@@ -1021,9 +1021,11 @@ export const servicesData = {
     whatIsPara2: 'Kangqore implements continuous model monitoring, bias detection, explainability layers, and EU AI Act compliance frameworks — ensuring your enterprise AI models and autonomous agents scale safely with absolute control.',
     bannerBrandDesc: 'Our enterprise AI governance & compliance framework',
     downloadAsset: '/assets/downloads/kangqore-ai-governance-playbook.pdf',
+    downloadAssetTitle: 'Download the Playbook',
     comparisonTable: {
       colA: 'Ungoverned AI',
       colB: 'Governed & Compliant AI',
+      heading: 'Ungoverned AI vs. Governed & Compliant AI',
       rows: [
         { dimension: 'Autonomy',    before: 'Unmonitored model outputs — high risk of hallucination, bias, and unauthorized agent actions.', after: 'Governed execution — pre-action approval gates, behavior limits, and kill-switches.' },
         { dimension: 'Workflow',    before: 'Ad-hoc scripts and unverified logic — breaks on edge cases without audit trails.', after: 'Continuous audit logging — automated policy enforcement and immutable compliance trails.' },
@@ -1110,6 +1112,13 @@ export const servicesData = {
       industry: 'Healthcare & Clinical Research Network',
       problem: 'Diagnostic AI models and patient triage algorithms lacked real-time drift detection and human oversight gates, risking diagnostic error propagation across hospital systems.',
       outcome: 'Kangqore embedded human-in-the-loop approval workflows, real-time data drift alerts, and automated bias checks — reducing critical model incidents by 95% across 12 clinical nodes.',
+    },
+    outcomeCard3: {
+      metric: '0%',
+      metricLabel: 'Unauthorized autonomous agent actions',
+      industry: 'Enterprise Cloud & Defense Technology',
+      problem: 'Shadow AI usage and unmonitored copilot agents exposed sensitive enterprise intellectual property and confidential customer PII to external LLM endpoints.',
+      outcome: 'Kangqore implemented Zero-Trust AI security, automated prompt sanitization, and cryptographic audit ledgers — guaranteeing zero unauthorized agent actions and 100% IP isolation.',
     },
   },
 

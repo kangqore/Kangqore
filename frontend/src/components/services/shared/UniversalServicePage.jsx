@@ -1170,7 +1170,7 @@ const featureMicros   = service.featureMicros
               <span className="text-white font-black text-lg tracking-tight">{service.name}</span>
               <span className="hidden sm:block w-px h-5 bg-white/10" />
               <div className="flex flex-col gap-0.5">
-                <span className="text-white/40 group-hover:text-white text-sm font-medium transition-colors duration-500">Kangqore {department.name} ™</span>
+                <span className="text-white/40 group-hover:text-white text-sm font-medium transition-colors duration-500">{service.bannerBrand ? `Kangqore ${service.bannerBrand}` : `Kangqore ${department.name} ™`}</span>
                 {service.bannerBrandDesc && (
                   <span className="text-white/40 group-hover:text-white/65 text-[11px] font-medium tracking-wide transition-colors duration-500">{service.bannerBrandDesc}</span>
                 )}
@@ -1180,7 +1180,7 @@ const featureMicros   = service.featureMicros
               {service.downloadAsset ? (
                 <a href={service.downloadAsset} download className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
                   <Download className="w-4 h-4" />
-                  Download the Playbook
+                  {service.downloadAssetTitle || 'Download the Playbook'}
                 </a>
               ) : (
                 <Link to="/contact" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
