@@ -925,44 +925,93 @@ export const servicesData = {
       {
         title: 'Managing AI & GenAI Solution Quality',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Data validation, model testing, and bias detection frameworks that ensure high-quality, hallucination-free AI outputs.',
-        items: ['Data Validation Pipelines', 'Model Quality Assurance', 'Bias & Hallucination Controls', 'Drift Detection']
+        desc: 'Ensure AI and Generative AI systems operate with consistent accuracy, reliability, safety, and enterprise-grade performance throughout their lifecycle.',
+        items: [
+          'Data Quality Engineering: Design robust data validation, cleansing, enrichment, and preprocessing pipelines that ensure trusted, high-quality inputs for AI systems.',
+          'Model Validation & Quality Assurance: Establish comprehensive testing frameworks to evaluate model accuracy, robustness, reliability, and production readiness.',
+          'AI Risk Detection: Identify and mitigate hallucinations, bias, anomalies, data quality issues, and unexpected model behaviour before they impact business operations.',
+          'Performance Monitoring & Drift Management: Continuously monitor model performance, detect data and concept drift, and maintain optimal AI effectiveness in production environments.',
+          'AI Evaluation & Benchmarking: Measure AI models against predefined quality metrics, enterprise benchmarks, and business objectives to ensure consistent performance.',
+          'Reliability & Resilience Engineering: Improve AI system stability, fault tolerance, recovery capabilities, and operational resilience across enterprise workloads.',
+        ]
       },
       {
-        title: 'Establishing Ethical AI Guidelines',
+        title: 'Establishing Ethical AI Governance',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Fairness, accountability, transparency, and explainable AI controls aligned with human values and organizational principles.',
-        items: ['Ethical AI Principles', 'Transparency Standards', 'Responsible GenAI', 'Explainability Controls']
+        desc: 'Develop governance frameworks that ensure AI systems operate responsibly, transparently, fairly, and in alignment with organisational values and regulatory expectations.',
+        items: [
+          'Responsible AI Frameworks: Define enterprise-wide governance principles that guide the ethical design, deployment, and operation of AI systems.',
+          'Fairness & Transparency: Implement controls that minimise bias, improve explainability, and promote equitable AI outcomes across business processes.',
+          'Explainable AI: Enable stakeholders to understand AI reasoning, decision pathways, confidence levels, and supporting evidence for every recommendation.',
+          'Accountability & Oversight: Establish governance structures that define ownership, responsibility, approvals, and decision accountability throughout the AI lifecycle.',
+          'Human Oversight: Integrate human-in-the-loop governance mechanisms for reviewing, validating, and approving high-impact AI decisions.',
+          'Responsible GenAI & Agentic AI: Apply specialised governance controls for autonomous AI agents, Generative AI applications, and multi-agent ecosystems.',
+        ]
       },
       {
-        title: 'Enabling Model & Agent Governance',
+        title: 'Model Governance',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Centralized model registries, agent behavior limits, version control, approval gates, and lifecycle management.',
-        items: ['Model & Agent Registries', 'Approval & Release Gates', 'Lineage & Behavior Tracking', 'Safe Rollback & Retirement']
+        desc: 'Establish enterprise-wide governance for managing AI models across development, deployment, monitoring, and retirement.',
+        items: [
+          'Model Lifecycle Management: Govern AI models through structured development, validation, deployment, monitoring, maintenance, and retirement processes.',
+          'Model Version Control: Maintain complete version history, documentation, lineage, and reproducibility across the AI development lifecycle.',
+          'Deployment Governance: Implement controlled approval workflows, release management, and production deployment processes for enterprise AI systems.',
+          'Performance Validation: Continuously validate model accuracy, reliability, robustness, and business effectiveness throughout production operations.',
+          'Change & Release Management: Manage governed model updates, rollback strategies, retraining cycles, and controlled releases with minimal operational disruption.',
+          'Model Registry & Documentation: Maintain a centralised repository containing model metadata, documentation, ownership, dependencies, approvals, and governance records.',
+        ]
       },
       {
-        title: 'Navigating Regulatory Compliance & Risk',
+        title: 'Compliance & AI Risk Management',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Complete alignment with global regulations (EU AI Act, NIST AI RMF, ISO/IEC 42001, GDPR) and enterprise risk management.',
-        items: ['EU AI Act & Regulatory Alignment', 'Data Masking & PII Protection', 'Audit Trail Logging', 'Risk Classification & Mitigation']
+        desc: 'Ensure AI systems comply with global regulations, industry standards, organisational policies, and enterprise risk management requirements.',
+        items: [
+          'Regulatory Compliance: Align AI solutions with international regulations, industry standards, and organisational governance requirements throughout the AI lifecycle.',
+          'Data Privacy & Protection: Implement enterprise controls for data anonymisation, encryption, consent management, retention, and secure information handling.',
+          'Audit & Policy Enforcement: Maintain comprehensive audit trails, policy enforcement mechanisms, operational logs, and governance evidence for regulatory compliance.',
+          'AI Risk Management: Identify, assess, prioritise, and mitigate operational, ethical, regulatory, cybersecurity, and business risks associated with AI systems.',
+          'Security & Access Governance: Protect AI assets through identity management, role-based access control, zero-trust security, and continuous access monitoring.',
+          'Compliance Monitoring & Reporting: Continuously monitor compliance posture, generate governance reports, and demonstrate adherence to enterprise and regulatory obligations.',
+        ]
       },
       {
-        title: 'AI Security, Privacy & Data Protection',
+        title: 'AI Security & Trust',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Zero-trust security controls, model asset protection, inference pipeline security, and encrypted data sovereignty.',
-        items: ['Zero-Trust Access Controls', 'Model & Prompt Injection Shield', 'Inference Pipeline Security', 'Data Privacy & Encryption']
+        desc: 'Protect AI systems, models, agents, and enterprise data against adversarial threats, unauthorised access, and emerging AI-specific security risks.',
+        items: [
+          'AI Security Architecture: Design secure AI infrastructures with defence-in-depth principles, zero-trust security, and resilient system architectures.',
+          'Prompt & LLM Security: Protect Large Language Models against prompt injection, jailbreaks, data leakage, and adversarial manipulation.',
+          'Identity & Access Management: Enforce role-based access, least-privilege controls, authentication, and authorisation across AI systems and agents.',
+          'AI Threat Detection: Continuously detect malicious behaviour, adversarial attacks, model abuse, and security anomalies across AI environments.',
+          'Secrets & Credential Management: Secure API keys, tokens, credentials, encryption keys, and confidential enterprise assets used by AI systems.',
+          'Secure AI Infrastructure: Implement encryption, network isolation, secure deployment pipelines, and infrastructure hardening for production AI workloads.',
+        ]
       },
       {
-        title: 'Continuous Governance Operations & Audit Readiness',
+        title: 'AI Observability & Operations',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Automated policy enforcement, real-time evidence generation, continuous SLA monitoring, and instant audit readiness.',
-        items: ['Automated Policy Enforcement', 'Real-Time Evidence Packaging', 'SLA & Observability Monitoring', 'Continuous Audit Readiness']
+        desc: 'Provide continuous visibility into AI system health, performance, cost, reliability, and operational effectiveness across the enterprise.',
+        items: [
+          'AI Observability: Monitor AI behaviour, inference quality, latency, token usage, and operational health across production environments.',
+          'Operational Monitoring: Track service availability, response times, throughput, resource utilisation, and overall AI system performance.',
+          'Cost & Resource Optimisation: Analyse AI infrastructure costs, token consumption, compute utilisation, and resource efficiency to optimise operational spending.',
+          'Incident & Failure Management: Detect, investigate, respond to, and recover from AI failures through structured incident management processes.',
+          'Capacity & Scalability Management: Plan and optimise AI infrastructure capacity to support enterprise-scale workloads and future growth.',
+          'Operational Analytics & Reporting: Deliver executive dashboards, operational insights, SLA reporting, and continuous improvement metrics for AI operations.',
+        ]
       },
       {
-        title: 'Human-in-the-Loop Oversight & Escalation Controls',
+        title: 'AI Governance Strategy & Transformation',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Configurable human approval gates, real-time exception escalation, kill-switch mechanisms, and interactive governance dashboards.',
-        items: ['Human Approval Workflows', 'Real-Time Exception Escalation', 'Automated Kill-Switch Safeguards', 'Interactive Governance Dashboards']
+        desc: 'Help organisations establish enterprise-wide AI governance operating models, governance maturity, organisational readiness, and long-term AI transformation strategies.',
+        items: [
+          'AI Governance Strategy: Define enterprise AI governance vision, principles, operating models, and strategic roadmaps aligned with business objectives.',
+          'AI Governance Operating Model: Design governance structures, roles, responsibilities, committees, decision authorities, and cross-functional governance processes.',
+          'AI Governance Maturity Assessment: Evaluate governance capabilities, identify gaps, benchmark against industry best practices, and develop improvement roadmaps.',
+          'AI Policy & Standards Management: Develop enterprise AI policies, governance standards, operating procedures, and control frameworks for consistent AI adoption.',
+          'AI Portfolio Governance: Prioritise, oversee, and govern enterprise AI initiatives, investments, programmes, and business value realisation.',
+          'AI Adoption & Change Management: Drive organisational readiness through stakeholder engagement, governance awareness, training, communication, and change management programmes.',
+        ]
       }
     ],
     whatIsEyebrow: 'What AI Governance services does Kangqore offer?',
