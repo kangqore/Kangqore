@@ -49,6 +49,9 @@ import ExploreServices from '../components/ExploreServices';
 import DepartmentsGrid from '../components/DepartmentsGrid';
 import DepartmentCarousel from '../components/home/DepartmentCarousel';
 import HomeRuler from '../components/home/HomeRuler';
+import BookingWidget from '../components/scheduling/BookingWidget';
+import TransformCTA from '../components/TransformCTA';
+import EqoreShowSection from '../components/podcast/EqoreShowSection';
 
 // ============================================================================
 // MOCK DATA
