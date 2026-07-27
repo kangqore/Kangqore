@@ -907,6 +907,141 @@ export const servicesData = {
     ],
   },
 
+  'ai-governance': {
+    slug: 'ai-governance',
+    name: 'AI Governance',
+    departmentSlug: 'cognition',
+    bannerBrand: 'eQORE™',
+    shortDescription: 'Building Trust, Control, and Accountability into Enterprise AI Systems',
+    fullDescription: 'Kangqore enables organizations to adopt, scale, and operationalize AI responsibly by embedding governance, transparency, and control across the entire AI lifecycle.',
+    keyFeatures: ['Quality assurance', 'Ethical AI principles', 'Model governance', 'Compliance & risk management', 'Explainable AI'],
+    relatedServiceSlugs: ['agentic-ai', 'mlops', 'data-science-ai'],
+    featured: true,
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    capabilitiesLabel: 'AI GOVERNANCE SERVICES',
+    capabilitiesSectionTitle: 'AI Governance Framework',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilityAreas: [
+      {
+        title: 'Managing AI & GenAI Solution Quality',
+        desc: 'Data validation, model testing, and bias detection frameworks that ensure high-quality AI outputs.',
+        items: ['Data Validation Pipelines', 'Model Quality Assurance', 'Bias & Hallucination Controls', 'Drift Detection']
+      },
+      {
+        title: 'Establishing Ethical AI Guidelines',
+        desc: 'Fairness, accountability, transparency, and explainable AI controls aligned with human values.',
+        items: ['Ethical AI Principles', 'Transparency Standards', 'Responsible GenAI', 'Explainability Controls']
+      },
+      {
+        title: 'Enabling Model Governance',
+        desc: 'Model versioning, lineage tracking, approval workflows, and lifecycle management.',
+        items: ['Model Registries', 'Approval Gates', 'Lineage Tracking', 'Safe Rollback & Retirement']
+      },
+      {
+        title: 'Navigating Compliance & Risk',
+        desc: 'Alignment with global regulations (EU AI Act, GDPR, HIPAA) and enterprise risk management.',
+        items: ['Regulatory Alignment', 'Data Masking & PII', 'Audit Logging', 'Risk Mitigation']
+      }
+    ],
+    whatIsEyebrow: 'What AI Governance services does Kangqore offer?',
+    whatIsTitle: 'AI Governance',
+    whatIsTitleLine2: 'That Builds Trust &',
+    whatIsHighlight: 'Mitigates Risk.',
+    whatIsPara2: 'Kangqore implements continuous model monitoring, bias detection, explainability layers, and EU AI Act compliance frameworks — ensuring your enterprise AI models and autonomous agents scale safely with absolute control.',
+    bannerBrandDesc: 'Our enterprise AI governance & compliance framework',
+    downloadAsset: '/assets/downloads/kangqore-ai-governance-playbook.pdf',
+    comparisonTable: {
+      colA: 'Ungoverned AI',
+      colB: 'Governed & Compliant AI',
+      rows: [
+        { dimension: 'Autonomy',    before: 'Unmonitored model outputs — high risk of hallucination, bias, and unauthorized agent actions.', after: 'Governed execution — pre-action approval gates, behavior limits, and kill-switches.' },
+        { dimension: 'Workflow',    before: 'Ad-hoc scripts and unverified logic — breaks on edge cases without audit trails.', after: 'Continuous audit logging — automated policy enforcement and immutable compliance trails.' },
+        { dimension: 'Learning',    before: 'Silent model & data drift — unmonitored decay degrades decision quality over time.', after: 'Real-time drift detection — automated alerts trigger human-in-the-loop review before impact.' },
+        { dimension: 'Integration', before: 'Fragmented shadow AI deployments — unmapped models creating security and legal exposure.', after: 'Centralized model registry — enterprise-wide visibility, risk classification, and RBAC controls.' },
+        { dimension: 'Outcomes',    before: 'Compliance, reputational & legal risks — vulnerable to EU AI Act and GDPR violations.', after: 'Audit-ready business outcomes — scale AI rapidly with verified explainability and trust.' },
+      ],
+    },
+    architectureNodes: [
+      {
+        title: 'Policy & Ethics Layer',
+        icon: 'ShieldCheck',
+        description: 'Define enterprise AI principles, ethical guardrails, and automated risk classification across all models.',
+        features: ['Risk Tiering', 'Ethical Guardrails', 'Usage Policies', 'EU AI Act Alignment'],
+      },
+      {
+        title: 'Model & Agent Control',
+        icon: 'BrainCircuit',
+        description: 'Centralized model registries, automated release gates, behavioral boundaries, and lifecycle documentation.',
+        features: ['Model Registries', 'Release Gates', 'Behavior Limits', 'Version Control'],
+      },
+      {
+        title: 'Data & Privacy Core',
+        icon: 'Lock',
+        description: 'Strict oversight over training data, prompt engineering, data masking, and context store lineage.',
+        features: ['Data Masking', 'Consent Management', 'Lineage Tracking', 'PII Protection'],
+      },
+      {
+        title: 'Execution Oversight',
+        icon: 'Activity',
+        description: 'Real-time human-in-the-loop checkpoints, anomaly detection alerts, and emergency kill-switches.',
+        features: ['HITL Workflows', 'Immutable Audit Logs', 'Anomaly Alerts', 'Emergency Kill-Switches'],
+      },
+    ],
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Model risk management (MRM) and credit explainability.',
+        agents: ['Model risk auditor agent', 'Regulatory compliance agent', 'Credit explainability agent'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Clinical AI validation and patient data privacy.',
+        agents: ['Clinical validation agent', 'HIPAA privacy agent', 'EHR consent agent'],
+      },
+      {
+        industry: 'Manufacturing & Industry',
+        headline: 'Industrial AI safety and automated QA compliance.',
+        agents: ['Industrial safety auditor', 'QA compliance agent', 'Predictive maintenance auditor'],
+      },
+      {
+        industry: 'Retail & Consumer Goods',
+        headline: 'Pricing fairness and consumer data privacy controls.',
+        agents: ['Pricing fairness agent', 'Bias detection agent', 'Consumer privacy agent'],
+      },
+      {
+        industry: 'IT & Infrastructure',
+        headline: 'Copilot policy enforcement and multi-tenant security.',
+        agents: ['Copilot policy agent', 'Multi-tenant security agent', 'API governance agent'],
+      },
+      {
+        industry: 'EdTech',
+        headline: 'Student data privacy and AI grading fairness.',
+        agents: ['Student privacy agent', 'AI grading fairness agent', 'Administrative audit agent'],
+      },
+    ],
+    servicePackages: [
+      { name: 'Strategy & Audit', description: 'Comprehensive AI landscape inventory, regulatory risk classification (EU AI Act), and governance gap analysis.', duration: '2–3 weeks', tier: 'Advisory' },
+      { name: 'Guardrail Pod', description: 'Rapid deployment of model registries, SHAP explainability layers, and bias monitoring for one high-risk production AI model.', duration: '8 weeks', tier: 'Pilot' },
+      { name: 'Platform Governance', description: 'Engineering enterprise-wide model registries, automated CI/CD compliance gates, and data masking pipelines.', duration: '16–24 weeks', tier: 'Platform' },
+      { name: 'Managed Compliance', description: 'Ongoing production monitoring, model drift alerting, human-in-the-loop workflow management, and audit log maintenance.', duration: 'Ongoing', tier: 'Managed' },
+      { name: 'Continuous Assurance', description: 'Enterprise-wide AI risk assurance, periodic regulatory re-assessments, and continuous model governance tuning.', duration: 'Ongoing', tier: 'Enterprise' },
+    ],
+    outcomeCard: {
+      metric: '100%',
+      metricLabel: 'EU AI Act audit readiness achieved',
+      industry: 'Global Financial Institution',
+      problem: 'Uncoordinated AI deployment across 40+ trading and risk departments created severe compliance vulnerability under emerging EU AI Act guidelines and model risk management mandates.',
+      outcome: 'Kangqore deployed a centralized model governance platform with automated risk tiering, model lineage tracking, and SHAP explainability — achieving 100% audit readiness across all production models with zero deployment slowdown.',
+    },
+    outcomeCard2: {
+      metric: '95%',
+      metricLabel: 'Critical model incident risk reduction',
+      industry: 'Healthcare & Clinical Research Network',
+      problem: 'Diagnostic AI models and patient triage algorithms lacked real-time drift detection and human oversight gates, risking diagnostic error propagation across hospital systems.',
+      outcome: 'Kangqore embedded human-in-the-loop approval workflows, real-time data drift alerts, and automated bias checks — reducing critical model incidents by 95% across 12 clinical nodes.',
+    },
+  },
+
   'analytics': {
     slug: 'analytics',
     name: 'Analytics',

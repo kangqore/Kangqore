@@ -678,6 +678,160 @@ const featureMicros   = service.featureMicros
                     <text x="442" y="348" textAnchor="middle" fill="#00f0ff" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">4. MACHINE SPEED</text>
                   </svg>
                 </div>
+              ) : service.slug === 'ai-governance' ? (
+                /* ── AI Governance Flow Diagram ── */
+                <div className="flex items-center justify-center w-full lg:-mt-16">
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[420px]">
+                    <defs>
+                      <linearGradient id="gov-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#2564ea"/>
+                        <stop offset="100%" stopColor="#00f0ff"/>
+                      </linearGradient>
+                      <linearGradient id="gov-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7f53f9"/>
+                        <stop offset="100%" stopColor="#a78bfa"/>
+                      </linearGradient>
+                      <linearGradient id="gov-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#00c875"/>
+                        <stop offset="100%" stopColor="#34d399"/>
+                      </linearGradient>
+                      <linearGradient id="gov-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#f59e0b"/>
+                        <stop offset="100%" stopColor="#fbbf24"/>
+                      </linearGradient>
+                      <filter id="glow-cyan-gov">
+                        <feGaussianBlur stdDeviation="5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-purple-gov">
+                        <feGaussianBlur stdDeviation="6" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-green-gov">
+                        <feGaussianBlur stdDeviation="5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <marker id="diag-arrow-cyan-gov" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#00f0ff" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-green-gov" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#34d399" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <clipPath id="capsule-clip-gov">
+                        <rect x="40" y="274" width="460" height="90" rx="30"/>
+                      </clipPath>
+                    </defs>
+
+                    {/* ── LEFT: Governance Triggers & Context Streams ── */}
+                    <text x="75" y="52" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">GOVERNANCE INPUTS</text>
+                    <rect x="25" y="70" width="100" height="26" rx="6" fill="#0c0e14" stroke="url(#gov-gold)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <rect x="20" y="106" width="110" height="26" rx="6" fill="#0c0e14" stroke="url(#gov-gold)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <rect x="25" y="142" width="100" height="26" rx="6" fill="#0c0e14" stroke="url(#gov-gold)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    
+                    <line x1="45" y1="83" x2="105" y2="83" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
+                    <line x1="40" y1="119" x2="110" y2="119" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
+                    <line x1="45" y1="155" x2="105" y2="155" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
+                    
+                    <circle cx="38" cy="83" r="2.5" fill="#f59e0b"/>
+                    <circle cx="34" cy="119" r="2.5" fill="#fbbf24"/>
+                    <circle cx="38" cy="155" r="2.5" fill="#f59e0b"/>
+
+                    <text x="75" y="86" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">MODEL PROMPTS</text>
+                    <text x="75" y="122" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">AGENT ACTIONS</text>
+                    <text x="75" y="158" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">RAG / CONTEXT</text>
+
+                    {/* Connecting arrows from left to center */}
+                    <path d="M 125 83 L 200 119" stroke="url(#gov-gold)" strokeWidth="1.2" strokeDasharray="3 3" opacity="0.6" markerEnd="url(#diag-arrow-cyan-gov)" />
+                    <path d="M 130 119 L 205 119" stroke="url(#gov-gold)" strokeWidth="1.5" opacity="0.8" markerEnd="url(#diag-arrow-cyan-gov)" />
+                    <path d="M 125 155 L 200 119" stroke="url(#gov-gold)" strokeWidth="1.2" strokeDasharray="3 3" opacity="0.6" markerEnd="url(#diag-arrow-cyan-gov)" />
+
+                    {/* ── CENTER: Governance Core & Policy Engine ── */}
+                    <circle cx="270" cy="119" r="65" fill="#06090f" stroke="url(#gov-purple)" strokeWidth="1.5" filter="url(#glow-purple-gov)" />
+                    <circle cx="270" cy="119" r="48" fill="#0a0e1a" stroke="#00f0ff" strokeWidth="1" strokeDasharray="4 2" />
+                    
+                    {/* Guardrail Core Chip */}
+                    <rect x="250" y="99" width="40" height="40" rx="8" fill="#0c0e14" stroke="url(#gov-cyan)" strokeWidth="1.5" />
+                    <path d="M 270 107 L 282 113 L 282 125 L 270 131 L 258 125 L 258 113 Z" fill="none" stroke="#00f0ff" strokeWidth="1.2" />
+                    <circle cx="270" cy="119" r="3" fill="#00f0ff" filter="url(#glow-cyan-gov)" />
+
+                    <text x="270" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">eQORE™ GOVERNANCE ENGINE</text>
+
+                    {/* Pulsing Orbiting Dots */}
+                    <circle cx="270" cy="54" r="3" fill="#7f53f9" />
+                    <circle cx="335" cy="119" r="3" fill="#00f0ff" />
+                    <circle cx="270" cy="184" r="3" fill="#00c875" />
+                    <circle cx="205" cy="119" r="3" fill="#f59e0b" />
+
+                    {/* Connecting arrow from center to right */}
+                    <path d="M 335 119 L 410 119" stroke="url(#gov-green)" strokeWidth="2" filter="url(#glow-green-gov)" markerEnd="url(#diag-arrow-green-gov)" />
+
+                    {/* ── RIGHT: Governance Audit Outcome Card ── */}
+                    <text x="440" y="52" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">COMPLIANCE OUTCOME</text>
+                    <rect x="415" y="65" width="110" height="108" rx="8" fill="#0c0e14" stroke="url(#gov-green)" strokeWidth="1.5" filter="url(#glow-green-gov)" />
+                    
+                    <text x="430" y="84" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="84" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">Risk tier passed</text>
+                    <text x="430" y="106" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="106" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">Bias &lt; 0.01 threshold</text>
+                    <text x="430" y="128" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="128" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">Audit log committed</text>
+                    <text x="430" y="150" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="150" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">EU AI Act compliant</text>
+
+                    {/* ── BOTTOM: Governance Pipeline Bar ── */}
+                    <rect x="40" y="274" width="460" height="90" rx="30" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <rect x="155" y="274" width="115" height="90" fill="#1a1a1a" fillOpacity="0.5" clipPath="url(#capsule-clip-gov)"/>
+                    <rect x="385" y="274" width="115" height="90" fill="url(#gov-green)" fillOpacity="0.1" clipPath="url(#capsule-clip-gov)"/>
+                    
+                    <line x1="155" y1="274" x2="155" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
+                    <line x1="270" y1="274" x2="270" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
+                    <line x1="385" y1="274" x2="385" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
+
+                    {/* Section 1: Risk Tier */}
+                    <g transform="translate(82, 290)">
+                      <circle cx="15" cy="15" r="12" fill="none" stroke="white" strokeOpacity="0.4" strokeWidth="1.2" />
+                      <circle cx="15" cy="15" r="6" fill="none" stroke="#f59e0b" strokeOpacity="0.6" strokeWidth="1.2" />
+                      <line x1="15" y1="0" x2="15" y2="30" stroke="white" strokeOpacity="0.3" />
+                      <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
+                    </g>
+                    <text x="97" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">1. RISK TIER</text>
+
+                    {/* Section 2: Explainability */}
+                    <g transform="translate(192, 290)">
+                      <circle cx="15" cy="8" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
+                      <circle cx="6" cy="20" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
+                      <circle cx="24" cy="20" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
+                      <line x1="12" y1="11" x2="8" y2="17" stroke="#7f53f9" strokeWidth="1.2" />
+                      <line x1="18" y1="11" x2="22" y2="17" stroke="#7f53f9" strokeWidth="1.2" />
+                      <circle cx="15" cy="8" r="2" fill="#7f53f9" filter="url(#glow-purple-gov)"/>
+                    </g>
+                    <text x="212" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">2. EXPLAINABILITY</text>
+
+                    {/* Section 3: Audit Gate */}
+                    <g transform="translate(312, 290)">
+                      <rect x="5" y="4" width="20" height="22" rx="3" fill="none" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-cyan-gov)"/>
+                      <path d="M 11 12 L 19 12 M 11 17 L 17 17" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+                    </g>
+                    <text x="327" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">3. AUDIT GATE</text>
+
+                    {/* Section 4: Continuous Compliance */}
+                    <g transform="translate(415, 290)">
+                      <path d="M 5 25 A 20 20 0 0 1 45 25" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.3" strokeLinecap="round"/>
+                      <path d="M 5 25 A 20 20 0 0 1 35 11" fill="none" stroke="#00c875" strokeWidth="3" strokeLinecap="round" filter="url(#glow-green-gov)"/>
+                      <circle cx="25" cy="25" r="3" fill="white"/>
+                    </g>
+                    <text x="442" y="348" textAnchor="middle" fill="#00c875" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">4. AUDIT READY</text>
+                  </svg>
+                </div>
               ) : (
                 /* ── Agentic AI Flow Diagram ── */
                 <div className="flex items-center justify-center w-full lg:-mt-16">

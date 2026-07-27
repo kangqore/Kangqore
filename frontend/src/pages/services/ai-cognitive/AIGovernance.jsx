@@ -65,13 +65,6 @@ const AIGovernance = () => {
       { label: 'AI Governance' }
     ],
 
-    stats: [
-      { value: '100%', label: 'Governance Coverage', color: 'text-brand-blue' },
-      { value: '10+', label: 'Governed AI Models', color: 'text-cyan-400' },
-      { value: '10+', label: 'Compliance Frameworks', color: 'text-brand-blue' },
-      { value: '24/7', label: 'Policy Enforcement', color: 'text-cyan-400' }
-    ],
-
     highFidelity: {
       narrative: {
         badge: 'Enterprise Trust :: 2026',
