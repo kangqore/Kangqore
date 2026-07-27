@@ -273,53 +273,68 @@ const DataScienceAI = () => {
     capabilitiesTitle: 'Our Capabilities.',
     capabilities: [
       {
-        title: 'Data Engineering & Modern Platforms',
+        title: 'Data Engineering & Modern Data Platforms',
+        desc: 'Design scalable, secure, and modern data ecosystems that enable trusted analytics, artificial intelligence, and enterprise decision-making.',
         bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'Real-time & batch pipelines', description: 'Design and deploy scalable data pipelines for both real-time streaming and batch processing workloads.' },
-          { heading: 'Data lakehouse & warehouse design', description: 'Build modern lakehouse architectures that unify structured and unstructured data for analytics and ML.' },
-          { heading: 'Streaming architectures', description: 'Implement event-driven streaming systems for real-time data processing and instant insights.' },
-          { heading: 'Data quality & governance frameworks', description: 'Establish data quality monitoring, lineage tracking, and governance policies across the enterprise.' }
+          { heading: 'Real-Time & Batch Data Engineering', description: 'Build high-performance data pipelines that process streaming and batch workloads to support operational intelligence and analytics at scale.' },
+          { heading: 'Data Lakehouse & Warehouse Architecture', description: 'Design modern lakehouse and warehouse platforms that unify structured, semi-structured, and unstructured enterprise data.' },
+          { heading: 'Event Streaming & Data Integration', description: 'Implement event-driven architectures that enable continuous data ingestion, real-time processing, and enterprise-wide data integration.' },
+          { heading: 'Data Quality Engineering', description: 'Establish automated data validation, profiling, cleansing, monitoring, and quality controls to ensure trusted enterprise data.' },
+          { heading: 'Data Governance & Lineage', description: 'Implement enterprise governance frameworks that provide data cataloguing, lineage tracking, metadata management, and policy enforcement.' },
+          { heading: 'Enterprise Data Architecture', description: 'Develop scalable, cloud-native data architectures that support analytics, AI workloads, and long-term digital transformation initiatives.' }
         ]
       },
       {
-        title: 'Machine Learning & Predictive Systems',
+        title: 'Machine Learning & Predictive Intelligence',
+        desc: 'Develop intelligent machine learning solutions that enable prediction, optimisation, automation, and data-driven business decision-making.',
         bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'Forecasting & optimization models', description: 'Build predictive models for demand forecasting, resource optimization, and strategic planning.' },
-          { heading: 'Classification & anomaly detection', description: 'Develop classifiers and anomaly detectors for fraud prevention, quality control, and risk assessment.' },
-          { heading: 'Recommender systems', description: 'Create personalized recommendation engines that drive engagement and conversion.' },
-          { heading: 'Advanced statistical modeling', description: 'Apply rigorous statistical methods for hypothesis testing, causal inference, and experimental design.' }
+          { heading: 'Predictive Modelling & Forecasting', description: 'Develop advanced forecasting models for demand planning, financial forecasting, operational optimisation, and strategic decision support.' },
+          { heading: 'Classification & Anomaly Detection', description: 'Build intelligent classification and anomaly detection systems that identify fraud, operational risks, quality issues, and unusual behaviour.' },
+          { heading: 'Recommendation Intelligence', description: 'Create AI-powered recommendation systems that deliver personalised customer experiences and improve engagement, retention, and revenue.' },
+          { heading: 'Statistical & Quantitative Modelling', description: 'Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.' },
+          { heading: 'Feature Engineering & Model Development', description: 'Design high-quality data features and optimise machine learning models for improved predictive performance and scalability.' },
+          { heading: 'Decision Intelligence', description: 'Combine machine learning, analytics, and business rules to support intelligent, explainable, and data-driven decision-making.' }
         ]
       },
       {
-        title: 'Generative AI & Intelligent Assistants',
+        title: 'Generative AI & Intelligent Systems',
+        desc: 'Design enterprise-grade Generative AI solutions that enhance productivity, automate knowledge work, and enable intelligent business operations.',
         bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'RAG systems & enterprise copilots', description: 'Build retrieval-augmented generation systems that ground AI responses in your enterprise knowledge.' },
-          { heading: 'Knowledge retrieval engines', description: 'Deploy intelligent search and retrieval systems that surface relevant information instantly.' },
-          { heading: 'Domain-specific GenAI applications', description: 'Create customized generative AI applications tailored to your industry and use cases.' },
-          { heading: 'Multi-agent workflows', description: 'Orchestrate multiple AI agents to handle complex, multi-step business processes autonomously.' }
+          { heading: 'Enterprise Copilots & AI Assistants', description: 'Develop secure AI assistants that augment employees with contextual knowledge, automation, and intelligent decision support.' },
+          { heading: 'Retrieval-Augmented Generation (RAG)', description: 'Build enterprise RAG architectures that combine foundation models with trusted organisational knowledge for accurate and grounded AI responses.' },
+          { heading: 'Enterprise Knowledge Intelligence', description: 'Develop intelligent search, semantic retrieval, and knowledge management platforms that unlock enterprise information.' },
+          { heading: 'Domain-Specific Generative AI', description: 'Create industry-specific Generative AI applications tailored to unique business processes, regulations, and operational requirements.' },
+          { heading: 'Multi-Agent AI Systems', description: 'Develop collaborative AI agent ecosystems capable of coordinating complex workflows, autonomous task execution, and enterprise orchestration.' },
+          { heading: 'AI Workflow Automation', description: 'Integrate Generative AI into enterprise workflows to automate repetitive processes, improve productivity, and accelerate business operations.' }
         ]
       },
       {
-        title: 'MLOps & Model Lifecycle Management',
+        title: 'MLOps & AI Lifecycle Engineering',
+        desc: 'Establish enterprise engineering practices that enable reliable, scalable, and governed deployment, operation, and continuous improvement of AI systems.',
         bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'CI/CD for ML', description: 'Implement continuous integration and deployment pipelines specifically designed for machine learning workflows.' },
-          { heading: 'Model versioning & rollback', description: 'Manage model versions with full lineage tracking and instant rollback capabilities.' },
-          { heading: 'Performance monitoring', description: 'Track model performance metrics in production with automated alerting and reporting.' },
-          { heading: 'Drift detection & retraining', description: 'Detect data and concept drift automatically and trigger retraining pipelines to maintain accuracy.' }
+          { heading: 'AI Deployment Pipelines', description: 'Implement automated CI/CD pipelines that streamline the development, testing, deployment, and delivery of AI solutions.' },
+          { heading: 'Model Lifecycle Management', description: 'Manage AI models across development, validation, deployment, monitoring, retraining, and retirement using governed lifecycle processes.' },
+          { heading: 'Model Versioning & Registry', description: 'Maintain centralised model repositories with complete version history, documentation, metadata, and reproducibility.' },
+          { heading: 'AI Performance Monitoring', description: 'Continuously monitor production models for accuracy, latency, throughput, reliability, and operational performance.' },
+          { heading: 'Drift Detection & Continuous Learning', description: 'Automatically detect data and concept drift while enabling continuous retraining and model optimisation.' },
+          { heading: 'AI Observability', description: 'Provide end-to-end visibility into model behaviour, inference quality, resource utilisation, operational health, and production AI systems.' }
         ]
       },
       {
         title: 'AI Governance & Responsible AI',
+        desc: 'Ensure enterprise AI systems operate responsibly, securely, transparently, and in compliance with organisational policies and regulatory requirements.',
         bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'Ethical AI policies', description: 'Establish organizational policies and frameworks for ethical AI development and deployment.' },
-          { heading: 'Bias detection & mitigation', description: 'Identify and mitigate bias in training data and model predictions to ensure fair outcomes.' },
-          { heading: 'Explainability frameworks', description: 'Implement model interpretability tools that make AI decisions transparent and understandable.' },
-          { heading: 'Audit trails & compliance controls', description: 'Maintain comprehensive audit logs and compliance controls for regulatory adherence.' }
+          { heading: 'Responsible AI Frameworks', description: 'Establish governance principles and organisational frameworks that guide the responsible design, deployment, and operation of AI systems.' },
+          { heading: 'Fairness & Bias Management', description: 'Identify, measure, and mitigate bias across datasets, models, and AI-driven decision processes to promote equitable outcomes.' },
+          { heading: 'Explainable AI', description: 'Implement interpretable AI techniques that provide transparent reasoning, confidence scores, and understandable decision explanations.' },
+          { heading: 'AI Risk & Compliance', description: 'Manage AI-related operational, regulatory, ethical, and business risks while ensuring compliance with enterprise governance standards.' },
+          { heading: 'Audit & Governance Controls', description: 'Maintain comprehensive audit trails, governance policies, approval workflows, and operational controls for enterprise AI systems.' },
+          { heading: 'Privacy & Data Protection', description: 'Protect sensitive enterprise information through privacy-preserving AI practices, data governance, encryption, and regulatory compliance.' }
         ]
       }
     ]
