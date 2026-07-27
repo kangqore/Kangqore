@@ -1798,110 +1798,6 @@ const EqoreTypingSection = ({ bookingRef }) => {
   );
 };
 
-
-
-
-
-// ============================================================================
-// REMAINING SECTIONS IMPORTED FROM ORIGINAL COMPONENTS
-// ============================================================================
-import BookingWidget from '../components/scheduling/BookingWidget';
-
-import TransformCTA from '../components/TransformCTA';
-import EqoreShowSection from '../components/podcast/EqoreShowSection';
-
-
-
-// ============================================================================
-// CAREERS SECTION — PINNED EXPANSION & TEXT CROSS-FADE
-// ============================================================================
-const CareersSection = () => {
-  const { t } = useTranslation();
-  const containerRef = useRef(null);
-
-  // 1. Track scroll progress inside the 300vh container (0 to 1)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  // 2. Map scroll progress to Text Opacity & Translation
-  const textOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.4], [0, -30]);
-
-  // 3. Map scroll progress to Image Scale & Width Expansion
-  const imageScale = useTransform(scrollYProgress, [0.2, 0.9], [1, 1.3]);
-  const imageWidth = useTransform(scrollYProgress, [0.2, 0.9], ["50%", "100%"]);
-  const imageBorderRadius = useTransform(scrollYProgress, [0.4, 0.9], ["16px", "0px"]);
-
-  return (
-    // Outer scroll track (3x screen height to give smooth scroll duration)
-    <section ref={containerRef} className="h-[300vh] relative bg-black">
-      
-      {/* Sticky Container pinned to full screen height */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        
-        <div className="max-w-7xl w-full px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-12 relative h-full">
-          
-          {/* Expanding Left Image */}
-          <motion.div 
-            style={{ 
-              width: imageWidth,
-              scale: imageScale,
-              borderRadius: imageBorderRadius
-            }}
-            className="relative h-[55vh] lg:h-[65vh] w-full lg:w-1/2 overflow-hidden shadow-2xl transition-all duration-75 z-10 origin-left"
-          >
-            <img 
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80" 
-              alt="Careers at Kangqore"
-              className="w-full h-full object-cover"
-            />
-            {/* Subtle Gradient Blend */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          </motion.div>
-
-          {/* Fading Right Content */}
-          <motion.div 
-            style={{ 
-              opacity: textOpacity, 
-              y: textY 
-            }}
-            className="w-full lg:w-1/2 text-white space-y-6 z-20 pointer-events-auto"
-          >
-            <div className="inline-flex items-center gap-2 mb-2">
-              <span className="px-3 py-1 text-xs font-bold tracking-wider text-white uppercase bg-brand-blue/20 border border-brand-blue/30 rounded-full shadow-[0_0_15px_rgba(37,100,234,0.3)]">
-                {t('careers_section.badge', 'Careers')}
-              </span>
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
-              {t('careers_section.heading', 'Build your future with Kangqore')}
-            </h2>
-            
-            <p className="text-lg text-gray-400 font-medium mb-8 max-w-md leading-[1.6]">
-              {t('careers_section.description', 'The next-generation AI-first, digital-first, cloud-first partner, we stand at the forefront of business evolution.')}
-            </p>
-            
-            <div>
-              <a 
-                href="/careers" 
-                className="group inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-semibold text-[15px] hover:bg-gray-100 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300"
-              >
-                {t('careers_section.cta', 'Explore Careers')}
-                <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            </div>
-          </motion.div>
-
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-
 // ============================================================================
 // MAIN HOMEPAGE COMPONENT
 // ============================================================================
@@ -2090,7 +1986,6 @@ const HomePage = () => {
 
       <EqoreTypingSection bookingRef={bookingRef} />
 
-      <CareersSection />
       <TransformCTA />
       <StickyMobileCTA />
     </>
