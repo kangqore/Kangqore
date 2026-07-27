@@ -824,9 +824,6 @@ const partnerLogos = [
 // ============================================================================
 // BIDS + PHILOSOPHY — two-panel split card layout
 // ============================================================================
-const BIDSSection = () => null;
-const PhilosophySection = () => null;
-
 const BIDSPhilosophySection = () => (
   <section className="bg-white dark:bg-black px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
     <div className="flex flex-col md:flex-row gap-4 max-w-[1600px] mx-auto">
