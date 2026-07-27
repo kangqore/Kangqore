@@ -13,7 +13,7 @@ import {
   TrendingUp, Users, BrainCircuit,
   ChevronDown, Activity, Shield,
   Globe, BarChart3, Network, Settings,
-  Plus, X, Download, ShieldCheck, Eye, Database,
+  Plus, X, Download, ShieldCheck, Eye, Database, Lock,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
@@ -48,7 +48,7 @@ const TypewriterText = ({ text, start = true, delay = 28 }) => {
 const CAP_COLORS = ['#22D3EE', '#60A5FA', '#A78BFA', '#FB923C', '#34D399', '#F472B6', '#FDE047', '#E8614A'];
 const ICON_POOL  = [Target, Zap, Layers, Search, Cpu, Radar, BrainCircuit, TrendingUp, Shield, Activity, Globe, BarChart3, Network, Settings, Rocket, Users];
 const PHASE_GRADIENTS = ['from-slate-600 to-slate-800', 'from-blue-500 to-blue-700', 'from-brand-blue to-indigo-600', 'from-emerald-500 to-emerald-700', 'from-cyan-500 to-cyan-700'];
-const JOURNEY_ICON_MAP = { Search, Target, Cpu, Rocket, Shield, TrendingUp, BrainCircuit, Network, Radar, Zap, Layers, Activity, Globe, Settings };
+const JOURNEY_ICON_MAP = { Search, Target, Cpu, Rocket, Shield, TrendingUp, BrainCircuit, Network, Radar, Zap, Layers, Activity, Globe, Settings, ShieldCheck, Eye, Database, Lock };
 const TECH_STACK_ICON_COLORS = [
   { bg: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)', glow: '0 8px 24px rgba(59,130,246,0.45), 0 2px 8px rgba(59,130,246,0.3)' },
   { bg: 'linear-gradient(135deg, #6d28d9 0%, #a78bfa 100%)', glow: '0 8px 24px rgba(139,92,246,0.45), 0 2px 8px rgba(139,92,246,0.3)' },
@@ -258,8 +258,522 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
   );
 };
 
+// ─── Universal Parity Data Synthesizer ─────────────────────────────────────────
+// Ensures ALL 62 service pages meet the Gold Benchmark standard (/services/agentic-ai)
+// by automatically providing domain-tailored fallbacks for Bento Grid, Comparison Matrix,
+// Architecture Stack, Industry Use Cases Grid, Outcome Cards, Service Packages, Business Metrics,
+// Custom FAQs, Journey Timeline, Hero Titles/Badges, Concierge Chips, Trust Signals, Tools Stack, and Playbook Asset.
+function getParityService(service, department) {
+  if (!service) return service;
+  const name = service.name || 'Enterprise Service';
+  const slug = service.slug || 'service';
+  const deptSlug = service.departmentSlug || (department && department.slug) || 'cognition';
+  const keyFeatures = service.keyFeatures || [];
+
+  // Hero Fallbacks
+  const heroTitle = service.heroTitle || (name + '\nSolutions at Enterprise Scale');
+  const heroBadge = service.heroBadge || (
+    deptSlug === 'foundry' ? 'Cloud-Native. Resilient. Scalable.' :
+    deptSlug === 'reimagine' ? 'Transform. Modernize. Accelerate.' :
+    deptSlug === 'shield' ? 'Zero-Trust. Risk-Managed. Audit-Ready.' :
+    deptSlug === 'platforms' ? 'Connected Platforms. Maximum ROI.' :
+    deptSlug === 'growth' ? 'Data-Driven. High-Velocity. Conversational.' :
+    'Reasoning. Learning. Autonomous.'
+  );
+  const heroMaxWidth = service.heroMaxWidth || 'max-w-[82%]';
+  const heroTitleSize = service.heroTitleSize || 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]';
+
+  // WhatIs Fallbacks
+  const whatIsTitle = service.whatIsTitle || name;
+  const whatIsHighlight = service.whatIsHighlight || 'Engineered for Enterprise Scale.';
+  const whatIsPara2 = service.whatIsPara2 || (
+    deptSlug === 'foundry' ? `Kangqore delivers end-to-end ${name.toLowerCase()} engineering, cloud architecture, and DevOps automation — building high-availability systems that scale effortlessly under heavy enterprise workloads.` :
+    deptSlug === 'reimagine' ? `Kangqore accelerates ${name.toLowerCase()} through proven modernization playbooks, technical debt reduction, and cloud-native re-platforming — delivering speed and agility without operational disruption.` :
+    deptSlug === 'shield' ? `Kangqore embeds robust ${name.toLowerCase()} controls, zero-trust security architecture, and regulatory compliance validation — protecting critical assets against emerging operational and cyber risks.` :
+    deptSlug === 'platforms' ? `Kangqore unifies ${name.toLowerCase()} across SaaS platforms, ERP systems, and enterprise APIs — creating seamless workflow integration and maximizing technology investment yield.` :
+    deptSlug === 'growth' ? `Kangqore powers ${name.toLowerCase()} through first-party data strategies, conversion rate engineering, and omnichannel AI marketing — driving measurable revenue and customer acquisition.` :
+    `Kangqore implements ${name.toLowerCase()} solutions that understand context, learn from operational data, and execute complex business workflows with continuous governance.`
+  );
+  const whatIsEyebrow = service.whatIsEyebrow || `What ${name} services does Kangqore offer?`;
+  const bannerBrandDesc = service.bannerBrandDesc || (
+    deptSlug === 'foundry' ? 'Our enterprise cloud & engineering platform' :
+    deptSlug === 'reimagine' ? 'Our enterprise modernization playbook' :
+    deptSlug === 'shield' ? 'Our trust & security governance framework' :
+    deptSlug === 'platforms' ? 'Our enterprise platform integration suite' :
+    deptSlug === 'growth' ? 'Our growth & conversion engineering system' :
+    'Our enterprise AI & cognitive computing platform'
+  );
+
+  // Business Metrics Fallback
+  const businessMetrics = (service.businessMetrics && service.businessMetrics.length > 0)
+    ? service.businessMetrics
+    : (
+      deptSlug === 'foundry' ? [
+        { title: 'Deployment Velocity', desc: `Increase in deployment velocity and release frequency across ${name.toLowerCase()} pipelines.`, value: '10', suffix: 'x', metricLabel: 'Faster Releases', icon: 'Zap' },
+        { title: 'System Availability', desc: `High-availability uptime maintained across production workloads and cloud infrastructure.`, value: '99.99', suffix: '%', metricLabel: 'Uptime SLA', icon: 'Target' },
+        { title: 'Infrastructure Savings', desc: `Reduction in cloud waste and infrastructure spending through automated resource optimization.`, value: '40', suffix: '%', metricLabel: 'Cost Reduction', icon: 'TrendingUp' },
+        { title: 'Defect Reduction', desc: 'Decrease in production defects after implementing automated CI/CD quality gates.', value: '85', suffix: '%', metricLabel: 'Fewer Defects', icon: 'Shield' },
+      ] :
+      deptSlug === 'reimagine' ? [
+        { title: 'Modernization Velocity', desc: `Accelerated transformation cycle times for ${name.toLowerCase()} applications.`, value: '3', suffix: 'x', metricLabel: 'Faster Delivery', icon: 'Zap' },
+        { title: 'Technical Debt Elimination', desc: 'Systematic reduction of legacy codebase technical debt and maintenance overhead.', value: '75', suffix: '%', metricLabel: 'Debt Reduced', icon: 'TrendingUp' },
+        { title: 'Latency Compression', desc: 'Improvement in system response times and transaction processing speed.', value: '60', suffix: '%', metricLabel: 'Faster Latency', icon: 'Target' },
+        { title: 'Portfolio ROI', desc: 'Return on investment delivered across modernized enterprise applications.', value: '250', suffix: '%', metricLabel: 'Measurable ROI', icon: 'Shield' },
+      ] :
+      deptSlug === 'shield' ? [
+        { title: 'Threat Detection Rate', desc: `Improvement in threat detection and security event classification for ${name.toLowerCase()}.`, value: '99.8', suffix: '%', metricLabel: 'Detection Rate', icon: 'ShieldCheck' },
+        { title: 'Incident Response Time', desc: 'Reduction in mean time to detect and remediate security incidents.', value: '70', suffix: '%', metricLabel: 'Faster Response', icon: 'Zap' },
+        { title: 'Compliance Coverage', desc: 'Controls mapped and validated against ISO 27001, SOC 2, NIST, and GDPR standards.', value: '100', suffix: '%', metricLabel: 'Audit Readiness', icon: 'Target' },
+        { title: 'Security Incident Reduction', desc: 'Reduction in security breaches after zero-trust control enforcement.', value: '85', suffix: '%', metricLabel: 'Fewer Incidents', icon: 'Lock' },
+      ] :
+      deptSlug === 'platforms' ? [
+        { title: 'Process Cycle Time', desc: `Reduction in end-to-end business process execution time across ${name.toLowerCase()}.`, value: '60', suffix: '%', metricLabel: 'Faster Cycle', icon: 'Zap' },
+        { title: 'Platform Adoption', desc: 'User adoption rate achieved across integrated enterprise platform workflows.', value: '95', suffix: '%', metricLabel: 'User Adoption', icon: 'Target' },
+        { title: 'Integration Errors', desc: 'Reduction in data synchronization errors between enterprise platform silos.', value: '90', suffix: '%', metricLabel: 'Error Reduction', icon: 'TrendingUp' },
+        { title: 'Enterprise TCO', desc: 'Lower total cost of ownership through platform consolidation and licensing efficiency.', value: '35', suffix: '%', metricLabel: 'TCO Reduction', icon: 'Shield' },
+      ] :
+      deptSlug === 'growth' ? [
+        { title: 'Conversion Rate Lift', desc: `Increase in user conversion rates engineered through ${name.toLowerCase()} optimization.`, value: '45', suffix: '%', metricLabel: 'Conversion Lift', icon: 'TrendingUp' },
+        { title: 'Acquisition Cost Reduction', desc: 'Decrease in customer acquisition cost (CAC) via precision targeted campaigns.', value: '35', suffix: '%', metricLabel: 'Lower CAC', icon: 'Target' },
+        { title: 'Organic Traffic Surge', desc: 'Growth in high-intent organic search traffic and search engine visibility.', value: '180', suffix: '%', metricLabel: 'Traffic Growth', icon: 'Zap' },
+        { title: 'Creative Productivity', desc: 'Savings in creative asset production costs using automated GenAI workflows.', value: '40', suffix: '%', metricLabel: 'Ops Savings', icon: 'Shield' },
+      ] : [
+        { title: 'Accuracy & Quality', desc: `Improvement in operational accuracy and solution precision for ${name.toLowerCase()}.`, value: '94', suffix: '%', metricLabel: 'High Accuracy', icon: 'BrainCircuit' },
+        { title: 'Process Automation', desc: 'End-to-end automation rate achieved across complex decision workflows.', value: '65', suffix: '%', metricLabel: 'Automated Rate', icon: 'Target' },
+        { title: 'Insight Discovery', desc: 'Faster time to actionable insights derived from unstructured enterprise data.', value: '5', suffix: 'x', metricLabel: 'Faster Insights', icon: 'Zap' },
+        { title: 'Production Models', desc: 'Scalable models and cognitive services operationalized across client estates.', value: '100', suffix: '+', metricLabel: 'Models Live', icon: 'Layers' },
+      ]
+    );
+
+  // Capability Areas Fallback
+  const capabilityAreas = (service.capabilityAreas && service.capabilityAreas.length >= 6)
+    ? service.capabilityAreas
+    : (
+      deptSlug === 'foundry' ? [
+        { title: `${name} Architecture & Cloud Design`, desc: `Design resilient, high-availability cloud architectures tailored for ${name.toLowerCase()} workloads.`, items: [`Cloud Infrastructure: Architect multi-cloud architectures across AWS, Azure, and GCP for ${name.toLowerCase()}.`, `Scalability & Resilience: Engineer automated auto-scaling and failover capabilities for production systems.`, `Performance Engineering: Eliminate latency bottlenecks through rigorous performance tuning.`, `Infrastructure as Code: Provision repeatable environments using Terraform, Pulumi, and Ansible.`, `Container Orchestration: Deploy Kubernetes meshes for containerized microservices.`, `High Availability: Ensure 99.99% system availability with disaster recovery protocols.`] },
+        { title: `DevOps & CI/CD Automation`, desc: `Streamline software delivery pipelines with automated testing, build, and deployment automation.`, items: [`Automated Build Pipelines: Build robust CI/CD pipelines using GitHub Actions, GitLab, and Jenkins.`, `Shift-Left Security: Embed SAST/DAST security scanning directly into commit pipelines.`, `Environment Provisioning: Automate ephemeral preview environments for rapid QA validation.`, `Zero-Downtime Releases: Deploy blue/green and canary release strategies with automated rollback.`, `Dependency Management: Maintain secure, automated dependency scanning and updates.`, `Pipeline Observability: Track build times, test pass rates, and release frequency.`] },
+        { title: `Quality Engineering & Testing`, desc: `Ensure code quality, performance, and security through continuous automated testing.`, items: [`Test Automation: Implement unit, integration, and end-to-end automated test suites.`, `Performance & Load Testing: Simulate high-concurrency traffic using k6 and Locust.`, `Security Testing: Conduct vulnerability assessments and penetration testing on endpoints.`, `API Contract Testing: Validate API contracts across microservice boundaries.`, `Regression Guardrails: Guarantee zero functional regression during continuous deployments.`, `Quality Telemetry: Track test coverage, code quality metrics, and technical debt.`] },
+        { title: `Site Reliability & Observability`, desc: `Deliver 24/7 system visibility, automated incident remediation, and SLA tracking.`, items: [`Full-Stack Observability: Monitor metrics, logs, and distributed traces using Datadog and Grafana.`, `SLO & SLA Management: Define and track service level objectives and error budgets.`, `Automated Alerting: Configure intelligent incident alerting with PagerDuty integration.`, `Chaos Engineering: Conduct resilience experiments to validate failover systems under stress.`, `Log Management: Centralize log aggregation and structured log analysis.`, `Incident Post-Mortems: Drive continuous reliability improvements through blameless post-mortems.`] },
+        { title: `Embedded & Systems Engineering`, desc: `Develop robust low-level software, firmware, and edge computing solutions.`, items: [`Firmware Development: Write high-performance C/C++ firmware for microcontrollers.`, `Edge Computing: Deploy real-time edge processing for industrial and IoT hardware.`, `RTOS Integration: Engineer deterministic real-time operating system applications.`, `Hardware Interfacing: Integrate I2C, SPI, CAN bus, and Ethernet communications.`, `Power Optimization: Optimize low-power states for battery-operated hardware.`, `Hardware-in-the-Loop Testing: Validate embedded code against physical hardware simulators.`] },
+        { title: `Security & Infrastructure Hardening`, desc: `Protect systems with identity management, network isolation, and zero-trust controls.`, items: [`Zero-Trust Architecture: Implement identity-based perimeter security and microsegmentation.`, `Secrets Management: Secure API keys, certificates, and database credentials with HashiCorp Vault.`, `Network Security: Configure firewalls, WAFs, DDoS protection, and VPC peering.`, `Data Encryption: Enforce AES-256 encryption for data at rest and TLS 1.3 for data in transit.`, `Access Governance: Enforce role-based access control (RBAC) and least-privilege policies.`, `Compliance Hardening: Harden infrastructure against CIS benchmarks and SOC 2 requirements.`] },
+        { title: `${name} Transformation Strategy`, desc: `Establish enterprise engineering standards, architecture blueprints, and operating models.`, items: [`Engineering Strategy: Define technical vision, target architecture, and multi-year roadmaps.`, `Technology Selection: Evaluate and benchmark tools, frameworks, and cloud vendors.`, `Platform Engineering: Build internal developer platforms (IDP) to accelerate engineering teams.`, `Skill Enablement: Train engineering teams on modern cloud-native and DevOps practices.`, `Vendor Management: Manage cloud vendor commitments, licensing, and infrastructure spending.`, `Continuous Improvement: Conduct maturity assessments and benchmark against industry leaders.`] }
+      ] :
+      deptSlug === 'reimagine' ? [
+        { title: `Legacy Codebase Assessment & Blueprint`, desc: `Analyze legacy systems, quantify technical debt, and create prioritised modernization blueprints.`, items: [`Codebase Discovery: Map legacy dependencies, architecture, and hidden business logic.`, `Technical Debt Scoring: Score technical debt to prioritize refactoring vs. re-platforming.`, `Migration Blueprint: Create dynamic modernization roadmaps mapped to business outcomes.`, `Risk Quantification: Assess operational risk, compliance vulnerabilities, and failure points.`, `Cost-Benefit Analysis: Evaluate cloud-native ROI against maintenance overhead.`, `Architecture Recommendations: Target modular microservices or serverless architectures.`] },
+        { title: `Application Modernization & Refactoring`, desc: `Transform monolithic legacy applications into scalable, cloud-native microservices.`, items: [`Monolith Decomposition: Deconstruct monoliths into independently deployable microservices.`, `API-Led Architecture: Replace legacy integration with versioned REST and GraphQL APIs.`, `Code Refactoring: Modernize legacy codebases to current language standards and patterns.`, `Containerization: Package applications into Docker containers for Kubernetes deployment.`, `Cloud Re-platforming: Migrate workloads to AWS, Azure, or GCP with minimal downtime.`, `UI/UX Refreshes: Rebuild legacy frontends into modern, responsive React/Next.js interfaces.`] },
+        { title: `Digital Business Transformation`, desc: `Reimagine business models and operations through digital technology and innovation.`, items: [`Business Model Innovation: Identify new digital product and monetization opportunities.`, `Process Digitization: Convert manual paper-based workflows into automated digital experiences.`, `Customer Experience Design: Create seamless omnichannel user journeys across web and mobile.`, `Operational Excellence: Streamline internal business operations through modern software.`, `Data Monetization: Transform internal data assets into external customer-facing APIs.`, `Change Management: Guide teams through digital culture and operating model shifts.`] },
+        { title: `MVP Acceleration & Prototyping`, desc: `Build and validate minimum viable products in rapid 8-week engineering sprints.`, items: [`Rapid Prototyping: Turn concept ideas into interactive, high-fidelity clickable prototypes.`, `Agile Sprint Execution: Deliver functional MVP builds through focused 2-week iterations.`, `Product Validation: Test MVP features with real target users to measure market demand.`, `Architecture Foundation: Build MVPs on production-grade cloud-native foundations.`, `Go-to-Market Readiness: Prepare launch collateral, deployment pipelines, and analytics.`, `Iterative Scale: Transition validated MVPs into full enterprise platform builds.`] },
+        { title: `Product Strategy & UX Architecture`, desc: `Define strategic product vision and design intuitive, high-converting digital experiences.`, items: [`User Research: Conduct deep qualitative user interviews and quantitative heuristic audits.`, `UX/UI Design Systems: Create scalable, accessible design systems with reusable components.`, `Information Architecture: Map clear user flows, site navigation, and content hierarchies.`, `Usability Testing: Validate design prototypes to eliminate user friction before engineering.`, `Product Analytics: Integrate product telemetry to track feature adoption and engagement.`, `Accessibility Compliance: Design for WCAG 2.1 AA compliance across digital interfaces.`] },
+        { title: `Technology Advisory & Consulting`, desc: `Provide expert technology guidance, architecture reviews, and vendor selection.`, items: [`Technology Advisory: Provide executive advisory on tech strategy, AI, and modernization.`, `Architecture Audits: Evaluate software architecture for scalability, security, and performance.`, `Vendor & Tool Selection: Conduct RFP evaluations and unbiased tool selection benchmarks.`, `IT Governance: Establish architecture review boards and technology standards.`, `Mergers & Acquisitions Tech Due Diligence: Audit target technology stacks during M&A.`, `Cost Optimization: Rationalize software license spending and technology redundancy.`] },
+        { title: `${name} Innovation & Scale`, desc: `Drive emerging technology adoption, experimental pilots, and scalable growth.`, items: [`Innovation Labs: Run rapid technology spikes to test emerging technologies.`, `Blockchain Solutions: Implement smart contracts and decentralized ledgers where appropriate.`, `Scaling Frameworks: Prepare modernized platforms to handle 10x traffic growth.`, `Continuous Modernization: Embed continuous refactoring practices into engineering backlogs.`, `Value Realization: Measure modernization outcomes against initial business cases.`, `Enterprise Alignment: Align engineering roadmaps directly with board-level business goals.`] }
+      ] :
+      deptSlug === 'shield' ? [
+        { title: `Zero-Trust Security Architecture`, desc: `Design identity-centric, least-privilege security architectures for enterprise workloads.`, items: [`Identity-First Security: Implement zero-trust identity verification across all access points.`, `Microsegmentation: Isolate network workloads to prevent lateral movement of threats.`, `Least-Privilege Controls: Enforce strict role-based access control (RBAC) and ABAC.`, `Continuous Authentication: Validate session health and device posture continuously.`, `Secure Enclaves: Protect sensitive workloads inside isolated hardware security modules.`, `Perimeter Defense: Deploy cloud WAF, DDoS protection, and API security gateways.`] },
+        { title: `Cyber Threat Detection & SOC Operations`, desc: `Monitor, detect, and remediate security threats 24/7 across multi-cloud and on-premise environments.`, items: [`24/7 SOC Monitoring: Continuous threat monitoring using advanced SIEM/SOAR platforms.`, `Threat Intelligence: Ingest global threat feeds to proactively block emerging attack vectors.`, `Automated Incident Response: Execute automated playbooks for immediate threat containment.`, `Endpoint Detection (EDR): Deploy EDR/XDR agents across all enterprise endpoints.`, `Log Analytics: Collect and analyze security logs across networks, servers, and applications.`, `Vulnerability Management: Conduct continuous vulnerability scanning and patch management.`] },
+        { title: `Data Privacy & Governance`, desc: `Protect sensitive enterprise data assets and ensure global privacy compliance.`, items: [`Data Classification: Automatically discover, label, and track sensitive enterprise data.`, `Data Masking & Anonymization: Protect PII and confidential records in non-production environments.`, `Encryption Infrastructure: Enforce AES-256 encryption at rest and TLS 1.3 in transit.`, `Consent & Rights Management: Implement automated GDPR/CCPA data subject request workflows.`, `DLP Policy Enforcement: Prevent unauthorized data exfiltration with Data Loss Prevention (DLP).`, `Cryptographic Key Vaults: Secure master keys and certificates with hardware security modules.`] },
+        { title: `Operational Technology (OT) & SCADA Security`, desc: `Secure industrial control systems, IoT hardware, and operational technology environments.`, items: [`IT/OT Convergence Security: Bridge IT and OT networks safely without compromising safety.`, `Industrial Anomaly Detection: Detect non-standard traffic and commands on SCADA networks.`, `Asset Discovery: Map all connected OT hardware, PLCs, and industrial sensor endpoints.`, `Protocol Inspection: Deep packet inspection for Modbus, DNP3, and PROFINET industrial protocols.`, `Air-Gapped Protections: Secure legacy OT systems with hardware diodes and strict isolation.`, `OT Incident Playbooks: Tailor incident response plans to prevent physical operational disruption.`] },
+        { title: `Finance & Operational Risk Management`, desc: `Identify, quantify, and mitigate operational, financial, and strategic enterprise risks.`, items: [`Risk Assessment Frameworks: Evaluate operational risks using NIST and ISO 31000 frameworks.`, `Financial Risk Modeling: Assess credit, market, and operational financial risk exposures.`, `Audit & Controls Validation: Validate internal financial and IT controls against SOX mandates.`, `Third-Party Risk Management: Audit vendor security postures and supply chain risks.`, `Business Continuity Planning: Develop Disaster Recovery (DR) and BCP recovery playbooks.`, `Governance Reporting: Deliver executive risk scorecards and board-level risk reporting.`] },
+        { title: `Quality Assurance & Security Testing`, desc: `Validate software security and compliance through rigorous penetration testing and QA.`, items: [`Penetration Testing: Conduct black-box, white-box, and grey-box security penetration tests.`, `Code Security Audits: Scan application codebases for OWASP Top 10 vulnerabilities.`, `Red Team Simulations: Simulate real-world cyber attacks to test defense posture.`, `Compliance Audits: Validate controls against ISO 27001, SOC 2, HIPAA, and PCI-DSS.`, `Automated QA Testing: Execute security and functional QA tests in CI/CD pipelines.`, `Remediation Guidance: Provide step-by-step developer remediation for security flaws.`] },
+        { title: `Security Culture & Change Enablement`, desc: `Train employees and foster a security-first culture across the enterprise.`, items: [`Security Awareness Training: Conduct anti-phishing simulations and employee security training.`, `DevSecOps Enablement: Train developers on secure coding practices and threat modeling.`, `Policy & Standards Management: Draft and maintain clear enterprise security policies.`, `Executive Briefings: Provide board and C-suite briefings on cybersecurity risk posture.`, `Incident Simulation Exercises: Run tabletop crisis response exercises for leadership teams.`, `Continuous Security Posture: Track security posture scores and drive year-over-year progress.`] }
+      ] :
+      deptSlug === 'platforms' ? [
+        { title: `Enterprise Platform Integration & iPaaS`, desc: `Connect ERP, CRM, and custom platforms with robust, scalable integration middleware.`, items: [`API Architecture: Design reusable, versioned RESTful and GraphQL API integration layers.`, `iPaaS Deployment: Implement MuleSoft, Boomi, or Workato for enterprise cloud integration.`, `Real-Time Data Sync: Maintain real-time data consistency across distributed platform silos.`, `Legacy System Connectors: Connect legacy mainframes and databases to modern cloud SaaS.`, `Event-Driven Integration: Deploy Kafka and Event Mesh for decoupled asynchronous workflows.`, `Integration Telemetry: Monitor API health, message queues, latency, and error rates.`] },
+        { title: `Salesforce Solutions & Optimization`, desc: `Transform customer relationships with custom Salesforce implementation and engineering.`, items: [`Sales & Service Cloud: Implement custom workflows for sales automation and service desks.`, `Marketing Cloud Integration: Connect marketing automation with unified customer data.`, `Apex & LWC Development: Build custom Lightning Web Components and Apex logic.`, `Salesforce Integration: Connect Salesforce seamlessly with ERP, billing, and CDP platforms.`, `Data Migration & Hygiene: Cleanse and migrate legacy CRM records into Salesforce.`, `Salesforce Governance: Establish user permissions, role hierarchies, and release gates.`] },
+        { title: `ServiceNow & Service Management`, desc: `Optimize IT service management, digital workflows, and operational efficiency.`, items: [`ITSM Implementation: Streamline incident, problem, change, and request management.`, `ITOM & Asset Management: Gain full visibility into IT infrastructure and configuration items (CMDB).`, `HR Service Delivery: Automate employee onboarding, HR requests, and case management.`, `Custom App Development: Build custom workflow applications on the ServiceNow platform.`, `ServiceNow Integration: Connect ServiceNow with Jira, Monitoring tools, and IAM systems.`, `Process Automation: Automate approval routing and service fulfillment workflows.`] },
+        { title: `Pimcore PIM & DAM Platform`, desc: `Centralize product information, digital assets, and e-commerce master data.`, items: [`PIM Implementation: Centralize product data attributes, categories, and localized content.`, `Digital Asset Management (DAM): Store, tag, and distribute digital media assets globally.`, `Multi-Channel Publishing: Syndicated product feeds to Amazon, e-commerce, and print.`, `Data Modeling: Design complex product data structures and relationship hierarchies.`, `ERP & E-Commerce Sync: Sync Pimcore seamlessly with SAP, Salesforce Commerce, and Magento.`, `Asset Rights Management: Control permissions and usage rights for enterprise media.`] },
+        { title: `Global Capability Centers (GCC)`, desc: `Establish and scale high-performing offshore global capability centers.`, items: [`GCC Setup Strategy: Plan operating models, location selection, and legal entity setup.`, `Talent Acquisition: Recruit and onboard top engineering, product, and AI talent.`, `Operational Governance: Establish delivery frameworks aligned with HQ standards.`, `Infrastructure & Security: Provision secure workspaces, VPNs, and hardware equipment.`, `Knowledge Transfer: Execute structured knowledge transfer from onshore teams.`, `Cost & Performance Tracking: Monitor GCC productivity, quality metrics, and cost savings.`] },
+        { title: `Talent & Organizational Transformation`, desc: `Optimize workforce capabilities, organizational design, and HR technology.`, items: [`Org Structure Design: Design agile team topologies and functional reporting structures.`, `Workforce Upskilling: Deliver technical training on cloud, AI, and modern platforms.`, `HR Tech Implementation: Deploy Workday, SuccessFactors, or custom HR portal tools.`, `Change Management: Execute structured change enablement programs for tech rollouts.`, `Performance Management: Establish KPI scorecards and continuous feedback loops.`, `Culture & Retention: Build engineering culture initiatives to retain top tech talent.`] },
+        { title: `Supply Chain & Logistics Engineering`, desc: `Optimize supply chain visibility, planning, and logistics execution platforms.`, items: [`Supply Chain Visibility: Build real-time tracking dashboards for global inventory.`, `Demand Forecasting: Use predictive analytics to optimize inventory stocking levels.`, `Logistics Integration: Connect warehouse management (WMS) and transportation (TMS) platforms.`, `Supplier Portal Engineering: Build secure portals for vendor onboarding and invoicing.`, `Track & Trace Systems: Implement RFID and IoT tracking across supply chain routes.`, `Resilience Planning: Simulate supply chain disruptions to optimize backup sourcing.`] }
+      ] :
+      deptSlug === 'growth' ? [
+        { title: `Customer Data Strategy & CDP`, desc: `Build a unified first-party customer data foundation to combat cookie deprecation.`, items: [`First-Party Data Strategy: Design data collection frameworks across web, app, and POS.`, `CDP Implementation: Deploy Segment, Tealium, or Hightouch for unified customer profiles.`, `Identity Resolution: Merge anonymous visitor data into unified cross-channel profiles.`, `Real-Time Segmentation: Create dynamic audience segments for personalized marketing.`, `Data Privacy Compliance: Enforce consent preferences and GDPR/CCPA data governance.`, `Data Activation: Sync audience segments to ad platforms, email tools, and CRMs.`] },
+        { title: `GenAI Marketing Readiness & Creative Ops`, desc: `Scale creative asset production and content personalization with Generative AI workflows.`, items: [`GenAI Creative Workflows: Deploy AI tools for rapid ad copy, banner, and video creation.`, `Brand Voice Guardrails: Fine-tune GenAI models to maintain 100% brand voice consistency.`, `Content Personalization: Generate personalized email and landing page copy at scale.`, `Creative Asset Audits: Evaluate creative performance using computer vision analytics.`, `Workflow Automation: Streamline creative approval and asset management pipelines.`, `Creative Cost Savings: Cut external agency production costs by 40% using GenAI.`] },
+        { title: `Performance Marketing & PPC Engineering`, desc: `Drive high-ROI customer acquisition across Google, Meta, LinkedIn, and programmatic channels.`, items: [`PPC Campaign Architecture: Structure high-converting Google Search and Shopping campaigns.`, `Social Advertising: Engineer targeted paid social campaigns across Meta, LinkedIn, and TikTok.`, `Retargeting Systems: Build multi-touch retargeting sequences based on user intent signals.`, `Bid Automation: Deploy AI-driven bidding strategies to optimize cost-per-acquisition (CPA).`, `Creative A/B Testing: Continuously test ad creatives, headlines, and call-to-action hooks.`, `Attribution Modeling: Track multi-touch attribution to allocate marketing spend accurately.`] },
+        { title: `SEO & Organic Growth Strategy`, desc: `Dominate search engine rankings through technical SEO, content clustering, and intent matching.`, items: [`Technical SEO Audits: Optimize Core Web Vitals, site crawlability, and schema markup.`, `Content Cluster Architecture: Build topical authority through structured hub-and-spoke content.`, `Search Intent Matching: Align content with high-value transactional and commercial queries.`, `Off-Page Digital PR: Build high-authority backlink footprints through strategic PR campaigns.`, `Programmatic SEO: Generate thousands of high-quality landing pages for long-tail search.`, `Organic Analytics: Track keyword rankings, organic traffic, and conversion attribution.`] },
+        { title: `Conversion Rate Optimization (CRO)`, desc: `Maximize conversion yield from existing website traffic using data-driven experimentation.`, items: [`Heuristic & UX Audits: Identify conversion friction points across checkout and signup flows.`, `Behavior Analytics: Analyze heatmaps, session recordings, and drop-off funnels in Hotjar.`, `A/B & Multivariate Testing: Run statistically rigorous tests in Optimizely or VWO.`, `Copywriting Optimization: Craft persuasive value propositions and friction-free microcopy.`, `Landing Page Engineering: Build ultra-fast, high-converting custom landing pages.`, `CRO ROI Tracking: Measure incremental revenue generated per optimization experiment.`] },
+        { title: `Growth Funnel & Revenue Engineering`, desc: `Design and optimize end-to-end user journeys from initial impression to customer expansion.`, items: [`Funnel Architecture: Map complete customer acquisition, activation, and retention loops.`, `Lead Scoring & Nurturing: Build automated email nurture sequences based on user behavior.`, `Retention Engineering: Implement product-led growth (PLG) tactics to reduce customer churn.`, `Virality & Referral Loops: Engineer referral mechanics that turn users into brand advocates.`, `Pricing & Packaging Optimization: Experiment with pricing tiers to maximize Average Revenue Per User.`, `Revenue Analytics: Track CAC, LTV, payback period, and funnel drop-off metrics in real time.`] },
+        { title: `Omnichannel Campaign Execution`, desc: `Plan and execute integrated marketing campaigns across digital and traditional channels.`, items: [`Campaign Strategy: Define campaign themes, target buyer personas, and messaging matrix.`, `Media Planning: Allocate media budgets strategically across channels for maximum impact.`, `Influencer & PR Integration: Coordinate digital PR and influencer amplification campaigns.`, `Event & Launch Marketing: Drive registration and engagement for virtual and live events.`, `Campaign Analytics: Deliver unified real-time reporting dashboards for executive leadership.`, `Continuous Optimization: Adjust campaign spend and messaging mid-flight based on performance.`] }
+      ] : [
+        { title: `Managing ${name} Solution Quality`, desc: `Ensure ${name.toLowerCase()} solutions operate with consistent accuracy, reliability, and enterprise performance.`, items: [`Data & Pipeline Engineering: Design robust validation pipelines for ${name.toLowerCase()}.`, `Quality Assurance & Testing: Establish frameworks to evaluate accuracy and production readiness.`, `Risk & Anomaly Detection: Identify and mitigate anomalies and unmanaged risks early.`, `Continuous Telemetry: Monitor operational telemetry and maintain optimal system effectiveness.`, `Evaluation & Benchmarking: Measure systems against predefined quality metrics and benchmarks.`, `Resilience & Reliability: Improve fault tolerance and system recovery capabilities.`] },
+        { title: `Establishing Ethical Governance & Control`, desc: `Develop governance frameworks that ensure ${name.toLowerCase()} operates responsibly and transparently.`, items: [`Responsible Frameworks: Define governance principles guiding design, deployment, and operations.`, `Fairness & Transparency: Implement controls that promote explainability and equitable outcomes.`, `Explainable Architecture: Enable stakeholders to understand decision pathways and reasoning.`, `Accountability & Oversight: Establish structures defining ownership and approval workflows.`, `Human-in-the-Loop Oversight: Integrate human review mechanisms for high-impact decisions.`, `Governance Controls: Apply tailored controls for core enterprise systems.`] },
+        { title: `Enterprise ${name} Lifecycle Governance`, desc: `Establish enterprise-wide governance for managing ${name.toLowerCase()} across development and maintenance.`, items: [`Lifecycle Management: Govern solutions through development, deployment, and maintenance.`, `Version Control & Lineage: Maintain complete version history and operational reproducibility.`, `Deployment Release Gates: Implement controlled release management and gated approvals.`, `Performance Validation: Continuously validate reliability and business effectiveness.`, `Change Management: Manage updates and retraining cycles with minimal disruption.`, `Centralized Asset Registry: Maintain a single repository of metadata and documentation.`] },
+        { title: `Compliance & Risk Management`, desc: `Ensure ${name.toLowerCase()} complies with global regulations and risk requirements.`, items: [`Regulatory Alignment: Align solutions with international regulations and governance rules.`, `Data Privacy & Protection: Implement controls for anonymization and secure handling.`, `Audit & Policy Enforcement: Maintain audit trails and policy enforcement evidence.`, `Enterprise Risk Mitigation: Identify, assess, prioritize, and mitigate business risks.`, `Security & Access Governance: Protect assets through identity management and RBAC.`, `Compliance Monitoring: Continuously track compliance posture and generate reports.`] },
+        { title: `Security, Trust & Infrastructure`, desc: `Protect ${name.toLowerCase()} systems and enterprise data against security risks.`, items: [`Security Architecture: Design secure infrastructures with zero-trust security principles.`, `Threat & Injection Defense: Protect systems against data leakage and vulnerabilities.`, `Identity & Access Management: Enforce role-based access and least-privilege controls.`, `Threat Detection Telemetry: Continuously detect malicious behavior across environments.`, `Secrets Management: Secure API keys, tokens, and confidential enterprise assets.`, `Infrastructure Hardening: Implement encryption and secure deployment pipelines.`] },
+        { title: `Observability & Operations`, desc: `Provide continuous visibility into health, performance, cost, and reliability.`, items: [`Full Telemetry Observability: Monitor behavior, latency, throughput, and system health.`, `Operational Monitoring: Track service availability, response times, and resource usage.`, `Cost Optimization: Analyze infrastructure spending and resource efficiency.`, `Incident Management: Detect, investigate, and recover from failures rapidly.`, `Capacity Management: Plan and optimize infrastructure capacity for enterprise workloads.`, `Operational Analytics: Deliver executive dashboards and SLA reporting.`] },
+        { title: `${name} Strategy & Transformation`, desc: `Establish operating models, frameworks, and strategic transformation roadmaps.`, items: [`Transformation Strategy: Define vision, principles, and strategic roadmaps.`, `Operating Model Design: Design governance structures, roles, and decision authorities.`, `Maturity Assessment: Evaluate capabilities, identify gaps, and build roadmaps.`, `Policy Management: Develop enterprise policies and governance standards.`, `Portfolio Governance: Prioritize and oversee enterprise initiatives and value realization.`, `Adoption & Change Management: Drive organizational readiness and change management.`] }
+      ]
+    );
+
+  // Comparison Table Fallback
+  const comparisonTable = service.comparisonTable || (
+    deptSlug === 'foundry' ? {
+      colA: `Legacy Fragile Infrastructure`,
+      colB: `Modern Cloud-Native Foundry (Engineering Foundry™)`,
+      heading: `Legacy Infrastructure vs. Modern Cloud-Native Foundry`,
+      rows: [
+        { dimension: 'Deployment Velocity', before: 'Manual release cycles taking weeks with frequent rollback risks.', after: 'Automated CI/CD pipelines deploying multiple times daily with zero downtime.' },
+        { dimension: 'System Uptime', before: 'Single points of failure causing unexpected outages and revenue loss.', after: 'High-availability Kubernetes mesh with 99.99% multi-region uptime SLA.' },
+        { dimension: 'Infrastructure Spending', before: 'Unmonitored server sprawl and high static cloud licensing costs.', after: 'FinOps resource optimization delivering 40% reduction in cloud waste.' },
+        { dimension: 'Security & Compliance', before: 'Perimeter-only security with unpatched vulnerabilities across servers.', after: 'Shift-left DevSecOps with automated SAST/DAST scanning and CIS hardening.' },
+        { dimension: 'Scalability', before: 'Manual server provisioning requiring weeks of lead time for traffic spikes.', after: 'Elastic auto-scaling responding instantly to real-time traffic surges.' }
+      ]
+    } :
+    deptSlug === 'reimagine' ? {
+      colA: `Legacy Monolith & Tech Debt`,
+      colB: `Modernized Agile Enterprise (eQORE™ Playbook)`,
+      heading: `Legacy Monolith vs. Modernized Agile Enterprise`,
+      rows: [
+        { dimension: 'System Architecture', before: 'Tightly coupled legacy monolith impossible to update without system risk.', after: 'Decoupled cloud-native microservices with versioned REST/GraphQL APIs.' },
+        { dimension: 'Modernization Speed', before: 'Multi-year manual rewriting programs that stall and exceed budgets.', after: 'Accelerated modernization sprints powered by automated discovery tools.' },
+        { dimension: 'Technical Debt', before: 'Accumulating tech debt consuming 80% of engineering maintenance budget.', after: 'Systematic debt reduction freeing 75% of bandwidth for new feature innovation.' },
+        { dimension: 'Customer Experience', before: 'Outdated legacy UI/UX with high user drop-off and support tickets.', after: 'Modern, responsive, accessible React/Next.js frontends built for engagement.' },
+        { dimension: 'Business Agility', before: 'Months required to launch new digital features or product capabilities.', after: 'Deploy new digital capabilities in weeks with validated market feedback.' }
+      ]
+    } :
+    deptSlug === 'shield' ? {
+      colA: `Unmonitored / Reactive Security`,
+      colB: `Governed Zero-Trust Security (Shield™)`,
+      heading: `Reactive Security vs. Governed Zero-Trust Security`,
+      rows: [
+        { dimension: 'Perimeter Defense', before: 'Implicit trust within internal network leaving lateral movement unblocked.', after: 'Zero-Trust architecture with continuous identity and posture verification.' },
+        { dimension: 'Threat Detection', before: 'Reactive incident response after breaches have already compromised data.', after: '24/7 SOC telemetry detecting and isolating threats within seconds.' },
+        { dimension: 'Audit Readiness', before: 'Panic before regulatory audits with incomplete manual log spreadsheets.', after: '100% continuous audit readiness with immutable cryptographic ledgers.' },
+        { dimension: 'Data Protection', before: 'Unencrypted sensitive records vulnerable to exfiltration and leaks.', after: 'AES-256 encryption at rest, TLS 1.3 in transit, and automated PII masking.' },
+        { dimension: 'Risk Visibility', before: 'Siloed risk assessments that sit in unread PDF reports.', after: 'Real-time executive risk dashboards mapping vulnerabilities enterprise-wide.' }
+      ]
+    } :
+    deptSlug === 'platforms' ? {
+      colA: `Disconnected Platform Silos`,
+      colB: `Unified Enterprise Platform (ALIS™)`,
+      heading: `Disconnected Silos vs. Unified Enterprise Platform`,
+      rows: [
+        { dimension: 'Data Synchronization', before: 'Batch overnight file transfers creating stale data across ERP and CRM.', after: 'Real-time event-driven integration keeping data synchronized instantly.' },
+        { dimension: 'Workflow Efficiency', before: 'Manual double-data entry across Salesforce, ServiceNow, and SAP.', after: 'End-to-end automated workflows bridging platforms without human touch.' },
+        { dimension: 'Platform Adoption', before: 'Low user adoption due to complex, unoptimized SaaS configurations.', after: '95% adoption rates achieved through intuitive, customized user flows.' },
+        { dimension: 'Integration Costs', before: 'Expensive point-to-point custom code brittle to platform version updates.', after: 'Standardized iPaaS connectors with automated contract validation.' },
+        { dimension: 'Total Cost of Ownership', before: 'Redundant software licenses and unmanaged SaaS app proliferation.', after: 'Consolidated platform architecture yielding 35% reduction in TCO.' }
+      ]
+    } :
+    deptSlug === 'growth' ? {
+      colA: `Ad Waste & Fragmented Marketing`,
+      colB: `Precision Growth Engineering (KVIS™)`,
+      heading: `Fragmented Marketing vs. Precision Growth Engineering`,
+      rows: [
+        { dimension: 'Customer Data', before: 'Third-party cookie reliance vulnerable to browser privacy changes.', after: 'Unified first-party CDP profiles driving real-time cross-channel targeting.' },
+        { dimension: 'Acquisition Cost (CAC)', before: 'Rising ad costs and wasted ad spend on unqualified audience clicks.', after: '35% reduction in CAC through AI-optimized bidding and audience intent.' },
+        { dimension: 'Conversion Yield', before: 'Static landing pages with unmeasured drop-off and low conversion rates.', after: 'Data-driven CRO experiments generating +45% lift in conversion rates.' },
+        { dimension: 'Creative Production', before: 'Slow agency creative cycles bottlenecking campaign launch frequency.', after: 'GenAI creative operations delivering 10x asset volume at 40% lower cost.' },
+        { dimension: 'Attribution', before: 'Last-click attribution misallocating budget to unproductive ad networks.', after: 'Multi-touch attribution models giving 100% clarity on true revenue ROI.' }
+      ]
+    } : {
+      colA: `Legacy / Unmonitored ${name}`,
+      colB: `Governed Enterprise ${name} (eQORE™)`,
+      heading: `Legacy ${name} vs. Governed Enterprise ${name}`,
+      rows: [
+        { dimension: 'Autonomy & Control', before: `Unmonitored ${name.toLowerCase()} processes with manual intervention and high error rates.`, after: `Governed execution — pre-action approval gates, policy controls, and automated kill-switches.` },
+        { dimension: 'Workflow Velocity', before: `Fragmented scripts and legacy silos with manual handoffs and no audit trails.`, after: `Continuous audit logging — automated policy enforcement and end-to-end execution.` },
+        { dimension: 'System Reliability', before: `Silent system drift and unmonitored performance decay degrading quality over time.`, after: `Real-time drift detection — automated alerts trigger human-in-the-loop review before impact.` },
+        { dimension: 'Data Integration', before: `Disconnected data stores creating data leakage and compliance vulnerabilities.`, after: `Centralized platform registry — enterprise-wide visibility, risk classification, and RBAC controls.` },
+        { dimension: 'Enterprise Outcomes', before: `Unpredictable cycle times, compliance risks, and high operational overhead.`, after: `Audit-ready business outcomes — scale rapidly with verified explainability and trust.` }
+      ]
+    }
+  );
+
+  // Architecture Nodes Fallback
+  const architectureNodes = (service.architectureNodes && service.architectureNodes.length > 0)
+    ? service.architectureNodes
+    : (
+      deptSlug === 'foundry' ? [
+        { title: 'Edge & Multi-Cloud Ingestion', icon: 'Cloud', description: 'Multi-region ingress gateways, load balancers, and CDN networks accepting global enterprise traffic.', features: ['Multi-Cloud Ingress', 'Global CDN Acceleration', 'DDoS Protection'] },
+        { title: 'Container & Service Mesh', icon: 'Cpu', description: 'Kubernetes orchestration mesh managing containerized microservices, service discovery, and traffic routing.', features: ['Kubernetes Mesh', 'Auto-Scaling Pods', 'Service Discovery'] },
+        { title: 'CI/CD & Delivery Engine', icon: 'Zap', description: 'Automated release pipelines executing SAST/DAST testing, container builds, and zero-downtime cutovers.', features: ['Automated Testing', 'GitOps Pipelines', 'Canary Releases'] },
+        { title: 'Observability & SRE Guard', icon: 'Activity', description: 'Unified monitoring stack collecting distributed traces, metrics, and logs with automated alerting.', features: ['Datadog/Grafana Telemetry', 'Automated Alerting', 'SLA Tracking'] }
+      ] :
+      deptSlug === 'reimagine' ? [
+        { title: 'Legacy Assessment & Ingestion', icon: 'Search', description: 'Automated code scanners map legacy dependencies, quantify technical debt, and extract business logic.', features: ['AST Code Scanners', 'Dependency Mapping', 'Debt Scoring'] },
+        { title: 'Microservices & API Gateway', icon: 'Layers', description: 'Decoupled cloud-native microservices exposed through versioned, documented REST/GraphQL APIs.', features: ['Microservices Mesh', 'API Management', 'Contract Validation'] },
+        { title: 'Cloud-Native Application Core', icon: 'Cpu', description: 'Scalable containerized application engine running on modern Kubernetes and serverless backends.', features: ['Container Runtime', 'Serverless Functions', 'Event-Driven Workflows'] },
+        { title: 'Continuous Refactoring & Telemetry', icon: 'Activity', description: 'Continuous quality monitoring ensuring modernized applications maintain high performance and zero debt.', features: ['Quality Telemetry', 'Performance Auditing', 'Regression Testing'] }
+      ] :
+      deptSlug === 'shield' ? [
+        { title: 'Perimeter & Identity Defense', icon: 'Lock', description: 'Identity-first zero-trust gateway enforcing multi-factor authentication, RBAC, and device health checks.', features: ['Zero-Trust Gateway', 'Identity Verification', 'WAF Protection'] },
+        { title: 'Threat Intelligence & SOC Engine', icon: 'ShieldCheck', description: '24/7 SIEM/SOAR threat monitoring ingesting global threat feeds to detect and isolate intrusions.', features: ['24/7 SIEM Monitoring', 'Threat Feeds', 'SOAR Playbooks'] },
+        { title: 'Data Privacy & Cryptographic Core', icon: 'Key', description: 'AES-256 encryption engine, hardware key vaults, and automated PII masking protecting data assets.', features: ['AES-256 Encryption', 'HSM Key Vaults', 'PII Masking'] },
+        { title: 'Audit Ledger & Incident Mesh', icon: 'Activity', description: 'Immutable audit log ledger documenting all access events and executing rapid incident containment.', features: ['Immutable Audit Logs', 'Automated Containment', 'SOC Scorecards'] }
+      ] :
+      deptSlug === 'platforms' ? [
+        { title: 'Enterprise Connector Layer', icon: 'Layers', description: 'Standardized iPaaS connectors interfacing with Salesforce, ServiceNow, SAP, and legacy ERP databases.', features: ['iPaaS Connectors', 'Legacy DB Bridges', 'API Gateways'] },
+        { title: 'Orchestration & Workflow Engine', icon: 'Workflow', description: 'Centralized process engine managing cross-platform workflows, approval routing, and event queues.', features: ['Workflow Engine', 'Event Bus', 'Approval Gates'] },
+        { title: 'Platform Data Mesh & MDM', icon: 'Database', description: 'Master Data Management (MDM) core keeping product, customer, and asset records synchronized.', features: ['MDM Synchronization', 'Data Cleansing', 'Schema Mapping'] },
+        { title: 'Governance & Portal Core', icon: 'Shield', description: 'Unified administrative portal enforcing platform security, user permissions, and compliance auditing.', features: ['RBAC Governance', 'Platform Telemetry', 'Audit Logging'] }
+      ] :
+      deptSlug === 'growth' ? [
+        { title: 'Customer Data Platform (CDP)', icon: 'Database', description: 'First-party customer data hub unifying web, mobile, and offline signals into 360-degree buyer profiles.', features: ['Unified Profiles', 'First-Party Tracking', 'Consent Governance'] },
+        { title: 'Audience & AI Segmentation Engine', icon: 'BrainCircuit', description: 'Predictive AI engine scoring buyer intent and generating dynamic real-time target segments.', features: ['Intent Scoring', 'Dynamic Segments', 'Predictive LTV'] },
+        { title: 'Omnichannel Campaign Execution Mesh', icon: 'Zap', description: 'Automated execution engine pushing personalized messaging across Search, Paid Social, Email, and Web.', features: ['Cross-Channel Push', 'GenAI Ad Workflows', 'Bid Optimization'] },
+        { title: 'Attribution & CRO Analytics Dashboard', icon: 'Activity', description: 'Real-time revenue dashboard delivering multi-touch attribution metrics and experiment test results.', features: ['Multi-Touch Attribution', 'A/B Test Analytics', 'ROI Scorecards'] }
+      ] : [
+        { title: 'Policy & Ethics Layer', icon: 'ShieldCheck', description: `Define enterprise ${name.toLowerCase()} principles, ethical guardrails, and automated risk classification across all systems.`, features: ['Risk Tiering', 'Ethical Guardrails', 'Usage Policies', 'Regulatory Alignment'] },
+        { title: 'Control & Orchestration Engine', icon: 'BrainCircuit', description: `Centralized system registries, automated release gates, behavioral boundaries, and lifecycle documentation.`, features: ['Central Registries', 'Release Gates', 'Behavior Limits', 'Version Control'] },
+        { title: 'Data & Privacy Core', icon: 'Lock', description: `Strict oversight over enterprise data ingestion, masking, privacy protection, and lineage tracking.`, features: ['Data Masking', 'Consent Management', 'Lineage Tracking', 'PII Protection'] },
+        { title: 'Execution Oversight & Telemetry', icon: 'Activity', description: `Real-time human-in-the-loop checkpoints, anomaly detection alerts, and emergency kill-switches.`, features: ['HITL Workflows', 'Immutable Audit Logs', 'Anomaly Alerts', 'Emergency Kill-Switches'] }
+      ]
+    );
+
+  // Industry Use Cases Fallback
+  const industryUseCases = (service.industryUseCases && service.industryUseCases.length > 0)
+    ? service.industryUseCases
+    : (
+      deptSlug === 'foundry' ? [
+        { industry: 'Banking & Financial Services', headline: `High-frequency trading and core banking infrastructure engineered for 99.999% uptime.`, agents: [`${name} Cloud Specialist`, 'DevSecOps Compliance Guard', 'SRE Incident Remediation Agent'] },
+        { industry: 'Healthcare & Life Sciences', headline: `HIPAA-compliant cloud architecture and medical device firmware engineering.`, agents: ['HIPAA Infrastructure Auditor', 'Medical Firmware Specialist', 'Kubernetes Compliance Guard'] },
+        { industry: 'Manufacturing & Industrial', headline: `Edge computing and IoT sensor infrastructure for smart factories.`, agents: ['Industrial IoT Specialist', 'Edge Computing Architect', 'SCADA Network Engineer'] },
+        { industry: 'Retail & E-Commerce', headline: `High-scalability infrastructure handling Black Friday traffic spikes without latency.`, agents: ['Auto-Scaling Architect', 'Global CDN Specialist', 'Performance Tuning Agent'] },
+        { industry: 'Media & Telecommunications', headline: `Low-latency video streaming pipelines and high-throughput network architectures.`, agents: ['Streaming Infrastructure Engineer', 'Network Security Specialist', 'Multi-Cloud Architect'] },
+        { industry: 'Energy & Utilities', headline: `Resilient grid monitoring software and mission-critical embedded systems.`, agents: ['Grid Infrastructure Specialist', 'Embedded Systems Engineer', 'Disaster Recovery Architect'] }
+      ] :
+      deptSlug === 'reimagine' ? [
+        { industry: 'Banking & Financial Services', headline: `Core banking monolith decomposition and cloud-native API transformation.`, agents: [`${name} Modernization Architect`, 'Core Banking Refactoring Agent', 'API Layer Specialist'] },
+        { industry: 'Healthcare & Life Sciences', headline: `Legacy EHR modernization and interoperable FHIR API integration.`, agents: ['EHR Modernization Specialist', 'FHIR Integration Engineer', 'Clinical UX Designer'] },
+        { industry: 'Manufacturing & Supply Chain', headline: `Mainframe ERP modernization and cloud-native logistics re-platforming.`, agents: ['ERP Refactoring Specialist', 'Cloud Re-platforming Agent', 'Supply Chain Tech Advisor'] },
+        { industry: 'Retail & Consumer Goods', headline: `E-commerce legacy backend transformation into headless microservices.`, agents: ['Headless Commerce Specialist', 'Microservices Architect', 'UX Conversion Designer'] },
+        { industry: 'Insurance', headline: `Policy administration system refactoring and automated digital claims portals.`, agents: ['Policy System Specialist', 'Legacy Code Parser Agent', 'Digital Portal Architect'] },
+        { industry: 'Public Sector', headline: `Government legacy software modernization with SOC 2 / FedRAMP compliance.`, agents: ['GovTech Modernization Specialist', 'Security Compliance Auditor', 'Cloud Migration Lead'] }
+      ] :
+      deptSlug === 'shield' ? [
+        { industry: 'Banking & Financial Services', headline: `Zero-trust cyber defense and SOX/FCA compliance validation.`, agents: [`${name} Security Auditor`, 'SOC Incident Analyst', 'SOX Compliance Guard'] },
+        { industry: 'Healthcare & Life Sciences', headline: `Patient data privacy protection and HIPAA zero-trust infrastructure.`, agents: ['HIPAA Privacy Shield Agent', 'Clinical Data Protection Specialist', 'EHR Security Auditor'] },
+        { industry: 'Manufacturing & Defense', headline: `Industrial OT/SCADA cybersecurity and air-gapped network defense.`, agents: ['Industrial OT Security Agent', 'SCADA Firewall Engineer', 'Defense Compliance Lead'] },
+        { industry: 'Retail & E-Commerce', headline: `PCI-DSS payment security and customer PII data leak prevention.`, agents: ['PCI-DSS Compliance Auditor', 'Data Loss Prevention Agent', 'Fraud Defense Specialist'] },
+        { industry: 'Technology & SaaS', headline: `ISO 27001 and SOC 2 Type II audit readiness and penetration testing.`, agents: ['SOC 2 Audit Specialist', 'Penetration Testing Engineer', 'API Security Auditor'] },
+        { industry: 'Energy & Critical Infrastructure', headline: `NERC CIP compliance and nation-state threat intelligence protection.`, agents: ['Critical Infrastructure Agent', 'Threat Intelligence Lead', 'Grid Cyber Security Guard'] }
+      ] :
+      deptSlug === 'platforms' ? [
+        { industry: 'Banking & Financial Services', headline: `ServiceNow ITSM and Salesforce Financial Services Cloud integration.`, agents: [`${name} Platform Architect`, 'Financial Cloud Specialist', 'ServiceNow ITSM Lead'] },
+        { industry: 'Healthcare & Life Sciences', headline: `Unified provider management and Veeva/Salesforce Health Cloud deployment.`, agents: ['Health Cloud Specialist', 'Provider Integration Lead', 'ServiceNow Workflow Engineer'] },
+        { industry: 'Manufacturing & Automotive', headline: `Pimcore PIM product data syndication across global dealer networks.`, agents: ['PIM Data Architect', 'Supply Chain Platform Lead', 'SAP Integration Specialist'] },
+        { industry: 'Retail & Consumer Goods', headline: `Omnichannel CRM integration connecting Salesforce Commerce with ERP backends.`, agents: ['Salesforce Commerce Specialist', 'Omnichannel CRM Lead', 'ERP Integration Agent'] },
+        { industry: 'Global Technology Enterprises', headline: `Global Capability Center (GCC) setup and offshore engineering team scaling.`, agents: ['GCC Setup Strategist', 'Offshore Delivery Lead', 'Talent Ops Specialist'] },
+        { industry: 'Professional Services', headline: `Unified Services Management (USM) streamlining PSA, CRM, and billing.`, agents: ['USM Platform Lead', 'PSA Integration Specialist', 'Workflow Automation Agent'] }
+      ] :
+      deptSlug === 'growth' ? [
+        { industry: 'Banking & Financial Services', headline: `First-party CDP customer acquisition and compliant fintech growth funnels.`, agents: [`${name} Growth Engineer`, 'Fintech CDP Specialist', 'Compliance Marketing Lead'] },
+        { industry: 'Healthcare & Wellness', headline: `Patient acquisition funnels and HIPAA-compliant digital marketing analytics.`, agents: ['Patient Growth Architect', 'HIPAA Analytics Specialist', 'CRO Experimentation Lead'] },
+        { industry: 'E-Commerce & D2C Retail', headline: `GenAI creative operations and multi-touch PPC ad spend optimization.`, agents: ['D2C Growth Engineer', 'GenAI Creative Lead', 'PPC Bidding Specialist'] },
+        { industry: 'B2B Software & SaaS', headline: `Product-led growth (PLG) funnels and technical SEO content clustering.`, agents: ['SaaS PLG Specialist', 'Technical SEO Architect', 'B2B Funnel Engineer'] },
+        { industry: 'Real Estate & Property', headline: `Omnichannel lead generation and automated CRM lead scoring sequences.`, agents: ['Lead Generation Lead', 'CRM Nurturing Specialist', 'Paid Social Architect'] },
+        { industry: 'Higher Education & EdTech', headline: `Student enrollment growth funnels and personalized conversion landing pages.`, agents: ['Enrollment Growth Specialist', 'Landing Page Engineer', 'Conversion Analytics Lead'] }
+      ] : [
+        { industry: 'Banking & Financial Services', headline: `Model risk management (MRM) and ${name.toLowerCase()} explainability.`, agents: [`${name} Risk Auditor Agent`, 'Regulatory Compliance Agent', 'Decision Explainability Agent'] },
+        { industry: 'Healthcare & Life Sciences', headline: `Clinical ${name.toLowerCase()} validation and patient data privacy.`, agents: ['Clinical Validation Agent', 'HIPAA Privacy Shield Agent', 'EHR Consent Agent'] },
+        { industry: 'Manufacturing & Industry', headline: `Industrial ${name.toLowerCase()} safety and automated QA compliance.`, agents: ['Industrial Safety Auditor', 'QA Compliance Agent', 'Predictive Maintenance Auditor'] },
+        { industry: 'Retail & Consumer Goods', headline: `Fairness and consumer data privacy controls for ${name.toLowerCase()}.`, agents: ['Pricing Fairness Agent', 'Bias Detection Agent', 'Consumer Privacy Agent'] },
+        { industry: 'IT & Infrastructure', headline: `Policy enforcement and multi-tenant security for ${name.toLowerCase()}.`, agents: ['Policy Enforcement Agent', 'Multi-Tenant Security Agent', 'API Governance Agent'] },
+        { industry: 'EdTech & Higher Ed', headline: `Student data privacy and ${name.toLowerCase()} evaluation fairness.`, agents: ['Student Privacy Agent', 'Evaluation Fairness Agent', 'Administrative Audit Agent'] }
+      ]
+    );
+
+  // Service Packages Fallback
+  const servicePackages = (service.servicePackages && service.servicePackages.length > 0)
+    ? service.servicePackages
+    : [
+        { name: 'Strategy & Audit', description: `Comprehensive ${name.toLowerCase()} assessment, architecture review, and strategic execution roadmap.`, duration: '2–3 weeks', tier: 'Advisory' },
+        { name: 'Pilot Pod', description: `Targeted deployment of core ${name.toLowerCase()} capability for one high-impact business unit.`, duration: '8 weeks', tier: 'Pilot' },
+        { name: 'Platform Build', description: `Engineering enterprise-wide ${name.toLowerCase()} architecture, automated pipelines, and core system integration.`, duration: '16–24 weeks', tier: 'Platform' },
+        { name: 'Managed Operations', description: `24/7 production monitoring, incident response, performance optimization, and operational management.`, duration: 'Ongoing', tier: 'Managed' },
+        { name: 'Continuous Scale', description: `Enterprise-wide optimization, periodic capability upgrades, and continuous strategic tuning.`, duration: 'Ongoing', tier: 'Enterprise' }
+      ];
+
+  // Outcome Cards Fallback
+  const outcomeCard = service.outcomeCard || {
+    metric: deptSlug === 'foundry' ? '99.99%' : deptSlug === 'reimagine' ? '65%' : deptSlug === 'shield' ? '99.8%' : deptSlug === 'platforms' ? '60%' : deptSlug === 'growth' ? '+45%' : '65%',
+    metricLabel: `Improvement in ${name.toLowerCase()} operational performance`,
+    industry: 'Global Enterprise Organization',
+    problem: `Legacy bottlenecks and fragmented tools severely impacted execution speed and created operational risks for ${name.toLowerCase()}.`,
+    outcome: `Kangqore engineered an integrated ${name.toLowerCase()} solution with automated pipelines — delivering measurable performance lift and 100% operational reliability.`
+  };
+  const outcomeCard2 = service.outcomeCard2 || {
+    metric: deptSlug === 'foundry' ? '10x' : deptSlug === 'reimagine' ? '3x' : deptSlug === 'shield' ? '100%' : deptSlug === 'platforms' ? '95%' : deptSlug === 'growth' ? '-35%' : '99.9%',
+    metricLabel: `Efficiency gain in ${name.toLowerCase()} workflows`,
+    industry: 'Financial & Enterprise Services',
+    problem: `Manual overhead and unmonitored system changes created continuous delay and compliance exposure.`,
+    outcome: `Kangqore deployed automated governance, real-time telemetry, and streamlined workflows — achieving maximum operational yield.`
+  };
+  const outcomeCard3 = service.outcomeCard3 || {
+    metric: deptSlug === 'foundry' ? '40%' : deptSlug === 'reimagine' ? '75%' : deptSlug === 'shield' ? '0' : deptSlug === 'platforms' ? '35%' : deptSlug === 'growth' ? '+180%' : '0%',
+    metricLabel: `Cost reduction and ROI impact`,
+    industry: 'High-Tech & Industrial Group',
+    problem: `High infrastructure costs and unoptimized tool sprawl created unnecessary overhead across business operations.`,
+    outcome: `Kangqore rationalized system architecture and automated delivery — eliminating waste and driving compound ROI.`
+  };
+
+  // Custom FAQs Fallback
+  const customFAQs = (service.customFAQs && service.customFAQs.length > 0)
+    ? service.customFAQs
+    : [
+        { q: `What makes Kangqore's approach to ${name} unique?`, a: `Kangqore combines deep domain engineering with automated governance, robust architecture standards, and measurable business KPIs. We don't just deliver tools — we engineer end-to-end capabilities that compound value over time.` },
+        { q: `How quickly can we see initial results from a ${name} engagement?`, a: `Our Strategy & Audit completes in 2–3 weeks, delivering a clear architecture and execution roadmap. A Pilot Pod delivers a production-grade capability in 8 weeks, giving you immediate operational ROI.` },
+        { q: `How do you handle integration with our existing systems?`, a: `We design reusable API layers, containerized microservices, and standardized connectors. Whether you run legacy mainframes, cloud-native meshes, or hybrid SaaS platforms, our architectures integrate seamlessly without interrupting live operations.` },
+        { q: `What governance and compliance standards are enforced?`, a: `Governance is built into every layer. Depending on your industry, we align controls with ISO 27001, SOC 2, GDPR, HIPAA, SOX, and NIST frameworks — producing immutable audit logs and real-time compliance dashboards.` },
+        { q: `Can you customize the solution for our specific industry requirements?`, a: `Yes. Every engagement leverages our industry-specific blueprints across Banking, Healthcare, Manufacturing, Retail, Technology, and Public Sector — ensuring domain compliance and business alignment from day one.` },
+        { q: `What ongoing operational support does Kangqore provide?`, a: `We offer Managed Operations and Continuous Scale packages — providing 24/7 monitoring, automated alerting, performance tuning, and periodic capability upgrades so your systems evolve with your business.` }
+      ];
+
+  // Custom Journey Fallback
+  const customJourney = (service.customJourney && service.customJourney.length > 0)
+    ? service.customJourney
+    : [
+        { phase: 'DISCOVER', icon: 'Search', title: `${name} Discovery`, desc: `Assess current landscape, map architecture dependencies, identify high-impact targets, and establish baseline performance KPIs.` },
+        { phase: 'ARCHITECT', icon: 'Target', title: 'Target Architecture', desc: `Design resilient solution blueprints, API integration layers, security controls, and governance frameworks mapped to business goals.`, kangqore: true },
+        { phase: 'ENGINEER', icon: 'Cpu', title: 'Build & Deploy', desc: `Develop, automate, and validate production pipelines — executing continuous integration, testing, and deployment at enterprise scale.`, kangqore: true },
+        { phase: 'GOVERN', icon: 'Shield', title: 'Govern & Monitor', desc: `Activate real-time telemetry, automated release gates, compliance tracking, and human-in-the-loop operational oversight.`, kangqore: true },
+        { phase: 'SCALE', icon: 'TrendingUp', title: 'Scale & Compound', desc: `Expand capabilities enterprise-wide, continuously optimize performance and costs, and drive long-term business value realization.`, kangqore: true }
+      ];
+
+  // Feature Micros Fallback
+  const featureMicros = (service.featureMicros && service.featureMicros.length > 0)
+    ? service.featureMicros
+    : [
+        `Engineered for high availability and enterprise scale.`,
+        `Automated governance and continuous compliance built-in.`,
+        `Seamless integration with existing enterprise platforms.`,
+        `Measurable business ROI delivered in weeks, not years.`
+      ];
+
+  // Hero Strip Items Fallback
+  const heroStripItems = (service.heroStripItems && service.heroStripItems.length > 0)
+    ? service.heroStripItems
+    : (
+      deptSlug === 'foundry' ? ['Cloud Infrastructure', 'DevOps Automation', 'CI/CD Pipelines', 'Site Reliability', 'Embedded Systems', 'Quality Engineering', 'Infrastructure as Code', 'Microservices Mesh'] :
+      deptSlug === 'reimagine' ? ['Legacy Refactoring', 'Application Modernization', 'Cloud Re-platforming', 'Digital Transformation', 'MVP Acceleration', 'Product UX Architecture', 'Tech Debt Elimination', 'API Modernization'] :
+      deptSlug === 'shield' ? ['Zero-Trust Architecture', '24/7 SOC Operations', 'Threat Detection', 'Data Privacy & PII', 'OT & SCADA Security', 'SOC 2 & ISO 27001', 'Penetration Testing', 'Risk Governance'] :
+      deptSlug === 'platforms' ? ['Salesforce Engineering', 'ServiceNow ITSM', 'Pimcore PIM/DAM', 'Enterprise iPaaS', 'GCC Setup & Scaling', 'Supply Chain Tech', 'Unified Service Management', 'ERP Integration'] :
+      deptSlug === 'growth' ? ['Customer Data Strategy', 'First-Party CDP', 'GenAI Marketing Ops', 'PPC & Ad Engineering', 'Technical SEO', 'Conversion Rate Optimization', 'Growth Funnel Architecture', 'Omnichannel Campaigns'] :
+      ['Machine Learning Engineering', 'Natural Language Intelligence', 'Computer Vision', 'Generative AI Services', 'Decision Intelligence', 'Knowledge Graphs', 'Autonomous Agents', 'AI Governance']
+    );
+
+  // Trust Signals Fallback
+  const trustSignals = (service.trustSignals && service.trustSignals.length > 0)
+    ? service.trustSignals
+    : [
+        `Enterprise-grade delivery framework validated across Banking, Healthcare, Manufacturing & Tech`,
+        `Built-in governance, zero-trust security controls & compliance audit readiness`,
+        `Proven track record of high-availability deployment and measurable ROI impact`,
+        `Open architecture supporting multi-cloud, hybrid, and legacy integration targets`
+      ];
+
+  // Concierge Chips Fallback
+  const conciergeChips = (service.conciergeChips && service.conciergeChips.length > 0)
+    ? service.conciergeChips
+    : [
+        `How fast can you assess our current ${name.toLowerCase()} environment?`,
+        `What architecture standards and governance controls come built-in?`,
+        `How do you handle integration with legacy enterprise systems?`,
+        `What timeline and delivery packages are available?`,
+        `Book a ${name} strategy session`
+      ];
+
+  // Tools Stack Fallback
+  const toolsStack = service.toolsStack || (
+    deptSlug === 'foundry' ? {
+      title: `${name} Technology Stack`,
+      subtitle: `The enterprise-grade toolchain powering high-availability cloud, DevOps, and engineering infrastructure.`,
+      items: [
+        { icon: 'Cloud', title: 'Cloud & Infrastructure', desc: 'AWS, Azure, Google Cloud Platform, HashiCorp Terraform, Ansible, and Pulumi for automated IaC.' },
+        { icon: 'Cpu', title: 'Containers & Mesh', desc: 'Kubernetes, Docker, Istio service mesh, Helm, and Amazon EKS / Azure AKS / GCP GKE.' },
+        { icon: 'Zap', title: 'CI/CD & Delivery', desc: 'GitHub Actions, GitLab CI, Jenkins, ArgoCD, SonarQube, and automated security scanners.' },
+        { icon: 'Activity', title: 'Observability & SRE', desc: 'Datadog, Prometheus, Grafana, OpenTelemetry, PagerDuty, and ELK log stack.' }
+      ]
+    } :
+    deptSlug === 'reimagine' ? {
+      title: `${name} Technology Stack`,
+      subtitle: `The modern engineering stack powering codebase refactoring, digital transformation, and fast-track MVPs.`,
+      items: [
+        { icon: 'Layers', title: 'Modern Application Frameworks', desc: 'React, Next.js, Node.js, Spring Boot, Go, and Python FastAPI for high-performance backends.' },
+        { icon: 'Workflow', title: 'API & Microservices', desc: 'GraphQL, RESTful API gateways, Kong, Apigee, and gRPC for high-throughput service communication.' },
+        { icon: 'Search', title: 'Code Parsing & Discovery', desc: 'SonarQube, Cast, Semgrep, and automated AST analyzers for legacy codebase extraction.' },
+        { icon: 'Cloud', title: 'Cloud-Native Deployment', desc: 'Docker, Kubernetes, AWS Fargate, Azure App Service, and serverless Lambda architectures.' }
+      ]
+    } :
+    deptSlug === 'shield' ? {
+      title: `${name} Technology Stack`,
+      subtitle: `The security and compliance toolchain protecting enterprise infrastructure, identity, and sensitive data.`,
+      items: [
+        { icon: 'ShieldCheck', title: 'SIEM & SOC Operations', desc: 'Splunk, Microsoft Sentinel, Elastic Security, Palo Alto Cortex, and automated SOAR playbooks.' },
+        { icon: 'Lock', title: 'Identity & Access (IAM)', desc: 'Okta, Microsoft Entra ID (Azure AD), CyberArk, and HashiCorp Vault for secrets management.' },
+        { icon: 'Key', title: 'Data Security & DLP', desc: 'Varonis, Cloudflare Access, AWS KMS, Hardware Security Modules (HSM), and Symantec DLP.' },
+        { icon: 'Activity', title: 'Vulnerability & Compliance', desc: 'Qualys, Tenable Nessus, CrowdStrike Falcon EDR, and automated CIS compliance auditors.' }
+      ]
+    } :
+    deptSlug === 'platforms' ? {
+      title: `${name} Technology Stack`,
+      subtitle: `The enterprise platform middleware and integration toolchain connecting SaaS, ERP, and custom systems.`,
+      items: [
+        { icon: 'Layers', title: 'Enterprise Platforms', desc: 'Salesforce Sales/Service/Marketing Cloud, ServiceNow ITSM/ITOM, and Pimcore PIM/DAM.' },
+        { icon: 'Workflow', title: 'iPaaS & Middleware', desc: 'MuleSoft Anypoint, Boomi, Workato, Apache Kafka event streams, and Software AG webMethods.' },
+        { icon: 'Database', title: 'ERP & Master Data', desc: 'SAP S/4HANA, Oracle ERP Cloud, Microsoft Dynamics 365, and Informatica MDM.' },
+        { icon: 'Shield', title: 'Platform Security & APIs', desc: 'OAuth 2.0, SAML 2.0, Apigee API Gateway, OpenID Connect, and enterprise RBAC controls.' }
+      ]
+    } :
+    deptSlug === 'growth' ? {
+      title: `${name} Technology Stack`,
+      subtitle: `The growth engineering, customer data, and marketing technology stack driving conversions and ROI.`,
+      items: [
+        { icon: 'Database', title: 'Customer Data Platforms', desc: 'Segment, Tealium, Hightouch, Snowflake, and Google BigQuery for unified customer data.' },
+        { icon: 'TrendingUp', title: 'Analytics & Attribution', desc: 'Google Analytics 4, Mixpanel, Amplitude, AppsFlyer, and multi-touch attribution models.' },
+        { icon: 'Zap', title: 'CRO & Experimentation', desc: 'Optimizely, VWO, Hotjar, Google Tag Manager, and custom React A/B testing engines.' },
+        { icon: 'BrainCircuit', title: 'GenAI & Ad Tech', desc: 'Midjourney, Jasper, Copy.ai, Google Ads API, Meta Marketing API, and LinkedIn Campaign Manager.' }
+      ]
+    } : {
+      title: `${name} Technology Stack`,
+      subtitle: `The enterprise-grade toolchain powering cognitive computing, machine learning, and AI governance.`,
+      items: [
+        { icon: 'BrainCircuit', title: 'Models & Frameworks', desc: 'PyTorch, TensorFlow, Hugging Face, scikit-learn, and custom neural network architectures.' },
+        { icon: 'Cpu', title: 'Foundation LLMs', desc: 'GPT-4o, Claude 3.5, Gemini 1.5, Llama 3, and fine-tuned open-weights enterprise models.' },
+        { icon: 'Layers', title: 'Vector & Knowledge DBs', desc: 'Pinecone, Weaviate, Qdrant, Neo4j knowledge graphs, and Apache Kafka streaming.' },
+        { icon: 'Shield', title: 'MLOps & Governance', desc: 'MLflow, LangSmith, Weights & Biases, SHAP explainability, and immutable audit ledgers.' }
+      ]
+    }
+  );
+
+  const downloadAsset = service.downloadAsset || `/assets/downloads/kangqore-${slug}-playbook.pdf`;
+  const downloadAssetTitle = service.downloadAssetTitle || 'Download the Playbook';
+
+  return {
+    ...service,
+    heroTitle,
+    heroBadge,
+    heroMaxWidth,
+    heroTitleSize,
+    whatIsTitle,
+    whatIsHighlight,
+    whatIsPara2,
+    whatIsEyebrow,
+    bannerBrandDesc,
+    businessMetrics,
+    capabilityAreas,
+    comparisonTable,
+    architectureNodes,
+    industryUseCases,
+    servicePackages,
+    outcomeCard,
+    outcomeCard2,
+    outcomeCard3,
+    customFAQs,
+    customJourney,
+    featureMicros,
+    heroStripItems,
+    trustSignals,
+    conciergeChips,
+    toolsStack,
+    downloadAsset,
+    downloadAssetTitle,
+  };
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function UniversalServicePage({ service, department }) {
+export default function UniversalServicePage({ service: rawService, department }) {
+  const service = getParityService(rawService, department);
 
   // ── Hero H1 split: optional \n forces a hard line-1; last word of line-2 gets gradient ──
   const heroTitleSource = service.heroTitle || service.name;
@@ -678,6 +1192,239 @@ const featureMicros   = service.featureMicros
                     <text x="442" y="348" textAnchor="middle" fill="#00f0ff" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">4. MACHINE SPEED</text>
                   </svg>
                 </div>
+              ) : service.slug === 'ai-governance' ? (
+                /* ── AI Governance Flow Diagram ── */
+                <div className="flex items-center justify-center w-full lg:-mt-16">
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[420px]">
+                    <defs>
+                      <linearGradient id="gov-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#2564ea"/>
+                        <stop offset="100%" stopColor="#00f0ff"/>
+                      </linearGradient>
+                      <linearGradient id="gov-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7f53f9"/>
+                        <stop offset="100%" stopColor="#a78bfa"/>
+                      </linearGradient>
+                      <linearGradient id="gov-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#00c875"/>
+                        <stop offset="100%" stopColor="#34d399"/>
+                      </linearGradient>
+                      <linearGradient id="gov-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ea580c"/>
+                        <stop offset="100%" stopColor="#fbbf24"/>
+                      </linearGradient>
+
+                      <filter id="glow-cyan-gov" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="6" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-purple-gov" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="7" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-green-gov" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="6" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+
+                      <marker id="arrow-cyan-matrix" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#00f0ff" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="arrow-green-matrix" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#34d399" strokeWidth="1.2" fill="none"/>
+                      </marker>
+
+                      <clipPath id="capsule-clip-gov">
+                        <rect x="35" y="270" width="470" height="96" rx="20"/>
+                      </clipPath>
+                    </defs>
+
+                    {/* ── TOP SYSTEM STATUS & FRAMEWORK BANNER ── */}
+                    <g transform="translate(100, 6)">
+                      <rect x="0" y="0" width="340" height="22" rx="11" fill="#080c14" stroke="url(#gov-cyan)" strokeWidth="1" strokeOpacity="0.5" />
+                      <circle cx="16" cy="11" r="3.5" fill="#00c875" filter="url(#glow-green-gov)" />
+                      <text x="28" y="14.5" fill="#00f0ff" fontSize="7.5" fontWeight="bold" fontFamily="monospace" letterSpacing="0.8">eQORE™ ENTERPRISE AI GOVERNANCE MATRIX :: NIST &amp; EU AI ACT COMPLIANT</text>
+                    </g>
+
+                    {/* ── LEFT COLUMN: INPUT & CAPABILITY CHIPS ── */}
+                    <text x="75" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">FRAMEWORK INPUTS</text>
+                    
+                    {/* Chip 1: Prompts & RAG */}
+                    <g transform="translate(15, 54)">
+                      <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
+                      <circle cx="12" cy="13" r="3" fill="#f59e0b" />
+                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="7" fontFamily="monospace" fontWeight="bold">PROMPTS &amp; RAG DATA</text>
+                      <text x="22" y="20" fill="#fbbf24" fillOpacity="0.9" fontSize="6" fontFamily="monospace">INPUT SHIELDING</text>
+                    </g>
+
+                    {/* Chip 2: Agent Actions */}
+                    <g transform="translate(15, 88)">
+                      <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
+                      <circle cx="12" cy="13" r="3" fill="#ea580c" />
+                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="7" fontFamily="monospace" fontWeight="bold">AGENT TOOL ACTIONS</text>
+                      <text x="22" y="20" fill="#ea580c" fillOpacity="0.9" fontSize="6" fontFamily="monospace">POLICY INTERCEPT</text>
+                    </g>
+
+                    {/* Chip 3: LLM & GenAI Models */}
+                    <g transform="translate(15, 122)">
+                      <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-cyan)" strokeWidth="1.2" strokeOpacity="0.8"/>
+                      <circle cx="12" cy="13" r="3" fill="#00f0ff" />
+                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="7" fontFamily="monospace" fontWeight="bold">LLM &amp; GENAI MODELS</text>
+                      <text x="22" y="20" fill="#00f0ff" fillOpacity="0.9" fontSize="6" fontFamily="monospace">BIAS DRIFT &lt; 0.01%</text>
+                    </g>
+
+                    {/* Chip 4: Enterprise GRC */}
+                    <g transform="translate(15, 156)">
+                      <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-purple)" strokeWidth="1.2" strokeOpacity="0.8"/>
+                      <circle cx="12" cy="13" r="3" fill="#a78bfa" />
+                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="7" fontFamily="monospace" fontWeight="bold">ENTERPRISE GRC</text>
+                      <text x="22" y="20" fill="#a78bfa" fillOpacity="0.9" fontSize="6" fontFamily="monospace">EU AI ACT TIERING</text>
+                    </g>
+
+                    {/* Laser stream connectors (Left to Center Matrix) */}
+                    <path d="M 133 67 C 160 67, 175 102, 194 102" stroke="url(#gov-gold)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#arrow-cyan-matrix)" />
+                    <path d="M 133 101 L 194 116" stroke="url(#gov-gold)" strokeWidth="1.5" strokeOpacity="0.9" markerEnd="url(#arrow-cyan-matrix)" />
+                    <path d="M 133 135 L 194 135" stroke="url(#gov-cyan)" strokeWidth="1.5" strokeOpacity="0.9" markerEnd="url(#arrow-cyan-matrix)" />
+                    <path d="M 133 169 C 160 169, 175 150, 194 150" stroke="url(#gov-purple)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#arrow-cyan-matrix)" />
+
+                    {/* ── CENTER: 4-QUADRANT GOVERNANCE MATRIX & KERNEL (cx=270, cy=125) ── */}
+                    <text x="270" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">eQORE™ GOVERNANCE MATRIX</text>
+                    
+                    {/* Outer Regulatory Perimeter Circle (R=72) */}
+                    <circle cx="270" cy="125" r="72" fill="#04070d" stroke="url(#gov-purple)" strokeWidth="1.5" filter="url(#glow-purple-gov)" />
+                    
+                    {/* Outer Radar Grid Marks */}
+                    <circle cx="270" cy="125" r="56" fill="#070b16" stroke="#00f0ff" strokeWidth="1" strokeDasharray="6 3" />
+                    <circle cx="270" cy="125" r="38" fill="none" stroke="white" strokeWidth="0.8" strokeOpacity="0.15" />
+
+                    {/* 4 Quadrant Accent Dividers */}
+                    <line x1="270" y1="53" x2="270" y2="197" stroke="white" strokeWidth="0.8" strokeOpacity="0.2" />
+                    <line x1="198" y1="125" x2="342" y2="125" stroke="white" strokeWidth="0.8" strokeOpacity="0.2" />
+
+                    {/* 4 Core Framework Capability Nodes */}
+                    {/* Top-Left Quadrant Node: ETHICS */}
+                    <g transform="translate(230, 80)">
+                      <circle cx="0" cy="0" r="4" fill="#f59e0b" filter="url(#glow-cyan-gov)" />
+                      <text x="-6" y="-6" textAnchor="end" fill="#fbbf24" fontSize="6.5" fontWeight="bold" fontFamily="monospace">RESPONSIBLE AI</text>
+                    </g>
+                    {/* Top-Right Quadrant Node: MODEL GOV */}
+                    <g transform="translate(310, 80)">
+                      <circle cx="0" cy="0" r="4" fill="#00f0ff" filter="url(#glow-cyan-gov)" />
+                      <text x="6" y="-6" fill="#00f0ff" fontSize="6.5" fontWeight="bold" fontFamily="monospace">MODEL GOVERNANCE</text>
+                    </g>
+                    {/* Bottom-Right Quadrant Node: RISK & SEC */}
+                    <g transform="translate(310, 170)">
+                      <circle cx="0" cy="0" r="4" fill="#7f53f9" />
+                      <text x="6" y="10" fill="#a78bfa" fontSize="6.5" fontWeight="bold" fontFamily="monospace">RISK &amp; SECURITY</text>
+                    </g>
+                    {/* Bottom-Left Quadrant Node: OPS & AUDIT */}
+                    <g transform="translate(230, 170)">
+                      <circle cx="0" cy="0" r="4" fill="#00c875" />
+                      <text x="-6" y="10" textAnchor="end" fill="#00c875" fontSize="6.5" fontWeight="bold" fontFamily="monospace">OPS &amp; ASSURANCE</text>
+                    </g>
+
+                    {/* Center Hexagonal Engine Processor Kernel */}
+                    <g transform="translate(248, 103)">
+                      <rect x="0" y="0" width="44" height="44" rx="10" fill="#080e1a" stroke="url(#gov-cyan)" strokeWidth="1.5" filter="url(#glow-cyan-gov)" />
+                      <path d="M 22 7 L 36 15 L 36 29 L 22 37 L 8 29 L 8 15 Z" fill="none" stroke="#00f0ff" strokeWidth="1.4" />
+                      <circle cx="22" cy="22" r="4" fill="#00f0ff" filter="url(#glow-cyan-gov)" />
+                    </g>
+
+                    {/* Output Laser Path (Center to Right Outcomes) */}
+                    <path d="M 342 125 L 410 125" stroke="url(#gov-green)" strokeWidth="2.5" filter="url(#glow-green-gov)" markerEnd="url(#arrow-green-matrix)" />
+
+                    {/* ── RIGHT COLUMN: AUDIT VERIFIED COMPLIANCE LEDGER ── */}
+                    <text x="465" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">VERIFIED OUTCOMES</text>
+
+                    <g transform="translate(410, 52)">
+                      <rect x="0" y="0" width="118" height="136" rx="10" fill="#080d16" stroke="url(#gov-green)" strokeWidth="1.5" filter="url(#glow-green-gov)" />
+                      
+                      {/* Badge Header */}
+                      <rect x="8" y="8" width="102" height="18" rx="5" fill="#00c875" fillOpacity="0.15" />
+                      <text x="59" y="20.5" textAnchor="middle" fill="#00c875" fontSize="7.5" fontWeight="black" fontFamily="monospace">VERIFIED PASSPORT</text>
+
+                      {/* Checklist */}
+                      <text x="12" y="42" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="42" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">EU AI Act Aligned</text>
+
+                      <text x="12" y="60" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="60" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Model Quality &gt; 99.8%</text>
+
+                      <text x="12" y="78" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="78" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Zero-Trust Shielded</text>
+
+                      <text x="12" y="96" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="96" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Immutable Audit Log</text>
+
+                      <text x="12" y="114" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
+                      <text x="23" y="114" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Kill-Switch Ready</text>
+                    </g>
+
+                    {/* ── BOTTOM: 4-STAGE CONTINUOUS LIFECYCLE PIPELINE ── */}
+                    <g transform="translate(30, 256)">
+                      {/* Outer Capsule Container */}
+                      <rect x="0" y="0" width="480" height="96" rx="20" fill="#050810" stroke="white" strokeWidth="1.2" strokeOpacity="0.25"/>
+                      
+                      {/* Active Stage Highlights */}
+                      <rect x="120" y="0" width="120" height="96" fill="#121724" fillOpacity="0.5"/>
+                      <rect x="360" y="0" width="120" height="96" fill="url(#gov-green)" fillOpacity="0.12" clipPath="url(#capsule-clip-gov)"/>
+                      
+                      {/* Segment Dividers */}
+                      <line x1="120" y1="0" x2="120" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
+                      <line x1="240" y1="0" x2="240" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
+                      <line x1="360" y1="0" x2="360" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
+
+                      {/* Stage 1: Discovery & Risk Tiering */}
+                      <g transform="translate(45, 18)">
+                        <circle cx="15" cy="15" r="14" fill="#0c101c" stroke="#f59e0b" strokeWidth="1.5" strokeOpacity="0.9"/>
+                        <circle cx="15" cy="15" r="6" fill="#f59e0b" />
+                        <line x1="15" y1="0" x2="15" y2="30" stroke="white" strokeOpacity="0.3" />
+                        <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
+                      </g>
+                      <text x="60" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">1. RISK TIERING</text>
+                      <text x="60" y="80" textAnchor="middle" fill="#f59e0b" fontSize="6.5" fontFamily="monospace">ISO / EU AI ACT</text>
+
+                      {/* Stage 2: Pre-Deploy Evaluation */}
+                      <g transform="translate(165, 18)">
+                        <circle cx="15" cy="8" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
+                        <circle cx="6" cy="22" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
+                        <circle cx="24" cy="22" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
+                        <line x1="12" y1="11" x2="8" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
+                        <line x1="18" y1="11" x2="22" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
+                        <circle cx="15" cy="8" r="2" fill="#a78bfa" filter="url(#glow-purple-gov)"/>
+                      </g>
+                      <text x="180" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">2. EXPLAINABILITY</text>
+                      <text x="180" y="80" textAnchor="middle" fill="#a78bfa" fontSize="6.5" fontFamily="monospace">SHAP &amp; LINEAGE</text>
+
+                      {/* Stage 3: Runtime Policy Intercept */}
+                      <g transform="translate(285, 18)">
+                        <rect x="5" y="3" width="20" height="24" rx="4" fill="#0c101c" stroke="#00f0ff" strokeWidth="1.5" filter="url(#glow-cyan-gov)"/>
+                        <path d="M 10 13 L 20 13 M 10 18 L 17 18 M 15 8 L 20 8" stroke="#00f0ff" strokeWidth="1.4" strokeLinecap="round" />
+                      </g>
+                      <text x="300" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">3. POLICY GATE</text>
+                      <text x="300" y="80" textAnchor="middle" fill="#00f0ff" fontSize="6.5" fontFamily="monospace">PRE-ACTION CHECK</text>
+
+                      {/* Stage 4: Continuous Assurance */}
+                      <g transform="translate(405, 18)">
+                        <path d="M 5 26 A 18 18 0 0 1 41 26" fill="none" stroke="white" strokeWidth="2" strokeOpacity="0.25" strokeLinecap="round"/>
+                        <path d="M 5 26 A 18 18 0 0 1 34 11" fill="none" stroke="#00c875" strokeWidth="3" strokeLinecap="round" filter="url(#glow-green-gov)"/>
+                        <line x1="23" y1="26" x2="33" y2="13" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                        <circle cx="23" cy="26" r="3" fill="#00c875"/>
+                      </g>
+                      <text x="420" y="68" textAnchor="middle" fill="#00c875" fontSize="8" fontWeight="bold" fontFamily="monospace">4. AUDIT READY</text>
+                      <text x="420" y="80" textAnchor="middle" fill="#00c875" fontSize="6.5" fontWeight="bold" fontFamily="monospace">100% COVERED</text>
+                    </g>
+                  </svg>
+                </div>
               ) : (
                 /* ── Agentic AI Flow Diagram ── */
                 <div className="flex items-center justify-center w-full lg:-mt-16">
@@ -937,7 +1684,7 @@ const featureMicros   = service.featureMicros
               <span className="text-white font-black text-lg tracking-tight">{service.name}</span>
               <span className="hidden sm:block w-px h-5 bg-white/10" />
               <div className="flex flex-col gap-0.5">
-                <span className="text-white/40 group-hover:text-white text-sm font-medium transition-colors duration-500">Kangqore {department.name} ™</span>
+                <span className="text-white/40 group-hover:text-white text-sm font-medium transition-colors duration-500">{service.bannerBrand ? `Kangqore ${service.bannerBrand}` : `Kangqore ${department.name} ™`}</span>
                 {service.bannerBrandDesc && (
                   <span className="text-white/40 group-hover:text-white/65 text-[11px] font-medium tracking-wide transition-colors duration-500">{service.bannerBrandDesc}</span>
                 )}
@@ -947,7 +1694,7 @@ const featureMicros   = service.featureMicros
               {service.downloadAsset ? (
                 <a href={service.downloadAsset} download className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
                   <Download className="w-4 h-4" />
-                  Download the Playbook
+                  {service.downloadAssetTitle || 'Download the Playbook'}
                 </a>
               ) : (
                 <Link to="/contact" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
@@ -1125,9 +1872,14 @@ const featureMicros   = service.featureMicros
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
-                } else if (capabilities.length === 3) {
+                } else if (capabilities.length === 7) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
-                  else cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 6) {
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 8) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
