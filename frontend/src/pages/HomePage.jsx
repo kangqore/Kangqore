@@ -356,7 +356,7 @@ const HeroCarousel = () => {
               index === activeSlide ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
           >
-            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 lg:translate-x-[2cm] pt-[194px] lg:pt-[250px] pb-[167px] sm:pb-[175px] h-full flex flex-col transition-transform duration-500">
+            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-[194px] lg:pt-[250px] pb-[167px] sm:pb-[175px] h-full flex flex-col">
 
               {/* Right panel — conditional per slide type */}
               {slide.type === 'video' && (
