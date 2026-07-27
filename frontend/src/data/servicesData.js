@@ -1605,29 +1605,6 @@ export const servicesData = {
     image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80',
   },
 
-  'ai-governance': {
-    slug: 'ai-governance',
-    name: 'AI Governance',
-    departmentSlug: 'shield',
-    bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Establish frameworks for responsible and ethical AI deployment',
-    fullDescription: 'Create comprehensive AI governance frameworks ensuring ethical, transparent, and compliant AI implementations.',
-    keyFeatures: ['Ethical AI guidelines', 'Bias detection and mitigation', 'Model explainability', 'Compliance monitoring', 'Risk assessment'],
-    relatedServiceSlugs: ['agentic-ai', 'genai-business-services', 'mlops'],
-    featured: true,
-    image: 'https://images.unsplash.com/photo-1639322537504-6427a16b0a28?w=800&q=80',
-    whatIsTitle: 'AI Governance That Turns',
-    whatIsTitleLine2: 'Ethics Into',
-    whatIsHighlight: 'Operational Practice.',
-    whatIsPara2: 'Kangqore builds comprehensive AI governance frameworks covering bias detection, model explainability, compliance monitoring, and risk assessment — aligned to EU AI Act, NIST AI RMF, ISO/IEC 42001, and sector-specific regulatory requirements.',
-    businessMetrics: [
-      { title: 'Audit Coverage',       desc: 'Percentage of AI model deployments covered by governance frameworks with immutable audit trails.',                      value: '100', suffix: '%', metricLabel: 'Full Audit Coverage',  icon: 'Shield'   },
-      { title: 'Bias Reduction',       desc: 'Reduction in detected model bias across protected attributes after governance framework implementation.',              value: '73',  suffix: '%', metricLabel: 'Bias Reduction',       icon: 'Target'   },
-      { title: 'Risk Resolution',      desc: 'AI risk findings resolved per governance sprint cycle across enterprise AI portfolios under Kangqore management.',     value: '90',  suffix: '%', metricLabel: 'Risk Resolution Rate', icon: 'Zap'      },
-      { title: 'Frameworks Covered',   desc: 'Governance frameworks mapped to EU AI Act, NIST AI RMF, ISO/IEC 42001, and sector-specific compliance standards.',    value: '6',   suffix: '+', metricLabel: 'Standards Aligned',    icon: 'Layers'   },
-    ],
-  },
-
   'quality-engineering-assurance': {
     slug: 'quality-engineering-assurance',
     name: 'Quality Engineering & Assurance',
