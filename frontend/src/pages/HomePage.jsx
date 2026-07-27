@@ -1813,104 +1813,85 @@ import EqoreShowSection from '../components/podcast/EqoreShowSection';
 
 
 // ============================================================================
-// CAREERS SECTION — SCROLL-DRIVEN STICKY ZOOM & TEXT CROSS-FADE
+// CAREERS SECTION — PINNED EXPANSION & TEXT CROSS-FADE (EXACT OPTION 1 ARCHITECTURE)
 // ============================================================================
 const CareersSection = () => {
   const { t } = useTranslation();
-  const targetRef = useRef(null);
+  const containerRef = useRef(null);
 
+  // 1. Track scroll progress inside the 300vh container (0 to 1)
   const { scrollYProgress } = useScroll({
-    target: targetRef,
+    target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // 1. Text & CTA fade out and slide left as scroll begins (0 -> 40%)
-  const textOpacity = useTransform(scrollYProgress, [0, 0.38], [1, 0]);
-  const textX = useTransform(scrollYProgress, [0, 0.38], [0, -60]);
-  const textScale = useTransform(scrollYProgress, [0, 0.38], [1, 0.95]);
+  // 2. Map scroll progress to Text Opacity & Translation
+  const textOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 0.4], [0, -30]);
 
-  // 2. Right Image expands from 50% width to 100% full cover (15% -> 85%)
-  const imageWidth = useTransform(scrollYProgress, [0.15, 0.82], ["50%", "100%"]);
-  const imageScale = useTransform(scrollYProgress, [0.15, 0.82], [1, 1.18]);
-  const cardRadius = useTransform(scrollYProgress, [0.4, 0.85], ["2rem", "0.5rem"]);
-  const borderOpacity = useTransform(scrollYProgress, [0.4, 0.85], [0.1, 0]);
-  const darkOverlayOpacity = useTransform(scrollYProgress, [0.15, 0.75], [0.7, 0.1]);
+  // 3. Map scroll progress to Image Scale & Width Expansion
+  const imageScale = useTransform(scrollYProgress, [0.2, 0.9], [1, 1.3]);
+  const imageWidth = useTransform(scrollYProgress, [0.2, 0.9], ["50%", "100%"]);
+  const imageBorderRadius = useTransform(scrollYProgress, [0.4, 0.9], ["16px", "0px"]);
 
   return (
-    <section ref={targetRef} className="relative h-[260vh] bg-white dark:bg-black text-white">
-      {/* Pinned full-viewport container during scroll */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-4 md:px-8">
+    // Outer scroll track (3x screen height to give smooth scroll duration)
+    <section ref={containerRef} className="h-[300vh] relative bg-black">
+      
+      {/* Sticky Container pinned to full screen height */}
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
-        <motion.div 
-          style={{ borderRadius: cardRadius }}
-          className="relative w-full max-w-7xl h-[78vh] bg-[#0a0a0c] overflow-hidden shadow-2xl border border-white/[0.08] flex items-center justify-center transition-all duration-75"
-        >
-          <div className="w-full h-full relative flex items-center">
+        <div className="max-w-7xl w-full px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-12 relative h-full">
+          
+          {/* Expanding Left Image */}
+          <motion.div 
+            style={{ 
+              width: imageWidth,
+              scale: imageScale,
+              borderRadius: imageBorderRadius
+            }}
+            className="relative h-[55vh] lg:h-[65vh] w-full lg:w-1/2 overflow-hidden shadow-2xl transition-all duration-75 z-10 origin-left"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80" 
+              alt="Careers at Kangqore"
+              className="w-full h-full object-cover"
+            />
+            {/* Subtle Gradient Blend */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          </motion.div>
+
+          {/* Fading Right Content */}
+          <motion.div 
+            style={{ 
+              opacity: textOpacity, 
+              y: textY 
+            }}
+            className="w-full lg:w-1/2 text-white space-y-6 z-20 pointer-events-auto"
+          >
+            <span className="text-xs uppercase tracking-widest text-gray-400 font-mono">
+              {t('careers_section.badge', 'CAREERS')}
+            </span>
             
-            {/* Left Column: Text and CTA (Fades Out on Scroll) */}
-            <motion.div 
-              style={{ 
-                opacity: textOpacity, 
-                x: textX,
-                scale: textScale
-              }}
-              className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 xl:p-20 flex flex-col justify-center relative z-20 pointer-events-auto"
-            >
-              <div className="inline-flex items-center gap-2 mb-6">
-                <span className="px-3 py-1 text-xs font-bold tracking-wider text-white uppercase bg-brand-blue/20 border border-brand-blue/30 rounded-full shadow-[0_0_15px_rgba(37,100,234,0.3)]">
-                  {t('careers_section.badge', 'Careers')}
-                </span>
-              </div>
-              
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold text-white mb-6 leading-[1.12] tracking-tight">
-                {t('careers_section.heading', 'Build your future with Kangqore')}
-              </h2>
-              
-              <p className="text-base sm:text-lg text-gray-400 font-medium mb-10 max-w-md leading-[1.6]">
-                {t('careers_section.description', 'The next-generation AI-first, digital-first, cloud-first partner, we stand at the forefront of business evolution.')}
-              </p>
-              
-              <div>
-                <a 
-                  href="/careers" 
-                  className="group inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-semibold text-[15px] hover:bg-gray-100 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] transition-all duration-300"
-                >
-                  {t('careers_section.cta', 'Explore Careers')}
-                  <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </a>
-              </div>
-            </motion.div>
-
-            {/* Right Column -> Expands to Full Screen Container Width */}
-            <motion.div 
-              style={{ width: imageWidth }}
-              className="absolute right-0 top-0 bottom-0 h-full overflow-hidden z-10 hidden lg:block"
-            >
-              <motion.img 
-                style={{ scale: imageScale }}
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80" 
-                alt="Kangqore Team Collaboration"
-                className="w-full h-full object-cover origin-center transition-transform duration-75"
-              />
-              {/* Dynamic Overlay Gradient that clears as image expands */}
-              <motion.div 
-                style={{ opacity: darkOverlayOpacity }}
-                className="absolute inset-0 bg-gradient-to-r from-[#0a0a0c] via-[#0a0a0c]/80 to-transparent" 
-              />
-            </motion.div>
-
-            {/* Mobile Fallback Background Image */}
-            <div className="absolute inset-0 z-0 lg:hidden overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80" 
-                alt="Kangqore Team Collaboration"
-                className="w-full h-full object-cover opacity-25"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/90 to-transparent" />
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-white tracking-tight">
+              {t('careers_section.heading', "Build a career that's as exciting as the world we're shaping")}
+            </h2>
+            
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed max-w-xl font-normal">
+              {t('careers_section.description', 'Grow personally and professionally in a global company that helps you unlock your full potential. The next-generation AI-first, digital-first, cloud-first partner.')}
+            </p>
+            
+            <div>
+              <a 
+                href="/careers" 
+                className="inline-flex items-center gap-3 px-8 py-4 bg-purple-600 hover:bg-purple-500 rounded-full font-medium text-white transition-all duration-300 shadow-[0_0_25px_rgba(147,51,234,0.4)] hover:scale-105"
+              >
+                {t('careers_section.cta', 'Join us')} <ArrowUpRight className="w-5 h-5" />
+              </a>
             </div>
+          </motion.div>
 
-          </div>
-        </motion.div>
+        </div>
 
       </div>
     </section>
