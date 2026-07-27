@@ -1,6 +1,8 @@
 import React from 'react';
 import { ShieldCheck, Search, Layers, Activity, Brain, Shield, AlertTriangle, Lock } from 'lucide-react';
 import ServicePageTemplate from '../../../components/ServicePageTemplate';
+import UniversalServicePage from '../../../components/services/shared/UniversalServicePage';
+import { servicesData } from '../../../data/servicesData';
 import SEO from '../../../components/SEO';
 
 const FAQ_SCHEMA = {
@@ -337,7 +339,7 @@ const AIGovernance = () => {
         url="https://kangqore.com/services/ai-governance"
         schemas={[FAQ_SCHEMA]}
       />
-      <ServicePageTemplate service={pageData.service} department={pageData.department} disableSEO />
+      <UniversalServicePage service={servicesData['ai-governance']} department={department} />
     </div>
   );
 };
