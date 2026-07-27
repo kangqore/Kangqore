@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { format, addDays } from 'date-fns';
@@ -1812,53 +1813,105 @@ import EqoreShowSection from '../components/podcast/EqoreShowSection';
 
 
 // ============================================================================
-// CAREERS SECTION
+// CAREERS SECTION — SCROLL-DRIVEN STICKY ZOOM & TEXT CROSS-FADE
 // ============================================================================
 const CareersSection = () => {
   const { t } = useTranslation();
+  const targetRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end end"]
+  });
+
+  // 1. Text & CTA fade out and slide left as scroll begins (0 -> 40%)
+  const textOpacity = useTransform(scrollYProgress, [0, 0.38], [1, 0]);
+  const textX = useTransform(scrollYProgress, [0, 0.38], [0, -60]);
+  const textScale = useTransform(scrollYProgress, [0, 0.38], [1, 0.95]);
+
+  // 2. Right Image expands from 50% width to 100% full cover (15% -> 85%)
+  const imageWidth = useTransform(scrollYProgress, [0.15, 0.82], ["50%", "100%"]);
+  const imageScale = useTransform(scrollYProgress, [0.15, 0.82], [1, 1.18]);
+  const cardRadius = useTransform(scrollYProgress, [0.4, 0.85], ["2rem", "0.5rem"]);
+  const borderOpacity = useTransform(scrollYProgress, [0.4, 0.85], [0.1, 0]);
+  const darkOverlayOpacity = useTransform(scrollYProgress, [0.15, 0.75], [0.7, 0.1]);
+
   return (
-    <section className="py-24 bg-white dark:bg-black relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="bg-[#0a0a0c] rounded-[2rem] overflow-hidden shadow-2xl border border-white/[0.05]">
-          <div className="grid lg:grid-cols-2">
-            {/* Left Column: Text and CTA */}
-            <div className="p-12 lg:p-16 xl:p-24 flex flex-col justify-center">
-              <div className="inline-flex items-center gap-2 mb-8">
+    <section ref={targetRef} className="relative h-[260vh] bg-white dark:bg-black text-white">
+      {/* Pinned full-viewport container during scroll */}
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-4 md:px-8">
+        
+        <motion.div 
+          style={{ borderRadius: cardRadius }}
+          className="relative w-full max-w-7xl h-[78vh] bg-[#0a0a0c] overflow-hidden shadow-2xl border border-white/[0.08] flex items-center justify-center transition-all duration-75"
+        >
+          <div className="w-full h-full relative flex items-center">
+            
+            {/* Left Column: Text and CTA (Fades Out on Scroll) */}
+            <motion.div 
+              style={{ 
+                opacity: textOpacity, 
+                x: textX,
+                scale: textScale
+              }}
+              className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 xl:p-20 flex flex-col justify-center relative z-20 pointer-events-auto"
+            >
+              <div className="inline-flex items-center gap-2 mb-6">
                 <span className="px-3 py-1 text-xs font-bold tracking-wider text-white uppercase bg-brand-blue/20 border border-brand-blue/30 rounded-full shadow-[0_0_15px_rgba(37,100,234,0.3)]">
                   {t('careers_section.badge', 'Careers')}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
+              
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold text-white mb-6 leading-[1.12] tracking-tight">
                 {t('careers_section.heading', 'Build your future with Kangqore')}
               </h2>
-              <p className="text-lg text-gray-400 font-medium mb-12 max-w-md leading-[1.6]">
+              
+              <p className="text-base sm:text-lg text-gray-400 font-medium mb-10 max-w-md leading-[1.6]">
                 {t('careers_section.description', 'The next-generation AI-first, digital-first, cloud-first partner, we stand at the forefront of business evolution.')}
               </p>
               
               <div>
                 <a 
                   href="/careers" 
-                  className="group inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-semibold text-[15px] hover:bg-gray-100 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300"
+                  className="group inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-semibold text-[15px] hover:bg-gray-100 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] transition-all duration-300"
                 >
                   {t('careers_section.cta', 'Explore Careers')}
                   <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Right Column: Image */}
-            <div className="relative h-96 lg:h-auto overflow-hidden bg-[#111]">
+            {/* Right Column -> Expands to Full Screen Container Width */}
+            <motion.div 
+              style={{ width: imageWidth }}
+              className="absolute right-0 top-0 bottom-0 h-full overflow-hidden z-10 hidden lg:block"
+            >
+              <motion.img 
+                style={{ scale: imageScale }}
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80" 
+                alt="Kangqore Team Collaboration"
+                className="w-full h-full object-cover origin-center transition-transform duration-75"
+              />
+              {/* Dynamic Overlay Gradient that clears as image expands */}
+              <motion.div 
+                style={{ opacity: darkOverlayOpacity }}
+                className="absolute inset-0 bg-gradient-to-r from-[#0a0a0c] via-[#0a0a0c]/80 to-transparent" 
+              />
+            </motion.div>
+
+            {/* Mobile Fallback Background Image */}
+            <div className="absolute inset-0 z-0 lg:hidden overflow-hidden">
               <img 
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80" 
                 alt="Kangqore Team Collaboration"
-                className="w-full h-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105"
+                className="w-full h-full object-cover opacity-25"
               />
-              {/* Subtle inner gradient to blend edges */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0c] via-transparent to-transparent hidden lg:block" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-transparent lg:hidden" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/90 to-transparent" />
             </div>
+
           </div>
-        </div>
+        </motion.div>
+
       </div>
     </section>
   );
