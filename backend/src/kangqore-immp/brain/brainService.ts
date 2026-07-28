@@ -89,8 +89,8 @@ function tokens(text: string): string[] {
 function classifyGroup(slug: string, relDir: string, type: string): string {
   if (relDir.startsWith('captures')) return 'capture'
   if (/^s\d/.test(slug)) return 'chronicle'
-  if (/identity|waanda|kimmp|aegis|wee|jarvis|voice|gen\d/.test(slug)) return 'identity'
-  if (/architecture|wvis|blueprint|runtime|freeze|constitution|spec|schema|scaffold/.test(slug)) return 'architecture'
+  if (/identity|waanda|kimmp|aegis|wee|jarvis|voice|gen\d|eqore|alis/.test(slug)) return 'identity'
+  if (/architecture|wvis|vis|blueprint|runtime|freeze|constitution|spec|schema|scaffold|view|immp/.test(slug)) return 'architecture'
   if (/commercial|bids|phase2|roadmap|revenue|customer|strategy/.test(slug)) return 'commercial'
   if (/user-profile|feedback|dev-env|seed|pending|scout|tts|env/.test(slug)) return 'ops'
   if (type === 'user' || type === 'feedback' || type === 'reference') return 'ops'
