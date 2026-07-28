@@ -270,38 +270,90 @@ const MLOps = () => {
         <AITransformationMagnet />
       </>
     ),
-    capabilitiesTitle: 'Our MLOps Capabilities',
+    capabilitiesTitle: 'Our Capabilities.',
     capabilities: [
       {
+        title: 'AI Strategy & MLOps Advisory',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
+        items: [
+          { heading: 'AI & MLOps Readiness Assessment', description: 'Evaluate organisational maturity, engineering capabilities, operational readiness, and platform foundations for enterprise-scale AI adoption.' },
+          { heading: 'AI Use Case Discovery', description: 'Identify, prioritise, and validate high-value AI initiatives aligned with strategic business objectives and measurable outcomes.' },
+          { heading: 'Data Readiness Assessment', description: 'Assess data quality, accessibility, governance, and architectural readiness required for successful machine learning initiatives.' },
+          { heading: 'MLOps Strategy & Roadmap', description: 'Develop enterprise MLOps operating models, implementation roadmaps, governance structures, and technology strategies.' },
+          { heading: 'AI Platform Advisory', description: 'Recommend cloud, hybrid, infrastructure, tooling, and platform architectures that support scalable enterprise AI operations.' },
+          { heading: 'AI Transformation Enablement', description: 'Drive organisational adoption through governance frameworks, stakeholder alignment, operating models, and capability development.' }
+        ]
+      },
+      {
+        title: 'AI Engineering & Lifecycle Management',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
+        items: [
+          { heading: 'Experiment Management', description: 'Capture datasets, parameters, metrics, artefacts, and experiments to ensure reproducibility, collaboration, and continuous innovation.' },
+          { heading: 'Model Development & Validation', description: 'Design, train, evaluate, validate, and optimise machine learning models for enterprise-grade production environments.' },
+          { heading: 'Model Registry & Lifecycle Management', description: 'Maintain centralised repositories for managing model versions, approvals, documentation, metadata, and deployment status.' },
+          { heading: 'Continuous Integration & Delivery', description: 'Automate testing, validation, packaging, and deployment of machine learning models through enterprise CI/CD pipelines.' },
+          { heading: 'Progressive Model Deployment', description: 'Deploy AI models safely using canary, blue-green, shadow, and phased rollout strategies that reduce operational risk.' },
+          { heading: 'AI Lifecycle Automation', description: 'Automate promotion, deployment, monitoring, retraining, rollback, and retirement across the complete AI lifecycle.' }
+        ]
+      },
+      {
         title: 'Data & Feature Engineering',
-        bgImage: '/images/capabilities/data-analytics.png',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'Automated ingestion pipelines', description: 'Streamline raw data flow into production-ready analytical datasets.' },
-          { heading: 'Feature store architecture', description: 'Centralized repository for discovering, documenting, and serving ML features.' },
-          { heading: 'Dataset versioning', description: 'Track data lineage and reproduce experiments with absolute precision.' },
-          { heading: 'Data validation & lineage', description: 'Ensure data quality and integrity throughout the entire pipeline.' }
+          { heading: 'Data Pipeline Engineering', description: 'Develop automated ingestion, transformation, orchestration, and processing pipelines that support enterprise AI workloads.' },
+          { heading: 'Feature Store Management', description: 'Establish centralised feature repositories that improve feature reuse, governance, consistency, and real-time serving.' },
+          { heading: 'Dataset Versioning & Lineage', description: 'Maintain complete dataset history, lineage, reproducibility, and traceability throughout model development and operations.' },
+          { heading: 'Data Validation & Quality Engineering', description: 'Implement automated validation, profiling, cleansing, monitoring, and quality controls for trusted enterprise data.' },
+          { heading: 'Metadata & Lineage Management', description: 'Capture metadata, dependencies, and lineage across datasets, pipelines, models, and AI assets.' },
+          { heading: 'Enterprise Data Orchestration', description: 'Coordinate distributed data workflows across cloud, hybrid, and enterprise environments with operational reliability.' }
         ]
       },
       {
-        title: 'Model Development & Deployment',
-        bgImage: '/images/capabilities/ai-cognitive.png',
+        title: 'Production AI Operations',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'Experiment tracking', description: 'Automatically log parameters, metrics, and artifacts for every run.' },
-          { heading: 'Canary deployments', description: 'Safely roll out models to a subset of users before full production release.' },
-          { heading: 'Model registry', description: 'Central hub for managing model lifecycle from staging to production.' },
-          { heading: 'CI/CD integration', description: 'Automated pipelines for testing and deploying ML models at scale.' },
-          { heading: 'Containerized deployments', description: 'Ensure consistent runtime environments across development and production.' }
+          { heading: 'AI Observability', description: 'Gain end-to-end visibility into model behaviour, inference quality, latency, resource utilisation, and operational health.' },
+          { heading: 'Performance Monitoring', description: 'Monitor prediction quality, throughput, availability, latency, and service-level objectives across production environments.' },
+          { heading: 'Drift Detection & Continuous Learning', description: 'Detect data drift, concept drift, prediction anomalies, and model degradation while triggering governed retraining workflows.' },
+          { heading: 'AI Performance Optimisation', description: 'Continuously improve model accuracy, inference efficiency, infrastructure utilisation, and operational cost.' },
+          { heading: 'Production Reliability Engineering', description: 'Maintain resilient, fault-tolerant, and highly available AI systems through proactive operational management.' },
+          { heading: 'Operational Intelligence & Reporting', description: 'Provide dashboards, SLA reporting, operational analytics, executive insights, and AI health metrics.' }
         ]
       },
       {
-        title: 'Monitoring, Governance & Optimization',
-        bgImage: '/images/capabilities/cybersecurity.png',
+        title: 'AI Platform Engineering',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'Drift detection', description: 'Identify when production data deviates from training sets in real-time.' },
-          { heading: 'Performance monitoring', description: 'Track latency, throughput, and system health for deployed models.' },
-          { heading: 'Auto-retraining triggers', description: 'Establish closed-loop systems that improve models based on live data.' },
-          { heading: 'Audit logs', description: 'Maintain full traceability of every model version and deployment decision.' },
-          { heading: 'Compliance guardrails', description: 'Enforce regulatory and ethical standards with policy-as-code gates.' }
+          { heading: 'AI Platform Architecture', description: 'Design scalable AI platforms that standardise enterprise machine learning engineering and operational practices.' },
+          { heading: 'Containerisation & Orchestration', description: 'Deploy AI workloads using containers, Kubernetes, and enterprise orchestration frameworks.' },
+          { heading: 'Hybrid & Multi-Cloud AI', description: 'Operate AI workloads consistently across public cloud, private cloud, hybrid, and on-premises environments.' },
+          { heading: 'Infrastructure Automation', description: 'Automate provisioning, configuration, scaling, and lifecycle management using Infrastructure as Code.' },
+          { heading: 'GPU & Accelerator Engineering', description: 'Optimise GPU, TPU, and specialised AI accelerator infrastructure for efficient training and inference workloads.' },
+          { heading: 'Scalability & Resilience Engineering', description: 'Deliver highly available, fault-tolerant, and elastic AI platforms that support enterprise-scale operations.' }
+        ]
+      },
+      {
+        title: 'AI Governance & Operational Assurance',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
+        items: [
+          { heading: 'Model Governance', description: 'Govern AI models across development, validation, deployment, monitoring, maintenance, and retirement.' },
+          { heading: 'Responsible AI Controls', description: 'Embed explainability, fairness, transparency, accountability, and human oversight into operational AI systems.' },
+          { heading: 'Audit & Traceability', description: 'Maintain comprehensive audit trails, deployment history, lineage, approvals, and governance evidence.' },
+          { heading: 'Compliance & Policy Management', description: 'Align AI operations with regulatory requirements, enterprise governance policies, and industry standards.' },
+          { heading: 'Security & Access Governance', description: 'Protect AI platforms through identity management, role-based access controls, encryption, and zero-trust security.' },
+          { heading: 'AI Risk Management', description: 'Continuously identify, assess, and mitigate operational, cybersecurity, regulatory, and business risks across AI environments.' }
+        ]
+      },
+      {
+        title: 'AI Performance, Cost & FinOps',
+        bgImage: '/images/capabilities/agentic-governed-autonomy.png',
+        items: [
+          { heading: 'AI Cost Optimisation', description: 'Optimise compute resources, inference workloads, storage, and token consumption to improve cost efficiency.' },
+          { heading: 'AI Resource Management', description: 'Monitor and optimise GPU, CPU, memory, and accelerator utilisation across enterprise AI workloads.' },
+          { heading: 'Workload Optimisation', description: 'Balance training and inference workloads to maximise throughput, reliability, and operational efficiency.' },
+          { heading: 'Capacity Planning', description: 'Forecast infrastructure demand and plan scalable AI environments that support future business growth.' },
+          { heading: 'AI FinOps & Cost Governance', description: 'Establish governance frameworks for budgeting, cost allocation, chargeback models, and AI investment optimisation.' },
+          { heading: 'Business Value Measurement', description: 'Measure AI adoption, operational impact, ROI, and business outcomes through enterprise performance metrics and executive reporting.' }
         ]
       }
     ]
