@@ -168,9 +168,9 @@ function assignAnatomicalBrainCoordinates(nodes: BrainNode[]) {
 function create3DHumanBrainSurfaceMesh(): THREE.Group {
   const group = new THREE.Group()
 
-  // 1. Dual Cerebral Hemispheres (Left & Right) with Multi-Frequency Gyri/Sulci Convolutions
-  const uSegs = 80
-  const vSegs = 80
+  // 1. Dual Cerebral Hemispheres (Left & Right) — Solid Natural Human Brain Tissue Structure
+  const uSegs = 96
+  const vSegs = 96
 
   const buildHemisphereMesh = (isLeft: boolean) => {
     const side = isLeft ? -1 : 1
@@ -194,13 +194,13 @@ function create3DHumanBrainSurfaceMesh(): THREE.Group {
         let y = sinV * sinU * 94 + (z > 35 ? 16 : 0) - (z < -65 ? 18 : 0)
         let baseWidth = sinV * cosU * 98
 
-        // Multi-frequency Gyri & Sulci surface folds (wrinkle convolutions)
-        const foldMajor = Math.sin(z * 0.08) * Math.cos(y * 0.09) * Math.sin(baseWidth * 0.07) * 9.5
-        const foldMinor = Math.cos(z * 0.22) * Math.sin(y * 0.22) * Math.cos(baseWidth * 0.18) * 3.8
-        const foldMicro = Math.sin(z * 0.45) * Math.cos(y * 0.45) * 1.4
+        // Deep Gyri & Sulci surface folds (organic tissue convolutions)
+        const foldMajor = Math.sin(z * 0.08) * Math.cos(y * 0.09) * Math.sin(baseWidth * 0.07) * 10.5
+        const foldMinor = Math.cos(z * 0.22) * Math.sin(y * 0.22) * Math.cos(baseWidth * 0.18) * 4.2
+        const foldMicro = Math.sin(z * 0.45) * Math.cos(y * 0.45) * 1.8
         const totalFold = foldMajor + foldMinor + foldMicro
 
-        let x = side * (10 + Math.abs(baseWidth) + totalFold)
+        let x = side * (8 + Math.abs(baseWidth) + totalFold)
         y += totalFold * 0.85
         z += totalFold * 0.85
 
@@ -231,27 +231,25 @@ function create3DHumanBrainSurfaceMesh(): THREE.Group {
     geo.setIndex(indices)
     geo.computeVertexNormals()
 
-    const color = isLeft ? 0x0284c7 : 0x7e22ce
-    const emissive = isLeft ? 0x0369a1 : 0x6b21a8
-
-    // Outer Glassmorphic Translucent Cortex Surface
+    // Authentic Natural Cerebral Cortex Tissue Material (Solid Pink-Grey Organic Surface)
+    const cortexColor = isLeft ? 0xdca392 : 0xce9180
     const mat = new THREE.MeshPhongMaterial({
-      color,
-      emissive,
-      specular: 0x38bdf8,
-      shininess: 45,
-      transparent: true,
-      opacity: 0.24,
+      color: cortexColor,
+      emissive: 0x22110c,
+      specular: 0x664444,
+      shininess: 32,
+      transparent: false,
+      opacity: 1.0,
       side: THREE.DoubleSide,
       wireframe: false,
     })
 
-    // Inner Sulci Wireframe Lattice Glow
+    // Subtle Deep Sulci Groove Outline Accent
     const wireMat = new THREE.MeshBasicMaterial({
-      color: isLeft ? 0x38bdf8 : 0xc084fc,
+      color: 0x643128,
       wireframe: true,
       transparent: true,
-      opacity: 0.16,
+      opacity: 0.15,
     })
 
     const mesh = new THREE.Mesh(geo, mat)
@@ -265,66 +263,74 @@ function create3DHumanBrainSurfaceMesh(): THREE.Group {
   group.add(buildHemisphereMesh(true))  // Left Hemisphere
   group.add(buildHemisphereMesh(false)) // Right Hemisphere
 
-  // 2. Inter-Hemispheric Corpus Callosum Arch
-  const callosumGeo = new THREE.TorusGeometry(45, 12, 16, 48, Math.PI)
+  // 2. Inter-Hemispheric Corpus Callosum Arch (Solid Off-White Neural Bridge)
+  const callosumGeo = new THREE.TorusGeometry(45, 14, 20, 48, Math.PI)
   const callosumMat = new THREE.MeshPhongMaterial({
-    color: 0x38bdf8,
-    emissive: 0x0284c7,
-    transparent: true,
-    opacity: 0.35,
-    wireframe: true,
+    color: 0xebd3c6,
+    emissive: 0x2c221c,
+    specular: 0x775544,
+    shininess: 25,
+    transparent: false,
+    opacity: 1.0,
+    wireframe: false,
   })
   const callosumMesh = new THREE.Mesh(callosumGeo, callosumMat)
   callosumMesh.rotation.y = Math.PI / 2
   callosumMesh.position.set(0, 10, 0)
   group.add(callosumMesh)
 
-  // 3. Central Thalamus / Limbic Core (Inner Glowing Nucleus)
-  const thalamusGeo = new THREE.SphereGeometry(28, 24, 20)
+  // 3. Central Thalamus & Limbic Core (Solid Deep Brain Nucleus)
+  const thalamusGeo = new THREE.SphereGeometry(30, 32, 24)
   const thalamusMat = new THREE.MeshPhongMaterial({
-    color: 0xa855f7,
-    emissive: 0x7e22ce,
-    transparent: true,
-    opacity: 0.45,
-    wireframe: true,
+    color: 0xb86b59,
+    emissive: 0x26100c,
+    specular: 0x553333,
+    shininess: 20,
+    transparent: false,
+    opacity: 1.0,
+    wireframe: false,
   })
   const thalamusMesh = new THREE.Mesh(thalamusGeo, thalamusMat)
   thalamusMesh.position.set(0, -5, -10)
   group.add(thalamusMesh)
 
-  // 4. Cerebellum with Horizontal Folia Ridges (Lower Rear Base)
-  const cerGeo = new THREE.SphereGeometry(52, 40, 32)
+  // 4. Cerebellum with Folia Ridges (Solid Natural Reddish-Coral Tissue)
+  const cerGeo = new THREE.SphereGeometry(54, 48, 36)
   const cerPos = cerGeo.attributes.position
   for (let k = 0; k < cerPos.count; k++) {
     const cx = cerPos.getX(k)
     const cy = cerPos.getY(k)
     const cz = cerPos.getZ(k)
-    const folia = Math.sin(cy * 0.42) * 4.2
+    const folia = Math.sin(cy * 0.45) * 4.5
     cerPos.setXYZ(k, cx * 1.12 + folia, cy * 0.68 + folia, cz * 0.98 + folia)
   }
   cerGeo.computeVertexNormals()
   const cerMat = new THREE.MeshPhongMaterial({
-    color: 0xf43f5e,
-    emissive: 0xbe123c,
-    transparent: true,
-    opacity: 0.28,
-    wireframe: true,
+    color: 0xc27a69,
+    emissive: 0x28120e,
+    specular: 0x664444,
+    shininess: 30,
+    transparent: false,
+    opacity: 1.0,
+    wireframe: false,
   })
   const cerMesh = new THREE.Mesh(cerGeo, cerMat)
   cerMesh.position.set(0, -82, -105)
   group.add(cerMesh)
 
-  // 5. Brainstem (Central Base Trunk)
-  const stemGeo = new THREE.CylinderGeometry(22, 15, 100, 32, 20)
+  // 5. Brainstem (Solid Natural Cream Neural Trunk)
+  const stemGeo = new THREE.CylinderGeometry(24, 16, 105, 32, 24)
   const stemMat = new THREE.MeshPhongMaterial({
-    color: 0x06b6d4,
-    emissive: 0x0e7490,
-    transparent: true,
-    opacity: 0.32,
-    wireframe: true,
+    color: 0xebd3c6,
+    emissive: 0x2c241f,
+    specular: 0x665544,
+    shininess: 25,
+    transparent: false,
+    opacity: 1.0,
+    wireframe: false,
   })
   const stemMesh = new THREE.Mesh(stemGeo, stemMat)
-  stemMesh.position.set(0, -118, -12)
+  stemMesh.position.set(0, -120, -12)
   group.add(stemMesh)
 
   return group
