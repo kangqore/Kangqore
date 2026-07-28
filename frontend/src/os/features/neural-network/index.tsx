@@ -876,6 +876,26 @@ export function NeuralNetworkModule() {
 
   useEffect(() => { applyHighlight() }, [hiddenGroups, applyHighlight])
 
+  // ── search-to-fly ─────────────────────────────────────────────────────────
+
+  const runSearch = useCallback((q: string) => {
+    setSearchQuery(q)
+    const query = q.trim().toLowerCase()
+    if (!query) { setSearchResults([]); return }
+    const nodes = (graphRef.current?.graphData().nodes as BrainNode[] | undefined) ?? []
+    const matches = nodes.filter(n =>
+      n.title.toLowerCase().includes(query) ||
+      (n.description && n.description.toLowerCase().includes(query)),
+    )
+    setSearchResults(matches.slice(0, 6))
+  }, [])
+
+  const searchSelect = useCallback((node: BrainNode) => {
+    focusNode(node)
+    setSearchQuery('')
+    setSearchResults([])
+  }, [focusNode])
+
   const quickFocusSystem = useCallback((sys: string) => {
     if (activeSystem === sys) {
       setActiveSystem(null)
@@ -906,26 +926,6 @@ export function NeuralNetworkModule() {
       runSearch(sys)
     }
   }, [activeSystem, clearFocus, focusNode, highlightCluster, runSearch])
-
-  // ── search-to-fly ─────────────────────────────────────────────────────────
-
-  const runSearch = useCallback((q: string) => {
-    setSearchQuery(q)
-    const query = q.trim().toLowerCase()
-    if (!query) { setSearchResults([]); return }
-    const nodes = (graphRef.current?.graphData().nodes as BrainNode[] | undefined) ?? []
-    const matches = nodes.filter(n =>
-      n.title.toLowerCase().includes(query) ||
-      (n.description && n.description.toLowerCase().includes(query)),
-    )
-    setSearchResults(matches.slice(0, 6))
-  }, [])
-
-  const searchSelect = useCallback((node: BrainNode) => {
-    focusNode(node)
-    setSearchQuery('')
-    setSearchResults([])
-  }, [focusNode])
 
   // ── voice out ─────────────────────────────────────────────────────────────
 
