@@ -1231,53 +1231,48 @@ export function NeuralNetworkModule() {
         .nodeLabel((n: any) => `<div style="padding:4px 10px;background:rgba(2,6,23,.9);border:1px solid ${groupColor(n.group)}55;border-radius:8px;color:#e2e8f0;font-family:ui-monospace,monospace;font-size:11px">${n.title}</div>`)
         .nodeThreeObject((n: any) => {
           const color = groupColor(n.group)
-          const r = 1.3 + n.val * 0.35
+          const r = 2.4 + n.val * 0.4
           const obj = new THREE.Group()
 
-          // 1. Soma (Sleek Neuron Nucleus Core)
-          const sphere = new THREE.Mesh(
-            new THREE.SphereGeometry(r, 16, 16),
-            new THREE.MeshBasicMaterial({ color: new THREE.Color(color), transparent: true, opacity: 0.95 }),
-          )
-
-          // 2. Arborized Dendrites (Micro-branching neural fibers)
-          const dendritePoints: THREE.Vector3[] = []
-          const spikeCount = 6
-          for (let i = 0; i < spikeCount; i++) {
-            const dir = new THREE.Vector3(
-              Math.sin(i * 1.3) * Math.cos(i * 2.1),
-              Math.cos(i * 1.3),
-              Math.sin(i * 1.3) * Math.sin(i * 2.1)
-            ).normalize()
-            const length = r * (1.8 + (i % 3) * 0.6)
-            dendritePoints.push(new THREE.Vector3(0, 0, 0))
-            dendritePoints.push(dir.multiplyScalar(length))
-          }
-          const dendGeo = new THREE.BufferGeometry().setFromPoints(dendritePoints)
-          const dendMat = new THREE.LineBasicMaterial({
+          // 1. Realistic 3D Shiny Metallic/Glass Ball (MeshPhongMaterial with high specular shine)
+          const sphereGeo = new THREE.SphereGeometry(r, 32, 32)
+          const sphereMat = new THREE.MeshPhongMaterial({
             color: new THREE.Color(color),
+            emissive: new THREE.Color(color).multiplyScalar(0.4),
+            specular: new THREE.Color(0xffffff),
+            shininess: 120,
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.95,
           })
-          const dendrites = new THREE.LineSegments(dendGeo, dendMat)
+          const sphere = new THREE.Mesh(sphereGeo, sphereMat)
 
-          // 3. Bioluminescent Synaptic Corona Sprite
+          // 2. Glossy Specular Hotspot / White Glass Core
+          const coreGeo = new THREE.SphereGeometry(r * 0.45, 16, 16)
+          const coreMat = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.75,
+            blending: THREE.AdditiveBlending,
+          })
+          const core = new THREE.Mesh(coreGeo, coreMat)
+          sphere.add(core)
+
+          // 3. Bioluminescent Synaptic Corona Glow Sprite
           const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
-            map: glowTexture(color), transparent: true, opacity: 0.65,
+            map: glowTexture(color), transparent: true, opacity: 0.75,
             blending: THREE.AdditiveBlending, depthWrite: false,
           }))
-          sprite.scale.set(r * 3.2, r * 3.2, 1)
+          sprite.scale.set(r * 4.2, r * 4.2, 1)
 
           // 4. Hovering 3D Billboard Label for Flagship System Pillars & Architecture Notes
           const isFlagship = /waanda|aegis|eqore|alis|vis|immp|bids|view|wee|kimmp/.test(n.slug)
           if (isFlagship) {
             const labelSprite = createTextSprite(n.title.length > 18 ? n.title.slice(0, 18) + '…' : n.title, color)
-            labelSprite.position.set(0, r + 7, 0)
+            labelSprite.position.set(0, r + 8, 0)
             obj.add(labelSprite)
           }
 
           obj.add(sphere)
-          obj.add(dendrites)
           obj.add(sprite)
 
           n.__sphere = sphere
