@@ -1323,12 +1323,16 @@ export function NeuralNetworkModule() {
 
           <div className="flex items-center gap-1.5 pl-4 border-l border-cyan-500/20 text-[8px] tracking-widest text-cyan-500/60">
             <span>HEALTH</span>
-            <span className="text-[12px] font-extrabold text-emerald-400 shadow-[0_0_8px_#00c875]">97%</span>
+            <span className="text-[12px] font-extrabold text-emerald-400 shadow-[0_0_8px_#00c875]">
+              {telemetry?.system?.healthPct ?? 97}%
+            </span>
           </div>
 
           <div className="flex items-center gap-1.5 pl-4 border-l border-cyan-500/20 text-[8px] tracking-widest text-cyan-500/60">
             <span>AGENTS</span>
-            <span className="text-[12px] font-extrabold text-cyan-300">81</span>
+            <span className="text-[12px] font-extrabold text-cyan-300">
+              {telemetry?.system?.agentsCount ?? 81}
+            </span>
           </div>
 
           <div className="flex items-center gap-1.5 pl-4 border-l border-cyan-500/20 text-[8px] tracking-widest text-cyan-500/60">
@@ -1341,7 +1345,9 @@ export function NeuralNetworkModule() {
             className="flex items-center gap-1.5 pl-4 border-l border-cyan-500/20 text-[8px] tracking-widest text-cyan-500/60 hover:text-cyan-300 transition-colors"
           >
             <span>◈ LOG</span>
-            <span className="text-[12px] font-extrabold text-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.5)]">500</span>
+            <span className="text-[12px] font-extrabold text-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.5)]">
+              {telemetry?.system?.logsCount ?? 500}
+            </span>
           </button>
 
           <button
