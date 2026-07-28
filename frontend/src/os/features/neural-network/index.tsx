@@ -101,47 +101,46 @@ function makeStarfield(): THREE.Group {
 // Anatomical Brain Lobe Positioning for Neurons
 function assignAnatomicalBrainCoordinates(nodes: BrainNode[]) {
   nodes.forEach((n, idx) => {
-    // Hemispheric split (even = left hemisphere, odd = right hemisphere)
     const isLeft = idx % 2 === 0
     const side = isLeft ? -1 : 1
-    const offset = Math.sin(idx * 1.5) * 12
+    const jitter = Math.sin(idx * 2.3) * 18
 
-    // Anatomical brain regions mapped to group identity
+    // Real Human Brain Anatomical Regions
     switch (n.group) {
-      case 'identity': // Prefrontal Cortex (Frontal Lobe) - Thought & Self
-        n.fx = side * (35 + Math.sin(idx) * 25)
-        n.fy = 35 + Math.cos(idx * 0.7) * 25
-        n.fz = 85 + (idx % 5) * 12
+      case 'identity': // Prefrontal Cortex (Frontal Lobe) - Forehead & Executive
+        n.fx = side * (50 + Math.sin(idx * 0.9) * 45)
+        n.fy = 45 + Math.cos(idx * 0.7) * 40
+        n.fz = 140 + (idx % 6) * 15
         break
-      case 'architecture': // Parietal & Motor Cortex (Top Crown) - Structure & Systems
-        n.fx = side * (40 + Math.cos(idx) * 30)
-        n.fy = 85 + Math.sin(idx * 0.8) * 20
-        n.fz = 10 + offset
+      case 'architecture': // Parietal Lobe & Motor Cortex (Top Crown)
+        n.fx = side * (60 + Math.cos(idx * 0.8) * 55)
+        n.fy = 140 + Math.sin(idx * 0.7) * 35
+        n.fz = 20 + jitter
         break
-      case 'chronicle': // Temporal Lobe (Sides & Memory Axis)
-        n.fx = side * (90 + Math.sin(idx * 0.5) * 20)
-        n.fy = 5 + Math.cos(idx * 0.6) * 35
-        n.fz = 25 + offset
+      case 'chronicle': // Temporal Lobe (Sides / Memory Arc)
+        n.fx = side * (145 + Math.sin(idx * 0.6) * 35)
+        n.fy = 10 + Math.cos(idx * 0.7) * 50
+        n.fz = 35 + jitter
         break
-      case 'commercial': // Occipital Lobe (Back Cortex) - Vision & Value
-        n.fx = side * (35 + Math.cos(idx) * 25)
-        n.fy = 25 + Math.sin(idx * 0.7) * 30
-        n.fz = -95 - (idx % 6) * 10
+      case 'commercial': // Occipital Lobe (Visual & Back Cortex)
+        n.fx = side * (55 + Math.cos(idx * 0.8) * 45)
+        n.fy = 35 + Math.sin(idx * 0.7) * 45
+        n.fz = -150 - (idx % 7) * 15
         break
-      case 'ops': // Cerebellum (Lower Back Base) - Execution & Balance
-        n.fx = side * (45 + Math.sin(idx) * 25)
-        n.fy = -65 + Math.cos(idx * 0.8) * 20
-        n.fz = -65 + offset
+      case 'ops': // Cerebellum (Lower Rear Base)
+        n.fx = side * (70 + Math.sin(idx * 0.8) * 40)
+        n.fy = -95 + Math.cos(idx * 0.8) * 30
+        n.fz = -105 + jitter
         break
-      case 'core': // Brainstem & Limbic Core (Central Axis)
-        n.fx = side * (10 + Math.sin(idx) * 10)
-        n.fy = -45 + (idx % 8) * -8
-        n.fz = -10 + offset
+      case 'core': // Brainstem & Thalamic Center (Deep Base Axis)
+        n.fx = side * (15 + Math.sin(idx) * 15)
+        n.fy = -80 + (idx % 8) * -12
+        n.fz = -20 + jitter
         break
-      case 'capture': default: // Hippocampus & Active Synapse Hubs
-        n.fx = side * (55 + Math.cos(idx) * 25)
-        n.fy = 15 + Math.sin(idx * 0.9) * 25
-        n.fz = 45 + offset
+      case 'capture': default: // Hippocampus & Limbic Synaptic Hubs
+        n.fx = side * (85 + Math.cos(idx * 0.8) * 40)
+        n.fy = 25 + Math.sin(idx * 0.9) * 40
+        n.fz = 75 + jitter
         break
     }
   })
@@ -153,77 +152,117 @@ function makeBrainHologramShell(): THREE.Group {
   const leftPoints: THREE.Vector3[] = []
   const rightPoints: THREE.Vector3[] = []
   const fissurePoints: THREE.Vector3[] = []
+  const stemPoints: THREE.Vector3[] = []
+  const cerebellumPoints: THREE.Vector3[] = []
 
-  // Create cerebral hemispheres & cortex surface contours
-  for (let u = 0; u <= Math.PI; u += 0.12) {
-    for (let v = 0; v <= Math.PI * 2; v += 0.15) {
-      const radiusX = 68 + Math.sin(v * 3) * 6
-      const radiusY = 75 + Math.cos(u * 2) * 8
-      const radiusZ = 95 + Math.sin(u * 2.5) * 10
+  // 1. Cerebral Hemispheres (Gyri & Sulci folds)
+  for (let u = 0; u <= Math.PI; u += 0.08) {
+    for (let v = 0; v <= Math.PI * 2; v += 0.1) {
+      const radiusX = 110 + Math.sin(v * 4) * 10
+      const radiusY = 120 + Math.cos(u * 2) * 15
+      const radiusZ = 160 + Math.sin(u * 2.5) * 18
 
       const cosU = Math.cos(u)
       const sinU = Math.sin(u)
       const cosV = Math.cos(v)
       const sinV = Math.sin(v)
 
-      // Surface Gyri & Sulci folds
-      const fold = Math.sin(sinU * sinV * 14) * Math.cos(cosU * 10) * 5.5
+      // Anatomical Gyri/Sulci wrinkles
+      const fold = Math.sin(sinU * sinV * 18) * Math.cos(cosU * 12) * 9.0
 
       const y = cosU * radiusY + fold
       const z = cosV * radiusZ + fold
 
       // Left Hemisphere (x < 0)
-      const lx = -(12 + sinU * Math.abs(sinV) * radiusX + fold)
+      const lx = -(18 + sinU * Math.abs(sinV) * radiusX + fold)
       leftPoints.push(new THREE.Vector3(lx, y, z))
 
       // Right Hemisphere (x > 0)
-      const rx = (12 + sinU * Math.abs(sinV) * radiusX + fold)
+      const rx = (18 + sinU * Math.abs(sinV) * radiusX + fold)
       rightPoints.push(new THREE.Vector3(rx, y, z))
     }
   }
 
-  // Central Longitudinal Fissure (Divider between Left & Right Hemisphere)
-  for (let z = -100; z <= 100; z += 4) {
-    const y = Math.cos(z * 0.03) * 60 + 10
+  // 2. Central Longitudinal Fissure (Deep midline divider)
+  for (let z = -170; z <= 170; z += 5) {
+    const y = Math.cos(z * 0.018) * 95 + 15
     fissurePoints.push(new THREE.Vector3(0, y, z))
-    fissurePoints.push(new THREE.Vector3(0, y - 40, z))
+    fissurePoints.push(new THREE.Vector3(0, y - 65, z))
   }
 
-  // Left Hemisphere Particles
+  // 3. Cerebellum (Lower Back)
+  for (let u = 0; u <= Math.PI; u += 0.15) {
+    for (let v = 0; v <= Math.PI * 2; v += 0.18) {
+      const cx = Math.sin(u) * Math.cos(v) * 65
+      const cy = -95 + Math.cos(u) * 35
+      const cz = -110 + Math.sin(u) * Math.sin(v) * 55
+      cerebellumPoints.push(new THREE.Vector3(cx, cy, cz))
+    }
+  }
+
+  // 4. Brainstem (Central Base)
+  for (let y = -80; y >= -180; y -= 4) {
+    const r = 22 - (y + 80) * 0.08
+    for (let a = 0; a < Math.PI * 2; a += 0.4) {
+      stemPoints.push(new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r - 20))
+    }
+  }
+
+  // Materials with neon cybernetic glow
   const leftGeo = new THREE.BufferGeometry().setFromPoints(leftPoints)
   const leftMat = new THREE.PointsMaterial({
     color: 0x38bdf8,
-    size: 1.4,
+    size: 1.8,
     transparent: true,
-    opacity: 0.28,
+    opacity: 0.35,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   })
   group.add(new THREE.Points(leftGeo, leftMat))
 
-  // Right Hemisphere Particles
   const rightGeo = new THREE.BufferGeometry().setFromPoints(rightPoints)
   const rightMat = new THREE.PointsMaterial({
     color: 0xa78bfa,
-    size: 1.4,
+    size: 1.8,
     transparent: true,
-    opacity: 0.28,
+    opacity: 0.35,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   })
   group.add(new THREE.Points(rightGeo, rightMat))
 
-  // Central Fissure Glow
   const fisGeo = new THREE.BufferGeometry().setFromPoints(fissurePoints)
   const fisMat = new THREE.PointsMaterial({
     color: 0x22d3ee,
-    size: 2.0,
+    size: 2.4,
     transparent: true,
-    opacity: 0.45,
+    opacity: 0.55,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   })
   group.add(new THREE.Points(fisGeo, fisMat))
+
+  const cerGeo = new THREE.BufferGeometry().setFromPoints(cerebellumPoints)
+  const cerMat = new THREE.PointsMaterial({
+    color: 0xf43f5e,
+    size: 1.6,
+    transparent: true,
+    opacity: 0.4,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  })
+  group.add(new THREE.Points(cerGeo, cerMat))
+
+  const stemGeo = new THREE.BufferGeometry().setFromPoints(stemPoints)
+  const stemMat = new THREE.PointsMaterial({
+    color: 0x06b6d4,
+    size: 2.0,
+    transparent: true,
+    opacity: 0.5,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  })
+  group.add(new THREE.Points(stemGeo, stemMat))
 
   return group
 }
@@ -432,7 +471,7 @@ export function NeuralNetworkModule() {
     if (!graph) return
     markInteraction()
     clearFocus()
-    graph.cameraPosition({ x: 0, y: 90, z: 780 }, { x: 0, y: 0, z: 0 }, 1800)
+    graph.cameraPosition({ x: 0, y: 30, z: 460 }, { x: 0, y: 0, z: 0 }, 1800)
   }, [clearFocus])
 
   const pulseNode = useCallback((node: BrainNode) => {
@@ -821,37 +860,68 @@ export function NeuralNetworkModule() {
         .nodeLabel((n: any) => `<div style="padding:4px 10px;background:rgba(2,6,23,.9);border:1px solid ${groupColor(n.group)}55;border-radius:8px;color:#e2e8f0;font-family:ui-monospace,monospace;font-size:11px">${n.title}</div>`)
         .nodeThreeObject((n: any) => {
           const color = groupColor(n.group)
-          const r = 2.2 + n.val * 0.55
+          const r = 2.8 + n.val * 0.6
           const obj = new THREE.Group()
+
+          // 1. Soma (Neuron Nucleus Core)
           const sphere = new THREE.Mesh(
             new THREE.SphereGeometry(r, 16, 16),
             new THREE.MeshBasicMaterial({ color: new THREE.Color(color), transparent: true, opacity: 0.95 }),
           )
+
+          // 2. Dendrites (Micro-branching fiber spikes)
+          const dendritePoints: THREE.Vector3[] = []
+          const spikeCount = 7
+          for (let i = 0; i < spikeCount; i++) {
+            const dir = new THREE.Vector3(
+              Math.sin(i * 1.3) * Math.cos(i * 2.1),
+              Math.cos(i * 1.3),
+              Math.sin(i * 1.3) * Math.sin(i * 2.1)
+            ).normalize()
+            const length = r * (2.2 + (i % 3) * 0.8)
+            dendritePoints.push(new THREE.Vector3(0, 0, 0))
+            dendritePoints.push(dir.multiplyScalar(length))
+          }
+          const dendGeo = new THREE.BufferGeometry().setFromPoints(dendritePoints)
+          const dendMat = new THREE.LineBasicMaterial({
+            color: new THREE.Color(color),
+            transparent: true,
+            opacity: 0.65,
+          })
+          const dendrites = new THREE.LineSegments(dendGeo, dendMat)
+
+          // 3. Synaptic Glow Corona
           const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
             map: glowTexture(color), transparent: true, opacity: 0.85,
             blending: THREE.AdditiveBlending, depthWrite: false,
           }))
-          sprite.scale.set(r * 6, r * 6, 1)
-          obj.add(sphere); obj.add(sprite)
-          n.__sphere = sphere; n.__sprite = sprite; n.__r = r
+          sprite.scale.set(r * 6.5, r * 6.5, 1)
+
+          obj.add(sphere)
+          obj.add(dendrites)
+          obj.add(sprite)
+
+          n.__sphere = sphere
+          n.__sprite = sprite
+          n.__r = r
           return obj
         })
         .linkColor((l: any) => (linkHidden(l) ? 'rgba(0,0,0,0)' : (linkLit(l) ? '#e0f2fe' : '#334155')))
         .linkOpacity(0.35)
         .linkWidth((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 1.6 : 0.45)))
-        .linkDirectionalParticles((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 4 : 2)))
-        .linkDirectionalParticleWidth(2.2)
-        .linkDirectionalParticleSpeed(0.008)
+        .linkDirectionalParticles((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 5 : 2)))
+        .linkDirectionalParticleWidth(2.4)
+        .linkDirectionalParticleSpeed(0.009)
         .onNodeClick((n: any) => focusNode(n))
         .onBackgroundClick(() => clearFocus())
         .enableNodeDrag(false)
         .graphData({ nodes, links })
 
-      ;(graph.d3Force('charge') as any)?.strength(-30)
-      ;(graph.d3Force('link') as any)?.distance(35)
+      ;(graph.d3Force('charge') as any)?.strength(0)
+      ;(graph.d3Force('link') as any)?.distance(0)
       graph.scene().add(makeStarfield())
       graph.scene().add(makeBrainHologramShell())
-      graph.cameraPosition({ x: 0, y: 90, z: 650 })
+      graph.cameraPosition({ x: 0, y: 30, z: 460 })
       graphRef.current = graph
 
       // slow idle drift — a gentle orbit that resumes 8s after the last touch
