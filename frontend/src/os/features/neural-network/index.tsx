@@ -146,9 +146,146 @@ function assignAnatomicalBrainCoordinates(nodes: BrainNode[]) {
   })
 }
 
+// Create Translucent 3D Human Brain Anatomy Model Surface Mesh
+function create3DHumanBrainSurfaceMesh(): THREE.Group {
+  const group = new THREE.Group()
+
+  // 1. Dual Cerebral Hemispheres (Left & Right)
+  const uSegs = 64
+  const vSegs = 64
+
+  const buildHemisphereMesh = (isLeft: boolean) => {
+    const side = isLeft ? -1 : 1
+    const vertices: number[] = []
+    const normals: number[] = []
+    const uvs: number[] = []
+    const indices: number[] = []
+
+    for (let i = 0; i <= uSegs; i++) {
+      const u = (i / uSegs) * Math.PI
+      for (let j = 0; j <= vSegs; j++) {
+        const v = (j / vSegs) * Math.PI
+
+        const sinV = Math.sin(v)
+        const cosV = Math.cos(v)
+        const sinU = Math.sin(u)
+        const cosU = Math.cos(u)
+
+        // Anatomical Brain Form Formula
+        let z = cosV * 150
+        let y = sinV * sinU * 90 + (z > 30 ? 14 : 0) - (z < -70 ? 16 : 0)
+        let baseWidth = sinV * cosU * 95
+
+        // Gyri & Sulci surface wrinkles
+        const fold = Math.sin(z * 0.11) * Math.cos(y * 0.11) * Math.sin(baseWidth * 0.09) * 7.5
+
+        let x = side * (12 + Math.abs(baseWidth) + fold)
+        y += fold
+        z += fold
+
+        vertices.push(x, y, z)
+        uvs.push(i / uSegs, j / vSegs)
+
+        const norm = new THREE.Vector3(x, y, z).normalize()
+        normals.push(norm.x, norm.y, norm.z)
+      }
+    }
+
+    for (let i = 0; i < uSegs; i++) {
+      for (let j = 0; j < vSegs; j++) {
+        const a = i * (vSegs + 1) + j
+        const b = a + 1
+        const c = (i + 1) * (vSegs + 1) + j
+        const d = c + 1
+
+        indices.push(a, b, d)
+        indices.push(a, d, c)
+      }
+    }
+
+    const geo = new THREE.BufferGeometry()
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+    geo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2))
+    geo.setIndex(indices)
+    geo.computeVertexNormals()
+
+    const color = isLeft ? 0x0284c7 : 0x7e22ce
+    const emissive = isLeft ? 0x0369a1 : 0x6b21a8
+
+    const mat = new THREE.MeshPhongMaterial({
+      color,
+      emissive,
+      specular: 0x38bdf8,
+      shininess: 35,
+      transparent: true,
+      opacity: 0.18,
+      side: THREE.DoubleSide,
+      wireframe: false,
+    })
+
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: isLeft ? 0x38bdf8 : 0xc084fc,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.12,
+    })
+
+    const mesh = new THREE.Mesh(geo, mat)
+    const wireMesh = new THREE.Mesh(geo, wireMat)
+    const hemiGroup = new THREE.Group()
+    hemiGroup.add(mesh)
+    hemiGroup.add(wireMesh)
+    return hemiGroup
+  }
+
+  group.add(buildHemisphereMesh(true))  // Left Hemisphere
+  group.add(buildHemisphereMesh(false)) // Right Hemisphere
+
+  // 2. Cerebellum (Lower Rear Base)
+  const cerGeo = new THREE.SphereGeometry(48, 32, 24)
+  const cerPos = cerGeo.attributes.position
+  for (let k = 0; k < cerPos.count; k++) {
+    const cx = cerPos.getX(k)
+    const cy = cerPos.getY(k)
+    const cz = cerPos.getZ(k)
+    const folia = Math.sin(cy * 0.35) * 3.5
+    cerPos.setXYZ(k, cx * 1.1 + folia, cy * 0.65 + folia, cz * 0.95 + folia)
+  }
+  cerGeo.computeVertexNormals()
+  const cerMat = new THREE.MeshPhongMaterial({
+    color: 0xf43f5e,
+    emissive: 0xbe123c,
+    transparent: true,
+    opacity: 0.22,
+    wireframe: true,
+  })
+  const cerMesh = new THREE.Mesh(cerGeo, cerMat)
+  cerMesh.position.set(0, -80, -102)
+  group.add(cerMesh)
+
+  // 3. Brainstem (Central Base Trunk)
+  const stemGeo = new THREE.CylinderGeometry(20, 14, 95, 24, 16)
+  const stemMat = new THREE.MeshPhongMaterial({
+    color: 0x06b6d4,
+    emissive: 0x0e7490,
+    transparent: true,
+    opacity: 0.26,
+    wireframe: true,
+  })
+  const stemMesh = new THREE.Mesh(stemGeo, stemMat)
+  stemMesh.position.set(0, -115, -12)
+  group.add(stemMesh)
+
+  return group
+}
+
 function makeBrainHologramShell(): THREE.Group {
   const group = new THREE.Group()
   group.name = 'futuristicBrainShell'
+
+  // Add 3D Human Brain Solid Model Surface
+  group.add(create3DHumanBrainSurfaceMesh())
 
   const leftCortexPoints: THREE.Vector3[] = []
   const rightCortexPoints: THREE.Vector3[] = []
@@ -967,6 +1104,18 @@ export function NeuralNetworkModule() {
 
       ;(graph.d3Force('charge') as any)?.strength(0)
       ;(graph.d3Force('link') as any)?.distance(0)
+
+      const dirLight1 = new THREE.DirectionalLight(0x38bdf8, 1.4)
+      dirLight1.position.set(200, 300, 200)
+      graph.scene().add(dirLight1)
+
+      const dirLight2 = new THREE.DirectionalLight(0xa855f7, 1.2)
+      dirLight2.position.set(-200, -200, -200)
+      graph.scene().add(dirLight2)
+
+      const ambientLight = new THREE.AmbientLight(0x0284c7, 0.7)
+      graph.scene().add(ambientLight)
+
       graph.scene().add(makeStarfield())
       graph.scene().add(makeBrainHologramShell())
       graph.cameraPosition({ x: -160, y: 60, z: 420 })
