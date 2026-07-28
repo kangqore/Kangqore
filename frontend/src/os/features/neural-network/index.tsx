@@ -47,8 +47,12 @@ const GROUP_COLORS: Record<string, string> = {
 }
 
 const GROUP_LABELS: Record<string, string> = {
-  identity: 'Identity', architecture: 'Architecture', chronicle: 'Chronicle',
-  commercial: 'Commercial', ops: 'Operations', core: 'Core', capture: 'Captures',
+  identity: 'AI System Pillars',
+  architecture: 'Platform OS & Perception',
+  commercial: 'Commercial & Revenue BIDS',
+  capture: 'Dynamic Ingested Memories',
+  ops: 'System Runtime & Operator',
+  chronicle: 'Sprint Development History',
 }
 
 const groupColor = (g: string) => GROUP_COLORS[g] ?? '#94a3b8'
@@ -528,7 +532,7 @@ export function NeuralNetworkModule() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<BrainNode[]>([])
   const navigate = useNavigate()
-  const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set())
+  const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set(['chronicle']))
   const [groupCounts, setGroupCounts] = useState<Record<string, number>>({})
   const [history, setHistory] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([])
   const [showHistory, setShowHistory] = useState(false)
