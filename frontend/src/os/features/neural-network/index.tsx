@@ -1683,12 +1683,12 @@ export function NeuralNetworkModule() {
       <div className="absolute bottom-24 right-6 z-30 flex flex-col items-center gap-3 pointer-events-auto select-none">
         
         {/* Anatomical View Presets 3D Solid Capsule Bar */}
-        <div className="px-3 py-1.5 rounded-full bg-gradient-to-b from-[#1e293b] via-[#0f172a] to-[#020617] border border-cyan-500/50 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.25),0_10px_25px_rgba(0,0,0,0.8),0_0_15px_rgba(34,211,238,0.25)] flex items-center gap-1.5 font-mono text-[9px] uppercase font-bold tracking-widest text-cyan-300">
+        <div className="px-2 py-1 rounded-full bg-gradient-to-b from-[#1e293b] via-[#0f172a] to-[#020617] border border-cyan-500/50 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.25),0_10px_25px_rgba(0,0,0,0.8),0_0_15px_rgba(34,211,238,0.25)] flex items-center gap-1 font-mono text-[7.5px] uppercase font-bold tracking-wider text-cyan-300">
           {(['front', 'back', 'left', 'right', 'top', 'perspective'] as const).map(v => (
             <button
               key={v}
               onClick={() => setBrainAngle(v)}
-              className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 hover:bg-cyan-500/30 hover:border-cyan-400 hover:text-white active:translate-y-0.5 transition-all shadow-sm"
+              className="px-1.5 py-0.5 rounded-md bg-white/5 border border-white/5 hover:bg-cyan-500/30 hover:border-cyan-400 hover:text-white active:translate-y-0.5 transition-all shadow-sm"
               title={`View ${v} angle`}
             >
               {v.slice(0, 3)}
