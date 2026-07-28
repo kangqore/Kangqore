@@ -47,6 +47,64 @@ brainRoutes.get('/telemetry', async (_req, res) => {
       { id: 'view', name: 'KANGQORE VIEW Neural OS', group: 'architecture', status: 'ONLINE', load: '9%', latency: '8ms', throughput: '60 fps' },
     ]
 
+    const recentTransmissions = [
+      {
+        id: `tx-${Date.now()}-1`,
+        timestamp: new Date(Date.now() - 400).toISOString(),
+        protocol: 'SYNAPSE_WS',
+        source: 'WAANDA',
+        target: 'NEURAL_CORTEX',
+        payload: { action: 'FETCH_MEMORY_NODES', activeNeurons: graph.count, links: graph.links.length },
+        bytes: '2.4 KB',
+        latencyMs: 14,
+        status: 'DELIVERED',
+      },
+      {
+        id: `tx-${Date.now()}-2`,
+        timestamp: new Date(Date.now() - 1200).toISOString(),
+        protocol: 'AEGIS_RPC',
+        source: 'AEGIS',
+        target: 'CORE',
+        payload: { phase: 'SECURITY_AUDIT', promptInjections: 0, rbacEnforced: true },
+        bytes: '840 B',
+        latencyMs: 8,
+        status: 'SHIELD_VERIFIED',
+      },
+      {
+        id: `tx-${Date.now()}-3`,
+        timestamp: new Date(Date.now() - 2100).toISOString(),
+        protocol: 'EQORE_STREAM',
+        source: 'EQORE',
+        target: 'USER_HUD',
+        payload: { sentiment: 'OPTIMISTIC', confidence: 0.984, tone: 'Executive Professional' },
+        bytes: '1.1 KB',
+        latencyMs: 22,
+        status: 'SYNCHRONIZED',
+      },
+      {
+        id: `tx-${Date.now()}-4`,
+        timestamp: new Date(Date.now() - 3400).toISOString(),
+        protocol: 'IMMP_BUS',
+        source: 'IMMP',
+        target: 'LLM_ROUTER',
+        payload: { activeModel: 'claude-3-5-sonnet', fallback: 'haiku', streamLatencyMs: 18 },
+        bytes: '3.8 KB',
+        latencyMs: 18,
+        status: 'ROUTING_LIVE',
+      },
+      {
+        id: `tx-${Date.now()}-5`,
+        timestamp: new Date(Date.now() - 4800).toISOString(),
+        protocol: 'VIS_FRAME',
+        source: 'VIS',
+        target: 'IMMP',
+        payload: { frameResolution: '1920x1080', ocrMatches: 42, fps: 60 },
+        bytes: '12.4 KB',
+        latencyMs: 16,
+        status: 'STREAMING',
+      },
+    ]
+
     res.json({
       timestamp: new Date().toISOString(),
       system: {
@@ -59,6 +117,7 @@ brainRoutes.get('/telemetry', async (_req, res) => {
         pulseRateHz: 60,
       },
       pillars,
+      transmissions: recentTransmissions,
     })
   } catch (err: any) {
     logger.error('[Brain] telemetry failed', err)

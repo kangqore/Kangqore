@@ -534,6 +534,8 @@ export function NeuralNetworkModule() {
   const [isDragging, setIsDragging] = useState(false)
   const [ingestStatus, setIngestStatus] = useState('')
   const [showTelemetry, setShowTelemetry] = useState(true)
+  const [showInspector, setShowInspector] = useState(false)
+  const [selectedPacket, setSelectedPacket] = useState<any>(null)
 
   useEffect(() => {
     const fetchTelemetry = () => {
@@ -1313,6 +1315,13 @@ export function NeuralNetworkModule() {
               </div>
             ))}
           </div>
+
+          <button
+            onClick={() => setShowInspector(true)}
+            className="w-full mt-3 py-1.5 px-2 rounded-xl bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 font-mono text-[9px] uppercase tracking-widest hover:bg-cyan-500/25 transition-all flex items-center justify-center gap-1.5"
+          >
+            <span>📡 Data Transmission Stream</span>
+          </button>
         </div>
       )}
 
@@ -1323,6 +1332,66 @@ export function NeuralNetworkModule() {
         >
           ▲ Telemetry HUD
         </button>
+      )}
+
+      {/* Live Data Transmission Stream Inspector Modal */}
+      {showInspector && (
+        <div className="absolute top-16 left-5 z-40 w-[480px] max-w-[90vw] max-h-[75vh] flex flex-col rounded-2xl border border-cyan-500/40 bg-[#020617]/90 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.9)] overflow-hidden">
+          <div className="flex items-center justify-between p-4 pb-3 border-b border-white/10 bg-cyan-500/10">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
+              <h3 className="font-mono text-xs font-bold tracking-[0.25em] text-cyan-300 uppercase">
+                Synaptic Data Transmission Stream
+              </h3>
+            </div>
+            <button
+              onClick={() => { setShowInspector(false); setSelectedPacket(null) }}
+              className="p-1 rounded text-slate-400 hover:text-white hover:bg-white/10"
+            >
+              <XIcon className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-2.5 font-mono">
+            <p className="text-[9px] text-slate-400 uppercase tracking-widest mb-2">
+              Live Transmitted Packets ({telemetry?.transmissions?.length || 0})
+            </p>
+            {telemetry?.transmissions?.map((tx: any) => (
+              <div
+                key={tx.id}
+                onClick={() => setSelectedPacket(selectedPacket?.id === tx.id ? null : tx)}
+                className={`p-3 rounded-xl border transition-all cursor-pointer ${
+                  selectedPacket?.id === tx.id
+                    ? 'border-cyan-400 bg-cyan-500/15'
+                    : 'border-white/10 bg-white/5 hover:border-cyan-500/30'
+                }`}
+              >
+                <div className="flex items-center justify-between text-[10px]">
+                  <span className="font-bold text-cyan-300">{tx.protocol}</span>
+                  <span className="text-slate-400 text-[8px]">{tx.timestamp.split('T')[1]?.slice(0, 8)}</span>
+                </div>
+                <div className="flex items-center justify-between mt-1 text-[10px]">
+                  <span className="text-slate-200">{tx.source} → {tx.target}</span>
+                  <span className="text-emerald-400 font-bold">{tx.latencyMs}ms ({tx.bytes})</span>
+                </div>
+
+                {selectedPacket?.id === tx.id && (
+                  <div className="mt-2.5 pt-2 border-t border-white/10 text-[9px] text-slate-300">
+                    <p className="text-slate-400 uppercase mb-1 font-bold">Transmitted Payload Preview:</p>
+                    <pre className="p-2 rounded bg-black/60 text-cyan-200 overflow-x-auto text-[9px] leading-relaxed">
+                      {JSON.stringify(tx.payload, null, 2)}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="p-3 border-t border-white/10 bg-white/5 flex items-center justify-between text-[9px] font-mono text-slate-400">
+            <span>Protocol: WebSocket / REST / AEGIS RPC</span>
+            <span className="text-emerald-400 font-bold">● Stream Active</span>
+          </div>
+        </div>
       )}
 
       {/* header + search + legend */}
