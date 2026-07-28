@@ -1679,16 +1679,16 @@ export function NeuralNetworkModule() {
         </div>
       </div>
 
-      {/* ══ 3D CYBERNETIC REVOLVER GIMBAL JOYSTICK CONTROLLER ══ */}
-      <div className="absolute bottom-24 right-6 z-30 flex flex-col items-center gap-2.5 pointer-events-auto select-none">
+      {/* ══ 3D SOLID CYBERNETIC REVOLVER GIMBAL JOYSTICK CONTROLLER ══ */}
+      <div className="absolute bottom-24 right-6 z-30 flex flex-col items-center gap-3 pointer-events-auto select-none">
         
-        {/* Anatomical View Presets Ring */}
-        <div className="flex items-center gap-1 p-1 rounded-xl bg-[#020617]/85 border border-cyan-500/30 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] font-mono text-[8px] uppercase font-bold tracking-widest text-cyan-300">
+        {/* Anatomical View Presets 3D Solid Capsule Bar */}
+        <div className="px-3 py-1.5 rounded-full bg-gradient-to-b from-[#1e293b] via-[#0f172a] to-[#020617] border border-cyan-500/50 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.25),0_10px_25px_rgba(0,0,0,0.8),0_0_15px_rgba(34,211,238,0.25)] flex items-center gap-1.5 font-mono text-[9px] uppercase font-bold tracking-widest text-cyan-300">
           {(['front', 'back', 'left', 'right', 'top', 'perspective'] as const).map(v => (
             <button
               key={v}
               onClick={() => setBrainAngle(v)}
-              className="px-2 py-1 rounded-lg hover:bg-cyan-500/20 hover:text-white transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 hover:bg-cyan-500/30 hover:border-cyan-400 hover:text-white active:translate-y-0.5 transition-all shadow-sm"
               title={`View ${v} angle`}
             >
               {v.slice(0, 3)}
@@ -1696,16 +1696,17 @@ export function NeuralNetworkModule() {
           ))}
         </div>
 
-        {/* 3D Revolver Directional Gimbal D-Pad */}
-        <div className="relative w-36 h-36 rounded-full border-2 border-cyan-500/40 bg-[#020617]/90 backdrop-blur-2xl shadow-[0_0_40px_rgba(34,211,238,0.25)] flex items-center justify-center">
-          {/* Compass Radial Ring */}
-          <div className="absolute inset-1.5 rounded-full border border-dashed border-cyan-500/20 pointer-events-none animate-[spin_60s_linear_infinite]" />
+        {/* 3D Solid Revolver Directional Gimbal D-Pad */}
+        <div className="relative w-40 h-40 rounded-full border-2 border-cyan-400/60 bg-gradient-to-b from-[#1e293b] via-[#0f172a] to-[#020617] backdrop-blur-2xl shadow-[inset_0_2px_4px_rgba(255,255,255,0.3),inset_0_-4px_8px_rgba(0,0,0,0.9),0_15px_40px_rgba(0,0,0,0.9),0_0_30px_rgba(34,211,238,0.3)] flex items-center justify-center">
+          {/* Outer Beveled Ring Edge */}
+          <div className="absolute inset-1 rounded-full border border-cyan-500/30 pointer-events-none" />
+          <div className="absolute inset-2.5 rounded-full border border-dashed border-cyan-400/25 pointer-events-none animate-[spin_80s_linear_infinite]" />
 
-          {/* D-Pad Arrow Controls */}
+          {/* D-Pad 3D Tactile Buttons */}
           {/* UP (Pitch Up) */}
           <button
             onClick={() => rotateBrain(0, -15)}
-            className="absolute top-1.5 p-2 rounded-lg text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all active:scale-95"
+            className="absolute top-2 w-9 h-9 rounded-full border border-cyan-500/40 bg-gradient-to-b from-[#334155] to-[#0f172a] text-cyan-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_8px_rgba(0,0,0,0.7)] hover:from-cyan-600 hover:to-cyan-900 hover:text-white active:translate-y-0.5 active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] transition-all flex items-center justify-center"
             title="Pitch Up (Rotate Up)"
           >
             <CaretUpIcon className="w-5 h-5" />
@@ -1714,7 +1715,7 @@ export function NeuralNetworkModule() {
           {/* DOWN (Pitch Down) */}
           <button
             onClick={() => rotateBrain(0, 15)}
-            className="absolute bottom-1.5 p-2 rounded-lg text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all active:scale-95"
+            className="absolute bottom-2 w-9 h-9 rounded-full border border-cyan-500/40 bg-gradient-to-b from-[#334155] to-[#0f172a] text-cyan-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_8px_rgba(0,0,0,0.7)] hover:from-cyan-600 hover:to-cyan-900 hover:text-white active:translate-y-0.5 active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] transition-all flex items-center justify-center"
             title="Pitch Down (Rotate Down)"
           >
             <CaretDownIcon className="w-5 h-5" />
@@ -1723,7 +1724,7 @@ export function NeuralNetworkModule() {
           {/* LEFT (Yaw Left) */}
           <button
             onClick={() => rotateBrain(-15, 0)}
-            className="absolute left-1.5 p-2 rounded-lg text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all active:scale-95"
+            className="absolute left-2 w-9 h-9 rounded-full border border-cyan-500/40 bg-gradient-to-b from-[#334155] to-[#0f172a] text-cyan-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_8px_rgba(0,0,0,0.7)] hover:from-cyan-600 hover:to-cyan-900 hover:text-white active:translate-y-0.5 active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] transition-all flex items-center justify-center"
             title="Yaw Left (Rotate Left)"
           >
             <CaretLeftIcon className="w-5 h-5" />
@@ -1732,53 +1733,53 @@ export function NeuralNetworkModule() {
           {/* RIGHT (Yaw Right) */}
           <button
             onClick={() => rotateBrain(15, 0)}
-            className="absolute right-1.5 p-2 rounded-lg text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all active:scale-95"
+            className="absolute right-2 w-9 h-9 rounded-full border border-cyan-500/40 bg-gradient-to-b from-[#334155] to-[#0f172a] text-cyan-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_8px_rgba(0,0,0,0.7)] hover:from-cyan-600 hover:to-cyan-900 hover:text-white active:translate-y-0.5 active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] transition-all flex items-center justify-center"
             title="Yaw Right (Rotate Right)"
           >
             <CaretRightIcon className="w-5 h-5" />
           </button>
 
-          {/* Center Revolver Joystick Knob */}
+          {/* Center Solid Metallic Revolver Joystick Knob */}
           <button
             onClick={resetView}
-            className="w-12 h-12 rounded-full border border-cyan-400 bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/40 hover:scale-105 transition-all shadow-[0_0_15px_rgba(34,211,238,0.5)] flex flex-col items-center justify-center gap-0.5 active:scale-95"
+            className="w-14 h-14 rounded-full border-2 border-cyan-300 bg-gradient-to-b from-[#38bdf8] via-[#0284c7] to-[#0369a1] text-white shadow-[inset_0_3px_6px_rgba(255,255,255,0.7),0_8px_20px_rgba(0,0,0,0.8),0_0_20px_rgba(34,211,238,0.6)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center gap-0.5"
             title="Reset Center View"
           >
-            <HouseIcon className="w-4 h-4" />
-            <span className="font-mono text-[6px] tracking-tighter uppercase font-bold">RESET</span>
+            <HouseIcon className="w-4 h-4 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]" />
+            <span className="font-mono text-[6.5px] tracking-tighter uppercase font-extrabold text-cyan-100">RESET</span>
           </button>
         </div>
 
-        {/* Zoom & Orbit Control Dock */}
-        <div className="flex items-center gap-2 p-1.5 rounded-xl bg-[#020617]/85 border border-cyan-500/30 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
+        {/* 3D Solid Zoom & Orbit Control Dock */}
+        <div className="px-4 py-2 rounded-2xl bg-gradient-to-b from-[#1e293b] via-[#0f172a] to-[#020617] border border-cyan-500/50 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.25),0_10px_25px_rgba(0,0,0,0.8),0_0_15px_rgba(34,211,238,0.25)] flex items-center gap-3">
           <button
             onClick={() => zoomBrain(0.8)}
-            className="p-1.5 rounded-lg text-cyan-300 hover:bg-cyan-500/20 transition-colors font-mono font-bold text-xs"
+            className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-cyan-300 hover:bg-cyan-500/30 hover:border-cyan-400 hover:text-white active:scale-95 transition-all font-mono font-bold text-sm flex items-center justify-center"
             title="Zoom In"
           >
             +
           </button>
           <button
             onClick={() => zoomBrain(1.2)}
-            className="p-1.5 rounded-lg text-cyan-300 hover:bg-cyan-500/20 transition-colors font-mono font-bold text-xs"
+            className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-cyan-300 hover:bg-cyan-500/30 hover:border-cyan-400 hover:text-white active:scale-95 transition-all font-mono font-bold text-sm flex items-center justify-center"
             title="Zoom Out"
           >
             -
           </button>
 
-          <div className="w-px h-4 bg-cyan-500/20" />
+          <div className="w-px h-5 bg-cyan-500/30" />
 
           <button
             onClick={() => setIsAutoOrbit(prev => !prev)}
-            className={`p-1.5 rounded-lg text-[9px] font-mono tracking-widest uppercase transition-all flex items-center gap-1 ${
+            className={`px-3 py-1.5 rounded-xl text-[9px] font-mono tracking-widest uppercase transition-all flex items-center gap-1.5 font-bold ${
               isAutoOrbit
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.4)]'
-                : 'text-slate-400 hover:text-cyan-300 hover:bg-white/5'
+                ? 'bg-gradient-to-r from-emerald-600 to-emerald-800 text-white border border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.5)]'
+                : 'bg-white/5 border border-white/10 text-slate-400 hover:text-cyan-300 hover:bg-cyan-500/20'
             }`}
             title="Toggle Continuous 360° Auto-Orbit Spin"
           >
             <span>ORBIT</span>
-            <span className={`w-1.5 h-1.5 rounded-full ${isAutoOrbit ? 'bg-emerald-400 animate-ping' : 'bg-slate-600'}`} />
+            <span className={`w-2 h-2 rounded-full ${isAutoOrbit ? 'bg-white animate-ping' : 'bg-slate-600'}`} />
           </button>
         </div>
 
