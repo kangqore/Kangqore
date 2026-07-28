@@ -346,7 +346,7 @@ function getParityService(service, department) {
     );
 
   // Capability Areas Fallback
-  const capabilityAreas = (service.capabilityAreas && service.capabilityAreas.length >= 6)
+  const capabilityAreas = (service.capabilityAreas && service.capabilityAreas.length > 0)
     ? service.capabilityAreas
     : (
       deptSlug === 'foundry' ? [
