@@ -98,6 +98,136 @@ function makeStarfield(): THREE.Group {
   return group
 }
 
+// Anatomical Brain Lobe Positioning for Neurons
+function assignAnatomicalBrainCoordinates(nodes: BrainNode[]) {
+  nodes.forEach((n, idx) => {
+    // Hemispheric split (even = left hemisphere, odd = right hemisphere)
+    const isLeft = idx % 2 === 0
+    const side = isLeft ? -1 : 1
+    const offset = Math.sin(idx * 1.5) * 12
+
+    // Anatomical brain regions mapped to group identity
+    switch (n.group) {
+      case 'identity': // Prefrontal Cortex (Frontal Lobe) - Thought & Self
+        n.fx = side * (35 + Math.sin(idx) * 25)
+        n.fy = 35 + Math.cos(idx * 0.7) * 25
+        n.fz = 85 + (idx % 5) * 12
+        break
+      case 'architecture': // Parietal & Motor Cortex (Top Crown) - Structure & Systems
+        n.fx = side * (40 + Math.cos(idx) * 30)
+        n.fy = 85 + Math.sin(idx * 0.8) * 20
+        n.fz = 10 + offset
+        break
+      case 'chronicle': // Temporal Lobe (Sides & Memory Axis)
+        n.fx = side * (90 + Math.sin(idx * 0.5) * 20)
+        n.fy = 5 + Math.cos(idx * 0.6) * 35
+        n.fz = 25 + offset
+        break
+      case 'commercial': // Occipital Lobe (Back Cortex) - Vision & Value
+        n.fx = side * (35 + Math.cos(idx) * 25)
+        n.fy = 25 + Math.sin(idx * 0.7) * 30
+        n.fz = -95 - (idx % 6) * 10
+        break
+      case 'ops': // Cerebellum (Lower Back Base) - Execution & Balance
+        n.fx = side * (45 + Math.sin(idx) * 25)
+        n.fy = -65 + Math.cos(idx * 0.8) * 20
+        n.fz = -65 + offset
+        break
+      case 'core': // Brainstem & Limbic Core (Central Axis)
+        n.fx = side * (10 + Math.sin(idx) * 10)
+        n.fy = -45 + (idx % 8) * -8
+        n.fz = -10 + offset
+        break
+      case 'capture': default: // Hippocampus & Active Synapse Hubs
+        n.fx = side * (55 + Math.cos(idx) * 25)
+        n.fy = 15 + Math.sin(idx * 0.9) * 25
+        n.fz = 45 + offset
+        break
+    }
+  })
+}
+
+function makeBrainHologramShell(): THREE.Group {
+  const group = new THREE.Group()
+
+  const leftPoints: THREE.Vector3[] = []
+  const rightPoints: THREE.Vector3[] = []
+  const fissurePoints: THREE.Vector3[] = []
+
+  // Create cerebral hemispheres & cortex surface contours
+  for (let u = 0; u <= Math.PI; u += 0.12) {
+    for (let v = 0; v <= Math.PI * 2; v += 0.15) {
+      const radiusX = 68 + Math.sin(v * 3) * 6
+      const radiusY = 75 + Math.cos(u * 2) * 8
+      const radiusZ = 95 + Math.sin(u * 2.5) * 10
+
+      const cosU = Math.cos(u)
+      const sinU = Math.sin(u)
+      const cosV = Math.cos(v)
+      const sinV = Math.sin(v)
+
+      // Surface Gyri & Sulci folds
+      const fold = Math.sin(sinU * sinV * 14) * Math.cos(cosU * 10) * 5.5
+
+      const y = cosU * radiusY + fold
+      const z = cosV * radiusZ + fold
+
+      // Left Hemisphere (x < 0)
+      const lx = -(12 + sinU * Math.abs(sinV) * radiusX + fold)
+      leftPoints.push(new THREE.Vector3(lx, y, z))
+
+      // Right Hemisphere (x > 0)
+      const rx = (12 + sinU * Math.abs(sinV) * radiusX + fold)
+      rightPoints.push(new THREE.Vector3(rx, y, z))
+    }
+  }
+
+  // Central Longitudinal Fissure (Divider between Left & Right Hemisphere)
+  for (let z = -100; z <= 100; z += 4) {
+    const y = Math.cos(z * 0.03) * 60 + 10
+    fissurePoints.push(new THREE.Vector3(0, y, z))
+    fissurePoints.push(new THREE.Vector3(0, y - 40, z))
+  }
+
+  // Left Hemisphere Particles
+  const leftGeo = new THREE.BufferGeometry().setFromPoints(leftPoints)
+  const leftMat = new THREE.PointsMaterial({
+    color: 0x38bdf8,
+    size: 1.4,
+    transparent: true,
+    opacity: 0.28,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  })
+  group.add(new THREE.Points(leftGeo, leftMat))
+
+  // Right Hemisphere Particles
+  const rightGeo = new THREE.BufferGeometry().setFromPoints(rightPoints)
+  const rightMat = new THREE.PointsMaterial({
+    color: 0xa78bfa,
+    size: 1.4,
+    transparent: true,
+    opacity: 0.28,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  })
+  group.add(new THREE.Points(rightGeo, rightMat))
+
+  // Central Fissure Glow
+  const fisGeo = new THREE.BufferGeometry().setFromPoints(fissurePoints)
+  const fisMat = new THREE.PointsMaterial({
+    color: 0x22d3ee,
+    size: 2.0,
+    transparent: true,
+    opacity: 0.45,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  })
+  group.add(new THREE.Points(fisGeo, fisMat))
+
+  return group
+}
+
 const timeGreeting = () => {
   const h = new Date().getHours()
   return h < 12 ? 'morning' : h < 18 ? 'afternoon' : 'evening'
@@ -667,6 +797,7 @@ export function NeuralNetworkModule() {
       const nodes: BrainNode[] = data.nodes
       const links: BrainLink[] = data.links
 
+      assignAnatomicalBrainCoordinates(nodes)
       rebuildIndexes(nodes, links)
 
       const nid = (e: any) => (typeof e === 'object' ? e.id : e)
@@ -706,22 +837,21 @@ export function NeuralNetworkModule() {
           return obj
         })
         .linkColor((l: any) => (linkHidden(l) ? 'rgba(0,0,0,0)' : (linkLit(l) ? '#e0f2fe' : '#334155')))
-        .linkOpacity(0.3)
-        .linkWidth((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 1.4 : 0.35)))
-        .linkDirectionalParticles((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 3 : 0)))
-        .linkDirectionalParticleWidth(1.8)
-        .linkDirectionalParticleSpeed(0.007)
+        .linkOpacity(0.35)
+        .linkWidth((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 1.6 : 0.45)))
+        .linkDirectionalParticles((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 4 : 2)))
+        .linkDirectionalParticleWidth(2.2)
+        .linkDirectionalParticleSpeed(0.008)
         .onNodeClick((n: any) => focusNode(n))
         .onBackgroundClick(() => clearFocus())
-        .enableNodeDrag(false)  // clicking a star should fly the camera, never reposition it — this also
-                                 // sidesteps a 3d-force-graph DragControls/OrbitControls crash (reading 'x'
-                                 // on an undefined pointer state) that was interrupting active mic sessions
+        .enableNodeDrag(false)
         .graphData({ nodes, links })
 
-      ;(graph.d3Force('charge') as any)?.strength(-140)
-      ;(graph.d3Force('link') as any)?.distance(52)
+      ;(graph.d3Force('charge') as any)?.strength(-30)
+      ;(graph.d3Force('link') as any)?.distance(35)
       graph.scene().add(makeStarfield())
-      graph.cameraPosition({ x: 0, y: 90, z: 780 })
+      graph.scene().add(makeBrainHologramShell())
+      graph.cameraPosition({ x: 0, y: 90, z: 650 })
       graphRef.current = graph
 
       // slow idle drift — a gentle orbit that resumes 8s after the last touch
