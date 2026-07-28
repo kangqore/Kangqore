@@ -68,18 +68,39 @@ const glowCache = new Map<string, THREE.Texture>()
 function glowTexture(color: string): THREE.Texture {
   let tex = glowCache.get(color)
   if (tex) return tex
-  const c = document.createElement('canvas')
-  c.width = c.height = 128
-  const ctx = c.getContext('2d')!
-  const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
-  grad.addColorStop(0, 'rgba(255,255,255,0.95)')
-  grad.addColorStop(0.25, color)
-  grad.addColorStop(1, 'rgba(0,0,0,0)')
-  ctx.fillStyle = grad
-  ctx.fillRect(0, 0, 128, 128)
-  tex = new THREE.CanvasTexture(c)
+  const canvas = document.createElement('canvas')
+  canvas.width = 64; canvas.height = 64
+  const ctx = canvas.getContext('2d')!
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
+  g.addColorStop(0, color)
+  g.addColorStop(0.3, color)
+  g.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = g
+  ctx.fillRect(0, 0, 64, 64)
+  tex = new THREE.CanvasTexture(canvas)
   glowCache.set(color, tex)
   return tex
+}
+
+function createTextSprite(text: string, color: string): THREE.Sprite {
+  const canvas = document.createElement('canvas')
+  canvas.width = 256
+  canvas.height = 64
+  const ctx = canvas.getContext('2d')
+  if (ctx) {
+    ctx.font = 'bold 20px ui-monospace, monospace'
+    ctx.fillStyle = color
+    ctx.shadowColor = color
+    ctx.shadowBlur = 8
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(text, 128, 32)
+  }
+  const texture = new THREE.CanvasTexture(canvas)
+  const mat = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.95, depthWrite: false })
+  const sprite = new THREE.Sprite(mat)
+  sprite.scale.set(28, 7, 1)
+  return sprite
 }
 
 function makeStarfield(): THREE.Group {
@@ -1176,6 +1197,14 @@ export function NeuralNetworkModule() {
             blending: THREE.AdditiveBlending, depthWrite: false,
           }))
           sprite.scale.set(r * 3.2, r * 3.2, 1)
+
+          // 4. Hovering 3D Billboard Label for Flagship System Pillars & Architecture Notes
+          const isFlagship = /waanda|aegis|eqore|alis|vis|immp|bids|view|wee|kimmp/.test(n.slug)
+          if (isFlagship) {
+            const labelSprite = createTextSprite(n.title.length > 18 ? n.title.slice(0, 18) + '…' : n.title, color)
+            labelSprite.position.set(0, r + 7, 0)
+            obj.add(labelSprite)
+          }
 
           obj.add(sphere)
           obj.add(dendrites)
