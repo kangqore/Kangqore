@@ -148,6 +148,7 @@ function assignAnatomicalBrainCoordinates(nodes: BrainNode[]) {
 
 function makeBrainHologramShell(): THREE.Group {
   const group = new THREE.Group()
+  group.name = 'futuristicBrainShell'
 
   const leftCortexPoints: THREE.Vector3[] = []
   const rightCortexPoints: THREE.Vector3[] = []
@@ -155,42 +156,42 @@ function makeBrainHologramShell(): THREE.Group {
   const cerebellumPoints: THREE.Vector3[] = []
   const stemPoints: THREE.Vector3[] = []
 
-  // 1. ANATOMICAL CEREBRUM SURFACE (Cerebral Cortex Gyri & Sulci)
-  for (let theta = 0; theta <= Math.PI; theta += 0.05) {
-    for (let phi = 0; phi <= Math.PI; phi += 0.06) {
+  // 1. ANATOMICAL CEREBRUM SURFACE (Cerebral Cortex Gyri & Sulci Mesh)
+  for (let theta = 0; theta <= Math.PI; theta += 0.04) {
+    for (let phi = 0; phi <= Math.PI; phi += 0.05) {
       const sinT = Math.sin(theta)
       const cosT = Math.cos(theta)
       const sinP = Math.sin(phi)
       const cosP = Math.cos(phi)
 
-      let z = cosT * 145
-      let y = sinT * sinP * 85 + (z > 30 ? 12 : 0) - (z < -70 ? 12 : 0)
+      let z = cosT * 155
+      let y = sinT * sinP * 92 + (z > 30 ? 14 : 0) - (z < -70 ? 14 : 0)
 
-      let baseWidth = sinT * cosP * 95
+      let baseWidth = sinT * cosP * 102
       if (baseWidth < 0) continue
 
       // Human Brain Gyri/Sulci wrinkles
-      const gyriFold = Math.sin(z * 0.12) * Math.cos(y * 0.12) * Math.sin(baseWidth * 0.1) * 6.5
+      const gyriFold = Math.sin(z * 0.12) * Math.cos(y * 0.12) * Math.sin(baseWidth * 0.1) * 7.0
 
       const finalY = y + gyriFold
       const finalZ = z + gyriFold
 
       // Left Hemisphere (X < 0)
-      const leftX = -(12 + baseWidth + gyriFold)
+      const leftX = -(14 + baseWidth + gyriFold)
       leftCortexPoints.push(new THREE.Vector3(leftX, finalY, finalZ))
 
       // Right Hemisphere (X > 0)
-      const rightX = (12 + baseWidth + gyriFold)
+      const rightX = (14 + baseWidth + gyriFold)
       rightCortexPoints.push(new THREE.Vector3(rightX, finalY, finalZ))
     }
   }
 
   // 2. TEMPORAL LOBES (Anatomical lateral thumb projections)
-  for (let t = -0.8; t <= 0.8; t += 0.1) {
-    for (let a = 0; a < Math.PI * 2; a += 0.15) {
-      const tx = Math.cos(a) * 30 + 75
-      const ty = Math.sin(a) * 24 - 20
-      const tz = t * 60 + 15
+  for (let t = -0.85; t <= 0.85; t += 0.08) {
+    for (let a = 0; a < Math.PI * 2; a += 0.12) {
+      const tx = Math.cos(a) * 32 + 80
+      const ty = Math.sin(a) * 26 - 22
+      const tz = t * 65 + 15
 
       leftCortexPoints.push(new THREE.Vector3(-tx, ty, tz))
       rightCortexPoints.push(new THREE.Vector3(tx, ty, tz))
@@ -198,26 +199,26 @@ function makeBrainHologramShell(): THREE.Group {
   }
 
   // 3. CEREBELLUM (Dense folded structure at lower rear base)
-  for (let u = 0; u <= Math.PI; u += 0.08) {
-    for (let v = 0; v <= Math.PI * 2; v += 0.12) {
-      const cx = Math.sin(u) * Math.cos(v) * 55
-      const cy = -75 + Math.cos(u) * 28 + Math.sin(v * 6) * 3.5
-      const cz = -100 + Math.sin(u) * Math.sin(v) * 45
+  for (let u = 0; u <= Math.PI; u += 0.07) {
+    for (let v = 0; v <= Math.PI * 2; v += 0.1) {
+      const cx = Math.sin(u) * Math.cos(v) * 60
+      const cy = -80 + Math.cos(u) * 30 + Math.sin(v * 6) * 4.0
+      const cz = -105 + Math.sin(u) * Math.sin(v) * 48
 
       cerebellumPoints.push(new THREE.Vector3(cx, cy, cz))
     }
   }
 
   // 4. BRAINSTEM (Central neural trunk extending downwards)
-  for (let y = -60; y >= -150; y -= 3) {
-    const r = 20 - (y + 60) * 0.06
-    for (let a = 0; a < Math.PI * 2; a += 0.3) {
+  for (let y = -65; y >= -165; y -= 2.5) {
+    const r = 22 - (y + 65) * 0.06
+    for (let a = 0; a < Math.PI * 2; a += 0.25) {
       stemPoints.push(new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r - 12))
     }
   }
 
-  // 5. SULCI CONNECTIVE LINES (Tracing cortex folds)
-  for (let i = 0; i < leftCortexPoints.length; i += 22) {
+  // 5. SULCI & GYRI NEURAL CONNECTIVE FISSURES
+  for (let i = 0; i < leftCortexPoints.length; i += 18) {
     if (i + 1 < leftCortexPoints.length) {
       sulciLinePoints.push(leftCortexPoints[i])
       sulciLinePoints.push(leftCortexPoints[i + 1])
@@ -226,13 +227,45 @@ function makeBrainHologramShell(): THREE.Group {
     }
   }
 
-  // Create Mesh Points & Glowing Line Artifacts
+  // 6. CYBERNETIC HOLOGRAPHIC HUD ORBITAL RINGS
+  const buildRing = (radius: number, axis: 'x' | 'y' | 'z', color: number, opacity: number) => {
+    const points: THREE.Vector3[] = []
+    const segs = 96
+    for (let i = 0; i <= segs; i++) {
+      const a = (i / segs) * Math.PI * 2
+      if (axis === 'y') points.push(new THREE.Vector3(Math.cos(a) * radius, 0, Math.sin(a) * radius))
+      else if (axis === 'x') points.push(new THREE.Vector3(0, Math.cos(a) * radius, Math.sin(a) * radius))
+      else points.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a) * radius, 0))
+    }
+    const geo = new THREE.BufferGeometry().setFromPoints(points)
+    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity })
+    return new THREE.LineLoop(geo, mat)
+  }
+
+  // Add 3 Cybernetic HUD Target Rings
+  group.add(buildRing(205, 'y', 0x00f0ff, 0.45))
+  group.add(buildRing(190, 'x', 0xa855f7, 0.35))
+  group.add(buildRing(180, 'z', 0x38bdf8, 0.30))
+
+  // 7. DYNAMIC QUANTUM SCANNING BEAM RING (Sweeps vertically along Y-axis)
+  const scanRingPoints: THREE.Vector3[] = []
+  for (let i = 0; i <= 64; i++) {
+    const a = (i / 64) * Math.PI * 2
+    scanRingPoints.push(new THREE.Vector3(Math.cos(a) * 165, 0, Math.sin(a) * 165))
+  }
+  const scanGeo = new THREE.BufferGeometry().setFromPoints(scanRingPoints)
+  const scanMat = new THREE.LineBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.7 })
+  const scanRing = new THREE.LineLoop(scanGeo, scanMat)
+  scanRing.name = 'quantumScanRing'
+  group.add(scanRing)
+
+  // Cybernetic Cortical Point Clouds & Glowing Line Meshes
   const leftGeo = new THREE.BufferGeometry().setFromPoints(leftCortexPoints)
   const leftMat = new THREE.PointsMaterial({
-    color: 0x38bdf8,
-    size: 1.4,
+    color: 0x00f0ff,
+    size: 1.5,
     transparent: true,
-    opacity: 0.28,
+    opacity: 0.32,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   })
@@ -240,10 +273,10 @@ function makeBrainHologramShell(): THREE.Group {
 
   const rightGeo = new THREE.BufferGeometry().setFromPoints(rightCortexPoints)
   const rightMat = new THREE.PointsMaterial({
-    color: 0xa78bfa,
-    size: 1.4,
+    color: 0xa855f7,
+    size: 1.5,
     transparent: true,
-    opacity: 0.28,
+    opacity: 0.32,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   })
@@ -251,10 +284,10 @@ function makeBrainHologramShell(): THREE.Group {
 
   const cerGeo = new THREE.BufferGeometry().setFromPoints(cerebellumPoints)
   const cerMat = new THREE.PointsMaterial({
-    color: 0xf43f5e,
-    size: 1.3,
+    color: 0xff0055,
+    size: 1.4,
     transparent: true,
-    opacity: 0.35,
+    opacity: 0.42,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   })
@@ -263,9 +296,9 @@ function makeBrainHologramShell(): THREE.Group {
   const stemGeo = new THREE.BufferGeometry().setFromPoints(stemPoints)
   const stemMat = new THREE.PointsMaterial({
     color: 0x06b6d4,
-    size: 1.6,
+    size: 1.8,
     transparent: true,
-    opacity: 0.42,
+    opacity: 0.5,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   })
@@ -275,7 +308,7 @@ function makeBrainHologramShell(): THREE.Group {
   const linesMat = new THREE.LineBasicMaterial({
     color: 0x0284c7,
     transparent: true,
-    opacity: 0.18,
+    opacity: 0.22,
   })
   group.add(new THREE.LineSegments(linesGeo, linesMat))
 
@@ -922,11 +955,11 @@ export function NeuralNetworkModule() {
           return obj
         })
         .linkColor((l: any) => (linkHidden(l) ? 'rgba(0,0,0,0)' : (linkLit(l) ? '#e0f2fe' : '#334155')))
-        .linkOpacity(0.35)
-        .linkWidth((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 1.4 : 0.4)))
-        .linkDirectionalParticles((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 4 : 2)))
-        .linkDirectionalParticleWidth(2.0)
-        .linkDirectionalParticleSpeed(0.008)
+        .linkOpacity(0.4)
+        .linkWidth((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 1.8 : 0.45)))
+        .linkDirectionalParticles((l: any) => (linkHidden(l) ? 0 : (linkLit(l) ? 6 : 3)))
+        .linkDirectionalParticleWidth(2.6)
+        .linkDirectionalParticleSpeed(0.012)
         .onNodeClick((n: any) => focusNode(n))
         .onBackgroundClick(() => clearFocus())
         .enableNodeDrag(false)
@@ -939,16 +972,27 @@ export function NeuralNetworkModule() {
       graph.cameraPosition({ x: -160, y: 60, z: 420 })
       graphRef.current = graph
 
-      // slow idle drift — a gentle orbit that resumes 8s after the last touch
+      // Dynamic real-time quantum laser scan animation & idle camera orbit
+      let scanTime = 0
       driftTimer = setInterval(() => {
+        scanTime += 0.045
+        const shell = graph.scene().getObjectByName('futuristicBrainShell')
+        if (shell) {
+          const scanRing = shell.getObjectByName('quantumScanRing')
+          if (scanRing) {
+            scanRing.position.y = Math.sin(scanTime * 1.4) * 125
+            scanRing.rotation.y += 0.015
+          }
+        }
+
         if (focusedRef.current) return
         if (Date.now() - lastInteractRef.current < 8000) return
         const cam = graph.cameraPosition()
         const r = Math.hypot(cam.x, cam.z)
         if (r < 50) return
-        const a = Math.atan2(cam.x, cam.z) + 0.00075
+        const a = Math.atan2(cam.x, cam.z) + 0.0009
         graph.cameraPosition({ x: r * Math.sin(a), y: cam.y, z: r * Math.cos(a) })
-      }, 40)
+      }, 30)
 
       el.addEventListener('pointerdown', markInteraction)
       el.addEventListener('wheel', markInteraction, { passive: true })
