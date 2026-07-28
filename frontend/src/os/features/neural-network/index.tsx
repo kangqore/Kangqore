@@ -39,7 +39,6 @@ type Status = 'idle' | 'listening' | 'thinking' | 'speaking'
 const GROUP_COLORS: Record<string, string> = {
   identity:     '#a78bfa', // WAANDA / KIMMP / AEGIS — violet
   architecture: '#38bdf8', // platform architecture — sky
-  chronicle:    '#f59e0b', // sprint history — amber
   commercial:   '#10b981', // revenue / BIDS / strategy — emerald
   ops:          '#f43f5e', // environment / tooling / operator — rose
   core:         '#22d3ee', // everything foundational — cyan
@@ -52,7 +51,6 @@ const GROUP_LABELS: Record<string, string> = {
   commercial: 'Commercial & Revenue BIDS',
   capture: 'Dynamic Ingested Memories',
   ops: 'System Runtime & Operator',
-  chronicle: 'Sprint Development History',
 }
 
 const groupColor = (g: string) => GROUP_COLORS[g] ?? '#94a3b8'
@@ -553,7 +551,7 @@ export function NeuralNetworkModule() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<BrainNode[]>([])
   const navigate = useNavigate()
-  const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set(['chronicle']))
+  const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set())
   const [groupCounts, setGroupCounts] = useState<Record<string, number>>({})
   const [history, setHistory] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([])
   const [showHistory, setShowHistory] = useState(false)
