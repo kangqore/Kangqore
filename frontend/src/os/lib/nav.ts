@@ -31,6 +31,8 @@ import {
   FootprintsIcon,
   GraphIcon,
   ShareNetworkIcon,
+  SparkleIcon,
+  EyeIcon,
 } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
 
@@ -94,6 +96,48 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'waanda-decide',     label: 'Decide',     path: `${BASE}/WAANDA/decide`     },
       { id: 'waanda-act',        label: 'Act',        path: `${BASE}/WAANDA/act`        },
       { id: 'waanda-learn',      label: 'Learn',      path: `${BASE}/WAANDA/learn`      },
+    ],
+  },
+  {
+    id: 'eqore',
+    label: 'EQORE',
+    icon: SparkleIcon,
+    defaultPath: `/eqore`,
+    matchPrefixes: [`/eqore`, `${BASE}/eqore`],
+    sidebarItems: [
+      { id: 'eqore-console',   label: 'EQORE AI Console', path: `/eqore`,                        category: 'Intelligence' },
+      { id: 'eqore-cognition', label: 'Cognitive Brain',  path: `/eqore?mode=cognition`,         category: 'Intelligence' },
+      { id: 'eqore-prompts',   label: 'System Prompts',   path: `/eqore?mode=prompts`,           category: 'Intelligence' },
+      { id: 'eqore-memory',    label: 'Memory Vault',     path: `${BASE}/kangqore-immp/memory`,   category: 'Intelligence' },
+      { id: 'eqore-waanda',    label: 'WAANDA Nexus',     path: `${BASE}/WAANDA`,                category: 'Intelligence', badge: 'live' },
+    ],
+  },
+  {
+    id: 'kangqore-vis',
+    label: 'KANGQORE VIS',
+    icon: EyeIcon,
+    defaultPath: `${BASE}/analytics`,
+    matchPrefixes: [`${BASE}/analytics`, `${BASE}/vis`],
+    sidebarItems: [
+      { id: 'vis-analytics',  label: 'Vision Telemetry', path: `${BASE}/analytics`,            category: 'Vision' },
+      { id: 'vis-twin',       label: 'Digital Twin™',    path: `${BASE}/analytics/twin`,       category: 'Vision' },
+      { id: 'vis-ois',        label: 'OIS Trend Stream', path: `${BASE}/analytics/ois`,        category: 'Vision' },
+      { id: 'vis-waanda',     label: 'WAANDA Stream',    path: `${BASE}/analytics/waanda`,     category: 'Vision', badge: 'live' },
+      { id: 'vis-agents',     label: 'Agent Stream',     path: `${BASE}/analytics/agents`,     category: 'Vision' },
+    ],
+  },
+  {
+    id: 'kangqore-alis',
+    label: 'KANGQORE ALIS',
+    icon: ShieldCheckeredIcon,
+    defaultPath: `${BASE}/aegis/compliance`,
+    matchPrefixes: [`${BASE}/aegis/compliance`, `${BASE}/aegis/findings`, `${BASE}/aegis/enforcement`],
+    sidebarItems: [
+      { id: 'alis-compliance', label: 'ALIS Compliance',  path: `${BASE}/aegis/compliance`, category: 'Governance' },
+      { id: 'alis-findings',   label: 'ALIS Audit Findings', path: `${BASE}/aegis/findings`,   category: 'Governance', badge: 'new' },
+      { id: 'alis-policy',     label: 'Policy Assurance', path: `${BASE}/aegis/policy`,     category: 'Governance' },
+      { id: 'alis-autonomy',   label: 'Autonomy Shield',  path: `${BASE}/aegis/autonomy`,   category: 'Governance' },
+      { id: 'alis-enforce',    label: 'Enforcement Engine', path: `${BASE}/aegis/enforcement`, category: 'Governance', badge: 'live' },
     ],
   },
   {
