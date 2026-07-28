@@ -37,20 +37,16 @@ interface BrainLink { source: number; target: number }
 type Status = 'idle' | 'listening' | 'thinking' | 'speaking'
 
 const GROUP_COLORS: Record<string, string> = {
-  identity:     '#a78bfa', // WAANDA / KIMMP / AEGIS — violet
-  architecture: '#38bdf8', // platform architecture — sky
-  commercial:   '#10b981', // revenue / BIDS / strategy — emerald
-  ops:          '#f43f5e', // environment / tooling / operator — rose
-  core:         '#22d3ee', // everything foundational — cyan
+  identity:     '#a78bfa', // WAANDA / KIMMP / AEGIS / EQORE / ALIS — violet
+  architecture: '#38bdf8', // platform architecture / VIEW / VIS / IMMP — sky
+  core:         '#22d3ee', // foundational core — cyan
   capture:      '#fde047', // newborn memories — star yellow
 }
 
 const GROUP_LABELS: Record<string, string> = {
   identity: 'AI System Pillars',
   architecture: 'Platform OS & Perception',
-  commercial: 'Commercial & Revenue BIDS',
   capture: 'Dynamic Ingested Memories',
-  ops: 'System Runtime & Operator',
 }
 
 const groupColor = (g: string) => GROUP_COLORS[g] ?? '#94a3b8'
