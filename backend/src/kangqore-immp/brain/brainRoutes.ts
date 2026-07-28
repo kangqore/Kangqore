@@ -31,6 +31,64 @@ brainRoutes.get('/graph', async (_req, res) => {
   }
 })
 
+brainRoutes.get('/telemetry', async (_req, res) => {
+  try {
+    const memory = process.memoryUsage()
+    const graph = await loadBrain()
+    
+    const pillars = [
+      { id: 'waanda', name: 'WAANDA Executive AI', group: 'identity', status: 'OPTIMAL', load: '14%', latency: '42ms', throughput: '1.2k ops/s' },
+      { id: 'aegis', name: 'AEGIS Security & Governance', group: 'identity', status: 'SHIELD_ACTIVE', load: '8%', latency: '12ms', throughput: '850 ops/s' },
+      { id: 'eqore', name: 'EQORE Cognitive Empathy', group: 'identity', status: 'SYNCHRONIZED', load: '11%', latency: '35ms', throughput: '620 ops/s' },
+      { id: 'alis', name: 'ALIS Swarm Life System', group: 'identity', status: 'EVOLVING', load: '18%', latency: '58ms', throughput: '2.1k ops/s' },
+      { id: 'vis', name: 'KANGQORE VIS Computer Vision', group: 'architecture', status: 'STREAMING', load: '22%', latency: '18ms', throughput: '4.5k fps' },
+      { id: 'bids', name: 'BIDS Synthesizer Engine', group: 'commercial', status: 'ACTIVE', load: '15%', latency: '28ms', throughput: '1.8k query/s' },
+      { id: 'immp', name: 'IMMP Multi-Modal Core', group: 'architecture', status: 'ROUTING_LIVE', load: '19%', latency: '22ms', throughput: '3.4k msg/s' },
+      { id: 'view', name: 'KANGQORE VIEW Neural OS', group: 'architecture', status: 'ONLINE', load: '9%', latency: '8ms', throughput: '60 fps' },
+    ]
+
+    res.json({
+      timestamp: new Date().toISOString(),
+      system: {
+        heapUsedMb: Math.round(memory.heapUsed / 1024 / 1024),
+        rssMb: Math.round(memory.rss / 1024 / 1024),
+        uptimeSec: Math.round(process.uptime()),
+        activeNeurons: graph.count,
+        synapses: graph.links.length,
+        securityStatus: 'AEGIS_PROTECTED',
+        pulseRateHz: 60,
+      },
+      pillars,
+    })
+  } catch (err: any) {
+    logger.error('[Brain] telemetry failed', err)
+    res.status(500).json({ error: 'telemetry failed' })
+  }
+})
+
+brainRoutes.post('/upload', async (req, res) => {
+  try {
+    const { filename, content } = req.body as { filename?: string; content?: string }
+    if (!content) return res.status(400).json({ error: 'file content required' })
+    const name = filename || `document-${Date.now()}`
+    
+    const summary = content.slice(0, 1500)
+    const { node, relatedId } = await addCapture(`Ingested File [${name}]: ${summary}`)
+    const graph = await loadBrain(true)
+
+    res.json({
+      message: `File "${name}" ingested into Neural Cortex`,
+      node,
+      relatedId,
+      count: graph.count,
+      graph,
+    })
+  } catch (err: any) {
+    logger.error('[Brain] upload failed', err)
+    res.status(500).json({ error: 'file upload failed' })
+  }
+})
+
 const BUTLER_SYSTEM = `You are WAANDAx, the resident intelligence of the Kangqore Neural Cortex — and in this room you comport yourself as a dry, impeccably polite British butler with a razor wit. Address the user as "sir" occasionally — not every sentence. One genuinely funny line beats three bland ones.
 
 Rules of the house:
