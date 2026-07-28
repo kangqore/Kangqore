@@ -326,19 +326,30 @@ export const RAIL_ITEMS: RailEntry[] = [
     ],
   },
   {
+    id: 'relay',
+    label: 'RELAY',
+    icon: ChatCircleDotsIcon,
+    defaultPath: `${BASE}/relay`,
+    matchPrefixes: [`${BASE}/relay`],
+    sidebarItems: [
+      { id: 'relay-stream',   label: 'Live Stream',     path: `${BASE}/relay`,               category: 'Communications', badge: 'live' },
+      { id: 'relay-direct',   label: 'Direct Relay',    path: `${BASE}/relay?view=direct`,   category: 'Communications' },
+      { id: 'relay-channels', label: 'Neural Channels', path: `${BASE}/relay?view=channels`, category: 'Communications' },
+    ],
+  },
+  {
     id: 'intelligence',
     label: 'Intelligence',
     icon: HardDrivesIcon,
     defaultPath: `${BASE}/systems`,
     matchPrefixes: [
       `${BASE}/systems`,
-      `${BASE}/agent-logs`, `${BASE}/analytics`, `${BASE}/relay`,
+      `${BASE}/agent-logs`, `${BASE}/analytics`,
     ],
     sidebarItems: [
       { id: 'systems',        label: 'Systems',        path: `${BASE}/systems`        },
       { id: 'agent-logs',     label: 'Agent Logs',     path: `${BASE}/agent-logs`     },
       { id: 'analytics',      label: 'Analytics',      path: `${BASE}/analytics`      },
-      { id: 'relay',          label: 'RELAY',          path: `${BASE}/relay`,          badge: 'comms' },
     ],
   },
   {
