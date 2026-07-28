@@ -11,9 +11,10 @@
 // ---------------------------------------------------------------------------
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ForceGraph3D, { type ForceGraph3DInstance } from '3d-force-graph'
 import * as THREE from 'three'
-import { HouseIcon, MagnifyingGlassIcon, MicrophoneIcon, PaperPlaneRightIcon, TrashIcon, XIcon } from '@phosphor-icons/react'
+import { ArrowsOutIcon, HouseIcon, MagnifyingGlassIcon, MicrophoneIcon, PaperPlaneRightIcon, TrashIcon, XIcon } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 
 interface BrainNode {
@@ -526,6 +527,7 @@ export function NeuralNetworkModule() {
   const [micLevel, setMicLevel] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<BrainNode[]>([])
+  const navigate = useNavigate()
   const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set())
   const [groupCounts, setGroupCounts] = useState<Record<string, number>>({})
   const [history, setHistory] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([])
@@ -536,6 +538,37 @@ export function NeuralNetworkModule() {
   const [showTelemetry, setShowTelemetry] = useState(true)
   const [showInspector, setShowInspector] = useState(false)
   const [selectedPacket, setSelectedPacket] = useState<any>(null)
+
+  const [clockTime, setClockTime] = useState('')
+  const [clockDate, setClockDate] = useState('')
+  const [sessionSecs, setSessionSecs] = useState(16)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+
+  useEffect(() => {
+    const updateClock = () => {
+      const d = new Date()
+      setClockTime(d.toTimeString().split(' ')[0])
+      setClockDate(d.toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }))
+    }
+    updateClock()
+    const timer = setInterval(() => {
+      updateClock()
+      setSessionSecs(s => s + 1)
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const sessionTimeStr = new Date(sessionSecs * 1000).toISOString().slice(11, 19)
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {})
+      setIsFullscreen(true)
+    } else {
+      document.exitFullscreen().catch(() => {})
+      setIsFullscreen(false)
+    }
+  }
 
   useEffect(() => {
     const fetchTelemetry = () => {
@@ -1277,9 +1310,82 @@ export function NeuralNetworkModule() {
         </div>
       )}
 
+      {/* ══ WAANDA ADMIN TOP BAR ══ */}
+      <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-5 py-2 border-b border-cyan-500/25 bg-gradient-to-r from-[rgba(0,20,60,0.9)] via-[rgba(0,8,24,0.95)] to-[rgba(0,20,60,0.9)] backdrop-blur-xl select-none font-mono">
+        {/* Left Section */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shadow-[0_0_8px_#00c875]" />
+            <span className="text-[11px] font-extrabold tracking-[0.2em] text-cyan-400 uppercase">
+              WAANDA
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5 pl-4 border-l border-cyan-500/20 text-[8px] tracking-widest text-cyan-500/60">
+            <span>HEALTH</span>
+            <span className="text-[12px] font-extrabold text-emerald-400 shadow-[0_0_8px_#00c875]">97%</span>
+          </div>
+
+          <div className="flex items-center gap-1.5 pl-4 border-l border-cyan-500/20 text-[8px] tracking-widest text-cyan-500/60">
+            <span>AGENTS</span>
+            <span className="text-[12px] font-extrabold text-cyan-300">81</span>
+          </div>
+
+          <div className="flex items-center gap-1.5 pl-4 border-l border-cyan-500/20 text-[8px] tracking-widest text-cyan-500/60">
+            <span>SESSION</span>
+            <span className="text-[12px] font-extrabold text-amber-400">{sessionTimeStr}</span>
+          </div>
+
+          <button
+            onClick={() => setShowInspector(true)}
+            className="flex items-center gap-1.5 pl-4 border-l border-cyan-500/20 text-[8px] tracking-widest text-cyan-500/60 hover:text-cyan-300 transition-colors"
+          >
+            <span>◈ LOG</span>
+            <span className="text-[12px] font-extrabold text-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.5)]">500</span>
+          </button>
+
+          <button
+            onClick={() => navigate('/kangqore-view/admin/home')}
+            className="ml-2 px-3 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[10px] hover:bg-cyan-500/20 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all"
+          >
+            ← Back
+          </button>
+        </div>
+
+        {/* Center Title */}
+        <div className="flex items-center gap-3">
+          <span className="text-[15px] font-black tracking-[0.4em] text-cyan-400 shadow-[0_0_16px_rgba(34,211,238,0.8)]">
+            W.A.A.N.D.A.
+          </span>
+          <span className="text-[10px] tracking-[0.15em] text-cyan-400/70 uppercase">
+            A KANGQORE PRODUCT.
+          </span>
+        </div>
+
+        {/* Right Section */}
+        <div className="flex items-center gap-6">
+          <div className="text-right">
+            <div className="text-[15px] font-black tracking-[0.1em] text-cyan-300 shadow-[0_0_16px_rgba(34,211,238,0.8)] leading-tight">
+              {clockTime}
+            </div>
+            <div className="text-[9px] text-cyan-500/60 leading-tight">
+              {clockDate}
+            </div>
+          </div>
+
+          <button
+            onClick={toggleFullscreen}
+            className="p-1 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-white/5 transition-colors"
+            title="Toggle Fullscreen"
+          >
+            <ArrowsOutIcon className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
       {/* Live System Telemetry & Multi-Agent Matrix HUD Panel */}
       {telemetry && showTelemetry && !selected && (
-        <div className="absolute top-4 right-4 z-20 w-72 p-3.5 rounded-2xl border border-cyan-500/30 bg-[#020617]/80 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
+        <div className="absolute top-16 right-4 z-20 w-72 p-3.5 rounded-2xl border border-cyan-500/30 bg-[#020617]/80 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
           <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
@@ -1328,7 +1434,7 @@ export function NeuralNetworkModule() {
       {telemetry && !showTelemetry && !selected && (
         <button
           onClick={() => setShowTelemetry(true)}
-          className="absolute top-4 right-4 z-20 px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-[#020617]/80 backdrop-blur-xl text-cyan-400 font-mono text-[9px] uppercase tracking-widest hover:border-cyan-400 transition-colors"
+          className="absolute top-16 right-4 z-20 px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-[#020617]/80 backdrop-blur-xl text-cyan-400 font-mono text-[9px] uppercase tracking-widest hover:border-cyan-400 transition-colors"
         >
           ▲ Telemetry HUD
         </button>
@@ -1395,7 +1501,7 @@ export function NeuralNetworkModule() {
       )}
 
       {/* header + search + legend */}
-      <div className="absolute top-4 left-5 z-20 select-none">
+      <div className="absolute top-16 left-5 z-20 select-none">
         <div className="pointer-events-none">
           <h1 className="font-mono text-[13px] font-bold tracking-[0.35em] text-cyan-300 uppercase drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]">
             WAANDAx · Neural Cortex
