@@ -170,9 +170,9 @@ function assignAnatomicalBrainCoordinates(nodes: BrainNode[]) {
 function create3DHumanBrainSurfaceMesh(): THREE.Group {
   const group = new THREE.Group()
 
-  // 1. Dual Cerebral Hemispheres (Left & Right)
-  const uSegs = 64
-  const vSegs = 64
+  // 1. Dual Cerebral Hemispheres (Left & Right) with Multi-Frequency Gyri/Sulci Convolutions
+  const uSegs = 80
+  const vSegs = 80
 
   const buildHemisphereMesh = (isLeft: boolean) => {
     const side = isLeft ? -1 : 1
@@ -191,17 +191,20 @@ function create3DHumanBrainSurfaceMesh(): THREE.Group {
         const sinU = Math.sin(u)
         const cosU = Math.cos(u)
 
-        // Anatomical Brain Form Formula
-        let z = cosV * 150
-        let y = sinV * sinU * 90 + (z > 30 ? 14 : 0) - (z < -70 ? 16 : 0)
-        let baseWidth = sinV * cosU * 95
+        // Realistic Anatomical Human Brain Form Formula
+        let z = cosV * 154
+        let y = sinV * sinU * 94 + (z > 35 ? 16 : 0) - (z < -65 ? 18 : 0)
+        let baseWidth = sinV * cosU * 98
 
-        // Gyri & Sulci surface wrinkles
-        const fold = Math.sin(z * 0.11) * Math.cos(y * 0.11) * Math.sin(baseWidth * 0.09) * 7.5
+        // Multi-frequency Gyri & Sulci surface folds (wrinkle convolutions)
+        const foldMajor = Math.sin(z * 0.08) * Math.cos(y * 0.09) * Math.sin(baseWidth * 0.07) * 9.5
+        const foldMinor = Math.cos(z * 0.22) * Math.sin(y * 0.22) * Math.cos(baseWidth * 0.18) * 3.8
+        const foldMicro = Math.sin(z * 0.45) * Math.cos(y * 0.45) * 1.4
+        const totalFold = foldMajor + foldMinor + foldMicro
 
-        let x = side * (12 + Math.abs(baseWidth) + fold)
-        y += fold
-        z += fold
+        let x = side * (10 + Math.abs(baseWidth) + totalFold)
+        y += totalFold * 0.85
+        z += totalFold * 0.85
 
         vertices.push(x, y, z)
         uvs.push(i / uSegs, j / vSegs)
@@ -233,22 +236,24 @@ function create3DHumanBrainSurfaceMesh(): THREE.Group {
     const color = isLeft ? 0x0284c7 : 0x7e22ce
     const emissive = isLeft ? 0x0369a1 : 0x6b21a8
 
+    // Outer Glassmorphic Translucent Cortex Surface
     const mat = new THREE.MeshPhongMaterial({
       color,
       emissive,
       specular: 0x38bdf8,
-      shininess: 35,
+      shininess: 45,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.24,
       side: THREE.DoubleSide,
       wireframe: false,
     })
 
+    // Inner Sulci Wireframe Lattice Glow
     const wireMat = new THREE.MeshBasicMaterial({
       color: isLeft ? 0x38bdf8 : 0xc084fc,
       wireframe: true,
       transparent: true,
-      opacity: 0.12,
+      opacity: 0.16,
     })
 
     const mesh = new THREE.Mesh(geo, mat)
@@ -262,39 +267,66 @@ function create3DHumanBrainSurfaceMesh(): THREE.Group {
   group.add(buildHemisphereMesh(true))  // Left Hemisphere
   group.add(buildHemisphereMesh(false)) // Right Hemisphere
 
-  // 2. Cerebellum (Lower Rear Base)
-  const cerGeo = new THREE.SphereGeometry(48, 32, 24)
+  // 2. Inter-Hemispheric Corpus Callosum Arch
+  const callosumGeo = new THREE.TorusGeometry(45, 12, 16, 48, Math.PI)
+  const callosumMat = new THREE.MeshPhongMaterial({
+    color: 0x38bdf8,
+    emissive: 0x0284c7,
+    transparent: true,
+    opacity: 0.35,
+    wireframe: true,
+  })
+  const callosumMesh = new THREE.Mesh(callosumGeo, callosumMat)
+  callosumMesh.rotation.y = Math.PI / 2
+  callosumMesh.position.set(0, 10, 0)
+  group.add(callosumMesh)
+
+  // 3. Central Thalamus / Limbic Core (Inner Glowing Nucleus)
+  const thalamusGeo = new THREE.SphereGeometry(28, 24, 20)
+  const thalamusMat = new THREE.MeshPhongMaterial({
+    color: 0xa855f7,
+    emissive: 0x7e22ce,
+    transparent: true,
+    opacity: 0.45,
+    wireframe: true,
+  })
+  const thalamusMesh = new THREE.Mesh(thalamusGeo, thalamusMat)
+  thalamusMesh.position.set(0, -5, -10)
+  group.add(thalamusMesh)
+
+  // 4. Cerebellum with Horizontal Folia Ridges (Lower Rear Base)
+  const cerGeo = new THREE.SphereGeometry(52, 40, 32)
   const cerPos = cerGeo.attributes.position
   for (let k = 0; k < cerPos.count; k++) {
     const cx = cerPos.getX(k)
     const cy = cerPos.getY(k)
     const cz = cerPos.getZ(k)
-    const folia = Math.sin(cy * 0.35) * 3.5
-    cerPos.setXYZ(k, cx * 1.1 + folia, cy * 0.65 + folia, cz * 0.95 + folia)
+    const folia = Math.sin(cy * 0.42) * 4.2
+    cerPos.setXYZ(k, cx * 1.12 + folia, cy * 0.68 + folia, cz * 0.98 + folia)
   }
   cerGeo.computeVertexNormals()
   const cerMat = new THREE.MeshPhongMaterial({
     color: 0xf43f5e,
     emissive: 0xbe123c,
     transparent: true,
-    opacity: 0.22,
+    opacity: 0.28,
     wireframe: true,
   })
   const cerMesh = new THREE.Mesh(cerGeo, cerMat)
-  cerMesh.position.set(0, -80, -102)
+  cerMesh.position.set(0, -82, -105)
   group.add(cerMesh)
 
-  // 3. Brainstem (Central Base Trunk)
-  const stemGeo = new THREE.CylinderGeometry(20, 14, 95, 24, 16)
+  // 5. Brainstem (Central Base Trunk)
+  const stemGeo = new THREE.CylinderGeometry(22, 15, 100, 32, 20)
   const stemMat = new THREE.MeshPhongMaterial({
     color: 0x06b6d4,
     emissive: 0x0e7490,
     transparent: true,
-    opacity: 0.26,
+    opacity: 0.32,
     wireframe: true,
   })
   const stemMesh = new THREE.Mesh(stemGeo, stemMat)
-  stemMesh.position.set(0, -115, -12)
+  stemMesh.position.set(0, -118, -12)
   group.add(stemMesh)
 
   return group
