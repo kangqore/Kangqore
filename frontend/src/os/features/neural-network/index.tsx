@@ -40,13 +40,11 @@ const GROUP_COLORS: Record<string, string> = {
   identity:     '#a78bfa', // WAANDA / KIMMP / AEGIS / EQORE / ALIS — violet
   architecture: '#38bdf8', // platform architecture / VIEW / VIS / IMMP — sky
   core:         '#22d3ee', // foundational core — cyan
-  capture:      '#fde047', // newborn memories — star yellow
 }
 
 const GROUP_LABELS: Record<string, string> = {
   identity: 'AI System Pillars',
   architecture: 'Platform OS & Perception',
-  capture: 'Dynamic Ingested Memories',
 }
 
 const groupColor = (g: string) => GROUP_COLORS[g] ?? '#94a3b8'
