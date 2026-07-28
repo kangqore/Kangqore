@@ -14,7 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ForceGraph3D, { type ForceGraph3DInstance } from '3d-force-graph'
 import * as THREE from 'three'
-import { ArrowsOutIcon, HouseIcon, MagnifyingGlassIcon, MicrophoneIcon, PaperPlaneRightIcon, TrashIcon, XIcon } from '@phosphor-icons/react'
+import { ArrowsOutIcon, CaretDownIcon, CaretLeftIcon, CaretRightIcon, CaretUpIcon, HouseIcon, MagnifyingGlassIcon, MicrophoneIcon, PaperPlaneRightIcon, TrashIcon, XIcon } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 
 interface BrainNode {
@@ -777,12 +777,44 @@ export function NeuralNetworkModule() {
     )
   }, [applyHighlight])
 
-  const quickFocusSystem = (systemName: string) => {
+  const [isAutoOrbit, setIsAutoOrbit] = useState(false)
+  const isAutoOrbitRef = useRef(false)
+  isAutoOrbitRef.current = isAutoOrbit
+
+  const rotateBrain = (yawDeg: number, pitchDeg: number) => {
     const graph = graphRef.current
     if (!graph) return
-    const nodes = graph.graphData().nodes as BrainNode[]
-    const target = nodes.find(n => n.slug.toLowerCase().includes(systemName.toLowerCase()) || n.title.toLowerCase().includes(systemName.toLowerCase()))
-    if (target) focusNode(target)
+    markInteraction()
+    const cam = graph.cameraPosition()
+    const r = Math.hypot(cam.x, cam.y, cam.z) || 450
+    let theta = Math.atan2(cam.x, cam.z) + (yawDeg * Math.PI) / 180
+    let phi = Math.acos(Math.max(-1, Math.min(1, cam.y / r))) + (pitchDeg * Math.PI) / 180
+    phi = Math.max(0.1, Math.min(Math.PI - 0.1, phi))
+    const x = r * Math.sin(phi) * Math.sin(theta)
+    const y = r * Math.cos(phi)
+    const z = r * Math.sin(phi) * Math.cos(theta)
+    graph.cameraPosition({ x, y, z }, { x: 0, y: 0, z: 0 }, 300)
+  }
+
+  const setBrainAngle = (view: 'front' | 'back' | 'top' | 'left' | 'right' | 'perspective') => {
+    const graph = graphRef.current
+    if (!graph) return
+    markInteraction()
+    let pos = { x: -160, y: 60, z: 420 }
+    if (view === 'front') pos = { x: 0, y: 15, z: 460 }
+    if (view === 'back') pos = { x: 0, y: 15, z: -460 }
+    if (view === 'top') pos = { x: 0, y: 460, z: 1 }
+    if (view === 'left') pos = { x: -460, y: 15, z: 0 }
+    if (view === 'right') pos = { x: 460, y: 15, z: 0 }
+    graph.cameraPosition(pos, { x: 0, y: 0, z: 0 }, 1000)
+  }
+
+  const zoomBrain = (factor: number) => {
+    const graph = graphRef.current
+    if (!graph) return
+    markInteraction()
+    const cam = graph.cameraPosition()
+    graph.cameraPosition({ x: cam.x * factor, y: cam.y * factor, z: cam.z * factor }, { x: 0, y: 0, z: 0 }, 250)
   }
 
   const highlightCluster = useCallback((ids: number[]) => {
@@ -1291,11 +1323,12 @@ export function NeuralNetworkModule() {
         }
 
         if (focusedRef.current) return
-        if (Date.now() - lastInteractRef.current < 8000) return
+        const shouldOrbit = isAutoOrbitRef.current || (Date.now() - lastInteractRef.current >= 8000)
+        if (!shouldOrbit) return
         const cam = graph.cameraPosition()
         const r = Math.hypot(cam.x, cam.z)
         if (r < 50) return
-        const a = Math.atan2(cam.x, cam.z) + 0.0009
+        const a = Math.atan2(cam.x, cam.z) + 0.0018
         graph.cameraPosition({ x: r * Math.sin(a), y: cam.y, z: r * Math.cos(a) })
       }, 30)
 
@@ -1640,15 +1673,110 @@ export function NeuralNetworkModule() {
         </div>
       </div>
 
-      {/* return to overview */}
-      <button
-        onClick={resetView}
-        className="absolute bottom-28 right-6 z-30 p-3 rounded-full bg-[#020617]/80 border border-white/10 backdrop-blur-xl text-slate-400 hover:text-cyan-300 hover:border-cyan-500/40 transition-colors shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
-        title="Return to overview"
-        aria-label="Return to overview"
-      >
-        <HouseIcon className="w-4 h-4" />
-      </button>
+      {/* ══ 3D CYBERNETIC REVOLVER GIMBAL JOYSTICK CONTROLLER ══ */}
+      <div className="absolute bottom-24 right-6 z-30 flex flex-col items-center gap-2.5 pointer-events-auto select-none">
+        
+        {/* Anatomical View Presets Ring */}
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-[#020617]/85 border border-cyan-500/30 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] font-mono text-[8px] uppercase font-bold tracking-widest text-cyan-300">
+          {(['front', 'back', 'left', 'right', 'top', 'perspective'] as const).map(v => (
+            <button
+              key={v}
+              onClick={() => setBrainAngle(v)}
+              className="px-2 py-1 rounded-lg hover:bg-cyan-500/20 hover:text-white transition-colors"
+              title={`View ${v} angle`}
+            >
+              {v.slice(0, 3)}
+            </button>
+          ))}
+        </div>
+
+        {/* 3D Revolver Directional Gimbal D-Pad */}
+        <div className="relative w-36 h-36 rounded-full border-2 border-cyan-500/40 bg-[#020617]/90 backdrop-blur-2xl shadow-[0_0_40px_rgba(34,211,238,0.25)] flex items-center justify-center">
+          {/* Compass Radial Ring */}
+          <div className="absolute inset-1.5 rounded-full border border-dashed border-cyan-500/20 pointer-events-none animate-[spin_60s_linear_infinite]" />
+
+          {/* D-Pad Arrow Controls */}
+          {/* UP (Pitch Up) */}
+          <button
+            onClick={() => rotateBrain(0, -15)}
+            className="absolute top-1.5 p-2 rounded-lg text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all active:scale-95"
+            title="Pitch Up (Rotate Up)"
+          >
+            <CaretUpIcon className="w-5 h-5" />
+          </button>
+
+          {/* DOWN (Pitch Down) */}
+          <button
+            onClick={() => rotateBrain(0, 15)}
+            className="absolute bottom-1.5 p-2 rounded-lg text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all active:scale-95"
+            title="Pitch Down (Rotate Down)"
+          >
+            <CaretDownIcon className="w-5 h-5" />
+          </button>
+
+          {/* LEFT (Yaw Left) */}
+          <button
+            onClick={() => rotateBrain(-15, 0)}
+            className="absolute left-1.5 p-2 rounded-lg text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all active:scale-95"
+            title="Yaw Left (Rotate Left)"
+          >
+            <CaretLeftIcon className="w-5 h-5" />
+          </button>
+
+          {/* RIGHT (Yaw Right) */}
+          <button
+            onClick={() => rotateBrain(15, 0)}
+            className="absolute right-1.5 p-2 rounded-lg text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all active:scale-95"
+            title="Yaw Right (Rotate Right)"
+          >
+            <CaretRightIcon className="w-5 h-5" />
+          </button>
+
+          {/* Center Revolver Joystick Knob */}
+          <button
+            onClick={resetView}
+            className="w-12 h-12 rounded-full border border-cyan-400 bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/40 hover:scale-105 transition-all shadow-[0_0_15px_rgba(34,211,238,0.5)] flex flex-col items-center justify-center gap-0.5 active:scale-95"
+            title="Reset Center View"
+          >
+            <HouseIcon className="w-4 h-4" />
+            <span className="font-mono text-[6px] tracking-tighter uppercase font-bold">RESET</span>
+          </button>
+        </div>
+
+        {/* Zoom & Orbit Control Dock */}
+        <div className="flex items-center gap-2 p-1.5 rounded-xl bg-[#020617]/85 border border-cyan-500/30 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
+          <button
+            onClick={() => zoomBrain(0.8)}
+            className="p-1.5 rounded-lg text-cyan-300 hover:bg-cyan-500/20 transition-colors font-mono font-bold text-xs"
+            title="Zoom In"
+          >
+            +
+          </button>
+          <button
+            onClick={() => zoomBrain(1.2)}
+            className="p-1.5 rounded-lg text-cyan-300 hover:bg-cyan-500/20 transition-colors font-mono font-bold text-xs"
+            title="Zoom Out"
+          >
+            -
+          </button>
+
+          <div className="w-px h-4 bg-cyan-500/20" />
+
+          <button
+            onClick={() => setIsAutoOrbit(prev => !prev)}
+            className={`p-1.5 rounded-lg text-[9px] font-mono tracking-widest uppercase transition-all flex items-center gap-1 ${
+              isAutoOrbit
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.4)]'
+                : 'text-slate-400 hover:text-cyan-300 hover:bg-white/5'
+            }`}
+            title="Toggle Continuous 360° Auto-Orbit Spin"
+          >
+            <span>ORBIT</span>
+            <span className={`w-1.5 h-1.5 rounded-full ${isAutoOrbit ? 'bg-emerald-400 animate-ping' : 'bg-slate-600'}`} />
+          </button>
+        </div>
+
+      </div>
 
       {/* side panel — the note the answer came from */}
       {selected && (
