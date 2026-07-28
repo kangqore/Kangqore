@@ -777,6 +777,14 @@ export function NeuralNetworkModule() {
     )
   }, [applyHighlight])
 
+  const quickFocusSystem = (systemName: string) => {
+    const graph = graphRef.current
+    if (!graph) return
+    const nodes = graph.graphData().nodes as BrainNode[]
+    const target = nodes.find(n => n.slug.toLowerCase().includes(systemName.toLowerCase()) || n.title.toLowerCase().includes(systemName.toLowerCase()))
+    if (target) focusNode(target)
+  }
+
   const highlightCluster = useCallback((ids: number[]) => {
     const graph = graphRef.current
     if (!graph) return
@@ -1563,7 +1571,7 @@ export function NeuralNetworkModule() {
         </div>
       )}
 
-      {/* header + search + legend */}
+      {/* header + search + legend + Quick System Focus Dock */}
       <div className="absolute top-16 left-5 z-20 select-none">
         <div className="pointer-events-none">
           <h1 className="font-mono text-[13px] font-bold tracking-[0.35em] text-cyan-300 uppercase drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]">
@@ -1574,9 +1582,9 @@ export function NeuralNetworkModule() {
           </p>
         </div>
 
-        <div className="mt-3 relative w-48 pointer-events-auto">
+        <div className="mt-3 relative w-52 pointer-events-auto">
           <div className="relative">
-            <MagnifyingGlassIcon className="w-3 h-3 absolute left-2 top-1/2 -translate-y-1/2 text-slate-500" />
+            <MagnifyingGlassIcon className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-cyan-400/60" />
             <input
               value={searchQuery}
               onChange={e => runSearch(e.target.value)}
@@ -1585,21 +1593,34 @@ export function NeuralNetworkModule() {
                 if (e.key === 'Escape') { setSearchQuery(''); setSearchResults([]) }
               }}
               onBlur={() => setTimeout(() => setSearchResults([]), 150)}
-              placeholder="Search notes…"
-              className="w-full bg-black/40 border border-white/10 rounded-lg pl-6 pr-2 py-1.5 text-[10px] font-mono text-slate-200 placeholder:text-slate-600 outline-none focus:border-cyan-500/40 transition-colors"
+              placeholder="Search neurons…"
+              className="w-full bg-[#020617]/85 border border-cyan-500/30 rounded-xl pl-8 pr-3 py-1.5 text-[10px] font-mono text-slate-200 placeholder:text-slate-600 outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all"
             />
           </div>
           {searchResults.length > 0 && (
-            <div className="absolute top-full mt-1 w-full max-h-52 overflow-y-auto rounded-lg border border-white/10 bg-[#020617]/95 backdrop-blur-xl shadow-lg z-30">
+            <div className="absolute top-full mt-1 w-full max-h-52 overflow-y-auto rounded-xl border border-cyan-500/30 bg-[#020617]/95 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] z-30">
               {searchResults.map(n => (
                 <button key={n.id} onMouseDown={() => searchSelect(n)}
-                        className="w-full text-left px-2.5 py-1.5 text-[10px] font-mono text-slate-300 hover:bg-white/5 hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                        className="w-full text-left px-3 py-2 text-[10px] font-mono text-slate-300 hover:bg-cyan-500/15 hover:text-cyan-300 flex items-center gap-2 transition-colors">
                   <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: groupColor(n.group) }} />
                   <span className="truncate">{n.title}</span>
                 </button>
               ))}
             </div>
           )}
+        </div>
+
+        {/* Quick System Focus Dock */}
+        <div className="mt-3 flex flex-wrap gap-1 max-w-[210px] pointer-events-auto">
+          {['WAANDA', 'AEGIS', 'EQORE', 'ALIS', 'VIS', 'IMMP'].map(sys => (
+            <button
+              key={sys}
+              onClick={() => quickFocusSystem(sys)}
+              className="px-2 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[8px] font-mono tracking-widest uppercase hover:bg-cyan-500/25 hover:border-cyan-400 hover:shadow-[0_0_10px_rgba(34,211,238,0.4)] transition-all"
+            >
+              {sys}
+            </button>
+          ))}
         </div>
 
         <div className="mt-3 flex flex-col gap-1.5 pointer-events-auto">
