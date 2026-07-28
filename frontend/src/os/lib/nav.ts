@@ -311,17 +311,31 @@ export const RAIL_ITEMS: RailEntry[] = [
     ],
   },
   {
+    id: 'neural-network',
+    label: 'Neural Network',
+    icon: ShareNetworkIcon,
+    defaultPath: `${BASE}/neural-network`,
+    matchPrefixes: [`${BASE}/neural-network`],
+    sidebarItems: [
+      { id: 'nn-cortex',      label: '3D Neural Cortex',   path: `${BASE}/neural-network`,                 category: 'Cortex' },
+      { id: 'nn-identity',    label: 'Identity Neurons',    path: `${BASE}/neural-network?group=identity`,    category: 'Cortex' },
+      { id: 'nn-arch',        label: 'Architecture Stack',  path: `${BASE}/neural-network?group=architecture`,category: 'Cortex' },
+      { id: 'nn-commercial',  label: 'Commercial Synapses', path: `${BASE}/neural-network?group=commercial`,  category: 'Cortex' },
+      { id: 'nn-ops',         label: 'Ops Telemetry',       path: `${BASE}/neural-network?group=ops`,         category: 'Cortex' },
+      { id: 'nn-captures',    label: 'Star Captures',       path: `${BASE}/neural-network?group=capture`,     category: 'Cortex', badge: 'live' },
+    ],
+  },
+  {
     id: 'intelligence',
     label: 'Intelligence',
     icon: HardDrivesIcon,
     defaultPath: `${BASE}/systems`,
     matchPrefixes: [
-      `${BASE}/systems`, `${BASE}/neural-network`,
+      `${BASE}/systems`,
       `${BASE}/agent-logs`, `${BASE}/analytics`, `${BASE}/relay`,
     ],
     sidebarItems: [
       { id: 'systems',        label: 'Systems',        path: `${BASE}/systems`        },
-      { id: 'neural-network', label: 'Neural Network', path: `${BASE}/neural-network` },
       { id: 'agent-logs',     label: 'Agent Logs',     path: `${BASE}/agent-logs`     },
       { id: 'analytics',      label: 'Analytics',      path: `${BASE}/analytics`      },
       { id: 'relay',          label: 'RELAY',          path: `${BASE}/relay`,          badge: 'comms' },
