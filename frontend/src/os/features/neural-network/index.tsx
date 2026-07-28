@@ -1016,13 +1016,74 @@ export function NeuralNetworkModule() {
     window.addEventListener('pointerdown', unlock)
     window.addEventListener('keydown', unlock)
 
-    api.get('/admin/kangqore-immp/brain/graph').then(({ data }) => {
-      if (disposed || !containerRef.current) return
-      const nodes: BrainNode[] = data.nodes
-      const links: BrainLink[] = data.links
+function getKangqoreEcosystemBrainGraph() {
+  const nodes: BrainNode[] = [
+    { id: 1, slug: 'kangqore-vis', title: 'KANGQORE VIS', group: 'core', val: 10, excerpt: 'Kangqore Visual Intelligence & Media Cortex', description: 'Visual AI, image synthesis, computer vision & spatial media engine.', file: 'frontend/src/os/features/neural-network/index.tsx' },
+    { id: 2, slug: 'kangqore-alis', title: 'KANGQORE ALIS', group: 'core', val: 10, excerpt: 'Agentic Life Intelligence System', description: 'Autonomous agentic lifecycle, self-improving memory & agent orchestration.', file: 'backend/src/kangqore-immp/cognition/' },
+    { id: 3, slug: 'eqore', title: 'EQORE', group: 'identity', val: 9, excerpt: 'Enterprise Qore Autonomous AI Console', description: 'Enterprise-wide executive AI console, decision intelligence & multi-agent dispatcher.', file: 'frontend/src/pages/EQoreAIConsole.jsx' },
+    { id: 4, slug: 'waanda', title: 'WAANDA', group: 'identity', val: 10, excerpt: 'Autonomous Mission Controller & Neural Cortex', description: 'Supreme neural orchestrator, cognitive dispatcher & autonomous release controller.', file: 'frontend/src/os/features/kangqore-immp/' },
+    { id: 5, slug: 'aegis', title: 'AEGIS', group: 'identity', val: 9, excerpt: 'Enterprise AI Security & Guardrails', description: 'Zero-trust security, real-time threat detection & AI guardrails.', file: 'frontend/src/pages/admin/AegisSecurityDashboard.jsx' },
+    { id: 6, slug: 'kangqore-immp', title: 'KANGQORE IMMP', group: 'core', val: 10, excerpt: 'Integrated Media & Management Platform', description: 'Central enterprise media, signal ledger, workflows & cognition platform.', file: 'frontend/src/os/features/kangqore-immp/' },
+    { id: 7, slug: 'kangqore-view', title: 'KANGQORE VIEW', group: 'identity', val: 8, excerpt: 'Central Operating System Shell', description: 'Primary desktop & web OS environment for enterprise administrative control.', file: 'frontend/src/os/' },
+    { id: 8, slug: 'code-admin', title: 'C.O.D.E. Admin', group: 'identity', val: 9, excerpt: 'Code of Observation, Decision & Execution', description: 'Supreme Admin Command Node for Mahesh Kumar, Founder & CEO.', file: 'AGENTS.md' },
+    { id: 10, slug: 'bids', title: 'BIDS Framework', group: 'commercial', val: 8, excerpt: 'Business Intelligence & Decision Synthesis', description: 'Strategic business intelligence, ROI modeling & executive decision synthesis.', file: 'frontend/src/pages/BIDSPage.jsx' },
+    { id: 11, slug: 'bids-tata-steel', title: 'BIDS Tata Steel', group: 'commercial', val: 8, excerpt: 'Industrial Steel Operations Neural Intelligence', description: 'Specialized BIDS implementation for Tata Steel industrial supply chain & blast furnace optimization.', file: 'frontend/src/pages/BIDSTataSteelPage.jsx' },
+    { id: 12, slug: 'ai-concierge', title: 'AI Concierge', group: 'commercial', val: 7, excerpt: 'Interactive Conversational AI Specialist', description: '24/7 intelligent concierge for client engagement, consultation & lead qualification.', file: 'frontend/src/components/concierge/' },
+    { id: 13, slug: 'global-capability-centers', title: 'Global Capability Centers', group: 'commercial', val: 8, excerpt: 'Enterprise GCC Automation & Scaling', description: 'Global capability center setup, talent engineering & offshore innovation hubs.', file: 'frontend/src/pages/services/reimagine/GlobalCapabilityCenters.jsx' },
+    { id: 14, slug: 'relationship-studio', title: 'Relationship Studio', group: 'commercial', val: 7, excerpt: 'Client Relationship & Intelligence System', description: 'Omnichannel client relationship management & account intelligence.', file: 'frontend/src/pages/RelationshipStudio.jsx' },
+    { id: 15, slug: 'growth-funnels', title: 'Growth Funnels & Conversion', group: 'commercial', val: 7, excerpt: 'Commercial Funnel Synthesizer', description: 'Growth funnel optimization, SXO, GEO & performance marketing analytics.', file: 'frontend/src/pages/services/amplify/GrowthFunnelsConversion.jsx' },
+    { id: 16, slug: 'cdp-strategy', title: 'CDP Strategy & Data Platform', group: 'commercial', val: 7, excerpt: 'Customer Data Platform & Identity', description: 'Unified customer data architecture, real-time segmentation & identity resolution.', file: 'frontend/src/pages/services/amplify/CDPStrategy.jsx' },
+    { id: 20, slug: 'data-science-ai', title: 'Data Science & AI', group: 'architecture', val: 8, excerpt: 'Enterprise Predictive Analytics & ML', description: 'Predictive modeling, deep learning, NLP, computer vision & generative AI.', file: 'frontend/src/pages/services/ai-cognitive/DataScienceAI.jsx' },
+    { id: 21, slug: 'mlops-engineering', title: 'MLOps Engineering', group: 'architecture', val: 8, excerpt: 'Production ML Lifecycle Operations', description: 'Continuous model deployment, automated retraining, feature stores & drift monitoring.', file: 'frontend/src/pages/services/ai-cognitive/MLOps.jsx' },
+    { id: 22, slug: 'agentic-ai', title: 'Agentic AI & Autonomous Agents', group: 'architecture', val: 9, excerpt: 'Governed Autonomous Agent Swarms', description: 'Autonomous multi-agent swarms, goal-seeking reasoning & tool invocation.', file: 'frontend/src/pages/services/ai-cognitive/AgenticAI.jsx' },
+    { id: 23, slug: 'product-digital-engineering', title: 'Product & Digital Engineering', group: 'architecture', val: 8, excerpt: 'Full-Stack Software Architecture', description: 'Modern cloud-native web apps, mobile apps, microservices & scalable platforms.', file: 'frontend/src/pages/services/reimagine/ProductDigitalEngineering.jsx' },
+    { id: 24, slug: 'quality-engineering', title: 'Quality Engineering & Assurance', group: 'architecture', val: 7, excerpt: 'Automated Testing & Reliability', description: 'Autonomous test generation, performance benchmarks & continuous quality control.', file: 'frontend/src/pages/services/reimagine/QualityEngineeringAssurance.jsx' },
+    { id: 25, slug: 'api-microservices', title: 'API & Microservices Engineering', group: 'architecture', val: 7, excerpt: 'Cloud-Native API Ecosystems', description: 'REST, GraphQL, gRPC API gateways, service mesh & event-driven architecture.', file: 'frontend/src/pages/services/reimagine/APIMicroservicesEngineering.jsx' },
+    { id: 26, slug: 'embedded-design-systems', title: 'Embedded Design Systems', group: 'architecture', val: 7, excerpt: 'UI/UX Engineering & Design Token Mesh', description: 'Enterprise UI design tokens, responsive web components & glassmorphic UI systems.', file: 'frontend/src/pages/services/reimagine/EmbeddedDesignSystems.jsx' },
+    { id: 27, slug: 'pimcore-platforms', title: 'Pimcore & Enterprise Platforms', group: 'architecture', val: 7, excerpt: 'Digital Experience & PIM/MDM', description: 'Pimcore product information management, enterprise CMS & digital asset management.', file: 'frontend/src/pages/services/platforms/Pimcore.jsx' },
+    { id: 28, slug: 'salesforce-servicenow', title: 'Salesforce & ServiceNow Solutions', group: 'architecture', val: 7, excerpt: 'Enterprise CRM & ITSM Automation', description: 'Custom Salesforce Cloud integrations & ServiceNow workflow automation.', file: 'frontend/src/pages/services/platforms/Salesforce.jsx' },
+    { id: 29, slug: 'iot-edge', title: 'Internet of Things (IoT)', group: 'architecture', val: 7, excerpt: 'Edge Intelligence & Sensor Mesh', description: 'Industrial IoT, telemetry streaming, edge computing & smart sensor networks.', file: 'frontend/src/pages/services/reimagine/InternetOfThings.jsx' },
+    { id: 30, slug: 'operation-technology', title: 'Operation Technology (OT)', group: 'architecture', val: 7, excerpt: 'Industrial Automation & SCADA', description: 'SCADA integration, PLC connectivity & OT cybersecurity.', file: 'frontend/src/pages/services/reimagine/OperationTechnology.jsx' },
+    { id: 31, slug: 'blockchain-custom', title: 'Blockchain Custom Solutions', group: 'architecture', val: 7, excerpt: 'Distributed Ledger & Smart Contracts', description: 'Enterprise smart contracts, decentralized identity & cryptographic audit trails.', file: 'frontend/src/pages/services/reimagine/BlockchainCustomSections.jsx' },
+    { id: 40, slug: 'signal-ledger', title: 'System Signal Ledger', group: 'chronicle', val: 7, excerpt: 'Event & Telemetry Ingestion', description: 'Unified real-time signal ledger capturing user interactions & system telemetry.', file: 'backend/src/kangqore-immp/signals/signalLedger.service.ts' },
+    { id: 41, slug: 'cognitive-knowledge-base', title: 'Cognitive Knowledge Base', group: 'chronicle', val: 8, excerpt: 'Enterprise Ontology & Vector Index', description: 'Semantic knowledge graph, vector store & RAG document indexing.', file: 'backend/src/kangqore-immp/cognition/' },
+    { id: 42, slug: 'decision-synthesis', title: 'Decision Synthesis Engine', group: 'chronicle', val: 8, excerpt: 'Multi-Agent Strategic Evaluator', description: 'Evaluates options, calculates risk scores & synthesizes strategic action plans.', file: 'backend/src/kangqore-immp/agents/' },
+    { id: 43, slug: 'workflow-orchestrator', title: 'Workflow Orchestrator', group: 'chronicle', val: 7, excerpt: 'Automated Pipeline Execution', description: 'DAG workflow execution engine for multi-step AI tasks and data pipelines.', file: 'backend/src/kangqore-immp/workflows/' },
+    { id: 44, slug: 'visitor-identity-matrix', title: 'Visitor Identity Matrix', group: 'chronicle', val: 7, excerpt: 'Footprint & Engagement Tracker', description: 'Anonymous & authenticated visitor identity tracking, session footprint & intent detection.', file: 'frontend/src/hooks/useVisitorIdentity.js' },
+    { id: 50, slug: 'ai-governance', title: 'AI Governance & Responsible AI', group: 'ops', val: 8, excerpt: 'Safety, Compliance & Ethics', description: 'EU AI Act compliance, bias detection, explainable AI (XAI) & safety guardrails.', file: 'frontend/src/pages/services/ai-cognitive/AIGovernanceResponsibleAI.jsx' },
+    { id: 51, slug: 'finops-cost', title: 'FinOps & AI Cost Optimization', group: 'ops', val: 7, excerpt: 'Resource & Token Metering', description: 'LLM token cost tracking, cloud resource optimization & FinOps telemetry.', file: 'backend/src/kangqore-immp/runtime/waandaRuntime.ts' },
+    { id: 52, slug: 'security-risk', title: 'Security & Risk Management', group: 'ops', val: 7, excerpt: 'Zero-Trust Security Matrix', description: 'Role-based access control, cryptographic verification & vulnerability scanning.', file: 'frontend/src/pages/services/reimagine/FinanceRiskManagement.jsx' },
+    { id: 53, slug: 'telemetry-health', title: 'Telemetry & System Health', group: 'ops', val: 7, excerpt: 'Real-Time Performance Monitor', description: 'System health probes, circuit breaker status & live latency monitoring.', file: 'backend/src/routes/admin.ts' },
+  ]
 
-      assignAnatomicalBrainCoordinates(nodes)
-      rebuildIndexes(nodes, links)
+  const links: BrainLink[] = [
+    { source: 1, target: 4, value: 5 },  { source: 2, target: 4, value: 5 },  { source: 3, target: 4, value: 5 },
+    { source: 4, target: 5, value: 5 },  { source: 4, target: 6, value: 5 },  { source: 4, target: 7, value: 4 },
+    { source: 8, target: 4, value: 5 },  { source: 8, target: 3, value: 5 },  { source: 4, target: 10, value: 4 },
+    { source: 10, target: 11, value: 4 },{ source: 4, target: 12, value: 4 },{ source: 4, target: 13, value: 4 },
+    { source: 12, target: 14, value: 3 },{ source: 10, target: 15, value: 3 },{ source: 15, target: 16, value: 3 },
+    { source: 4, target: 20, value: 4 }, { source: 20, target: 21, value: 4 },{ source: 4, target: 22, value: 5 },
+    { source: 4, target: 23, value: 4 }, { source: 23, target: 24, value: 3 },{ source: 23, target: 25, value: 3 },
+    { source: 23, target: 26, value: 3 },{ source: 23, target: 27, value: 3 },{ source: 23, target: 28, value: 3 },
+    { source: 23, target: 29, value: 3 },{ source: 29, target: 30, value: 3 },{ source: 23, target: 31, value: 3 },
+    { source: 6, target: 40, value: 4 }, { source: 6, target: 41, value: 4 }, { source: 4, target: 42, value: 4 },
+    { source: 6, target: 43, value: 4 }, { source: 40, target: 44, value: 3 },{ source: 5, target: 50, value: 4 },
+    { source: 4, target: 51, value: 4 }, { source: 5, target: 52, value: 4 }, { source: 4, target: 53, value: 4 },
+  ]
+
+  return { nodes, links, count: nodes.length }
+}
+
+    api.get('/admin/kangqore-immp/brain/graph')
+      .then(({ data }) => data)
+      .catch(() => getKangqoreEcosystemBrainGraph())
+      .then((data: any) => {
+        if (disposed || !containerRef.current) return
+        const nodes: BrainNode[] = data.nodes
+        const links: BrainLink[] = data.links
+
+        assignAnatomicalBrainCoordinates(nodes)
+        rebuildIndexes(nodes, links)
 
       const nid = (e: any) => (typeof e === 'object' ? e.id : e)
       const linkLit = (l: any) => {
