@@ -582,6 +582,7 @@ export function NeuralNetworkModule() {
   const [micLevel, setMicLevel] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<BrainNode[]>([])
+  const [activeSystem, setActiveSystem] = useState<string | null>(null)
   const navigate = useNavigate()
   const [hiddenGroups, setHiddenGroups] = useState<Set<string>>(new Set())
   const [groupCounts, setGroupCounts] = useState<Record<string, number>>({})
@@ -874,6 +875,37 @@ export function NeuralNetworkModule() {
   }, [])
 
   useEffect(() => { applyHighlight() }, [hiddenGroups, applyHighlight])
+
+  const quickFocusSystem = useCallback((sys: string) => {
+    if (activeSystem === sys) {
+      setActiveSystem(null)
+      clearFocus()
+      return
+    }
+    setActiveSystem(sys)
+    const graph = graphRef.current
+    if (!graph) return
+    const nodes = (graph.graphData().nodes as BrainNode[] | undefined) ?? []
+    const sysQuery = sys.toLowerCase()
+    
+    // Find matching nodes
+    const matches = nodes.filter(n =>
+      n.title.toLowerCase().includes(sysQuery) ||
+      (n.description && n.description.toLowerCase().includes(sysQuery)) ||
+      (n.group && n.group.toLowerCase().includes(sysQuery))
+    )
+
+    if (matches.length > 0) {
+      if (matches.length === 1) {
+        focusNode(matches[0])
+      } else {
+        highlightCluster(matches.map(m => m.id))
+      }
+    } else {
+      // Fallback: search query filter
+      runSearch(sys)
+    }
+  }, [activeSystem, clearFocus, focusNode, highlightCluster, runSearch])
 
   // ── search-to-fly ─────────────────────────────────────────────────────────
 
@@ -1650,16 +1682,24 @@ export function NeuralNetworkModule() {
         </div>
 
         {/* Quick System Focus Dock */}
-        <div className="mt-3 flex flex-wrap gap-1 max-w-[210px] pointer-events-auto">
-          {['WAANDA', 'AEGIS', 'EQORE', 'ALIS', 'VIS', 'IMMP'].map(sys => (
-            <button
-              key={sys}
-              onClick={() => quickFocusSystem(sys)}
-              className="px-2 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[8px] font-mono tracking-widest uppercase hover:bg-cyan-500/25 hover:border-cyan-400 hover:shadow-[0_0_10px_rgba(34,211,238,0.4)] transition-all"
-            >
-              {sys}
-            </button>
-          ))}
+        <div className="mt-3 flex flex-wrap gap-1.5 max-w-[215px] pointer-events-auto">
+          {['WAANDA', 'AEGIS', 'EQORE', 'ALIS', 'VIS', 'IMMP'].map(sys => {
+            const isActive = activeSystem === sys
+            return (
+              <button
+                key={sys}
+                onClick={() => quickFocusSystem(sys)}
+                className={`px-2.5 py-1 rounded-md text-[8.5px] font-mono tracking-widest uppercase transition-all shadow-sm active:scale-95 ${
+                  isActive
+                    ? 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-slate-950 font-black border border-cyan-200 shadow-[0_0_15px_rgba(34,211,238,0.8)] scale-105'
+                    : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 hover:border-cyan-400 hover:text-white hover:shadow-[0_0_10px_rgba(34,211,238,0.4)]'
+                }`}
+                title={`Focus 3D Cluster on ${sys}`}
+              >
+                {sys}
+              </button>
+            )
+          })}
         </div>
 
         <div className="mt-3 flex flex-col gap-1.5 pointer-events-auto">
