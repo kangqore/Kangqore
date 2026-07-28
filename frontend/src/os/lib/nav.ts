@@ -331,11 +331,7 @@ export const RAIL_ITEMS: RailEntry[] = [
     icon: ChatCircleDotsIcon,
     defaultPath: `${BASE}/relay`,
     matchPrefixes: [`${BASE}/relay`],
-    sidebarItems: [
-      { id: 'relay-stream',   label: 'Live Stream',     path: `${BASE}/relay`,               category: 'Communications', badge: 'live' },
-      { id: 'relay-direct',   label: 'Direct Relay',    path: `${BASE}/relay?view=direct`,   category: 'Communications' },
-      { id: 'relay-channels', label: 'Neural Channels', path: `${BASE}/relay?view=channels`, category: 'Communications' },
-    ],
+    sidebarItems: [],
   },
   {
     id: 'intelligence',
