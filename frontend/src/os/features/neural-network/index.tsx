@@ -420,38 +420,6 @@ function makeBrainHologramShell(): THREE.Group {
     }
   }
 
-  // 6. CYBERNETIC HOLOGRAPHIC HUD ORBITAL RINGS
-  const buildRing = (radius: number, axis: 'x' | 'y' | 'z', color: number, opacity: number) => {
-    const points: THREE.Vector3[] = []
-    const segs = 96
-    for (let i = 0; i <= segs; i++) {
-      const a = (i / segs) * Math.PI * 2
-      if (axis === 'y') points.push(new THREE.Vector3(Math.cos(a) * radius, 0, Math.sin(a) * radius))
-      else if (axis === 'x') points.push(new THREE.Vector3(0, Math.cos(a) * radius, Math.sin(a) * radius))
-      else points.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a) * radius, 0))
-    }
-    const geo = new THREE.BufferGeometry().setFromPoints(points)
-    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity })
-    return new THREE.LineLoop(geo, mat)
-  }
-
-  // Add 3 Cybernetic HUD Target Rings
-  group.add(buildRing(205, 'y', 0x00f0ff, 0.45))
-  group.add(buildRing(190, 'x', 0xa855f7, 0.35))
-  group.add(buildRing(180, 'z', 0x38bdf8, 0.30))
-
-  // 7. DYNAMIC QUANTUM SCANNING BEAM RING (Sweeps vertically along Y-axis)
-  const scanRingPoints: THREE.Vector3[] = []
-  for (let i = 0; i <= 64; i++) {
-    const a = (i / 64) * Math.PI * 2
-    scanRingPoints.push(new THREE.Vector3(Math.cos(a) * 165, 0, Math.sin(a) * 165))
-  }
-  const scanGeo = new THREE.BufferGeometry().setFromPoints(scanRingPoints)
-  const scanMat = new THREE.LineBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.7 })
-  const scanRing = new THREE.LineLoop(scanGeo, scanMat)
-  scanRing.name = 'quantumScanRing'
-  group.add(scanRing)
-
   // Cybernetic Cortical Point Clouds & Glowing Line Meshes
   const leftGeo = new THREE.BufferGeometry().setFromPoints(leftCortexPoints)
   const leftMat = new THREE.PointsMaterial({
