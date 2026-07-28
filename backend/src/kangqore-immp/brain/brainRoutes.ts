@@ -40,7 +40,7 @@ brainRoutes.get('/telemetry', async (_req, res) => {
       { id: 'waanda', name: 'WAANDA Executive AI', group: 'identity', status: 'OPTIMAL', load: '14%', latency: '42ms', throughput: '1.2k ops/s' },
       { id: 'aegis', name: 'AEGIS Security & Governance', group: 'identity', status: 'SHIELD_ACTIVE', load: '8%', latency: '12ms', throughput: '850 ops/s' },
       { id: 'eqore', name: 'EQORE Cognitive Empathy', group: 'identity', status: 'SYNCHRONIZED', load: '11%', latency: '35ms', throughput: '620 ops/s' },
-      { id: 'alis', name: 'ALIS Swarm Life System', group: 'identity', status: 'EVOLVING', load: '18%', latency: '58ms', throughput: '2.1k ops/s' },
+      { id: 'alis', name: 'ALIS Demand & Market Intelligence', group: 'identity', status: 'EVOLVING', load: '18%', latency: '58ms', throughput: '2.1k ops/s' },
       { id: 'vis', name: 'KANGQORE VIS Computer Vision', group: 'architecture', status: 'STREAMING', load: '22%', latency: '18ms', throughput: '4.5k fps' },
       { id: 'bids', name: 'BIDS Synthesizer Engine', group: 'commercial', status: 'ACTIVE', load: '15%', latency: '28ms', throughput: '1.8k query/s' },
       { id: 'immp', name: 'IMMP Multi-Modal Core', group: 'architecture', status: 'ROUTING_LIVE', load: '19%', latency: '22ms', throughput: '3.4k msg/s' },
