@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import useSeo from '../seo/useSeo';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { departmentsData, departmentsList } from '../data/departmentsData';
 import { servicesData } from '../data/servicesData';
@@ -79,26 +79,22 @@ const DepartmentsIndexPage = () => {
     ],
   };
 
+  useSeo({
+    title: pageTitle,
+    description: pageDescription,
+    keywords: seo.keywords,
+    canonical: pageUrl,
+    robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+    lang: 'en',
+    og: { type: 'website', url: pageUrl, title: pageTitle, description: pageDescription,
+          image: ogImage, site_name: ORG_NAME, locale: 'en_GB' },
+    twitter: { card: 'summary_large_image', site: '@kangqore', url: pageUrl,
+               title: pageTitle, description: pageDescription, image: ogImage },
+    jsonLd: [jsonLd],
+  });
+
   return (
     <div className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        {seo.keywords && <meta name="keywords" content={seo.keywords} />}
-        <link rel="canonical" href={pageUrl} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={pageUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:site_name" content={ORG_NAME} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={pageUrl} />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content={ogImage} />
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Helmet>
 
       {/* ─── HERO ─── */}
       <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
