@@ -352,7 +352,7 @@ export default function ProductStrategyBIDSPage() {
                 {[['8', 'Capability\nAreas'], ['4', 'Engagement\nPhases'], ['6', 'Industry\nContexts'], ['4', 'Tool\nCategories']].map(([v, l]) => (
                   <div key={l}>
                     <p className="text-4xl font-black text-white tracking-tight mb-1">{v}</p>
-                    <p className="text-white/30 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{l}</p>
+                    <p className="text-white/60 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{l}</p>
                   </div>
                 ))}
               </div>
@@ -414,7 +414,7 @@ export default function ProductStrategyBIDSPage() {
           <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
             {['Strategy-Led Design', 'Research-Informed Decisions', 'Validated Prototyping', 'Scalable Design Systems', 'Accessibility-First Architecture', 'Design-to-Build Continuity', 'Adoption-Centred Launch Planning'].map((f, i, arr) => (
               <React.Fragment key={f}>
-                <span className="flex-shrink-0 text-white/25 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
+                <span className="flex-shrink-0 text-white/60 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
                 {i < arr.length - 1 && <span className="flex-shrink-0 mx-4 text-white/10 text-xs select-none">·</span>}
               </React.Fragment>
             ))}
@@ -471,7 +471,7 @@ export default function ProductStrategyBIDSPage() {
               <div className="group p-8 rounded-2xl border border-white/[0.07] bg-[#06090f] relative overflow-hidden hover:border-transparent transition-all duration-500">
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
                 <div className="relative z-10">
-                  <p className="text-[9px] font-black tracking-[0.4em] text-white/25 group-hover:text-white/60 uppercase mb-6 transition-colors duration-500">DESIGN INTELLIGENCE PROFILE</p>
+                  <p className="text-[9px] font-black tracking-[0.4em] text-white/60 group-hover:text-white/60 uppercase mb-6 transition-colors duration-500">DESIGN INTELLIGENCE PROFILE</p>
                   <p className="text-[10px] font-black tracking-widest uppercase mb-2 text-cyan-400 group-hover:text-white transition-colors duration-500">{featureLabels[activeFeature] || 'Select a Feature'}</p>
                   <p className="text-white font-black text-2xl leading-tight mb-5">{featureTitles[activeFeature] || '—'}</p>
                   <p className="text-white/45 group-hover:text-white text-sm font-medium leading-relaxed mb-6 transition-colors duration-500">{featureContents[activeFeature] || 'Select a feature to explore its role in the product design framework.'}</p>
@@ -785,7 +785,7 @@ export default function ProductStrategyBIDSPage() {
           <div ref={differentiatorRef}>
             <div className="flex items-center justify-between mb-12">
               <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase">WHY THIS APPROACH</p>
-              <div className="hidden lg:grid grid-cols-[1fr_1fr] gap-10 text-[9px] font-black tracking-[0.3em] text-white/15 uppercase pr-1">
+              <div className="hidden lg:grid grid-cols-[1fr_1fr] gap-10 text-[9px] font-black tracking-[0.3em] text-white/60 uppercase pr-1">
                 <span>Reason</span>
                 <span>Detail</span>
               </div>
@@ -886,7 +886,7 @@ export default function ProductStrategyBIDSPage() {
                         </div>
                         <div className="relative z-10 flex-1 min-w-0">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/20 group-hover:text-white/50 uppercase transition-colors duration-500">{item.phase}</div>
+                            <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/60 group-hover:text-white/50 uppercase transition-colors duration-500">{item.phase}</div>
                             {item.kangqore && (
                               <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 group-hover:bg-white/15 border border-brand-blue/20 group-hover:border-white/30 rounded-full transition-colors duration-500">
                                 <div className="w-1 h-1 bg-brand-blue group-hover:bg-white rounded-full animate-pulse transition-colors duration-500" />
@@ -922,7 +922,7 @@ export default function ProductStrategyBIDSPage() {
                 <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
                   {[['Phases', '04'], ['Timeline', '4-12 wks'], ['Confidence', '100%']].map(([label, val], i) => (
                     <div key={label}>
-                      <div className="font-mono text-[10px] text-white/20 tracking-widest uppercase font-bold mb-2">{label}</div>
+                      <div className="font-mono text-[10px] text-white/60 tracking-widest uppercase font-bold mb-2">{label}</div>
                       <div className={`text-2xl font-black ${i === 2 ? 'bg-brand-gradient bg-clip-text text-transparent' : 'text-white'}`}>{val}</div>
                     </div>
                   ))}

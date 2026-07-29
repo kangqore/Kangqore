@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { X, ArrowRight, Sparkles, Activity } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -144,6 +144,38 @@ const firstName = (name) => {
   return name.trim().split(/\s+/)[0];
 };
 
+// ── eROOT appearance policy ───────────────────────────────────────────────────
+// Suppression rules, in one place so the trigger and the dismiss path cannot
+// drift apart: never within 24h of a manual dismissal, never more than twice in
+// a session, and never on top of the cookie banner (which owns the same corner).
+const DISMISS_KEY        = 'kq-eroot-dismissed-until';
+const SESSION_SHOWN_KEY  = 'kq-eroot-shown-count';
+const DISMISS_HOURS      = 24;
+const MAX_PER_SESSION    = 2;
+const DWELL_MS           = 8000;   // engaged-reader threshold
+const REOPEN_MS          = 60000;  // after an auto-dismiss (not a manual close)
+
+function cookieBannerOpen() {
+  // The consent banner is a fixed, full-width bar at z-99999. While it is up it
+  // owns the bottom of the viewport, so eROOT must stay out of the way.
+  return Boolean(
+    document.querySelector('[class*="z-[99999]"]') ||
+    document.querySelector('#cookie-consent, .cookie-consent, [data-cookie-banner]')
+  );
+}
+
+function canShowEroot() {
+  if (typeof window === 'undefined') return false;
+  try {
+    const until = Number(localStorage.getItem(DISMISS_KEY) || 0);
+    if (until && Date.now() < until) return false;
+    if (Number(sessionStorage.getItem(SESSION_SHOWN_KEY) || 0) >= MAX_PER_SESSION) return false;
+  } catch {
+    /* storage blocked (private mode) — fall through and allow */
+  }
+  return !cookieBannerOpen();
+}
+
 const EROOT = () => {
   const navigate  = useNavigate();
   const location  = useLocation();
@@ -159,17 +191,53 @@ const EROOT = () => {
   // Hook into the Human Context Intelligence Layer
   const { vibe, topIntent, probabilities } = useHumanContext();
 
+  // ── Trigger gating ──────────────────────────────────────────────────────────
+  // Previously this opened on a blind 3s timer on every page, with no memory of
+  // being dismissed — so it interrupted before a visitor had read anything and
+  // came back on every one of the 106 routes. It now waits for an intent signal
+  // (engaged dwell, or exit-intent) and remembers a dismissal for 24h.
+  // Seeded from sessionStorage so a page reload does not reset the session cap.
+  const shownCountRef = useRef(
+    typeof window === 'undefined' ? 0 : Number(sessionStorage.getItem(SESSION_SHOWN_KEY) || 0)
+  );
+
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 3000);
-    
-    const handleCookiesAccepted = () => {
+    // Deliberately NOT gated at mount: the cookie banner is up on first paint,
+    // so bailing here would permanently disarm the triggers for anyone who has
+    // not yet accepted. Suppression is evaluated at reveal time instead.
+    let dwellTimer;
+    let cancelled = false;
+
+    const reveal = () => {
+      if (cancelled || !canShowEroot() || shownCountRef.current >= MAX_PER_SESSION) return;
+      shownCountRef.current += 1;
+      sessionStorage.setItem(SESSION_SHOWN_KEY, String(shownCountRef.current));
       setVisible(true);
     };
-    window.addEventListener('cookies-accepted', handleCookiesAccepted);
-    
+
+    // Signal 1 — engaged reader: 8s dwell AND scrolled past the hero.
+    const startDwell = () => {
+      if (dwellTimer) return;
+      dwellTimer = setTimeout(reveal, DWELL_MS);
+    };
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.6) startDwell();
+    };
+
+    // Signal 2 — exit-intent: pointer leaves through the top of the viewport.
+    const onMouseOut = (e) => {
+      if (e.clientY <= 0 && !e.relatedTarget) reveal();
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('mouseout', onMouseOut);
+    onScroll(); // in case the page loads already scrolled
+
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('cookies-accepted', handleCookiesAccepted);
+      cancelled = true;
+      clearTimeout(dwellTimer);
+      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('mouseout', onMouseOut);
     };
   }, []);
 
@@ -191,13 +259,31 @@ const EROOT = () => {
     if (e && e.preventDefault) e.preventDefault();
     if (e && e.stopPropagation) e.stopPropagation();
     
+    // `e` present = the visitor actively closed it. That is an explicit signal,
+    // so remember it for 24h instead of re-offering on the next page view.
+    const manual = Boolean(e);
+    if (manual) {
+      try {
+        localStorage.setItem(DISMISS_KEY, String(Date.now() + DISMISS_HOURS * 60 * 60 * 1000));
+      } catch {
+        /* storage blocked — dismissal is session-only, acceptable */
+      }
+    }
+
     setClosing(true);
     setTimeout(() => {
       setClosing(false);
       setVisible(false);
-      // Only auto-reopen if it wasn't a manual close, or reopen after a much longer delay
-      if (!e) {
-        setTimeout(() => setVisible(true), 30000);
+      // Auto-dismiss (timed out, not closed by the visitor) may re-offer once
+      // more later in the session — still bounded by MAX_PER_SESSION.
+      if (!manual) {
+        setTimeout(() => {
+          if (canShowEroot() && shownCountRef.current < MAX_PER_SESSION) {
+            shownCountRef.current += 1;
+            sessionStorage.setItem(SESSION_SHOWN_KEY, String(shownCountRef.current));
+            setVisible(true);
+          }
+        }, REOPEN_MS);
       }
     }, 300); // Faster close animation for better UX
   };

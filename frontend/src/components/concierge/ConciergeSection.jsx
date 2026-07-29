@@ -23,6 +23,7 @@ import { useVoiceInput } from '../../hooks/useVoiceInput';
 import CitationBadge from './CitationBadge';
 import SuggestedPromptChip from './SuggestedPromptChip';
 import LeadCaptureInline from './LeadCaptureInline';
+import ResponsiveImage from '../media/ResponsiveImage';
 
 const HANDOFF_KEYWORDS = [
   "connect you to a kangqore consultant",
@@ -267,7 +268,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
           <div className={`relative z-10 px-6 sm:px-8 py-5 border-b flex items-center justify-between gap-2 ${inverted ? 'border-white/20' : 'border-white/5'}`}>
             <div className="flex items-center gap-4">
               <div className={`w-11 h-11 rounded-full overflow-hidden flex items-center justify-center shrink-0 ${inverted ? 'bg-white/30' : 'bg-slate-800'}`}>
-                <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
+                <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
               </div>
               <div>
                 <p className="text-[15px] font-semibold tracking-tight text-white">
@@ -358,7 +359,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                         {isUser ? (
                           <span className="text-[11px] font-bold text-white tracking-wide select-none">You</span>
                         ) : (
-                          <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
+                          <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
                         )}
                       </div>
                       <div
@@ -541,6 +542,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                 value={voice.listening && voice.interim ? `${input} ${voice.interim}`.trim() : input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={streaming}
+                aria-label="Ask eQORE AI a question"
                 placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
                 className={`w-full pl-6 pr-28 py-[18px] rounded-full text-[15px] focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg ${inverted ? 'bg-white/30 border border-white/50 text-white placeholder-white/75' : 'bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400'}`}
               />

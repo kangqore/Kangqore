@@ -210,4 +210,40 @@ if (mode === 'check') {
     `wrote ${path.relative(repoRoot, SITEMAP_PATH)} ` +
       `(${STATIC_URLS.length} static + ${deptSlugs.length} departments + ${serviceSlugs.length} services = ${totalUrls} URLs)`,
   );
+
+  // Also emit a machine-readable manifest for the backend. The dynamic
+  // /sitemap.xml route shadows this static file at runtime, and it previously
+  // degraded to a homepage-only sitemap whenever the CMS tables were empty —
+  // silently hiding all 106 canonical URLs from crawlers. SitemapService now
+  // merges this manifest so the static route set is always present.
+  const manifestPath = path.join(repoRoot, 'shared', 'siteRoutes.json');
+  const manifest = {
+    generatedAt: new Date().toISOString(),
+    baseUrl: BASE_URL,
+    routes: [
+      ...STATIC_URLS.map((u) => ({
+        path: u.loc.replace(BASE_URL, '') || '/',
+        type: 'STATIC',
+        priority: u.priority,
+        changefreq: u.changefreq,
+      })),
+      ...deptSlugs.map((s) => ({
+        path: `/departments/${s}`,
+        type: 'DEPARTMENT',
+        priority: '0.9',
+        changefreq: 'monthly',
+      })),
+      ...serviceSlugs.map((s) => ({
+        path: `/services/${s}`,
+        type: 'SERVICE',
+        priority: '0.8',
+        changefreq: 'monthly',
+      })),
+    ],
+  };
+  fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  console.log(
+    `wrote ${path.relative(repoRoot, manifestPath)} (${manifest.routes.length} routes)`,
+  );
 }

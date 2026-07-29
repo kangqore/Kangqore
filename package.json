@@ -21,6 +21,19 @@
     "audit:legacy-coverage": "node scripts/audit-legacy-coverage.mjs",
     "audit:page-seo": "node scripts/audit-page-seo.mjs",
     "audit:data-architecture": "node scripts/audit-data-architecture.mjs",
-    "audit:all": "npm run audit:seo-data && npm run audit:legacy-coverage && npm run audit:page-seo && npm run audit:data-architecture"
+    "audit:all": "npm run audit:seo-data && npm run audit:legacy-coverage && npm run audit:page-seo && npm run audit:data-architecture",
+    "gen:sitemap": "node scripts/generate-sitemap.mjs",
+    "gen:prerender": "node scripts/generate-prerender.mjs",
+    "gen:images": "node scripts/generate-images.mjs",
+    "gen:all": "npm run gen:sitemap && npm run gen:prerender && npm run gen:images",
+    "check:sitemap": "node scripts/generate-sitemap.mjs --check",
+    "check:prerender": "node scripts/generate-prerender.mjs --check",
+    "check:images": "node scripts/generate-images.mjs --check",
+    "check:seo": "npm run check:sitemap && npm run check:prerender && npm run check:images",
+    "compress": "node scripts/compress-build.mjs",
+    "build:web": "cd frontend && npm run build && cd .. && npm run gen:all && npm run compress"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
   }
 }

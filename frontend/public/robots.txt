@@ -1,26 +1,60 @@
 # Kangqore — robots.txt
-# Public marketing pages are crawlable; admin / auth / API are not.
+#
+# ⚠️  THIS FILE IS A FALLBACK ONLY AND IS NORMALLY SHADOWED.
+# The live /robots.txt is generated at request time by
+# backend/src/kangqore-vis/technical-seo/RobotsService.ts, which takes
+# precedence (see backend/src/index.ts). Edit that file, not this one.
+# This copy exists so a static-only deploy (no backend) still ships sane rules.
 
 User-agent: *
 Allow: /
-
-# Private surfaces
-Disallow: /admin/
+Disallow: /admin
+Disallow: /api
+Disallow: /dashboard
 Disallow: /auth/
-Disallow: /dashboard/
-Disallow: /api/
-Disallow: /book/
 Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
 Disallow: /reset-password
+Disallow: /kangqore-view/
+Disallow: /book/
 
-# Parameterized URLs (tracking, sessions, etc.)
-Disallow: /*?*
+# ─── AI & answer engines: explicitly allowed ───
+User-agent: GPTBot
+Allow: /
 
-# Legacy URL paths (Phase C ships 301 redirects, but explicit disallow
-# saves crawl budget by signalling "don't follow these patterns")
-Disallow: /department/
-Disallow: /services/*/
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
 
 Sitemap: https://kangqore.com/sitemap.xml
+# LLM-friendly index: https://kangqore.com/llms.txt

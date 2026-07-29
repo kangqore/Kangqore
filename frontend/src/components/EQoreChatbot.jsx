@@ -10,6 +10,7 @@ import SlotPicker from './concierge/SlotPicker';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import TextareaAutosize from 'react-textarea-autosize';
+import ResponsiveImage from './media/ResponsiveImage';
 
 const HANDOFF_KEYWORDS = [
   "connect you to a kangqore consultant",
@@ -466,7 +467,7 @@ const EQoreChatbot = () => {
           <div className="flex items-center gap-3 relative z-10">
             <div className="relative">
               <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.2)] bg-[#050505]">
-                <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
+                <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
               </div>
               <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-cyan-400 border-2 border-[#111115] rounded-full animate-pulse shadow-[0_0_10px_rgba(34,211,238,0.6)]"></span>
             </div>
@@ -535,7 +536,7 @@ const EQoreChatbot = () => {
                 <div className={`flex items-end gap-2 max-w-[85%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
                   {!isUser && (
                     <div className="w-6 h-6 rounded-md overflow-hidden border border-cyan-400/20 bg-[#050505] shrink-0 mb-1 shadow-[0_0_10px_rgba(34,211,238,0.1)]">
-                      <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
+                      <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div className={`p-3.5 text-[13px] leading-relaxed shadow-sm whitespace-pre-wrap ${
@@ -723,6 +724,7 @@ const EQoreChatbot = () => {
                 }
               }}
               disabled={streaming || isListening}
+              aria-label="Message eQORE AI"
               placeholder={isListening ? 'Listening...' : 'Query the intelligence core...'}
               className={`w-full pl-4 pr-24 py-2 bg-[#050505] border rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60 resize-none leading-relaxed ${
                 isListening ? 'border-red-500/60 ring-1 ring-red-500/30' : 'border-white/10'
@@ -759,6 +761,7 @@ const EQoreChatbot = () => {
                 <button
                   type="submit"
                   disabled={!inputText.trim()}
+                  aria-label="Send message"
                   className="p-2 bg-brand-blue text-white rounded-lg hover:bg-brand-blue/80 disabled:opacity-30 disabled:bg-white/10 disabled:text-white/30 transition-all flex items-center justify-center"
                 >
                   <Send className="w-4 h-4" />

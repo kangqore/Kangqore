@@ -5,6 +5,7 @@ import { LogIn, LogOut, UserCircle, ArrowUp, ChevronUp, MessageCircle, Accessibi
 import { departmentData } from '../data/departmentData';
 import { useAuth } from '../context/AuthContext';
 import EQoreChatbot from './EQoreChatbot';
+import ResponsiveImage from './media/ResponsiveImage';
 
 const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
   const { user, logout } = useAuth();
@@ -279,10 +280,12 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
               className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-[0_10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex items-center justify-center transition-all duration-500 hover:scale-110 hover:shadow-[0_0_25px_rgba(37,100,234,0.4)] group"
               aria-label="Ask eQORE AI"
             >
-              <img 
-                src="/images/eqore-avatar.png" 
-                alt="eQORE AI" 
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+              <ResponsiveImage
+                src="/images/eqore-avatar.png"
+                alt="eQORE AI"
+                loading="lazy"
+                sizes="48px"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               {hasUnread && (
                 <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white dark:border-gray-800 animate-pulse"></span>
@@ -590,7 +593,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
                           </div>
                           <div className="min-w-0">
                             <p className="text-[15px] font-bold text-white group-hover:text-brand-blue transition-colors truncate">{user.name}</p>
-                            <p className="text-[10px] text-white/40 uppercase tracking-widest truncate">{user.role?.replace('_', ' ')}</p>
+                            <p className="text-[10px] text-white/60 uppercase tracking-widest truncate">{user.role?.replace('_', ' ')}</p>
                           </div>
                         </Link>
                         <button 
@@ -621,7 +624,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
               {/* Sidebar Footer */}
               <div className="px-10 py-6 border-t border-white/5 relative z-10 bg-black/20">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-white/30 mb-4">Connect with us</p>
+                <p className="text-[9px] uppercase tracking-widest font-bold text-white/60 mb-4">Connect with us</p>
                 <div className="flex gap-3">
                   {socialLinks.map((social, i) => (
                     <a 
@@ -638,7 +641,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
                     </a>
                   ))}
                 </div>
-                <div className="mt-6 flex items-center justify-between text-[10px] text-white/20 font-medium tracking-tight">
+                <div className="mt-6 flex items-center justify-between text-[10px] text-white/60 font-medium tracking-tight">
                   <p>© 2026 Kangqore Global Pvt Ltd.</p>
                   <Link to="/privacy" className="hover:text-white/40 transition-colors">Privacy Policy</Link>
                 </div>

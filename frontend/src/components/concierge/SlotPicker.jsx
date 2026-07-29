@@ -53,7 +53,7 @@ const SlotPicker = ({ leadId, slots, onBooked }) => {
             Select a Slot
           </span>
         </div>
-        <span className="text-[10px] text-white/30 font-medium">30 min</span>
+        <span className="text-[10px] text-white/60 font-medium">30 min</span>
       </div>
 
       <div className="p-3 space-y-2">

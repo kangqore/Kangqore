@@ -158,7 +158,7 @@ export default function ProblemTrilogy() {
         </div>
       </div>
       <div className="lg:pt-16">
-        <p className="text-[10px] font-black tracking-[0.45em] text-white/25 uppercase mb-8">
+        <p className="text-[10px] font-black tracking-[0.45em] text-white/60 uppercase mb-8">
           WITHOUT DIAGNOSTIC INTELLIGENCE
         </p>
         <div className="space-y-0">
@@ -202,8 +202,8 @@ export default function ProblemTrilogy() {
       </div>
       <div>
         <div className="grid grid-cols-2 pb-3 mb-1">
-          <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase">CONSTRAINT</p>
-          <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase">BUSINESS IMPACT</p>
+          <p className="text-[9px] font-black tracking-[0.4em] text-white/60 uppercase">CONSTRAINT</p>
+          <p className="text-[9px] font-black tracking-[0.4em] text-white/60 uppercase">BUSINESS IMPACT</p>
         </div>
         {constraints.map((row) => (
           <div key={row.constraint} className="grid grid-cols-2 py-5 border-t border-white/[0.06]">

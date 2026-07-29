@@ -126,7 +126,7 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
             {/* Refreshed label */}
             <div className="flex items-center gap-1.5 pt-0.5">
               <RefreshCw className="w-2.5 h-2.5 text-white/20" />
-              <span className="text-[10px] text-white/25">
+              <span className="text-[10px] text-white/60">
                 Availability refreshed just now
               </span>
             </div>

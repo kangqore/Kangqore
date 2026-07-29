@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import AmbientVideo from './media/AmbientVideo';
 
 const FOOTER_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
@@ -94,9 +95,13 @@ const Footer = () => {
 
         {/* LEFT CARD — Video Background */}
         <div style={{ position: 'relative', minHeight: 420, borderRadius: 28, padding: 32, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.12)', background: '#111214', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <video autoPlay muted loop playsInline preload="auto" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none' }}>
-            <source src="/videos/hero-bg.mp4" type="video/mp4" />
-          </video>
+          {/* Decorative only. Gated on viewport, motion preference and
+              connection quality — see AmbientVideo. The card's #111214
+              background is the intended appearance when it does not load. */}
+          <AmbientVideo
+            src="/videos/hero-bg.mp4"
+            style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}
+          />
 
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 1, paddingTop: '10px' }}>
@@ -126,7 +131,7 @@ const Footer = () => {
           <div style={{ display: 'flex', gap: 28, paddingTop: 8, flexWrap: 'wrap' }} className="footer-nav-cols">
             {/* Capabilities */}
             <div style={{ flex: '0 1 150px', minWidth: 140 }}>
-              <h3 className="text-gray-400 dark:text-gray-500" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Capabilities</h3>
+              <h3 className="text-gray-600 dark:text-gray-400" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Capabilities</h3>
               <Link to="/department/ai-cognitive" style={navLinkStyle}>AI & Cognitive</Link>
               <Link to="/department/cloud-engineering" style={navLinkStyle}>Cloud & Engineering</Link>
               <Link to="/department/cybersecurity" style={navLinkStyle}>Cybersecurity</Link>
@@ -135,7 +140,7 @@ const Footer = () => {
             </div>
             {/* Company */}
             <div style={{ flex: '0 1 150px', minWidth: 140 }}>
-              <h3 className="text-gray-400 dark:text-gray-500" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Company</h3>
+              <h3 className="text-gray-600 dark:text-gray-400" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Company</h3>
               <Link to="/about-us" style={navLinkStyle}>{t('menu.about_us')}</Link>
               <Link to="/values" style={navLinkStyle}>Values & Culture</Link>
               <Link to="/leadership" style={navLinkStyle}>{t('menu.leadership')}</Link>
@@ -144,7 +149,7 @@ const Footer = () => {
             </div>
             {/* Insights */}
             <div style={{ flex: '0 1 150px', minWidth: 140 }}>
-              <h3 className="text-gray-400 dark:text-gray-500" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Insights</h3>
+              <h3 className="text-gray-600 dark:text-gray-400" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Insights</h3>
               <Link to="/blogs" style={navLinkStyle}>Engineering Blog</Link>
               <Link to="/case-studies" style={navLinkStyle}>Case Studies</Link>
               <Link to="/white-paper" style={navLinkStyle}>White Papers</Link>
@@ -156,7 +161,7 @@ const Footer = () => {
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginTop: 48, flexWrap: 'wrap', gap: 24 }} className="footer-bottom-row">
             {/* Copyright + Legal */}
             <div>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 500, color: '#9ca3af', marginBottom: 8 }}>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 500, color: '#4b5563', marginBottom: 8 }}>
                 © {new Date().getFullYear()} Kangqore Global Pvt Ltd. All rights reserved.
               </p>
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -174,11 +179,11 @@ const Footer = () => {
 
             {/* Subscribe CTA */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }} className="footer-subscribe-block">
-              <h4 style={{ fontSize: 15, fontWeight: 400, color: '#6b7280', lineHeight: 1.45, fontFamily: "'DM Sans', sans-serif" }}>
+              <h4 style={{ fontSize: 15, fontWeight: 400, color: '#4b5563', lineHeight: 1.45, fontFamily: "'DM Sans', sans-serif" }}>
                 AI moves fast.<br/><strong style={{ display: 'block', fontSize: 19, fontWeight: 700, color: 'inherit' }}>Stay ahead with Kangqore.</strong>
               </h4>
               <form onSubmit={handleSubscribe} style={{ display: 'flex', width: 310, background: 'var(--tw-bg-opacity, #fff)', border: '1px solid #e5e7eb', borderRadius: 12, padding: 5, boxShadow: '0 2px 10px rgba(0,0,0,0.04)' }} className="footer-subscribe-form">
-                <input type="email" placeholder="Enter email address" value={email} onChange={e => { setEmail(e.target.value); if (subscribeStatus === 'error') { setSubscribeStatus('idle'); setSubscribeMsg(''); } }} required
+                <input type="email" aria-label="Email address for newsletter" placeholder="Enter email address" value={email} onChange={e => { setEmail(e.target.value); if (subscribeStatus === 'error') { setSubscribeStatus('idle'); setSubscribeMsg(''); } }} required
                   disabled={subscribeStatus === 'loading'}
                   style={{ flex: 1, padding: '11px 14px', background: 'transparent', border: 'none', outline: 'none', fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, color: 'inherit', opacity: subscribeStatus === 'loading' ? 0.6 : 1 }} />
                 <button type="submit"

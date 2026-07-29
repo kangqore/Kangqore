@@ -647,15 +647,17 @@ const Header = ({ onMenuClick }) => {
               <div className="flex lg:hidden items-center gap-2">
                 <button
                   onClick={() => setShowSearch(true)}
+                  aria-label="Open search"
                   className="p-3 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-700 dark:text-white hover:bg-gray-200"
                 >
-                  <Search className="w-5 h-5" />
+                  <Search className="w-5 h-5" aria-hidden="true" />
                 </button>
                 <button
                   onClick={onMenuClick}
+                  aria-label="Open main menu"
                   className="p-3 bg-brand-gradient text-white rounded-full shadow-lg"
                 >
-                  <Menu className="w-6 h-6" />
+                  <Menu className="w-6 h-6" aria-hidden="true" />
                 </button>
               </div>
             </div>

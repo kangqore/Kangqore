@@ -23,6 +23,7 @@ import SvcRuler from './SvcRuler';
 import ConciergeSection from '../../concierge/ConciergeSection';
 import { AIToolsSection } from '../cognition/AICustomSections';
 import { servicesData } from '../../../data/servicesData';
+import ResponsiveImage from '../../media/ResponsiveImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,6 +79,10 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
 
   const handleMouseMove = (e) => {
     if (!cardRef.current || isExpanded) return;
+    // The 3D tilt is driven by inline transforms, so the global
+    // prefers-reduced-motion CSS cannot suppress it — it has to be gated here.
+    if (typeof window !== 'undefined'
+        && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     const card = cardRef.current;
     const rect = card.getBoundingClientRect();
     
@@ -151,10 +156,18 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
       {/* Background Image */}
       <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         {bgImage && (
-          <img 
-            src={bgImage} 
-            alt={cap.title} 
-            className="w-full h-full object-cover transition-transform duration-700" 
+          <ResponsiveImage
+            src={bgImage}
+            alt={`${cap.title} — ${cap.desc || 'Kangqore capability'}`}
+            // Bento imagery is heavy and almost entirely below the fold. The
+            // first card is the LCP candidate, so it loads eagerly with high
+            // priority; the rest defer until near-viewport.
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchPriority={i === 0 ? 'high' : 'low'}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            width="800"
+            height="600"
+            className="w-full h-full object-cover transition-transform duration-700"
             style={{
               transform: tilt.active ? `translate3d(${-tilt.y * 0.5}px, ${tilt.x * 0.5}px, 0) scale3d(1.03, 1.03, 1.03)` : 'none',
               transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)'
@@ -612,7 +625,7 @@ function getParityService(service, department) {
     ? service.customFAQs
     : [
         { q: `What makes Kangqore's approach to ${name} unique?`, a: `Kangqore combines deep domain engineering with automated governance, robust architecture standards, and measurable business KPIs. We don't just deliver tools — we engineer end-to-end capabilities that compound value over time.` },
-        { q: `How quickly can we see initial results from a ${name} engagement?`, a: `Our Strategy & Audit completes in 2–3 weeks, delivering a clear architecture and execution roadmap. A Pilot Pod delivers a production-grade capability in 8 weeks, giving you immediate operational ROI.` },
+        { q: `How quickly can we see initial results from ${article(name)} ${name} engagement?`, a: `Our Strategy & Audit completes in 2–3 weeks, delivering a clear architecture and execution roadmap. A Pilot Pod delivers a production-grade capability in 8 weeks, giving you immediate operational ROI.` },
         { q: `How do you handle integration with our existing systems?`, a: `We design reusable API layers, containerized microservices, and standardized connectors. Whether you run legacy mainframes, cloud-native meshes, or hybrid SaaS platforms, our architectures integrate seamlessly without interrupting live operations.` },
         { q: `What governance and compliance standards are enforced?`, a: `Governance is built into every layer. Depending on your industry, we align controls with ISO 27001, SOC 2, GDPR, HIPAA, SOX, and NIST frameworks — producing immutable audit logs and real-time compliance dashboards.` },
         { q: `Can you customize the solution for our specific industry requirements?`, a: `Yes. Every engagement leverages our industry-specific blueprints across Banking, Healthcare, Manufacturing, Retail, Technology, and Public Sector — ensuring domain compliance and business alignment from day one.` },
@@ -670,7 +683,7 @@ function getParityService(service, department) {
         `What architecture standards and governance controls come built-in?`,
         `How do you handle integration with legacy enterprise systems?`,
         `What timeline and delivery packages are available?`,
-        `Book a ${name} strategy session`
+        `Book ${article(name)} ${name} strategy session`
       ];
 
   // Tools Stack Fallback
@@ -771,6 +784,41 @@ function getParityService(service, department) {
   };
 }
 
+// Service names are interpolated into prose, and 17 of the 62 begin with a
+// vowel ("Agentic AI Services", "AI Governance", "Analytics"), which rendered
+// as "a Agentic AI Services engagement". Article is chosen from the name.
+function article(name) {
+  return /^[aeiou]/i.test(String(name || '').trim()) ? 'an' : 'a';
+}
+
+// Maps the free-text industry labels used in servicesData onto the canonical
+// /industries/* routes. Anything unmapped renders without a link rather than
+// guessing a slug and shipping a 404.
+const INDUSTRY_ROUTES = {
+  'banking & financial services': 'banking',
+  'banking and financial services': 'banking',
+  'financial services': 'banking',
+  insurance: 'insurance',
+  healthcare: 'healthcare',
+  'healthcare & life sciences': 'healthcare',
+  'life sciences': 'life-science',
+  manufacturing: 'manufacturing',
+  'retail & consumer': 'retail',
+  'retail & consumer goods': 'retail',
+  retail: 'retail',
+  'consumer goods': 'consumer-goods',
+  edtech: 'edtech',
+  'media & entertainment': 'media-technology',
+  'media & technology': 'media-technology',
+  'energy & utilities': 'energy-utilities',
+  'travel & hospitality': 'travel-hospitality',
+  'information services': 'information-services',
+};
+
+function industrySlug(label) {
+  return INDUSTRY_ROUTES[String(label || '').trim().toLowerCase()] || null;
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function UniversalServicePage({ service: rawService, department }) {
   const service = getParityService(rawService, department);
@@ -826,7 +874,7 @@ export default function UniversalServicePage({ service: rawService, department }
   const faqs = service.customFAQs || [
     { q: `What is ${service.name}?`,                           a: service.fullDescription },
     { q: `How does Kangqore approach ${service.name}?`,        a: `Kangqore approaches ${service.name} through a four-phase model: Discover, Frame, Build, and Activate. We begin by understanding your current state and goals, design a tailored solution, implement it with precision, and continuously optimize for lasting results.` },
-    { q: `What does a ${service.name} engagement include?`,    a: `A ${service.name} engagement typically covers: ${service.keyFeatures.join(', ')}. Each engagement is tailored to your specific business context and strategic objectives.` },
+    { q: `What does ${article(service.name)} ${service.name} engagement include?`,    a: `${article(service.name) === 'an' ? 'An' : 'A'} ${service.name} engagement typically covers: ${service.keyFeatures.join(', ')}. Each engagement is tailored to your specific business context and strategic objectives.` },
     { q: `Who is ${service.name} designed for?`,               a: `${service.name} is designed for organizations looking to drive meaningful outcomes through ${service.shortDescription.toLowerCase()}. It is relevant for both greenfield initiatives and optimization of existing capabilities.` },
     { q: `What outcomes can I expect?`,                        a: `Organizations that partner with Kangqore on ${service.name} typically achieve improved operational efficiency, accelerated delivery timelines, reduced risk, and measurable business impact aligned with their strategic objectives.` },
     { q: `How do I get started?`,                              a: `The first step is a 30-minute discovery call with a Kangqore specialist. We will assess your current state, understand your goals, and outline a clear path forward — with no commitment required.` },
@@ -836,6 +884,14 @@ export default function UniversalServicePage({ service: rawService, department }
   const relatedServices = (service.relatedServiceSlugs || []).slice(0, 3)
     .map(slug => { const r = servicesData[slug]; return r ? { name: r.name, link: `/services/${slug}`, Icon: slugIcon(slug), desc: r.shortDescription } : null; })
     .filter(Boolean);
+
+  // ── Topic cluster: every sibling service in the same practice ─────────────
+  // Three related links left each service page a near dead-end for crawlers and
+  // gave the 61-page catalogue no traversable hub↔spoke structure. Linking the
+  // full practice turns each page into a real cluster node.
+  const clusterSiblings = Object.keys(servicesData)
+    .filter(s => s !== service.slug && servicesData[s].departmentSlug === service.departmentSlug)
+    .map(s => ({ slug: s, name: servicesData[s].name, link: `/services/${s}` }));
 
   // ── Feature accordion (first 4 keyFeatures) ──────────────────────────────
   const featureLabels   = service.keyFeatures.slice(0, 4);
@@ -915,7 +971,7 @@ const featureMicros   = service.featureMicros
       <div id="svc-hero" className="p-2 h-screen" style={{ backgroundColor: 'var(--page-bg, #000)' }}>
         <div className="relative w-full h-full overflow-hidden rounded-xl text-white">
 
-          <img src={service.image} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover object-center" />
+          <ResponsiveImage src={service.image} alt="" aria-hidden="true" loading="lazy" sizes="100vw" className="absolute inset-0 w-full h-full object-cover object-center" />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/10 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 pointer-events-none" />
 
@@ -956,7 +1012,7 @@ const featureMicros   = service.featureMicros
                 </div>
 
                 {/* Company fact strip */}
-                <p className="text-[10px] font-semibold tracking-[0.2em] text-white/25 uppercase mt-[calc(2rem+0.5cm)]">
+                <p className="text-[10px] font-semibold tracking-[0.2em] text-white/60 uppercase mt-[calc(2rem+0.5cm)]">
                   AI-first engineering company&nbsp;&nbsp;·&nbsp;&nbsp;6 Departments&nbsp;&nbsp;·&nbsp;&nbsp;60+ Services&nbsp;&nbsp;·&nbsp;&nbsp;Global Delivery
                 </p>
 
@@ -972,8 +1028,14 @@ const featureMicros   = service.featureMicros
             <div className="flex items-center gap-4 w-max" style={{ animation: 'svc-strip-scroll 40s linear infinite' }}>
               {HERO_STRIP.map((cap, i) => {
                 const Icon = cap.icon;
+                // The list is tripled so the CSS scroll loop wraps without a
+                // visible gap — copies 2 and 3 are pure animation scaffolding.
+                // Hiding them from the a11y tree means screen readers announce
+                // each capability once instead of three times, and text
+                // extraction (crawlers, answer engines) counts them once.
+                const isDuplicate = i >= HERO_CAPS.length;
                 return (
-                  <div key={i} className="flex items-center gap-4 bg-[#0a0a0c] border border-white/10 rounded-2xl p-1.5 pr-6 shadow-2xl flex-shrink-0 cursor-default hover:-translate-y-1 transition-transform duration-300">
+                  <div key={i} aria-hidden={isDuplicate ? 'true' : undefined} className="flex items-center gap-4 bg-[#0a0a0c] border border-white/10 rounded-2xl p-1.5 pr-6 shadow-2xl flex-shrink-0 cursor-default hover:-translate-y-1 transition-transform duration-300">
                     <div
                       className="w-14 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                       style={{
@@ -1022,7 +1084,9 @@ const featureMicros   = service.featureMicros
 
           <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start mb-20">
             <div>
-              <p className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-8 font-light max-w-xl">{service.shortDescription}</p>
+              {/* data-speakable pairs with SpeakableSpecification in the page
+                  schema: this is the passage a voice assistant reads aloud. */}
+              <p data-speakable className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-8 font-light max-w-xl">{service.shortDescription}</p>
               <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mb-0">
                 {service.whatIsPara2 || <>A service can be technically delivered and still fail if the strategy and execution are misaligned.{' '}<span className="text-white">Kangqore closes that gap.</span></>}
               </p>
@@ -1630,28 +1694,7 @@ const featureMicros   = service.featureMicros
                     <text x="442" y="348" textAnchor="middle" fill="#00c875" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">4. SYNC</text>
                   </svg>
                 </div>
-              ) ) : (
-              <div className="space-y-4">
-                <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
-                  <div className="relative z-10">
-                    <p className="text-[9px] font-black tracking-[0.4em] text-amber-400/70 group-hover:text-white/70 uppercase mb-4 transition-colors duration-500">THE CHALLENGE</p>
-                    <p className="text-white font-semibold text-lg leading-snug">
-                      Organizations face growing complexity in delivering {service.name} at enterprise scale without losing clarity or velocity.
-                    </p>
-                  </div>
-                </div>
-                <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
-                  <div className="relative z-10">
-                    <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 group-hover:text-white/70 uppercase mb-4 transition-colors duration-500">THE SOLUTION</p>
-                    <p className="text-white font-semibold text-lg leading-snug">
-                      Kangqore helps businesses align intent, execution, and outcomes — so teams make better decisions earlier and deliver with greater confidence.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+              ) ) : null}
           </div>
 
           {/* Stats row — full width */}
@@ -1672,7 +1715,7 @@ const featureMicros   = service.featureMicros
             ].map(([v, l]) => (
               <div key={l}>
                 <p className="text-4xl font-black text-white tracking-tight mb-1">{v}</p>
-                <p className="text-white/40 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{l}</p>
+                <p className="text-white/60 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{l}</p>
               </div>
             ))}
           </div>
@@ -1708,23 +1751,12 @@ const featureMicros   = service.featureMicros
             </div>
           </div>
 
-          {/* Challenge / Solution — plain, side-by-side, only when diagram is shown */}
-          {service.capabilityAreas && (
-            <div className="grid sm:grid-cols-2 gap-10 pt-10 border-t border-white/[0.06] mb-16">
-              <div>
-                <p className="text-[9px] font-black tracking-[0.4em] text-amber-400/70 uppercase mb-4">THE CHALLENGE</p>
-                <p className="text-white/55 text-base font-medium leading-relaxed">
-                  Organizations face growing complexity in delivering {service.name} at enterprise scale without losing clarity or velocity.
-                </p>
-              </div>
-              <div>
-                <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-4">THE SOLUTION</p>
-                <p className="text-white/55 text-base font-medium leading-relaxed">
-                  Kangqore helps businesses align intent, execution, and outcomes — so teams make better decisions earlier and deliver with greater confidence.
-                </p>
-              </div>
-            </div>
-          )}
+          {/* Challenge / Solution block removed: the copy was service-agnostic
+              boilerplate ("Organizations face growing complexity in delivering
+              X at enterprise scale") that read identically for all 62 services
+              and therefore said nothing about any of them. It occupied the slot
+              between the hero and the capability grid where a reader decides
+              whether to continue. Reinstate only with real per-service copy. */}
 
           {/* Pull-quote — hidden when businessMetrics are provided */}
           {!service.businessMetrics && (
@@ -1748,11 +1780,11 @@ const featureMicros   = service.featureMicros
       {!service.hideBadgeStrip && (
         <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <p className="text-[8px] font-black tracking-[0.45em] text-white/20 uppercase mb-7 text-center">CORE CAPABILITY PRINCIPLES</p>
+            <p className="text-[8px] font-black tracking-[0.45em] text-white/60 uppercase mb-7 text-center">CORE CAPABILITY PRINCIPLES</p>
             <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
               {service.keyFeatures.map((f, i, arr) => (
                 <React.Fragment key={f}>
-                  <span className="flex-shrink-0 text-white/40 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
+                  <span className="flex-shrink-0 text-white/60 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
                   {i < arr.length - 1 && <span className="flex-shrink-0 mx-4 text-white/10 text-xs select-none">·</span>}
                 </React.Fragment>
               ))}
@@ -1768,10 +1800,10 @@ const featureMicros   = service.featureMicros
           `What capabilities does Kangqore offer for ${service.name}?`,
           `How does the ${service.name} engagement process work?`,
           `What deliverables will I receive?`,
-          `How long does a ${service.name} engagement take?`,
+          `How long does ${article(service.name)} ${service.name} engagement take?`,
           ...service.keyFeatures.map(f => `Tell me about ${f.toLowerCase()}`),
           `Which industries does ${service.name} apply to?`,
-          `Request a ${service.name} Discovery Call`,
+          `Request ${article(service.name)} ${service.name} Discovery Call`,
         ]} />
       </div>
 
@@ -1832,6 +1864,9 @@ const featureMicros   = service.featureMicros
             }
             .svc-cap-group:hover .svc-cap-items {
               opacity: 1; transform: translateY(0); pointer-events: auto; visibility: visible;
+            }
+            .svc-ghost-num::after {
+              content: attr(data-ghost);
             }
             .svc-cap-no-scroll::-webkit-scrollbar { display: none; }
             .svc-cap-no-scroll { -ms-overflow-style: none; scrollbar-width: none; }
@@ -2004,7 +2039,7 @@ const featureMicros   = service.featureMicros
               </h2>
             </div>
             <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
-              Every {service.name} decision stays coherent from strategy through delivery.
+              Every decision stays coherent from strategy through delivery.
             </p>
           </div>
 
@@ -2077,13 +2112,13 @@ const featureMicros   = service.featureMicros
             <div className="grid lg:grid-cols-[1fr_64px_1fr] gap-0 items-stretch">
               {/* Before panel */}
               <div className="rounded-2xl lg:rounded-r-none bg-white/[0.025] border border-white/[0.05] lg:border-r-0 p-8 lg:p-10">
-                <span className="text-[9px] font-black tracking-[0.35em] uppercase text-white/25 block mb-8">
+                <span className="text-[9px] font-black tracking-[0.35em] uppercase text-white/60 block mb-8">
                   {service.comparisonTable.colA || 'Traditional Automation'}
                 </span>
                 <div className="space-y-7">
                   {service.comparisonTable.rows.map((row, i) => (
                     <div key={i}>
-                      <span className="text-[8px] font-black tracking-[0.3em] uppercase text-white/20 block mb-1.5">{row.dimension}</span>
+                      <span className="text-[8px] font-black tracking-[0.3em] uppercase text-white/60 block mb-1.5">{row.dimension}</span>
                       <p className="text-white/30 text-sm font-medium leading-relaxed">{row.before}</p>
                     </div>
                   ))}
@@ -2100,13 +2135,13 @@ const featureMicros   = service.featureMicros
 
               {/* After panel */}
               <div className="rounded-2xl lg:rounded-l-none bg-[#000] border border-cyan-400/10 lg:border-l-0 border-l-2 border-l-cyan-400/20 p-8 lg:p-10">
-                <span className="text-[9px] font-black tracking-[0.35em] uppercase text-cyan-400/60 block mb-8">
+                <span className="text-[9px] font-black tracking-[0.35em] uppercase text-cyan-400/80 block mb-8">
                   {service.comparisonTable.colB || 'Agentic AI'}
                 </span>
                 <div className="space-y-7">
                   {service.comparisonTable.rows.map((row, i) => (
                     <div key={i}>
-                      <span className="text-[8px] font-black tracking-[0.3em] uppercase text-white/25 block mb-1.5">{row.dimension}</span>
+                      <span className="text-[8px] font-black tracking-[0.3em] uppercase text-white/60 block mb-1.5">{row.dimension}</span>
                       <p className="text-white font-semibold text-sm leading-relaxed">{row.after}</p>
                     </div>
                   ))}
@@ -2134,7 +2169,7 @@ const featureMicros   = service.featureMicros
                 </h2>
               </div>
               <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
-                Every {service.name} deployment runs on a governed, modular architecture built for enterprise scale.
+                Every deployment runs on a governed, modular architecture built for enterprise scale.
               </p>
             </div>
 
@@ -2146,7 +2181,7 @@ const featureMicros   = service.featureMicros
                 return (
                   <div key={idx} className="px-8 first:pl-0 last:pr-0 flex flex-col gap-4 py-2 rounded-xl transition-colors duration-300 hover:bg-[#06090f]">
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-[8px] font-black tracking-[0.3em] text-white/15">
+                      <span className="font-mono text-[8px] font-black tracking-[0.3em] text-white/60">
                         {String(idx + 1).padStart(2, '0')}
                       </span>
                       <NodeIcon className="w-3.5 h-3.5" style={{ color: `${color}80` }} />
@@ -2187,7 +2222,7 @@ const featureMicros   = service.featureMicros
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.industryUseCases.map((item, idx) => (
                 <div key={idx} className="bg-[#000000] p-8 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
-                  <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/40">{item.industry}</span>
+                  <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/60">{item.industry}</span>
                   <p className="text-white font-bold text-lg leading-snug">{item.headline}</p>
                   <ul className="space-y-2 mt-1">
                     {item.agents.map((agent, i) => (
@@ -2197,6 +2232,18 @@ const featureMicros   = service.featureMicros
                       </li>
                     ))}
                   </ul>
+                  {/* Contextual cross-link into the industry hub. These are the
+                      in-content links that build topical authority — unlike the
+                      sitewide nav, which crawlers discount as boilerplate. */}
+                  {industrySlug(item.industry) && (
+                    <Link
+                      to={`/industries/${industrySlug(item.industry)}`}
+                      className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400/80 hover:text-cyan-300 transition-colors"
+                    >
+                      {service.name} for {item.industry}
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  )}
                 </div>
               ))}
             </div>
@@ -2222,7 +2269,7 @@ const featureMicros   = service.featureMicros
 
               <div className="flex items-center gap-4 mb-16">
                 <div className="h-[1px] w-8 bg-white/20" />
-                <span className="text-[9px] font-black tracking-[0.35em] text-white/40 uppercase">Engagement Outcomes</span>
+                <span className="text-[9px] font-black tracking-[0.35em] text-white/60 uppercase">Engagement Outcomes</span>
               </div>
 
               <div className={`grid gap-px ${gridCols} bg-white/[0.04] rounded-2xl overflow-hidden`}>
@@ -2240,17 +2287,17 @@ const featureMicros   = service.featureMicros
                       )}
                     </div>
                     <div className="border-t border-white/[0.06] pt-6">
-                      <span className="text-[9px] font-black tracking-[0.3em] uppercase text-white/40 block mb-5">
+                      <span className="text-[9px] font-black tracking-[0.3em] uppercase text-white/60 block mb-5">
                         {card.industry}
                       </span>
                       <div className="space-y-4">
                         <div>
-                          <p className="text-[9px] font-black tracking-[0.25em] uppercase text-white/40 mb-1.5">The Challenge</p>
+                          <p className="text-[9px] font-black tracking-[0.25em] uppercase text-white/60 mb-1.5">The Challenge</p>
                           <p className="text-white/50 text-xs font-medium leading-relaxed">{card.problem}</p>
                         </div>
                         <div className="h-px bg-white/[0.05]" />
                         <div>
-                          <p className="text-[9px] font-black tracking-[0.25em] uppercase text-white/40 mb-1.5">The Outcome</p>
+                          <p className="text-[9px] font-black tracking-[0.25em] uppercase text-white/60 mb-1.5">The Outcome</p>
                           <p className="text-white/85 font-semibold text-xs leading-relaxed">{card.outcome}</p>
                         </div>
                       </div>
@@ -2264,7 +2311,7 @@ const featureMicros   = service.featureMicros
                           href={service.methodologyBrief}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group inline-flex items-center gap-1.5 text-[10px] font-black tracking-[0.15em] uppercase text-white/30 hover:text-cyan-400/70 transition-colors duration-200"
+                          className="group inline-flex items-center gap-1.5 text-[10px] font-black tracking-[0.15em] uppercase text-white/60 hover:text-cyan-400/70 transition-colors duration-200"
                         >
                           Download Methodology
                           <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" />
@@ -2356,7 +2403,7 @@ const featureMicros   = service.featureMicros
                           </div>
                           <div className="relative z-10 flex-1 min-w-0">
                             <div className="flex items-center gap-3 mb-2">
-                              <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/20 group-hover:text-white/80 uppercase transition-colors duration-500">{item.phase}</div>
+                              <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/60 group-hover:text-white/80 uppercase transition-colors duration-500">{item.phase}</div>
                               {item.kangqore && (
                                 <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 group-hover:bg-white/15 border border-brand-blue/20 group-hover:border-white/30 rounded-full transition-colors duration-500">
                                   <div className="w-1 h-1 bg-brand-blue group-hover:bg-white rounded-full animate-pulse transition-colors duration-500" />
@@ -2393,7 +2440,7 @@ const featureMicros   = service.featureMicros
                   <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
                     {[['Phases', String(activeJourney.length).padStart(2, '0')], ['Timeline', '4-16 wks'], ['Confidence', '100%']].map(([label, val], i) => (
                       <div key={label}>
-                        <div className="font-mono text-[10px] text-white/40 tracking-widest uppercase font-bold mb-2">{label}</div>
+                        <div className="font-mono text-[10px] text-white/60 tracking-widest uppercase font-bold mb-2">{label}</div>
                         <div className={`text-2xl font-black ${i === 2 ? 'bg-brand-gradient bg-clip-text text-transparent' : 'text-white'}`}>{val}</div>
                       </div>
                     ))}
@@ -2422,11 +2469,11 @@ const featureMicros   = service.featureMicros
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.servicePackages.map((pkg, idx) => (
                 <div key={idx} className="bg-[#000000] p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
-                  <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/30">0{idx + 1}</span>
+                  <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
                   <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
                   <p className="text-white/40 text-sm font-medium leading-relaxed flex-1">{pkg.description}</p>
                   {pkg.duration && (
-                    <span className="text-[10px] font-black tracking-[0.2em] uppercase text-white/30 bg-white/[0.04] px-2 py-1 rounded-md self-start">
+                    <span className="text-[10px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
                       {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
                     </span>
                   )}
@@ -2456,7 +2503,7 @@ const featureMicros   = service.featureMicros
               return (
                 <div key={c.n} className={`group relative flex flex-col transition-all duration-500 hover:-translate-y-2 ${elevated ? 'lg:-translate-y-4' : ''}`}>
                   <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 shadow-lg">
-                    <img src={`/assets/engines/engine${(i % 6) + 1}.png`} alt={c.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={`/assets/engines/engine${(i % 6) + 1}.png`} alt={c.title} loading="lazy" decoding="async" width="600" height="400" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
                   <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#06090f] flex flex-col flex-1">
                     <h3 className="text-white font-bold text-lg sm:text-xl leading-tight mb-3">{c.title}</h3>
@@ -2611,7 +2658,7 @@ const featureMicros   = service.featureMicros
                 </h2>
               </div>
               <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
-                Complementary services that extend and compound your {service.name} investment.
+                Complementary services that extend and compound this investment.
               </p>
             </div>
 
@@ -2626,19 +2673,19 @@ const featureMicros   = service.featureMicros
                   <Link to={e.link} className="group lg:col-span-2 relative flex flex-col justify-between p-9 rounded-3xl border border-white/[0.08] bg-[#06090f] min-h-[360px] lg:min-h-[420px] overflow-hidden transition-all duration-500 hover:border-transparent hover:-translate-y-1 hover:shadow-[0_28px_56px_rgba(37,100,234,0.2)]">
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)' }} />
                     {/* Ghost number */}
-                    <span className="absolute -bottom-2 -right-2 text-[140px] font-black leading-none select-none text-white/[0.03] group-hover:text-white/[0.08] transition-colors duration-700 pointer-events-none">01</span>
+                    <span aria-hidden="true" data-ghost="01" className="svc-ghost-num absolute -bottom-2 -right-2 text-[140px] font-black leading-none select-none text-white/[0.03] group-hover:text-white/[0.08] transition-colors duration-700 pointer-events-none" />
                     {/* Top */}
                     <div className="relative z-10">
                       <div className="w-11 h-11 bg-white/[0.06] group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-cyan-400 group-hover:text-white transition-all duration-500 mb-7">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="font-mono text-[9px] font-black tracking-[0.3em] text-white/20 group-hover:text-white/50 uppercase block mb-2 transition-colors duration-500">01 — RELATED</span>
+                      <span className="font-mono text-[9px] font-black tracking-[0.3em] text-white/60 group-hover:text-white/50 uppercase block mb-2 transition-colors duration-500">01 — RELATED</span>
                     </div>
                     {/* Bottom */}
                     <div className="relative z-10">
                       <h3 className="text-2xl lg:text-3xl font-black text-white mb-3 leading-tight">{e.name}</h3>
                       <p className="text-white/40 group-hover:text-white text-sm font-medium leading-relaxed mb-7 transition-colors duration-500 max-w-xs">{e.desc}</p>
-                      <span className="inline-flex items-center gap-2 text-[10px] font-black tracking-[0.2em] uppercase text-white/40 group-hover:text-white transition-colors duration-500">
+                      <span className="inline-flex items-center gap-2 text-[10px] font-black tracking-[0.2em] uppercase text-white/60 group-hover:text-white transition-colors duration-500">
                         Explore Capability <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                       </span>
                     </div>
@@ -2655,7 +2702,7 @@ const featureMicros   = service.featureMicros
                     <Link key={e.name} to={e.link} className="group relative flex items-center gap-6 p-8 rounded-3xl border border-white/[0.08] bg-[#06090f] flex-1 overflow-hidden transition-all duration-500 hover:border-transparent hover:-translate-y-0.5 hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)]">
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
                       {/* Ghost number */}
-                      <span className="absolute -bottom-3 -right-3 text-[100px] font-black leading-none select-none text-white/[0.03] group-hover:text-white/[0.08] transition-colors duration-700 pointer-events-none">{n}</span>
+                      <span aria-hidden="true" data-ghost={n} className="svc-ghost-num absolute -bottom-3 -right-3 text-[100px] font-black leading-none select-none text-white/[0.03] group-hover:text-white/[0.08] transition-colors duration-700 pointer-events-none" />
                       {/* Icon */}
                       <div className="relative z-10 w-12 h-12 flex-shrink-0 bg-white/[0.06] group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-500">
                         <Icon className="w-5 h-5" />
@@ -2675,6 +2722,49 @@ const featureMicros   = service.featureMicros
                 })}
               </div>
 
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ══════════════════════ PRACTICE CLUSTER ══════════════════════ */}
+      {clusterSiblings.length > 0 && (
+        <section className="py-20 border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }} aria-labelledby="practice-cluster-heading">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{department.name}</span>
+            </div>
+            <h2 id="practice-cluster-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
+              The complete <span className="bg-brand-gradient bg-clip-text text-transparent">{department.name}</span> practice.
+            </h2>
+            <p className="text-white/40 text-sm font-medium leading-relaxed max-w-2xl mb-10">
+              {service.name} is one of {clusterSiblings.length + 1} services in this practice. Explore how they combine.
+            </p>
+
+            <nav aria-label={`Other ${department.name} services`}>
+              <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1">
+                {clusterSiblings.map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      to={s.link}
+                      className="group flex items-center justify-between gap-4 py-3 border-b border-white/[0.06] text-white/55 hover:text-white transition-colors duration-300"
+                    >
+                      <span className="text-sm font-medium leading-snug">{s.name}</span>
+                      <ArrowRight className="w-3.5 h-3.5 shrink-0 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-300" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
+              <Link to={`/departments/${department.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-400 hover:text-white transition-colors">
+                All {department.name} services <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/services" className="inline-flex items-center gap-2 text-sm font-semibold text-white/50 hover:text-white transition-colors">
+                Browse all 61 services <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </section>
@@ -2713,7 +2803,7 @@ const featureMicros   = service.featureMicros
                 </a>
               </div>
               <div className="flex flex-col gap-2 lg:items-end">
-                <span className="text-[10px] font-black tracking-[0.25em] uppercase text-white/20">From first call to first agent</span>
+                <span className="text-[10px] font-black tracking-[0.25em] uppercase text-white/60">From first call to first agent</span>
                 <span className="text-white/50 text-sm font-semibold">Strategy → Build → Production in 8 weeks</span>
               </div>
             </div>
