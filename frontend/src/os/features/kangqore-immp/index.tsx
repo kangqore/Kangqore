@@ -182,6 +182,17 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S213–S222 Gen5 Primary Engine (Chapter 11 T1)
+import { Gen5RoutingPage }               from './pages/Gen5RoutingPage'
+import { Gen5DomainSpecialisationPage }  from './pages/Gen5DomainSpecialisationPage'
+import { Gen5FiftyPercentPage }          from './pages/Gen5FiftyPercentPage'
+import { Gen5ContinuousTrainingPage }    from './pages/Gen5ContinuousTrainingPage'
+import { Gen5ProductionPage }            from './pages/Gen5ProductionPage'
+import { Gen5AgenticReasoningPage }      from './pages/Gen5AgenticReasoningPage'
+import { Gen5CostIntelPage }             from './pages/Gen5CostIntelPage'
+import { Gen5NinetyFivePercentPage }     from './pages/Gen5NinetyFivePercentPage'
+import { WaandaGen3ArchitecturePage }    from './pages/WaandaGen3ArchitecturePage'
+import { Gen5GateS222Page }              from './pages/Gen5GateS222Page'
 // Customer pages C36–C75
 import { CustomerThirtySixPage }     from './pages/CustomerThirtySixPage'
 import { CustomerThirtySevenPage }   from './pages/CustomerThirtySevenPage'
@@ -479,6 +490,17 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S213–S222 Gen5 Primary Engine (Chapter 11 T1) */}
+          <Route path="gen5-25-routing"            element={<Gen5RoutingPage />}               />
+          <Route path="gen5-domain-specialisation" element={<Gen5DomainSpecialisationPage />}  />
+          <Route path="gen5-50-routing"            element={<Gen5FiftyPercentPage />}          />
+          <Route path="gen5-continuous-training"   element={<Gen5ContinuousTrainingPage />}    />
+          <Route path="gen5-80-production"         element={<Gen5ProductionPage />}            />
+          <Route path="gen5-agentic-reasoning"     element={<Gen5AgenticReasoningPage />}      />
+          <Route path="gen5-cost-intelligence"     element={<Gen5CostIntelPage />}             />
+          <Route path="gen5-95-routing"            element={<Gen5NinetyFivePercentPage />}     />
+          <Route path="waanda-gen3-architecture"   element={<WaandaGen3ArchitecturePage />}    />
+          <Route path="gen5-gate-s222"             element={<Gen5GateS222Page />}              />
           {/* Customer pages C36–C40 */}
           <Route path="customers/thirty-six"    element={<CustomerThirtySixPage />}         />
           <Route path="customers/thirty-seven"  element={<CustomerThirtySevenPage />}       />
