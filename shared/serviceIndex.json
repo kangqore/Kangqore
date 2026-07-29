@@ -1,0 +1,666 @@
+{
+  "generatedAt": "2026-07-29T21:45:18.536Z",
+  "baseUrl": "https://kangqore.com",
+  "services": [
+    {
+      "slug": "agentic-ai",
+      "url": "/services/agentic-ai",
+      "name": "Agentic AI Services",
+      "department": "Cognition",
+      "description": "Kangqore builds production-grade agentic AI systems that reason, plan, and execute complex enterprise workflows — with oversight, audit trails, and governance.",
+      "capabilities": [
+        "Autonomous Goal Execution",
+        "Enterprise Agent Orchestration",
+        "Enterprise Memory & Knowledge",
+        "Enterprise Intelligence",
+        "Enterprise Governance",
+        "Enterprise Security",
+        "Enterprise Operations",
+        "Enterprise Integrations"
+      ],
+      "faqs": [
+        {
+          "q": "What exactly falls under Kangqore's Agentic AI services?",
+          "a": "We don't build AI demos. We build AI operators. Kangqore delivers autonomous agent development, multi-agent orchestration, RAG-powered enterprise reasoning, and governed LLM deployments using LangGraph — covering the full lifecycle from agent architecture design to production-scale optimization."
+        },
+        {
+          "q": "Isn't this just generative AI with extra steps?",
+          "a": "Generative AI answers. Agentic AI acts. Traditional AI classifies or predicts from a fixed prompt. Agentic AI sets goals, decomposes them into multi-step plans, selects and uses tools, executes tasks autonomously, and self-corrects when outcomes deviate — without waiting for a human to issue the next instruction."
+        },
+        {
+          "q": "What stops an agent from doing something we didn't authorize?",
+          "a": "Every agent we deploy has a governor, not just a goal. Our governance-first architecture embeds human-in-the-loop (HITL) controls, immutable audit trails, role-based access restrictions, and policy enforcement layers before a single autonomous action runs in production. Risk is validated at every phase — not discovered after go-live."
+        }
+      ]
+    },
+    {
+      "slug": "agentic-ai-led-application-modernization",
+      "url": "/services/agentic-ai-led-application-modernization",
+      "name": "Agentic AI-led Application Modernization",
+      "department": "Cognition",
+      "description": "Modernise legacy apps at machine speed with agentic AI — automated refactoring, intelligent migration, and continuous governance without disrupting operations.",
+      "capabilities": [
+        "Application Modernization",
+        "Cloud Modernization",
+        "Data Modernization",
+        "Quality Engineering & DevOps",
+        "Security Modernization",
+        "Integration & API Modernization",
+        "Infrastructure Modernization"
+      ],
+      "faqs": [
+        {
+          "q": "What is Agentic AI-led Application Modernization?",
+          "a": "We don't migrate code — we deploy AI operators that understand legacy systems. Kangqore delivers autonomous agentic AI systems that assess entire codebases in days, generate dynamic migration blueprints, execute re-platforming to cloud-native architectures, and validate outcomes at 99% test coverage — compressing multi-year transformation programs into governed, measurable sprints."
+        },
+        {
+          "q": "How does AI reduce the risk of application modernization?",
+          "a": "Risk in traditional modernization comes from incomplete discovery, manual execution errors, and inadequate testing. Agentic AI eliminates all three. Assessment agents map every dependency before a single line is moved. Execution agents include exception escalation and human-in-the-loop gates so no critical step happens unsupervised. And test generation agents produce comprehensive regression packs that no manual QA team could match in speed or coverage."
+        },
+        {
+          "q": "Which legacy systems can Agentic AI modernize?",
+          "a": "Any legacy codebase that can be read. Kangqore's assessment agents work across COBOL, Java EE, .NET Framework, Oracle Forms, mainframe systems, on-premise ERPs, and custom enterprise platforms. If the code exists, the agents can assess it, plan the migration, and execute the transformation."
+        }
+      ]
+    },
+    {
+      "slug": "ai-cognitive-computing",
+      "url": "/services/ai-cognitive-computing",
+      "name": "AI & Cognitive Computing",
+      "department": "Cognition",
+      "description": "Cognitive computing systems that understand, reason, and learn from data — natural language understanding, pattern recognition, and machine reasoning.",
+      "capabilities": [
+        "Machine Learning Engineering",
+        "Computer Vision & Visual Intelligence",
+        "Natural Language Intelligence",
+        "Generative AI Services",
+        "Decision Intelligence",
+        "Knowledge Intelligence",
+        "Autonomous & Agentic Systems",
+        "AI Engineering & MLOps",
+        "AI Governance & Responsible AI",
+        "Extended Reality (XR) Solutions"
+      ],
+      "faqs": [
+        {
+          "q": "What exactly is cognitive computing, and how is it different from AI?",
+          "a": "AI is the broad discipline. Cognitive computing is the architectural philosophy — systems that mimic human reasoning processes: understanding context, learning from experience, interpreting ambiguity, and making judgment calls. Kangqore builds cognitive systems that don't just classify or predict — they reason over enterprise knowledge, learn from operational feedback, and execute decisions that previously required human judgment."
+        },
+        {
+          "q": "Which cognitive capabilities does Kangqore actually deliver?",
+          "a": "We deliver across ten capability domains: Machine Learning Engineering, Computer Vision & Visual Intelligence, Natural Language Intelligence, Generative AI Services, Decision Intelligence, Knowledge Intelligence, Autonomous & Agentic Systems, AI Engineering & MLOps, AI Governance & Responsible AI, and Extended Reality Solutions. Each domain ships production-grade systems — not demos."
+        },
+        {
+          "q": "How does Kangqore handle NLP and language understanding?",
+          "a": "Our Natural Language Intelligence practice covers conversational AI, intent and sentiment analysis, speech recognition, document intelligence, entity extraction, semantic search, and language generation. Every NLP solution is grounded in your enterprise data — not generic pre-training — so responses reflect your policies, terminology, and knowledge base accurately."
+        }
+      ]
+    },
+    {
+      "slug": "data-science-ai",
+      "url": "/services/data-science-ai",
+      "name": "Data Science & AI",
+      "department": "Cognition",
+      "description": "Data science with AI: predictive modeling, statistical analysis, feature engineering, and model deployment — turn data into business decisions.",
+      "capabilities": [
+        "Data Engineering & Modern Data Platforms",
+        "Machine Learning & Predictive Intelligence",
+        "Generative AI & Intelligent Systems",
+        "MLOps & AI Lifecycle Engineering",
+        "AI Governance & Responsible AI"
+      ],
+      "faqs": []
+    },
+    {
+      "slug": "genai-business-services",
+      "url": "/services/genai-business-services",
+      "name": "GenAI Business Services",
+      "department": "Cognition",
+      "description": "Generative AI for the enterprise — LLM implementation, custom fine-tuning, content & code generation, and enterprise AI assistants. Powered by eQORE™.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "mlops",
+      "url": "/services/mlops",
+      "name": "MLOps",
+      "department": "Cognition",
+      "description": "Production-grade MLOps — model versioning, automated pipelines, continuous training, monitoring, and feature stores for the full ML lifecycle.",
+      "capabilities": [
+        "AI Strategy & MLOps Advisory",
+        "AI Engineering & Lifecycle Management",
+        "Data & Feature Engineering",
+        "Production AI Operations",
+        "AI Platform Engineering",
+        "AI Governance & Operational Assurance",
+        "AI Performance, Cost & FinOps"
+      ],
+      "faqs": []
+    },
+    {
+      "slug": "ai-governance",
+      "url": "/services/ai-governance",
+      "name": "AI Governance",
+      "department": "Shield",
+      "description": "Responsible AI frameworks — ethical AI guidelines, bias detection and mitigation, model explainability, compliance monitoring, and risk assessment.",
+      "capabilities": [
+        "Managing AI & GenAI Solution Quality",
+        "Establishing Ethical AI Governance",
+        "Model Governance",
+        "Compliance & AI Risk Management",
+        "AI Security & Trust",
+        "AI Observability & Operations",
+        "AI Governance Strategy & Transformation"
+      ],
+      "faqs": [
+        {
+          "q": "What does AI governance actually mean in practice?",
+          "a": "AI governance is the operating system for trustworthy AI. It means every model, agent, and AI application in your enterprise has a defined owner, documented lifecycle, version-controlled deployment, explainable outputs, bias monitoring, compliance validation, and immutable audit trails. Kangqore implements this as infrastructure — not a policy document that sits in a drawer."
+        },
+        {
+          "q": "Why does our organisation need AI governance now?",
+          "a": "Three forces are converging: the EU AI Act introduces mandatory compliance obligations with significant penalties for high-risk AI. Shadow AI usage is creating unmonitored model sprawl across departments. And generative AI and autonomous agents are making decisions that directly impact customers, revenue, and legal exposure. Governance is no longer optional — it's the difference between scaling AI and getting shut down by your regulator."
+        },
+        {
+          "q": "How is Kangqore's AI governance different from buying a GRC tool?",
+          "a": "GRC tools manage policies. Kangqore implements governance infrastructure. We build centralized model registries with automated risk tiering, CI/CD compliance gates that block non-compliant deployments, SHAP explainability layers for every production model, real-time drift detection and bias monitoring, human-in-the-loop approval workflows, and immutable cryptographic audit ledgers. This is engineering, not checkbox compliance."
+        }
+      ]
+    },
+    {
+      "slug": "analytics",
+      "url": "/services/analytics",
+      "name": "Analytics",
+      "department": "Cognition",
+      "description": "End-to-end analytics — business intelligence, dashboards, KPI tracking, self-service analytics, and data storytelling for measurable decision-making.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "big-data",
+      "url": "/services/big-data",
+      "name": "Big Data",
+      "department": "Cognition",
+      "description": "Big data platforms at scale — data lakes, distributed processing, real-time streaming, data warehousing, and ETL pipelines for enterprise workloads.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "digital-process-automation",
+      "url": "/services/digital-process-automation",
+      "name": "Digital Process Automation (DPA)",
+      "department": "Cognition",
+      "description": "Digital process automation — process discovery, workflow automation, integration, monitoring, and continuous optimization for operational efficiency.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "robotic-process-automation",
+      "url": "/services/robotic-process-automation",
+      "name": "Robotic Process Automation (RPA)",
+      "department": "Cognition",
+      "description": "Enterprise RPA — bot development, attended and unattended automation, bot monitoring, and CoE setup for rule-based business processes.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "business-process-management",
+      "url": "/services/business-process-management",
+      "name": "Business Process Management",
+      "department": "Cognition",
+      "description": "Enterprise BPM — process modeling, workflow automation, process orchestration, business rules, and analytics for end-to-end process excellence.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "intelligent-automation",
+      "url": "/services/intelligent-automation",
+      "name": "Intelligent Automation",
+      "department": "Cognition",
+      "description": "AI-powered automation — AI decision automation, NLP integration, document intelligence, cognitive automation, and process orchestration combined.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "managed-cloud-services",
+      "url": "/services/managed-cloud-services",
+      "name": "Managed Cloud Services",
+      "department": "Foundry",
+      "description": "End-to-end managed cloud — 24/7 monitoring, cost optimization, security management, performance tuning, and compliance support across hyperscalers.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "aws",
+      "url": "/services/aws",
+      "name": "AWS",
+      "department": "Foundry",
+      "description": "Expert AWS services — architecture, migration, cost optimization, security best practices, and DevOps on AWS for enterprise workloads.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "microsoft-services",
+      "url": "/services/microsoft-services",
+      "name": "Microsoft Services",
+      "department": "Foundry",
+      "description": "Microsoft cloud services — Azure implementation, Microsoft 365, Power Platform, Dynamics 365, and Microsoft security & compliance.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "google-cloud-services",
+      "url": "/services/google-cloud-services",
+      "name": "Google Cloud Services",
+      "department": "Foundry",
+      "description": "Google Cloud Platform expertise — GCP architecture, BigQuery analytics, AI/ML on GCP, Kubernetes (GKE), and data solutions.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "cloud-computing",
+      "url": "/services/cloud-computing",
+      "name": "Cloud Computing",
+      "department": "Foundry",
+      "description": "Multi-cloud and hybrid cloud strategy — cloud strategy, multi-cloud management, hybrid solutions, cloud native development, and FinOps.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "embedded-design-systems",
+      "url": "/services/embedded-design-systems",
+      "name": "Embedded Design Systems & IT/OT",
+      "department": "Foundry",
+      "description": "Embedded systems and IT/OT convergence — firmware development, IT/OT integration, IoT connectivity, and edge computing for industrial use.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "engineering-foundry",
+      "url": "/services/engineering-foundry",
+      "name": "Engineering Foundry",
+      "department": "Foundry",
+      "description": "Engineering Foundry™ — rapid prototyping, innovation sprints, technical POCs, experimentation, and technology scouting with embedded engineering pods.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "engineering-rd-services",
+      "url": "/services/engineering-rd-services",
+      "name": "Engineering R&D Services",
+      "department": "Foundry",
+      "description": "Engineering R&D — technology research, innovation labs, IP development, patent support, and academic partnerships for product innovation.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "product-digital-engineering",
+      "url": "/services/product-digital-engineering",
+      "name": "Product Digital Engineering Services",
+      "department": "Foundry",
+      "description": "Digital engineering for connected products — product digitization, connected products, digital twins, smart features, and data integration.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "devops-as-a-service",
+      "url": "/services/devops-as-a-service",
+      "name": "DevOps as a Service (DaaS)",
+      "department": "Foundry",
+      "description": "Managed DevOps — CI/CD pipelines, infrastructure as code, container orchestration, monitoring, and SRE practices for faster, reliable delivery.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "managed-infrastructure-services",
+      "url": "/services/managed-infrastructure-services",
+      "name": "Managed Infrastructure Services",
+      "department": "Foundry",
+      "description": "End-to-end managed infrastructure — 24/7 monitoring, incident management, capacity planning, performance optimization, and automation.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "modernization-infrastructure",
+      "url": "/services/modernization-infrastructure",
+      "name": "Modernization Infrastructure",
+      "department": "Foundry",
+      "description": "Modernize legacy infrastructure — assessment, modernization roadmap, cloud migration, hybrid infrastructure, and infrastructure as code (IaC).",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "managed-services",
+      "url": "/services/managed-services",
+      "name": "Managed Services",
+      "department": "Foundry",
+      "description": "Full suite of managed IT services — service desk, application management, infrastructure management, security services, and cloud management.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "support-maintenance",
+      "url": "/services/support-maintenance",
+      "name": "Support And Maintenance",
+      "department": "Foundry",
+      "description": "Ongoing support and maintenance — helpdesk support, application support, system maintenance, patch management, and SLA management.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "software-development",
+      "url": "/services/software-development",
+      "name": "Software Development",
+      "department": "Foundry",
+      "description": "Custom software development — full-stack development, agile methodology, code quality, CI/CD, and documentation tailored to your business needs.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "api-microservices-engineering",
+      "url": "/services/api-microservices-engineering",
+      "name": "API & Microservices Engineering",
+      "department": "Foundry",
+      "description": "API-first and microservices — API design, microservices architecture, API gateway, service mesh, and API management for scalable applications.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "internet-of-things",
+      "url": "/services/internet-of-things",
+      "name": "Internet Of Things (IoT)",
+      "department": "Foundry",
+      "description": "End-to-end IoT — IoT architecture, device connectivity, IoT analytics, platform integration, and security for connected device ecosystems.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "application-modernization",
+      "url": "/services/application-modernization",
+      "name": "Application Modernization",
+      "department": "Reimagine",
+      "description": "Modernize legacy applications — legacy assessment, re-platforming, re-architecting, containerization, and API enablement. The Modernization Playbook™.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "digital-transformation",
+      "url": "/services/digital-transformation",
+      "name": "Digital Transformation",
+      "department": "Reimagine",
+      "description": "End-to-end digital transformation — digital strategy, operating model design, technology enablement, change management, and value realization.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "legacy-modernization",
+      "url": "/services/legacy-modernization",
+      "name": "Legacy Modernization",
+      "department": "Reimagine",
+      "description": "Modernize aging systems — assessment, migration planning, data migration, testing, and cutover management. Risk-managed, fixed-bid waves.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "technology-modernization",
+      "url": "/services/technology-modernization",
+      "name": "Technology Modernization",
+      "department": "Reimagine",
+      "description": "Modernize your technology stack — technology assessment, roadmap development, implementation, integration, and optimization.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "technology-transformation",
+      "url": "/services/technology-transformation",
+      "name": "Technology Transformation",
+      "department": "Reimagine",
+      "description": "Fundamental technology change — vision and strategy, architecture design, transformation execution, change enablement, and value measurement.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "digital-business-transformation",
+      "url": "/services/digital-business-transformation",
+      "name": "Digital Business Transformation",
+      "department": "Reimagine",
+      "description": "Reimagine business models — business model innovation, digital products, customer experience, operational excellence, and data monetization.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "technology-consulting",
+      "url": "/services/technology-consulting",
+      "name": "Technology Consulting",
+      "department": "Reimagine",
+      "description": "Expert technology consulting — technology strategy, architecture advisory, vendor selection, technology roadmaps, and IT governance.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "strategy-consulting",
+      "url": "/services/strategy-consulting",
+      "name": "Strategy Consulting",
+      "department": "Reimagine",
+      "description": "Business and technology strategy — business strategy, digital strategy, market analysis, competitive positioning, and growth strategy.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "discover-frame-workshops",
+      "url": "/services/discover-frame-workshops",
+      "name": "Discover & Frame Workshops",
+      "department": "Reimagine",
+      "description": "Structured workshops — design thinking, problem framing, ideation, solution design, and roadmap development. The diagnostic entry-point.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "mvp-acceleration",
+      "url": "/services/mvp-acceleration",
+      "name": "MVP Acceleration",
+      "department": "Reimagine",
+      "description": "Rapid MVP build and validation — rapid prototyping, agile sprints, user validation, iterative development, and launch support.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "product-strategy-experience-design",
+      "url": "/services/product-strategy-experience-design",
+      "name": "Product Strategy & Experience Design",
+      "department": "Reimagine",
+      "description": "Product strategy and UX/UI — product vision, user research, UX/UI design, design systems, and usability testing for exceptional product experiences.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "blockchain",
+      "url": "/services/blockchain",
+      "name": "Blockchain",
+      "department": "Reimagine",
+      "description": "Blockchain solutions — blockchain strategy, smart contracts, private networks, DeFi, and supply chain transparency. Built for enterprise rigor.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "it-security-services",
+      "url": "/services/it-security-services",
+      "name": "IT Security Services",
+      "department": "Shield",
+      "description": "Enterprise cybersecurity — security assessment, threat detection, incident response, security operations, and compliance management.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "finance-risk-management",
+      "url": "/services/finance-risk-management",
+      "name": "Finance & Risk Management",
+      "department": "Shield",
+      "description": "Finance transformation and risk — risk assessment, compliance, financial planning, and audit support. Under Shield™ Trust & Governance Framework.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "quality-engineering-assurance",
+      "url": "/services/quality-engineering-assurance",
+      "name": "Quality Engineering & Assurance",
+      "department": "Shield",
+      "description": "Quality engineering — test strategy, test automation, performance testing, security testing, and quality metrics for production-grade releases.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "operation-technology",
+      "url": "/services/operation-technology",
+      "name": "Operation Technology (OT)",
+      "department": "Shield",
+      "description": "OT security and management — OT assessment, OT security, IT/OT convergence, SCADA systems, and industrial IoT for critical environments.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "enterprise-platform-integration",
+      "url": "/services/enterprise-platform-integration",
+      "name": "Enterprise Platform Integration",
+      "department": "Platforms",
+      "description": "Connect enterprise applications — integration strategy, API development, ESB implementation, data integration, and iPaaS solutions.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "pimcore",
+      "url": "/services/pimcore",
+      "name": "Pimcore",
+      "department": "Platforms",
+      "description": "Pimcore PIM/DAM — PIM implementation, DAM setup, data modeling, integration, and custom development for product information and digital assets.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "salesforce",
+      "url": "/services/salesforce",
+      "name": "Salesforce",
+      "department": "Platforms",
+      "description": "Salesforce implementation — Sales Cloud, Service Cloud, Marketing Cloud, custom development, and integration for customer-centric operations.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "servicenow",
+      "url": "/services/servicenow",
+      "name": "ServiceNow",
+      "department": "Platforms",
+      "description": "ServiceNow implementation — ITSM, ITOM, HR Service Delivery, custom apps, and integration for unified enterprise service management.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "global-capability-centers",
+      "url": "/services/global-capability-centers",
+      "name": "Global Capability Centers (GCC)",
+      "department": "Platforms",
+      "description": "Build and scale GCCs — GCC setup, operating model, talent management, process excellence, and technology enablement for global delivery.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "talent-organization",
+      "url": "/services/talent-organization",
+      "name": "Talent & Organization",
+      "department": "Platforms",
+      "description": "Talent and org design — talent strategy, org design, change management, learning and development, and HR technology for workforce transformation.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "supply-chain",
+      "url": "/services/supply-chain",
+      "name": "Supply Chain",
+      "department": "Platforms",
+      "description": "Supply chain transformation — strategy, planning and forecasting, logistics optimization, visibility, and sustainability for resilient operations.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "unified-services-management",
+      "url": "/services/unified-services-management",
+      "name": "Unified Services Management (USM)",
+      "department": "Platforms",
+      "description": "Unified service management — service strategy, process design, tool implementation, governance, and continuous improvement for consistent delivery.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "cdp-strategy",
+      "url": "/services/cdp-strategy",
+      "name": "Customer Data Strategy",
+      "department": "Growth",
+      "description": "First-party customer data strategy — unified profiles, real-time segmentation, privacy & compliance, and cross-channel activation. KVIS™.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "marketing-ai-readiness",
+      "url": "/services/marketing-ai-readiness",
+      "name": "Marketing AI Readiness",
+      "department": "Growth",
+      "description": "GenAI for marketing — creative ops audit, GenAI roadmap, content personalization at scale, workflow automation, and AI-driven asset generation.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "social-media-management",
+      "url": "/services/social-media-management",
+      "name": "Social Media Management",
+      "department": "Growth",
+      "description": "Social media strategy and management — strategy development, content creation, community management, and analytics across all platforms.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "performance-marketing",
+      "url": "/services/performance-marketing",
+      "name": "Performance Marketing",
+      "department": "Growth",
+      "description": "Data-driven performance marketing — PPC, social ads, retargeting, conversion optimization, and attribution for measurable pipeline.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "seo-organic-growth-strategy",
+      "url": "/services/seo-organic-growth-strategy",
+      "name": "SEO & Organic Growth Strategy",
+      "department": "Growth",
+      "description": "Technical SEO and organic growth — technical SEO, content clustering, off-page footprint, and Core Web Vitals for sustained search visibility.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "growth-funnels-conversion-engineering",
+      "url": "/services/growth-funnels-conversion-engineering",
+      "name": "Growth Funnels & Conversion Engineering",
+      "department": "Growth",
+      "description": "Engineered growth funnels — funnel design, A/B testing, conversion optimization, growth hacking, and funnel analytics for maximum revenue.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "conversion-rate-optimization",
+      "url": "/services/conversion-rate-optimization",
+      "name": "Conversion Rate Optimization (CRO)",
+      "department": "Growth",
+      "description": "Maximum yield from existing traffic — A/B testing, behavior analytics, heuristic analysis, and friction audits. Pipeline you can attribute.",
+      "capabilities": [],
+      "faqs": []
+    },
+    {
+      "slug": "campaign-planning",
+      "url": "/services/campaign-planning",
+      "name": "Campaign Planning",
+      "department": "Growth",
+      "description": "Strategic campaign planning — campaign strategy, channel planning, creative development, execution, and continuous optimization.",
+      "capabilities": [],
+      "faqs": []
+    }
+  ]
+}

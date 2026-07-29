@@ -1,0 +1,642 @@
+{
+  "generatedAt": "2026-07-29T11:16:22.696Z",
+  "baseUrl": "https://kangqore.com",
+  "routes": [
+    {
+      "path": "/",
+      "type": "STATIC",
+      "priority": "1.0",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/about-us",
+      "type": "STATIC",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/contact",
+      "type": "STATIC",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/careers",
+      "type": "STATIC",
+      "priority": "0.7",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/partners",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/values",
+      "type": "STATIC",
+      "priority": "0.5",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/leadership",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/testimonials",
+      "type": "STATIC",
+      "priority": "0.5",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/eqore",
+      "type": "STATIC",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/insights",
+      "type": "STATIC",
+      "priority": "0.7",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/case-studies",
+      "type": "STATIC",
+      "priority": "0.7",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/blogs",
+      "type": "STATIC",
+      "priority": "0.7",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/white-paper",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/news",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/events",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/brochures",
+      "type": "STATIC",
+      "priority": "0.4",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/communities",
+      "type": "STATIC",
+      "priority": "0.5",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/investors",
+      "type": "STATIC",
+      "priority": "0.5",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/brand-identity",
+      "type": "STATIC",
+      "priority": "0.3",
+      "changefreq": "yearly"
+    },
+    {
+      "path": "/location",
+      "type": "STATIC",
+      "priority": "0.4",
+      "changefreq": "yearly"
+    },
+    {
+      "path": "/departments",
+      "type": "STATIC",
+      "priority": "0.9",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/services",
+      "type": "STATIC",
+      "priority": "0.9",
+      "changefreq": "weekly"
+    },
+    {
+      "path": "/industries/banking",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/insurance",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/edtech",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/healthcare",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/life-science",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/media-technology",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/retail",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/travel-hospitality",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/energy-utilities",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/manufacturing",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/information-services",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/industries/consumer-goods",
+      "type": "STATIC",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/privacy-policy",
+      "type": "STATIC",
+      "priority": "0.3",
+      "changefreq": "yearly"
+    },
+    {
+      "path": "/terms-and-conditions",
+      "type": "STATIC",
+      "priority": "0.3",
+      "changefreq": "yearly"
+    },
+    {
+      "path": "/cookie-policy",
+      "type": "STATIC",
+      "priority": "0.3",
+      "changefreq": "yearly"
+    },
+    {
+      "path": "/accessibility-statement",
+      "type": "STATIC",
+      "priority": "0.3",
+      "changefreq": "yearly"
+    },
+    {
+      "path": "/departments/cognition",
+      "type": "DEPARTMENT",
+      "priority": "0.9",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/departments/foundry",
+      "type": "DEPARTMENT",
+      "priority": "0.9",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/departments/reimagine",
+      "type": "DEPARTMENT",
+      "priority": "0.9",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/departments/shield",
+      "type": "DEPARTMENT",
+      "priority": "0.9",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/departments/platforms",
+      "type": "DEPARTMENT",
+      "priority": "0.9",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/departments/growth",
+      "type": "DEPARTMENT",
+      "priority": "0.9",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/agentic-ai",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/agentic-ai-led-application-modernization",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/ai-cognitive-computing",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/data-science-ai",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/genai-business-services",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/mlops",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/ai-governance",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/analytics",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/big-data",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/digital-process-automation",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/robotic-process-automation",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/business-process-management",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/intelligent-automation",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/managed-cloud-services",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/aws",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/microsoft-services",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/google-cloud-services",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/cloud-computing",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/embedded-design-systems",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/engineering-foundry",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/engineering-rd-services",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/product-digital-engineering",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/devops-as-a-service",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/managed-infrastructure-services",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/modernization-infrastructure",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/managed-services",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/support-maintenance",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/software-development",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/api-microservices-engineering",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/internet-of-things",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/application-modernization",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/digital-transformation",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/legacy-modernization",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/technology-modernization",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/technology-transformation",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/digital-business-transformation",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/technology-consulting",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/strategy-consulting",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/discover-frame-workshops",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/mvp-acceleration",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/product-strategy-experience-design",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/blockchain",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/it-security-services",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/finance-risk-management",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/quality-engineering-assurance",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/operation-technology",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/enterprise-platform-integration",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/pimcore",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/salesforce",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/servicenow",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/global-capability-centers",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/talent-organization",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/supply-chain",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/unified-services-management",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/cdp-strategy",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/marketing-ai-readiness",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/social-media-management",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/performance-marketing",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/seo-organic-growth-strategy",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/growth-funnels-conversion-engineering",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/conversion-rate-optimization",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    {
+      "path": "/services/campaign-planning",
+      "type": "SERVICE",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    }
+  ]
+}
