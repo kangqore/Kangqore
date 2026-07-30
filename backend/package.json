@@ -92,6 +92,7 @@
     "jest": "^29.7.0",
     "nodemon": "^3.0.2",
     "prisma": "5.22.0",
+    "redis-memory-server": "^0.16.1",
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.1",
     "tsx": "^4.21.0",
@@ -110,5 +111,8 @@
     "api"
   ],
   "author": "Kangqore Team",
-  "license": "MIT"
+  "license": "MIT",
+  "redisMemoryServer": {
+    "disablePostinstall": "1"
+  }
 }
