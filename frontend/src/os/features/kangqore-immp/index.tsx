@@ -182,6 +182,17 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S223–S232 Global Fleet 200 (Chapter 11 T2)
+import { FleetHundredPage }              from './pages/FleetHundredPage'
+import { JapanLaunchPage }               from './pages/JapanLaunchPage'
+import { Fleet125Page }                  from './pages/Fleet125Page'
+import { AnzLaunchPage }                 from './pages/AnzLaunchPage'
+import { Fleet150Page }                  from './pages/Fleet150Page'
+import { LatamLaunchPage }               from './pages/LatamLaunchPage'
+import { Fleet175Page }                  from './pages/Fleet175Page'
+import { MenaLaunchPage }                from './pages/MenaLaunchPage'
+import { Fleet200Page }                  from './pages/Fleet200Page'
+import { GateS232Page }                  from './pages/GateS232Page'
 // S213–S222 Gen5 Primary Engine (Chapter 11 T1)
 import { Gen5RoutingPage }               from './pages/Gen5RoutingPage'
 import { Gen5DomainSpecialisationPage }  from './pages/Gen5DomainSpecialisationPage'
@@ -490,6 +501,17 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S223–S232 Global Fleet 200 (Chapter 11 T2) */}
+          <Route path="fleet-100-milestone"        element={<FleetHundredPage />}              />
+          <Route path="japan-commercial-launch"    element={<JapanLaunchPage />}               />
+          <Route path="fleet-125"                  element={<Fleet125Page />}                  />
+          <Route path="anz-commercial-launch"      element={<AnzLaunchPage />}                 />
+          <Route path="fleet-150"                  element={<Fleet150Page />}                  />
+          <Route path="latam-commercial-launch"    element={<LatamLaunchPage />}               />
+          <Route path="fleet-175"                  element={<Fleet175Page />}                  />
+          <Route path="mena-commercial-launch"     element={<MenaLaunchPage />}                />
+          <Route path="fleet-200-milestone"        element={<Fleet200Page />}                  />
+          <Route path="fleet-gate-s232"            element={<GateS232Page />}                  />
           {/* S213–S222 Gen5 Primary Engine (Chapter 11 T1) */}
           <Route path="gen5-25-routing"            element={<Gen5RoutingPage />}               />
           <Route path="gen5-domain-specialisation" element={<Gen5DomainSpecialisationPage />}  />

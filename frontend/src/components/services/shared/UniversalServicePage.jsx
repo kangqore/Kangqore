@@ -25,6 +25,7 @@ import { AIToolsSection } from '../cognition/AICustomSections';
 import { servicesData } from '../../../data/servicesData';
 import ResponsiveImage from '../../media/ResponsiveImage';
 import Beams from '../../ui/Beams';
+import GeminiComparisonSection from './GeminiComparisonSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -2194,58 +2195,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
       {service.comparisonTable && (
-        <section className="py-24" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <div className="mb-14">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">WHY IT MATTERS</span>
-              </div>
-              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                {service.comparisonTable.heading || <>The shift from automation<br /><span className="bg-brand-gradient bg-clip-text text-transparent">to autonomy.</span></>}
-              </h2>
-            </div>
-            <div className="grid lg:grid-cols-[1fr_64px_1fr] gap-0 items-stretch">
-              {/* Before panel */}
-              <div className="rounded-2xl lg:rounded-r-none bg-white/[0.025] border border-white/[0.05] lg:border-r-0 p-8 lg:p-10">
-                <span className="text-[9px] font-black tracking-[0.35em] uppercase text-white/60 block mb-8">
-                  {service.comparisonTable.colA || 'Traditional Automation'}
-                </span>
-                <div className="space-y-7">
-                  {service.comparisonTable.rows.map((row, i) => (
-                    <div key={i}>
-                      <span className="text-[8px] font-black tracking-[0.3em] uppercase text-white/60 block mb-1.5">{row.dimension}</span>
-                      <p className="text-white/30 text-sm font-medium leading-relaxed">{row.before}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Centre divider */}
-              <div className="hidden lg:flex flex-col items-center justify-center relative">
-                <div className="absolute inset-y-0 w-px bg-gradient-to-b from-transparent via-cyan-400/20 to-transparent" />
-                <div className="relative z-10 w-9 h-9 rounded-full bg-[#000] border border-cyan-400/25 flex items-center justify-center shadow-[0_0_16px_rgba(34,211,238,0.12)]">
-                  <ArrowRight className="w-3.5 h-3.5 text-cyan-400/70" />
-                </div>
-              </div>
-
-              {/* After panel */}
-              <div className="rounded-2xl lg:rounded-l-none bg-[#000] border border-cyan-400/10 lg:border-l-0 border-l-2 border-l-cyan-400/20 p-8 lg:p-10">
-                <span className="text-[9px] font-black tracking-[0.35em] uppercase text-cyan-400/80 block mb-8">
-                  {service.comparisonTable.colB || 'Agentic AI'}
-                </span>
-                <div className="space-y-7">
-                  {service.comparisonTable.rows.map((row, i) => (
-                    <div key={i}>
-                      <span className="text-[8px] font-black tracking-[0.3em] uppercase text-white/60 block mb-1.5">{row.dimension}</span>
-                      <p className="text-white font-semibold text-sm leading-relaxed">{row.after}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <GeminiComparisonSection comparisonTable={service.comparisonTable} />
       )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
