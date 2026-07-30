@@ -24,6 +24,7 @@ import ConciergeSection from '../../concierge/ConciergeSection';
 import { AIToolsSection } from '../cognition/AICustomSections';
 import { servicesData } from '../../../data/servicesData';
 import ResponsiveImage from '../../media/ResponsiveImage';
+import Beams from '../../ui/Beams';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -865,7 +866,22 @@ export default function UniversalServicePage({ service: rawService, department }
   }));
 
   // ── Hero scrolling strip ──────────────────────────────────────────────────
-  const HERO_CAPS  = (service.heroStripItems || service.keyFeatures).map((f, i) => ({ label: f, color: CAP_COLORS[i % CAP_COLORS.length], icon: ICON_POOL[i % ICON_POOL.length] }));
+  const HERO_CAP_IMAGES = {
+    'Autonomous Goal Execution': '/images/capabilities/agentic-goal-execution.png',
+    'Enterprise Agent Orchestration': '/images/capabilities/agentic-multi-agent.png',
+    'Enterprise Memory & Knowledge': '/images/capabilities/agentic-memory-knowledge.png',
+    'Enterprise Intelligence': '/images/capabilities/cognitive-decision-intelligence.png',
+    'Enterprise Governance': '/images/capabilities/agentic-governed-autonomy.png',
+    'Enterprise Security': '/images/capabilities/agentic-enterprise-security.png',
+    'Enterprise Operations': '/images/capabilities/agentic-enterprise-operations.png',
+    'Enterprise Integrations': '/images/capabilities/integration-api-modernization-illustration.png',
+  };
+  const HERO_CAPS  = (service.heroStripItems || service.keyFeatures).map((f, i) => ({
+    label: f,
+    color: CAP_COLORS[i % CAP_COLORS.length],
+    icon: ICON_POOL[i % ICON_POOL.length],
+    bgImage: HERO_CAP_IMAGES[f] || (service.architectureNodes && service.architectureNodes[i % service.architectureNodes.length]?.bgImage) || `/images/architecture/agentic-${['perceive','reason','plan','act','learn'][i % 5]}.png`
+  }));
   const HERO_STRIP = [...HERO_CAPS, ...HERO_CAPS, ...HERO_CAPS];
 
 
@@ -971,7 +987,24 @@ const featureMicros   = service.featureMicros
       <div id="svc-hero" className="p-2 h-screen" style={{ backgroundColor: 'var(--page-bg, #000)' }}>
         <div className="relative w-full h-full overflow-hidden rounded-xl text-white">
 
-          {service.useAbstractHero || service.slug === 'agentic-ai' ? (
+          {service.slug === 'agentic-ai' ? (
+            <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
+              <div className="absolute inset-0 z-0">
+                <Beams
+                  beamWidth={2}
+                  beamHeight={15}
+                  beamNumber={12}
+                  lightColor="#ffffff"
+                  speed={2}
+                  noiseIntensity={1.75}
+                  scale={0.2}
+                  rotation={0}
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none z-10" />
+            </div>
+          ) : service.useAbstractHero ? (
             <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
               {/* Abstract Gradient Mesh */}
               <div className="absolute -top-[20%] -left-[10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-blue-600/20 via-cyan-500/10 to-transparent blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
@@ -1081,9 +1114,26 @@ const featureMicros   = service.featureMicros
                 // extraction (crawlers, answer engines) counts them once.
                 const isDuplicate = i >= HERO_CAPS.length;
                 return (
-                  <div key={i} aria-hidden={isDuplicate ? 'true' : undefined} className="flex items-center gap-4 bg-[#0a0a0c] border border-white/10 rounded-2xl p-1.5 pr-6 shadow-2xl flex-shrink-0 cursor-default hover:-translate-y-1 transition-transform duration-300">
+                  <div 
+                    key={i} 
+                    aria-hidden={isDuplicate ? 'true' : undefined} 
+                    className="relative flex items-center gap-4 bg-[#060a12] border border-white/15 rounded-2xl p-2 pr-6 shadow-2xl flex-shrink-0 cursor-default hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
+                  >
+                    {/* Background Image overlay */}
+                    {cap.bgImage && (
+                      <ResponsiveImage
+                        src={cap.bgImage}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                        sizes="300px"
+                        className="absolute inset-0 w-full h-full object-cover object-center opacity-40 group-hover:opacity-65 group-hover:scale-105 transition-all duration-500 pointer-events-none"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#060a12]/90 via-[#060a12]/60 to-[#060a12]/90 pointer-events-none z-0" />
+
                     <div
-                      className="w-14 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                      className="relative z-10 w-12 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                       style={{
                         background: `linear-gradient(135deg, ${cap.color}55 0%, ${cap.color}cc 100%)`,
                         boxShadow: `0 4px 14px ${cap.color}55`,
@@ -1091,7 +1141,7 @@ const featureMicros   = service.featureMicros
                     >
                       <Icon className="w-5 h-5 text-white drop-shadow" />
                     </div>
-                    <span className="text-[14px] font-semibold text-white/90 tracking-tight whitespace-nowrap">{cap.label}</span>
+                    <span className="relative z-10 text-[14px] font-bold text-white/95 tracking-tight whitespace-nowrap drop-shadow-sm">{cap.label}</span>
                   </div>
                 );
               })}
