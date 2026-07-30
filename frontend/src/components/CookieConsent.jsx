@@ -57,7 +57,7 @@ const CookieConsent = () => {
 
   return (
     <div 
-      className="fixed bottom-2 left-2 right-2 z-[99999] max-w-screen-2xl mx-auto bg-black border border-neutral-800 rounded-3xl animate-slide-up text-left pt-6 pb-8 px-6 md:px-8 max-h-[90vh] overflow-y-auto no-scrollbar"
+      className="fixed bottom-2 left-2 right-2 z-[99999] max-w-screen-2xl mx-auto bg-black border border-neutral-800 rounded-2xl lg:rounded-3xl animate-slide-up text-left pt-4 pb-4 px-4 lg:pt-6 lg:pb-8 lg:px-8 max-h-[90vh] overflow-y-auto no-scrollbar"
       style={{ backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
     >
       <style>{`
@@ -196,20 +196,35 @@ const CookieConsent = () => {
           </div>
         </div>
       ) : (
-        <div className="w-full px-2 md:px-8 flex flex-col gap-6">
+        <div className="w-full px-0 md:px-8 flex flex-col gap-6">
 
           {/* Bottom Row: Text Content & Buttons */}
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-16">
-            <div className="flex flex-col gap-3 lg:flex-1">
-              <h2 className="text-xl font-bold text-white tracking-tight leading-snug">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-16">
+            <div className="flex flex-col gap-1.5 lg:gap-3 lg:flex-1">
+              {/* The heading is decorative reassurance; on a 390px viewport it cost
+                  a whole line that pushed the hero CTA off-screen. */}
+              <h2 className="hidden lg:block text-xl font-bold text-white tracking-tight leading-snug">
                 At Kangqore, we value your privacy.
               </h2>
-              <p className="text-[10px] md:text-[11px] text-slate-400 leading-relaxed font-normal">
-                When you visit any website, it may store or retrieve information on your browser, mostly in the form of cookies. 
-                This information might be about you, your preferences or your device and is mostly used to make the site work as you expect it to. 
-                The information does not usually directly identify you, but it can give you a more personalized web experience. 
-                Because we respect your right to privacy, you can choose not to allow some types of cookies. 
-                However, blocking some types of cookies may impact your experience of the site and the services we are able to offer. 
+
+              {/* Mobile: a one-line notice. The full disclosure is not removed —
+                  it stays one tap away behind "Manage" and the Cookie policy
+                  link, so consent remains informed. The long-form copy below
+                  previously occupied ~45% of the first mobile viewport and
+                  buried both hero CTAs. */}
+              <p className="lg:hidden text-[13px] text-slate-300 leading-snug font-normal">
+                We use cookies to run this site and understand how it is used.{' '}
+                <Link to="/cookies" className="text-white underline font-semibold">
+                  Cookie policy
+                </Link>
+              </p>
+
+              <p className="hidden lg:block text-[10px] md:text-[11px] text-slate-400 leading-relaxed font-normal">
+                When you visit any website, it may store or retrieve information on your browser, mostly in the form of cookies.
+                This information might be about you, your preferences or your device and is mostly used to make the site work as you expect it to.
+                The information does not usually directly identify you, but it can give you a more personalized web experience.
+                Because we respect your right to privacy, you can choose not to allow some types of cookies.
+                However, blocking some types of cookies may impact your experience of the site and the services we are able to offer.
                 To find out more, read our updated{' '}
                 <Link to="/cookies" className="text-white hover:text-slate-300 underline font-semibold transition-colors">
                   Cookie policy
@@ -218,20 +233,22 @@ const CookieConsent = () => {
               </p>
             </div>
 
-            {/* Right Side: Actions */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full lg:w-auto justify-end flex-shrink-0">
+            {/* Actions — side by side on mobile so they occupy one row, not two */}
+            <div className="flex flex-row items-center gap-3 sm:gap-6 w-full lg:w-auto justify-end flex-shrink-0">
               <button
                 onClick={() => setCustomizing(true)}
-                className="w-[180px] py-2 bg-transparent border border-neutral-600 hover:border-white text-white font-bold rounded-full transition-all text-center text-xs"
+                className="flex-1 lg:flex-none lg:w-[180px] py-2.5 lg:py-2 bg-transparent border border-neutral-600 hover:border-white text-white font-bold rounded-full transition-all text-center text-xs"
               >
-                Customize cookies
+                <span className="lg:hidden">Manage</span>
+                <span className="hidden lg:inline">Customize cookies</span>
               </button>
               <button
                 onClick={handleAcceptAll}
-                className="w-[180px] py-2 text-white text-xs font-bold rounded-full transition-all shadow-md hover:opacity-90 active:opacity-80 text-center"
+                className="flex-1 lg:flex-none lg:w-[180px] py-2.5 lg:py-2 text-white text-xs font-bold rounded-full transition-all shadow-md hover:opacity-90 active:opacity-80 text-center"
                 style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }}
               >
-                Accept all cookies
+                <span className="lg:hidden">Accept all</span>
+                <span className="hidden lg:inline">Accept all cookies</span>
               </button>
             </div>
           </div>

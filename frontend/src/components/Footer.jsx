@@ -167,11 +167,11 @@ const Footer = () => {
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 {legalLinks.map((l, i) => (
                   <React.Fragment key={l.name}>
-                    <Link to={l.path} style={{ fontSize: 11, color: '#9ca3af', textDecoration: 'none', fontWeight: 500 }}
+                    <Link to={l.path} style={{ fontSize: 11, color: '#4b5563', textDecoration: 'none', fontWeight: 500 }}
                       onMouseEnter={e => e.currentTarget.style.color = '#2564ea'}
-                      onMouseLeave={e => e.currentTarget.style.color = '#9ca3af'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#4b5563'}
                     >{l.name}</Link>
-                    {i < legalLinks.length - 1 && <span style={{ color: '#d1d5db', fontSize: 11 }}>•</span>}
+                    {i < legalLinks.length - 1 && <span aria-hidden="true" style={{ color: '#9ca3af', fontSize: 11 }}>•</span>}
                   </React.Fragment>
                 ))}
               </div>
