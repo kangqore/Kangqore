@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { createServer } from 'node:http';
 import path from 'node:path';
+import fs from 'node:fs';
 import passport from 'passport';
 
 import authRoutes from './routes/auth';
@@ -383,10 +384,93 @@ app.use(dashboardRedirectMiddleware);
 
 // Serve Frontend Static Files
 const frontendBuildPath = path.join(__dirname, '../../frontend/build');
+
+// Serve Brotli-precompressed assets when the client accepts them.
+// `compression()` above only speaks gzip/deflate; on this JS-heavy SPA first
+// paint is gated on the bundle arriving, and Brotli is ~21% smaller than gzip
+// across the critical chunks. Files are produced at build time by
+// scripts/compress-build.mjs, so there is no per-request CPU cost.
+// MUST be registered before express.static, which would otherwise answer first.
+const BROTLI_TYPES: Record<string, string> = {
+  '.js': 'application/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.json': 'application/json; charset=utf-8',
+};
+
+app.get(/\.(js|css|svg|json)$/, (req, res, next) => {
+  const accepts = String(req.headers['accept-encoding'] || '');
+  if (!/\bbr\b/.test(accepts)) return next();
+
+  // req.path is URL-decoded and normalised by Express; resolve and confirm the
+  // result stays inside the build directory before reading anything.
+  const candidate = path.resolve(frontendBuildPath, `.${req.path}.br`);
+  if (!candidate.startsWith(path.resolve(frontendBuildPath))) return next();
+  if (!fs.existsSync(candidate)) return next();
+
+  const type = BROTLI_TYPES[path.extname(req.path).toLowerCase()];
+  if (type) res.setHeader('Content-Type', type);
+  res.setHeader('Content-Encoding', 'br');
+  res.setHeader('Vary', 'Accept-Encoding');
+  // Hashed filenames are immutable; anything else stays revalidated.
+  res.setHeader('Cache-Control', /-[A-Za-z0-9_-]{8,}\./.test(req.path)
+    ? 'public, max-age=31536000, immutable'
+    : 'public, max-age=0, must-revalidate');
+  res.sendFile(candidate, (err) => { if (err) next(); });
+});
+
 app.use(express.static(frontendBuildPath));
+
+// ─── Soft-404 elimination ──────────────────────────────────────────────────────
+// As an SPA, every unknown URL previously returned HTTP 200 with the shell —
+// so /services/does-not-exist looked like a real page to crawlers. Search
+// Console reports those as "Soft 404" and they burn crawl budget across an
+// unbounded URL space.
+//
+// The canonical route list is already generated for the sitemap, so it can also
+// authoritatively decide what does NOT exist. Only namespaces we can validate
+// exhaustively are checked; every other path keeps SPA behaviour untouched.
+const VALIDATED_NAMESPACES = ['/services/', '/departments/'];
+
+let knownRoutes: Set<string> | null = null;
+function loadKnownRoutes(): Set<string> {
+  if (knownRoutes) return knownRoutes;
+  const candidates = [
+    path.resolve(__dirname, '../../shared/siteRoutes.json'),
+    path.resolve(process.cwd(), 'shared/siteRoutes.json'),
+    path.resolve(process.cwd(), '../shared/siteRoutes.json'),
+  ];
+  for (const file of candidates) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(file, 'utf8'));
+      if (Array.isArray(parsed?.routes) && parsed.routes.length) {
+        knownRoutes = new Set(parsed.routes.map((r: { path: string }) => r.path.replace(/\/$/, '')));
+        return knownRoutes;
+      }
+    } catch {
+      /* try next candidate */
+    }
+  }
+  // Manifest missing: fail open. A stale 404 is far worse than a soft 404.
+  console.warn('[soft404] siteRoutes.json not found — unknown-route detection disabled');
+  knownRoutes = new Set();
+  return knownRoutes;
+}
 
 // Serve index.html for all non-API routes (client-side routing)
 app.get('*', (req, res) => {
+  const clean = req.path.replace(/\/$/, '');
+  const routes = loadKnownRoutes();
+  const inValidatedNamespace = VALIDATED_NAMESPACES.some(
+    (ns) => req.path.startsWith(ns) && req.path.length > ns.length,
+  );
+
+  // The SPA still renders its NotFound view; only the status code changes, so
+  // humans see the same page while crawlers get an honest 404.
+  if (routes.size > 0 && inValidatedNamespace && !routes.has(clean)) {
+    res.status(404);
+  }
+
   res.sendFile(path.join(frontendBuildPath, 'index.html'));
 });
 

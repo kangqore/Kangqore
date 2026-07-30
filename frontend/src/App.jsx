@@ -16,16 +16,16 @@ import EROOT from './components/eROOT';
 import { authRoutes, publicRoutes, industryRoutes, contentRoutes, serviceRoutes } from './routes';
 import { legacyRedirectRoutes } from './routes/legacyRedirectRoutes';
 // Import page components
-import HomePage from './pages/HomePage';
-import Services from './pages/Services';
-import DynamicKangqorePage from './pages/DynamicKangqorePage';
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const Services = React.lazy(() => import('./pages/Services'));
+const DynamicKangqorePage = React.lazy(() => import('./pages/DynamicKangqorePage'));
 import InstallPrompt from './components/InstallPrompt';
 import OfflineIndicator from './components/OfflineIndicator';
-import BookingCancelPage from './pages/BookingCancelPage';
-import BookingReschedulePage from './pages/BookingReschedulePage';
-import AcceptInvitePage from './pages/AcceptInvitePage';
-import BookingConfirmationPage from './pages/BookingConfirmationPage';
-import BookingPage from './pages/BookingPage';
+const BookingCancelPage = React.lazy(() => import('./pages/BookingCancelPage'));
+const BookingReschedulePage = React.lazy(() => import('./pages/BookingReschedulePage'));
+const AcceptInvitePage = React.lazy(() => import('./pages/AcceptInvitePage'));
+const BookingConfirmationPage = React.lazy(() => import('./pages/BookingConfirmationPage'));
+const BookingPage = React.lazy(() => import('./pages/BookingPage'));
 const BidsRequestPage = React.lazy(() => import('./pages/BidsRequestPage'));
 import './App.css';
 
@@ -80,11 +80,13 @@ function MainLayout({ children, showFullMenu, setShowFullMenu, handleMenuClick }
       <AnimatePresence mode="wait">
         <motion.main
           key={location.pathname}
+          id="main-content"
+          tabIndex={-1}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="min-h-screen"
+          className="min-h-screen focus:outline-none"
         >
           {children}
         </motion.main>
@@ -228,6 +230,9 @@ function AppContent() {
 
   return (
     <div className="App min-h-screen text-foreground parallax-container" style={{ backgroundColor: 'var(--page-bg)' }}>
+      {/* First tabbable element on every page. The published accessibility
+          statement already advertised this; it did not previously exist. */}
+      <a href="#main-content" className="kq-skip-link">Skip to content</a>
       <GlobalScrollAnimations />
       <WebVitalsReporter />
       <Suspense fallback={<PageLoader />}>

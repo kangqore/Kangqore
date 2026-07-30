@@ -22,8 +22,9 @@
 
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 
+import useSeo from '../seo/useSeo';
+import { buildServiceGraph } from '../seo/serviceSchema';
 import { servicesData, servicesList } from '../data/servicesData';
 import { departmentsData } from '../data/departmentsData';
 import { serviceSEO } from '../data/seoData';
@@ -46,101 +47,60 @@ const PSED_REGISTRY = {
 const ServicePage = () => {
   const { slug } = useParams();
 
-  if (!slug || !servicesList.includes(slug)) {
-    return <NotFound />;
-  }
-
-  const svc = servicesData[slug];
-  const dept = departmentsData[svc.departmentSlug];
-  const seo = serviceSEO[slug] || {};
+  // Everything below the hook must be computed unconditionally: hooks cannot sit
+  // behind the NotFound early-return. `valid` gates the payload, not the call.
+  const valid = Boolean(slug && servicesList.includes(slug));
+  const svc = valid ? servicesData[slug] : null;
+  const dept = svc ? departmentsData[svc.departmentSlug] : null;
+  const seo = (valid && serviceSEO[slug]) || {};
 
   const pageUrl = `${SITE_URL}/services/${slug}`;
-  const deptUrl = `${SITE_URL}/departments/${dept.slug}`;
-  const pageTitle = seo.title || `${svc.name} — ${dept.shortName} | Kangqore`;
-  const pageDescription = seo.description || svc.shortDescription;
+  const pageTitle = seo.title || (svc && dept ? `${svc.name} — ${dept.shortName} | Kangqore` : 'Kangqore');
+  const pageDescription = seo.description || svc?.shortDescription || '';
   const ogImage = `${SITE_URL}/og/default.png`;
 
-  // JSON-LD: Service schema + BreadcrumbList (deep breadcrumb even though URL is flat).
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Service',
-        '@id': pageUrl,
-        name: svc.name,
-        description: svc.shortDescription,
-        provider: {
-          '@type': 'Organization',
-          name: ORG_NAME,
-          url: SITE_URL,
-        },
-        serviceType: dept.tagline,
-        url: pageUrl,
-        brand: {
-          '@type': 'Brand',
-          name: svc.bannerBrand.replace(/[™®]/g, '').trim(),
-        },
-        isPartOf: {
-          '@type': 'Service',
-          name: dept.name,
-          url: deptUrl,
-        },
-        ...(svc.relatedServiceSlugs && svc.relatedServiceSlugs.length > 0
-          ? {
-              isRelatedTo: svc.relatedServiceSlugs.slice(0, 3).map((relSlug) => {
-                const rel = servicesData[relSlug];
-                return {
-                  '@type': 'Service',
-                  name: rel?.name || relSlug,
-                  url: `${SITE_URL}/services/${relSlug}`,
-                };
-              }),
-            }
-          : {}),
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-          { '@type': 'ListItem', position: 2, name: 'Departments', item: `${SITE_URL}/departments` },
-          { '@type': 'ListItem', position: 3, name: dept.shortName, item: deptUrl },
-          { '@type': 'ListItem', position: 4, name: svc.name, item: pageUrl },
-        ],
-      },
-    ],
-  };
-
-  // Canonical Helmet block — emitted for BOTH skeleton and premium paths so
-  // SEO/canonical/JSON-LD/OG behavior is identical regardless of which body
-  // renders. ServicePageTemplate's own SEO is suppressed via disableSEO.
-  const canonicalHelmet = (
-    <Helmet>
-      <title>{pageTitle}</title>
-      <meta name="description" content={pageDescription} />
-      {seo.keywords && <meta name="keywords" content={seo.keywords} />}
-      <link rel="canonical" href={pageUrl} />
-
-      {/* Open Graph */}
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={pageUrl} />
-      <meta property="og:title" content={pageTitle} />
-      <meta property="og:description" content={pageDescription} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:site_name" content={ORG_NAME} />
-
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={pageUrl} />
-      <meta name="twitter:title" content={pageTitle} />
-      <meta name="twitter:description" content={pageDescription} />
-      <meta name="twitter:image" content={ogImage} />
-
-      {/* JSON-LD: Service + BreadcrumbList */}
-      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-    </Helmet>
+  useSeo(
+    valid
+      ? {
+          title: pageTitle,
+          description: pageDescription,
+          keywords: seo.keywords,
+          canonical: pageUrl,
+          robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+          lang: 'en',
+          og: {
+            type: 'website',
+            url: pageUrl,
+            title: pageTitle,
+            description: pageDescription,
+            image: ogImage,
+            site_name: ORG_NAME,
+            locale: 'en_GB',
+          },
+          twitter: {
+            card: 'summary_large_image',
+            site: '@kangqore',
+            url: pageUrl,
+            title: pageTitle,
+            description: pageDescription,
+            image: ogImage,
+          },
+          // Regional variants: the platform serves UK/US/EU/India from one URL,
+          // so every locale points at the canonical and x-default anchors it.
+          hreflang: [
+            { lang: 'en-GB', url: pageUrl },
+            { lang: 'en-US', url: pageUrl },
+            { lang: 'en-IN', url: pageUrl },
+            { lang: 'x-default', url: pageUrl },
+          ],
+          jsonLd: [buildServiceGraph({ svc, dept, pageUrl, pageTitle, pageDescription, ogImage })],
+        }
+      : null
   );
 
-
+  if (!valid) {
+    return <NotFound />;
+  }
 
   // ─── PSED: keep bespoke ProductStrategyBIDSPage (the reference design) ───────
   const psedExtras = PSED_REGISTRY[slug];
@@ -154,22 +114,12 @@ const ServicePage = () => {
       shortDescription: svc.shortDescription,
     };
     const psedDept = { name: dept.shortName, slug: dept.slug, description: dept.description };
-    return (
-      <>
-        {canonicalHelmet}
-        <ServicePageTemplate service={psedService} department={psedDept} disableSEO />
-      </>
-    );
+    return <ServicePageTemplate service={psedService} department={psedDept} disableSEO />;
   }
 
   // ─── Universal path: all 60 other services → PSED-style template ───────────
   const universalDept = { name: dept.shortName, slug: dept.slug };
-  return (
-    <>
-      {canonicalHelmet}
-      <UniversalServicePage service={svc} department={universalDept} />
-    </>
-  );
+  return <UniversalServicePage service={svc} department={universalDept} />;
 };
 
 export default ServicePage;

@@ -4,8 +4,13 @@ import { SitemapService } from './SitemapService';
 import { RobotsService } from './RobotsService';
 import { RedirectService } from './RedirectService';
 import { BrokenLinkAuditor } from './BrokenLinkAuditor';
+import { botPrerenderMiddleware } from './BotPrerenderService';
 
 export function mountTechnicalSeoRoutes(app: Express): void {
+  // Must run before the SPA catch-all: serves static snapshots of service pages
+  // to AI/search crawlers that do not execute JavaScript.
+  app.use(botPrerenderMiddleware);
+
   app.get('/sitemap.xml', async (_req, res) => {
     try {
       const xml = await SitemapService.generate();

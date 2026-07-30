@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Target, Layers, Shield, TrendingUp, Eye, BarChart3, DollarSign, MousePointerClick, Gauge, PenTool, Video, Search, Sparkles, Building2, ShoppingCart, Briefcase, Globe, Rocket, Users, LineChart, Plus, Brain, Database, Cpu, Network, CheckCircle2, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ResponsiveImage from '../../media/ResponsiveImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -555,11 +556,11 @@ export const AIToolsSection = ({ title = 'Agentic AI Tools & Technology', items 
             <div className="relative max-w-lg w-full">
               {/* Soft decorative background glow behind the illustration */}
               <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none z-0" />
-              <img 
+              <ResponsiveImage 
                 src="/images/capabilities/agentic-ai-tools-dark-illustration.png" 
                 alt="Agentic AI Tools & Technology Illustration" 
                 className="w-full h-auto object-contain relative z-10 animate-float"
-              />
+              loading="lazy" sizes="(max-width:1024px) 100vw, 50vw" />
             </div>
           </div>
         </div>

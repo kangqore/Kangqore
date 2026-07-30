@@ -44,7 +44,7 @@ const EqoreIntelligenceFeed = ({ allServices }) => {
           <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
           <span className="text-white/60 font-bold uppercase tracking-wider text-[8px]">SERVICES FEED</span>
         </div>
-        <span className="text-white/30 text-[8px]">Total: {allServices?.length || 0}</span>
+        <span className="text-white/60 text-[8px]">Total: {allServices?.length || 0}</span>
       </div>
 
       {/* Scrolling Logs */}

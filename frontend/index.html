@@ -37,7 +37,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://images.unsplash.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet" />
+    <!-- Fonts are loaded non-render-blocking. As a plain stylesheet this
+         third-party request sat on the critical path and gated first paint
+         entirely: FCP and LCP were both pinned to however long
+         fonts.googleapis.com took to answer. Swapping to the
+         media="print"/onload pattern lets the page paint immediately in the
+         fallback face; display=swap then swaps the webfont in when it lands. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all';this.onload=null"
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet" />
+    </noscript>
 
     <!-- ─── Canonical (default) ──────────────────────────────────────── -->
     <link rel="canonical" href="https://kangqore.com" />
@@ -54,12 +73,39 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": "https://kangqore.com/#organization",
       "name": "Kangqore",
       "legalName": "Kangqore Global Pvt Ltd",
       "url": "https://kangqore.com",
-      "logo": "https://kangqore.com/assets/logo.png",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://kangqore.com/assets/logo.png",
+        "width": 512,
+        "height": 512
+      },
+      "image": "https://kangqore.com/assets/og-image.jpg",
       "description": "Kangqore is a value-driven IT company that enables enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation.",
+      "slogan": "Intelligence-First Engineering",
       "foundingDate": "2024",
+      "email": "hello@kangqore.com",
+      "areaServed": [
+        { "@type": "Country", "name": "United Kingdom" },
+        { "@type": "Country", "name": "United States" },
+        { "@type": "Country", "name": "India" },
+        { "@type": "Place", "name": "European Union" }
+      ],
+      "knowsAbout": [
+        "Agentic AI",
+        "Generative AI",
+        "Multi-Agent Orchestration",
+        "AI Governance",
+        "MLOps",
+        "Cloud Engineering",
+        "Cybersecurity",
+        "Digital Transformation",
+        "Data Engineering",
+        "Product Engineering"
+      ],
       "sameAs": [
         "https://www.linkedin.com/company/kangqore",
         "https://x.com/kangqore",
@@ -68,12 +114,53 @@
         "https://www.youtube.com/@kangqore",
         "https://www.reddit.com/r/kangqore"
       ],
-      "contactPoint": [{
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "url": "https://kangqore.com/contact",
-        "availableLanguage": ["English"]
-      }]
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "url": "https://kangqore.com/contact",
+          "email": "hello@kangqore.com",
+          "availableLanguage": ["English"],
+          "areaServed": ["GB", "US", "IN", "EU"]
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "url": "https://kangqore.com/contact",
+          "availableLanguage": ["English"]
+        }
+      ]
+    }
+    </script>
+
+    <!-- ─── Professional Service entity (local/geo signals) ────────────── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "@id": "https://kangqore.com/#professionalservice",
+      "name": "Kangqore",
+      "url": "https://kangqore.com",
+      "parentOrganization": { "@id": "https://kangqore.com/#organization" },
+      "priceRange": "££££",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "London",
+        "addressCountry": "GB"
+      },
+      "areaServed": [
+        { "@type": "Country", "name": "United Kingdom" },
+        { "@type": "Country", "name": "United States" },
+        { "@type": "Country", "name": "India" },
+        { "@type": "Place", "name": "European Union" }
+      ],
+      "serviceType": [
+        "Agentic AI Services",
+        "AI Consulting",
+        "Cloud Engineering",
+        "Cybersecurity",
+        "Digital Transformation"
+      ]
     }
     </script>
 

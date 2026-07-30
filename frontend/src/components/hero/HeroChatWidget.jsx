@@ -167,7 +167,7 @@ const HeroChatWidget = ({ isActive }) => {
         style={{ minHeight: '100px', maxHeight: '210px' }}
       >
         {restoring && (
-          <div className="text-[10px] uppercase tracking-widest font-bold text-white/40 mb-3 flex items-center gap-2">
+          <div className="text-[10px] uppercase tracking-widest font-bold text-white/60 mb-3 flex items-center gap-2">
             <RefreshCw className="w-3 h-3 animate-spin" /> Restoring…
           </div>
         )}
@@ -309,7 +309,7 @@ const HeroChatWidget = ({ isActive }) => {
 
         {/* Footer: Disclaimer only */}
         <div className="flex items-center justify-center mt-3">
-          <span className="text-[10px] italic text-white/30 font-medium tracking-wide">
+          <span className="text-[10px] italic text-white/60 font-medium tracking-wide">
             Content is generated with AI assistance
           </span>
         </div>

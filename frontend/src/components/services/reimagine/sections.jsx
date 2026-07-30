@@ -1609,7 +1609,7 @@ const technologyTransformationPillar2 = (
                   ].map((s, i) => (
                     <div key={i} className="bg-white dark:bg-gray-900 dark:border-gray-800/5 p-4 rounded-xl border border-white/5">
                       <div className={`text-xl font-bold ${s.color}`}>{s.val}</div>
-                      <div className="text-[10px] text-white/40 uppercase tracking-tighter">{s.label}</div>
+                      <div className="text-[10px] text-white/60 uppercase tracking-tighter">{s.label}</div>
                     </div>
                   ))}
                 </div>

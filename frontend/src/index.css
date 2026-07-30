@@ -898,3 +898,57 @@ html, body, #root { border-top: none !important; box-shadow: none !important; }
 .vibrant-theme header .bg-white\/\[0\.03\] {
   background: rgba(0,0,0,0.04) !important;
 }
+
+/* ─── Motion & focus accessibility ─────────────────────────────────────────────
+   The site had no prefers-reduced-motion handling at all: parallax, the bento
+   card tilt, marquees and scroll reveals all ran regardless of OS setting,
+   which is a vestibular-safety issue (WCAG 2.3.3) not just a preference.
+   ──────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Reveal anything that animates in, so content is never left invisible
+     when its entrance transition is suppressed. */
+  .parallax-container [class*="translate-y-"],
+  .parallax-container [class*="opacity-0"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Keyboard focus was relying on the browser default, which is invisible against
+   the dark theme. :focus-visible keeps pointer users unaffected. */
+:focus-visible {
+  outline: 2px solid #4ab6d4;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip link — the published accessibility statement already promised this. */
+.kq-skip-link {
+  /* position: fixed + translate, not `top: -100%`: percentage offsets resolve
+     against the containing block's height, so on a tall page the link parked
+     hundreds of px off-screen and the :focus reveal never brought it back. */
+  position: fixed;
+  left: 1rem;
+  top: 0;
+  transform: translateY(-150%);
+  z-index: 100000;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  background: #ffffff;
+  color: #05070c;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: transform 0.15s ease-in-out;
+}
+.kq-skip-link:focus {
+  transform: translateY(0);
+}

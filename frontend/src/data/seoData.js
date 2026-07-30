@@ -359,7 +359,7 @@ export const serviceSEO = {
 
   // ─── Cognition (11) ──
   'agentic-ai': {
-    title: 'Agentic AI Services — Autonomous AI Agents for Enterprise | Kangqore',
+    title: 'Agentic AI Services — Autonomous AI Agents | Kangqore',
     description: 'Kangqore builds production-grade agentic AI systems that reason, plan, and execute complex enterprise workflows — with oversight, audit trails, and governance.',
     keywords: 'agentic AI services, autonomous AI agents, enterprise AI agent development, AI workflow automation, multi-agent orchestration, human-in-the-loop AI, LLM agents, governed AI agents, agentic AI consulting, LLM agent orchestration, RAG-powered agents',
     url: '/services/agentic-ai',

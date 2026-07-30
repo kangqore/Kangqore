@@ -1,6 +1,44 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { prisma } from '../../lib/prisma';
 
 const BASE_URL = process.env.PUBLIC_BASE_URL || 'https://kangqore.com';
+
+// Canonical static route manifest produced by scripts/generate-sitemap.mjs.
+// This is the floor for the sitemap: the CMS-backed tables below ADD to it,
+// they never replace it. Previously an empty CMS table collapsed the whole
+// sitemap to a single homepage URL, hiding all 106 canonical routes.
+interface RouteManifestEntry {
+  path: string;
+  type: string;
+  priority: string;
+  changefreq: string;
+}
+
+let manifestCache: RouteManifestEntry[] | null = null;
+
+function loadRouteManifest(): RouteManifestEntry[] {
+  if (manifestCache) return manifestCache;
+  const candidates = [
+    path.resolve(__dirname, '../../../../shared/siteRoutes.json'),
+    path.resolve(process.cwd(), 'shared/siteRoutes.json'),
+    path.resolve(process.cwd(), '../shared/siteRoutes.json'),
+  ];
+  for (const file of candidates) {
+    try {
+      const raw = fs.readFileSync(file, 'utf8');
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed?.routes) && parsed.routes.length > 0) {
+        manifestCache = parsed.routes as RouteManifestEntry[];
+        return manifestCache;
+      }
+    } catch {
+      /* try next candidate */
+    }
+  }
+  console.warn('[SitemapService] siteRoutes.json not found — sitemap will only contain CMS pages');
+  return [];
+}
 
 interface SitemapEntry {
   url: string;
@@ -61,10 +99,29 @@ export class SitemapService {
       /* KIMMP pages unavailable — sitemap still serves the VIS blueprints */
     }
 
+    // Merge the static route manifest underneath the CMS entries. CMS rows win
+    // on collision so an editor-managed lastmod/priority still takes effect.
+    const today = new Date().toISOString().split('T')[0];
+    const seen = new Set(entries.map((e) => e.url));
+    for (const route of loadRouteManifest()) {
+      const url = this.absolute(route.path);
+      if (seen.has(url)) continue;
+      seen.add(url);
+      entries.push({
+        url,
+        lastmod: today,
+        changefreq: route.changefreq,
+        priority: route.priority,
+      });
+    }
+
     if (entries.length === 0) {
+      // Only reachable if the manifest is missing AND the CMS is empty — a real
+      // misconfiguration, so make it loud rather than silently shipping 1 URL.
+      console.error('[SitemapService] no routes resolved — sitemap is empty');
       entries.push({
         url: BASE_URL,
-        lastmod: new Date().toISOString().split('T')[0],
+        lastmod: today,
         changefreq: 'weekly',
         priority: '1.0',
       });

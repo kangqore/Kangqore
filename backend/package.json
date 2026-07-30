@@ -111,5 +111,8 @@
     "api"
   ],
   "author": "Kangqore Team",
-  "license": "MIT"
+  "license": "MIT",
+  "redisMemoryServer": {
+    "disablePostinstall": "1"
+  }
 }

@@ -17,9 +17,19 @@
 //       • <meta name="twitter:image">
 //       • <script type="application/ld+json">
 //
-// This is a STATIC SOURCE-FILE audit — no running app required. The Phase E
-// SEO surface is rendered by these components; if the source has the right
-// JSX, the rendered HTML will too.
+// This is a STATIC SOURCE-FILE audit — no running app required.
+//
+// IMPORTANT: this audit previously asserted the presence of <Helmet> JSX on the
+// premise that "if the source has the right JSX, the rendered HTML will too."
+// That premise proved false. Under React 19 + StrictMode, react-helmet@6 stops
+// applying <meta>/<link>/<script> (its side-effect cleanup reverts them on the
+// StrictMode remount), so every page shipped canonical=homepage while this gate
+// stayed green. The audit therefore certified the exact bug it existed to catch.
+//
+// It is now mechanism-agnostic: it asserts each template supplies the required
+// SEO fields via EITHER Helmet JSX or a useSeo() config. Static analysis still
+// cannot prove delivery — only that the inputs exist. Rendered-DOM assertions
+// live in the Playwright checks.
 //
 // Pure static analysis. Exit 0 on pass, non-zero on any audit failure.
 // ────────────────────────────────────────────────────────────────────────────────
@@ -39,21 +49,25 @@ const PAGES = [
 
 // Required SEO elements. Each entry: human-readable label + regex that must
 // match somewhere in the file's source.
+// Each entry: human-readable label, plus the patterns that satisfy it under
+// either mechanism. A field passes if ANY of its regexes match.
 const REQUIRED = [
-  { label: '<Helmet> import',         re: /import\s*\{\s*Helmet\s*\}\s*from\s*['"]react-helmet['"]/ },
-  { label: '<Helmet> JSX usage',      re: /<Helmet>/ },
-  { label: '<title>',                 re: /<title>[\s\S]+?<\/title>/ },
-  { label: 'meta description',        re: /<meta\s+name=["']description["']\s+content=/ },
-  { label: '<link rel="canonical">',  re: /<link\s+rel=["']canonical["']\s+href=/ },
-  { label: 'og:type',                 re: /<meta\s+property=["']og:type["']\s+content=/ },
-  { label: 'og:url',                  re: /<meta\s+property=["']og:url["']\s+content=/ },
-  { label: 'og:title',                re: /<meta\s+property=["']og:title["']\s+content=/ },
-  { label: 'og:description',          re: /<meta\s+property=["']og:description["']\s+content=/ },
-  { label: 'og:image',                re: /<meta\s+property=["']og:image["']\s+content=/ },
-  { label: 'og:site_name',            re: /<meta\s+property=["']og:site_name["']\s+content=/ },
-  { label: 'twitter:card',            re: /<meta\s+name=["']twitter:card["']\s+content=/ },
-  { label: 'twitter:image',           re: /<meta\s+name=["']twitter:image["']\s+content=/ },
-  { label: 'JSON-LD <script>',        re: /<script\s+type=["']application\/ld\+json["']>/ },
+  { label: 'SEO mechanism imported', res: [
+      /import\s*\{\s*Helmet\s*\}\s*from\s*['"]react-helmet['"]/,
+      /import\s+useSeo\s+from\s+['"][^'"]*seo\/useSeo['"]/ ] },
+  { label: 'SEO mechanism invoked', res: [ /<Helmet>/, /useSeo\s*\(/ ] },
+  { label: 'title',            res: [ /<title>[\s\S]+?<\/title>/, /\btitle:\s*\S/ ] },
+  { label: 'meta description', res: [ /<meta\s+name=["']description["']\s+content=/, /\bdescription:\s*\S/ ] },
+  { label: 'canonical',        res: [ /<link\s+rel=["']canonical["']\s+href=/, /\bcanonical:\s*\S/ ] },
+  { label: 'og:type',          res: [ /<meta\s+property=["']og:type["']\s+content=/, /\btype:\s*['"]website['"]/ ] },
+  { label: 'og:url',           res: [ /<meta\s+property=["']og:url["']\s+content=/, /og:\s*\{[\s\S]{0,400}?\burl:/ ] },
+  { label: 'og:title',         res: [ /<meta\s+property=["']og:title["']\s+content=/, /og:\s*\{[\s\S]{0,400}?\btitle:/ ] },
+  { label: 'og:description',   res: [ /<meta\s+property=["']og:description["']\s+content=/, /og:\s*\{[\s\S]{0,400}?\bdescription:/ ] },
+  { label: 'og:image',         res: [ /<meta\s+property=["']og:image["']\s+content=/, /og:\s*\{[\s\S]{0,400}?\bimage:/ ] },
+  { label: 'og:site_name',     res: [ /<meta\s+property=["']og:site_name["']\s+content=/, /\bsite_name:\s*\S/ ] },
+  { label: 'twitter:card',     res: [ /<meta\s+name=["']twitter:card["']\s+content=/, /\bcard:\s*['"]summary_large_image['"]/ ] },
+  { label: 'twitter:image',    res: [ /<meta\s+name=["']twitter:image["']\s+content=/, /twitter:\s*\{[\s\S]{0,400}?\bimage:/ ] },
+  { label: 'JSON-LD',          res: [ /<script\s+type=["']application\/ld\+json["']>/, /\bjsonLd:\s*\[/ ] },
 ];
 
 let failures = [];
@@ -75,7 +89,7 @@ for (const page of PAGES) {
     fail(`${page.name}: contains "noindex" — Phase D real templates must be indexable.`);
   }
 
-  const missing = REQUIRED.filter((r) => !r.re.test(src)).map((r) => r.label);
+  const missing = REQUIRED.filter((r) => !r.res.some((re) => re.test(src))).map((r) => r.label);
   if (missing.length > 0) {
     fail(`${page.name} missing SEO elements: ${missing.join(', ')}`);
     continue;

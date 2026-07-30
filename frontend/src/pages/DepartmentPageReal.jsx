@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import useSeo from '../seo/useSeo';
 import { ArrowRight, ChevronRight, Users, Target, Wrench } from 'lucide-react';
 
 import { departmentsData, departmentsList } from '../data/departmentsData';
@@ -35,18 +35,17 @@ export default function DepartmentPageReal() {
   const [relatedRef,  relatedVisible]  = useScrollAnimation({ once: true, threshold: 0.1  });
   const [ctaRef,      ctaVisible]      = useScrollAnimation({ once: true, threshold: 0.2  });
 
-  if (!slug || !departmentsList.includes(slug)) return <NotFound />;
-
-  const d    = departmentsData[slug];
-  const seo  = departmentSEO[slug] || {};
-  const Icon = d.icon;
+  const valid = Boolean(slug && departmentsList.includes(slug));
+  const d    = valid ? departmentsData[slug] : null;
+  const seo  = (valid && departmentSEO[slug]) || {};
+  const Icon = d?.icon;
 
   const pageUrl         = `${SITE_URL}/departments/${slug}`;
-  const pageTitle       = seo.title       || `${d.name} — ${d.tagline} | Kangqore`;
-  const pageDescription = seo.description || d.description;
+  const pageTitle       = seo.title       || (d ? `${d.name} — ${d.tagline} | Kangqore` : 'Kangqore');
+  const pageDescription = seo.description || d?.description || '';
   const ogImage         = `${SITE_URL}/og/default.png`;
 
-  const deliverySteps = d.deliveryApproach.split(' → ');
+  const deliverySteps = (d?.deliveryApproach || '').split(' → ');
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -89,29 +88,31 @@ export default function DepartmentPageReal() {
     ],
   };
 
+  useSeo(
+    valid
+      ? {
+          title: pageTitle,
+          description: pageDescription,
+          keywords: seo.keywords,
+          canonical: pageUrl,
+          robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+          lang: 'en',
+          og: { type: 'website', url: pageUrl, title: pageTitle, description: pageDescription,
+                image: ogImage, site_name: ORG_NAME, locale: 'en_GB' },
+          twitter: { card: 'summary_large_image', site: '@kangqore', url: pageUrl,
+                     title: pageTitle, description: pageDescription, image: ogImage },
+          jsonLd: [jsonLd],
+        }
+      : null
+  );
+
+  if (!valid) return <NotFound />;
+
   return (
     <div
       className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white"
       style={{ backgroundColor: '#000000' }}
     >
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        {seo.keywords && <meta name="keywords" content={seo.keywords} />}
-        <link rel="canonical" href={pageUrl} />
-        <meta property="og:type"         content="website" />
-        <meta property="og:url"          content={pageUrl} />
-        <meta property="og:title"        content={pageTitle} />
-        <meta property="og:description"  content={pageDescription} />
-        <meta property="og:image"        content={ogImage} />
-        <meta property="og:site_name"    content={ORG_NAME} />
-        <meta name="twitter:card"         content="summary_large_image" />
-        <meta name="twitter:url"          content={pageUrl} />
-        <meta name="twitter:title"        content={pageTitle} />
-        <meta name="twitter:description"  content={pageDescription} />
-        <meta name="twitter:image"        content={ogImage} />
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Helmet>
 
       {/* ─────────────────────── HERO ─────────────────────── */}
       <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">

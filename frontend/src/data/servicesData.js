@@ -28,7 +28,6 @@ export const servicesData = {
     heroTitleSize: 'text-[1.6rem] sm:text-[1.92rem] lg:text-[2.688rem] xl:text-[3.6rem]',
     heroBadge: 'AI Agents Built to Execute',
     departmentSlug: 'cognition',
-    bannerBrand: 'eQORE™',
     shortDescription: 'Unlike traditional automation or generative AI, agentic AI systems reason over goals, plan multi-step strategies, and execute them autonomously — adapting in real time to new information.',
     fullDescription: 'Deploy production-grade enterprise agentic AI solutions — autonomous agents that reason, plan, and execute complex workflows with governance, audit trails, and human-in-the-loop oversight built in.',
     fullDescriptionMaxWidth: 'max-w-[980px]',
@@ -49,7 +48,7 @@ export const servicesData = {
     capabilityAreas: [
       {
         title: 'Autonomous Goal Execution',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-goal-execution.png',
         desc: 'Turn high-level business objectives into structured, self-adjusting execution plans that recover automatically when conditions change.',
         items: [
           'Goal Decomposition Engine: Transform high-level business objectives into structured execution plans with intelligent task sequencing, dependency mapping, and milestone tracking.',
@@ -60,7 +59,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Agent Orchestration',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-multi-agent.png',
         desc: 'Deploy specialized agent teams across every department and route work intelligently, with built-in consensus and centralized oversight.',
         items: [
           'Specialized Agent Teams: Deploy domain-specific AI agents across Finance, HR, Sales, Marketing, Operations, Customer Support, Legal, IT, and Engineering to collaborate on complex business processes.',
@@ -71,7 +70,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Memory & Knowledge',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-memory-knowledge.png',
         desc: 'Give every agent persistent, shared organizational memory — grounded in your enterprise systems and continuously improving over time.',
         items: [
           'Persistent Enterprise Memory: Maintain long-term context across conversations, workflows, projects, customers, and organizational knowledge for consistent decision-making.',
@@ -82,7 +81,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Intelligence',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-enterprise-intelligence.png',
         desc: 'Ground every recommendation in live business context and verified data — with transparent, explainable reasoning behind every decision.',
         items: [
           'Context-Aware Decision Intelligence: Understand business objectives, operational constraints, historical context, and live enterprise signals before making recommendations or taking action.',
@@ -104,7 +103,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Security',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-enterprise-security.png',
         desc: 'Protect every integration, credential, and inter-agent exchange with encryption, access controls, and continuous threat monitoring.',
         items: [
           'Secure Tool Access: Protect integrations with authenticated, encrypted, and policy-controlled access to enterprise systems and external services.',
@@ -115,7 +114,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Operations',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-enterprise-operations.png',
         desc: 'Automate complex business processes end-to-end, triggered by real events and continuously tuned for efficiency and cost.',
         items: [
           'Intelligent Workflow Automation: Automate repetitive and complex business processes while maintaining visibility, governance, and operational control.',
@@ -126,7 +125,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Integrations',
-        image: '/images/capabilities/agentic-governed-autonomy.png',
+        image: '/images/capabilities/agentic-enterprise-integrations.png',
         desc: 'Connect agents directly into the business applications, productivity tools, and data platforms your enterprise already runs on.',
         items: [
           'Business Applications: Integrate seamlessly with CRM, ERP, HRMS, ITSM, Finance, and industry-specific enterprise platforms.',
@@ -142,7 +141,7 @@ export const servicesData = {
     whatIsHighlight: 'Automation.',
     shortDescription: 'Unlike traditional automation or generative AI, agentic AI systems reason over goals, plan multi-step strategies, and execute them autonomously — adapting in real time to new information. Kangqore builds enterprise agentic AI that governs itself and drives measurable outcomes.',
     whatIsPara2: 'Through our agentic AI development services, we partner with enterprises to transform how work happens across CRM, ERP, and supply chain systems. Our agents operate independently using multi-agent orchestration and RAG-powered reasoning — accelerating execution and improving operational efficiency at scale.',
-    bannerBrandDesc: 'Our enterprise agentic AI product & platform',
+    bannerBrandDesc: 'Our AI, data & automation practice',
     downloadAsset: '/assets/downloads/kangqore-agentic-ai-playbook.pdf',
     comparisonTable: {
       colA: 'Traditional Automation',
@@ -201,13 +200,13 @@ export const servicesData = {
       outcome: 'A multi-agent agentic AI system autonomously cross-referenced transaction data, flagged anomalies, and produced investigation reports — eliminating manual coordination and reducing cycle time by 60%.',
     },
     customFAQs: [
-      { q: 'What exactly falls under Kangqore\'s Agentic AI services?', a: 'We don\'t build AI demos. We build AI operators. Kangqore delivers autonomous agent development, multi-agent orchestration, RAG-powered enterprise reasoning, and governed LLM deployments using LangGraph — all under our Cognition™ platform, which covers the full lifecycle from agent architecture design to production-scale optimization.' },
+      { q: 'What exactly falls under Kangqore\'s Agentic AI services?', a: 'We don\'t build AI demos. We build AI operators. Kangqore delivers autonomous agent development, multi-agent orchestration, RAG-powered enterprise reasoning, and governed LLM deployments using LangGraph — covering the full lifecycle from agent architecture design to production-scale optimization.' },
       { q: 'Isn\'t this just generative AI with extra steps?', a: 'Generative AI answers. Agentic AI acts. Traditional AI classifies or predicts from a fixed prompt. Agentic AI sets goals, decomposes them into multi-step plans, selects and uses tools, executes tasks autonomously, and self-corrects when outcomes deviate — without waiting for a human to issue the next instruction.' },
       { q: 'What stops an agent from doing something we didn\'t authorize?', a: 'Every agent we deploy has a governor, not just a goal. Our governance-first architecture embeds human-in-the-loop (HITL) controls, immutable audit trails, role-based access restrictions, and policy enforcement layers before a single autonomous action runs in production. Risk is validated at every phase — not discovered after go-live.' },
       { q: 'Which of our workflows are actually good candidates for an agent?', a: 'If a human currently coordinates across three or more systems to complete a task, an agent can own it. High-impact use cases include autonomous fraud investigation, supply chain renegotiation, clinical prior authorization, Level 2/3 support resolution, DevOps incident triage, and intelligent procurement — wherever complexity has made automation impossible until now.' },
       { q: 'Realistically, how long until an agent is live?', a: 'Eight weeks to a production agent — not a prototype, a live operator. A focused pilot targeting one high-value workflow typically deploys in 8–12 weeks using Kangqore\'s accelerated blueprints. Enterprise-grade multi-agent systems with full RAG integration and governance layers are production-ready within 16–24 weeks, depending on data readiness.' },
       { q: 'How do we know if the agent is actually working?', a: 'We define the ROI metric before we write a line of code. Engagements are baselined during Discovery so success is measurable from day one. Outcomes we\'ve targeted include 42% faster vendor onboarding, 78% fewer clicks to surface enterprise knowledge, 31% CSAT improvement in support operations, and 17% reduction in incident wait time.' },
-      { q: 'Does Kangqore\'s agentic AI work for our industry specifically?', a: 'Any industry where complexity has been the enemy of automation. Kangqore delivers agentic AI across banking and financial services, healthcare and life sciences, supply chain and logistics, enterprise software engineering, and customer operations — with Cognition™ blueprints built for the compliance and governance demands of each sector.' },
+      { q: 'Does Kangqore\'s agentic AI work for our industry specifically?', a: 'Any industry where complexity has been the enemy of automation. Kangqore delivers agentic AI across banking and financial services, healthcare and life sciences, supply chain and logistics, enterprise software engineering, and customer operations — with delivery blueprints built for the compliance and governance demands of each sector.' },
       { q: 'Will we need other vendors alongside Kangqore, or is this one engagement?', a: 'From "what should the agent do?" to "the agent is running in production" — that\'s our scope. Kangqore covers strategy and use-case identification, agent architecture design, RAG and LLM integration, multi-agent orchestration, governed deployment, and continuous post-launch optimization. One partner, full lifecycle, no handoff gaps.' },
       { q: 'What tech stack does Kangqore use for agentic AI?', a: 'Orchestration runs on LangGraph for stateful multi-agent workflows, with LangChain for tool-calling and chain composition. Memory persistence uses a hybrid approach — short-term context in working memory, long-term state in vector stores (Pinecone, Weaviate, or pgvector depending on enterprise constraints). RAG pipelines are built on enterprise embedding models with retrieval re-ranking to minimize hallucination on domain-specific data. Failure recovery is handled at the agent level via retry logic and self-correction prompts, and at the workflow level via checkpoint-based state restoration — so a failed node replays from its last valid state, not from zero. LLM selection (GPT-4o, Claude, Gemini, or fine-tuned open-source) is use-case and compliance driven. Observability and drift monitoring run through LangSmith or enterprise-compatible equivalents.' },
       { q: 'What happens when an agent makes a wrong decision?', a: 'We design for failure before writing a line of code. Agents operate within bounded permissions — they cannot act outside their assigned scope. When a step fails, checkpoint-based state restoration replays it from its last valid state, not from zero. Critical decisions trigger automatic human-in-the-loop escalation. Every action is logged to an immutable audit trail — explainable, auditable, and reversible.' },
