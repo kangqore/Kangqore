@@ -2230,7 +2230,7 @@ const featureMicros   = service.featureMicros
                 return (
                   <div 
                     key={idx} 
-                    className="group relative rounded-2xl overflow-hidden min-h-[440px] flex flex-col justify-between p-6 border border-white/10 bg-[#060a12] transition-all duration-500 hover:border-cyan-400/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.9)] cursor-pointer"
+                    className="group relative rounded-2xl overflow-hidden min-h-[310px] flex flex-col justify-between p-6 border border-white/10 bg-[#060a12] transition-all duration-500 hover:border-cyan-400/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.9)] cursor-pointer"
                   >
                     {/* NORMAL STATE BACKGROUND: Background Image */}
                     {node.bgImage && (
