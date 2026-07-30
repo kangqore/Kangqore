@@ -971,9 +971,55 @@ const featureMicros   = service.featureMicros
       <div id="svc-hero" className="p-2 h-screen" style={{ backgroundColor: 'var(--page-bg, #000)' }}>
         <div className="relative w-full h-full overflow-hidden rounded-xl text-white">
 
-          <ResponsiveImage src={service.image} alt="" aria-hidden="true" loading="lazy" sizes="100vw" className="absolute inset-0 w-full h-full object-cover object-center" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/10 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 pointer-events-none" />
+          {service.useAbstractHero || service.slug === 'agentic-ai' ? (
+            <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
+              {/* Abstract Gradient Mesh */}
+              <div className="absolute -top-[20%] -left-[10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-blue-600/20 via-cyan-500/10 to-transparent blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+              <div className="absolute top-[20%] -right-[15%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tl from-indigo-600/20 via-blue-500/10 to-transparent blur-[140px] animate-pulse" style={{ animationDuration: '12s' }} />
+              <div className="absolute -bottom-[20%] left-[20%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-t from-cyan-600/15 via-teal-500/5 to-transparent blur-[100px]" />
+
+              {/* Cybernetic Tech Grid */}
+              <div 
+                className="absolute inset-0 opacity-[0.14]" 
+                style={{
+                  backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px)`,
+                  backgroundSize: '4rem 4rem',
+                  maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
+                  WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)'
+                }}
+              />
+
+              {/* Text-Free Animated Particle Field / Glowing Node Mesh */}
+              <svg className="absolute inset-0 w-full h-full opacity-35" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="hero-node-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.5" />
+                    <stop offset="50%" stopColor="#818cf8" stopOpacity="0.25" />
+                    <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.05" />
+                  </linearGradient>
+                </defs>
+                <g stroke="url(#hero-node-grad)" strokeWidth="1" fill="none">
+                  <path d="M120,180 L380,110 L720,280 L1080,160 L1400,240 M380,110 L580,420 L920,380 M720,280 L1220,520 M280,580 L580,420 L980,660 M920,380 L1350,480" className="animate-pulse" style={{ animationDuration: '7s' }} />
+                </g>
+                <circle cx="120" cy="180" r="3" fill="#38bdf8" className="animate-ping" style={{ animationDuration: '3s' }} />
+                <circle cx="380" cy="110" r="2.5" fill="#818cf8" />
+                <circle cx="720" cy="280" r="4" fill="#38bdf8" />
+                <circle cx="1080" cy="160" r="3" fill="#60a5fa" />
+                <circle cx="580" cy="420" r="2.5" fill="#38bdf8" />
+                <circle cx="920" cy="380" r="3.5" fill="#818cf8" />
+                <circle cx="1220" cy="520" r="2.5" fill="#38bdf8" />
+                <circle cx="1400" cy="240" r="3" fill="#60a5fa" />
+              </svg>
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none" />
+            </div>
+          ) : (
+            <>
+              <ResponsiveImage src={service.image} alt="" aria-hidden="true" loading="lazy" sizes="100vw" className="absolute inset-0 w-full h-full object-cover object-center" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 pointer-events-none" />
+            </>
+          )}
 
           <div className="relative z-10 h-full flex flex-col justify-center">
             <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-16">
@@ -2154,18 +2200,20 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
       {service.architectureNodes && (
-        <section className="py-24" style={{ backgroundColor: '#000000' }}>
+        <section id="svc-architecture" className="py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
               <div>
                 <div className="flex items-center gap-4 mb-4">
                   <div className="h-[1px] w-12 bg-white/20" />
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">ARCHITECTURE</span>
+                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">ARCHITECTURE & EXECUTION LOOP</span>
                 </div>
                 <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
                   How It Works.<br />
-                  <span className="bg-brand-gradient bg-clip-text text-transparent">The 4-Layer Stack.</span>
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">
+                    {service.architectureNodes.length === 5 ? 'The 5-Stage Autonomous Execution Loop.' : 'The 4-Layer Stack.'}
+                  </span>
                 </h2>
               </div>
               <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
@@ -2173,25 +2221,25 @@ const featureMicros   = service.featureMicros
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-0 lg:divide-x lg:divide-white/[0.05]">
+            <div className={`grid grid-cols-1 md:grid-cols-2 ${service.architectureNodes.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-6 md:gap-8 lg:gap-0 lg:divide-x lg:divide-white/[0.05]`}>
               {service.architectureNodes.map((node, idx) => {
                 const NodeIcon = JOURNEY_ICON_MAP[node.icon] || Target;
-                const LAYER_COLORS = ['#2564ea', '#4ab6d4', '#6366f1', '#10b981'];
+                const LAYER_COLORS = ['#38bdf8', '#818cf8', '#2564ea', '#10b981', '#f59e0b'];
                 const color = LAYER_COLORS[idx % LAYER_COLORS.length];
                 return (
-                  <div key={idx} className="px-8 first:pl-0 last:pr-0 flex flex-col gap-4 py-2 rounded-xl transition-colors duration-300 hover:bg-[#06090f]">
+                  <div key={idx} className="px-6 first:pl-0 last:pr-0 flex flex-col gap-4 py-3 rounded-xl transition-colors duration-300 hover:bg-[#06090f]">
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-[8px] font-black tracking-[0.3em] text-white/60">
+                      <span className="font-mono text-[9px] font-black tracking-[0.3em] text-cyan-300">
                         {String(idx + 1).padStart(2, '0')}
                       </span>
-                      <NodeIcon className="w-3.5 h-3.5" style={{ color: `${color}80` }} />
+                      <NodeIcon className="w-4 h-4" style={{ color: color }} />
                     </div>
-                    <h3 className="text-white font-black text-sm leading-snug">{node.title}</h3>
-                    <p className="text-white/40 text-xs font-medium leading-relaxed">{node.description}</p>
-                    <ul className="space-y-1.5 mt-auto pt-4 border-t border-white/[0.04]">
+                    <h3 className="text-white font-extrabold text-sm tracking-wide leading-snug">{node.title}</h3>
+                    <p className="text-white/50 text-xs font-medium leading-relaxed">{node.description}</p>
+                    <ul className="space-y-1.5 mt-auto pt-4 border-t border-white/[0.06]">
                       {node.features.map((f, i) => (
-                        <li key={i} className="flex items-center gap-2 text-[11px] text-white/40 font-medium">
-                          <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: `${color}50` }} />
+                        <li key={i} className="flex items-center gap-2 text-[11px] text-white/50 font-medium">
+                          <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
                           {f}
                         </li>
                       ))}
