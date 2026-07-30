@@ -2223,50 +2223,55 @@ const featureMicros   = service.featureMicros
 
             <div className={`grid grid-cols-1 sm:grid-cols-2 ${service.architectureNodes.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-6`}>
               {service.architectureNodes.map((node, idx) => {
-                const NodeIcon = JOURNEY_ICON_MAP[node.icon] || Target;
-                const LAYER_COLORS = ['#38bdf8', '#818cf8', '#6366f1', '#10b981', '#f59e0b'];
-                const color = LAYER_COLORS[idx % LAYER_COLORS.length];
-
                 return (
                   <div 
                     key={idx} 
-                    className="group relative rounded-2xl overflow-hidden min-h-[460px] flex flex-col justify-between p-6 sm:p-7 border border-white/10 bg-[#060a12] transition-all duration-500 hover:border-white/30 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)] cursor-pointer"
+                    className="group relative rounded-xl overflow-hidden min-h-[480px] flex flex-col justify-between p-6 sm:p-7 bg-[#f2f2f0] text-gray-900 border border-gray-300/60 shadow-sm transition-all duration-300 hover:shadow-2xl cursor-pointer"
                   >
-                    {/* Background Image with Dark Gradient Overlay */}
-                    {node.bgImage ? (
-                      <>
+                    {/* Card Header (Always Visible — Screenshot 1 & 2) */}
+                    <div className="relative z-10">
+                      <p className="text-[11px] font-black tracking-[0.2em] text-gray-900 uppercase mb-3">
+                        {node.stageName ? `STAGE 0${idx + 1}` : 'ARCHITECTURE'}
+                      </p>
+                      <h3 className="text-2xl sm:text-[1.65rem] font-extrabold text-gray-900 tracking-tight leading-[1.25] mb-2">
+                        {node.title}
+                      </h3>
+                    </div>
+
+                    {/* WITHOUT HOVER: Image Graphic at Bottom (Screenshot 1) */}
+                    {node.bgImage && (
+                      <div className="relative z-0 w-full h-[240px] mt-auto transition-opacity duration-300 opacity-100 group-hover:opacity-0 pointer-events-none overflow-hidden rounded-lg">
                         <ResponsiveImage 
                           src={node.bgImage} 
                           alt={node.title} 
-                          className="absolute inset-0 w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-700 ease-out" 
+                          className="w-full h-full object-cover object-center filter contrast-125 brightness-95" 
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/95 group-hover:via-black/70 transition-colors duration-500" />
-                      </>
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-b from-[#090d16] via-[#050810] to-[#020306] group-hover:from-[#0c1220] transition-colors duration-500" />
+                      </div>
                     )}
 
-                    {/* Card Content: Title & Description */}
-                    <div className="relative z-10 flex flex-col h-full justify-between">
+                    {/* WITH HOVER: Description + Features List + Expand Indicator (Screenshot 2) */}
+                    <div className="absolute inset-x-0 bottom-0 top-[120px] p-6 sm:p-7 bg-[#f2f2f0] flex flex-col justify-between z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
                       <div>
-                        <h3 className="text-white font-black text-2xl tracking-tight leading-snug mb-3 drop-shadow-md">
-                          {node.title}
-                        </h3>
-                        <p className="text-white/70 text-xs font-medium leading-relaxed group-hover:text-white/90 transition-colors duration-300">
+                        <p className="text-gray-800 text-xs sm:text-[13px] font-medium leading-relaxed mb-4">
                           {node.description}
                         </p>
+
+                        {node.features && node.features.length > 0 && (
+                          <ul className="space-y-1.5 pt-3 border-t border-gray-300/60">
+                            {node.features.map((f, i) => (
+                              <li key={i} className="flex items-center gap-2 text-[11px] text-gray-900 font-bold">
+                                <div className="w-1.5 h-1.5 rounded-full bg-gray-900 flex-shrink-0" />
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
 
-                      {/* Features List — Revealed on Hover */}
-                      <div className="max-h-0 opacity-0 group-hover:max-h-60 group-hover:opacity-100 transition-all duration-500 ease-in-out overflow-hidden mt-4 pt-4 border-t border-white/10">
-                        <ul className="space-y-2">
-                          {node.features.map((f, i) => (
-                            <li key={i} className="flex items-center gap-2 text-xs text-white/90 font-semibold">
-                              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
-                              {f}
-                            </li>
-                          ))}
-                        </ul>
+                      {/* Bottom Right: Expand > (Screenshot 2) */}
+                      <div className="flex items-center justify-end font-extrabold text-sm text-gray-900 pt-3">
+                        <span>Expand</span>
+                        <span className="ml-1 text-base">›</span>
                       </div>
                     </div>
                   </div>
