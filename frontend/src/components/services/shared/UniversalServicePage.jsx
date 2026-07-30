@@ -2221,29 +2221,54 @@ const featureMicros   = service.featureMicros
               </p>
             </div>
 
-            <div className={`grid grid-cols-1 md:grid-cols-2 ${service.architectureNodes.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-6 md:gap-8 lg:gap-0 lg:divide-x lg:divide-white/[0.05]`}>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 ${service.architectureNodes.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-6`}>
               {service.architectureNodes.map((node, idx) => {
                 const NodeIcon = JOURNEY_ICON_MAP[node.icon] || Target;
-                const LAYER_COLORS = ['#38bdf8', '#818cf8', '#2564ea', '#10b981', '#f59e0b'];
+                const LAYER_COLORS = ['#38bdf8', '#818cf8', '#6366f1', '#10b981', '#f59e0b'];
                 const color = LAYER_COLORS[idx % LAYER_COLORS.length];
+
                 return (
-                  <div key={idx} className="px-6 first:pl-0 last:pr-0 flex flex-col gap-4 py-3 rounded-xl transition-colors duration-300 hover:bg-[#06090f]">
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-[9px] font-black tracking-[0.3em] text-cyan-300">
-                        {String(idx + 1).padStart(2, '0')}
-                      </span>
-                      <NodeIcon className="w-4 h-4" style={{ color: color }} />
+                  <div 
+                    key={idx} 
+                    className="group relative rounded-2xl overflow-hidden min-h-[460px] flex flex-col justify-between p-6 sm:p-7 border border-white/10 bg-[#060a12] transition-all duration-500 hover:border-white/30 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)] cursor-pointer"
+                  >
+                    {/* Background Image with Dark Gradient Overlay */}
+                    {node.bgImage ? (
+                      <>
+                        <ResponsiveImage 
+                          src={node.bgImage} 
+                          alt={node.title} 
+                          className="absolute inset-0 w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-700 ease-out" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/95 group-hover:via-black/70 transition-colors duration-500" />
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-b from-[#090d16] via-[#050810] to-[#020306] group-hover:from-[#0c1220] transition-colors duration-500" />
+                    )}
+
+                    {/* Card Content: Title & Description */}
+                    <div className="relative z-10 flex flex-col h-full justify-between">
+                      <div>
+                        <h3 className="text-white font-black text-2xl tracking-tight leading-snug mb-3 drop-shadow-md">
+                          {node.title}
+                        </h3>
+                        <p className="text-white/70 text-xs font-medium leading-relaxed group-hover:text-white/90 transition-colors duration-300">
+                          {node.description}
+                        </p>
+                      </div>
+
+                      {/* Features List — Revealed on Hover */}
+                      <div className="max-h-0 opacity-0 group-hover:max-h-60 group-hover:opacity-100 transition-all duration-500 ease-in-out overflow-hidden mt-4 pt-4 border-t border-white/10">
+                        <ul className="space-y-2">
+                          {node.features.map((f, i) => (
+                            <li key={i} className="flex items-center gap-2 text-xs text-white/90 font-semibold">
+                              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+                              {f}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                    <h3 className="text-white font-extrabold text-sm tracking-wide leading-snug">{node.title}</h3>
-                    <p className="text-white/50 text-xs font-medium leading-relaxed">{node.description}</p>
-                    <ul className="space-y-1.5 mt-auto pt-4 border-t border-white/[0.06]">
-                      {node.features.map((f, i) => (
-                        <li key={i} className="flex items-center gap-2 text-[11px] text-white/50 font-medium">
-                          <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
                   </div>
                 );
               })}
