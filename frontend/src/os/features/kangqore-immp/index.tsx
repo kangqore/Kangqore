@@ -182,6 +182,17 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S233–S242 BIDS™ at Scale (Chapter 11 T3)
+import { BidsAutomationPage }            from './pages/BidsAutomationPage'
+import { BidsEnterpriseTierPage }         from './pages/BidsEnterpriseTierPage'
+import { BidsFirstTenClientsPage }        from './pages/BidsFirstTenClientsPage'
+import { BidsVerticalExpansionPage }      from './pages/BidsVerticalExpansionPage'
+import { BidsAiReviewPage }               from './pages/BidsAiReviewPage'
+import { BidsIndustryBenchmarkingPage }   from './pages/BidsIndustryBenchmarkingPage'
+import { BidsAnnualSubscriptionPage }     from './pages/BidsAnnualSubscriptionPage'
+import { BidsFiftyEngagementPage }        from './pages/BidsFiftyEngagementPage'
+import { BidsCertifiedPartnerPage }       from './pages/BidsCertifiedPartnerPage'
+import { GateS242Page }                   from './pages/GateS242Page'
 // S223–S232 Global Fleet 200 (Chapter 11 T2)
 import { FleetHundredPage }              from './pages/FleetHundredPage'
 import { JapanLaunchPage }               from './pages/JapanLaunchPage'
@@ -501,6 +512,17 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S233–S242 BIDS™ at Scale (Chapter 11 T3) */}
+          <Route path="bids-automation-v2"          element={<BidsAutomationPage />}           />
+          <Route path="bids-enterprise-tier"        element={<BidsEnterpriseTierPage />}       />
+          <Route path="bids-first-ten-clients"      element={<BidsFirstTenClientsPage />}      />
+          <Route path="bids-vertical-expansion"     element={<BidsVerticalExpansionPage />}    />
+          <Route path="bids-ai-review"              element={<BidsAiReviewPage />}             />
+          <Route path="bids-industry-benchmarking"  element={<BidsIndustryBenchmarkingPage />} />
+          <Route path="bids-annual-subscription"    element={<BidsAnnualSubscriptionPage />}   />
+          <Route path="bids-fifty-engagement"       element={<BidsFiftyEngagementPage />}      />
+          <Route path="bids-certified-partners"     element={<BidsCertifiedPartnerPage />}     />
+          <Route path="bids-gate-s242"              element={<GateS242Page />}                 />
           {/* S223–S232 Global Fleet 200 (Chapter 11 T2) */}
           <Route path="fleet-100-milestone"        element={<FleetHundredPage />}              />
           <Route path="japan-commercial-launch"    element={<JapanLaunchPage />}               />
