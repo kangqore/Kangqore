@@ -182,6 +182,28 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S263–S272 Fortune 500 Enterprise Tier (Chapter 12 T2)
+import { Soc2TypeIIPage }                  from './pages/Soc2TypeIIPage'
+import { FedRampPage }                     from './pages/FedRampPage'
+import { DedicatedSuccessTeamsPage }       from './pages/DedicatedSuccessTeamsPage'
+import { ExecutiveBusinessReviewsPage }    from './pages/ExecutiveBusinessReviewsPage'
+import { F500SalesMotionPage }             from './pages/F500SalesMotionPage'
+import { ResellersProgramPage }            from './pages/ResellersProgramPage'
+import { F500ClientOnboardingPage }        from './pages/F500ClientOnboardingPage'
+import { EnterpriseACVPage }              from './pages/EnterpriseACVPage'
+import { F500LogosPage }                   from './pages/F500LogosPage'
+import { GateS272Page }                    from './pages/GateS272Page'
+// S253–S262 WAANDA Gen3 Cognitive Engine (Chapter 12 T1)
+import { Gen3ArchitecturePage }        from './pages/Gen3ArchitecturePage'
+import { Gen3PlanningEnginePage }      from './pages/Gen3PlanningEnginePage'
+import { Gen3ReasoningEnginePage }     from './pages/Gen3ReasoningEnginePage'
+import { Gen3LanguageGenPage }         from './pages/Gen3LanguageGenPage'
+import { Gen3MultiturnPage }           from './pages/Gen3MultiturnPage'
+import { Gen3AutonomousGoalsPage }     from './pages/Gen3AutonomousGoalsPage'
+import { Gen3SelfCorrectionPage }      from './pages/Gen3SelfCorrectionPage'
+import { Gen3TrainingPipelinePage }    from './pages/Gen3TrainingPipelinePage'
+import { Gen3Routing50Page }           from './pages/Gen3Routing50Page'
+import { GateS262Page }                from './pages/GateS262Page'
 // S251–S252 Series A Close (Chapter 11 TX)
 import { SeriesADiligencePage }       from './pages/SeriesADiligencePage'
 import { GateS252Page }               from './pages/GateS252Page'
@@ -524,6 +546,28 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S263–S272 Fortune 500 Enterprise Tier (Chapter 12 T2) */}
+          <Route path="soc2-type2-certification"       element={<Soc2TypeIIPage />}               />
+          <Route path="fedramp-moderate"               element={<FedRampPage />}                  />
+          <Route path="dedicated-success-teams"        element={<DedicatedSuccessTeamsPage />}    />
+          <Route path="executive-business-reviews"     element={<ExecutiveBusinessReviewsPage />} />
+          <Route path="f500-sales-motion"              element={<F500SalesMotionPage />}          />
+          <Route path="resellers-program"              element={<ResellersProgramPage />}         />
+          <Route path="f500-client-onboarding"         element={<F500ClientOnboardingPage />}     />
+          <Route path="enterprise-acv"                 element={<EnterpriseACVPage />}            />
+          <Route path="f500-logos"                     element={<F500LogosPage />}                />
+          <Route path="f500-gate-s272"                 element={<GateS272Page />}                 />
+          {/* S253–S262 WAANDA Gen3 Cognitive Engine (Chapter 12 T1) */}
+          <Route path="gen3-architecture"              element={<Gen3ArchitecturePage />}         />
+          <Route path="gen3-planning-engine"           element={<Gen3PlanningEnginePage />}       />
+          <Route path="gen3-reasoning-engine"          element={<Gen3ReasoningEnginePage />}      />
+          <Route path="gen3-language-generation"       element={<Gen3LanguageGenPage />}          />
+          <Route path="gen3-multiturn-conversation"    element={<Gen3MultiturnPage />}            />
+          <Route path="gen3-autonomous-goals"          element={<Gen3AutonomousGoalsPage />}      />
+          <Route path="gen3-self-correction"           element={<Gen3SelfCorrectionPage />}       />
+          <Route path="gen3-training-pipeline"         element={<Gen3TrainingPipelinePage />}     />
+          <Route path="gen3-routing-50pct"             element={<Gen3Routing50Page />}            />
+          <Route path="gen3-gate-s262"                 element={<GateS262Page />}                 />
           {/* S251–S252 Series A Close (Chapter 11 TX) */}
           <Route path="series-a-diligence"        element={<SeriesADiligencePage />}     />
           <Route path="chapter-11-gate-s252"      element={<GateS252Page />}             />
