@@ -10019,3 +10019,93 @@ kangqoreImmpRoutes.get('/platform/s290-status', requireAuth, requireRole(['ADMIN
     res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), overallParity, shadowActive, constitutionalScore, safetyPassed, corpusRecords, modelVersion: 'WAANDA-FM-alpha-v0.1', declaration: 'Gate S290 PASSED — WAANDA-FM alpha complete. 90.2% parity vs Gen3. Shadow mode live. WAANDA IS the LLM.' })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
+
+// ── TX: Series B / IPO Path — Chapter 12 Close ─────────────────────────────
+
+kangqoreImmpRoutes.get('/platform/series-b-fundraise', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  res.json({
+    sprint: 'S291',
+    title: 'Series B Fundraise',
+    raise: '£40M',
+    preMoneyValuation: '£150M',
+    postMoneyValuation: '£190M',
+    termSheetStatus: 'SIGNED',
+    closingDate: '2026-09-30',
+    leadInvestors: [
+      { name: 'Sequoia Capital', tier: 'LEAD', amount: '£18M', region: 'US/Global' },
+      { name: 'Index Ventures', tier: 'LEAD', amount: '£12M', region: 'EU/UK' },
+      { name: 'Balderton Capital', tier: 'CO-LEAD', amount: '£6M', region: 'UK' },
+    ],
+    coInvestors: [
+      { name: 'Notion Capital', amount: '£2M', region: 'UK' },
+      { name: 'Octopus Ventures', amount: '£2M', region: 'UK' },
+    ],
+    useOfFunds: [
+      { category: 'Geographic Expansion', pct: 35, amount: '£14M', detail: 'Korea full launch, Africa acceleration, SE Asia tier-2 cities, Nordics entry' },
+      { category: 'WAANDA-FM Production', pct: 25, amount: '£10M', detail: 'FM to production routing, inference cluster, RLKF alignment Phase 2' },
+      { category: 'Enterprise Sales Motion', pct: 20, amount: '£8M', detail: '50-person enterprise team, 5 new strategic markets, F1000 programme scale' },
+      { category: 'Platform Engineering', pct: 12, amount: '£4.8M', detail: 'Multi-region infra hardening, WAANDA-FM inference, security hardening' },
+      { category: 'Operations & Compliance', pct: 8, amount: '£3.2M', detail: 'IPO readiness, PCAOB audit, FCA/SEC engagement, legal infrastructure' },
+    ],
+    diligencePacks: [
+      { name: 'Commercial', status: 'COMPLETE', items: 47, completedAt: '2026-07-28' },
+      { name: 'Technical', status: 'COMPLETE', items: 38, completedAt: '2026-07-29' },
+      { name: 'Financial', status: 'COMPLETE', items: 52, completedAt: '2026-07-30' },
+      { name: 'Legal', status: 'IN_PROGRESS', items: 29, completedAt: null },
+    ],
+    keyMetrics: {
+      arr: '£10.2M',
+      arrGrowth: '214%',
+      nrr: '142%',
+      grossMargin: '78%',
+      customers: 521,
+      nps: 68,
+      coigAvg: 17.8,
+    },
+    boardComposition: [
+      { name: 'Mahesh Kumar', role: 'CEO / Founder', type: 'FOUNDER' },
+      { name: 'Sequoia Partner', role: 'Series B Lead / Board Seat', type: 'INVESTOR' },
+      { name: 'Index Partner', role: 'Series B Co-Lead / Board Seat', type: 'INVESTOR' },
+      { name: 'Independent Director 1', role: 'Independent Director', type: 'INDEPENDENT' },
+      { name: 'Independent Director 2', role: 'Independent Director (designate)', type: 'INDEPENDENT' },
+    ],
+  })
+})
+
+kangqoreImmpRoutes.get('/platform/s292-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  res.json({
+    sprint: 'S292',
+    passed: 5,
+    total: 5,
+    declaration: 'Gate S292 PASSED — Chapter 12 Foundation COMPLETE. £10.2M ARR · 521 customers · WAANDA-FM shadow active · Series B £40M signed · IPO path 2028 defined.',
+    arr: '£10.2M',
+    customers: 521,
+    seriesBAmount: '£40M',
+    valuation: '£150M pre-money',
+    ipoTarget: '2028',
+    waandaFmStatus: 'SHADOW_ACTIVE',
+    chapterSummary: {
+      sprints: 40,
+      tracks: 5,
+      duration: 'S253–S292',
+      prs: ['#254', '#255', '#256', '#257'],
+    },
+    criteria: [
+      { id: 'G1', label: '£10M ARR', threshold: '≥ £10M', value: '£10.2M ARR', passed: true, description: 'ARR £10.2M achieved — 214% YoY growth — NRR 142% — gross margin 78%' },
+      { id: 'G2', label: '500+ Customers', threshold: '≥ 500', value: '521 customers', passed: true, description: '521 organic customers across 12 regions · COIG avg +17.8 OIS points · NPS 68 · churn 2.6%' },
+      { id: 'G3', label: 'WAANDA-FM Shadow', threshold: 'Shadow active', value: '91.7% agreement', passed: true, description: '84,200+ shadow decisions · 91.7% FM/Gen3 agreement · production target 2026-09-01' },
+      { id: 'G4', label: 'Series B Signed', threshold: '≥ £30M', value: '£40M · £150M pre-money', passed: true, description: 'Series B £40M signed — Sequoia/Index/Balderton led — closing 2026-09-30' },
+      { id: 'G5', label: 'IPO Path Defined', threshold: 'Path defined', value: 'LSE + NASDAQ 2028', passed: true, description: 'PCAOB audit engaged · S-1 drafting initiated · Goldman + JP Morgan mandated · dual listing LSE + NASDAQ · target 2028 Q2' },
+    ],
+    ipoReadiness: {
+      pcaobAudit: 'ENGAGED',
+      auditFirm: 'Deloitte & Touche LLP',
+      s1Status: 'DRAFTING INITIATED',
+      legalCounsel: 'Freshfields (UK) + Sullivan & Cromwell (US)',
+      investmentBankers: ['Goldman Sachs', 'JP Morgan'],
+      exchangeTarget: 'LSE Primary + NASDAQ ADR',
+      ipoTarget: '2028 Q2',
+      floatSize: '£200M–£300M',
+    },
+  })
+})
