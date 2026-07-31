@@ -182,6 +182,15 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S283–S290 WAANDA-FM Alpha — Foundation Model (Chapter 12 T4)
+import { WfmCorpusAssemblyPage }    from './pages/WfmCorpusAssemblyPage'
+import { WfmArchitecturePage }       from './pages/WfmArchitecturePage'
+import { WfmPretrainingPhase1Page }  from './pages/WfmPretrainingPhase1Page'
+import { WfmPretrainingPhase2Page }  from './pages/WfmPretrainingPhase2Page'
+import { WfmFinetuningPage }         from './pages/WfmFinetuningPage'
+import { WfmBenchmarkPage }          from './pages/WfmBenchmarkPage'
+import { WfmShadowModePage }         from './pages/WfmShadowModePage'
+import { GateS290Page }              from './pages/GateS290Page'
 // S273–S282 500-Customer Fleet · 12+ Regions (Chapter 12 T3)
 import { CanadaLaunchPage }          from './pages/CanadaLaunchPage'
 import { SingaporeLaunchPage }       from './pages/SingaporeLaunchPage'
@@ -557,6 +566,15 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S283–S290 WAANDA-FM Alpha — Foundation Model (Chapter 12 T4) */}
+          <Route path="wfm-corpus-assembly"      element={<WfmCorpusAssemblyPage />}   />
+          <Route path="wfm-architecture"         element={<WfmArchitecturePage />}      />
+          <Route path="wfm-pretraining-phase1"   element={<WfmPretrainingPhase1Page />} />
+          <Route path="wfm-pretraining-phase2"   element={<WfmPretrainingPhase2Page />} />
+          <Route path="wfm-finetuning"           element={<WfmFinetuningPage />}        />
+          <Route path="wfm-benchmark"            element={<WfmBenchmarkPage />}         />
+          <Route path="wfm-shadow-mode"          element={<WfmShadowModePage />}        />
+          <Route path="wfm-gate-s290"            element={<GateS290Page />}             />
           {/* S273–S282 500-Customer Fleet · 12+ Regions (Chapter 12 T3) */}
           <Route path="canada-commercial-launch"    element={<CanadaLaunchPage />}         />
           <Route path="singapore-commercial-launch" element={<SingaporeLaunchPage />}      />
