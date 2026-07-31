@@ -3,21 +3,11 @@ import { motion } from "framer-motion";
 import React from "react";
 
 const STREAM_COLORS = [
-  "#38BDF8", // 0: Autonomy (Cyan)
-  "#818CF8", // 1: Workflow (Indigo)
-  "#A855F7", // 2: Learning (Purple)
-  "#F472B6", // 3: Integration (Pink)
-  "#FB923C", // 4: Outcomes (Amber)
-];
-
-// Exact Bezier curves matching the 5 card rows (Y: 70, 185, 300, 415, 530)
-// converging through the center transition node (500, 300)
-const STREAM_PATHS = [
-  "M 0,70 L 380,70 C 450,70 470,300 500,300 C 530,300 550,70 620,70 L 1000,70",     // 0: Autonomy
-  "M 0,185 L 380,185 C 450,185 470,300 500,300 C 530,300 550,185 620,185 L 1000,185", // 1: Workflow
-  "M 0,300 L 380,300 C 450,300 480,300 500,300 C 520,300 550,300 620,300 L 1000,300", // 2: Learning
-  "M 0,415 L 380,415 C 450,415 470,300 500,300 C 530,300 550,415 620,415 L 1000,415", // 3: Integration
-  "M 0,530 L 380,530 C 450,530 470,300 500,300 C 530,300 550,530 620,530 L 1000,530", // 4: Outcomes
+  "#FFB7C5", // Row 0: Autonomy (Rose/Pink)
+  "#FFDDB7", // Row 1: Workflow (Gold/Amber)
+  "#B1C5FF", // Row 2: Learning (Soft Blue)
+  "#4FABFF", // Row 3: Integration (Cyan)
+  "#076EFF", // Row 4: Outcomes (Electric Blue)
 ];
 
 const transition = {
@@ -26,20 +16,24 @@ const transition = {
 };
 
 export const GoogleGeminiEffect = ({
-  pathLengths = [],
+  pathLengths,
   hoveredRow = null,
   className,
 }) => {
+  // SVG coordinates for 5 synced rows (viewBox 0 0 1000 600)
+  // Left card edge ~ 450, Center ~ 500, Right card edge ~ 550
+  const rowY = [160, 240, 320, 400, 480];
+
   return (
-    <div className={cn("absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0", className)}>
+    <div className={cn("absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible", className)}>
       <svg
         viewBox="0 0 1000 600"
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
+        className="w-full h-full overflow-visible"
       >
         <defs>
-          <filter id="gemini-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <filter id="geminiGlow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -48,66 +42,97 @@ export const GoogleGeminiEffect = ({
           </filter>
         </defs>
 
-        {/* Render 5 Ecosystem Streams synced to the 5 Card Rows */}
-        {STREAM_PATHS.map((d, i) => {
+        {rowY.map((y, i) => {
           const color = STREAM_COLORS[i];
           const isHovered = hoveredRow === i;
-          const isAnyHovered = hoveredRow !== null;
-          const pathLen = pathLengths[i] ?? 1;
+          const strokeWidth = isHovered ? 5 : 3;
+          const opacity = hoveredRow !== null ? (isHovered ? 1 : 0.25) : 0.85;
+          const pLength = pathLengths?.[i] ?? 1;
 
-          // Opacity & width dynamically adjust based on row hover ecosystem state
-          let opacity = 0.35;
-          let strokeWidth = 2.5;
-
-          if (isHovered) {
-            opacity = 1.0;
-            strokeWidth = 5.5;
-          } else if (isAnyHovered) {
-            opacity = 0.15;
-            strokeWidth = 1.5;
-          }
+          // Smooth S-curve bezier from Left Row Y_i -> Center Braided Node -> Right Row Y_i
+          // Path starts at Left Card row, weaves through central transition button (500, 320), and connects to Right Card row
+          const pathD = `M 80 ${y} L 440 ${y} C 470 ${y}, 485 ${320 + (i - 2) * 12}, 500 320 C 515 ${320 - (i - 2) * 12}, 530 ${y}, 560 ${y} L 920 ${y}`;
 
           return (
             <g key={i}>
-              {/* Outer Glow Halo Path (active on hover or high progress) */}
-              {isHovered && (
-                <motion.path
-                  d={d}
-                  stroke={color}
-                  strokeWidth={12}
-                  fill="none"
-                  filter="url(#gemini-glow)"
-                  opacity={0.6}
-                  transition={transition}
-                />
-              )}
-
-              {/* Base Gemini Stream Path */}
+              {/* Outer Glow Halo Path */}
               <motion.path
-                d={d}
+                d={pathD}
+                stroke={color}
+                strokeWidth={strokeWidth * 2.2}
+                strokeLinecap="round"
+                fill="none"
+                opacity={isHovered ? 0.6 : 0.2}
+                filter="url(#geminiGlow)"
+              />
+
+              {/* Main Stream Path */}
+              <motion.path
+                d={pathD}
                 stroke={color}
                 strokeWidth={strokeWidth}
+                strokeLinecap="round"
                 fill="none"
-                initial={{ pathLength: 0 }}
-                style={{ pathLength: pathLen }}
                 opacity={opacity}
+                initial={{ pathLength: 0 }}
+                style={{ pathLength: pLength }}
                 transition={transition}
               />
 
-              {/* Action Potential Fast Energy Pulse (Flowing Left -> Right) */}
+              {/* Animated Action Potential Pulses (Electricity Flowing Left -> Right) */}
               <motion.path
-                d={d}
+                d={pathD}
                 stroke="#ffffff"
-                strokeWidth={strokeWidth * 0.8}
-                strokeDasharray="30 180"
+                strokeWidth={strokeWidth + 1}
+                strokeDasharray={isHovered ? "40 120" : "24 160"}
+                strokeLinecap="round"
                 fill="none"
-                opacity={isHovered ? 0.95 : 0.4}
-                animate={{ strokeDashoffset: [210, 0] }}
+                opacity={isHovered ? 1 : 0.75}
+                animate={{ strokeDashoffset: [360, 0] }}
                 transition={{
                   repeat: Infinity,
-                  duration: isHovered ? 2.5 : 5 + i * 0.8,
+                  duration: isHovered ? 2.5 : 4.5,
                   ease: "linear",
                 }}
+                filter="url(#geminiGlow)"
+              />
+
+              {/* Socket Connector Node on Left Card (Row Origin) */}
+              <circle
+                cx={440}
+                cy={y}
+                r={isHovered ? 6 : 4}
+                fill={color}
+                opacity={opacity}
+                className="transition-all duration-300"
+              />
+              <circle
+                cx={440}
+                cy={y}
+                r={isHovered ? 10 : 6}
+                fill="none"
+                stroke={color}
+                strokeWidth="1.5"
+                opacity={isHovered ? 0.9 : 0.4}
+              />
+
+              {/* Socket Connector Node on Right Card (Row Destination) */}
+              <circle
+                cx={560}
+                cy={y}
+                r={isHovered ? 6 : 4}
+                fill={color}
+                opacity={opacity}
+                className="transition-all duration-300"
+              />
+              <circle
+                cx={560}
+                cy={y}
+                r={isHovered ? 10 : 6}
+                fill="none"
+                stroke={color}
+                strokeWidth="1.5"
+                opacity={isHovered ? 0.9 : 0.4}
               />
             </g>
           );
