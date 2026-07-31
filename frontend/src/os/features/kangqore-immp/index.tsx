@@ -182,6 +182,17 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S273–S282 500-Customer Fleet · 12+ Regions (Chapter 12 T3)
+import { CanadaLaunchPage }          from './pages/CanadaLaunchPage'
+import { SingaporeLaunchPage }       from './pages/SingaporeLaunchPage'
+import { Fleet250Page }              from './pages/Fleet250Page'
+import { SouthKoreaLaunchPage }      from './pages/SouthKoreaLaunchPage'
+import { Fleet300Page }              from './pages/Fleet300Page'
+import { AfricaLaunchPage }          from './pages/AfricaLaunchPage'
+import { Fleet400Page }              from './pages/Fleet400Page'
+import { Bids200EngagementsPage }    from './pages/Bids200EngagementsPage'
+import { Fleet500Page }              from './pages/Fleet500Page'
+import { GateS282Page }              from './pages/GateS282Page'
 // S263–S272 Fortune 500 Enterprise Tier (Chapter 12 T2)
 import { Soc2TypeIIPage }                  from './pages/Soc2TypeIIPage'
 import { FedRampPage }                     from './pages/FedRampPage'
@@ -546,6 +557,17 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S273–S282 500-Customer Fleet · 12+ Regions (Chapter 12 T3) */}
+          <Route path="canada-commercial-launch"    element={<CanadaLaunchPage />}         />
+          <Route path="singapore-commercial-launch" element={<SingaporeLaunchPage />}      />
+          <Route path="fleet-250-milestone"         element={<Fleet250Page />}             />
+          <Route path="south-korea-commercial-launch" element={<SouthKoreaLaunchPage />}  />
+          <Route path="fleet-300-milestone"         element={<Fleet300Page />}             />
+          <Route path="africa-commercial-launch"    element={<AfricaLaunchPage />}         />
+          <Route path="fleet-400-milestone"         element={<Fleet400Page />}             />
+          <Route path="bids-200-engagements"        element={<Bids200EngagementsPage />}  />
+          <Route path="fleet-500-milestone"         element={<Fleet500Page />}             />
+          <Route path="fleet-gate-s282"             element={<GateS282Page />}            />
           {/* S263–S272 Fortune 500 Enterprise Tier (Chapter 12 T2) */}
           <Route path="soc2-type2-certification"       element={<Soc2TypeIIPage />}               />
           <Route path="fedramp-moderate"               element={<FedRampPage />}                  />
