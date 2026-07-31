@@ -6,6 +6,7 @@ import { prisma } from '../../lib/prisma'
 import { KimmpRag } from '../rag/kimmpRag.service'
 import { SemanticMapper } from '../../services/semanticMapper.service'
 import type { ExternalRef, ResolvedEntity } from '../../services/semanticMapper.service'
+import { ObjectSetService } from '../../services/objectSet.service'
 
 export interface EnterpriseContext {
   // Temporal
@@ -44,6 +45,8 @@ export interface EnterpriseContext {
   ragContext?:   string
   // OAG — resolved canonical entities from external system refs (Phase 2)
   resolvedEntities?: ResolvedEntity[]
+  // S294 — named Object Sets matched into structured context instead of an ad-hoc filter
+  objectSets?: Array<{ id: string; name: string; count: number; objectIds: string[] }>
   // Optional scoped entity IDs
   goalId?:       string
   workflowId?:   string
@@ -58,6 +61,8 @@ export interface ContextOptions {
   question?:       string
   // OAG — optional cross-system entity refs to resolve into canonical ontology objects
   entityRefs?:     ExternalRef[]
+  // S294 — named Object Sets to run and inject as structured context (instead of ad-hoc filters)
+  objectSetIds?:   string[]
   // Performance: skip expensive sections when not needed
   skipGraph?:      boolean
   skipDecisions?:  boolean
@@ -182,6 +187,21 @@ export class KimmpContextAssembler {
       if (resolved.size > 0) resolvedEntities = Array.from(resolved.values())
     }
 
+    // S294 — resolve named Object Sets into structured context (matched object IDs)
+    let objectSets: EnterpriseContext['objectSets']
+    if (opts.objectSetIds && opts.objectSetIds.length > 0) {
+      const resolved = await Promise.all(opts.objectSetIds.map(async id => {
+        try {
+          const set = await prisma.objectSet.findUnique({ where: { id }, select: { id: true, name: true } })
+          if (!set) return null
+          const { objects } = await ObjectSetService.execute(id)
+          return { id: set.id, name: set.name, count: objects.length, objectIds: objects.map((o: any) => o.id) }
+        } catch { return null }
+      }))
+      const present = resolved.filter((r): r is NonNullable<typeof r> => r !== null)
+      if (present.length > 0) objectSets = present
+    }
+
     return {
       currentTime:      now,
       userId:           opts.userId,
@@ -197,6 +217,7 @@ export class KimmpContextAssembler {
       activeWorkflows:  workflowsResult.status    === 'fulfilled' ? workflowsResult.value    : [],
       ragContext,
       resolvedEntities,
+      objectSets,
       goalId:           opts.goalId,
       workflowId:       opts.workflowId,
       organizationId:   opts.organizationId,
@@ -263,6 +284,11 @@ export class KimmpContextAssembler {
     // Phase 2 — OAG: resolved cross-system entities
     if (ctx.resolvedEntities && ctx.resolvedEntities.length > 0) {
       lines.push(`Resolved entities: ${ctx.resolvedEntities.map(e => `${e.displayName} [${e.objectType}]`).join(', ')}`)
+    }
+
+    // S294 — named Object Sets matched for this run
+    if (ctx.objectSets && ctx.objectSets.length > 0) {
+      lines.push(`Object Sets in scope: ${ctx.objectSets.map(s => `"${s.name}" (${s.count} objects)`).join(', ')}`)
     }
 
     // Phase 2 — OAG: entity graph (scoped, human-readable)

@@ -268,6 +268,18 @@ export function initializeSocket(httpServer: HttpServer): Server {
       });
     });
 
+    // ── OBJECT SET LIVE UPDATES (S293) ────────────────────────────────────────
+    // objectset:join — subscribe to membership-change pushes for a saved Object Set
+    socket.on('objectset:join', (data: { objectSetId: string }) => {
+      if (!data?.objectSetId) return;
+      socket.join(`objectset:${data.objectSetId}`);
+    });
+
+    socket.on('objectset:leave', (data: { objectSetId: string }) => {
+      if (!data?.objectSetId) return;
+      socket.leave(`objectset:${data.objectSetId}`);
+    });
+
     // Handle disconnect
     socket.on('disconnect', () => {
       console.log(`🔌 User disconnected: ${userId}`);

@@ -4393,6 +4393,7 @@ model OntologyObjectType {
   instances      OntologyObject[]
   actions        OntologyAction[]
   semanticMappings SemanticTypeMapping[]
+  objectSets     ObjectSet[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
@@ -4413,6 +4414,7 @@ model OntologyObject {
   inboundRelationships  OntologyRelationship[] @relation("RelationshipTarget")
   events                OntologyEvent[]
   externalRefs          ExternalEntityRef[]
+  setMemberships        ObjectSetMembership[]
 
   @@index([typeId])
   @@index([externalId])
@@ -4513,6 +4515,49 @@ model OntologyAction {
 
   @@unique([typeId, name])
   @@map("ontology_actions")
+}
+
+// ─── Object Sets — S293 ───────────────────────────────────────────────────────
+// A saved, named, composable query over OntologyObjects. Palantir's most-used
+// daily feature: "All enterprise accounts with OIS below 70." Referenced from
+// KIMMP context, canvas seeding, dashboards, and the SDK — a first-class object.
+
+model ObjectSet {
+  id          String               @id @default(cuid())
+  name        String
+  description String?
+  rootTypeId  String?
+  rootType    OntologyObjectType?  @relation(fields: [rootTypeId], references: [id], onDelete: SetNull)
+  query       Json                 @default("{}")   // Query DSL — see objectSet.service.ts
+  tags        String[]             @default([])
+  isPublic    Boolean              @default(false)
+  isSystem    Boolean              @default(false)
+  createdBy   String?
+  lastRunAt   DateTime?
+  lastCount   Int                  @default(0)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  memberships ObjectSetMembership[]
+
+  @@unique([name, createdBy])
+  @@index([rootTypeId])
+  @@index([isSystem])
+  @@map("object_sets")
+}
+
+model ObjectSetMembership {
+  id          String         @id @default(cuid())
+  objectSetId String
+  objectSet   ObjectSet      @relation(fields: [objectSetId], references: [id], onDelete: Cascade)
+  objectId    String
+  object      OntologyObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  addedAt     DateTime       @default(now())
+
+  @@unique([objectSetId, objectId])
+  @@index([objectSetId])
+  @@index([objectId])
+  @@map("object_set_memberships")
 }
 
 // ─── Track G — Enterprise Knowledge Lifecycle ────────────────────────────────
