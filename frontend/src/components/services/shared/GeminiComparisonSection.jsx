@@ -20,8 +20,9 @@ export default function GeminiComparisonSection({ comparisonTable }) {
 
   return (
     <section ref={containerRef} className="py-28 relative overflow-hidden bg-[#02050b]">
-      {/* Background Gemini Effect SVG Animation */}
+      {/* Background Gemini Effect SVG Animation Synced to 5 Rows */}
       <GoogleGeminiEffect
+        hoveredRow={hoveredRow}
         pathLengths={[
           pathLengthFirst,
           pathLengthSecond,
