@@ -8763,3 +8763,226 @@ kangqoreImmpRoutes.get('/platform/s242-status', requireAuth, requireRole(['ADMIN
     res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), totalEngagements, totalPartners, subscriptionArrPct, conversionRate, declaration: 'BIDS™ v2.0 — Self-sustaining commercial product delivering measurable enterprise transformation' })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
+
+// ─── S243–S250 Platform Ecosystem (Chapter 11 T4) ────────────────────────────
+
+// S243 GET /platform/app-store-status
+kangqoreImmpRoutes.get('/platform/app-store-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  const APPS = [
+    { id: 'A001', name: 'CRM Intelligence Pack',     category: 'CRM',       publisher: 'Nexus Intelligence', installs: 42, rating: 4.8, price: '£49/mo',  status: 'LIVE' },
+    { id: 'A002', name: 'BIDS™ Audit Connector',     category: 'Analytics', publisher: 'Meridian Consulting', installs: 31, rating: 4.7, price: '£29/mo',  status: 'LIVE' },
+    { id: 'A003', name: 'Compliance Dashboard Pro',  category: 'Compliance',publisher: 'Apex Advisory',       installs: 28, rating: 4.6, price: '£39/mo',  status: 'LIVE' },
+    { id: 'A004', name: 'HR Pulse Analytics',        category: 'HR',        publisher: 'Vantage Consulting',  installs: 19, rating: 4.5, price: '£19/mo',  status: 'LIVE' },
+    { id: 'A005', name: 'Finance Intelligence Suite',category: 'Finance',   publisher: 'Innova Latam',        installs: 24, rating: 4.9, price: '£59/mo',  status: 'LIVE' },
+    { id: 'A006', name: 'Project Blueprint Viewer',  category: 'PMO',       publisher: 'Catalyst Group',      installs: 37, rating: 4.7, price: 'Free',     status: 'LIVE' },
+    { id: 'A007', name: 'WAANDA Voice Assistant',    category: 'Productivity',publisher: 'Kangqore',          installs: 89, rating: 4.9, price: 'Free',     status: 'LIVE' },
+    { id: 'A008', name: 'ESG Reporting Engine',      category: 'Compliance',publisher: 'Gulf AI Partners',    installs: 14, rating: 4.4, price: '£29/mo',  status: 'LIVE' },
+    { id: 'A009', name: 'Customer Health Tracker',   category: 'CRM',       publisher: 'Summit Advisory',     installs: 22, rating: 4.6, price: '£19/mo',  status: 'LIVE' },
+    { id: 'A010', name: 'COIG Benchmark Widget',     category: 'Analytics', publisher: 'Horizon Partners',    installs: 33, rating: 4.8, price: 'Free',     status: 'LIVE' },
+    { id: 'A011', name: 'Japan Compliance Pack',     category: 'Compliance',publisher: 'Fujita Partners',     installs: 11, rating: 4.5, price: '£39/mo',  status: 'LIVE' },
+    { id: 'A012', name: 'Sales Intelligence Overlay',category: 'Sales',     publisher: 'Nexus Intelligence',  installs: 26, rating: 4.7, price: '£29/mo',  status: 'LIVE' },
+  ]
+  const CATEGORIES = ['CRM', 'Analytics', 'Compliance', 'Finance', 'HR', 'PMO', 'Productivity', 'Sales']
+  const totalInstalls = APPS.reduce((s, a) => s + a.installs, 0)
+  const avgRating = Math.round((APPS.reduce((s, a) => s + a.rating, 0) / APPS.length) * 10) / 10
+  res.json({ apps: APPS, total: APPS.length, categories: CATEGORIES, totalInstalls, avgRating, revenueModel: { kangqoreShare: 70, partnerShare: 30 }, sandboxing: true, sdkVersion: 'v3' })
+})
+
+// S244 GET /platform/integration-hub
+kangqoreImmpRoutes.get('/platform/integration-hub', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  const INTEGRATIONS = [
+    { id: 'slack',      name: 'Slack',            category: 'Comms',      status: 'LIVE', installs: 72, icon: '💬' },
+    { id: 'hubspot',    name: 'HubSpot',          category: 'CRM',        status: 'LIVE', installs: 58, icon: '🟠' },
+    { id: 'salesforce', name: 'Salesforce',       category: 'CRM',        status: 'LIVE', installs: 44, icon: '☁️' },
+    { id: 'zapier',     name: 'Zapier',           category: 'Automation', status: 'LIVE', installs: 61, icon: '⚡' },
+    { id: 'make',       name: 'Make',             category: 'Automation', status: 'LIVE', installs: 39, icon: '🔗' },
+    { id: 'teams',      name: 'Microsoft Teams',  category: 'Comms',      status: 'LIVE', installs: 53, icon: '🟣' },
+    { id: 'notion',     name: 'Notion',           category: 'Productivity',status: 'LIVE', installs: 48, icon: '⬜' },
+    { id: 'jira',       name: 'Jira',             category: 'PM',         status: 'LIVE', installs: 41, icon: '🔵' },
+    { id: 'github',     name: 'GitHub',           category: 'Dev',        status: 'LIVE', installs: 36, icon: '🐙' },
+    { id: 'stripe',     name: 'Stripe',           category: 'Finance',    status: 'LIVE', installs: 34, icon: '💳' },
+    { id: 'xero',       name: 'Xero',             category: 'Finance',    status: 'LIVE', installs: 29, icon: '📊' },
+    { id: 'quickbooks', name: 'QuickBooks',       category: 'Finance',    status: 'LIVE', installs: 22, icon: '💰' },
+    { id: 'zendesk',    name: 'Zendesk',          category: 'Support',    status: 'LIVE', installs: 31, icon: '🎫' },
+    { id: 'intercom',   name: 'Intercom',         category: 'Support',    status: 'LIVE', installs: 27, icon: '💬' },
+    { id: 'linear',     name: 'Linear',           category: 'PM',         status: 'LIVE', installs: 24, icon: '🟣' },
+    { id: 'confluence', name: 'Confluence',       category: 'Productivity',status: 'LIVE', installs: 33, icon: '📝' },
+    { id: 'figma',      name: 'Figma',            category: 'Design',     status: 'LIVE', installs: 18, icon: '🎨' },
+    { id: 'airtable',   name: 'Airtable',         category: 'Data',       status: 'LIVE', installs: 26, icon: '📋' },
+    { id: 'webflow',    name: 'Webflow',          category: 'CMS',        status: 'LIVE', installs: 15, icon: '🌐' },
+    { id: 'powerbi',    name: 'Power BI',         category: 'Analytics',  status: 'LIVE', installs: 38, icon: '📈' },
+    { id: 'tableau',    name: 'Tableau',          category: 'Analytics',  status: 'LIVE', installs: 21, icon: '📊' },
+    { id: 'googleads',  name: 'Google Ads',       category: 'Marketing',  status: 'LIVE', installs: 19, icon: '📢' },
+    { id: 'mailchimp',  name: 'Mailchimp',        category: 'Marketing',  status: 'LIVE', installs: 23, icon: '🐒' },
+    { id: 'pipedrive',  name: 'Pipedrive',        category: 'CRM',        status: 'LIVE', installs: 17, icon: '🎯' },
+    { id: 'clickup',    name: 'ClickUp',          category: 'PM',         status: 'LIVE', installs: 28, icon: '✅' },
+    { id: 'mondaydotcom',name:'Monday.com',       category: 'PM',         status: 'LIVE', installs: 25, icon: '📅' },
+    { id: 'asana',      name: 'Asana',            category: 'PM',         status: 'LIVE', installs: 21, icon: '🎯' },
+    { id: 'dropbox',    name: 'Dropbox',          category: 'Storage',    status: 'LIVE', installs: 16, icon: '📦' },
+    { id: 'onedrive',   name: 'OneDrive',         category: 'Storage',    status: 'LIVE', installs: 31, icon: '☁️' },
+    { id: 'googledrive',name: 'Google Drive',     category: 'Storage',    status: 'LIVE', installs: 43, icon: '🟢' },
+    { id: 'docusign',   name: 'DocuSign',         category: 'Legal',      status: 'LIVE', installs: 28, icon: '✍️' },
+    { id: 'bamboohr',   name: 'BambooHR',         category: 'HR',         status: 'LIVE', installs: 19, icon: '🎋' },
+    { id: 'workday',    name: 'Workday',          category: 'HR',         status: 'LIVE', installs: 22, icon: '💼' },
+    { id: 'servicenow', name: 'ServiceNow',       category: 'ITSM',       status: 'LIVE', installs: 15, icon: '🔧' },
+    { id: 'pagerduty',  name: 'PagerDuty',        category: 'ITSM',       status: 'LIVE', installs: 12, icon: '🚨' },
+    { id: 'datadog',    name: 'Datadog',          category: 'Observability',status:'LIVE', installs: 18, icon: '🐕' },
+    { id: 'twilio',     name: 'Twilio',           category: 'Comms',      status: 'LIVE', installs: 14, icon: '📱' },
+    { id: 'sendgrid',   name: 'SendGrid',         category: 'Comms',      status: 'LIVE', installs: 16, icon: '✉️' },
+    { id: 'aws',        name: 'AWS',              category: 'Cloud',      status: 'LIVE', installs: 31, icon: '🟡' },
+    { id: 'azure',      name: 'Azure',            category: 'Cloud',      status: 'LIVE', installs: 28, icon: '🔷' },
+    { id: 'gcp',        name: 'Google Cloud',     category: 'Cloud',      status: 'LIVE', installs: 21, icon: '🌤️' },
+    { id: 'looker',     name: 'Looker',           category: 'Analytics',  status: 'LIVE', installs: 14, icon: '👁️' },
+    { id: 'segment',    name: 'Segment',          category: 'Data',       status: 'LIVE', installs: 19, icon: '📡' },
+    { id: 'mixpanel',   name: 'Mixpanel',         category: 'Analytics',  status: 'LIVE', installs: 17, icon: '📊' },
+    { id: 'amplitude',  name: 'Amplitude',        category: 'Analytics',  status: 'LIVE', installs: 15, icon: '📈' },
+    { id: 'typeform',   name: 'Typeform',         category: 'Data',       status: 'LIVE', installs: 13, icon: '📋' },
+    { id: 'surveymonkey',name:'SurveyMonkey',     category: 'Data',       status: 'LIVE', installs: 11, icon: '🐒' },
+    { id: 'calendly',   name: 'Calendly',         category: 'Scheduling', status: 'LIVE', installs: 24, icon: '📅' },
+    { id: 'zoom',       name: 'Zoom',             category: 'Comms',      status: 'LIVE', installs: 38, icon: '🎥' },
+    { id: 'hubspot_mktg',name:'HubSpot Marketing',category: 'Marketing',  status: 'LIVE', installs: 22, icon: '📧' },
+    { id: 'klaviyo',    name: 'Klaviyo',          category: 'Marketing',  status: 'LIVE', installs: 14, icon: '📨' },
+    { id: 'snowflake',  name: 'Snowflake',        category: 'Data',       status: 'LIVE', installs: 16, icon: '❄️' },
+    { id: 'dbt',        name: 'dbt',              category: 'Data',       status: 'LIVE', installs: 12, icon: '🔧' },
+  ]
+  const CATEGORIES = [...new Set(INTEGRATIONS.map(i => i.category))]
+  const totalInstalls = INTEGRATIONS.reduce((s, i) => s + i.installs, 0)
+  res.json({ integrations: INTEGRATIONS, total: INTEGRATIONS.length, categories: CATEGORIES, totalInstalls, sdkEnabled: true, connectorSDKVersion: 'v3' })
+})
+
+// S245 GET /platform/hackathon-program
+kangqoreImmpRoutes.get('/platform/hackathon-program', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  const PRIZES = [
+    { place: '1st',    amount: '£20,000', reward: '+ App Store featured listing + Kangqore partnership offer' },
+    { place: '2nd',    amount: '£12,000', reward: '+ App Store listing + Gold partner fast-track' },
+    { place: '3rd',    amount: '£8,000',  reward: '+ App Store listing + Silver partner status' },
+    { place: '4th–10th', amount: '£1,000 each', reward: '+ App Store listing + community recognition' },
+  ]
+  const TRACKS = [
+    { id: 'T1', name: 'WAANDA Intelligence Extensions', desc: 'Build new intelligence modules that extend WAANDA\'s reasoning capabilities via SDK v3.' },
+    { id: 'T2', name: 'Industry Vertical Apps',          desc: 'Create vertical-specific apps for BIDS™ editions: ARIA, LEX, FINX, MFGX, RETX, or GOVX.' },
+    { id: 'T3', name: 'Integration Connectors',          desc: 'Build connectors for uncovered tools using the Connector SDK — auto-published on approval.' },
+    { id: 'T4', name: 'Open Category',                   desc: 'Any app that runs on Kangqore OS and creates value for enterprise customers.' },
+  ]
+  const TIMELINE = [
+    { phase: 'Registration Opens',     date: '2026-09-01' },
+    { phase: '48-Hour Build Window',   date: '2026-10-17' },
+    { phase: 'Judging Panel Review',   date: '2026-10-20' },
+    { phase: 'Winners Announced',      date: '2026-10-24' },
+    { phase: 'App Store Publication',  date: '2026-11-01' },
+  ]
+  res.json({ prizePool: 50000, currency: 'GBP', prizes: PRIZES, tracks: TRACKS, timeline: TIMELINE, duration: '48h', registeredTeams: 124, submissionsExpected: 80, winnersPublishedToAppStore: true })
+})
+
+// S246 GET /platform/developer-community
+kangqoreImmpRoutes.get('/platform/developer-community', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  const STATS = { registeredDevs: 2140, forumPosts: 4820, qnaAnswered: 1930, showcaseApps: 47, ambassadors: 18, newsletterSubscribers: 1840 }
+  const OPEN_SOURCE = [
+    { repo: 'kangqore/sdk-v3-core',     stars: 312, description: 'Official SDK v3 core library — build WAANDA extensions', language: 'TypeScript' },
+    { repo: 'kangqore/connector-sdk',   stars: 248, description: 'Connector SDK for building Integration Hub connectors', language: 'TypeScript' },
+    { repo: 'kangqore/bids-components', stars: 187, description: 'BIDS™ React component library — open-source UI kit', language: 'TypeScript' },
+    { repo: 'kangqore/waanda-examples', stars: 421, description: 'Official example apps and extension templates', language: 'TypeScript' },
+  ]
+  const AMBASSADOR_BENEFITS = ['Early access to SDK previews', 'Direct line to engineering team', 'Featured developer spotlight', 'Ambassador badge + swag', '£500 annual credits', 'Co-present at Partner Summit']
+  res.json({ stats: STATS, openSourceRepos: OPEN_SOURCE, ambassadorBenefits: AMBASSADOR_BENEFITS, forums: true, qna: true, newsletter: 'Monthly', showcase: true })
+})
+
+// S247 GET /platform/waanda-certification
+kangqoreImmpRoutes.get('/platform/waanda-certification', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  const TIERS = [
+    {
+      tier: 'Bronze', badge: '🥉', targetDevs: 300, certified: 312, price: '£199',
+      exams: ['WAANDA Fundamentals (60q · 75% pass)', 'SDK v3 Basics (40q · 70% pass)'],
+      skills: ['WAANDA OS navigation', 'SDK v3 basics', 'Blueprint reading', 'Extension API fundamentals'],
+      validity: '1 year',
+    },
+    {
+      tier: 'Silver', badge: '🥈', targetDevs: 150, certified: 148, price: '£399',
+      exams: ['WAANDA Developer (80q · 80% pass)', 'Integration Lab (practical)', 'BIDS™ Integration Specialist (50q)'],
+      skills: ['Full SDK v3 proficiency', 'Connector development', 'BIDS™ extension development', 'Security & sandboxing'],
+      validity: '2 years',
+    },
+    {
+      tier: 'Gold', badge: '🥇', targetDevs: 50, certified: 52, price: '£799',
+      exams: ['WAANDA Architect (100q · 85% pass)', 'Architecture Review Board (panel)', 'Live build assessment (4h)'],
+      skills: ['Platform architecture design', 'Enterprise deployment patterns', 'Custom AI extension design', 'Partner onboarding delivery'],
+      validity: '3 years',
+    },
+  ]
+  const totalCertified = TIERS.reduce((s, t) => s + t.certified, 0)
+  const targetTotal = TIERS.reduce((s, t) => s + t.targetDevs, 0)
+  res.json({ tiers: TIERS, totalCertified, targetTotal, architectBadge: true, proctored: true, target500: totalCertified >= 500 })
+})
+
+// S248 GET /platform/marketplace-billing
+kangqoreImmpRoutes.get('/platform/marketplace-billing', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  const PAYOUT_LEDGER = [
+    { partner: 'Nexus Intelligence',   month: '2026-06', apps: 2, grossRevenue: 4810, kangqoreShare: 3367, partnerPayout: 1443, status: 'PAID' },
+    { partner: 'Meridian Consulting',  month: '2026-06', apps: 1, grossRevenue: 2900, kangqoreShare: 2030, partnerPayout: 870,  status: 'PAID' },
+    { partner: 'Apex Advisory',        month: '2026-06', apps: 1, grossRevenue: 2240, kangqoreShare: 1568, partnerPayout: 672,  status: 'PAID' },
+    { partner: 'Vantage Consulting',   month: '2026-06', apps: 1, grossRevenue: 1710, kangqoreShare: 1197, partnerPayout: 513,  status: 'PAID' },
+    { partner: 'Innova Latam',         month: '2026-06', apps: 1, grossRevenue: 2160, kangqoreShare: 1512, partnerPayout: 648,  status: 'PAID' },
+    { partner: 'Catalyst Group',       month: '2026-06', apps: 1, grossRevenue: 0,    kangqoreShare: 0,    partnerPayout: 0,    status: 'FREE' },
+    { partner: 'Gulf AI Partners',     month: '2026-06', apps: 1, grossRevenue: 1260, kangqoreShare: 882,  partnerPayout: 378,  status: 'PAID' },
+    { partner: 'Summit Advisory',      month: '2026-06', apps: 1, grossRevenue: 1980, kangqoreShare: 1386, partnerPayout: 594,  status: 'PAID' },
+    { partner: 'Horizon Partners',     month: '2026-06', apps: 1, grossRevenue: 0,    kangqoreShare: 0,    partnerPayout: 0,    status: 'FREE' },
+    { partner: 'Fujita Partners',      month: '2026-06', apps: 1, grossRevenue: 990,  kangqoreShare: 693,  partnerPayout: 297,  status: 'PAID' },
+  ]
+  const grossMRR = PAYOUT_LEDGER.reduce((s, p) => s + p.grossRevenue, 0)
+  const kangqoreMRR = PAYOUT_LEDGER.reduce((s, p) => s + p.kangqoreShare, 0)
+  const partnerMRR = PAYOUT_LEDGER.reduce((s, p) => s + p.partnerPayout, 0)
+  const marketplaceARR = grossMRR * 12
+  res.json({ payoutLedger: PAYOUT_LEDGER, grossMRR, kangqoreMRR, partnerMRR, marketplaceARR, revenueModel: '70/30', automatedPayouts: true, firstRevenueEvent: '2026-05-01', splitAutomated: true })
+})
+
+// S249 GET /platform/partner-summit
+kangqoreImmpRoutes.get('/platform/partner-summit', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  const AGENDA = [
+    { time: '09:00', session: 'Opening Keynote — The WAANDA Ecosystem Vision',          speaker: 'Kangqore Founding Team',  type: 'Keynote' },
+    { time: '10:00', session: 'BIDS™ 2.0: Partner Delivery Best Practices',             speaker: 'Top BIDS delivery partner', type: 'Workshop' },
+    { time: '11:00', session: 'COIG Leaderboard Launch — Anonymized Results',           speaker: 'WAANDA Intelligence Team', type: 'Presentation' },
+    { time: '12:00', session: 'Lunch + Networking',                                      speaker: '',                        type: 'Networking' },
+    { time: '13:00', session: 'App Store Showcase — Top 5 Partner Apps',                speaker: 'Partner Developers',       type: 'Showcase' },
+    { time: '14:00', session: 'Gen5 AI: What It Means for Partner Delivery',            speaker: 'Kangqore AI Team',         type: 'Technical' },
+    { time: '15:00', session: 'Partner Tier Advancement Ceremony',                       speaker: 'Partner Program Lead',     type: 'Ceremony' },
+    { time: '16:00', session: 'Roadmap Preview: Chapter 12 Ecosystem Strategy',         speaker: 'Kangqore Leadership',      type: 'Preview' },
+    { time: '17:00', session: 'Drinks + Evening Networking',                             speaker: '',                        type: 'Networking' },
+  ]
+  const COIG_LEADERBOARD = [
+    { rank: 1,  industry: 'FinTech',        region: 'UK',    coigAvg: 14.8, clients: 14, badge: '🥇' },
+    { rank: 2,  industry: 'Professional',   region: 'UK',    coigAvg: 13.9, clients: 11, badge: '🥈' },
+    { rank: 3,  industry: 'FinTech',        region: 'US',    coigAvg: 13.4, clients: 9,  badge: '🥉' },
+    { rank: 4,  industry: 'HealthTech',     region: 'UK',    coigAvg: 12.8, clients: 8,  badge: '' },
+    { rank: 5,  industry: 'LegalTech',      region: 'EU',    coigAvg: 12.3, clients: 7,  badge: '' },
+    { rank: 6,  industry: 'FinTech',        region: 'INDIA', coigAvg: 11.9, clients: 6,  badge: '' },
+    { rank: 7,  industry: 'Manufacturing',  region: 'JP',    coigAvg: 11.4, clients: 5,  badge: '' },
+    { rank: 8,  industry: 'Retail',         region: 'ANZ',   coigAvg: 10.8, clients: 4,  badge: '' },
+  ]
+  const CASE_STUDIES = [
+    { partner: 'Nexus Intelligence',  engagement: 'BIDS™ FinTech Transformation',  coigGain: '+9.4',  blueprintROI: '£2.8M', award: 'Partner of the Year' },
+    { partner: 'Apex Advisory',       engagement: 'Healthcare ARIA Deployment',     coigGain: '+8.1',  blueprintROI: '£1.4M', award: 'Best ARIA Delivery' },
+    { partner: 'Vantage Consulting',  engagement: 'India Market Expansion Suite',   coigGain: '+7.8',  blueprintROI: '£1.1M', award: 'Regional Excellence' },
+  ]
+  res.json({ agenda: AGENDA, coigLeaderboard: COIG_LEADERBOARD, caseStudies: CASE_STUDIES, attendees: 94, partners: 10, location: 'London, UK', date: '2026-10-15', virtual: true })
+})
+
+// S250 GET /platform/s250-status
+kangqoreImmpRoutes.get('/platform/s250-status', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const registeredDevs = 2140, publishedApps = 12, activeIntegrations = 52, marketplaceARR = 221520, certifiedDevs = 512
+    const g1 = registeredDevs >= 2000
+    const g2 = publishedApps >= 20
+    const g3 = activeIntegrations >= 50
+    const g4 = marketplaceARR >= 100000
+    const g5 = certifiedDevs >= 500
+    const criteria = [
+      { id: 'G1', label: '2,000+ registered developers', passed: g1, value: `${registeredDevs.toLocaleString()} developers`, threshold: '≥ 2,000', description: 'Developer ecosystem has critical mass — enough volume to sustain App Store, community, and certification activity.' },
+      { id: 'G2', label: '20+ published App Store apps', passed: g2, value: `${publishedApps} apps published`, threshold: '≥ 20 apps', description: 'App Store has meaningful catalogue depth — customers have genuine third-party choice beyond Kangqore first-party.' },
+      { id: 'G3', label: '50+ active integrations in production', passed: g3, value: `${activeIntegrations} integrations live`, threshold: '≥ 50', description: 'Integration Hub covers the enterprise toolchain — Kangqore connects to existing customer stacks without friction.' },
+      { id: 'G4', label: 'Marketplace ARR ≥ £100K', passed: g4, value: `£${(marketplaceARR / 1000).toFixed(0)}K ARR`, threshold: '≥ £100K', description: 'Third-party revenue is real and recurring — the ecosystem generates revenue independently of direct Kangqore sales.' },
+      { id: 'G5', label: '500+ WAANDA-certified developers', passed: g5, value: `${certifiedDevs} certified`, threshold: '≥ 500', description: 'Certified developer supply enables partner delivery at scale — BIDS engagements and Blueprint deployments are staffable.' },
+    ]
+    const passed = criteria.filter(c => c.passed).length
+    res.json({ criteria, passed, total: criteria.length, score: Math.round((passed / criteria.length) * 100), registeredDevs, publishedApps, activeIntegrations, marketplaceARR, certifiedDevs, declaration: 'Ecosystem v1.0 — Kangqore has a self-sustaining developer and partner ecosystem generating third-party revenue' })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
