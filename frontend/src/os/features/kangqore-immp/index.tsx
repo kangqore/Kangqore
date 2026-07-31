@@ -182,6 +182,15 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S243–S250 Platform Ecosystem (Chapter 11 T4)
+import { AppStorePage }               from './pages/AppStorePage'
+import { IntegrationHubPage }         from './pages/IntegrationHubPage'
+import { HackathonProgramPage }       from './pages/HackathonProgramPage'
+import { DeveloperCommunityPage }     from './pages/DeveloperCommunityPage'
+import { WaandaCertificationPage }    from './pages/WaandaCertificationPage'
+import { MarketplaceBillingPage }     from './pages/MarketplaceBillingPage'
+import { PartnerSummitPage }          from './pages/PartnerSummitPage'
+import { GateS250Page }               from './pages/GateS250Page'
 // S233–S242 BIDS™ at Scale (Chapter 11 T3)
 import { BidsAutomationPage }            from './pages/BidsAutomationPage'
 import { BidsEnterpriseTierPage }         from './pages/BidsEnterpriseTierPage'
@@ -512,6 +521,15 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S243–S250 Platform Ecosystem (Chapter 11 T4) */}
+          <Route path="app-store-v1"              element={<AppStorePage />}             />
+          <Route path="integration-hub"           element={<IntegrationHubPage />}       />
+          <Route path="hackathon-program"         element={<HackathonProgramPage />}     />
+          <Route path="developer-community"       element={<DeveloperCommunityPage />}   />
+          <Route path="waanda-certification"      element={<WaandaCertificationPage />}  />
+          <Route path="marketplace-billing"       element={<MarketplaceBillingPage />}   />
+          <Route path="partner-summit"            element={<PartnerSummitPage />}        />
+          <Route path="ecosystem-gate-s250"       element={<GateS250Page />}             />
           {/* S233–S242 BIDS™ at Scale (Chapter 11 T3) */}
           <Route path="bids-automation-v2"          element={<BidsAutomationPage />}           />
           <Route path="bids-enterprise-tier"        element={<BidsEnterpriseTierPage />}       />
