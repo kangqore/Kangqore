@@ -55,20 +55,41 @@ function computeGroupCounts(nodes: BrainNode[]): Record<string, number> {
   return counts
 }
 
-// cached radial-gradient glow textures, one per color
+// cached bioelectric radial-gradient glow textures with lightning tendrils
 const glowCache = new Map<string, THREE.Texture>()
-function glowTexture(color: string): THREE.Texture {
+function bioElectricGlowTexture(color: string): THREE.Texture {
   let tex = glowCache.get(color)
   if (tex) return tex
   const canvas = document.createElement('canvas')
-  canvas.width = 64; canvas.height = 64
+  canvas.width = 128; canvas.height = 128
   const ctx = canvas.getContext('2d')!
-  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
-  g.addColorStop(0, color)
-  g.addColorStop(0.3, color)
+  const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
+  g.addColorStop(0, '#ffffff')
+  g.addColorStop(0.25, color)
+  g.addColorStop(0.65, color)
   g.addColorStop(1, 'rgba(0,0,0,0)')
   ctx.fillStyle = g
-  ctx.fillRect(0, 0, 64, 64)
+  ctx.fillRect(0, 0, 128, 128)
+
+  // Electric action-potential discharges / lightning tendrils
+  ctx.strokeStyle = color
+  ctx.lineWidth = 1.5
+  ctx.globalAlpha = 0.75
+  for (let i = 0; i < 8; i++) {
+    const angle = (i * Math.PI) / 4 + Math.random() * 0.15
+    ctx.beginPath()
+    ctx.moveTo(64, 64)
+    const midR = 25 + Math.random() * 10
+    const endR = 48 + Math.random() * 12
+    const midX = 64 + Math.cos(angle + 0.1) * midR
+    const midY = 64 + Math.sin(angle + 0.1) * midR
+    const endX = 64 + Math.cos(angle) * endR
+    const endY = 64 + Math.sin(angle) * endR
+    ctx.lineTo(midX, midY)
+    ctx.lineTo(endX, endY)
+    ctx.stroke()
+  }
+
   tex = new THREE.CanvasTexture(canvas)
   glowCache.set(color, tex)
   return tex
@@ -1231,52 +1252,108 @@ export function NeuralNetworkModule() {
         .nodeLabel((n: any) => `<div style="padding:4px 10px;background:rgba(2,6,23,.9);border:1px solid ${groupColor(n.group)}55;border-radius:8px;color:#e2e8f0;font-family:ui-monospace,monospace;font-size:11px">${n.title}</div>`)
         .nodeThreeObject((n: any) => {
           const color = groupColor(n.group)
-          const r = 2.4 + n.val * 0.4
+          const r = 2.8 + n.val * 0.45
           const obj = new THREE.Group()
 
-          // 1. Realistic 3D Shiny Metallic/Glass Ball (MeshPhongMaterial with high specular shine)
-          const sphereGeo = new THREE.SphereGeometry(r, 32, 32)
-          const sphereMat = new THREE.MeshPhongMaterial({
+          // 1. Bioelectric Consciousness Soma Body (Organic Icosahedron Cell Body)
+          const somaGeo = new THREE.IcosahedronGeometry(r, 2)
+          const somaMat = new THREE.MeshPhongMaterial({
             color: new THREE.Color(color),
-            emissive: new THREE.Color(color).multiplyScalar(0.4),
-            specular: new THREE.Color(0xffffff),
-            shininess: 120,
+            emissive: new THREE.Color(color).multiplyScalar(0.45),
+            specular: new THREE.Color(0x00f0ff),
+            shininess: 150,
             transparent: true,
-            opacity: 0.95,
+            opacity: 0.88,
           })
-          const sphere = new THREE.Mesh(sphereGeo, sphereMat)
+          const soma = new THREE.Mesh(somaGeo, somaMat)
 
-          // 2. Glossy Specular Hotspot / White Glass Core
+          // 2. Ion-Channel Bio-Dendrite Scaffolding (Outer Electric Wireframe Lattice)
+          const wireGeo = new THREE.IcosahedronGeometry(r * 1.18, 1)
+          const wireMat = new THREE.MeshBasicMaterial({
+            color: new THREE.Color(color),
+            wireframe: true,
+            transparent: true,
+            opacity: 0.45,
+            blending: THREE.AdditiveBlending,
+          })
+          const wireMesh = new THREE.Mesh(wireGeo, wireMat)
+          soma.add(wireMesh)
+
+          // 3. Action Potential Nucleus (White-Hot Bioelectric Core)
           const coreGeo = new THREE.SphereGeometry(r * 0.45, 16, 16)
           const coreMat = new THREE.MeshBasicMaterial({
             color: 0xffffff,
             transparent: true,
-            opacity: 0.75,
+            opacity: 0.9,
             blending: THREE.AdditiveBlending,
           })
           const core = new THREE.Mesh(coreGeo, coreMat)
-          sphere.add(core)
+          soma.add(core)
 
-          // 3. Bioluminescent Synaptic Corona Glow Sprite
+          // 4. Bioelectric Action Potential Orbital Ring (Dendritic Energy Ring)
+          const ringGeo = new THREE.TorusGeometry(r * 1.5, r * 0.08, 8, 24)
+          const ringMat = new THREE.MeshBasicMaterial({
+            color: new THREE.Color(color),
+            transparent: true,
+            opacity: 0.75,
+            blending: THREE.AdditiveBlending,
+          })
+          const ionRing = new THREE.Mesh(ringGeo, ringMat)
+          ionRing.rotation.x = Math.PI / 3.5
+          obj.add(ionRing)
+
+          // 5. Radiating Synaptic Axon Filaments (Micro Dendrite Spikes)
+          const spikeCount = 8
+          const spikePositions: number[] = []
+          for (let s = 0; s < spikeCount; s++) {
+            const theta = (s / spikeCount) * Math.PI * 2
+            const phi = ((s % 3) - 1) * 0.5
+            const dir = new THREE.Vector3(
+              Math.cos(theta) * Math.cos(phi),
+              Math.sin(phi),
+              Math.sin(theta) * Math.cos(phi)
+            ).normalize()
+            const startPos = dir.clone().multiplyScalar(r)
+            const endPos = dir.clone().multiplyScalar(r * 1.55)
+            spikePositions.push(startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z)
+          }
+          const spikeGeo = new THREE.BufferGeometry()
+          spikeGeo.setAttribute('position', new THREE.Float32BufferAttribute(spikePositions, 3))
+          const spikeMat = new THREE.LineBasicMaterial({
+            color: new THREE.Color(color),
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending,
+          })
+          const dendrites = new THREE.LineSegments(spikeGeo, spikeMat)
+          obj.add(dendrites)
+
+          // 6. Bioelectric Corona Glow Sprite
           const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
-            map: glowTexture(color), transparent: true, opacity: 0.75,
-            blending: THREE.AdditiveBlending, depthWrite: false,
+            map: bioElectricGlowTexture(color),
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
           }))
-          sprite.scale.set(r * 4.2, r * 4.2, 1)
+          sprite.scale.set(r * 4.6, r * 4.6, 1)
+          obj.add(sprite)
 
-          // 4. Hovering 3D Billboard Label for Flagship System Pillars & Architecture Notes
+          // 7. Hovering 3D Billboard Label for Flagship System Pillars
           const isFlagship = /waanda|aegis|eqore|alis|vis|immp|bids|view|wee|kimmp/.test(n.slug)
           if (isFlagship) {
             const labelSprite = createTextSprite(n.title.length > 18 ? n.title.slice(0, 18) + '…' : n.title, color)
-            labelSprite.position.set(0, r + 8, 0)
+            labelSprite.position.set(0, r + 9, 0)
             obj.add(labelSprite)
           }
 
-          obj.add(sphere)
-          obj.add(sprite)
+          obj.add(soma)
 
-          n.__sphere = sphere
+          n.__sphere = soma
           n.__sprite = sprite
+          n.__nucleus = core
+          n.__ionRing = ionRing
+          n.__dendrites = dendrites
           n.__r = r
           return obj
         })
@@ -1310,7 +1387,7 @@ export function NeuralNetworkModule() {
       graph.cameraPosition({ x: -160, y: 60, z: 420 })
       graphRef.current = graph
 
-      // Dynamic real-time quantum laser scan animation & idle camera orbit
+      // Dynamic real-time quantum laser scan animation, bioelectric ion pulses & idle camera orbit
       let scanTime = 0
       driftTimer = setInterval(() => {
         scanTime += 0.045
@@ -1320,6 +1397,22 @@ export function NeuralNetworkModule() {
           if (scanRing) {
             scanRing.position.y = Math.sin(scanTime * 1.4) * 125
             scanRing.rotation.y += 0.015
+          }
+        }
+
+        // Animate bioelectric consciousness action potentials across all nodes
+        const allNodes = (graph.graphData().nodes as any[]) ?? []
+        for (let i = 0; i < allNodes.length; i++) {
+          const node = allNodes[i]
+          if (node.__ionRing) {
+            node.__ionRing.rotation.z += 0.025
+          }
+          if (node.__nucleus) {
+            const pulse = 1 + 0.22 * Math.sin(scanTime * 3.5 + (node.id || i))
+            node.__nucleus.scale.setScalar(pulse)
+          }
+          if (node.__dendrites) {
+            node.__dendrites.rotation.y += 0.012
           }
         }
 
