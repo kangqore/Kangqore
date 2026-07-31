@@ -4,11 +4,11 @@ import { ArrowRight } from 'lucide-react';
 import { GoogleGeminiEffect } from '../../ui/GoogleGeminiEffect';
 
 const STREAM_COLORS = [
-  "#FFB7C5", // Row 0: Autonomy
-  "#FFDDB7", // Row 1: Workflow
-  "#B1C5FF", // Row 2: Learning
-  "#4FABFF", // Row 3: Integration
-  "#076EFF", // Row 4: Outcomes
+  "#FFB7C5", // Row 0: Autonomy (Rose)
+  "#FFDDB7", // Row 1: Workflow (Gold)
+  "#B1C5FF", // Row 2: Learning (Soft Blue)
+  "#4FABFF", // Row 3: Integration (Cyan)
+  "#076EFF", // Row 4: Outcomes (Electric Blue)
 ];
 
 export default function GeminiComparisonSection({ comparisonTable }) {
@@ -20,11 +20,11 @@ export default function GeminiComparisonSection({ comparisonTable }) {
     offset: ['start end', 'end start'],
   });
 
-  const pathLengthFirst = useTransform(scrollYProgress, [0.05, 0.7], [0, 1.2]);
-  const pathLengthSecond = useTransform(scrollYProgress, [0.05, 0.7], [0, 1.2]);
-  const pathLengthThird = useTransform(scrollYProgress, [0.05, 0.7], [0, 1.2]);
-  const pathLengthFourth = useTransform(scrollYProgress, [0.05, 0.7], [0, 1.2]);
-  const pathLengthFifth = useTransform(scrollYProgress, [0.05, 0.7], [0, 1.2]);
+  const pathLengthFirst = useTransform(scrollYProgress, [0.05, 0.75], [0, 1.2]);
+  const pathLengthSecond = useTransform(scrollYProgress, [0.05, 0.75], [0, 1.2]);
+  const pathLengthThird = useTransform(scrollYProgress, [0.05, 0.75], [0, 1.2]);
+  const pathLengthFourth = useTransform(scrollYProgress, [0.05, 0.75], [0, 1.2]);
+  const pathLengthFifth = useTransform(scrollYProgress, [0.05, 0.75], [0, 1.2]);
 
   return (
     <section ref={containerRef} className="py-28 relative overflow-hidden bg-[#02050b]">
@@ -44,9 +44,9 @@ export default function GeminiComparisonSection({ comparisonTable }) {
           </h2>
         </div>
 
-        {/* Integrated Ecosystem Container: Cards + GoogleGeminiEffect Pulled Forward */}
+        {/* Integrated Card Ecosystem with Organic Gemini Wave Overlay */}
         <div className="relative">
-          {/* Synaptic Stream Layer (Pulled Forward, Synced to Card Row Coordinates) */}
+          {/* Authentic Google Gemini Organic Wave Overlay (Pulled Forward, z-20) */}
           <GoogleGeminiEffect
             pathLengths={[
               pathLengthFirst,
@@ -87,10 +87,10 @@ export default function GeminiComparisonSection({ comparisonTable }) {
                             {row.dimension}
                           </span>
                           <span
-                            className="w-2 h-2 rounded-full transition-all duration-300"
+                            className="w-2.5 h-2.5 rounded-full transition-all duration-300"
                             style={{
                               backgroundColor: isHovered ? rowColor : 'rgba(255,255,255,0.2)',
-                              boxShadow: isHovered ? `0 0 10px ${rowColor}` : 'none'
+                              boxShadow: isHovered ? `0 0 12px ${rowColor}, 0 0 4px #ffffff` : 'none'
                             }}
                           />
                         </div>
