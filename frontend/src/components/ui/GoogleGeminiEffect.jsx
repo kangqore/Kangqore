@@ -14,7 +14,7 @@ export const GoogleGeminiEffect = ({
   className,
 }) => {
   return (
-    <div className={cn("absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0", className)}>
+    <div className={cn("absolute inset-0 w-[120%] h-full overflow-hidden pointer-events-none z-0 translate-x-[15%]", className)}>
       {title && (
         <p className="text-lg md:text-5xl font-extrabold pb-4 text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-100 to-neutral-400">
           {title}
