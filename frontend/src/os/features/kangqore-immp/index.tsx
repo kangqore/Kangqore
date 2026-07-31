@@ -182,6 +182,9 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S251–S252 Series A Close (Chapter 11 TX)
+import { SeriesADiligencePage }       from './pages/SeriesADiligencePage'
+import { GateS252Page }               from './pages/GateS252Page'
 // S243–S250 Platform Ecosystem (Chapter 11 T4)
 import { AppStorePage }               from './pages/AppStorePage'
 import { IntegrationHubPage }         from './pages/IntegrationHubPage'
@@ -521,6 +524,9 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S251–S252 Series A Close (Chapter 11 TX) */}
+          <Route path="series-a-diligence"        element={<SeriesADiligencePage />}     />
+          <Route path="chapter-11-gate-s252"      element={<GateS252Page />}             />
           {/* S243–S250 Platform Ecosystem (Chapter 11 T4) */}
           <Route path="app-store-v1"              element={<AppStorePage />}             />
           <Route path="integration-hub"           element={<IntegrationHubPage />}       />
