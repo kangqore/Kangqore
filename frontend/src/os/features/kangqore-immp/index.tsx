@@ -182,6 +182,9 @@ import { ProfServicesPackPage }          from './pages/ProfServicesPackPage'
 import { SdkV3PortalPage }               from './pages/SdkV3PortalPage'
 import { SeriesADataRoomPage }           from './pages/SeriesADataRoomPage'
 import { ChapterTenGatePage }            from './pages/ChapterTenGatePage'
+// S291–S292 Series B / IPO Path — Chapter 12 TX
+import { SeriesBFundraisePage }     from './pages/SeriesBFundraisePage'
+import { GateS292Page }             from './pages/GateS292Page'
 // S283–S290 WAANDA-FM Alpha — Foundation Model (Chapter 12 T4)
 import { WfmCorpusAssemblyPage }    from './pages/WfmCorpusAssemblyPage'
 import { WfmArchitecturePage }       from './pages/WfmArchitecturePage'
@@ -566,6 +569,9 @@ export function KIMMMModule() {
           <Route path="sdk-v3-portal"              element={<SdkV3PortalPage />}               />
           <Route path="series-a-data-room"         element={<SeriesADataRoomPage />}           />
           <Route path="chapter-ten-gate-s212"      element={<ChapterTenGatePage />}            />
+          {/* S291–S292 Series B / IPO Path — Chapter 12 TX */}
+          <Route path="series-b-fundraise"       element={<SeriesBFundraisePage />}     />
+          <Route path="chapter-12-gate-s292"     element={<GateS292Page />}             />
           {/* S283–S290 WAANDA-FM Alpha — Foundation Model (Chapter 12 T4) */}
           <Route path="wfm-corpus-assembly"      element={<WfmCorpusAssemblyPage />}   />
           <Route path="wfm-architecture"         element={<WfmArchitecturePage />}      />
