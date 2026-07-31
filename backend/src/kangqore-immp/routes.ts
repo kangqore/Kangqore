@@ -9552,7 +9552,7 @@ kangqoreImmpRoutes.get('/platform/canada-launch', requireAuth, requireRole(['ADM
       { name: 'PIPEDA',       full: 'Personal Information Protection and Electronic Documents Act', passed: true },
       { name: 'PHIPA (ON)',   full: 'Personal Health Information Protection Act — Ontario',         passed: true },
       { name: 'Law 25 (QC)',  full: 'Loi modernisant des dispositions législatives — Quebec',       passed: true },
-      { name: 'CASL',         full: 'Canada's Anti-Spam Legislation',                              passed: true },
+      { name: 'CASL',         full: "Canada's Anti-Spam Legislation",                              passed: true },
     ]
     res.json({
       sprintId: 'S273', marketName: 'Canada', currency: 'CAD', launchDate: '2026-08-04',
