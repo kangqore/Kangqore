@@ -32,10 +32,10 @@ export default function GeminiComparisonSection({ comparisonTable }) {
           </h2>
         </div>
 
-        {/* Card Comparison Grid (Open inner boundaries) */}
-        <div className="grid lg:grid-cols-2 gap-0 items-stretch relative">
-          {/* Before Panel (Traditional Automation - Open Right Boundary) */}
-          <div className="rounded-2xl lg:rounded-r-none bg-white/[0.025] backdrop-blur-md border border-white/[0.08] lg:border-r-0 p-8 lg:p-10 shadow-2xl relative z-10 flex flex-col justify-between">
+        {/* Separated Card Comparison Grid with Gap */}
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch relative">
+          {/* Before Panel (Traditional Automation Card) */}
+          <div className="rounded-2xl bg-white/[0.025] backdrop-blur-md border border-white/[0.08] p-8 lg:p-10 shadow-2xl relative z-10 flex flex-col justify-between">
             <div>
               <span className="text-[9px] font-black tracking-[0.35em] uppercase text-white/50 block mb-8">
                 {comparisonTable.colA || 'Traditional Automation'}
@@ -81,8 +81,8 @@ export default function GeminiComparisonSection({ comparisonTable }) {
             </div>
           </div>
 
-          {/* After Panel (Agentic AI - Open Left Boundary) */}
-          <div className="rounded-2xl lg:rounded-l-none bg-gradient-to-br from-[#06142a]/95 via-[#030a18]/95 to-[#020712]/95 backdrop-blur-md border border-cyan-400/30 lg:border-l-0 border-l-2 border-l-cyan-400/40 p-8 lg:p-10 shadow-[0_0_50px_rgba(34,211,238,0.12)] relative z-10 flex flex-col justify-between">
+          {/* After Panel (Agentic AI - Hero Autonomous Card) */}
+          <div className="rounded-2xl bg-gradient-to-br from-[#06142a]/95 via-[#030a18]/95 to-[#020712]/95 backdrop-blur-md border border-cyan-400/30 p-8 lg:p-10 shadow-[0_0_50px_rgba(34,211,238,0.12)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-8">
                 <span className="text-[9px] font-black tracking-[0.35em] uppercase text-cyan-400 block">
