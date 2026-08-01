@@ -5,12 +5,14 @@ import { useQuery } from '@tanstack/react-query'
 import { create } from 'zustand'
 import {
   Search, Zap, Briefcase, CalendarClock, LayoutDashboard,
-  Handshake, Loader2, ArrowRight, ArrowUpRight, Plus,
+  Handshake, Loader2, ArrowRight, ArrowUpRight, Plus, Play,
 } from 'lucide-react'
 import { LightningIcon, SquaresFourIcon, TargetIcon, CpuIcon } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 import { spring } from '@os/motion'
 import { navGroups, HOME_NAV_ITEM } from '@lib/nav'
+import { actionEngineService, type OntologyAction } from '../../features/ontology/actionEngineService'
+import { ActionRunModal } from '../../features/ontology/components/ActionRunModal'
 
 // ── Store ──────────────────────────────────────────────────────────────────────
 
@@ -78,34 +80,54 @@ export function CommandPalette() {
   const inputRef  = useRef<HTMLInputElement>(null)
   const [query, setQuery]      = useState('')
   const [activeIdx, setActive] = useState(0)
+  const [runningAction, setRunningAction] = useState<OntologyAction | null>(null)
   const dq = useDebounce(query, 220)
+
+  // S297 — "/" switches the palette into Action-runner mode: "/approve" or
+  // "/run approve" both match against Action displayName/name.
+  const isActionMode = query.trimStart().startsWith('/')
+  const actionQuery = query.trimStart().slice(1).replace(/^run\s+/i, '').trim().toLowerCase()
 
   const allNavItems = useMemo(() => [HOME_NAV_ITEM, ...navGroups.flatMap(g => g.items)], [])
 
   // Nav items matching the current query
   const navMatches = useMemo(() => {
-    if (!dq) return []
+    if (!dq || isActionMode) return []
     const q = dq.toLowerCase()
     return allNavItems.filter(n => n.label.toLowerCase().includes(q)).slice(0, 5)
-  }, [dq, allNavItems])
+  }, [dq, allNavItems, isActionMode])
 
   const { data, isFetching } = useQuery({
     queryKey: ['cmd-search', dq],
     queryFn: () => api.get('/admin/search', { params: { q: dq } }).then(r => r.data),
-    enabled: dq.length >= 2,
+    enabled: dq.length >= 2 && !isActionMode,
     staleTime: 30_000,
   })
 
+  const { data: allActions } = useQuery({
+    queryKey: ['cmd-actions'],
+    queryFn: () => actionEngineService.list(),
+    enabled: isActionMode,
+    staleTime: 30_000,
+  })
+  const actionMatches = useMemo(() => {
+    if (!isActionMode) return []
+    const pool = allActions ?? []
+    if (!actionQuery) return pool.slice(0, 8)
+    return pool.filter(a => a.displayName.toLowerCase().includes(actionQuery) || a.name.toLowerCase().includes(actionQuery)).slice(0, 8)
+  }, [isActionMode, allActions, actionQuery])
+
   const results: SearchResult[] = data?.results ?? []
 
-  // Flat ordered list for keyboard navigation (only in search mode)
+  // Flat ordered list for keyboard navigation (only in search / action mode)
   const flatItems = useMemo(() => {
+    if (isActionMode) return actionMatches.map(a => ({ kind: 'action' as const, action: a }))
     if (dq.length < 2) return []
     return [
       ...navMatches.map(n => ({ kind: 'nav' as const, path: n.path })),
       ...results.map(r => ({ kind: 'result' as const, path: r.path, id: r.id, type: r.type })),
     ]
-  }, [dq, navMatches, results])
+  }, [dq, navMatches, results, isActionMode, actionMatches])
 
   // ── Effects ────────────────────────────────────────────────────────────────
 
@@ -129,10 +151,15 @@ export function CommandPalette() {
     if (e.key === 'Escape') { setOpen(false); return }
     if (e.key === 'ArrowDown') { e.preventDefault(); setActive(i => Math.min(i + 1, flatItems.length - 1)) }
     if (e.key === 'ArrowUp')   { e.preventDefault(); setActive(i => Math.max(i - 1, 0)) }
-    if (e.key === 'Enter' && flatItems[activeIdx]) { navigate(flatItems[activeIdx].path); setOpen(false) }
+    if (e.key === 'Enter' && flatItems[activeIdx]) {
+      const item = flatItems[activeIdx]
+      if (item.kind === 'action') { runAction(item.action); return }
+      navigate(item.path); setOpen(false)
+    }
   }
 
   function go(path: string) { navigate(path); setOpen(false) }
+  function runAction(action: OntologyAction) { setRunningAction(action); setOpen(false) }
 
   // Group search results by type for display
   const groups = Object.entries(
@@ -143,8 +170,9 @@ export function CommandPalette() {
     }, {})
   ) as [ResultType, SearchResult[]][]
 
-  const isSearching = dq.length >= 2
+  const isSearching = dq.length >= 2 && !isActionMode
   const noResults   = isSearching && !isFetching && navMatches.length === 0 && results.length === 0
+  const noActions   = isActionMode && actionMatches.length === 0 && allActions !== undefined
 
   return (
     <AnimatePresence>
@@ -200,7 +228,40 @@ export function CommandPalette() {
                 className="max-h-[62vh] overflow-y-auto"
                 style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.06) transparent' }}
               >
-                {!isSearching ? (
+                {isActionMode ? (
+                  /* ── S297: Run Action ── */
+                  <div className="p-2">
+                    <p className={SECTION_LABEL}>Run action</p>
+                    {noActions ? (
+                      <div className="py-8 text-center">
+                        <p className="text-sm text-slate-500">No actions match <span className="text-white font-medium">"{actionQuery || query}"</span></p>
+                        <p className="text-xs text-slate-700 mt-1">Try a shorter name, e.g. <span className="font-mono">/approve</span></p>
+                      </div>
+                    ) : (
+                      <div className="space-y-0.5">
+                        {actionMatches.map((a, idx) => (
+                          <button
+                            key={a.id}
+                            onMouseEnter={() => setActive(idx)}
+                            onClick={() => runAction(a)}
+                            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors"
+                            style={{ background: idx === activeIdx ? 'rgba(255,255,255,0.07)' : 'transparent' }}
+                          >
+                            <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(87,155,252,0.1)', border: '1px solid rgba(87,155,252,0.2)' }}>
+                              <Play weight="fill" className="w-3.5 h-3.5" style={{ color: '#579bfc' }} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[13px] font-medium text-slate-200 truncate">{a.displayName}</p>
+                              <p className="text-[11px] text-slate-600">{a.type?.displayName} · {a.parameters.length} param{a.parameters.length !== 1 ? 's' : ''}</p>
+                            </div>
+                            <ArrowRight className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                ) : !isSearching ? (
                   /* ── Empty state: full nav launcher ── */
                   <div className="p-2">
 
@@ -371,6 +432,9 @@ export function CommandPalette() {
             </div>
           </motion.div>
         </>
+      )}
+      {runningAction && (
+        <ActionRunModal action={runningAction} onClose={() => setRunningAction(null)} />
       )}
     </AnimatePresence>
   )

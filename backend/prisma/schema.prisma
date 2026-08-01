@@ -4415,6 +4415,7 @@ model OntologyObject {
   events                OntologyEvent[]
   externalRefs          ExternalEntityRef[]
   setMemberships        ObjectSetMembership[]
+  actionExecutions      ActionExecution[]
 
   @@index([typeId])
   @@index([externalId])
@@ -4508,13 +4509,73 @@ model OntologyAction {
   name         String             // "ApproveInvoice", "EscalateRisk"
   displayName  String
   description  String?
-  parameters   Json               @default("{}")  // { paramName: { type, required, description } }
+  parameters   Json               @default("[]")  // ActionParameterDef[] — { name, type, required, enum?, min?, max?, regex?, description? }
   allowedRoles String[]           @default(["ADMIN"])
   executions   Int                @default(0)
   createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  validationRules ActionValidationRule[]
+  effects         ActionEffect[]
+  executionLog    ActionExecution[]
 
   @@unique([typeId, name])
   @@map("ontology_actions")
+}
+
+// ─── Action Engine v2 — S295–S297 ─────────────────────────────────────────────
+// Upgrades OntologyAction from a label into a real execution engine: typed
+// parameters (above), pre-flight validation rules, declarative write-back
+// effects, and a unified HUMAN/KIMMP/AEGIS execution audit log.
+
+model ActionValidationRule {
+  id           String         @id @default(cuid())
+  actionId     String
+  action       OntologyAction @relation(fields: [actionId], references: [id], onDelete: Cascade)
+  condition    Json           // ConditionNode DSL — { all: Condition[] } | { any: Condition[] } | { field, op, value, source: 'param'|'object' }
+  errorMessage String
+  severity     String         @default("BLOCK")  // BLOCK | WARN
+  order        Int            @default(0)
+  createdAt    DateTime       @default(now())
+
+  @@index([actionId])
+  @@map("action_validation_rules")
+}
+
+model ActionEffect {
+  id            String         @id @default(cuid())
+  actionId      String
+  action        OntologyAction @relation(fields: [actionId], references: [id], onDelete: Cascade)
+  effectType    String         // UPDATE_OBJECT | CREATE_OBJECT | CREATE_RELATIONSHIP | WEBHOOK | EMIT_EVENT
+  configuration Json           @default("{}")
+  order         Int            @default(0)
+  createdAt     DateTime       @default(now())
+
+  @@index([actionId])
+  @@map("action_effects")
+}
+
+model ActionExecution {
+  id             String          @id @default(cuid())
+  actionId       String
+  action         OntologyAction  @relation(fields: [actionId], references: [id], onDelete: Cascade)
+  objectId       String?
+  object         OntologyObject? @relation(fields: [objectId], references: [id], onDelete: SetNull)
+  actorId        String?
+  actorType      String          @default("HUMAN")   // HUMAN | KIMMP | AEGIS
+  params         Json            @default("{}")
+  effectsApplied Json            @default("[]")
+  status         String          @default("SUCCESS") // SUCCESS | FAILED | BLOCKED
+  errorMessage   String?
+  durationMs     Int             @default(0)
+  confidence     Float?
+  createdAt      DateTime        @default(now())
+
+  @@index([actionId])
+  @@index([objectId])
+  @@index([actorType, createdAt])
+  @@index([status])
+  @@map("action_executions")
 }
 
 // ─── Object Sets — S293 ───────────────────────────────────────────────────────
