@@ -4407,6 +4407,7 @@ model OntologyObject {
   externalId String?            // FK to the real record (e.g. clientId)
   properties Json               @default("{}")
   markings   String[]           @default([])  // ["INTERNAL", "CONFIDENTIAL"]
+  validTo    DateTime?          // S300 — soft-delete: set when a canvas node backing this object is removed
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
 
@@ -4420,6 +4421,7 @@ model OntologyObject {
 
   @@index([typeId])
   @@index([externalId])
+  @@index([validTo])
   @@map("ontology_objects")
 }
 

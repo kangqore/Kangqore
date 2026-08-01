@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery }   from '@tanstack/react-query'
-import { Bot, GitBranch, LayoutGrid, Layers, Network, Sparkles } from 'lucide-react'
+import { Bot, GitBranch, LayoutGrid, Layers, Network, Sparkles, Globe2 } from 'lucide-react'
 import { cn }         from '@design-system/cn'
 import { api, isDemo } from '@lib/api'
 import { useWorkflowsStore } from './store'
@@ -12,6 +12,7 @@ import { KIMMLWorkflowGenerator }  from './pages/KIMMLWorkflowGenerator'
 import { WorkflowCanvas }          from './pages/WorkflowCanvas'
 import { AgentTopologyPage }       from './pages/AgentTopologyPage'
 import { MissionGraphPage }        from './pages/MissionGraphPage'
+import { EnterpriseGraphPage }     from './pages/EnterpriseGraphPage'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
@@ -21,6 +22,7 @@ const TABS = [
   { path: 'kimmp',    label: 'KIMMP Build',   icon: Sparkles   },
   { path: 'agents',   label: 'Agent Topology',icon: Bot        },
   { path: 'missions', label: 'Mission Graph', icon: Network    },
+  { path: 'enterprise-graph', label: 'Enterprise Graph', icon: Globe2 },
 ]
 
 // Map DB row → frontend Workflow type.
@@ -121,6 +123,7 @@ export function WorkflowsModule() {
           <Route path="kimmp"      element={<KIMMLWorkflowGenerator />} />
           <Route path="agents"     element={<AgentTopologyPage />}      />
           <Route path="missions"   element={<MissionGraphPage />}       />
+          <Route path="enterprise-graph" element={<EnterpriseGraphPage />} />
           <Route path="*"          element={<Navigate to="/kangqore-view/admin/workflows" replace />} />
         </Routes>
         </motion.div>

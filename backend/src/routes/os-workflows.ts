@@ -1,6 +1,7 @@
 import { Router, Response, NextFunction } from 'express'
 import { PrismaClient }                   from '@prisma/client'
 import { authenticate, authorize, AuthenticatedRequest } from '../middleware/auth'
+import { CanvasOntologyBridge } from '../services/canvasOntologyBridge.service'
 
 const router = Router()
 const prisma = new PrismaClient()
@@ -44,6 +45,21 @@ router.get('/runs', authenticate, authorize(['ADMIN']), async (req: Authenticate
 })
 
 /**
+ * GET /api/os-workflows/enterprise-graph
+ * S302 — every bridged OntologyObject across every workflow, with
+ * relationships and degree centrality. Registered before GET /:id so "enterprise-graph"
+ * is never swallowed as a workflow id.
+ */
+router.get('/enterprise-graph', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const graph = await CanvasOntologyBridge.getEnterpriseGraph()
+    res.json(graph)
+  } catch (err) {
+    next(err)
+  }
+})
+
+/**
  * GET /api/os-workflows/:id
  * Single workflow with its recent runs.
  */
@@ -78,6 +94,17 @@ router.post('/', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRe
         steps: steps ?? [], owner: owner ?? '', tags: tags ?? [],
       },
     })
+
+    // S300 — Canvas ↔ Ontology Bridge: link bridged steps to OntologyObjects
+    if (Array.isArray(steps) && steps.length > 0) {
+      const synced = await CanvasOntologyBridge.syncWorkflowSteps(workflow.id, steps, [])
+      const hasLinks = synced.some((s: any) => s.ontologyObjectId)
+      if (hasLinks) {
+        await prisma.osWorkflow.update({ where: { id: workflow.id }, data: { steps: synced as any } })
+        workflow.steps = synced as any
+      }
+    }
+
     res.status(201).json({ workflow })
   } catch (err) {
     next(err)
@@ -95,8 +122,45 @@ router.patch('/:id', authenticate, authorize(['ADMIN']), async (req: Authenticat
     for (const key of allowed) {
       if (req.body[key] !== undefined) data[key] = req.body[key]
     }
+
+    // S300 — Canvas ↔ Ontology Bridge: reconcile bridged steps before persisting
+    if (Array.isArray(data.steps)) {
+      const existing = await prisma.osWorkflow.findUnique({ where: { id: req.params.id }, select: { steps: true } })
+      const previousSteps = (existing?.steps as any[]) ?? []
+      data.steps = await CanvasOntologyBridge.syncWorkflowSteps(req.params.id, data.steps as any[], previousSteps)
+    }
+
     const workflow = await prisma.osWorkflow.update({ where: { id: req.params.id }, data })
     res.json({ workflow })
+  } catch (err) {
+    next(err)
+  }
+})
+
+/**
+ * POST /api/os-workflows/backfill-ontology
+ * S300 — idempotently link every bridged step across every workflow that
+ * doesn't yet have an OntologyObject. Non-destructive; safe to re-run.
+ */
+router.post('/backfill-ontology', authenticate, authorize(['ADMIN']), async (_req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    await CanvasOntologyBridge.seedCanvasTypes()
+    const results = await CanvasOntologyBridge.backfillAll()
+    res.json({ results, totalLinked: results.reduce((s, r) => s + r.linked, 0) })
+  } catch (err) {
+    next(err)
+  }
+})
+
+/**
+ * GET /api/os-workflows/:id/graph
+ * S301 — bridged OntologyObjects + OntologyRelationships for this workflow's
+ * canvas, for the "Graph View" toggle.
+ */
+router.get('/:id/graph', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const graph = await CanvasOntologyBridge.getWorkflowGraph(req.params.id)
+    res.json(graph)
   } catch (err) {
     next(err)
   }
