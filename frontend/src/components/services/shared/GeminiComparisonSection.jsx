@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 const DIMENSION_ACCENTS = [
   "#FFB7C5", // Row 0: Autonomy (Rose)
@@ -14,7 +15,7 @@ export default function GeminiComparisonSection({ comparisonTable }) {
   return (
     <section className="py-28 relative overflow-hidden bg-[#02050b]">
       {/* Sleek ambient background gradient glow */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(34,211,238,0.1),rgba(255,255,255,0))]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(34,211,238,0.12),rgba(255,255,255,0))]" />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="mb-14">
@@ -32,7 +33,7 @@ export default function GeminiComparisonSection({ comparisonTable }) {
           </h2>
         </div>
 
-        {/* Side-by-Side Comparison Card Grid */}
+        {/* Clean, High-End Card Comparison Grid */}
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-stretch relative">
           {/* Before Panel (Traditional Automation) */}
           <div className="rounded-2xl bg-white/[0.025] backdrop-blur-md border border-white/[0.08] p-8 lg:p-10 shadow-2xl relative z-10 flex flex-col justify-between">
