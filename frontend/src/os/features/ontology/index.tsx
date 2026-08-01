@@ -1,9 +1,11 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { Network, Boxes, GitBranch, Shield, GitMerge, Cpu, Package } from 'lucide-react'
+import { Network, Boxes, GitBranch, Shield, GitMerge, Cpu, Package, Zap, ScrollText } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { OntologyExplorer }       from './pages/OntologyExplorer'
 import { OntologyObjects }        from './pages/OntologyObjects'
 import { ObjectSetsPage }         from './pages/ObjectSetsPage'
+import { ActionsPage }            from './pages/ActionsPage'
+import { ActionExecutionPage }    from './pages/ActionExecutionPage'
 import { LineageViewer }          from './pages/LineageViewer'
 import { MarkingsManager }        from './pages/MarkingsManager'
 import { OntologyVersioningPage } from './pages/OntologyVersioningPage'
@@ -13,6 +15,8 @@ const TABS = [
   { path: 'explorer',    label: 'Explorer',     icon: Network    },
   { path: 'objects',     label: 'Objects',      icon: Boxes      },
   { path: 'object-sets', label: 'Object Sets',  icon: Package    },
+  { path: 'actions',     label: 'Actions',      icon: Zap        },
+  { path: 'executions',  label: 'Execution Log', icon: ScrollText },
   { path: 'lineage',     label: 'Lineage',      icon: GitBranch  },
   { path: 'markings',    label: 'Markings',     icon: Shield     },
   { path: 'versioning',  label: 'Versioning',   icon: GitMerge   },
@@ -50,6 +54,8 @@ export function OntologyModule() {
         <Route path="explorer"     element={<OntologyExplorer />}              />
         <Route path="objects"      element={<OntologyObjects />}               />
         <Route path="object-sets"  element={<ObjectSetsPage />}                />
+        <Route path="actions"      element={<ActionsPage />}                   />
+        <Route path="executions"   element={<ActionExecutionPage />}           />
         <Route path="lineage"      element={<LineageViewer />}                 />
         <Route path="markings"     element={<MarkingsManager />}               />
         <Route path="versioning"   element={<OntologyVersioningPage />}        />

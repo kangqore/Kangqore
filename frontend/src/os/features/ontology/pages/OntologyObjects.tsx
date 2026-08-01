@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
-import { Cube, ArrowLeft, CaretLeft, CaretRight, ShieldCheck, CaretDown, CaretUp } from '@phosphor-icons/react'
+import { Cube, ArrowLeft, CaretLeft, CaretRight, ShieldCheck, CaretDown, CaretUp, Lightning, Play } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 import { apiFetch } from '@lib/api'
 import { GitBranch, Plus, Clock, X, Loader2, ChevronRight } from 'lucide-react'
 import { cn } from '@design-system/cn'
+import { actionEngineService, type OntologyAction } from '../actionEngineService'
+import { ActionRunModal } from '../components/ActionRunModal'
 
 const CLASS_BADGE: Record<string, string> = {
   PUBLIC:       'bg-green-500/10 text-green-400 border-green-500/20',
@@ -154,6 +156,7 @@ function AddRelModal({ objectId, typeName, onClose }: { objectId: string; typeNa
 // ── Expanded row ──────────────────────────────────────────────────────────────
 function ExpandedRow({ obj }: { obj: any }) {
   const [showRelModal, setShowRelModal] = useState(false)
+  const [runningAction, setRunningAction] = useState<OntologyAction | null>(null)
 
   const { data: relsData, isLoading: relsLoading } = useQuery<{ items: any[] }>({
     queryKey: ['ontology-node-rels', obj.id],
@@ -164,6 +167,12 @@ function ExpandedRow({ obj }: { obj: any }) {
   const { data: eventsData, isLoading: eventsLoading } = useQuery<{ items: any[] }>({
     queryKey: ['ontology-events', obj.id],
     queryFn: () => apiFetch(`/admin/ontology/events?objectId=${obj.id}&limit=10`),
+    staleTime: 30_000,
+  })
+
+  const { data: actions = [] } = useQuery({
+    queryKey: ['ontology-actions', obj.typeId],
+    queryFn: () => actionEngineService.list(obj.typeId),
     staleTime: 30_000,
   })
 
@@ -252,11 +261,40 @@ function ExpandedRow({ obj }: { obj: any }) {
           </div>
         </div>
 
+        {/* Actions panel — S297: one-click execution scoped to this object */}
+        {actions.length > 0 && (
+          <div className="px-8 pb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Lightning className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
+              <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Actions</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {actions.map((a: OntologyAction) => (
+                <button
+                  key={a.id}
+                  onClick={() => setRunningAction(a)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[#579bfc] hover:border-[#579bfc]/40 transition-colors"
+                >
+                  <Play className="w-3 h-3" weight="fill" />
+                  {a.displayName}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {showRelModal && (
           <AddRelModal
             objectId={obj.id}
             typeName={obj.type?.displayName ?? 'Object'}
             onClose={() => setShowRelModal(false)}
+          />
+        )}
+        {runningAction && (
+          <ActionRunModal
+            action={runningAction}
+            objectId={obj.id}
+            onClose={() => setRunningAction(null)}
           />
         )}
       </td>

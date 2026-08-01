@@ -10,6 +10,7 @@ import { OntologyBranchService } from '../services/ontologyBranch.service'
 import { OntologyMerge } from '../services/ontologyMerge.service'
 import { CdcService } from '../lib/cdc/cdcService'
 import { ObjectSetService } from '../services/objectSet.service'
+import { ActionEngine } from '../services/actionEngine.service'
 import { getIO } from '../socket'
 
 const router = Router()
@@ -167,12 +168,103 @@ router.get('/actions', ...guard, async (req, res) => {
   try {
     const actions = await prisma.ontologyAction.findMany({
       where: typeId ? { typeId } : undefined,
-      include: { type: { select: { name: true, displayName: true, icon: true, color: true } } },
+      include: {
+        type: { select: { name: true, displayName: true, icon: true, color: true } },
+        _count: { select: { validationRules: true, effects: true, executionLog: true } },
+      },
       orderBy: { executions: 'desc' },
     })
     res.json({ actions })
   } catch {
     res.status(500).json({ error: 'Failed to fetch actions' })
+  }
+})
+
+// NOTE: literal /actions/executions* routes must be registered before the
+// generic /actions/:id route below — Express matches by segment count, so
+// GET /actions/:id would otherwise shadow GET /actions/executions.
+router.get('/actions/executions', ...guard, async (req, res) => {
+  const { actionId, objectId, actorType, status, from, to, page = '1', limit = '20' } = req.query as Record<string, string>
+  const skip = (parseInt(page) - 1) * parseInt(limit)
+  const where: any = {}
+  if (actionId) where.actionId = actionId
+  if (objectId) where.objectId = objectId
+  if (actorType) where.actorType = actorType
+  if (status) where.status = status
+  if (from || to) where.createdAt = { ...(from && { gte: new Date(from) }), ...(to && { lte: new Date(to) }) }
+  try {
+    const [executions, total] = await Promise.all([
+      prisma.actionExecution.findMany({
+        where,
+        include: {
+          action: { select: { name: true, displayName: true } },
+          object: { select: { id: true, externalId: true, type: { select: { displayName: true, icon: true, color: true } } } },
+        },
+        skip, take: parseInt(limit),
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.actionExecution.count({ where }),
+    ])
+    res.json({ executions, total, pages: Math.ceil(total / parseInt(limit)) })
+  } catch {
+    res.status(500).json({ error: 'Failed to fetch executions' })
+  }
+})
+
+router.get('/actions/executions/metrics', ...guard, async (req, res) => {
+  try {
+    const [total, succeeded, byActor, byAction, avgDuration] = await Promise.all([
+      prisma.actionExecution.count(),
+      prisma.actionExecution.count({ where: { status: 'SUCCESS' } }),
+      prisma.actionExecution.groupBy({ by: ['actorType'], _count: { _all: true } }),
+      prisma.actionExecution.groupBy({ by: ['actionId'], _count: { _all: true }, orderBy: { _count: { actionId: 'desc' } }, take: 5 }),
+      prisma.actionExecution.aggregate({ _avg: { durationMs: true } }),
+    ])
+    const actionIds = byAction.map(a => a.actionId)
+    const actionNames = actionIds.length
+      ? await prisma.ontologyAction.findMany({ where: { id: { in: actionIds } }, select: { id: true, displayName: true } })
+      : []
+    const nameById = new Map(actionNames.map(a => [a.id, a.displayName]))
+    res.json({
+      total,
+      successRate: total > 0 ? succeeded / total : 0,
+      avgDurationMs: avgDuration._avg.durationMs ?? 0,
+      byActor: byActor.map(a => ({ actorType: a.actorType, count: a._count._all })),
+      mostExecuted: byAction.map(a => ({ actionId: a.actionId, displayName: nameById.get(a.actionId) ?? 'Unknown', count: a._count._all })),
+    })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.get('/actions/executions/:id', ...guard, async (req, res) => {
+  try {
+    const execution = await prisma.actionExecution.findUniqueOrThrow({
+      where: { id: req.params.id },
+      include: {
+        action: true,
+        object: { include: { type: { select: { displayName: true, icon: true, color: true } } } },
+      },
+    })
+    res.json({ execution })
+  } catch (e: any) {
+    res.status(404).json({ error: e.message })
+  }
+})
+
+router.get('/actions/:id', ...guard, async (req, res) => {
+  try {
+    const action = await prisma.ontologyAction.findUniqueOrThrow({
+      where: { id: req.params.id },
+      include: {
+        type: { select: { name: true, displayName: true, icon: true, color: true } },
+        validationRules: { orderBy: { order: 'asc' } },
+        effects: { orderBy: { order: 'asc' } },
+      },
+    })
+    res.json({ action })
+  } catch (e: any) {
+    res.status(404).json({ error: e.message })
   }
 })
 
@@ -182,7 +274,7 @@ router.post('/actions', ...guard, async (req, res) => {
     const action = await prisma.ontologyAction.create({
       data: {
         typeId, name, displayName, description,
-        parameters: parameters ?? {},
+        parameters: parameters ?? [],
         allowedRoles: allowedRoles ?? ['ADMIN'],
       },
     })
@@ -192,21 +284,149 @@ router.post('/actions', ...guard, async (req, res) => {
   }
 })
 
-router.post('/actions/:id/execute', ...guard, async (req, res) => {
+router.patch('/actions/:id', ...guard, async (req, res) => {
+  const { displayName, description, parameters, allowedRoles } = req.body
   try {
     const action = await prisma.ontologyAction.update({
       where: { id: req.params.id },
-      data: { executions: { increment: 1 } },
+      data: {
+        ...(displayName !== undefined && { displayName }),
+        ...(description !== undefined && { description }),
+        ...(parameters !== undefined && { parameters }),
+        ...(allowedRoles !== undefined && { allowedRoles }),
+      },
+    })
+    res.json({ action })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.delete('/actions/:id', ...guard, async (req, res) => {
+  try {
+    await prisma.ontologyAction.delete({ where: { id: req.params.id } })
+    res.json({ success: true })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+// ── Validation rules — S295 ───────────────────────────────────────────────────
+
+router.post('/actions/:id/validation-rules', ...guard, async (req, res) => {
+  const { condition, errorMessage, severity, order } = req.body
+  try {
+    const rule = await prisma.actionValidationRule.create({
+      data: {
+        actionId: req.params.id, condition: condition ?? {},
+        errorMessage, severity: severity ?? 'BLOCK', order: order ?? 0,
+      },
+    })
+    res.json({ rule })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.patch('/actions/validation-rules/:ruleId', ...guard, async (req, res) => {
+  const { condition, errorMessage, severity, order } = req.body
+  try {
+    const rule = await prisma.actionValidationRule.update({
+      where: { id: req.params.ruleId },
+      data: {
+        ...(condition !== undefined && { condition }),
+        ...(errorMessage !== undefined && { errorMessage }),
+        ...(severity !== undefined && { severity }),
+        ...(order !== undefined && { order }),
+      },
+    })
+    res.json({ rule })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.delete('/actions/validation-rules/:ruleId', ...guard, async (req, res) => {
+  try {
+    await prisma.actionValidationRule.delete({ where: { id: req.params.ruleId } })
+    res.json({ success: true })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+// ── Effects — S296 ─────────────────────────────────────────────────────────────
+
+router.post('/actions/:id/effects', ...guard, async (req, res) => {
+  const { effectType, configuration, order } = req.body
+  try {
+    const effect = await prisma.actionEffect.create({
+      data: { actionId: req.params.id, effectType, configuration: configuration ?? {}, order: order ?? 0 },
+    })
+    res.json({ effect })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.patch('/actions/effects/:effectId', ...guard, async (req, res) => {
+  const { effectType, configuration, order } = req.body
+  try {
+    const effect = await prisma.actionEffect.update({
+      where: { id: req.params.effectId },
+      data: {
+        ...(effectType !== undefined && { effectType }),
+        ...(configuration !== undefined && { configuration }),
+        ...(order !== undefined && { order }),
+      },
+    })
+    res.json({ effect })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.delete('/actions/effects/:effectId', ...guard, async (req, res) => {
+  try {
+    await prisma.actionEffect.delete({ where: { id: req.params.effectId } })
+    res.json({ success: true })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+// ── Execution — S296/S297 ───────────────────────────────────────────────────────
+
+router.post('/actions/:id/validate', ...guard, async (req, res) => {
+  const { params, objectId } = req.body
+  try {
+    const result = await ActionEngine.preflight(req.params.id, params ?? {}, objectId)
+    res.json(result)
+  } catch (e: any) {
+    res.status(404).json({ error: e.message })
+  }
+})
+
+router.post('/actions/:id/execute', ...guard, async (req, res) => {
+  const { params, objectId, actorType, confidence } = req.body
+  try {
+    const execution = await ActionEngine.execute({
+      actionId: req.params.id,
+      params: params ?? {},
+      objectId: objectId ?? null,
+      actorId: (req as any).user?.id,
+      actorType: actorType ?? 'HUMAN',
+      confidence,
     })
     await prisma.auditLog.create({
       data: {
         userId: (req as any).user?.id,
-        action: `ONTOLOGY:${action.name}`,
-        resource: `ontology_actions/${action.id}`,
-        newValue: req.body as any,
+        action: `ONTOLOGY_ACTION:${execution.status}`,
+        resource: `ontology_actions/${req.params.id}`,
+        newValue: { executionId: execution.id, params } as any,
       },
-    })
-    res.json({ success: true, actionName: action.name, params: req.body })
+    }).catch(() => {})
+    res.json({ execution })
   } catch (e: any) {
     res.status(404).json({ error: e.message })
   }
