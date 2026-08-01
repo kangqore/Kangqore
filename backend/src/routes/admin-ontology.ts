@@ -11,6 +11,9 @@ import { OntologyMerge } from '../services/ontologyMerge.service'
 import { CdcService } from '../lib/cdc/cdcService'
 import { ObjectSetService } from '../services/objectSet.service'
 import { ActionEngine } from '../services/actionEngine.service'
+import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.service'
+import { OntologyGeoService } from '../services/ontologyGeo.service'
+import { OntologyPipelineService } from '../services/ontologyPipeline.service'
 import { getIO } from '../socket'
 
 const router = Router()
@@ -131,6 +134,36 @@ router.get('/objects', ...guard, async (req, res) => {
   }
 })
 
+// S304 — literal /objects/geo-* paths must be registered before /objects/:id
+// (same 2-segment shape) or :id would swallow them.
+router.get('/objects/geo-bbox', ...guard, async (req, res) => {
+  const { minLat, maxLat, minLng, maxLng, typeId } = req.query as Record<string, string>
+  if (![minLat, maxLat, minLng, maxLng].every(v => v !== undefined && !Number.isNaN(Number(v)))) {
+    return res.status(400).json({ error: 'minLat, maxLat, minLng, maxLng are required' })
+  }
+  try {
+    const objects = await OntologyGeoService.geoBbox({
+      minLat: Number(minLat), maxLat: Number(maxLat), minLng: Number(minLng), maxLng: Number(maxLng),
+    }, typeId || undefined)
+    res.json({ objects })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/objects/geo-search', ...guard, async (req, res) => {
+  const { lat, lng, radiusKm, typeId } = req.body
+  if (typeof lat !== 'number' || typeof lng !== 'number' || typeof radiusKm !== 'number') {
+    return res.status(400).json({ error: 'lat, lng, radiusKm (numbers) are required' })
+  }
+  try {
+    const objects = await OntologyGeoService.geoSearch({ lat, lng }, radiusKm, typeId || undefined)
+    res.json({ objects })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
 router.get('/objects/:id', ...guard, async (req, res) => {
   try {
     const object = await prisma.ontologyObject.findUniqueOrThrow({
@@ -174,6 +207,114 @@ router.patch('/objects/:id', ...guard, async (req, res) => {
     res.json({ object: obj })
   } catch (e: any) {
     res.status(400).json({ error: e.message })
+  }
+})
+
+// ─── Time-Series — S303 ─────────────────────────────────────────────────────
+
+router.post('/objects/:id/timeseries', ...guard, async (req, res) => {
+  const { propertyName, value, unit, timestamp } = req.body
+  if (!propertyName || typeof value !== 'number') return res.status(400).json({ error: 'propertyName and numeric value are required' })
+  try {
+    const point = await OntologyTimeSeriesService.append(req.params.id, propertyName, value, unit, timestamp ? new Date(timestamp) : undefined)
+    res.status(201).json({ point })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.get('/objects/:id/timeseries', ...guard, async (req, res) => {
+  const { propertyName, from, to, resolution } = req.query as Record<string, string>
+  try {
+    const series = await OntologyTimeSeriesService.query(req.params.id, {
+      propertyName: propertyName || undefined,
+      from: from ? new Date(from) : undefined,
+      to: to ? new Date(to) : undefined,
+      resolution: (resolution as any) || 'raw',
+    })
+    res.json({ series })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// ─── Pipelines — S305 ────────────────────────────────────────────────────────
+
+router.get('/pipelines', ...guard, async (_req, res) => {
+  try {
+    const pipelines = await prisma.ontologyPipeline.findMany({
+      include: { targetType: { select: { name: true, displayName: true, icon: true, color: true } } },
+      orderBy: { createdAt: 'asc' },
+    })
+    res.json({ pipelines })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/pipelines/seed', ...guard, async (_req, res) => {
+  try {
+    const results = await OntologyPipelineService.seedBuiltins()
+    res.json({ results })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/pipelines', ...guard, async (req, res) => {
+  const { name, sourceType, sourceQuery, targetTypeId, fieldMapping, schedule } = req.body
+  try {
+    const pipeline = await prisma.ontologyPipeline.create({
+      data: { name, sourceType, sourceQuery: sourceQuery ?? {}, targetTypeId, fieldMapping: fieldMapping ?? {}, schedule: schedule ?? 'ON_CHANGE' },
+    })
+    res.status(201).json({ pipeline })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.patch('/pipelines/:id', ...guard, async (req, res) => {
+  const { name, fieldMapping, schedule, enabled } = req.body
+  try {
+    const pipeline = await prisma.ontologyPipeline.update({
+      where: { id: req.params.id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(fieldMapping !== undefined && { fieldMapping }),
+        ...(schedule !== undefined && { schedule }),
+        ...(enabled !== undefined && { enabled }),
+      },
+    })
+    res.json({ pipeline })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.delete('/pipelines/:id', ...guard, async (req, res) => {
+  try {
+    await prisma.ontologyPipeline.delete({ where: { id: req.params.id } })
+    res.json({ success: true })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.post('/pipelines/:id/run', ...guard, async (req, res) => {
+  try {
+    const result = await OntologyPipelineService.run(req.params.id)
+    res.json(result)
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.post('/pipelines/run-all', ...guard, async (_req, res) => {
+  try {
+    const results = await OntologyPipelineService.runAll()
+    res.json({ results })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
   }
 })
 

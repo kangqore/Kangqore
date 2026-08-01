@@ -1,6 +1,7 @@
 import { Router, Response, NextFunction } from 'express'
 import { PrismaClient }                   from '@prisma/client'
 import { authenticate, authorize, AuthenticatedRequest } from '../middleware/auth'
+import { OntologyPipelineService } from '../services/ontologyPipeline.service'
 
 const router = Router()
 const prisma = new PrismaClient()
@@ -92,6 +93,10 @@ router.patch('/:id', authenticate, authorize(['ADMIN']), async (req: Authenticat
       data,
       include: WITH_CONTACTS,
     })
+    // S305 — ON_CHANGE: keep the client's OntologyObject live within seconds
+    // of the real record changing, instead of waiting for the next scheduled
+    // pipeline run. Fire-and-forget — must never block or fail this response.
+    OntologyPipelineService.triggerForRecord('clientCRM', client.id).catch(() => {})
     res.json({ client })
   } catch (err) { next(err) }
 })

@@ -6,6 +6,7 @@ import { objectSetService, type ObjectSet, type FilterOp, type QueryNode, type F
 
 const OP_LABELS: Record<FilterOp, string> = {
   eq: '=', neq: '≠', gt: '>', gte: '≥', lt: '<', lte: '≤', contains: 'contains', in: 'in',
+  within_km: 'within km of {lat,lng,radiusKm}', // S304 — built via Map View, not this generic row editor
 }
 
 const FIELD_PRESETS = [
