@@ -2,6 +2,35 @@ import { KeosKernel, MissionRequest } from '../../os/kernel/KeosKernel';
 import { AegisShield } from '../../kangqore-aegis/AegisShield';
 import { KeosEventBus } from '../../os/kernel/KeosEventBus';
 import { CapabilityRegistry } from '../../os/kernel/CapabilityRegistry';
+import { ActionEngine } from '../../services/actionEngine.service';
+
+// S298 — "AI Through Actions": every mission this dispatcher runs also writes
+// an ActionExecution row (actorType KIMMP) through the same engine humans and
+// AEGIS write to, so "what did KIMMP do to Client X this week?" is one filtered
+// Action log query. Best-effort and fire-and-forget — must never affect the
+// mission itself if the write fails (e.g. system Actions not yet seeded).
+function mapMissionToSystemAction(request: MissionRequest): string {
+  const text = `${request.requiredCapability ?? ''} ${request.goal ?? ''}`.toUpperCase();
+  if (text.includes('ANALYZE'))  return 'ANALYZE_CLIENT';
+  if (text.includes('INSIGHT'))  return 'GENERATE_INSIGHT';
+  if (text.includes('DECISION')) return 'STRATEGIC_DECISION';
+  return 'RUN_AGENT';
+}
+
+async function recordMissionAsAction(request: MissionRequest, missionId: string, aegisResult: { riskScore: number; policiesEvaluated: any[] }, executionResult: any): Promise<void> {
+  const actionName = mapMissionToSystemAction(request);
+  const actionId = await ActionEngine.getSystemActionId(actionName);
+  if (!actionId) return; // system Actions not seeded yet — audit-only write, safe to skip
+  await ActionEngine.execute({
+    actionId,
+    params: { goal: request.goal, missionId, riskScore: aegisResult.riskScore },
+    objectId: request.context?.objectId ?? null,
+    actorId: request.requester,
+    actorType: 'KIMMP',
+    sourceModule: 'MissionDispatcher',
+    reasoning: typeof executionResult?.result === 'string' ? executionResult.result : request.description,
+  });
+}
 
 // Any KIMMP module that needs governed execution passes its own executor here.
 // The pipeline (Auth → Capability → AEGIS → Approval → Execute → Ledger → Event)
@@ -55,6 +84,15 @@ export class MissionDispatcher {
         policyEvaluated: aegisResult.policiesEvaluated,
         riskScore: aegisResult.riskScore,
       });
+      // S298 — an AEGIS DENY is a governance block; mirror it into the unified Action log
+      ActionEngine.getSystemActionId('GOVERNANCE_BLOCK').then(actionId => {
+        if (!actionId) return;
+        return ActionEngine.execute({
+          actionId, params: { goal: request.goal, riskScore: aegisResult.riskScore, reason: aegisResult.reason },
+          actorId: actor, actorType: 'AEGIS', sourceModule: 'MissionDispatcher',
+          reasoning: `DENY: ${aegisResult.reason}`,
+        });
+      }).catch(() => {});
       throw new Error(`AEGIS BLOCKED MISSION: ${aegisResult.reason}`);
     }
 
@@ -115,6 +153,9 @@ export class MissionDispatcher {
       goal: request.goal,
       result: executionResult,
     });
+
+    // S298 — unified Action audit trail (fire-and-forget; never blocks the mission)
+    recordMissionAsAction(request, missionId, aegisResult, executionResult).catch(() => {});
 
     // Notify WAANDA that KEOS ran a mission (keeps lastActive timestamp real)
     import('../../waanda/adapters/KeosAdapter').then(({ notifyKeosMissionRun }) => notifyKeosMissionRun()).catch(() => {})

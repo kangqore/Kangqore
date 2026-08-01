@@ -6,6 +6,9 @@
 import { Prisma } from '@prisma/client'
 import axios from 'axios'
 import { prisma } from '../lib/prisma'
+import { checkPolicy } from './policyEngine.service'
+import { AegisBudget } from '../kangqore-aegis/aegisBudget.service'
+import { getIO } from '../socket'
 
 // ─── Typed parameters ───────────────────────────────────────────────────────
 
@@ -117,6 +120,33 @@ export function runValidationRules(
   return { valid: !errors.some(e => e.severity === 'BLOCK'), errors }
 }
 
+// ─── Policy gate — S298 ──────────────────────────────────────────────────────
+// Routes every Action through the same KimmpPolicy engine that already exists
+// (policyEngine.service.ts) but, until now, was only reachable via an admin
+// test route. `action.name` doubles as the policy `trigger` — the existing
+// seed data (STRATEGIC_DECISION, EXTERNAL_API_CALL, DELETE_RECORD, ...) starts
+// firing the moment an Action with a matching name executes.
+
+export interface PolicyGateResult {
+  effect: 'ALLOW' | 'DENY' | 'REQUIRE_APPROVAL' | 'NOTIFY'
+  policyId: string | null
+  policyName: string | null
+  reason: string
+}
+
+async function runPolicyGate(actionName: string, params: Record<string, any>, actorId?: string | null): Promise<PolicyGateResult> {
+  return checkPolicy({ trigger: actionName, params, actorId: actorId ?? undefined })
+}
+
+function truncate(s: string | undefined | null, max = 500): string | undefined {
+  if (!s) return undefined
+  return s.length > max ? s.slice(0, max - 1) + '…' : s
+}
+
+function emitExecutionEvent(execution: any): void {
+  try { getIO().to('admin').emit('action:execution', execution) } catch { /* socket not initialised (tests, scripts) */ }
+}
+
 // ─── Effects ─────────────────────────────────────────────────────────────────
 
 export type EffectType = 'UPDATE_OBJECT' | 'CREATE_OBJECT' | 'CREATE_RELATIONSHIP' | 'WEBHOOK' | 'EMIT_EVENT'
@@ -212,10 +242,21 @@ export interface ExecuteInput {
   actorId?: string | null
   actorType?: string
   confidence?: number
+  // S298 — KIMMP/AEGIS provenance, folded straight onto the audit row
+  agentsMixed?: string[]
+  sourceModule?: string
+  reasoning?: string
+}
+
+// System actions are gated on the actor's own budget bucket — HUMAN actors are
+// never budget-limited (a person clicking a button isn't "spend").
+async function checkBudgetGate(actorType: string, actorId?: string | null): Promise<{ blocked: boolean; message?: string }> {
+  if (actorType === 'HUMAN') return { blocked: false }
+  return AegisBudget.gate(actorId ?? actorType.toLowerCase())
 }
 
 export const ActionEngine = {
-  async preflight(actionId: string, params: Record<string, any>, objectId?: string | null) {
+  async preflight(actionId: string, params: Record<string, any>, objectId?: string | null, actorType: string = 'HUMAN', actorId?: string | null) {
     const action = await prisma.ontologyAction.findUniqueOrThrow({
       where: { id: actionId },
       include: { validationRules: { orderBy: { order: 'asc' } } },
@@ -224,11 +265,21 @@ export const ActionEngine = {
     const paramDefs = ((action.parameters as unknown) as ActionParameterDef[]) ?? []
     const typedCheck = validateTypedParams(paramDefs, params)
     const ruleCheck = runValidationRules(action.validationRules, { params, object })
+    const policy = await runPolicyGate(action.name, params, actorId)
     const errors: RuleError[] = [
       ...typedCheck.errors.map(e => ({ severity: 'BLOCK' as const, message: e.message })),
       ...ruleCheck.errors,
     ]
-    return { valid: typedCheck.valid && ruleCheck.valid, errors }
+    if (policy.effect === 'DENY') errors.push({ severity: 'BLOCK', message: `Policy "${policy.policyName}": ${policy.reason}` })
+    else if (policy.effect === 'REQUIRE_APPROVAL') errors.push({ severity: 'WARN', message: `Will require ADMIN approval — policy "${policy.policyName}"` })
+    else if (policy.effect === 'NOTIFY') errors.push({ severity: 'WARN', message: `Policy "${policy.policyName}" will log this execution for audit` })
+
+    if (actorType !== 'HUMAN') {
+      const usage = await AegisBudget.checkUsage(actorId ?? actorType.toLowerCase())
+      if (usage.overBudget && usage.hardDeny) errors.push({ severity: 'BLOCK', message: `Budget exceeded: ${usage.callCount}/${usage.budget} calls in ${usage.windowHours}h` })
+    }
+
+    return { valid: typedCheck.valid && ruleCheck.valid && !errors.some(e => e.severity === 'BLOCK'), errors }
   },
 
   async execute(input: ExecuteInput) {
@@ -242,30 +293,89 @@ export const ActionEngine = {
       },
     })
     const object = input.objectId ? await prisma.ontologyObject.findUnique({ where: { id: input.objectId } }) : null
+    const params = input.params ?? {}
+
+    const commonFields = {
+      actionId: input.actionId, objectId: input.objectId ?? undefined,
+      actorId: input.actorId ?? undefined, actorType,
+      params, confidence: input.confidence,
+      agentsMixed: input.agentsMixed ?? [],
+      sourceModule: input.sourceModule,
+      reasoning: truncate(input.reasoning),
+    }
 
     const paramDefs = ((action.parameters as unknown) as ActionParameterDef[]) ?? []
-    const typedCheck = validateTypedParams(paramDefs, input.params ?? {})
-    const ruleCheck = runValidationRules(action.validationRules, { params: input.params ?? {}, object })
+    const typedCheck = validateTypedParams(paramDefs, params)
+    const ruleCheck = runValidationRules(action.validationRules, { params, object })
     const preflightErrors: RuleError[] = [
       ...typedCheck.errors.map(e => ({ severity: 'BLOCK' as const, message: e.message })),
       ...ruleCheck.errors,
     ]
 
     if (!typedCheck.valid || !ruleCheck.valid) {
-      return prisma.actionExecution.create({
+      const execution = await prisma.actionExecution.create({
         data: {
-          actionId: input.actionId, objectId: input.objectId ?? undefined,
-          actorId: input.actorId ?? undefined, actorType,
-          params: input.params ?? {}, effectsApplied: [],
+          ...commonFields, effectsApplied: [],
           status: 'BLOCKED',
           errorMessage: preflightErrors.map(e => `[${e.severity}] ${e.message}`).join('; '),
           durationMs: Date.now() - t0,
-          confidence: input.confidence,
         },
       })
+      emitExecutionEvent(execution)
+      return execution
     }
 
-    const effectCtx: EffectCtx = { params: input.params ?? {}, object, actorId: input.actorId, actorType }
+    // S298 — Policy gate: the same KimmpPolicy engine humans and AI both answer to.
+    const policy = await runPolicyGate(action.name, params, input.actorId)
+    if (policy.effect === 'DENY') {
+      const execution = await prisma.actionExecution.create({
+        data: {
+          ...commonFields, effectsApplied: [],
+          status: 'BLOCKED', policyId: policy.policyId ?? undefined,
+          errorMessage: `Policy "${policy.policyName}": ${policy.reason}`,
+          durationMs: Date.now() - t0,
+        },
+      })
+      emitExecutionEvent(execution)
+      return execution
+    }
+    if (policy.effect === 'REQUIRE_APPROVAL') {
+      await prisma.pendingApproval.create({
+        data: {
+          actionId: input.actionId, objectId: input.objectId ?? undefined,
+          actorId: input.actorId ?? undefined, actorType,
+          params, policyId: policy.policyId ?? undefined, policyName: policy.policyName ?? undefined,
+          reason: policy.reason, confidence: input.confidence,
+        },
+      })
+      const execution = await prisma.actionExecution.create({
+        data: {
+          ...commonFields, effectsApplied: [],
+          status: 'PENDING_APPROVAL', policyId: policy.policyId ?? undefined,
+          errorMessage: `Awaiting ADMIN approval — policy "${policy.policyName}": ${policy.reason}`,
+          durationMs: Date.now() - t0,
+        },
+      })
+      emitExecutionEvent(execution)
+      return execution
+    }
+
+    // S298 — Budget gate (KIMMP/AEGIS only; a human clicking a button isn't "spend").
+    const budget = await checkBudgetGate(actorType, input.actorId)
+    if (budget.blocked) {
+      const execution = await prisma.actionExecution.create({
+        data: {
+          ...commonFields, effectsApplied: [],
+          status: 'BLOCKED',
+          errorMessage: budget.message,
+          durationMs: Date.now() - t0,
+        },
+      })
+      emitExecutionEvent(execution)
+      return execution
+    }
+
+    const effectCtx: EffectCtx = { params, object, actorId: input.actorId, actorType }
     const dbEffects = action.effects.filter(e => e.effectType !== 'WEBHOOK')
     const webhookEffects = action.effects.filter(e => e.effectType === 'WEBHOOK')
     const applied: any[] = []
@@ -300,12 +410,10 @@ export const ActionEngine = {
 
     const execution = await prisma.actionExecution.create({
       data: {
-        actionId: input.actionId, objectId: input.objectId ?? undefined,
-        actorId: input.actorId ?? undefined, actorType,
-        params: input.params ?? {}, effectsApplied: applied,
+        ...commonFields, effectsApplied: applied,
         status, errorMessage,
+        policyId: policy.effect === 'NOTIFY' ? (policy.policyId ?? undefined) : undefined,
         durationMs: Date.now() - t0,
-        confidence: input.confidence,
       },
     })
 
@@ -313,6 +421,134 @@ export const ActionEngine = {
       await prisma.ontologyAction.update({ where: { id: input.actionId }, data: { executions: { increment: 1 } } })
     }
 
+    emitExecutionEvent(execution)
     return execution
+  },
+
+  // ─── S299 — Human-in-the-loop ────────────────────────────────────────────────
+
+  async resolvePendingApproval(pendingId: string, decision: 'APPROVE' | 'REJECT', resolvedBy: string) {
+    const pending = await prisma.pendingApproval.findUniqueOrThrow({
+      where: { id: pendingId },
+      include: { action: { include: { effects: { orderBy: { order: 'asc' } } } } },
+    })
+    if (pending.status !== 'PENDING') throw new Error(`Already ${pending.status.toLowerCase()}`)
+
+    const object = pending.objectId ? await prisma.ontologyObject.findUnique({ where: { id: pending.objectId } }) : null
+    const params = (pending.params as Record<string, any>) ?? {}
+
+    if (decision === 'REJECT') {
+      const execution = await prisma.actionExecution.create({
+        data: {
+          actionId: pending.actionId, objectId: pending.objectId ?? undefined,
+          actorId: pending.actorId ?? undefined, actorType: pending.actorType,
+          params, effectsApplied: [], status: 'BLOCKED',
+          errorMessage: `Rejected by ADMIN (${resolvedBy})`,
+          policyId: pending.policyId ?? undefined, confidence: pending.confidence,
+          durationMs: 0,
+        },
+      })
+      await prisma.pendingApproval.update({
+        where: { id: pendingId },
+        data: { status: 'REJECTED', resolvedBy, resolvedAt: new Date(), executionId: execution.id },
+      })
+      emitExecutionEvent(execution)
+      try { getIO().to('admin').emit('pendingapproval:resolved', { id: pendingId, decision: 'REJECT' }) } catch {}
+      return execution
+    }
+
+    // APPROVE — apply effects now, bypassing the policy gate that already
+    // matched (an ADMIN just overrode it for this one execution).
+    const t0 = Date.now()
+    const effectCtx: EffectCtx = { params, object, actorId: pending.actorId, actorType: pending.actorType }
+    const dbEffects = pending.action.effects.filter(e => e.effectType !== 'WEBHOOK')
+    const webhookEffects = pending.action.effects.filter(e => e.effectType === 'WEBHOOK')
+    const applied: any[] = []
+    let status: 'SUCCESS' | 'FAILED' = 'SUCCESS'
+    let errorMessage: string | null = null
+
+    try {
+      await prisma.$transaction(async (tx) => {
+        for (const effect of dbEffects) {
+          const result = await applyDbEffect(tx, effect, effectCtx)
+          applied.push({ effectId: effect.id, effectType: effect.effectType, result })
+          if (effect.effectType === 'UPDATE_OBJECT' && result?.object) effectCtx.object = result.object
+        }
+      })
+    } catch (e: any) {
+      status = 'FAILED'
+      errorMessage = e.message
+    }
+    if (status === 'SUCCESS') {
+      for (const effect of webhookEffects) {
+        try {
+          const result = await applyWebhookEffect(effect, effectCtx)
+          applied.push({ effectId: effect.id, effectType: 'WEBHOOK', result })
+        } catch (e: any) {
+          applied.push({ effectId: effect.id, effectType: 'WEBHOOK', error: e.message })
+        }
+      }
+    }
+
+    const execution = await prisma.actionExecution.create({
+      data: {
+        actionId: pending.actionId, objectId: pending.objectId ?? undefined,
+        actorId: pending.actorId ?? undefined, actorType: pending.actorType,
+        params, effectsApplied: applied, status, errorMessage,
+        policyId: pending.policyId ?? undefined, confidence: pending.confidence,
+        reasoning: truncate(`Approved by ADMIN (${resolvedBy})`),
+        durationMs: Date.now() - t0,
+      },
+    })
+    if (status === 'SUCCESS') {
+      await prisma.ontologyAction.update({ where: { id: pending.actionId }, data: { executions: { increment: 1 } } })
+    }
+    await prisma.pendingApproval.update({
+      where: { id: pendingId },
+      data: { status: 'APPROVED', resolvedBy, resolvedAt: new Date(), executionId: execution.id },
+    })
+    emitExecutionEvent(execution)
+    try { getIO().to('admin').emit('pendingapproval:resolved', { id: pendingId, decision: 'APPROVE' }) } catch {}
+    return execution
+  },
+
+  // ─── S298 — Seed system Actions for KIMMP task types ─────────────────────────
+  // MissionDispatcher and AegisActionExecutor resolve these by name to route
+  // KIMMP/AEGIS execution through this same engine instead of a separate path.
+
+  SYSTEM_TYPE: { name: 'System', displayName: 'System', icon: 'Cpu', color: '#64748b', description: 'Non-business-object execution surface for KIMMP and AEGIS system actions' },
+  SYSTEM_ACTIONS: [
+    { name: 'ANALYZE_CLIENT',      displayName: 'Analyze Client',      description: 'KIMMP client analysis task' },
+    { name: 'RUN_AGENT',           displayName: 'Run Agent',           description: 'KIMMP generic agent/mission execution' },
+    { name: 'GENERATE_INSIGHT',    displayName: 'Generate Insight',    description: 'KIMMP insight generation task' },
+    { name: 'STRATEGIC_DECISION',  displayName: 'Strategic Decision',  description: 'KIMMP Decision Engine strategic decision' },
+    { name: 'GOVERNANCE_BLOCK',    displayName: 'Governance Action',   description: 'AEGIS governance action (pause/block/quarantine/etc.)' },
+    { name: 'BUDGET_DENY',         displayName: 'Budget Enforcement',  description: 'AEGIS per-tenant budget gate' },
+  ] as Array<{ name: string; displayName: string; description: string }>,
+
+  async seedSystemActions(): Promise<Array<{ created: boolean; name: string }>> {
+    const type = await prisma.ontologyObjectType.upsert({
+      where: { name: ActionEngine.SYSTEM_TYPE.name },
+      create: ActionEngine.SYSTEM_TYPE,
+      update: {},
+    })
+    const results: Array<{ created: boolean; name: string }> = []
+    for (const def of ActionEngine.SYSTEM_ACTIONS) {
+      const existing = await prisma.ontologyAction.findUnique({ where: { typeId_name: { typeId: type.id, name: def.name } } })
+      if (existing) { results.push({ created: false, name: def.name }); continue }
+      await prisma.ontologyAction.create({
+        data: { typeId: type.id, name: def.name, displayName: def.displayName, description: def.description, parameters: [], allowedRoles: ['ADMIN'] },
+      })
+      results.push({ created: true, name: def.name })
+    }
+    return results
+  },
+
+  /** Resolve a seeded system Action's id by name — used by MissionDispatcher/AegisActionExecutor. */
+  async getSystemActionId(name: string): Promise<string | null> {
+    const type = await prisma.ontologyObjectType.findUnique({ where: { name: ActionEngine.SYSTEM_TYPE.name } })
+    if (!type) return null
+    const action = await prisma.ontologyAction.findUnique({ where: { typeId_name: { typeId: type.id, name } } })
+    return action?.id ?? null
   },
 }

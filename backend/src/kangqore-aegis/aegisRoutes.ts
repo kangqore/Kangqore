@@ -10,6 +10,7 @@ import { AegisSovereignty }             from './aegisSovereignty.service'
 import { AegisPolicyEngine }            from './aegisPolicy.service'
 import { AegisEngineDispatcher }        from './aegisEngineDispatcher'
 import { AegisActionExecutor }          from './aegisActionExecutor'
+import { AegisBudget }                  from './aegisBudget.service'
 import { aegisConfig }                  from './aegisConfig'
 import { verifyAccessToken }            from '../services/token.service'
 import { prisma }                       from '../lib/prisma'
@@ -315,15 +316,12 @@ aegisRouter.get('/actions/log', async (req: Request, res: Response) => {
 })
 
 // ── S112: Phase 3 — Per-tenant Budget Enforcement ────────────────────────────
-
-// In-memory budget store (persisted as KIMMP signals for audit trail)
-const tenantBudgets: Record<string, { callLimit: number; windowHours: number; hardDeny: boolean }> = {}
+// S298 — the in-memory store + usage check now live in aegisBudget.service.ts
+// so the Action Engine can gate on the same budget as this dashboard reads.
 
 aegisRouter.get('/budget', async (_req: Request, res: Response) => {
   // Returns global + per-tenant enforcement config
-  const budgets = Object.entries(tenantBudgets).map(([tenantId, cfg]) => ({
-    tenantId, ...cfg,
-  }))
+  const budgets = AegisBudget.listConfigs()
   res.json({
     shield:    'AEGIS',
     domain:    'BUDGET_ENFORCEMENT',
@@ -336,11 +334,7 @@ aegisRouter.get('/budget', async (_req: Request, res: Response) => {
 aegisRouter.post('/budget', async (req: Request, res: Response) => {
   const { tenantId, callLimit, windowHours, hardDeny } = req.body
   if (!tenantId) return res.status(400).json({ error: 'tenantId required' })
-  tenantBudgets[tenantId] = {
-    callLimit:   callLimit   ?? 500,
-    windowHours: windowHours ?? 24,
-    hardDeny:    hardDeny    ?? true,
-  }
+  const config = AegisBudget.setBudget(tenantId, { callLimit, windowHours, hardDeny })
   // Emit KIMMP signal for audit
   await prisma.kimmpSignal.create({
     data: {
@@ -350,29 +344,21 @@ aegisRouter.post('/budget', async (req: Request, res: Response) => {
       signalValue: `AEGIS Budget Set — ${tenantId}`,
       severity: 'LOW',
       confidence: 100,
-      metadata: { summary: `callLimit=${callLimit ?? 500}/day, hardDeny=${hardDeny ?? true}` }
+      metadata: { summary: `callLimit=${config.callLimit}/day, hardDeny=${config.hardDeny}` }
     },
   }).catch(() => {})
-  res.json({ shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT', tenantId, config: tenantBudgets[tenantId] })
+  res.json({ shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT', tenantId, config })
 })
 
 aegisRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) => {
   const { tenantId } = req.params
-  const cfg = tenantBudgets[tenantId]
-  const since = cfg ? new Date(Date.now() - (cfg.windowHours ?? 24) * 3_600_000) : new Date(Date.now() - 86_400_000)
-
-  const callCount = await (prisma as any).aegisActionLog.count({
-    where: { agentId: { contains: tenantId }, executedAt: { gte: since } },
-  }).catch(() => 0)
-
-  const budget     = cfg?.callLimit ?? null
-  const overBudget = budget !== null && callCount > budget
-  if (overBudget && cfg?.hardDeny) {
+  const usage = await AegisBudget.checkUsage(tenantId)
+  if (usage.overBudget && usage.hardDeny) {
     await (prisma as any).aegisActionLog.create({
       data: {
         actionType: 'LOG_AUDIT_ENTRY', level: 0,
         agentId: 'aegis.budget-enforcer', engine: 'AUTONOMY_BOUNDARY',
-        params: { tenantId, callCount, limit: budget },
+        params: { tenantId, callCount: usage.callCount, limit: usage.budget },
         result: { blocked: true }, status: 'SUCCESS',
       },
     }).catch(() => {})
@@ -380,9 +366,9 @@ aegisRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) =
 
   res.json({
     shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT',
-    tenantId, callCount, budget,
-    windowHours: cfg?.windowHours ?? 24,
-    overBudget, hardDeny: cfg?.hardDeny ?? false,
-    since: since.toISOString(),
+    tenantId, callCount: usage.callCount, budget: usage.budget,
+    windowHours: usage.windowHours,
+    overBudget: usage.overBudget, hardDeny: usage.hardDeny,
+    since: usage.since.toISOString(),
   })
 })

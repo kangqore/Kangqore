@@ -15,8 +15,30 @@ import { createNotification }  from '../services/notificationService'
 import { emailService }        from '../services/email.service'
 import { AegisLedger }         from './aegisLedger.service'
 import { redisConnection }     from '../lib/redis'
+import { ActionEngine }        from '../services/actionEngine.service'
 import type { AegisAction }    from './aegisActionProposer'
 import type { AegisAgentResult } from './agents/types'
+
+// S298 — governance actions (not routine telemetry like EMIT_SOCKET/CREATE_NOTIFICATION)
+// also write a parallel ActionExecution row so the unified Action log genuinely
+// shows "PAUSE, BLOCK, QUARANTINE, BUDGET_DENY" — everything an admin would
+// actually search the audit trail for.
+const GOVERNANCE_ACTION_TYPES = new Set(['PAUSE_KIMMP_LOOP', 'BLOCK_ACTOR', 'QUARANTINE_ASSET', 'FLAG_ACTOR', 'REVOKE_SESSION'])
+
+async function recordGovernanceAction(actionType: string, level: number, params: Record<string, unknown>, result: { agentId: string; engine: string; summary: string }, outcome: unknown): Promise<void> {
+  if (!GOVERNANCE_ACTION_TYPES.has(actionType)) return
+  const actionId = await ActionEngine.getSystemActionId('GOVERNANCE_BLOCK')
+  if (!actionId) return
+  await ActionEngine.execute({
+    actionId,
+    params: { ...params, aegisActionType: actionType, level, outcome },
+    actorId: result.agentId,
+    actorType: 'AEGIS',
+    agentsMixed: [result.agentId],
+    sourceModule: result.engine,
+    reasoning: result.summary,
+  })
+}
 
 let cachedAdminId:    string | null = null
 let cachedAdminEmail: string | null = null
@@ -48,6 +70,9 @@ async function logAction(
       status,
     },
   }).catch(() => {})
+
+  // S298 — fire-and-forget; a failure here must never affect AEGIS's own logging
+  recordGovernanceAction(action.type, action.level, action.params, result, outcome).catch(() => {})
 }
 
 // ---------------------------------------------------------------------------
@@ -349,6 +374,11 @@ export const AegisActionExecutor = {
           status:     'SUCCESS',
         },
       }).catch(() => {})
+
+      // S298 — L3 approved actions are the most severe governance events; always mirror them
+      recordGovernanceAction(pending.actionType, 3, pending.params as Record<string, unknown>, {
+        agentId: pending.agentId ?? 'aegis', engine: pending.engine ?? 'AEGIS', summary: `L3 action approved by ADMIN ${adminUserId}`,
+      }, outcome).catch(() => {})
 
       emitToAdmins('aegis:action:executed', { id: pendingId, actionType: pending.actionType, outcome })
       return { success: true, message: `${pending.actionType} executed successfully` }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
-import { Cube, ArrowLeft, CaretLeft, CaretRight, ShieldCheck, CaretDown, CaretUp, Lightning, Play } from '@phosphor-icons/react'
+import { Cube, ArrowLeft, CaretLeft, CaretRight, ShieldCheck, CaretDown, CaretUp, Lightning, Play, Sparkle } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 import { apiFetch } from '@lib/api'
 import { GitBranch, Plus, Clock, X, Loader2, ChevronRight } from 'lucide-react'
@@ -176,8 +176,16 @@ function ExpandedRow({ obj }: { obj: any }) {
     staleTime: 30_000,
   })
 
+  // S299 — object-level activity feed: chronological ActionExecution history
+  const { data: activityData } = useQuery({
+    queryKey: ['action-executions', 'object', obj.id],
+    queryFn: () => actionEngineService.listExecutions({ objectId: obj.id, limit: 10 }),
+    staleTime: 15_000,
+  })
+
   const rels   = relsData?.items ?? []
   const events = eventsData?.items ?? []
+  const activity = activityData?.executions ?? []
 
   return (
     <tr>
@@ -278,6 +286,35 @@ function ExpandedRow({ obj }: { obj: any }) {
                   <Play className="w-3 h-3" weight="fill" />
                   {a.displayName}
                 </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Activity feed — S299: chronological ActionExecution history for this object */}
+        {activity.length > 0 && (
+          <div className="px-8 pb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkle className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
+              <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Activity</p>
+            </div>
+            <div className="space-y-1.5">
+              {activity.map((e: any) => (
+                <div key={e.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
+                  <span
+                    className="px-1.5 py-0.5 rounded text-[9px] font-bold whitespace-nowrap"
+                    style={{
+                      background: e.status === 'SUCCESS' ? 'rgba(16,185,129,0.12)' : e.status === 'FAILED' ? 'rgba(239,68,68,0.10)' : e.status === 'PENDING_APPROVAL' ? 'rgba(168,85,247,0.12)' : 'rgba(245,158,11,0.12)',
+                      color: e.status === 'SUCCESS' ? '#10b981' : e.status === 'FAILED' ? '#ef4444' : e.status === 'PENDING_APPROVAL' ? '#a855f7' : '#f59e0b',
+                    }}
+                  >
+                    {e.status}
+                  </span>
+                  <span className="text-[var(--os-text-1)] truncate flex-1">{e.action?.displayName ?? e.actionId}</span>
+                  <span className="text-[9px] text-[var(--os-text-2)] whitespace-nowrap">{e.actorType}</span>
+                  {e.confidence != null && <span className="text-[9px] text-amber-400">{Math.round(e.confidence * 100)}%</span>}
+                  <span className="text-[9px] text-[var(--os-text-2)] whitespace-nowrap">{new Date(e.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                </div>
               ))}
             </div>
           </div>

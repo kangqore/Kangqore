@@ -65,10 +65,34 @@ export interface ActionExecution {
   actorType: 'HUMAN' | 'KIMMP' | 'AEGIS'
   params: Record<string, any>
   effectsApplied: any[]
-  status: 'SUCCESS' | 'FAILED' | 'BLOCKED'
+  status: 'SUCCESS' | 'FAILED' | 'BLOCKED' | 'PENDING_APPROVAL'
   errorMessage: string | null
   durationMs: number
   confidence: number | null
+  agentsMixed: string[]
+  sourceModule: string | null
+  reasoning: string | null
+  policyId: string | null
+  createdAt: string
+}
+
+export interface PendingApproval {
+  id: string
+  actionId: string
+  action?: { name: string; displayName: string }
+  objectId: string | null
+  object?: { id: string; externalId: string | null; type: { displayName: string; icon: string | null; color: string | null } } | null
+  actorId: string | null
+  actorType: 'HUMAN' | 'KIMMP' | 'AEGIS'
+  params: Record<string, any>
+  policyId: string | null
+  policyName: string | null
+  reason: string | null
+  confidence: number | null
+  status: 'PENDING' | 'APPROVED' | 'REJECTED'
+  resolvedBy: string | null
+  resolvedAt: string | null
+  executionId: string | null
   createdAt: string
 }
 
@@ -134,5 +158,20 @@ export const actionEngineService = {
   },
   metrics(): Promise<ExecutionMetrics> {
     return api.get('/admin/ontology/actions/executions/metrics').then(r => r.data)
+  },
+
+  seedSystem(): Promise<Array<{ created: boolean; name: string }>> {
+    return api.post('/admin/ontology/actions/seed-system', {}).then(r => r.data.results)
+  },
+
+  // ── S299 — Human-in-the-loop ──────────────────────────────────────────────
+  listPendingApprovals(status: 'PENDING' | 'ALL' = 'PENDING'): Promise<{ items: PendingApproval[]; total: number; pages: number }> {
+    return api.get('/admin/ontology/pending-approvals', { params: { status } }).then(r => r.data)
+  },
+  approvePending(id: string): Promise<ActionExecution> {
+    return api.post(`/admin/ontology/pending-approvals/${id}/approve`, {}).then(r => r.data.execution)
+  },
+  rejectPending(id: string): Promise<ActionExecution> {
+    return api.post(`/admin/ontology/pending-approvals/${id}/reject`, {}).then(r => r.data.execution)
   },
 }
