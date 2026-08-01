@@ -1,6 +1,6 @@
 import { api } from '@lib/api'
 
-export type FilterOp = 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'in'
+export type FilterOp = 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'in' | 'within_km'
 
 export interface FilterNode { type: 'filter'; field: string; op: FilterOp; value: any }
 export interface CombinatorNode { type: 'union' | 'intersection'; sets: QueryNode[] }

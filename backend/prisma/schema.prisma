@@ -4394,6 +4394,7 @@ model OntologyObjectType {
   actions        OntologyAction[]
   semanticMappings SemanticTypeMapping[]
   objectSets     ObjectSet[]
+  pipelines      OntologyPipeline[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
@@ -4418,11 +4419,55 @@ model OntologyObject {
   setMemberships        ObjectSetMembership[]
   actionExecutions      ActionExecution[]
   pendingApprovals      PendingApproval[]
+  timeSeries            OntologyTimeSeries[]
 
   @@index([typeId])
   @@index([externalId])
   @@index([validTo])
   @@map("ontology_objects")
+}
+
+// ─── Data Layer Expansion — S303 ──────────────────────────────────────────────
+// Time-series properties: sensor readings, OIS history, price data. A property
+// name on an object can have many timestamped values instead of one static one.
+
+model OntologyTimeSeries {
+  id           String         @id @default(cuid())
+  objectId     String
+  object       OntologyObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  propertyName String
+  timestamp    DateTime       @default(now())
+  value        Float
+  unit         String?
+  createdAt    DateTime       @default(now())
+
+  @@index([objectId, propertyName, timestamp])
+  @@map("ontology_timeseries")
+}
+
+// ─── Data Layer Expansion — S305 ──────────────────────────────────────────────
+// Pipelines keep the ontology alive automatically instead of manually curated:
+// fetch source records, upsert an OntologyObject per record matched by
+// externalId, apply fieldMapping. INTERNAL pipelines read straight from our
+// own Prisma tables (ClientCRM, Project, User) — the S305 "built-in" set.
+
+model OntologyPipeline {
+  id              String             @id @default(cuid())
+  name            String             @unique
+  sourceType      String             // INTERNAL | WEBHOOK | CSV
+  sourceQuery     Json               @default("{}")  // INTERNAL: { model: 'clientCRM' | 'project' | 'user' }
+  targetTypeId    String
+  targetType      OntologyObjectType @relation(fields: [targetTypeId], references: [id], onDelete: Cascade)
+  fieldMapping    Json               @default("{}")  // { ontologyPropertyName: sourceFieldName }
+  schedule        String             @default("ON_CHANGE") // cron expression | 'ON_CHANGE'
+  enabled         Boolean            @default(true)
+  lastRunAt       DateTime?
+  lastObjectCount Int                @default(0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@index([enabled])
+  @@map("ontology_pipelines")
 }
 
 model OntologyRelationship {

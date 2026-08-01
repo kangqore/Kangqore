@@ -9,8 +9,9 @@
 // a properties.* path (e.g. "properties.ois", "properties.status").
 
 import { prisma } from '../lib/prisma'
+import { haversineKm } from './ontologyGeo.service'
 
-export type FilterOp = 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'in'
+export type FilterOp = 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'in' | 'within_km'
 
 export interface FilterNode {
   type: 'filter'
@@ -67,6 +68,13 @@ function applyFilter(objects: any[], node: FilterNode): any[] {
       case 'lte':      return typeof actual === 'number' && actual <= node.value
       case 'contains': return typeof actual === 'string' && actual.toLowerCase().includes(String(node.value).toLowerCase())
       case 'in':        return Array.isArray(node.value) && node.value.includes(actual)
+      case 'within_km': {
+        // S304 — field addresses a geopoint (e.g. "properties.location"); value = { lat, lng, radiusKm }
+        if (!actual || typeof actual.lat !== 'number' || typeof actual.lng !== 'number') return false
+        const { lat, lng, radiusKm } = node.value ?? {}
+        if (typeof lat !== 'number' || typeof lng !== 'number' || typeof radiusKm !== 'number') return false
+        return haversineKm({ lat: actual.lat, lng: actual.lng }, { lat, lng }) <= radiusKm
+      }
       default: return false
     }
   })

@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
-import { Cube, ArrowLeft, CaretLeft, CaretRight, ShieldCheck, CaretDown, CaretUp, Lightning, Play, Sparkle } from '@phosphor-icons/react'
+import { Cube, ArrowLeft, CaretLeft, CaretRight, ShieldCheck, CaretDown, CaretUp, Lightning, Play, Sparkle, ChartLineUp } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 import { apiFetch } from '@lib/api'
 import { GitBranch, Plus, Clock, X, Loader2, ChevronRight } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { actionEngineService, type OntologyAction } from '../actionEngineService'
+import { timeSeriesService } from '../timeSeriesService'
+import { Sparkline } from '../components/Sparkline'
 import { ActionRunModal } from '../components/ActionRunModal'
 
 const CLASS_BADGE: Record<string, string> = {
@@ -183,9 +185,17 @@ function ExpandedRow({ obj }: { obj: any }) {
     staleTime: 15_000,
   })
 
+  // S303 — time-series properties, one sparkline per property with data
+  const { data: seriesData } = useQuery({
+    queryKey: ['ontology-timeseries', obj.id],
+    queryFn: () => timeSeriesService.query(obj.id),
+    staleTime: 15_000,
+  })
+
   const rels   = relsData?.items ?? []
   const events = eventsData?.items ?? []
   const activity = activityData?.executions ?? []
+  const series   = seriesData ?? {}
 
   return (
     <tr>
@@ -314,6 +324,24 @@ function ExpandedRow({ obj }: { obj: any }) {
                   <span className="text-[9px] text-[var(--os-text-2)] whitespace-nowrap">{e.actorType}</span>
                   {e.confidence != null && <span className="text-[9px] text-amber-400">{Math.round(e.confidence * 100)}%</span>}
                   <span className="text-[9px] text-[var(--os-text-2)] whitespace-nowrap">{new Date(e.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Time series — S303: one sparkline per tracked property */}
+        {Object.keys(series).length > 0 && (
+          <div className="px-8 pb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <ChartLineUp className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
+              <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Time Series</p>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              {Object.entries(series).map(([propertyName, points]) => (
+                <div key={propertyName} className="px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)]">
+                  <p className="text-[9px] text-[var(--os-text-2)] uppercase tracking-wide mb-1">{propertyName}</p>
+                  <Sparkline data={points} />
                 </div>
               ))}
             </div>

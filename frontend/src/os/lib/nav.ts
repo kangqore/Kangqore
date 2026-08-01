@@ -309,6 +309,8 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'ont-executions', label: 'Execution Log', path: `${BASE}/ontology/executions`, category: 'Explore' },
       { id: 'ont-policy-gate', label: 'Policy Gate', path: `${BASE}/ontology/policy-gate`, category: 'Govern' },
       { id: 'ont-approvals', label: 'Approvals',   path: `${BASE}/ontology/approvals`, category: 'Govern' },
+      { id: 'ont-map',        label: 'Map View',    path: `${BASE}/ontology/map`,       category: 'Explore' },
+      { id: 'ont-pipelines',  label: 'Pipelines',   path: `${BASE}/ontology/pipelines`, category: 'Manage' },
       { id: 'ont-lineage',    label: 'Lineage',    path: `${BASE}/ontology/lineage`,   category: 'Explore' },
       { id: 'ont-markings',   label: 'Markings',   path: `${BASE}/ontology/markings`,  category: 'Manage' },
       { id: 'ont-versioning', label: 'Versioning', path: `${BASE}/ontology/versioning`, category: 'Manage' },
