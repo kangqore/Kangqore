@@ -18,6 +18,7 @@ export interface WorkflowStep {
   config?: Record<string, string>
   onSuccess?: string    // next step id
   onFailure?: string
+  ontologyObjectId?: string  // S300 — set by the backend when this step's type is a bridged ontology concept
 }
 
 export interface Workflow {

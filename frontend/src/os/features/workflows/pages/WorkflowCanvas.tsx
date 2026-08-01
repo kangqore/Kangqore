@@ -31,7 +31,7 @@ import {
   Activity, Code2, CheckCircle, XCircle, Clock3,
   Building2, Users, Crosshair, Wallet, Flag,
   Wrench, Archive, Layers, Eye, UserCheck,
-  Share2, Download, Keyboard, Search, Boxes,
+  Share2, Download, Keyboard, Search, Boxes, Network,
 } from 'lucide-react'
 import { api } from '@lib/api'
 import { connectSocket, getSocket } from '@lib/socket'
@@ -43,6 +43,7 @@ import type { CanvasUser, CanvasYDoc } from '@lib/yjs-canvas'
 import { useAuthStore } from '@store/auth'
 import type { WorkflowStep, StepType, WvisStepType, IntelStepType, Workflow } from '../types'
 import { validateWorkflow, scoreWorkflow, type ValidationIssue, type ValidationResult, type ValidationScore } from '../workflowValidation'
+import { WorkflowGraphView } from '../components/WorkflowGraphView'
 
 type CanvasMode = 'workflow' | 'intelligence' | 'enterprise' | 'agents' | 'all'
 
@@ -1850,6 +1851,28 @@ function WfRow({ wf, isSelected, onClick }: { wf: Workflow; isSelected: boolean;
   )
 }
 
+// ── S301 — Live Sync: linked OntologyObject fetch + debounced property sync ──
+
+function useLinkedOntologyObject(ontologyObjectId?: string) {
+  const [object, setObject] = useState<any>(null)
+  useEffect(() => {
+    if (!ontologyObjectId) { setObject(null); return }
+    let cancelled = false
+    api.get(`/admin/ontology/objects/${ontologyObjectId}`).then(r => { if (!cancelled) setObject(r.data.object) }).catch(() => { if (!cancelled) setObject(null) })
+    return () => { cancelled = true }
+  }, [ontologyObjectId])
+  return object
+}
+
+// Average confidence across this object's KIMMP-inferred relationships — the
+// only "confidence" that's actually grounded in real data (no fabricated score).
+function kimmpConfidence(object: any): number | null {
+  if (!object) return null
+  const rels = [...(object.outboundRelationships ?? []), ...(object.inboundRelationships ?? [])].filter((r: any) => r.inferredBy === 'KIMMP')
+  if (rels.length === 0) return null
+  return rels.reduce((s: number, r: any) => s + r.confidence, 0) / rels.length
+}
+
 // ── Node config drawer ────────────────────────────────────────────────────────
 
 function NodeConfigDrawer({
@@ -1864,6 +1887,21 @@ function NodeConfigDrawer({
   const [name, setName] = useState(step.name)
   const [desc, setDesc] = useState(step.description)
   useEffect(() => { setName(step.name); setDesc(step.description) }, [step.id])
+
+  // S301 — live sync: linked OntologyObject + debounced 800ms property PATCH,
+  // independent of the "Apply changes" button which saves the whole workflow.
+  const ontologyObject = useLinkedOntologyObject(step.ontologyObjectId)
+  const confidence = kimmpConfidence(ontologyObject)
+  useEffect(() => {
+    if (!step.ontologyObjectId || !ontologyObject) return
+    if (name === step.name && desc === step.description) return
+    const t = setTimeout(() => {
+      api.patch(`/admin/ontology/objects/${step.ontologyObjectId}`, {
+        properties: { ...ontologyObject.properties, name, description: desc },
+      }).catch(() => {})
+    }, 800)
+    return () => clearTimeout(t)
+  }, [name, desc, step.ontologyObjectId, step.name, step.description, ontologyObject])
 
   return (
     <div style={{
@@ -1903,6 +1941,26 @@ function NodeConfigDrawer({
             fontSize: 11, outline: 'none', resize: 'none', lineHeight: 1.5,
           }} />
       </div>
+
+      {/* S300/S301 — Ontology link: this node IS an OntologyObject, not a copy of one */}
+      {step.ontologyObjectId && (
+        <div style={{
+          marginBottom: 13, padding: '8px 10px', borderRadius: 10,
+          background: `${TEAL}0c`, border: `1px solid ${TEAL}25`,
+          display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap',
+        }}>
+          <Share2 style={{ width: 11, height: 11, color: TEAL, flexShrink: 0 }} />
+          <span style={{ fontSize: 10, fontWeight: 700, color: TEAL }}>Synced to Graph</span>
+          {ontologyObject?.type?.displayName && (
+            <span style={{ fontSize: 9, color: SLATE }}>· {ontologyObject.type.displayName}</span>
+          )}
+          {confidence != null && (
+            <span style={{ fontSize: 9, fontWeight: 700, color: confidence >= 0.7 ? GREEN : AMBER, marginLeft: 'auto' }}>
+              {Math.round(confidence * 100)}% KIMMP confidence
+            </span>
+          )}
+        </div>
+      )}
 
       <button onClick={() => onUpdate({ name, description: desc })} style={{
         width: '100%', padding: '8px', borderRadius: 10, border: 'none',
@@ -2114,6 +2172,57 @@ function FitViewHook({ fitTrigger }: { fitTrigger: number }) {
     if (fitTrigger > 0) fitView({ padding: 0.25, maxZoom: 1.2, duration: 350 })
   }, [fitTrigger, fitView])
   return null
+}
+
+// ── S301 — RelationshipInspector ────────────────────────────────────────────
+// Click an edge whose endpoints are both synced to the ontology → shows the
+// real OntologyRelationship (type, confidence, validFrom, inferredBy, reason)
+// behind it, not just a ReactFlow line.
+function RelationshipInspector({ sourceStep, targetStep, onClose }: {
+  sourceStep?: WorkflowStep
+  targetStep?: WorkflowStep
+  onClose: () => void
+}) {
+  const [rel, setRel] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!sourceStep?.ontologyObjectId || !targetStep?.ontologyObjectId) { setLoading(false); return }
+    setLoading(true)
+    api.get('/admin/ontology/relationships', { params: { sourceId: sourceStep.ontologyObjectId, targetId: targetStep.ontologyObjectId } })
+      .then(r => setRel(r.data.items?.[0] ?? null))
+      .finally(() => setLoading(false))
+  }, [sourceStep?.ontologyObjectId, targetStep?.ontologyObjectId])
+
+  return (
+    <div style={{
+      position: 'absolute', top: 14, right: 14, zIndex: 40, width: 220,
+      borderRadius: 14, background: CARD, border: `1px solid ${TEAL}30`,
+      padding: '12px 12px', boxShadow: `0 8px 24px rgba(0,0,0,0.3)`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+        <GitBranch style={{ width: 12, height: 12, color: TEAL }} />
+        <span style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.06em', flex: 1 }}>Relationship</span>
+        <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+          <X style={{ width: 11, height: 11, color: SLATE }} />
+        </button>
+      </div>
+      {!sourceStep?.ontologyObjectId || !targetStep?.ontologyObjectId ? (
+        <p style={{ fontSize: 10, color: SLATE, lineHeight: 1.5, margin: 0 }}>Neither node is synced to the ontology yet — save the workflow to link them.</p>
+      ) : loading ? (
+        <p style={{ fontSize: 10, color: SLATE, margin: 0 }}>Loading…</p>
+      ) : !rel ? (
+        <p style={{ fontSize: 10, color: SLATE, margin: 0 }}>No OntologyRelationship recorded for this edge yet.</p>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)' }}>{rel.relationshipType.replace(/_/g, ' ')}</span>
+          <span style={{ fontSize: 9, color: SLATE }}>confidence {Math.round(rel.confidence * 100)}% · {rel.inferredBy}</span>
+          <span style={{ fontSize: 9, color: SLATE }}>since {new Date(rel.validFrom).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+          {rel.reason && <span style={{ fontSize: 9, color: SLATE, lineHeight: 1.5 }}>{rel.reason}</span>}
+        </div>
+      )}
+    </div>
+  )
 }
 
 // ── S294 — ObjectSetPickerModal ─────────────────────────────────────────────
@@ -2514,6 +2623,7 @@ export function WorkflowCanvas() {
   const [saveErr,      setSaveErr]      = useState('')
   const [ctxMenu,      setCtxMenu]      = useState<CtxMenu | null>(null)
   const [configNodeId, setConfigNodeId] = useState<string | null>(null)
+  const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null) // S301 — relationship inspector
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
   const [explainIssue, setExplainIssue] = useState<ValidationIssue | null>(null)
   const [canvasMode,   setCanvasMode]   = useState<CanvasMode>('workflow')
@@ -2524,6 +2634,7 @@ export function WorkflowCanvas() {
   const [compiledHash, setCompiledHash] = useState('')
   const [showShare,    setShowShare]    = useState(false)
   const [showObjectSetPicker, setShowObjectSetPicker] = useState(false)
+  const [showGraphView, setShowGraphView] = useState(false) // S301 — "Graph View" mode, toggled with 'G'
   const [fitTrigger,   setFitTrigger]  = useState(0)
   const [showFeed,     setShowFeed]    = useState(false)
 
@@ -2665,6 +2776,7 @@ export function WorkflowCanvas() {
       if (e.key === '?') { setShowShare(s => !s); return }
       if (e.key === '/') { e.preventDefault(); paletteSearchRef.current?.focus(); return }
       if (e.key === 'f' || e.key === 'F') { e.preventDefault(); setFitTrigger(t => t + 1); return }
+      if (e.key === 'g' || e.key === 'G') { e.preventDefault(); setShowGraphView(v => !v); return }
       if (!nds.length) return
       if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'Tab') {
         e.preventDefault()
@@ -2687,6 +2799,8 @@ export function WorkflowCanvas() {
         e.preventDefault()
         setConfigNodeId(null)
         setShowShare(false)
+        setShowGraphView(false)
+        setSelectedEdgeId(null)
         setPaletteSearch('')
         paletteSearchRef.current?.blur()
         kbFocusIdxRef.current = -1
@@ -2795,7 +2909,14 @@ export function WorkflowCanvas() {
     setConfigNodeId(node.id)
   }, [])
 
-  const onPaneClick = useCallback(() => { setCtxMenu(null); setConfigNodeId(null) }, [])
+  const onPaneClick = useCallback(() => { setCtxMenu(null); setConfigNodeId(null); setSelectedEdgeId(null) }, [])
+
+  // S301 — relationship inspector: click an edge whose endpoints are both
+  // synced to the ontology to see the real OntologyRelationship behind it.
+  const onEdgeClick = useCallback((_: React.MouseEvent, edge: Edge) => {
+    setConfigNodeId(null)
+    setSelectedEdgeId(id => id === edge.id ? null : edge.id)
+  }, [])
 
   // Update node step data
   const updateNodeStep = useCallback((nodeId: string, patch: Partial<WorkflowStep>) => {
@@ -3342,6 +3463,7 @@ export function WorkflowCanvas() {
                 onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 onNodeClick={onNodeClick}
+                onEdgeClick={onEdgeClick}
                 onNodeContextMenu={onNodeContextMenu}
                 onNodeMouseEnter={onNodeMouseEnter}
                 onNodeMouseLeave={onNodeMouseLeave}
@@ -3379,6 +3501,7 @@ export function WorkflowCanvas() {
                         { icon: Download,   label: 'Export PNG',             disabled: !nodesRef.current.length, onClick: exportPng, color: TEAL  },
                         { icon: GitBranch,  label: 'Canvas Diff',            disabled: false,                 onClick: openDiff,    color: AMBER  },
                         { icon: Boxes,      label: 'Seed from Object Set',   disabled: false,                 onClick: () => setShowObjectSetPicker(true), color: CYAN },
+                        { icon: Network,    label: 'Graph View (G)',         disabled: false,                 onClick: () => setShowGraphView(v => !v), color: showGraphView ? BLUE : SLATE },
                       ].map(({ icon: Icon, label, disabled, onClick, color }) => (
                         <button key={label} onClick={onClick} disabled={disabled} title={label} style={{
                           width: 28, height: 28, borderRadius: 7, border: 'none',
@@ -3408,6 +3531,18 @@ export function WorkflowCanvas() {
                   </div>
                 </Panel>
               </ReactFlow>
+              {/* S301 — relationship inspector */}
+              {selectedEdgeId && (() => {
+                const edge = edges.find(e => e.id === selectedEdgeId)
+                if (!edge) return null
+                const sourceStep = nodes.find(n => n.id === edge.source)?.data?.step as WorkflowStep | undefined
+                const targetStep = nodes.find(n => n.id === edge.target)?.data?.step as WorkflowStep | undefined
+                return <RelationshipInspector sourceStep={sourceStep} targetStep={targetStep} onClose={() => setSelectedEdgeId(null)} />
+              })()}
+              {/* S301 — Graph View mode */}
+              {showGraphView && wf && (
+                <WorkflowGraphView workflowId={wf.id} onClose={() => setShowGraphView(false)} />
+              )}
               {/* S54 — peer cursor overlays (socket.io presence) */}
               {Array.from(peers.values()).filter(p => p.x !== null).map(p => (
                 <div key={p.userId} style={{

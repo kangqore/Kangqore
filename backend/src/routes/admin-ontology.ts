@@ -131,6 +131,22 @@ router.get('/objects', ...guard, async (req, res) => {
   }
 })
 
+router.get('/objects/:id', ...guard, async (req, res) => {
+  try {
+    const object = await prisma.ontologyObject.findUniqueOrThrow({
+      where: { id: req.params.id },
+      include: {
+        type: { select: { name: true, displayName: true, icon: true, color: true } },
+        outboundRelationships: { where: { validTo: null }, select: { id: true, targetId: true, relationshipType: true, confidence: true, inferredBy: true, validFrom: true, reason: true } },
+        inboundRelationships: { where: { validTo: null }, select: { id: true, sourceId: true, relationshipType: true, confidence: true, inferredBy: true, validFrom: true, reason: true } },
+      },
+    })
+    res.json({ object })
+  } catch (e: any) {
+    res.status(404).json({ error: e.message })
+  }
+})
+
 router.post('/objects', ...guard, async (req, res) => {
   const { typeId, externalId, properties, markings } = req.body
   try {
