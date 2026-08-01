@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
 
 const DIMENSION_ACCENTS = [
   "#FFB7C5", // Row 0: Autonomy (Rose)
@@ -15,7 +14,7 @@ export default function GeminiComparisonSection({ comparisonTable }) {
   return (
     <section className="py-28 relative overflow-hidden bg-[#02050b]">
       {/* Sleek ambient background gradient glow */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(34,211,238,0.12),rgba(255,255,255,0))]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(34,211,238,0.1),rgba(255,255,255,0))]" />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="mb-14">
@@ -33,10 +32,10 @@ export default function GeminiComparisonSection({ comparisonTable }) {
           </h2>
         </div>
 
-        {/* Clean, High-End Card Comparison Grid */}
-        <div className="grid lg:grid-cols-[1fr_64px_1fr] gap-0 items-stretch relative">
+        {/* Side-by-Side Comparison Card Grid */}
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-stretch relative">
           {/* Before Panel (Traditional Automation) */}
-          <div className="rounded-2xl lg:rounded-r-none bg-white/[0.025] backdrop-blur-md border border-white/[0.08] lg:border-r-0 p-8 lg:p-10 shadow-2xl relative z-10 flex flex-col justify-between">
+          <div className="rounded-2xl bg-white/[0.025] backdrop-blur-md border border-white/[0.08] p-8 lg:p-10 shadow-2xl relative z-10 flex flex-col justify-between">
             <div>
               <span className="text-[9px] font-black tracking-[0.35em] uppercase text-white/50 block mb-8">
                 {comparisonTable.colA || 'Traditional Automation'}
@@ -82,18 +81,8 @@ export default function GeminiComparisonSection({ comparisonTable }) {
             </div>
           </div>
 
-          {/* Centre Divider with Pulsing Transition Junction */}
-          <div className="hidden lg:flex flex-col items-center justify-center relative z-20">
-            <div className="absolute inset-y-0 w-px bg-gradient-to-b from-transparent via-cyan-400/40 to-transparent" />
-            <div className="relative z-10 w-11 h-11 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 p-[1px] shadow-[0_0_28px_rgba(34,211,238,0.5)] animate-pulse">
-              <div className="w-full h-full rounded-full bg-[#040812] flex items-center justify-center">
-                <ArrowRight className="w-4 h-4 text-cyan-300" />
-              </div>
-            </div>
-          </div>
-
           {/* After Panel (Agentic AI - Hero Autonomous Card) */}
-          <div className="rounded-2xl lg:rounded-l-none bg-gradient-to-br from-[#06142a]/95 via-[#030a18]/95 to-[#020712]/95 backdrop-blur-md border border-cyan-400/30 lg:border-l-0 border-l-2 border-l-cyan-400/40 p-8 lg:p-10 shadow-[0_0_50px_rgba(34,211,238,0.12)] relative z-10 flex flex-col justify-between">
+          <div className="rounded-2xl bg-gradient-to-br from-[#06142a]/95 via-[#030a18]/95 to-[#020712]/95 backdrop-blur-md border border-cyan-400/30 p-8 lg:p-10 shadow-[0_0_50px_rgba(34,211,238,0.12)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-8">
                 <span className="text-[9px] font-black tracking-[0.35em] uppercase text-cyan-400 block">
