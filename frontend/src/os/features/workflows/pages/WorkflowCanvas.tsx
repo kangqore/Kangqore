@@ -31,7 +31,7 @@ import {
   Activity, Code2, CheckCircle, XCircle, Clock3,
   Building2, Users, Crosshair, Wallet, Flag,
   Wrench, Archive, Layers, Eye, UserCheck,
-  Share2, Download, Keyboard, Search,
+  Share2, Download, Keyboard, Search, Boxes,
 } from 'lucide-react'
 import { api } from '@lib/api'
 import { connectSocket, getSocket } from '@lib/socket'
@@ -2116,6 +2116,74 @@ function FitViewHook({ fitTrigger }: { fitTrigger: number }) {
   return null
 }
 
+// ── S294 — ObjectSetPickerModal ─────────────────────────────────────────────
+// "Seed from Object Set" — drop a saved Object Set onto the intelligence canvas
+// to auto-populate a Context node with its live matched objects.
+function ObjectSetPickerModal({ onSelect, onClose }: {
+  onSelect: (set: { id: string; name: string; description: string | null; lastCount: number }) => void
+  onClose: () => void
+}) {
+  const [sets, setSets]       = useState<Array<{ id: string; name: string; description: string | null; lastCount: number; tags: string[] }>>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    api.get('/admin/ontology/object-sets').then(r => setSets(r.data?.sets ?? [])).finally(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', esc)
+    return () => document.removeEventListener('keydown', esc)
+  }, [onClose])
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', zIndex: 9999,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }} onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div style={{
+        background: CARD, border: `1px solid ${EDGE_C}`, borderRadius: 18, width: 440, maxWidth: '92vw',
+        maxHeight: '70vh', boxShadow: '0 24px 80px rgba(0,0,0,0.6)',
+        display: 'flex', flexDirection: 'column', overflow: 'hidden',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '16px 20px', borderBottom: `1px solid ${EDGE_C}` }}>
+          <Boxes style={{ width: 15, height: 15, color: CYAN }} />
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)', flex: 1 }}>Seed from Object Set</span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, borderRadius: 6, color: SLATE }}>
+            <X style={{ width: 14, height: 14 }} />
+          </button>
+        </div>
+        <div style={{ overflowY: 'auto', padding: 10 }}>
+          {loading ? (
+            <div style={{ padding: 24, textAlign: 'center', fontSize: 11, color: SLATE }}>Loading object sets…</div>
+          ) : sets.length === 0 ? (
+            <div style={{ padding: 24, textAlign: 'center', fontSize: 11, color: SLATE }}>
+              No Object Sets yet — create one in Ontology → Object Sets.
+            </div>
+          ) : sets.map(s => (
+            <button key={s.id} onClick={() => { onSelect(s); onClose() }} style={{
+              display: 'flex', flexDirection: 'column', gap: 3, width: '100%', textAlign: 'left',
+              padding: '10px 12px', borderRadius: 10, border: `1px solid ${EDGE_C}`, background: 'transparent',
+              cursor: 'pointer', marginBottom: 6, transition: `all 0.15s ${EASE}`,
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${CYAN}0c`; (e.currentTarget as HTMLElement).style.borderColor = `${CYAN}40` }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.borderColor = EDGE_C }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)' }}>{s.name}</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: CYAN, flexShrink: 0 }}>{s.lastCount} objects</span>
+              </div>
+              {s.description && (
+                <span style={{ fontSize: 10, color: SLATE, lineHeight: 1.4 }}>{s.description}</span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── ShareModal ────────────────────────────────────────────────────────────────
 const KB_SHORTCUTS = [
   { key: '⌘Z / ⌘⇧Z', desc: 'Undo / Redo' },
@@ -2455,6 +2523,7 @@ export function WorkflowCanvas() {
   const [showCompile,  setShowCompile]  = useState(false)
   const [compiledHash, setCompiledHash] = useState('')
   const [showShare,    setShowShare]    = useState(false)
+  const [showObjectSetPicker, setShowObjectSetPicker] = useState(false)
   const [fitTrigger,   setFitTrigger]  = useState(0)
   const [showFeed,     setShowFeed]    = useState(false)
 
@@ -2768,6 +2837,27 @@ export function WorkflowCanvas() {
       data: { step: { id: newId, type, name: `New ${cfg.label}`, description: 'Click to configure', order: nds.length } as WorkflowStep },
     }])
     setLastSuggestionType(type)
+    setSaved(false)
+  }, [pushHistory, setNodes])
+
+  // S294 — "Seed from Object Set": drop a saved Object Set onto the canvas as a
+  // Context node pre-populated with its live matched objects.
+  const seedFromObjectSet = useCallback((set: { id: string; name: string; description: string | null; lastCount: number }) => {
+    pushHistory()
+    const newId = `step-${Date.now()}`
+    setNodes(nds => [...nds, {
+      id: newId, type: 'wfNode',
+      position: { x: 380, y: 80 + (nds.length % 5) * 130 },
+      data: {
+        step: {
+          id: newId, type: 'context', name: set.name,
+          description: `${set.lastCount} objects — synced from Object Set "${set.name}"`,
+          order: nds.length,
+          objectSetId: set.id,
+        } as WorkflowStep,
+      },
+    }])
+    setLastSuggestionType('context')
     setSaved(false)
   }, [pushHistory, setNodes])
 
@@ -3288,6 +3378,7 @@ export function WorkflowCanvas() {
                         { icon: Sparkles,   label: 'WAANDA Layout Override', disabled: waandaLayoutLoading,   onClick: waandaLayout, color: GREEN  },
                         { icon: Download,   label: 'Export PNG',             disabled: !nodesRef.current.length, onClick: exportPng, color: TEAL  },
                         { icon: GitBranch,  label: 'Canvas Diff',            disabled: false,                 onClick: openDiff,    color: AMBER  },
+                        { icon: Boxes,      label: 'Seed from Object Set',   disabled: false,                 onClick: () => setShowObjectSetPicker(true), color: CYAN },
                       ].map(({ icon: Icon, label, disabled, onClick, color }) => (
                         <button key={label} onClick={onClick} disabled={disabled} title={label} style={{
                           width: 28, height: 28, borderRadius: 7, border: 'none',
@@ -3638,6 +3729,14 @@ export function WorkflowCanvas() {
             edges={edges}
             wfName={wf.name}
             onClose={() => setShowShare(false)}
+          />
+        )}
+
+        {/* S294 — Seed from Object Set */}
+        {showObjectSetPicker && (
+          <ObjectSetPickerModal
+            onSelect={seedFromObjectSet}
+            onClose={() => setShowObjectSetPicker(false)}
           />
         )}
 

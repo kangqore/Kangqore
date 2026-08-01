@@ -304,6 +304,7 @@ export const RAIL_ITEMS: RailEntry[] = [
     sidebarItems: [
       { id: 'ont-explorer',   label: 'Explorer',   path: `${BASE}/ontology/explorer`,  category: 'Explore' },
       { id: 'ont-objects',    label: 'Objects',    path: `${BASE}/ontology/objects`,   category: 'Explore' },
+      { id: 'ont-object-sets', label: 'Object Sets', path: `${BASE}/ontology/object-sets`, category: 'Explore' },
       { id: 'ont-lineage',    label: 'Lineage',    path: `${BASE}/ontology/lineage`,   category: 'Explore' },
       { id: 'ont-markings',   label: 'Markings',   path: `${BASE}/ontology/markings`,  category: 'Manage' },
       { id: 'ont-versioning', label: 'Versioning', path: `${BASE}/ontology/versioning`, category: 'Manage' },

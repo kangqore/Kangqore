@@ -9,6 +9,8 @@ import { OntologyVersioning } from '../services/ontologyVersioning.service'
 import { OntologyBranchService } from '../services/ontologyBranch.service'
 import { OntologyMerge } from '../services/ontologyMerge.service'
 import { CdcService } from '../lib/cdc/cdcService'
+import { ObjectSetService } from '../services/objectSet.service'
+import { getIO } from '../socket'
 
 const router = Router()
 const guard = [authenticate, authorize(['ADMIN'])] as const
@@ -207,6 +209,131 @@ router.post('/actions/:id/execute', ...guard, async (req, res) => {
     res.json({ success: true, actionName: action.name, params: req.body })
   } catch (e: any) {
     res.status(404).json({ error: e.message })
+  }
+})
+
+// ─── Object Sets — S293 ─────────────────────────────────────────────────────
+// Saved, named, composable queries over OntologyObjects. Referenced from KIMMP
+// context, canvas seeding, dashboards, and the SDK.
+
+router.get('/object-sets', ...guard, async (req, res) => {
+  const { tag, isPublic, search } = req.query as Record<string, string>
+  const where: any = {}
+  if (tag) where.tags = { has: tag }
+  if (isPublic !== undefined) where.isPublic = isPublic === 'true'
+  if (search) where.OR = [
+    { name: { contains: search, mode: 'insensitive' } },
+    { description: { contains: search, mode: 'insensitive' } },
+  ]
+  try {
+    const sets = await prisma.objectSet.findMany({
+      where,
+      include: { rootType: { select: { name: true, displayName: true, icon: true, color: true } } },
+      orderBy: [{ isSystem: 'desc' }, { updatedAt: 'desc' }],
+    })
+    res.json({ sets })
+  } catch {
+    res.status(500).json({ error: 'Failed to fetch object sets' })
+  }
+})
+
+router.get('/object-sets/:id', ...guard, async (req, res) => {
+  try {
+    const set = await prisma.objectSet.findUniqueOrThrow({
+      where: { id: req.params.id },
+      include: { rootType: true },
+    })
+    const members = await prisma.objectSetMembership.findMany({
+      where: { objectSetId: set.id },
+      include: { object: { include: { type: { select: { name: true, displayName: true, icon: true, color: true } } } } },
+      orderBy: { addedAt: 'desc' },
+      take: 200,
+    })
+    res.json({ set, objects: members.map(m => m.object) })
+  } catch (e: any) {
+    res.status(404).json({ error: e.message })
+  }
+})
+
+router.post('/object-sets', ...guard, async (req, res) => {
+  const { name, description, rootTypeId, query, tags, isPublic } = req.body
+  try {
+    const set = await prisma.objectSet.create({
+      data: {
+        name, description, rootTypeId: rootTypeId || null,
+        query: query ?? {}, tags: tags ?? [], isPublic: !!isPublic,
+        createdBy: (req as any).user?.id,
+      },
+    })
+    const { count } = await ObjectSetService.execute(set.id)
+    res.json({ set: { ...set, lastCount: count } })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.patch('/object-sets/:id', ...guard, async (req, res) => {
+  const { name, description, query, tags, isPublic } = req.body
+  try {
+    const set = await prisma.objectSet.update({
+      where: { id: req.params.id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(description !== undefined && { description }),
+        ...(query !== undefined && { query }),
+        ...(tags !== undefined && { tags }),
+        ...(isPublic !== undefined && { isPublic }),
+      },
+    })
+    res.json({ set })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.delete('/object-sets/:id', ...guard, async (req, res) => {
+  try {
+    await prisma.objectSet.delete({ where: { id: req.params.id } })
+    res.json({ success: true })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.post('/object-sets/preview', ...guard, async (req, res) => {
+  try {
+    const { objects, count } = await ObjectSetService.preview(req.body.query)
+    res.json({ objects: objects.slice(0, 50), count })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.post('/object-sets/:id/execute', ...guard, async (req, res) => {
+  try {
+    const { objects, count } = await ObjectSetService.execute(req.params.id)
+    try { getIO().to(`objectset:${req.params.id}`).emit('objectset:update', { objectSetId: req.params.id, count }) } catch {}
+    res.json({ objects, count })
+  } catch (e: any) {
+    res.status(404).json({ error: e.message })
+  }
+})
+
+router.post('/object-sets/:id/subscribe', ...guard, async (req, res) => {
+  try {
+    const set = await prisma.objectSet.findUniqueOrThrow({ where: { id: req.params.id } })
+    res.json({ room: `objectset:${set.id}`, socketEvent: 'objectset:update', lastCount: set.lastCount, lastRunAt: set.lastRunAt })
+  } catch (e: any) {
+    res.status(404).json({ error: e.message })
+  }
+})
+
+router.post('/object-sets/seed', ...guard, async (req, res) => {
+  try {
+    const results = await ObjectSetService.seedSystemSets()
+    res.json({ results })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
   }
 })
 
