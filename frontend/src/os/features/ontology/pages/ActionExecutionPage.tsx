@@ -1,12 +1,14 @@
-import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { Scroll, X, CheckCircle, XCircle, ShieldWarning, Robot, User, ShieldCheck } from '@phosphor-icons/react'
+import { useEffect, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Scroll, X, CheckCircle, XCircle, ShieldWarning, Robot, User, ShieldCheck, HourglassMedium, Sparkle } from '@phosphor-icons/react'
+import { connectSocket, getSocket } from '@lib/socket'
 import { actionEngineService, type ActionExecution } from '../actionEngineService'
 
 const STATUS_CFG = {
-  SUCCESS: { label: 'Success', color: '#10b981', Icon: CheckCircle },
-  FAILED:  { label: 'Failed',  color: '#ef4444', Icon: XCircle },
-  BLOCKED: { label: 'Blocked', color: '#f59e0b', Icon: ShieldWarning },
+  SUCCESS:           { label: 'Success',          color: '#10b981', Icon: CheckCircle },
+  FAILED:            { label: 'Failed',           color: '#ef4444', Icon: XCircle },
+  BLOCKED:           { label: 'Blocked',           color: '#f59e0b', Icon: ShieldWarning },
+  PENDING_APPROVAL:  { label: 'Pending Approval',  color: '#a855f7', Icon: HourglassMedium },
 } as const
 
 const ACTOR_CFG = {
@@ -25,10 +27,49 @@ function timeAgo(date: string) {
   return `${Math.floor(h / 24)}d ago`
 }
 
+// Actor breakdown as a real donut, not a stacked bar — pure CSS conic-gradient,
+// no chart library needed for 3 segments.
+function ActorDonut({ byActor }: { byActor: Array<{ actorType: string; count: number }> }) {
+  const total = byActor.reduce((s, a) => s + a.count, 0)
+  if (total === 0) return <p className="text-xs text-[var(--os-text-2)]">No executions yet</p>
+
+  let acc = 0
+  const stops = byActor.map(a => {
+    const color = ACTOR_CFG[a.actorType as keyof typeof ACTOR_CFG]?.color ?? '#94a3b8'
+    const start = (acc / total) * 360
+    acc += a.count
+    const end = (acc / total) * 360
+    return `${color} ${start}deg ${end}deg`
+  })
+
+  return (
+    <div className="flex items-center gap-4">
+      <div
+        className="w-16 h-16 rounded-full flex-shrink-0 relative"
+        style={{ background: `conic-gradient(${stops.join(', ')})` }}
+      >
+        <div className="absolute inset-[5px] rounded-full flex items-center justify-center" style={{ background: 'var(--os-card)' }}>
+          <span className="text-[11px] font-black text-[var(--os-text-1)]">{total}</span>
+        </div>
+      </div>
+      <div className="flex flex-col gap-1">
+        {byActor.map(a => {
+          const cfg = ACTOR_CFG[a.actorType as keyof typeof ACTOR_CFG]
+          return (
+            <span key={a.actorType} className="text-[10px] font-semibold flex items-center gap-1.5" style={{ color: cfg?.color }}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: cfg?.color }} />
+              {cfg?.label ?? a.actorType} — {total > 0 ? ((a.count / total) * 100).toFixed(0) : 0}% ({a.count})
+            </span>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 function MetricsRow() {
   const { data } = useQuery({ queryKey: ['action-execution-metrics'], queryFn: () => actionEngineService.metrics() })
   if (!data) return null
-  const total = data.byActor.reduce((s, a) => s + a.count, 0) || 1
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <div className="os-card p-4">
@@ -44,20 +85,8 @@ function MetricsRow() {
         <p className="text-2xl font-black text-[var(--os-text-1)]">{data.total}</p>
       </div>
       <div className="os-card p-4">
-        <p className="text-[10px] uppercase tracking-widest font-semibold text-[var(--os-text-2)] mb-2">Actor Split</p>
-        <div className="flex h-2 rounded-full overflow-hidden bg-[var(--os-surface-0)]">
-          {data.byActor.map(a => (
-            <div key={a.actorType} style={{ width: `${(a.count / total) * 100}%`, background: ACTOR_CFG[a.actorType as keyof typeof ACTOR_CFG]?.color ?? '#94a3b8' }} title={`${a.actorType}: ${a.count}`} />
-          ))}
-        </div>
-        <div className="flex items-center gap-2 mt-2 flex-wrap">
-          {data.byActor.map(a => (
-            <span key={a.actorType} className="text-[9px] font-semibold flex items-center gap-1" style={{ color: ACTOR_CFG[a.actorType as keyof typeof ACTOR_CFG]?.color }}>
-              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: ACTOR_CFG[a.actorType as keyof typeof ACTOR_CFG]?.color }} />
-              {a.actorType} {a.count}
-            </span>
-          ))}
-        </div>
+        <p className="text-[10px] uppercase tracking-widest font-semibold text-[var(--os-text-2)] mb-2">Actor Split — This Week</p>
+        <ActorDonut byActor={data.byActor} />
       </div>
       {data.mostExecuted.length > 0 && (
         <div className="os-card p-4 col-span-2 lg:col-span-4">
@@ -70,6 +99,59 @@ function MetricsRow() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// S299 — AI Action Feed: live WebSocket stream of KIMMP/AEGIS ActionExecutions.
+function AiActionFeed() {
+  const [events, setEvents] = useState<ActionExecution[]>([])
+  const [aiOnly, setAiOnly] = useState(true)
+
+  useEffect(() => {
+    connectSocket()
+    const socket = getSocket()
+    const onExecution = (execution: ActionExecution) => {
+      setEvents(prev => [execution, ...prev].slice(0, 15))
+    }
+    socket.on('action:execution', onExecution)
+    return () => { socket.off('action:execution', onExecution) }
+  }, [])
+
+  const visible = aiOnly ? events.filter(e => e.actorType !== 'HUMAN') : events
+
+  return (
+    <div className="os-card overflow-hidden">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--os-border)]">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--os-text-2)] flex items-center gap-1.5">
+          <Sparkle size={13} weight="fill" className="text-[#a855f7]" /> AI Action Feed
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" title="Live" />
+        </p>
+        <button onClick={() => setAiOnly(v => !v)} className="text-[10px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
+          {aiOnly ? 'Showing KIMMP + AEGIS only' : 'Showing all actors'}
+        </button>
+      </div>
+      {visible.length === 0 ? (
+        <div className="px-5 py-6 text-center text-xs text-[var(--os-text-2)]">Waiting for live executions…</div>
+      ) : (
+        <div className="divide-y divide-[var(--os-border)] max-h-64 overflow-y-auto">
+          {visible.map(e => {
+            const s = STATUS_CFG[e.status]
+            const a = ACTOR_CFG[e.actorType]
+            return (
+              <div key={e.id} className="flex items-center gap-3 px-5 py-2.5">
+                <a.Icon size={13} weight="fill" style={{ color: a.color }} className="flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-[var(--os-text-1)] truncate">{e.action?.displayName ?? e.actionId}</p>
+                  {e.reasoning && <p className="text-[10px] text-[var(--os-text-2)] truncate">{e.reasoning}</p>}
+                </div>
+                {e.confidence != null && <span className="text-[9px] text-[var(--os-text-2)] flex-shrink-0">{(e.confidence * 100).toFixed(0)}%</span>}
+                <span className="text-[9px] font-bold flex-shrink-0" style={{ color: s.color }}>{s.label}</span>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
@@ -127,10 +209,12 @@ function ExecutionDetailDrawer({ id, onClose }: { id: string; onClose: () => voi
 }
 
 export function ActionExecutionPage() {
+  const qc = useQueryClient()
   const [actorType, setActorType] = useState('')
   const [status, setStatus]       = useState('')
   const [page, setPage]           = useState(1)
   const [detailId, setDetailId]   = useState<string | null>(null)
+  const [seeded, setSeeded]       = useState(false)
 
   const { data, isLoading } = useQuery({
     queryKey: ['action-executions', actorType, status, page],
@@ -139,16 +223,32 @@ export function ActionExecutionPage() {
     }),
   })
 
+  const seedSystem = useMutation({
+    mutationFn: () => actionEngineService.seedSystem(),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['ontology-actions'] }); setSeeded(true) },
+  })
+
   const executions = data?.executions ?? []
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-lg font-black text-[var(--os-text-1)] flex items-center gap-2"><Scroll size={18} /> Action Execution Log</h2>
-        <p className="text-xs text-[var(--os-text-2)] mt-0.5">One audit trail for every write — human, KIMMP, or AEGIS.</p>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h2 className="text-lg font-black text-[var(--os-text-1)] flex items-center gap-2"><Scroll size={18} /> Action Execution Log</h2>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5">One audit trail for every write — human, KIMMP, or AEGIS.</p>
+        </div>
+        <button
+          onClick={() => seedSystem.mutate()}
+          disabled={seedSystem.isPending || seeded}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50 transition-colors"
+          title="Seed the system Actions (ANALYZE_CLIENT, RUN_AGENT, GENERATE_INSIGHT, STRATEGIC_DECISION, GOVERNANCE_BLOCK, BUDGET_DENY) that MissionDispatcher and AEGIS route through"
+        >
+          {seeded ? 'System Actions Seeded' : seedSystem.isPending ? 'Seeding…' : 'Seed System Actions'}
+        </button>
       </div>
 
       <MetricsRow />
+      <AiActionFeed />
 
       <div className="flex items-center gap-2">
         <select className="px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" value={actorType} onChange={e => { setActorType(e.target.value); setPage(1) }}>

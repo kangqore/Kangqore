@@ -4416,6 +4416,7 @@ model OntologyObject {
   externalRefs          ExternalEntityRef[]
   setMemberships        ObjectSetMembership[]
   actionExecutions      ActionExecution[]
+  pendingApprovals      PendingApproval[]
 
   @@index([typeId])
   @@index([externalId])
@@ -4518,6 +4519,7 @@ model OntologyAction {
   validationRules ActionValidationRule[]
   effects         ActionEffect[]
   executionLog    ActionExecution[]
+  pendingApprovals PendingApproval[]
 
   @@unique([typeId, name])
   @@map("ontology_actions")
@@ -4565,10 +4567,17 @@ model ActionExecution {
   actorType      String          @default("HUMAN")   // HUMAN | KIMMP | AEGIS
   params         Json            @default("{}")
   effectsApplied Json            @default("[]")
-  status         String          @default("SUCCESS") // SUCCESS | FAILED | BLOCKED
+  status         String          @default("SUCCESS") // SUCCESS | FAILED | BLOCKED | PENDING_APPROVAL
   errorMessage   String?
   durationMs     Int             @default(0)
   confidence     Float?
+  // S298 — AI Through Actions: which sub-agents contributed, which KIMMP module
+  // dispatched this, and a truncated rationale — the fields that make "what did
+  // KIMMP do to Client X this week?" answerable from this table alone.
+  agentsMixed    String[]        @default([])
+  sourceModule   String?
+  reasoning      String?
+  policyId       String?         // KimmpPolicy that gated this execution, if any
   createdAt      DateTime        @default(now())
 
   @@index([actionId])
@@ -4576,6 +4585,36 @@ model ActionExecution {
   @@index([actorType, createdAt])
   @@index([status])
   @@map("action_executions")
+}
+
+// ─── Human-in-the-loop — S299 ─────────────────────────────────────────────────
+// A KimmpPolicy with effect REQUIRE_APPROVAL parks the execution here instead of
+// running it. An ADMIN approves (effects run, an ActionExecution SUCCESS row is
+// written) or rejects (a BLOCKED ActionExecution row is written, nothing runs).
+
+model PendingApproval {
+  id           String          @id @default(cuid())
+  actionId     String
+  action       OntologyAction  @relation(fields: [actionId], references: [id], onDelete: Cascade)
+  objectId     String?
+  object       OntologyObject? @relation(fields: [objectId], references: [id], onDelete: SetNull)
+  actorId      String?
+  actorType    String          @default("KIMMP")   // HUMAN | KIMMP | AEGIS
+  params       Json            @default("{}")
+  policyId     String?
+  policyName   String?
+  reason       String?
+  confidence   Float?
+  status       String          @default("PENDING") // PENDING | APPROVED | REJECTED
+  resolvedBy   String?
+  resolvedAt   DateTime?
+  executionId  String?         // ActionExecution written once resolved
+  createdAt    DateTime        @default(now())
+
+  @@index([status, createdAt])
+  @@index([actionId])
+  @@index([objectId])
+  @@map("pending_approvals")
 }
 
 // ─── Object Sets — S293 ───────────────────────────────────────────────────────

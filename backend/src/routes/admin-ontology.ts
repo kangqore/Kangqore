@@ -398,12 +398,64 @@ router.delete('/actions/effects/:effectId', ...guard, async (req, res) => {
 // ── Execution — S296/S297 ───────────────────────────────────────────────────────
 
 router.post('/actions/:id/validate', ...guard, async (req, res) => {
-  const { params, objectId } = req.body
+  const { params, objectId, actorType, actorId } = req.body
   try {
-    const result = await ActionEngine.preflight(req.params.id, params ?? {}, objectId)
+    const result = await ActionEngine.preflight(req.params.id, params ?? {}, objectId, actorType ?? 'HUMAN', actorId)
     res.json(result)
   } catch (e: any) {
     res.status(404).json({ error: e.message })
+  }
+})
+
+router.post('/actions/seed-system', ...guard, async (req, res) => {
+  try {
+    const results = await ActionEngine.seedSystemActions()
+    res.json({ results })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// ── S299 — Human-in-the-loop ────────────────────────────────────────────────
+
+router.get('/pending-approvals', ...guard, async (req, res) => {
+  const { status = 'PENDING', page = '1', limit = '20' } = req.query as Record<string, string>
+  const skip = (parseInt(page) - 1) * parseInt(limit)
+  try {
+    const where = status === 'ALL' ? {} : { status }
+    const [items, total] = await Promise.all([
+      prisma.pendingApproval.findMany({
+        where,
+        include: {
+          action: { select: { name: true, displayName: true } },
+          object: { select: { id: true, externalId: true, type: { select: { displayName: true, icon: true, color: true } } } },
+        },
+        skip, take: parseInt(limit),
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.pendingApproval.count({ where }),
+    ])
+    res.json({ items, total, pages: Math.ceil(total / parseInt(limit)) })
+  } catch {
+    res.status(500).json({ error: 'Failed to fetch pending approvals' })
+  }
+})
+
+router.post('/pending-approvals/:id/approve', ...guard, async (req, res) => {
+  try {
+    const execution = await ActionEngine.resolvePendingApproval(req.params.id, 'APPROVE', (req as any).user?.id ?? 'admin')
+    res.json({ execution })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.post('/pending-approvals/:id/reject', ...guard, async (req, res) => {
+  try {
+    const execution = await ActionEngine.resolvePendingApproval(req.params.id, 'REJECT', (req as any).user?.id ?? 'admin')
+    res.json({ execution })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
   }
 })
 
