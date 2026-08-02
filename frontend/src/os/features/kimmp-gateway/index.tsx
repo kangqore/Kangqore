@@ -1,12 +1,14 @@
 import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { Radio, Wand2 } from 'lucide-react'
+import { Radio, Wand2, Trophy } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { GatewayExplorerPage } from './pages/GatewayExplorerPage'
 import { PromptRegistryStudioPage } from './pages/PromptRegistryStudioPage'
+import { AipParityPage } from './pages/AipParityPage'
 
 const TABS = [
   { path: 'explorer', label: 'Gateway',        icon: Radio },
   { path: 'prompts',  label: 'Prompt Registry', icon: Wand2 },
+  { path: 'parity',   label: 'AIP Parity',      icon: Trophy },
 ]
 
 export function KimmpGatewayModule() {
@@ -34,6 +36,7 @@ export function KimmpGatewayModule() {
         <Route index          element={<Navigate to="explorer" replace />} />
         <Route path="explorer" element={<GatewayExplorerPage />}          />
         <Route path="prompts"  element={<PromptRegistryStudioPage />}     />
+        <Route path="parity"   element={<AipParityPage />}                />
         <Route path="*"        element={<Navigate to="explorer" replace />} />
       </Routes>
     </div>

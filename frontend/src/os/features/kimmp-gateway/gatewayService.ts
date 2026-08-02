@@ -113,6 +113,33 @@ export interface ToolCallRow {
   executions: ToolCallExecution[]
 }
 
+// S325 — Unified AI Operations Console: everything every earlier phase in
+// the roadmap knows about a single call, in one response.
+export interface CallDetail {
+  call: LlmCallLog
+  promptRegression: PromptRegression | null
+  agent: { id: string; name: string; role: string; status: string; model: string } | null
+  agentQuality: { avgOverall: number | null; evalCount: number } | null
+  toolExecutions: ToolCallExecution[]
+}
+
+// S327 — AIP Parity Scorecard. `live` = real non-zero production data exists
+// for this capability, not just "the code exists." Not a sprint tracker —
+// no table records "S308 shipped"; this reports actual usage per capability.
+export interface AipCapability {
+  key: string
+  label: string
+  metric: string
+  value: number
+  live: boolean
+}
+
+export interface AipParity {
+  capabilities: AipCapability[]
+  overall: { liveCount: number; totalCount: number; allLive: boolean }
+  computedAt: string
+}
+
 // S320 — Eval Health tile. Both read existing Gate 3/3.5/E4 aggregation
 // (admin.ts readiness + wir/evaluations/quality) — no new scoring here.
 export interface ReadinessSummary {
@@ -139,7 +166,7 @@ export const gatewayService = {
   listCalls(params?: { actorType?: string; model?: string; taskType?: string; status?: string; page?: number; limit?: number }): Promise<{ calls: LlmCallLog[]; total: number; pages: number }> {
     return api.get('/admin/kimmp-gateway/calls', { params }).then(r => r.data)
   },
-  getCall(id: string): Promise<{ call: LlmCallLog; promptRegression: PromptRegression | null }> {
+  getCall(id: string): Promise<CallDetail> {
     return api.get(`/admin/kimmp-gateway/calls/${id}`).then(r => r.data)
   },
   costAnalytics(days = 30): Promise<CostAnalytics> {
@@ -198,5 +225,8 @@ export const gatewayService = {
   },
   evalQuality(days = 30): Promise<AgentQuality[]> {
     return api.get('/admin/kangqore-immp/wir/evaluations/quality', { params: { days } }).then(r => r.data.quality)
+  },
+  aipParity(): Promise<AipParity> {
+    return api.get('/admin/kangqore-immp/aip-parity').then(r => r.data)
   },
 }

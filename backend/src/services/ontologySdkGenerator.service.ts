@@ -195,6 +195,111 @@ function pyType(f: FieldDef): string {
   }
 }
 
+// S326 — the operational surface (Gateway/Registry/Eval/Agent Studio), read
+// APIs only, appended to the same generated file. There's no live shape to
+// infer here the way object types are — v1/kimmpOps.ts's response shapes are
+// fixed and metadata-scoped (no prompt/response text, no prompt content, no
+// systemPrompt), so this is hand-written once rather than generated per-field.
+function generateOperationalTypeScript(): string {
+  return `// ── KIMMP Operations Client — Gateway, Prompt Registry, Eval, Agent Studio ──
+// Read-only, metadata-scoped: call rows expose cost/latency/status (never
+// prompt/response text), prompts expose name/version (never content), agents
+// expose role/model (never systemPrompt). Same auth as OntologyClient above.
+
+export interface KimmpCallSummary {
+  id: string; actorType: string; model: string; provider: string
+  promptTokens: number; completionTokens: number; totalCost: number; latencyMs: number
+  taskType: string | null; agentRole: string | null; status: string
+  promptName: string | null; promptVersion: number | null; createdAt: string
+}
+export interface KimmpCostSummary { days: number; totalCost: number; totalTokens: number; callCount: number }
+export interface KimmpPromptSummary { name: string; activeVersion: number; totalVersions: number }
+export interface KimmpReadiness {
+  benchmark: { score: number; passCount: number; driftAlert: boolean; at: string } | null
+  runtime35: { score: number; passCount: number; failCount: number; at: string } | null
+}
+export interface KimmpAgentSummary {
+  id: string; name: string; role: string; description: string | null
+  status: string; model: string; tools: string[]; maxLevel: number; createdAt: string
+}
+
+export class KimmpOperationsClient {
+  private readonly headers: Record<string, string>
+  private readonly base: string
+
+  constructor({ apiKey, baseUrl = 'https://yourdomain.com' }: OntologyClientOptions) {
+    this.base = baseUrl.replace(/\\/$/, '') + '/api/v1/kimmp'
+    this.headers = { Authorization: \`Bearer \${apiKey}\`, 'Content-Type': 'application/json' }
+  }
+
+  private async req<T>(path: string): Promise<T> {
+    const res = await fetch(this.base + path, { headers: this.headers })
+    if (!res.ok) throw new Error(\`Kangqore KIMMP Ops API error \${res.status}: \${await res.text()}\`)
+    return res.json() as Promise<T>
+  }
+
+  calls(opts: { page?: number; limit?: number; status?: string } = {}): Promise<{ data: KimmpCallSummary[]; total: number; page: number; limit: number }> {
+    const params = new URLSearchParams(opts as Record<string, string>).toString()
+    return this.req(\`/calls\${params ? '?' + params : ''}\`)
+  }
+
+  cost(days = 30): Promise<{ data: KimmpCostSummary }> {
+    return this.req(\`/cost?days=\${days}\`)
+  }
+
+  prompts(): Promise<{ data: KimmpPromptSummary[]; count: number }> {
+    return this.req('/prompts')
+  }
+
+  readiness(): Promise<{ data: KimmpReadiness }> {
+    return this.req('/readiness')
+  }
+
+  agents(): Promise<{ data: KimmpAgentSummary[]; count: number }> {
+    return this.req('/agents')
+  }
+}
+`
+}
+
+function generateOperationalPython(): string {
+  return `
+
+# ── KIMMP Operations Client — Gateway, Prompt Registry, Eval, Agent Studio ──
+# Read-only, metadata-scoped: same fields as the TypeScript KimmpOperationsClient.
+
+class KimmpOperationsClient:
+    def __init__(self, api_key: str, base_url: str = "https://yourdomain.com"):
+        self._base = base_url.rstrip("/") + "/api/v1/kimmp"
+        self._headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+
+    def _get(self, path: str) -> Dict:
+        r = requests.get(self._base + path, headers=self._headers)
+        r.raise_for_status()
+        return r.json()
+
+    def calls(self, page: int = 1, limit: int = 20, status: Optional[str] = None) -> Dict:
+        params = {"page": page, "limit": limit}
+        if status:
+            params["status"] = status
+        r = requests.get(self._base + "/calls", headers=self._headers, params=params)
+        r.raise_for_status()
+        return r.json()
+
+    def cost(self, days: int = 30) -> Dict:
+        return self._get(f"/cost?days={days}")
+
+    def prompts(self) -> Dict:
+        return self._get("/prompts")
+
+    def readiness(self) -> Dict:
+        return self._get("/readiness")
+
+    def agents(self) -> Dict:
+        return self._get("/agents")
+`
+}
+
 export function generateTypeScript(types: TypeShape[], actions: ActionShape[], objectSets: ObjectSetShape[]): string {
   const interfaces = types.map(t => {
     const fields = t.fields.map(f => `  ${f.name}${f.required ? '' : '?'}: ${tsType(f)}${f.inferred ? '  // inferred from live data' : ''}`).join('\n')
@@ -222,8 +327,10 @@ export function generateTypeScript(types: TypeShape[], actions: ActionShape[], o
   ).join('\n')
 
   return `/**
- * Kangqore Ontology SDK — TypeScript
- * Generated live from OntologyObjectType / OntologyAction / ObjectSet definitions.
+ * Kangqore SDK — TypeScript
+ * Ontology surface generated live from OntologyObjectType / OntologyAction /
+ * ObjectSet definitions; KIMMP Operations surface (Gateway, Prompt Registry,
+ * Eval, Agent Studio) is read-only and metadata-scoped — see S326.
  * Regenerate any time via GET /admin/ontology/sdk/typescript — do not hand-edit.
  */
 
@@ -286,15 +393,20 @@ ${objectSetApis || '    // no object sets yet'}
   }
 }
 
+${generateOperationalTypeScript()}
 /* Quick-start:
 
-import { OntologyClient } from './kangqore-ontology-sdk'
+import { OntologyClient, KimmpOperationsClient } from './kangqore-ontology-sdk'
 
 const ontology = new OntologyClient({ apiKey: 'kq_live_YOUR_PARTNER_KEY' })
+const kimmp    = new KimmpOperationsClient({ apiKey: 'kq_live_YOUR_PARTNER_KEY' })
 
 const { objects } = await ontology.objects.Client.where({ tier: 'ENTERPRISE' }).execute()
 const highRisk = await ontology.objectSets['<object-set-id>'].execute()
 await ontology.actions.ApproveRenewal.execute({ reason: 'On-time payment history' }, '<clientObjectId>')
+
+const { data: recentCalls } = await kimmp.calls({ limit: 10 })
+const { data: readiness }   = await kimmp.readiness()
 
 */
 `
@@ -350,7 +462,7 @@ class OntologyClient:
         return self._post(f"/object-sets/{object_set_id}/execute", {})
 
 ${actionMethods || '    # No actions defined yet'}
-`
+${generateOperationalPython()}`
 }
 
 function computeSchemaHash(types: TypeShape[], actions: ActionShape[], objectSets: ObjectSetShape[]): string {

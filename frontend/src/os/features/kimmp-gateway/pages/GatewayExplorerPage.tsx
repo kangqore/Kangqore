@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { io } from 'socket.io-client'
 import {
   Radio, Scroll, ChartBar, ChartPie, ShieldWarning, Wallet, Wrench,
-  Plus, Trash, X, Database, MagnifyingGlass, Warning, CheckCircle,
+  Plus, Trash, X, Database, MagnifyingGlass, Warning, CheckCircle, Robot,
 } from '@phosphor-icons/react'
 import { Loader2 } from 'lucide-react'
 import { gatewayService, type LlmCallLog } from '../gatewayService'
@@ -66,6 +66,34 @@ function CallDetailModal({ call, onClose }: { call: LlmCallLog; onClose: () => v
             <span>This prompt version was active during a Gate 3 drift alert ({regression.driftDelta.toFixed(1)}pt drop, score {regression.totalScore.toFixed(0)}, {new Date(regression.at).toLocaleDateString()}).</span>
           </div>
         )}
+
+        {/* S325 — Unified AI Operations Console: the agent that made this
+            call (P6), its eval quality (P5), and the tools it invoked (P3),
+            all in the same view as the raw prompt/response. */}
+        {detail?.agent && (
+          <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <Robot size={12} className="text-[var(--os-text-2)] flex-shrink-0" />
+              <span className="text-[11px] font-bold text-[var(--os-text-1)] truncate">{detail.agent.name}</span>
+              <span className="text-[9px] text-[var(--os-text-2)] truncate">{detail.agent.role}</span>
+            </div>
+            <span className="text-[9px] text-[var(--os-text-2)] flex-shrink-0">
+              {detail.agentQuality?.avgOverall != null ? `${detail.agentQuality.avgOverall.toFixed(1)}/5 (${detail.agentQuality.evalCount})` : 'No evaluations yet'}
+            </span>
+          </div>
+        )}
+        {detail && detail.toolExecutions.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {detail.toolExecutions.map(ex => (
+              <span key={ex.id} className="flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-semibold bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+                <Wrench size={10} className="text-[var(--os-text-2)]" />
+                <span className="text-[var(--os-text-1)]">{ex.action?.displayName ?? ex.action?.name ?? 'Unknown action'}</span>
+                <span style={{ color: statusColor(ex.status) }}>{ex.status}</span>
+              </span>
+            ))}
+          </div>
+        )}
+
         <div>
           <p className="text-[9px] uppercase tracking-wide text-[var(--os-text-2)] mb-1">Prompt</p>
           <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-3 whitespace-pre-wrap text-[var(--os-text-1)]">{call.prompt}</pre>

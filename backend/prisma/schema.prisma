@@ -4988,6 +4988,28 @@ model OntologySubscription {
   @@map("ontology_subscriptions")
 }
 
+// S326 — partner webhook registrations for KIMMP operational events (eval
+// regressions, budget breaches) — the operational-surface counterpart to
+// OntologySubscription above. Same CDC-event-bus integration point
+// (lib/eventBus.ts, topic 'cdc.events'), new event types; kept as its own
+// model rather than overloading OntologySubscription.objectTypeId, which is
+// an ontology-specific FK with no meaning for these event types.
+model KimmpOperationalSubscription {
+  id              String    @id @default(cuid())
+  name            String
+  url             String
+  secret          String              // HMAC-SHA256 signing secret, same scheme as OntologySubscription
+  eventTypes      String[]  @default(["eval.drift_alert", "budget.exceeded"])
+  enabled         Boolean   @default(true)
+  lastTriggeredAt DateTime?
+  lastStatus      String?             // last delivery HTTP status or 'error'
+  createdBy       String?
+  createdAt       DateTime  @default(now())
+
+  @@index([enabled])
+  @@map("kimmp_operational_subscriptions")
+}
+
 // ── ITIL / Service Management ──────────────────────────────────────────────────
 
 model ConfigItem {
