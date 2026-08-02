@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { io } from 'socket.io-client'
 import {
   Radio, Scroll, ChartBar, ChartPie, ShieldWarning, Wallet, Wrench,
-  Plus, Trash, X,
+  Plus, Trash, X, Database, MagnifyingGlass,
 } from '@phosphor-icons/react'
 import { Loader2 } from 'lucide-react'
 import { gatewayService, type LlmCallLog } from '../gatewayService'
@@ -14,8 +14,10 @@ import { gatewayService, type LlmCallLog } from '../gatewayService'
 // AEGIS callLLM chokepoints (see backend commit for the full breakdown).
 // S315 adds the Tool Calls tab — OntologyActions Claude invoked via S313/S314's
 // tool-calling bridge, cross-linked to their ActionExecution rows.
+// S318 adds the Index Health tab — pgvector coverage/size + index-vs-legacy
+// latency benchmark + a live unified semantic search box.
 
-type Tab = 'live' | 'calls' | 'cost' | 'models' | 'pii' | 'budgets' | 'tools'
+type Tab = 'live' | 'calls' | 'cost' | 'models' | 'pii' | 'budgets' | 'tools' | 'index'
 
 const TAB_DEFS: Array<{ id: Tab; label: string; icon: any }> = [
   { id: 'live',    label: 'Live Feed',      icon: Radio },
@@ -25,6 +27,7 @@ const TAB_DEFS: Array<{ id: Tab; label: string; icon: any }> = [
   { id: 'pii',     label: 'PII Incidents',  icon: ShieldWarning },
   { id: 'budgets', label: 'Token Budgets',  icon: Wallet },
   { id: 'tools',   label: 'Tool Calls',     icon: Wrench },
+  { id: 'index',   label: 'Index Health',   icon: Database },
 ]
 
 function fmtCost(c: number) { return c < 0.01 && c > 0 ? '<$0.01' : `$${c.toFixed(2)}` }
@@ -410,6 +413,113 @@ function ToolCallsTab() {
   )
 }
 
+function fmtBytes(n: number) {
+  if (n < 1024) return `${n} B`
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`
+  return `${(n / (1024 * 1024)).toFixed(1)} MB`
+}
+
+const TABLE_LABEL: Record<string, string> = {
+  knowledge_chunks: 'Knowledge Chunks (public KB)',
+  kimmp_system_knowledge: 'System Knowledge (8 RAG systems)',
+}
+
+function IndexHealthTab() {
+  const qc = useQueryClient()
+  const { data: health, isLoading } = useQuery({ queryKey: ['pgvector-health'], queryFn: () => gatewayService.pgvectorHealth() })
+  const backfill = useMutation({
+    mutationFn: () => gatewayService.pgvectorBackfill(),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['pgvector-health'] }),
+  })
+  const benchmark = useMutation({ mutationFn: () => gatewayService.pgvectorBenchmark() })
+
+  const [query, setQuery] = useState('')
+  const search = useMutation({ mutationFn: () => gatewayService.knowledgeSearch(query, 6) })
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-[var(--os-text-2)]">pgvector HNSW index over the two embedding stores — semantic search that used to scan every row now queries a real index.</p>
+        <button onClick={() => backfill.mutate()} disabled={backfill.isPending}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+          {backfill.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Run backfill'}
+        </button>
+      </div>
+
+      {isLoading ? <div className="os-card h-32 animate-pulse bg-[var(--os-surface-0)]" /> : (
+        <div className="grid grid-cols-2 gap-4">
+          {(health ?? []).map(h => {
+            const pct = h.totalRows > 0 ? (h.indexedRows / h.totalRows) * 100 : 0
+            return (
+              <div key={h.table} className="os-card p-4 space-y-2">
+                <p className="text-xs font-bold text-[var(--os-text-1)]">{TABLE_LABEL[h.table] ?? h.table}</p>
+                <div className="h-1.5 rounded-full bg-[var(--os-surface-0)] overflow-hidden">
+                  <div className="h-full bg-[#579bfc]" style={{ width: `${pct}%` }} />
+                </div>
+                <div className="flex items-center justify-between text-[10px] text-[var(--os-text-2)]">
+                  <span>{h.indexedRows} / {h.totalRows} rows indexed ({pct.toFixed(0)}%)</span>
+                  <span className="font-semibold text-[var(--os-text-1)]">{fmtBytes(h.indexSizeBytes)} on disk</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      <div className="os-card p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--os-text-2)]">Latency — index vs. legacy full scan</p>
+          <button onClick={() => benchmark.mutate()} disabled={benchmark.isPending} className="text-[10px] font-semibold text-[#579bfc]">
+            {benchmark.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Run benchmark'}
+          </button>
+        </div>
+        {benchmark.data ? (
+          <div className="grid grid-cols-2 gap-4">
+            {benchmark.data.map(b => (
+              <div key={b.table} className="space-y-1.5">
+                <p className="text-[11px] font-bold text-[var(--os-text-1)]">{TABLE_LABEL[b.table] ?? b.table}</p>
+                <div className="flex items-center justify-between text-[10px]">
+                  <span className="text-[#10b981] font-semibold">Index: p50 {b.indexMs.p50.toFixed(1)}ms · p95 {b.indexMs.p95.toFixed(1)}ms</span>
+                </div>
+                <div className="flex items-center justify-between text-[10px]">
+                  <span className="text-[var(--os-text-2)]">Legacy scan ({b.rowsScanned} rows): p50 {b.legacyScanMs.p50.toFixed(1)}ms · p95 {b.legacyScanMs.p95.toFixed(1)}ms</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-[10px] text-[var(--os-text-2)]">Run the benchmark to compare — same query, {'>'}=7 samples each path.</p>
+        )}
+      </div>
+
+      <div className="os-card p-4 space-y-3">
+        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--os-text-2)]">Try unified search</p>
+        <div className="flex items-center gap-2">
+          <input value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && query.trim() && search.mutate()}
+            placeholder="Search both knowledge stores…" className="flex-1 px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <button onClick={() => search.mutate()} disabled={search.isPending || !query.trim()} className="p-2 rounded-md bg-[var(--os-accent)] text-white disabled:opacity-50">
+            {search.isPending ? <Loader2 size={13} className="animate-spin" /> : <MagnifyingGlass size={13} />}
+          </button>
+        </div>
+        {search.data && (
+          <div className="space-y-1.5">
+            {search.data.length === 0 ? <p className="text-[11px] text-[var(--os-text-2)]">No results</p> : search.data.map(r => (
+              <div key={r.id} className="p-2.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+                <div className="flex items-center justify-between">
+                  <p className="text-[11px] font-bold text-[var(--os-text-1)]">{r.title}</p>
+                  <span className="text-[9px] text-[var(--os-text-2)] tabular-nums">{r.score.toFixed(3)}</span>
+                </div>
+                <p className="text-[9px] text-[var(--os-text-2)] mb-1">{r.source === 'knowledge_chunk' ? 'Public KB' : `${r.system} · ${r.docType}`}</p>
+                <p className="text-[10px] text-[var(--os-text-2)] line-clamp-2">{r.body}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export function GatewayExplorerPage() {
   const [tab, setTab] = useState<Tab>('live')
 
@@ -436,6 +546,7 @@ export function GatewayExplorerPage() {
       {tab === 'pii' && <PiiIncidentsTab />}
       {tab === 'budgets' && <BudgetsTab />}
       {tab === 'tools' && <ToolCallsTab />}
+      {tab === 'index' && <IndexHealthTab />}
     </div>
   )
 }

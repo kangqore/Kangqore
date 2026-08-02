@@ -4,6 +4,8 @@ import { prisma } from '../lib/prisma'
 import { authenticate, authorize } from '../middleware/auth'
 import { complete, GATEWAY_MODEL_MAP } from '../services/kimmpGateway.service'
 import { checkBudget } from '../services/kimmpGatewayCore'
+import { PgvectorIndex } from '../services/pgvectorIndex.service'
+import { embedQuery, isEmbeddingsConfigured } from '../services/embeddings.service'
 
 const router = Router()
 const guard = [authenticate, authorize(['ADMIN'])] as const
@@ -300,6 +302,40 @@ router.get('/tool-calls', ...guard, async (req, res) => {
     }))
 
     res.json({ rows, total, pages: Math.ceil(total / parseInt(limit)) })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// ─── S316-S318: pgvector index health ───────────────────────────────────────
+
+router.get('/pgvector/health', ...guard, async (_req, res) => {
+  try {
+    const health = await PgvectorIndex.health()
+    res.json({ health })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/pgvector/backfill', ...guard, async (_req, res) => {
+  try {
+    const results = await PgvectorIndex.backfillAll()
+    res.json({ results })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.get('/pgvector/benchmark', ...guard, async (_req, res) => {
+  try {
+    if (!isEmbeddingsConfigured()) { res.status(400).json({ error: 'Embeddings not configured' }); return }
+    const emb = await embedQuery('system health check probe query for latency benchmarking')
+    const benchmarks = await Promise.all([
+      PgvectorIndex.benchmarkLatency('knowledge_chunks', emb),
+      PgvectorIndex.benchmarkLatency('kimmp_system_knowledge', emb),
+    ])
+    res.json({ benchmarks })
   } catch (e: any) {
     res.status(500).json({ error: e.message })
   }

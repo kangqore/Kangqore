@@ -28,6 +28,8 @@ import {
 } from '../../services/embeddings.service'
 import { SystemType } from './agentRegistry'
 import { AegisLedger } from '../../kangqore-aegis/aegisLedger.service'
+import { PgvectorIndex } from '../../services/pgvectorIndex.service'
+import { KimmpFlags } from '../core/flags'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -182,6 +184,8 @@ export class SystemRAG {
         },
       })
       loadedAt.delete(system)  // invalidate in-memory index
+      // S317 — keep the pgvector index current at ingest time.
+      if (embedding.length) PgvectorIndex.upsertVector('kimmp_system_knowledge', record.id, embedding).catch(() => {})
       logger.info(`[KIMMP:RAG] ingested system=${system} type=${docType} id=${record.id}`)
       return { id: record.id, ok: true }
     } catch (err: any) {
@@ -213,20 +217,37 @@ export class SystemRAG {
 
     const MIN_SCORE = 0.3
     const now = Date.now()
-    const scored = index
-      .filter(d => d.embedding.length > 0)
-      .map(d => {
-        const cosine    = cosineSimilarity(queryEmb, d.embedding)
-        const daysSince = (now - d.createdAt.getTime()) / 86_400_000
-        // Decay: full weight at 0 days, ~37% at 90 days, ~5% at 270 days
-        const decay = Math.exp(-daysSince / 90)
-        // Blend: 80% cosine relevance + 20% recency so fresh docs are preferred
-        // but a highly relevant old doc still beats a barely-relevant new one
-        const score = cosine * 0.8 + cosine * decay * 0.2
-        return { doc: d, score }
-      })
-      .filter(s  => s.score >= MIN_SCORE)
-      .sort((a, b) => b.score - a.score)
+    const blend = (cosine: number, createdAt: Date) => {
+      const daysSince = (now - createdAt.getTime()) / 86_400_000
+      // Decay: full weight at 0 days, ~37% at 90 days, ~5% at 270 days
+      const decay = Math.exp(-daysSince / 90)
+      // Blend: 80% cosine relevance + 20% recency so fresh docs are preferred
+      // but a highly relevant old doc still beats a barely-relevant new one
+      return cosine * 0.8 + cosine * decay * 0.2
+    }
+
+    // S317 — query the HNSW index for the candidate set instead of
+    // cosine-scoring every doc in this system's in-memory index. The
+    // recency-decay blend still runs in TS on the (much smaller) candidate
+    // set — pgvector only ranks by raw cosine, it doesn't know about decay.
+    // Feature-flagged; both paths return the identical scored shape.
+    let scored: Array<{ doc: IndexedDoc; score: number }>
+    if (KimmpFlags.pgvectorEnabled()) {
+      const byId = new Map(index.map(d => [d.id, d]))
+      const matches = await PgvectorIndex.queryTopK(
+        'kimmp_system_knowledge', queryEmb, topK * 10, `system = '${system}' AND active = true`,
+      ).catch(() => [])
+      scored = matches
+        .map(m => { const doc = byId.get(m.id); return doc ? { doc, score: blend(m.score, doc.createdAt) } : null })
+        .filter((s): s is { doc: IndexedDoc; score: number } => !!s && s.score >= MIN_SCORE)
+        .sort((a, b) => b.score - a.score)
+    } else {
+      scored = index
+        .filter(d => d.embedding.length > 0)
+        .map(d => ({ doc: d, score: blend(cosineSimilarity(queryEmb, d.embedding), d.createdAt) }))
+        .filter(s => s.score >= MIN_SCORE)
+        .sort((a, b) => b.score - a.score)
+    }
 
     if (scored.length === 0) return []
 

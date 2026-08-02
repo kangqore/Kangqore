@@ -61,6 +61,11 @@ export const KimmpFlags = {
    *  Enable once VOYAGE_API_KEY is set and the KB index is populated. */
   ragEnabled: () => bool('KIMMP_RAG_ENABLED', false),
 
+  /** S317 — query the pgvector HNSW index instead of scanning + cosine-scoring
+   *  every row in memory. OFF by default so the old and new paths can be
+   *  compared before fully cutting over; both return the same shape. */
+  pgvectorEnabled: () => bool('KIMMP_PGVECTOR_ENABLED', false),
+
   /** Phase 5 — run and store v0 predictions per lead. OFF by default.
    *  Enable after the migration is applied. */
   predictionsEnabled: () => bool('KIMMP_PREDICTIONS_ENABLED', false),
