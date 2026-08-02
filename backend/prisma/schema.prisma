@@ -3251,6 +3251,80 @@ model KimmpLlmCost {
 }
 
 // ---------------------------------------------------------------------------
+// S308 — KIMMP Intelligence Gateway: unified LLM call log.
+// Reality check: three per-call cost ledgers already exist in this schema —
+// KimmpLlmCost (above), AICostEntry, and WaandaRuntimeCall — and all three
+// are effectively dead: zero writes in production code paths (WaandaRuntimeCall
+// is only reachable via a nightly benchmark script). Rather than add a fourth
+// unused table, this is the one that's actually wired into the real call paths
+// (kimmpLLMRouter.routedCall, withWaandax, AEGIS callLLM). The three legacy
+// ledgers are left in place (dropping tables isn't in scope here) but should
+// be considered for retirement in a future cleanup sprint.
+// ---------------------------------------------------------------------------
+model LlmCallLog {
+  id                 String   @id @default(cuid())
+  userId             String?
+  actorType          String   // KIMMP | AEGIS | HUMAN | COPILOT | NOTEBOOK
+  model              String
+  provider           String   // claude | waandax | gen2 | openai | gemini | none
+  promptTokens       Int      @default(0)
+  completionTokens   Int      @default(0)
+  totalCost          Float    @default(0)
+  latencyMs          Int      @default(0)
+  prompt             String   @db.Text  // truncated to 2000 chars before storage
+  response           String   @db.Text  // truncated to 2000 chars before storage
+  referencedObjectIds String[] @default([])
+  taskType           String?
+  agentRole          String?
+  sourceModule       String?  // best-effort file attribution for passively-instrumented call sites
+  status             String   // SUCCESS | ERROR | BLOCKED
+  errorMessage       String?
+  piiDetected        Boolean  @default(false)
+  piiPatterns        String[] @default([])
+  createdAt          DateTime @default(now())
+
+  @@index([userId])
+  @@index([actorType])
+  @@index([createdAt])
+  @@index([status])
+  @@map("llm_call_logs")
+}
+
+// S309 — per-user/team monthly token budget. Usage is computed on the fly by
+// summing LlmCallLog rows for the current calendar month rather than kept in
+// a separate running counter — correct by construction, and "auto-resets
+// monthly" falls out for free from the createdAt filter.
+model TokenBudget {
+  id                String   @id @default(cuid())
+  userId            String?
+  teamId            String?
+  monthlyTokenLimit Int
+  alertThreshold    Float    @default(0.8)
+  hardStop          Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId])
+  @@index([teamId])
+  @@map("token_budgets")
+}
+
+// S309 — per-deployment PII scanning policy. Only one row should be `active`
+// at a time (enforced in the service layer, not the DB) — deployments switch
+// profiles (default/healthcare/financial) by flipping which row is active.
+model PiiScanConfig {
+  id              String   @id @default(cuid())
+  name            String   @unique // default | healthcare | financial | ...
+  mode            String   @default("AUDIT") // REDACT | BLOCK | AUDIT
+  enabledPatterns String[] @default(["email", "phone", "ni_number", "ssn", "nhs_number", "iban"]) // 'passport' available but not default — no universal format, high false-positive rate
+  active          Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("pii_scan_configs")
+}
+
+// ---------------------------------------------------------------------------
 // KIMMP Phase 5 — Prediction Ledger
 // Records every prediction run so outputs can be compared against real
 // outcomes as data accumulates. This IS the ML training label store — each

@@ -279,6 +279,8 @@ app.get('/api/docs/spec', (_req, res) => res.json(swaggerSpec));
 
 import adminOntologyRoutes from './routes/admin-ontology';
 app.use('/api/admin/ontology', adminOntologyRoutes);
+import adminKimmpGatewayRoutes from './routes/admin-kimmp-gateway';
+app.use('/api/admin/kimmp-gateway', adminKimmpGatewayRoutes);
 app.use('/api/admin/integrations', integrationsRouter);
 app.use('/api/admin/semantic',     semanticMappingRouter);
 app.use('/api/admin/packs',        packsRouter);

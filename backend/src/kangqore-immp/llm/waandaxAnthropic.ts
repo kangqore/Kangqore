@@ -19,6 +19,7 @@
 import type Anthropic from '@anthropic-ai/sdk'
 import crypto from 'crypto'
 import logger from '../../utils/logger'
+import { logCall, scanPii, inferCallerModule } from '../../services/kimmpGatewayCore'
 
 const WAANDAX_URL   = process.env.WAANDAX_URL   || 'http://127.0.0.1:11435'
 const WAANDAX_MODEL = process.env.WAANDAX_MODEL || ''
@@ -150,6 +151,46 @@ async function createViaWaandax(params: any): Promise<Anthropic.Message> {
   })
 }
 
+// ── S308 passive gateway logging ─────────────────────────────────────────────
+// Covers every one of the 29 files that call withWaandax(new Anthropic(...))
+// directly, PLUS AEGIS's shared callLLM() helper (kangqore-aegis/agents/llm.ts)
+// which itself wraps its client the same way — ~70 files logged from this one
+// instrumentation point, no per-file changes needed. AEGIS calls are skipped
+// here (see actorType check below) because callLLM() logs them itself with
+// accurate actorType:'AEGIS' attribution — this avoids double-counting.
+// Caller module must be captured SYNCHRONOUSLY, before any await/.then() —
+// once inside a promise continuation the call stack no longer reaches back
+// to the original synchronous caller.
+function logGatewayCall(
+  params: any,
+  callerInfo: { sourceModule: string; actorType: string },
+  latencyMs: number,
+  res: Anthropic.Message | null,
+  err?: Error,
+) {
+  if (callerInfo.actorType === 'AEGIS') return
+  const systemText = flattenContent(params.system) ?? ''
+  const userText = (params.messages ?? []).map((m: any) => flattenContent(m.content) ?? '').join('\n')
+  const provider = res?.id?.toString().startsWith('waandax_') ? 'waandax' : 'claude'
+  const model = res?.model ?? params.model ?? 'unknown'
+  const textBlock = res?.content?.find((b: any) => b.type === 'text') as { text?: string } | undefined
+
+  scanPii(systemText + '\n' + userText).then(scan => logCall({
+    actorType: callerInfo.actorType,
+    model, provider,
+    promptTokens: (res as any)?.usage?.input_tokens ?? 0,
+    completionTokens: (res as any)?.usage?.output_tokens ?? 0,
+    latencyMs,
+    prompt: systemText + '\n' + userText,
+    response: textBlock?.text ?? '',
+    sourceModule: callerInfo.sourceModule,
+    status: err ? 'ERROR' : 'SUCCESS',
+    errorMessage: err?.message ?? null,
+    piiDetected: scan.detected,
+    piiPatterns: scan.patterns,
+  })).catch(() => {})
+}
+
 // ── the wrapper ──────────────────────────────────────────────────────────────
 
 export function withWaandax(client: Anthropic): Anthropic {
@@ -159,29 +200,39 @@ export function withWaandax(client: Anthropic): Anthropic {
     get(target, prop, receiver) {
       if (prop === 'create') {
         return (params: any, options?: any) => {
-          // Claude-only shapes (stream/tools/non-text) or local layer disabled
-          if (!localCapable(params)) return target.create(params, options)
+          const callerInfo = inferCallerModule()
+          const start = Date.now()
 
-          const claudeUsable = hasKey && Date.now() - _claudeFailedAt > CLAUDE_COOLOFF_MS
-          if (claudeUsable) {
-            // Claude-first; WAANDAx picks the call up if Claude fails
-            return target.create(params, options).catch((claudeErr: Error) => {
-              _claudeFailedAt = Date.now()
-              const label = (claudeErr as any)?.status ?? claudeErr.message
-              logger.warn(`[WAANDAx direct] Claude failed (${label}) — serving locally for ${CLAUDE_COOLOFF_MS / 1000}s`)
-              return createViaWaandax(params).catch(() => { throw claudeErr })
-            })
-          }
+          const resultPromise: Promise<Anthropic.Message> = (() => {
+            // Claude-only shapes (stream/tools/non-text) or local layer disabled
+            if (!localCapable(params)) return target.create(params, options)
 
-          // Claude keyless or cooling — serve locally, Claude as backup
-          if (Date.now() - _failedAt < COOLOFF_MS) return target.create(params, options)
-          return createViaWaandax(params).catch((err: Error) => {
-            if (!isWaandaxBusyError(err)) {
-              _failedAt = Date.now()
-              logger.warn(`[WAANDAx direct] local serve failed (${err.message}) — falling back to Claude for ${COOLOFF_MS / 1000}s`)
+            const claudeUsable = hasKey && Date.now() - _claudeFailedAt > CLAUDE_COOLOFF_MS
+            if (claudeUsable) {
+              // Claude-first; WAANDAx picks the call up if Claude fails
+              return target.create(params, options).catch((claudeErr: Error) => {
+                _claudeFailedAt = Date.now()
+                const label = (claudeErr as any)?.status ?? claudeErr.message
+                logger.warn(`[WAANDAx direct] Claude failed (${label}) — serving locally for ${CLAUDE_COOLOFF_MS / 1000}s`)
+                return createViaWaandax(params).catch(() => { throw claudeErr })
+              })
             }
-            return target.create(params, options)
-          })
+
+            // Claude keyless or cooling — serve locally, Claude as backup
+            if (Date.now() - _failedAt < COOLOFF_MS) return target.create(params, options)
+            return createViaWaandax(params).catch((err: Error) => {
+              if (!isWaandaxBusyError(err)) {
+                _failedAt = Date.now()
+                logger.warn(`[WAANDAx direct] local serve failed (${err.message}) — falling back to Claude for ${COOLOFF_MS / 1000}s`)
+              }
+              return target.create(params, options)
+            })
+          })()
+
+          return resultPromise.then(
+            res => { logGatewayCall(params, callerInfo, Date.now() - start, res); return res },
+            err => { logGatewayCall(params, callerInfo, Date.now() - start, null, err); throw err },
+          )
         }
       }
       const v = Reflect.get(target, prop, receiver)
