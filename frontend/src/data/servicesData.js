@@ -48,7 +48,7 @@ export const servicesData = {
     capabilityAreas: [
       {
         title: 'Autonomous Goal Execution',
-        image: '/images/capabilities/agentic-goal-execution.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Turn high-level business objectives into structured, self-adjusting execution plans that recover automatically when conditions change.',
         items: [
           'Goal Decomposition Engine: Transform high-level business objectives into structured execution plans with intelligent task sequencing, dependency mapping, and milestone tracking.',
@@ -59,7 +59,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Agent Orchestration',
-        image: '/images/capabilities/agentic-multi-agent.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Deploy specialized agent teams across every department and route work intelligently, with built-in consensus and centralized oversight.',
         items: [
           'Specialized Agent Teams: Deploy domain-specific AI agents across Finance, HR, Sales, Marketing, Operations, Customer Support, Legal, IT, and Engineering to collaborate on complex business processes.',
@@ -70,7 +70,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Memory & Knowledge',
-        image: '/images/capabilities/agentic-memory-knowledge.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Give every agent persistent, shared organizational memory — grounded in your enterprise systems and continuously improving over time.',
         items: [
           'Persistent Enterprise Memory: Maintain long-term context across conversations, workflows, projects, customers, and organizational knowledge for consistent decision-making.',
@@ -81,7 +81,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Intelligence',
-        image: '/images/capabilities/agentic-enterprise-intelligence.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Ground every recommendation in live business context and verified data — with transparent, explainable reasoning behind every decision.',
         items: [
           'Context-Aware Decision Intelligence: Understand business objectives, operational constraints, historical context, and live enterprise signals before making recommendations or taking action.',
@@ -103,7 +103,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Security',
-        image: '/images/capabilities/agentic-enterprise-security.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Protect every integration, credential, and inter-agent exchange with encryption, access controls, and continuous threat monitoring.',
         items: [
           'Secure Tool Access: Protect integrations with authenticated, encrypted, and policy-controlled access to enterprise systems and external services.',
@@ -114,7 +114,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Operations',
-        image: '/images/capabilities/agentic-enterprise-operations.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Automate complex business processes end-to-end, triggered by real events and continuously tuned for efficiency and cost.',
         items: [
           'Intelligent Workflow Automation: Automate repetitive and complex business processes while maintaining visibility, governance, and operational control.',
@@ -125,7 +125,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Integrations',
-        image: '/images/capabilities/agentic-enterprise-integrations.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Connect agents directly into the business applications, productivity tools, and data platforms your enterprise already runs on.',
         items: [
           'Business Applications: Integrate seamlessly with CRM, ERP, HRMS, ITSM, Finance, and industry-specific enterprise platforms.',

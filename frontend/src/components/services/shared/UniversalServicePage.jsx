@@ -868,14 +868,14 @@ export default function UniversalServicePage({ service: rawService, department }
 
   // ── Hero scrolling strip ──────────────────────────────────────────────────
   const HERO_CAP_IMAGES = {
-    'Autonomous Goal Execution': '/images/capabilities/agentic-goal-execution.png',
-    'Enterprise Agent Orchestration': '/images/capabilities/agentic-multi-agent.png',
-    'Enterprise Memory & Knowledge': '/images/capabilities/agentic-memory-knowledge.png',
-    'Enterprise Intelligence': '/images/capabilities/cognitive-decision-intelligence.png',
+    'Autonomous Goal Execution': '/images/capabilities/agentic-governed-autonomy.png',
+    'Enterprise Agent Orchestration': '/images/capabilities/agentic-governed-autonomy.png',
+    'Enterprise Memory & Knowledge': '/images/capabilities/agentic-governed-autonomy.png',
+    'Enterprise Intelligence': '/images/capabilities/agentic-governed-autonomy.png',
     'Enterprise Governance': '/images/capabilities/agentic-governed-autonomy.png',
-    'Enterprise Security': '/images/capabilities/agentic-enterprise-security.png',
-    'Enterprise Operations': '/images/capabilities/agentic-enterprise-operations.png',
-    'Enterprise Integrations': '/images/capabilities/integration-api-modernization-illustration.png',
+    'Enterprise Security': '/images/capabilities/agentic-governed-autonomy.png',
+    'Enterprise Operations': '/images/capabilities/agentic-governed-autonomy.png',
+    'Enterprise Integrations': '/images/capabilities/agentic-governed-autonomy.png',
   };
   const HERO_CAPS  = (service.heroStripItems || service.keyFeatures).map((f, i) => ({
     label: f,
