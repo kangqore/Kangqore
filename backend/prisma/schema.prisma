@@ -3691,6 +3691,7 @@ model KimmpAgent {
   tools        String[]
   model        String            @default("claude-sonnet-4-6")
   systemPrompt String?           @db.Text
+  promptName   String?           // S321 — optional PromptRegistry name; when set, resolved via the router's existing registry lookup, falling back to systemPrompt on a miss
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
   logs         KimmpAgentLog[]
