@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
-  MagicWand, ClockCounterClockwise, ArrowsClockwise, FileText, Plus, X, CaretDown, CaretUp,
+  MagicWand, ClockCounterClockwise, ArrowsClockwise, FileText, Plus, X, CaretDown, CaretUp, Warning,
 } from '@phosphor-icons/react'
 import { Loader2 } from 'lucide-react'
 import { promptRegistryService, type PromptNameSummary } from '../promptRegistryService'
@@ -129,11 +129,19 @@ function PromptCard({ summary }: { summary: PromptNameSummary }) {
       {expanded && (
         <div className="space-y-3 pt-2 border-t border-[var(--os-border)]">
           {usage && (
-            <div className="flex items-center gap-4 text-[11px] text-[var(--os-text-2)]">
+            <div className="flex items-center gap-4 flex-wrap text-[11px] text-[var(--os-text-2)]">
               <span><strong className="text-[var(--os-text-1)]">{usage.callsToday}</strong> calls today</span>
               <span><strong className="text-[var(--os-text-1)]">{usage.last30Days}</strong> calls / 30d</span>
               {usage.byVersion.map(v => (
-                <span key={v.version}>v{v.version || '—'}: {v.callCount} calls, ${v.cost.toFixed(2)}{v.errors > 0 ? `, ${v.errors} errors` : ''}</span>
+                <span key={v.version} className="flex items-center gap-1">
+                  v{v.version || '—'}: {v.callCount} calls, ${v.cost.toFixed(2)}{v.errors > 0 ? `, ${v.errors} errors` : ''}
+                  {v.regression.flagged && (
+                    <span title={`Drift alert: ${v.regression.driftDelta.toFixed(1)}pt drop, score ${v.regression.totalScore.toFixed(0)}, ${new Date(v.regression.at).toLocaleDateString()}`}
+                      className="flex items-center gap-0.5 px-1 py-0.5 rounded bg-red-500/10 text-red-400 font-bold">
+                      <Warning size={9} weight="fill" /> DRIFT
+                    </span>
+                  )}
+                </span>
               ))}
             </div>
           )}

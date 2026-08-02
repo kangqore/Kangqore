@@ -5331,6 +5331,12 @@ model KimmpBenchmarkRun {
   driftDelta    Float?                 // avg confidence change vs previous run
   costTotal     Float                  @default(0)   // USD estimated
   durationMs    Int                    @default(0)
+  // S319 — { [AIPrompt.name]: activeVersion } captured at run start. A single
+  // run exercises many registered prompts indirectly (whichever the command
+  // endpoint happens to route through), so this is a snapshot of what was
+  // live, not a single FK — lets an admin correlate a drift alert on this run
+  // with which prompt versions were active at the time.
+  promptVersionSnapshot Json?
   results       KimmpBenchmarkResult[]
   startedAt     DateTime               @default(now())
   completedAt   DateTime?
