@@ -54,7 +54,7 @@ Return JSON: { "needsAction": true, "reasoning": "why action is or isn't needed"
     let reasoning   = 'No action required at this time.'
 
     try {
-      const res   = await sonnet('You are KIMMP Goal Engine.', prompt, 400, { agentType: 'GOAL_CHECK', tags: ['goal_engine'] })
+      const res   = await sonnet('You are KIMMP Goal Engine.', prompt, 400, { agentType: 'GOAL_CHECK', tags: ['goal_engine'], promptName: 'goal_engine_system' })
       const raw   = textOf(res)
       const match = raw.match(/\{[\s\S]*\}/)
       if (match) {

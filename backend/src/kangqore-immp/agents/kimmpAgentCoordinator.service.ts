@@ -133,7 +133,7 @@ Produce a single consensus recommendation that integrates all findings. Be speci
     let actionRequired = false
 
     try {
-      const res   = await sonnet('You are KIMMP Coordination Engine.', consensusPrompt, 800, { agentType: 'ADVISOR' })
+      const res   = await sonnet('You are KIMMP Coordination Engine.', consensusPrompt, 800, { agentType: 'ADVISOR', promptName: 'consensus_system' })
       const raw   = textOf(res)
       const match = raw.match(/\{[\s\S]*\}/)
       if (match) {

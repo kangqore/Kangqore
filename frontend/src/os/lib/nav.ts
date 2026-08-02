@@ -32,6 +32,7 @@ import {
   GraphIcon,
   ShareNetworkIcon,
   RadioIcon,
+  MagicWandIcon,
 } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
 
@@ -473,7 +474,8 @@ export const navGroups: NavGroup[] = [
         ],
       },
       { id: 'kangqore-immp',  label: 'KIMMP',          icon: BrainIcon,           path: `${BASE}/kangqore-immp`  },
-      { id: 'kimmp-gateway',  label: 'Intelligence Gateway', icon: RadioIcon,     path: `${BASE}/kimmp-gateway`  },
+      { id: 'kimmp-gateway',  label: 'Intelligence Gateway', icon: RadioIcon,     path: `${BASE}/kimmp-gateway/explorer`  },
+      { id: 'kimmp-prompts',  label: 'Prompt Registry',      icon: MagicWandIcon, path: `${BASE}/kimmp-gateway/prompts`   },
       { id: 'systems',        label: 'Systems',        icon: HardDrivesIcon,      path: `${BASE}/systems`        },
       { id: 'aegis',          label: 'AEGIS',          icon: ShieldCheckeredIcon, path: `${BASE}/aegis`          },
       { id: 'ontology',       label: 'Ontology',       icon: GraphIcon,           path: `${BASE}/ontology`       },

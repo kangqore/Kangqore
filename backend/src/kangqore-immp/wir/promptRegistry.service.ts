@@ -51,6 +51,14 @@ const DEFAULTS: Array<{ name: string; content: string; notes: string }> = [
 export class PromptRegistry {
 
   static async get(name: string, version?: number): Promise<string | null> {
+    const resolved = await PromptRegistry.getWithVersion(name, version)
+    return resolved?.content ?? null
+  }
+
+  // S311 — same lookup as get(), but also returns which version actually
+  // served the call. Gateway callers (kimmpLLMRouter/withWaandax/AEGIS
+  // callLLM) need this to record promptName+promptVersion on LlmCallLog.
+  static async getWithVersion(name: string, version?: number): Promise<{ content: string; version: number } | null> {
     try {
       await PromptRegistry._seedIfNeeded(name)
 
@@ -60,10 +68,11 @@ export class PromptRegistry {
           : { name, active: true },
         orderBy: { version: 'desc' },
       })
-      return prompt?.content ?? null
+      return prompt ? { content: prompt.content, version: prompt.version } : null
     } catch {
       // Fallback: return default if DB unavailable
-      return DEFAULTS.find(d => d.name === name)?.content ?? null
+      const def = DEFAULTS.find(d => d.name === name)
+      return def ? { content: def.content, version: 1 } : null
     }
   }
 

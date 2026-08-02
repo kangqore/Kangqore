@@ -30,6 +30,7 @@ import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
 import { waandaxSlot, isWaandaxBusyError } from './waandaxAnthropic'
 import { logCall, scanPii } from '../../services/kimmpGatewayCore'
+import { PromptRegistry } from '../wir/promptRegistry.service'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -431,6 +432,12 @@ export interface RouterMeta {
   agentSystem?: string
   tags?:        string[]
   hint?:        string   // callerHint for Runtime Intelligence telemetry
+  // S311 — when set, the passive routedCall() wrapper resolves this via
+  // PromptRegistry and uses the registry content as the system prompt
+  // instead of the caller-supplied `system` string. If the registry lookup
+  // misses (no active version yet), the caller-supplied `system` is used as
+  // the fallback, so passing promptName is always safe to add incrementally.
+  promptName?:  string
 }
 
 export interface RouterOptions {
@@ -661,22 +668,35 @@ export async function routedCall(
   meta: RouterMeta = {},
   options: RouterOptions = {},
 ): Promise<RouterResult> {
-  if (options.skipGatewayLog) return _routedCallImpl(claudeModel, system, user, maxTokens, meta, options)
+  // S311 — resolve a registry-backed system prompt when the caller opted in
+  // via meta.promptName. Falls back to the caller-supplied `system` string
+  // on any miss (no active version seeded yet, DB unavailable, etc.) — safe
+  // to add to a call site without a coordinated registry-seeding step first.
+  let resolvedSystem = system
+  let promptVersion: number | null = null
+  if (meta.promptName) {
+    const resolved = await PromptRegistry.getWithVersion(meta.promptName).catch(() => null)
+    if (resolved) { resolvedSystem = resolved.content; promptVersion = resolved.version }
+  }
+
+  if (options.skipGatewayLog) return _routedCallImpl(claudeModel, resolvedSystem, user, maxTokens, meta, options)
 
   try {
-    const result = await _routedCallImpl(claudeModel, system, user, maxTokens, meta, options)
-    scanPii(system + '\n' + user).then(scan => logCall({
+    const result = await _routedCallImpl(claudeModel, resolvedSystem, user, maxTokens, meta, options)
+    scanPii(resolvedSystem + '\n' + user).then(scan => logCall({
       actorType:     'KIMMP',
       model:         result._routerMeta.usedModel,
       provider:      result._routerMeta.provider,
       promptTokens:  result._routerMeta.inputTokens,
       completionTokens: result._routerMeta.outputTokens,
       latencyMs:     result._routerMeta.durationMs,
-      prompt:        system + '\n' + user,
+      prompt:        resolvedSystem + '\n' + user,
       response:      result.content[0]?.text ?? '',
       taskType:      meta.tags?.[0],
       agentRole:     meta.agentType,
       sourceModule:  meta.agentSystem ?? meta.agentType ?? 'kimmpLLMRouter',
+      promptName:    meta.promptName,
+      promptVersion,
       status:        'SUCCESS',
       piiDetected:   scan.detected,
       piiPatterns:   scan.patterns,
@@ -685,9 +705,10 @@ export async function routedCall(
   } catch (err) {
     logCall({
       actorType: 'KIMMP', model: claudeModel, provider: 'none',
-      prompt: system + '\n' + user, response: '',
+      prompt: resolvedSystem + '\n' + user, response: '',
       taskType: meta.tags?.[0], agentRole: meta.agentType,
       sourceModule: meta.agentSystem ?? meta.agentType ?? 'kimmpLLMRouter',
+      promptName: meta.promptName, promptVersion,
       status: 'ERROR', errorMessage: (err as Error).message,
     }).catch(() => {})
     throw err
