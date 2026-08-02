@@ -68,6 +68,30 @@ export interface TokenBudget {
   createdAt: string
 }
 
+export interface PgvectorTableHealth {
+  table: 'knowledge_chunks' | 'kimmp_system_knowledge'
+  totalRows: number
+  indexedRows: number
+  indexSizeBytes: number
+}
+
+export interface PgvectorBenchmark {
+  table: 'knowledge_chunks' | 'kimmp_system_knowledge'
+  indexMs: { p50: number; p95: number }
+  legacyScanMs: { p50: number; p95: number }
+  rowsScanned: number
+}
+
+export interface UnifiedSearchResult {
+  id: string
+  source: 'knowledge_chunk' | 'system_knowledge'
+  title: string
+  body: string
+  score: number
+  system?: string
+  docType?: string
+}
+
 export interface ToolCallExecution {
   id: string
   status: string
@@ -126,5 +150,17 @@ export const gatewayService = {
   },
   modelMap(): Promise<Record<string, string>> {
     return api.get('/admin/kimmp-gateway/model-map').then(r => r.data.modelMap)
+  },
+  pgvectorHealth(): Promise<PgvectorTableHealth[]> {
+    return api.get('/admin/kimmp-gateway/pgvector/health').then(r => r.data.health)
+  },
+  pgvectorBackfill(): Promise<Array<{ table: string; updated: number }>> {
+    return api.post('/admin/kimmp-gateway/pgvector/backfill', {}).then(r => r.data.results)
+  },
+  pgvectorBenchmark(): Promise<PgvectorBenchmark[]> {
+    return api.get('/admin/kimmp-gateway/pgvector/benchmark').then(r => r.data.benchmarks)
+  },
+  knowledgeSearch(q: string, k = 8): Promise<UnifiedSearchResult[]> {
+    return api.get('/admin/kangqore-immp/knowledge/search', { params: { q, k } }).then(r => r.data.results)
   },
 }

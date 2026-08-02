@@ -13,6 +13,8 @@ import {
   getEmbeddingModel,
   isEmbeddingsConfigured,
 } from './embeddings.service';
+import { PgvectorIndex } from './pgvectorIndex.service';
+import { KimmpFlags } from '../kangqore-immp/core/flags';
 
 interface IndexedChunk {
   id: string;
@@ -25,6 +27,7 @@ interface IndexedChunk {
 }
 
 let memoryIndex: IndexedChunk[] = [];
+let memoryIndexById = new Map<string, IndexedChunk>();
 let lastIndexedAt: Date | null = null;
 
 export function getIndexState() {
@@ -49,6 +52,7 @@ async function loadIndexFromDb(): Promise<void> {
     tags: r.tags || [],
     embedding: (r.embedding as unknown as number[]) || [],
   }));
+  memoryIndexById = new Map(memoryIndex.map((c) => [c.id, c]));
   logger.info(`retrieval.index.loaded chunks=${memoryIndex.length}`);
 }
 
@@ -114,6 +118,9 @@ export async function indexKnowledgeBase(options: { force?: boolean } = {}): Pro
         await prisma.knowledgeChunk.create({ data });
         added++;
       }
+      // S317 — keep the pgvector index current at ingest time; the backfill
+      // script only needs to run once for pre-existing rows.
+      PgvectorIndex.upsertVector('knowledge_chunks', chunk.id, emb).catch(() => {});
     }
   }
 
@@ -243,10 +250,23 @@ export async function retrieve(
     return [];
   }
 
-  const scored = memoryIndex
-    .map((c) => ({ chunk: c, score: cosineSimilarity(queryEmb, c.embedding) }))
-    .filter((s) => s.score >= minScore)
-    .sort((a, b) => b.score - a.score);
+  // S317 — query the HNSW index for the initial candidate set instead of
+  // cosine-scoring every row in memory; MMR still runs in TS on the (much
+  // smaller) result. Feature-flagged so the two paths can be compared before
+  // fully cutting over — both return the identical IndexedChunk[] shape.
+  let scored: Array<{ chunk: IndexedChunk; score: number }>;
+  if (KimmpFlags.pgvectorEnabled()) {
+    const matches = await PgvectorIndex.queryTopK('knowledge_chunks', queryEmb, Math.max(k * 3, k) * 2).catch(() => []);
+    scored = matches
+      .map((m) => ({ chunk: memoryIndexById.get(m.id), score: m.score }))
+      .filter((s): s is { chunk: IndexedChunk; score: number } => !!s.chunk && s.score >= minScore)
+      .sort((a, b) => b.score - a.score);
+  } else {
+    scored = memoryIndex
+      .map((c) => ({ chunk: c, score: cosineSimilarity(queryEmb, c.embedding) }))
+      .filter((s) => s.score >= minScore)
+      .sort((a, b) => b.score - a.score);
+  }
 
   if (scored.length === 0) return [];
 

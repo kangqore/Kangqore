@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 model User {
@@ -391,6 +393,11 @@ model KnowledgeChunk {
   body        String
   tags        String[]
   embedding   Float[]
+  // S316 — real pgvector column alongside the original Float[]. Additive:
+  // Float[] is untouched, this is populated by a separate backfill script.
+  // Prisma can't read/write Unsupported columns via the normal client API —
+  // all access goes through $queryRaw/$executeRaw (see embeddingVector.service.ts).
+  embeddingVector Unsupported("vector(1024)")?
   embedModel  String?
   contentHash String
   populated   Boolean  @default(true)
@@ -3973,6 +3980,8 @@ model KimmpSystemKnowledge {
   source      String?                   // e.g. "dispatch:abc123", "meeting:xyz", "manual"
   tags        String[]
   embedding   Float[]                   // voyage-3-large embeddings (1024-dim)
+  // S316 — see KnowledgeChunk.embeddingVector for the additive-column rationale.
+  embeddingVector Unsupported("vector(1024)")?
   embedModel  String?
   contentHash String                    // sha256(title+body) — deduplication key
   active      Boolean  @default(true)   // soft delete

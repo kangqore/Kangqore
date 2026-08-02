@@ -16,6 +16,7 @@ import { isStrategicDecision, runStrategicDecision, StrategicDecisionResult } fr
 import { routedCall } from '../llm/kimmpLLMRouter';
 import { LogicToolRegistry } from '../tools/logicToolRegistry';
 import { OntologyActionToolRegistry } from '../../services/ontologyActionToolRegistry.service';
+import { KnowledgeSearchTool } from '../../services/knowledgeSearchTool.service';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -326,17 +327,17 @@ Return ONLY valid JSON:
     let usedModel = model;
 
     try {
-      // S314 — merge in tool-callable OntologyActions alongside the existing
-      // Logic Tools calculators. Same tools/toolExecutor contract the router
-      // already supports; route by name against the ontology tool set first,
-      // fall through to Logic Tools otherwise.
+      // S314/S318 — merge in tool-callable OntologyActions and the S318
+      // knowledge-search tool alongside the existing Logic Tools calculators.
+      // Same tools/toolExecutor contract the router already supports; route
+      // by name, ontology actions and knowledge search first, Logic Tools otherwise.
       const ontologyTools = await OntologyActionToolRegistry.getTools().catch(() => []);
       const ontologyToolNames = new Set(ontologyTools.map(t => t.name));
-      const combinedTools = [...LogicToolRegistry.getTools('all'), ...ontologyTools];
+      const combinedTools = [...LogicToolRegistry.getTools('all'), ...ontologyTools, KnowledgeSearchTool.getTool()];
       const combinedExecutor = (name: string, input: any) =>
-        ontologyToolNames.has(name)
-          ? OntologyActionToolRegistry.executor(name, input)
-          : LogicToolRegistry.auditedExecutor(name, input);
+        ontologyToolNames.has(name) ? OntologyActionToolRegistry.executor(name, input)
+        : KnowledgeSearchTool.isKnowledgeSearchTool(name) ? KnowledgeSearchTool.executor(name, input)
+        : LogicToolRegistry.auditedExecutor(name, input);
 
       // Build single user message string for router (handles history separately below)
       const routerResult = await routedCall(model, systemPrompt, userPromptText, 1500, {

@@ -1704,6 +1704,7 @@ import { WAOE } from './waoe/waoe.service'
 import { getMissionControlData } from './waoe/missionControl.service'
 import { WIR } from './wir/wir.service'
 import { PromptRegistry } from './wir/promptRegistry.service'
+import { unifiedSearch } from '../services/unifiedKnowledgeSearch.service'
 import { EvaluationFramework } from './wir/evaluationFramework.service'
 import { CostIntelligence } from './wir/costIntelligence.service'
 import { AIModelRegistry } from './wir/modelRegistry.service'
@@ -1847,6 +1848,19 @@ kangqoreImmpRoutes.get('/wir/dashboard', requireAuth, requireRole(['ADMIN']), as
 kangqoreImmpRoutes.get('/wir/models', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try { res.json({ models: AIModelRegistry.list(), health: AIModelRegistry.health() }) }
   catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// S318: unified semantic search across KnowledgeChunk + KimmpSystemKnowledge
+kangqoreImmpRoutes.get('/knowledge/search', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const q = String(req.query.q ?? '')
+    const k = Math.min(20, Math.max(1, parseInt(String(req.query.k ?? '8'), 10)))
+    if (!q.trim()) { res.status(400).json({ error: 'q is required' }); return }
+    const results = await unifiedSearch(q, k)
+    res.json({ results })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
 })
 
 // E2: Prompt Registry — list

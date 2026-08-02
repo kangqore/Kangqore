@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # PostgreSQL Database
   postgres:
-    image: postgres:15-alpine
+    image: pgvector/pgvector:pg15
     container_name: kangqore-postgres
     environment:
       POSTGRES_DB: kangqore_core
