@@ -156,6 +156,27 @@ export class KimmpAuthorityEngine {
     })
   }
 
+  // S323 — general edit, used by the Agent Studio builder (name/role/model/
+  // prompt/tools), distinct from the single-purpose setLevel/suspend/kill/
+  // activate above which stay as focused, audited actions.
+  static async updateAgent(agentId: string, data: {
+    name?: string; role?: string; description?: string
+    tools?: string[]; model?: string; systemPrompt?: string; promptName?: string | null
+  }): Promise<any> {
+    return await (prisma as any).kimmpAgent.update({
+      where: { id: agentId },
+      data: {
+        ...(data.name         !== undefined && { name: data.name }),
+        ...(data.role         !== undefined && { role: data.role }),
+        ...(data.description  !== undefined && { description: data.description }),
+        ...(data.tools        !== undefined && { tools: data.tools }),
+        ...(data.model        !== undefined && { model: data.model }),
+        ...(data.systemPrompt !== undefined && { systemPrompt: data.systemPrompt }),
+        ...(data.promptName   !== undefined && { promptName: data.promptName }),
+      },
+    })
+  }
+
   static async suspend(agentId: string): Promise<void> {
     await (prisma as any).kimmpAgent.update({ where: { id: agentId }, data: { status: 'SUSPENDED' } })
   }

@@ -365,4 +365,67 @@ router.get('/pgvector/benchmark', ...guard, async (_req, res) => {
   }
 })
 
+// ─── Agent Performance + Audit (S324) ─────────────────────────────────────────
+// Full per-row granularity only for KimmpAgent rows run through S321's
+// runtime (agentRole = agent.name, sourceModule = 'AGENT_STUDIO', set by
+// kimmpAgentRuntime.service.ts). The 38 KIMMP + 80 AEGIS hardcoded agents
+// are NOT individually attributable in LlmCallLog today: every one of the 38
+// orchestrator agent functions tags agentType:'orchestrator' uniformly (see
+// kimmpOrchestrator.service.ts's haiku/sonnet/opus wrappers), and AEGIS's
+// shared callLLM() helper sets no agentRole at all, only a constant
+// sourceModule. Shown here as three honest aggregate buckets rather than
+// faking per-agent rows the data can't support — full migration of the
+// existing 118 hardcoded agents to per-agent attribution is future scope.
+router.get('/agents/performance', ...guard, async (_req, res) => {
+  try {
+    const since = new Date(Date.now() - 30 * 86_400_000)
+    const dbAgents = await prisma.kimmpAgent.findMany({ orderBy: { createdAt: 'desc' } })
+
+    const agents = await Promise.all(dbAgents.map(async agent => {
+      const [calls, runCount, quality] = await Promise.all([
+        prisma.llmCallLog.findMany({
+          where: { agentRole: agent.name, sourceModule: 'AGENT_STUDIO', createdAt: { gte: since } },
+          select: { totalCost: true, latencyMs: true, status: true, toolExecutionIds: true },
+        }),
+        (prisma as any).kimmpAgentLog.count({ where: { agentId: agent.id, createdAt: { gte: since } } }).catch(() => 0),
+        (prisma as any).aIEvaluation.aggregate({
+          where: { targetType: 'AGENT', targetId: agent.id },
+          _avg: { overall: true }, _count: { _all: true },
+        }).catch(() => null),
+      ])
+      return {
+        agent: { id: agent.id, name: agent.name, role: agent.role, status: agent.status, model: agent.model },
+        callCount:       calls.length,
+        cost:            calls.reduce((s, c) => s + c.totalCost, 0),
+        avgLatencyMs:    calls.length ? Math.round(calls.reduce((s, c) => s + c.latencyMs, 0) / calls.length) : 0,
+        errorCount:      calls.filter(c => c.status === 'ERROR').length,
+        toolInvocations: calls.reduce((s, c) => s + c.toolExecutionIds.length, 0),
+        runCount,
+        avgQuality: quality?._avg?.overall ?? null,
+        evalCount:  quality?._count?._all ?? 0,
+      }
+    }))
+
+    const bucket = async (label: string, where: any) => {
+      const calls = await prisma.llmCallLog.findMany({ where: { ...where, createdAt: { gte: since } }, select: { totalCost: true, latencyMs: true, status: true } })
+      return {
+        label,
+        callCount:    calls.length,
+        cost:         calls.reduce((s, c) => s + c.totalCost, 0),
+        avgLatencyMs: calls.length ? Math.round(calls.reduce((s, c) => s + c.latencyMs, 0) / calls.length) : 0,
+        errorCount:   calls.filter(c => c.status === 'ERROR').length,
+      }
+    }
+    const legacyBuckets = await Promise.all([
+      bucket('KIMMP Orchestrator — 38 hardcoded agents (aggregate)', { agentRole: 'orchestrator' }),
+      bucket('KIMMP Speak — system voice synthesis', { agentRole: 'KIMMP_SPEAK' }),
+      bucket('AEGIS Engine — 80 hardcoded agents (aggregate)', { actorType: 'AEGIS' }),
+    ])
+
+    res.json({ agents, legacyBuckets })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
 export default router

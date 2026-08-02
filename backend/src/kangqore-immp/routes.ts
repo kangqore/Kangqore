@@ -36,6 +36,8 @@ import { KIMMMCommandService } from './command/commandService';
 import { KimmpMemoryService } from './memory/kimmpMemory.service';
 import { KimmpActionsService } from './actions/kimmpActions.service';
 import { KimmpAuthorityEngine } from './authority/kimmpAuthority.service';
+import { KimmpAgentRuntime } from './agents/kimmpAgentRuntime.service';
+import { syncToolCatalog } from './agents/agentToolBinding.service';
 import { KimmpActionProposer } from './actions/kimmpActionProposer';
 import { KimmpScoutService, SCOUT_SOURCES } from './scout/kimmpScout.service';
 import { KimmpCorrelationEngine } from './correlation/kimmpCorrelation.service';
@@ -539,10 +541,56 @@ kangqoreImmpRoutes.delete('/authority/agents/:id', requireAuth, requireRole(['AD
   res.json({ ok: true })
 })
 
+// S323 — general edit for the Agent Studio builder (name/role/model/prompt/
+// tools), separate from the focused level/suspend/kill/activate actions above.
+kangqoreImmpRoutes.patch('/authority/agents/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  const { name, role, description, tools, model, systemPrompt, promptName } = req.body ?? {}
+  try {
+    const agent = await KimmpAuthorityEngine.updateAgent(req.params.id, { name, role, description, tools, model, systemPrompt, promptName })
+    res.json({ agent })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+// S321/S322 — run a DB-defined agent through the new generic execution path.
+kangqoreImmpRoutes.post('/authority/agents/:id/run', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  const input = typeof req.body?.input === 'string' ? req.body.input.trim() : ''
+  if (!input) return res.status(400).json({ error: 'input required' })
+  try {
+    const result = await KimmpAgentRuntime.run(req.params.id, input, (req as any).user?.id)
+    res.json(result)
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+// S324 — per-agent run history (KimmpAgentLog), the "audit" half of S324.
+kangqoreImmpRoutes.get('/authority/agents/:id/logs', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  const logs = await (prisma as any).kimmpAgentLog.findMany({
+    where: { agentId: req.params.id },
+    orderBy: { createdAt: 'desc' },
+    take: 30,
+  }).catch(() => [])
+  res.json({ logs })
+})
+
 // ─── Authority — tool registry ────────────────────────────────────────────────
 kangqoreImmpRoutes.get('/authority/tools', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   const tools = await KimmpAuthorityEngine.getAllTools()
   res.json({ tools })
+})
+
+// S322 — upserts real calculator + toolCallable-ontology-action names into the
+// KimmpTool catalog (additive only) so the Agent Studio tool picker reflects
+// what's actually bindable, not just the 11 hand-seeded ActionType rows.
+kangqoreImmpRoutes.post('/authority/tools/sync', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    const result = await syncToolCatalog()
+    res.json(result)
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
 })
 
 // ─── Workflows — list active workflows ───────────────────────────────────────
