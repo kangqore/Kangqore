@@ -4395,6 +4395,7 @@ model OntologyObjectType {
   semanticMappings SemanticTypeMapping[]
   objectSets     ObjectSet[]
   pipelines      OntologyPipeline[]
+  subscriptions  OntologySubscription[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
@@ -4849,11 +4850,53 @@ model ProgrammaticApiKey {
   revoked     Boolean   @default(false)
   createdAt   DateTime  @default(now())
 
+  // S307 — partner scoping. Empty array = unrestricted (preserves pre-S307 behavior).
+  scopedObjectTypes String[] @default([])  // OntologyObjectType.name values this key may read
+  scopedActions     String[] @default([])  // OntologyAction.name values this key may execute
+
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([keyHash])
   @@map("programmatic_api_keys")
+}
+
+// S306 — one row per SDK generation, so consumers can see what changed between
+// versions ("Client.tier enum added 'ENTERPRISE_PLUS'"). schemaHash lets the
+// generator skip re-diffing when nothing in the live ontology has changed.
+model OntologySdkVersion {
+  id                String   @id @default(cuid())
+  schemaHash        String
+  typesCount        Int
+  actionsCount      Int
+  objectSetsCount   Int
+  diffFromPrevious  Json?    // { typesAdded, typesRemoved, fieldsChanged, actionsAdded, actionsRemoved }
+  createdAt         DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("ontology_sdk_versions")
+}
+
+// S307 — partner webhook registrations for ontology mutation events. Fed by
+// the existing CDC event bus (table 'ontology_objects'), not a bespoke hook.
+model OntologySubscription {
+  id              String    @id @default(cuid())
+  name            String
+  url             String
+  secret          String              // HMAC-SHA256 signing secret, same scheme as developer.ts webhook/sign
+  objectTypeId    String?             // null = all object types
+  eventTypes      String[]  @default(["object.created", "object.updated"])
+  enabled         Boolean   @default(true)
+  lastTriggeredAt DateTime?
+  lastStatus      String?             // last delivery HTTP status or 'error'
+  createdBy       String?
+  createdAt       DateTime  @default(now())
+
+  objectType      OntologyObjectType? @relation(fields: [objectTypeId], references: [id], onDelete: Cascade)
+
+  @@index([objectTypeId])
+  @@index([enabled])
+  @@map("ontology_subscriptions")
 }
 
 // ── ITIL / Service Management ──────────────────────────────────────────────────

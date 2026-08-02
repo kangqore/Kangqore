@@ -14,6 +14,9 @@ import { ActionEngine } from '../services/actionEngine.service'
 import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.service'
 import { OntologyGeoService } from '../services/ontologyGeo.service'
 import { OntologyPipelineService } from '../services/ontologyPipeline.service'
+import { OntologySdkGenerator } from '../services/ontologySdkGenerator.service'
+import { OntologyWebhookSubscriptionService } from '../services/ontologyWebhookSubscription.service'
+import crypto from 'crypto'
 import { getIO } from '../socket'
 
 const router = Router()
@@ -1184,6 +1187,120 @@ router.post('/merge-requests/:id/reject', ...guard, async (req, res) => {
     const mr = await OntologyMerge.reject(req.params.id, (req as any).user?.id, note)
     res.json({ mergeRequest: mr })
   } catch (e: any) { res.status(400).json({ error: e.message }) }
+})
+
+// ─── Generated SDK — S306 ───────────────────────────────────────────────────
+
+router.get('/sdk/schema', ...guard, async (_req, res) => {
+  try {
+    const shapes = await OntologySdkGenerator.schema()
+    res.json(shapes)
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.get('/sdk/typescript', ...guard, async (_req, res) => {
+  try {
+    await OntologySdkGenerator.recordVersionIfChanged()
+    const sdk = await OntologySdkGenerator.typescript()
+    res.setHeader('Content-Disposition', 'attachment; filename="kangqore-ontology-sdk.ts"')
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+    res.send(sdk)
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.get('/sdk/python', ...guard, async (_req, res) => {
+  try {
+    await OntologySdkGenerator.recordVersionIfChanged()
+    const sdk = await OntologySdkGenerator.python()
+    res.setHeader('Content-Disposition', 'attachment; filename="kangqore_ontology.py"')
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+    res.send(sdk)
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.get('/sdk/changelog', ...guard, async (_req, res) => {
+  try {
+    const versions = await OntologySdkGenerator.changelog()
+    res.json({ versions })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// ─── Webhook Subscriptions — S307 ───────────────────────────────────────────
+
+router.get('/subscriptions', ...guard, async (_req, res) => {
+  try {
+    const subscriptions = await prisma.ontologySubscription.findMany({
+      include: { objectType: { select: { name: true, displayName: true } } },
+      orderBy: { createdAt: 'desc' },
+    })
+    res.json({ subscriptions: subscriptions.map(s => ({ ...s, secret: s.secret.slice(0, 6) + '••••••••' })) })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/subscriptions', ...guard, async (req, res) => {
+  const { name, url, objectTypeId, eventTypes } = req.body
+  try {
+    if (!name?.trim() || !url?.trim()) { res.status(400).json({ error: 'name and url are required' }); return }
+    const subscription = await prisma.ontologySubscription.create({
+      data: {
+        name: name.trim(),
+        url: url.trim(),
+        secret: `whsec_${crypto.randomBytes(24).toString('hex')}`,
+        objectTypeId: objectTypeId || null,
+        eventTypes: eventTypes ?? ['object.created', 'object.updated'],
+        createdBy: (req as any).user?.id,
+      },
+    })
+    res.status(201).json({ subscription })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.patch('/subscriptions/:id', ...guard, async (req, res) => {
+  const { name, url, eventTypes, enabled } = req.body
+  try {
+    const subscription = await prisma.ontologySubscription.update({
+      where: { id: req.params.id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(url !== undefined && { url }),
+        ...(eventTypes !== undefined && { eventTypes }),
+        ...(enabled !== undefined && { enabled }),
+      },
+    })
+    res.json({ subscription })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.delete('/subscriptions/:id', ...guard, async (req, res) => {
+  try {
+    await prisma.ontologySubscription.delete({ where: { id: req.params.id } })
+    res.json({ success: true })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.post('/subscriptions/:id/test', ...guard, async (req, res) => {
+  try {
+    const subscription = await OntologyWebhookSubscriptionService.test(req.params.id)
+    res.json({ subscription })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
 })
 
 export default router

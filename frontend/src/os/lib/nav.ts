@@ -311,6 +311,7 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'ont-approvals', label: 'Approvals',   path: `${BASE}/ontology/approvals`, category: 'Govern' },
       { id: 'ont-map',        label: 'Map View',    path: `${BASE}/ontology/map`,       category: 'Explore' },
       { id: 'ont-pipelines',  label: 'Pipelines',   path: `${BASE}/ontology/pipelines`, category: 'Manage' },
+      { id: 'ont-developer',  label: 'Developer',   path: `${BASE}/ontology/developer`, category: 'Manage' },
       { id: 'ont-lineage',    label: 'Lineage',    path: `${BASE}/ontology/lineage`,   category: 'Explore' },
       { id: 'ont-markings',   label: 'Markings',   path: `${BASE}/ontology/markings`,  category: 'Manage' },
       { id: 'ont-versioning', label: 'Versioning', path: `${BASE}/ontology/versioning`, category: 'Manage' },

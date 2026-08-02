@@ -13,8 +13,12 @@
 import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import crypto from 'crypto'
+import { ontologyV1Router } from './ontology'
 
 export const v1Router = Router()
+
+// S306/S307 — generated Ontology SDK talks to /api/v1/ontology/*
+v1Router.use('/ontology', ontologyV1Router)
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function userId(req: Request): string | undefined {

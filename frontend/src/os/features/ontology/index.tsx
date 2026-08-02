@@ -1,5 +1,5 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { Network, Boxes, GitBranch, Shield, GitMerge, Cpu, Package, Zap, ScrollText, ShieldCheck, HourglassIcon, MapPin, Workflow } from 'lucide-react'
+import { Network, Boxes, GitBranch, Shield, GitMerge, Cpu, Package, Zap, ScrollText, ShieldCheck, HourglassIcon, MapPin, Workflow, Terminal } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { OntologyExplorer }       from './pages/OntologyExplorer'
 import { OntologyObjects }        from './pages/OntologyObjects'
@@ -10,6 +10,7 @@ import { PolicyGatePage }         from './pages/PolicyGatePage'
 import { PendingApprovalsPage }   from './pages/PendingApprovalsPage'
 import { MapViewPage }            from './pages/MapViewPage'
 import { PipelineDashboardPage }  from './pages/PipelineDashboardPage'
+import { DeveloperPortalPage }    from './pages/DeveloperPortalPage'
 import { LineageViewer }          from './pages/LineageViewer'
 import { MarkingsManager }        from './pages/MarkingsManager'
 import { OntologyVersioningPage } from './pages/OntologyVersioningPage'
@@ -25,6 +26,7 @@ const TABS = [
   { path: 'approvals',   label: 'Approvals',    icon: HourglassIcon },
   { path: 'map',          label: 'Map View',     icon: MapPin     },
   { path: 'pipelines',    label: 'Pipelines',    icon: Workflow   },
+  { path: 'developer',    label: 'Developer',    icon: Terminal   },
   { path: 'lineage',     label: 'Lineage',      icon: GitBranch  },
   { path: 'markings',    label: 'Markings',     icon: Shield     },
   { path: 'versioning',  label: 'Versioning',   icon: GitMerge   },
@@ -68,6 +70,7 @@ export function OntologyModule() {
         <Route path="approvals"    element={<PendingApprovalsPage />}          />
         <Route path="map"          element={<MapViewPage />}                   />
         <Route path="pipelines"    element={<PipelineDashboardPage />}         />
+        <Route path="developer"    element={<DeveloperPortalPage />}           />
         <Route path="lineage"      element={<LineageViewer />}                 />
         <Route path="markings"     element={<MarkingsManager />}               />
         <Route path="versioning"   element={<OntologyVersioningPage />}        />
