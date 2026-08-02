@@ -14,6 +14,7 @@
 import { prisma }           from '../../lib/prisma'
 import { GOLDEN_PROMPTS }   from './goldenPrompts'
 import { scoreResponse, computeDrift } from './scorer'
+import { PromptRegistry }   from '../../kangqore-immp/wir/promptRegistry.service'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -104,6 +105,11 @@ export async function runBenchmarks(opts: BenchmarkOptions): Promise<BenchmarkSu
 
   const log = (...args: any[]) => { if (verbose) console.log('[Benchmark]', ...args) }
 
+  // S319 — snapshot every registered prompt's active version at run start,
+  // so a later drift alert can be correlated with what was live at the time.
+  const promptNames = await PromptRegistry.listNames().catch(() => [])
+  const promptVersionSnapshot = Object.fromEntries(promptNames.map(p => [p.name, p.activeVersion]))
+
   // Create run record
   const run = await (prisma as any).kimmpBenchmarkRun.create({
     data: {
@@ -114,6 +120,7 @@ export async function runBenchmarks(opts: BenchmarkOptions): Promise<BenchmarkSu
       driftAlert:  false,
       driftDelta:  0,
       durationMs:  0,
+      promptVersionSnapshot,
     },
   })
 

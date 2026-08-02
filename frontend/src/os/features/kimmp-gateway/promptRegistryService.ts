@@ -16,11 +16,17 @@ export interface PromptNameSummary {
   totalVersions: number
 }
 
+// S319 — read-only correlation against Gate 3 drift-alerted benchmark runs;
+// no new scoring, just a lookup keyed on {promptName: version}.
+export type PromptRegression =
+  | { flagged: false }
+  | { flagged: true; runId: string; driftDelta: number; totalScore: number; at: string }
+
 export interface PromptUsage {
   name: string
   callsToday: number
   last30Days: number
-  byVersion: Array<{ version: number; callCount: number; cost: number; tokens: number; errors: number }>
+  byVersion: Array<{ version: number; callCount: number; cost: number; tokens: number; errors: number; regression: PromptRegression }>
 }
 
 export const promptRegistryService = {

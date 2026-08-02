@@ -53,6 +53,7 @@ export interface CommandResult {
   interactionId: string | null;
   plan: PlanStep[] | null;
   decision?: StrategicDecisionResult;
+  toolsUsed: string[];   // S320 — tool names invoked this turn (ontology actions, knowledge search, logic tools); [] if none
 }
 
 // ─── Signal / decision formatters ─────────────────────────────────────────────
@@ -242,6 +243,7 @@ export class KIMMMCommandService {
           interactionId:   null,
           plan:            null,
           decision,
+          toolsUsed:       [],
         }
       } catch (err) {
         logger.warn('[KIMMP:COMMAND] Decision engine failed, falling back to chat:', err)
@@ -325,6 +327,7 @@ Return ONLY valid JSON:
     // 7. Call LLM via resilient router (Claude → OpenAI → Gemini → empty)
     let raw = '';
     let usedModel = model;
+    let toolsUsed: string[] = [];
 
     try {
       // S314/S318 — merge in tool-callable OntologyActions and the S318
@@ -349,6 +352,9 @@ Return ONLY valid JSON:
       });
       raw = routerResult.content[0]?.type === 'text' ? routerResult.content[0].text : '';
       usedModel = routerResult.model;
+      // S320 — surface which tools this turn actually invoked, so golden
+      // prompts can assert on tool usage (not just response text).
+      toolsUsed = (routerResult._routerMeta.toolCalls ?? []).map(tc => tc.name);
       if (routerResult._routerMeta.fallback) {
         logger.info(`[KIMMP:COMMAND] Routed to fallback provider: ${routerResult._routerMeta.provider}`);
       }
@@ -418,6 +424,7 @@ Return ONLY valid JSON:
       fromCache: false,
       interactionId,
       plan: plan?.length ? plan : null,
+      toolsUsed,
     };
   }
 
@@ -439,6 +446,7 @@ Return ONLY valid JSON:
       fromCache: false,
       interactionId: null,
       plan: plan?.length ? plan.map(s => ({ ...s, status: 'failed' as const })) : null,
+      toolsUsed: [],
     };
   }
 }

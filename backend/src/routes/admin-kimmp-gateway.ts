@@ -31,10 +31,28 @@ router.get('/calls', ...guard, async (req, res) => {
   }
 })
 
+// S319 — was the promptVersion this call used flagged by a Gate 3 drift
+// alert? Snapshot-based: any KimmpBenchmarkRun with driftAlert=true whose
+// promptVersionSnapshot recorded this exact {name: version} pair as active.
+// No new scoring — reads Gate 3's existing drift computation.
+async function checkPromptRegression(promptName: string | null, promptVersion: number | null) {
+  if (!promptName || promptVersion == null) return null
+  const run = await prisma.kimmpBenchmarkRun.findFirst({
+    where: {
+      driftAlert: true,
+      promptVersionSnapshot: { path: [promptName], equals: promptVersion },
+    },
+    orderBy: { startedAt: 'desc' },
+    select: { id: true, driftDelta: true, totalScore: true, startedAt: true },
+  }).catch(() => null)
+  return run ? { flagged: true, runId: run.id, driftDelta: run.driftDelta, totalScore: run.totalScore, at: run.startedAt } : { flagged: false }
+}
+
 router.get('/calls/:id', ...guard, async (req, res) => {
   try {
     const call = await prisma.llmCallLog.findUniqueOrThrow({ where: { id: req.params.id } })
-    res.json({ call })
+    const promptRegression = await checkPromptRegression(call.promptName, call.promptVersion)
+    res.json({ call, promptRegression })
   } catch (e: any) {
     res.status(404).json({ error: e.message })
   }
@@ -264,11 +282,17 @@ router.get('/prompts/:name/usage', ...guard, async (req, res) => {
     const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0)
     const callsToday = calls.filter(c => c.createdAt >= todayStart).length
 
+    const versions = Array.from(byVersion.entries()).map(([version, stats]) => ({ version, ...stats })).sort((a, b) => b.version - a.version)
+    // S319 — flag any version that was live during a Gate 3 drift alert.
+    const versionsWithRegression = await Promise.all(versions.map(async v => ({
+      ...v, regression: await checkPromptRegression(req.params.name, v.version),
+    })))
+
     res.json({
       name: req.params.name,
       callsToday,
       last30Days: calls.length,
-      byVersion: Array.from(byVersion.entries()).map(([version, stats]) => ({ version, ...stats })).sort((a, b) => b.version - a.version),
+      byVersion: versionsWithRegression,
     })
   } catch (e: any) {
     res.status(500).json({ error: e.message })

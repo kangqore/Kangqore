@@ -21,8 +21,16 @@ export interface LlmCallLog {
   errorMessage: string | null
   piiDetected: boolean
   piiPatterns: string[]
+  promptName: string | null
+  promptVersion: number | null
   createdAt: string
 }
+
+// S319 — result of checking a call's {promptName, promptVersion} against Gate 3
+// drift-alerted benchmark runs. Read-only correlation, no new scoring.
+export type PromptRegression =
+  | { flagged: false }
+  | { flagged: true; runId: string; driftDelta: number; totalScore: number; at: string }
 
 export interface CostAnalytics {
   totalCost: number
@@ -105,12 +113,34 @@ export interface ToolCallRow {
   executions: ToolCallExecution[]
 }
 
+// S320 — Eval Health tile. Both read existing Gate 3/3.5/E4 aggregation
+// (admin.ts readiness + wir/evaluations/quality) — no new scoring here.
+export interface ReadinessSummary {
+  readyForRelease: boolean
+  overall: number
+  blockingIssues: string[]
+  warnings: string[]
+  timestamp: string
+  gates: Record<string, { name: string; status: string; weight: number }>
+  detail: {
+    benchmark: { score: number; passCount: number; driftAlert: boolean; at: string } | null
+    runtime35: { score: number; passCount: number; failCount: number; at: string } | null
+  }
+}
+
+export interface AgentQuality {
+  agentType: string
+  avgOverall: number
+  evalCount: number
+  dimensions: { correct: number; useful: number; complete: number; grounded: number; actionable: number; safe: number }
+}
+
 export const gatewayService = {
   listCalls(params?: { actorType?: string; model?: string; taskType?: string; status?: string; page?: number; limit?: number }): Promise<{ calls: LlmCallLog[]; total: number; pages: number }> {
     return api.get('/admin/kimmp-gateway/calls', { params }).then(r => r.data)
   },
-  getCall(id: string): Promise<LlmCallLog> {
-    return api.get(`/admin/kimmp-gateway/calls/${id}`).then(r => r.data.call)
+  getCall(id: string): Promise<{ call: LlmCallLog; promptRegression: PromptRegression | null }> {
+    return api.get(`/admin/kimmp-gateway/calls/${id}`).then(r => r.data)
   },
   costAnalytics(days = 30): Promise<CostAnalytics> {
     return api.get('/admin/kimmp-gateway/analytics/cost', { params: { days } }).then(r => r.data)
@@ -162,5 +192,11 @@ export const gatewayService = {
   },
   knowledgeSearch(q: string, k = 8): Promise<UnifiedSearchResult[]> {
     return api.get('/admin/kangqore-immp/knowledge/search', { params: { q, k } }).then(r => r.data.results)
+  },
+  readiness(): Promise<ReadinessSummary> {
+    return api.get('/admin/kangqore-immp/readiness').then(r => r.data)
+  },
+  evalQuality(days = 30): Promise<AgentQuality[]> {
+    return api.get('/admin/kangqore-immp/wir/evaluations/quality', { params: { days } }).then(r => r.data.quality)
   },
 }

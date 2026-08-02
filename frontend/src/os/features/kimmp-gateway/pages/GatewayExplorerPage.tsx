@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { io } from 'socket.io-client'
 import {
   Radio, Scroll, ChartBar, ChartPie, ShieldWarning, Wallet, Wrench,
-  Plus, Trash, X, Database, MagnifyingGlass,
+  Plus, Trash, X, Database, MagnifyingGlass, Warning, CheckCircle,
 } from '@phosphor-icons/react'
 import { Loader2 } from 'lucide-react'
 import { gatewayService, type LlmCallLog } from '../gatewayService'
@@ -37,6 +37,12 @@ function statusColor(status: string) {
 }
 
 function CallDetailModal({ call, onClose }: { call: LlmCallLog; onClose: () => void }) {
+  // S319 — regression check lives server-side (correlates this call's
+  // promptName/Version against Gate 3 drift-alerted benchmark runs); the list
+  // row doesn't carry it, so fetch the detail on open.
+  const { data: detail } = useQuery({ queryKey: ['gateway-call-detail', call.id], queryFn: () => gatewayService.getCall(call.id) })
+  const regression = detail?.promptRegression
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
@@ -48,10 +54,17 @@ function CallDetailModal({ call, onClose }: { call: LlmCallLog; onClose: () => v
           <span className="px-1.5 py-0.5 rounded font-bold" style={{ background: `${statusColor(call.status)}22`, color: statusColor(call.status) }}>{call.status}</span>
           <span className="px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]">{call.actorType}</span>
           {call.taskType && <span className="px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]">{call.taskType}</span>}
+          {call.promptName && <span className="px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]">{call.promptName}{call.promptVersion != null ? ` v${call.promptVersion}` : ''}</span>}
           <span className="text-[var(--os-text-2)]">{call.latencyMs}ms · {fmtTokens(call.promptTokens)}→{fmtTokens(call.completionTokens)} tok · {fmtCost(call.totalCost)}</span>
         </div>
         {call.piiDetected && (
           <div className="text-[10px] text-amber-400">PII detected: {call.piiPatterns.join(', ')}</div>
+        )}
+        {regression?.flagged && (
+          <div className="flex items-center gap-1.5 text-[10px] text-red-400 bg-red-500/10 border border-red-500/30 rounded-md px-2.5 py-1.5">
+            <Warning size={12} weight="fill" />
+            <span>This prompt version was active during a Gate 3 drift alert ({regression.driftDelta.toFixed(1)}pt drop, score {regression.totalScore.toFixed(0)}, {new Date(regression.at).toLocaleDateString()}).</span>
+          </div>
         )}
         <div>
           <p className="text-[9px] uppercase tracking-wide text-[var(--os-text-2)] mb-1">Prompt</p>
@@ -174,6 +187,67 @@ function CallLogTab() {
   )
 }
 
+// S320 — Eval Health tile. Reads the existing Gate 3 (benchmark) / Gate 3.5
+// (runtime intelligence) / E4 (LLM-as-judge) aggregation already computed by
+// admin.ts's /readiness and wir's /evaluations/quality routes — no new
+// scoring, just a dashboard surface for numbers that already exist.
+function EvalHealthTile() {
+  const { data: readiness, isLoading: loadingReadiness } = useQuery({ queryKey: ['gateway-readiness'], queryFn: () => gatewayService.readiness() })
+  const { data: quality, isLoading: loadingQuality } = useQuery({ queryKey: ['gateway-eval-quality'], queryFn: () => gatewayService.evalQuality(30) })
+
+  if (loadingReadiness || loadingQuality) return <div className="os-card h-24 animate-pulse bg-[var(--os-surface-0)]" />
+
+  const bench = readiness?.detail.benchmark
+  const rt35  = readiness?.detail.runtime35
+  const avgQuality = quality?.length ? quality.reduce((s, q) => s + q.avgOverall, 0) / quality.length : null
+  const totalEvals  = quality?.reduce((s, q) => s + q.evalCount, 0) ?? 0
+
+  return (
+    <div className="os-card p-4">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--os-text-2)]">Eval Health — Gate 3 · 3.5 · E4</p>
+        {readiness && (
+          <span className="text-[9px] px-1.5 py-0.5 rounded font-bold" style={{ background: readiness.readyForRelease ? '#10b98122' : '#f59e0b22', color: readiness.readyForRelease ? '#10b981' : '#f59e0b' }}>
+            {readiness.readyForRelease ? 'READY' : 'REVIEW'} · {readiness.overall}%
+          </span>
+        )}
+      </div>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="space-y-1">
+          <p className="text-[9px] text-[var(--os-text-2)]">Gate 3 · AI Reliability</p>
+          {bench ? (
+            <>
+              <div className="flex items-center gap-1.5">
+                <p className="text-lg font-black text-[var(--os-text-1)] tabular-nums">{bench.score.toFixed(0)}</p>
+                {bench.driftAlert && <Warning size={12} weight="fill" className="text-red-400" />}
+              </div>
+              <p className="text-[9px] text-[var(--os-text-2)]">{bench.passCount} passed{bench.driftAlert ? ' · drift alert' : ''} · {new Date(bench.at).toLocaleDateString()}</p>
+            </>
+          ) : <p className="text-[11px] text-[var(--os-text-2)]">No runs yet</p>}
+        </div>
+        <div className="space-y-1">
+          <p className="text-[9px] text-[var(--os-text-2)]">Gate 3.5 · Runtime Intel</p>
+          {rt35 ? (
+            <>
+              <p className="text-lg font-black text-[var(--os-text-1)] tabular-nums">{rt35.score.toFixed(0)}</p>
+              <p className="text-[9px] text-[var(--os-text-2)]">{rt35.passCount}/{rt35.passCount + rt35.failCount} passed · {new Date(rt35.at).toLocaleDateString()}</p>
+            </>
+          ) : <p className="text-[11px] text-[var(--os-text-2)]">No runs yet</p>}
+        </div>
+        <div className="space-y-1">
+          <p className="text-[9px] text-[var(--os-text-2)]">E4 · Judged Quality (30d)</p>
+          {avgQuality != null ? (
+            <>
+              <p className="text-lg font-black text-[var(--os-text-1)] tabular-nums">{avgQuality.toFixed(1)}<span className="text-[10px] font-normal text-[var(--os-text-2)]">/5</span></p>
+              <p className="text-[9px] text-[var(--os-text-2)]">{totalEvals} evaluations</p>
+            </>
+          ) : <p className="text-[11px] text-[var(--os-text-2)]">No evaluations yet</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function CostAnalyticsTab() {
   const { data, isLoading } = useQuery({ queryKey: ['gateway-cost'], queryFn: () => gatewayService.costAnalytics(30) })
   if (isLoading) return <div className="os-card h-64 animate-pulse bg-[var(--os-surface-0)]" />
@@ -182,6 +256,7 @@ function CostAnalyticsTab() {
 
   return (
     <div className="space-y-4">
+      <EvalHealthTile />
       <div className="grid grid-cols-3 gap-3">
         <div className="os-card p-4"><p className="text-[10px] text-[var(--os-text-2)] uppercase">30-day spend</p><p className="text-2xl font-black text-[var(--os-text-1)]">{fmtCost(data.totalCost)}</p></div>
         <div className="os-card p-4"><p className="text-[10px] text-[var(--os-text-2)] uppercase">Total tokens</p><p className="text-2xl font-black text-[var(--os-text-1)]">{fmtTokens(data.totalTokens)}</p></div>
@@ -230,21 +305,24 @@ function ModelsTab() {
   const maxCalls = Math.max(...models.map(m => m.callCount), 1)
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-      {models.map(m => (
-        <div key={m.model} className="os-card p-4 space-y-2">
-          <p className="text-sm font-bold text-[var(--os-text-1)] truncate">{m.model}</p>
-          <div className="h-1.5 rounded-full bg-[var(--os-surface-0)] overflow-hidden">
-            <div className="h-full bg-[#579bfc]" style={{ width: `${(m.callCount / maxCalls) * 100}%` }} />
+    <div className="space-y-4">
+      <EvalHealthTile />
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        {models.map(m => (
+          <div key={m.model} className="os-card p-4 space-y-2">
+            <p className="text-sm font-bold text-[var(--os-text-1)] truncate">{m.model}</p>
+            <div className="h-1.5 rounded-full bg-[var(--os-surface-0)] overflow-hidden">
+              <div className="h-full bg-[#579bfc]" style={{ width: `${(m.callCount / maxCalls) * 100}%` }} />
+            </div>
+            <div className="flex items-center justify-between text-[10px] text-[var(--os-text-2)]">
+              <span>{m.callCount} calls</span>
+              <span>{m.avgLatencyMs}ms avg</span>
+              <span className="font-semibold text-[var(--os-text-1)]">{fmtCost(m.totalCost)}</span>
+            </div>
           </div>
-          <div className="flex items-center justify-between text-[10px] text-[var(--os-text-2)]">
-            <span>{m.callCount} calls</span>
-            <span>{m.avgLatencyMs}ms avg</span>
-            <span className="font-semibold text-[var(--os-text-1)]">{fmtCost(m.totalCost)}</span>
-          </div>
-        </div>
-      ))}
-      {models.length === 0 && <p className="text-xs text-[var(--os-text-2)] col-span-full text-center py-8">No calls logged yet</p>}
+        ))}
+        {models.length === 0 && <p className="text-xs text-[var(--os-text-2)] col-span-full text-center py-8">No calls logged yet</p>}
+      </div>
     </div>
   )
 }

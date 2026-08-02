@@ -7,6 +7,7 @@ export type BenchmarkCategory =
   | 'navigation'      // intent to navigate; must set navigate field
   | 'explainability'  // decision must include evidence + reasoning + policies
   | 'confidence'      // sanity check; very simple prompts should score > 85
+  | 'tool-use'        // S320 — must invoke a specific tool via the S313-S318 tool-calling bridge
 
 export interface BenchmarkExpect {
   hasDecision?:      boolean   // response must (or must not) include a decision object
@@ -19,6 +20,7 @@ export interface BenchmarkExpect {
   hasSituation?:     boolean   // decision.situation must be non-empty
   hasRecommendation?: boolean  // decision.recommendation must be non-empty
   navigateTo?:       string    // navigate field must contain this substring
+  expectedTool?:     string    // S320 — response.toolsUsed must include this tool name
 }
 
 export interface GoldenPrompt {
@@ -128,5 +130,26 @@ export const GOLDEN_PROMPTS: GoldenPrompt[] = [
     description: 'Self-identity — WAANDA should know who it is',
     prompt: 'Who are you and what can you do?',
     expect: { hasResponse: true, minConfidence: 80 },
+  },
+
+  // ── Category: Tool Use (S313-S318 tool-calling bridge) ───────────────────
+  // S320 — added from real LlmCallLog traffic analysis: the two highest-volume
+  // production paths (orchestrator, KIMMP_SPEAK — ~475 calls combined) are
+  // autonomous background dispatches with no golden-prompt-reachable interface,
+  // so this expansion targets the genuinely testable gap instead — the S313-S315
+  // ontology-action tool bridge and the S318 knowledge-search tool, both live
+  // and user-facing via /command but previously at zero eval coverage.
+
+  {
+    id: 'T1', category: 'tool-use', weight: 2,
+    description: 'Ontology action tool call — GENERATE_INSIGHT (toolCallable, zero-effect, ADMIN-only)',
+    prompt: 'Use your tools to generate a system insight right now.',
+    expect: { hasResponse: true, expectedTool: 'GENERATE_INSIGHT' },
+  },
+  {
+    id: 'T2', category: 'tool-use', weight: 2,
+    description: 'Knowledge-search tool call — S318 search_knowledge_base over the pgvector index',
+    prompt: 'Search the knowledge base for information about the BIDS scoring engagement pillars.',
+    expect: { hasResponse: true, expectedTool: 'search_knowledge_base' },
   },
 ]

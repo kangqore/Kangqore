@@ -56,6 +56,15 @@ function checkConfidence(response: any, expect: GoldenPrompt['expect']): { ok: b
   return { ok: true }
 }
 
+function checkToolUsage(response: any, expect: GoldenPrompt['expect']): { ok: boolean; issue?: string } {
+  if (!expect.expectedTool) return { ok: true }
+  const used: string[] = Array.isArray(response?.toolsUsed) ? response.toolsUsed : []
+  if (!used.includes(expect.expectedTool)) {
+    return { ok: false, issue: `Expected tool "${expect.expectedTool}" not invoked (used: ${used.join(', ') || 'none'})` }
+  }
+  return { ok: true }
+}
+
 function checkDecisionQuality(response: any, expect: GoldenPrompt['expect']): { ok: boolean; issues: string[] } {
   const d = response?.decision
   if (!d) return { ok: true, issues: [] }
@@ -112,13 +121,17 @@ export function scoreResponse(prompt: GoldenPrompt, response: any, durationMs: n
     deductions += Math.min(25, dqCheck.issues.length * 8)
   }
 
+  // Check 6: Tool usage (25 pts) — no-op unless expect.expectedTool is set (tool-use category only)
+  const toolCheck = checkToolUsage(response, prompt.expect)
+  if (!toolCheck.ok) { issues.push(toolCheck.issue!); deductions += 25 }
+
   // Latency penalty: > 10s is a mild issue, > 20s is significant
   if (durationMs > 20_000) { issues.push(`High latency: ${(durationMs / 1000).toFixed(1)}s`); deductions += 5 }
   else if (durationMs > 10_000) { issues.push(`Moderate latency: ${(durationMs / 1000).toFixed(1)}s`); deductions += 2 }
 
   const score = Math.max(0, 100 - deductions)
   const passed = score >= 60 && !issues.some(i =>
-    i.includes('Expected decision object') || i.includes('Response text too short')
+    i.includes('Expected decision object') || i.includes('Response text too short') || i.startsWith('Expected tool')
   )
 
   const d = response?.decision
