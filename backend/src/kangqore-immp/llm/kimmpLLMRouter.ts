@@ -29,6 +29,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { prisma } from '../../lib/prisma'
 import logger from '../../utils/logger'
 import { waandaxSlot, isWaandaxBusyError } from './waandaxAnthropic'
+import { logCall, scanPii } from '../../services/kimmpGatewayCore'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -224,7 +225,7 @@ async function _waandaxAvailable(): Promise<boolean> {
   return _waandaxOk
 }
 
-async function _callWaandax(system: string, user: string, maxTokens: number): Promise<string> {
+async function _callWaandax(system: string, user: string, maxTokens: number): Promise<{ text: string; inputTokens: number; outputTokens: number }> {
   return waandaxSlot(async () => {
   const res = await fetch(`${WAANDAX_URL}/v1/chat/completions`, {
     method: 'POST',
@@ -242,7 +243,11 @@ async function _callWaandax(system: string, user: string, maxTokens: number): Pr
   })
   if (!res.ok) throw new Error(`WAANDAx ${res.status}`)
   const data = await res.json() as any
-  return String(data.choices?.[0]?.message?.content ?? '')
+  return {
+    text: String(data.choices?.[0]?.message?.content ?? ''),
+    inputTokens: data.usage?.prompt_tokens ?? 0,
+    outputTokens: data.usage?.completion_tokens ?? 0,
+  }
   })
 }
 
@@ -254,7 +259,7 @@ async function _callClaude(
   user: string,
   maxTokens: number,
   options: RouterOptions = {},
-): Promise<{ text: string; toolCallCount: number }> {
+): Promise<{ text: string; toolCallCount: number; inputTokens: number; outputTokens: number }> {
   const messages: Anthropic.MessageParam[] = [{ role: 'user', content: user }]
   const createParams: Anthropic.MessageCreateParamsNonStreaming = {
     model:       claudeModel,
@@ -268,18 +273,22 @@ async function _callClaude(
   }
 
   let toolCallCount = 0
+  let inputTokens = 0
+  let outputTokens = 0
   const MAX_TOOL_ITERATIONS = 5
 
   // Tool-use loop — Claude may call tools multiple times before producing final text
   for (let iteration = 0; iteration < MAX_TOOL_ITERATIONS; iteration++) {
     const res = await _anthropic.messages.create(createParams)
+    inputTokens += res.usage?.input_tokens ?? 0
+    outputTokens += res.usage?.output_tokens ?? 0
 
     // If stop_reason is 'end_turn' or there are no tool_use blocks, extract text and return
     const toolUseBlocks = res.content.filter(b => b.type === 'tool_use') as Anthropic.ToolUseBlock[]
 
     if (toolUseBlocks.length === 0 || res.stop_reason === 'end_turn') {
       const textBlock = res.content.find(b => b.type === 'text') as Anthropic.TextBlock | undefined
-      return { text: textBlock?.text ?? '', toolCallCount }
+      return { text: textBlock?.text ?? '', toolCallCount, inputTokens, outputTokens }
     }
 
     // Execute each tool call
@@ -319,7 +328,7 @@ async function _callClaude(
   const textBlock = Array.isArray(lastMsg?.content)
     ? (lastMsg!.content as Anthropic.ContentBlock[]).find(b => b.type === 'text') as Anthropic.TextBlock | undefined
     : undefined
-  return { text: textBlock?.text ?? '', toolCallCount }
+  return { text: textBlock?.text ?? '', toolCallCount, inputTokens, outputTokens }
 }
 
 // ─── Provider: OpenAI (GPT-4o) ───────────────────────────────────────────────
@@ -430,6 +439,10 @@ export interface RouterOptions {
   toolExecutor?: (name: string, input: any) => any
   // Persona-critical calls: skip the Gen2/WAANDAx local slots and go straight to Claude
   preferClaude?: boolean
+  // S308 — set by kimmpGateway.complete(), which already logs this call itself
+  // with richer explicit metadata; prevents the passive routedCall() wrapper
+  // below from double-logging the same call.
+  skipGatewayLog?: boolean
 }
 
 export interface RouterResult {
@@ -448,7 +461,7 @@ export interface RouterResult {
   }
 }
 
-export async function routedCall(
+async function _routedCallImpl(
   claudeModel: string,
   system: string,
   user: string,
@@ -476,7 +489,7 @@ export async function routedCall(
   const routeToGen2   = gen2ModelId && ANTHROPIC_KEY && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
   if (routeToGen2 && gen2ModelId) {
     try {
-      const { text } = await _callClaude(gen2ModelId, system, user, maxTokens, options)
+      const { text, inputTokens, outputTokens } = await _callClaude(gen2ModelId, system, user, maxTokens, options)
       _counts.gen2++
       markServed('gen2')
       cbSuccess('gen2')
@@ -484,7 +497,7 @@ export async function routedCall(
       return {
         content: [{ type: 'text', text }],
         model: gen2ModelId,
-        _routerMeta: makeMeta('gen2', gen2ModelId, false),
+        _routerMeta: makeMeta('gen2', gen2ModelId, false, inputTokens, outputTokens),
       }
     } catch (err) {
       cbFailure('gen2')
@@ -509,7 +522,7 @@ export async function routedCall(
   const claudeUsable = !!ANTHROPIC_KEY && cbAllow('claude')
   if (!claudeUsable && !options.tools?.length && await _waandaxAvailable() && cbAllow('waandax')) {
     try {
-      const text = await _callWaandax(system, user, maxTokens)
+      const { text, inputTokens, outputTokens } = await _callWaandax(system, user, maxTokens)
       _counts.waandax++
       markServed('waandax')
       cbSuccess('waandax')
@@ -517,7 +530,7 @@ export async function routedCall(
       return {
         content: [{ type: 'text', text }],
         model: WAANDAX_MODEL,
-        _routerMeta: makeMeta('waandax', WAANDAX_MODEL, false),
+        _routerMeta: makeMeta('waandax', WAANDAX_MODEL, false, inputTokens, outputTokens),
       }
     } catch (err) {
       if (isWaandaxBusyError(err)) {
@@ -534,7 +547,7 @@ export async function routedCall(
   // do not call cbAllow('claude') again here (see note above).
   if (claudeUsable) {
     try {
-      const { text, toolCallCount } = await _callClaude(claudeModel, system, user, maxTokens, options)
+      const { text, toolCallCount, inputTokens, outputTokens } = await _callClaude(claudeModel, system, user, maxTokens, options)
       _toolCallCount = toolCallCount
       _counts.claude++
       markServed('claude')
@@ -543,7 +556,7 @@ export async function routedCall(
       return {
         content: [{ type: 'text', text }],
         model: claudeModel,
-        _routerMeta: makeMeta('claude', claudeModel, false),
+        _routerMeta: makeMeta('claude', claudeModel, false, inputTokens, outputTokens),
       }
     } catch (err) {
       cbFailure('claude')
@@ -598,7 +611,7 @@ export async function routedCall(
   // beats returning empty. Callers can detect this via _routerMeta.fallback.
   if (await _waandaxAvailable() && cbAllow('waandax')) {
     try {
-      const text = await _callWaandax(system, user, maxTokens)
+      const { text, inputTokens, outputTokens } = await _callWaandax(system, user, maxTokens)
       _counts.waandax++
       markServed('waandax')
       cbSuccess('waandax')
@@ -611,7 +624,7 @@ export async function routedCall(
       return {
         content: [{ type: 'text', text }],
         model: WAANDAX_MODEL,
-        _routerMeta: makeMeta('waandax', WAANDAX_MODEL, true),
+        _routerMeta: makeMeta('waandax', WAANDAX_MODEL, true, inputTokens, outputTokens),
       }
     } catch (err) {
       if (isWaandaxBusyError(err)) {
@@ -629,6 +642,55 @@ export async function routedCall(
     content: [{ type: 'text', text: '' }],
     model: 'none',
     _routerMeta: makeMeta('none', 'none', true),
+  }
+}
+
+// S308 — passive gateway instrumentation. Every one of the ~31 files that
+// call haiku/sonnet/opus/routedCall gets logged here automatically, with
+// whatever RouterMeta they already pass (agentType/agentSystem/tags) used
+// for attribution — no changes needed in any of those 31 files. PII scanning
+// here always runs in AUDIT mode only (see kimmpGatewayCore.scanPii) since
+// this wrapper can't assume every existing caller tolerates a newly-thrown
+// error. Skipped entirely when kimmpGateway.complete() already logged the
+// call itself with richer, explicit metadata (options.skipGatewayLog).
+export async function routedCall(
+  claudeModel: string,
+  system: string,
+  user: string,
+  maxTokens: number,
+  meta: RouterMeta = {},
+  options: RouterOptions = {},
+): Promise<RouterResult> {
+  if (options.skipGatewayLog) return _routedCallImpl(claudeModel, system, user, maxTokens, meta, options)
+
+  try {
+    const result = await _routedCallImpl(claudeModel, system, user, maxTokens, meta, options)
+    scanPii(system + '\n' + user).then(scan => logCall({
+      actorType:     'KIMMP',
+      model:         result._routerMeta.usedModel,
+      provider:      result._routerMeta.provider,
+      promptTokens:  result._routerMeta.inputTokens,
+      completionTokens: result._routerMeta.outputTokens,
+      latencyMs:     result._routerMeta.durationMs,
+      prompt:        system + '\n' + user,
+      response:      result.content[0]?.text ?? '',
+      taskType:      meta.tags?.[0],
+      agentRole:     meta.agentType,
+      sourceModule:  meta.agentSystem ?? meta.agentType ?? 'kimmpLLMRouter',
+      status:        'SUCCESS',
+      piiDetected:   scan.detected,
+      piiPatterns:   scan.patterns,
+    })).catch(() => {})
+    return result
+  } catch (err) {
+    logCall({
+      actorType: 'KIMMP', model: claudeModel, provider: 'none',
+      prompt: system + '\n' + user, response: '',
+      taskType: meta.tags?.[0], agentRole: meta.agentType,
+      sourceModule: meta.agentSystem ?? meta.agentType ?? 'kimmpLLMRouter',
+      status: 'ERROR', errorMessage: (err as Error).message,
+    }).catch(() => {})
+    throw err
   }
 }
 

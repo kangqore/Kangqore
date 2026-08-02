@@ -133,6 +133,7 @@ const MarketingModule    = React.lazy(() => import('./os/features/marketing').th
 const CareersModule      = React.lazy(() => import('./os/features/careers').then(m => ({ default: m.CareersModule })));
 const AnalyticsModule    = React.lazy(() => import('./os/features/analytics').then(m => ({ default: m.AnalyticsModule })));
 const KIMMMModule        = React.lazy(() => import('./os/features/kangqore-immp').then(m => ({ default: m.KIMMMModule })));
+const KimmpGatewayModule = React.lazy(() => import('./os/features/kimmp-gateway').then(m => ({ default: m.KimmpGatewayModule })));
 const WaandaModule       = React.lazy(() => import('./os/features/waanda').then(m => ({ default: m.WaandaModule })));
 const DashboardHome      = React.lazy(() => import('./os/features/overview').then(m => ({ default: m.DashboardHome })));
 const AgentLogsModule    = React.lazy(() => import('./os/features/agent-logs').then(m => ({ default: m.AgentLogsModule })));
@@ -283,6 +284,7 @@ function AppContent() {
             <Route path="careers/*"        element={<CareersModule />}       />
             <Route path="analytics/*"      element={<AnalyticsModule />}     />
             <Route path="kangqore-immp/*"  element={<KIMMMModule />}         />
+            <Route path="kimmp-gateway/*"  element={<KimmpGatewayModule />}  />
             <Route path="agent-logs"       element={<AgentLogsModule />}     />
             <Route path="systems/*"        element={<SystemsModule />}       />
             <Route path="scheduling/*"     element={<SchedulingModule />}    />
