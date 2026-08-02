@@ -15,6 +15,7 @@ import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.servic
 import { OntologyGeoService } from '../services/ontologyGeo.service'
 import { OntologyPipelineService } from '../services/ontologyPipeline.service'
 import { OntologySdkGenerator } from '../services/ontologySdkGenerator.service'
+import { OntologyToolSchema } from '../services/ontologyToolSchema.service'
 import { OntologyWebhookSubscriptionService } from '../services/ontologyWebhookSubscription.service'
 import crypto from 'crypto'
 import { getIO } from '../socket'
@@ -412,6 +413,16 @@ router.get('/actions/executions/:id', ...guard, async (req, res) => {
   }
 })
 
+// S313 — must precede /actions/:id or "tool-schemas" gets swallowed as an id
+router.get('/actions/tool-schemas', ...guard, async (_req, res) => {
+  try {
+    const tools = await OntologyToolSchema.generateToolSchemas()
+    res.json({ tools })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
 router.get('/actions/:id', ...guard, async (req, res) => {
   try {
     const action = await prisma.ontologyAction.findUniqueOrThrow({
@@ -445,7 +456,7 @@ router.post('/actions', ...guard, async (req, res) => {
 })
 
 router.patch('/actions/:id', ...guard, async (req, res) => {
-  const { displayName, description, parameters, allowedRoles } = req.body
+  const { displayName, description, parameters, allowedRoles, toolCallable } = req.body
   try {
     const action = await prisma.ontologyAction.update({
       where: { id: req.params.id },
@@ -454,6 +465,7 @@ router.patch('/actions/:id', ...guard, async (req, res) => {
         ...(description !== undefined && { description }),
         ...(parameters !== undefined && { parameters }),
         ...(allowedRoles !== undefined && { allowedRoles }),
+        ...(toolCallable !== undefined && { toolCallable }),
       },
     })
     res.json({ action })

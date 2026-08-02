@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { io } from 'socket.io-client'
 import {
-  Radio, Scroll, ChartBar, ChartPie, ShieldWarning, Wallet,
+  Radio, Scroll, ChartBar, ChartPie, ShieldWarning, Wallet, Wrench,
   Plus, Trash, X,
 } from '@phosphor-icons/react'
 import { Loader2 } from 'lucide-react'
@@ -12,8 +12,10 @@ import { gatewayService, type LlmCallLog } from '../gatewayService'
 // WAANDAx, Gen2, OpenAI, Gemini fallback — is logged in one table via
 // passive instrumentation of the existing kimmpLLMRouter / withWaandax /
 // AEGIS callLLM chokepoints (see backend commit for the full breakdown).
+// S315 adds the Tool Calls tab — OntologyActions Claude invoked via S313/S314's
+// tool-calling bridge, cross-linked to their ActionExecution rows.
 
-type Tab = 'live' | 'calls' | 'cost' | 'models' | 'pii' | 'budgets'
+type Tab = 'live' | 'calls' | 'cost' | 'models' | 'pii' | 'budgets' | 'tools'
 
 const TAB_DEFS: Array<{ id: Tab; label: string; icon: any }> = [
   { id: 'live',    label: 'Live Feed',      icon: Radio },
@@ -22,6 +24,7 @@ const TAB_DEFS: Array<{ id: Tab; label: string; icon: any }> = [
   { id: 'models',  label: 'Models',         icon: ChartPie },
   { id: 'pii',     label: 'PII Incidents',  icon: ShieldWarning },
   { id: 'budgets', label: 'Token Budgets',  icon: Wallet },
+  { id: 'tools',   label: 'Tool Calls',     icon: Wrench },
 ]
 
 function fmtCost(c: number) { return c < 0.01 && c > 0 ? '<$0.01' : `$${c.toFixed(2)}` }
@@ -368,6 +371,45 @@ function BudgetsTab() {
   )
 }
 
+function ToolCallsTab() {
+  const [selected, setSelected] = useState<LlmCallLog | null>(null)
+  const { data, isLoading } = useQuery({ queryKey: ['gateway-tool-calls'], queryFn: () => gatewayService.toolCalls({ limit: 40 }) })
+  const rows = data?.rows ?? []
+
+  if (isLoading) return <div className="os-card h-64 animate-pulse bg-[var(--os-surface-0)]" />
+  if (rows.length === 0) {
+    return (
+      <div className="os-card p-8 text-center text-xs text-[var(--os-text-2)]">
+        No tool-invoked OntologyActions yet. Mark an action <code className="font-mono">toolCallable</code> in the Ontology → Actions page and ask KIMMP to use it.
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-2">
+      {rows.map(({ call, executions }) => (
+        <div key={call.id} className="os-card p-3 space-y-2 cursor-pointer hover:bg-[var(--os-surface-0)]" onClick={() => setSelected(call)}>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-[var(--os-text-1)]">{call.model} · {call.actorType}</p>
+            <span className="text-[9px] text-[var(--os-text-2)]">{new Date(call.createdAt).toLocaleString()}</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {executions.map(ex => (
+              <span key={ex.id} className="flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-semibold bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+                <Wrench size={10} className="text-[var(--os-text-2)]" />
+                <span className="text-[var(--os-text-1)]">{ex.action?.displayName ?? ex.action?.name ?? 'Unknown action'}</span>
+                {ex.object && <span className="text-[var(--os-text-2)]">on {ex.object.type.displayName}</span>}
+                <span style={{ color: statusColor(ex.status) }}>{ex.status}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+      {selected && <CallDetailModal call={selected} onClose={() => setSelected(null)} />}
+    </div>
+  )
+}
+
 export function GatewayExplorerPage() {
   const [tab, setTab] = useState<Tab>('live')
 
@@ -393,6 +435,7 @@ export function GatewayExplorerPage() {
       {tab === 'models' && <ModelsTab />}
       {tab === 'pii' && <PiiIncidentsTab />}
       {tab === 'budgets' && <BudgetsTab />}
+      {tab === 'tools' && <ToolCallsTab />}
     </div>
   )
 }

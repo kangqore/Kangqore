@@ -260,7 +260,7 @@ async function _callClaude(
   user: string,
   maxTokens: number,
   options: RouterOptions = {},
-): Promise<{ text: string; toolCallCount: number; inputTokens: number; outputTokens: number }> {
+): Promise<{ text: string; toolCallCount: number; inputTokens: number; outputTokens: number; toolCalls: ToolCallRecord[] }> {
   const messages: Anthropic.MessageParam[] = [{ role: 'user', content: user }]
   const createParams: Anthropic.MessageCreateParamsNonStreaming = {
     model:       claudeModel,
@@ -276,6 +276,12 @@ async function _callClaude(
   let toolCallCount = 0
   let inputTokens = 0
   let outputTokens = 0
+  // S315 — every tool call's name/input/result, regardless of which registry
+  // served it. The router doesn't know or care whether a tool is a Logic
+  // Tool calculator or an OntologyAction — the caller's combined toolExecutor
+  // (see commandService.ts) handles that. routedCall()'s logging wrapper
+  // reads this back to populate LlmCallLog.referencedObjectIds/toolExecutionIds.
+  const toolCalls: ToolCallRecord[] = []
   const MAX_TOOL_ITERATIONS = 5
 
   // Tool-use loop — Claude may call tools multiple times before producing final text
@@ -289,7 +295,7 @@ async function _callClaude(
 
     if (toolUseBlocks.length === 0 || res.stop_reason === 'end_turn') {
       const textBlock = res.content.find(b => b.type === 'text') as Anthropic.TextBlock | undefined
-      return { text: textBlock?.text ?? '', toolCallCount, inputTokens, outputTokens }
+      return { text: textBlock?.text ?? '', toolCallCount, inputTokens, outputTokens, toolCalls }
     }
 
     // Execute each tool call
@@ -308,6 +314,7 @@ async function _callClaude(
       } else {
         resultContent = JSON.stringify({ error: 'No tool executor provided' })
       }
+      toolCalls.push({ name: block.name, input: block.input, result: resultContent })
       toolResults.push({
         type:        'tool_result',
         tool_use_id: block.id,
@@ -329,7 +336,7 @@ async function _callClaude(
   const textBlock = Array.isArray(lastMsg?.content)
     ? (lastMsg!.content as Anthropic.ContentBlock[]).find(b => b.type === 'text') as Anthropic.TextBlock | undefined
     : undefined
-  return { text: textBlock?.text ?? '', toolCallCount, inputTokens, outputTokens }
+  return { text: textBlock?.text ?? '', toolCallCount, inputTokens, outputTokens, toolCalls }
 }
 
 // ─── Provider: OpenAI (GPT-4o) ───────────────────────────────────────────────
@@ -452,6 +459,14 @@ export interface RouterOptions {
   skipGatewayLog?: boolean
 }
 
+// S315 — one entry per tool call made during the request, whichever registry
+// (Logic Tools, OntologyActionToolRegistry, or any future one) served it.
+export interface ToolCallRecord {
+  name:   string
+  input:  any
+  result: string
+}
+
 export interface RouterResult {
   content: Array<{ type: 'text'; text: string }>
   model:   string
@@ -465,6 +480,7 @@ export interface RouterResult {
     inputTokens?:  number
     outputTokens?: number
     toolCallCount?: number  // number of logic tool calls made in this request
+    toolCalls?:    ToolCallRecord[]
   }
 }
 
@@ -478,6 +494,7 @@ async function _routedCallImpl(
 ): Promise<RouterResult> {
   const start = Date.now()
   let _toolCallCount = 0
+  let _toolCalls: ToolCallRecord[] = []
   const makeMeta = (provider: string, model: string, fallback: boolean, inputTokens?: number, outputTokens?: number) => ({
     durationMs:    Date.now() - start,
     provider,
@@ -488,6 +505,7 @@ async function _routedCallImpl(
     inputTokens,
     outputTokens,
     toolCallCount: _toolCallCount,
+    toolCalls:     _toolCalls,
   })
 
   // ── 0. Gen2 fine-tuned model — A/B traffic split (AutonomyConfig.gen2TrafficPct) ─
@@ -496,7 +514,8 @@ async function _routedCallImpl(
   const routeToGen2   = gen2ModelId && ANTHROPIC_KEY && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
   if (routeToGen2 && gen2ModelId) {
     try {
-      const { text, inputTokens, outputTokens } = await _callClaude(gen2ModelId, system, user, maxTokens, options)
+      const { text, inputTokens, outputTokens, toolCalls } = await _callClaude(gen2ModelId, system, user, maxTokens, options)
+      _toolCalls = toolCalls
       _counts.gen2++
       markServed('gen2')
       cbSuccess('gen2')
@@ -554,8 +573,9 @@ async function _routedCallImpl(
   // do not call cbAllow('claude') again here (see note above).
   if (claudeUsable) {
     try {
-      const { text, toolCallCount, inputTokens, outputTokens } = await _callClaude(claudeModel, system, user, maxTokens, options)
+      const { text, toolCallCount, inputTokens, outputTokens, toolCalls } = await _callClaude(claudeModel, system, user, maxTokens, options)
       _toolCallCount = toolCallCount
+      _toolCalls = toolCalls
       _counts.claude++
       markServed('claude')
       cbSuccess('claude')
@@ -683,6 +703,16 @@ export async function routedCall(
 
   try {
     const result = await _routedCallImpl(claudeModel, resolvedSystem, user, maxTokens, meta, options)
+    // S315 — surface any tool-invoked OntologyAction on the log row. A tool
+    // call's result is only ever the JSON OntologyActionToolRegistry.executor
+    // returns ({executionId,...}) — Logic Tools return plain calculator
+    // output, so JSON.parse failing/missing executionId just means "not an
+    // ontology action," not an error.
+    const toolCalls = result._routerMeta.toolCalls ?? []
+    const referencedObjectIds = toolCalls.map(tc => tc.input?.objectId).filter((v): v is string => !!v)
+    const toolExecutionIds = toolCalls
+      .map(tc => { try { return JSON.parse(tc.result)?.executionId as string | undefined } catch { return undefined } })
+      .filter((v): v is string => !!v)
     scanPii(resolvedSystem + '\n' + user).then(scan => logCall({
       actorType:     'KIMMP',
       model:         result._routerMeta.usedModel,
@@ -692,6 +722,8 @@ export async function routedCall(
       latencyMs:     result._routerMeta.durationMs,
       prompt:        resolvedSystem + '\n' + user,
       response:      result.content[0]?.text ?? '',
+      referencedObjectIds,
+      toolExecutionIds,
       taskType:      meta.tags?.[0],
       agentRole:     meta.agentType,
       sourceModule:  meta.agentSystem ?? meta.agentType ?? 'kimmpLLMRouter',

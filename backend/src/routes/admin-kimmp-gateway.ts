@@ -273,4 +273,36 @@ router.get('/prompts/:name/usage', ...guard, async (req, res) => {
   }
 })
 
+// ─── S315: tool-invoked OntologyActions — LlmCallLog joined to ActionExecution ─
+
+router.get('/tool-calls', ...guard, async (req, res) => {
+  const { page = '1', limit = '25' } = req.query as Record<string, string>
+  try {
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+    const where = { toolExecutionIds: { isEmpty: false } }
+    const [calls, total] = await Promise.all([
+      prisma.llmCallLog.findMany({ where, orderBy: { createdAt: 'desc' }, skip, take: parseInt(limit) }),
+      prisma.llmCallLog.count({ where }),
+    ])
+
+    const allExecutionIds = calls.flatMap(c => c.toolExecutionIds)
+    const executions = allExecutionIds.length
+      ? await prisma.actionExecution.findMany({
+          where: { id: { in: allExecutionIds } },
+          include: { action: { select: { name: true, displayName: true } }, object: { select: { id: true, properties: true, type: { select: { displayName: true } } } } },
+        })
+      : []
+    const executionMap = new Map(executions.map(e => [e.id, e]))
+
+    const rows = calls.map(c => ({
+      call: c,
+      executions: c.toolExecutionIds.map(id => executionMap.get(id)).filter(Boolean),
+    }))
+
+    res.json({ rows, total, pages: Math.ceil(total / parseInt(limit)) })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
 export default router

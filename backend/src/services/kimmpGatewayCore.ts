@@ -156,6 +156,7 @@ export interface LogCallInput {
   prompt: string
   response: string
   referencedObjectIds?: string[]
+  toolExecutionIds?: string[]
   taskType?: string | null
   agentRole?: string | null
   sourceModule?: string | null
@@ -186,6 +187,7 @@ export async function logCall(input: LogCallInput): Promise<void> {
         prompt: input.prompt.slice(0, TRUNCATE),
         response: input.response.slice(0, TRUNCATE),
         referencedObjectIds: input.referencedObjectIds ?? [],
+        toolExecutionIds: input.toolExecutionIds ?? [],
         taskType: input.taskType ?? null,
         agentRole: input.agentRole ?? null,
         sourceModule: input.sourceModule ?? null,
