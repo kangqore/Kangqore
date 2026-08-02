@@ -7,6 +7,7 @@
 import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import crypto from 'crypto'
+import { OntologySdkGenerator } from '../services/ontologySdkGenerator.service'
 
 export const developerRouter = Router()
 
@@ -32,7 +33,7 @@ developerRouter.get('/keys', async (req: Request, res: Response) => {
 
   const keys = await prisma.programmaticApiKey.findMany({
     where:   { userId, revoked: false },
-    select:  { id: true, name: true, prefix: true, lastUsedAt: true, expiresAt: true, createdAt: true },
+    select:  { id: true, name: true, prefix: true, lastUsedAt: true, expiresAt: true, createdAt: true, scopedObjectTypes: true, scopedActions: true },
     orderBy: { createdAt: 'desc' },
   })
 
@@ -68,7 +69,7 @@ developerRouter.post('/keys', async (req: Request, res: Response) => {
   const userId = (req.user as any)?.userId
   if (!userId) { res.status(401).json({ error: 'Unauthorized' }); return }
 
-  const { name, expiresInDays } = req.body
+  const { name, expiresInDays, scopedObjectTypes, scopedActions } = req.body
   if (!name?.trim()) { res.status(400).json({ error: 'name is required' }); return }
 
   const existing = await prisma.programmaticApiKey.count({ where: { userId, revoked: false } })
@@ -83,8 +84,12 @@ developerRouter.post('/keys', async (req: Request, res: Response) => {
     : null
 
   const key = await prisma.programmaticApiKey.create({
-    data: { userId, name: name.trim(), keyHash, prefix, expiresAt },
-    select: { id: true, name: true, prefix: true, expiresAt: true, createdAt: true },
+    data: {
+      userId, name: name.trim(), keyHash, prefix, expiresAt,
+      scopedObjectTypes: Array.isArray(scopedObjectTypes) ? scopedObjectTypes : [],
+      scopedActions: Array.isArray(scopedActions) ? scopedActions : [],
+    },
+    select: { id: true, name: true, prefix: true, expiresAt: true, createdAt: true, scopedObjectTypes: true, scopedActions: true },
   })
 
   res.status(201).json({ key, token: rawKey, warning: 'Store this token now — it will not be shown again.' })
@@ -124,8 +129,8 @@ developerRouter.delete('/keys/:id', async (req: Request, res: Response) => {
  * GET /admin/developer/sdk/typescript
  * Serves the Kangqore TypeScript SDK as a downloadable .ts file
  */
-developerRouter.get('/sdk/typescript', (_req: Request, res: Response) => {
-  const sdk = `/**
+developerRouter.get('/sdk/typescript', async (_req: Request, res: Response) => {
+  const platformSdk = `/**
  * Kangqore OS — TypeScript SDK v1.0
  * Auto-generated — https://kangqore.com/docs/sdk
  *
@@ -354,6 +359,20 @@ console.log('Decision ID:', decision.id)
 */
 `
 
+  // S306 — the platform SDK above (OIS/Signals/Decisions/Blueprints) stays
+  // hand-maintained since those domains have no live-schema source of truth.
+  // The Ontology section below is generated live from OntologyObjectType /
+  // OntologyAction / ObjectSet definitions — this half of the S91 download
+  // now updates itself as the ontology evolves.
+  let ontologySdk = ''
+  try {
+    ontologySdk = await OntologySdkGenerator.typescript()
+  } catch {
+    ontologySdk = '// Ontology SDK generation failed — see GET /admin/ontology/sdk/typescript for details\n'
+  }
+
+  const sdk = `${platformSdk}\n\n// ═══════════════════════════════════════════════════════════════════════════\n// Ontology SDK (generated — S306) — typed access to your live OntologyObjectTypes\n// ═══════════════════════════════════════════════════════════════════════════\n\n${ontologySdk}`
+
   res.setHeader('Content-Disposition', 'attachment; filename="kangqore-sdk.ts"')
   res.setHeader('Content-Type', 'text/plain; charset=utf-8')
   res.send(sdk)
@@ -361,8 +380,8 @@ console.log('Decision ID:', decision.id)
 
 // ─── S122: Python SDK v2 ───────────────────────────────────────────────────────
 
-developerRouter.get('/sdk/python', (_req: Request, res: Response) => {
-  const sdk = `"""
+developerRouter.get('/sdk/python', async (_req: Request, res: Response) => {
+  const platformSdk = `"""
 Kangqore OS — Python SDK v2.0
 Auto-generated — https://kangqore.com/docs/sdk/python
 
@@ -497,6 +516,15 @@ if __name__ == "__main__":
     )
     print("Signal created")
 `
+
+  let ontologySdk = ''
+  try {
+    ontologySdk = await OntologySdkGenerator.python()
+  } catch {
+    ontologySdk = '# Ontology SDK generation failed — see GET /admin/ontology/sdk/python for details\n'
+  }
+
+  const sdk = `${platformSdk}\n\n# ═══════════════════════════════════════════════════════════════════════════\n# Ontology SDK (generated — S306) — typed access to your live OntologyObjectTypes\n# ═══════════════════════════════════════════════════════════════════════════\n\n${ontologySdk}`
 
   res.setHeader('Content-Disposition', 'attachment; filename="kangqore_client.py"')
   res.setHeader('Content-Type', 'text/plain; charset=utf-8')

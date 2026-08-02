@@ -23,7 +23,7 @@ export async function apiKeyAuth(req: Request, res: Response, next: NextFunction
 
   const apiKey = await (prisma as any).programmaticApiKey.findUnique({
     where:  { keyHash },
-    select: { id: true, userId: true, revoked: true, expiresAt: true, prefix: true },
+    select: { id: true, userId: true, revoked: true, expiresAt: true, prefix: true, scopedObjectTypes: true, scopedActions: true },
   }).catch(() => null)
 
   if (!apiKey) {
@@ -59,7 +59,12 @@ export async function apiKeyAuth(req: Request, res: Response, next: NextFunction
 
   // Attach to req so downstream handlers can use it
   ;(req as any).user    = { ...user, userId: user.id }
-  ;(req as any).apiKey  = { id: apiKey.id, prefix: apiKey.prefix }
+  ;(req as any).apiKey  = {
+    id: apiKey.id,
+    prefix: apiKey.prefix,
+    scopedObjectTypes: apiKey.scopedObjectTypes ?? [],
+    scopedActions: apiKey.scopedActions ?? [],
+  }
 
   next()
 }
