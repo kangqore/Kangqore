@@ -48,6 +48,7 @@ import { KIMMLearningScheduler } from '../kangqore-immp/learning/kimmpLearningSc
 import { CronManager } from '../jobs/CronManager'
 import { CdcService }  from '../lib/cdc/cdcService'
 import { OntologyWebhookSubscriptionService } from '../services/ontologyWebhookSubscription.service'
+import { KimmpOperationalWebhookService } from '../services/kimmpOperationalWebhook.service'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -282,9 +283,10 @@ export const WAANDA = {
     CronManager.initialize()
     await CdcService.init()
     await OntologyWebhookSubscriptionService.init()
+    await KimmpOperationalWebhookService.init()
     this.reportSubsystem('infrastructure', {
       status:  'OPERATIONAL',
-      details: { cronManager: true, cdc: true, ontologyWebhooks: true },
+      details: { cronManager: true, cdc: true, ontologyWebhooks: true, kimmpOperationalWebhooks: true },
     })
 
     // KB index + SystemRAG are heavy — defer until after port is bound

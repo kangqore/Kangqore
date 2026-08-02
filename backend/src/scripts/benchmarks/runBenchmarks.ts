@@ -199,6 +199,15 @@ export async function runBenchmarks(opts: BenchmarkOptions): Promise<BenchmarkSu
     },
   })
 
+  // S326 — emit on the shared CDC bus so any registered
+  // KimmpOperationalSubscription with 'eval.drift_alert' fires. Fire-and-forget:
+  // a webhook delivery failure must never fail the benchmark run itself.
+  if (drift.alert) {
+    import('../../lib/cdc/cdcService').then(({ CdcService }) =>
+      CdcService.emit('kimmp_benchmark_runs', 'UPDATE', null, { id: run.id, totalScore, driftAlert: true, driftDelta: drift.delta, at: new Date().toISOString() }),
+    ).catch(() => {})
+  }
+
   const gate = totalScore >= 75 && failCount <= 2 ? 'PASS' : 'FAIL'
 
   const summary: BenchmarkSummary = {

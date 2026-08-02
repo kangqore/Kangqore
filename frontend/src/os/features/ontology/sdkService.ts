@@ -97,6 +97,39 @@ export const subscriptionService = {
   },
 }
 
+// S326 — operational-surface counterpart to OntologySubscription: same
+// HMAC-signed webhook shape, scoped to KIMMP operational events (eval drift,
+// budget breach) rather than ontology object mutations.
+export interface KimmpOperationalSubscription {
+  id: string
+  name: string
+  url: string
+  secret: string
+  eventTypes: string[]
+  enabled: boolean
+  lastTriggeredAt: string | null
+  lastStatus: string | null
+  createdAt: string
+}
+
+export const operationalSubscriptionService = {
+  list(): Promise<KimmpOperationalSubscription[]> {
+    return api.get('/admin/kimmp-gateway/subscriptions').then(r => r.data?.subscriptions ?? [])
+  },
+  create(input: { name: string; url: string; eventTypes?: string[] }): Promise<KimmpOperationalSubscription> {
+    return api.post('/admin/kimmp-gateway/subscriptions', input).then(r => r.data.subscription)
+  },
+  update(id: string, patch: Partial<{ name: string; url: string; eventTypes: string[]; enabled: boolean }>): Promise<KimmpOperationalSubscription> {
+    return api.patch(`/admin/kimmp-gateway/subscriptions/${id}`, patch).then(r => r.data.subscription)
+  },
+  remove(id: string): Promise<void> {
+    return api.delete(`/admin/kimmp-gateway/subscriptions/${id}`).then(() => undefined)
+  },
+  test(id: string): Promise<KimmpOperationalSubscription> {
+    return api.post(`/admin/kimmp-gateway/subscriptions/${id}/test`, {}).then(r => r.data.subscription)
+  },
+}
+
 export interface DeveloperApiKey {
   id: string
   name: string

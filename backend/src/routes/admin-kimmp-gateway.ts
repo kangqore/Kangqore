@@ -1,11 +1,13 @@
 // S310 — KIMMP Intelligence Gateway dashboard API.
 import { Router } from 'express'
+import crypto from 'crypto'
 import { prisma } from '../lib/prisma'
 import { authenticate, authorize } from '../middleware/auth'
 import { complete, GATEWAY_MODEL_MAP } from '../services/kimmpGateway.service'
 import { checkBudget } from '../services/kimmpGatewayCore'
 import { PgvectorIndex } from '../services/pgvectorIndex.service'
 import { embedQuery, isEmbeddingsConfigured } from '../services/embeddings.service'
+import { KimmpOperationalWebhookService } from '../services/kimmpOperationalWebhook.service'
 
 const router = Router()
 const guard = [authenticate, authorize(['ADMIN'])] as const
@@ -48,11 +50,42 @@ async function checkPromptRegression(promptName: string | null, promptVersion: n
   return run ? { flagged: true, runId: run.id, driftDelta: run.driftDelta, totalScore: run.totalScore, at: run.startedAt } : { flagged: false }
 }
 
+// S325 — Unified AI Operations Console: click one call, see everything every
+// earlier phase in this roadmap knows about it. All reads, no new tables —
+// promptRegression is S319's existing drift check; agent/agentQuality re-use
+// S324's KimmpAgent + AIEvaluation join; toolExecutions re-uses the exact
+// join /tool-calls (S315) already does, just scoped to one call.
 router.get('/calls/:id', ...guard, async (req, res) => {
   try {
     const call = await prisma.llmCallLog.findUniqueOrThrow({ where: { id: req.params.id } })
     const promptRegression = await checkPromptRegression(call.promptName, call.promptVersion)
-    res.json({ call, promptRegression })
+
+    const [agent, toolExecutions] = await Promise.all([
+      call.sourceModule === 'AGENT_STUDIO' && call.agentRole
+        ? prisma.kimmpAgent.findFirst({ where: { name: call.agentRole } })
+        : null,
+      call.toolExecutionIds.length
+        ? prisma.actionExecution.findMany({
+            where: { id: { in: call.toolExecutionIds } },
+            include: { action: { select: { name: true, displayName: true } }, object: { select: { id: true, properties: true, type: { select: { displayName: true } } } } },
+          })
+        : [],
+    ])
+
+    const agentQuality = agent
+      ? await (prisma as any).aIEvaluation.aggregate({
+          where: { targetType: 'AGENT', targetId: agent.id },
+          _avg: { overall: true }, _count: { _all: true },
+        }).catch(() => null)
+      : null
+
+    res.json({
+      call,
+      promptRegression,
+      agent,
+      agentQuality: agentQuality ? { avgOverall: agentQuality._avg?.overall ?? null, evalCount: agentQuality._count?._all ?? 0 } : null,
+      toolExecutions,
+    })
   } catch (e: any) {
     res.status(404).json({ error: e.message })
   }
@@ -425,6 +458,75 @@ router.get('/agents/performance', ...guard, async (_req, res) => {
     res.json({ agents, legacyBuckets })
   } catch (e: any) {
     res.status(500).json({ error: e.message })
+  }
+})
+
+// ─── Operational Webhook Subscriptions (S326) ────────────────────────────────
+// Partner-facing counterpart to admin-ontology.ts's /subscriptions — same
+// shape, scoped to KIMMP operational events (eval drift, budget breach)
+// instead of ontology object mutations.
+
+router.get('/subscriptions', ...guard, async (_req, res) => {
+  try {
+    const subscriptions = await (prisma as any).kimmpOperationalSubscription.findMany({ orderBy: { createdAt: 'desc' } })
+    res.json({ subscriptions: subscriptions.map((s: any) => ({ ...s, secret: s.secret.slice(0, 6) + '••••••••' })) })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/subscriptions', ...guard, async (req, res) => {
+  const { name, url, eventTypes } = req.body
+  try {
+    if (!name?.trim() || !url?.trim()) { res.status(400).json({ error: 'name and url are required' }); return }
+    const subscription = await (prisma as any).kimmpOperationalSubscription.create({
+      data: {
+        name: name.trim(),
+        url: url.trim(),
+        secret: `whsec_${crypto.randomBytes(24).toString('hex')}`,
+        eventTypes: eventTypes ?? ['eval.drift_alert', 'budget.exceeded'],
+        createdBy: (req as any).user?.id,
+      },
+    })
+    res.status(201).json({ subscription })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.patch('/subscriptions/:id', ...guard, async (req, res) => {
+  const { name, url, eventTypes, enabled } = req.body
+  try {
+    const subscription = await (prisma as any).kimmpOperationalSubscription.update({
+      where: { id: req.params.id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(url !== undefined && { url }),
+        ...(eventTypes !== undefined && { eventTypes }),
+        ...(enabled !== undefined && { enabled }),
+      },
+    })
+    res.json({ subscription })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.delete('/subscriptions/:id', ...guard, async (req, res) => {
+  try {
+    await (prisma as any).kimmpOperationalSubscription.delete({ where: { id: req.params.id } })
+    res.json({ success: true })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.post('/subscriptions/:id/test', ...guard, async (req, res) => {
+  try {
+    const subscription = await KimmpOperationalWebhookService.test(req.params.id)
+    res.json({ subscription })
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
   }
 })
 

@@ -14,11 +14,15 @@ import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import crypto from 'crypto'
 import { ontologyV1Router } from './ontology'
+import { kimmpOpsV1Router } from './kimmpOps'
 
 export const v1Router = Router()
 
 // S306/S307 — generated Ontology SDK talks to /api/v1/ontology/*
 v1Router.use('/ontology', ontologyV1Router)
+
+// S326 — generated KIMMP Operations SDK talks to /api/v1/kimmp/*
+v1Router.use('/kimmp', kimmpOpsV1Router)
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function userId(req: Request): string | undefined {

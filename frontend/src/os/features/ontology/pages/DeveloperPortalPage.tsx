@@ -2,10 +2,13 @@ import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Code, Terminal, Play, WebhooksLogo, Key, Copy, Download,
-  ClockCounterClockwise, Trash, Plus, X, CheckCircle,
+  ClockCounterClockwise, Trash, Plus, X, CheckCircle, Gauge,
 } from '@phosphor-icons/react'
 import { Loader2 } from 'lucide-react'
-import { sdkService, subscriptionService, developerKeyService, type SdkTypeShape } from '../sdkService'
+import {
+  sdkService, subscriptionService, operationalSubscriptionService, developerKeyService,
+  type SdkTypeShape, type KimmpOperationalSubscription,
+} from '../sdkService'
 import { ObjectTable } from '../components/ObjectTable'
 
 // S306/S307 — Developer Portal: live SDK playground (pick a type, see the
@@ -13,14 +16,18 @@ import { ObjectTable } from '../components/ObjectTable'
 // partner webhook subscriptions + scoped API keys. This is the "partners
 // build against our ontology the same way they build against Salesforce"
 // surface — everything here reads real, live ontology state, nothing mocked.
+// S326 adds the KIMMP Operations half: the same downloaded SDK file now also
+// exports KimmpOperationsClient (read APIs over Gateway/Registry/Eval/Agent
+// Studio), and a second webhook tab for operational events.
 
-type Tab = 'playground' | 'changelog' | 'webhooks' | 'keys'
+type Tab = 'playground' | 'changelog' | 'webhooks' | 'opsWebhooks' | 'keys'
 
 const TAB_DEFS: Array<{ id: Tab; label: string; icon: any }> = [
-  { id: 'playground', label: 'SDK Playground', icon: Terminal },
-  { id: 'changelog',  label: 'Changelog',      icon: ClockCounterClockwise },
-  { id: 'webhooks',   label: 'Webhooks',       icon: WebhooksLogo },
-  { id: 'keys',       label: 'API Keys',       icon: Key },
+  { id: 'playground',   label: 'SDK Playground',      icon: Terminal },
+  { id: 'changelog',    label: 'Changelog',           icon: ClockCounterClockwise },
+  { id: 'webhooks',     label: 'Ontology Webhooks',   icon: WebhooksLogo },
+  { id: 'opsWebhooks',  label: 'Operational Webhooks', icon: Gauge },
+  { id: 'keys',         label: 'API Keys',            icon: Key },
 ]
 
 function InterfacePreview({ type }: { type: SdkTypeShape }) {
@@ -85,7 +92,10 @@ function DownloadRow() {
     <div className="os-card p-4 flex items-center justify-between flex-wrap gap-3">
       <div className="flex items-center gap-2">
         <Code size={16} className="text-[var(--os-text-2)]" />
-        <p className="text-xs text-[var(--os-text-1)] font-semibold">Download the generated SDK</p>
+        <div>
+          <p className="text-xs text-[var(--os-text-1)] font-semibold">Download the generated SDK</p>
+          <p className="text-[10px] text-[var(--os-text-2)]">One file — OntologyClient (business objects) + KimmpOperationsClient (Gateway/Registry/Eval/Agent Studio, read-only)</p>
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <a href="/api/admin/ontology/sdk/typescript" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
@@ -193,6 +203,89 @@ function WebhooksTab() {
                 <p className="text-[10px] text-[var(--os-text-2)] truncate font-mono">{s.url}</p>
                 <p className="text-[9px] text-[var(--os-text-2)] mt-0.5">
                   {s.objectType?.displayName ?? 'All types'} · {s.lastTriggeredAt ? `last: ${s.lastStatus} @ ${new Date(s.lastTriggeredAt).toLocaleTimeString()}` : 'never triggered'}
+                </p>
+              </div>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <button onClick={() => toggle.mutate(s)} className={`text-[9px] font-semibold px-2 py-1 rounded-md border ${s.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+                  {s.enabled ? 'Enabled' : 'Disabled'}
+                </button>
+                <button onClick={() => test.mutate(s.id)} title="Send test event" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[#579bfc]">
+                  {test.isPending ? <Loader2 size={13} className="animate-spin" /> : <Play size={13} weight="fill" />}
+                </button>
+                <button onClick={() => remove.mutate(s.id)} className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-red-400"><Trash size={13} /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// S326 — operational-surface counterpart to WebhooksTab above: same shape,
+// scoped to eval.drift_alert / budget.exceeded (Gate 3 drift + hard-stop
+// budget breaches) instead of ontology object mutations.
+function OperationalWebhooksTab() {
+  const qc = useQueryClient()
+  const [showForm, setShowForm] = useState(false)
+  const [name, setName] = useState('')
+  const [url, setUrl] = useState('')
+
+  const { data, isLoading } = useQuery({ queryKey: ['kimmp-ops-subscriptions'], queryFn: () => operationalSubscriptionService.list() })
+  const subs = data ?? []
+
+  const create = useMutation({
+    mutationFn: () => operationalSubscriptionService.create({ name, url }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['kimmp-ops-subscriptions'] }); setShowForm(false); setName(''); setUrl('') },
+  })
+  const test = useMutation({
+    mutationFn: (id: string) => operationalSubscriptionService.test(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['kimmp-ops-subscriptions'] }),
+  })
+  const toggle = useMutation({
+    mutationFn: (s: KimmpOperationalSubscription) => operationalSubscriptionService.update(s.id, { enabled: !s.enabled }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['kimmp-ops-subscriptions'] }),
+  })
+  const remove = useMutation({
+    mutationFn: (id: string) => operationalSubscriptionService.remove(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['kimmp-ops-subscriptions'] }),
+  })
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-[var(--os-text-2)]">Partners register a URL to receive HMAC-signed POSTs on eval.drift_alert (Gate 3) / budget.exceeded (hard-stop budgets).</p>
+        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold">
+          <Plus size={12} /> New subscription
+        </button>
+      </div>
+
+      {showForm && (
+        <div className="os-card p-4 space-y-2">
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Subscription name" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://partner.example.com/webhook" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <div className="flex items-center gap-2">
+            <button onClick={() => create.mutate()} disabled={create.isPending || !name.trim() || !url.trim()} className="px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+              {create.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Create'}
+            </button>
+            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {isLoading ? (
+        <div className="os-card h-32 animate-pulse bg-[var(--os-surface-0)]" />
+      ) : subs.length === 0 ? (
+        <div className="os-card p-8 text-center text-xs text-[var(--os-text-2)]">No operational webhook subscriptions yet</div>
+      ) : (
+        <div className="space-y-2">
+          {subs.map(s => (
+            <div key={s.id} className="os-card p-3 flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-[var(--os-text-1)] truncate">{s.name}</p>
+                <p className="text-[10px] text-[var(--os-text-2)] truncate font-mono">{s.url}</p>
+                <p className="text-[9px] text-[var(--os-text-2)] mt-0.5">
+                  {s.eventTypes.join(', ')} · {s.lastTriggeredAt ? `last: ${s.lastStatus} @ ${new Date(s.lastTriggeredAt).toLocaleTimeString()}` : 'never triggered'}
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
@@ -326,6 +419,7 @@ export function DeveloperPortalPage() {
       {tab === 'playground' && <PlaygroundTab />}
       {tab === 'changelog' && <ChangelogTab />}
       {tab === 'webhooks' && <WebhooksTab />}
+      {tab === 'opsWebhooks' && <OperationalWebhooksTab />}
       {tab === 'keys' && <KeysTab />}
     </div>
   )

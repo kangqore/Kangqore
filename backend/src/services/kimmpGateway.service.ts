@@ -35,6 +35,12 @@ export async function complete(opts: CompleteOptions): Promise<string> {
         prompt: opts.system + '\n' + opts.user, response: '', taskType: opts.taskType, agentRole: opts.agentRole,
         status: 'BLOCKED', errorMessage: budget.reason, latencyMs: Date.now() - start,
       })
+      // S326 — emit on the shared CDC bus so any registered
+      // KimmpOperationalSubscription with 'budget.exceeded' fires.
+      // Fire-and-forget: a webhook delivery failure must never block the caller.
+      import('../lib/cdc/cdcService').then(({ CdcService }) =>
+        CdcService.emit('token_budgets', 'UPDATE', null, { userId: opts.userId, usedTokens: budget.usedTokens, limitTokens: budget.limitTokens, reason: budget.reason, at: new Date().toISOString() }),
+      ).catch(() => {})
       throw new GatewayBudgetExceededError(budget.reason ?? 'Budget exceeded')
     }
   }
