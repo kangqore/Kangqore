@@ -238,4 +238,39 @@ router.get('/model-map', ...guard, async (_req, res) => {
   res.json({ modelMap: GATEWAY_MODEL_MAP })
 })
 
+// ─── S312: per-prompt usage, sourced from LlmCallLog via the S311 link ─────
+
+router.get('/prompts/:name/usage', ...guard, async (req, res) => {
+  try {
+    const since = new Date(Date.now() - 30 * 86_400_000)
+    const calls = await prisma.llmCallLog.findMany({
+      where: { promptName: req.params.name, createdAt: { gte: since } },
+      select: { promptVersion: true, totalCost: true, promptTokens: true, completionTokens: true, status: true, createdAt: true },
+    })
+
+    const byVersion = new Map<number, { callCount: number; cost: number; tokens: number; errors: number }>()
+    for (const c of calls) {
+      const v = c.promptVersion ?? 0
+      const row = byVersion.get(v) ?? { callCount: 0, cost: 0, tokens: 0, errors: 0 }
+      row.callCount++
+      row.cost += c.totalCost
+      row.tokens += c.promptTokens + c.completionTokens
+      if (c.status === 'ERROR') row.errors++
+      byVersion.set(v, row)
+    }
+
+    const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0)
+    const callsToday = calls.filter(c => c.createdAt >= todayStart).length
+
+    res.json({
+      name: req.params.name,
+      callsToday,
+      last30Days: calls.length,
+      byVersion: Array.from(byVersion.entries()).map(([version, stats]) => ({ version, ...stats })).sort((a, b) => b.version - a.version),
+    })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
 export default router

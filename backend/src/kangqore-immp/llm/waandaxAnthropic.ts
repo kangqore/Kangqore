@@ -20,6 +20,7 @@ import type Anthropic from '@anthropic-ai/sdk'
 import crypto from 'crypto'
 import logger from '../../utils/logger'
 import { logCall, scanPii, inferCallerModule } from '../../services/kimmpGatewayCore'
+import { PromptRegistry } from '../wir/promptRegistry.service'
 
 const WAANDAX_URL   = process.env.WAANDAX_URL   || 'http://127.0.0.1:11435'
 const WAANDAX_MODEL = process.env.WAANDAX_MODEL || ''
@@ -167,6 +168,7 @@ function logGatewayCall(
   latencyMs: number,
   res: Anthropic.Message | null,
   err?: Error,
+  promptMeta?: { promptName?: string; promptVersion: number | null },
 ) {
   if (callerInfo.actorType === 'AEGIS') return
   const systemText = flattenContent(params.system) ?? ''
@@ -184,6 +186,8 @@ function logGatewayCall(
     prompt: systemText + '\n' + userText,
     response: textBlock?.text ?? '',
     sourceModule: callerInfo.sourceModule,
+    promptName: promptMeta?.promptName ?? null,
+    promptVersion: promptMeta?.promptVersion ?? null,
     status: err ? 'ERROR' : 'SUCCESS',
     errorMessage: err?.message ?? null,
     piiDetected: scan.detected,
@@ -199,9 +203,20 @@ export function withWaandax(client: Anthropic): Anthropic {
   const messagesProxy = new Proxy(client.messages, {
     get(target, prop, receiver) {
       if (prop === 'create') {
-        return (params: any, options?: any) => {
+        return async (params: any, options?: any) => {
           const callerInfo = inferCallerModule()
           const start = Date.now()
+
+          // S311 — options.promptName is a side-channel this Proxy defines
+          // (not part of the Anthropic SDK's real RequestOptions); when set,
+          // resolve it via PromptRegistry and use the registry content as
+          // `system`, falling back to the caller-supplied `system` on a miss.
+          let promptVersion: number | null = null
+          if (options?.promptName) {
+            const resolved = await PromptRegistry.getWithVersion(options.promptName).catch(() => null)
+            if (resolved) { params = { ...params, system: resolved.content }; promptVersion = resolved.version }
+          }
+          const promptMeta = options?.promptName ? { promptName: options.promptName as string, promptVersion } : undefined
 
           const resultPromise: Promise<Anthropic.Message> = (() => {
             // Claude-only shapes (stream/tools/non-text) or local layer disabled
@@ -230,8 +245,8 @@ export function withWaandax(client: Anthropic): Anthropic {
           })()
 
           return resultPromise.then(
-            res => { logGatewayCall(params, callerInfo, Date.now() - start, res); return res },
-            err => { logGatewayCall(params, callerInfo, Date.now() - start, null, err); throw err },
+            res => { logGatewayCall(params, callerInfo, Date.now() - start, res, undefined, promptMeta); return res },
+            err => { logGatewayCall(params, callerInfo, Date.now() - start, null, err, promptMeta); throw err },
           )
         }
       }

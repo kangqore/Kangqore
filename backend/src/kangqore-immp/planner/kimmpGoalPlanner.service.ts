@@ -82,7 +82,7 @@ Rules:
 - be specific to the goal and context — not generic`
 
     try {
-      const res  = await sonnet('You are KIMMP. Return only valid JSON.', prompt, 2000, { agentType: 'PLANNER', tags: ['goal_plan'] })
+      const res  = await sonnet('You are KIMMP. Return only valid JSON.', prompt, 2000, { agentType: 'PLANNER', tags: ['goal_plan'], promptName: 'planner_system' })
       const raw  = textOf(res)
       const match = raw.match(/\{[\s\S]*\}/)
       if (match) {

@@ -159,6 +159,8 @@ export interface LogCallInput {
   taskType?: string | null
   agentRole?: string | null
   sourceModule?: string | null
+  promptName?: string | null
+  promptVersion?: number | null
   status: 'SUCCESS' | 'ERROR' | 'BLOCKED'
   errorMessage?: string | null
   piiDetected?: boolean
@@ -187,6 +189,8 @@ export async function logCall(input: LogCallInput): Promise<void> {
         taskType: input.taskType ?? null,
         agentRole: input.agentRole ?? null,
         sourceModule: input.sourceModule ?? null,
+        promptName: input.promptName ?? null,
+        promptVersion: input.promptVersion ?? null,
         status: input.status,
         errorMessage: input.errorMessage ?? null,
         piiDetected: input.piiDetected ?? false,

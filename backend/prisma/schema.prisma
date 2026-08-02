@@ -3277,6 +3277,8 @@ model LlmCallLog {
   taskType           String?
   agentRole          String?
   sourceModule       String?  // best-effort file attribution for passively-instrumented call sites
+  promptName         String?  // S311 — AIPrompt.name, when the caller resolved its system prompt via PromptRegistry
+  promptVersion      Int?     // AIPrompt.version actually served — null if promptName given but registry lookup missed
   status             String   // SUCCESS | ERROR | BLOCKED
   errorMessage       String?
   piiDetected        Boolean  @default(false)
@@ -3287,6 +3289,7 @@ model LlmCallLog {
   @@index([actorType])
   @@index([createdAt])
   @@index([status])
+  @@index([promptName])
   @@map("llm_call_logs")
 }
 

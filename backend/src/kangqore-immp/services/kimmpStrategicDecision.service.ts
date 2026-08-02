@@ -138,7 +138,7 @@ Rules:
 - If data is thin, lower confidence and say so in the situation.`
 
   try {
-    const res  = await sonnet('You are KIMMP, a strategic enterprise AI. Return only valid JSON.', prompt, 1500, { agentType: 'DECISION_ENGINE', tags: ['strategic_decision'] })
+    const res  = await sonnet('You are KIMMP, a strategic enterprise AI. Return only valid JSON.', prompt, 1500, { agentType: 'DECISION_ENGINE', tags: ['strategic_decision'], promptName: 'decision_system' })
     const raw  = textOf(res)
     const match = raw.match(/\{[\s\S]*\}/)
     if (match) return JSON.parse(match[0])
