@@ -5,7 +5,7 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Lightning, Plus, Trash, X, PencilSimple, Play, DotsSixVertical } from '@phosphor-icons/react'
+import { Lightning, Plus, Trash, X, PencilSimple, Play, DotsSixVertical, Wrench } from '@phosphor-icons/react'
 import { Loader2 } from 'lucide-react'
 import { api } from '@lib/api'
 import {
@@ -392,6 +392,10 @@ function ActionCard({ action, onEdit, onRun }: { action: OntologyAction; onEdit:
     mutationFn: () => actionEngineService.remove(action.id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['ontology-actions'] }),
   })
+  const toggleTool = useMutation({
+    mutationFn: () => actionEngineService.update(action.id, { toolCallable: !action.toolCallable }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['ontology-actions'] }),
+  })
   return (
     <div className="os-card p-4 flex flex-col gap-3">
       <div className="flex items-start justify-between gap-2">
@@ -414,6 +418,10 @@ function ActionCard({ action, onEdit, onRun }: { action: OntologyAction; onEdit:
           ))}
         </div>
         <div className="flex items-center gap-1">
+          <button onClick={() => toggleTool.mutate()} title={action.toolCallable ? 'Tool-callable — Claude may invoke this action' : 'Not tool-callable — click to expose to Claude via tool-use'}
+            className={`p-1.5 rounded-md ${action.toolCallable ? 'text-[#22d3ee] bg-[#22d3ee]/10' : 'text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]'}`}>
+            <Wrench size={13} weight={action.toolCallable ? 'fill' : 'regular'} />
+          </button>
           <button onClick={onEdit} title="Edit" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]"><PencilSimple size={13} /></button>
           <button onClick={onRun} title="Run" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[#579bfc] hover:bg-[var(--os-surface-0)]"><Play size={13} weight="fill" /></button>
           <button onClick={() => confirm(`Delete "${action.displayName}"?`) && remove.mutate()} title="Delete" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)]"><Trash size={13} /></button>

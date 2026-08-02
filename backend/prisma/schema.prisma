@@ -3274,6 +3274,7 @@ model LlmCallLog {
   prompt             String   @db.Text  // truncated to 2000 chars before storage
   response           String   @db.Text  // truncated to 2000 chars before storage
   referencedObjectIds String[] @default([])
+  toolExecutionIds   String[] @default([]) // S315 — ActionExecution ids for any OntologyAction invoked as a tool call during this LLM call
   taskType           String?
   agentRole          String?
   sourceModule       String?  // best-effort file attribution for passively-instrumented call sites
@@ -4637,6 +4638,7 @@ model OntologyAction {
   description  String?
   parameters   Json               @default("[]")  // ActionParameterDef[] — { name, type, required, enum?, min?, max?, regex?, description? }
   allowedRoles String[]           @default(["ADMIN"])
+  toolCallable Boolean            @default(false) // S314 — opt-in: only actions explicitly marked here are exposed as Claude tools
   executions   Int                @default(0)
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt

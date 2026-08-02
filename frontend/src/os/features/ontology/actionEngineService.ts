@@ -47,6 +47,7 @@ export interface OntologyAction {
   description: string | null
   parameters: ActionParameterDef[]
   allowedRoles: string[]
+  toolCallable?: boolean
   executions: number
   validationRules?: ActionValidationRule[]
   effects?: ActionEffect[]
@@ -116,7 +117,7 @@ export const actionEngineService = {
   create(input: { typeId: string; name: string; displayName: string; description?: string; parameters: ActionParameterDef[]; allowedRoles: string[] }): Promise<OntologyAction> {
     return api.post('/admin/ontology/actions', input).then(r => r.data.action)
   },
-  update(id: string, input: Partial<{ displayName: string; description: string; parameters: ActionParameterDef[]; allowedRoles: string[] }>): Promise<OntologyAction> {
+  update(id: string, input: Partial<{ displayName: string; description: string; parameters: ActionParameterDef[]; allowedRoles: string[]; toolCallable: boolean }>): Promise<OntologyAction> {
     return api.patch(`/admin/ontology/actions/${id}`, input).then(r => r.data.action)
   },
   remove(id: string): Promise<void> {

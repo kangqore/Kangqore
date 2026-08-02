@@ -13,6 +13,7 @@ export interface LlmCallLog {
   prompt: string
   response: string
   referencedObjectIds: string[]
+  toolExecutionIds: string[]
   taskType: string | null
   agentRole: string | null
   sourceModule: string | null
@@ -67,6 +68,19 @@ export interface TokenBudget {
   createdAt: string
 }
 
+export interface ToolCallExecution {
+  id: string
+  status: string
+  errorMessage: string | null
+  action: { name: string; displayName: string } | null
+  object: { id: string; properties: Record<string, unknown>; type: { displayName: string } } | null
+}
+
+export interface ToolCallRow {
+  call: LlmCallLog
+  executions: ToolCallExecution[]
+}
+
 export const gatewayService = {
   listCalls(params?: { actorType?: string; model?: string; taskType?: string; status?: string; page?: number; limit?: number }): Promise<{ calls: LlmCallLog[]; total: number; pages: number }> {
     return api.get('/admin/kimmp-gateway/calls', { params }).then(r => r.data)
@@ -100,6 +114,9 @@ export const gatewayService = {
   },
   updateBudget(id: string, patch: Partial<{ monthlyTokenLimit: number; alertThreshold: number; hardStop: boolean }>): Promise<TokenBudget> {
     return api.patch(`/admin/kimmp-gateway/budgets/${id}`, patch).then(r => r.data.budget)
+  },
+  toolCalls(params?: { page?: number; limit?: number }): Promise<{ rows: ToolCallRow[]; total: number; pages: number }> {
+    return api.get('/admin/kimmp-gateway/tool-calls', { params }).then(r => r.data)
   },
   removeBudget(id: string): Promise<void> {
     return api.delete(`/admin/kimmp-gateway/budgets/${id}`).then(() => undefined)

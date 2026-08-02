@@ -15,6 +15,7 @@ import { KimmpPlannerService, PlanStep } from '../planner/kimmpPlanner.service';
 import { isStrategicDecision, runStrategicDecision, StrategicDecisionResult } from '../services/kimmpStrategicDecision.service';
 import { routedCall } from '../llm/kimmpLLMRouter';
 import { LogicToolRegistry } from '../tools/logicToolRegistry';
+import { OntologyActionToolRegistry } from '../../services/ontologyActionToolRegistry.service';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -325,13 +326,25 @@ Return ONLY valid JSON:
     let usedModel = model;
 
     try {
+      // S314 — merge in tool-callable OntologyActions alongside the existing
+      // Logic Tools calculators. Same tools/toolExecutor contract the router
+      // already supports; route by name against the ontology tool set first,
+      // fall through to Logic Tools otherwise.
+      const ontologyTools = await OntologyActionToolRegistry.getTools().catch(() => []);
+      const ontologyToolNames = new Set(ontologyTools.map(t => t.name));
+      const combinedTools = [...LogicToolRegistry.getTools('all'), ...ontologyTools];
+      const combinedExecutor = (name: string, input: any) =>
+        ontologyToolNames.has(name)
+          ? OntologyActionToolRegistry.executor(name, input)
+          : LogicToolRegistry.auditedExecutor(name, input);
+
       // Build single user message string for router (handles history separately below)
       const routerResult = await routedCall(model, systemPrompt, userPromptText, 1500, {
         agentType: 'COMMAND',
         tags: ['command', req.moduleContext ?? 'global'],
       }, {
-        tools: LogicToolRegistry.getTools('all'),
-        toolExecutor: (name: string, input: any) => LogicToolRegistry.auditedExecutor(name, input),
+        tools: combinedTools,
+        toolExecutor: combinedExecutor,
       });
       raw = routerResult.content[0]?.type === 'text' ? routerResult.content[0].text : '';
       usedModel = routerResult.model;
