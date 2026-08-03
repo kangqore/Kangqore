@@ -63,8 +63,11 @@ function Divider() {
 export function Rail() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { sidebarCollapsed, setSidebarCollapsed, toggleSidebar } = useUIStore()
-  const activeItem = getActiveRailItem(pathname)
+  const { sidebarCollapsed, setSidebarCollapsed, toggleSidebar, pinnedRailId, setPinnedRailId } = useUIStore()
+  const urlActiveItem = getActiveRailItem(pathname)
+  const activeItem = pinnedRailId
+    ? (RAIL_ITEMS.find(i => i.id === pinnedRailId) ?? urlActiveItem)
+    : urlActiveItem
 
   const isTeamPortal = pathname.startsWith('/kangqore-view/team')
   const isClientPortal = pathname.startsWith('/kangqore-view/client')
@@ -165,6 +168,7 @@ export function Rail() {
   }
 
   function handleClick(item: RailEntry) {
+    setPinnedRailId(item.id)
     navigate(item.defaultPath)
     if (item.sidebarItems.length > 0 && sidebarCollapsed) {
       setSidebarCollapsed(false)
