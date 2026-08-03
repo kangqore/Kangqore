@@ -8,12 +8,14 @@ interface UIStore {
   notificationPanelOpen: boolean
   viewMode: ViewMode
   supportedViews: ViewMode[]   // set by each page on mount; NOT persisted
+  pinnedRailId: string | null  // set on explicit rail click; overrides URL-based detection
   toggleSidebar: () => void
   setSidebarCollapsed: (v: boolean) => void
   openNotificationPanel: () => void
   closeNotificationPanel: () => void
   setViewMode: (mode: ViewMode) => void
   registerPageViews: (views: ViewMode[]) => void
+  setPinnedRailId: (id: string | null) => void
 }
 
 export const useUIStore = create<UIStore>()(
@@ -23,12 +25,14 @@ export const useUIStore = create<UIStore>()(
       notificationPanelOpen: false,
       viewMode: 'board',
       supportedViews: ['list', 'board'],
+      pinnedRailId: null,
       toggleSidebar: () => set(s => ({ sidebarCollapsed: !s.sidebarCollapsed })),
       setSidebarCollapsed: (v) => set({ sidebarCollapsed: v }),
       openNotificationPanel: () => set({ notificationPanelOpen: true }),
       closeNotificationPanel: () => set({ notificationPanelOpen: false }),
       setViewMode: (mode) => set({ viewMode: mode }),
       registerPageViews: (views) => set({ supportedViews: views }),
+      setPinnedRailId: (id) => set({ pinnedRailId: id }),
     }),
     { name: 'kangqore-ui', partialize: s => ({ sidebarCollapsed: s.sidebarCollapsed, viewMode: s.viewMode }) }
   )

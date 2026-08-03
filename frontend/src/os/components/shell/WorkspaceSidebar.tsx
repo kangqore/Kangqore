@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { cn } from '@design-system/cn'
-import { getActiveRailItem } from '@lib/nav'
+import { getActiveRailItem, RAIL_ITEMS } from '@lib/nav'
 import { useUIStore } from '@store/ui'
 import { useKIMMPStore } from '@store/kimmp'
 import { api, isDemo } from '@lib/api'
@@ -60,10 +60,12 @@ function isItemActive(item: RailSidebarItem, pathname: string, searchParams: URL
 export function WorkspaceSidebar() {
   const { pathname } = useLocation()
   const [searchParams] = useSearchParams()
-  const { sidebarCollapsed } = useUIStore()
+  const { sidebarCollapsed, pinnedRailId } = useUIStore()
   const badges = useBadgeCounts()
 
-  const activeRailItem = getActiveRailItem(pathname)
+  const activeRailItem = pinnedRailId
+    ? (RAIL_ITEMS.find(i => i.id === pinnedRailId) ?? getActiveRailItem(pathname))
+    : getActiveRailItem(pathname)
   const sidebarItems = activeRailItem?.sidebarItems ?? []
 
   return (
