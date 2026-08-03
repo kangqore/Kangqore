@@ -509,13 +509,14 @@ async function _routedCallImpl(
   })
 
   // ── 0. Gen2 fine-tuned model — A/B traffic split (AutonomyConfig.gen2TrafficPct) ─
+  // Gen2 is LOCAL_MLX — always call _callWaandax() (port 11435), never _callClaude().
+  // No ANTHROPIC_KEY dependency: Gen2 must route even when Claude credits are exhausted.
   const gen2ModelId   = options.preferClaude ? null : await _getDeployedGen2()
   const gen2TrafficPct = await _getGen2TrafficPct()
-  const routeToGen2   = gen2ModelId && ANTHROPIC_KEY && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
+  const routeToGen2   = gen2ModelId && !options.tools?.length && await _waandaxAvailable() && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
   if (routeToGen2 && gen2ModelId) {
     try {
-      const { text, inputTokens, outputTokens, toolCalls } = await _callClaude(gen2ModelId, system, user, maxTokens, options)
-      _toolCalls = toolCalls
+      const { text, inputTokens, outputTokens } = await _callWaandax(system, user, maxTokens)
       _counts.gen2++
       markServed('gen2')
       cbSuccess('gen2')
@@ -527,7 +528,7 @@ async function _routedCallImpl(
       }
     } catch (err) {
       cbFailure('gen2')
-      logger.warn('[KIMMP Router] Gen2 failed, falling back to Ollama/Claude:', (err as Error).message)
+      logger.warn('[KIMMP Router] Gen2 failed, falling back to Claude:', (err as Error).message)
     }
   }
 
