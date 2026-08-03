@@ -13,23 +13,12 @@ import App from "@/App";
   }
 })()
 
-// Nuke any active service workers — they were intercepting API POST requests.
-// On first load: unregister all, then force a reload so the page runs clean.
-// sessionStorage flag prevents the reload from looping.
+// Silently unregister any stale service workers. The old sw.js was a
+// self-destructing cleanup SW — no interception means no reload is needed.
 if ('serviceWorker' in navigator) {
-  const alreadyKilled = sessionStorage.getItem('sw-killed')
-  if (!alreadyKilled) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      if (regs.length > 0) {
-        Promise.all(regs.map(r => r.unregister())).then(() => {
-          sessionStorage.setItem('sw-killed', '1')
-          window.location.reload()
-        })
-      } else {
-        sessionStorage.setItem('sw-killed', '1')
-      }
-    })
-  }
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(r => r.unregister())
+  })
 }
 
 const rootElement = document.getElementById("root");
