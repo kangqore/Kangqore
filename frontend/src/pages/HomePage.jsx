@@ -52,6 +52,7 @@ import HomeRuler from '../components/home/HomeRuler';
 import BookingWidget from '../components/scheduling/BookingWidget';
 import TransformCTA from '../components/TransformCTA';
 import EqoreShowSection from '../components/podcast/EqoreShowSection';
+import LatestInsightsSection from '../components/home/LatestInsightsSection';
 
 // ============================================================================
 // MOCK DATA
@@ -821,88 +822,6 @@ const partnerLogos = [
   { label: "Google Cloud", src: "/assets/badges/gcp.svg", scale: "h-10 sm:h-12" },
 ];
 
-// ============================================================================
-// BIDS + PHILOSOPHY — two-panel split card layout
-// ============================================================================
-const BIDSPhilosophySection = () => (
-  <section className="bg-white dark:bg-black px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-    <div className="flex flex-col md:flex-row gap-4 max-w-[1600px] mx-auto">
-
-      {/* ── Left card — Kangqore BIDS™ ── */}
-      <div className="relative flex-1 rounded-2xl overflow-hidden min-h-[640px] flex flex-col">
-        {/* Full-bleed image background */}
-        <img
-          src="/images/imgbg3.png"
-          alt="Kangqore BIDS Dashboard"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        {/* Gradient — transparent at top, deep black at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/90" />
-
-        {/* Content pinned to bottom */}
-        <div className="relative z-10 mt-auto p-8 sm:p-10">
-          {/* Icon badge */}
-          <div className="w-10 h-10 rounded-full border border-white/30 backdrop-blur-sm flex items-center justify-center mb-6">
-            <BarChart3 className="w-4 h-4 text-white" strokeWidth={2} />
-          </div>
-
-          <h2 className="text-[2rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-[1.1] tracking-[-0.03em] text-white mb-4">
-            Kangqore BIDS™
-          </h2>
-          <p className="text-white/65 text-sm sm:text-base leading-relaxed mb-8 max-w-sm">
-            A proprietary intelligence framework that diagnoses bottlenecks, maps growth
-            opportunities, and recommends data-backed transformation priorities.
-          </p>
-          <Link
-            to="/bids"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 active:scale-[0.97] transition-all duration-200"
-          >
-            Explore BIDS™
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-
-      {/* ── Right card — Our Philosophy ── */}
-      <div className="relative flex-1 rounded-2xl overflow-hidden min-h-[640px] bg-white flex flex-col">
-        {/* Chess image bleeds in from the top — decorative, fades to white */}
-        <div className="absolute top-0 left-0 right-0 h-[65%] overflow-hidden">
-          <img
-            src="/images/chess_bg.png"
-            alt=""
-            className="w-full h-full object-cover object-top"
-          />
-          {/* Fade to white at bottom edge */}
-          <div className="absolute bottom-0 left-0 right-0 h-[55%] bg-gradient-to-b from-transparent to-white" />
-        </div>
-
-        {/* Content pinned to bottom */}
-        <div className="relative z-10 mt-auto p-8 sm:p-10">
-          {/* Icon badge */}
-          <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center mb-6">
-            <Sparkles className="w-4 h-4 text-gray-700" strokeWidth={2} />
-          </div>
-
-          <h2 className="text-[2rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-[1.1] tracking-[-0.03em] text-gray-900 mb-4">
-            We Innovate Futures.
-          </h2>
-          <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-8 max-w-sm">
-            Companies don't evolve by ideas alone. They evolve through innovation —
-            building future-ready systems for the next generation of business.
-          </p>
-          <Link
-            to="/about-us"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-semibold text-sm hover:bg-gray-800 active:scale-[0.97] transition-all duration-200"
-          >
-            Our Philosophy
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-
-    </div>
-  </section>
-);
 
 const PartnerBadgesStrip = () => {
   // Triple the logos to ensure seamless infinite scroll
@@ -1582,7 +1501,7 @@ const LeadershipSection = () => {
             <div className="relative overflow-hidden shadow-2xl max-w-sm sm:max-w-md mx-auto lg:mx-0 aspect-[4/5] rounded-xl border border-gray-100 dark:border-neutral-900">
               <img 
                 src="/images/leadership/ceo-mahesh-kumar.png" 
-                alt="C.O.D.E., Founder and CEO" 
+                alt="Mahesh Kumar, Founder and CEO" 
                 className="w-full h-full object-cover object-top block transform scale-[1.01] group-hover:scale-105 transition-transform duration-[1.2s]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none"></div>
@@ -1607,7 +1526,7 @@ const LeadershipSection = () => {
             {/* Editorial Attribution & Minimalist Links */}
             <div className="pt-6 border-t border-gray-200 dark:border-neutral-800 flex items-center justify-between mt-8">
               <div>
-                <p className="text-gray-900 dark:text-white font-semibold text-lg tracking-tight">C.O.D.E.</p>
+                <p className="text-gray-900 dark:text-white font-semibold text-lg tracking-tight">Mahesh Kumar</p>
                 <p className="text-xs text-neutral-500 font-medium tracking-wider uppercase mt-0.5">Founder & CEO, Kangqore</p>
               </div>
 
@@ -1870,6 +1789,7 @@ const HomePage = () => {
       {lockedIntent === 'enterpriseBuyer' ? (
         <>
           <div id="home-services"><DepartmentCarousel /></div>
+
           <div id="home-industries"><IndustriesWeServe /></div>
           <TrustIntelligenceLayer />
         </>
@@ -1961,15 +1881,16 @@ const HomePage = () => {
       {lockedIntent !== 'enterpriseBuyer' && (
         <>
           <div id="home-services"><DepartmentCarousel /></div>
+
           <div id="home-industries"><IndustriesWeServe /></div>
         </>
       )}
       <TrustStatementSection />
       <PartnerBadgesStrip />
-      <div id="home-bids"><BIDSPhilosophySection /></div>
-      <TestimonialsSection />
+      <LatestInsightsSection />
       <LeadershipSection />
       <EqoreShowSection />
+
 
       <section id="scheduling-widget" className="py-24 bg-white dark:bg-black relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center mb-16">
