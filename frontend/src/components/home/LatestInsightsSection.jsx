@@ -7,9 +7,19 @@ const LatestInsightsSection = () => {
     <section className="py-24 bg-white text-gray-900 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-10 tracking-tight font-sans">
-          Latest insights
-        </h2>
+        <div className="mb-16">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-[1px] w-12 bg-gray-400"></div>
+            <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
+              testimonials
+            </span>
+          </div>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
+              Trusted by <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">leaders</span>.
+            </h2>
+          </div>
+        </div>
 
         {/* Main Insights Layout */}
         <div className="flex flex-col gap-10 lg:gap-14 w-full">
@@ -67,13 +77,13 @@ const LatestInsightsSection = () => {
                 </div>
               </div>
 
-              {/* Pill Button: More insights -> */}
+              {/* Pill Button: More testimonials -> */}
               <div className="pt-2">
                 <Link 
-                  to="/insights"
+                  to="/testimonials"
                   className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full border border-gray-900 text-gray-900 text-sm font-medium hover:bg-gray-900 hover:text-white transition-all duration-300 group"
                 >
-                  More insights
+                  More testimonials
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

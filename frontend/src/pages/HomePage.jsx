@@ -622,7 +622,7 @@ const EditorialCard = ({ card, featured = false }) => {
         <p className="mb-4 text-[13px] font-bold uppercase tracking-[0.2em] text-gray-400 font-sans">
           {card.type}
         </p>
-        <h3 className={`font-serif text-white leading-[1.1] tracking-tight group-hover:underline decoration-white/30 underline-offset-8 transition-all ${featured ? 'text-4xl md:text-5xl lg:text-6xl' : 'text-xl md:text-2xl'}`}>
+        <h3 className="font-sans text-2xl lg:text-3xl font-bold text-white leading-tight tracking-tight group-hover:underline decoration-white/30 underline-offset-8 transition-all">
           {card.title} <span className="inline-block ml-1 font-sans text-xl font-light">›</span>
         </h3>
       </div>
