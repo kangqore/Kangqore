@@ -332,8 +332,7 @@ export const servicesData = {
     heroTitleSize: 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]',
     heroBadge: 'Modernise Faster. Risk Less.',
     departmentSlug: 'cognition',
-    bannerBrand: 'eQORE™',
-    bannerBrandDesc: 'Our enterprise agentic modernization platform',
+    bannerBrandDesc: 'Our AI, data & automation practice',
     shortDescription: 'Legacy systems accumulate technical debt, block cloud-native adoption, and make enterprise AI integration structurally impossible. Kangqore\'s agentic AI-led modernization model eliminates that constraint — deploying autonomous agents that assess, refactor, and re-platform legacy applications at machine speed, with enterprise-grade governance at every step.',
     fullDescription: 'Deploy agentic AI modernization at enterprise scale — intelligent agents that assess, refactor, and re-platform legacy applications with cloud-native precision and human-in-the-loop governance built in.',
     keyFeatures: ['Legacy Codebase Assessment', 'AI-driven Migration Blueprint', 'Microservices Decomposition', 'Cloud-native Re-platforming', 'Automated Test Generation'],
@@ -347,31 +346,39 @@ export const servicesData = {
     whatIsHighlight: 'Agentic Modernization Era.',
     whatIsPara2: 'Intelligent agents scan full codebases, extract business logic, and validate cloud-native deployments autonomously — human-in-the-loop governance at every critical milestone. The outcome: measurable technical debt reduction, faster time-to-modern, and a continuous modernization capability that scales across the entire application portfolio.',
 
+    // Framed around what the agents measurably produce, not generic programme
+    // outcomes — each label names an artefact a buyer can ask to see.
     businessMetrics: [
-      { title: 'Faster Time to Market',             desc: 'Agentic AI compresses modernization delivery cycles — getting applications to production faster than any traditional approach can match.',                             value: 'Faster Time to Market',             suffix: '',  metricLabel: '',  icon: 'Zap'        },
-      { title: 'Reduced Technical Debt',            desc: 'AI assessment agents identify, score, and eliminate accumulated debt systematically — reducing long-term maintenance burden across the modernised estate.',           value: 'Reduced Technical Debt',            suffix: '',  metricLabel: '',  icon: 'TrendingUp' },
-      { title: 'Improved Quality',                  desc: 'AI-generated test suites validate every migration milestone at near-complete coverage — quality that manual testing cannot replicate at enterprise scale.',           value: 'Improved Quality',                  suffix: '',  metricLabel: '',  icon: 'Target'     },
-      { title: 'Cost Efficiency & Controlled Risk', desc: 'Lower total modernization cost versus traditional SME-intensive approaches — with built-in AI governance keeping cost, quality, and risk measurable at every step.', value: 'Cost Efficiency & Controlled Risk',  suffix: '',  metricLabel: '',  icon: 'Shield'     },
+      { title: 'Assessment Velocity',        desc: 'Dependency graphs, bounded-context maps and tech-debt scorecards for a multi-million-line estate arrive in days, because scanning is parallelised across agents rather than queued behind SME availability.', value: 'Assessment Velocity',        suffix: '',  metricLabel: '',  icon: 'Zap'        },
+      { title: 'Technical Debt Retired',     desc: 'Every module is scored on coupling, duplication and test coverage before work starts, so debt reduction is tracked as a burn-down against a baseline instead of asserted at the end.',                       value: 'Technical Debt Retired',     suffix: '',  metricLabel: '',  icon: 'TrendingUp' },
+      { title: 'Regression Coverage',        desc: 'Agents generate characterisation tests against legacy behaviour before refactoring, so the migrated system is proven equivalent rather than assumed correct at cutover.',                                    value: 'Regression Coverage',        suffix: '',  metricLabel: '',  icon: 'Target'     },
+      { title: 'Governed Cost Envelope',     desc: 'Scope, spend and risk stay inside a declared envelope because every autonomous action is bounded by policy and every deviation escalates to a named human owner.',                                           value: 'Governed Cost Envelope',     suffix: '',  metricLabel: '',  icon: 'Shield'     },
     ],
 
+    // Argues why the agent model is structurally different, rather than
+    // restating why manual modernization is slow — that framing is generic to
+    // the category and says nothing specific about how Kangqore delivers.
     whyShift: {
       label: 'Why Agentic Modernization',
-      title: 'Why Shift to Agentic Modernization',
+      title: 'What Changes When Agents Do the Work',
       items: [
-        'Agentic AI converts resource-intensive modernization programs into autonomous, goal-driven transformation — removing dependency on scarce SME bandwidth.',
-        'Traditional approaches are tool-heavy, manually intensive, and impossible to scale without proportional cost increase.',
-        'Intelligent agents map legacy systems, extract business logic, and execute end-to-end modernization workflows — with governance at every step.',
-        'Unlike one-off programs, agentic modernization learns, adapts, and compounds — turning transformation into a continuous organizational capability.',
+        'Discovery stops being a bottleneck. Reading a legacy estate is parallelisable work, so agents map dependencies across millions of lines concurrently instead of one SME reading one subsystem at a time.',
+        'The migration plan becomes a living artefact. It is regenerated as each subsystem is understood, rather than fixed upfront from partial discovery and then defended as reality diverges.',
+        'Behaviour is pinned before it is changed. Characterisation tests are written against the legacy system first, so equivalence is demonstrable at every cutover instead of hoped for.',
+        'Capability outlives the programme. The dependency graphs, tests and runbooks agents produce remain yours — the next modernization starts from that state, not from zero.',
       ],
     },
 
+    // Mirrors the five phases in customJourney below. The previous three-step
+    // version described a different, more generic framework than the one the
+    // page actually documents further down.
     modernizationFramework: {
       label: 'Our Approach',
-      title: 'Kangqore Application Modernization Framework',
+      title: 'How a Kangqore Modernization Runs',
       steps: [
-        'Establish governance, security controls, and transformation readiness — before a single line of legacy code is touched.',
-        'Deploy agentic automation and intelligence to accelerate assessment, refactoring, and decision velocity at every stage.',
-        'Modernize end-to-end — application, data, infrastructure, and integration — to unlock revenue, operational efficiency, and compound ROI.',
+        'Assess before committing. Agents scan the estate and return a dependency map, tech-debt scorecard and migration candidates — so the business case is built on measurement, not estimate.',
+        'Sequence by risk, not by convenience. Monoliths are decomposed into bounded contexts and ordered so the least-coupled, highest-value work proves the approach before anything critical moves.',
+        'Execute under guardrails, then extend. Transformation runs autonomously inside declared policy limits with human sign-off at each gate, and continues as sprints across the remaining estate.',
       ],
     },
 
@@ -383,7 +390,7 @@ export const servicesData = {
       {
         title: 'Application Modernization',
         image: '/images/capabilities/app_mod_thick.svg',
-        desc: 'Re-architect legacy applications into modular, API-driven, cloud-native systems — scalable, maintainable, and AI-ready from the ground up.',
+        desc: 'Agents read the monolith, recover the business rules buried in it, and carve it into independently deployable services along the seams the code actually has — not the ones an architecture diagram claims.',
         items: [
           'Legacy Re-architecture: Decompose monolithic applications into modular, independently deployable microservices.',
           'API-driven Modernization: Replace legacy integration points with versioned RESTful and GraphQL APIs with full contract documentation.',
@@ -392,20 +399,20 @@ export const servicesData = {
         ],
       },
       {
-        title: 'Cloud Modernization',
-        image: '/images/capabilities/cloud_mod_thick.svg',
-        desc: 'Migrate fast and migrate with confidence — enabling cloud-native, hybrid, and multi-cloud environments with lean, scalable, cost-optimised performance.',
+        title: 'Integration & API Modernization',
+        image: '/images/capabilities/integration_mod_thick.svg',
+        desc: 'Point-to-point coupling is inventoried and replaced with versioned contracts and event streams, so services can be released independently instead of in lockstep with everything they touch.',
         items: [
-          'Cloud Strategy & Migration: Assess, plan, and execute lift-and-shift or re-platform migrations across AWS, Azure, and GCP.',
-          'Hybrid & Multi-cloud Architecture: Design resilient multi-cloud environments with consistent governance and cost control.',
-          'Cloud Cost Optimisation: Rightsizing, reserved capacity planning, and FinOps disciplines to eliminate cloud waste.',
-          'Cloud-native Enablement: Containerisation, Kubernetes orchestration, and serverless adoption for lean, scalable operations.',
+          'API-led Integration Architecture: Replace point-to-point integrations with reusable, versioned API layers across enterprise systems.',
+          'Event-driven Architecture: Implement Kafka, event mesh, and pub-sub patterns for real-time, decoupled business processes.',
+          'Legacy Middleware Modernisation: Retire legacy ESBs in favour of lightweight, cloud-native integration platforms.',
+          'iPaaS Modernisation: Migrate integration workloads to modern iPaaS platforms with monitoring, governance, and observability.',
         ],
       },
       {
         title: 'Data Modernization',
         image: '/images/capabilities/data_mod_thick.svg',
-        desc: 'Transform disparate, siloed data into a unified, real-time asset — modernising data platforms for better governance and AI-powered insights.',
+        desc: 'Schema lineage is traced across every consuming system before anything moves, so warehouses become lakehouses without silently breaking the reports and models downstream of them.',
         items: [
           'Data Platform Modernization: Migrate from legacy warehouses to modern lakehouse architectures on cloud-native platforms.',
           'Real-time Data Pipelines: Build streaming pipelines that deliver sub-second data freshness for operational analytics workloads.',
@@ -414,9 +421,31 @@ export const servicesData = {
         ],
       },
       {
+        title: 'Cloud Modernization',
+        image: '/images/capabilities/cloud_mod_thick.svg',
+        desc: 'Workload profiling determines which applications are lifted, which are re-platformed and which are rewritten, then agents generate the target topology and a rollback-safe cutover plan for each one.',
+        items: [
+          'Cloud Strategy & Migration: Assess, plan, and execute lift-and-shift or re-platform migrations across AWS, Azure, and GCP.',
+          'Hybrid & Multi-cloud Architecture: Design resilient multi-cloud environments with consistent governance and cost control.',
+          'Cloud Cost Optimisation: Rightsizing, reserved capacity planning, and FinOps disciplines to eliminate cloud waste.',
+          'Cloud-native Enablement: Containerisation, Kubernetes orchestration, and serverless adoption for lean, scalable operations.',
+        ],
+      },
+      {
+        title: 'Infrastructure Modernization',
+        image: '/images/capabilities/infrastructure_mod_thick.svg',
+        desc: 'Environments become reproducible code with observability and recovery designed in, so failure modes are exercised deliberately rather than discovered during an incident.',
+        items: [
+          'Infrastructure as Code: Provision repeatable, governed infrastructure with Terraform, Pulumi, or CloudFormation.',
+          'Observability & Monitoring: Deploy unified observability stacks covering metrics, logs, traces, and alerting at full depth.',
+          'Resilience & Disaster Recovery: Modernise recovery architectures with automated failover, RTO/RPO validation, and chaos engineering.',
+          'Performance Engineering: Eliminate bottlenecks through load testing, capacity planning, and continuous optimisation.',
+        ],
+      },
+      {
         title: 'Quality Engineering & DevOps',
         image: '/images/capabilities/quality_mod_thick.svg',
-        desc: 'Accelerate delivery with built-in quality and automation — continuous testing, AI-driven validation, and optimised pipelines for faster, smarter releases.',
+        desc: 'Characterisation tests are generated against legacy behaviour first, giving the pipeline a provable definition of "unchanged" to enforce on every subsequent refactor and release.',
         items: [
           'Test Automation Modernization: Replace manual testing with AI-assisted frameworks across unit, integration, and regression.',
           'CI/CD Pipeline Acceleration: Design modern delivery pipelines with automated gates, quality checks, and zero-downtime rollback.',
@@ -427,34 +456,12 @@ export const servicesData = {
       {
         title: 'Security Modernization',
         image: '/images/capabilities/security_mod_thick.svg',
-        desc: 'Security baked into every layer of the modernised estate — from identity controls and zero-trust architecture through continuous compliance oversight.',
+        desc: 'Identity, secrets and trust boundaries are re-derived for the decomposed architecture, because a monolith\u2019s implicit internal trust becomes an explicit attack surface the moment it is split.',
         items: [
           'Security-by-Design: Embed controls, identity management, and threat modelling at every architecture and deployment layer.',
           'Zero Trust Architecture: Implement identity-first access, microsegmentation, and continuous verification across the estate.',
           'Compliance Modernization: Map and validate controls against ISO 27001, SOC 2, GDPR, HIPAA, and sector requirements.',
           'Vulnerability Assessment & Remediation: Automated scanning, penetration testing, and remediation across modernised systems.',
-        ],
-      },
-      {
-        title: 'Integration & API Modernization',
-        image: '/images/capabilities/integration_mod_thick.svg',
-        desc: 'Ensure information flows everywhere — enabling flexible, API-led, event-driven integration layers for real-time, agile business processes at enterprise scale.',
-        items: [
-          'API-led Integration Architecture: Replace point-to-point integrations with reusable, versioned API layers across enterprise systems.',
-          'Event-driven Architecture: Implement Kafka, event mesh, and pub-sub patterns for real-time, decoupled business processes.',
-          'Legacy Middleware Modernisation: Retire legacy ESBs in favour of lightweight, cloud-native integration platforms.',
-          'iPaaS Modernisation: Migrate integration workloads to modern iPaaS platforms with monitoring, governance, and observability.',
-        ],
-      },
-      {
-        title: 'Infrastructure Modernization',
-        image: '/images/capabilities/infrastructure_mod_thick.svg',
-        desc: 'Ensure core infrastructure is scalable, observable, and resilient — improving performance and modernising recovery capabilities for enterprise-grade reliability.',
-        items: [
-          'Infrastructure as Code: Provision repeatable, governed infrastructure with Terraform, Pulumi, or CloudFormation.',
-          'Observability & Monitoring: Deploy unified observability stacks covering metrics, logs, traces, and alerting at full depth.',
-          'Resilience & Disaster Recovery: Modernise recovery architectures with automated failover, RTO/RPO validation, and chaos engineering.',
-          'Performance Engineering: Eliminate bottlenecks through load testing, capacity planning, and continuous optimisation.',
         ],
       },
     ],
@@ -540,12 +547,14 @@ export const servicesData = {
     ],
 
     outcomeCard: {
+      illustrative: true,
       metric: '60%',
       metricLabel: 'Reduction in modernization timeline',
       problem: 'A financial services firm faced a 3-year manual migration program for their legacy core banking system — requiring 40+ engineers, fragile manual testing, and continuous rollback risk that blocked two prior attempts.',
       outcome: 'Kangqore deployed AI assessment agents to map dependencies in days, generated the microservices decomposition blueprint autonomously, and executed re-platforming sprints with 99% automated test coverage — cutting the modernization timeline by 60%.',
     },
     outcomeCard2: {
+      illustrative: true,
       metric: '3×',
       metricLabel: 'Faster assessment than manual code review',
       problem: 'An insurance group needed a complete technical debt assessment of a 15-year-old policy administration system across 2.3M lines of code — a task that would take a manual team 6+ months and still produce an incomplete picture.',
