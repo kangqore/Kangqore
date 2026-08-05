@@ -174,42 +174,7 @@ const TransformCTA = () => {
             </p>
           </div>
 
-          {/* Trust & Compliance Badges */}
-          <div className="mt-16 pt-10 border-t border-gray-100 dark:border-gray-900">
-            <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-8 cursor-default">
-              Our Security & Compliance Posture
-            </p>
-            <div className="flex flex-wrap gap-x-12 gap-y-10 justify-start items-start">
-              {[
-                { name: 'SOC 2 Aligned', id: 'soc2' },
-                { name: 'ISO 27001 Oriented', id: 'iso27001' },
-                { name: 'GDPR Ready', id: 'gdpr' },
-                { name: 'DPDP Conscious', id: 'dpdp' },
-                { name: 'HIPAA Aware', id: 'hipaa' },
-                { name: 'PCI DSS Mindful', id: 'pcidss' },
-                { name: 'CMMI Practiced', id: 'cmmi' }
-              ].map(({ name, id }) => (
-                <div 
-                  key={name} 
-                  className="flex flex-col items-center gap-4 w-[110px] sm:w-[120px] transition-transform duration-300 hover:-translate-y-1.5 cursor-default"
-                >
-                  <div className="w-16 h-16 flex items-center justify-center">
-                    <img 
-                      src={`/assets/badges/${id}.svg?v=2`} 
-                      alt={`${name} Logo`} 
-                      className="w-14 h-14 object-contain filter dark:brightness-110"
-                      onError={(e) => { 
-                        e.target.style.display = 'none';
-                      }} 
-                    />
-                  </div>
-                  <span className="text-[10px] sm:text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest text-center leading-tight">
-                    {name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+
         </div>
       </div>
     </section>
