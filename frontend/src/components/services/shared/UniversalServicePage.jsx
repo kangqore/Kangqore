@@ -602,6 +602,7 @@ function getParityService(service, department) {
 
   // Outcome Cards Fallback
   const outcomeCard = service.outcomeCard || {
+    illustrative: true,
     metric: deptSlug === 'foundry' ? '99.99%' : deptSlug === 'reimagine' ? '65%' : deptSlug === 'shield' ? '99.8%' : deptSlug === 'platforms' ? '60%' : deptSlug === 'growth' ? '+45%' : '65%',
     metricLabel: `Improvement in ${name.toLowerCase()} operational performance`,
     industry: 'Global Enterprise Organization',
@@ -609,6 +610,7 @@ function getParityService(service, department) {
     outcome: `Kangqore engineered an integrated ${name.toLowerCase()} solution with automated pipelines — delivering measurable performance lift and 100% operational reliability.`
   };
   const outcomeCard2 = service.outcomeCard2 || {
+    illustrative: true,
     metric: deptSlug === 'foundry' ? '10x' : deptSlug === 'reimagine' ? '3x' : deptSlug === 'shield' ? '100%' : deptSlug === 'platforms' ? '95%' : deptSlug === 'growth' ? '-35%' : '99.9%',
     metricLabel: `Efficiency gain in ${name.toLowerCase()} workflows`,
     industry: 'Financial & Enterprise Services',
@@ -616,6 +618,7 @@ function getParityService(service, department) {
     outcome: `Kangqore deployed automated governance, real-time telemetry, and streamlined workflows — achieving maximum operational yield.`
   };
   const outcomeCard3 = service.outcomeCard3 || {
+    illustrative: true,
     metric: deptSlug === 'foundry' ? '40%' : deptSlug === 'reimagine' ? '75%' : deptSlug === 'shield' ? '0' : deptSlug === 'platforms' ? '35%' : deptSlug === 'growth' ? '+180%' : '0%',
     metricLabel: `Cost reduction and ROI impact`,
     industry: 'High-Tech & Industrial Group',
@@ -2398,8 +2401,13 @@ const featureMicros   = service.featureMicros
                       </div>
                     </div>
                     <div className="mt-auto flex items-center justify-between flex-wrap gap-3">
+                      {/* "Engagement confidential" asserts a real, named client exists.
+                          Cards flagged illustrative — and the generated fallbacks, which
+                          are templates rather than engagements — must not make that claim. */}
                       <p className="text-white/40 text-xs font-medium italic">
-                        Engagement confidential — details available on request.
+                        {card.illustrative
+                          ? 'Illustrative scenario — modelled on typical engagement patterns, not a specific client result.'
+                          : 'Engagement confidential — details available on request.'}
                       </p>
                       {service.methodologyBrief && (
                         <a

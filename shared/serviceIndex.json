@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-29T21:45:18.536Z",
+  "generatedAt": "2026-08-05T20:35:29.600Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -41,12 +41,12 @@
       "description": "Modernise legacy apps at machine speed with agentic AI — automated refactoring, intelligent migration, and continuous governance without disrupting operations.",
       "capabilities": [
         "Application Modernization",
-        "Cloud Modernization",
-        "Data Modernization",
-        "Quality Engineering & DevOps",
-        "Security Modernization",
         "Integration & API Modernization",
-        "Infrastructure Modernization"
+        "Data Modernization",
+        "Cloud Modernization",
+        "Infrastructure Modernization",
+        "Quality Engineering & DevOps",
+        "Security Modernization"
       ],
       "faqs": [
         {
