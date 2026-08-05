@@ -259,7 +259,7 @@ function AppContent() {
               </OSProtectedRoute>
             }
           >
-            <Route index                   element={<Navigate to="home" replace />} />
+            <Route index                   element={<DashboardHome />}             />
             <Route path="home"             element={<DashboardHome />}       />
             <Route path="keos/*"           element={<OSBootstrap />}         />
             <Route path="WAANDA/*"         element={<WaandaModule />}        />
