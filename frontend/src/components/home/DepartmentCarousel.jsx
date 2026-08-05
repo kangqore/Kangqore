@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { departmentsData, departmentsList } from '../../data/departmentsData';
 import { servicesData } from '../../data/servicesData';
 
@@ -19,9 +20,19 @@ const carouselDepartments = departmentsList.map((slug, index) => {
   };
 });
 
-const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps }) => {
+const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYProgress }) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0, active: false });
   const cardRef = useRef(null);
+
+  // Simple scroll parallax for the background image
+  // It moves slightly based on the scroll position
+  const yParallax = useTransform(scrollYProgress, [0, 1], [0, 40]);
+
+  // Framer motion variants for the staggered entrance
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    show: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 100, damping: 20 } },
+  };
 
   const handleMouseMove = (e) => {
     if (!cardRef.current || isExpanded) return;
@@ -54,7 +65,8 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps }) => {
   const bgImage = dept.image || '';
 
   return (
-    <div
+    <motion.div
+      variants={cardVariants}
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -84,14 +96,15 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps }) => {
 
       <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         {bgImage && (
-          <img
+          <motion.img
             src={bgImage}
             alt={`${dept.title} — ${dept.desc}`}
             loading={i === 0 ? 'eager' : 'lazy'}
             className="w-full h-full object-cover transition-transform duration-700"
             style={{
-              transform: tilt.active ? `translate3d(${-tilt.y * 0.5}px, ${tilt.x * 0.5}px, 0) scale3d(1.03, 1.03, 1.03)` : 'none',
-              transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)'
+              y: yParallax,
+              transform: tilt.active ? `translate3d(${-tilt.y * 0.5}px, ${tilt.x * 0.5}px, 0) scale3d(1.1, 1.1, 1.1)` : 'scale3d(1.05, 1.05, 1.05)',
+              transition: tilt.active ? 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)' : 'transform 0.5s ease',
             }}
           />
         )}
@@ -128,7 +141,7 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps }) => {
           </div>
         </div>
         <div className="flex items-center justify-between mt-4">
-          <Link to={dept.link} className="inline-flex items-center font-bold w-fit shrink-0 transition-all duration-300 text-sm lg:text-base text-white hover:text-cyan-400">
+          <Link to={dept.link} viewTransition className="inline-flex items-center font-bold w-fit shrink-0 transition-all duration-300 text-sm lg:text-base text-white hover:text-cyan-400">
             Explore Capability
             <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
@@ -171,7 +184,7 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps }) => {
           </ul>
         </div>
         <div className="mt-8 flex items-center justify-between pt-6 border-t border-white/10">
-          <Link to={dept.link} className="inline-flex items-center font-bold text-sm text-cyan-400 hover:text-cyan-300 transition-colors pointer-events-auto">
+          <Link to={dept.link} viewTransition className="inline-flex items-center font-bold text-sm text-cyan-400 hover:text-cyan-300 transition-colors pointer-events-auto">
             View All Services <ArrowRight className="ml-1.5 w-4 h-4" />
           </Link>
           <button 
@@ -191,15 +204,32 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps }) => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const DepartmentCarousel = () => {
   const [expandedCaps, setExpandedCaps] = useState({});
+  const sectionRef = useRef(null);
+  
+  // Track scroll progress of this specific section for parallax effects
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const gridVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
 
   return (
-    <section className="py-24 relative overflow-hidden bg-white dark:bg-[#050507]">
+    <section ref={sectionRef} className="py-24 relative overflow-hidden bg-white dark:bg-[#050507]">
       <style dangerouslySetInnerHTML={{__html: `
         .svc-cap-group .svc-cap-desc {
           opacity: 1; transform: translateY(0);
@@ -236,7 +266,13 @@ const DepartmentCarousel = () => {
           </div>
         </div>
 
-        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div 
+          className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          variants={gridVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           {carouselDepartments.map((dept, i) => {
             const isExpanded = !!expandedCaps[i];
             
@@ -253,10 +289,11 @@ const DepartmentCarousel = () => {
                 cardClass={cardClass}
                 isExpanded={isExpanded}
                 setExpandedCaps={setExpandedCaps}
+                scrollYProgress={scrollYProgress}
               />
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,8 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const LatestInsightsSection = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 20 } },
+  };
+
   return (
     <section className="py-24 bg-white text-gray-900 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -22,10 +38,16 @@ const LatestInsightsSection = () => {
         </div>
 
         {/* Main Insights Layout */}
-        <div className="flex flex-col gap-10 lg:gap-14 w-full">
+        <motion.div 
+          className="flex flex-col gap-10 lg:gap-14 w-full"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           
           {/* ── TOP FEATURED ITEM (Neon Waves Banner + Overlapping Dark Card) ── */}
-          <div className="relative w-full flex flex-col lg:flex-row items-center min-h-0 lg:min-h-[380px]">
+          <motion.div variants={itemVariants} className="relative w-full flex flex-col lg:flex-row items-center min-h-0 lg:min-h-[380px]">
             {/* Neon Waves Media Banner */}
             <div className="w-full lg:w-[74%] h-[260px] sm:h-[320px] lg:h-[380px] rounded-xl overflow-hidden relative shadow-2xl border border-black/[0.05]">
               <img 
@@ -53,10 +75,10 @@ const LatestInsightsSection = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* ── BOTTOM ASYMMETRIC ROW ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start w-full mt-4 lg:mt-6">
+          <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start w-full mt-4 lg:mt-6">
             
             {/* Bottom-Left Solid Navy Blue Card + Pill CTA */}
             <div className="lg:col-span-4 flex flex-col gap-6 w-full">
@@ -81,6 +103,7 @@ const LatestInsightsSection = () => {
               <div className="pt-2">
                 <Link 
                   to="/testimonials"
+                  viewTransition
                   className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full border border-gray-900 text-gray-900 text-sm font-medium hover:bg-gray-900 hover:text-white transition-all duration-300 group"
                 >
                   More testimonials
@@ -118,9 +141,9 @@ const LatestInsightsSection = () => {
 
             </div>
 
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
       </div>
     </section>
