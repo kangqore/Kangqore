@@ -276,17 +276,15 @@ const BookingWidget = ({ eventTypeSlug, schedulingLinkId, showVoiceAssistant = f
           <div className="flex flex-col md:flex-row items-center gap-6">
             {/* eQORE Avatar with Pulse Ring */}
             <div className="relative shrink-0">
-              <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-[heroPulseRing_3s_ease-out_infinite]" />
+              <div className="absolute inset-0 rounded-full border border-brand-blue/40 animate-[heroPulseRing_3s_ease-out_infinite]" />
               <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white dark:border-white/10 shadow-xl bg-black relative z-10">
                 <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* Fluent Voice Conversation + Typed Fallback */}
-            <div className="flex-1 w-full flex flex-col gap-4">
-              <VoiceAssistant eventTypeSlug={eventTypeSlug} onBookingAction={handleVoiceAssistantBooking} />
-
-              <div className="relative">
+            <div className="flex-1 w-full flex flex-col md:flex-row items-center gap-4">
+              <div className="relative flex-1 w-full">
               {!voiceInputValue && (
                 <div className="absolute inset-0 pointer-events-none flex items-center overflow-hidden whitespace-nowrap z-0">
                   <div className="flex animate-booking-placeholder-scroll">
@@ -307,20 +305,22 @@ const BookingWidget = ({ eventTypeSlug, schedulingLinkId, showVoiceAssistant = f
                   onChange={(e) => setVoiceInputValue(e.target.value)}
                   placeholder=""
                   aria-label="Ask eQORE to book this call"
-                  className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 px-0 py-3 text-lg md:text-2xl font-light tracking-tight text-gray-900 dark:text-white placeholder-gray-300 focus:outline-none focus:border-cyan-400 transition-all duration-500 pr-16"
+                  className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 px-0 py-3 text-lg md:text-2xl font-light tracking-tight text-gray-900 dark:text-white placeholder-gray-300 focus:outline-none focus:border-brand-blue transition-all duration-500 pr-16"
                 />
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
                   <button
                     type="submit"
                     disabled={voiceProcessing || !voiceInputValue.trim()}
-                    className="p-3 text-cyan-400 hover:text-brand-blue hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
+                    className="p-3 text-brand-blue hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
                   >
                     {voiceProcessing ? <RefreshCw className="w-5 h-5 md:w-6 md:h-6 animate-spin" /> : <Send className="w-5 h-5 md:w-6 md:h-6" />}
                   </button>
                 </div>
-                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-cyan-400 transition-all duration-700 group-focus-within:w-full group-hover:w-full opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-brand-gradient transition-all duration-700 group-focus-within:w-full group-hover:w-full opacity-50 shadow-[0_0_10px_rgba(37,100,234,0.5)]"></div>
               </form>
               </div>
+
+              <VoiceAssistant eventTypeSlug={eventTypeSlug} onBookingAction={handleVoiceAssistantBooking} />
             </div>
           </div>
         </div>
@@ -484,9 +484,19 @@ const BookingWidget = ({ eventTypeSlug, schedulingLinkId, showVoiceAssistant = f
               className="h-full flex flex-col md:flex-row p-4 md:p-8"
             >
               <div className="flex-1 p-4">
-                <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-2">
-                  Select Date
-                </h3>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    Select Date
+                  </h3>
+                  <button
+                    onClick={() => setSelectedDate(new Date())}
+                    className="p-2 text-gray-400 hover:text-brand-blue hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-widest"
+                    title="Reset Date"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    Reset
+                  </button>
+                </div>
                 <div className="day-picker-container scale-110 origin-top-left">
                   <style>{`
                     .day-picker-container .rdp-day_selected,
