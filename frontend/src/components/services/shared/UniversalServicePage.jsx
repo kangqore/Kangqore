@@ -2204,7 +2204,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
       {service.comparisonTable && (
-        <GeminiComparisonSection comparisonTable={service.comparisonTable} />
+        <GeminiComparisonSection comparisonTable={service.comparisonTable} lede={service.comparisonLede} />
       )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
@@ -2316,6 +2316,9 @@ const featureMicros   = service.featureMicros
                 Agents built for<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">your industry.</span>
               </h2>
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
+                {service.industryLede || `Kangqore deploys ${name.toLowerCase()} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
+              </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.industryUseCases.map((item, idx) => (
@@ -2568,6 +2571,9 @@ const featureMicros   = service.featureMicros
                 Five ways to start.<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">One partner throughout.</span>
               </h2>
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
+                {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed programme. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
+              </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.servicePackages.map((pkg, idx) => (
@@ -2710,6 +2716,9 @@ const featureMicros   = service.featureMicros
                 The hard questions,<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">answered (FAQ).</span>
               </h2>
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-2xl">
+                {service.faqLede || `The questions below are the ones buyers actually ask in a first call — on scope, risk, timelines and what happens when something goes wrong. Answers are direct rather than promotional.`}
+              </p>
             </div>
             <div className="lg:pb-3 flex flex-col items-start gap-6">
               <p className="text-lg sm:text-xl font-bold text-white leading-snug">

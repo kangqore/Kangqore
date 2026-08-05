@@ -14,7 +14,7 @@ const GRADIENT_STYLE = {
   WebkitTextFillColor: 'transparent',
 };
 
-export default function GeminiComparisonSection({ comparisonTable }) {
+export default function GeminiComparisonSection({ comparisonTable, lede }) {
   const [hoveredRow, setHoveredRow] = useState(null);
 
   const rows = comparisonTable?.rows || [
@@ -63,6 +63,12 @@ export default function GeminiComparisonSection({ comparisonTable }) {
               </>
             )}
           </h2>
+          {/* Answer-first lead-in: the section previously went straight from the
+              heading into the comparison table, leaving nothing for featured
+              snippets or AI answer engines to extract. */}
+          <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
+            {lede || 'The difference is not speed of execution but who decides the next step. Rule-based automation follows a script a human wrote in advance; an agentic system evaluates the current state against a goal and chooses the action itself, escalating when the decision exceeds its remit.'}
+          </p>
         </div>
 
         {/* 3-Column Comparison Table with Gradient Accents */}
