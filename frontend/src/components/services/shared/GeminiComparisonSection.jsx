@@ -59,7 +59,7 @@ export default function GeminiComparisonSection({ comparisonTable }) {
             {comparisonTable?.heading || (
               <>
                 The shift from automation<br />
-                <span style={GRADIENT_STYLE}>to autonomy.</span>
+                to autonomy.
               </>
             )}
           </h2>
@@ -75,7 +75,7 @@ export default function GeminiComparisonSection({ comparisonTable }) {
             <div className="md:col-span-4 p-5 sm:p-6 text-white/60">
               TRADITIONAL AI / RULES-BASED AUTOMATION
             </div>
-            <div className="md:col-span-5 p-5 sm:p-6 bg-[#2564ea]/15 flex items-center justify-between rounded-t-2xl md:rounded-tr-2xl md:rounded-tl-none">
+            <div className="md:col-span-5 p-5 sm:p-6 flex items-center justify-between">
               <span style={GRADIENT_STYLE} className="font-black">
                 AGENTIC AI
               </span>

@@ -26,6 +26,7 @@ import { servicesData } from '../../../data/servicesData';
 import ResponsiveImage from '../../media/ResponsiveImage';
 import Beams from '../../ui/Beams';
 import GeminiComparisonSection from './GeminiComparisonSection';
+import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1005,6 +1006,12 @@ const featureMicros   = service.featureMicros
               <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent pointer-events-none z-10" />
               <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none z-10" />
             </div>
+          ) : service.slug === 'agentic-ai-led-application-modernization' ? (
+            <div className="absolute inset-0 w-full h-full bg-[#050505] overflow-hidden pointer-events-none">
+              <BackgroundNoiseGrid />
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/70 pointer-events-none z-10" />
+            </div>
           ) : service.useAbstractHero ? (
             <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
               {/* Abstract Gradient Mesh */}
@@ -1061,8 +1068,7 @@ const featureMicros   = service.featureMicros
 
                 {/* Typewriter badge */}
                 <div className="inline-flex items-center gap-3 mb-10 mt-[1cm]">
-                  <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
-                  <p className="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
+                  <p className="text-xs font-bold tracking-[0.2em] text-white uppercase">
                     <TypewriterText text={badgeText} start />
                   </p>
                 </div>
@@ -1081,13 +1087,13 @@ const featureMicros   = service.featureMicros
 
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <Link to="/contact" className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.15)]">
+                  <Link to="/contact" className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-black text-sm tracking-wide hover:bg-white/20 hover:border-white/40 transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.05)]">
                     {service.primaryCtaText || 'Talk To Our Experts'}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                   </Link>
                   <a href="#svc-capabilities" className="group inline-flex items-center gap-2 px-6 py-4 text-white/55 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200">
                     Explore Capabilities
-                    <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                   </a>
                 </div>
 
