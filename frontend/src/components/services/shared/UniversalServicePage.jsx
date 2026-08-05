@@ -617,14 +617,14 @@ function getParityService(service, department) {
     problem: `Manual overhead and unmonitored system changes created continuous delay and compliance exposure.`,
     outcome: `Kangqore deployed automated governance, real-time telemetry, and streamlined workflows — achieving maximum operational yield.`
   };
-  const outcomeCard3 = service.outcomeCard3 || {
-    illustrative: true,
-    metric: deptSlug === 'foundry' ? '40%' : deptSlug === 'reimagine' ? '75%' : deptSlug === 'shield' ? '0' : deptSlug === 'platforms' ? '35%' : deptSlug === 'growth' ? '+180%' : '0%',
-    metricLabel: `Cost reduction and ROI impact`,
-    industry: 'High-Tech & Industrial Group',
-    problem: `High infrastructure costs and unoptimized tool sprawl created unnecessary overhead across business operations.`,
-    outcome: `Kangqore rationalized system architecture and automated delivery — eliminating waste and driving compound ROI.`
-  };
+  // No generated fallback for a third outcome card. The previous default keyed
+  // its metric off deptSlug and fell through to '0%' for cognition (and a bare
+  // '0' for shield), so twelve Cognition services publicly displayed
+  // "0% — Cost reduction and ROI impact" directly beneath two positive results,
+  // reading as a declining sequence. It also invented a client descriptor
+  // ("High-Tech & Industrial Group") for an engagement that does not exist.
+  // A third card now renders only when a service supplies real data for it.
+  const outcomeCard3 = service.outcomeCard3 || null;
 
   // Custom FAQs Fallback
   const customFAQs = (service.customFAQs && service.customFAQs.length > 0)
