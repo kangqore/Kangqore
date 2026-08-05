@@ -617,14 +617,14 @@ function getParityService(service, department) {
     problem: `Manual overhead and unmonitored system changes created continuous delay and compliance exposure.`,
     outcome: `Kangqore deployed automated governance, real-time telemetry, and streamlined workflows — achieving maximum operational yield.`
   };
-  const outcomeCard3 = service.outcomeCard3 || {
-    illustrative: true,
-    metric: deptSlug === 'foundry' ? '40%' : deptSlug === 'reimagine' ? '75%' : deptSlug === 'shield' ? '0' : deptSlug === 'platforms' ? '35%' : deptSlug === 'growth' ? '+180%' : '0%',
-    metricLabel: `Cost reduction and ROI impact`,
-    industry: 'High-Tech & Industrial Group',
-    problem: `High infrastructure costs and unoptimized tool sprawl created unnecessary overhead across business operations.`,
-    outcome: `Kangqore rationalized system architecture and automated delivery — eliminating waste and driving compound ROI.`
-  };
+  // No generated fallback for a third outcome card. The previous default keyed
+  // its metric off deptSlug and fell through to '0%' for cognition (and a bare
+  // '0' for shield), so twelve Cognition services publicly displayed
+  // "0% — Cost reduction and ROI impact" directly beneath two positive results,
+  // reading as a declining sequence. It also invented a client descriptor
+  // ("High-Tech & Industrial Group") for an engagement that does not exist.
+  // A third card now renders only when a service supplies real data for it.
+  const outcomeCard3 = service.outcomeCard3 || null;
 
   // Custom FAQs Fallback
   const customFAQs = (service.customFAQs && service.customFAQs.length > 0)
@@ -2204,7 +2204,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
       {service.comparisonTable && (
-        <GeminiComparisonSection comparisonTable={service.comparisonTable} />
+        <GeminiComparisonSection comparisonTable={service.comparisonTable} lede={service.comparisonLede} />
       )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
@@ -2316,6 +2316,9 @@ const featureMicros   = service.featureMicros
                 Agents built for<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">your industry.</span>
               </h2>
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
+                {service.industryLede || `Kangqore deploys ${name.toLowerCase()} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
+              </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.industryUseCases.map((item, idx) => (
@@ -2568,6 +2571,9 @@ const featureMicros   = service.featureMicros
                 Five ways to start.<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">One partner throughout.</span>
               </h2>
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
+                {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed programme. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
+              </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.servicePackages.map((pkg, idx) => (
@@ -2710,6 +2716,9 @@ const featureMicros   = service.featureMicros
                 The hard questions,<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">answered (FAQ).</span>
               </h2>
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-2xl">
+                {service.faqLede || `The questions below are the ones buyers actually ask in a first call — on scope, risk, timelines and what happens when something goes wrong. Answers are direct rather than promotional.`}
+              </p>
             </div>
             <div className="lg:pb-3 flex flex-col items-start gap-6">
               <p className="text-lg sm:text-xl font-bold text-white leading-snug">
