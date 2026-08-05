@@ -83,6 +83,7 @@ import { legacyRedirectsMiddleware } from './middleware/legacyRedirects';
 import { dashboardRedirectMiddleware } from './middleware/dashboardRedirect';
 import { customDomainRouter } from './middleware/customDomainRouter';
 import { initializeSocket } from './socket';
+import { initializeVoiceGateway } from './voice/voiceGateway';
 
 
 // Server restart trigger 12345678901234567890
@@ -486,6 +487,9 @@ const server = createServer(app);
 // Initialize Socket.io for real-time features
 const io = initializeSocket(server);
 app.set('io', io); // Make io accessible in routes via req.app.get('io')
+
+// Voice Assistant WebSocket gateway (public, unauthenticated — booking surfaces)
+initializeVoiceGateway(server);
 
 server.listen(PORT, () => {
   console.log(`🚀 Core Backend + Frontend running on port ${PORT}`);
