@@ -2,10 +2,7 @@ import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, useScroll } from 'framer-motion';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { format } from 'date-fns';
-import { parseSchedulingRequest, parseSchedulingRequestAsync, timeRangeToTimeStr } from '../hooks/nlpSchedulingParser';
 import AvailabilityPulse from '../components/scheduling/AvailabilityPulse';
-import { useVoiceInput } from '../hooks/useVoiceInput';
 
 const ConciergeSection = lazy(() =>
   import('../components/concierge/ConciergeSection')
@@ -15,9 +12,9 @@ import HeroGlassCards from '../components/hero/HeroGlassCards';
 import HeroChatWidget from '../components/hero/HeroChatWidget';
 
 import { Link } from 'react-router-dom';
-import { 
+import {
   ChevronRight, ChevronDown, Check, ArrowRight,
-  SkipForward, Send, RefreshCw, Mic
+  SkipForward
 } from 'lucide-react';
 
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
@@ -1554,149 +1551,6 @@ const LeadershipSection = () => {
 
 
 // ============================================================================
-// SECTION 9: EQORE COMMAND CENTER (Automation)
-// ============================================================================
-const EqoreTypingSection = ({ bookingRef }) => {
-  const [inputValue, setInputValue] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [feedback, setFeedback] = useState("Command the Intelligence Core...");
-
-  const { listening, toggle } = useVoiceInput({
-    onFinal: (text) => {
-      setInputValue(text);
-      executeAutomate(text);
-    }
-  });
-
-  const executeAutomate = async (text) => {
-    if (!text || !text.trim() || isProcessing) return;
-
-    setIsProcessing(true);
-    setFeedback("Processing with NLP engine...");
-
-    try {
-      // Advanced NLP Parser — async call to chrono-node backend
-      const intent = await parseSchedulingRequestAsync(text);
-
-      if (intent.understood) {
-        let finalTimeStr = intent.timeStr;
-        if (!finalTimeStr && intent.timeRange) {
-          finalTimeStr = timeRangeToTimeStr(intent.timeRange);
-        }
-
-        if (finalTimeStr && intent.targetDate) {
-          if (bookingRef.current) {
-            bookingRef.current.selectDateTime(intent.targetDate, finalTimeStr);
-            setFeedback(intent.summary || `Automation engaged: Setting consultation for ${format(intent.targetDate, 'EEEE')} at ${finalTimeStr}.`);
-            
-            // Scroll to widget to show selection
-            const widget = document.getElementById('scheduling-widget');
-            if (widget) widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        } else {
-          // Understood partially (e.g. "next week" with no time)
-          setFeedback(intent.summary || "Please specify a time, e.g., 'Friday at 2pm'.");
-          if (intent.targetDate && bookingRef.current) {
-             // Just select the date
-             bookingRef.current.selectDateTime(intent.targetDate, "09:00 AM"); // placeholder time
-             const widget = document.getElementById('scheduling-widget');
-             if (widget) widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        }
-      } else {
-        setFeedback("Could not parse schedule. Try: 'Friday at 10:00 AM' or 'tomorrow afternoon'.");
-      }
-    } catch (err) {
-      setFeedback("NLP engine unavailable. Try: 'Friday at 10:00 AM' or 'tomorrow afternoon'.");
-    } finally {
-      setIsProcessing(false);
-      setInputValue('');
-    }
-  };
-
-  const handleAutomate = async (e) => {
-    e.preventDefault();
-    await executeAutomate(inputValue);
-  };
-
-  return (
-    <section className="pb-32 bg-white dark:bg-black">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center gap-10">
-          {/* eQORE Avatar with Circular Pulse Ring */}
-          <div className="relative shrink-0">
-            <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-[heroPulseRing_3s_ease-out_infinite]" />
-            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-white/20 dark:border-white/10 shadow-2xl bg-black relative z-10 transition-transform duration-500 hover:scale-110">
-              <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
-            </div>
-            {/* Mic Button (Replaces Status Indicator) */}
-            <button 
-              type="button"
-              onClick={toggle}
-              className={`absolute bottom-0 right-0 w-8 h-8 rounded-full border-2 border-white dark:border-[#0a0a0c] flex items-center justify-center z-20 shadow-[0_0_15px_rgba(34,211,238,0.8)] transition-colors duration-300 ${listening ? 'bg-red-500 text-white' : 'bg-cyan-400 text-white hover:bg-cyan-300'}`}
-              aria-label="Start voice input"
-            >
-              {listening && <div className="absolute inset-0 rounded-full bg-red-500/50 animate-ping pointer-events-none" />}
-              <Mic className="w-4 h-4 relative z-10" />
-            </button>
-          </div>
-
-          {/* Premium Minimal Input Content */}
-          <div className="flex-1 w-full relative">
-            {/* Custom Marquee Placeholder Overlay */}
-            {!inputValue && (
-              <div className="absolute inset-0 pointer-events-none flex items-center overflow-hidden whitespace-nowrap z-0">
-                <style>
-                  {`
-                    @keyframes placeholder-scroll {
-                      0% { transform: translateX(0); }
-                      100% { transform: translateX(-50%); }
-                    }
-                    .animate-placeholder-scroll {
-                      animation: placeholder-scroll 25s linear infinite;
-                    }
-                  `}
-                </style>
-                <div className="flex animate-placeholder-scroll">
-                  <span className="text-2xl md:text-4xl font-light tracking-tight text-gray-300 pr-20">
-                    Ask eQORE to book your 30-minute Discovery Call at your preferred date and time.
-                  </span>
-                  <span className="text-2xl md:text-4xl font-light tracking-tight text-gray-300 pr-20">
-                    Ask eQORE to book your 30-minute Discovery Call at your preferred date and time.
-                  </span>
-                </div>
-              </div>
-            )}
-
-            <form onSubmit={handleAutomate} className="relative group z-10">
-              <input 
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder=""
-                className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 px-0 py-5 text-2xl md:text-4xl font-light tracking-tight text-gray-900 dark:text-white placeholder-gray-300 focus:outline-none focus:border-cyan-400 transition-all duration-500 pr-16"
-              />
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
-                <button 
-                  type="submit"
-                  disabled={isProcessing || !inputValue.trim()}
-                  className="p-3 text-cyan-400 hover:text-brand-blue hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
-                >
-                  {isProcessing ? <RefreshCw className="w-6 h-6 md:w-7 md:h-7 animate-spin" /> : <Send className="w-6 h-6 md:w-7 md:h-7" />}
-                </button>
-              </div>
-              
-              {/* Animated underline glow on hover/focus */}
-              <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-cyan-400 transition-all duration-700 group-focus-within:w-full group-hover:w-full opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// ============================================================================
 // MAIN HOMEPAGE COMPONENT
 // ============================================================================
 
@@ -1715,7 +1569,6 @@ const SectionWrapper = ({ children, id, className = "" }) => (
 
 const HomePage = () => {
 
-  const bookingRef = useRef(null);
   const [lockedIntent, setLockedIntent] = useState(null);
 
   useEffect(() => {
@@ -1896,10 +1749,8 @@ const HomePage = () => {
           </p>
           <AvailabilityPulse eventTypeSlug="discovery-call" />
         </div>
-        <BookingWidget ref={bookingRef} eventTypeSlug="discovery-call" />
+        <BookingWidget eventTypeSlug="discovery-call" showVoiceAssistant />
       </section>
-
-      <EqoreTypingSection bookingRef={bookingRef} />
 
       <SectionWrapper>
         <CareersSection />

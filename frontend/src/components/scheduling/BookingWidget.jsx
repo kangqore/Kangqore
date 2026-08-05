@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format, addDays, startOfDay, parseISO, isSameDay } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
@@ -18,17 +18,20 @@ import {
   Loader2,
   Video,
   RefreshCw,
+  Send,
   X
 } from 'lucide-react';
 import axios from 'axios';
 import { useToast } from '../../hooks/use-toast';
+import { parseSchedulingRequestAsync, timeRangeToTimeStr } from '../../hooks/nlpSchedulingParser';
+import VoiceAssistant from '../voice/VoiceAssistant';
 
 function detectTimezone() {
   try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; }
   catch { return 'UTC'; }
 }
 
-const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
+const BookingWidget = ({ eventTypeSlug, schedulingLinkId, showVoiceAssistant = false }) => {
   const { toast } = useToast();
   const [step, setStep] = useState(1); // 1: Date/Time, 2: Form, 3: Success
   const [eventType, setEventType] = useState(null);
@@ -37,15 +40,6 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [bookingResult, setBookingResult] = useState(null);
   const [timezone] = useState(detectTimezone);
-
-  // Expose control to parent (e.g., eQORE automation)
-  useImperativeHandle(ref, () => ({
-    selectDateTime: (date, timeStr) => {
-      setSelectedDate(date);
-      setPendingAutomation({ date, timeStr });
-    },
-    setStep: (s) => setStep(s)
-  }));
 
   const [pendingAutomation, setPendingAutomation] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -91,6 +85,64 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
       setPendingAutomation(null);
     }
   }, [availableSlots, loadingSlots, pendingAutomation, toast]);
+
+  // ─── eQORE Voice Assistant (integral to the widget) ─────────────────────
+  const [voiceInputValue, setVoiceInputValue] = useState('');
+  const [voiceProcessing, setVoiceProcessing] = useState(false);
+  const [voiceFeedback, setVoiceFeedback] = useState('Command the Intelligence Core...');
+
+  const handleVoiceAssistantBooking = (action) => {
+    if (!action?.targetDate) return;
+    let finalTimeStr = action.timeStr;
+    if (!finalTimeStr && action.timeRange) {
+      finalTimeStr = timeRangeToTimeStr(action.timeRange);
+    }
+    setSelectedDate(action.targetDate);
+    setPendingAutomation({ date: action.targetDate, timeStr: finalTimeStr || '09:00 AM' });
+  };
+
+  const executeVoiceAutomation = async (text) => {
+    if (!text || !text.trim() || voiceProcessing) return;
+
+    setVoiceProcessing(true);
+    setVoiceFeedback('Processing with NLP engine...');
+
+    try {
+      const intent = await parseSchedulingRequestAsync(text);
+
+      if (intent.understood) {
+        let finalTimeStr = intent.timeStr;
+        if (!finalTimeStr && intent.timeRange) {
+          finalTimeStr = timeRangeToTimeStr(intent.timeRange);
+        }
+
+        if (finalTimeStr && intent.targetDate) {
+          setSelectedDate(intent.targetDate);
+          setPendingAutomation({ date: intent.targetDate, timeStr: finalTimeStr });
+          setVoiceFeedback(intent.summary || `Automation engaged: Setting consultation for ${format(intent.targetDate, 'EEEE')} at ${finalTimeStr}.`);
+        } else {
+          // Understood partially (e.g. "next week" with no time)
+          setVoiceFeedback(intent.summary || "Please specify a time, e.g., 'Friday at 2pm'.");
+          if (intent.targetDate) {
+            setSelectedDate(intent.targetDate);
+            setPendingAutomation({ date: intent.targetDate, timeStr: "09:00 AM" }); // placeholder time
+          }
+        }
+      } else {
+        setVoiceFeedback("Could not parse schedule. Try: 'Friday at 10:00 AM' or 'tomorrow afternoon'.");
+      }
+    } catch (err) {
+      setVoiceFeedback("NLP engine unavailable. Try: 'Friday at 10:00 AM' or 'tomorrow afternoon'.");
+    } finally {
+      setVoiceProcessing(false);
+      setVoiceInputValue('');
+    }
+  };
+
+  const handleVoiceSubmit = async (e) => {
+    e.preventDefault();
+    await executeVoiceAutomation(voiceInputValue);
+  };
 
   // Load Event Type
   useEffect(() => {
@@ -206,8 +258,75 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
   if (!eventType) return null;
 
   return (
-    <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col md:flex-row min-h-[600px]">
-      
+    <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col">
+
+      {showVoiceAssistant && (
+        <div className="border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-black/20 px-6 py-6 md:px-10 md:py-8">
+          <style>
+            {`
+              @keyframes bookingPlaceholderScroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .animate-booking-placeholder-scroll {
+                animation: bookingPlaceholderScroll 25s linear infinite;
+              }
+            `}
+          </style>
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            {/* eQORE Avatar with Pulse Ring */}
+            <div className="relative shrink-0">
+              <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-[heroPulseRing_3s_ease-out_infinite]" />
+              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white dark:border-white/10 shadow-xl bg-black relative z-10">
+                <img src="/images/eqore-avatar.png" alt="eQORE" className="w-full h-full object-cover" />
+              </div>
+            </div>
+
+            {/* Fluent Voice Conversation + Typed Fallback */}
+            <div className="flex-1 w-full flex flex-col gap-4">
+              <VoiceAssistant eventTypeSlug={eventTypeSlug} onBookingAction={handleVoiceAssistantBooking} />
+
+              <div className="relative">
+              {!voiceInputValue && (
+                <div className="absolute inset-0 pointer-events-none flex items-center overflow-hidden whitespace-nowrap z-0">
+                  <div className="flex animate-booking-placeholder-scroll">
+                    <span className="text-lg md:text-2xl font-light tracking-tight text-gray-300 pr-20">
+                      Ask eQORE to book your {selectedDuration || eventType.duration}-minute {eventType.name} at your preferred date and time.
+                    </span>
+                    <span className="text-lg md:text-2xl font-light tracking-tight text-gray-300 pr-20">
+                      Ask eQORE to book your {selectedDuration || eventType.duration}-minute {eventType.name} at your preferred date and time.
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <form onSubmit={handleVoiceSubmit} className="relative group z-10">
+                <input
+                  type="text"
+                  value={voiceInputValue}
+                  onChange={(e) => setVoiceInputValue(e.target.value)}
+                  placeholder=""
+                  aria-label="Ask eQORE to book this call"
+                  className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 px-0 py-3 text-lg md:text-2xl font-light tracking-tight text-gray-900 dark:text-white placeholder-gray-300 focus:outline-none focus:border-cyan-400 transition-all duration-500 pr-16"
+                />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
+                  <button
+                    type="submit"
+                    disabled={voiceProcessing || !voiceInputValue.trim()}
+                    className="p-3 text-cyan-400 hover:text-brand-blue hover:scale-125 active:scale-95 transition-all duration-300 disabled:opacity-0"
+                  >
+                    {voiceProcessing ? <RefreshCw className="w-5 h-5 md:w-6 md:h-6 animate-spin" /> : <Send className="w-5 h-5 md:w-6 md:h-6" />}
+                  </button>
+                </div>
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-cyan-400 transition-all duration-700 group-focus-within:w-full group-hover:w-full opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="flex flex-col md:flex-row flex-1 min-h-[600px]">
       {/* Left Sidebar: Event Info */}
       <div className="md:w-1/3 bg-gray-50 dark:bg-black/20 p-8 md:p-12 border-r border-gray-100 dark:border-gray-800">
         <div className="space-y-6">
@@ -643,9 +762,10 @@ const BookingWidget = forwardRef(({ eventTypeSlug, schedulingLinkId }, ref) => {
           )}
         </AnimatePresence>
       </div>
+      </div>
     </div>
   );
-});
+};
 
 
 export default BookingWidget;
