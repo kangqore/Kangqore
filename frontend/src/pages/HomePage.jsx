@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { format, addDays } from 'date-fns';
+import { format } from 'date-fns';
 import { parseSchedulingRequest, parseSchedulingRequestAsync, timeRangeToTimeStr } from '../hooks/nlpSchedulingParser';
 import AvailabilityPulse from '../components/scheduling/AvailabilityPulse';
 import { useVoiceInput } from '../hooks/useVoiceInput';
@@ -13,40 +13,18 @@ const ConciergeSection = lazy(() =>
 
 import HeroGlassCards from '../components/hero/HeroGlassCards';
 import HeroChatWidget from '../components/hero/HeroChatWidget';
-import BIDSProductVisual from '../components/hero/BIDSProductVisual';
+
 import { Link } from 'react-router-dom';
 import { 
-  ChevronLeft, ChevronRight, ChevronDown, Calendar, Clock,
-  User, Mail, Building, MessageSquare, Check, Cpu, Zap, Users, ArrowRight, ArrowLeft, ArrowUpRight,
-  Plus, X, Pause, Play, SkipForward, Briefcase, Globe, Phone, Send, Search, Menu,
-  Facebook, Twitter, Linkedin, Instagram, Target, ShieldCheck, Scale, Handshake,
-  Bot, RefreshCw, Cloud, TrendingUp, Lock, BarChart3, BookOpen,
-  Landmark, Factory, Monitor, Sparkles, Quote, Star, Mic, Volume2, VolumeX
+  ChevronRight, ChevronDown, Check, ArrowRight,
+  SkipForward, Send, RefreshCw, Mic
 } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../components/ui/dialog';
+
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { useToast } from '../hooks/use-toast';
+
 import { departmentData } from '../data/departmentData';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '../components/ui/accordion';
-import NewModernSection from '../components/NewModernSection';
-import VisualBackground from '../components/VisualBackground';
 import SEO from '../components/SEO';
 import { coreSEO } from '../data/seoData';
-import SecondaryButton from '../components/ui/SecondaryButton';
-import ExploreServices from '../components/ExploreServices';
-import DepartmentsGrid from '../components/DepartmentsGrid';
 import DepartmentCarousel from '../components/home/DepartmentCarousel';
 import HomeRuler from '../components/home/HomeRuler';
 import BookingWidget from '../components/scheduling/BookingWidget';
@@ -413,7 +391,7 @@ const HeroCarousel = () => {
                 {slide.cta && (
                   <div className="flex flex-col sm:flex-row items-center gap-8 animate-fade-in">
                     {slide.cta && (
-                      <Link
+                      <Link viewTransition
                         to={slide.link}
                         className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/[0.07] backdrop-blur-md border border-white/14 text-white shadow-xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]"
                       >
@@ -429,7 +407,7 @@ const HeroCarousel = () => {
                     )}
 
                     {slide.secondaryCta && (
-                      <Link
+                      <Link viewTransition
                         to={slide.secondaryLink || "/contact"}
                         className="group inline-flex items-center gap-2 px-4 py-2 hover:opacity-80 transition-opacity duration-300"
                       >
@@ -602,9 +580,9 @@ const trustCards = [
   },
 ];
 
-const EditorialCard = ({ card, featured = false }) => {
+const EditorialCard = ({ card }) => {
   return (
-    <Link
+    <Link viewTransition
       to={card.href}
       className={`group relative z-10 overflow-hidden bg-slate-900 dark:bg-black transition-all duration-700 w-full rounded-2xl ${card.aspect}`}
       style={{ transform: 'translateZ(0)' }}
@@ -734,13 +712,13 @@ const InsightsSubscribeBlock = () => {
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans rounded-xl">
+            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 hover:scale-105 active:scale-95 transition-all duration-300 font-sans rounded-xl">
               Apple
             </button>
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans rounded-xl">
+            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 hover:scale-105 active:scale-95 transition-all duration-300 font-sans rounded-xl">
               Google
             </button>
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 transition-colors font-sans rounded-xl">
+            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 hover:scale-105 active:scale-95 transition-all duration-300 font-sans rounded-xl">
               LinkedIn
             </button>
           </div>
@@ -764,7 +742,7 @@ const TrustIntelligenceLayer = () => {
               <p className="max-w-2xl text-2xl md:text-3xl lg:text-4xl leading-snug md:leading-snug text-gray-900 dark:text-white font-medium tracking-tight">
                 Insights engineered for decision-makers. The ideas, research, and perspectives defining the future of intelligent enterprise infrastructure.
               </p>
-              <Link to="/insights" className="w-14 h-14 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center group hover:scale-110 hover:shadow-[0_0_20px_rgba(37,100,234,0.3)] transition-all duration-500 shrink-0 mt-4 md:mt-0 relative overflow-hidden">
+              <Link viewTransition to="/insights" className="w-14 h-14 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center group hover:scale-110 hover:shadow-[0_0_20px_rgba(37,100,234,0.3)] transition-all duration-500 shrink-0 mt-4 md:mt-0 relative overflow-hidden">
                 <div className="absolute inset-0 bg-brand-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <ArrowRight className="w-6 h-6 text-white dark:text-gray-900 group-hover:text-white relative z-10 transition-all duration-500 -rotate-45 group-hover:rotate-0 group-hover:translate-x-0.5" />
               </Link>
@@ -773,7 +751,7 @@ const TrustIntelligenceLayer = () => {
 
           {/* 2. Featured Card (Right Side - Spans entire height) */}
           <div className="lg:row-span-2 lg:col-start-3 h-full">
-            <EditorialCard card={trustCards[0]} featured={true} />
+            <EditorialCard card={trustCards[0]} />
           </div>
 
           {/* 3. Small Card Left (Bottom Left) */}
@@ -844,7 +822,7 @@ const PartnerBadgesStrip = () => {
             </h2>
           </div>
 
-          <Link to="/partners" className="hidden md:flex items-center gap-2 text-brand-blue font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all mb-2">
+          <Link viewTransition to="/partners" className="hidden md:flex items-center gap-2 text-brand-blue font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all mb-2">
             View Full Partner Ecosystem →
           </Link>
         </div>
@@ -874,7 +852,7 @@ const PartnerBadgesStrip = () => {
 
       {/* Mobile "View Full Partner Ecosystem" link */}
       <div className="md:hidden flex justify-center mt-8">
-        <Link to="/partners" className="inline-flex items-center gap-2 text-brand-blue font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all">
+        <Link viewTransition to="/partners" className="inline-flex items-center gap-2 text-brand-blue font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all">
           View Full Partner Ecosystem →
         </Link>
       </div>
@@ -911,7 +889,7 @@ const StickyMobileCTA = () => {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden p-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
-      <Link
+      <Link viewTransition
         to="/contact"
         className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
       >
@@ -992,7 +970,7 @@ const IndustriesWeServe = () => {
             { id: 'media_tech', to: '/industries/media-technology' },
             { id: 'life_science', to: '/industries/life-science' },
           ].map((item, idx) => (
-            <Link 
+            <Link viewTransition 
               key={idx}
               to={item.to}
               className="group flex items-center justify-between py-5 border-b border-white/5 hover:border-brand-blue/30 transition-all duration-300"
@@ -1005,7 +983,7 @@ const IndustriesWeServe = () => {
           ))}
           
           {/* Last Action: Explore All */}
-          <Link 
+          <Link viewTransition 
             to="/industries"
             className="group flex items-center justify-between py-5 border-b border-brand-blue/20 hover:border-brand-blue/50 transition-all duration-300"
           >
@@ -1175,7 +1153,7 @@ const TrustStatementTypewriter = ({ isVisible }) => {
             </p>
             
             <div className="mt-12">
-              <Link 
+              <Link viewTransition 
                 to="/services"
                 className="group inline-flex items-center gap-3 text-gray-900 dark:text-white font-bold uppercase tracking-widest text-xs hover:text-brand-blue transition-colors"
               >
@@ -1297,7 +1275,7 @@ const TestimonialsSection = () => {
               Research & <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Insights</span>.
             </h2>
           </div>
-          <Link 
+          <Link viewTransition 
             to="/contact" 
             className="group flex items-center gap-3 text-[15px] font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest"
           >
@@ -1465,7 +1443,7 @@ const TestimonialsSection = () => {
             <h3 className="text-xl md:text-2xl font-medium text-white leading-relaxed mb-8">
               Explore how organizations partner with us to strengthen delivery performance, enhance compliance posture, and achieve measurable operational outcomes.
             </h3>
-            <Link 
+            <Link viewTransition 
               to="/contact" 
               className="inline-flex items-center gap-2 text-lg font-bold text-white hover:text-white/90 transition-colors group"
             >
@@ -1720,7 +1698,22 @@ const EqoreTypingSection = ({ bookingRef }) => {
 // ============================================================================
 // MAIN HOMEPAGE COMPONENT
 // ============================================================================
+
+const SectionWrapper = ({ children, id, className = "" }) => (
+  <motion.div
+    id={id}
+    className={className}
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-100px" }}
+    transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+  >
+    {children}
+  </motion.div>
+);
+
 const HomePage = () => {
+
   const bookingRef = useRef(null);
   const [lockedIntent, setLockedIntent] = useState(null);
 
@@ -1788,20 +1781,20 @@ const HomePage = () => {
       {/* Dynamic Layout Shift */}
       {lockedIntent === 'enterpriseBuyer' ? (
         <>
-          <div id="home-services"><DepartmentCarousel /></div>
+          <SectionWrapper id="home-services"><DepartmentCarousel /></SectionWrapper>
 
-          <div id="home-industries"><IndustriesWeServe /></div>
-          <TrustIntelligenceLayer />
+          <SectionWrapper id="home-industries"><IndustriesWeServe /></SectionWrapper>
+          <SectionWrapper><TrustIntelligenceLayer /></SectionWrapper>
         </>
       ) : (
-        <TrustIntelligenceLayer />
+        <SectionWrapper><TrustIntelligenceLayer /></SectionWrapper>
       )}
 
-      <div id="home-concierge">
+      <SectionWrapper id="home-concierge">
         <Suspense fallback={<div className="w-full h-[200px]" aria-hidden="true" />}>
           <ConciergeSection />
         </Suspense>
-      </div>
+      </SectionWrapper>
 
       {/* ── Intelligent Solutions 3-card section ── */}
       <section className="py-20 bg-black overflow-hidden">
@@ -1841,7 +1834,7 @@ const HomePage = () => {
                 raise: false,
               },
             ].map((card) => (
-              <Link
+              <Link viewTransition
                 key={card.title}
                 to={card.link}
                 onClick={card.scrollTo ? (e) => { e.preventDefault(); document.getElementById(card.scrollTo)?.scrollIntoView({ behavior: 'smooth' }); } : undefined}
@@ -1880,16 +1873,16 @@ const HomePage = () => {
       {/* Phase D — 6-department canonical grid replaces the legacy 15-dept carousel. */}
       {lockedIntent !== 'enterpriseBuyer' && (
         <>
-          <div id="home-services"><DepartmentCarousel /></div>
+          <SectionWrapper id="home-services"><DepartmentCarousel /></SectionWrapper>
 
-          <div id="home-industries"><IndustriesWeServe /></div>
+          <SectionWrapper id="home-industries"><IndustriesWeServe /></SectionWrapper>
         </>
       )}
       <TrustStatementSection />
       <PartnerBadgesStrip />
-      <LatestInsightsSection />
-      <LeadershipSection />
-      <EqoreShowSection />
+      <SectionWrapper><LatestInsightsSection /></SectionWrapper>
+      <SectionWrapper><LeadershipSection /></SectionWrapper>
+      <SectionWrapper><EqoreShowSection /></SectionWrapper>
 
 
       <section id="scheduling-widget" className="py-24 bg-white dark:bg-black relative overflow-hidden">

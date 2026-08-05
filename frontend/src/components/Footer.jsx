@@ -127,6 +127,25 @@ const Footer = () => {
         {/* RIGHT CARD — Navigation */}
         <div className="bg-[#f0f1f5] dark:bg-[#0a0a0c] footer-right-card" style={{ borderRadius: 28, padding: 40, overflow: 'visible', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative' }}>
 
+          {/* Floating Let's Connect Badge */}
+          <a href="/contact" className="absolute -top-8 -right-6 flex flex-col items-center z-50 group hover:-translate-y-2 transition-transform duration-300" style={{ textDecoration: 'none' }}>
+            <div className="w-[74px] h-[74px] rounded-2xl flex items-center justify-center relative overflow-hidden transition-all duration-300 transform -rotate-[6deg] group-hover:rotate-0"
+                 style={{
+                   background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+                   boxShadow: '0 14px 28px rgba(37,100,234,0.25), inset 0 6px 12px rgba(255,255,255,0.4), inset 0 -6px 12px rgba(0,0,0,0.2)',
+                 }}>
+              <div className="absolute inset-0 bg-white/5 rounded-2xl"></div>
+              <img src="/assets/kangqore-icon-white.png" alt="Kangqore Connect" className="w-[45px] h-[45px] object-contain relative z-10 drop-shadow-md transition-transform duration-300 group-hover:scale-110" />
+            </div>
+            <div className="flex items-center gap-1 mt-1.5 -ml-3 -rotate-6">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transform rotate-45 mt-0.5">
+                <path d="M9 10l3-3 3 3" />
+                <path d="M12 7v7c0 2-1 3-3 3H5" />
+              </svg>
+              <span className="text-[#9ca3af]" style={{ fontFamily: "'Caveat', cursive", fontSize: 18, fontWeight: 700 }}>Let's connect!</span>
+            </div>
+          </a>
+
           {/* Nav Columns */}
           <div style={{ display: 'flex', gap: 28, paddingTop: 8, flexWrap: 'wrap' }} className="footer-nav-cols">
             {/* Capabilities */}
