@@ -31,6 +31,7 @@ import BookingWidget from '../components/scheduling/BookingWidget';
 import TransformCTA from '../components/TransformCTA';
 import EqoreShowSection from '../components/podcast/EqoreShowSection';
 import LatestInsightsSection from '../components/home/LatestInsightsSection';
+import CareersSection from '../components/home/CareersSection';
 
 // ============================================================================
 // MOCK DATA
@@ -1899,6 +1900,10 @@ const HomePage = () => {
       </section>
 
       <EqoreTypingSection bookingRef={bookingRef} />
+
+      <SectionWrapper>
+        <CareersSection />
+      </SectionWrapper>
 
       <TransformCTA />
       <StickyMobileCTA />
