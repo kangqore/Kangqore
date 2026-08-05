@@ -44,7 +44,7 @@ function Waveform({ micAnalyser, playbackAnalyser, active, state }) {
           const v = data[i * step] / 255;
           const barHeight = Math.max(2, v * height);
           const x = i * barWidth;
-          const color = state === 'speaking' ? 'rgba(34,211,238,0.9)' : 'rgba(37,100,234,0.85)';
+          const color = state === 'speaking' ? 'rgba(74,182,212,0.9)' : 'rgba(37,100,234,0.85)';
           ctx2d.fillStyle = color;
           ctx2d.fillRect(x + barWidth * 0.2, (height - barHeight) / 2, barWidth * 0.6, barHeight);
         }
@@ -93,16 +93,16 @@ export default function VoiceAssistant({ eventTypeSlug, onBookingAction, classNa
         disabled={state === 'unavailable'}
         aria-label={active ? 'End voice conversation' : 'Start voice conversation with eQORE'}
         title={state === 'unavailable' ? error || 'Voice Assistant unavailable' : undefined}
-        className={`relative shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.5)] ${
+        className={`relative shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-[0_0_15px_rgba(37,100,234,0.5)] ${
           state === 'unavailable'
             ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed opacity-60'
             : active
               ? 'bg-red-500 text-white hover:bg-red-400'
-              : 'bg-cyan-400 text-white hover:bg-cyan-300'
+              : 'bg-brand-gradient text-white hover:opacity-90'
         }`}
       >
         {active && state !== 'connecting' && (
-          <span className="absolute inset-0 rounded-full bg-cyan-400/40 animate-ping pointer-events-none" />
+          <span className="absolute inset-0 rounded-full bg-brand-gradient opacity-40 animate-ping pointer-events-none" />
         )}
         {active ? <X className="w-4 h-4 relative z-10" /> : <Mic className="w-4 h-4 relative z-10" />}
       </button>
@@ -110,7 +110,7 @@ export default function VoiceAssistant({ eventTypeSlug, onBookingAction, classNa
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <span className={`text-[10px] font-bold uppercase tracking-widest ${
-            state === 'unavailable' || state === 'error' ? 'text-red-400' : 'text-cyan-500'
+            state === 'unavailable' || state === 'error' ? 'text-red-400' : 'bg-brand-gradient bg-clip-text text-transparent'
           }`}>
             {STATE_LABEL[state]}
           </span>
@@ -118,9 +118,11 @@ export default function VoiceAssistant({ eventTypeSlug, onBookingAction, classNa
         {active ? (
           <Waveform micAnalyser={micAnalyser} playbackAnalyser={playbackAnalyser} active={active} state={state} />
         ) : (
-          <p className="text-sm text-gray-400 dark:text-gray-500 truncate">
-            {state === 'unavailable' ? (error || 'Voice Assistant unavailable') : 'Tap the mic for a live voice conversation'}
-          </p>
+          state === 'unavailable' && (
+            <p className="text-sm text-gray-400 dark:text-gray-500 truncate">
+              {error || 'Voice Assistant unavailable'}
+            </p>
+          )
         )}
         {active && caption && (
           <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">{caption}</p>
