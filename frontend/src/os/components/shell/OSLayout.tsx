@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import '../../os.css'
 import { Rail }              from './Rail'
@@ -14,6 +14,21 @@ import { AmbientBackground } from './AmbientBackground'
 
 // Only the WAANDA root (Arc HUD) is immersive — sub-routes use the normal shell
 const WAANDA_ROOT = '/kangqore-view/admin/WAANDA'
+
+// Inline fallback shown inside the content area while a lazy page module loads.
+// Keeps the OS shell (Rail, Topbar, Sidebar) visible — the outer Suspense only
+// fires during the very first OSLayout lazy load, not on every page transition.
+function ContentLoader() {
+  return (
+    <div className="flex items-center justify-center w-full h-full min-h-[200px]">
+      <div className="flex items-center gap-2 text-[var(--os-text-3)]">
+        <div className="w-2 h-2 rounded-full bg-[var(--os-blue)] animate-bounce" style={{ animationDelay: '0ms' }} />
+        <div className="w-2 h-2 rounded-full bg-[var(--os-blue)] animate-bounce" style={{ animationDelay: '150ms' }} />
+        <div className="w-2 h-2 rounded-full bg-[var(--os-blue)] animate-bounce" style={{ animationDelay: '300ms' }} />
+      </div>
+    </div>
+  )
+}
 
 // Light-mode token overrides for the admin — applied as inline style so they
 // cascade to all descendants via CSS custom property inheritance, overriding
@@ -74,38 +89,38 @@ export function OSLayout() {
           {isWaandaGUI ? (
             <main className="flex-1 overflow-y-auto overflow-x-hidden !bg-black !m-0 !rounded-none !border-none">
               <ModuleShell>
-                <Outlet />
+                <Suspense fallback={<ContentLoader />}><Outlet /></Suspense>
               </ModuleShell>
             </main>
           ) : isWaandaSubroute ? (
             <main className="flex-1 overflow-y-auto px-6 py-6 lg:px-10 lg:py-8 pb-16">
               <ModuleShell>
-                <Outlet />
+                <Suspense fallback={<ContentLoader />}><Outlet /></Suspense>
               </ModuleShell>
             </main>
           ) : isUrgi ? (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
               <ModuleShell>
-                <Outlet />
+                <Suspense fallback={<ContentLoader />}><Outlet /></Suspense>
               </ModuleShell>
             </div>
           ) : isNeuralNetwork ? (
             <main className="flex-1 overflow-hidden m-0 p-0 bg-black relative">
               <ModuleShell>
-                <Outlet />
+                <Suspense fallback={<ContentLoader />}><Outlet /></Suspense>
               </ModuleShell>
             </main>
           ) : isRelay ? (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
               <ModuleShell>
-                <Outlet />
+                <Suspense fallback={<ContentLoader />}><Outlet /></Suspense>
               </ModuleShell>
             </div>
           ) : (
             <main className="flex-1 overflow-y-auto px-6 py-6 lg:px-10 lg:py-8 pb-16">
               <PageTransition>
                 <ModuleShell>
-                  <Outlet />
+                  <Suspense fallback={<ContentLoader />}><Outlet /></Suspense>
                 </ModuleShell>
               </PageTransition>
             </main>
