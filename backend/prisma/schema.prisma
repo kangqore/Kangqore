@@ -7144,8 +7144,11 @@ model NpsResponse {
 
 model ComplianceControl {
   id           String    @id @default(cuid())
-  code         String    @unique              // e.g. "CC1.1", "CC6.3"
-  criteria     String                         // CC1–CC9 COSO category
+  code         String    @unique              // e.g. "CC1.1", "CC6.3", "ISO-A5.1"
+  framework    String    @default("SOC2")     // Overshadow Roadmap P2 — SOC2 | ISO27001. Scopes which
+                                               // certification program a checkpoint belongs to; readiness
+                                               // tracking only, never a stand-in for an auditor's verdict.
+  criteria     String                         // SOC2: CC1–CC9 COSO category. ISO27001: A.5/A.6/A.7/A.8 theme.
   name         String
   description  String    @db.Text
   status       String    @default("MISSING")  // IN_PLACE | PARTIAL | MISSING
@@ -7156,6 +7159,7 @@ model ComplianceControl {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   @@index([criteria, status])
+  @@index([framework, status])
   @@map("compliance_controls")
 }
 
@@ -7636,7 +7640,11 @@ model SOC2Evidence {
   collectedAt DateTime @default(now())
   period      SOC2AuditPeriod @relation(fields: [periodId], references: [id])
 
-  @@index([periodId, controlId])
+  // Was a plain @@index — the collect-evidence route's upsert() has always
+  // referenced a periodId_controlId compound unique that never existed,
+  // so every upsert silently failed (caught by a blanket .catch(() => null)).
+  // This is the actual fix; the route code was already written for it.
+  @@unique([periodId, controlId])
   @@map("soc2_evidence")
 }
 

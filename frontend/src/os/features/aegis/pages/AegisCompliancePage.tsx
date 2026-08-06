@@ -813,10 +813,11 @@ function LiveSoc2Controls() {
   const [collapsed, setCollapsed]   = useState(false)
   const [editingId, setEditingId]   = useState<string | null>(null)
   const [editForm, setEditForm]     = useState({ status: 'IN_PLACE', evidenceNote: '' })
+  const [framework, setFramework]   = useState<'SOC2' | 'ISO27001'>('SOC2')
 
-  const { data, isLoading } = useQuery<{ controls: LiveControl[] }>({
-    queryKey: ['live-compliance-controls'],
-    queryFn:  () => api.get('/admin/kangqore-immp/aegis/compliance-controls').then(r => r.data),
+  const { data, isLoading } = useQuery<{ framework: string; controls: LiveControl[] }>({
+    queryKey: ['live-compliance-controls', framework],
+    queryFn:  () => api.get(`/admin/kangqore-immp/aegis/compliance-controls?framework=${framework}`).then(r => r.data),
     staleTime: 60_000,
   })
 
@@ -835,15 +836,26 @@ function LiveSoc2Controls() {
 
   return (
     <div className="rounded-2xl border overflow-hidden" style={{ background: 'var(--os-card)', borderColor: 'var(--os-border)' }}>
-      <button onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center gap-3 w-full px-5 py-4 text-left hover:bg-[var(--os-surface-0)] transition-colors"
-        style={{ borderBottom: collapsed ? undefined : '1px solid var(--os-border)' }}>
-        <Database className="w-4 h-4" style={{ color: '#7c3aed' }} />
-        <p className="text-sm font-bold flex-1" style={{ color: 'var(--os-text-1)' }}>SOC2 Live Controls</p>
-        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>{inPlace}/{controls.length} IN PLACE</span>
-        {missing > 0 && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444' }}>{missing} MISSING</span>}
-        {collapsed ? <ChevronDown className="w-4 h-4" style={{ color: 'var(--os-text-2)' }} /> : <ChevronUp className="w-4 h-4" style={{ color: 'var(--os-text-2)' }} />}
-      </button>
+      <div className="flex items-center gap-3 w-full px-5 py-4" style={{ borderBottom: collapsed ? undefined : '1px solid var(--os-border)' }}>
+        <button onClick={() => setCollapsed(!collapsed)} className="flex items-center gap-3 flex-1 text-left">
+          <Database className="w-4 h-4" style={{ color: '#7c3aed' }} />
+          <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{framework === 'SOC2' ? 'SOC2' : 'ISO 27001'} Readiness Checkpoints</p>
+        </button>
+        <div className="flex rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid var(--os-border)' }} onClick={e => e.stopPropagation()}>
+          {(['SOC2', 'ISO27001'] as const).map(fw => (
+            <button key={fw} onClick={() => setFramework(fw)}
+              className="text-[10px] font-bold px-2.5 py-1 transition-colors"
+              style={{ background: framework === fw ? '#7c3aed22' : 'transparent', color: framework === fw ? '#7c3aed' : 'var(--os-text-2)' }}>
+              {fw === 'SOC2' ? 'SOC2' : 'ISO27001'}
+            </button>
+          ))}
+        </div>
+        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>{inPlace}/{controls.length} IN PLACE</span>
+        {missing > 0 && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444' }}>{missing} MISSING</span>}
+        <button onClick={() => setCollapsed(!collapsed)} className="flex-shrink-0">
+          {collapsed ? <ChevronDown className="w-4 h-4" style={{ color: 'var(--os-text-2)' }} /> : <ChevronUp className="w-4 h-4" style={{ color: 'var(--os-text-2)' }} />}
+        </button>
+      </div>
 
       {!collapsed && (
         isLoading ? (

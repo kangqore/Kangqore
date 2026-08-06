@@ -55,6 +55,17 @@ export function SOC2AuditPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['soc2-periods'] }),
   })
 
+  // controlsPassed/controlsFailed are the only fields on this page meant to
+  // reflect a real auditor's verdict — everything else here is either raw
+  // technical evidence or admin-entered metadata.
+  const [editingVerdict, setEditingVerdict] = useState(false)
+  const [verdictForm, setVerdictForm] = useState({ controlsPassed: 0, controlsFailed: 0 })
+  const verdictMut = useMutation({
+    mutationFn: ({ id, controlsPassed, controlsFailed }: { id: string; controlsPassed: number; controlsFailed: number }) =>
+      api.patch(`/admin/kangqore-immp/soc2/periods/${id}`, { controlsPassed, controlsFailed }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['soc2-periods'] }); setEditingVerdict(false) },
+  })
+
   const periods: Period[] = data?.periods ?? []
   const period = periods.find(p => p.id === selected) ?? null
 
@@ -164,25 +175,63 @@ export function SOC2AuditPage() {
                 </div>
 
                 {/* Progress */}
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  {[
-                    { l: 'Controls Passed', v: period.controlsPassed, color: GRN },
-                    { l: 'Controls Failed', v: period.controlsFailed, color: RED },
-                    { l: 'Pass Rate', v: `${passRate}%`, color: passRate >= 80 ? GRN : passRate >= 60 ? AMB : RED },
-                  ].map(x => (
-                    <div key={x.l} className="rounded-lg p-3 text-center"
-                      style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}` }}>
-                      <p className="text-xl font-black" style={{ color: x.color }}>{x.v}</p>
-                      <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: T2 }}>{x.l}</p>
+                {editingVerdict ? (
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider" style={{ color: T2 }}>Controls Passed (per auditor)</label>
+                      <input type="number" min={0} value={verdictForm.controlsPassed}
+                        onChange={e => setVerdictForm(f => ({ ...f, controlsPassed: Number(e.target.value) }))}
+                        className="w-full text-sm px-3 py-1.5 rounded-lg mt-1"
+                        style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }} />
                     </div>
-                  ))}
-                </div>
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider" style={{ color: T2 }}>Controls Failed (per auditor)</label>
+                      <input type="number" min={0} value={verdictForm.controlsFailed}
+                        onChange={e => setVerdictForm(f => ({ ...f, controlsFailed: Number(e.target.value) }))}
+                        className="w-full text-sm px-3 py-1.5 rounded-lg mt-1"
+                        style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }} />
+                    </div>
+                    <div className="col-span-2 flex gap-2">
+                      <button onClick={() => setEditingVerdict(false)} className="flex-1 text-xs py-1.5 rounded-lg" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
+                      <button onClick={() => verdictMut.mutate({ id: period.id, ...verdictForm })} disabled={verdictMut.isPending}
+                        className="flex-1 text-xs font-semibold py-1.5 rounded-lg" style={{ background: PURP, color: '#fff' }}>
+                        {verdictMut.isPending ? 'Saving…' : 'Save auditor verdict'}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-3 mb-4">
+                    {[
+                      { l: 'Controls Passed', v: period.controlsPassed, color: GRN },
+                      { l: 'Controls Failed', v: period.controlsFailed, color: RED },
+                      { l: 'Pass Rate', v: `${passRate}%`, color: passRate >= 80 ? GRN : passRate >= 60 ? AMB : RED },
+                    ].map(x => (
+                      <div key={x.l} className="rounded-lg p-3 text-center"
+                        style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}` }}>
+                        <p className="text-xl font-black" style={{ color: x.color }}>{x.v}</p>
+                        <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: T2 }}>{x.l}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {!editingVerdict && (
+                  <button
+                    onClick={() => { setVerdictForm({ controlsPassed: period.controlsPassed, controlsFailed: period.controlsFailed }); setEditingVerdict(true) }}
+                    className="text-[10px] font-semibold mb-2"
+                    style={{ color: PURP }}>
+                    Enter auditor verdict
+                  </button>
+                )}
 
                 {/* Progress bar */}
                 <div className="h-2 rounded-full overflow-hidden" style={{ background: `${BDR}80` }}>
                   <div className="h-full rounded-full transition-all duration-500"
                     style={{ width: `${passRate}%`, background: passRate >= 80 ? GRN : passRate >= 60 ? AMB : RED }} />
                 </div>
+                <p className="text-[10px] mt-2" style={{ color: T2 }}>
+                  Pass/fail counts are entered manually and should only reflect real auditor feedback —
+                  Collect Evidence gathers data, it doesn't decide pass or fail.
+                </p>
 
                 {/* Status actions */}
                 <div className="flex gap-2 mt-4">
@@ -231,7 +280,7 @@ export function SOC2AuditPage() {
                           : <AlertCircle className="w-4 h-4" style={{ color: AMB }} />}
                         <span className="text-[10px] font-semibold"
                           style={{ color: e.sourceCount > 0 ? GRN : AMB }}>
-                          {e.sourceCount > 0 ? 'PASS' : 'REVIEW'}
+                          {e.sourceCount > 0 ? 'DATA PRESENT' : 'NO DATA'}
                         </span>
                       </div>
                     </div>
