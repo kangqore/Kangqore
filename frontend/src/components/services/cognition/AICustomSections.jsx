@@ -511,16 +511,55 @@ export const AITransformationMagnet = () => {
 // ═══════════════════════════════════════════════════════════════════════════════
 // 8. AI TOOLS & TECHNOLOGY SECTION
 // ═══════════════════════════════════════════════════════════════════════════════
-export const AIToolsSection = ({ title = 'Agentic AI Tools & Technology', items = [] }) => {
+export const AIToolsSection = ({
+  title = 'Agentic AI Tools & Technology',
+  // Optional overrides so a custom title can carry the same eyebrow + gradient
+  // treatment as the sections in UniversalServicePage. Without titleHighlight
+  // the gradient only fires on the legacy ' & Technology' titles below.
+  eyebrow,
+  titleHighlight,
+  subtitle,
+  items = [],
+  // Per-service illustration. Defaults to the shared generic asset so the
+  // services that have not been given their own artwork are unaffected.
+  image = '/images/capabilities/agentic-ai-tools-dark-illustration.png',
+  imageAlt = 'Agentic AI Tools & Technology Illustration',
+}) => {
   const iconMap = { Network, Brain, Layers, Shield, Eye, Database, Cpu, Search };
+  // Nothing is open on load. A row is active only while it is hovered or
+  // focused; leaving the list closes it again.
+  const [openTool, setOpenTool] = useState(null);
+  const isCustomModel = typeof image !== 'string';
   return (
-    <section className="py-24 bg-black border-t border-white/[0.04] relative overflow-hidden">
+    <section className={`py-24 bg-black border-t border-white/[0.04] relative ${isCustomModel ? '' : 'overflow-hidden'}`}>
+      {/* Expanded 3D Canvas Background Panel (Full-Section overlay exceeding bounds) */}
+      {isCustomModel && (
+        <div className="absolute inset-x-0 -top-32 -bottom-32 z-0 pointer-events-none lg:pointer-events-auto">
+          {image}
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
-          {/* Left Column: Title and vertical list of 4 tools */}
-          <div className="w-full lg:w-1/2 flex flex-col">
+        {/* items-start (not center) so a longer list does not strand the
+            illustration in dead space; the illustration sticks instead. */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-12 lg:gap-20">
+          {/* Left Column: Title and vertical list of layers */}
+          <div className={`w-full ${isCustomModel ? 'lg:w-[48%]' : 'lg:w-1/2'} flex flex-col`}>
+            {eyebrow && (
+              <div className="flex items-center gap-4 mb-4">
+                <div className="h-[1px] w-12 bg-white/20" />
+                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                  {eyebrow}
+                </span>
+              </div>
+            )}
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-12 leading-tight font-display">
-              {title.includes(' & Technology') ? (
+              {titleHighlight ? (
+                <>
+                  {title}{' '}
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">{titleHighlight}</span>
+                </>
+              ) : title.includes(' & Technology') ? (
                 <>
                   {title.replace(' & Technology', '')} &{' '}
                   <span className="bg-brand-gradient bg-clip-text text-transparent">Technology.</span>
@@ -529,40 +568,108 @@ export const AIToolsSection = ({ title = 'Agentic AI Tools & Technology', items 
                 title
               )}
             </h2>
-            <div className="space-y-8">
+            {subtitle && (
+              <p className="text-white/50 text-base leading-relaxed -mt-8 mb-12 max-w-xl">
+                {subtitle}
+              </p>
+            )}
+            {/* Accordion: exactly one layer is open at a time, the first by
+                default. Pointer users reveal on hover, but hover alone would
+                lock out touch and keyboard — so focus and click open a row too,
+                and each header is a real button with aria-expanded. */}
+            {/* onMouseLeave sits on the list, not each row, so moving between
+                rows does not flash closed on the way past. */}
+            <div className="space-y-2" onMouseLeave={() => setOpenTool(null)}>
               {items.map((item, i) => {
                 const Icon = iconMap[item.icon] || Network;
+                const isOpen = openTool === i;
+                const panelId = `tool-panel-${i}`;
                 return (
-                  <div key={i} className="flex items-start gap-5 group">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400/40 group-hover:bg-cyan-400/20 transition-all duration-300 shadow-[0_0_15px_rgba(74,182,212,0.1)]">
-                      <Icon className="w-5.5 h-5.5" style={{ width: '20px', height: '20px' }} />
-                    </div>
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-white/90 leading-snug tracking-tight">
-                        {item.title}
-                      </h3>
-                      <p className="text-slate-400 text-sm leading-relaxed mt-1.5 font-light">
-                        {item.desc}
-                      </p>
-                    </div>
+                  <div
+                    key={item.title}
+                    className="group relative"
+                    onMouseEnter={() => setOpenTool(i)}
+                  >
+                    {/* Spine: runs from the bottom of this marker to the top of
+                        the next one. Drawn per row (rather than one absolute
+                        line for the whole list) so it follows a row expanding
+                        or collapsing. -bottom-2 bridges the space-y-2 gap. */}
+                    {i < items.length - 1 && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute left-6 -translate-x-1/2 top-16 -bottom-2 w-px bg-gradient-to-b from-[#4ab6d4]/45 to-[#2564ea]/15"
+                      />
+                    )}
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      onFocus={() => setOpenTool(i)}
+                      onClick={() => setOpenTool(i)}
+                      className="w-full flex items-start gap-5 text-left py-4 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    >
+                      <span
+                        className={`relative z-10 flex-shrink-0 w-12 h-12 rounded-full bg-brand-gradient flex items-center justify-center text-white transition-all duration-300 ${
+                          isOpen
+                            ? 'scale-110 shadow-[0_0_20px_rgba(74,182,212,0.35)]'
+                            : 'opacity-70'
+                        }`}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="absolute inset-[3px] rounded-full border border-dashed border-white/40"
+                        />
+                        <Icon className="relative" style={{ width: '20px', height: '20px' }} />
+                      </span>
+                      <span className="flex-1 min-w-0">
+                        <span
+                          className={`block text-lg sm:text-xl font-bold leading-snug tracking-tight transition-colors duration-300 ${
+                            isOpen ? 'text-white' : 'text-white/55 group-hover:text-white/80'
+                          }`}
+                        >
+                          {item.title}
+                        </span>
+                        {/* grid 0fr -> 1fr animates to the content's natural
+                            height without hard-coding a max-height per item. */}
+                        <span
+                          id={panelId}
+                          className="grid transition-all duration-500 ease-out motion-reduce:transition-none"
+                          style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                        >
+                          <span className="overflow-hidden">
+                            <span
+                              className={`block text-slate-400 text-sm leading-relaxed pt-1.5 font-light transition-opacity duration-300 motion-reduce:transition-none ${
+                                isOpen ? 'opacity-100' : 'opacity-0'
+                              }`}
+                            >
+                              {item.desc}
+                            </span>
+                          </span>
+                        </span>
+                      </span>
+                    </button>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          {/* Right Column: Isometric Illustration */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center">
-            <div className="relative max-w-lg w-full">
-              {/* Soft decorative background glow behind the illustration */}
-              <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none z-0" />
-              <ResponsiveImage 
-                src="/images/capabilities/agentic-ai-tools-dark-illustration.png" 
-                alt="Agentic AI Tools & Technology Illustration" 
-                className="w-full h-auto object-contain relative z-10 animate-float"
-              loading="lazy" sizes="(max-width:1024px) 100vw, 50vw" />
+          {/* Right Column: Isometric Illustration (Only for standard image pages) */}
+          {!isCustomModel && (
+            <div className="w-full lg:w-1/2 flex items-center justify-center lg:sticky lg:top-28 lg:pt-24">
+              <div className="relative max-w-lg w-full">
+                {/* Soft decorative background glow behind the illustration */}
+                <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none z-0" />
+                <ResponsiveImage
+                  src={image}
+                  alt={imageAlt}
+                  className="w-full h-auto object-contain relative z-10 animate-float"
+                  loading="lazy"
+                  sizes="(max-width:1024px) 100vw, 50vw"
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
