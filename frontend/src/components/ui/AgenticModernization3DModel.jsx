@@ -513,7 +513,8 @@ const ModernizationModelContent = ({ activeStep, setActiveStep }) => {
   
   // Mathematically derived offsets to center the brain inside the right 52% column
   const groupX = isMobile ? 0 : 0.75 * aspect;
-  const groupScale = isMobile ? 0.44 : 0.65;
+  const groupScale = isMobile ? 0.40 : 0.585; // Reduced by 10% (0.65 * 0.9 = 0.585)
+  const groupY = isMobile ? -0.05 : -0.15;    // Shifted downward
 
   useFrame((state) => {
     if (groupRef.current) {
@@ -523,7 +524,7 @@ const ModernizationModelContent = ({ activeStep, setActiveStep }) => {
   });
 
   return (
-    <group ref={groupRef} scale={groupScale} position={[groupX, 0.1, 0]}>
+    <group ref={groupRef} scale={groupScale} position={[groupX, groupY, 0]}>
       <SolidBrainShell />
       
       <group position={[0, 0.15, 0]}>
