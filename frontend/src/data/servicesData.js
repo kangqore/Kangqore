@@ -335,6 +335,7 @@ export const servicesData = {
     bannerBrandDesc: 'Our AI, data & automation practice',
     shortDescription: 'Legacy systems accumulate technical debt, block cloud-native adoption, and make enterprise AI integration structurally impossible. Kangqore\'s agentic AI-led modernization model eliminates that constraint — deploying autonomous agents that assess, refactor, and re-platform legacy applications at machine speed, with enterprise-grade governance at every step.',
     fullDescription: 'Deploy agentic AI modernization at enterprise scale — intelligent agents that assess, refactor, and re-platform legacy applications with cloud-native precision and human-in-the-loop governance built in.',
+    fullDescriptionMaxWidth: 'max-w-[860px]',
     keyFeatures: ['Legacy Codebase Assessment', 'AI-driven Migration Blueprint', 'Microservices Decomposition', 'Cloud-native Re-platforming', 'Automated Test Generation'],
     relatedServiceSlugs: ['agentic-ai', 'genai-business-services', 'ai-governance'],
     featured: true,
@@ -596,29 +597,41 @@ export const servicesData = {
     ],
     downloadAsset: '/assets/downloads/kangqore-agentic-modernization-playbook.pdf',
     downloadAssetTitle: 'Download the Playbook',
+    // Without this override the section falls through to the department-level
+    // `cognition` default, which advertises "cognitive computing, machine
+    // learning, and AI governance" — wrong practice for this page.
     toolsStack: {
-      title: 'Agentic Modernization Technology Stack',
-      subtitle: 'The enterprise-grade toolchain powering autonomous codebase assessment, refactoring, and cloud-native deployment.',
+      eyebrow: 'THE METHOD',
+      title: 'How an agentic modernization',
+      titleHighlight: 'actually runs.',
+      subtitle: 'Five rules govern how an engagement executes against your estate. Each one is a method and the outcome it produces — what the agents do, and what you are left holding afterwards.',
+      image: '/images/capabilities/agentic_modernization_3d_pipeline.png',
+      imageAlt: 'Agentic modernization pipeline: a tangled legacy estate is scanned by a runtime of six agents — scan, map, plan, refactor, verify and gate — and emerges as discrete, API-connected cloud-native services.',
       items: [
         {
+          icon: 'Database',
+          title: 'Behaviour is pinned before anything moves',
+          desc: 'Agents build the dependency graph, take runtime traces from live production paths, and generate a characterization suite that passes green against the legacy system exactly as it stands. The outcome is a regression gate that did not previously exist: every later change is measured against recorded behaviour rather than institutional memory, so "did we break something" resolves to a test result instead of an argument.',
+        },
+        {
+          icon: 'Brain',
+          title: 'Target state compiles to a work graph',
+          desc: 'You specify the destination — bounded contexts, service boundaries, target runtime — and a planner compiles it into a dependency-ordered work graph, then executes across that graph concurrently. The outcome is that sequencing derives from coupling actually present in the code rather than from an estimate, and independent branches run at once instead of queueing behind a single engineer.',
+        },
+        {
           icon: 'Search',
-          title: 'Assessment & Scanning',
-          desc: 'SonarQube, Semgrep, Cast, and custom AST parsers — deployed in parallel to extract legacy architecture, scoring technical debt, and mapping dependencies.',
+          title: 'Rules recovered, then seams cut',
+          desc: 'Scanners emit a call graph and a debt score, then stop. Agents continue past that line — reconstructing business rules out of nested conditionals and stored procedures, then deriving service boundaries from observed coupling: call frequency, shared-data access, co-change history. The outcome is decomposition that follows how the system behaves rather than the package structure, which usually encodes team history instead of domain logic.',
         },
         {
-          icon: 'BrainCircuit',
-          title: 'Agentic Transformation Engine',
-          desc: 'Autonomous LLM agents trained on enterprise design patterns — executing monolith decomposition, microservice scaffolding, and API generation.',
-        },
-        {
-          icon: 'Cloud',
-          title: 'Cloud & Infrastructure',
-          desc: 'Kubernetes, Docker, Terraform, Helm, and AWS/Azure/GCP cloud-native service stacks for continuous re-platforming and deployment.',
+          icon: 'Eye',
+          title: 'Strangler-fig rollout behind a facade',
+          desc: 'New services run alongside the legacy path with traffic shifted a slice at a time behind a routing facade, both implementations exercised against identical requests and their responses compared. The outcome is that divergence surfaces while the old path is still serving, which makes reversing a step a routing change rather than an incident.',
         },
         {
           icon: 'Shield',
-          title: 'Validation & Governance',
-          desc: 'AI test generation frameworks, Playwright, SonarCloud quality gates, and immutable audit ledgers capturing every transformation step.',
+          title: 'Gated, reversible, and cumulative',
+          desc: 'Agent output arrives as a reviewable change set carrying its tests, diff and rationale; architecture, data-model and go-live decisions require a named human approval, and each increment is versioned independently. The outcome is twofold: any single step rolls back without unwinding the rest, and the artefacts left behind — graph, rule set, test corpus, gating policies — carry into the next application, so effort per service falls as estate coverage rises.',
         },
       ],
     },
@@ -938,7 +951,7 @@ export const servicesData = {
       subtitle: 'The enterprise-grade toolchain powering every Kangqore cognitive computing deployment.',
       items: [
         {
-          icon: 'BrainCircuit',
+          icon: 'Brain',
           title: 'Models & Frameworks',
           desc: 'PyTorch, TensorFlow, Hugging Face Transformers, scikit-learn, spaCy, and custom neural architectures — selected per domain and compliance requirement.',
         },
@@ -1470,7 +1483,7 @@ export const servicesData = {
       subtitle: 'The compliance-grade toolchain powering every Kangqore AI governance deployment.',
       items: [
         {
-          icon: 'ShieldCheck',
+          icon: 'Database',
           title: 'Governance & Registry',
           desc: 'MLflow model registry, custom governance dashboards, automated risk tiering engines, and enterprise-wide asset inventories.',
         },
@@ -1480,12 +1493,12 @@ export const servicesData = {
           desc: 'SHAP, LIME, and counterfactual explainability layers. Fairness metrics across protected characteristics with automated bias alerting.',
         },
         {
-          icon: 'Lock',
+          icon: 'Shield',
           title: 'Security & Privacy',
           desc: 'Zero-Trust AI architecture, prompt sanitization, PII detection, data masking, differential privacy, and encrypted audit ledgers.',
         },
         {
-          icon: 'Activity',
+          icon: 'Network',
           title: 'Monitoring & Compliance',
           desc: 'Real-time drift detection, performance telemetry, compliance dashboards, HITL approval workflows, and immutable regulatory evidence.',
         },

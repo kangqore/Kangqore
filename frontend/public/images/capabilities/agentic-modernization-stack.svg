@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 780" width="800" height="780" role="img" aria-labelledby="t d" fill="none">
+  <title id="t">Agentic modernization pipeline</title>
+  <desc id="d">A legacy estate of tangled interdependent components is scanned by a runtime of six agents — scan, map, plan, refactor, verify and gate — and emerges as a set of discrete, API-connected cloud-native services.</desc>
+
+  <defs>
+    <linearGradient id="gBrand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2564ea"/>
+      <stop offset="1" stop-color="#4ab6d4"/>
+    </linearGradient>
+    <!-- A gradient in the default objectBoundingBox units is not rendered when the
+         referencing element's bounding box has zero width or height. These beams
+         and the runtime bus are straight lines, so they must be in user space. -->
+    <linearGradient id="gBeam1" gradientUnits="userSpaceOnUse" x1="0" y1="252" x2="0" y2="300">
+      <stop offset="0" stop-color="#2564ea" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#4ab6d4" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#4ab6d4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gBeam2" gradientUnits="userSpaceOnUse" x1="0" y1="472" x2="0" y2="520">
+      <stop offset="0" stop-color="#2564ea" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#4ab6d4" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#4ab6d4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gBus" gradientUnits="userSpaceOnUse" x1="110" y1="0" x2="690" y2="0">
+      <stop offset="0" stop-color="#2564ea"/>
+      <stop offset="1" stop-color="#4ab6d4"/>
+    </linearGradient>
+    <linearGradient id="gScan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4ab6d4" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#4ab6d4" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#4ab6d4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gPanel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2564ea" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#4ab6d4" stop-opacity="0.03"/>
+    </linearGradient>
+    <radialGradient id="gGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#4ab6d4" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#4ab6d4" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clipLegacy"><rect x="90" y="30" width="620" height="220" rx="20"/></clipPath>
+
+    <style>
+      text { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .band-label { font-size: 13px; font-weight: 700; letter-spacing: 2.4px; }
+      .node-label { font-size: 10px; font-weight: 700; letter-spacing: 1.1px; text-anchor: middle; }
+      .scan     { animation: scanY 5s cubic-bezier(.45,0,.55,1) infinite; }
+      .pulse-a  { animation: pulse 3.2s ease-in-out infinite; }
+      .pulse-b  { animation: pulse 3.2s ease-in-out infinite; animation-delay: .55s; }
+      .pulse-c  { animation: pulse 3.2s ease-in-out infinite; animation-delay: 1.1s; }
+      .flow     { stroke-dasharray: 5 9; animation: flow 1.6s linear infinite; }
+      @keyframes scanY { 0%, 100% { transform: translateY(6px); } 50% { transform: translateY(186px); } }
+      @keyframes pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+      @keyframes flow  { to { stroke-dashoffset: -28; } }
+      @media (prefers-reduced-motion: reduce) {
+        .scan, .pulse-a, .pulse-b, .pulse-c, .flow { animation: none !important; }
+      }
+    </style>
+  </defs>
+
+  <ellipse cx="400" cy="390" rx="380" ry="330" fill="url(#gGlow)"/>
+
+  <!-- ══ BAND 1 — LEGACY ESTATE ══ -->
+  <rect x="90" y="30" width="620" height="220" rx="20" fill="#94a3b8" fill-opacity="0.035" stroke="#94a3b8" stroke-opacity="0.2" stroke-dasharray="6 6"/>
+  <text class="band-label" x="112" y="60" fill="#7c8ba1">LEGACY ESTATE</text>
+
+  <g stroke="#64748b" stroke-opacity="0.4" stroke-width="1.2">
+    <path d="M165 122 L330 138 M165 122 L245 98 M245 98 L410 103 M330 138 L490 143 M410 103 L575 108 M490 143 L645 148 M575 108 L645 148
+             M200 198 L290 218 M290 218 L375 188 M375 188 L460 222 M460 222 L545 192 M545 192 L630 218
+             M165 122 L200 198 M245 98 L290 218 M330 138 L375 188 M410 103 L460 222 M490 143 L545 192 M575 108 L630 218
+             M200 198 L330 138 M375 188 L245 98 M460 222 L575 108 M545 192 L410 103 M630 218 L490 143 M290 218 L165 122"/>
+  </g>
+  <g fill="#0b1220" stroke="#64748b" stroke-opacity="0.85" stroke-width="1.6">
+    <circle cx="165" cy="122" r="11"/><circle cx="245" cy="98" r="9"/><circle cx="330" cy="138" r="13"/>
+    <circle cx="410" cy="103" r="10"/><circle cx="490" cy="143" r="12"/><circle cx="575" cy="108" r="9"/>
+    <circle cx="645" cy="148" r="11"/><circle cx="200" cy="198" r="10"/><circle cx="290" cy="218" r="12"/>
+    <circle cx="375" cy="188" r="9"/><circle cx="460" cy="222" r="11"/><circle cx="545" cy="192" r="10"/>
+    <circle cx="630" cy="218" r="12"/>
+  </g>
+
+  <g clip-path="url(#clipLegacy)">
+    <rect class="scan" x="90" y="30" width="620" height="2.5" fill="url(#gScan)"/>
+  </g>
+
+  <!-- ══ TRANSITION 1 ══ -->
+  <g stroke="url(#gBeam1)" stroke-width="2.5" stroke-linecap="round">
+    <path d="M280 254 L280 298"/><path d="M400 254 L400 298"/><path d="M520 254 L520 298"/>
+  </g>
+
+  <!-- ══ BAND 2 — AGENT RUNTIME ══ -->
+  <rect x="60" y="300" width="680" height="170" rx="20" fill="url(#gPanel)" stroke="#4ab6d4" stroke-opacity="0.32"/>
+  <text class="band-label" x="82" y="330" fill="#4ab6d4">AGENT RUNTIME</text>
+
+  <path class="flow" d="M110 390 L690 390" stroke="url(#gBus)" stroke-opacity="0.6" stroke-width="2"/>
+
+  <g>
+    <!-- SCAN -->
+    <rect x="110" y="363" width="54" height="54" rx="16" fill="#0b1220" stroke="url(#gBrand)" stroke-width="1.6"/>
+    <circle class="pulse-a" cx="137" cy="388" r="8" fill="none" stroke="#4ab6d4" stroke-width="2"/>
+    <path d="M143 394 L149 400" stroke="#4ab6d4" stroke-width="2" stroke-linecap="round"/>
+    <text class="node-label" x="137" y="443" fill="#8fa3b8">SCAN</text>
+
+    <!-- MAP -->
+    <rect x="215" y="363" width="54" height="54" rx="16" fill="#0b1220" stroke="url(#gBrand)" stroke-width="1.6"/>
+    <g stroke="#4ab6d4" stroke-width="1.8" stroke-linecap="round"><path d="M232 396 L242 380 L252 396"/></g>
+    <g fill="#4ab6d4" class="pulse-b"><circle cx="232" cy="399" r="3.2"/><circle cx="242" cy="377" r="3.2"/><circle cx="252" cy="399" r="3.2"/></g>
+    <text class="node-label" x="242" y="443" fill="#8fa3b8">MAP</text>
+
+    <!-- PLAN -->
+    <rect x="320" y="363" width="54" height="54" rx="16" fill="#0b1220" stroke="url(#gBrand)" stroke-width="1.6"/>
+    <g stroke="#4ab6d4" stroke-width="2" stroke-linecap="round"><path d="M336 380 L358 380"/><path d="M336 389 L352 389"/><path d="M336 398 L358 398"/></g>
+    <text class="node-label" x="347" y="443" fill="#8fa3b8">PLAN</text>
+
+    <!-- REFACTOR -->
+    <rect x="425" y="363" width="54" height="54" rx="16" fill="#0b1220" stroke="url(#gBrand)" stroke-width="1.6"/>
+    <g stroke="#4ab6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M441 383 L435 389 L441 395"/><path d="M463 383 L469 389 L463 395"/>
+    </g>
+    <path class="pulse-c" d="M448 399 L456 379" stroke="#4ab6d4" stroke-width="2" stroke-linecap="round"/>
+    <text class="node-label" x="452" y="443" fill="#8fa3b8">REFACTOR</text>
+
+    <!-- VERIFY -->
+    <rect x="530" y="363" width="54" height="54" rx="16" fill="#0b1220" stroke="url(#gBrand)" stroke-width="1.6"/>
+    <path d="M545 389 L553 397 L570 379" stroke="#4ab6d4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <text class="node-label" x="557" y="443" fill="#8fa3b8">VERIFY</text>
+
+    <!-- GATE -->
+    <rect x="636" y="363" width="54" height="54" rx="16" fill="#0b1220" stroke="url(#gBrand)" stroke-width="1.6"/>
+    <path d="M663 375 L676 381 V391 C676 398 670 403 663 405 C656 403 650 398 650 391 V381 Z" stroke="#4ab6d4" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+    <text class="node-label" x="663" y="443" fill="#8fa3b8">GATE</text>
+  </g>
+
+  <!-- ══ TRANSITION 2 ══ -->
+  <g stroke="url(#gBeam2)" stroke-width="2.5" stroke-linecap="round">
+    <path d="M280 474 L280 518"/><path d="M400 474 L400 518"/><path d="M520 474 L520 518"/>
+  </g>
+
+  <!-- ══ BAND 3 — CLOUD-NATIVE SERVICES ══ -->
+  <rect x="90" y="520" width="620" height="230" rx="20" fill="#4ab6d4" fill-opacity="0.04" stroke="#4ab6d4" stroke-opacity="0.24"/>
+  <text class="band-label" x="112" y="550" fill="#4ab6d4">CLOUD-NATIVE SERVICES</text>
+
+  <g stroke="#4ab6d4" stroke-opacity="0.4" stroke-width="1.4">
+    <path d="M250 606 L270 606 M390 606 L410 606 M530 606 L550 606"/>
+    <path d="M250 691 L270 691 M390 691 L410 691 M530 691 L550 691"/>
+    <path d="M190 637 L190 660 M330 637 L330 660 M470 637 L470 660 M610 637 L610 660"/>
+  </g>
+
+  <g fill="#0b1220" stroke="#4ab6d4" stroke-opacity="0.6" stroke-width="1.5">
+    <rect x="130" y="575" width="120" height="62" rx="14"/><rect x="270" y="575" width="120" height="62" rx="14"/>
+    <rect x="410" y="575" width="120" height="62" rx="14"/><rect x="550" y="575" width="120" height="62" rx="14"/>
+    <rect x="130" y="660" width="120" height="62" rx="14"/><rect x="270" y="660" width="120" height="62" rx="14"/>
+    <rect x="410" y="660" width="120" height="62" rx="14"/><rect x="550" y="660" width="120" height="62" rx="14"/>
+  </g>
+
+  <g fill="#4ab6d4">
+    <circle class="pulse-a" cx="146" cy="591" r="3.6"/><circle class="pulse-b" cx="286" cy="591" r="3.6"/>
+    <circle class="pulse-c" cx="426" cy="591" r="3.6"/><circle class="pulse-a" cx="566" cy="591" r="3.6"/>
+    <circle class="pulse-b" cx="146" cy="676" r="3.6"/><circle class="pulse-c" cx="286" cy="676" r="3.6"/>
+    <circle class="pulse-a" cx="426" cy="676" r="3.6"/><circle class="pulse-b" cx="566" cy="676" r="3.6"/>
+  </g>
+
+  <g stroke="#8fa3b8" stroke-opacity="0.45" stroke-width="2.6" stroke-linecap="round">
+    <path d="M158 608 L222 608"/><path d="M158 620 L200 620"/>
+    <path d="M298 608 L362 608"/><path d="M298 620 L340 620"/>
+    <path d="M438 608 L502 608"/><path d="M438 620 L480 620"/>
+    <path d="M578 608 L642 608"/><path d="M578 620 L620 620"/>
+    <path d="M158 693 L222 693"/><path d="M158 705 L200 705"/>
+    <path d="M298 693 L362 693"/><path d="M298 705 L340 705"/>
+    <path d="M438 693 L502 693"/><path d="M438 705 L480 705"/>
+    <path d="M578 693 L642 693"/><path d="M578 705 L620 705"/>
+  </g>
+</svg>

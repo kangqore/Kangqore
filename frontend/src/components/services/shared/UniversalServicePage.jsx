@@ -27,6 +27,7 @@ import ResponsiveImage from '../../media/ResponsiveImage';
 import Beams from '../../ui/Beams';
 import GeminiComparisonSection from './GeminiComparisonSection';
 import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
+import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DModel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -2288,7 +2289,7 @@ const featureMicros   = service.featureMicros
                 <span className="bg-brand-gradient bg-clip-text text-transparent">your industry.</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
-                {service.industryLede || `Kangqore deploys ${name.toLowerCase()} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
+                {service.industryLede || `Kangqore deploys ${service.name.toLowerCase()} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
@@ -2675,7 +2676,21 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ TOOLS & TECHNOLOGY ══════════════════════ */}
       {service.toolsStack && (
-        <AIToolsSection title={service.toolsStack.title} items={service.toolsStack.items} />
+        <AIToolsSection
+          title={service.toolsStack.title}
+          eyebrow={service.toolsStack.eyebrow}
+          titleHighlight={service.toolsStack.titleHighlight}
+          subtitle={service.toolsStack.subtitle}
+          items={service.toolsStack.items}
+          image={
+            service.slug === 'agentic-ai-led-application-modernization' ? (
+              <AgenticModernization3DModel />
+            ) : (
+              service.toolsStack.image
+            )
+          }
+          imageAlt={service.toolsStack.imageAlt}
+        />
       )}
 
       {/* ══════════════════════ FAQ ══════════════════════ */}

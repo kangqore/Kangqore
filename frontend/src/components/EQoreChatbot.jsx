@@ -442,7 +442,7 @@ const EQoreChatbot = () => {
 
   return (
     <div 
-      className={`fixed ${isInHero ? 'bottom-[152px]' : 'bottom-[172px]'} right-8 z-[10001] transition-opacity duration-1000 ${isSlideIn ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      className={`fixed ${isInHero ? 'bottom-[calc(152px-0.5cm)]' : 'bottom-[calc(172px-0.5cm)]'} right-8 z-[10001] transition-opacity duration-1000 ${isSlideIn ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
       style={{
         transform: `translate(calc(${isSlideIn ? '0%' : '120%'} + ${position.x}px), ${position.y}px)`,
         transition: isDragging ? 'none' : 'opacity 1s, transform 1s cubic-bezier(0.16, 1, 0.3, 1)'
