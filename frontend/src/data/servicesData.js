@@ -372,7 +372,7 @@ export const servicesData = {
     capabilityAreas: [
       {
         title: 'Application Modernization',
-        image: '/images/capabilities/app_mod_thick.svg',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Agents read the monolith, recover the business rules buried in it, and carve it into independently deployable services along the seams the code actually has — not the ones an architecture diagram claims.',
         items: [
           'Legacy Re-architecture: Decompose monolithic applications into modular, independently deployable microservices.',
@@ -383,7 +383,7 @@ export const servicesData = {
       },
       {
         title: 'Integration & API Modernization',
-        image: '/images/capabilities/integration_mod_thick.svg',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Point-to-point coupling is inventoried and replaced with versioned contracts and event streams, so services can be released independently instead of in lockstep with everything they touch.',
         items: [
           'API-led Integration Architecture: Replace point-to-point integrations with reusable, versioned API layers across enterprise systems.',
@@ -394,7 +394,7 @@ export const servicesData = {
       },
       {
         title: 'Data Modernization',
-        image: '/images/capabilities/data_mod_thick.svg',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Schema lineage is traced across every consuming system before anything moves, so warehouses become lakehouses without silently breaking the reports and models downstream of them.',
         items: [
           'Data Platform Modernization: Migrate from legacy warehouses to modern lakehouse architectures on cloud-native platforms.',
@@ -405,7 +405,7 @@ export const servicesData = {
       },
       {
         title: 'Cloud Modernization',
-        image: '/images/capabilities/cloud_mod_thick.svg',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Workload profiling determines which applications are lifted, which are re-platformed and which are rewritten, then agents generate the target topology and a rollback-safe cutover plan for each one.',
         items: [
           'Cloud Strategy & Migration: Assess, plan, and execute lift-and-shift or re-platform migrations across AWS, Azure, and GCP.',
@@ -416,7 +416,7 @@ export const servicesData = {
       },
       {
         title: 'Infrastructure Modernization',
-        image: '/images/capabilities/infrastructure_mod_thick.svg',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Environments become reproducible code with observability and recovery designed in, so failure modes are exercised deliberately rather than discovered during an incident.',
         items: [
           'Infrastructure as Code: Provision repeatable, governed infrastructure with Terraform, Pulumi, or CloudFormation.',
@@ -427,7 +427,7 @@ export const servicesData = {
       },
       {
         title: 'Quality Engineering & DevOps',
-        image: '/images/capabilities/quality_mod_thick.svg',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Characterisation tests are generated against legacy behaviour first, giving the pipeline a provable definition of "unchanged" to enforce on every subsequent refactor and release.',
         items: [
           'Test Automation Modernization: Replace manual testing with AI-assisted frameworks across unit, integration, and regression.',
@@ -438,7 +438,7 @@ export const servicesData = {
       },
       {
         title: 'Security Modernization',
-        image: '/images/capabilities/security_mod_thick.svg',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Identity, secrets and trust boundaries are re-derived for the decomposed architecture, because a monolith\u2019s implicit internal trust becomes an explicit attack surface the moment it is split.',
         items: [
           'Security-by-Design: Embed controls, identity management, and threat modelling at every architecture and deployment layer.',
@@ -548,7 +548,7 @@ export const servicesData = {
       { q: 'What is Agentic AI-led Application Modernization?', a: 'We don\'t migrate code — we deploy AI operators that understand legacy systems. Kangqore delivers autonomous agentic AI systems that assess entire codebases in days, generate dynamic migration blueprints, execute re-platforming to cloud-native architectures, and validate outcomes at 99% test coverage — compressing multi-year transformation programs into governed, measurable sprints.' },
       { q: 'How does AI reduce the risk of application modernization?', a: 'Risk in traditional modernization comes from incomplete discovery, manual execution errors, and inadequate testing. Agentic AI eliminates all three. Assessment agents map every dependency before a single line is moved. Execution agents include exception escalation and human-in-the-loop gates so no critical step happens unsupervised. And test generation agents produce comprehensive regression packs that no manual QA team could match in speed or coverage.' },
       { q: 'Which legacy systems can Agentic AI modernize?', a: 'Any legacy codebase that can be read. Kangqore\'s assessment agents work across COBOL, Java EE, .NET Framework, Oracle Forms, mainframe systems, on-premise ERPs, and custom enterprise platforms. If the code exists, the agents can assess it, plan the migration, and execute the transformation.' },
-      { q: 'How fast can modernization happen with AI agents?', a: 'Assessment in days. Blueprint in a week. First migrated module in under two months. Our AI-led approach compresses the discovery and planning phases that traditionally take 6–12 months into 2–3 weeks — so you\'re executing transformation by the time a traditional team has finished scoping it.' },
+      { q: 'How fast can modernization happen with AI agents?', a: 'There are two speeds here and it matters which is which. The compute-bound work — codebase comprehension, dependency mapping, rule recovery, test generation — runs in parallel and completes in days, because it scales with hardware rather than headcount. The change-bound work does not: cutover is governed by your release windows, your change-advisory board and your regulator. So Assessment & Blueprint is 2–3 weeks end to end, a Pilot Modernization is 8 weeks, and a Program Build is 16–24. Every duration we publish is calendar time including your approval gates, not agent runtime — so if a vendor quotes an end-to-end programme in days, ask which of the two numbers they are giving you.' },
       { q: 'Do you modernize to cloud-native architectures?', a: 'Yes. Kangqore\'s execution agents re-platform to containerised, Kubernetes-native architectures on AWS, Azure, or GCP — building microservices, generating API layers, and producing deployment-ready infrastructure-as-code alongside every migrated service.' },
       { q: 'Can you modernize without disrupting live business operations?', a: 'Zero-disruption migration is the design constraint, not the aspiration. We execute in parallel tracks — legacy systems stay live while agents build, test, and validate the modern equivalent. Go-live only happens after human-in-the-loop sign-off at every milestone and automated regression packs confirm functional equivalence with the legacy system.' },
       { q: 'What does the governance model look like during migration?', a: 'Every agent action is logged to an immutable audit trail. Human-in-the-loop checkpoints gate each migration milestone. Compliance validation runs continuously against GDPR, HIPAA, SOX, or sector standards relevant to your estate. You have full visibility at all times — what moved, when, by which agent, validated by whom.' },
@@ -595,6 +595,10 @@ export const servicesData = {
       'Can you modernize without disrupting live operations?',
       'Book an Application Modernization assessment',
     ],
+    // The durations in this section read as a contradiction of the "Machine
+    // Speed" hero unless the page says what they measure. They are calendar
+    // time, not agent runtime — stating that turns the table into evidence.
+    engagementLede: 'There are five entry points, from a two-week advisory audit to an ongoing managed programme. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate. Durations below are calendar time including your approval gates — not agent runtime.',
     downloadAsset: '/assets/downloads/kangqore-agentic-modernization-playbook.pdf',
     downloadAssetTitle: 'Download the Playbook',
     // Without this override the section falls through to the department-level
