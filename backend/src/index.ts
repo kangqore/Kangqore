@@ -294,6 +294,11 @@ import { publicVisitorRouter, adminVisitorRouter } from './routes/visitor';
 app.use('/api/public/visitor', publicVisitorRouter);
 app.use('/api/admin/visitor', adminVisitorRouter);
 
+// Overshadow Roadmap P1 — "Publish the Proof": aggregate-only, no-auth
+// scorecard/governance/eval endpoints. See routes/public-trust.ts header.
+import { publicTrustRouter } from './routes/public-trust';
+app.use('/api/public/trust', publicTrustRouter);
+
 import hcipRouter from './routes/hcip';
 app.use('/api/v1', apiKeyAuth, v1RateLimiter, v1Router);
 

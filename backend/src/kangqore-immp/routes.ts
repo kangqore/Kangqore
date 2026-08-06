@@ -18,6 +18,7 @@ import logger from '../utils/logger';
 import { requireAuth, requireRole } from '../middleware/rbac';
 import { KIMMP_VERSION } from './core/types';
 import { KimmpFlags } from './core/flags';
+import { computeCapabilityScorecard } from '../services/publicTrust.service';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -603,56 +604,11 @@ kangqoreImmpRoutes.post('/authority/tools/sync', requireAuth, requireRole(['ADMI
 // whether each capability has actual usage, which is what `live` reports.
 kangqoreImmpRoutes.get('/aip-parity', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
-    const since30d = new Date(Date.now() - 30 * 86_400_000)
-
-    const [
-      callCount, actorTypes, piiConfig, piiIncidentCount, budgetCount,
-      promptNames, callsWithPromptName, toolCallableCount, toolInvocationCount,
-      pgvectorHealth, latestBenchmark, agentCount, agentRunCount,
-    ] = await Promise.all([
-      prisma.llmCallLog.count(),
-      prisma.llmCallLog.findMany({ distinct: ['actorType'], select: { actorType: true } }),
-      (prisma as any).piiScanConfig.findFirst({ where: { active: true } }),
-      prisma.llmCallLog.count({ where: { piiDetected: true } }),
-      (prisma as any).tokenBudget.count(),
-      (prisma as any).aIPrompt.findMany({ distinct: ['name'], select: { name: true } }),
-      prisma.llmCallLog.findMany({ where: { promptName: { not: null }, createdAt: { gte: since30d } }, distinct: ['promptName'], select: { promptName: true } }),
-      (prisma as any).ontologyAction.count({ where: { toolCallable: true } }),
-      prisma.llmCallLog.count({ where: { toolExecutionIds: { isEmpty: false } } }),
-      (await import('../services/pgvectorIndex.service')).PgvectorIndex.health().catch(() => []),
-      (prisma as any).kimmpBenchmarkRun.findFirst({ orderBy: { startedAt: 'desc' }, select: { totalScore: true, passCount: true, driftAlert: true } }),
-      (prisma as any).kimmpAgent.count({ where: { status: 'ACTIVE' } }),
-      (prisma as any).kimmpAgentLog.count(),
-    ])
-
-    const totalPromptRows = promptNames.length
-    const adoptedPromptRows = callsWithPromptName.length
-    const promptAdoptionPct = totalPromptRows > 0 ? Math.round((adoptedPromptRows / totalPromptRows) * 100) : 0
-
-    const pgvectorRows = pgvectorHealth as Array<{ totalRows: number; indexedRows: number }>
-    const totalEmbedRows = pgvectorRows.reduce((s, h) => s + h.totalRows, 0)
-    const indexedEmbedRows = pgvectorRows.reduce((s, h) => s + h.indexedRows, 0)
-    const pgvectorCoveragePct = totalEmbedRows > 0 ? Math.round((indexedEmbedRows / totalEmbedRows) * 100) : 0
-
-    const capabilities = [
-      { key: 'llm_gateway',    label: 'LLM Gateway',      metric: `${callCount.toLocaleString()} calls logged`, value: callCount, live: callCount > 0 },
-      { key: 'call_audit',     label: 'Call Audit Trail', metric: `${actorTypes.length} actor types tracked (${actorTypes.map((a: any) => a.actorType).join(', ') || 'none'})`, value: actorTypes.length, live: callCount > 0 },
-      { key: 'pii_detection',  label: 'PII Detection',    metric: piiConfig ? `Active profile · ${piiIncidentCount} incidents flagged` : 'No active scan profile', value: piiIncidentCount, live: !!piiConfig },
-      { key: 'cost_enforcement', label: 'Cost Enforcement', metric: `${budgetCount} budget${budgetCount === 1 ? '' : 's'} configured`, value: budgetCount, live: budgetCount > 0 },
-      { key: 'gateway_dashboard', label: 'Gateway Dashboard', metric: '8 tabs live', value: callCount, live: callCount > 0 },
-      { key: 'prompt_registry', label: 'Prompt Registry', metric: `${promptAdoptionPct}% adoption (${adoptedPromptRows}/${totalPromptRows} registered prompts used in 30d)`, value: promptAdoptionPct, live: adoptedPromptRows > 0 },
-      { key: 'function_calling', label: 'Function Calling', metric: `${toolCallableCount} tool-callable action${toolCallableCount === 1 ? '' : 's'} · ${toolInvocationCount} calls invoked a tool`, value: toolInvocationCount, live: toolCallableCount > 0 },
-      { key: 'embedding_index', label: 'Embedding Index', metric: `${pgvectorCoveragePct}% indexed (${indexedEmbedRows}/${totalEmbedRows} rows)`, value: pgvectorCoveragePct, live: totalEmbedRows > 0 && indexedEmbedRows > 0 },
-      { key: 'eval_pipeline', label: 'Eval Pipeline', metric: latestBenchmark ? `Gate 3 score ${latestBenchmark.totalScore.toFixed(0)}/100 · ${latestBenchmark.passCount} passed${latestBenchmark.driftAlert ? ' · drift alert' : ''}` : 'No runs yet', value: latestBenchmark?.totalScore ?? 0, live: !!latestBenchmark },
-      { key: 'agent_studio', label: 'Agent Studio', metric: `${agentCount} active agent${agentCount === 1 ? '' : 's'} · ${agentRunCount} run${agentRunCount === 1 ? '' : 's'} logged`, value: agentCount, live: agentCount > 0 && agentRunCount > 0 },
-    ]
-
-    const liveCount = capabilities.filter(c => c.live).length
-    res.json({
-      capabilities,
-      overall: { liveCount, totalCount: capabilities.length, allLive: liveCount === capabilities.length },
-      computedAt: new Date().toISOString(),
-    })
+    // S308-S327's own scorecard and the public /api/public/trust/scorecard
+    // (Overshadow Roadmap P1) compute from the same shared function — the
+    // admin view and the public view must never drift into two answers.
+    const result = await computeCapabilityScorecard()
+    res.json(result)
   } catch (e: any) {
     res.status(500).json({ error: e.message })
   }

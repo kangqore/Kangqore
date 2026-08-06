@@ -26,6 +26,10 @@ const BrandIdentity = React.lazy(() => import('../pages/BrandIdentity'));
 const OurCulture = React.lazy(() => import('../pages/OurCulture'));
 const BIDSPage = React.lazy(() => import('../pages/BIDSPage'));
 
+// Trust & Governance — Overshadow Roadmap P1 ("Publish the Proof")
+const TrustGovernancePage = React.lazy(() => import('../pages/TrustGovernancePage'));
+const GovernanceNativeWhitepaperPage = React.lazy(() => import('../pages/GovernanceNativeWhitepaperPage'));
+
 // Legal & Compliance pages
 const PrivacyPolicy = React.lazy(() => import('../pages/legal/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('../pages/legal/TermsAndConditions'));
@@ -44,6 +48,10 @@ export const publicRoutes = [
 
   // BIDS™ page
   <Route key="bids" path="/bids" element={<BIDSPage />} />,
+
+  // Trust & Governance — Overshadow Roadmap P1 ("Publish the Proof")
+  <Route key="trust" path="/trust" element={<TrustGovernancePage />} />,
+  <Route key="trust-whitepaper" path="/trust/governance-native-vs-retrofitted" element={<GovernanceNativeWhitepaperPage />} />,
 
   // General pages
   <Route key="contact" path="/contact" element={<ContactUs />} />,
