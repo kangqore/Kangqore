@@ -1913,42 +1913,13 @@ const featureMicros   = service.featureMicros
         ]} />
       </div>
 
-      {/* ══════════════════════ WHY SHIFT ══════════════════════ */}
-      {service.whyShift && (
-        <section className="py-24 relative" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <p className="text-[10px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-5">{service.whyShift.label || 'Why This Approach'}</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-14">{service.whyShift.title}</h2>
-            <div className="grid sm:grid-cols-2 gap-6">
-              {service.whyShift.items.map((item, i) => (
-                <div key={i} className="flex gap-6 p-8 border border-white/[0.06] rounded-2xl bg-[#03060d] hover:border-white/[0.12] transition-colors duration-300">
-                  <span className="text-5xl font-black text-white/[0.07] leading-none flex-shrink-0 select-none tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="text-white/55 text-base leading-relaxed font-light pt-1">{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ══════════════════════ FRAMEWORK ══════════════════════ */}
-      {service.modernizationFramework && (
-        <section className="py-24 relative border-t border-white/[0.04]" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <p className="text-[10px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-5">{service.modernizationFramework.label || 'Our Framework'}</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-16">{service.modernizationFramework.title}</h2>
-            <div className="grid sm:grid-cols-3 gap-10 lg:gap-16">
-              {service.modernizationFramework.steps.map((step, i) => (
-                <div key={i}>
-                  <div className="text-[72px] font-black text-white/[0.05] leading-none mb-3 select-none tabular-nums">{String(i + 1).padStart(2, '0')}</div>
-                  <div className="w-10 h-[2px] mb-6" style={{ background: 'linear-gradient(90deg,#2564ea,#4ab6d4)' }} />
-                  <p className="text-white/55 text-base leading-relaxed font-light">{step}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* WHY SHIFT and FRAMEWORK sections removed.
+          "What Changes When Agents Do the Work" (whyShift) argued the same case
+          as the comparison table below, which presents it as a scannable grid.
+          "How a Kangqore Modernization Runs" (modernizationFramework) restated
+          the engagement model already covered by "Five ways to start", which
+          carries durations and tiers the three-step version lacked.
+          Together they cost 1,267px of height for duplicated argument. */}
 
       {/* ══════════════════════ CAPABILITIES ══════════════════════ */}
       {service.capabilityAreas ? (
@@ -2594,6 +2565,9 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ TRUST PILLARS / PARTNERSHIP MODEL ══════════════════════ */}
+      {/* Opt-out per service via hidePartnershipModel — the six claims here are
+          generic to consultancy and add ~1,160px for ~93 words. */}
+      {!service.hidePartnershipModel && (
       <section id="svc-partnership" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-16">
@@ -2624,6 +2598,7 @@ const featureMicros   = service.featureMicros
           </div>
         </div>
       </section>
+      )}
 
       {/* ══════════════════════ TECH STACK (service-specific) ══════════════════════ */}
       {service.techStack && service.techStack.length > 0 && (

@@ -340,6 +340,7 @@ export const servicesData = {
     featured: true,
     image: '/images/capabilities/software-engineering.png',
     hideBadgeStrip: true,
+    hidePartnershipModel: true,
 
     whatIsEyebrow: 'What Agentic AI-led Application Modernization services does Kangqore offer?',
     whatIsTitle: 'Own the',
@@ -358,29 +359,10 @@ export const servicesData = {
     // Argues why the agent model is structurally different, rather than
     // restating why manual modernization is slow — that framing is generic to
     // the category and says nothing specific about how Kangqore delivers.
-    whyShift: {
-      label: 'Why Agentic Modernization',
-      title: 'What Changes When Agents Do the Work',
-      items: [
-        'Discovery stops being a bottleneck. Reading a legacy estate is parallelisable work, so agents map dependencies across millions of lines concurrently instead of one SME reading one subsystem at a time.',
-        'The migration plan becomes a living artefact. It is regenerated as each subsystem is understood, rather than fixed upfront from partial discovery and then defended as reality diverges.',
-        'Behaviour is pinned before it is changed. Characterisation tests are written against the legacy system first, so equivalence is demonstrable at every cutover instead of hoped for.',
-        'Capability outlives the programme. The dependency graphs, tests and runbooks agents produce remain yours — the next modernization starts from that state, not from zero.',
-      ],
-    },
 
     // Mirrors the five phases in customJourney below. The previous three-step
     // version described a different, more generic framework than the one the
     // page actually documents further down.
-    modernizationFramework: {
-      label: 'Our Approach',
-      title: 'How a Kangqore Modernization Runs',
-      steps: [
-        'Assess before committing. Agents scan the estate and return a dependency map, tech-debt scorecard and migration candidates — so the business case is built on measurement, not estimate.',
-        'Sequence by risk, not by convenience. Monoliths are decomposed into bounded contexts and ordered so the least-coupled, highest-value work proves the approach before anything critical moves.',
-        'Execute under guardrails, then extend. Transformation runs autonomously inside declared policy limits with human sign-off at each gate, and continues as sprints across the remaining estate.',
-      ],
-    },
 
     capabilitiesLabel: 'MODERNIZATION CAPABILITIES',
     capabilitiesSectionTitle: 'Agentic AI Modernization',
@@ -470,11 +452,11 @@ export const servicesData = {
       colA: 'Traditional Modernization',
       colB: 'Agentic AI-led Modernization',
       rows: [
-        { dimension: 'Assessment',  before: 'Months of manual code review and dependency mapping.',                       after: 'AI agents deliver complete codebase analysis and dependency maps in days — not months.' },
-        { dimension: 'Planning',    before: 'Static migration playbook built on incomplete discovery.',                   after: 'Dynamic, AI-generated blueprint continuously updated as agents map more of the estate.' },
-        { dimension: 'Execution',   before: 'Human-driven, error-prone migration with frequent rollbacks.',               after: 'Autonomous execution with exception escalation and governed human-in-the-loop checkpoints.' },
-        { dimension: 'Testing',     before: 'Manual test coverage — slow, incomplete, and high-risk at scale.',           after: 'AI-generated test suites achieve 99% regression coverage before every go-live gate.' },
-        { dimension: 'Outcomes',    before: 'High risk, frequent delays, budget overruns, and missed milestones.',        after: 'Governed delivery with measurable milestones and immutable audit-ready documentation.' },
+        { dimension: 'Discovery',      before: 'Engineers read subsystems one at a time, and the business rules stay in the heads of whoever has been there longest.',   after: 'Static analysis covers the whole estate at once — producing a dependency graph, and recovering the embedded business rules as a written artefact that outlives staff turnover.' },
+        { dimension: 'Planning',       before: 'A static migration playbook, drafted from partial discovery and defended as reality diverges from it.',                    after: 'A blueprint that is regenerated as each subsystem is understood, alongside architecture maps and runbooks derived from the source rather than drawn once and left to drift.' },
+        { dimension: 'Transformation', before: 'Refactoring and language migration written by hand, module by module, at whatever pace headcount allows.',                 after: 'Agents execute the transformation and cross-language conversion against the recovered specification, leaving engineers reviewing diffs rather than authoring them.' },
+        { dimension: 'Validation',     before: 'Test coverage is written after the fact — slow, partial, and highest-risk exactly where the code is oldest.',              after: 'Characterisation tests are generated against legacy behaviour before anything changes, so each cutover is proven equivalent rather than assumed correct.' },
+        { dimension: 'Governance',     before: 'Progress is reported in status decks; when something breaks, the reasoning behind the change is gone.',                    after: 'Every autonomous action runs inside declared policy limits and lands in an immutable audit trail, with named human sign-off at each gate.' },
       ],
     },
 
