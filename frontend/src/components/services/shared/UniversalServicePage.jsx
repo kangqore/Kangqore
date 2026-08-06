@@ -2101,77 +2101,79 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ PHILOSOPHY / FEATURES ══════════════════════ */}
-      <section className="py-32" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      {service.slug !== 'agentic-ai-led-application-modernization' && (
+        <section className="py-32" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
-          {/* Header */}
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
-            <div>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">THE PHILOSOPHY</span>
-              </div>
-              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                Built for Impact.<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered with Precision.</span>
-              </h2>
-            </div>
-            <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
-              Every decision stays coherent from strategy through delivery.
-            </p>
-          </div>
-
-          {/* Bento grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 auto-rows-[minmax(220px,auto)] gap-3">
-            {featureLabels.map((label, i) => {
-              const FIcon = featureIcons[i];
-              const n = String(i + 1).padStart(2, '0');
-              const isWide = i === 0 || i === 3;
-              const ACCENT = ['#2564ea','#4ab6d4','#6366f1','#10b981'];
-              return (
-                <div
-                  key={label}
-                  className={`group relative rounded-2xl overflow-hidden border border-white/[0.07] bg-[#06090f] p-7 flex flex-col justify-between hover:border-white/[0.14] transition-all duration-500 ${isWide ? 'sm:col-span-2' : 'sm:col-span-1'}`}
-                >
-                  {/* top accent line */}
-                  <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl"
-                    style={{ background: `linear-gradient(90deg, ${ACCENT[i]}, transparent)` }} />
-
-                  {/* faint bg glow */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl"
-                    style={{ background: `radial-gradient(ellipse at top left, ${ACCENT[i]}0d 0%, transparent 65%)` }} />
-
-                  {/* Large bg number */}
-                  <span className="absolute bottom-4 right-5 font-mono text-[5rem] lg:text-[6rem] font-black leading-none select-none text-white/[0.04] group-hover:text-white/[0.07] transition-colors duration-500 tabular-nums">
-                    {n}
-                  </span>
-
-                  {/* Icon */}
-                  <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center border border-white/[0.08] group-hover:border-white/20 transition-all duration-500"
-                    style={{ background: `${ACCENT[i]}14` }}>
-                    <FIcon className="w-4 h-4 transition-colors duration-500" style={{ color: `${ACCENT[i]}99` }} />
-                  </div>
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    <p className="text-[9px] font-black tracking-[0.28em] uppercase mb-2 transition-colors duration-500"
-                      style={{ color: `${ACCENT[i]}80` }}>
-                      {n} — {featureTitles[i]}
-                    </p>
-                    <h3 className="text-white/70 group-hover:text-white font-black text-lg leading-snug mb-2 transition-colors duration-300">
-                      {label}
-                    </h3>
-                    <p className="text-white/40 group-hover:text-white/70 text-xs font-medium leading-relaxed transition-colors duration-500 max-w-sm">
-                      {featureMicros[i]}
-                    </p>
-                  </div>
+            {/* Header */}
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+              <div>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-[1px] w-12 bg-white/20" />
+                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">THE PHILOSOPHY</span>
                 </div>
-              );
-            })}
-          </div>
+                <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
+                  Built for Impact.<br />
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered with Precision.</span>
+                </h2>
+              </div>
+              <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
+                Every decision stays coherent from strategy through delivery.
+              </p>
+            </div>
 
-        </div>
-      </section>
+            {/* Bento grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 auto-rows-[minmax(220px,auto)] gap-3">
+              {featureLabels.map((label, i) => {
+                const FIcon = featureIcons[i];
+                const n = String(i + 1).padStart(2, '0');
+                const isWide = i === 0 || i === 3;
+                const ACCENT = ['#2564ea','#4ab6d4','#6366f1','#10b981'];
+                return (
+                  <div
+                    key={label}
+                    className={`group relative rounded-2xl overflow-hidden border border-white/[0.07] bg-[#06090f] p-7 flex flex-col justify-between hover:border-white/[0.14] transition-all duration-500 ${isWide ? 'sm:col-span-2' : 'sm:col-span-1'}`}
+                  >
+                    {/* top accent line */}
+                    <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl"
+                      style={{ background: `linear-gradient(90deg, ${ACCENT[i]}, transparent)` }} />
+
+                    {/* faint bg glow */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl"
+                      style={{ background: `radial-gradient(ellipse at top left, ${ACCENT[i]}0d 0%, transparent 65%)` }} />
+
+                    {/* Large bg number */}
+                    <span className="absolute bottom-4 right-5 font-mono text-[5rem] lg:text-[6rem] font-black leading-none select-none text-white/[0.04] group-hover:text-white/[0.07] transition-colors duration-500 tabular-nums">
+                      {n}
+                    </span>
+
+                    {/* Icon */}
+                    <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center border border-white/[0.08] group-hover:border-white/20 transition-all duration-500"
+                      style={{ background: `${ACCENT[i]}14` }}>
+                      <FIcon className="w-4 h-4 transition-colors duration-500" style={{ color: `${ACCENT[i]}99` }} />
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative z-10">
+                      <p className="text-[9px] font-black tracking-[0.28em] uppercase mb-2 transition-colors duration-500"
+                        style={{ color: `${ACCENT[i]}80` }}>
+                        {n} — {featureTitles[i]}
+                      </p>
+                      <h3 className="text-white/70 group-hover:text-white font-black text-lg leading-snug mb-2 transition-colors duration-300">
+                        {label}
+                      </h3>
+                      <p className="text-white/40 group-hover:text-white/70 text-xs font-medium leading-relaxed transition-colors duration-500 max-w-sm">
+                        {featureMicros[i]}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+        </section>
+      )}
 
 
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
@@ -2180,7 +2182,7 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
-      {service.architectureNodes && (
+      {service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && (
         <section id="svc-architecture" className="py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
@@ -2294,29 +2296,37 @@ const featureMicros   = service.featureMicros
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.industryUseCases.map((item, idx) => (
-                <div key={idx} className="bg-[#000000] p-8 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
-                  <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/60">{item.industry}</span>
-                  <p className="text-white font-bold text-lg leading-snug">{item.headline}</p>
-                  <ul className="space-y-2 mt-1">
-                    {item.agents.map((agent, i) => (
-                      <li key={i} className="flex items-start gap-2.5">
-                        <div className="w-1 h-1 rounded-full bg-cyan-400 mt-2 flex-shrink-0" />
-                        <span className="text-white/50 text-sm font-medium leading-relaxed">{agent}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {/* Contextual cross-link into the industry hub. These are the
-                      in-content links that build topical authority — unlike the
-                      sitewide nav, which crawlers discount as boilerplate. */}
-                  {industrySlug(item.industry) && (
-                    <Link
-                      to={`/industries/${industrySlug(item.industry)}`}
-                      className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400/80 hover:text-cyan-300 transition-colors"
-                    >
-                      {service.name} for {item.industry}
-                      <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  )}
+                <div key={idx} className="group bg-[#000000] p-8 flex flex-col transition-all duration-500 hover:bg-[#060a10] cursor-pointer">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:text-cyan-400 transition-colors duration-300">{item.industry}</span>
+                    <span className="text-white/30 group-hover:text-cyan-400 text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none">+</span>
+                  </div>
+                  
+                  <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
+                    <div className="min-h-0 flex flex-col gap-4 mt-4">
+                      <p className="text-white font-bold text-lg leading-snug">{item.headline}</p>
+                      <ul className="space-y-2">
+                        {item.agents.map((agent, i) => (
+                          <li key={i} className="flex items-start gap-2.5">
+                            <div className="w-1 h-1 rounded-full bg-cyan-400 mt-2 flex-shrink-0" />
+                            <span className="text-white/50 text-sm font-medium leading-relaxed">{agent}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      {/* Contextual cross-link into the industry hub. These are the
+                          in-content links that build topical authority — unlike the
+                          sitewide nav, which crawlers discount as boilerplate. */}
+                      {industrySlug(item.industry) && (
+                        <Link
+                          to={`/industries/${industrySlug(item.industry)}`}
+                          className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400/80 hover:text-cyan-300 transition-colors"
+                        >
+                          {service.name} for {item.industry}
+                          <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -2860,14 +2870,7 @@ const featureMicros   = service.featureMicros
               </ul>
             </nav>
 
-            <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
-              <Link to={`/departments/${department.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-400 hover:text-white transition-colors">
-                All {department.name} services <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link to="/services" className="inline-flex items-center gap-2 text-sm font-semibold text-white/50 hover:text-white transition-colors">
-                Browse all 61 services <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+            {/* Removed links wrapper per request */}
           </div>
         </section>
       )}
@@ -2904,9 +2907,9 @@ const featureMicros   = service.featureMicros
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
               </div>
-              <div className="flex flex-col gap-2 lg:items-end">
-                <span className="text-[10px] font-black tracking-[0.25em] uppercase text-white/60">From first call to first agent</span>
-                <span className="text-white/50 text-sm font-semibold">Strategy → Build → Production in 8 weeks</span>
+              <div className="group/weeks flex flex-col gap-1 lg:items-end cursor-default select-none">
+                <span className="text-[7.5px] font-black tracking-[0.25em] uppercase text-white/30 group-hover/weeks:text-white/80 transition-colors duration-300">From first call to first agent</span>
+                <span className="text-white/25 text-[10px] font-semibold group-hover/weeks:text-white/70 transition-colors duration-300">Strategy → Build → Production in 8 weeks</span>
               </div>
             </div>
 
