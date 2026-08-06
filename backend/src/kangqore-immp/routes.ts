@@ -19,6 +19,7 @@ import { requireAuth, requireRole } from '../middleware/rbac';
 import { KIMMP_VERSION } from './core/types';
 import { KimmpFlags } from './core/flags';
 import { computeCapabilityScorecard } from '../services/publicTrust.service';
+import { getLiveComplianceSignals, ensureFrameworkSeeded } from '../services/complianceReadiness.service';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -4019,31 +4020,14 @@ kangqoreImmpRoutes.post('/customers/churn-alerts', requireAuth, requireRole(['AD
 // S70 — Enterprise Security: SOC2 Controls · RBAC Scopes · Security Findings
 // ════════════════════════════════════════════════════════════════════════════
 
-// GET /admin/kangqore-immp/aegis/compliance-controls
-kangqoreImmpRoutes.get('/aegis/compliance-controls', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+// GET /admin/kangqore-immp/aegis/compliance-controls?framework=SOC2|ISO27001
+kangqoreImmpRoutes.get('/aegis/compliance-controls', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
-    let controls = await (prisma as any).complianceControl.findMany({ orderBy: [{ criteria: 'asc' }, { code: 'asc' }] })
-    if (controls.length === 0) {
-      // Seed SOC2 CC1–CC9 scaffold
-      const seed = [
-        { code: 'CC1.1', criteria: 'CC1', name: 'Control Environment — Integrity & Ethics',       status: 'PARTIAL',  description: 'Organisation demonstrates commitment to integrity and ethical values' },
-        { code: 'CC1.2', criteria: 'CC1', name: 'Control Environment — Board Oversight',           status: 'MISSING',  description: 'Board or governing body demonstrates independence from management' },
-        { code: 'CC2.1', criteria: 'CC2', name: 'Communication — Internal Communication',          status: 'IN_PLACE', description: 'Internal communication of security responsibilities and policies' },
-        { code: 'CC3.1', criteria: 'CC3', name: 'Risk Assessment — Risk Identification',           status: 'PARTIAL',  description: 'Identifies and assesses risks to achieving security objectives' },
-        { code: 'CC4.1', criteria: 'CC4', name: 'Monitoring — Ongoing Evaluation',                status: 'MISSING',  description: 'Selects, develops and performs ongoing monitoring activities' },
-        { code: 'CC5.1', criteria: 'CC5', name: 'Control Activities — Technology Controls',        status: 'PARTIAL',  description: 'Technology controls selected and developed to achieve objectives' },
-        { code: 'CC6.1', criteria: 'CC6', name: 'Logical Access — Access Management',              status: 'IN_PLACE', description: 'Logical access security software, infrastructure, and architectures' },
-        { code: 'CC6.2', criteria: 'CC6', name: 'Logical Access — New Access Provisioning',       status: 'PARTIAL',  description: 'Prior to issuing system credentials and granting system access' },
-        { code: 'CC6.3', criteria: 'CC6', name: 'Logical Access — Access Removal',                status: 'MISSING',  description: 'Removes access to protected information assets when no longer required' },
-        { code: 'CC7.1', criteria: 'CC7', name: 'System Operations — Vulnerability Management',   status: 'MISSING',  description: 'Detection and monitoring of vulnerabilities and threats' },
-        { code: 'CC8.1', criteria: 'CC8', name: 'Change Management — Infrastructure Changes',      status: 'PARTIAL',  description: 'Authorises, designs, develops, tests and implements changes' },
-        { code: 'CC9.1', criteria: 'CC9', name: 'Risk Mitigation — Vendor Risk Management',       status: 'MISSING',  description: 'Identifies, selects and develops risk mitigation activities for risks with vendors' },
-      ]
-      await (prisma as any).complianceControl.createMany({ data: seed, skipDuplicates: true })
-      controls = await (prisma as any).complianceControl.findMany({ orderBy: [{ criteria: 'asc' }, { code: 'asc' }] })
-    }
+    const framework = req.query.framework === 'ISO27001' ? 'ISO27001' : 'SOC2'
+    await ensureFrameworkSeeded(framework)
+    const controls = await (prisma as any).complianceControl.findMany({ where: { framework }, orderBy: [{ criteria: 'asc' }, { code: 'asc' }] })
     const summary = { total: controls.length, in_place: controls.filter((c: any) => c.status === 'IN_PLACE').length, partial: controls.filter((c: any) => c.status === 'PARTIAL').length, missing: controls.filter((c: any) => c.status === 'MISSING').length }
-    res.json({ controls, summary })
+    res.json({ framework, controls, summary })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
@@ -5282,8 +5266,11 @@ kangqoreImmpRoutes.post('/soc2/periods/:id/collect-evidence', requireAuth, requi
     ]
 
     const [auditCount, signalCount, findingCount, keyCount] = await Promise.all([
-      (prisma as any).kIMMPSignal.count({ where: { createdAt: { gte: period.periodStart, lte: period.periodEnd } } }).catch(() => 0),
-      (prisma as any).kIMMPSignal.count().catch(() => 0),
+      // Pre-existing bug fix: this was `kIMMPSignal` (wrong casing — throws
+      // synchronously on undefined, which .catch() can't intercept), so
+      // Collect Evidence has never actually completed a request before this fix.
+      (prisma as any).kimmpSignal.count({ where: { createdAt: { gte: period.periodStart, lte: period.periodEnd } } }).catch(() => 0),
+      (prisma as any).kimmpSignal.count().catch(() => 0),
       (prisma as any).securityFinding.count().catch(() => 0),
       (prisma as any).programmaticApiKey.count({ where: { revoked: false } }).catch(() => 0),
     ])
@@ -5301,10 +5288,14 @@ kangqoreImmpRoutes.post('/soc2/periods/:id/collect-evidence', requireAuth, requi
       }).catch(() => null)
     ))
 
+    // Evidence gathered is not the same as a control passing — "passed" is an
+    // auditor's judgment call, not something this route gets to declare.
+    // controlsPassed/controlsFailed stay whatever an admin has set via the
+    // PATCH route below, reflecting real auditor feedback if any exists yet.
     const collected = evidence.filter(Boolean).length
     await (prisma as any).sOC2AuditPeriod.update({
       where: { id: period.id },
-      data: { evidenceCount: collected, controlsPassed: collected },
+      data: { evidenceCount: collected },
     })
 
     res.json({ collected, controls: collected })
@@ -5327,7 +5318,9 @@ kangqoreImmpRoutes.get('/soc2/periods/:id/export', requireAuth, requireRole(['AD
       controls: period.evidence.map((e: any) => ({
         controlId: e.controlId, controlName: e.controlName, evidenceType: e.evidenceType,
         description: e.description, sourceTable: e.sourceTable, sourceCount: e.sourceCount,
-        collectedAt: e.collectedAt, status: e.sourceCount > 0 ? 'PASS' : 'REVIEW',
+        collectedAt: e.collectedAt,
+        // Data presence, not an auditor's pass/fail verdict — see collect-evidence handler above.
+        evidenceStatus: e.sourceCount > 0 ? 'DATA_PRESENT' : 'NO_DATA',
       })),
       securityFindings: findings.map((f: any) => ({
         title: f.title, severity: f.severity, status: f.status, cveRef: f.cveRef,
@@ -5341,9 +5334,18 @@ kangqoreImmpRoutes.get('/soc2/periods/:id/export', requireAuth, requireRole(['AD
 
 kangqoreImmpRoutes.patch('/soc2/periods/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
-    const { status, notes } = req.body ?? {}
+    // controlsPassed/controlsFailed are admin-entered here deliberately — the
+    // only legitimate source for those numbers is real auditor feedback, not
+    // anything this system can compute on its own (see collect-evidence).
+    const { status, notes, controlsPassed, controlsFailed } = req.body ?? {}
     const period = await (prisma as any).sOC2AuditPeriod.update({
-      where: { id: req.params.id }, data: { ...(status && { status }), ...(notes && { notes }) },
+      where: { id: req.params.id },
+      data: {
+        ...(status !== undefined && { status }),
+        ...(notes !== undefined && { notes }),
+        ...(controlsPassed !== undefined && { controlsPassed: Number(controlsPassed) }),
+        ...(controlsFailed !== undefined && { controlsFailed: Number(controlsFailed) }),
+      },
     })
     res.json({ period })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
@@ -9407,59 +9409,69 @@ kangqoreImmpRoutes.get('/platform/s262-status', requireAuth, requireRole(['ADMIN
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// ─── CHAPTER 12 T2: Fortune 500 Enterprise Tier (S263–S272) ─────────────────
+// ─── Overshadow Roadmap P2 — Compliance Program readiness (NOT certificates) ─
+//
+// These two routes previously returned hardcoded fabricated data — a fake
+// "Deloitte & Touche LLP"-certified SOC2 Type II report and a fake
+// "GSA"-sponsored, "Coalfire"-assessed FedRAMP authorization, neither backed
+// by any real audit or real database row. That was a real integrity problem:
+// an admin-facing page asserting named third-party certifications that never
+// happened. Fixed to report genuine readiness state instead — see
+// services/complianceReadiness.service.ts. Route paths kept stable so the
+// existing frontend pages don't need new URLs, only honest data.
 
-// S263 GET /platform/soc2-type2-cert
+// GET /platform/soc2-type2-cert — SOC2 readiness (not a certificate)
 kangqoreImmpRoutes.get('/platform/soc2-type2-cert', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
-    const controls = [
-      { category: 'Security',         controlCount: 24, status: 'PASSED', auditorComment: 'Zero exceptions noted' },
-      { category: 'Availability',     controlCount: 12, status: 'PASSED', auditorComment: '99.97% uptime verified over 12-month period' },
-      { category: 'Confidentiality',  controlCount: 18, status: 'PASSED', auditorComment: 'Data classification and handling controls effective' },
-      { category: 'Processing Integrity', controlCount: 9, status: 'PASSED', auditorComment: 'KIMMP output validation controls operating effectively' },
-      { category: 'Privacy',          controlCount: 15, status: 'PASSED', auditorComment: 'GDPR + UK DPA 2018 alignment confirmed' },
-    ]
-    const totalControls = controls.reduce((s, c) => s + c.controlCount, 0)
+    await ensureFrameworkSeeded('SOC2')
+    const [controls, liveSignals, latestPeriod] = await Promise.all([
+      (prisma as any).complianceControl.findMany({ where: { framework: 'SOC2' }, orderBy: [{ criteria: 'asc' }, { code: 'asc' }] }),
+      getLiveComplianceSignals(),
+      (prisma as any).sOC2AuditPeriod.findFirst({ orderBy: { periodStart: 'desc' } }),
+    ])
+    const summary = {
+      total: controls.length,
+      in_place: controls.filter((c: any) => c.status === 'IN_PLACE').length,
+      partial: controls.filter((c: any) => c.status === 'PARTIAL').length,
+      missing: controls.filter((c: any) => c.status === 'MISSING').length,
+    }
+    const readinessPct = controls.length > 0
+      ? Math.round(((summary.in_place + summary.partial * 0.5) / controls.length) * 100)
+      : 0
     res.json({
-      certificationName: 'SOC2 Type II',
-      certificationBody: 'Deloitte & Touche LLP',
-      auditPeriod: '2025-08-01 → 2026-07-31',
-      reportDate: '2026-07-28',
-      status: 'CERTIFIED',
-      totalControlsTested: totalControls,
-      exceptionCount: 0,
-      reportAvailable: true,
-      controls,
-      customerBenefit: 'Enterprise procurement teams can reference certified SOC2 Type II report — eliminates 6–12 week security review cycles',
-      nextAudit: '2027-07-31',
+      framework: 'SOC2 Type II',
+      status: latestPeriod ? latestPeriod.status : 'NOT_STARTED', // real admin-tracked state, never CERTIFIED here
+      certifyingBody: null,
+      auditPeriod: latestPeriod ? { label: latestPeriod.label, auditor: latestPeriod.auditor ?? null, start: latestPeriod.periodStart, end: latestPeriod.periodEnd } : null,
+      readinessPct,
+      controls: summary,
+      liveSignals,
+      disclaimer: 'This is an internal audit-readiness view, not a certification. A SOC 2 Type II report can only be issued by an independent external auditor after a real observation period — see the SOC2 Audit Control page to manage an actual engagement.',
     })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// S264 GET /platform/fedramp-moderate
+// GET /platform/fedramp-moderate — FedRAMP + IRAP decision gate (not an authorization)
 kangqoreImmpRoutes.get('/platform/fedramp-moderate', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
-    const phases = [
-      { phase: 'System Security Plan (SSP)',          status: 'COMPLETE', completedDate: '2026-06-01' },
-      { phase: '3PAO Security Assessment',             status: 'COMPLETE', completedDate: '2026-07-01' },
-      { phase: 'Agency ATO Letter',                    status: 'COMPLETE', completedDate: '2026-07-20' },
-      { phase: 'FedRAMP PMO Review',                   status: 'COMPLETE', completedDate: '2026-07-28' },
-      { phase: 'Marketplace Listing',                  status: 'LIVE',     completedDate: '2026-07-31' },
-      { phase: 'Continuous Monitoring Programme',      status: 'ACTIVE',   completedDate: '2026-08-01' },
-    ]
+    const gateNote = 'Decision point, not a task (Overshadow Roadmap P2.3/P2.4): pursue only behind a real, qualifying sponsoring pipeline. Speculative FedRAMP/IRAP engineering work before a real opportunity exists is the single easiest way to waste 18–24 months.'
     res.json({
-      authorization: 'FedRAMP Moderate',
-      sponsoringAgency: 'US General Services Administration (GSA)',
-      thirdPartyAssessor: 'Coalfire Systems Inc.',
-      atoDate: '2026-07-20',
-      status: 'AUTHORIZED',
-      controlsImplemented: 325,
-      controlsInherited: 87,
-      marketplaceListed: true,
-      eligibleCustomers: ['US Federal Agencies', 'DoD contractors', 'State and Local Government'],
-      annualConMon: true,
-      phases,
-      customerUnlock: 'US Federal government market — estimated £50M+ addressable revenue in Year 2',
+      fedramp: {
+        authorization: 'FedRAMP Moderate',
+        status: 'NOT_STARTED',
+        sponsoringAgency: null,
+        thirdPartyAssessor: null,
+        gateNote,
+        disclaimer: 'Not an authorization. Requires a sponsoring federal agency (or FedRAMP Marketplace listing) and a 3PAO assessment — realistically 18–24+ months once a real engagement begins.',
+      },
+      irap: {
+        authorization: 'IRAP (Australian Government ISM)',
+        status: 'NOT_STARTED',
+        sponsoringAgency: null,
+        assessor: null,
+        gateNote,
+        disclaimer: 'Not an assessment. Same decision-gate logic as FedRAMP, scoped to the Australian public sector — pursue only if a real deal justifies it.',
+      },
     })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
