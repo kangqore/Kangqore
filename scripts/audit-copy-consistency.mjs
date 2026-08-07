@@ -119,9 +119,13 @@ for (const file of files) {
 const dataFile = path.join(SRC, 'data', 'servicesData.js');
 if (fs.existsSync(dataFile)) {
   const src = fs.readFileSync(dataFile, 'utf8');
-  // Percentages inside Tailwind arbitrary values (max-w-[82%]) are layout, not claims.
+  // Percentages inside Tailwind arbitrary values (max-w-[82%]) are layout, not
+  // claims. This must be anchored to a utility prefix and forbid whitespace and
+  // quotes inside the brackets: a bare /\[[^\]]*%[^\]]*\]/ also matches ordinary
+  // JavaScript array literals, which silently exempted every claim living in
+  // customFAQs: [ … ] or keyFeatures: [ … ].
   const tailwind = new Set();
-  for (const m of src.matchAll(/\[[^\]]*?\d{1,3}%[^\]]*?\]/g)) {
+  for (const m of src.matchAll(/[\w-]+-\[[^\]\s'"]*\d{1,3}%[^\]\s'"]*\]/g)) {
     for (let i = m.index; i < m.index + m[0].length; i++) tailwind.add(i);
   }
 
@@ -141,13 +145,24 @@ if (fs.existsSync(dataFile)) {
     }
     if (labelled) continue;
 
-    const context = src.slice(Math.max(0, m.index - 160), m.index + 120);
-    if (SOURCED_CLAIMS.some((c) => context.includes(c.match.slice(0, 60)))) continue;
+    // Allowlisting must be scoped to the string literal the claim lives in.
+    // Matching against a surrounding character window instead lets any claim
+    // that merely sits *near* an allowlisted one inherit its exemption — two
+    // adjacent bullets in the same array were enough to silence a new claim.
+    const quote = src.lastIndexOf("'", m.index);
+    let end = m.index;
+    while (end < src.length) {
+      end = src.indexOf("'", end + 1);
+      if (end === -1) { end = src.length; break; }
+      if (src[end - 1] !== '\\') break;
+    }
+    const literal = quote === -1 ? '' : src.slice(quote + 1, end);
+    if (SOURCED_CLAIMS.some((c) => literal.trim() === c.match.trim())) continue;
 
     claimHits.push({
       line: lineOf(src, m.index),
       value: m[0],
-      context: context.replace(/\s+/g, ' ').slice(60, 210),
+      context: (literal || src.slice(m.index - 90, m.index + 90)).replace(/\s+/g, ' ').slice(0, 150),
     });
   }
 }
