@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-06T23:22:09.994Z",
+  "generatedAt": "2026-08-07T06:33:58.018Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -31,7 +31,26 @@
           "q": "What stops an agent from doing something we didn't authorize?",
           "a": "Every agent we deploy has a governor, not just a goal. Our governance-first architecture embeds human-in-the-loop (HITL) controls, immutable audit trails, role-based access restrictions, and policy enforcement layers before a single autonomous action runs in production. Risk is validated at every phase — not discovered after go-live."
         }
-      ]
+      ],
+      "method": [
+        {
+          "rule": "Orchestration & Frameworks",
+          "detail": "Stateful multi-agent workflows on LangGraph, with LangChain handling tool-calling and chain composition."
+        },
+        {
+          "rule": "Models",
+          "detail": "GPT-4o, Claude, Gemini, or fine-tuned open-source — selected per use case and compliance requirement, not locked to one vendor."
+        },
+        {
+          "rule": "Integration",
+          "detail": "Enterprise APIs, microservices, and hybrid memory across vector stores — Pinecone, Weaviate, or pgvector depending on constraints."
+        },
+        {
+          "rule": "Monitoring",
+          "detail": "LangSmith-based observability and drift detection, backed by immutable audit trails and checkpoint-based recovery."
+        }
+      ],
+      "dataHandling": []
     },
     {
       "slug": "agentic-ai-led-application-modernization",
@@ -60,6 +79,54 @@
         {
           "q": "Which legacy systems can Agentic AI modernize?",
           "a": "Any legacy codebase that can be read. Kangqore's assessment agents work across COBOL, Java EE, .NET Framework, Oracle Forms, mainframe systems, on-premise ERPs, and custom enterprise platforms. If the code exists, the agents can assess it, plan the migration, and execute the transformation."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Behaviour is pinned before anything moves",
+          "detail": "Agents build the dependency graph, take runtime traces from live production paths, and generate a characterization suite that passes green against the legacy system exactly as it stands. The outcome is a regression gate that did not previously exist: every later change is measured against recorded behaviour rather than institutional memory, so \"did we break something\" resolves to a test result instead of an argument."
+        },
+        {
+          "rule": "Target state compiles to a work graph",
+          "detail": "You specify the destination — bounded contexts, service boundaries, target runtime — and a planner compiles it into a dependency-ordered work graph, then executes across that graph concurrently. The outcome is that sequencing derives from coupling actually present in the code rather than from an estimate, and independent branches run at once instead of queueing behind a single engineer."
+        },
+        {
+          "rule": "Rules recovered, then seams cut",
+          "detail": "Scanners emit a call graph and a debt score, then stop. Agents continue past that line — reconstructing business rules out of nested conditionals and stored procedures, then deriving service boundaries from observed coupling: call frequency, shared-data access, co-change history. The outcome is decomposition that follows how the system behaves rather than the package structure, which usually encodes team history instead of domain logic."
+        },
+        {
+          "rule": "Strangler-fig rollout behind a facade",
+          "detail": "New services run alongside the legacy path with traffic shifted a slice at a time behind a routing facade, both implementations exercised against identical requests and their responses compared. The outcome is that divergence surfaces while the old path is still serving, which makes reversing a step a routing change rather than an incident."
+        },
+        {
+          "rule": "Gated, reversible, and cumulative",
+          "detail": "Agent output arrives as a reviewable change set carrying its tests, diff and rationale; architecture, data-model and go-live decisions require a named human approval, and each increment is versioned independently. The outcome is twofold: any single step rolls back without unwinding the rest, and the artefacts left behind — graph, rule set, test corpus, gating policies — carry into the next application, so effort per service falls as estate coverage rises."
+        }
+      ],
+      "dataHandling": [
+        {
+          "topic": "Deployment — three models, your choice",
+          "detail": "Agents run inside your own cloud account, on-premise behind your firewall including air-gapped estates, or on Kangqore-managed infrastructure. The model is chosen and agreed before any repository is connected."
+        },
+        {
+          "topic": "Models — self-hosted, open-weight",
+          "detail": "The models are open-weight and run on infrastructure inside the deployment boundary. No third-party model API receives your source code, so there is no external vendor tenancy holding it and no outbound inference call to audit."
+        },
+        {
+          "topic": "Access — read-only",
+          "detail": "Agents are granted read access. They do not write to your repositories. Every proposed change arrives as a reviewable change set carrying its tests, diff and rationale, and a named person on your side accepts it."
+        },
+        {
+          "topic": "Residency — set at contract",
+          "detail": "For customer-hosted and on-premise deployments your data sits wherever you place it. For Kangqore-managed engagements the region is a contractual parameter agreed before work begins, not a default assigned for you."
+        },
+        {
+          "topic": "Retention — scoped to the engagement",
+          "detail": "Prompts, agent outputs and generated artefacts persist for the duration of the engagement and are deleted on completion. What survives is what we hand to you: the dependency graph, the test corpus, the audit ledger."
+        },
+        {
+          "topic": "Certification",
+          "detail": "Kangqore holds ISO 27001 and SOC 2 certification. Client-specific regulatory controls — HIPAA, GDPR and sector regimes — are mapped during engagement setup rather than retrofitted before an audit."
         }
       ]
     },
@@ -94,7 +161,26 @@
           "q": "How does Kangqore handle NLP and language understanding?",
           "a": "Our Natural Language Intelligence practice covers conversational AI, intent and sentiment analysis, speech recognition, document intelligence, entity extraction, semantic search, and language generation. Every NLP solution is grounded in your enterprise data — not generic pre-training — so responses reflect your policies, terminology, and knowledge base accurately."
         }
-      ]
+      ],
+      "method": [
+        {
+          "rule": "Models & Frameworks",
+          "detail": "PyTorch, TensorFlow, Hugging Face Transformers, scikit-learn, spaCy, and custom neural architectures — selected per domain and compliance requirement."
+        },
+        {
+          "rule": "Foundation Models",
+          "detail": "GPT-4o, Claude, Gemini, Llama, Mistral, and fine-tuned domain-specific models — vendor-agnostic selection based on use case, accuracy, and governance."
+        },
+        {
+          "rule": "Data & Knowledge",
+          "detail": "Neo4j knowledge graphs, Pinecone & Weaviate vector stores, Apache Kafka streaming, and enterprise data lake architectures for real-time cognitive ingestion."
+        },
+        {
+          "rule": "Governance & Ops",
+          "detail": "MLflow model registry, LangSmith observability, SHAP explainability, Weights & Biases experiment tracking, and immutable audit trail infrastructure."
+        }
+      ],
+      "dataHandling": []
     },
     {
       "slug": "data-science-ai",
@@ -109,7 +195,9 @@
         "MLOps & AI Lifecycle Engineering",
         "AI Governance & Responsible AI"
       ],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "genai-business-services",
@@ -118,7 +206,9 @@
       "department": "Cognition",
       "description": "Generative AI for the enterprise — LLM implementation, custom fine-tuning, content & code generation, and enterprise AI assistants. Powered by eQORE™.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "mlops",
@@ -135,7 +225,9 @@
         "AI Governance & Operational Assurance",
         "AI Performance, Cost & FinOps"
       ],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "ai-governance",
@@ -165,7 +257,26 @@
           "q": "How is Kangqore's AI governance different from buying a GRC tool?",
           "a": "GRC tools manage policies. Kangqore implements governance infrastructure. We build centralized model registries with automated risk tiering, CI/CD compliance gates that block non-compliant deployments, SHAP explainability layers for every production model, real-time drift detection and bias monitoring, human-in-the-loop approval workflows, and immutable cryptographic audit ledgers. This is engineering, not checkbox compliance."
         }
-      ]
+      ],
+      "method": [
+        {
+          "rule": "Governance & Registry",
+          "detail": "MLflow model registry, custom governance dashboards, automated risk tiering engines, and enterprise-wide asset inventories."
+        },
+        {
+          "rule": "Explainability & Fairness",
+          "detail": "SHAP, LIME, and counterfactual explainability layers. Fairness metrics across protected characteristics with automated bias alerting."
+        },
+        {
+          "rule": "Security & Privacy",
+          "detail": "Zero-Trust AI architecture, prompt sanitization, PII detection, data masking, differential privacy, and encrypted audit ledgers."
+        },
+        {
+          "rule": "Monitoring & Compliance",
+          "detail": "Real-time drift detection, performance telemetry, compliance dashboards, HITL approval workflows, and immutable regulatory evidence."
+        }
+      ],
+      "dataHandling": []
     },
     {
       "slug": "analytics",
@@ -174,7 +285,9 @@
       "department": "Cognition",
       "description": "End-to-end analytics — business intelligence, dashboards, KPI tracking, self-service analytics, and data storytelling for measurable decision-making.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "big-data",
@@ -183,7 +296,9 @@
       "department": "Cognition",
       "description": "Big data platforms at scale — data lakes, distributed processing, real-time streaming, data warehousing, and ETL pipelines for enterprise workloads.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "digital-process-automation",
@@ -192,7 +307,9 @@
       "department": "Cognition",
       "description": "Digital process automation — process discovery, workflow automation, integration, monitoring, and continuous optimization for operational efficiency.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "robotic-process-automation",
@@ -201,7 +318,9 @@
       "department": "Cognition",
       "description": "Enterprise RPA — bot development, attended and unattended automation, bot monitoring, and CoE setup for rule-based business processes.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "business-process-management",
@@ -210,7 +329,9 @@
       "department": "Cognition",
       "description": "Enterprise BPM — process modeling, workflow automation, process orchestration, business rules, and analytics for end-to-end process excellence.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "intelligent-automation",
@@ -219,7 +340,9 @@
       "department": "Cognition",
       "description": "AI-powered automation — AI decision automation, NLP integration, document intelligence, cognitive automation, and process orchestration combined.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "managed-cloud-services",
@@ -228,7 +351,9 @@
       "department": "Foundry",
       "description": "End-to-end managed cloud — 24/7 monitoring, cost optimization, security management, performance tuning, and compliance support across hyperscalers.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "aws",
@@ -237,7 +362,9 @@
       "department": "Foundry",
       "description": "Expert AWS services — architecture, migration, cost optimization, security best practices, and DevOps on AWS for enterprise workloads.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "microsoft-services",
@@ -246,7 +373,9 @@
       "department": "Foundry",
       "description": "Microsoft cloud services — Azure implementation, Microsoft 365, Power Platform, Dynamics 365, and Microsoft security & compliance.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "google-cloud-services",
@@ -255,7 +384,9 @@
       "department": "Foundry",
       "description": "Google Cloud Platform expertise — GCP architecture, BigQuery analytics, AI/ML on GCP, Kubernetes (GKE), and data solutions.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "cloud-computing",
@@ -264,7 +395,9 @@
       "department": "Foundry",
       "description": "Multi-cloud and hybrid cloud strategy — cloud strategy, multi-cloud management, hybrid solutions, cloud native development, and FinOps.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "embedded-design-systems",
@@ -273,7 +406,9 @@
       "department": "Foundry",
       "description": "Embedded systems and IT/OT convergence — firmware development, IT/OT integration, IoT connectivity, and edge computing for industrial use.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "engineering-foundry",
@@ -282,7 +417,9 @@
       "department": "Foundry",
       "description": "Engineering Foundry™ — rapid prototyping, innovation sprints, technical POCs, experimentation, and technology scouting with embedded engineering pods.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "engineering-rd-services",
@@ -291,7 +428,9 @@
       "department": "Foundry",
       "description": "Engineering R&D — technology research, innovation labs, IP development, patent support, and academic partnerships for product innovation.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "product-digital-engineering",
@@ -300,7 +439,9 @@
       "department": "Foundry",
       "description": "Digital engineering for connected products — product digitization, connected products, digital twins, smart features, and data integration.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "devops-as-a-service",
@@ -309,7 +450,9 @@
       "department": "Foundry",
       "description": "Managed DevOps — CI/CD pipelines, infrastructure as code, container orchestration, monitoring, and SRE practices for faster, reliable delivery.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "managed-infrastructure-services",
@@ -318,7 +461,9 @@
       "department": "Foundry",
       "description": "End-to-end managed infrastructure — 24/7 monitoring, incident management, capacity planning, performance optimization, and automation.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "modernization-infrastructure",
@@ -327,7 +472,9 @@
       "department": "Foundry",
       "description": "Modernize legacy infrastructure — assessment, modernization roadmap, cloud migration, hybrid infrastructure, and infrastructure as code (IaC).",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "managed-services",
@@ -336,7 +483,9 @@
       "department": "Foundry",
       "description": "Full suite of managed IT services — service desk, application management, infrastructure management, security services, and cloud management.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "support-maintenance",
@@ -345,7 +494,9 @@
       "department": "Foundry",
       "description": "Ongoing support and maintenance — helpdesk support, application support, system maintenance, patch management, and SLA management.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "software-development",
@@ -354,7 +505,9 @@
       "department": "Foundry",
       "description": "Custom software development — full-stack development, agile methodology, code quality, CI/CD, and documentation tailored to your business needs.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "api-microservices-engineering",
@@ -363,7 +516,9 @@
       "department": "Foundry",
       "description": "API-first and microservices — API design, microservices architecture, API gateway, service mesh, and API management for scalable applications.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "internet-of-things",
@@ -372,7 +527,9 @@
       "department": "Foundry",
       "description": "End-to-end IoT — IoT architecture, device connectivity, IoT analytics, platform integration, and security for connected device ecosystems.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "application-modernization",
@@ -381,7 +538,9 @@
       "department": "Reimagine",
       "description": "Modernize legacy applications — legacy assessment, re-platforming, re-architecting, containerization, and API enablement. The Modernization Playbook™.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "digital-transformation",
@@ -390,7 +549,9 @@
       "department": "Reimagine",
       "description": "End-to-end digital transformation — digital strategy, operating model design, technology enablement, change management, and value realization.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "legacy-modernization",
@@ -399,7 +560,9 @@
       "department": "Reimagine",
       "description": "Modernize aging systems — assessment, migration planning, data migration, testing, and cutover management. Risk-managed, fixed-bid waves.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "technology-modernization",
@@ -408,7 +571,9 @@
       "department": "Reimagine",
       "description": "Modernize your technology stack — technology assessment, roadmap development, implementation, integration, and optimization.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "technology-transformation",
@@ -417,7 +582,9 @@
       "department": "Reimagine",
       "description": "Fundamental technology change — vision and strategy, architecture design, transformation execution, change enablement, and value measurement.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "digital-business-transformation",
@@ -426,7 +593,9 @@
       "department": "Reimagine",
       "description": "Reimagine business models — business model innovation, digital products, customer experience, operational excellence, and data monetization.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "technology-consulting",
@@ -435,7 +604,9 @@
       "department": "Reimagine",
       "description": "Expert technology consulting — technology strategy, architecture advisory, vendor selection, technology roadmaps, and IT governance.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "strategy-consulting",
@@ -444,7 +615,9 @@
       "department": "Reimagine",
       "description": "Business and technology strategy — business strategy, digital strategy, market analysis, competitive positioning, and growth strategy.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "discover-frame-workshops",
@@ -453,7 +626,9 @@
       "department": "Reimagine",
       "description": "Structured workshops — design thinking, problem framing, ideation, solution design, and roadmap development. The diagnostic entry-point.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "mvp-acceleration",
@@ -462,7 +637,9 @@
       "department": "Reimagine",
       "description": "Rapid MVP build and validation — rapid prototyping, agile sprints, user validation, iterative development, and launch support.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "product-strategy-experience-design",
@@ -471,7 +648,9 @@
       "department": "Reimagine",
       "description": "Product strategy and UX/UI — product vision, user research, UX/UI design, design systems, and usability testing for exceptional product experiences.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "blockchain",
@@ -480,7 +659,9 @@
       "department": "Reimagine",
       "description": "Blockchain solutions — blockchain strategy, smart contracts, private networks, DeFi, and supply chain transparency. Built for enterprise rigor.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "it-security-services",
@@ -489,7 +670,9 @@
       "department": "Shield",
       "description": "Enterprise cybersecurity — security assessment, threat detection, incident response, security operations, and compliance management.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "finance-risk-management",
@@ -498,7 +681,9 @@
       "department": "Shield",
       "description": "Finance transformation and risk — risk assessment, compliance, financial planning, and audit support. Under Shield™ Trust & Governance Framework.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "quality-engineering-assurance",
@@ -507,7 +692,9 @@
       "department": "Shield",
       "description": "Quality engineering — test strategy, test automation, performance testing, security testing, and quality metrics for production-grade releases.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "operation-technology",
@@ -516,7 +703,9 @@
       "department": "Shield",
       "description": "OT security and management — OT assessment, OT security, IT/OT convergence, SCADA systems, and industrial IoT for critical environments.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "enterprise-platform-integration",
@@ -525,7 +714,9 @@
       "department": "Platforms",
       "description": "Connect enterprise applications — integration strategy, API development, ESB implementation, data integration, and iPaaS solutions.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "pimcore",
@@ -534,7 +725,9 @@
       "department": "Platforms",
       "description": "Pimcore PIM/DAM — PIM implementation, DAM setup, data modeling, integration, and custom development for product information and digital assets.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "salesforce",
@@ -543,7 +736,9 @@
       "department": "Platforms",
       "description": "Salesforce implementation — Sales Cloud, Service Cloud, Marketing Cloud, custom development, and integration for customer-centric operations.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "servicenow",
@@ -552,7 +747,9 @@
       "department": "Platforms",
       "description": "ServiceNow implementation — ITSM, ITOM, HR Service Delivery, custom apps, and integration for unified enterprise service management.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "global-capability-centers",
@@ -561,7 +758,9 @@
       "department": "Platforms",
       "description": "Build and scale GCCs — GCC setup, operating model, talent management, process excellence, and technology enablement for global delivery.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "talent-organization",
@@ -570,7 +769,9 @@
       "department": "Platforms",
       "description": "Talent and org design — talent strategy, org design, change management, learning and development, and HR technology for workforce transformation.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "supply-chain",
@@ -579,7 +780,9 @@
       "department": "Platforms",
       "description": "Supply chain transformation — strategy, planning and forecasting, logistics optimization, visibility, and sustainability for resilient operations.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "unified-services-management",
@@ -588,7 +791,9 @@
       "department": "Platforms",
       "description": "Unified service management — service strategy, process design, tool implementation, governance, and continuous improvement for consistent delivery.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "cdp-strategy",
@@ -597,7 +802,9 @@
       "department": "Growth",
       "description": "First-party customer data strategy — unified profiles, real-time segmentation, privacy & compliance, and cross-channel activation. KVIS™.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "marketing-ai-readiness",
@@ -606,7 +813,9 @@
       "department": "Growth",
       "description": "GenAI for marketing — creative ops audit, GenAI roadmap, content personalization at scale, workflow automation, and AI-driven asset generation.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "social-media-management",
@@ -615,7 +824,9 @@
       "department": "Growth",
       "description": "Social media strategy and management — strategy development, content creation, community management, and analytics across all platforms.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "performance-marketing",
@@ -624,7 +835,9 @@
       "department": "Growth",
       "description": "Data-driven performance marketing — PPC, social ads, retargeting, conversion optimization, and attribution for measurable pipeline.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "seo-organic-growth-strategy",
@@ -633,7 +846,9 @@
       "department": "Growth",
       "description": "Technical SEO and organic growth — technical SEO, content clustering, off-page footprint, and Core Web Vitals for sustained search visibility.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "growth-funnels-conversion-engineering",
@@ -642,7 +857,9 @@
       "department": "Growth",
       "description": "Engineered growth funnels — funnel design, A/B testing, conversion optimization, growth hacking, and funnel analytics for maximum revenue.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "conversion-rate-optimization",
@@ -651,7 +868,9 @@
       "department": "Growth",
       "description": "Maximum yield from existing traffic — A/B testing, behavior analytics, heuristic analysis, and friction audits. Pipeline you can attribute.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     },
     {
       "slug": "campaign-planning",
@@ -660,7 +879,9 @@
       "department": "Growth",
       "description": "Strategic campaign planning — campaign strategy, channel planning, creative development, execution, and continuous optimization.",
       "capabilities": [],
-      "faqs": []
+      "faqs": [],
+      "method": [],
+      "dataHandling": []
     }
   ]
 }
