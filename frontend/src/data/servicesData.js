@@ -595,6 +595,41 @@ export const servicesData = {
       'Can you modernize without disrupting live operations?',
       'Book an Application Modernization assessment',
     ],
+    // Every statement below is a representation to an enterprise buyer and was
+    // confirmed with the business before publication. Do not copy this key to
+    // another service without re-confirming the facts for that service.
+    dataBoundary: {
+      eyebrow: 'WHERE YOUR CODE RUNS',
+      title: 'Your code runs inside a boundary',
+      titleHighlight: 'you define.',
+      lede: 'Before a repository is connected, four things are settled: where the agents run, which models they use, what they are allowed to touch, and what is left behind when the engagement ends.',
+      blocks: [
+        {
+          label: 'Deployment — three models, your choice',
+          body: 'Agents run inside your own cloud account, on-premise behind your firewall including air-gapped estates, or on Kangqore-managed infrastructure. The model is chosen and agreed before any repository is connected.',
+        },
+        {
+          label: 'Models — self-hosted, open-weight',
+          body: 'The models are open-weight and run on infrastructure inside the deployment boundary. No third-party model API receives your source code, so there is no external vendor tenancy holding it and no outbound inference call to audit.',
+        },
+        {
+          label: 'Access — read-only',
+          body: 'Agents are granted read access. They do not write to your repositories. Every proposed change arrives as a reviewable change set carrying its tests, diff and rationale, and a named person on your side accepts it.',
+        },
+        {
+          label: 'Residency — set at contract',
+          body: 'For customer-hosted and on-premise deployments your data sits wherever you place it. For Kangqore-managed engagements the region is a contractual parameter agreed before work begins, not a default assigned for you.',
+        },
+        {
+          label: 'Retention — scoped to the engagement',
+          body: 'Prompts, agent outputs and generated artefacts persist for the duration of the engagement and are deleted on completion. What survives is what we hand to you: the dependency graph, the test corpus, the audit ledger.',
+        },
+        {
+          label: 'Certification',
+          body: 'Kangqore holds ISO 27001 and SOC 2 certification. Client-specific regulatory controls — HIPAA, GDPR and sector regimes — are mapped during engagement setup rather than retrofitted before an audit.',
+        },
+      ],
+    },
     // The durations in this section read as a contradiction of the "Machine
     // Speed" hero unless the page says what they measure. They are calendar
     // time, not agent runtime — stating that turns the table into evidence.

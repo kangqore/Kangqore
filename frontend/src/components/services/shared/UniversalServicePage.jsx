@@ -2703,6 +2703,45 @@ const featureMicros   = service.featureMicros
         />
       )}
 
+      {/* ══════════════════ DATA BOUNDARY ══════════════════ */}
+      {/* Sits between the method and the FAQ deliberately: the method describes
+          what agents do to the client's code, this describes where that code
+          lives while they do it. Page-scoped — every statement here is a
+          representation to an enterprise buyer, so no service inherits it by
+          default. Only add the key to a service whose facts you have confirmed. */}
+      {service.dataBoundary && (
+        <section className="py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.dataBoundary.eyebrow}
+              </span>
+            </div>
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-3xl">
+              {service.dataBoundary.title}{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {service.dataBoundary.titleHighlight}
+              </span>
+            </h2>
+            {service.dataBoundary.lede && (
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-14">
+                {service.dataBoundary.lede}
+              </p>
+            )}
+            <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
+              {service.dataBoundary.blocks.map((b) => (
+                <div key={b.label}>
+                  <div className="h-[2px] w-16 rounded-full mb-5" style={{ background: 'linear-gradient(90deg, #2564ea, #4ab6d4)' }} />
+                  <p className="text-white font-bold text-lg leading-snug tracking-tight mb-3">{b.label}</p>
+                  <p className="text-white/60 text-base leading-relaxed">{b.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════ FAQ ══════════════════════ */}
       <section id="svc-faq" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div ref={faqRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${faqVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>

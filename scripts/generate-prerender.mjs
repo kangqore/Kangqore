@@ -147,6 +147,31 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
     .map((f) => `      <section><h3>${esc(f.q)}</h3><p>${esc(f.a)}</p></section>`)
     .join('\n');
 
+  // The React page renders these two sections from `toolsStack` and
+  // `dataBoundary`, but the snapshot did not carry either — so bots and AI
+  // crawlers received the page without its method or its security posture,
+  // the two highest-value blocks on it. Emitted here as real HTML.
+  const blockList = (items, key, val) =>
+    items.map((i) => `          <li><strong>${esc(i[key])}</strong>: ${esc(i[val])}</li>`).join('\n');
+
+  const heading = (o) => esc([o.title, o.titleHighlight].filter(Boolean).join(' '));
+
+  const method = svc.toolsStack
+    ? `    <h2>${heading(svc.toolsStack)}</h2>
+    ${svc.toolsStack.subtitle ? `<p>${esc(svc.toolsStack.subtitle)}</p>` : ''}
+      <ul>
+${blockList(svc.toolsStack.items || [], 'title', 'desc')}
+      </ul>`
+    : '';
+
+  const boundary = svc.dataBoundary
+    ? `    <h2>${heading(svc.dataBoundary)}</h2>
+    ${svc.dataBoundary.lede ? `<p>${esc(svc.dataBoundary.lede)}</p>` : ''}
+      <ul>
+${blockList(svc.dataBoundary.blocks || [], 'label', 'body')}
+      </ul>`
+    : '';
+
   const metrics = (svc.businessMetrics || [])
     .map((m) => `        <li><strong>${esc(m.value)}${esc(m.suffix || '')}</strong> ${esc(m.metricLabel || m.title)} — ${esc(m.desc)}</li>`)
     .join('\n');
@@ -204,6 +229,10 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
     ${metrics ? `<h2>Business Outcomes</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${capabilities}` : ''}
+
+    ${method}
+
+    ${boundary}
 
     ${faqs ? `<h2>Frequently Asked Questions</h2>\n${faqs}` : ''}
 
@@ -289,6 +318,8 @@ if (process.argv.includes('--check')) {
         description: (serviceSEO[slug]?.description || svc.shortDescription || '').trim(),
         capabilities: (svc.capabilityAreas || []).map((a) => a.title),
         faqs: (svc.customFAQs || []).slice(0, 3).map((f) => ({ q: f.q, a: f.a })),
+        method: (svc.toolsStack?.items || []).map((i) => ({ rule: i.title, detail: i.desc })),
+        dataHandling: (svc.dataBoundary?.blocks || []).map((b) => ({ topic: b.label, detail: b.body })),
       };
     }),
   };

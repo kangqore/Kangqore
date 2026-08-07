@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Html, Line } from '@react-three/drei';
 import * as THREE from 'three';
@@ -537,9 +537,58 @@ const ModernizationModelContent = ({ activeStep, setActiveStep }) => {
   );
 };
 
+// ─── Static fallback ─────────────────────────────────────────────────────────
+// Shown instead of the WebGL canvas when the visitor has asked for reduced
+// motion or the browser cannot give us a 3D context. Same meaning as the model,
+// in a form that is static, accessible and ~10 KB. Initialised true so a
+// server/prerender pass and the first paint both get real markup rather than an
+// empty <canvas>; the effect downgrades to the canvas only once we know it is
+// safe to animate.
+const STATIC_FALLBACK_SRC = '/images/capabilities/agentic-modernization-stack.svg';
+const STATIC_FALLBACK_ALT =
+  'Agentic modernization pipeline: a tangled legacy estate is scanned by a runtime of six agents — scan, map, plan, refactor, verify and gate — and emerges as discrete, API-connected cloud-native services.';
+
+const hasWebGL = () => {
+  try {
+    const c = document.createElement('canvas');
+    return Boolean(c.getContext('webgl2') || c.getContext('webgl'));
+  } catch {
+    return false;
+  }
+};
+
+const useStaticOnly = () => {
+  const [staticOnly, setStaticOnly] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setStaticOnly(mq.matches || !hasWebGL());
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  return staticOnly;
+};
+
 // ─── Main 3D Canvas Component ─────────────────────────────────────────────────
 export const AgenticModernization3DModel = () => {
   const [activeStep, setActiveStep] = useState(null);
+  const staticOnly = useStaticOnly();
+
+  if (staticOnly) {
+    return (
+      <div className="w-full h-full min-h-[400px] flex items-center justify-center bg-transparent">
+        <img
+          src={STATIC_FALLBACK_SRC}
+          alt={STATIC_FALLBACK_ALT}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-auto max-w-lg object-contain"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full min-h-[400px] relative overflow-hidden bg-transparent">
