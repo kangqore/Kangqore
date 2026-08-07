@@ -268,9 +268,9 @@ const LegacyEstate = () => {
 const AgentRuntime = ({ activeStep, setActiveStep }) => {
   const steps = useMemo(() => [
     {
-      title: "PIN BEHAVIOUR",
+      title: "PIN BEHAVIOR",
       stage: "STAGE 01",
-      desc: "Behaviour is pinned before anything moves"
+      desc: "Behavior is pinned before anything moves"
     },
     {
       title: "COMPILE GRAPH",
@@ -540,7 +540,7 @@ const ModernizationModelContent = ({ activeStep, setActiveStep }) => {
 // ─── Static fallback ─────────────────────────────────────────────────────────
 // Shown instead of the WebGL canvas when the visitor has asked for reduced
 // motion or the browser cannot give us a 3D context. Same meaning as the model,
-// in a form that is static, accessible and ~10 KB. Initialised true so a
+// in a form that is static, accessible and ~10 KB. Initialized true so a
 // server/prerender pass and the first paint both get real markup rather than an
 // empty <canvas>; the effect downgrades to the canvas only once we know it is
 // safe to animate.
@@ -572,8 +572,10 @@ const useStaticOnly = () => {
 };
 
 // ─── Main 3D Canvas Component ─────────────────────────────────────────────────
-export const AgenticModernization3DModel = () => {
-  const [activeStep, setActiveStep] = useState(null);
+export const AgenticModernization3DModel = ({ activeStep: propActiveStep }) => {
+  const [localActiveStep, setLocalActiveStep] = useState(null);
+  const activeStep = propActiveStep !== undefined && propActiveStep !== null ? propActiveStep : localActiveStep;
+  const setActiveStep = propActiveStep !== undefined && propActiveStep !== null ? () => {} : setLocalActiveStep;
   const staticOnly = useStaticOnly();
 
   if (staticOnly) {

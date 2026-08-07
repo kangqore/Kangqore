@@ -28,6 +28,7 @@ import Beams from '../../ui/Beams';
 import GeminiComparisonSection from './GeminiComparisonSection';
 import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
 import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DModel';
+import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -376,7 +377,7 @@ function getParityService(service, department) {
         { title: `${name} Transformation Strategy`, desc: `Establish enterprise engineering standards, architecture blueprints, and operating models.`, items: [`Engineering Strategy: Define technical vision, target architecture, and multi-year roadmaps.`, `Technology Selection: Evaluate and benchmark tools, frameworks, and cloud vendors.`, `Platform Engineering: Build internal developer platforms (IDP) to accelerate engineering teams.`, `Skill Enablement: Train engineering teams on modern cloud-native and DevOps practices.`, `Vendor Management: Manage cloud vendor commitments, licensing, and infrastructure spending.`, `Continuous Improvement: Conduct maturity assessments and benchmark against industry leaders.`] }
       ] :
       deptSlug === 'reimagine' ? [
-        { title: `Legacy Codebase Assessment & Blueprint`, desc: `Analyze legacy systems, quantify technical debt, and create prioritised modernization blueprints.`, items: [`Codebase Discovery: Map legacy dependencies, architecture, and hidden business logic.`, `Technical Debt Scoring: Score technical debt to prioritize refactoring vs. re-platforming.`, `Migration Blueprint: Create dynamic modernization roadmaps mapped to business outcomes.`, `Risk Quantification: Assess operational risk, compliance vulnerabilities, and failure points.`, `Cost-Benefit Analysis: Evaluate cloud-native ROI against maintenance overhead.`, `Architecture Recommendations: Target modular microservices or serverless architectures.`] },
+        { title: `Legacy Codebase Assessment & Blueprint`, desc: `Analyze legacy systems, quantify technical debt, and create prioritized modernization blueprints.`, items: [`Codebase Discovery: Map legacy dependencies, architecture, and hidden business logic.`, `Technical Debt Scoring: Score technical debt to prioritize refactoring vs. re-platforming.`, `Migration Blueprint: Create dynamic modernization roadmaps mapped to business outcomes.`, `Risk Quantification: Assess operational risk, compliance vulnerabilities, and failure points.`, `Cost-Benefit Analysis: Evaluate cloud-native ROI against maintenance overhead.`, `Architecture Recommendations: Target modular microservices or serverless architectures.`] },
         { title: `Application Modernization & Refactoring`, desc: `Transform monolithic legacy applications into scalable, cloud-native microservices.`, items: [`Monolith Decomposition: Deconstruct monoliths into independently deployable microservices.`, `API-Led Architecture: Replace legacy integration with versioned REST and GraphQL APIs.`, `Code Refactoring: Modernize legacy codebases to current language standards and patterns.`, `Containerization: Package applications into Docker containers for Kubernetes deployment.`, `Cloud Re-platforming: Migrate workloads to AWS, Azure, or GCP with minimal downtime.`, `UI/UX Refreshes: Rebuild legacy frontends into modern, responsive React/Next.js interfaces.`] },
         { title: `Digital Business Transformation`, desc: `Reimagine business models and operations through digital technology and innovation.`, items: [`Business Model Innovation: Identify new digital product and monetization opportunities.`, `Process Digitization: Convert manual paper-based workflows into automated digital experiences.`, `Customer Experience Design: Create seamless omnichannel user journeys across web and mobile.`, `Operational Excellence: Streamline internal business operations through modern software.`, `Data Monetization: Transform internal data assets into external customer-facing APIs.`, `Change Management: Guide teams through digital culture and operating model shifts.`] },
         { title: `MVP Acceleration & Prototyping`, desc: `Build and validate minimum viable products in rapid 8-week engineering sprints.`, items: [`Rapid Prototyping: Turn concept ideas into interactive, high-fidelity clickable prototypes.`, `Agile Sprint Execution: Deliver functional MVP builds through focused 2-week iterations.`, `Product Validation: Test MVP features with real target users to measure market demand.`, `Architecture Foundation: Build MVPs on production-grade cloud-native foundations.`, `Go-to-Market Readiness: Prepare launch collateral, deployment pipelines, and analytics.`, `Iterative Scale: Transition validated MVPs into full enterprise platform builds.`] },
@@ -909,7 +910,7 @@ export default function UniversalServicePage({ service: rawService, department }
 
   // ── Topic cluster: every sibling service in the same practice ─────────────
   // Three related links left each service page a near dead-end for crawlers and
-  // gave the 61-page catalogue no traversable hub↔spoke structure. Linking the
+  // gave the 61-page catalog no traversable hub↔spoke structure. Linking the
   // full practice turns each page into a real cluster node.
   const clusterSiblings = Object.keys(servicesData)
     .filter(s => s !== service.slug && servicesData[s].departmentSlug === service.departmentSlug)
@@ -927,6 +928,8 @@ const featureMicros   = service.featureMicros
   const [openFaq,          setOpenFaq]          = useState(0);
   const [activeCapability, setActiveCapability] = useState(0);
   const [expandedCaps,     setExpandedCaps]     = useState({});
+  // Data-boundary blocks: none open on load, active only while hovered/focused.
+  const [openBoundary,     setOpenBoundary]     = useState(null);
 
   // ── Scroll animations ─────────────────────────────────────────────────────
   const [defRef,   defVisible]   = useScrollAnimation({ once: true, threshold: 0.1 });
@@ -2554,7 +2557,7 @@ const featureMicros   = service.featureMicros
                 <span className="bg-brand-gradient bg-clip-text text-transparent">One partner throughout.</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
-                {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed programme. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
+                {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
@@ -2695,6 +2698,8 @@ const featureMicros   = service.featureMicros
           image={
             service.slug === 'agentic-ai-led-application-modernization' ? (
               <AgenticModernization3DModel />
+            ) : service.slug === 'agentic-ai' ? (
+              <AgenticAI3DModel />
             ) : (
               service.toolsStack.image
             )
@@ -2729,14 +2734,57 @@ const featureMicros   = service.featureMicros
                 {service.dataBoundary.lede}
               </p>
             )}
-            <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
-              {service.dataBoundary.blocks.map((b) => (
-                <div key={b.label}>
-                  <div className="h-[2px] w-16 rounded-full mb-5" style={{ background: 'linear-gradient(90deg, #2564ea, #4ab6d4)' }} />
-                  <p className="text-white font-bold text-lg leading-snug tracking-tight mb-3">{b.label}</p>
-                  <p className="text-white/60 text-base leading-relaxed">{b.body}</p>
-                </div>
-              ))}
+            {/* Collapsed by default; a block is active only while hovered or
+                focused, and leaving the grid closes it. Hover alone would lock
+                out touch and keyboard, so focus and click open a block too and
+                each header is a real button with aria-expanded. */}
+            <div
+              className="grid md:grid-cols-2 gap-x-16 gap-y-4"
+              onMouseLeave={() => setOpenBoundary(null)}
+            >
+              {service.dataBoundary.blocks.map((b, i) => {
+                const isOpen = openBoundary === i;
+                const panelId = `boundary-panel-${i}`;
+                return (
+                  <div key={b.label} className="group" onMouseEnter={() => setOpenBoundary(i)}>
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      onFocus={() => setOpenBoundary(i)}
+                      onClick={() => setOpenBoundary(i)}
+                      className="w-full text-left py-3 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    >
+                      <span
+                        className={`block h-[2px] rounded-full mb-5 transition-all duration-500 ${isOpen ? 'w-24' : 'w-16 opacity-60'}`}
+                        style={{ background: 'linear-gradient(90deg, #2564ea, #4ab6d4)' }}
+                      />
+                      <span
+                        className={`block font-bold text-lg leading-snug tracking-tight transition-colors duration-300 ${
+                          isOpen ? 'text-white' : 'text-white/55 group-hover:text-white/80'
+                        }`}
+                      >
+                        {b.label}
+                      </span>
+                      <span
+                        id={panelId}
+                        className="grid transition-all duration-500 ease-out motion-reduce:transition-none"
+                        style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                      >
+                        <span className="overflow-hidden">
+                          <span
+                            className={`block text-white/60 text-base leading-relaxed pt-3 transition-opacity duration-300 motion-reduce:transition-none ${
+                              isOpen ? 'opacity-100' : 'opacity-0'
+                            }`}
+                          >
+                            {b.body}
+                          </span>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

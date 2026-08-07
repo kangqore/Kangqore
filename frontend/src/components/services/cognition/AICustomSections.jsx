@@ -530,12 +530,15 @@ export const AIToolsSection = ({
   // focused; leaving the list closes it again.
   const [openTool, setOpenTool] = useState(null);
   const isCustomModel = typeof image !== 'string';
+  const customModelElement = isCustomModel && React.isValidElement(image)
+    ? React.cloneElement(image, { activeStep: openTool })
+    : image;
   return (
     <section className={`py-24 bg-black border-t border-white/[0.04] relative ${isCustomModel ? '' : 'overflow-hidden'}`}>
       {/* Expanded 3D Canvas Background Panel (Full-Section overlay exceeding bounds) */}
       {isCustomModel && (
         <div className="absolute inset-x-0 -top-32 -bottom-32 z-0 pointer-events-none lg:pointer-events-auto">
-          {image}
+          {customModelElement}
         </div>
       )}
 
