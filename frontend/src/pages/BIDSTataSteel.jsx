@@ -225,7 +225,7 @@ export default function BIDSTataSteel() {
                 'Carbon neutrality commitments requiring full operational transformation',
                 'Technology modernization across decades of manufacturing infrastructure',
                 'AI and automation adoption to maintain global competitiveness',
-                'Multi-site operational visibility and performance standardisation',
+                'Multi-site operational visibility and performance standardization',
                 'Workforce capability transformation as processes evolve',
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '8px' }}>
@@ -237,7 +237,7 @@ export default function BIDSTataSteel() {
             <div>
               <p className="label label-muted" style={{ marginBottom: '12px' }}>Investment Risks Without Diagnosis</p>
               {[
-                'Transformation programmes addressing symptoms rather than root causes',
+                'Transformation programs addressing symptoms rather than root causes',
                 'Technology investments misaligned to actual operational constraints',
                 'AI and automation projects without the data maturity to support them',
                 'Security gaps across OT/IT boundaries in an increasingly connected plant',
@@ -252,7 +252,7 @@ export default function BIDSTataSteel() {
           </div>
 
           <div className="highlight-box">
-            <p>"The cost of misdiagnosis in a programme of this scale is not measured in project budgets — it is measured in years of competitive position and billions in capital directed at the wrong priorities."</p>
+            <p>"The cost of misdiagnosis in a program of this scale is not measured in project budgets — it is measured in years of competitive position and billions in capital directed at the wrong priorities."</p>
           </div>
 
           <div className="divider" />
@@ -272,14 +272,14 @@ export default function BIDSTataSteel() {
         <div className="page">
           <div className="label">The Problem</div>
           <h2 style={{ fontSize: '28px', fontWeight: '900', lineHeight: '1.15', letterSpacing: '-0.03em', color: '#0f0f0f', marginBottom: '20px' }}>
-            Most transformation programmes fail<br />because the enterprise was <span style={{ background: 'linear-gradient(135deg, #2564ea, #38bdf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>never fully diagnosed.</span>
+            Most transformation programs fail<br />because the enterprise was <span style={{ background: 'linear-gradient(135deg, #2564ea, #38bdf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>never fully diagnosed.</span>
           </h2>
 
           <div className="three-col" style={{ marginBottom: '24px' }}>
             {[
-              { title: 'The Problem', color: '#fb7185', body: 'Organisations rarely fail because they lack investment. Critical constraints — operational, technological, and strategic — remain hidden beneath the surface. Without a comprehensive diagnosis, investments address symptoms rather than causes.' },
+              { title: 'The Problem', color: '#fb7185', body: 'Organizations rarely fail because they lack investment. Critical constraints — operational, technological, and strategic — remain hidden beneath the surface. Without a comprehensive diagnosis, investments address symptoms rather than causes.' },
               { title: 'The Economic Reality', color: '#fb923c', body: 'Without diagnostic intelligence, operational inefficiencies compound, technology debt accumulates, security exposure increases, and growth opportunities remain undiscovered — while transformation budgets produce diminishing returns.' },
-              { title: 'The Real Cost', color: '#f472b6', body: 'Every constraint that goes undiagnosed has a compounding business cost. The question is not whether these costs exist — it is whether your organisation has measured them before committing the next £ of transformation capital.' },
+              { title: 'The Real Cost', color: '#f472b6', body: 'Every constraint that goes undiagnosed has a compounding business cost. The question is not whether these costs exist — it is whether your organization has measured them before committing the next £ of transformation capital.' },
             ].map((c) => (
               <div key={c.title} style={{ borderTop: `2px solid ${c.color}`, paddingTop: '14px' }}>
                 <p style={{ fontSize: '10px', fontWeight: '800', letterSpacing: '0.2em', textTransform: 'uppercase', color: c.color, marginBottom: '8px' }}>{c.title}</p>
@@ -295,7 +295,7 @@ export default function BIDSTataSteel() {
             {[
               { constraint: 'Fragmented production data across disconnected systems', impact: 'Elevated operational costs · Poor decision velocity' },
               { constraint: 'Manual quality control workflows at scale', impact: 'Consistency risks · Compliance exposure' },
-              { constraint: 'Technology debt in legacy manufacturing platforms', impact: 'Slower modernisation · Integration cost' },
+              { constraint: 'Technology debt in legacy manufacturing platforms', impact: 'Slower modernization · Integration cost' },
               { constraint: 'Weak AI readiness across data and infrastructure', impact: 'Lost automation gains · Competitive lag' },
               { constraint: 'OT/IT security boundary gaps', impact: 'Elevated breach exposure · Regulatory risk' },
               { constraint: 'Limited operational visibility at supervisory level', impact: 'Reactive management · Inefficiency compounding' },
@@ -381,19 +381,19 @@ export default function BIDSTataSteel() {
               { n: '01', name: 'Business Strategy Intelligence',      tag: 'Strategy Maturity · Growth Readiness',        note: 'Alignment of green steel strategy, decarbonisation roadmap, and capital allocation to market position.' },
               { n: '02', name: 'Leadership Intelligence',             tag: 'Leadership Effectiveness Score',              note: 'Executive decision velocity, cross-regional governance, and transformation sponsorship.' },
               { n: '03', name: 'Financial Intelligence',              tag: 'Financial Health Score',                      note: 'Capital efficiency, investment allocation, and financial resilience across transformation spend.' },
-              { n: '04', name: 'Operational Intelligence',            tag: 'Operational Efficiency Score',                note: 'Production workflows, process maturity, operational bottlenecks, and multi-site standardisation.' },
+              { n: '04', name: 'Operational Intelligence',            tag: 'Operational Efficiency Score',                note: 'Production workflows, process maturity, operational bottlenecks, and multi-site standardization.' },
               { n: '05', name: 'Workforce Intelligence',              tag: 'Workforce Readiness Score',                   note: 'Skills readiness for EAF transition, automation capability, and change management maturity.' },
               { n: '06', name: 'Customer Intelligence',               tag: 'Customer Experience Score',                   note: 'Commercial relationship quality, contract fulfilment performance, and customer intelligence maturity.' },
               { n: '07', name: 'Sales Intelligence',                  tag: 'Revenue Engine Score',                        note: 'Revenue pipeline performance, pricing intelligence, and commercial execution capability.' },
               { n: '08', name: 'Growth Intelligence',                 tag: 'Digital Growth Score',                        note: 'Market expansion readiness, digital channel performance, and new market entry capability.' },
-              { n: '09', name: 'Technology Intelligence',             tag: 'Technology Maturity Score',                   note: 'Manufacturing technology stack health, legacy system exposure, and modernisation roadmap clarity.' },
+              { n: '09', name: 'Technology Intelligence',             tag: 'Technology Maturity Score',                   note: 'Manufacturing technology stack health, legacy system exposure, and modernization roadmap clarity.' },
               { n: '10', name: 'Cloud & Infrastructure Intelligence', tag: 'Infrastructure Readiness Score',               note: 'Cloud adoption maturity, OT/IT convergence readiness, and infrastructure scalability for smart manufacturing.' },
               { n: '11', name: 'Data Intelligence',                   tag: 'Data Maturity Score',                         note: 'Production data quality, analytics infrastructure, and intelligence capability across plant operations.' },
               { n: '12', name: 'AI Intelligence',                     tag: 'AI Readiness Score',                          note: 'Predictive maintenance, quality AI, demand forecasting, and AI governance readiness.' },
               { n: '13', name: 'Automation Intelligence',             tag: 'Automation Maturity Score',                   note: 'Process automation coverage, robotics integration, and workflow orchestration across manufacturing.' },
               { n: '14', name: 'Cybersecurity Intelligence',          tag: 'Cyber Resilience Score',                      note: 'OT security posture, IT/OT boundary controls, regulatory compliance, and incident response capability.' },
               { n: '15', name: 'Governance & Risk Intelligence',      tag: 'Governance Maturity Score',                   note: 'ESG governance, operational risk management, compliance posture, and regulatory readiness.' },
-              { n: '16', name: 'Transformation Intelligence',         tag: 'Transformation Readiness Score',              note: 'Change management maturity, transformation execution velocity, and programme delivery capability.' },
+              { n: '16', name: 'Transformation Intelligence',         tag: 'Transformation Readiness Score',              note: 'Change management maturity, transformation execution velocity, and program delivery capability.' },
             ].map((p) => (
               <div key={p.n} style={{ padding: '10px 12px 10px 0', borderBottom: '1px solid #f0f0ec', display: 'flex', gap: '10px' }}>
                 <span style={{ fontSize: '9px', fontWeight: '800', color: '#ccc', flexShrink: 0, marginTop: '2px', width: '18px' }}>{p.n}</span>
@@ -423,9 +423,9 @@ export default function BIDSTataSteel() {
             {[
               { color: '#22d3ee', name: 'Cognition Intelligence Engine',   dept: 'Cognition', desc: 'Diagnoses AI readiness, GenAI adoption potential, data maturity for intelligence workloads, and automation opportunity. For Tata Steel: evaluates predictive maintenance readiness, production quality AI, and data infrastructure for smart manufacturing.' },
               { color: '#60a5fa', name: 'Foundry Intelligence Engine',     dept: 'Foundry',   desc: 'Evaluates infrastructure health, cloud migration readiness, engineering platform maturity, and technology resilience. For Tata Steel: OT/IT convergence, legacy system health, and infrastructure readiness for connected plant operations.' },
-              { color: '#a78bfa', name: 'Reimagine Intelligence Engine',   dept: 'Reimagine', desc: 'Identifies modernisation priorities, legacy system exposure, and digital transformation readiness. For Tata Steel: blast furnace to EAF transition technology mapping, process modernisation, and change execution capability.' },
+              { color: '#a78bfa', name: 'Reimagine Intelligence Engine',   dept: 'Reimagine', desc: 'Identifies modernization priorities, legacy system exposure, and digital transformation readiness. For Tata Steel: blast furnace to EAF transition technology mapping, process modernization, and change execution capability.' },
               { color: '#fb7185', name: 'Shield Intelligence Engine',      dept: 'Shield',    desc: 'Assesses cybersecurity posture, compliance gap exposure, and AI governance coverage. For Tata Steel: OT security across plant environments, regulatory compliance posture, and operational trust maturity.' },
-              { color: '#fbbf24', name: 'Platforms Intelligence Engine',   dept: 'Platforms', desc: 'Diagnoses enterprise platform utilisation, integration complexity, and process maturity. For Tata Steel: SAP and manufacturing platform health, integration sprawl, and consolidation opportunities.' },
+              { color: '#fbbf24', name: 'Platforms Intelligence Engine',   dept: 'Platforms', desc: 'Diagnoses enterprise platform utilization, integration complexity, and process maturity. For Tata Steel: SAP and manufacturing platform health, integration sprawl, and consolidation opportunities.' },
               { color: '#34d399', name: 'Growth Intelligence Engine',      dept: 'Growth',    desc: 'Maps revenue engine performance, marketing execution gaps, and digital visibility. For Tata Steel: commercial capability, pricing intelligence, and customer relationship maturity.' },
             ].map((e) => (
               <div key={e.name} style={{ border: '1px solid #e8e8e4', borderRadius: '10px', padding: '14px', borderTop: `3px solid ${e.color}` }}>
@@ -472,14 +472,14 @@ export default function BIDSTataSteel() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0' }}>
             {[
               { n: '01', name: 'Request Submitted',                color: '#22d3ee', desc: 'Submit your diagnostic request along with key business, technology, operational, or transformation objectives.' },
-              { n: '02', name: 'Initial Review',                   color: '#fb923c', desc: 'The Kangqore team performs a preliminary review of your requirements and organisational context. Response within 24–48 business hours.', sla: 'Response within 24–48 business hours' },
+              { n: '02', name: 'Initial Review',                   color: '#fb923c', desc: 'The Kangqore team performs a preliminary review of your requirements and organizational context. Response within 24–48 business hours.', sla: 'Response within 24–48 business hours' },
               { n: '03', name: 'Executive Scoping Session',        color: '#60a5fa', desc: 'A 30–60 minute executive discovery session focused on business objectives, strategic priorities, current challenges, and transformation goals.' },
               { n: '04', name: 'Root Cause Identification',        color: '#f472b6', desc: 'The initial diagnostic phase identifies potential areas of concern, hidden constraints, operational bottlenecks, technology gaps, and risk exposure.' },
               { n: '05', name: 'Diagnostic Proposal & Scope',      color: '#fde047', desc: 'Receive a tailored engagement proposal outlining assessment scope, stakeholder involvement, diagnostic pillars, timeline, deliverables, and engagement structure.' },
               { n: '06', name: 'Enterprise Evaluation',            color: '#86efac', desc: 'Evaluated across the diagnostic framework using leadership interviews, documentation reviews, technology assessments, operational analysis, data and AI evaluations, and security reviews.' },
               { n: '07', name: 'Intelligence Scoring & Findings',  color: '#a78bfa', desc: 'The assessment is processed through the Intelligence Engines to generate the Business Health Score, Constraint Analysis, Risk Register, Opportunity Register, and Transformation Priorities.' },
               { n: '08', name: 'Executive Findings Presentation',  color: '#e8614a', desc: 'Leadership teams receive a detailed presentation of findings, root causes, risks, opportunities, and strategic recommendations.' },
-              { n: '09', name: 'Transformation Blueprint',         color: '#22d3ee', desc: 'Receive a prioritised 30/60/90/180-day roadmap designed to improve performance, resilience, growth, operational efficiency, technology maturity, and AI readiness.' },
+              { n: '09', name: 'Transformation Blueprint',         color: '#22d3ee', desc: 'Receive a prioritized 30/60/90/180-day roadmap designed to improve performance, resilience, growth, operational efficiency, technology maturity, and AI readiness.' },
               { n: '10', name: 'Transformation Engagement',        color: '#60a5fa', desc: 'The diagnostic prescription maps directly to Kangqore\'s transformation ecosystem. Execution begins where diagnosis ends — no re-scoping, no second firm, no gap.' },
             ].map((step) => (
               <div key={step.n} style={{ padding: '10px 16px 10px 0', borderBottom: '1px solid #f0f0ec', display: 'flex', gap: '12px' }}>
@@ -509,9 +509,9 @@ export default function BIDSTataSteel() {
             {[
               { n: '01', name: 'Diagnostic Scorecard',         desc: 'Enterprise-wide scoring across all sixteen intelligence pillars — benchmarked, classified, and ranked by business impact.' },
               { n: '02', name: 'Executive Intelligence Report', desc: 'Comprehensive executive-level findings, root cause analysis, and strategic recommendations for the leadership team.' },
-              { n: '03', name: 'Transformation Blueprint',     desc: 'Prioritised transformation strategy and phased execution roadmap aligned to identified constraints and opportunities.' },
-              { n: '04', name: 'Risk Register',                desc: 'Identified and scored organisational, technology, operational, and cybersecurity risks — quantified by business exposure.' },
-              { n: '05', name: 'Opportunity Register',         desc: 'High-value growth, efficiency, AI, automation, and modernisation opportunities mapped with estimated business impact.' },
+              { n: '03', name: 'Transformation Blueprint',     desc: 'Prioritized transformation strategy and phased execution roadmap aligned to identified constraints and opportunities.' },
+              { n: '04', name: 'Risk Register',                desc: 'Identified and scored organizational, technology, operational, and cybersecurity risks — quantified by business exposure.' },
+              { n: '05', name: 'Opportunity Register',         desc: 'High-value growth, efficiency, AI, automation, and modernization opportunities mapped with estimated business impact.' },
               { n: '06', name: 'Service Prescription Matrix',  desc: 'Recommended capability areas aligned to identified constraints — execution-ready from day one, no re-scoping required.' },
               { n: '07', name: '30/60/90/180-Day Roadmap',     desc: 'A phased transformation execution plan giving the executive team a sequenced action plan from day one.' },
               { n: '08', name: 'Executive Board Presentation', desc: 'Boardroom-ready strategic findings presentation structured for board-level review and governance decision-making.' },
@@ -546,7 +546,7 @@ export default function BIDSTataSteel() {
         <div className="page">
           <div className="label">Representative Output</div>
           <h2 style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '-0.02em', color: '#0f0f0f', marginBottom: '6px' }}>This is what you receive.</h2>
-          <p style={{ fontSize: '11px', color: '#888', marginBottom: '16px' }}>Representative manufacturing enterprise scorecard — illustrative, not attributable to a specific organisation.</p>
+          <p style={{ fontSize: '11px', color: '#888', marginBottom: '16px' }}>Representative manufacturing enterprise scorecard — illustrative, not attributable to a specific organization.</p>
 
           {/* Scorecard header */}
           <div style={{ border: '1px solid #e8e8e4', borderRadius: '10px', overflow: 'hidden', marginBottom: '12px' }}>
@@ -618,7 +618,7 @@ export default function BIDSTataSteel() {
               {[
                 { rank: '01', pillar: 'Operational Efficiency', score: 32, status: 'Critical', sc: '#fb7185', impact: 'Elevated operating costs across fragmented production processes', action: 'Business Process Reengineering & Manufacturing Intelligence' },
                 { rank: '02', pillar: 'AI Readiness',            score: 29, status: 'Critical', sc: '#fb7185', impact: 'Significant competitive exposure as manufacturing peers accelerate AI adoption', action: 'AI & Cognitive Computing Strategy — Manufacturing Edition' },
-                { rank: '03', pillar: 'Technology Maturity',     score: 49, status: 'Moderate', sc: '#fbbf24', impact: 'Legacy system debt constraining modernisation velocity and integration capability', action: 'Application Modernisation & Platform Engineering' },
+                { rank: '03', pillar: 'Technology Maturity',     score: 49, status: 'Moderate', sc: '#fbbf24', impact: 'Legacy system debt constraining modernization velocity and integration capability', action: 'Application Modernization & Platform Engineering' },
               ].map((f, i) => (
                 <div key={f.rank} style={{ padding: '14px 16px', borderLeft: i > 0 ? '1px solid #f0f0ec' : 'none' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
@@ -685,7 +685,7 @@ export default function BIDSTataSteel() {
               'Critical constraints — operational, technological, and strategic — identified, scored, and ranked by business impact',
               'Every engagement produces a ranked, scored roadmap — not a list of recommendations',
               'The Risk Register identifies and quantifies operational, technology, cybersecurity, and OT security risk exposures',
-              'Technology Maturity and Cloud scores identify consolidation opportunities, cost exposure, and modernisation priorities',
+              'Technology Maturity and Cloud scores identify consolidation opportunities, cost exposure, and modernization priorities',
               'AI Readiness — consistently one of the highest-priority findings — with clear pathways to manufacturing AI adoption',
               'The Opportunity Register maps automation, AI, and efficiency wins with estimated business impact',
               'The 30/60/90/180-Day Roadmap gives the executive team a sequenced action plan from day one',
@@ -748,7 +748,7 @@ export default function BIDSTataSteel() {
 
           <div className="divider" />
 
-          <p className="label label-muted" style={{ marginBottom: '14px' }}>How we access your organisation — and how we don't</p>
+          <p className="label label-muted" style={{ marginBottom: '14px' }}>How we access your organization — and how we don't</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '20px' }}>
             {[
               { title: 'No persistent system access', body: 'Our diagnostic protocol is structured-interview and evidence-led. We do not require live API access, system credentials, or ongoing integration hooks to complete an engagement.' },

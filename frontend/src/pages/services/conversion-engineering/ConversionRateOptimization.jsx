@@ -107,9 +107,9 @@ const ConversionRateOptimization = () => {
       { name: 'E-commerce & D2C', description: 'Reduce cart abandonment, increase AOV, and engineer post-purchase upsells.', icon: ShoppingCart },
       { name: 'Real Estate', description: 'Streamline property inquiry funnels and investor lead generation journeys.', icon: Landmark },
       { name: 'Healthcare', description: 'Simplify appointment bookings and patient acquisition while maintaining trust.', icon: Heart },
-      { name: 'Education', description: 'Increase student enrollment applications and optimise course discovery.', icon: GraduationCap },
+      { name: 'Education', description: 'Increase student enrollment applications and optimize course discovery.', icon: GraduationCap },
       { name: 'Finance & Insurance', description: 'Simplify complex application processes and build high-trust conversion pathways.', icon: DollarSign },
-      { name: 'Professional Services', description: 'Improve lead quality, optimise form submissions, and deploy automated nurturing.', icon: Briefcase }
+      { name: 'Professional Services', description: 'Improve lead quality, optimize form submissions, and deploy automated nurturing.', icon: Briefcase }
     ],
 
     customFAQs: [
@@ -235,7 +235,7 @@ const ConversionRateOptimization = () => {
       capabilities,
       trustPillars: [
         { title: 'Revenue-First Execution', tag: 'Commercial Focus', description: 'Every recommendation is measured against commercial impact—not vanity metrics or isolated page improvements.' },
-        { title: 'Full-System Thinking', tag: 'End-to-End', description: 'We optimise acquisition, conversion, retention, and expansion together as one connected revenue system.' },
+        { title: 'Full-System Thinking', tag: 'End-to-End', description: 'We optimize acquisition, conversion, retention, and expansion together as one connected revenue system.' },
         { title: 'Scientific Rigor', tag: 'Data Science', description: 'Structured experimentation replaces guesswork. We wait for statistical significance before declaring winners.' },
         { title: 'AI-Native Advantage', tag: 'Modern Intelligence', description: 'Modern automation and intelligence increase speed, precision, and personalisation across the entire funnel.' }
       ],

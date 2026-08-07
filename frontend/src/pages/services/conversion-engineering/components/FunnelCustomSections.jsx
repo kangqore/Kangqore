@@ -47,7 +47,7 @@ export const FunnelChallengesSection = () => {
     },
     { 
       before: { title: '"Poor Lead Quality"', desc: 'Sales teams waste time chasing unqualified prospects generated from poorly designed, low-friction form flows.' },
-      after: { title: 'High-Intent Qualification', desc: 'We optimise for high-intent commercial actions, adding strategic friction to filter, qualify, and route premium leads.' }
+      after: { title: 'High-Intent Qualification', desc: 'We optimize for high-intent commercial actions, adding strategic friction to filter, qualify, and route premium leads.' }
     },
     { 
       before: { title: '"Follow-Up Friction"', desc: 'Leads go cold because post-conversion nurturing, onboarding, and activation sequences are weak or non-existent.' },
@@ -208,7 +208,7 @@ export const FourPhaseFunnelMethod = () => {
   const phases = [
     { num: '01', title: 'Attract', desc: 'Acquire the right audience—not just more traffic. We build precision acquisition systems that target high-intent demand.', includes: ['Paid acquisition strategy', 'SEO & organic demand capture', 'Audience signal mapping', 'Creative testing systems', 'High-intent channel planning'] },
     { num: '02', title: 'Engage', desc: 'Turn attention into trust and buying intent. We create personalised experiences that move prospects toward commitment.', includes: ['High-converting landing pages', 'Personalised journeys', 'Lead magnets & interactive tools', 'Retargeting sequences', 'Webinar / event funnels'] },
-    { num: '03', title: 'Convert', desc: 'Reduce friction and increase action. We optimise every decision point to maximise conversion rates and revenue per visitor.', includes: ['CRO & A/B testing', 'Checkout optimisation', 'Offer and pricing psychology', 'Form-flow improvement', 'Sales enablement assets'] },
+    { num: '03', title: 'Convert', desc: 'Reduce friction and increase action. We optimize every decision point to maximize conversion rates and revenue per visitor.', includes: ['CRO & A/B testing', 'Checkout optimization', 'Offer and pricing psychology', 'Form-flow improvement', 'Sales enablement assets'] },
     { num: '04', title: 'Retain & Expand', desc: 'Grow revenue after the first conversion. We engineer post-purchase systems that increase lifetime value and reduce churn.', includes: ['Onboarding systems', 'Upsell / cross-sell flows', 'Reactivation campaigns', 'Referral loops', 'Loyalty automation'] }
   ];
 
@@ -340,7 +340,7 @@ export const FunnelSuccessSection = () => {
             What High-Performing Funnels <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400 italic">Deliver.</span>
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed">
-            True growth engineering isn't about isolated tweaks. It's about building a seamless commercial system that maximises the return on every visitor.
+            True growth engineering isn't about isolated tweaks. It's about building a seamless commercial system that maximizes the return on every visitor.
           </p>
         </div>
         

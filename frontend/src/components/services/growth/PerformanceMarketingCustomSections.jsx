@@ -564,7 +564,7 @@ export const PerformanceReadinessMagnet = () => {
                 theme="glass"
               />
             </div>
-            <p className="mt-8 text-sm text-white/60 font-light">Average agencies optimise campaigns. Kangqore engineers revenue systems.</p>
+            <p className="mt-8 text-sm text-white/60 font-light">Average agencies optimize campaigns. Kangqore engineers revenue systems.</p>
           </div>
         </div>
       </div>

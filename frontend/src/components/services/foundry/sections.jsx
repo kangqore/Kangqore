@@ -2037,7 +2037,7 @@ const supportMaintenance = {
       bgImage: '/images/capabilities/data-analytics.png',
       items: [
         'Recurring issue pattern identification',
-        'System behaviour and footprint tuning',
+        'System behavior and footprint tuning',
         'Preventative reliability fixes',
         'Log review and fault pattern analysis'
       ]

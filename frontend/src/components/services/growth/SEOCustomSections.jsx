@@ -140,8 +140,8 @@ export const FourPhaseGrowthMethod = () => {
 
   const phases = [
     { num: '01', title: 'Audit & Opportunity Discovery', desc: 'We assess your website, competitors, search demand, content gaps, and technical barriers to identify the highest-value growth opportunities.', includes: ['Technical SEO audit', 'Competitor analysis', 'Keyword opportunity mapping', 'Content gap analysis', 'UX & conversion review'] },
-    { num: '02', title: 'Strategy & Architecture', desc: 'We create a custom roadmap aligned with your business goals, buyer journey, and market realities.', includes: ['Keyword strategy', 'Page prioritisation', 'Content cluster planning', 'Information architecture', 'Internal linking model'] },
-    { num: '03', title: 'Execution & Optimisation', desc: 'We implement improvements across technical SEO, content, on-page signals, and conversion performance.', includes: ['Metadata optimisation', 'Landing page improvements', 'Schema markup', 'Technical fixes', 'Content deployment'] },
+    { num: '02', title: 'Strategy & Architecture', desc: 'We create a custom roadmap aligned with your business goals, buyer journey, and market realities.', includes: ['Keyword strategy', 'Page prioritization', 'Content cluster planning', 'Information architecture', 'Internal linking model'] },
+    { num: '03', title: 'Execution & Optimization', desc: 'We implement improvements across technical SEO, content, on-page signals, and conversion performance.', includes: ['Metadata optimization', 'Landing page improvements', 'Schema markup', 'Technical fixes', 'Content deployment'] },
     { num: '04', title: 'Scale & Compound Growth', desc: 'Once momentum starts, we expand keyword ownership, improve conversion efficiency, and strengthen authority.', includes: ['Expansion campaigns', 'Authority building', 'Performance iteration', 'Content scaling', 'Conversion refinement'] }
   ];
 

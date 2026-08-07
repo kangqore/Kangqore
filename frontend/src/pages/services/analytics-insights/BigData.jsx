@@ -15,7 +15,7 @@ const FAQ_SCHEMA = {
     {
       "@type": "Question",
       "name": "How do we govern and secure petabyte-scale data without creating analytics bottlenecks?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Governance at scale requires automation, not manual oversight. We implement data catalogues, automated classification, role-based access controls, and column-level encryption that operate transparently within your analytics workflows. Analysts see the data they're authorized to see, instantly — without submitting access tickets or waiting for manual approvals." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Governance at scale requires automation, not manual oversight. We implement data catalogs, automated classification, role-based access controls, and column-level encryption that operate transparently within your analytics workflows. Analysts see the data they're authorized to see, instantly — without submitting access tickets or waiting for manual approvals." }
     },
     {
       "@type": "Question",
@@ -291,7 +291,7 @@ const BigData = () => {
         items: [
           { heading: 'Strategy & Roadmap Development', description: 'Define the business case, technology choices, and phased migration plan for moving to a lakehouse architecture — grounded in your existing data estate and target analytics use cases.' },
           { heading: 'Prototyping & Tool Evaluation', description: 'Run structured proof-of-concepts across Delta Lake, Apache Iceberg, and Hudi to validate performance, compatibility, and governance capabilities before committing to a platform.' },
-          { heading: 'Data Integration, Access & Services', description: 'Design and implement ingestion pipelines, API access layers, and data product catalogues that make lakehouse data accessible to every consumer — from BI tools to ML notebooks.' },
+          { heading: 'Data Integration, Access & Services', description: 'Design and implement ingestion pipelines, API access layers, and data product catalogs that make lakehouse data accessible to every consumer — from BI tools to ML notebooks.' },
           { heading: 'Scalable Storage & Processing Architecture', description: 'Engineer compute-storage separation, partitioning strategies, and tiered storage policies that scale cost-efficiently with data volume and query concurrency.' },
           { heading: 'Construction & Go-Live Enablement', description: 'Build and validate the complete lakehouse stack — ingestion, storage, transformation, governance — and manage the go-live transition with zero-downtime cutover.' }
         ]
@@ -347,7 +347,7 @@ const BigData = () => {
         items: [
           { heading: 'Platform monitoring & health checks', description: 'Proactive 24/7 monitoring of pipeline health, cluster utilization, and data freshness — with automated alerting and escalation before issues impact downstream consumers.' },
           { heading: 'Continuous performance optimization', description: 'Ongoing query tuning, storage optimization, and compute right-sizing cadences that keep platform performance improving and infrastructure costs contained over time.' },
-          { heading: 'Ongoing governance & compliance', description: 'Maintain data catalogues, lineage records, access control reviews, and compliance reporting on a continuous basis — keeping your platform audit-ready at all times.' },
+          { heading: 'Ongoing governance & compliance', description: 'Maintain data catalogs, lineage records, access control reviews, and compliance reporting on a continuous basis — keeping your platform audit-ready at all times.' },
           { heading: 'Managed analytics operations', description: 'Operate your analytics infrastructure end-to-end — from pipeline orchestration and incident response to feature releases and user support — as a fully managed service.' }
         ]
       }

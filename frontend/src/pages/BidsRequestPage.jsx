@@ -9,7 +9,7 @@ const BIDS_INDUSTRIES = [
 const PRIMARY_CHALLENGES = [
   { value: 'operational_efficiency',   label: 'Operational Inefficiency — productivity is being lost in core operations' },
   { value: 'data_blindness',           label: 'Data Blindness — no real insight into business performance' },
-  { value: 'digital_transformation',   label: 'Digital Transformation — need to modernise but don\'t know where to start' },
+  { value: 'digital_transformation',   label: 'Digital Transformation — need to modernize but don\'t know where to start' },
   { value: 'team_alignment',           label: 'Team Alignment — strategy and execution are disconnected' },
   { value: 'customer_experience',      label: 'Customer Experience — delivery quality needs improvement' },
   { value: 'ai_readiness',             label: 'AI Readiness — want to adopt AI but lack a clear path' },
@@ -134,7 +134,7 @@ export default function BidsRequestPage() {
           </h1>
           <p className="text-gray-500 text-sm leading-relaxed mb-8">
             The BIDS™ (Business Diagnostic Intelligence System) delivers a deep 16-pillar diagnostic of your
-            organisation — pinpointing operational gaps, prioritising transformation, and generating a WAANDA™-powered
+            organization — pinpointing operational gaps, prioritizing transformation, and generating a WAANDA™-powered
             roadmap used by enterprise leaders to make confident decisions.
           </p>
 
@@ -209,8 +209,8 @@ export default function BidsRequestPage() {
 
             {/* Company */}
             <div>
-              <label style={LABEL_STYLE}>Company / Organisation *</label>
-              <input value={form.company} onChange={set('company')} required placeholder="Your organisation name" style={INPUT_STYLE} />
+              <label style={LABEL_STYLE}>Company / Organization *</label>
+              <input value={form.company} onChange={set('company')} required placeholder="Your organization name" style={INPUT_STYLE} />
             </div>
 
             {/* Industry + Team Size */}

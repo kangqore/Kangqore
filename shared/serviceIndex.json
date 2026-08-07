@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T06:33:58.018Z",
+  "generatedAt": "2026-08-07T10:25:39.080Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -57,7 +57,7 @@
       "url": "/services/agentic-ai-led-application-modernization",
       "name": "Agentic AI-led Application Modernization",
       "department": "Cognition",
-      "description": "Modernise legacy apps at machine speed with agentic AI — automated refactoring, intelligent migration, and continuous governance without disrupting operations.",
+      "description": "Modernize legacy apps at machine speed with agentic AI — automated refactoring, intelligent migration, and continuous governance without disrupting operations.",
       "capabilities": [
         "Application Modernization",
         "Integration & API Modernization",
@@ -70,7 +70,7 @@
       "faqs": [
         {
           "q": "What is Agentic AI-led Application Modernization?",
-          "a": "We don't migrate code — we deploy AI operators that understand legacy systems. Kangqore delivers autonomous agentic AI systems that assess entire codebases in days, generate dynamic migration blueprints, execute re-platforming to cloud-native architectures, and validate outcomes at 99% test coverage — compressing multi-year transformation programs into governed, measurable sprints."
+          "a": "We don't migrate code — we deploy AI operators that understand legacy systems. Kangqore delivers autonomous agentic AI systems that assess entire codebases in days, generate dynamic migration blueprints, execute re-platforming to cloud-native architectures, and prove behavioral equivalence against the legacy system before cutover — compressing multi-year transformation programs into governed, measurable sprints."
         },
         {
           "q": "How does AI reduce the risk of application modernization?",
@@ -83,8 +83,8 @@
       ],
       "method": [
         {
-          "rule": "Behaviour is pinned before anything moves",
-          "detail": "Agents build the dependency graph, take runtime traces from live production paths, and generate a characterization suite that passes green against the legacy system exactly as it stands. The outcome is a regression gate that did not previously exist: every later change is measured against recorded behaviour rather than institutional memory, so \"did we break something\" resolves to a test result instead of an argument."
+          "rule": "Behavior is pinned before anything moves",
+          "detail": "Agents build the dependency graph, take runtime traces from live production paths, and generate a characterization suite that passes green against the legacy system exactly as it stands. The outcome is a regression gate that did not previously exist: every later change is measured against recorded behavior rather than institutional memory, so \"did we break something\" resolves to a test result instead of an argument."
         },
         {
           "rule": "Target state compiles to a work graph",
@@ -250,7 +250,7 @@
           "a": "AI governance is the operating system for trustworthy AI. It means every model, agent, and AI application in your enterprise has a defined owner, documented lifecycle, version-controlled deployment, explainable outputs, bias monitoring, compliance validation, and immutable audit trails. Kangqore implements this as infrastructure — not a policy document that sits in a drawer."
         },
         {
-          "q": "Why does our organisation need AI governance now?",
+          "q": "Why does our organization need AI governance now?",
           "a": "Three forces are converging: the EU AI Act introduces mandatory compliance obligations with significant penalties for high-risk AI. Shadow AI usage is creating unmonitored model sprawl across departments. And generative AI and autonomous agents are making decisions that directly impact customers, revenue, and legal exposure. Governance is no longer optional — it's the difference between scaling AI and getting shut down by your regulator."
         },
         {

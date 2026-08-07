@@ -73,6 +73,9 @@ jobs:
     - name: Audit page-source SEO surface (canonical + OG + JSON-LD)
       run: npm run audit:page-seo
 
+    - name: Copy consistency audit (US spelling, labelled numeric claims)
+      run: npm run audit:copy-consistency
+
     # Backend Build
     - name: Install Backend Dependencies
       working-directory: ./backend

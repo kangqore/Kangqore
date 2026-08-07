@@ -366,7 +366,7 @@ export const serviceSEO = {
   },
   'agentic-ai-led-application-modernization': {
     title: 'Agentic AI-led Application Modernization | Kangqore',
-    description: 'Modernise legacy apps at machine speed with agentic AI — automated refactoring, intelligent migration, and continuous governance without disrupting operations.',
+    description: 'Modernize legacy apps at machine speed with agentic AI — automated refactoring, intelligent migration, and continuous governance without disrupting operations.',
     keywords: 'agentic AI modernization, application modernization, AI-led migration, legacy modernization, intelligent refactoring, AI-driven modernization, enterprise application modernization',
     url: '/services/agentic-ai-led-application-modernization',
   },

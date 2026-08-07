@@ -537,14 +537,14 @@ const technologyConsulting = {
       title: 'Our Technology Consulting',
       titleHighlight: 'Delivery Model.',
       description: 'At Kangqore, technology consulting is structured as a disciplined advisory-to-execution model—designed to improve clarity, reduce risk, and create stronger transformation outcomes.',
-      pills: ['Analyse', 'Strategize', 'Manage', 'Optimize'],
+      pills: ['Analyze', 'Strategize', 'Manage', 'Optimize'],
     },
     matrix: {
       engineId: 'Engine :: TECH_ADV_V1',
       title: '4-Phase Advisory Lifecycle',
       subtext: 'We deconstruct the complexity of technology transformation into governed, measurable advisory layers.',
       layers: [
-        { title: 'Analyse', id: 'ADV_ANALYSE', icon: <Search />, desc: 'Understand business goals, current systems, process realities, dependencies, and risk areas.' },
+        { title: 'Analyze', id: 'ADV_ANALYSE', icon: <Search />, desc: 'Understand business goals, current systems, process realities, dependencies, and risk areas.' },
         { title: 'Strategize', id: 'ADV_STRAT', icon: <Layers />, desc: 'Create a roadmap for modernization, architecture decisions, transformation priorities, and platform alignment.' },
         { title: 'Manage', id: 'ADV_MANAGE', icon: <ShieldCheck />, desc: 'Support solution planning, implementation readiness, stakeholder coordination, and team enablement.' },
         { title: 'Optimize', id: 'ADV_OPT', icon: <Activity />, desc: 'Continuously evaluate outcomes, refine the technology path, and adapt strategy as priorities evolve.' },

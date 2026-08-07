@@ -260,7 +260,7 @@ export default function AboutUs() {
           </FadeIn>
           <FadeIn delay="130ms">
             <p className="text-lg sm:text-xl text-white/35 max-w-xl font-light leading-relaxed mb-12">
-              End-to-end technology partner for organisations navigating digital transformation, AI adoption, and cloud modernisation at scale.
+              End-to-end technology partner for organizations navigating digital transformation, AI adoption, and cloud modernization at scale.
             </p>
           </FadeIn>
           <FadeIn delay="200ms">
@@ -328,7 +328,7 @@ export default function AboutUs() {
                   </div>
                   <div>
                     <p className="font-mono text-[9px] text-cyan-400 font-bold tracking-widest uppercase mb-3">Vision</p>
-                    <p className="text-sm text-white/25 font-light leading-relaxed italic">To be the trusted technology partner for organisations navigating an AI-driven world.</p>
+                    <p className="text-sm text-white/25 font-light leading-relaxed italic">To be the trusted technology partner for organizations navigating an AI-driven world.</p>
                   </div>
                 </div>
               </FadeIn>
@@ -374,7 +374,7 @@ export default function AboutUs() {
             <FadeIn>
               <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-amber-400 mb-6">The Challenge</p>
               <p className="text-2xl sm:text-3xl text-white/55 font-light leading-snug">
-                Organisations face growing complexity in digital transformation without the depth, velocity, or governance to execute at enterprise scale.
+                Organizations face growing complexity in digital transformation without the depth, velocity, or governance to execute at enterprise scale.
               </p>
             </FadeIn>
             <FadeIn delay="100ms">
@@ -390,7 +390,7 @@ export default function AboutUs() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 sm:p-8 rounded-2xl border border-white/[0.07] bg-white/[0.025]">
               <div>
                 <p className="text-base font-bold text-white">Kangqore · Technology Partner</p>
-                <p className="text-sm text-white/25 font-light mt-1">Full-stack digital transformation for ambitious organisations</p>
+                <p className="text-sm text-white/25 font-light mt-1">Full-stack digital transformation for ambitious organizations</p>
               </div>
               <div className="flex items-center gap-4 flex-shrink-0">
                 <Link to="/services" className="px-5 py-2.5 rounded-full border border-white/10 text-[12px] font-bold text-white/45 hover:text-white hover:border-white/30 transition-all duration-300">
@@ -475,8 +475,8 @@ export default function AboutUs() {
           <div className="grid lg:grid-cols-3 gap-5">
             {[
               { num:'01', badge:'Foundation', year:'2023', title:'Born in Bengaluru',      desc:'Kangqore was founded with a clear mandate — bridge technology potential with real-world business execution. Enterprise-ready digital systems that deliver measurable outcomes.', color:'text-brand-blue', bgc:'bg-brand-blue/10'  },
-              { num:'02', badge:'Expansion',  year:'2024', title:'Building Depth',          desc:'Capabilities expanded across AI, cloud engineering, modernisation, automation, and cybersecurity — evolving into a multi-disciplinary technology partner for diverse industries.',  color:'text-cyan-400',   bgc:'bg-cyan-500/10'    },
-              { num:'03', badge:'Now',         year:'2025', title:'Engineering the Future', desc:'Today, Kangqore engineers intelligent products, platforms, and services — helping organisations become adaptive, resilient, and future-ready in an AI-driven world.',              color:'text-amber-400',  bgc:'bg-amber-500/10'   },
+              { num:'02', badge:'Expansion',  year:'2024', title:'Building Depth',          desc:'Capabilities expanded across AI, cloud engineering, modernization, automation, and cybersecurity — evolving into a multi-disciplinary technology partner for diverse industries.',  color:'text-cyan-400',   bgc:'bg-cyan-500/10'    },
+              { num:'03', badge:'Now',         year:'2025', title:'Engineering the Future', desc:'Today, Kangqore engineers intelligent products, platforms, and services — helping organizations become adaptive, resilient, and future-ready in an AI-driven world.',              color:'text-amber-400',  bgc:'bg-amber-500/10'   },
             ].map((m, i) => (
               <FadeIn key={i} delay={`${i * 100}ms`}>
                 <div className="relative group h-full p-8 lg:p-10 rounded-[2rem] border border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.035] transition-all duration-500 overflow-hidden">
@@ -572,7 +572,7 @@ export default function AboutUs() {
               { title: 'Strategy',     id: 'KANG_STR', Icon: Target,  desc: 'Business analysis, technology roadmapping, and architecture design aligned to your goals.',  color: 'text-brand-blue', bgc: 'bg-brand-blue/10'  },
               { title: 'Engineering',  id: 'KANG_ENG', Icon: Code2,   desc: 'High-velocity development, cloud-native systems, and modern platform delivery.',              color: 'text-cyan-400',   bgc: 'bg-cyan-500/10'    },
               { title: 'Intelligence', id: 'KANG_AI',  Icon: Brain,   desc: 'AI, automation, and data engineering embedded by design — not bolted on.',                    color: 'text-violet-400', bgc: 'bg-violet-500/10'  },
-              { title: 'Operations',   id: 'KANG_OPS', Icon: Shield,  desc: 'Managed services, governance, security, and continuous optimisation.',                        color: 'text-amber-400',  bgc: 'bg-amber-500/10'   },
+              { title: 'Operations',   id: 'KANG_OPS', Icon: Shield,  desc: 'Managed services, governance, security, and continuous optimization.',                        color: 'text-amber-400',  bgc: 'bg-amber-500/10'   },
             ].map((m, i) => {
               const refs   = [t1Ref, t2Ref, t3Ref, t4Ref];
               const styles = [t1Style, t2Style, t3Style, t4Style];
@@ -612,7 +612,7 @@ export default function AboutUs() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue via-blue-400 to-cyan-400">Enterprises.</span>
           </p>
           <p className="text-lg text-white/18 font-light italic max-w-2xl mx-auto">
-            Your organisation should run on systems that reason, adapt, and evolve — not systems that constrain.
+            Your organization should run on systems that reason, adapt, and evolve — not systems that constrain.
           </p>
         </div>
         <div className="mt-20 inline-flex flex-wrap justify-center gap-16 text-center relative z-10">
@@ -686,7 +686,7 @@ export default function AboutUs() {
             <FadeIn>
               <div className="p-8 lg:p-10 rounded-[2rem] border border-white/[0.05] bg-white/[0.01]">
                 <p className="font-mono text-[9px] text-white/18 uppercase tracking-widest mb-8">Traditional Vendor</p>
-                {['Executes tasks without context','Optimises for hours billed','Delivers outputs, not outcomes','Hands off at go-live','Technology-first, business-second'].map((t, i) => (
+                {['Executes tasks without context','Optimizes for hours billed','Delivers outputs, not outcomes','Hands off at go-live','Technology-first, business-second'].map((t, i) => (
                   <div key={i} className="flex items-start gap-3 mb-4">
                     <div className="w-4 h-4 rounded-full border border-white/8 flex items-center justify-center mt-0.5 shrink-0">
                       <div className="w-1.5 h-0.5 bg-white/12" />
@@ -746,8 +746,8 @@ export default function AboutUs() {
 
           <div className="grid lg:grid-cols-2 gap-5 mb-5">
             {[
-              { tag:'Planet', tagColor:'text-emerald-400', Icon: Leaf,  iconBg:'bg-emerald-500/10', title:'Prioritising the planet', body:'We design energy-efficient architectures, promote ethical AI practices, and build sustainable systems — ensuring technology drives progress while respecting environmental responsibility.', img:'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=1200&q=80' },
-              { tag:'People', tagColor:'text-brand-blue',  Icon: Heart, iconBg:'bg-brand-blue/10',  title:'A people-first culture',  body:'We foster a culture of ownership, continuous learning, and collaboration — empowering individuals to solve meaningful problems and grow alongside the organisation.',              img:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80' },
+              { tag:'Planet', tagColor:'text-emerald-400', Icon: Leaf,  iconBg:'bg-emerald-500/10', title:'Prioritizing the planet', body:'We design energy-efficient architectures, promote ethical AI practices, and build sustainable systems — ensuring technology drives progress while respecting environmental responsibility.', img:'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=1200&q=80' },
+              { tag:'People', tagColor:'text-brand-blue',  Icon: Heart, iconBg:'bg-brand-blue/10',  title:'A people-first culture',  body:'We foster a culture of ownership, continuous learning, and collaboration — empowering individuals to solve meaningful problems and grow alongside the organization.',              img:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80' },
             ].map((s, i) => (
               <FadeIn key={i} delay={`${i * 80}ms`}>
                 <div className="group relative rounded-[2rem] overflow-hidden border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500" style={{ minHeight: '440px' }}>
@@ -805,7 +805,7 @@ export default function AboutUs() {
           </FadeIn>
           <FadeIn delay="80ms">
             <p className="text-lg text-white/28 leading-relaxed font-light mb-14 max-w-3xl mx-auto">
-              Whether you're modernising platforms, adopting AI, or building something entirely new — Kangqore is ready to partner across the full transformation lifecycle.
+              Whether you're modernizing platforms, adopting AI, or building something entirely new — Kangqore is ready to partner across the full transformation lifecycle.
             </p>
           </FadeIn>
           <FadeIn delay="160ms">

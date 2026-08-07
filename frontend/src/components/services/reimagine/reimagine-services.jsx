@@ -1162,7 +1162,7 @@ const applicationModernization = {
     { title: 'Engineering Rigor', description: 'Architecture discipline + delivery rigor + automation-first mindset — ensuring measurable ROI.' },
     { title: 'Security-First', description: 'Modernization is incomplete without pipeline maturity. We bake in DevSecOps by default.' },
     { title: 'Zero-Disruption Strategy', description: 'Blue/green, canary, and strangler patterns to modernize while staying live and operational.' },
-    { title: 'Outcome-Led Roadmaps', description: 'Performance, scalability, and TCO benchmarks tracked through granular modernisation KPIs.' },
+    { title: 'Outcome-Led Roadmaps', description: 'Performance, scalability, and TCO benchmarks tracked through granular modernization KPIs.' },
   ],
 
   industries: [

@@ -155,7 +155,7 @@ const INITIAL_TOPICS = [
     comments: [
       { id: 1, author: 'Arjun Mehta', initials: 'AM', color: '#3B82F6', text: 'The COIG metric is fascinating — measuring operational intelligence gain rather than just cost savings. How is it calculated?', date: '2026-07-17' },
       { id: 2, author: 'Priya Sharma', initials: 'PS', color: '#10B981', text: 'Love that you went Customer Zero before pitching to anyone. Real credibility when the founders run their own platform daily.', date: '2026-07-17' },
-      { id: 3, author: 'Sarah Chen', initials: 'SC', color: '#FB923C', text: 'Is the Blueprint portable? Can it be customised per industry vertical?', date: '2026-07-16' },
+      { id: 3, author: 'Sarah Chen', initials: 'SC', color: '#FB923C', text: 'Is the Blueprint portable? Can it be customized per industry vertical?', date: '2026-07-16' },
     ]
   },
   {
