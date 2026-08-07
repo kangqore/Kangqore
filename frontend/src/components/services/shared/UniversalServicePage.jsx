@@ -133,7 +133,9 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
             ) 
           : (isExpanded 
               ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
-              : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.85),0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_25px_50px_-8px_rgba(37,100,234,0.3),0_10px_20px_rgba(0,0,0,0.8)]'
+              // Hover lift is neutral: the blue glow (rgba(37,100,234,0.3))
+              // was reading as a light source behind the card. Depth kept.
+              : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.85),0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_25px_50px_-8px_rgba(0,0,0,0.9),0_10px_20px_rgba(0,0,0,0.8)]'
             )
       }`}
     >

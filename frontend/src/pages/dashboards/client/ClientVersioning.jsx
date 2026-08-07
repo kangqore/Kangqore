@@ -112,7 +112,7 @@ const ClientVersioning = ({ isTabContent = false }) => {
                     ))}
                 </div>
 
-                {/* Pipeline Visualisation Placeholder */}
+                {/* Pipeline Visualization Placeholder */}
                 <div className="bg-slate-900 rounded-[3rem] p-12 text-center space-y-8">
                     <h3 className="text-xl font-black text-white">CI/CD Pipeline Flow</h3>
                     <div className="flex items-center justify-center gap-6">

@@ -802,7 +802,7 @@ const dpaAutomationCoESection = (
       <div className="max-w-5xl mx-auto">
         <div className="space-y-4">
           {[
-            { num: 1, title: 'Domain Expertise in Focus Verticals', text: 'Healthcare, Manufacturing, CPG/Retail, BFSI, etc. — provides a vital edge in process re-engineering and optimisation consulting, which is an integral part of any successful enterprise automation initiative.' },
+            { num: 1, title: 'Domain Expertise in Focus Verticals', text: 'Healthcare, Manufacturing, CPG/Retail, BFSI, etc. — provides a vital edge in process re-engineering and optimization consulting, which is an integral part of any successful enterprise automation initiative.' },
             { num: 2, title: 'Leverage of Digital Capital', text: 'Driven by standardization of tools and technology processes, enabling reusable methodologies, accelerators, and frameworks to assist our clients in achieving their objectives faster.' },
             { num: 3, title: 'Focus on Bridging Process & Application Gaps', text: 'Rather than just focusing on improving and bridging gaps in processes, we focus on identifying application gaps leveraging low-code/no-code platforms to improve the overall business process efficiency and posture to create an ecosystem of well-orchestrated human and digital workers.' },
             { num: 4, title: 'Cognitive Automation Focus', text: 'Improve automated capture of data, automated decision-making, and scale automation. Leverage of Gen AI as part of cognitive automation brings other extended capabilities such as Human-in-the-Loop, language understanding, image recognition, interpreting meaning in text and images, translation, and decision-making.' },

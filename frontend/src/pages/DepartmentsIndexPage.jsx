@@ -123,7 +123,7 @@ const DepartmentsIndexPage = () => {
               </h1>
 
               <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
-                Organised across six specialised departments — each owning a clear capability domain. AI, cloud, modernization, trust, enterprise platforms, and growth.
+                Organized across six specialized departments — each owning a clear capability domain. AI, cloud, modernization, trust, enterprise platforms, and growth.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center gap-5">
@@ -175,7 +175,7 @@ const DepartmentsIndexPage = () => {
             <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">WHAT WE DO</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
               One ecosystem.{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">Six specialisations.</span>
+              <span className="bg-brand-gradient bg-clip-text text-transparent">Six specializations.</span>
             </h2>
           </div>
 
@@ -191,7 +191,7 @@ const DepartmentsIndexPage = () => {
               {/* Stats strip */}
               <div className="grid grid-cols-3 gap-6 pt-10 border-t border-white/[0.08]">
                 {[
-                  { value: '6',  label: 'Specialised\nDepartments' },
+                  { value: '6',  label: 'Specialized\nDepartments' },
                   { value: '61', label: 'Canonical\nServices'       },
                   { value: '5',  label: 'Branded\nMethodologies'    },
                 ].map(s => (
@@ -363,7 +363,7 @@ const DepartmentsIndexPage = () => {
           {/* All services link */}
           <div className="mt-16 pt-10 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
-              <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-2">FULL CATALOGUE</p>
+              <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-2">FULL CATALOG</p>
               <p className="text-white/50 text-sm font-medium">All 61 services across 6 departments — indexed and browsable.</p>
             </div>
             <Link

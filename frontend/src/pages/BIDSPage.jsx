@@ -1628,7 +1628,7 @@ export default function BIDSPage() {
             <div>
               <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">ENGAGEMENT INTEGRITY</p>
               <h2 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-4">
-                How we access your organisation.<br />
+                How we access your organization.<br />
                 <span className="text-white/30">And how we don't.</span>
               </h2>
               <p className="text-white/40 text-base leading-relaxed">
@@ -1982,7 +1982,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-20">
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8 lg:max-w-[50%]">
-              Most transformation programmes fail because the enterprise was <span className="bg-brand-gradient bg-clip-text text-transparent">never fully diagnosed.</span>
+              Most transformation programs fail because the enterprise was <span className="bg-brand-gradient bg-clip-text text-transparent">never fully diagnosed.</span>
             </h2>
             <Link
               to="/bids-request"
@@ -1994,7 +1994,7 @@ export default function BIDSPage() {
           </div>
           <div className="max-w-4xl mb-16">
             <p className="text-white/50 text-lg lg:text-xl leading-relaxed">
-              Kangqore BIDS™ is the diagnostic intelligence framework built to close that gap. It surfaces hidden constraints across operations, technology, security, and growth systems — quantifies their compounding cost — and delivers a prioritised transformation blueprint before a single investment is committed.
+              Kangqore BIDS™ is the diagnostic intelligence framework built to close that gap. It surfaces hidden constraints across operations, technology, security, and growth systems — quantifies their compounding cost — and delivers a prioritized transformation blueprint before a single investment is committed.
             </p>
           </div>
           {/* Compliance badges — trust footnote */}

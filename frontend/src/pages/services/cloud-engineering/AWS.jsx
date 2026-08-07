@@ -109,7 +109,7 @@ const AWS = () => {
     description: 'Transform your business with cutting-edge cloud engineering solutions.'
   };
 
-  // Technologies (categorised lookup)
+  // Technologies (categorized lookup)
   const technologies = [
     {
       category: 'Core AWS Services',

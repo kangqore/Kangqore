@@ -19,7 +19,7 @@ const SEOOrganicGrowthStrategy = () => {
     titleHighlight: 'Strategy',
     slug: 'seo-organic-growth',
     shortDescription: 'Build a stronger, lower-cost acquisition engine with SEO strategies designed to improve rankings, capture high-intent traffic, increase authority, and generate measurable business growth over time.',
-    description: 'Stop Renting Traffic. Start Owning Demand. We combine technical SEO, content strategy, on-page optimisation, analytics, and conversion thinking to turn search visibility into a scalable revenue channel.',
+    description: 'Stop Renting Traffic. Start Owning Demand. We combine technical SEO, content strategy, on-page optimization, analytics, and conversion thinking to turn search visibility into a scalable revenue channel.',
     image: 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?auto=format&fit=crop&w=1260&q=80',
 
     primaryButton: { text: 'Book a Growth Strategy Call', link: '/contact' },
@@ -184,7 +184,7 @@ const SEOOrganicGrowthStrategy = () => {
     },
     {
       title: 'On-Page SEO Services',
-      description: 'Optimise pages for relevance, intent alignment, engagement, and conversion. From metadata to internal links, every element is engineered to perform.',
+      description: 'Optimize pages for relevance, intent alignment, engagement, and conversion. From metadata to internal links, every element is engineered to perform.',
       bgImage: '/images/capabilities/growth-marketing.png',
       items: ['Intent matching', 'Metadata optimization', 'Internal link structuring', 'UX/UI enhancements'],
       micro: 'Make every page count.'
@@ -212,7 +212,7 @@ const SEOOrganicGrowthStrategy = () => {
     },
     {
       title: 'Mobile SEO',
-      description: 'Optimise mobile experience, speed, UX signals, and technical performance for the devices where most search journeys now begin.',
+      description: 'Optimize mobile experience, speed, UX signals, and technical performance for the devices where most search journeys now begin.',
       bgImage: '/images/capabilities/data-analytics.png',
       items: ['Mobile-first indexing', 'Core Web Vitals', 'Responsive design audits', 'Touch target optimization'],
       micro: 'Dominate mobile search.'
@@ -226,7 +226,7 @@ const SEOOrganicGrowthStrategy = () => {
     },
     {
       title: 'Local SEO',
-      description: 'Win local search visibility through Google Business optimisation, location pages, reviews strategy, and map-pack dominance that drives real footfall and leads.',
+      description: 'Win local search visibility through Google Business optimization, location pages, reviews strategy, and map-pack dominance that drives real footfall and leads.',
       bgImage: '/images/capabilities/growth-marketing.png',
       items: ['Google Business optimization', 'Local citation syndication', 'Review management', 'Hyperlocal keywords'],
       micro: 'Dominate your geography.'

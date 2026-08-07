@@ -187,9 +187,11 @@ const EnterpriseIntegrations = ({ isActive }) => {
     if (groupRef.current) {
       const elapsed = state.clock.getElapsedTime();
       groupRef.current.children.forEach((child, idx) => {
-        // Slow float offset up and down
-        child.position.y = blocks[idx].pos[1] + Math.sin(elapsed * 2 + idx) * 0.05;
-        child.rotation.y = elapsed * 0.15 + idx;
+        if (blocks[idx] && child.position) {
+          // Slow float offset up and down
+          child.position.y = blocks[idx].pos[1] + Math.sin(elapsed * 2 + idx) * 0.05;
+          child.rotation.y = elapsed * 0.15 + idx;
+        }
       });
     }
   });

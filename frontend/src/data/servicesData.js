@@ -167,7 +167,7 @@ export const servicesData = {
       },
       {
         industry: 'Manufacturing',
-        headline: 'Supply chains that self-optimise.',
+        headline: 'Supply chains that self-optimize.',
         agents: ['Supply chain disruption detection and rerouting agent', 'Predictive maintenance orchestration agent', 'Vendor onboarding and qualification agent'],
       },
       {
@@ -187,13 +187,13 @@ export const servicesData = {
       },
     ],
     servicePackages: [
-      { name: 'Strategy & Audit', description: 'Map your highest-value automation opportunities. Baseline current state, identify agent candidates, and define a prioritised roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
+      { name: 'Strategy & Audit', description: 'Map your highest-value automation opportunities. Baseline current state, identify agent candidates, and define a prioritized roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
       { name: 'Agent Pod', description: 'Rapid delivery of one targeted production agent — scoped, built, tested, and live. The fastest way to prove agentic ROI.', duration: '8 weeks', tier: 'Pilot' },
       { name: 'Platform Build', description: 'Design and engineer a scalable multi-agent platform integrated into your ERP, CRM, and data systems with full governance architecture.', duration: '16–24 weeks', tier: 'Platform' },
       { name: 'Governed Deployment', description: 'Monitored production rollout with HITL dashboards, immutable audit trails, explainability layers, and compliance validation at every step.', duration: 'Ongoing', tier: 'Managed' },
-      { name: 'Scale & Optimise', description: 'Continuous performance tuning, drift detection, and capability expansion across agent networks — so your AI compounds, not stagnates.', duration: 'Ongoing', tier: 'Enterprise' },
+      { name: 'Scale & Optimize', description: 'Continuous performance tuning, drift detection, and capability expansion across agent networks — so your AI compounds, not stagnates.', duration: 'Ongoing', tier: 'Enterprise' },
     ],
-    outcomeCard: {
+    outcomeCard: { illustrative: true,
       metric: '60%',
       metricLabel: 'Reduction in fraud investigation time',
       problem: 'Fraud investigation required 4–6 human analysts coordinating across 3 disconnected systems per case — creating bottlenecks, inconsistency, and unacceptable cycle times at enterprise volume.',
@@ -260,7 +260,7 @@ export const servicesData = {
       'Governance is load-bearing, not bolted on.',
       'Your data. Re-ranked retrieval. No hallucinations.',
     ],
-    outcomeCard2: {
+    outcomeCard2: { illustrative: true,
       metric: '67%',
       metricLabel: 'Reduction in prior authorization cycle time',
       problem: 'Clinical prior authorizations required nurses to coordinate across payer portals, EHR systems, and clinical guidelines — averaging 3.2 days per case at enterprise volume, with high rejection rates from incomplete submissions.',
@@ -330,7 +330,7 @@ export const servicesData = {
     heroTitle: 'Agentic AI-led Application\nModernization at Machine Speed',
     heroMaxWidth: 'max-w-[82%]',
     heroTitleSize: 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]',
-    heroBadge: 'Modernise Faster. Risk Less.',
+    heroBadge: 'Modernize Faster. Risk Less.',
     departmentSlug: 'cognition',
     bannerBrandDesc: 'Our AI, data & automation practice',
     shortDescription: 'Legacy systems accumulate technical debt, block cloud-native adoption, and make enterprise AI integration structurally impossible. Kangqore\'s agentic AI-led modernization model eliminates that constraint — deploying autonomous agents that assess, refactor, and re-platform legacy applications at machine speed, with enterprise-grade governance at every step.',
@@ -348,12 +348,12 @@ export const servicesData = {
     whatIsHighlight: 'Agentic Modernization Era.',
     whatIsPara2: 'Intelligent agents scan full codebases, extract business logic, and validate cloud-native deployments autonomously — human-in-the-loop governance at every critical milestone. The outcome: measurable technical debt reduction, faster time-to-modern, and a continuous modernization capability that scales across the entire application portfolio.',
 
-    // Framed around what the agents measurably produce, not generic programme
+    // Framed around what the agents measurably produce, not generic program
     // outcomes — each label names an artefact a buyer can ask to see.
     businessMetrics: [
-      { title: 'Assessment Velocity',        desc: 'Dependency graphs, bounded-context maps and tech-debt scorecards for a multi-million-line estate arrive in days, because scanning is parallelised across agents rather than queued behind SME availability.', value: 'Assessment Velocity',        suffix: '',  metricLabel: '',  icon: 'Zap'        },
+      { title: 'Assessment Velocity',        desc: 'Dependency graphs, bounded-context maps and tech-debt scorecards for a multi-million-line estate arrive in days, because scanning is parallelized across agents rather than queued behind SME availability.', value: 'Assessment Velocity',        suffix: '',  metricLabel: '',  icon: 'Zap'        },
       { title: 'Technical Debt Retired',     desc: 'Every module is scored on coupling, duplication and test coverage before work starts, so debt reduction is tracked as a burn-down against a baseline instead of asserted at the end.',                       value: 'Technical Debt Retired',     suffix: '',  metricLabel: '',  icon: 'TrendingUp' },
-      { title: 'Regression Coverage',        desc: 'Agents generate characterisation tests against legacy behaviour before refactoring, so the migrated system is proven equivalent rather than assumed correct at cutover.',                                    value: 'Regression Coverage',        suffix: '',  metricLabel: '',  icon: 'Target'     },
+      { title: 'Regression Coverage',        desc: 'Agents generate characterization tests against legacy behavior before refactoring, so the migrated system is proven equivalent rather than assumed correct at cutover.',                                    value: 'Regression Coverage',        suffix: '',  metricLabel: '',  icon: 'Target'     },
       { title: 'Governed Cost Envelope',     desc: 'Scope, spend and risk stay inside a declared envelope because every autonomous action is bounded by policy and every deviation escalates to a named human owner.',                                           value: 'Governed Cost Envelope',     suffix: '',  metricLabel: '',  icon: 'Shield'     },
     ],
 
@@ -388,8 +388,8 @@ export const servicesData = {
         items: [
           'API-led Integration Architecture: Replace point-to-point integrations with reusable, versioned API layers across enterprise systems.',
           'Event-driven Architecture: Implement Kafka, event mesh, and pub-sub patterns for real-time, decoupled business processes.',
-          'Legacy Middleware Modernisation: Retire legacy ESBs in favour of lightweight, cloud-native integration platforms.',
-          'iPaaS Modernisation: Migrate integration workloads to modern iPaaS platforms with monitoring, governance, and observability.',
+          'Legacy Middleware Modernization: Retire legacy ESBs in favor of lightweight, cloud-native integration platforms.',
+          'iPaaS Modernization: Migrate integration workloads to modern iPaaS platforms with monitoring, governance, and observability.',
         ],
       },
       {
@@ -410,7 +410,7 @@ export const servicesData = {
         items: [
           'Cloud Strategy & Migration: Assess, plan, and execute lift-and-shift or re-platform migrations across AWS, Azure, and GCP.',
           'Hybrid & Multi-cloud Architecture: Design resilient multi-cloud environments with consistent governance and cost control.',
-          'Cloud Cost Optimisation: Rightsizing, reserved capacity planning, and FinOps disciplines to eliminate cloud waste.',
+          'Cloud Cost Optimization: Rightsizing, reserved capacity planning, and FinOps disciplines to eliminate cloud waste.',
           'Cloud-native Enablement: Containerisation, Kubernetes orchestration, and serverless adoption for lean, scalable operations.',
         ],
       },
@@ -421,14 +421,14 @@ export const servicesData = {
         items: [
           'Infrastructure as Code: Provision repeatable, governed infrastructure with Terraform, Pulumi, or CloudFormation.',
           'Observability & Monitoring: Deploy unified observability stacks covering metrics, logs, traces, and alerting at full depth.',
-          'Resilience & Disaster Recovery: Modernise recovery architectures with automated failover, RTO/RPO validation, and chaos engineering.',
-          'Performance Engineering: Eliminate bottlenecks through load testing, capacity planning, and continuous optimisation.',
+          'Resilience & Disaster Recovery: Modernize recovery architectures with automated failover, RTO/RPO validation, and chaos engineering.',
+          'Performance Engineering: Eliminate bottlenecks through load testing, capacity planning, and continuous optimization.',
         ],
       },
       {
         title: 'Quality Engineering & DevOps',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Characterisation tests are generated against legacy behaviour first, giving the pipeline a provable definition of "unchanged" to enforce on every subsequent refactor and release.',
+        desc: 'Characterization tests are generated against legacy behavior first, giving the pipeline a provable definition of "unchanged" to enforce on every subsequent refactor and release.',
         items: [
           'Test Automation Modernization: Replace manual testing with AI-assisted frameworks across unit, integration, and regression.',
           'CI/CD Pipeline Acceleration: Design modern delivery pipelines with automated gates, quality checks, and zero-downtime rollback.',
@@ -444,7 +444,7 @@ export const servicesData = {
           'Security-by-Design: Embed controls, identity management, and threat modelling at every architecture and deployment layer.',
           'Zero Trust Architecture: Implement identity-first access, microsegmentation, and continuous verification across the estate.',
           'Compliance Modernization: Map and validate controls against ISO 27001, SOC 2, GDPR, HIPAA, and sector requirements.',
-          'Vulnerability Assessment & Remediation: Automated scanning, penetration testing, and remediation across modernised systems.',
+          'Vulnerability Assessment & Remediation: Automated scanning, penetration testing, and remediation across modernized systems.',
         ],
       },
     ],
@@ -456,7 +456,7 @@ export const servicesData = {
         { dimension: 'Discovery',      before: 'Engineers read subsystems one at a time, and the business rules stay in the heads of whoever has been there longest.',   after: 'Static analysis covers the whole estate at once — producing a dependency graph, and recovering the embedded business rules as a written artefact that outlives staff turnover.' },
         { dimension: 'Planning',       before: 'A static migration playbook, drafted from partial discovery and defended as reality diverges from it.',                    after: 'A blueprint that is regenerated as each subsystem is understood, alongside architecture maps and runbooks derived from the source rather than drawn once and left to drift.' },
         { dimension: 'Transformation', before: 'Refactoring and language migration written by hand, module by module, at whatever pace headcount allows.',                 after: 'Agents execute the transformation and cross-language conversion against the recovered specification, leaving engineers reviewing diffs rather than authoring them.' },
-        { dimension: 'Validation',     before: 'Test coverage is written after the fact — slow, partial, and highest-risk exactly where the code is oldest.',              after: 'Characterisation tests are generated against legacy behaviour before anything changes, so each cutover is proven equivalent rather than assumed correct.' },
+        { dimension: 'Validation',     before: 'Test coverage is written after the fact — slow, partial, and highest-risk exactly where the code is oldest.',              after: 'Characterization tests are generated against legacy behavior before anything changes, so each cutover is proven equivalent rather than assumed correct.' },
         { dimension: 'Governance',     before: 'Progress is reported in status decks; when something breaks, the reasoning behind the change is gone.',                    after: 'Every autonomous action runs inside declared policy limits and lands in an immutable audit trail, with named human sign-off at each gate.' },
       ],
     },
@@ -471,8 +471,8 @@ export const servicesData = {
       {
         title: 'Migration Planning Engine',
         icon: 'Target',
-        description: 'Generates a dynamic, prioritised migration roadmap — decomposing monoliths into bounded contexts and sequencing execution by risk and business value.',
-        features: ['Bounded Context Discovery', 'Migration Sequencing', 'Risk Prioritisation'],
+        description: 'Generates a dynamic, prioritized migration roadmap — decomposing monoliths into bounded contexts and sequencing execution by risk and business value.',
+        features: ['Bounded Context Discovery', 'Migration Sequencing', 'Risk Prioritization'],
       },
       {
         title: 'Execution Agent',
@@ -491,42 +491,42 @@ export const servicesData = {
     industryUseCases: [
       {
         industry: 'Banking & Financial Services',
-        headline: 'Core banking modernised. Compliance maintained.',
+        headline: 'Core banking modernized. Compliance maintained.',
         agents: ['Legacy core banking assessment and migration blueprint agent', 'API layer generation and end-to-end testing agent', 'Regulatory compliance validation and audit agent'],
       },
       {
         industry: 'Healthcare',
-        headline: 'Clinical systems modernised without patient data risk.',
+        headline: 'Clinical systems modernized without patient data risk.',
         agents: ['EHR/EMR dependency analysis and migration sequencing agent', 'HIPAA compliance validation and immutable audit agent', 'Integration testing and regression coverage agent'],
       },
       {
         industry: 'Manufacturing',
-        headline: 'ERP modernised and cloud-native without production disruption.',
+        headline: 'ERP modernized and cloud-native without production disruption.',
         agents: ['ERP dependency mapping and microservices decomposition agent', 'Cloud-native containerisation and deployment agent', 'Performance baseline validation and load testing agent'],
       },
       {
         industry: 'Retail & E-Commerce',
         headline: 'Monolith decomposed into scalable microservices.',
-        agents: ['E-commerce monolith bounded context discovery agent', 'Microservices scaffold generation and API contract agent', 'Load testing, performance optimisation, and go-live agent'],
+        agents: ['E-commerce monolith bounded context discovery agent', 'Microservices scaffold generation and API contract agent', 'Load testing, performance optimization, and go-live agent'],
       },
       {
         industry: 'Insurance',
         headline: 'Policy administration re-platformed at scale.',
-        agents: ['Policy system assessment and technical debt scoring agent', 'Re-platforming execution and API modernisation agent', 'Regression test suite generation and validation agent'],
+        agents: ['Policy system assessment and technical debt scoring agent', 'Re-platforming execution and API modernization agent', 'Regression test suite generation and validation agent'],
       },
       {
         industry: 'Telecommunications',
-        headline: 'BSS/OSS modernised without service disruption.',
+        headline: 'BSS/OSS modernized without service disruption.',
         agents: ['BSS/OSS dependency mapping and migration risk assessment agent', 'Cloud-native re-platforming execution and integration agent', 'End-to-end validation and compliance reporting agent'],
       },
     ],
 
     servicePackages: [
-      { name: 'Assessment & Blueprint', description: 'AI-powered legacy codebase analysis, dependency mapping, tech debt scoring, and prioritised modernisation roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
-      { name: 'Pilot Modernization',    description: 'Targeted modernisation of one application, module, or service — from assessment through cloud-native deployment.', duration: '8 weeks', tier: 'Pilot' },
+      { name: 'Assessment & Blueprint', description: 'AI-powered legacy codebase analysis, dependency mapping, tech debt scoring, and prioritized modernization roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
+      { name: 'Pilot Modernization',    description: 'Targeted modernization of one application, module, or service — from assessment through cloud-native deployment.', duration: '8 weeks', tier: 'Pilot' },
       { name: 'Program Build',          description: 'End-to-end re-platforming with microservices decomposition, API generation, and full governance architecture across the application portfolio.', duration: '16–24 weeks', tier: 'Platform' },
       { name: 'Governed Migration',     description: 'Monitored migration rollout with HITL checkpoints, AI-generated test suites, audit trails, and compliance validation at every milestone.', duration: 'Ongoing', tier: 'Managed' },
-      { name: 'Scale & Optimise',       description: 'Continuous modernisation sprints, performance optimisation, and AI capability integration across the modernised estate — so the work compounds.', duration: 'Ongoing', tier: 'Enterprise' },
+      { name: 'Scale & Optimize',       description: 'Continuous modernization sprints, performance optimization, and AI capability integration across the modernized estate — so the work compounds.', duration: 'Ongoing', tier: 'Enterprise' },
     ],
 
     outcomeCard: {
@@ -541,26 +541,26 @@ export const servicesData = {
       metric: '3×',
       metricLabel: 'Faster assessment than manual code review',
       problem: 'An insurance group needed a complete technical debt assessment of a 15-year-old policy administration system across 2.3M lines of code — a task that would take a manual team 6+ months and still produce an incomplete picture.',
-      outcome: 'AI assessment agents scanned the full codebase in 11 days, producing a dependency map, tech debt scorecard, and prioritised migration roadmap — enabling the board to commit to modernisation with evidence rather than estimates.',
+      outcome: 'AI assessment agents scanned the full codebase in 11 days, producing a dependency map, tech debt scorecard, and prioritized migration roadmap — enabling the board to commit to modernization with evidence rather than estimates.',
     },
 
     customFAQs: [
-      { q: 'What is Agentic AI-led Application Modernization?', a: 'We don\'t migrate code — we deploy AI operators that understand legacy systems. Kangqore delivers autonomous agentic AI systems that assess entire codebases in days, generate dynamic migration blueprints, execute re-platforming to cloud-native architectures, and validate outcomes at 99% test coverage — compressing multi-year transformation programs into governed, measurable sprints.' },
+      { q: 'What is Agentic AI-led Application Modernization?', a: 'We don\'t migrate code — we deploy AI operators that understand legacy systems. Kangqore delivers autonomous agentic AI systems that assess entire codebases in days, generate dynamic migration blueprints, execute re-platforming to cloud-native architectures, and prove behavioral equivalence against the legacy system before cutover — compressing multi-year transformation programs into governed, measurable sprints.' },
       { q: 'How does AI reduce the risk of application modernization?', a: 'Risk in traditional modernization comes from incomplete discovery, manual execution errors, and inadequate testing. Agentic AI eliminates all three. Assessment agents map every dependency before a single line is moved. Execution agents include exception escalation and human-in-the-loop gates so no critical step happens unsupervised. And test generation agents produce comprehensive regression packs that no manual QA team could match in speed or coverage.' },
       { q: 'Which legacy systems can Agentic AI modernize?', a: 'Any legacy codebase that can be read. Kangqore\'s assessment agents work across COBOL, Java EE, .NET Framework, Oracle Forms, mainframe systems, on-premise ERPs, and custom enterprise platforms. If the code exists, the agents can assess it, plan the migration, and execute the transformation.' },
-      { q: 'How fast can modernization happen with AI agents?', a: 'There are two speeds here and it matters which is which. The compute-bound work — codebase comprehension, dependency mapping, rule recovery, test generation — runs in parallel and completes in days, because it scales with hardware rather than headcount. The change-bound work does not: cutover is governed by your release windows, your change-advisory board and your regulator. So Assessment & Blueprint is 2–3 weeks end to end, a Pilot Modernization is 8 weeks, and a Program Build is 16–24. Every duration we publish is calendar time including your approval gates, not agent runtime — so if a vendor quotes an end-to-end programme in days, ask which of the two numbers they are giving you.' },
+      { q: 'How fast can modernization happen with AI agents?', a: 'There are two speeds here and it matters which is which. The compute-bound work — codebase comprehension, dependency mapping, rule recovery, test generation — runs in parallel and completes in days, because it scales with hardware rather than headcount. The change-bound work does not: cutover is governed by your release windows, your change-advisory board and your regulator. So Assessment & Blueprint is 2–3 weeks end to end, a Pilot Modernization is 8 weeks, and a Program Build is 16–24. Every duration we publish is calendar time including your approval gates, not agent runtime — so if a vendor quotes an end-to-end program in days, ask which of the two numbers they are giving you.' },
       { q: 'Do you modernize to cloud-native architectures?', a: 'Yes. Kangqore\'s execution agents re-platform to containerised, Kubernetes-native architectures on AWS, Azure, or GCP — building microservices, generating API layers, and producing deployment-ready infrastructure-as-code alongside every migrated service.' },
       { q: 'Can you modernize without disrupting live business operations?', a: 'Zero-disruption migration is the design constraint, not the aspiration. We execute in parallel tracks — legacy systems stay live while agents build, test, and validate the modern equivalent. Go-live only happens after human-in-the-loop sign-off at every milestone and automated regression packs confirm functional equivalence with the legacy system.' },
       { q: 'What does the governance model look like during migration?', a: 'Every agent action is logged to an immutable audit trail. Human-in-the-loop checkpoints gate each migration milestone. Compliance validation runs continuously against GDPR, HIPAA, SOX, or sector standards relevant to your estate. You have full visibility at all times — what moved, when, by which agent, validated by whom.' },
-      { q: 'How do you handle large codebases with millions of lines of code?', a: 'Scale is the point. AI assessment agents scan millions of lines in days because they operate in parallel, not sequentially. Dependency analysis, tech debt scoring, and migration sequencing happen simultaneously across the full codebase — giving you a complete modernisation picture faster than a human team could review the first module.' },
+      { q: 'How do you handle large codebases with millions of lines of code?', a: 'Scale is the point. AI assessment agents scan millions of lines in days because they operate in parallel, not sequentially. Dependency analysis, tech debt scoring, and migration sequencing happen simultaneously across the full codebase — giving you a complete modernization picture faster than a human team could review the first module.' },
     ],
 
     customJourney: [
-      { phase: 'ASSESS',     icon: 'Search',     title: 'Legacy Assessment',    desc: 'AI agents scan the full codebase, map dependencies, score technical debt, and identify migration candidates — producing a complete modernisation intelligence report in days.' },
-      { phase: 'BLUEPRINT',  icon: 'Target',     title: 'Migration Blueprint',  desc: 'Generate a dynamic, prioritised migration roadmap — decomposing monoliths into bounded contexts, sequencing by risk and business value, and defining governance architecture.', kangqore: true },
+      { phase: 'ASSESS',     icon: 'Search',     title: 'Legacy Assessment',    desc: 'AI agents scan the full codebase, map dependencies, score technical debt, and identify migration candidates — producing a complete modernization intelligence report in days.' },
+      { phase: 'BLUEPRINT',  icon: 'Target',     title: 'Migration Blueprint',  desc: 'Generate a dynamic, prioritized migration roadmap — decomposing monoliths into bounded contexts, sequencing by risk and business value, and defining governance architecture.', kangqore: true },
       { phase: 'EXECUTE',    icon: 'Zap',        title: 'Execute & Migrate',    desc: 'Autonomous agents execute code transformation, microservices decomposition, API generation, and cloud-native re-platforming — with exception escalation and HITL checkpoints.', kangqore: true },
-      { phase: 'VALIDATE',   icon: 'Shield',     title: 'Test & Validate',      desc: 'AI-generated test suites achieve 99% regression coverage. Human sign-off gates every milestone. Compliance validation confirms the migrated estate meets all regulatory requirements.', kangqore: true },
-      { phase: 'SCALE',      icon: 'TrendingUp', title: 'Optimise & Extend',    desc: 'Continuous modernisation sprints across the remaining estate. Performance optimisation, tech debt elimination, and AI capability integration into the modernised architecture.', kangqore: true },
+      { phase: 'VALIDATE',   icon: 'Shield',     title: 'Test & Validate',      desc: 'AI-generated characterization suites pin legacy behavior before refactoring begins. Human sign-off gates every milestone. Compliance validation confirms the migrated estate meets all regulatory requirements.', kangqore: true },
+      { phase: 'SCALE',      icon: 'TrendingUp', title: 'Optimize & Extend',    desc: 'Continuous modernization sprints across the remaining estate. Performance optimization, tech debt elimination, and AI capability integration into the modernized architecture.', kangqore: true },
     ],
 
     heroStripItems: [
@@ -577,12 +577,12 @@ export const servicesData = {
     featureMicros: [
       'AI agents assess faster than any manual team.',
       'Zero-disruption migration with governed checkpoints.',
-      '99% automated test coverage before go-live.',
+      'Generated suites held to a 99% coverage floor before equivalence testing begins.',
       'Full audit trail from assessment to deployment.',
     ],
 
     trustSignals: [
-      'AI-governed modernisation with human-in-the-loop checkpoints and immutable audit trails',
+      'AI-governed modernization with human-in-the-loop checkpoints and immutable audit trails',
       'Enterprise-grade compliance validation against GDPR, HIPAA, SOX, and sector standards',
       'Proven delivery framework — from blueprint to production in weeks, not years',
       'Open architecture: AWS, Azure, GCP, and on-premise hybrid targets all supported',
@@ -633,7 +633,7 @@ export const servicesData = {
     // The durations in this section read as a contradiction of the "Machine
     // Speed" hero unless the page says what they measure. They are calendar
     // time, not agent runtime — stating that turns the table into evidence.
-    engagementLede: 'There are five entry points, from a two-week advisory audit to an ongoing managed programme. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate. Durations below are calendar time including your approval gates — not agent runtime.',
+    engagementLede: 'There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate. Durations below are calendar time including your approval gates — not agent runtime.',
     downloadAsset: '/assets/downloads/kangqore-agentic-modernization-playbook.pdf',
     downloadAssetTitle: 'Download the Playbook',
     // Without this override the section falls through to the department-level
@@ -649,8 +649,8 @@ export const servicesData = {
       items: [
         {
           icon: 'Database',
-          title: 'Behaviour is pinned before anything moves',
-          desc: 'Agents build the dependency graph, take runtime traces from live production paths, and generate a characterization suite that passes green against the legacy system exactly as it stands. The outcome is a regression gate that did not previously exist: every later change is measured against recorded behaviour rather than institutional memory, so "did we break something" resolves to a test result instead of an argument.',
+          title: 'Behavior is pinned before anything moves',
+          desc: 'Agents build the dependency graph, take runtime traces from live production paths, and generate a characterization suite that passes green against the legacy system exactly as it stands. The outcome is a regression gate that did not previously exist: every later change is measured against recorded behavior rather than institutional memory, so "did we break something" resolves to a test result instead of an argument.',
         },
         {
           icon: 'Brain',
@@ -701,11 +701,11 @@ export const servicesData = {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Design, develop, and operationalise enterprise machine learning systems that transform data into predictive intelligence, automated decision-making, and continuously improving business outcomes.',
         items: [
-          'Predictive Intelligence: Forecast customer behaviour, market trends, operational demand, and business outcomes using historical and real-time enterprise data.',
+          'Predictive Intelligence: Forecast customer behavior, market trends, operational demand, and business outcomes using historical and real-time enterprise data.',
           'Statistical Learning: Develop mathematically robust models that uncover hidden patterns, quantify uncertainty, and support evidence-based decision making.',
-          'Deep Learning Systems: Leverage advanced neural network architectures to solve complex recognition, forecasting, optimisation, and generative AI challenges.',
-          'Feature Engineering: Transform and optimise enterprise data to maximise model accuracy, reliability, and business performance.',
-          'Model Optimisation: Continuously improve model accuracy, efficiency, scalability, and inference performance across production environments.',
+          'Deep Learning Systems: Leverage advanced neural network architectures to solve complex recognition, forecasting, optimization, and generative AI challenges.',
+          'Feature Engineering: Transform and optimize enterprise data to maximize model accuracy, reliability, and business performance.',
+          'Model Optimization: Continuously improve model accuracy, efficiency, scalability, and inference performance across production environments.',
           'Model Monitoring: Monitor model drift, bias, accuracy, explainability, and operational health throughout the AI lifecycle.',
         ],
       },
@@ -715,9 +715,9 @@ export const servicesData = {
         desc: 'Enable enterprise systems to understand, interpret, and derive actionable intelligence from images, video streams, visual documents, and spatial environments.',
         items: [
           'Image Intelligence: Extract structured insights from photographs, satellite imagery, scanned documents, and industrial visual assets.',
-          'Video Analytics: Analyse live and recorded video streams to detect events, monitor activities, and automate operational workflows.',
+          'Video Analytics: Analyze live and recorded video streams to detect events, monitor activities, and automate operational workflows.',
           'Object Recognition: Identify, classify, and monitor physical objects across diverse visual environments using AI-powered detection models.',
-          'Facial Analytics: Perform face detection, verification, identification, and behavioural analysis while supporting enterprise security and compliance.',
+          'Facial Analytics: Perform face detection, verification, identification, and behavioral analysis while supporting enterprise security and compliance.',
           'Document Intelligence: Convert unstructured visual documents into searchable, structured, and actionable enterprise information.',
           'Scene Intelligence: Understand complete visual environments by interpreting objects, activities, relationships, and contextual information.',
           'Visual Search: Enable intelligent image-based search and content discovery across enterprise media repositories.',
@@ -726,12 +726,12 @@ export const servicesData = {
       {
         title: 'Natural Language Intelligence',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Empower enterprise applications to understand, interpret, generate, and reason over human language across conversations, documents, and organisational knowledge.',
+        desc: 'Empower enterprise applications to understand, interpret, generate, and reason over human language across conversations, documents, and organizational knowledge.',
         items: [
           'Conversational AI: Develop intelligent virtual assistants and enterprise chatbots capable of natural, context-aware interactions.',
           'Language Understanding: Interpret user intent, sentiment, entities, relationships, and contextual meaning across communication channels.',
           'Speech Intelligence: Enable speech recognition, transcription, speaker identification, and voice analytics for enterprise applications.',
-          'Document Intelligence: Automatically classify, summarise, process, and extract knowledge from enterprise documents at scale.',
+          'Document Intelligence: Automatically classify, summarize, process, and extract knowledge from enterprise documents at scale.',
           'Information Extraction: Identify entities, business facts, relationships, and critical information from unstructured textual content.',
           'Semantic Search & Retrieval: Deliver AI-powered enterprise search that surfaces contextually relevant knowledge across distributed information sources.',
           'Language Generation: Generate accurate reports, summaries, business communications, and contextual responses using advanced language models.',
@@ -742,14 +742,14 @@ export const servicesData = {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Design, build, and deploy enterprise-grade generative AI solutions that accelerate innovation, automate knowledge work, and transform digital experiences.',
         items: [
-          'Enterprise LLM Solutions: Build customised large language model applications aligned with enterprise knowledge and business processes.',
+          'Enterprise LLM Solutions: Build customized large language model applications aligned with enterprise knowledge and business processes.',
           'Retrieval-Augmented Generation (RAG): Combine enterprise knowledge with foundation models to deliver accurate, secure, and context-aware AI responses.',
           'AI Copilots: Develop intelligent copilots that assist employees with research, analysis, decision-making, and workflow automation.',
-          'AI Agent Development: Engineer autonomous AI agents capable of reasoning, planning, tool utilisation, and multi-step execution.',
+          'AI Agent Development: Engineer autonomous AI agents capable of reasoning, planning, tool utilization, and multi-step execution.',
           'Multimodal AI: Develop AI systems capable of understanding and generating text, images, audio, video, and structured data.',
           'AI Content Generation: Automate the creation of reports, proposals, marketing content, technical documentation, software code, and business communications.',
-          'Prompt Engineering: Design, evaluate, and optimise AI interactions for accuracy, consistency, reliability, and business effectiveness.',
-          'LLMOps: Manage the deployment, evaluation, monitoring, optimisation, governance, and lifecycle of enterprise language models.',
+          'Prompt Engineering: Design, evaluate, and optimize AI interactions for accuracy, consistency, reliability, and business effectiveness.',
+          'LLMOps: Manage the deployment, evaluation, monitoring, optimization, governance, and lifecycle of enterprise language models.',
         ],
       },
       {
@@ -760,7 +760,7 @@ export const servicesData = {
           'Predictive Decision Support: Provide AI-driven recommendations based on predictive analytics and enterprise intelligence.',
           'Prescriptive Analytics: Recommend optimal actions by evaluating business objectives, constraints, and available alternatives.',
           'Scenario Simulation: Model multiple business scenarios to evaluate potential outcomes before critical decisions are made.',
-          'Optimisation Engines: Continuously optimise pricing, logistics, scheduling, inventory, resource allocation, and operational performance.',
+          'Optimization Engines: Continuously optimize pricing, logistics, scheduling, inventory, resource allocation, and operational performance.',
           'Risk Intelligence: Identify, quantify, and monitor operational, financial, regulatory, and strategic risks.',
           'Decision Automation: Automate repeatable business decisions while maintaining governance and human oversight.',
         ],
@@ -768,14 +768,14 @@ export const servicesData = {
       {
         title: 'Knowledge Intelligence',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Transform enterprise knowledge into a connected, searchable, and AI-accessible intelligence layer that enhances organisational decision-making.',
+        desc: 'Transform enterprise knowledge into a connected, searchable, and AI-accessible intelligence layer that enhances organizational decision-making.',
         items: [
-          'Enterprise Knowledge Graphs: Connect business entities, relationships, and organisational knowledge into intelligent graph-based systems.',
+          'Enterprise Knowledge Graphs: Connect business entities, relationships, and organizational knowledge into intelligent graph-based systems.',
           'Semantic Intelligence: Understand business meaning, relationships, and context beyond traditional keyword-based systems.',
           'Ontology Engineering: Design enterprise ontologies that establish consistent business definitions and AI reasoning capabilities.',
           'Knowledge Discovery: Identify hidden relationships, trends, and opportunities across enterprise information ecosystems.',
           'Enterprise Search: Provide unified semantic search across structured and unstructured enterprise knowledge sources.',
-          'Contextual Intelligence: Deliver relevant knowledge based on user context, organisational relationships, and business objectives.',
+          'Contextual Intelligence: Deliver relevant knowledge based on user context, organizational relationships, and business objectives.',
         ],
       },
       {
@@ -784,11 +784,11 @@ export const servicesData = {
         desc: 'Develop intelligent autonomous systems capable of reasoning, planning, collaborating, and executing complex enterprise workflows with minimal human intervention.',
         items: [
           'Autonomous Agents: Deploy AI agents capable of independently planning, executing, and adapting complex business tasks.',
-          'Multi-Agent Systems: Coordinate specialised AI agents that collaborate to solve enterprise-scale business challenges.',
+          'Multi-Agent Systems: Coordinate specialized AI agents that collaborate to solve enterprise-scale business challenges.',
           'Agent Orchestration: Manage communication, coordination, and task distribution across multiple autonomous agents.',
           'Cognitive Workflow Automation: Automate end-to-end enterprise workflows requiring reasoning, planning, and contextual decision-making.',
           'Human-AI Collaboration: Enable intelligent cooperation between employees and AI agents through governed decision workflows.',
-          'Agent Governance: Monitor, secure, audit, and control autonomous agent behaviour across enterprise environments.',
+          'Agent Governance: Monitor, secure, audit, and control autonomous agent behavior across enterprise environments.',
         ],
       },
       {
@@ -800,7 +800,7 @@ export const servicesData = {
           'AI Infrastructure: Design scalable compute, storage, networking, and GPU architectures supporting enterprise AI workloads.',
           'AI Deployment Pipelines: Streamline continuous integration and continuous deployment for AI models and intelligent applications.',
           'Model Lifecycle Management: Manage versioning, validation, approvals, deployment, rollback, and retirement of AI models.',
-          'Performance Optimisation: Improve latency, throughput, scalability, resource utilisation, and infrastructure efficiency.',
+          'Performance Optimization: Improve latency, throughput, scalability, resource utilization, and infrastructure efficiency.',
           'AI Observability: Monitor model performance, operational health, usage patterns, costs, and production reliability.',
         ],
       },
@@ -813,22 +813,22 @@ export const servicesData = {
           'Explainable AI: Provide transparent reasoning, confidence scoring, and interpretable AI decision-making.',
           'AI Governance: Define enterprise policies, governance frameworks, approval workflows, and operational controls for AI systems.',
           'AI Risk Management: Identify, assess, monitor, and mitigate operational, regulatory, and reputational AI risks.',
-          'Compliance Management: Ensure AI systems align with organisational policies and applicable regulatory requirements.',
+          'Compliance Management: Ensure AI systems align with organizational policies and applicable regulatory requirements.',
           'AI Security: Protect AI models, datasets, infrastructure, APIs, and inference pipelines from threats and misuse.',
         ],
       },
       {
         title: 'Extended Reality (XR) Solutions',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Create immersive digital experiences that improve engineering, workforce training, product visualisation, operational planning, and customer engagement.',
+        desc: 'Create immersive digital experiences that improve engineering, workforce training, product visualization, operational planning, and customer engagement.',
         items: [
           'Augmented Reality Solutions: Overlay contextual digital information onto physical environments to improve operational efficiency and user experiences.',
           'Virtual Reality Experiences: Develop immersive virtual environments for collaboration, simulation, training, and customer engagement.',
           'Mixed Reality Applications: Combine physical and digital environments to enable intelligent real-time interaction with enterprise systems.',
-          'Digital Twin Visualisation: Create interactive virtual representations of physical assets, facilities, and business operations for monitoring and optimisation.',
+          'Digital Twin Visualization: Create interactive virtual representations of physical assets, facilities, and business operations for monitoring and optimization.',
           'Spatial Computing: Enable intelligent interaction between users, digital content, and physical environments using spatial awareness technologies.',
-          'Immersive Product Experiences: Allow customers and stakeholders to visualise, configure, and experience products before manufacturing or purchase.',
-          'Industrial Simulation: Model engineering, manufacturing, logistics, and operational environments to optimise performance while reducing cost and risk.',
+          'Immersive Product Experiences: Allow customers and stakeholders to visualize, configure, and experience products before manufacturing or purchase.',
+          'Industrial Simulation: Model engineering, manufacturing, logistics, and operational environments to optimize performance while reducing cost and risk.',
         ],
       },
     ],
@@ -889,7 +889,7 @@ export const servicesData = {
       },
       {
         industry: 'Manufacturing',
-        headline: 'Supply chains and industrial operations that self-optimise.',
+        headline: 'Supply chains and industrial operations that self-optimize.',
         agents: ['Supply chain rerouting agent', 'Predictive maintenance agent', 'Vendor onboarding agent'],
       },
       {
@@ -909,20 +909,20 @@ export const servicesData = {
       },
     ],
     servicePackages: [
-      { name: 'Strategy & Audit', description: 'Map your highest-value cognitive automation opportunities. Baseline current state, identify targets, and define a prioritised roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
+      { name: 'Strategy & Audit', description: 'Map your highest-value cognitive automation opportunities. Baseline current state, identify targets, and define a prioritized roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
       { name: 'Cognitive Pod', description: 'Rapid delivery of one targeted production cognitive system — scoped, built, tested, and live. The fastest way to prove cognitive ROI.', duration: '8 weeks', tier: 'Pilot' },
       { name: 'Platform Build', description: 'Design and engineer a scalable cognitive platform integrated into your ERP, CRM, and data systems with full governance architecture.', duration: '16–24 weeks', tier: 'Platform' },
       { name: 'Governed Deployment', description: 'Monitored production rollout with HITL dashboards, immutable audit trails, explainability layers, and compliance validation at every step.', duration: 'Ongoing', tier: 'Managed' },
-      { name: 'Scale & Optimise', description: 'Continuous performance tuning, drift detection, and capability expansion across cognitive networks — so your AI compounds, not stagnates.', duration: 'Ongoing', tier: 'Enterprise' },
+      { name: 'Scale & Optimize', description: 'Continuous performance tuning, drift detection, and capability expansion across cognitive networks — so your AI compounds, not stagnates.', duration: 'Ongoing', tier: 'Enterprise' },
     ],
-    outcomeCard: {
+    outcomeCard: { illustrative: true,
       metric: '87%',
       metricLabel: 'Improvement in unstructured data comprehension',
       industry: 'Global Financial Services',
       problem: 'Risk and compliance teams spent 12,000+ hours annually manually reading unstructured regulatory filings, cross-border contracts, and compliance disclosures — creating severe decision latency and missed operational risk flags.',
       outcome: 'Kangqore implemented an enterprise cognitive reasoning engine using multi-modal NLP, semantic search, and knowledge graph extraction — enabling automated compliance analysis with 87% comprehension accuracy and 4x faster insights.',
     },
-    outcomeCard2: {
+    outcomeCard2: { illustrative: true,
       metric: '65%',
       metricLabel: 'Complex decision automation rate',
       industry: 'Healthcare & Clinical Research',
@@ -933,7 +933,7 @@ export const servicesData = {
       { title: 'Data Comprehension',  desc: 'Improvement in unstructured data comprehension using multi-modal NLP and cognitive reasoning engines.',                              value: '87', suffix: '%',    metricLabel: 'Comprehension Accuracy', icon: 'BrainCircuit' },
       { title: 'Decision Automation', desc: 'Complex business decisions automated through cognitive decision intelligence and prescriptive analytics platforms.',                     value: '65', suffix: '%',    metricLabel: 'Decisions Automated',    icon: 'Target'       },
       { title: 'Knowledge Discovery',  desc: 'Faster insight discovery from enterprise knowledge graphs, semantic search, and contextual intelligence layers.',                       value: '4',  suffix: 'x',    metricLabel: 'Faster Insights',        icon: 'Zap'          },
-      { title: 'Models in Production', desc: 'Enterprise AI and cognitive computing models deployed and operationalised across client organisations.',                                  value: '120',suffix: '+',    metricLabel: 'Models Deployed',        icon: 'Layers'       },
+      { title: 'Models in Production', desc: 'Enterprise AI and cognitive computing models deployed and operationalised across client organizations.',                                  value: '120',suffix: '+',    metricLabel: 'Models Deployed',        icon: 'Layers'       },
     ],
     customFAQs: [
       { q: 'What exactly is cognitive computing, and how is it different from AI?', a: 'AI is the broad discipline. Cognitive computing is the architectural philosophy — systems that mimic human reasoning processes: understanding context, learning from experience, interpreting ambiguity, and making judgment calls. Kangqore builds cognitive systems that don\'t just classify or predict — they reason over enterprise knowledge, learn from operational feedback, and execute decisions that previously required human judgment.' },
@@ -942,17 +942,17 @@ export const servicesData = {
       { q: 'Can you build computer vision systems for our industry?', a: 'Yes. We deploy computer vision across manufacturing (defect detection, quality control), healthcare (medical imaging, pathology analysis), retail (visual search, shelf monitoring), financial services (document processing, fraud detection), and logistics (inventory monitoring, warehouse automation). Every system is validated against your domain-specific accuracy requirements before production deployment.' },
       { q: 'What does the generative AI offering include?', a: 'Enterprise LLM solutions, retrieval-augmented generation (RAG), AI copilots for employee productivity, autonomous agent development, multimodal AI, AI content generation, prompt engineering, and LLMOps for model lifecycle governance. We build GenAI that is grounded in your data, governed by your policies, and measurable against your business objectives.' },
       { q: 'How do you ensure AI governance and responsible AI?', a: 'Governance is load-bearing, not cosmetic. Every cognitive system ships with explainable AI layers, fairness testing, bias detection, compliance alignment (GDPR, EU AI Act, sector mandates), immutable audit trails, and human-in-the-loop approval gates. Kangqore\'s governance framework covers model risk management, data privacy, security controls, and organizational accountability.' },
-      { q: 'What about decision intelligence — can AI actually make business decisions?', a: 'Not unsupervised — but it can recommend, simulate, and automate them with governance. Our decision intelligence systems provide predictive decision support, prescriptive analytics, scenario simulation, optimisation engines, risk intelligence, and decision automation — all with configurable human oversight levels depending on decision criticality.' },
-      { q: 'How does knowledge intelligence differ from enterprise search?', a: 'Enterprise search finds documents. Knowledge intelligence understands relationships. Kangqore builds enterprise knowledge graphs that connect entities, facts, and context across your organisation — then layers semantic intelligence, ontology engineering, knowledge discovery, and contextual retrieval on top. The result: AI that doesn\'t just find information but understands what it means in your business context.' },
-      { q: 'What does a typical engagement look like?', a: 'Week 1–3: Strategy & Audit — map highest-value cognitive automation targets. Week 4–11: Cognitive Pod — deliver one production-ready cognitive system. Week 12–24: Platform Build — scale to enterprise-wide cognitive infrastructure. Ongoing: Governed Deployment + Scale & Optimise — production monitoring, drift detection, and continuous capability expansion.' },
-      { q: 'What industries has Kangqore delivered cognitive computing for?', a: 'Banking & financial services (compliance, fraud, credit decisioning), healthcare (clinical triage, research extraction, patient eligibility), manufacturing (predictive maintenance, supply chain optimisation, quality control), retail & consumer (personalisation, demand forecasting, conversational commerce), IT & infrastructure (incident resolution, DevOps remediation), and education (adaptive learning, automated assessment). Each engagement starts from industry-specific cognitive blueprints, not generic templates.' },
+      { q: 'What about decision intelligence — can AI actually make business decisions?', a: 'Not unsupervised — but it can recommend, simulate, and automate them with governance. Our decision intelligence systems provide predictive decision support, prescriptive analytics, scenario simulation, optimization engines, risk intelligence, and decision automation — all with configurable human oversight levels depending on decision criticality.' },
+      { q: 'How does knowledge intelligence differ from enterprise search?', a: 'Enterprise search finds documents. Knowledge intelligence understands relationships. Kangqore builds enterprise knowledge graphs that connect entities, facts, and context across your organization — then layers semantic intelligence, ontology engineering, knowledge discovery, and contextual retrieval on top. The result: AI that doesn\'t just find information but understands what it means in your business context.' },
+      { q: 'What does a typical engagement look like?', a: 'Week 1–3: Strategy & Audit — map highest-value cognitive automation targets. Week 4–11: Cognitive Pod — deliver one production-ready cognitive system. Week 12–24: Platform Build — scale to enterprise-wide cognitive infrastructure. Ongoing: Governed Deployment + Scale & Optimize — production monitoring, drift detection, and continuous capability expansion.' },
+      { q: 'What industries has Kangqore delivered cognitive computing for?', a: 'Banking & financial services (compliance, fraud, credit decisioning), healthcare (clinical triage, research extraction, patient eligibility), manufacturing (predictive maintenance, supply chain optimization, quality control), retail & consumer (personalisation, demand forecasting, conversational commerce), IT & infrastructure (incident resolution, DevOps remediation), and education (adaptive learning, automated assessment). Each engagement starts from industry-specific cognitive blueprints, not generic templates.' },
     ],
     customJourney: [
       { phase: 'DISCOVER',   icon: 'Search',     title: 'Cognitive Discovery',     desc: 'Map enterprise knowledge flows, identify high-value cognitive automation targets, and baseline current decision-making quality across business processes.' },
       { phase: 'ARCHITECT',  icon: 'Target',     title: 'System Architecture',     desc: 'Design cognitive system architecture — NLP pipelines, knowledge graphs, decision engines, vision models, and integration layers — with governance embedded from day one.', kangqore: true },
       { phase: 'BUILD',      icon: 'Cpu',        title: 'Build & Train',           desc: 'Develop, train, and validate cognitive models against enterprise data — achieving production-grade accuracy, explainability, and performance benchmarks.', kangqore: true },
       { phase: 'DEPLOY',     icon: 'Shield',     title: 'Governed Deployment',     desc: 'Deploy with human-in-the-loop oversight, real-time monitoring dashboards, drift detection alerts, and immutable audit trails for every cognitive decision.', kangqore: true },
-      { phase: 'SCALE',      icon: 'TrendingUp', title: 'Scale & Compound',        desc: 'Expand cognitive capabilities across departments, connect knowledge graphs enterprise-wide, and continuously optimise model accuracy and operational efficiency.', kangqore: true },
+      { phase: 'SCALE',      icon: 'TrendingUp', title: 'Scale & Compound',        desc: 'Expand cognitive capabilities across departments, connect knowledge graphs enterprise-wide, and continuously optimize model accuracy and operational efficiency.', kangqore: true },
     ],
     featureMicros: [
       'Systems that reason — not just classify.',
@@ -1055,13 +1055,13 @@ export const servicesData = {
       {
         title: 'Machine Learning & Predictive Intelligence',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Develop intelligent machine learning solutions that enable prediction, optimisation, automation, and data-driven business decision-making.',
+        desc: 'Develop intelligent machine learning solutions that enable prediction, optimization, automation, and data-driven business decision-making.',
         items: [
-          'Predictive Modelling & Forecasting: Develop advanced forecasting models for demand planning, financial forecasting, operational optimisation, and strategic decision support.',
-          'Classification & Anomaly Detection: Build intelligent classification and anomaly detection systems that identify fraud, operational risks, quality issues, and unusual behaviour.',
+          'Predictive Modelling & Forecasting: Develop advanced forecasting models for demand planning, financial forecasting, operational optimization, and strategic decision support.',
+          'Classification & Anomaly Detection: Build intelligent classification and anomaly detection systems that identify fraud, operational risks, quality issues, and unusual behavior.',
           'Recommendation Intelligence: Create AI-powered recommendation systems that deliver personalised customer experiences and improve engagement, retention, and revenue.',
           'Statistical & Quantitative Modelling: Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.',
-          'Feature Engineering & Model Development: Design high-quality data features and optimise machine learning models for improved predictive performance and scalability.',
+          'Feature Engineering & Model Development: Design high-quality data features and optimize machine learning models for improved predictive performance and scalability.',
           'Decision Intelligence: Combine machine learning, analytics, and business rules to support intelligent, explainable, and data-driven decision-making.',
         ],
       },
@@ -1071,7 +1071,7 @@ export const servicesData = {
         desc: 'Design enterprise-grade Generative AI solutions that enhance productivity, automate knowledge work, and enable intelligent business operations.',
         items: [
           'Enterprise Copilots & AI Assistants: Develop secure AI assistants that augment employees with contextual knowledge, automation, and intelligent decision support.',
-          'Retrieval-Augmented Generation (RAG): Build enterprise RAG architectures that combine foundation models with trusted organisational knowledge for accurate and grounded AI responses.',
+          'Retrieval-Augmented Generation (RAG): Build enterprise RAG architectures that combine foundation models with trusted organizational knowledge for accurate and grounded AI responses.',
           'Enterprise Knowledge Intelligence: Develop intelligent search, semantic retrieval, and knowledge management platforms that unlock enterprise information.',
           'Domain-Specific Generative AI: Create industry-specific Generative AI applications tailored to unique business processes, regulations, and operational requirements.',
           'Multi-Agent AI Systems: Develop collaborative AI agent ecosystems capable of coordinating complex workflows, autonomous task execution, and enterprise orchestration.',
@@ -1085,18 +1085,18 @@ export const servicesData = {
         items: [
           'AI Deployment Pipelines: Implement automated CI/CD pipelines that streamline the development, testing, deployment, and delivery of AI solutions.',
           'Model Lifecycle Management: Manage AI models across development, validation, deployment, monitoring, retraining, and retirement using governed lifecycle processes.',
-          'Model Versioning & Registry: Maintain centralised model repositories with complete version history, documentation, metadata, and reproducibility.',
+          'Model Versioning & Registry: Maintain centralized model repositories with complete version history, documentation, metadata, and reproducibility.',
           'AI Performance Monitoring: Continuously monitor production models for accuracy, latency, throughput, reliability, and operational performance.',
-          'Drift Detection & Continuous Learning: Automatically detect data and concept drift while enabling continuous retraining and model optimisation.',
-          'AI Observability: Provide end-to-end visibility into model behaviour, inference quality, resource utilisation, operational health, and production AI systems.',
+          'Drift Detection & Continuous Learning: Automatically detect data and concept drift while enabling continuous retraining and model optimization.',
+          'AI Observability: Provide end-to-end visibility into model behavior, inference quality, resource utilization, operational health, and production AI systems.',
         ],
       },
       {
         title: 'AI Governance & Responsible AI',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Ensure enterprise AI systems operate responsibly, securely, transparently, and in compliance with organisational policies and regulatory requirements.',
+        desc: 'Ensure enterprise AI systems operate responsibly, securely, transparently, and in compliance with organizational policies and regulatory requirements.',
         items: [
-          'Responsible AI Frameworks: Establish governance principles and organisational frameworks that guide the responsible design, deployment, and operation of AI systems.',
+          'Responsible AI Frameworks: Establish governance principles and organizational frameworks that guide the responsible design, deployment, and operation of AI systems.',
           'Fairness & Bias Management: Identify, measure, and mitigate bias across datasets, models, and AI-driven decision processes to promote equitable outcomes.',
           'Explainable AI: Implement interpretable AI techniques that provide transparent reasoning, confidence scores, and understandable decision explanations.',
           'AI Risk & Compliance: Manage AI-related operational, regulatory, ethical, and business risks while ensuring compliance with enterprise governance standards.',
@@ -1155,14 +1155,14 @@ export const servicesData = {
       {
         title: 'AI Strategy & MLOps Advisory',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Establish enterprise AI operating models, implementation roadmaps, and organisational readiness that accelerate successful AI adoption and long-term business value.',
+        desc: 'Establish enterprise AI operating models, implementation roadmaps, and organizational readiness that accelerate successful AI adoption and long-term business value.',
         items: [
-          'AI & MLOps Readiness Assessment: Evaluate organisational maturity, engineering capabilities, operational readiness, and platform foundations for enterprise-scale AI adoption.',
-          'AI Use Case Discovery: Identify, prioritise, and validate high-value AI initiatives aligned with strategic business objectives and measurable outcomes.',
+          'AI & MLOps Readiness Assessment: Evaluate organizational maturity, engineering capabilities, operational readiness, and platform foundations for enterprise-scale AI adoption.',
+          'AI Use Case Discovery: Identify, prioritize, and validate high-value AI initiatives aligned with strategic business objectives and measurable outcomes.',
           'Data Readiness Assessment: Assess data quality, accessibility, governance, and architectural readiness required for successful machine learning initiatives.',
           'MLOps Strategy & Roadmap: Develop enterprise MLOps operating models, implementation roadmaps, governance structures, and technology strategies.',
           'AI Platform Advisory: Recommend cloud, hybrid, infrastructure, tooling, and platform architectures that support scalable enterprise AI operations.',
-          'AI Transformation Enablement: Drive organisational adoption through governance frameworks, stakeholder alignment, operating models, and capability development.',
+          'AI Transformation Enablement: Drive organizational adoption through governance frameworks, stakeholder alignment, operating models, and capability development.',
         ],
       },
       {
@@ -1171,8 +1171,8 @@ export const servicesData = {
         desc: 'Accelerate AI development through governed engineering practices that enable reliable, repeatable, and production-ready machine learning delivery.',
         items: [
           'Experiment Management: Capture datasets, parameters, metrics, artefacts, and experiments to ensure reproducibility, collaboration, and continuous innovation.',
-          'Model Development & Validation: Design, train, evaluate, validate, and optimise machine learning models for enterprise-grade production environments.',
-          'Model Registry & Lifecycle Management: Maintain centralised repositories for managing model versions, approvals, documentation, metadata, and deployment status.',
+          'Model Development & Validation: Design, train, evaluate, validate, and optimize machine learning models for enterprise-grade production environments.',
+          'Model Registry & Lifecycle Management: Maintain centralized repositories for managing model versions, approvals, documentation, metadata, and deployment status.',
           'Continuous Integration & Delivery: Automate testing, validation, packaging, and deployment of machine learning models through enterprise CI/CD pipelines.',
           'Progressive Model Deployment: Deploy AI models safely using canary, blue-green, shadow, and phased rollout strategies that reduce operational risk.',
           'AI Lifecycle Automation: Automate promotion, deployment, monitoring, retraining, rollback, and retirement across the complete AI lifecycle.',
@@ -1184,7 +1184,7 @@ export const servicesData = {
         desc: 'Build trusted, governed, and scalable data foundations that power enterprise AI, machine learning, and intelligent automation.',
         items: [
           'Data Pipeline Engineering: Develop automated ingestion, transformation, orchestration, and processing pipelines that support enterprise AI workloads.',
-          'Feature Store Management: Establish centralised feature repositories that improve feature reuse, governance, consistency, and real-time serving.',
+          'Feature Store Management: Establish centralized feature repositories that improve feature reuse, governance, consistency, and real-time serving.',
           'Dataset Versioning & Lineage: Maintain complete dataset history, lineage, reproducibility, and traceability throughout model development and operations.',
           'Data Validation & Quality Engineering: Implement automated validation, profiling, cleansing, monitoring, and quality controls for trusted enterprise data.',
           'Metadata & Lineage Management: Capture metadata, dependencies, and lineage across datasets, pipelines, models, and AI assets.',
@@ -1194,12 +1194,12 @@ export const servicesData = {
       {
         title: 'Production AI Operations',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Operate enterprise AI systems with continuous monitoring, intelligent optimisation, and resilient production infrastructure.',
+        desc: 'Operate enterprise AI systems with continuous monitoring, intelligent optimization, and resilient production infrastructure.',
         items: [
-          'AI Observability: Gain end-to-end visibility into model behaviour, inference quality, latency, resource utilisation, and operational health.',
+          'AI Observability: Gain end-to-end visibility into model behavior, inference quality, latency, resource utilization, and operational health.',
           'Performance Monitoring: Monitor prediction quality, throughput, availability, latency, and service-level objectives across production environments.',
           'Drift Detection & Continuous Learning: Detect data drift, concept drift, prediction anomalies, and model degradation while triggering governed retraining workflows.',
-          'AI Performance Optimisation: Continuously improve model accuracy, inference efficiency, infrastructure utilisation, and operational cost.',
+          'AI Performance Optimization: Continuously improve model accuracy, inference efficiency, infrastructure utilization, and operational cost.',
           'Production Reliability Engineering: Maintain resilient, fault-tolerant, and highly available AI systems through proactive operational management.',
           'Operational Intelligence & Reporting: Provide dashboards, SLA reporting, operational analytics, executive insights, and AI health metrics.',
         ],
@@ -1207,13 +1207,13 @@ export const servicesData = {
       {
         title: 'AI Platform Engineering',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Design secure, cloud-native AI platforms that standardise enterprise AI development, deployment, orchestration, and operations.',
+        desc: 'Design secure, cloud-native AI platforms that standardize enterprise AI development, deployment, orchestration, and operations.',
         items: [
-          'AI Platform Architecture: Design scalable AI platforms that standardise enterprise machine learning engineering and operational practices.',
+          'AI Platform Architecture: Design scalable AI platforms that standardize enterprise machine learning engineering and operational practices.',
           'Containerisation & Orchestration: Deploy AI workloads using containers, Kubernetes, and enterprise orchestration frameworks.',
           'Hybrid & Multi-Cloud AI: Operate AI workloads consistently across public cloud, private cloud, hybrid, and on-premises environments.',
           'Infrastructure Automation: Automate provisioning, configuration, scaling, and lifecycle management using Infrastructure as Code.',
-          'GPU & Accelerator Engineering: Optimise GPU, TPU, and specialised AI accelerator infrastructure for efficient training and inference workloads.',
+          'GPU & Accelerator Engineering: Optimize GPU, TPU, and specialized AI accelerator infrastructure for efficient training and inference workloads.',
           'Scalability & Resilience Engineering: Deliver highly available, fault-tolerant, and elastic AI platforms that support enterprise-scale operations.',
         ],
       },
@@ -1233,13 +1233,13 @@ export const servicesData = {
       {
         title: 'AI Performance, Cost & FinOps',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Maximise the business value of enterprise AI through continuous optimisation of performance, infrastructure utilisation, operational efficiency, and technology investment.',
+        desc: 'Maximize the business value of enterprise AI through continuous optimization of performance, infrastructure utilization, operational efficiency, and technology investment.',
         items: [
-          'AI Cost Optimisation: Optimise compute resources, inference workloads, storage, and token consumption to improve cost efficiency.',
-          'AI Resource Management: Monitor and optimise GPU, CPU, memory, and accelerator utilisation across enterprise AI workloads.',
-          'Workload Optimisation: Balance training and inference workloads to maximise throughput, reliability, and operational efficiency.',
+          'AI Cost Optimization: Optimize compute resources, inference workloads, storage, and token consumption to improve cost efficiency.',
+          'AI Resource Management: Monitor and optimize GPU, CPU, memory, and accelerator utilization across enterprise AI workloads.',
+          'Workload Optimization: Balance training and inference workloads to maximize throughput, reliability, and operational efficiency.',
           'Capacity Planning: Forecast infrastructure demand and plan scalable AI environments that support future business growth.',
-          'AI FinOps & Cost Governance: Establish governance frameworks for budgeting, cost allocation, chargeback models, and AI investment optimisation.',
+          'AI FinOps & Cost Governance: Establish governance frameworks for budgeting, cost allocation, chargeback models, and AI investment optimization.',
           'Business Value Measurement: Measure AI adoption, operational impact, ROI, and business outcomes through enterprise performance metrics and executive reporting.',
         ],
       },
@@ -1273,7 +1273,7 @@ export const servicesData = {
         items: [
           'Data Quality Engineering: Design robust data validation, cleansing, enrichment, and preprocessing pipelines that ensure trusted, high-quality inputs for AI systems.',
           'Model Validation & Quality Assurance: Establish comprehensive testing frameworks to evaluate model accuracy, robustness, reliability, and production readiness.',
-          'AI Risk Detection: Identify and mitigate hallucinations, bias, anomalies, data quality issues, and unexpected model behaviour before they impact business operations.',
+          'AI Risk Detection: Identify and mitigate hallucinations, bias, anomalies, data quality issues, and unexpected model behavior before they impact business operations.',
           'Performance Monitoring & Drift Management: Continuously monitor model performance, detect data and concept drift, and maintain optimal AI effectiveness in production environments.',
           'AI Evaluation & Benchmarking: Measure AI models against predefined quality metrics, enterprise benchmarks, and business objectives to ensure consistent performance.',
           'Reliability & Resilience Engineering: Improve AI system stability, fault tolerance, recovery capabilities, and operational resilience across enterprise workloads.',
@@ -1282,14 +1282,14 @@ export const servicesData = {
       {
         title: 'Establishing Ethical AI Governance',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Develop governance frameworks that ensure AI systems operate responsibly, transparently, fairly, and in alignment with organisational values and regulatory expectations.',
+        desc: 'Develop governance frameworks that ensure AI systems operate responsibly, transparently, fairly, and in alignment with organizational values and regulatory expectations.',
         items: [
           'Responsible AI Frameworks: Define enterprise-wide governance principles that guide the ethical design, deployment, and operation of AI systems.',
-          'Fairness & Transparency: Implement controls that minimise bias, improve explainability, and promote equitable AI outcomes across business processes.',
+          'Fairness & Transparency: Implement controls that minimize bias, improve explainability, and promote equitable AI outcomes across business processes.',
           'Explainable AI: Enable stakeholders to understand AI reasoning, decision pathways, confidence levels, and supporting evidence for every recommendation.',
           'Accountability & Oversight: Establish governance structures that define ownership, responsibility, approvals, and decision accountability throughout the AI lifecycle.',
           'Human Oversight: Integrate human-in-the-loop governance mechanisms for reviewing, validating, and approving high-impact AI decisions.',
-          'Responsible GenAI & Agentic AI: Apply specialised governance controls for autonomous AI agents, Generative AI applications, and multi-agent ecosystems.',
+          'Responsible GenAI & Agentic AI: Apply specialized governance controls for autonomous AI agents, Generative AI applications, and multi-agent ecosystems.',
         ]
       },
       {
@@ -1302,18 +1302,18 @@ export const servicesData = {
           'Deployment Governance: Implement controlled approval workflows, release management, and production deployment processes for enterprise AI systems.',
           'Performance Validation: Continuously validate model accuracy, reliability, robustness, and business effectiveness throughout production operations.',
           'Change & Release Management: Manage governed model updates, rollback strategies, retraining cycles, and controlled releases with minimal operational disruption.',
-          'Model Registry & Documentation: Maintain a centralised repository containing model metadata, documentation, ownership, dependencies, approvals, and governance records.',
+          'Model Registry & Documentation: Maintain a centralized repository containing model metadata, documentation, ownership, dependencies, approvals, and governance records.',
         ]
       },
       {
         title: 'Compliance & AI Risk Management',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Ensure AI systems comply with global regulations, industry standards, organisational policies, and enterprise risk management requirements.',
+        desc: 'Ensure AI systems comply with global regulations, industry standards, organizational policies, and enterprise risk management requirements.',
         items: [
-          'Regulatory Compliance: Align AI solutions with international regulations, industry standards, and organisational governance requirements throughout the AI lifecycle.',
+          'Regulatory Compliance: Align AI solutions with international regulations, industry standards, and organizational governance requirements throughout the AI lifecycle.',
           'Data Privacy & Protection: Implement enterprise controls for data anonymisation, encryption, consent management, retention, and secure information handling.',
           'Audit & Policy Enforcement: Maintain comprehensive audit trails, policy enforcement mechanisms, operational logs, and governance evidence for regulatory compliance.',
-          'AI Risk Management: Identify, assess, prioritise, and mitigate operational, ethical, regulatory, cybersecurity, and business risks associated with AI systems.',
+          'AI Risk Management: Identify, assess, prioritize, and mitigate operational, ethical, regulatory, cybersecurity, and business risks associated with AI systems.',
           'Security & Access Governance: Protect AI assets through identity management, role-based access control, zero-trust security, and continuous access monitoring.',
           'Compliance Monitoring & Reporting: Continuously monitor compliance posture, generate governance reports, and demonstrate adherence to enterprise and regulatory obligations.',
         ]
@@ -1323,10 +1323,10 @@ export const servicesData = {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Protect AI systems, models, agents, and enterprise data against adversarial threats, unauthorised access, and emerging AI-specific security risks.',
         items: [
-          'AI Security Architecture: Design secure AI infrastructures with defence-in-depth principles, zero-trust security, and resilient system architectures.',
+          'AI Security Architecture: Design secure AI infrastructures with defense-in-depth principles, zero-trust security, and resilient system architectures.',
           'Prompt & LLM Security: Protect Large Language Models against prompt injection, jailbreaks, data leakage, and adversarial manipulation.',
           'Identity & Access Management: Enforce role-based access, least-privilege controls, authentication, and authorisation across AI systems and agents.',
-          'AI Threat Detection: Continuously detect malicious behaviour, adversarial attacks, model abuse, and security anomalies across AI environments.',
+          'AI Threat Detection: Continuously detect malicious behavior, adversarial attacks, model abuse, and security anomalies across AI environments.',
           'Secrets & Credential Management: Secure API keys, tokens, credentials, encryption keys, and confidential enterprise assets used by AI systems.',
           'Secure AI Infrastructure: Implement encryption, network isolation, secure deployment pipelines, and infrastructure hardening for production AI workloads.',
         ]
@@ -1336,25 +1336,25 @@ export const servicesData = {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Provide continuous visibility into AI system health, performance, cost, reliability, and operational effectiveness across the enterprise.',
         items: [
-          'AI Observability: Monitor AI behaviour, inference quality, latency, token usage, and operational health across production environments.',
-          'Operational Monitoring: Track service availability, response times, throughput, resource utilisation, and overall AI system performance.',
-          'Cost & Resource Optimisation: Analyse AI infrastructure costs, token consumption, compute utilisation, and resource efficiency to optimise operational spending.',
+          'AI Observability: Monitor AI behavior, inference quality, latency, token usage, and operational health across production environments.',
+          'Operational Monitoring: Track service availability, response times, throughput, resource utilization, and overall AI system performance.',
+          'Cost & Resource Optimization: Analyze AI infrastructure costs, token consumption, compute utilization, and resource efficiency to optimize operational spending.',
           'Incident & Failure Management: Detect, investigate, respond to, and recover from AI failures through structured incident management processes.',
-          'Capacity & Scalability Management: Plan and optimise AI infrastructure capacity to support enterprise-scale workloads and future growth.',
+          'Capacity & Scalability Management: Plan and optimize AI infrastructure capacity to support enterprise-scale workloads and future growth.',
           'Operational Analytics & Reporting: Deliver executive dashboards, operational insights, SLA reporting, and continuous improvement metrics for AI operations.',
         ]
       },
       {
         title: 'AI Governance Strategy & Transformation',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Help organisations establish enterprise-wide AI governance operating models, governance maturity, organisational readiness, and long-term AI transformation strategies.',
+        desc: 'Help organizations establish enterprise-wide AI governance operating models, governance maturity, organizational readiness, and long-term AI transformation strategies.',
         items: [
           'AI Governance Strategy: Define enterprise AI governance vision, principles, operating models, and strategic roadmaps aligned with business objectives.',
           'AI Governance Operating Model: Design governance structures, roles, responsibilities, committees, decision authorities, and cross-functional governance processes.',
           'AI Governance Maturity Assessment: Evaluate governance capabilities, identify gaps, benchmark against industry best practices, and develop improvement roadmaps.',
           'AI Policy & Standards Management: Develop enterprise AI policies, governance standards, operating procedures, and control frameworks for consistent AI adoption.',
-          'AI Portfolio Governance: Prioritise, oversee, and govern enterprise AI initiatives, investments, programmes, and business value realisation.',
-          'AI Adoption & Change Management: Drive organisational readiness through stakeholder engagement, governance awareness, training, communication, and change management programmes.',
+          'AI Portfolio Governance: Prioritize, oversee, and govern enterprise AI initiatives, investments, programs, and business value realisation.',
+          'AI Adoption & Change Management: Drive organizational readiness through stakeholder engagement, governance awareness, training, communication, and change management programs.',
         ]
       }
     ],
@@ -1443,21 +1443,21 @@ export const servicesData = {
       { name: 'Managed Compliance', description: 'Ongoing production monitoring, model drift alerting, human-in-the-loop workflow management, and audit log maintenance.', duration: 'Ongoing', tier: 'Managed' },
       { name: 'Continuous Assurance', description: 'Enterprise-wide AI risk assurance, periodic regulatory re-assessments, and continuous model governance tuning.', duration: 'Ongoing', tier: 'Enterprise' },
     ],
-    outcomeCard: {
+    outcomeCard: { illustrative: true,
       metric: '100%',
       metricLabel: 'EU AI Act audit readiness achieved',
       industry: 'Global Financial Institution',
       problem: 'Uncoordinated AI deployment across 40+ trading and risk departments created severe compliance vulnerability under emerging EU AI Act guidelines and model risk management mandates.',
       outcome: 'Kangqore deployed a centralized model governance platform with automated risk tiering, model lineage tracking, and SHAP explainability — achieving 100% audit readiness across all production models with zero deployment slowdown.',
     },
-    outcomeCard2: {
+    outcomeCard2: { illustrative: true,
       metric: '95%',
       metricLabel: 'Critical model incident risk reduction',
       industry: 'Healthcare & Clinical Research Network',
       problem: 'Diagnostic AI models and patient triage algorithms lacked real-time drift detection and human oversight gates, risking diagnostic error propagation across hospital systems.',
       outcome: 'Kangqore embedded human-in-the-loop approval workflows, real-time data drift alerts, and automated bias checks — reducing critical model incidents by 95% across 12 clinical nodes.',
     },
-    outcomeCard3: {
+    outcomeCard3: { illustrative: true,
       metric: '0%',
       metricLabel: 'Unauthorized autonomous agent actions',
       industry: 'Enterprise Cloud & Defense Technology',
@@ -1472,12 +1472,12 @@ export const servicesData = {
     ],
     customFAQs: [
       { q: 'What does AI governance actually mean in practice?', a: 'AI governance is the operating system for trustworthy AI. It means every model, agent, and AI application in your enterprise has a defined owner, documented lifecycle, version-controlled deployment, explainable outputs, bias monitoring, compliance validation, and immutable audit trails. Kangqore implements this as infrastructure — not a policy document that sits in a drawer.' },
-      { q: 'Why does our organisation need AI governance now?', a: 'Three forces are converging: the EU AI Act introduces mandatory compliance obligations with significant penalties for high-risk AI. Shadow AI usage is creating unmonitored model sprawl across departments. And generative AI and autonomous agents are making decisions that directly impact customers, revenue, and legal exposure. Governance is no longer optional — it\'s the difference between scaling AI and getting shut down by your regulator.' },
+      { q: 'Why does our organization need AI governance now?', a: 'Three forces are converging: the EU AI Act introduces mandatory compliance obligations with significant penalties for high-risk AI. Shadow AI usage is creating unmonitored model sprawl across departments. And generative AI and autonomous agents are making decisions that directly impact customers, revenue, and legal exposure. Governance is no longer optional — it\'s the difference between scaling AI and getting shut down by your regulator.' },
       { q: 'How is Kangqore\'s AI governance different from buying a GRC tool?', a: 'GRC tools manage policies. Kangqore implements governance infrastructure. We build centralized model registries with automated risk tiering, CI/CD compliance gates that block non-compliant deployments, SHAP explainability layers for every production model, real-time drift detection and bias monitoring, human-in-the-loop approval workflows, and immutable cryptographic audit ledgers. This is engineering, not checkbox compliance.' },
       { q: 'What regulations does your governance framework address?', a: 'EU AI Act (risk classification, transparency, conformity assessment), GDPR (data privacy, consent, right to explanation), HIPAA (clinical AI data protection), SOX (financial model auditability), NIST AI RMF (risk management framework), ISO 42001 (AI management system), and sector-specific mandates including FCA/PRA model risk management for financial services and FDA AI/ML guidance for healthcare.' },
       { q: 'How do you handle model risk management (MRM)?', a: 'Every model in your registry is assigned an automated risk tier (critical, high, medium, low) based on business impact, data sensitivity, regulatory exposure, and autonomy level. Critical and high-risk models require human-in-the-loop approval gates before deployment, continuous performance validation in production, and periodic re-assessment with documented evidence. This is the MRM standard that regulators expect — implemented as automated infrastructure.' },
-      { q: 'Can you govern generative AI and autonomous agents specifically?', a: 'That\'s where governance matters most. Kangqore\'s framework includes prompt sanitization and injection defence, behavioral boundary enforcement for autonomous agents, agent-level RBAC with zero-trust permissions, output quality monitoring with hallucination detection, kill-switches for emergency agent termination, and complete prompt-to-response audit trails for every LLM interaction.' },
-      { q: 'What does explainable AI look like in production?', a: 'Every production model ships with SHAP-based feature importance, confidence scoring on every prediction, counterfactual explanations ("what would need to change for a different outcome"), decision pathway visualisation for complex multi-step reasoning, and human-readable audit reports that non-technical stakeholders and regulators can understand.' },
+      { q: 'Can you govern generative AI and autonomous agents specifically?', a: 'That\'s where governance matters most. Kangqore\'s framework includes prompt sanitization and injection defense, behavioral boundary enforcement for autonomous agents, agent-level RBAC with zero-trust permissions, output quality monitoring with hallucination detection, kill-switches for emergency agent termination, and complete prompt-to-response audit trails for every LLM interaction.' },
+      { q: 'What does explainable AI look like in production?', a: 'Every production model ships with SHAP-based feature importance, confidence scoring on every prediction, counterfactual explanations ("what would need to change for a different outcome"), decision pathway visualization for complex multi-step reasoning, and human-readable audit reports that non-technical stakeholders and regulators can understand.' },
       { q: 'How do you detect and prevent model drift and bias?', a: 'Real-time production monitoring continuously tracks prediction distributions, feature drift, data quality degradation, and outcome fairness metrics across protected characteristics. When drift exceeds configurable thresholds, automated alerts trigger human-in-the-loop review — before degraded decisions reach customers or operations. Bias checks run on every model retraining cycle with documented fairness evidence.' },
       { q: 'What does a typical AI governance engagement look like?', a: 'Week 1–3: Strategy & Audit — inventory all AI assets, classify risk, identify governance gaps. Week 4–11: Guardrail Pod — deploy model registries, explainability layers, and bias monitoring for one high-risk model. Week 12–24: Platform Governance — enterprise-wide registry, automated compliance gates, and data masking pipelines. Ongoing: Managed Compliance + Continuous Assurance — production monitoring, periodic re-assessment, and governance tuning.' },
       { q: 'How do you handle data privacy within AI governance?', a: 'Enterprise data governance controls include automated PII detection and masking in training data, consent management and data lineage tracking, differential privacy for sensitive datasets, prompt sanitization to prevent data leakage through LLMs, and encrypted data-in-transit and data-at-rest across all AI infrastructure. Every data handling action is logged to immutable audit trails.' },
@@ -1628,7 +1628,7 @@ export const servicesData = {
     whatIsTitle: 'RPA That Deploys Bots',
     whatIsTitleLine2: 'That Operate Without',
     whatIsHighlight: 'Supervision.',
-    whatIsPara2: 'Kangqore builds enterprise RPA programs from process assessment through Centre of Excellence establishment — deploying screen automation and cognitive bots that execute high-volume, rules-based workflows at 99.8% accuracy.',
+    whatIsPara2: 'Kangqore builds enterprise RPA programs from process assessment through Centre of Excellence establishment — deploying screen automation and cognitive bots that execute high-volume, rules-based workflows with accuracy targets agreed per process.',
     businessMetrics: [
       { title: 'Operational Cost', desc: 'Average cost reduction achieved across IT and business process automation programs delivered by Kangqore.', value: '40',   suffix: '%',    metricLabel: 'Cost Reduction',   icon: 'Target'    },
       { title: 'Bot Accuracy',     desc: 'Execution accuracy across finance, HR, and insurance workflows — virtually eliminating manual processing errors.',  value: '99.8', suffix: '%',    metricLabel: 'Bot Accuracy',     icon: 'Shield'    },
@@ -2264,7 +2264,7 @@ export const servicesData = {
     name: 'Marketing AI Readiness',
     departmentSlug: 'growth',
     bannerBrand: 'KVIS™',
-    shortDescription: 'Audit and optimize creative operations with GenAI to save 40%+ in costs.',
+    shortDescription: 'Audit and optimize creative operations with GenAI to cut production cost and cycle time.',
     fullDescription: 'Deploy cutting-edge Generative AI across your marketing workflows to accelerate creative production, personalize content at scale, and drastically reduce operational overhead.',
     keyFeatures: ['Creative ops audit', 'GenAI implementation roadmap', 'Content personalization at scale', 'Workflow automation', 'AI-driven asset generation'],
     relatedServiceSlugs: ['cdp-strategy', 'genai-business-services', 'performance-marketing'],
