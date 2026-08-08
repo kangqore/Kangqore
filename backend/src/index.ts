@@ -299,6 +299,9 @@ app.use('/api/admin/visitor', adminVisitorRouter);
 import { publicTrustRouter } from './routes/public-trust';
 app.use('/api/public/trust', publicTrustRouter);
 
+import { publicMarketplaceRouter } from './routes/public-marketplace';
+app.use('/api/public/marketplace', publicMarketplaceRouter);
+
 import hcipRouter from './routes/hcip';
 app.use('/api/v1', apiKeyAuth, v1RateLimiter, v1Router);
 

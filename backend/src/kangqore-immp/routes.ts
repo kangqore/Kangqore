@@ -20,6 +20,7 @@ import { KIMMP_VERSION } from './core/types';
 import { KimmpFlags } from './core/flags';
 import { computeCapabilityScorecard } from '../services/publicTrust.service';
 import { getLiveComplianceSignals, ensureFrameworkSeeded, getComplianceOverview } from '../services/complianceReadiness.service';
+import { getAgentStudioBenchmark } from '../services/agentStudioGrowth.service';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -9483,6 +9484,15 @@ kangqoreImmpRoutes.get('/platform/fedramp-moderate', requireAuth, requireRole(['
 kangqoreImmpRoutes.get('/platform/compliance-overview', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
     res.json(await getComplianceOverview())
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /platform/agent-studio-benchmark — Overshadow Roadmap P3.1: Kangqore's
+// real, live build-benchmark numbers next to App Engine's vendor-reported
+// figures. Same shared function the public /trust page calls.
+kangqoreImmpRoutes.get('/platform/agent-studio-benchmark', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    res.json(await getAgentStudioBenchmark())
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
