@@ -230,7 +230,7 @@ export default function BIDSPage() {
               Kangqore Business Diagnostic Intelligence System
             </p>
 
-            <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
+            <p className="text-base text-white/50 leading-[1.8] max-w-lg mb-14 font-medium">
               The Enterprise MRI for Business, Technology, Operations, AI, Security, and Growth — revealing hidden constraints before they become critical failures.
             </p>
 
@@ -347,9 +347,9 @@ export default function BIDSPage() {
           <div className="mb-10 flex flex-wrap items-center gap-x-4 gap-y-2">
             <span className="text-[10px] font-black tracking-[0.35em] text-white/25 uppercase">Engagement Process</span>
             <span className="text-white/10 text-sm">·</span>
-            <span className="text-[13px] font-medium text-white/45">10 structured steps</span>
+            <span className="text-[13px] font-medium text-white/50">10 structured steps</span>
             <span className="text-white/10 text-sm">·</span>
-            <span className="text-[13px] font-medium text-white/45">2–12 weeks depending on scope</span>
+            <span className="text-[13px] font-medium text-white/50">2–12 weeks depending on scope</span>
             <a href="#process" className="ml-auto inline-flex items-center gap-1.5 text-[11px] font-black text-cyan-400/70 hover:text-cyan-400 tracking-widest uppercase transition-colors duration-200">
               View Full Process <ArrowRight className="w-3 h-3" />
             </a>
@@ -373,7 +373,7 @@ export default function BIDSPage() {
 
           {/* Pull quote */}
           <div className="border-l-2 border-white/10 pl-8">
-            <p className="text-xl sm:text-2xl font-black text-white/40 leading-snug max-w-4xl">
+            <p className="text-xl sm:text-2xl font-black text-white/50 leading-snug max-w-4xl">
               "What is preventing this organization from achieving its full potential?"
             </p>
             <p className="text-lg font-black text-white mt-3">
@@ -462,7 +462,7 @@ export default function BIDSPage() {
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
               Questions every<br />executive should<br /><span className="bg-brand-gradient bg-clip-text text-transparent">be able to answer.</span>
             </h2>
-            <p className="text-white/40 text-lg font-medium leading-relaxed">
+            <p className="text-white/50 text-lg font-medium leading-relaxed">
               Rate your organization's current clarity on each question. The results indicate where diagnostic intelligence delivers the highest value.
             </p>
           </div>
@@ -594,7 +594,7 @@ export default function BIDSPage() {
                           <p className="text-[9px] font-black tracking-widest uppercase mb-2" style={{ color: profile.color }}>Profile</p>
                           <p className="text-white font-black text-2xl leading-tight">{profile.label}</p>
                         </div>
-                        <p className="text-white/45 text-sm font-medium leading-relaxed mb-6">{profile.message}</p>
+                        <p className="text-white/50 text-sm font-medium leading-relaxed mb-6">{profile.message}</p>
                         <div className="p-4 rounded-xl border mb-6" style={{ borderColor: profile.color + '30', backgroundColor: profile.color + '0a' }}>
                           <p className="text-sm font-semibold leading-snug" style={{ color: profile.color }}>{profile.signal}</p>
                         </div>
@@ -730,7 +730,7 @@ export default function BIDSPage() {
               <h2 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 Built for organizations<br /><span className="bg-brand-gradient bg-clip-text text-transparent">preparing for significant change.</span>
               </h2>
-              <p className="text-white/40 text-base font-medium leading-relaxed mb-10">Typical engagements include:</p>
+              <p className="text-white/50 text-base font-medium leading-relaxed mb-10">Typical engagements include:</p>
               <div className="space-y-0">
                 {[
                   'Growth-stage companies scaling beyond founder-led operations',
@@ -758,7 +758,7 @@ export default function BIDSPage() {
                 <h3 className="text-white font-black text-xl mb-4 leading-tight">
                   Currently accepting Q3–Q4 2026 discovery and transformation engagements.
                 </h3>
-                <p className="text-white/40 text-sm font-medium leading-relaxed mb-8">
+                <p className="text-white/50 text-sm font-medium leading-relaxed mb-8">
                   Each engagement involves direct senior-specialist involvement throughout the assessment — from executive scoping through to findings delivery. We accept new diagnostic engagements on an ongoing basis and respond to all scoping requests within 24–48 business hours.
                 </p>
                 <Link
@@ -790,7 +790,7 @@ export default function BIDSPage() {
               </h2>
             </div>
             <div className="lg:pb-3">
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
+              <p className="text-white/50 text-lg font-medium leading-relaxed mb-8">
                 A structured, ten-step process from initial request through executive delivery — designed to match the pace of how executive teams actually make decisions.
               </p>
               <Link
@@ -871,7 +871,7 @@ export default function BIDSPage() {
                 <span className="text-[9px] font-black tracking-widest mt-1 flex-shrink-0 w-6" style={{ color: step.color }}>{step.n}</span>
                 <div>
                   <p className="text-white font-black text-base mb-2 leading-tight">{step.name}</p>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed">{step.desc}</p>
+                  <p className="text-white/50 text-sm font-medium leading-relaxed">{step.desc}</p>
                   {step.sla && (
                     <div className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full border border-cyan-500/20 bg-cyan-500/[0.04]">
                       <div className="w-1 h-1 rounded-full bg-cyan-400 flex-shrink-0" />
@@ -885,7 +885,7 @@ export default function BIDSPage() {
 
           <div className="mt-4 pt-10 border-t border-white/[0.06]">
             <p className="text-[9px] font-black tracking-[0.35em] text-white/20 uppercase mb-3">PROPRIETARY METHODOLOGY</p>
-            <p className="text-white/40 text-sm font-medium leading-relaxed mb-4 max-w-2xl">
+            <p className="text-white/50 text-sm font-medium leading-relaxed mb-4 max-w-2xl">
               The scoring methodology — including pillar weightings, data point inputs, and cross-engine synthesis logic — is proprietary. A methodology overview is available upon request for qualified engagements.
             </p>
             <Link to="/contact" className="inline-flex items-center gap-2 text-cyan-400/70 hover:text-cyan-400 transition-colors duration-200 text-sm font-bold">
@@ -935,7 +935,7 @@ export default function BIDSPage() {
                       <div className="lg:hidden pb-6 pl-7 pr-2">
                         <p className="text-[9px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">PILLAR {p.n}</p>
                         <p className="text-white/70 text-base font-semibold mb-2">{pillarDetails[i].tagline}</p>
-                        <p className="text-white/40 text-sm leading-relaxed mb-4">{pillarDetails[i].desc}</p>
+                        <p className="text-white/50 text-sm leading-relaxed mb-4">{pillarDetails[i].desc}</p>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10">
                           <span className="text-white/50 text-xs font-semibold tracking-wide">{p.score}</span>
                         </div>
@@ -954,7 +954,7 @@ export default function BIDSPage() {
                   {pillars[activePillar].name}
                 </h3>
                 <p className="text-white/70 text-lg font-semibold mb-4">{pillarDetails[activePillar].tagline}</p>
-                <p className="text-white/40 text-base leading-relaxed mb-10">{pillarDetails[activePillar].desc}</p>
+                <p className="text-white/50 text-base leading-relaxed mb-10">{pillarDetails[activePillar].desc}</p>
                 <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-white/10">
                   {(() => { const Icon = pillars[activePillar].icon; return <Icon className="w-4 h-4 text-cyan-400" strokeWidth={1.5} />; })()}
                   <span className="text-white/50 text-sm font-semibold tracking-wide">{pillars[activePillar].score}</span>
@@ -1027,7 +1027,7 @@ export default function BIDSPage() {
               How Kangqore BIDS™<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">conducts enterprise diagnosis.</span>
             </h2>
-            <p className="text-white/45 text-lg leading-relaxed font-medium max-w-3xl">
+            <p className="text-white/50 text-lg leading-relaxed font-medium max-w-3xl">
               Not a questionnaire, survey, or checklist. Every engagement combines qualitative, quantitative, operational, and technical intelligence across sixteen diagnostic pillars — synthesizing globally recognized standards into a single evidence-based view.
             </p>
           </div>
@@ -1173,7 +1173,7 @@ export default function BIDSPage() {
                       {cat.points.map(pt => (
                         <li key={pt} className="flex items-start gap-2.5">
                           <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: cat.color + '80' }} />
-                          <span className="text-white/45 text-sm font-medium leading-snug">{pt}</span>
+                          <span className="text-white/50 text-sm font-medium leading-snug">{pt}</span>
                         </li>
                       ))}
                     </ul>
@@ -1373,7 +1373,7 @@ export default function BIDSPage() {
               What the diagnostic<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">typically surfaces.</span>
             </h2>
-            <p className="text-white/40 text-lg font-medium leading-relaxed">
+            <p className="text-white/50 text-lg font-medium leading-relaxed">
               The following examples are representative of diagnostic patterns across engagement types. They are illustrative, not attributable to specific organizations or engagements.
             </p>
           </div>
@@ -1528,7 +1528,7 @@ export default function BIDSPage() {
                   { name: 'Transformation',          score: 47, c: 'bg-amber-400',   s: 'Moderate' },
                 ].map(p => (
                   <div key={p.name} className="flex items-center gap-3">
-                    <span className="text-[11px] text-white/40 font-semibold w-40 flex-shrink-0 truncate">{p.name}</span>
+                    <span className="text-[11px] text-white/50 font-semibold w-40 flex-shrink-0 truncate">{p.name}</span>
                     <div className="flex-1 h-1 bg-white/[0.06] rounded-full overflow-hidden">
                       <div className={`h-full ${p.c} rounded-full`} style={{ width: `${p.score}%` }} />
                     </div>
@@ -1601,7 +1601,7 @@ export default function BIDSPage() {
               </div>
               <div>
                 <p className="text-white font-black text-base mb-1">Sample Engagement Scorecard</p>
-                <p className="text-white/40 text-sm leading-relaxed max-w-lg">
+                <p className="text-white/50 text-sm leading-relaxed max-w-lg">
                   A real-format scorecard from a completed BIDS™ engagement — anonymised, with findings, pillar scores, priorities, and the executive summary structure your leadership team will receive.
                 </p>
               </div>
@@ -1631,7 +1631,7 @@ export default function BIDSPage() {
                 How we access your organization.<br />
                 <span className="text-white/30">And how we don't.</span>
               </h2>
-              <p className="text-white/40 text-base leading-relaxed">
+              <p className="text-white/50 text-base leading-relaxed">
                 Enterprise buyers ask the right questions. We answer them upfront — before the engagement begins, not buried in an SOW on page 38.
               </p>
             </div>
@@ -1691,7 +1691,7 @@ export default function BIDSPage() {
               </h2>
             </div>
             <div className="flex lg:items-end lg:pb-3">
-              <p className="text-white/40 text-lg font-medium leading-relaxed max-w-lg">
+              <p className="text-white/50 text-lg font-medium leading-relaxed max-w-lg">
                 The framework calibrates diagnostic pillars, scoring benchmarks, and prescription logic to the specific complexity of your industry — not a generic template applied uniformly.
               </p>
             </div>
@@ -1706,7 +1706,7 @@ export default function BIDSPage() {
                 style={{ transitionDelay: editionsVisible ? `${i * 40}ms` : '0ms' }}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black tracking-[0.28em] text-white/45 uppercase group-hover:text-white transition-colors duration-300">
+                  <span className="text-[10px] font-black tracking-[0.28em] text-white/50 uppercase group-hover:text-white transition-colors duration-300">
                     {e}
                   </span>
                   <ArrowRight className="w-3.5 h-3.5 text-white/15 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 ml-2" />
@@ -1805,7 +1805,7 @@ export default function BIDSPage() {
                     <span className="text-xs font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">{d.n}</span>
                     <div>
                       <p className="text-white font-bold text-lg mb-2">{d.label}</p>
-                      <p className="text-white/40 text-sm leading-relaxed">{d.desc}</p>
+                      <p className="text-white/50 text-sm leading-relaxed">{d.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -1825,7 +1825,7 @@ export default function BIDSPage() {
                 Choose the right<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">engagement scope.</span>
               </h2>
-              <p className="text-white/40 text-lg font-medium leading-relaxed">
+              <p className="text-white/50 text-lg font-medium leading-relaxed">
                 Each model is calibrated to organizational complexity, scope, and strategic objectives. Investment is determined by complexity, scope, geography, and stakeholder requirements.
               </p>
             </div>
@@ -1862,7 +1862,7 @@ export default function BIDSPage() {
                 <div className="mb-6">
                   <div className="w-6 h-0.5 rounded-full mb-5" style={{ backgroundColor: tier.color }} />
                   <p className="text-white font-black text-xl mb-3 leading-tight">{tier.name}</p>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed mb-5">{tier.audience}</p>
+                  <p className="text-white/50 text-sm font-medium leading-relaxed mb-5">{tier.audience}</p>
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border" style={{ borderColor: tier.color + '30' }}>
                     <span className="text-xs font-black tracking-wide" style={{ color: tier.color }}>Duration: {tier.duration}</span>
                   </div>
@@ -2025,7 +2025,7 @@ export default function BIDSPage() {
 
           {/* Closing statement */}
           <div className="mt-28">
-            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/40 max-w-3xl">
+            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/50 max-w-3xl">
               The enterprises that diagnose before they invest don't just reduce risk.{' '}
               <span className="text-white">They outgrow everyone who didn't.</span>
             </p>

@@ -122,7 +122,7 @@ const DepartmentsIndexPage = () => {
                 <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">· 61 Services</span>
               </h1>
 
-              <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
+              <p className="text-base text-white/50 leading-[1.8] max-w-lg mb-14 font-medium">
                 Organized across six specialized departments — each owning a clear capability domain. AI, cloud, modernization, trust, enterprise platforms, and growth.
               </p>
 
@@ -226,7 +226,7 @@ const DepartmentsIndexPage = () => {
                       <p className="text-white font-black text-sm leading-tight">{d.shortName}</p>
                       <p className="text-white/35 text-[10px] font-medium mt-0.5">{d.serviceCount} services</p>
                     </div>
-                    <ChevronRight className="w-3.5 h-3.5 text-white/15 group-hover:text-white/40 ml-auto flex-shrink-0 transition-colors duration-200" />
+                    <ChevronRight className="w-3.5 h-3.5 text-white/15 group-hover:text-white/50 ml-auto flex-shrink-0 transition-colors duration-200" />
                   </Link>
                 );
               })}
@@ -315,7 +315,7 @@ const DepartmentsIndexPage = () => {
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30" />
                     {/* Dept label */}
                     <div className="absolute bottom-5 left-6">
-                      <p className="text-white/40 text-[9px] font-black tracking-[0.35em] uppercase">Kangqore</p>
+                      <p className="text-white/50 text-[9px] font-black tracking-[0.35em] uppercase">Kangqore</p>
                       <p className="text-white font-black text-xl leading-tight drop-shadow-lg">{d.shortName}</p>
                     </div>
                   </div>
@@ -338,7 +338,7 @@ const DepartmentsIndexPage = () => {
                         {top3.map((svc) => (
                           <li key={svc.slug} className="flex items-center gap-2">
                             <span className="w-1 h-1 rounded-full bg-brand-cyan flex-shrink-0" />
-                            <span className="text-white/40 text-xs font-medium">{svc.name}</span>
+                            <span className="text-white/50 text-xs font-medium">{svc.name}</span>
                           </li>
                         ))}
                       </ul>
@@ -414,7 +414,7 @@ const DepartmentsIndexPage = () => {
 
           {/* Closing statement */}
           <div className="mt-16 pt-10 border-t border-white/[0.06]">
-            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/40 max-w-3xl">
+            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/50 max-w-3xl">
               The enterprises that build the right capabilities before they need them don't just grow.{' '}
               <span className="text-white">They dominate the curve.</span>
             </p>

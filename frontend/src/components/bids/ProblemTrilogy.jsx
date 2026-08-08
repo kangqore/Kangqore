@@ -114,7 +114,7 @@ export default function ProblemTrilogy() {
         </div>
       </div>
       <div className="lg:pt-8">
-        <p className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase mb-8">FAMILIAR SYMPTOMS</p>
+        <p className="text-xs font-bold tracking-[0.3em] text-white/50 uppercase mb-8">FAMILIAR SYMPTOMS</p>
         <div className="space-y-5">
           {symptoms.map((s) => (
             <div key={s} className="flex items-center gap-5">
@@ -192,7 +192,7 @@ export default function ProblemTrilogy() {
           Every hidden constraint<br />
           has a <span className="text-red-400">measurable cost.</span>
         </h2>
-        <p className="text-white/40 text-base font-medium leading-relaxed mb-10">
+        <p className="text-white/50 text-base font-medium leading-relaxed mb-10">
           Every constraint that goes undiagnosed has a compounding business cost. The question is
           not whether these costs exist — but whether your organization has measured them.
         </p>
@@ -208,7 +208,7 @@ export default function ProblemTrilogy() {
         {constraints.map((row) => (
           <div key={row.constraint} className="grid grid-cols-2 py-5 border-t border-white/[0.06]">
             <p className="text-white font-bold text-sm">{row.constraint}</p>
-            <p className="text-white/45 font-medium text-sm">{row.impact}</p>
+            <p className="text-white/50 font-medium text-sm">{row.impact}</p>
           </div>
         ))}
       </div>

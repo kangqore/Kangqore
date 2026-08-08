@@ -148,7 +148,7 @@ export default function DepartmentPageReal() {
                 {d.description}
               </p>
 
-              <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
+              <p className="text-base text-white/50 leading-[1.8] max-w-lg mb-14 font-medium">
                 {d.heroBody}
               </p>
 
@@ -264,7 +264,7 @@ export default function DepartmentPageReal() {
 
           {/* Pull quote */}
           <div className="border-l-2 border-white/10 pl-8">
-            <p className="text-xl sm:text-2xl font-black text-white/40 leading-snug max-w-4xl">
+            <p className="text-xl sm:text-2xl font-black text-white/50 leading-snug max-w-4xl">
               "{d.description}"
             </p>
             <p className="text-lg font-black text-white mt-3">
@@ -416,7 +416,7 @@ export default function DepartmentPageReal() {
               </h2>
             </div>
             <div className="lg:pb-3">
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
+              <p className="text-white/50 text-lg font-medium leading-relaxed mb-8">
                 A structured, phased engagement from initial scoping through to managed delivery — designed to match
                 the pace of how {d.buyerPersonas.primary}-led organizations actually make decisions.
               </p>
@@ -469,7 +469,7 @@ export default function DepartmentPageReal() {
                 </h2>
               </div>
               <div className="flex lg:items-end lg:pb-3">
-                <p className="text-white/40 text-lg font-medium leading-relaxed max-w-lg">
+                <p className="text-white/50 text-lg font-medium leading-relaxed max-w-lg">
                   Kangqore departments are designed to work in combination — each capable of standalone delivery,
                   and more powerful when paired for broader transformation programs.
                 </p>
@@ -496,7 +496,7 @@ export default function DepartmentPageReal() {
                       <div className="w-2 h-2 rounded-full bg-brand-cyan/40" />
                     </div>
                     <p className="text-white font-black text-2xl mb-2">{rel.shortName}</p>
-                    <p className="text-white/45 text-sm font-medium leading-relaxed flex-1 mb-6">
+                    <p className="text-white/50 text-sm font-medium leading-relaxed flex-1 mb-6">
                       {rel.tagline}
                     </p>
                     <div className="flex items-center gap-2 pt-4 border-t border-white/[0.06]">
@@ -556,7 +556,7 @@ export default function DepartmentPageReal() {
           </div>
 
           <div className="mt-10 pt-10 border-t border-white/[0.06]">
-            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/40 max-w-3xl">
+            <p className="text-2xl sm:text-3xl lg:text-[2.5rem] font-black leading-[1.25] text-white/50 max-w-3xl">
               {d.shortName} transformation, diagnosed and delivered.{' '}
               <span className="text-white">From first conversation to production.</span>
             </p>

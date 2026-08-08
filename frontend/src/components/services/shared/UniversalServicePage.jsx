@@ -1811,7 +1811,7 @@ const featureMicros   = service.featureMicros
                   {m.value}<span className="text-cyan-400">{m.suffix}</span>
                 </p>
                 <p className="text-white font-bold text-xs uppercase tracking-widest mb-2">{m.metricLabel}</p>
-                <p className="text-white/40 text-sm leading-snug">{m.desc}</p>
+                <p className="text-white/50 text-sm leading-snug">{m.desc}</p>
               </div>
             )) : [
               [String(capabilities.length), 'Capability\nAreas'],
@@ -1833,9 +1833,9 @@ const featureMicros   = service.featureMicros
               <span className="text-white font-black text-lg tracking-tight">{service.name}</span>
               <span className="hidden sm:block w-px h-5 bg-white/10" />
               <div className="flex flex-col gap-0.5">
-                <span className="text-white/40 group-hover:text-white text-sm font-medium transition-colors duration-500">{service.bannerBrand ? `Kangqore ${service.bannerBrand}` : `Kangqore ${department.name} ™`}</span>
+                <span className="text-white/50 group-hover:text-white text-sm font-medium transition-colors duration-500">{service.bannerBrand ? `Kangqore ${service.bannerBrand}` : `Kangqore ${department.name} ™`}</span>
                 {service.bannerBrandDesc && (
-                  <span className="text-white/40 group-hover:text-white/65 text-[11px] font-medium tracking-wide transition-colors duration-500">{service.bannerBrandDesc}</span>
+                  <span className="text-white/50 group-hover:text-white/65 text-[11px] font-medium tracking-wide transition-colors duration-500">{service.bannerBrandDesc}</span>
                 )}
               </div>
             </div>
@@ -1869,7 +1869,7 @@ const featureMicros   = service.featureMicros
             <div className="group border-l-2 border-white/10 pl-8 py-6 pr-8 rounded-r-2xl bg-[#06090f] relative overflow-hidden hover:border-transparent transition-all duration-500">
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
               <div className="relative z-10">
-                <p className="text-xl sm:text-2xl font-black text-white/40 group-hover:text-white leading-snug max-w-4xl transition-colors duration-500">
+                <p className="text-xl sm:text-2xl font-black text-white/50 group-hover:text-white leading-snug max-w-4xl transition-colors duration-500">
                   "{service.pullQuote || service.fullDescription}"
                 </p>
                 <p className="text-lg font-black text-white mt-3">
@@ -1965,7 +1965,7 @@ const featureMicros   = service.featureMicros
                     : <>Our{' '}<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Capabilities.</span></>
                   }
                 </h2>
-                <p className="text-lg text-white/40 leading-relaxed max-w-md lg:text-right">
+                <p className="text-lg text-white/50 leading-relaxed max-w-md lg:text-right">
                   {capabilities.length} Capability Area{capabilities.length !== 1 ? 's' : ''}. Engineered for enterprise.
                 </p>
               </div>
@@ -2055,7 +2055,7 @@ const featureMicros   = service.featureMicros
                       >
                         <div className="flex items-center gap-5">
                           <span className={`w-2.5 h-2.5 flex-shrink-0 transition-colors duration-200 ${active ? 'bg-cyan-400' : 'bg-transparent'}`} />
-                          <span className={`text-base sm:text-lg lg:text-xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/40 group-hover:text-white'}`}>{c.title}</span>
+                          <span className={`text-base sm:text-lg lg:text-xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/50 group-hover:text-white'}`}>{c.title}</span>
                         </div>
                         <ChevronRight className={`lg:hidden w-4 h-4 text-white/20 flex-shrink-0 transition-transform duration-200 ${active ? 'rotate-90' : ''}`} />
                       </div>
@@ -2067,7 +2067,7 @@ const featureMicros   = service.featureMicros
                             {c.items.map(item => (
                               <li key={item} className="flex items-start gap-3">
                                 <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: c.color }} />
-                                <span className="text-white/45 text-xs font-medium">{item}</span>
+                                <span className="text-white/50 text-xs font-medium">{item}</span>
                               </li>
                             ))}
                           </ul>
@@ -2116,7 +2116,7 @@ const featureMicros   = service.featureMicros
                   <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered with Precision.</span>
                 </h2>
               </div>
-              <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
+              <p className="text-white/50 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
                 Every decision stays coherent from strategy through delivery.
               </p>
             </div>
@@ -2161,7 +2161,7 @@ const featureMicros   = service.featureMicros
                       <h3 className="text-white/70 group-hover:text-white font-black text-lg leading-snug mb-2 transition-colors duration-300">
                         {label}
                       </h3>
-                      <p className="text-white/40 group-hover:text-white/70 text-xs font-medium leading-relaxed transition-colors duration-500 max-w-sm">
+                      <p className="text-white/50 group-hover:text-white/70 text-xs font-medium leading-relaxed transition-colors duration-500 max-w-sm">
                         {featureMicros[i]}
                       </p>
                     </div>
@@ -2198,7 +2198,7 @@ const featureMicros   = service.featureMicros
                   </span>
                 </h2>
               </div>
-              <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
+              <p className="text-white/50 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
                 Every deployment runs on a governed, modular architecture built for enterprise scale.
               </p>
             </div>
@@ -2366,7 +2366,7 @@ const featureMicros   = service.featureMicros
                       <span className="font-black leading-none text-white" style={{ fontSize: metricSize }}>
                         {card.metric}
                       </span>
-                      <p className="text-white/45 text-sm font-semibold leading-snug max-w-[18ch] mt-2">
+                      <p className="text-white/50 text-sm font-semibold leading-snug max-w-[18ch] mt-2">
                         {card.metricLabel}
                       </p>
                       {card.metricContext && (
@@ -2393,7 +2393,7 @@ const featureMicros   = service.featureMicros
                       {/* "Engagement confidential" asserts a real, named client exists.
                           Cards flagged illustrative — and the generated fallbacks, which
                           are templates rather than engagements — must not make that claim. */}
-                      <p className="text-white/40 text-xs font-medium italic">
+                      <p className="text-white/50 text-xs font-medium italic">
                         {card.illustrative
                           ? 'Illustrative scenario — modelled on typical engagement patterns, not a specific client result.'
                           : 'Engagement confidential — details available on request.'}
@@ -2504,7 +2504,7 @@ const featureMicros   = service.featureMicros
                               )}
                             </div>
                             <h4 className="text-lg font-black text-white mb-1">{item.title}</h4>
-                            <p className="text-sm text-white/40 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
+                            <p className="text-sm text-white/50 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
                           </div>
                         </div>
                       </div>
@@ -2525,7 +2525,7 @@ const featureMicros   = service.featureMicros
                       From Ambition to<br />
                       <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered Outcomes.</span>
                     </h2>
-                    <p className="text-white/40 text-lg font-light leading-relaxed max-w-lg">
+                    <p className="text-white/50 text-lg font-light leading-relaxed max-w-lg">
                       A connected system for moving from business goals through solution design to implementation and continuous optimization.
                     </p>
                   </div>
@@ -2566,7 +2566,7 @@ const featureMicros   = service.featureMicros
                 <div key={idx} className="bg-[#000000] p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
                   <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
                   <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed flex-1">{pkg.description}</p>
+                  <p className="text-white/50 text-sm font-medium leading-relaxed flex-1">{pkg.description}</p>
                   {pkg.duration && (
                     <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
                       {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
@@ -2632,7 +2632,7 @@ const featureMicros   = service.featureMicros
                   <span className="bg-brand-gradient bg-clip-text text-transparent">& Technology.</span>
                 </h2>
               </div>
-              <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
+              <p className="text-white/50 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
                 The stack powering every autonomous agent we build.
               </p>
             </div>
@@ -2670,7 +2670,7 @@ const featureMicros   = service.featureMicros
                       {/* Content */}
                       <div className="relative z-10 flex-1 min-w-0">
                         <h3 className="text-xl lg:text-2xl font-black text-white/75 group-hover:text-white mb-1.5 transition-colors duration-300 leading-tight">{item.title}</h3>
-                        <p className="text-white/40 group-hover:text-white/70 text-sm font-medium leading-relaxed transition-colors duration-500">{item.desc}</p>
+                        <p className="text-white/50 group-hover:text-white/70 text-sm font-medium leading-relaxed transition-colors duration-500">{item.desc}</p>
                       </div>
 
                       {/* Arrow ring */}
@@ -2860,7 +2860,7 @@ const featureMicros   = service.featureMicros
             <h2 id="practice-cluster-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
               The complete <span className="bg-brand-gradient bg-clip-text text-transparent">{department.name}</span> practice.
             </h2>
-            <p className="text-white/40 text-sm font-medium leading-relaxed max-w-2xl mb-10">
+            <p className="text-white/50 text-sm font-medium leading-relaxed max-w-2xl mb-10">
               {service.name} is one of {clusterSiblings.length + 1} services in this practice. Explore how they combine.
             </p>
 
@@ -2900,7 +2900,7 @@ const featureMicros   = service.featureMicros
                 One conversation.<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">One agent in production.</span>
               </h2>
-              <p className="text-white/45 text-lg font-medium leading-relaxed max-w-xl">
+              <p className="text-white/50 text-lg font-medium leading-relaxed max-w-xl">
                 Talk through your highest-value workflow in 30 minutes — we will scope the right entry point and show you what a production agent looks like for your context.
               </p>
             </div>

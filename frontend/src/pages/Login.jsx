@@ -458,7 +458,7 @@ export default function Login() {
                 <ArrowLeft className="w-4 h-4 text-white/70 group-hover:text-white group-hover:-translate-x-0.5 transition-all duration-300" />
               </div>
               <div className="flex flex-col items-start justify-center">
-                <span className="text-white/40 text-[9px] font-black tracking-[0.2em] uppercase leading-none mb-1 group-hover:text-white/60 transition-colors">Return</span>
+                <span className="text-white/50 text-[9px] font-black tracking-[0.2em] uppercase leading-none mb-1 group-hover:text-white/60 transition-colors">Return</span>
                 <span className="text-white text-[13px] font-bold tracking-wide leading-none">
                   {deptStep ? 'Back to roles' : selectedDept ? 'Back to departments' : 'Back to roles'}
                 </span>
@@ -574,7 +574,7 @@ export default function Login() {
               {/* Mobile Back Button */}
               <button
                 onClick={handleBackToRoles}
-                className="lg:hidden absolute top-6 left-6 inline-flex items-center gap-2 text-white/40 hover:text-white text-sm font-medium transition-colors duration-200 z-50"
+                className="lg:hidden absolute top-6 left-6 inline-flex items-center gap-2 text-white/50 hover:text-white text-sm font-medium transition-colors duration-200 z-50"
               >
                 <ArrowLeft className="w-4 h-4" />
                 {deptStep ? 'Back to roles' : selectedDept ? 'Back to departments' : 'Back'}
@@ -605,7 +605,7 @@ export default function Login() {
                           {role.name}
                         </div>
                         <h2 className="text-[20px] font-extrabold tracking-tight text-white mb-1">Select your department</h2>
-                        <p className="text-[12px] text-white/40">Choose a department to continue signing in</p>
+                        <p className="text-[12px] text-white/50">Choose a department to continue signing in</p>
                       </div>
 
                       {/* Dept grid */}
@@ -653,7 +653,7 @@ export default function Login() {
                     <div className="text-center mb-6">
                       <img src="/assets/kangqore-icon-white.png" alt="Kangqore" className="w-[50px] h-[50px] object-contain mx-auto mb-4" />
                       <h2 className="text-[22px] leading-tight font-extrabold tracking-tight text-white mb-2">Unlock Executive Core Features</h2>
-                      <p className="text-[13px] text-white/40 max-w-[300px] mx-auto leading-relaxed">
+                      <p className="text-[13px] text-white/50 max-w-[300px] mx-auto leading-relaxed">
                         Sign in to save your progress, bookmark capabilities, and unlock exclusive enterprise content.
                       </p>
                     </div>
@@ -674,7 +674,7 @@ export default function Login() {
                           </div>
                         )}
                         <div>
-                          <label className="block text-[11px] font-bold text-white/40 tracking-widest uppercase mb-2">Authentication Code</label>
+                          <label className="block text-[11px] font-bold text-white/50 tracking-widest uppercase mb-2">Authentication Code</label>
                           <input
                             type="text"
                             value={twoFactorCode}
@@ -695,7 +695,7 @@ export default function Login() {
                         <button
                           type="button"
                           onClick={() => { setTwoFactorChallenge(null); setTwoFactorCode(''); setTwoFactorError(''); }}
-                          className="w-full text-center text-[12px] text-white/40 hover:text-white/70 transition-colors"
+                          className="w-full text-center text-[12px] text-white/50 hover:text-white/70 transition-colors"
                         >
                           Back to sign in
                         </button>
@@ -706,7 +706,7 @@ export default function Login() {
                           <CheckCircle className="w-7 h-7" />
                         </div>
                         <h3 className="text-xl font-bold text-white mb-2">Account Created!</h3>
-                        <p className="text-sm text-white/40 mb-6">Your {role.name} account is ready.</p>
+                        <p className="text-sm text-white/50 mb-6">Your {role.name} account is ready.</p>
                         <button
                           onClick={() => { setSignupMode(false); setSignupSuccess(false); setSignupData({ name: '', email: '', company: '', phone: '', password: '', confirmPassword: '' }); }}
                           className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-brand-blue to-brand-cyan shadow-lg hover:shadow-[0_0_20px_rgba(37,100,234,0.3)] transition-all duration-300"
@@ -723,7 +723,7 @@ export default function Login() {
                             className={`flex-1 pb-3.5 text-[15px] font-bold border-b-[3px] transition-all duration-200 ${
                               !signupMode 
                                 ? 'border-brand-cyan text-brand-cyan' 
-                                : 'border-transparent text-white/40 hover:text-white/80'
+                                : 'border-transparent text-white/50 hover:text-white/80'
                             }`}
                           >
                             Sign In
@@ -733,7 +733,7 @@ export default function Login() {
                             className={`flex-1 pb-3.5 text-[15px] font-bold border-b-[3px] transition-all duration-200 ${
                               signupMode 
                                 ? 'border-brand-cyan text-brand-cyan' 
-                                : 'border-transparent text-white/40 hover:text-white/80'
+                                : 'border-transparent text-white/50 hover:text-white/80'
                             }`}
                           >
                             Create Account
@@ -750,7 +750,7 @@ export default function Login() {
                               </div>
                             )}
                             <div>
-                              <label className="block text-[11px] font-bold text-white/40 tracking-widest uppercase mb-2">Email Address</label>
+                              <label className="block text-[11px] font-bold text-white/50 tracking-widest uppercase mb-2">Email Address</label>
                               <input
                                 type="email"
                                 value={formData.email}
@@ -761,7 +761,7 @@ export default function Login() {
                               />
                             </div>
                             <div>
-                              <label className="block text-[11px] font-bold text-white/40 tracking-widest uppercase mb-2">Password</label>
+                              <label className="block text-[11px] font-bold text-white/50 tracking-widest uppercase mb-2">Password</label>
                               <div className="relative">
                                 <input
                                   type={showPassword ? 'text' : 'password'}
@@ -795,7 +795,7 @@ export default function Login() {
                             )}
                             <div className="grid grid-cols-2 gap-3">
                               <div>
-                                <label className="block text-[11px] font-bold text-white/40 tracking-widest uppercase mb-2">Full Name</label>
+                                <label className="block text-[11px] font-bold text-white/50 tracking-widest uppercase mb-2">Full Name</label>
                                 <input
                                   type="text"
                                   value={signupData.name}
@@ -806,7 +806,7 @@ export default function Login() {
                                 />
                               </div>
                               <div>
-                                <label className="block text-[11px] font-bold text-white/40 tracking-widest uppercase mb-2">Company Name</label>
+                                <label className="block text-[11px] font-bold text-white/50 tracking-widest uppercase mb-2">Company Name</label>
                                 <input
                                   type="text"
                                   value={signupData.company}
@@ -817,7 +817,7 @@ export default function Login() {
                               </div>
                             </div>
                             <div>
-                              <label className="block text-[11px] font-bold text-white/40 tracking-widest uppercase mb-2">Email Address</label>
+                              <label className="block text-[11px] font-bold text-white/50 tracking-widest uppercase mb-2">Email Address</label>
                               <input
                                 type="email"
                                 value={signupData.email}
@@ -828,7 +828,7 @@ export default function Login() {
                               />
                             </div>
                             <div>
-                              <label className="block text-[11px] font-bold text-white/40 tracking-widest uppercase mb-2">Password</label>
+                              <label className="block text-[11px] font-bold text-white/50 tracking-widest uppercase mb-2">Password</label>
                               <div className="relative">
                                 <input
                                   type={showPassword ? 'text' : 'password'}

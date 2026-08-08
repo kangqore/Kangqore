@@ -134,7 +134,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                   {/* Traditional AI Column */}
                   <div className="md:col-span-4 p-5 sm:p-6">
                     <p className={`text-sm leading-relaxed transition-colors ${
-                      isHovered ? 'text-white/80' : 'text-white/40'
+                      isHovered ? 'text-white/80' : 'text-white/50'
                     }`}>
                       {row.before}
                     </p>

@@ -28,7 +28,7 @@ const ClientFeedbackWidget = () => {
           <div className="flex items-center gap-4 mt-5">
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
-                <Star key={star} className="w-4 h-4 text-white/40 fill-white/20" />
+                <Star key={star} className="w-4 h-4 text-white/50 fill-white/20" />
               ))}
             </div>
             <div className="px-2 py-1 rounded bg-white dark:bg-black/10 backdrop-blur-sm">

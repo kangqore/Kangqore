@@ -36,6 +36,22 @@ const SCALE = [11, 12, 14, 16, 20, 24, 32, 48, 64];
 const TYPE_FLOOR = 11;
 const ALLOWED_SECTION_PADDING = ['py-32', 'py-24', 'py-16'];
 
+// Rule 3 — text opacity floor. White text composited on black:
+//   white/40 -> #666666 = 3.66:1  FAIL      white/50 -> #7f7f7f = 5.28:1  PASS
+//   white/45 -> #727272 = 4.41:1  FAIL      white/60 -> #999999 = 7.37:1  PASS
+// /40 was the secondary body colour and had never passed AA; it accounted for
+// 28 of 28 settled contrast failures on /services/agentic-ai. Only `text-`
+// utilities are constrained — border-/bg-/via-white/40 carry no contrast duty.
+// Only /40 and /45 are forbidden — those are the two that produced measured
+// axe failures (28 of 28 settled violations on /services/agentic-ai came from
+// them, at 3.65-3.74 and 4.42). Lower opacities are the ghost-text convention
+// (large background numerals, dividers) where a contrast ratio is not the
+// right test, and blanket-banning them would flag deliberate decoration.
+// text-white/35 x18 sits between the two and is unreviewed — see the note at
+// the foot of this file.
+const BANNED_TEXT_OPACITY = [40, 45];
+const TEXT_OPACITY_RX = /text-white\/(\d{1,3})\b/g;
+
 // Responsive prefixes are fine — py-16 md:py-24 is one rhythm expressed twice.
 const SECTION_RX = /<section[^>]*className=(?:"|`)([^"`]*)/g;
 const PY_RX = /(?:^|\s|:)(py-\d+)/g;
@@ -75,6 +91,7 @@ if (!fs.existsSync(SRC)) {
 const files = walk(SRC).filter((f) => inServicesTree(path.relative(SRC, f)));
 const typeHits = [];
 const padHits = [];
+const opacityHits = [];
 
 for (const file of files) {
   const src = fs.readFileSync(file, 'utf8');
@@ -86,6 +103,13 @@ for (const file of files) {
       typeHits.push({ rel, line: lineOf(src, m.index), px, why: `below the ${TYPE_FLOOR}px floor` });
     } else if (!SCALE.includes(px)) {
       typeHits.push({ rel, line: lineOf(src, m.index), px, why: 'not on the svc-* scale' });
+    }
+  }
+
+  for (const m of src.matchAll(TEXT_OPACITY_RX)) {
+    const pct = Number.parseInt(m[1], 10);
+    if (BANNED_TEXT_OPACITY.includes(pct)) {
+      opacityHits.push({ rel, line: lineOf(src, m.index), cls: m[0], pct });
     }
   }
 
@@ -125,8 +149,24 @@ if (padHits.length) {
   console.log('section rhythm: clean — shared template on 128 / 96 / 64');
 }
 
+if (opacityHits.length) {
+  failed = true;
+  console.error(`\nRule 3 — text contrast: ${opacityHits.length} banned white-text token(s).`);
+  console.error('  On black, text-white/40 is 3.66:1 and /45 is 4.41:1 — both below WCAG AA.\n');
+  for (const h of opacityHits.slice(0, 25)) console.error(`    ${h.rel}:${h.line}  ${h.cls}`);
+  if (opacityHits.length > 25) console.error(`    … and ${opacityHits.length - 25} more`);
+} else {
+  console.log(`text contrast: clean — no text-white/${BANNED_TEXT_OPACITY.join(' or /')} in the services tree`);
+}
+
 if (failed) {
   console.error('\ndesign tokens FAILED');
   process.exit(1);
 }
 console.log('\ndesign tokens pass');
+
+// ── Unreviewed ────────────────────────────────────────────────────────────────
+// text-white/35 (18 uses in the services tree) composites to ~2.9:1 on black.
+// If any of those are body copy rather than decoration they fail AA, but I have
+// not measured them, so they are not banned here. Worth a pass with the
+// scroll-and-settle axe method before deciding.

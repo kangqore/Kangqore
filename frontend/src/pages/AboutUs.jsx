@@ -271,7 +271,7 @@ export default function AboutUs() {
                   <ArrowRight className="w-3.5 h-3.5 text-white" />
                 </span>
               </Link>
-              <Link to="/services" className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/10 text-[13px] font-bold text-white/40 hover:text-white hover:border-white/25 transition-all duration-300">
+              <Link to="/services" className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/10 text-[13px] font-bold text-white/50 hover:text-white hover:border-white/25 transition-all duration-300">
                 Explore capabilities <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -291,7 +291,7 @@ export default function AboutUs() {
                 <div className="text-2xl sm:text-[1.75rem] font-black text-white group-hover:text-cyan-400 transition-colors duration-300 font-display mb-1">
                   <Counter value={s.v} duration={1400 + i * 200} />
                 </div>
-                <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/20 group-hover:text-white/45 transition-colors">{s.l}</div>
+                <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/20 group-hover:text-white/50 transition-colors">{s.l}</div>
               </div>
             ))}
           </div>
@@ -313,10 +313,10 @@ export default function AboutUs() {
                 </h2>
               </FadeIn>
               <FadeIn delay="120ms">
-                <p className="text-lg text-white/40 leading-relaxed font-light mb-6 max-w-2xl">
+                <p className="text-lg text-white/50 leading-relaxed font-light mb-6 max-w-2xl">
                   Kangqore is a value-driven technology company enabling enterprises and institutions to achieve end-to-end digital transformation through modern engineering and AI-enabled innovation.
                 </p>
-                <p className="text-lg text-white/40 leading-relaxed font-light max-w-2xl">
+                <p className="text-lg text-white/50 leading-relaxed font-light max-w-2xl">
                   Our work bridges strategy and execution — turning advanced technologies into measurable business outcomes across AI, cloud, data, security, and digital engineering.
                 </p>
               </FadeIn>
@@ -393,7 +393,7 @@ export default function AboutUs() {
                 <p className="text-sm text-white/25 font-light mt-1">Full-stack digital transformation for ambitious organizations</p>
               </div>
               <div className="flex items-center gap-4 flex-shrink-0">
-                <Link to="/services" className="px-5 py-2.5 rounded-full border border-white/10 text-[12px] font-bold text-white/45 hover:text-white hover:border-white/30 transition-all duration-300">
+                <Link to="/services" className="px-5 py-2.5 rounded-full border border-white/10 text-[12px] font-bold text-white/50 hover:text-white hover:border-white/30 transition-all duration-300">
                   Explore Services
                 </Link>
                 <Link to="/contact" className="px-5 py-2.5 rounded-full bg-white text-gray-900 text-[12px] font-bold hover:scale-[1.02] transition-transform duration-300">
@@ -521,7 +521,7 @@ export default function AboutUs() {
                       <Users className="w-7 h-7 text-white/12 group-hover:text-brand-blue/50 transition-colors duration-400" />
                     </div>
                     <p className="text-[9px] font-black uppercase tracking-[0.22em] text-brand-blue/60 group-hover:text-brand-blue mb-3 transition-colors">We're Hiring</p>
-                    <h3 className="text-lg font-bold text-white/45 mb-4">{p.title}</h3>
+                    <h3 className="text-lg font-bold text-white/50 mb-4">{p.title}</h3>
                     <p className="text-sm text-white/20 font-light leading-relaxed mb-6">{p.bio}</p>
                     <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-brand-blue/40 group-hover:text-brand-blue group-hover:gap-3 transition-all">
                       View opening <ArrowRight className="w-3 h-3" />
@@ -723,7 +723,7 @@ export default function AboutUs() {
                 <div className="w-6 h-px bg-white/[0.05] group-hover:w-full group-hover:bg-gradient-to-r group-hover:from-brand-blue group-hover:to-cyan-400 mb-4 transition-all duration-700 ease-out" />
                 <div className="flex items-start gap-3 translate-y-1 opacity-40 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                   <div className="w-1.5 h-1.5 rounded-full bg-brand-blue scale-0 group-hover:scale-100 mt-1.5 shrink-0 transition-transform duration-500 origin-center" />
-                  <p className="text-sm text-white/45 font-light leading-relaxed group-hover:text-white/65 transition-colors duration-500">{d.solution}</p>
+                  <p className="text-sm text-white/50 font-light leading-relaxed group-hover:text-white/65 transition-colors duration-500">{d.solution}</p>
                 </div>
               </div>
             ))}

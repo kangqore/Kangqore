@@ -632,7 +632,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
                       href={social.href} 
                       target="_blank" 
                       rel="noopener" 
-                      className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-brand-blue hover:shadow-[0_0_20px_rgba(37,100,234,0.4)] transition-all duration-300 group"
+                      className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/50 hover:text-white hover:bg-brand-blue hover:shadow-[0_0_20px_rgba(37,100,234,0.4)] transition-all duration-300 group"
                       title={social.name}
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -643,7 +643,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
                 </div>
                 <div className="mt-6 flex items-center justify-between text-[10px] text-white/60 font-medium tracking-tight">
                   <p>© 2026 Kangqore Global Pvt Ltd.</p>
-                  <Link to="/privacy" className="hover:text-white/40 transition-colors">Privacy Policy</Link>
+                  <Link to="/privacy" className="hover:text-white/50 transition-colors">Privacy Policy</Link>
                 </div>
               </div>
             </motion.div>
