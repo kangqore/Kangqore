@@ -741,3 +741,147 @@ export const AIFAQSection = ({ faqs = [] }) => {
     </section>
   );
 };
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 10. AI INSIGHTS & PERSPECTIVES SECTION (5 Interactive Cards)
+// ═══════════════════════════════════════════════════════════════════════════════
+export const AIInsightsSection = () => {
+  const cards = [
+    {
+      eyref: "stage-01",
+      title: "PERCEIVE",
+      description: "Agents ingest and understand multi-modal context from enterprise systems — structured data, documents, user signals, and real-time event streams.",
+      features: ["RAG Integration", "API Connectors", "Multi-Modal Context", "Real-time Telemetry"],
+      image: "/images/insights/execution-gap.png",
+      bgColor: "bg-gradient-to-b from-[#d5d7dc] via-[#e2e4e8] to-[#ffffff]",
+      textColor: "text-black",
+      descColor: "text-black/80",
+      blendMode: "multiply",
+      objectFit: "cover"
+    },
+    {
+      eyref: "stage-02",
+      title: "REASON",
+      description: "LLM-powered cognitive reasoning evaluates high-level goals, checks governance guardrails, and synthesizes contextual state.",
+      features: ["Goal Evaluation", "Contextual LLM", "State Management", "Guardrail Verification"],
+      image: "/images/insights/tokenomics.png",
+      bgColor: "bg-[#ffffff]",
+      textColor: "text-black",
+      descColor: "text-black/80",
+      blendMode: "multiply",
+      objectFit: "contain"
+    },
+    {
+      eyref: "stage-03",
+      title: "PLAN",
+      description: "Decomposes complex objectives into dynamic, multi-step execution graphs and resilient strategy paths using LangGraph state machines.",
+      features: ["Goal Decomposition", "LangGraph Logic", "Dependency Mapping", "Fallback Routing"],
+      image: "/images/insights/pulse-of-change.png",
+      bgColor: "bg-[#0b062b]",
+      textColor: "text-white",
+      descColor: "text-white/80",
+      blendMode: "screen",
+      objectFit: "cover"
+    },
+    {
+      eyref: "stage-04",
+      title: "ACT",
+      description: "Autonomously executes tool calls, writes to enterprise ERP/CRM systems, triggers RPA bots, and coordinates agent swarms.",
+      features: ["Function Calling", "Workflow Automations", "Write Permissions", "Multi-Agent Handoffs"],
+      image: "/images/insights/leadership-principles.png",
+      bgColor: "bg-[#ececec]",
+      textColor: "text-black",
+      descColor: "text-black/80",
+      blendMode: "multiply",
+      objectFit: "contain"
+    },
+    {
+      eyref: "stage-05",
+      title: "LEARN",
+      description: "Evaluates execution outcomes, self-corrects from failures, updates persistent organizational memory, and continuously optimizes future runs.",
+      features: ["Self-Correction", "Persistent Memory", "Outcome Evaluation", "Drift Detection"],
+      image: "/images/insights/production-audit.png",
+      bgColor: "bg-[#0f151c]",
+      textColor: "text-white",
+      descColor: "text-white/80",
+      blendMode: "screen",
+      objectFit: "cover"
+    }
+  ];
+
+  return (
+    <section className="py-24 relative overflow-hidden bg-black border-t border-white/[0.05]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="mb-16">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-[1px] w-12 bg-white/20" />
+            <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">ARCHITECTURE & EXECUTION LOOP</span>
+          </div>
+          <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
+            How It Works.<br />
+            <span className="bg-brand-gradient bg-clip-text text-transparent">The 5-Stage Autonomous Execution Loop.</span>
+          </h2>
+          <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl">
+            Every deployment runs on a governed, modular architecture built for enterprise scale.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          {cards.map((card, idx) => (
+            <div 
+              key={idx}
+              className={`group relative rounded-2xl overflow-hidden h-[320px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/5 ${card.bgColor} ${card.textColor}`}
+            >
+              {/* Card Title (Always visible at the top) */}
+              <div className="relative z-10">
+                <h3 className="font-extrabold text-2xl leading-snug tracking-tight">
+                  {card.title}
+                </h3>
+              </div>
+
+              {/* Graphic/Illustration positioned absolutely at the bottom with seamless blend */}
+              <ResponsiveImage 
+                src={card.image} 
+                alt={card.title} 
+                className={`absolute bottom-0 left-0 right-0 w-full h-[65%] object-${card.objectFit} object-bottom transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none z-10`}
+                style={{ 
+                  mixBlendMode: card.blendMode,
+                  WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 25%)',
+                  maskImage: 'linear-gradient(to bottom, transparent, black 25%)'
+                }}
+                loading="lazy"
+              />
+
+              {/* Slide-up Details Panel (revealed on hover) */}
+              <div 
+                className={`absolute inset-0 pt-8 px-6 pb-6 transition-all duration-500 ease-in-out transform translate-y-full group-hover:translate-y-0 flex flex-col justify-between ${card.bgColor} ${card.textColor} z-20`}
+              >
+                <div>
+                  <h4 className="font-extrabold text-2xl leading-snug tracking-tight mb-3">
+                    {card.title}
+                  </h4>
+                  <p className={`text-[11px] leading-relaxed font-semibold ${card.descColor}`}>
+                    {card.description}
+                  </p>
+
+                  <div className="mt-3 pt-3 border-t border-current/10">
+                    <span className="block text-[8px] font-bold tracking-widest uppercase mb-1.5 opacity-60">Key Capabilities</span>
+                    <ul className="flex flex-col gap-y-1">
+                      {card.features.map((f, i) => (
+                        <li key={i} className="flex items-center gap-1.5 text-[9.5px] font-bold leading-tight">
+                          <span className="w-1 h-1 rounded-full bg-current opacity-70 flex-shrink-0" />
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
