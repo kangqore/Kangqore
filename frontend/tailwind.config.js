@@ -61,6 +61,23 @@ module.exports = {
         'os-md':   ['1rem',     { lineHeight: '1.5rem',   letterSpacing: '-0.01em'}],  // 16px
         'os-lg':   ['1.25rem',  { lineHeight: '1.5rem',   letterSpacing: '-0.02em'}],  // 20px
         'os-xl':   ['1.75rem',  { lineHeight: '2rem',     letterSpacing: '-0.03em'}],  // 28px
+
+        // ── Marketing service pages ───────────────────────────────────────
+        // That tree had 14 arbitrary font sizes in simultaneous use (10px x466,
+        // 15px x232, 9px x67, 17px x41, 7px x25 …) with no ratio governing
+        // them, so nothing had a reliable visual rank. These are the only
+        // sizes it should use. 11px is the floor — below that, labels stop
+        // being readable at arm's length regardless of contrast.
+        // Enforced by scripts/audit-design-tokens.mjs.
+        'svc-label': ['11px', { lineHeight: '1.25', letterSpacing: '0.12em' }],  // eyebrows, tags
+        'svc-xs':    ['12px', { lineHeight: '1.4'  }],
+        'svc-sm':    ['14px', { lineHeight: '1.5'  }],
+        'svc-base':  ['16px', { lineHeight: '1.6'  }],
+        'svc-lg':    ['20px', { lineHeight: '1.5'  }],
+        'svc-xl':    ['24px', { lineHeight: '1.35' }],
+        'svc-2xl':   ['32px', { lineHeight: '1.25' }],
+        'svc-3xl':   ['48px', { lineHeight: '1.15' }],
+        'svc-4xl':   ['64px', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
       },
 
       // ── OS Border Radius ────────────────────────────────────────────────

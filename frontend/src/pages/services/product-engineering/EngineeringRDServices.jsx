@@ -242,10 +242,10 @@ const EngineeringRDServices = () => {
               <span className="text-transparent bg-clip-text bg-brand-gradient italic">Center of Excellence</span>
             </h2>
             <div className="relative pl-6 border-l-[3px] border-brand-blue" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Kangqore's R&D CoE is built on the <strong className="text-brand-blue">R&D Framework™</strong> — six proprietary solution accelerators forming a unified product intelligence architecture: <strong className="text-brand-blue">UX Analytics</strong>, <strong className="text-brand-blue">MIDAS</strong>, <strong className="text-brand-blue">AAPRISE</strong>, <strong className="text-brand-blue">Agile Delivery</strong>, <strong className="text-brand-blue">WSAPI</strong>, and <strong className="text-brand-blue">DEP</strong>.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 This unified architecture delivers end-to-end product intelligence — from real-time user analytics and connected M2M data fabrics to mobile app intelligence, agile engineering, web service abstraction, and developer community enablement. Enterprise-grade, governed, and outcome-assured.
               </p>
             </div>
@@ -288,8 +288,8 @@ const EngineeringRDServices = () => {
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 60%, transparent 100%)' }}></div>
                         <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.20) 0%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>UX</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Analytics</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>UX</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Analytics</span>
                         </div>
                       </div>
                       {/* Top Right -> MIDAS */}
@@ -549,13 +549,13 @@ const EngineeringRDServices = () => {
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
               <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
 
-              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                 <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_RD_FW</span></div>
                 <div className="flex justify-between gap-4"><span>LEVEL:</span> <span>ENTERPRISE</span></div>
                 <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">INNOVATING</span></div>
               </div>
 
-              <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+              <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
                 <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">R&D Framework™</div>
                 <div>ACCELERATING_R&D...</div>
                 <div>ADOPTION: +92%</div>
@@ -583,16 +583,16 @@ const EngineeringRDServices = () => {
                     <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                     <MonitorSmartphone className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">AAPRISE</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">AAPRISE</span>
                 </div>
               </div>
               <div className="absolute bottom-20 left-0 group">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                     <Globe2 className="w-12 h-12 text-white" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">API</div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">API</div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">WSAPI</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">WSAPI</span>
                 </div>
               </div>
               <div className="absolute bottom-20 right-0 group">
@@ -601,7 +601,7 @@ const EngineeringRDServices = () => {
                     <div className="absolute inset-0 bg-brand-gradient opacity-10 group-hover:opacity-20 transition-opacity"></div>
                     <div className="relative"><Code2 className="w-16 h-16 text-emerald-400" /></div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">DEP</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">DEP</span>
                 </div>
               </div>
 

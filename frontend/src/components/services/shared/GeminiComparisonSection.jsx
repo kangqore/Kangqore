@@ -46,7 +46,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
   ];
 
   return (
-    <section className="py-28 relative overflow-hidden bg-black">
+    <section className="py-24 relative overflow-hidden bg-black">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         
         {/* Section Header */}
@@ -86,7 +86,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                 AGENTIC AI
               </span>
               <span 
-                className="px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-widest"
+                className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-widest"
                 style={{
                   background: 'rgba(37, 100, 234, 0.2)',
                   border: '1px solid rgba(74, 182, 212, 0.4)',

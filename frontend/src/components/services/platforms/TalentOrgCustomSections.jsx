@@ -285,10 +285,10 @@ export const TalentDiamondCoESection = () => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Our <strong className="text-brand-blue">Talent & Organization CoE</strong> combines behavioral science, organizational design, AI-powered analytics, and technology-enabled learning into one integrated practice that delivers measurable impact.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 We replace reactive HR with "architect-and-govern." By unifying workforce strategy, leadership pipelines, culture intelligence, and AI-native talent operations, we ensure your organization is built on absolute engineering confidence.
               </p>
             </div>
@@ -310,10 +310,10 @@ export const TalentDiamondCoESection = () => {
                 <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                   <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'to-diamond-float-3d 6s ease-in-out infinite' }}>
                     <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#1e40af] to-[#2564ea]" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Talent<br/>Strategy</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#2564ea] to-[#3b82f6]" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">AI &<br/>Analytics</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#3b82f6] to-[#0ea5e9]" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Org<br/>Design</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#0ea5e9] to-[#4ab6d4]" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Culture<br/>Intelligence</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#1e40af] to-[#2564ea]" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Talent<br/>Strategy</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#2564ea] to-[#3b82f6]" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">AI &<br/>Analytics</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#3b82f6] to-[#0ea5e9]" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Org<br/>Design</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#0ea5e9] to-[#4ab6d4]" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Culture<br/>Intelligence</div></div>
                     </div>
                   </div>
                 </div>
@@ -459,7 +459,7 @@ export const TalentDeliveryModel = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="font-mono text-[10px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
+                        <div className="font-mono text-[11px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
                       </div>
                       <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brand-blue transition-colors duration-300">{item.title}</h4>
                       <p className="text-gray-500 leading-relaxed font-light">{item.desc}</p>
@@ -483,9 +483,9 @@ export const TalentDeliveryModel = () => {
                  At Kangqore, talent transformation is structured as a phased, evidence-based model — designed to build lasting organizational capability, not one-time interventions.
                </p>
                <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-100">
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Cycle</div><div className="text-2xl font-bold text-gray-900 dark:text-white">Agile</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Impact</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">MAX</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Cycle</div><div className="text-2xl font-bold text-gray-900 dark:text-white">Agile</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Impact</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">MAX</div></div>
                 </div>
              </div>
           </div>
@@ -559,7 +559,7 @@ export const TalentExecutionEcosystem = () => {
           <div className="lg:w-1/2 flex items-center justify-center pointer-events-none">
              <div className="relative aspect-square w-full max-w-[550px] flex items-center justify-center">
                  {/* Diagnostic Overlay */}
-                 <div className="absolute top-4 left-4 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+                 <div className="absolute top-4 left-4 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                     <div className="flex justify-between gap-4"><span>build_id:</span> <span className="text-brand-blue">#KG_ECO_SYS</span></div>
                     <div className="flex justify-between gap-4"><span>pipeline:</span> <span className="text-emerald-500">OPTIMIZED</span></div>
                   </div>
@@ -569,7 +569,7 @@ export const TalentExecutionEcosystem = () => {
                     <div className="absolute inset-2 bg-brand-gradient rounded-[2rem] opacity-5"></div>
                     <div className="relative"><Users className="w-16 h-16 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" /></div>
                     <div className="absolute -top-2 -right-2 w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-emerald-400 shadow-xl border border-white/10"><CheckCircle2 className="w-5 h-5" /></div>
-                    <span className="absolute -bottom-8 font-mono text-[10px] font-bold tracking-[0.2em] text-gray-400">T&O_CORE</span>
+                    <span className="absolute -bottom-8 font-mono text-[11px] font-bold tracking-[0.2em] text-gray-400">T&O_CORE</span>
                  </div>
 
                  {/* Ring 1 (Inner) */}
@@ -579,7 +579,7 @@ export const TalentExecutionEcosystem = () => {
                             <div className="w-14 h-14 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl shadow-xl flex items-center justify-center border border-gray-100 mb-2">
                                <Building2 className="w-6 h-6 text-brand-blue"/>
                             </div>
-                            <span className="font-mono text-[9px] font-bold tracking-widest text-gray-500 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 rounded-full py-0.5 shadow-sm">GCC_OPS</span>
+                            <span className="font-mono text-[11px] font-bold tracking-widest text-gray-500 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 rounded-full py-0.5 shadow-sm">GCC_OPS</span>
                         </div>
                     </div>
                  </div>
@@ -591,7 +591,7 @@ export const TalentExecutionEcosystem = () => {
                             <div className="w-14 h-14 bg-slate-900 rounded-2xl shadow-xl flex items-center justify-center border border-white/10 mb-2">
                                <GraduationCap className="w-6 h-6 text-emerald-400"/>
                             </div>
-                            <span className="font-mono text-[9px] font-bold tracking-widest text-gray-500 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 rounded-full py-0.5 shadow-sm">L&D_SYS</span>
+                            <span className="font-mono text-[11px] font-bold tracking-widest text-gray-500 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 rounded-full py-0.5 shadow-sm">L&D_SYS</span>
                         </div>
                     </div>
                  </div>
@@ -603,7 +603,7 @@ export const TalentExecutionEcosystem = () => {
                             <div className="w-14 h-14 bg-brand-gradient rounded-2xl shadow-xl flex items-center justify-center border border-white/10 mb-2">
                                <Shield className="w-6 h-6 text-white"/>
                             </div>
-                            <span className="font-mono text-[9px] font-bold tracking-widest text-gray-500 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 rounded-full py-0.5 shadow-sm">FIN_RISK</span>
+                            <span className="font-mono text-[11px] font-bold tracking-widest text-gray-500 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 rounded-full py-0.5 shadow-sm">FIN_RISK</span>
                         </div>
                     </div>
                  </div>

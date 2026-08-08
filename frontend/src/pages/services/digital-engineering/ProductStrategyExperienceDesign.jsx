@@ -303,7 +303,7 @@ export default function ProductStrategyExperienceDesign() {
               ].map(s => (
                 <div key={s.label} className="text-center">
                   <p className="text-xl font-black text-white drop-shadow-lg">{s.value}</p>
-                  <p className="text-[10px] text-cyan-400/80 font-bold tracking-widest uppercase mt-1">{s.label}</p>
+                  <p className="text-[11px] text-cyan-400/80 font-bold tracking-widest uppercase mt-1">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -318,7 +318,7 @@ export default function ProductStrategyExperienceDesign() {
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-14">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS PRODUCT STRATEGY & DESIGN</p>
+            <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS PRODUCT STRATEGY & DESIGN</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
               The complete design{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span>{' '}
@@ -346,7 +346,7 @@ export default function ProductStrategyExperienceDesign() {
                 ].map(s => (
                   <div key={s.label}>
                     <p className="text-4xl font-black text-white tracking-tight mb-1">{s.value}</p>
-                    <p className="text-white/30 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{s.label}</p>
+                    <p className="text-white/30 text-[11px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{s.label}</p>
                   </div>
                 ))}
               </div>
@@ -355,13 +355,13 @@ export default function ProductStrategyExperienceDesign() {
             {/* Right — challenge/solution cards */}
             <div className="space-y-4">
               <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-amber-400/70 uppercase mb-4">THE CHALLENGE</p>
+                <p className="text-[11px] font-black tracking-[0.4em] text-amber-400/70 uppercase mb-4">THE CHALLENGE</p>
                 <p className="text-white font-semibold text-lg leading-snug">
                   A product can be engineered well and still fail if the strategy and experience are weak.
                 </p>
               </div>
               <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-4">THE SOLUTION</p>
+                <p className="text-[11px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-4">THE SOLUTION</p>
                 <p className="text-white font-semibold text-lg leading-snug">
                   Kangqore helps businesses connect business intent, user needs, and execution realities — so product teams make better choices earlier and build with greater confidence.
                 </p>
@@ -400,11 +400,11 @@ export default function ProductStrategyExperienceDesign() {
       {/* ─────────────────── BADGE STRIP ─────────────────── */}
       <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <p className="text-[8px] font-black tracking-[0.45em] text-white/18 uppercase mb-7 text-center">DESIGN APPROACH PRINCIPLES</p>
+          <p className="text-[11px] font-black tracking-[0.45em] text-white/18 uppercase mb-7 text-center">DESIGN APPROACH PRINCIPLES</p>
           <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
             {['Strategy-Led Design', 'Research-Informed Decisions', 'Validated Prototyping', 'Scalable Design Systems', 'Accessibility-First Architecture', 'Design-to-Build Continuity', 'Adoption-Centred Launch Planning'].map((f, i, arr) => (
               <React.Fragment key={f}>
-                <span className="flex-shrink-0 text-white/25 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
+                <span className="flex-shrink-0 text-white/25 text-[11px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
                 {i < arr.length - 1 && <span className="flex-shrink-0 mx-4 text-white/10 text-xs select-none">·</span>}
               </React.Fragment>
             ))}
@@ -416,7 +416,7 @@ export default function ProductStrategyExperienceDesign() {
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PHILOSOPHY</p>
+            <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PHILOSOPHY</p>
             <div className="grid lg:grid-cols-2 gap-16 items-end">
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 Design What Matters.<br />
@@ -454,7 +454,7 @@ export default function ProductStrategyExperienceDesign() {
                     </div>
                     {isOpen && (
                       <div className="pl-8 pt-1">
-                        <p className="text-[9px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-2">{f.label}</p>
+                        <p className="text-[11px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-2">{f.label}</p>
                         <p className="text-white/55 text-sm font-medium leading-relaxed">{f.content}</p>
                       </div>
                     )}
@@ -466,8 +466,8 @@ export default function ProductStrategyExperienceDesign() {
             {/* Right — sticky active feature detail */}
             <div className="lg:sticky lg:top-8">
               <div className="p-8 rounded-2xl border border-white/[0.07] bg-[#06090f]">
-                <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-6">DESIGN INTELLIGENCE PROFILE</p>
-                <p className="text-[10px] font-black tracking-widest uppercase mb-2 text-cyan-400">
+                <p className="text-[11px] font-black tracking-[0.4em] text-white/25 uppercase mb-6">DESIGN INTELLIGENCE PROFILE</p>
+                <p className="text-[11px] font-black tracking-widest uppercase mb-2 text-cyan-400">
                   {['Product Strategy', 'Product & UX/UI Design', 'Innovation & Rapid Prototyping', 'Design Systems'][activeFeature] || 'Select a Feature'}
                 </p>
                 <p className="text-white font-black text-2xl leading-tight mb-5">
@@ -503,7 +503,7 @@ export default function ProductStrategyExperienceDesign() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 p-8 rounded-2xl border border-white/[0.07] bg-[#06090f]">
             <div>
-              <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-3">READY TO EXPLORE A DESIGN ENGAGEMENT?</p>
+              <p className="text-[11px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-3">READY TO EXPLORE A DESIGN ENGAGEMENT?</p>
               <p className="text-white font-black text-xl leading-snug mb-2">Start with a 30-minute discovery call.</p>
               <p className="text-white/35 text-sm font-medium leading-relaxed max-w-xl">
                 Walk through the Kangqore Product Strategy & Design approach with a senior specialist. No commitment — a clear picture of how the engagement works and whether it fits your current priorities.
@@ -536,7 +536,7 @@ export default function ProductStrategyExperienceDesign() {
         >
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
+              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 From Ambition to<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Market Ready.</span>
@@ -559,14 +559,14 @@ export default function ProductStrategyExperienceDesign() {
           <div className="grid sm:grid-cols-2 gap-x-16 lg:gap-x-24">
             {journeyPhases.map((step) => (
               <div key={step.n} className="flex gap-6 py-8 border-t border-white/[0.06]">
-                <span className="text-[9px] font-black tracking-widest mt-1 flex-shrink-0 w-6" style={{ color: step.color }}>{step.n}</span>
+                <span className="text-[11px] font-black tracking-widest mt-1 flex-shrink-0 w-6" style={{ color: step.color }}>{step.n}</span>
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <p className="text-white font-black text-base leading-tight">{step.phase}</p>
                     {step.kangqore && (
                       <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
                         <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse" />
-                        <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                        <span className="text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
                       </div>
                     )}
                   </div>
@@ -603,7 +603,7 @@ export default function ProductStrategyExperienceDesign() {
           {/* Brand equity insight */}
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE STRATEGIC IMPERATIVE</p>
+              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE STRATEGIC IMPERATIVE</p>
               <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 A fragmented user experience directly erodes{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">brand equity.</span>
@@ -614,13 +614,13 @@ export default function ProductStrategyExperienceDesign() {
             </div>
             <div className="space-y-4">
               <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-brand-blue uppercase mb-3">THE FOUNDATION</p>
+                <p className="text-[11px] font-black tracking-[0.4em] text-brand-blue uppercase mb-3">THE FOUNDATION</p>
                 <p className="text-white/60 text-base font-light leading-relaxed italic">
                   "An Enterprise Design Architecture prevents scaling debt and ensures that new feature development takes days, not months."
                 </p>
               </div>
               <div className="p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl">
-                <p className="text-[9px] font-black tracking-[0.4em] text-emerald-400 uppercase mb-3">THE STRATEGY</p>
+                <p className="text-[11px] font-black tracking-[0.4em] text-emerald-400 uppercase mb-3">THE STRATEGY</p>
                 <p className="text-white/60 text-base font-light leading-relaxed italic">
                   "When algorithmic user intelligence is merged with high-fidelity design, customer adoption accelerates exponentially."
                 </p>
@@ -667,7 +667,7 @@ export default function ProductStrategyExperienceDesign() {
                     {/* Mobile tap-to-expand */}
                     {active && (
                       <div className="lg:hidden pb-6 pl-7 pr-2">
-                        <p className="text-[9px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">CAPABILITY {c.n}</p>
+                        <p className="text-[11px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">CAPABILITY {c.n}</p>
                         <p className="text-white/70 text-sm leading-relaxed mb-4">{c.desc}</p>
                         <ul className="space-y-1.5">
                           {c.items.map(item => (
@@ -687,7 +687,7 @@ export default function ProductStrategyExperienceDesign() {
             {/* Right — floats in place */}
             <div className="hidden lg:flex items-start pt-5">
               <div className="w-full sticky top-8">
-                <p className="text-[10px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">
+                <p className="text-[11px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">
                   CAPABILITY {capabilities[activeCapability >= 0 ? activeCapability : 0].n}
                 </p>
                 <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">
@@ -715,7 +715,7 @@ export default function ProductStrategyExperienceDesign() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
             <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENTERPRISE DESIGN COE</p>
+              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENTERPRISE DESIGN COE</p>
               <p className="text-white/60 text-lg leading-relaxed font-light mb-5">
                 Our <strong className="text-white">Enterprise Design CoE</strong> provides a high-velocity strategic blueprint, surrounding your product idea with four critical layers of UX validation.
               </p>
@@ -748,16 +748,16 @@ export default function ProductStrategyExperienceDesign() {
                     <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'diamond-float-3d 6s ease-in-out infinite' }}>
                       <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
                         <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}>
-                          <div className="-rotate-45 text-center text-white font-bold text-[15px]">Lean<br />Discovery</div>
+                          <div className="-rotate-45 text-center text-white font-bold text-[16px]">Lean<br />Discovery</div>
                         </div>
                         <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}>
-                          <div className="-rotate-45 text-center text-white font-bold text-[15px]">Strategic<br />Roadmap</div>
+                          <div className="-rotate-45 text-center text-white font-bold text-[16px]">Strategic<br />Roadmap</div>
                         </div>
                         <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}>
-                          <div className="-rotate-45 text-center text-white font-bold text-[15px]">Flawless<br />UI/UX</div>
+                          <div className="-rotate-45 text-center text-white font-bold text-[16px]">Flawless<br />UI/UX</div>
                         </div>
                         <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}>
-                          <div className="-rotate-45 text-center text-white font-bold text-[15px]">Architected<br />Scalability</div>
+                          <div className="-rotate-45 text-center text-white font-bold text-[16px]">Architected<br />Scalability</div>
                         </div>
                       </div>
                     </div>
@@ -816,7 +816,7 @@ export default function ProductStrategyExperienceDesign() {
 
           {/* Differentiators */}
           <div ref={differentiatorRef} className="max-w-5xl mx-auto">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHY THIS APPROACH</p>
+            <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHY THIS APPROACH</p>
             <div className="space-y-3">
               {differentiators.map((d) => (
                 <div key={d.num} className="diff-item group flex items-start gap-5 p-6 bg-[#06090f] rounded-2xl border border-white/[0.07] hover:border-white/[0.15] transition-all duration-300 relative overflow-hidden">
@@ -891,11 +891,11 @@ export default function ProductStrategyExperienceDesign() {
                         </div>
                         <div className="relative z-10 flex-1 min-w-0">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/20 uppercase">{item.phase}</div>
+                            <div className="font-mono text-[11px] font-bold tracking-[0.3em] text-white/20 uppercase">{item.phase}</div>
                             {item.kangqore && (
                               <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
                                 <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse" />
-                                <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                                <span className="text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
                               </div>
                             )}
                           </div>
@@ -929,15 +929,15 @@ export default function ProductStrategyExperienceDesign() {
                 {/* Stats summary */}
                 <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
                   <div>
-                    <div className="font-mono text-[10px] text-white/20 tracking-widest uppercase font-bold mb-2">Phases</div>
+                    <div className="font-mono text-[11px] text-white/20 tracking-widest uppercase font-bold mb-2">Phases</div>
                     <div className="text-2xl font-black text-white">04</div>
                   </div>
                   <div>
-                    <div className="font-mono text-[10px] text-white/20 tracking-widest uppercase font-bold mb-2">Timeline</div>
+                    <div className="font-mono text-[11px] text-white/20 tracking-widest uppercase font-bold mb-2">Timeline</div>
                     <div className="text-2xl font-black text-white">4-12<span className="text-sm text-white/30 ml-1">wks</span></div>
                   </div>
                   <div>
-                    <div className="font-mono text-[10px] text-white/20 tracking-widest uppercase font-bold mb-2">Confidence</div>
+                    <div className="font-mono text-[11px] text-white/20 tracking-widest uppercase font-bold mb-2">Confidence</div>
                     <div className="text-2xl font-black bg-brand-gradient bg-clip-text text-transparent">100%</div>
                   </div>
                 </div>
@@ -968,11 +968,11 @@ export default function ProductStrategyExperienceDesign() {
               return (
                 <div key={p.tag} className="p-6 border border-white/[0.07] bg-[#06090f] rounded-xl flex flex-col gap-4">
                   <div>
-                    <span className="text-[9px] font-black tracking-widest" style={{ color: color + '60' }}>0{i + 1}</span>
+                    <span className="text-[11px] font-black tracking-widest" style={{ color: color + '60' }}>0{i + 1}</span>
                     <div className="w-5 h-0.5 rounded-full mt-2" style={{ backgroundColor: color }} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black tracking-[0.3em] uppercase mb-2" style={{ color }}>{p.tag}</p>
+                    <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-2" style={{ color }}>{p.tag}</p>
                     <p className="text-white/80 text-base font-black leading-snug">{p.title}</p>
                   </div>
                   <p className="text-white/35 text-sm font-medium leading-relaxed">{p.desc}</p>
@@ -1016,7 +1016,7 @@ export default function ProductStrategyExperienceDesign() {
           {/* Who this is for */}
           <div className="mt-20 grid lg:grid-cols-2 gap-20 items-start pt-16 border-t border-white/[0.05]">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHERE EXPERIENCE STRATEGY ADDS MOST VALUE</p>
+              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHERE EXPERIENCE STRATEGY ADDS MOST VALUE</p>
               <h3 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 Relevant across new products,<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">redesigns, and large portfolios.</span>
@@ -1051,7 +1051,7 @@ export default function ProductStrategyExperienceDesign() {
         >
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">FREQUENTLY ASKED QUESTIONS</p>
+              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">FREQUENTLY ASKED QUESTIONS</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 Common questions<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">answered.</span>
@@ -1103,7 +1103,7 @@ export default function ProductStrategyExperienceDesign() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXTEND YOUR STRATEGY</p>
+              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXTEND YOUR STRATEGY</p>
               <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 Related Engineering{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Expertise.</span>
@@ -1142,7 +1142,7 @@ export default function ProductStrategyExperienceDesign() {
           <div className="p-10 lg:p-16 rounded-3xl border border-white/[0.08] bg-[#06090f] relative overflow-hidden text-center">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] h-[300px] bg-brand-blue/15 blur-[100px] rounded-full pointer-events-none" />
             <div className="relative z-10">
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">READY TO GET STARTED?</p>
+              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">READY TO GET STARTED?</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-3xl mx-auto">
                 Ready to define a sharper product and a{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">stronger experience?</span>

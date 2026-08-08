@@ -272,10 +272,10 @@ const ModernizationInfrastructure = () => {
           {/* LEFT: Intro Text */}
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Our Infrastructure Modernization Framework is built on four interconnected layers — <strong className="text-brand-blue">Application Modernization</strong>, <strong className="text-brand-blue">Cloud Architecture</strong>, <strong className="text-brand-blue">Mobility</strong>, and <strong className="text-brand-blue">DevSecOps</strong> — forming a unified enterprise backbone.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 From structured cloud assessments to zero-trust networks and IaC deployments, we architect operations that become a competitive advantage, ending legacy friction permanently.
               </p>
             </div>
@@ -321,32 +321,32 @@ const ModernizationInfrastructure = () => {
                       <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #4b8bf5 0%, #2564ea 50%, #1d4ed8 100%)', transform: 'translateZ(6px)' }}>
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 60%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Enterprise</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Applications</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Enterprise</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Applications</span>
                         </div>
                       </div>
                       {/* Top Right -> Cloud Architecture & Engineering */}
                       <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #6db3f8 0%, #3b82f6 50%, #2564ea 100%)', transform: 'translateZ(4px)' }}>
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 60%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Cloud</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Engineering</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Cloud</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Engineering</span>
                         </div>
                       </div>
                       {/* Bottom Left -> Digital Mobility */}
                       <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #2564ea 0%, #1e40af 50%, #1e3a8a 100%)', transform: 'translateZ(2px)' }}>
                         <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Digital</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Mobility</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Digital</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Mobility</span>
                         </div>
                       </div>
                       {/* Bottom Right -> Continuous DevSecOps */}
                       <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #5cc8e0 0%, #4ab6d4 50%, #2d9db8 100%)', transform: 'translateZ(3px)' }}>
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.06) 60%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Continuous</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">DevSecOps</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Continuous</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">DevSecOps</span>
                         </div>
                       </div>
                     </div>
@@ -459,13 +459,13 @@ const ModernizationInfrastructure = () => {
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-400/10 blur-[100px] rounded-full"></div>
                 <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
   
-                <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+                <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                   <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_INFRA_EXEC</span></div>
                   <div className="flex justify-between gap-4"><span>LEVEL:</span> <span>ENTERPRISE</span></div>
                   <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">OPTIMIZED</span></div>
                 </div>
   
-                <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+                <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
                   <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">Kubernetes Core</div>
                   <div>PROVISIONING_NODES...</div>
                   <div>SECURITY: +99.9%</div>
@@ -493,7 +493,7 @@ const ModernizationInfrastructure = () => {
                       <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                       <Server className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Compute</span>
+                    <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Compute</span>
                   </div>
                 </div>
   
@@ -501,9 +501,9 @@ const ModernizationInfrastructure = () => {
                   <div className="flex flex-col items-center gap-3">
                     <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                       <Network className="w-12 h-12 text-white" />
-                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">ZTA</div>
+                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">ZTA</div>
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Network</span>
+                    <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Network</span>
                   </div>
                 </div>
   
@@ -515,7 +515,7 @@ const ModernizationInfrastructure = () => {
                         <Activity className="w-16 h-16 text-emerald-400" />
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Observability</span>
+                    <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Observability</span>
                   </div>
                 </div>
   

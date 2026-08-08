@@ -728,7 +728,7 @@ const EmbeddedDesignSystems = () => {
                 <div className="w-full flex-1 flex flex-col">
                   <ul className="space-y-3">
                     {step.items.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-[12px] xl:text-[13px] text-gray-500 leading-snug text-left group-hover:text-gray-700 dark:text-gray-300 transition-colors duration-300">
+                      <li key={i} className="flex items-start gap-2.5 text-[12px] xl:text-[14px] text-gray-500 leading-snug text-left group-hover:text-gray-700 dark:text-gray-300 transition-colors duration-300">
                         <span className="mt-[0.4rem] w-1.5 h-1.5 bg-brand-blue/40 rounded-full shrink-0 group-hover:bg-brand-blue group-hover:scale-125 transition-all duration-300"></span>
                         <span className="opacity-90">{item}</span>
                       </li>

@@ -197,7 +197,7 @@ const TechnologyModernization = () => {
                          </svg>
                          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                             <span className="text-3xl font-bold text-gray-900 dark:text-white leading-none">75%</span>
-                            <span className="text-[10px] text-gray-500 font-mono uppercase tracking-tighter mt-1">Maintenance</span>
+                            <span className="text-[11px] text-gray-500 font-mono uppercase tracking-tighter mt-1">Maintenance</span>
                          </div>
                       </div>
 
@@ -205,14 +205,14 @@ const TechnologyModernization = () => {
                          <div className="flex items-center gap-3">
                             <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-600 to-brand-blue"></div>
                             <div>
-                               <div className="text-[10px] text-gray-400 font-mono uppercase tracking-widest">Maintenance</div>
+                               <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest">Maintenance</div>
                                <div className="text-sm font-bold text-gray-900 dark:text-white">75-80% Budget</div>
                             </div>
                          </div>
                          <div className="flex items-center gap-3">
                             <div className="w-3 h-3 rounded-full bg-gray-200"></div>
                             <div>
-                               <div className="text-[10px] text-gray-400 font-mono uppercase tracking-widest">Innovation</div>
+                               <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest">Innovation</div>
                                <div className="text-sm font-bold text-gray-900 dark:text-white">&lt; 25% Strategic</div>
                             </div>
                          </div>
@@ -240,7 +240,7 @@ const TechnologyModernization = () => {
             
             <div className="relative z-10 grid lg:grid-cols-12 gap-16 items-center">
               <div className="lg:col-span-12 mb-4 text-center">
-                 <div className="font-mono text-[10px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Projected Performance</div>
+                 <div className="font-mono text-[11px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Projected Performance</div>
                  <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 dark:text-white tracking-tight leading-[0.95] font-display">
                     Measurable ROI. <span className="text-transparent bg-clip-text bg-brand-gradient italic">Guaranteed Impact.</span>
                  </h2>
@@ -258,7 +258,7 @@ const TechnologyModernization = () => {
                       {stat.value}
                     </div>
                     <div className="font-bold text-brand-blue text-xs uppercase tracking-widest mb-1">{stat.label}</div>
-                    <div className="text-[10px] text-gray-500 font-mono italic">{stat.sub}</div>
+                    <div className="text-[11px] text-gray-500 font-mono italic">{stat.sub}</div>
                   </div>
                 ))}
               </div>

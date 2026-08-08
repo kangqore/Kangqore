@@ -285,10 +285,10 @@ const technologyConsultingAdvisoryCoESection = (
         {/* LEFT: Intro Text */}
         <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
           <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-            <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+            <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
               Kangqore's Advisory Center of Excellence (CoE) addresses four critical technology decision domains — <strong className="text-brand-blue">Discovery & Validation</strong>, <strong className="text-brand-blue">Architecture & Audit</strong>, <strong className="text-brand-blue">Strategy & Roadmap</strong>, and <strong className="text-brand-blue">Transformation & Migration</strong>.
             </p>
-            <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               We replace fragmented advisory with a unified consulting model. From concept validation and legacy assessment to cloud migration planning and digital transformation, our framework ensures strategic clarity, reduced risk, and measurable transformation outcomes.
             </p>
           </div>
@@ -324,29 +324,29 @@ const technologyConsultingAdvisoryCoESection = (
                     {/* Top Left -> Discovery & Validation */}
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #4b8bf5 0%, #2564ea 50%, #1d4ed8 100%)', transform: 'translateZ(6px)' }}>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight">Discovery &</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight">Validation</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight">Discovery &</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight">Validation</span>
                       </div>
                     </div>
                     {/* Top Right -> Architecture & Audit */}
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #6db3f8 0%, #3b82f6 50%, #2564ea 100%)', transform: 'translateZ(4px)' }}>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight">Architecture &</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight">Audit</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight">Architecture &</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight">Audit</span>
                       </div>
                     </div>
                     {/* Bottom Left -> Strategy & Roadmap */}
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #2564ea 0%, #1e40af 50%, #1e3a8a 100%)', transform: 'translateZ(2px)' }}>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight">Strategy &</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight">Roadmap</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight">Strategy &</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight">Roadmap</span>
                       </div>
                     </div>
                     {/* Bottom Right -> Transformation & Migration */}
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #5cc8e0 0%, #4ab6d4 50%, #2d9db8 100%)', transform: 'translateZ(3px)' }}>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight">Transformation</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight">& Migration</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight">Transformation</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight">& Migration</span>
                       </div>
                     </div>
                   </div>
@@ -464,8 +464,8 @@ const technologyConsultingExecutionEcosystemSection = (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-slate-900 rounded-full shadow-[0_20px_50px_rgba(37,100,234,0.3)] flex flex-col items-center justify-center relative z-20 group border-4 border-white">
               <div className="absolute inset-0 bg-brand-gradient opacity-20 rounded-full group-hover:opacity-40 transition-opacity duration-700"></div>
               <BrainCircuit className="w-16 h-16 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)] mb-2" />
-              <span className="font-mono text-[10px] text-white tracking-[0.2em] uppercase font-bold">ADVISORY</span>
-              <span className="font-mono text-[9px] text-cyan-400 tracking-[0.1em] mt-1">KERNEL_V2</span>
+              <span className="font-mono text-[11px] text-white tracking-[0.2em] uppercase font-bold">ADVISORY</span>
+              <span className="font-mono text-[11px] text-cyan-400 tracking-[0.1em] mt-1">KERNEL_V2</span>
             </div>
 
             {/* Orbiting Satellite Nodes */}
@@ -750,7 +750,7 @@ const strategyConsultingTrendsSection = (
                 <circle cx="400" cy="300" r="35" fill="#eff6ff" />
                 <circle cx="400" cy="300" r="20" fill="#2563eb" />
                 <text x="400" y="365" textAnchor="middle" className="text-sm font-bold fill-slate-800 tracking-widest uppercase">Growth in AI</text>
-                <text x="400" y="385" textAnchor="middle" className="text-[10px] font-bold fill-blue-600 tracking-wider">CORE PRIORITY</text>
+                <text x="400" y="385" textAnchor="middle" className="text-[11px] font-bold fill-blue-600 tracking-wider">CORE PRIORITY</text>
               </g>
 
               {/* Connecting Lines */}
@@ -1059,12 +1059,12 @@ const discoverFrameDeliverablesStepper = (
               <div key={idx} className="relative pl-12 group">
                 <div className="absolute left-0 top-1.5 w-3 h-3 bg-white dark:bg-gray-900 dark:border-gray-800 border-2 border-brand-blue rounded-full z-10 transition-transform duration-300 group-hover:scale-125"></div>
                 <div>
-                  <h4 className="text-[17px] lg:text-[18px] font-bold text-brand-blue mb-6 tracking-wide uppercase font-display">
+                  <h4 className="text-[16px] lg:text-[20px] font-bold text-brand-blue mb-6 tracking-wide uppercase font-display">
                     {step.title}
                   </h4>
                   <div className="space-y-4">
                     {step.points.map((p, pIdx) => (
-                      <p key={pIdx} className="text-gray-500 text-[15px] lg:text-[16px] leading-relaxed font-light">
+                      <p key={pIdx} className="text-gray-500 text-[16px] lg:text-[16px] leading-relaxed font-light">
                         {p}
                       </p>
                     ))}
@@ -1085,10 +1085,10 @@ const discoverFrameDiscoveryCoESection = (
       <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
         <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
           <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-            <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+            <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
               Our <strong className="text-brand-blue">Discovery & Frame CoE</strong> provides a high-fidelity operational blueprint, surrounding your product idea with four critical execution layers.
             </p>
-            <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               We replace "guess-work engineering" with "governed framing." By unifying market validation, user-centered design, technical architecture, and commercial planning, we ensure your product is built on a foundation of clarity rather than a mountain of assumptions.
             </p>
           </div>
@@ -1119,16 +1119,16 @@ const discoverFrameDiscoveryCoESection = (
                 <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d' }}>
                   <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
                     <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}>
-                      <div className="-rotate-45 text-center text-white font-bold text-[15px]">Market & Business<br />Analysis</div>
+                      <div className="-rotate-45 text-center text-white font-bold text-[16px]">Market & Business<br />Analysis</div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}>
-                      <div className="-rotate-45 text-center text-white font-bold text-[15px]">User & UX<br />Framing</div>
+                      <div className="-rotate-45 text-center text-white font-bold text-[16px]">User & UX<br />Framing</div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}>
-                      <div className="-rotate-45 text-center text-white font-bold text-[15px]">Technical &<br />Architecture</div>
+                      <div className="-rotate-45 text-center text-white font-bold text-[16px]">Technical &<br />Architecture</div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}>
-                      <div className="-rotate-45 text-center text-white font-bold text-[15px]">Delivery &<br />Roadmap</div>
+                      <div className="-rotate-45 text-center text-white font-bold text-[16px]">Delivery &<br />Roadmap</div>
                     </div>
                   </div>
                 </div>
@@ -1231,7 +1231,7 @@ const discoverFrameExecutionEcosystemSection = (
                 <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center border border-blue-50 relative z-10 hover:-translate-y-2 transition-all duration-300">
                   <Rocket className="w-12 h-12 text-brand-blue" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accelerate</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accelerate</span>
               </div>
             </div>
 
@@ -1240,7 +1240,7 @@ const discoverFrameExecutionEcosystemSection = (
                 <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                   <Cpu className="w-12 h-12 text-cyan-400" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
               </div>
             </div>
 
@@ -1249,7 +1249,7 @@ const discoverFrameExecutionEcosystemSection = (
                 <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300">
                   <Radar className="w-12 h-12 text-white" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
               </div>
             </div>
           </div>
@@ -1493,7 +1493,7 @@ const technologyTransformationPillar1 = (
         <div className="lg:col-span-1"></div>
         <div className="lg:col-span-4 self-end">
           <div className="bg-brand-gradient border border-brand-blue/20 p-10 rounded-2xl relative overflow-hidden group shadow-xl shadow-blue-900/10">
-            <div className="text-[10px] font-mono text-white/80 uppercase tracking-[0.3em] font-bold mb-6">Strategy Data</div>
+            <div className="text-[11px] font-mono text-white/80 uppercase tracking-[0.3em] font-bold mb-6">Strategy Data</div>
             <div className="text-6xl font-bold text-white mb-4 tracking-tighter">41%</div>
             <p className="text-sm text-white/90 leading-relaxed uppercase tracking-wider font-bold">
               of executives rate AI as the top contributor to technical debt.
@@ -1501,13 +1501,13 @@ const technologyTransformationPillar1 = (
             <div className="grid grid-cols-2 gap-8 pt-8 mt-12 border-t border-white/20">
               <div>
                 <div className="text-4xl font-bold text-white mb-2 tracking-tighter">97%</div>
-                <p className="text-[10px] text-white/70 uppercase tracking-[0.2em] leading-relaxed font-bold">
+                <p className="text-[11px] text-white/70 uppercase tracking-[0.2em] leading-relaxed font-bold">
                   agree technology plays a critical role in reinvention.
                 </p>
               </div>
               <div>
                 <div className="text-4xl font-bold text-white mb-2 tracking-tighter">7%</div>
-                <p className="text-[10px] text-white/70 uppercase tracking-[0.2em] leading-relaxed font-bold">
+                <p className="text-[11px] text-white/70 uppercase tracking-[0.2em] leading-relaxed font-bold">
                   more budget spent on technical debt remediation.
                 </p>
               </div>
@@ -1546,7 +1546,7 @@ const technologyTransformationPillar1 = (
       {/* Measurable Achievement Stats */}
       <div className="mt-24">
         <div className="text-center mb-4">
-          <div className="font-mono text-[10px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Projected Performance</div>
+          <div className="font-mono text-[11px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Projected Performance</div>
           <h3 className="text-3xl lg:text-5xl font-bold text-slate-900 dark:text-white tracking-tighter leading-[0.95] font-display mb-12">
             Measurable <span className="text-transparent bg-clip-text bg-brand-gradient italic">Achievement.</span>
           </h3>
@@ -1563,8 +1563,8 @@ const technologyTransformationPillar1 = (
               <div className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-2 group-hover:scale-110 group-hover:text-brand-blue transition-all tracking-tighter duration-500">
                 {stat.value}
               </div>
-              <div className="font-bold text-brand-blue text-[10px] uppercase tracking-[0.3em] mb-1">{stat.label}</div>
-              <div className="text-[10px] text-slate-400 font-mono italic">{stat.sub}</div>
+              <div className="font-bold text-brand-blue text-[11px] uppercase tracking-[0.3em] mb-1">{stat.label}</div>
+              <div className="text-[11px] text-slate-400 font-mono italic">{stat.sub}</div>
             </div>
           ))}
         </div>
@@ -1609,7 +1609,7 @@ const technologyTransformationPillar2 = (
                   ].map((s, i) => (
                     <div key={i} className="bg-white dark:bg-gray-900 dark:border-gray-800/5 p-4 rounded-xl border border-white/5">
                       <div className={`text-xl font-bold ${s.color}`}>{s.val}</div>
-                      <div className="text-[10px] text-white/60 uppercase tracking-tighter">{s.label}</div>
+                      <div className="text-[11px] text-white/60 uppercase tracking-tighter">{s.label}</div>
                     </div>
                   ))}
                 </div>
@@ -1782,7 +1782,7 @@ const technologyTransformationCustomSections = (
           <div className="absolute top-0 right-0 w-96 h-96 bg-brand-blue/5 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none"></div>
 
           <div className="relative z-10 text-center">
-            <div className="font-mono text-[10px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Transformation Impact</div>
+            <div className="font-mono text-[11px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Transformation Impact</div>
             <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 dark:text-white tracking-tight leading-[0.95] font-display mb-12">
               Proof, Not <span className="text-transparent bg-clip-text bg-brand-gradient italic">Promises.</span>
             </h2>
@@ -1799,7 +1799,7 @@ const technologyTransformationCustomSections = (
                     {stat.value}
                   </div>
                   <div className="font-bold text-brand-blue text-xs uppercase tracking-widest mb-1">{stat.label}</div>
-                  <div className="text-[10px] text-gray-500 font-mono italic">{stat.sub}</div>
+                  <div className="text-[11px] text-gray-500 font-mono italic">{stat.sub}</div>
                 </div>
               ))}
             </div>

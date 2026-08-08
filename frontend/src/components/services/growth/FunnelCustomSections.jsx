@@ -482,19 +482,19 @@ export const FunnelLogoTrustSection = () => {
         <div className="flex flex-wrap justify-center gap-8 lg:gap-24 mb-16 border-b border-gray-100 pb-12">
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">100%</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Data-Driven Testing</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Data-Driven Testing</p>
           </div>
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">2.5x</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Average Conversion Lift</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Average Conversion Lift</p>
           </div>
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">10M+</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">User Sessions Analyzed</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">User Sessions Analyzed</p>
           </div>
         </div>
 
-        <p className="text-center text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] mb-10">Conversion Intelligence Partnerships</p>
+        <p className="text-center text-[11px] font-black text-gray-300 uppercase tracking-[0.3em] mb-10">Conversion Intelligence Partnerships</p>
         
         <div className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 grayscale">
           <div className="funnel-logo flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300">

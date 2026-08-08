@@ -331,7 +331,7 @@ const DigitalBusinessTransformation = () => {
                     <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                     <Brain className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
                 </div>
               </div>
 
@@ -339,9 +339,9 @@ const DigitalBusinessTransformation = () => {
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-24 h-24 bg-blue-600 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                     <Layers className="w-12 h-12 text-white" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">CORE</div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">CORE</div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Engineering</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Engineering</span>
                 </div>
               </div>
 
@@ -353,7 +353,7 @@ const DigitalBusinessTransformation = () => {
                       <Fingerprint className="w-16 h-16 text-emerald-400" />
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data Fabric</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data Fabric</span>
                 </div>
               </div>
 

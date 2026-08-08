@@ -101,8 +101,8 @@ const CaseStudiesSection = ({ caseStudies, title, intro, serviceName }) => {
                   { k: 'Outcome', v: cs.outcome },
                 ].filter(b => b.v).map((b) => (
                   <div key={b.k}>
-                    <div className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-1.5">{b.k}</div>
-                    <p className="text-[15px] text-gray-600 dark:text-gray-300 font-light leading-relaxed">{b.v}</p>
+                    <div className="text-[11px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-1.5">{b.k}</div>
+                    <p className="text-[16px] text-gray-600 dark:text-gray-300 font-light leading-relaxed">{b.v}</p>
                   </div>
                 ))}
               </div>

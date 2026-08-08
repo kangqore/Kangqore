@@ -206,7 +206,7 @@ const BPMPreferenceSection = () => {
                     <div className="shrink-0 w-7 h-7 bg-brand-gradient rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5">
                       {sIdx + 1}
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-[15px]">{step}</p>
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-[16px]">{step}</p>
                   </div>
                 ))}
               </div>
@@ -582,12 +582,12 @@ const dpaRelatedSchematic = (
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute inset-0 opacity-[0.05]"
                  style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_DPA_EXEC</span></div>
               <div className="flex justify-between gap-4"><span>LEVEL:</span> <span>ENTERPRISE</span></div>
               <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">ORCHESTRATED</span></div>
             </div>
-            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
               <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">Workflow Engine</div>
               <div>SYNTHESIZING_TASKS...</div>
               <div>EFFICIENCY: +94%</div>
@@ -611,16 +611,16 @@ const dpaRelatedSchematic = (
                   <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                   <Layers className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Systems</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Systems</span>
               </div>
             </div>
             <div className="absolute bottom-20 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                   <CheckCircle2 className="w-12 h-12 text-white" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">KPI</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">KPI</div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Metrics</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Metrics</span>
               </div>
             </div>
             <div className="absolute bottom-20 right-0 group">
@@ -631,7 +631,7 @@ const dpaRelatedSchematic = (
                     <BrainCircuit className="w-16 h-16 text-emerald-400" />
                   </div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Cognitive AI</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Cognitive AI</span>
               </div>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
@@ -662,10 +662,10 @@ const dpaAutomationCoESection = (
       <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
         <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
           <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-            <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+            <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
               Kangqore&rsquo;s Digital Process Automation Center of Excellence (CoE) is built on four interconnected capability layers — <strong className="text-brand-blue">Automation Consulting</strong>, <strong className="text-brand-blue">Process Automation</strong>, <strong className="text-brand-blue">Digital Automation</strong>, and <strong className="text-brand-blue">Cognitive Automation</strong> — forming a unified automation architecture.
             </p>
-            <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               From strategic advisory and process discovery to intelligent orchestration, low-code modernization, and AI-driven decision systems, we deliver end-to-end automation that transforms how work flows across the enterprise. Our model enhances efficiency, enables personalization, strengthens omnichannel engagement, and embeds data-driven intelligence into core operations.
             </p>
           </div>
@@ -699,8 +699,8 @@ const dpaAutomationCoESection = (
                       <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.20) 0%, transparent 100%)' }}></div>
                       <div className="absolute top-0 left-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.15), transparent)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Automation</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Consulting</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Automation</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Consulting</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #6db3f8 0%, #3b82f6 50%, #2564ea 100%)', transform: 'translateZ(4px)' }}>
@@ -708,8 +708,8 @@ const dpaAutomationCoESection = (
                       <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.15) 0%, transparent 100%)' }}></div>
                       <div className="absolute top-0 right-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(270deg, rgba(255,255,255,0.12), transparent)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Digital</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Automation</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Digital</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Automation</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #2564ea 0%, #1e40af 50%, #1e3a8a 100%)', transform: 'translateZ(2px)' }}>
@@ -717,8 +717,8 @@ const dpaAutomationCoESection = (
                       <div className="absolute bottom-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.25) 0%, transparent 100%)' }}></div>
                       <div className="absolute top-0 left-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.10), transparent)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Process</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Automation</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Process</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Automation</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #5cc8e0 0%, #4ab6d4 50%, #2d9db8 100%)', transform: 'translateZ(3px)' }}>
@@ -726,8 +726,8 @@ const dpaAutomationCoESection = (
                       <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.20) 0%, transparent 100%)' }}></div>
                       <div className="absolute top-0 right-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(270deg, rgba(255,255,255,0.10), transparent)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Cognitive</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Automation</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Cognitive</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Automation</span>
                       </div>
                     </div>
                   </div>
@@ -1053,25 +1053,25 @@ const rpaCoESection = (
               <div className="w-20 h-20 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl shadow-xl flex items-center justify-center border border-blue-50 hover:-translate-y-2 transition-all">
                 <Cpu className="w-10 h-10 text-blue-600" />
               </div>
-              <span className="block text-center text-[10px] font-bold text-gray-400 tracking-[0.15em] mt-2 uppercase">IT Ops</span>
+              <span className="block text-center text-[11px] font-bold text-gray-400 tracking-[0.15em] mt-2 uppercase">IT Ops</span>
             </div>
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
               <div className="w-20 h-20 bg-slate-900 rounded-2xl shadow-xl flex items-center justify-center hover:translate-y-2 transition-all">
                 <BarChart3 className="w-10 h-10 text-emerald-400" />
               </div>
-              <span className="block text-center text-[10px] font-bold text-gray-400 tracking-[0.15em] mt-2 uppercase">BPA</span>
+              <span className="block text-center text-[11px] font-bold text-gray-400 tracking-[0.15em] mt-2 uppercase">BPA</span>
             </div>
             <div className="absolute top-1/2 left-4 -translate-y-1/2">
               <div className="w-20 h-20 bg-brand-gradient rounded-2xl shadow-xl flex items-center justify-center hover:-translate-x-2 transition-all">
                 <Shield className="w-10 h-10 text-white" />
               </div>
-              <span className="block text-center text-[10px] font-bold text-gray-400 tracking-[0.15em] mt-2 uppercase">Security</span>
+              <span className="block text-center text-[11px] font-bold text-gray-400 tracking-[0.15em] mt-2 uppercase">Security</span>
             </div>
             <div className="absolute top-1/2 right-4 -translate-y-1/2">
               <div className="w-20 h-20 bg-cyan-500 rounded-2xl shadow-xl flex items-center justify-center hover:translate-x-2 transition-all">
                 <Zap className="w-10 h-10 text-white" />
               </div>
-              <span className="block text-center text-[10px] font-bold text-gray-400 tracking-[0.15em] mt-2 uppercase">POC</span>
+              <span className="block text-center text-[11px] font-bold text-gray-400 tracking-[0.15em] mt-2 uppercase">POC</span>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
               <defs>
