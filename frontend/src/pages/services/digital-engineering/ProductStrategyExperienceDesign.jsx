@@ -267,7 +267,7 @@ export default function ProductStrategyExperienceDesign() {
                 Reimagine — Digital Experience Practice
               </p>
 
-              <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
+              <p className="text-base text-white/50 leading-[1.8] max-w-lg mb-14 font-medium">
                 Kangqore helps organizations define better products, design stronger user experiences, and turn ideas into execution-ready outcomes.
               </p>
 
@@ -387,7 +387,7 @@ export default function ProductStrategyExperienceDesign() {
 
           {/* Pull quote */}
           <div className="border-l-2 border-white/10 pl-8">
-            <p className="text-xl sm:text-2xl font-black text-white/40 leading-snug max-w-4xl">
+            <p className="text-xl sm:text-2xl font-black text-white/50 leading-snug max-w-4xl">
               "Design What Matters. Build What Wins."
             </p>
             <p className="text-lg font-black text-white mt-3">
@@ -473,7 +473,7 @@ export default function ProductStrategyExperienceDesign() {
                 <p className="text-white font-black text-2xl leading-tight mb-5">
                   {['Strategy', 'Design', 'Prototyping', 'Systems'][activeFeature] || '—'}
                 </p>
-                <p className="text-white/45 text-sm font-medium leading-relaxed mb-6">
+                <p className="text-white/50 text-sm font-medium leading-relaxed mb-6">
                   {[
                     'Define where the product should go, why it matters, and how it should create value through strategic prioritization.',
                     'Shape experiences that are intuitive, usable, and accessible, aligned perfectly with your brand and business goals.',
@@ -543,7 +543,7 @@ export default function ProductStrategyExperienceDesign() {
               </h2>
             </div>
             <div className="lg:pb-3">
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
+              <p className="text-white/50 text-lg font-medium leading-relaxed mb-8">
                 A connected system for moving from customer understanding to product clarity to design systems and launch-ready direction.
               </p>
               <Link
@@ -571,7 +571,7 @@ export default function ProductStrategyExperienceDesign() {
                     )}
                   </div>
                   <p className="text-white font-semibold text-sm mb-2" style={{ color: step.color }}>{step.title}</p>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed">{step.desc}</p>
+                  <p className="text-white/50 text-sm font-medium leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -673,7 +673,7 @@ export default function ProductStrategyExperienceDesign() {
                           {c.items.map(item => (
                             <li key={item} className="flex items-start gap-3">
                               <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: c.color }} />
-                              <span className="text-white/45 text-xs font-medium leading-relaxed">{item}</span>
+                              <span className="text-white/50 text-xs font-medium leading-relaxed">{item}</span>
                             </li>
                           ))}
                         </ul>
@@ -719,7 +719,7 @@ export default function ProductStrategyExperienceDesign() {
               <p className="text-white/60 text-lg leading-relaxed font-light mb-5">
                 Our <strong className="text-white">Enterprise Design CoE</strong> provides a high-velocity strategic blueprint, surrounding your product idea with four critical layers of UX validation.
               </p>
-              <p className="text-white/40 text-base leading-relaxed font-light">
+              <p className="text-white/50 text-base leading-relaxed font-light">
                 We replace "build-and-hope" with "validate-and-architect." By unifying lean discovery, high-fidelity mockups, strategic research, and scalable design architectures, we ensure your product UX is built on a foundation of absolute confidence.
               </p>
             </div>
@@ -807,7 +807,7 @@ export default function ProductStrategyExperienceDesign() {
                 ].map((q, idx) => (
                   <div key={idx} className="bg-[#06090f] border border-white/[0.08] rounded-2xl overflow-hidden">
                     <div className={`bg-gradient-to-r ${q.gradient} p-4 text-white font-bold text-sm`}>{q.title}</div>
-                    <div className="p-4"><ul className="space-y-1 text-xs text-white/40">{q.items.map((item, k) => <li key={k}>• {item}</li>)}</ul></div>
+                    <div className="p-4"><ul className="space-y-1 text-xs text-white/50">{q.items.map((item, k) => <li key={k}>• {item}</li>)}</ul></div>
                   </div>
                 ))}
               </div>
@@ -824,7 +824,7 @@ export default function ProductStrategyExperienceDesign() {
                   <div className="w-11 h-11 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0 group-hover:bg-brand-blue/20 group-hover:border-brand-blue/40 transition-colors">{d.num}</div>
                   <div>
                     <h4 className="font-black text-lg text-white mb-1 group-hover:text-cyan-400 transition-colors">{d.title}</h4>
-                    <p className="text-white/40 text-sm leading-relaxed">{d.text}</p>
+                    <p className="text-white/50 text-sm leading-relaxed">{d.text}</p>
                   </div>
                 </div>
               ))}
@@ -900,7 +900,7 @@ export default function ProductStrategyExperienceDesign() {
                             )}
                           </div>
                           <h4 className="text-lg font-black text-white mb-1 group-hover:text-cyan-400 transition-colors duration-300">{item.title}</h4>
-                          <p className="text-sm text-white/40 font-light leading-relaxed">{item.desc}</p>
+                          <p className="text-sm text-white/50 font-light leading-relaxed">{item.desc}</p>
                         </div>
                       </div>
                     </div>
@@ -921,7 +921,7 @@ export default function ProductStrategyExperienceDesign() {
                     From Ambition to <br />
                     <span className="bg-brand-gradient bg-clip-text text-transparent">Market Ready.</span>
                   </h2>
-                  <p className="text-white/40 text-lg font-light leading-relaxed max-w-lg">
+                  <p className="text-white/50 text-lg font-light leading-relaxed max-w-lg">
                     A connected system for moving from customer understanding to product clarity to design systems and launch-ready direction.
                   </p>
                 </div>
@@ -1007,7 +1007,7 @@ export default function ProductStrategyExperienceDesign() {
                     <Icon className="w-5 h-5" style={{ color: colors[i] }} />
                   </div>
                   <h3 className="text-white font-black text-lg leading-snug mb-4">{item.title}</h3>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed">{item.desc}</p>
+                  <p className="text-white/50 text-sm font-medium leading-relaxed">{item.desc}</p>
                 </div>
               );
             })}
@@ -1021,7 +1021,7 @@ export default function ProductStrategyExperienceDesign() {
                 Relevant across new products,<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">redesigns, and large portfolios.</span>
               </h3>
-              <p className="text-white/40 text-base font-medium leading-relaxed">Typical engagements include:</p>
+              <p className="text-white/50 text-base font-medium leading-relaxed">Typical engagements include:</p>
             </div>
             <div>
               <div className="space-y-0">
@@ -1031,7 +1031,7 @@ export default function ProductStrategyExperienceDesign() {
                       <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mt-2 flex-shrink-0" />
                       <div>
                         <p className="text-white font-semibold text-base leading-snug">{item.name}</p>
-                        <p className="text-white/40 text-sm font-light mt-1 leading-relaxed">{item.desc}</p>
+                        <p className="text-white/50 text-sm font-light mt-1 leading-relaxed">{item.desc}</p>
                       </div>
                     </div>
                     {i < industries.length - 1 && <div className="w-px h-2 ml-[2.75px] bg-white/[0.04]" />}
@@ -1058,7 +1058,7 @@ export default function ProductStrategyExperienceDesign() {
               </h2>
             </div>
             <div className="lg:pb-3">
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
+              <p className="text-white/50 text-lg font-medium leading-relaxed mb-8">
                 Still have questions? Our specialists are available for a no-obligation discovery call.
               </p>
               <Link
@@ -1108,7 +1108,7 @@ export default function ProductStrategyExperienceDesign() {
                 Related Engineering{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Expertise.</span>
               </h2>
-              <p className="text-white/40 text-base font-medium leading-relaxed max-w-xl">
+              <p className="text-white/50 text-base font-medium leading-relaxed max-w-xl">
                 Extend your design strategy into a full-scale product. Kangqore provides the end-to-end engineering muscle to build what you've architected.
               </p>
             </div>
@@ -1122,7 +1122,7 @@ export default function ProductStrategyExperienceDesign() {
                     </div>
                     <div>
                       <span className="font-black text-lg text-white block mb-1 group-hover:text-cyan-400 transition-colors">{e.name}</span>
-                      <p className="text-white/40 text-sm">{e.desc}</p>
+                      <p className="text-white/50 text-sm">{e.desc}</p>
                     </div>
                     <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all mt-1 flex-shrink-0 ml-auto" />
                   </Link>
@@ -1147,7 +1147,7 @@ export default function ProductStrategyExperienceDesign() {
                 Ready to define a sharper product and a{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">stronger experience?</span>
               </h2>
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
+              <p className="text-white/50 text-lg font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
                 Let's shape the right product strategy, design the right experience, and create the execution-ready foundation needed to move faster with confidence.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-5">

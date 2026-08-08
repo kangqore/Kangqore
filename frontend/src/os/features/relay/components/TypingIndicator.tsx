@@ -24,7 +24,7 @@ export function TypingIndicator({ channelId }: { channelId: string }) {
           />
         ))}
       </div>
-      <span className="text-[11px] text-white/40 italic">{label}</span>
+      <span className="text-[11px] text-white/50 italic">{label}</span>
     </div>
   )
 }

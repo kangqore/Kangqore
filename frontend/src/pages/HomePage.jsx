@@ -503,7 +503,7 @@ const HeroCarousel = () => {
     {/* ── Hero Trust Logo Strip (Free from container) ── */}
     <div className="relative z-20 w-full bg-transparent py-[calc(1.25rem+0.5cm)] sm:py-[calc(1.5rem+0.5cm)] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-10">
-        <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 dark:text-white/40 uppercase tracking-[0.25em] text-center mx-auto leading-relaxed whitespace-nowrap">
+        <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 dark:text-white/50 uppercase tracking-[0.25em] text-center mx-auto leading-relaxed whitespace-nowrap">
           TRUSTED BY GLOBAL ENTERPRISES TO DELIVER AT SCALE.
         </p>
       </div>

@@ -656,12 +656,12 @@ export const KangqoreCommandCenterDashboard = () => {
               <div className="grid grid-cols-2 gap-4 lg:gap-6">
                  {/* Live KPIs */}
                  <div className="bg-white dark:bg-gray-900 dark:border-gray-800/[0.02] border border-white/5 rounded-xl p-5">
-                    <div className="text-white/40 text-xs font-bold uppercase tracking-wider mb-2">Time-to-Hire</div>
+                    <div className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Time-to-Hire</div>
                     <div className="text-3xl font-bold text-white font-display mb-1">18 <span className="text-xl text-white/50 font-sans">Days</span></div>
                     <div className="text-emerald-400 flex items-center gap-1 text-sm font-medium"><TrendingUp className="w-4 h-4" /> 14% vs benchmark</div>
                  </div>
                  <div className="bg-white dark:bg-gray-900 dark:border-gray-800/[0.02] border border-white/5 rounded-xl p-5">
-                    <div className="text-white/40 text-xs font-bold uppercase tracking-wider mb-2">Open Reqs</div>
+                    <div className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Open Reqs</div>
                     <div className="text-3xl font-bold text-white font-display mb-1">24</div>
                     <div className="text-white/50 text-sm font-medium">12 in final interview</div>
                  </div>

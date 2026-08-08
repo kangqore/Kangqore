@@ -136,7 +136,7 @@ const IndustriesIndexPage = () => {
                 </span>
               </h1>
 
-              <p className="text-base text-white/40 leading-[1.8] max-w-lg mb-14 font-medium">
+              <p className="text-base text-white/50 leading-[1.8] max-w-lg mb-14 font-medium">
                 From banking floors to hospital corridors, manufacturing lines to retail ecosystems — Kangqore delivers intelligence-led transformation across 12+ sectors with domain-calibrated precision.
               </p>
 
@@ -180,7 +180,7 @@ const IndustriesIndexPage = () => {
                 <div key={s.label} className="flex items-center gap-4">
                   <div>
                     <p className={`text-3xl font-black leading-none drop-shadow-lg ${s.color}`}>{s.value}</p>
-                    <p className="text-[10px] text-white/40 font-bold tracking-widest uppercase mt-1">{s.label}</p>
+                    <p className="text-[10px] text-white/50 font-bold tracking-widest uppercase mt-1">{s.label}</p>
                   </div>
                   {i < STATS.length - 1 && <div className="w-px h-8 bg-white/10" />}
                 </div>
@@ -239,7 +239,7 @@ const IndustriesIndexPage = () => {
                   <span className="text-white font-black text-xs">{String(i + 1).padStart(2, '0')}</span>
                 </div>
                 <h3 className="text-white font-bold text-sm mb-2 leading-snug">{p.title}</h3>
-                <p className="text-white/40 text-xs leading-relaxed">{p.description}</p>
+                <p className="text-white/50 text-xs leading-relaxed">{p.description}</p>
               </div>
             ))}
           </div>
@@ -277,7 +277,7 @@ const IndustriesIndexPage = () => {
                   reimagined.
                 </span>
               </h2>
-              <p className="text-white/40 text-base leading-relaxed max-w-xl mx-auto mb-12">
+              <p className="text-white/50 text-base leading-relaxed max-w-xl mx-auto mb-12">
                 Tell us your sector and your biggest operational challenge. Our industry experts will map the right capabilities to the outcomes you need.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-5">

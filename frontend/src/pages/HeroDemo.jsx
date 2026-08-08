@@ -146,7 +146,7 @@ export default function HeroDemo() {
                     className="w-1.5 h-1.5 rounded-full flex-shrink-0 transition-all duration-300 group-hover:scale-150"
                     style={{ backgroundColor: cap.color, boxShadow: `0 0 6px ${cap.color}` }}
                   />
-                  <span className="text-[11px] font-bold tracking-[0.12em] text-white/40 uppercase whitespace-nowrap group-hover:text-white/80 transition-colors duration-200">
+                  <span className="text-[11px] font-bold tracking-[0.12em] text-white/50 uppercase whitespace-nowrap group-hover:text-white/80 transition-colors duration-200">
                     {cap.label}
                   </span>
                 </div>

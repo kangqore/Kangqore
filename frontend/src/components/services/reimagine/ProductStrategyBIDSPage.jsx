@@ -396,7 +396,7 @@ export default function ProductStrategyBIDSPage() {
           <div className="group border-l-2 border-white/10 pl-8 py-6 pr-8 rounded-r-2xl bg-[#06090f] relative overflow-hidden hover:border-transparent transition-all duration-500">
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
             <div className="relative z-10">
-              <p className="text-xl sm:text-2xl font-black text-white/40 group-hover:text-white leading-snug max-w-4xl transition-colors duration-500">
+              <p className="text-xl sm:text-2xl font-black text-white/50 group-hover:text-white leading-snug max-w-4xl transition-colors duration-500">
                 "Design What Matters. Build What Wins."
               </p>
               <p className="text-lg font-black text-white mt-3">
@@ -474,7 +474,7 @@ export default function ProductStrategyBIDSPage() {
                   <p className="text-[11px] font-black tracking-[0.4em] text-white/60 group-hover:text-white/60 uppercase mb-6 transition-colors duration-500">DESIGN INTELLIGENCE PROFILE</p>
                   <p className="text-[11px] font-black tracking-widest uppercase mb-2 text-cyan-400 group-hover:text-white transition-colors duration-500">{featureLabels[activeFeature] || 'Select a Feature'}</p>
                   <p className="text-white font-black text-2xl leading-tight mb-5">{featureTitles[activeFeature] || '—'}</p>
-                  <p className="text-white/45 group-hover:text-white text-sm font-medium leading-relaxed mb-6 transition-colors duration-500">{featureContents[activeFeature] || 'Select a feature to explore its role in the product design framework.'}</p>
+                  <p className="text-white/50 group-hover:text-white text-sm font-medium leading-relaxed mb-6 transition-colors duration-500">{featureContents[activeFeature] || 'Select a feature to explore its role in the product design framework.'}</p>
                   <div className="p-4 rounded-xl border border-cyan-400/20 group-hover:border-white/25 bg-cyan-400/[0.04] group-hover:bg-white/10 transition-colors duration-500">
                     <p className="text-sm font-semibold leading-snug text-cyan-400 group-hover:text-white transition-colors duration-500">{featureMicros[activeFeature] || 'Strategy, Design, Prototyping, and Systems — four layers of the same vision.'}</p>
                   </div>
@@ -549,7 +549,7 @@ export default function ProductStrategyBIDSPage() {
               </h2>
             </div>
             <div className="lg:pb-3">
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
+              <p className="text-white/50 text-lg font-medium leading-relaxed mb-8">
                 A connected system for moving from customer understanding to product clarity to design systems and launch-ready direction.
               </p>
               <Link to="/contact" className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group">
@@ -574,7 +574,7 @@ export default function ProductStrategyBIDSPage() {
                     )}
                   </div>
                   <p className="text-sm font-semibold mb-2" style={{ color: step.color }}>{step.title}</p>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed">{step.desc}</p>
+                  <p className="text-white/50 text-sm font-medium leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -672,7 +672,7 @@ export default function ProductStrategyBIDSPage() {
                           {c.items.map(item => (
                             <li key={item} className="flex items-start gap-3">
                               <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: c.color }} />
-                              <span className="text-white/45 text-xs font-medium">{item}</span>
+                              <span className="text-white/50 text-xs font-medium">{item}</span>
                             </li>
                           ))}
                         </ul>
@@ -711,7 +711,7 @@ export default function ProductStrategyBIDSPage() {
               <p className="text-white/60 text-lg leading-relaxed font-light mb-5">
                 Our <strong className="text-white">Enterprise Design CoE</strong> provides a high-velocity strategic blueprint, surrounding your product idea with four critical layers of UX validation.
               </p>
-              <p className="text-white/40 text-base leading-relaxed font-light">
+              <p className="text-white/50 text-base leading-relaxed font-light">
                 We replace "build-and-hope" with "validate-and-architect." By unifying lean discovery, high-fidelity mockups, strategic research, and scalable design architectures, we ensure your product UX is built on a foundation of absolute confidence.
               </p>
             </div>
@@ -895,7 +895,7 @@ export default function ProductStrategyBIDSPage() {
                             )}
                           </div>
                           <h4 className="text-lg font-black text-white mb-1">{item.title}</h4>
-                          <p className="text-sm text-white/40 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
+                          <p className="text-sm text-white/50 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
                         </div>
                       </div>
                     </div>
@@ -915,7 +915,7 @@ export default function ProductStrategyBIDSPage() {
                     From Ambition to<br />
                     <span className="bg-brand-gradient bg-clip-text text-transparent">Market Ready.</span>
                   </h2>
-                  <p className="text-white/40 text-lg font-light leading-relaxed max-w-lg">
+                  <p className="text-white/50 text-lg font-light leading-relaxed max-w-lg">
                     A connected system for moving from customer understanding to product clarity to design systems and launch-ready direction.
                   </p>
                 </div>
@@ -1022,7 +1022,7 @@ export default function ProductStrategyBIDSPage() {
                 Relevant across new products,<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">redesigns, and large portfolios.</span>
               </h3>
-              <p className="text-white/40 text-base font-medium leading-relaxed">Typical engagements include:</p>
+              <p className="text-white/50 text-base font-medium leading-relaxed">Typical engagements include:</p>
             </div>
             <div className="space-y-0">
               {industries.map((item, i) => (
@@ -1031,7 +1031,7 @@ export default function ProductStrategyBIDSPage() {
                     <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mt-2 flex-shrink-0" />
                     <div>
                       <p className="text-white font-semibold text-base leading-snug">{item.name}</p>
-                      <p className="text-white/40 text-sm font-light mt-1 leading-relaxed">{item.desc}</p>
+                      <p className="text-white/50 text-sm font-light mt-1 leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
                   {i < industries.length - 1 && <div className="w-px h-2 ml-[2.75px] bg-white/[0.04]" />}
@@ -1057,7 +1057,7 @@ export default function ProductStrategyBIDSPage() {
               </h2>
             </div>
             <div className="lg:pb-3">
-              <p className="text-white/40 text-lg font-medium leading-relaxed mb-8">
+              <p className="text-white/50 text-lg font-medium leading-relaxed mb-8">
                 Still have questions? Our specialists are available for a no-obligation discovery call.
               </p>
               <Link to="/contact" className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group">
@@ -1099,7 +1099,7 @@ export default function ProductStrategyBIDSPage() {
                 Related Engineering{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Expertise.</span>
               </h2>
-              <p className="text-white/40 text-base font-medium leading-relaxed max-w-xl">
+              <p className="text-white/50 text-base font-medium leading-relaxed max-w-xl">
                 Extend your design strategy into a full-scale product. Kangqore provides the end-to-end engineering muscle to build what you've architected.
               </p>
             </div>
@@ -1114,7 +1114,7 @@ export default function ProductStrategyBIDSPage() {
                     </div>
                     <div className="relative z-10">
                       <span className="font-black text-lg text-white block mb-1">{e.name}</span>
-                      <p className="text-white/40 group-hover:text-white text-sm transition-colors duration-500">{e.desc}</p>
+                      <p className="text-white/50 group-hover:text-white text-sm transition-colors duration-500">{e.desc}</p>
                     </div>
                     <ArrowRight className="relative z-10 w-4 h-4 text-white/20 group-hover:text-white group-hover:translate-x-1 transition-all mt-1 flex-shrink-0 ml-auto" />
                   </Link>

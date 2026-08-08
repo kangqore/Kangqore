@@ -71,14 +71,14 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
               <Calendar className="w-3.5 h-3.5 text-cyan-400" />
             </div>
             <div>
-              <p className="text-[11px] font-bold text-white/40 uppercase tracking-wider mb-0.5">
+              <p className="text-[11px] font-bold text-white/50 uppercase tracking-wider mb-0.5">
                 Understood
               </p>
               <p className="text-[13px] text-white/90 font-medium leading-snug">
                 {summary}
               </p>
               {parsedIntent?.durationHint && (
-                <p className="text-[11px] text-white/40 mt-1">
+                <p className="text-[11px] text-white/50 mt-1">
                   Duration preference: {parsedIntent.durationHint} min
                 </p>
               )}
