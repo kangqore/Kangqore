@@ -66,7 +66,7 @@ const AgentStudioBenchmarkPage = () => {
             Agent Studio vs. App Engine — the build benchmark
           </h1>
           <p className="text-lg text-gray-500 dark:text-gray-400 font-light">
-            We said we&apos;d publish this comparison whether it favoured us or not. Here it is, computed
+            We said we&apos;d publish this comparison whether it favored us or not. Here it is, computed
             live, not written once and left to go stale.
           </p>
         </div>
@@ -150,7 +150,7 @@ const AgentStudioBenchmarkPage = () => {
             <p>
               The 230% ROI and 9-month payback come from a Forrester Total Economic Impact™ study
               commissioned and published by ServiceNow, based on interviews with six decision-makers at
-              App Engine customer organisations. The 50–75% figure is Forrester&apos;s reported gain in
+              App Engine customer organizations. The 50–75% figure is Forrester&apos;s reported gain in
               <em> end-user</em> task efficiency; the 4x figure is separately reported <em>developer</em>{' '}
               efficiency — two different populations, worth not collapsing into one claim.
             </p>
