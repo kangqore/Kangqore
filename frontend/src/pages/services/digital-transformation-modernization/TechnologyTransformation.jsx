@@ -199,7 +199,7 @@ const TechnologyTransformation = () => {
             <div className="absolute top-0 right-0 w-96 h-96 bg-brand-blue/5 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none"></div>
             
             <div className="relative z-10 text-center">
-              <div className="font-mono text-[10px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Transformation Impact</div>
+              <div className="font-mono text-[11px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Transformation Impact</div>
               <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 dark:text-white tracking-tight leading-[0.95] font-display mb-12">
                 Proof, Not <span className="text-transparent bg-clip-text bg-brand-gradient italic">Promises.</span>
               </h2>
@@ -216,7 +216,7 @@ const TechnologyTransformation = () => {
                       {stat.value}
                     </div>
                     <div className="font-bold text-brand-blue text-xs uppercase tracking-widest mb-1">{stat.label}</div>
-                    <div className="text-[10px] text-gray-500 font-mono italic">{stat.sub}</div>
+                    <div className="text-[11px] text-gray-500 font-mono italic">{stat.sub}</div>
                   </div>
                 ))}
               </div>

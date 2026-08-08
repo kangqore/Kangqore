@@ -270,7 +270,7 @@ export const GrowthPodSection = () => {
                     <member.icon className="w-24 h-24 text-white/5 group-hover:text-brand-blue group-hover:scale-110 transition-all duration-700 relative z-10" />
                   </div>
                   <div className="mt-auto">
-                    <p className="text-[15px] text-gray-400 font-light leading-relaxed max-w-[90%] group-hover:text-gray-200 transition-colors duration-500">{member.focus}</p>
+                    <p className="text-[16px] text-gray-400 font-light leading-relaxed max-w-[90%] group-hover:text-gray-200 transition-colors duration-500">{member.focus}</p>
                   </div>
                 </div>
 
@@ -401,7 +401,7 @@ export const KPIReportingSection = () => {
                     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75`}></span>
                     <span className={`relative inline-flex rounded-full h-2 w-2 bg-brand-blue`}></span>
                   </span>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-wider group-hover:text-brand-blue transition-colors uppercase">Live</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-wider group-hover:text-brand-blue transition-colors uppercase">Live</span>
                 </div>
               </div>
 
@@ -419,7 +419,7 @@ export const KPIReportingSection = () => {
                       <div className={`w-1.5 h-1.5 rounded-full bg-gray-200 group-hover/item:bg-brand-blue transition-colors duration-300`}></div>
                       <div className="absolute w-4 h-[1px] bg-brand-blue scale-x-0 group-hover/item:scale-x-100 origin-left transition-transform duration-300 -left-1 opacity-0 group-hover/item:opacity-30"></div>
                     </div>
-                    <span className="text-[13px] text-gray-500 font-medium tracking-tight group-hover/item:text-gray-900 dark:text-white group-hover/item:translate-x-1 transition-all duration-300">{m}</span>
+                    <span className="text-[14px] text-gray-500 font-medium tracking-tight group-hover/item:text-gray-900 dark:text-white group-hover/item:translate-x-1 transition-all duration-300">{m}</span>
                   </div>
                 ))}
               </div>
@@ -429,7 +429,7 @@ export const KPIReportingSection = () => {
                 <div className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
                   {kpi.benchmarkPrefix}<span className="pm-countup text-brand-blue tabular-nums" data-target={kpi.benchmarkNum}>0</span>{kpi.benchmarkSuffix}
                 </div>
-                <p className="text-[10px] text-gray-400 mt-4 font-medium tracking-wide flex items-center gap-2">
+                <p className="text-[11px] text-gray-400 mt-4 font-medium tracking-wide flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gray-300"></span>
                   {kpi.source}
                 </p>
@@ -528,11 +528,11 @@ export const LogoTrustSection = () => {
     <div ref={sectionRef} className="py-16 bg-white dark:bg-gray-900 dark:border-gray-800 border-b border-gray-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-wrap justify-center gap-8 lg:gap-24 mb-16 border-b border-gray-100 pb-12">
-          <div className="text-center"><p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">$50M+</p><p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Managed Spend</p></div>
-          <div className="text-center"><p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">4.2x</p><p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Average ROAS</p></div>
-          <div className="text-center"><p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">12+</p><p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Growth Industries</p></div>
+          <div className="text-center"><p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">$50M+</p><p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Managed Spend</p></div>
+          <div className="text-center"><p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">4.2x</p><p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Average ROAS</p></div>
+          <div className="text-center"><p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">12+</p><p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Growth Industries</p></div>
         </div>
-        <p className="text-center text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] mb-10">Institutional Ad Platform Partnerships</p>
+        <p className="text-center text-[11px] font-black text-gray-300 uppercase tracking-[0.3em] mb-10">Institutional Ad Platform Partnerships</p>
         <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 lg:gap-x-20">
           {logos.map((logo, idx) => (<div key={idx} className="pm-logo grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-500 cursor-pointer"><img src={logo.url} alt={logo.name} className="h-6 lg:h-8 w-auto object-contain" /></div>))}
         </div>

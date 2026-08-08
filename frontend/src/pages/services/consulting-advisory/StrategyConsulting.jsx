@@ -593,7 +593,7 @@ const StrategyConsulting = () => {
                   <circle cx="400" cy="300" r="35" fill="#eff6ff" />
                   <circle cx="400" cy="300" r="20" fill="#2563eb" />
                   <text x="400" y="365" textAnchor="middle" className="text-sm font-bold fill-slate-800 tracking-widest uppercase">Growth in AI</text>
-                  <text x="400" y="385" textAnchor="middle" className="text-[10px] font-bold fill-blue-600 tracking-wider">CORE PRIORITY</text>
+                  <text x="400" y="385" textAnchor="middle" className="text-[11px] font-bold fill-blue-600 tracking-wider">CORE PRIORITY</text>
                 </g>
 
                 {/* Orbital System (Lines + Nodes revolving around center) */}

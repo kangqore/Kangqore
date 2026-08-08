@@ -288,10 +288,10 @@ const MVPAccelerationAnimatedSections = () => {
                   <div key={idx} className="relative pl-12 group">
                     <div className="stepper-node absolute left-0 top-1.5 w-3 h-3 bg-white dark:bg-gray-900 dark:border-gray-800 border-2 border-brand-blue rounded-full z-10 transition-transform duration-300 group-hover:scale-125"></div>
                     <div className="stepper-content">
-                      <h4 className="text-[17px] lg:text-[18px] font-bold text-brand-blue mb-6 tracking-wide uppercase font-display">{step.title}</h4>
+                      <h4 className="text-[16px] lg:text-[20px] font-bold text-brand-blue mb-6 tracking-wide uppercase font-display">{step.title}</h4>
                       <div className="space-y-4">
                         {step.points.map((p, pIdx) => (
-                          <p key={pIdx} className="text-gray-500 text-[15px] lg:text-[16px] leading-relaxed font-light">{p}</p>
+                          <p key={pIdx} className="text-gray-500 text-[16px] lg:text-[16px] leading-relaxed font-light">{p}</p>
                         ))}
                       </div>
                     </div>
@@ -309,10 +309,10 @@ const MVPAccelerationAnimatedSections = () => {
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
             <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
               <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-                <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+                <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                   Our <strong className="text-brand-blue">MVP Acceleration CoE</strong> provides a high-velocity execution blueprint, surrounding your product idea with four critical delivery layers.
                 </p>
-                <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                   We replace &ldquo;build-and-hope&rdquo; with &ldquo;validate-and-accelerate.&rdquo; By unifying lean discovery, rapid engineering, strategic validation, and scalable growth thinking, we ensure your MVP is built on a foundation of confidence rather than a collection of guesses.
                 </p>
               </div>
@@ -339,10 +339,10 @@ const MVPAccelerationAnimatedSections = () => {
                   <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                     <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'diamond-float-3d 6s ease-in-out infinite' }}>
                       <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Lean<br/>Discovery</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Rapid<br/>Engineering</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Strategic<br/>Validation</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Scalable<br/>Growth</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Lean<br/>Discovery</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Rapid<br/>Engineering</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Strategic<br/>Validation</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Scalable<br/>Growth</div></div>
                       </div>
                     </div>
                   </div>
@@ -498,11 +498,11 @@ const MVPAccelerationAnimatedSections = () => {
                       </div>
                       <div className="relative z-10 flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
+                          <div className="font-mono text-[11px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
                           {item.kangqore && (
                             <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
                               <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse"></div>
-                              <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                              <span className="text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
                             </div>
                           )}
                         </div>
@@ -536,15 +536,15 @@ const MVPAccelerationAnimatedSections = () => {
                 </div>
                 <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-100">
                   <div>
-                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div>
+                    <div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div>
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">05</div>
                   </div>
                   <div>
-                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div>
+                    <div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div>
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">10-16<span className="text-sm text-gray-400 ml-1">wks</span></div>
                   </div>
                   <div>
-                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Kangqore</div>
+                    <div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Kangqore</div>
                     <div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">3/5</div>
                   </div>
                 </div>
@@ -667,10 +667,10 @@ const ProductStrategyAnimatedSections = () => {
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
             <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
               <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-                <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+                <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                   Our <strong className="text-brand-blue">Enterprise Design CoE</strong> provides a high-velocity strategic blueprint, surrounding your product idea with four critical layers of UX validation.
                 </p>
-                <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                   We replace &ldquo;build-and-hope&rdquo; with &ldquo;validate-and-architect.&rdquo; By unifying lean discovery, high-fidelity mockups, strategic research, and scalable design architectures, we ensure your product UX is built on a foundation of absolute confidence.
                 </p>
               </div>
@@ -697,10 +697,10 @@ const ProductStrategyAnimatedSections = () => {
                   <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                     <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'diamond-float-3d 6s ease-in-out infinite' }}>
                       <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Lean<br/>Discovery</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Strategic<br/>Roadmap</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Flawless<br/>UI/UX</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Architected<br/>Scalability</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Lean<br/>Discovery</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Strategic<br/>Roadmap</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Flawless<br/>UI/UX</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Architected<br/>Scalability</div></div>
                       </div>
                     </div>
                   </div>
@@ -829,11 +829,11 @@ const ProductStrategyAnimatedSections = () => {
                       </div>
                       <div className="relative z-10 flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
+                          <div className="font-mono text-[11px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
                           {item.kangqore && (
                             <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
                               <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse"></div>
-                              <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                              <span className="text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
                             </div>
                           )}
                         </div>
@@ -867,15 +867,15 @@ const ProductStrategyAnimatedSections = () => {
                 </div>
                 <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-100">
                   <div>
-                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div>
+                    <div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div>
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">04</div>
                   </div>
                   <div>
-                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div>
+                    <div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div>
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">4-12<span className="text-sm text-gray-400 ml-1">wks</span></div>
                   </div>
                   <div>
-                    <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Confidence</div>
+                    <div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Confidence</div>
                     <div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">100%</div>
                   </div>
                 </div>
@@ -921,7 +921,7 @@ const applicationModernizationCustomSections = (
                 <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue mb-8 group-hover:scale-110 group-hover:bg-brand-gradient group-hover:text-white transition-all duration-500 shadow-sm">
                   {hurdle.icon}
                 </div>
-                <div className="inline-flex px-3 py-1 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-gray-400 rounded-full text-[10px] font-bold tracking-widest uppercase mb-4 border border-gray-100 group-hover:text-brand-blue group-hover:border-blue-200 transition-all">
+                <div className="inline-flex px-3 py-1 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-gray-400 rounded-full text-[11px] font-bold tracking-widest uppercase mb-4 border border-gray-100 group-hover:text-brand-blue group-hover:border-blue-200 transition-all">
                   {hurdle.pill}
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight group-hover:text-brand-blue transition-colors">{hurdle.title}</h3>
@@ -983,7 +983,7 @@ const applicationModernizationCustomSections = (
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/10 blur-[100px] rounded-full"></div>
               <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                 <div className="flex justify-between gap-4"><span>PIPELINE:</span> <span className="text-brand-blue">#MOD_7R</span></div>
                 <div className="flex justify-between gap-4"><span>MODE:</span> <span>RE_ARCHITECT</span></div>
                 <div className="flex justify-between gap-4"><span>LOAD:</span> <span className="text-emerald-500">STABLE</span></div>
@@ -1007,16 +1007,16 @@ const applicationModernizationCustomSections = (
                     <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                     <Cloud className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Migration</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Migration</span>
                 </div>
               </div>
               <div className="absolute bottom-20 left-0 group">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-500">
                     <Smartphone className="w-12 h-12 text-white" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">UX</div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">UX</div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Experience</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Experience</span>
                 </div>
               </div>
               <div className="absolute bottom-20 right-0 group">
@@ -1027,7 +1027,7 @@ const applicationModernizationCustomSections = (
                       <Database className="w-16 h-16 text-emerald-400" />
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data Fabric</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data Fabric</span>
                 </div>
               </div>
               <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
@@ -1359,7 +1359,7 @@ const digitalTransformationCustomSections = (
                     <div className="animate-counter-rotate preserve-3d">
                       <div className={`w-16 h-16 ${sat.bg} rounded-2xl shadow-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-500 relative z-30`}>
                         {sat.icon}
-                        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 py-0.5 rounded text-[8px] font-bold text-gray-500 uppercase tracking-widest border border-gray-100 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 py-0.5 rounded text-[11px] font-bold text-gray-500 uppercase tracking-widest border border-gray-100 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                           {sat.label}
                         </div>
                       </div>
@@ -1435,7 +1435,7 @@ const digitalTransformationCustomSections = (
                       <div className="animate-counter-rotate preserve-3d">
                         <div className={`w-14 h-14 ${node.color} rounded-2xl shadow-xl flex items-center justify-center transform hover:scale-125 transition-transform duration-500`}>
                           {node.icon}
-                          <div className="absolute -bottom-8 bg-white dark:bg-gray-900 dark:border-gray-800/90 backdrop-blur-sm px-2 py-0.5 rounded text-[8px] font-bold text-gray-500 uppercase tracking-widest border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="absolute -bottom-8 bg-white dark:bg-gray-900 dark:border-gray-800/90 backdrop-blur-sm px-2 py-0.5 rounded text-[11px] font-bold text-gray-500 uppercase tracking-widest border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity">
                             {node.label}
                           </div>
                         </div>
@@ -1454,7 +1454,7 @@ const digitalTransformationCustomSections = (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[80%] grid grid-cols-2 gap-4">
               {[{ label: 'DELIVERY', value: 'AGILE' }, { label: 'STACK', value: 'NATIVE' }].map((stat, idx) => (
                 <div key={idx} className="bg-white dark:bg-gray-900 dark:border-gray-800/60 backdrop-blur-md border border-white/50 rounded-2xl p-4 shadow-xl hover:-translate-y-1 transition-transform">
-                  <div className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-1">{stat.label}</div>
+                  <div className="text-[11px] font-bold text-gray-400 tracking-widest uppercase mb-1">{stat.label}</div>
                   <div className="text-lg font-bold text-brand-blue">{stat.value}</div>
                 </div>
               ))}
@@ -1638,12 +1638,12 @@ const legacyModernizationStrategiesSection = (
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_MOD_01</span></div>
               <div className="flex justify-between gap-4"><span>PHASE:</span> <span>MODERNIZE</span></div>
               <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">TRANSFORMING</span></div>
             </div>
-            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
               <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">Migration Hub</div>
               <div>PROCESSING_MODULES...</div>
               <div>PROGRESS: 94%</div>
@@ -1667,16 +1667,16 @@ const legacyModernizationStrategiesSection = (
                   <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                   <Cloud className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Cloud</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Cloud</span>
               </div>
             </div>
             <div className="absolute bottom-20 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                   <Database className="w-12 h-12 text-white" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">API</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">API</div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data</span>
               </div>
             </div>
             <div className="absolute bottom-20 right-0 group">
@@ -1687,7 +1687,7 @@ const legacyModernizationStrategiesSection = (
                     <Layers className="w-16 h-16 text-emerald-400" />
                   </div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Microservices</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Microservices</span>
               </div>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
@@ -1918,21 +1918,21 @@ const technologyModernizationCustomSections = (
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                       <span className="text-3xl font-bold text-gray-900 dark:text-white leading-none">75%</span>
-                      <span className="text-[10px] text-gray-500 font-mono uppercase tracking-tighter mt-1">Maintenance</span>
+                      <span className="text-[11px] text-gray-500 font-mono uppercase tracking-tighter mt-1">Maintenance</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-8 w-full border-t border-gray-50 pt-8">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-600 to-brand-blue"></div>
                       <div>
-                        <div className="text-[10px] text-gray-400 font-mono uppercase tracking-widest">Maintenance</div>
+                        <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest">Maintenance</div>
                         <div className="text-sm font-bold text-gray-900 dark:text-white">75-80% Budget</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full bg-gray-200"></div>
                       <div>
-                        <div className="text-[10px] text-gray-400 font-mono uppercase tracking-widest">Innovation</div>
+                        <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest">Innovation</div>
                         <div className="text-sm font-bold text-gray-900 dark:text-white">&lt; 25% Strategic</div>
                       </div>
                     </div>
@@ -1957,7 +1957,7 @@ const technologyModernizationCustomSections = (
           <div className="absolute top-0 right-0 w-96 h-96 bg-brand-blue/5 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none"></div>
           <div className="relative z-10 grid lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-12 mb-4 text-center">
-              <div className="font-mono text-[10px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Projected Performance</div>
+              <div className="font-mono text-[11px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Projected Performance</div>
               <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 dark:text-white tracking-tight leading-[0.95] font-display">
                 Measurable ROI. <span className="text-transparent bg-clip-text bg-brand-gradient italic">Guaranteed Impact.</span>
               </h2>
@@ -1974,7 +1974,7 @@ const technologyModernizationCustomSections = (
                     {stat.value}
                   </div>
                   <div className="font-bold text-brand-blue text-xs uppercase tracking-widest mb-1">{stat.label}</div>
-                  <div className="text-[10px] text-gray-500 font-mono italic">{stat.sub}</div>
+                  <div className="text-[11px] text-gray-500 font-mono italic">{stat.sub}</div>
                 </div>
               ))}
             </div>
@@ -2201,16 +2201,16 @@ const digitalBusinessTransformationOrchestrationSection = (
                   <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                   <Brain className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
               </div>
             </div>
             <div className="absolute bottom-20 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-blue-600 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                   <Layers className="w-12 h-12 text-white" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">CORE</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">CORE</div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Engineering</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Engineering</span>
               </div>
             </div>
             <div className="absolute bottom-20 right-0 group">
@@ -2221,7 +2221,7 @@ const digitalBusinessTransformationOrchestrationSection = (
                     <Fingerprint className="w-16 h-16 text-emerald-400" />
                   </div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data Fabric</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data Fabric</span>
               </div>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
@@ -2516,7 +2516,7 @@ const mvpAccelerationExecutionEcosystem = (
           <div className="relative aspect-square w-full max-w-[550px] mx-auto">
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-blue/10 blur-[100px] rounded-full"></div>
-            <div className="absolute top-0 left-0 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-0 left-0 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>blueprint_id:</span> <span className="text-brand-blue">#KG_MVP_A01</span></div>
               <div className="flex justify-between gap-4"><span>logic_state:</span> <span className="text-emerald-500">LAUNCH_READY</span></div>
             </div>
@@ -2531,19 +2531,19 @@ const mvpAccelerationExecutionEcosystem = (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center border border-blue-50 relative z-10 hover:-translate-y-2 transition-all duration-300"><Compass className="w-12 h-12 text-brand-blue" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Discover_Frame</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Discover_Frame</span>
               </div>
             </div>
             <div className="absolute bottom-10 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Cpu className="w-12 h-12 text-cyan-400" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
               </div>
             </div>
             <div className="absolute bottom-10 right-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300"><RefreshCw className="w-12 h-12 text-white" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
               </div>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
@@ -2819,7 +2819,7 @@ const psedExecutionEcosystem = (
           <div className="relative aspect-square w-full max-w-[550px] mx-auto">
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-blue/10 blur-[100px] rounded-full"></div>
-            <div className="absolute top-0 left-0 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-0 left-0 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>blueprint_id:</span> <span className="text-brand-blue">#KG_UX_S01</span></div>
               <div className="flex justify-between gap-4"><span>logic_state:</span> <span className="text-emerald-500">VALIDATED</span></div>
             </div>
@@ -2834,19 +2834,19 @@ const psedExecutionEcosystem = (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center border border-blue-50 relative z-10 hover:-translate-y-2 transition-all duration-300"><Compass className="w-12 h-12 text-brand-blue" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Discover_Frame</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Discover_Frame</span>
               </div>
             </div>
             <div className="absolute bottom-10 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Cpu className="w-12 h-12 text-cyan-400" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
               </div>
             </div>
             <div className="absolute bottom-10 right-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300"><RefreshCw className="w-12 h-12 text-white" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
               </div>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">

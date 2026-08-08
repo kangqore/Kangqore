@@ -159,7 +159,7 @@ const TechnologyLedGrowthStrategy = () => {
                 <div className={`absolute top-4 right-4 text-white transition-all duration-500 z-20 ${isDataExpanded ? 'scale-110' : 'hover:rotate-90'}`}>
                   {isDataExpanded ? <Minus className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
                 </div>
-                <div className="text-[10px] font-mono text-white/80 uppercase tracking-[0.3em] font-bold mb-6">Strategy Data</div>
+                <div className="text-[11px] font-mono text-white/80 uppercase tracking-[0.3em] font-bold mb-6">Strategy Data</div>
                 <div className="text-6xl font-bold text-white mb-4 tracking-tighter transition-all duration-500">41%</div>
                 <p className="text-sm text-white/90 leading-relaxed uppercase tracking-wider font-bold">
                   of executives rate AI as the top contributor to technical debt.
@@ -169,13 +169,13 @@ const TechnologyLedGrowthStrategy = () => {
                    <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/20">
                       <div>
                         <div className="text-4xl font-bold text-white mb-2 tracking-tighter">97%</div>
-                        <p className="text-[10px] text-white/70 uppercase tracking-[0.2em] leading-relaxed font-bold">
+                        <p className="text-[11px] text-white/70 uppercase tracking-[0.2em] leading-relaxed font-bold">
                           agree technology plays a critical role in reinvention.
                         </p>
                       </div>
                       <div>
                         <div className="text-4xl font-bold text-white mb-2 tracking-tighter">7%</div>
-                        <p className="text-[10px] text-white/70 uppercase tracking-[0.2em] leading-relaxed font-bold">
+                        <p className="text-[11px] text-white/70 uppercase tracking-[0.2em] leading-relaxed font-bold">
                           more budget spent on technical debt remediation.
                         </p>
                       </div>
@@ -295,7 +295,7 @@ const TechnologyLedGrowthStrategy = () => {
           <div className="relative overflow-hidden">
             <div className="relative z-10 grid lg:grid-cols-12 gap-16 items-center">
               <div className="lg:col-span-12 text-center mb-4">
-                 <div className="font-mono text-[10px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Projected Performance</div>
+                 <div className="font-mono text-[11px] text-brand-blue mb-4 tracking-[0.4em] uppercase font-bold">Projected Performance</div>
                  <h2 className="text-4xl lg:text-7xl font-bold text-slate-900 dark:text-white tracking-tighter leading-[0.95] font-display">
                     Measurable <span className="text-transparent bg-clip-text bg-brand-gradient italic">Achievement.</span>
                  </h2>
@@ -312,8 +312,8 @@ const TechnologyLedGrowthStrategy = () => {
                     <div className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-2 group-hover:scale-110 group-hover:text-brand-blue transition-all tracking-tighter duration-500">
                       {stat.value}
                     </div>
-                    <div className="font-bold text-brand-blue text-[10px] uppercase tracking-[0.3em] mb-1">{stat.label}</div>
-                    <div className="text-[10px] text-slate-400 font-mono italic">{stat.sub}</div>
+                    <div className="font-bold text-brand-blue text-[11px] uppercase tracking-[0.3em] mb-1">{stat.label}</div>
+                    <div className="text-[11px] text-slate-400 font-mono italic">{stat.sub}</div>
                   </div>
                 ))}
               </div>

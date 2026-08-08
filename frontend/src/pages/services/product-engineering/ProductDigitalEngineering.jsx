@@ -216,10 +216,10 @@ const ProductDigitalEngineering = () => {
               <span className="text-transparent bg-clip-text bg-brand-gradient italic">Center of Excellence</span>
             </h2>
             <div className="relative pl-6 border-l-[3px] border-brand-blue" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Kangqore's Digital Foundry™ provides a holistic, outcome-assured delivery structure: uniting <strong className="text-brand-blue">Platform Architecture</strong>, <strong className="text-brand-blue">Intelligent Quality</strong>, <strong className="text-brand-blue">Device Connectivity</strong>, and <strong className="text-brand-blue">Experience Design</strong>.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 By integrating these core disciplines, we eliminate execution silos. We don't just write code — we engineer unified digital enterprise systems that scale predictably and adapt continuously to market demands.
               </p>
             </div>
@@ -261,8 +261,8 @@ const ProductDigitalEngineering = () => {
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 60%, transparent 100%)' }}></div>
                         <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.20) 0%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Platform</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Platform</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
                         </div>
                       </div>
                       {/* Top Right -> Quality Engineering */}
@@ -270,8 +270,8 @@ const ProductDigitalEngineering = () => {
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 60%, transparent 100%)' }}></div>
                         <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.15) 0%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Quality</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Quality</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
                         </div>
                       </div>
                       {/* Bottom Left -> Experience Design */}
@@ -279,8 +279,8 @@ const ProductDigitalEngineering = () => {
                         <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)' }}></div>
                         <div className="absolute bottom-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.25) 0%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Experience</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Design</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Experience</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Design</span>
                         </div>
                       </div>
                       {/* Bottom Right -> Device Connectivity */}
@@ -505,13 +505,13 @@ const ProductDigitalEngineering = () => {
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
               <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
 
-              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                 <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#DIGI_CORE</span></div>
                 <div className="flex justify-between gap-4"><span>MODE:</span> <span>SCALING</span></div>
                 <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">LIVE</span></div>
               </div>
 
-              <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+              <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
                 <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">SysLog</div>
                 <div>PLATFORM_SYNC...</div>
                 <div>LATENCY: &lt;1ms</div>
@@ -539,7 +539,7 @@ const ProductDigitalEngineering = () => {
                     <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                     <Rocket className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">PROTOTYPE</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">PROTOTYPE</span>
                 </div>
               </div>
               <div className="absolute bottom-20 left-0 group">
@@ -547,7 +547,7 @@ const ProductDigitalEngineering = () => {
                   <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                     <BrainCircuit className="w-12 h-12 text-white" />
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">COGNITIVE</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">COGNITIVE</span>
                 </div>
               </div>
               <div className="absolute bottom-20 right-0 group">
@@ -556,7 +556,7 @@ const ProductDigitalEngineering = () => {
                     <div className="absolute inset-0 bg-brand-gradient opacity-10 group-hover:opacity-20 transition-opacity"></div>
                     <div className="relative"><RadioTower className="w-16 h-16 text-emerald-400" /></div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">TELEMETRY</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">TELEMETRY</span>
                 </div>
               </div>
 

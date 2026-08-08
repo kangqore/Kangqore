@@ -271,10 +271,10 @@ export const BlockchainDiamondCoESection = () => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Our <strong className="text-brand-blue">Blockchain CoE</strong> defines the right protocol, infrastructure, and governance decisions before build complexity leads to fragility.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 By unifying trust architecture, security-native engineering, and full-stack application delivery, we ensure your distributed platforms are production-ready.
               </p>
             </div>
@@ -296,10 +296,10 @@ export const BlockchainDiamondCoESection = () => {
                 <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                   <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'bc-diamond-float-3d 6s ease-in-out infinite' }}>
                     <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Trust<br/>Architecture</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Secure<br/>Engineering</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Platform<br/>Depth</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Interoperable<br/>Focus</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Trust<br/>Architecture</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Secure<br/>Engineering</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Platform<br/>Depth</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Interoperable<br/>Focus</div></div>
                     </div>
                   </div>
                 </div>
@@ -445,8 +445,8 @@ export const BlockchainDeliveryModel = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="font-mono text-[10px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
-                        {item.kangqore && <div className="px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore</div>}
+                        <div className="font-mono text-[11px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
+                        {item.kangqore && <div className="px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore</div>}
                       </div>
                       <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brand-blue transition-colors duration-300">{item.title}</h4>
                       <p className="text-gray-500 leading-relaxed font-light">{item.desc}</p>
@@ -470,9 +470,9 @@ export const BlockchainDeliveryModel = () => {
                  At Kangqore, blockchain delivery is structured as an architecture-first engineering model—designed to reduce experimentation risk and move towards production with scale.
                </p>
                <div className="grid grid-cols-3 gap-6 pt-8">
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Cycle</div><div className="text-2xl font-bold text-gray-900 dark:text-white">Agile</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Control</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">MAX</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Cycle</div><div className="text-2xl font-bold text-gray-900 dark:text-white">Agile</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Control</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">MAX</div></div>
                 </div>
              </div>
           </div>
@@ -546,8 +546,8 @@ export const BlockchainExecutionEcosystem = () => {
 
             {/* Orbit 1 (Inner) - Platforms */}
             <div className="bc-eco-enter bc-orbit-ring-1 absolute w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] rounded-full bc-orbit-path" style={{ border: '1px solid rgba(37, 100, 234, 0.1)' }}>
-                <div className="bc-orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[10px] shadow-lg" style={{ top: '0%', left: '50%' }}>ETH</div>
-                <div className="bc-orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[10px] shadow-lg" style={{ top: '100%', left: '50%' }}>H.LEDGER</div>
+                <div className="bc-orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[11px] shadow-lg" style={{ top: '0%', left: '50%' }}>ETH</div>
+                <div className="bc-orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[11px] shadow-lg" style={{ top: '100%', left: '50%' }}>H.LEDGER</div>
             </div>
 
             {/* Orbit 2 (Middle) - Smart Contracts / Security */}
@@ -560,7 +560,7 @@ export const BlockchainExecutionEcosystem = () => {
             <div className="bc-eco-enter bc-orbit-ring-3 absolute w-[440px] h-[440px] lg:w-[520px] lg:h-[520px] rounded-full bc-orbit-path" style={{ border: '1px solid rgba(37, 100, 234, 0.08)' }}>
                 <div className="bc-orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-14 h-14 lg:w-16 lg:h-16 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold text-xs shadow-lg hover:scale-110 transition-transform text-center leading-tight" style={{ top: '6.7%', left: '75%' }}>dApps</div>
                 <div className="bc-orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center px-4 lg:px-5 h-10 lg:h-12 rounded-2xl bg-slate-800 text-white font-bold text-xs shadow-lg min-w-max hover:scale-110 transition-transform" style={{ top: '93.3%', left: '75%' }}>REST API</div>
-                <div className="bc-orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 text-brand-blue font-bold text-[10px] shadow-sm hover:scale-110 transition-transform" style={{ top: '50%', left: '0%' }}>Middleware</div>
+                <div className="bc-orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 text-brand-blue font-bold text-[11px] shadow-sm hover:scale-110 transition-transform" style={{ top: '50%', left: '0%' }}>Middleware</div>
             </div>
           </div>
         </div>

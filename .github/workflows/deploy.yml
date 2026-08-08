@@ -76,6 +76,9 @@ jobs:
     - name: Copy consistency audit (US spelling, labelled numeric claims)
       run: npm run audit:copy-consistency
 
+    - name: Design token audit (type scale, section rhythm)
+      run: npm run audit:design-tokens
+
     # Backend Build
     - name: Install Backend Dependencies
       working-directory: ./backend

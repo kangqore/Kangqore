@@ -323,12 +323,12 @@ const DiscoverFrameWorkshops = () => {
                   <div className="stepper-node absolute left-0 top-1.5 w-3 h-3 bg-white dark:bg-gray-900 dark:border-gray-800 border-2 border-brand-blue rounded-full z-10 transition-transform duration-300 group-hover:scale-125"></div>
                   
                   <div className="stepper-content">
-                    <h4 className="text-[17px] lg:text-[18px] font-bold text-brand-blue mb-6 tracking-wide uppercase font-display">
+                    <h4 className="text-[16px] lg:text-[20px] font-bold text-brand-blue mb-6 tracking-wide uppercase font-display">
                       {step.title}
                     </h4>
                     <div className="space-y-4">
                       {step.points.map((p, pIdx) => (
-                        <p key={pIdx} className="text-gray-500 text-[15px] lg:text-[16px] leading-relaxed font-light">
+                        <p key={pIdx} className="text-gray-500 text-[16px] lg:text-[16px] leading-relaxed font-light">
                           {p}
                         </p>
                       ))}
@@ -357,10 +357,10 @@ const DiscoverFrameWorkshops = () => {
           {/* LEFT: Intro Text */}
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Our <strong className="text-brand-blue">Discovery & Frame CoE</strong> provides a high-fidelity operational blueprint, surrounding your product idea with four critical execution layers.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 We replace "guess-work engineering" with "governed framing." By unifying market validation, user-centered design, technical architecture, and commercial planning, we ensure your product is built on a foundation of clarity rather than a mountain of assumptions.
               </p>
             </div>
@@ -394,16 +394,16 @@ const DiscoverFrameWorkshops = () => {
                   <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'diamond-float-3d 6s ease-in-out infinite' }}>
                     <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
                       <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}>
-                        <div className="-rotate-45 text-center text-white font-bold text-[15px]">Market & Business<br/>Analysis</div>
+                        <div className="-rotate-45 text-center text-white font-bold text-[16px]">Market & Business<br/>Analysis</div>
                       </div>
                       <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}>
-                        <div className="-rotate-45 text-center text-white font-bold text-[15px]">User & UX<br/>Framing</div>
+                        <div className="-rotate-45 text-center text-white font-bold text-[16px]">User & UX<br/>Framing</div>
                       </div>
                       <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}>
-                        <div className="-rotate-45 text-center text-white font-bold text-[15px]">Technical &<br/>Architecture</div>
+                        <div className="-rotate-45 text-center text-white font-bold text-[16px]">Technical &<br/>Architecture</div>
                       </div>
                       <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}>
-                        <div className="-rotate-45 text-center text-white font-bold text-[15px]">Delivery &<br/>Roadmap</div>
+                        <div className="-rotate-45 text-center text-white font-bold text-[16px]">Delivery &<br/>Roadmap</div>
                       </div>
                     </div>
                   </div>
@@ -524,7 +524,7 @@ const DiscoverFrameWorkshops = () => {
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-blue/10 blur-[100px] rounded-full"></div>
                 
                 {/* ID Badge */}
-                <div className="absolute top-0 left-0 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+                <div className="absolute top-0 left-0 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                   <div className="flex justify-between gap-4"><span>blueprint_id:</span> <span className="text-brand-blue">#KG_FRM_B01</span></div>
                   <div className="flex justify-between gap-4"><span>logic_state:</span> <span className="text-emerald-500">READY_FOR_EXECUTION</span></div>
                 </div>
@@ -550,7 +550,7 @@ const DiscoverFrameWorkshops = () => {
                     <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center border border-blue-50 relative z-10 hover:-translate-y-2 transition-all duration-300">
                       <Rocket className="w-12 h-12 text-brand-blue" />
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accelerate</span>
+                    <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accelerate</span>
                   </div>
                 </div>
 
@@ -560,7 +560,7 @@ const DiscoverFrameWorkshops = () => {
                     <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                       <Cpu className="w-12 h-12 text-cyan-400" />
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
+                    <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
                   </div>
                 </div>
 
@@ -570,7 +570,7 @@ const DiscoverFrameWorkshops = () => {
                     <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300">
                       <Radar className="w-12 h-12 text-white" />
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
+                    <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Modernize</span>
                   </div>
                 </div>
 

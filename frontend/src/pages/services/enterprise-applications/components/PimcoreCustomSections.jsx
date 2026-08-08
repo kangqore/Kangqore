@@ -230,7 +230,7 @@ export const PimProblemsGrid = () => {
                         <Icon className="w-7 h-7 text-gray-400 group-hover:text-[#2564ea] transition-colors relative z-10" />
                       </div>
                       <div className="flex flex-col items-end gap-1">
-                        <span className="text-[10px] font-mono text-gray-300 uppercase tracking-widest">Diagnostic ID</span>
+                        <span className="text-[11px] font-mono text-gray-300 uppercase tracking-widest">Diagnostic ID</span>
                         <span className="text-xs font-mono text-gray-900 dark:text-white font-bold tracking-tighter">{p.id}</span>
                       </div>
                     </div>

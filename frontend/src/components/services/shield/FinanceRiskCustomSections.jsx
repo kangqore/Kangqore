@@ -97,7 +97,7 @@ export const FinanceRelatedExpertise = () => {
                   <div className={`w-20 h-20 ${node.bg} rounded-3xl shadow-2xl flex items-center justify-center mb-2 hover:-translate-y-2 transition-all`}>
                     <node.Icon className={`w-10 h-10 ${node.color}`} />
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-gray-400">{node.label}</span>
+                  <span className="text-[11px] font-mono font-bold text-gray-400">{node.label}</span>
                 </div>
               ))}
             </div>
@@ -322,10 +322,10 @@ export const FinanceDiamondCoESection = () => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Our <strong className="text-brand-blue">Finance & Risk CoE</strong> unifies platform modernization, risk governance, AI-enabled automation, and ESG readiness into one integrated practice.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 We ensure every finance transformation is architecturally sound, compliance-confident, and measurably valuable to the enterprise.
               </p>
             </div>
@@ -347,10 +347,10 @@ export const FinanceDiamondCoESection = () => {
                 <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                   <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'fr-diamond-float-3d 6s ease-in-out infinite' }}>
                     <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#1e40af] to-[#2564ea]" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Risk<br/>Governance</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#2564ea] to-[#3b82f6]" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Platform<br/>Modernization</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#3b82f6] to-[#0ea5e9]" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">ESG<br/>Intelligence</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#0ea5e9] to-[#4ab6d4]" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Predictive<br/>Planning</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#1e40af] to-[#2564ea]" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Risk<br/>Governance</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#2564ea] to-[#3b82f6]" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Platform<br/>Modernization</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#3b82f6] to-[#0ea5e9]" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">ESG<br/>Intelligence</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-[#0ea5e9] to-[#4ab6d4]" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Predictive<br/>Planning</div></div>
                     </div>
                   </div>
                 </div>
@@ -509,8 +509,8 @@ export const FinanceDeliveryModel = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="font-mono text-[10px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
-                        {item.kangqore && <div className="px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore</div>}
+                        <div className="font-mono text-[11px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
+                        {item.kangqore && <div className="px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore</div>}
                       </div>
                       <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brand-blue transition-colors duration-300">{item.title}</h4>
                       <p className="text-gray-500 leading-relaxed font-light">{item.desc}</p>
@@ -534,9 +534,9 @@ export const FinanceDeliveryModel = () => {
                  At Kangqore, finance and risk transformation follows a structured, evidence-based model — designed to minimize disruption and maximize sustained operational improvement.
                </p>
                <div className="grid grid-cols-3 gap-6 pt-8">
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Cycle</div><div className="text-2xl font-bold text-gray-900 dark:text-white">Agile</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Control</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">MAX</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Cycle</div><div className="text-2xl font-bold text-gray-900 dark:text-white">Agile</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Control</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">MAX</div></div>
                 </div>
              </div>
           </div>
@@ -607,8 +607,8 @@ export const FinanceExecutionEcosystem = () => {
 
             {/* Orbit 1 */}
             <div className="fr-eco-enter fr-orbit-ring-1 absolute w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] rounded-full fr-orbit-path" style={{ border: '1px solid rgba(37, 100, 234, 0.1)' }}>
-                <div className="fr-orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[10px] shadow-lg" style={{ top: '0%', left: '50%' }}>ERP</div>
-                <div className="fr-orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[10px] shadow-lg" style={{ top: '100%', left: '50%' }}>GRC</div>
+                <div className="fr-orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[11px] shadow-lg" style={{ top: '0%', left: '50%' }}>ERP</div>
+                <div className="fr-orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[11px] shadow-lg" style={{ top: '100%', left: '50%' }}>GRC</div>
             </div>
 
             {/* Orbit 2 */}
@@ -621,7 +621,7 @@ export const FinanceExecutionEcosystem = () => {
             <div className="fr-eco-enter fr-orbit-ring-3 absolute w-[440px] h-[440px] lg:w-[520px] lg:h-[520px] rounded-full fr-orbit-path" style={{ border: '1px solid rgba(37, 100, 234, 0.08)' }}>
                 <div className="fr-orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-14 h-14 lg:w-16 lg:h-16 rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-xs shadow-lg hover:scale-110 transition-transform text-center leading-tight" style={{ top: '6.7%', left: '75%' }}>ESG Data</div>
                 <div className="fr-orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center px-4 lg:px-5 h-10 lg:h-12 rounded-2xl bg-slate-800 text-white font-bold text-xs shadow-lg min-w-max hover:scale-110 transition-transform" style={{ top: '93.3%', left: '75%' }}>Analytics</div>
-                <div className="fr-orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 text-brand-blue font-bold text-[10px] shadow-sm hover:scale-110 transition-transform" style={{ top: '50%', left: '0%' }}>Treasury</div>
+                <div className="fr-orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 text-brand-blue font-bold text-[11px] shadow-sm hover:scale-110 transition-transform" style={{ top: '50%', left: '0%' }}>Treasury</div>
             </div>
           </div>
         </div>

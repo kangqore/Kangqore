@@ -608,31 +608,31 @@ const OperationTechnology = () => {
               <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl shadow-lg border border-gray-100 flex items-center justify-center">
                 <Radio className="w-8 h-8 text-brand-blue" />
               </div>
-              <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">SCADA</span>
+              <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">SCADA</span>
             </div>
             <div className="absolute bottom-16 left-8 flex flex-col items-center gap-2">
               <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl shadow-lg flex items-center justify-center">
                 <Shield className="w-8 h-8 text-white" />
               </div>
-              <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">Security</span>
+              <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">Security</span>
             </div>
             <div className="absolute bottom-16 right-8 flex flex-col items-center gap-2">
               <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl shadow-lg flex items-center justify-center relative">
                 <Activity className="w-10 h-10 text-cyan-400" />
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></div>
               </div>
-              <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">Telemetry</span>
+              <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">Telemetry</span>
             </div>
             <div className="absolute top-16 left-12 flex flex-col items-center gap-2">
               <div className="w-14 h-14 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl shadow-lg border border-gray-100 flex items-center justify-center">
                 <Cog className="w-8 h-8 text-amber-500" />
               </div>
-              <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">PLC/HMI</span>
+              <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">PLC/HMI</span>
             </div>
 
             {/* Floating metadata badges */}
             <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900 dark:border-gray-800/90 backdrop-blur-sm rounded-lg shadow-md px-4 py-2 border border-gray-100">
-              <div className="flex gap-6 font-mono text-[10px]">
+              <div className="flex gap-6 font-mono text-[11px]">
                 <div><span className="text-gray-400">ID:</span> <span className="text-brand-blue font-bold">#KG_OT_OPS</span></div>
                 <div><span className="text-gray-400">SLA:</span> <span className="text-emerald-500 font-bold">99.99%</span></div>
                 <div><span className="text-gray-400">STATUS:</span> <span className="text-emerald-500 font-bold">HARDENED</span></div>
@@ -640,7 +640,7 @@ const OperationTechnology = () => {
             </div>
 
             <div className="absolute bottom-4 right-4 bg-slate-800/90 backdrop-blur-sm rounded-xl shadow-xl px-4 py-3 border border-slate-700/50">
-              <div className="font-mono text-[10px] space-y-1">
+              <div className="font-mono text-[11px] space-y-1">
                 <div className="text-amber-400 font-bold tracking-widest">OT ENGINE</div>
                 <div className="text-gray-400">MONITORING_ASSETS...</div>
                 <div className="text-gray-400">STATUS: <span className="text-emerald-400">FERRARI</span></div>

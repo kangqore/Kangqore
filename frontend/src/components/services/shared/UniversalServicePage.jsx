@@ -213,13 +213,13 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
             {cap.items.length} Key Capabilities
           </p>
           <div className="relative flex-1">
-            <p className={`svc-cap-desc absolute inset-0 leading-relaxed text-sm lg:text-[15px] ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
+            <p className={`svc-cap-desc absolute inset-0 leading-relaxed text-sm lg:text-[16px] ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
               {cap.desc}
             </p>
             <ul className={`svc-cap-items absolute inset-0 space-y-2.5 ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
               <span className={`block text-xs font-bold uppercase tracking-widest mb-2.5 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>Key Capabilities:</span>
               {cap.items.slice(0, 6).map((item, j) => (
-                <li key={j} className="flex items-start text-[13px] lg:text-sm font-medium">
+                <li key={j} className="flex items-start text-[14px] lg:text-sm font-medium">
                   <span className={`mr-2 opacity-80 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>✦</span>
                   {item.includes(':') ? item.split(':')[0] : item}
                 </li>
@@ -237,10 +237,10 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
       <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl ${isVibrant ? 'bg-white/98 border-gray-200' : 'bg-[#0a0a0c]/98 border-white/10'} ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`}>
         <div className="flex flex-col text-left">
           <div className="flex items-center justify-between mb-4">
-            <span className={`text-[9px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono ${isVibrant ? 'text-gray-700 bg-gray-100/50 border-gray-300' : 'text-slate-300 bg-white/5 border-white/10'}`}>
+            <span className={`text-[11px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono ${isVibrant ? 'text-gray-700 bg-gray-100/50 border-gray-300' : 'text-slate-300 bg-white/5 border-white/10'}`}>
               {cap.items.length} Sub-Capabilities
             </span>
-            <span className={`text-[10px] font-black tracking-[0.3em] uppercase font-mono ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>{cap.n}</span>
+            <span className={`text-[11px] font-black tracking-[0.3em] uppercase font-mono ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>{cap.n}</span>
           </div>
           <h4 className={`text-xl sm:text-2xl font-bold mb-2 tracking-tight ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
             {cap.title}
@@ -1101,7 +1101,7 @@ const featureMicros   = service.featureMicros
                 </div>
 
                 {/* Company fact strip */}
-                <p className="text-[10px] font-semibold tracking-[0.2em] text-white/60 uppercase mt-[calc(2rem+0.5cm)]">
+                <p className="text-[11px] font-semibold tracking-[0.2em] text-white/60 uppercase mt-[calc(2rem+0.5cm)]">
                   AI-first engineering company&nbsp;&nbsp;·&nbsp;&nbsp;6 Departments&nbsp;&nbsp;·&nbsp;&nbsp;60+ Services&nbsp;&nbsp;·&nbsp;&nbsp;Global Delivery
                 </p>
 
@@ -1821,7 +1821,7 @@ const featureMicros   = service.featureMicros
             ].map(([v, l]) => (
               <div key={l}>
                 <p className="text-4xl font-black text-white tracking-tight mb-1">{v}</p>
-                <p className="text-white/60 text-[10px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{l}</p>
+                <p className="text-white/60 text-[11px] font-bold tracking-wide uppercase leading-tight whitespace-pre-line">{l}</p>
               </div>
             ))}
           </div>
@@ -1886,11 +1886,11 @@ const featureMicros   = service.featureMicros
       {!service.hideBadgeStrip && (
         <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <p className="text-[8px] font-black tracking-[0.45em] text-white/60 uppercase mb-7 text-center">CORE CAPABILITY PRINCIPLES</p>
+            <p className="text-[11px] font-black tracking-[0.45em] text-white/60 uppercase mb-7 text-center">CORE CAPABILITY PRINCIPLES</p>
             <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
               {service.keyFeatures.map((f, i, arr) => (
                 <React.Fragment key={f}>
-                  <span className="flex-shrink-0 text-white/60 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
+                  <span className="flex-shrink-0 text-white/60 text-[11px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
                   {i < arr.length - 1 && <span className="flex-shrink-0 mx-4 text-white/10 text-xs select-none">·</span>}
                 </React.Fragment>
               ))}
@@ -2061,7 +2061,7 @@ const featureMicros   = service.featureMicros
                       </div>
                       {active && (
                         <div className="lg:hidden pb-6 pl-7 pr-2">
-                          <p className="text-[9px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">CAPABILITY {c.n}</p>
+                          <p className="text-[11px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">CAPABILITY {c.n}</p>
                           <p className="text-white/70 text-sm leading-relaxed mb-4">{c.desc}</p>
                           <ul className="space-y-1.5">
                             {c.items.map(item => (
@@ -2081,7 +2081,7 @@ const featureMicros   = service.featureMicros
               {/* Desktop detail panel */}
               <div className="hidden lg:flex items-start pt-5">
                 <div className="w-full sticky top-8">
-                  <p className="text-[10px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">CAPABILITY {capabilities[safeCapIdx].n}</p>
+                  <p className="text-[11px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">CAPABILITY {capabilities[safeCapIdx].n}</p>
                   <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">{capabilities[safeCapIdx].title}</h3>
                   <p className="text-white/60 text-base leading-relaxed mb-8 max-w-lg">{capabilities[safeCapIdx].desc}</p>
                   <ul className="space-y-3">
@@ -2154,7 +2154,7 @@ const featureMicros   = service.featureMicros
 
                     {/* Content */}
                     <div className="relative z-10">
-                      <p className="text-[9px] font-black tracking-[0.28em] uppercase mb-2 transition-colors duration-500"
+                      <p className="text-[11px] font-black tracking-[0.28em] uppercase mb-2 transition-colors duration-500"
                         style={{ color: `${ACCENT[i]}80` }}>
                         {n} — {featureTitles[i]}
                       </p>
@@ -2259,7 +2259,7 @@ const featureMicros   = service.featureMicros
 
                       {/* NORMAL STATE GRAPHICS (Bottom): Accent Stage Indicator & Graphic Icon (Fades out on hover) */}
                       <div className="group-hover:opacity-0 transition-opacity duration-300 flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
-                        <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-300 uppercase">
+                        <span className="text-[11px] font-mono font-bold tracking-widest text-cyan-300 uppercase">
                           STAGE 0{idx + 1}
                         </span>
                         <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-white/10 border border-white/15">
@@ -2302,7 +2302,7 @@ const featureMicros   = service.featureMicros
               {service.industryUseCases.map((item, idx) => (
                 <div key={idx} className="group bg-[#000000] p-8 flex flex-col transition-all duration-500 hover:bg-[#060a10] cursor-pointer">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:text-cyan-400 transition-colors duration-300">{item.industry}</span>
+                    <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:text-cyan-400 transition-colors duration-300">{item.industry}</span>
                     <span className="text-white/30 group-hover:text-cyan-400 text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none">+</span>
                   </div>
                   
@@ -2356,7 +2356,7 @@ const featureMicros   = service.featureMicros
 
               <div className="flex items-center gap-4 mb-16">
                 <div className="h-[1px] w-8 bg-white/20" />
-                <span className="text-[9px] font-black tracking-[0.35em] text-white/60 uppercase">Engagement Outcomes</span>
+                <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">Engagement Outcomes</span>
               </div>
 
               <div className={`grid gap-px ${gridCols} bg-white/[0.04] rounded-2xl overflow-hidden`}>
@@ -2374,17 +2374,17 @@ const featureMicros   = service.featureMicros
                       )}
                     </div>
                     <div className="border-t border-white/[0.06] pt-6">
-                      <span className="text-[9px] font-black tracking-[0.3em] uppercase text-white/60 block mb-5">
+                      <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60 block mb-5">
                         {card.industry}
                       </span>
                       <div className="space-y-4">
                         <div>
-                          <p className="text-[9px] font-black tracking-[0.25em] uppercase text-white/60 mb-1.5">The Challenge</p>
+                          <p className="text-[11px] font-black tracking-[0.25em] uppercase text-white/60 mb-1.5">The Challenge</p>
                           <p className="text-white/50 text-xs font-medium leading-relaxed">{card.problem}</p>
                         </div>
                         <div className="h-px bg-white/[0.05]" />
                         <div>
-                          <p className="text-[9px] font-black tracking-[0.25em] uppercase text-white/60 mb-1.5">The Outcome</p>
+                          <p className="text-[11px] font-black tracking-[0.25em] uppercase text-white/60 mb-1.5">The Outcome</p>
                           <p className="text-white/85 font-semibold text-xs leading-relaxed">{card.outcome}</p>
                         </div>
                       </div>
@@ -2403,7 +2403,7 @@ const featureMicros   = service.featureMicros
                           href={service.methodologyBrief}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group inline-flex items-center gap-1.5 text-[10px] font-black tracking-[0.15em] uppercase text-white/60 hover:text-cyan-400/70 transition-colors duration-200"
+                          className="group inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.15em] uppercase text-white/60 hover:text-cyan-400/70 transition-colors duration-200"
                         >
                           Download Methodology
                           <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" />
@@ -2421,7 +2421,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ MID-PAGE CTA ══════════════════════ */}
       {service.outcomeCard && (
-        <section className="py-20" style={{ backgroundColor: '#000000' }}>
+        <section className="py-16" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-8">
             <p className="text-2xl sm:text-3xl font-bold text-white leading-snug max-w-xl">
               Your next workflow runs itself.
@@ -2495,11 +2495,11 @@ const featureMicros   = service.featureMicros
                           </div>
                           <div className="relative z-10 flex-1 min-w-0">
                             <div className="flex items-center gap-3 mb-2">
-                              <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-white/60 group-hover:text-white/80 uppercase transition-colors duration-500">{item.phase}</div>
+                              <div className="font-mono text-[11px] font-bold tracking-[0.3em] text-white/60 group-hover:text-white/80 uppercase transition-colors duration-500">{item.phase}</div>
                               {item.kangqore && (
                                 <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 group-hover:bg-white/15 border border-brand-blue/20 group-hover:border-white/30 rounded-full transition-colors duration-500">
                                   <div className="w-1 h-1 bg-brand-blue group-hover:bg-white rounded-full animate-pulse transition-colors duration-500" />
-                                  <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue group-hover:text-white uppercase transition-colors duration-500">Kangqore</span>
+                                  <span className="text-[11px] font-bold tracking-[0.15em] text-brand-blue group-hover:text-white uppercase transition-colors duration-500">Kangqore</span>
                                 </div>
                               )}
                             </div>
@@ -2532,7 +2532,7 @@ const featureMicros   = service.featureMicros
                   <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
                     {[['Phases', String(activeJourney.length).padStart(2, '0')], ['Timeline', '4-16 wks'], ['Confidence', '100%']].map(([label, val], i) => (
                       <div key={label}>
-                        <div className="font-mono text-[10px] text-white/60 tracking-widest uppercase font-bold mb-2">{label}</div>
+                        <div className="font-mono text-[11px] text-white/60 tracking-widest uppercase font-bold mb-2">{label}</div>
                         <div className={`text-2xl font-black ${i === 2 ? 'bg-brand-gradient bg-clip-text text-transparent' : 'text-white'}`}>{val}</div>
                       </div>
                     ))}
@@ -2564,11 +2564,11 @@ const featureMicros   = service.featureMicros
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.servicePackages.map((pkg, idx) => (
                 <div key={idx} className="bg-[#000000] p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
-                  <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
+                  <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
                   <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
                   <p className="text-white/40 text-sm font-medium leading-relaxed flex-1">{pkg.description}</p>
                   {pkg.duration && (
-                    <span className="text-[10px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
+                    <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
                       {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
                     </span>
                   )}
@@ -2851,7 +2851,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ PRACTICE CLUSTER ══════════════════════ */}
       {clusterSiblings.length > 0 && (
-        <section className="py-20 border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }} aria-labelledby="practice-cluster-heading">
+        <section className="py-16 border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }} aria-labelledby="practice-cluster-heading">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
@@ -2918,8 +2918,8 @@ const featureMicros   = service.featureMicros
                 </a>
               </div>
               <div className="group/weeks flex flex-col gap-1 lg:items-end cursor-default select-none">
-                <span className="text-[7.5px] font-black tracking-[0.25em] uppercase text-white/30 group-hover/weeks:text-white/80 transition-colors duration-300">From first call to first agent</span>
-                <span className="text-white/25 text-[10px] font-semibold group-hover/weeks:text-white/70 transition-colors duration-300">Strategy → Build → Production in 8 weeks</span>
+                <span className="text-[11px] font-black tracking-[0.25em] uppercase text-white/30 group-hover/weeks:text-white/80 transition-colors duration-300">From first call to first agent</span>
+                <span className="text-white/25 text-[11px] font-semibold group-hover/weeks:text-white/70 transition-colors duration-300">Strategy → Build → Production in 8 weeks</span>
               </div>
             </div>
 

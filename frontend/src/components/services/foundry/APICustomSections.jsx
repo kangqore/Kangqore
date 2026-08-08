@@ -516,8 +516,8 @@ export const DeliveryModelTimelline = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="font-mono text-[10px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
-                        {item.kangqore && <div className="px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore</div>}
+                        <div className="font-mono text-[11px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
+                        {item.kangqore && <div className="px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore</div>}
                       </div>
                       <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brand-blue transition-colors duration-300">{item.title}</h4>
                       <p className="text-gray-500 leading-relaxed font-light">{item.desc}</p>
@@ -541,9 +541,9 @@ export const DeliveryModelTimelline = () => {
                  At Kangqore, API and microservices engineering is structured as a disciplined architecture and platform model—designed to reduce distributed complexity, strengthen runtime control, and support resilient scale.
                </p>
                <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-100">
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Cycle</div><div className="text-2xl font-bold text-gray-900 dark:text-white">Agile</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Control</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">MAX</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Cycle</div><div className="text-2xl font-bold text-gray-900 dark:text-white">Agile</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Control</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">MAX</div></div>
                 </div>
              </div>
 
@@ -603,10 +603,10 @@ export const APIDiamondCoESection = () => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Our <strong className="text-brand-blue">API Engineering CoE</strong> provides a high-velocity strategic blueprint, surrounding your service initiative with four critical layers of engineering validation.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 We replace "endpoint-sprawl" with "architect-and-govern." By unifying gateway strategy, boundary design, distributed security, and lifecycle governance, we ensure your service platform is built on absolute engineering confidence.
               </p>
             </div>
@@ -628,10 +628,10 @@ export const APIDiamondCoESection = () => {
                 <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                   <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'api-diamond-float-3d 6s ease-in-out infinite' }}>
                     <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Gateway<br/>Strategy</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Boundary<br/>Design</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Distributed<br/>Security</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Runtime<br/>Governance</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Gateway<br/>Strategy</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Boundary<br/>Design</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Distributed<br/>Security</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Runtime<br/>Governance</div></div>
                     </div>
                   </div>
                 </div>
@@ -773,7 +773,7 @@ export const APIExecutionEcosystem = () => {
           </div>
           <div className="lg:w-1/2 relative">
              <div className="relative aspect-square w-full max-w-[550px] mx-auto">
-                <div className="absolute top-0 left-0 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+                <div className="absolute top-0 left-0 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                    <div className="flex justify-between gap-4"><span>build_id:</span> <span className="text-brand-blue">#KG_API_V2</span></div>
                    <div className="flex justify-between gap-4"><span>pipeline:</span> <span className="text-emerald-500">OPTIMIZED</span></div>
                  </div>
@@ -785,15 +785,15 @@ export const APIExecutionEcosystem = () => {
                  </div>
                  <div className="absolute top-0 left-1/2 -translate-x-1/2 text-center group">
                     <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center mb-2 hover:-translate-y-2 transition-all"><Rocket className="w-12 h-12 text-brand-blue"/></div>
-                    <span className="text-[10px] font-mono font-bold text-gray-400">MVP_ACCEL</span>
+                    <span className="text-[11px] font-mono font-bold text-gray-400">MVP_ACCEL</span>
                  </div>
                  <div className="absolute bottom-10 left-0 text-center group">
                     <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center mb-2 translate-x-4 hover:translate-x-0 transition-all"><Code2 className="w-12 h-12 text-cyan-400"/></div>
-                    <span className="text-[10px] font-mono font-bold text-gray-400 translate-x-4 block">SW_DEV</span>
+                    <span className="text-[11px] font-mono font-bold text-gray-400 translate-x-4 block">SW_DEV</span>
                  </div>
                  <div className="absolute bottom-10 right-0 text-center group">
                     <div className="w-24 h-24 bg-brand-gradient rounded-3xl shadow-2xl flex items-center justify-center mb-2 -translate-x-4 hover:-translate-x-0 transition-all"><Bot className="w-12 h-12 text-white"/></div>
-                    <span className="text-[10px] font-mono font-bold text-gray-400 -translate-x-4 block">AGENTIC_AI</span>
+                    <span className="text-[11px] font-mono font-bold text-gray-400 -translate-x-4 block">AGENTIC_AI</span>
                  </div>
                 <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
                   <defs>

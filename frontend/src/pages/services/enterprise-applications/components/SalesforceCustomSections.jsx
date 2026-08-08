@@ -321,7 +321,7 @@ export const SalesforceDiamondCoESection = () => {
               <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">Center of<br/> Excellence.</span>
             </h2>
             <div className="relative pl-6">
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 We unify your Salesforce initiative with four critical layers of engineering validation to ensure absolute platform confidence and scale.
               </p>
             </div>
@@ -345,10 +345,10 @@ export const SalesforceDiamondCoESection = () => {
                 <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                   <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'sf-diamond-float 6s ease-in-out infinite' }}>
                     <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-cyan-500" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Strategy<br/>Blueprint</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-500 to-blue-700" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Cloud<br/>Design</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-800 to-indigo-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Security<br/>Rigor</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-600 to-blue-600" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Operational<br/>Control</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-cyan-500" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Strategy<br/>Blueprint</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-500 to-blue-700" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Cloud<br/>Design</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-800 to-indigo-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Security<br/>Rigor</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-600 to-blue-600" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Operational<br/>Control</div></div>
                     </div>
                   </div>
                 </div>
@@ -491,7 +491,7 @@ export const SalesforceDeliveryModel = () => {
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <div className="font-mono text-[11px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
-                          {item.kangqore && <div className="px-2.5 py-1 bg-brand-blue/10 rounded-full text-[8px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore Execute</div>}
+                          {item.kangqore && <div className="px-2.5 py-1 bg-brand-blue/10 rounded-full text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore Execute</div>}
                         </div>
                         <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-brand-blue transition-colors duration-300 font-display">{item.title}</h4>
                         <p className="text-gray-500 leading-relaxed font-light text-lg">{item.desc}</p>
@@ -561,8 +561,8 @@ export const SalesforceExecutionEcosystem = () => {
 
                 {/* Orbit 1 (Inner) */}
                 <div className="eco-enter orbit-ring-1 absolute w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] rounded-full orbit-path" style={{ border: '1px solid rgba(37, 100, 234, 0.1)' }}>
-                    <div className="orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[10px] shadow-lg" style={{ top: '0%', left: '50%' }}>LWC</div>
-                    <div className="orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[10px] shadow-lg" style={{ top: '100%', left: '50%' }}>Flow</div>
+                    <div className="orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[11px] shadow-lg" style={{ top: '0%', left: '50%' }}>LWC</div>
+                    <div className="orbit-node-1 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-[11px] shadow-lg" style={{ top: '100%', left: '50%' }}>Flow</div>
                 </div>
 
                 {/* Orbit 2 (Middle) */}
@@ -575,7 +575,7 @@ export const SalesforceExecutionEcosystem = () => {
                 <div className="eco-enter orbit-ring-3 absolute w-[440px] h-[440px] lg:w-[520px] lg:h-[520px] rounded-full orbit-path" style={{ border: '1px solid rgba(37, 100, 234, 0.08)' }}>
                     <div className="orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-14 h-14 lg:w-16 lg:h-16 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold text-xs shadow-lg hover:scale-110 transition-transform" style={{ top: '6.7%', left: '75%' }}>Slack</div>
                     <div className="orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center px-4 lg:px-5 h-10 lg:h-12 rounded-2xl bg-slate-800 text-white font-bold text-xs shadow-lg min-w-max hover:scale-110 transition-transform" style={{ top: '93.3%', left: '75%' }}>Tableau</div>
-                    <div className="orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-emerald-50 text-emerald-600 font-bold text-[10px] shadow-sm hover:scale-110 transition-transform" style={{ top: '50%', left: '0%' }}>Apex</div>
+                    <div className="orbit-node-3 absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-emerald-50 text-emerald-600 font-bold text-[11px] shadow-sm hover:scale-110 transition-transform" style={{ top: '50%', left: '0%' }}>Apex</div>
                 </div>
              </div>
           </div>

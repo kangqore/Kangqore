@@ -279,10 +279,10 @@ const SoftwareDevelopmentAnimatedSections = () => {
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
             <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
               <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-                <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+                <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                   Our <strong className="text-brand-blue">Software Engineering CoE</strong> provides a high-velocity strategic blueprint, surrounding your software initiative with four critical layers of engineering validation.
                 </p>
-                <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                   We replace "code-and-hope" with "architect-and-validate." By unifying discovery, architecture, development, and continuous evolution, we ensure your software is built on a foundation of absolute engineering confidence.
                 </p>
               </div>
@@ -304,10 +304,10 @@ const SoftwareDevelopmentAnimatedSections = () => {
                   <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                     <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'diamond-float-3d 6s ease-in-out infinite' }}>
                       <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Strategic<br/>Discovery</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Architecture<br/>Design</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Engineering<br/>Excellence</div></div>
-                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Continuous<br/>Evolution</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Strategic<br/>Discovery</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Architecture<br/>Design</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Engineering<br/>Excellence</div></div>
+                        <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Continuous<br/>Evolution</div></div>
                       </div>
                     </div>
                   </div>
@@ -444,11 +444,11 @@ const SoftwareDevelopmentAnimatedSections = () => {
                       </div>
                       <div className="relative z-10 flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
+                          <div className="font-mono text-[11px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
                           {item.kangqore && (
                             <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
                               <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse"></div>
-                              <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                              <span className="text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
                             </div>
                           )}
                         </div>
@@ -480,9 +480,9 @@ const SoftwareDevelopmentAnimatedSections = () => {
                   </p>
                 </div>
                 <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-100">
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div><div className="text-2xl font-bold text-gray-900 dark:text-white">8-24<span className="text-sm text-gray-400 ml-1">wks</span></div></div>
-                  <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Confidence</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">100%</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div><div className="text-2xl font-bold text-gray-900 dark:text-white">8-24<span className="text-sm text-gray-400 ml-1">wks</span></div></div>
+                  <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Confidence</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">100%</div></div>
                 </div>
               </div>
             </div>
@@ -792,7 +792,7 @@ const embeddedDesignSystemsPreMatrixSection = (
               <div className="w-full flex-1 flex flex-col">
                 <ul className="space-y-3">
                   {step.items.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-[12px] xl:text-[13px] text-gray-500 leading-snug text-left group-hover:text-gray-700 dark:text-gray-300 transition-colors duration-300">
+                    <li key={i} className="flex items-start gap-2.5 text-[12px] xl:text-[14px] text-gray-500 leading-snug text-left group-hover:text-gray-700 dark:text-gray-300 transition-colors duration-300">
                       <span className="mt-[0.4rem] w-1.5 h-1.5 bg-brand-blue/40 rounded-full shrink-0 group-hover:bg-brand-blue group-hover:scale-125 transition-all duration-300"></span>
                       <span className="opacity-90">{item}</span>
                     </li>
@@ -1301,10 +1301,10 @@ const engineeringRDServicesCoESection = (
             <span className="text-transparent bg-clip-text bg-brand-gradient italic">Center of Excellence</span>
           </h2>
           <div className="relative pl-6 border-l-[3px] border-brand-blue" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-            <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+            <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
               Kangqore's R&D CoE is built on the <strong className="text-brand-blue">R&D Framework™</strong> — six proprietary solution accelerators forming a unified product intelligence architecture: <strong className="text-brand-blue">UX Analytics</strong>, <strong className="text-brand-blue">MIDAS</strong>, <strong className="text-brand-blue">AAPRISE</strong>, <strong className="text-brand-blue">Agile Delivery</strong>, <strong className="text-brand-blue">WSAPI</strong>, and <strong className="text-brand-blue">DEP</strong>.
             </p>
-            <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               This unified architecture delivers end-to-end product intelligence — from real-time user analytics and connected M2M data fabrics to mobile app intelligence, agile engineering, web service abstraction, and developer community enablement. Enterprise-grade, governed, and outcome-assured.
             </p>
           </div>
@@ -1347,8 +1347,8 @@ const engineeringRDServicesCoESection = (
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 60%, transparent 100%)' }}></div>
                       <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.20) 0%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>UX</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Analytics</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>UX</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Analytics</span>
                       </div>
                     </div>
                     {/* Top Right -> MIDAS */}
@@ -1540,13 +1540,13 @@ const engineeringRDServicesRelatedOfferings = (
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
 
-            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_RD_FW</span></div>
               <div className="flex justify-between gap-4"><span>LEVEL:</span> <span>ENTERPRISE</span></div>
               <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">INNOVATING</span></div>
             </div>
 
-            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
               <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">R&D Framework™</div>
               <div>ACCELERATING_R&D...</div>
               <div>ADOPTION: +92%</div>
@@ -1574,16 +1574,16 @@ const engineeringRDServicesRelatedOfferings = (
                   <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                   <MonitorSmartphone className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">AAPRISE</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">AAPRISE</span>
               </div>
             </div>
             <div className="absolute bottom-20 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                   <Globe2 className="w-12 h-12 text-white" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">API</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">API</div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">WSAPI</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">WSAPI</span>
               </div>
             </div>
             <div className="absolute bottom-20 right-0 group">
@@ -1592,7 +1592,7 @@ const engineeringRDServicesRelatedOfferings = (
                   <div className="absolute inset-0 bg-brand-gradient opacity-10 group-hover:opacity-20 transition-opacity"></div>
                   <div className="relative"><Code2 className="w-16 h-16 text-emerald-400" /></div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">DEP</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">DEP</span>
               </div>
             </div>
 
@@ -1891,10 +1891,10 @@ const productDigitalEngineeringCoESection = (
             <span className="text-transparent bg-clip-text bg-brand-gradient italic">Center of Excellence</span>
           </h2>
           <div className="relative pl-6 border-l-[3px] border-brand-blue" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-            <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+            <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
               Kangqore's Digital Foundry™ provides a holistic, outcome-assured delivery structure: uniting <strong className="text-brand-blue">Platform Architecture</strong>, <strong className="text-brand-blue">Intelligent Quality</strong>, <strong className="text-brand-blue">Device Connectivity</strong>, and <strong className="text-brand-blue">Experience Design</strong>.
             </p>
-            <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               By integrating these core disciplines, we eliminate execution silos. We don't just write code — we engineer unified digital enterprise systems that scale predictably and adapt continuously to market demands.
             </p>
           </div>
@@ -1936,8 +1936,8 @@ const productDigitalEngineeringCoESection = (
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 60%, transparent 100%)' }}></div>
                       <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.20) 0%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Platform</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Platform</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
                       </div>
                     </div>
                     {/* Top Right -> Quality Engineering */}
@@ -1945,8 +1945,8 @@ const productDigitalEngineeringCoESection = (
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 60%, transparent 100%)' }}></div>
                       <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.15) 0%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Quality</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Quality</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
                       </div>
                     </div>
                     {/* Bottom Left -> Experience Design */}
@@ -1954,8 +1954,8 @@ const productDigitalEngineeringCoESection = (
                       <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)' }}></div>
                       <div className="absolute bottom-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.25) 0%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Experience</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Design</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Experience</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Design</span>
                       </div>
                     </div>
                     {/* Bottom Right -> Device Connectivity */}
@@ -2122,12 +2122,12 @@ const productDigitalEngineeringRelatedSection = (
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#DIGI_CORE</span></div>
               <div className="flex justify-between gap-4"><span>MODE:</span> <span>SCALING</span></div>
               <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">LIVE</span></div>
             </div>
-            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
               <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">SysLog</div>
               <div>PLATFORM_SYNC...</div>
               <div>LATENCY: &lt;1ms</div>
@@ -2151,7 +2151,7 @@ const productDigitalEngineeringRelatedSection = (
                   <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                   <Rocket className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">PROTOTYPE</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">PROTOTYPE</span>
               </div>
             </div>
             <div className="absolute bottom-20 left-0 group">
@@ -2159,7 +2159,7 @@ const productDigitalEngineeringRelatedSection = (
                 <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                   <BrainCircuit className="w-12 h-12 text-white" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">COGNITIVE</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">COGNITIVE</span>
               </div>
             </div>
             <div className="absolute bottom-20 right-0 group">
@@ -2168,7 +2168,7 @@ const productDigitalEngineeringRelatedSection = (
                   <div className="absolute inset-0 bg-brand-gradient opacity-10 group-hover:opacity-20 transition-opacity"></div>
                   <div className="relative"><RadioTower className="w-16 h-16 text-emerald-400" /></div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">TELEMETRY</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">TELEMETRY</span>
               </div>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
@@ -2813,10 +2813,10 @@ const EngineeringFoundryDiscover3D = () => {
                     <div className="absolute -right-4 -top-2 w-10 h-10 bg-brand-blue/5 rounded-full blur-md group-hover:bg-brand-blue/20 transition-all duration-500 group-hover:scale-150"></div>
                   </span>
                 </div>
-                <h3 className="text-[17px] font-bold text-gray-900 dark:text-white mb-4 leading-snug pr-4">{pillar.title}</h3>
+                <h3 className="text-[16px] font-bold text-gray-900 dark:text-white mb-4 leading-snug pr-4">{pillar.title}</h3>
                 <p className="text-[14px] text-gray-500 leading-relaxed font-light flex-grow">{pillar.desc}</p>
                 <div className="mt-auto overflow-hidden">
-                  <button className="text-[13px] font-bold text-brand-blue uppercase tracking-widest flex items-center gap-2 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <button className="text-[14px] font-bold text-brand-blue uppercase tracking-widest flex items-center gap-2 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                     Explore <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                   </button>
                 </div>
@@ -2889,7 +2889,7 @@ const engineeringFoundryDiamondSection = (
             <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
               The Engineering Foundry orchestrates a centralized environment where AI generative agents and human developers collaborate cleanly. It isn't just a code generation tool; it is a holistic pipeline that automates architectural decisions, test execution, and deployment gating.
             </p>
-            <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               Our AI-assisted continuous delivery model drastically reduces technical debt, keeps human engineers focused on strategy rather than boilerplate, and seamlessly bridges the gap between modern cloud-native standards and legacy infrastructure.
             </p>
           </div>
@@ -2919,29 +2919,29 @@ const engineeringFoundryDiamondSection = (
                     <div className="relative overflow-hidden flex items-center justify-center p-2" style={{ background: 'linear-gradient(180deg, #4b8bf5 0%, #2564ea 50%, #1d4ed8 100%)', transform: 'translateZ(6px)' }}>
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 60%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Core</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Functionality</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Core</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Functionality</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center p-2" style={{ background: 'linear-gradient(180deg, #6db3f8 0%, #3b82f6 50%, #2564ea 100%)', transform: 'translateZ(4px)' }}>
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 60%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Capabilities</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Capabilities</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center p-2" style={{ background: 'linear-gradient(180deg, #2564ea 0%, #1e40af 50%, #1e3a8a 100%)', transform: 'translateZ(2px)' }}>
                       <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>UX</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Generation</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>UX</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Generation</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center p-2" style={{ background: 'linear-gradient(180deg, #5cc8e0 0%, #4ab6d4 50%, #2d9db8 100%)', transform: 'translateZ(3px)' }}>
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.06) 60%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Scalability &</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Extensibility</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Scalability &</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Extensibility</span>
                       </div>
                     </div>
                   </div>
@@ -3091,7 +3091,7 @@ const engineeringFoundryRelatedSection = (
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_FND_GEN</span></div>
               <div className="flex justify-between gap-4"><span>ASSET:</span> <span>SOURCE CODE</span></div>
               <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">COMPILED</span></div>
@@ -3247,10 +3247,10 @@ const modernizationInfrastructureCoESection = (
       <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
         <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
           <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-            <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+            <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
               Our Infrastructure Modernization Framework is built on four interconnected layers — <strong className="text-brand-blue">Application Modernization</strong>, <strong className="text-brand-blue">Cloud Architecture</strong>, <strong className="text-brand-blue">Mobility</strong>, and <strong className="text-brand-blue">DevSecOps</strong> — forming a unified enterprise backbone.
             </p>
-            <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               From structured cloud assessments to zero-trust networks and IaC deployments, we architect operations that become a competitive advantage, ending legacy friction permanently.
             </p>
           </div>
@@ -3280,29 +3280,29 @@ const modernizationInfrastructureCoESection = (
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #4b8bf5 0%, #2564ea 50%, #1d4ed8 100%)', transform: 'translateZ(6px)' }}>
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 60%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Enterprise</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Applications</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Enterprise</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Applications</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #6db3f8 0%, #3b82f6 50%, #2564ea 100%)', transform: 'translateZ(4px)' }}>
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 60%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Cloud</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Engineering</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Cloud</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Engineering</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #2564ea 0%, #1e40af 50%, #1e3a8a 100%)', transform: 'translateZ(2px)' }}>
                       <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Digital</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Mobility</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Digital</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Mobility</span>
                       </div>
                     </div>
                     <div className="relative overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #5cc8e0 0%, #4ab6d4 50%, #2d9db8 100%)', transform: 'translateZ(3px)' }}>
                       <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.06) 60%, transparent 100%)' }}></div>
                       <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">Continuous</span>
-                        <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight shadow-sm">DevSecOps</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">Continuous</span>
+                        <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight shadow-sm">DevSecOps</span>
                       </div>
                     </div>
                   </div>
@@ -3375,12 +3375,12 @@ const modernizationInfrastructurePostCapSection = (
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-400/10 blur-[100px] rounded-full"></div>
             <div className="absolute inset-0 opacity-[0.05]" style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_INFRA_EXEC</span></div>
               <div className="flex justify-between gap-4"><span>LEVEL:</span> <span>ENTERPRISE</span></div>
               <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">OPTIMIZED</span></div>
             </div>
-            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+            <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
               <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">Kubernetes Core</div>
               <div>PROVISIONING_NODES...</div>
               <div>SECURITY: +99.9%</div>
@@ -3404,16 +3404,16 @@ const modernizationInfrastructurePostCapSection = (
                   <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                   <Server className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Compute</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Compute</span>
               </div>
             </div>
             <div className="absolute bottom-20 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                   <Network className="w-12 h-12 text-white" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">ZTA</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">ZTA</div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Network</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Network</span>
               </div>
             </div>
             <div className="absolute bottom-20 right-0 group">
@@ -3424,7 +3424,7 @@ const modernizationInfrastructurePostCapSection = (
                     <Activity className="w-16 h-16 text-emerald-400" />
                   </div>
                 </div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Observability</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Observability</span>
               </div>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
@@ -3707,7 +3707,7 @@ const softwareDevelopmentRelatedSection = (
         <div className="lg:w-1/2 relative">
           <div className="relative aspect-square w-full max-w-[550px] mx-auto">
             <div className="absolute inset-0 pointer-events-none overflow-hidden"></div>
-            <div className="absolute top-0 left-0 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+            <div className="absolute top-0 left-0 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
               <div className="flex justify-between gap-4"><span>build_id:</span> <span className="text-brand-blue">#KG_SD_V2</span></div>
               <div className="flex justify-between gap-4"><span>pipeline:</span> <span className="text-emerald-500">DEPLOYED</span></div>
             </div>
@@ -3720,19 +3720,19 @@ const softwareDevelopmentRelatedSection = (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center relative z-10 hover:-translate-y-2 transition-all duration-300"><Rocket className="w-12 h-12 text-brand-blue" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accel</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accel</span>
               </div>
             </div>
             <div className="absolute bottom-10 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Network className="w-12 h-12 text-cyan-400" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">API_Eng</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">API_Eng</span>
               </div>
             </div>
             <div className="absolute bottom-10 right-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300"><Layers className="w-12 h-12 text-white" /></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
               </div>
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">

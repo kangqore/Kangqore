@@ -111,15 +111,15 @@ const PremiumAnimatedSections = ({ data }) => {
       ` }} />
 
       {/* 3D DIAMOND CoE SECTION */}
-      <section className="py-20 lg:py-28 overflow-hidden relative bg-white dark:bg-black z-[10]">
+      <section className="py-16 lg:py-24 overflow-hidden relative bg-white dark:bg-black z-[10]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
             <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
               <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-                <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+                <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                   Our <strong className="text-brand-blue">{coe.label}</strong> {coe.intro}
                 </p>
-                <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">{coe.body}</p>
+                <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">{coe.body}</p>
               </div>
             </div>
             <div className="w-full lg:w-[60%] xl:w-[65%] relative flex justify-center lg:justify-end">
@@ -141,7 +141,7 @@ const PremiumAnimatedSections = ({ data }) => {
                       <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
                         {coe.quadrants.map((q, i) => (
                           <div key={i} className={`relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br ${quadGradients[i]}`} style={{ transform: `translateZ(${[6, 4, 2, 3][i]}px)` }}>
-                            <div className="-rotate-45 text-center text-white font-bold text-[15px]">{q.lines[0]}<br />{q.lines[1]}</div>
+                            <div className="-rotate-45 text-center text-white font-bold text-[16px]">{q.lines[0]}<br />{q.lines[1]}</div>
                           </div>
                         ))}
                       </div>
@@ -267,11 +267,11 @@ const PremiumAnimatedSections = ({ data }) => {
                       </div>
                       <div className="relative z-10 flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
+                          <div className="font-mono text-[11px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
                           {item.kangqore && (
                             <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
                               <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse"></div>
-                              <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                              <span className="text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
                             </div>
                           )}
                         </div>
@@ -303,7 +303,7 @@ const PremiumAnimatedSections = ({ data }) => {
                 <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-100">
                   {journey.stats.map((s, i) => (
                     <div key={i}>
-                      <div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">{s.label}</div>
+                      <div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">{s.label}</div>
                       <div className={`text-2xl font-bold ${i === 2 ? 'text-transparent bg-clip-text bg-brand-gradient' : 'text-gray-900 dark:text-white'}`}>{s.value}</div>
                     </div>
                   ))}

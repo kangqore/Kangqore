@@ -536,7 +536,7 @@ const DigitalTransformation = () => {
                       <div className="animate-counter-rotate preserve-3d">
                         <div className={`w-16 h-16 ${sat.bg} rounded-2xl shadow-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-500 relative z-30`}>
                           {sat.icon}
-                          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 py-0.5 rounded text-[8px] font-bold text-gray-500 uppercase tracking-widest border border-gray-100 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900 dark:border-gray-800/80 backdrop-blur-sm px-2 py-0.5 rounded text-[11px] font-bold text-gray-500 uppercase tracking-widest border border-gray-100 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                             {sat.label}
                           </div>
                         </div>
@@ -649,7 +649,7 @@ const DigitalTransformation = () => {
                         <div className="animate-counter-rotate preserve-3d">
                           <div className={`w-14 h-14 ${node.color} rounded-2xl shadow-xl flex items-center justify-center transform hover:scale-125 transition-transform duration-500`}>
                             {node.icon}
-                            <div className="absolute -bottom-8 bg-white dark:bg-gray-900 dark:border-gray-800/90 backdrop-blur-sm px-2 py-0.5 rounded text-[8px] font-bold text-gray-500 uppercase tracking-widest border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute -bottom-8 bg-white dark:bg-gray-900 dark:border-gray-800/90 backdrop-blur-sm px-2 py-0.5 rounded text-[11px] font-bold text-gray-500 uppercase tracking-widest border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity">
                               {node.label}
                             </div>
                           </div>
@@ -676,7 +676,7 @@ const DigitalTransformation = () => {
                   { label: 'STACK', value: 'NATIVE' }
                 ].map((stat, idx) => (
                   <div key={idx} className="bg-white dark:bg-gray-900 dark:border-gray-800/60 backdrop-blur-md border border-white/50 rounded-2xl p-4 shadow-xl hover:-translate-y-1 transition-transform">
-                    <div className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-1">{stat.label}</div>
+                    <div className="text-[11px] font-bold text-gray-400 tracking-widest uppercase mb-1">{stat.label}</div>
                     <div className="text-lg font-bold text-brand-blue">{stat.value}</div>
                   </div>
                 ))}

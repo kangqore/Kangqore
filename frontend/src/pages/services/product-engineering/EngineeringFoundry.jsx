@@ -70,7 +70,7 @@ const DiscoverFoundry3D = () => {
                   </span>
                 </div>
                 
-                <h3 className="text-[17px] font-bold text-gray-900 dark:text-white mb-4 leading-snug pr-4">
+                <h3 className="text-[16px] font-bold text-gray-900 dark:text-white mb-4 leading-snug pr-4">
                   {pillar.title}
                 </h3>
                 
@@ -79,7 +79,7 @@ const DiscoverFoundry3D = () => {
                 </p>
                 
                 <div className="mt-auto overflow-hidden">
-                  <button className="text-[13px] font-bold text-brand-blue uppercase tracking-widest flex items-center gap-2 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <button className="text-[14px] font-bold text-brand-blue uppercase tracking-widest flex items-center gap-2 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                     Explore <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                   </button>
                 </div>
@@ -406,7 +406,7 @@ const EngineeringFoundry = () => {
               <div className="absolute inset-0 opacity-[0.05]" 
                    style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
 
-              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                 <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_FND_GEN</span></div>
                 <div className="flex justify-between gap-4"><span>ASSET:</span> <span>SOURCE CODE</span></div>
                 <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">COMPILED</span></div>
@@ -440,7 +440,7 @@ const EngineeringFoundry = () => {
               <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 The Engineering Foundry orchestrates a centralized environment where AI generative agents and human developers collaborate cleanly. It isn't just a code generation tool; it is a holistic pipeline that automates architectural decisions, test execution, and deployment gating.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 Our AI-assisted continuous delivery model drastically reduces technical debt, keeps human engineers focused on strategy rather than boilerplate, and seamlessly bridges the gap between modern cloud-native standards and legacy infrastructure.
               </p>
               
@@ -484,8 +484,8 @@ const EngineeringFoundry = () => {
                       }}>
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 60%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Core</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Functionality</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Core</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Functionality</span>
                         </div>
                       </div>
                       <div className="relative overflow-hidden flex items-center justify-center p-2" style={{
@@ -494,8 +494,8 @@ const EngineeringFoundry = () => {
                       }}>
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 60%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Capabilities</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Engineering</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Capabilities</span>
                         </div>
                       </div>
                       <div className="relative overflow-hidden flex items-center justify-center p-2" style={{
@@ -504,8 +504,8 @@ const EngineeringFoundry = () => {
                       }}>
                         <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>UX</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Generation</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>UX</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Generation</span>
                         </div>
                       </div>
                       <div className="relative overflow-hidden flex items-center justify-center p-2" style={{
@@ -514,8 +514,8 @@ const EngineeringFoundry = () => {
                       }}>
                         <div className="absolute top-0 left-0 right-0 h-[40%]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.06) 60%, transparent 100%)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Scalability &</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Extensibility</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Scalability &</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Extensibility</span>
                         </div>
                       </div>
                     </div>

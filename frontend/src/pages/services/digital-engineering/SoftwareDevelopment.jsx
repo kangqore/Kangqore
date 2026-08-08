@@ -370,11 +370,11 @@ const SoftwareDevelopment = () => {
                     </div>
                     <div className="relative z-10 flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="font-mono text-[9px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
+                        <div className="font-mono text-[11px] font-bold tracking-[0.3em] text-gray-300 uppercase">{item.phase}</div>
                         {item.kangqore && (
                           <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full">
                             <div className="w-1 h-1 bg-brand-blue rounded-full animate-pulse"></div>
-                            <span className="text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
+                            <span className="text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase">Kangqore</span>
                           </div>
                         )}
                       </div>
@@ -406,9 +406,9 @@ const SoftwareDevelopment = () => {
                 </p>
               </div>
               <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-100">
-                <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
-                <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div><div className="text-2xl font-bold text-gray-900 dark:text-white">8-24<span className="text-sm text-gray-400 ml-1">wks</span></div></div>
-                <div><div className="font-mono text-[10px] text-gray-300 tracking-widest uppercase font-bold mb-2">Confidence</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">100%</div></div>
+                <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Phases</div><div className="text-2xl font-bold text-gray-900 dark:text-white">04</div></div>
+                <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Timeline</div><div className="text-2xl font-bold text-gray-900 dark:text-white">8-24<span className="text-sm text-gray-400 ml-1">wks</span></div></div>
+                <div><div className="font-mono text-[11px] text-gray-300 tracking-widest uppercase font-bold mb-2">Confidence</div><div className="text-2xl font-bold text-transparent bg-clip-text bg-brand-gradient">100%</div></div>
               </div>
             </div>
           </div>
@@ -426,10 +426,10 @@ const SoftwareDevelopment = () => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Our <strong className="text-brand-blue">Software Engineering CoE</strong> provides a high-velocity strategic blueprint, surrounding your software initiative with four critical layers of engineering validation.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 We replace "code-and-hope" with "architect-and-validate." By unifying discovery, architecture, development, and continuous evolution, we ensure your software is built on a foundation of absolute engineering confidence.
               </p>
             </div>
@@ -451,10 +451,10 @@ const SoftwareDevelopment = () => {
                 <div className="relative z-10 w-[300px] h-[300px]" style={{ perspective: '900px', perspectiveOrigin: '50% 40%' }}>
                   <div className="w-full h-full rounded-[20px] p-[3px] shadow-2xl" style={{ transform: 'rotate(45deg) rotateX(12deg)', transformStyle: 'preserve-3d', animation: 'diamond-float-3d 6s ease-in-out infinite' }}>
                     <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-[3px] rounded-[18px] overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Strategic<br/>Discovery</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Architecture<br/>Design</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Engineering<br/>Excellence</div></div>
-                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[15px]">Continuous<br/>Evolution</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-800" style={{ transform: 'translateZ(6px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Strategic<br/>Discovery</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-400 to-blue-600" style={{ transform: 'translateZ(4px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Architecture<br/>Design</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-slate-900" style={{ transform: 'translateZ(2px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Engineering<br/>Excellence</div></div>
+                      <div className="relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-cyan-500 to-cyan-700" style={{ transform: 'translateZ(3px)' }}><div className="-rotate-45 text-center text-white font-bold text-[16px]">Continuous<br/>Evolution</div></div>
                     </div>
                   </div>
                 </div>
@@ -586,7 +586,7 @@ const SoftwareDevelopment = () => {
           <div className="lg:w-1/2 relative">
             <div className="relative aspect-square w-full max-w-[550px] mx-auto">
               <div className="absolute inset-0 pointer-events-none overflow-hidden"></div>
-              <div className="absolute top-0 left-0 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="absolute top-0 left-0 p-3 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                 <div className="flex justify-between gap-4"><span>build_id:</span> <span className="text-brand-blue">#KG_SD_V2</span></div>
                 <div className="flex justify-between gap-4"><span>pipeline:</span> <span className="text-emerald-500">DEPLOYED</span></div>
               </div>
@@ -599,19 +599,19 @@ const SoftwareDevelopment = () => {
               <div className="absolute top-0 left-1/2 -translate-x-1/2 group">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-24 h-24 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-center relative z-10 hover:-translate-y-2 transition-all duration-300"><Rocket className="w-12 h-12 text-brand-blue" /></div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accel</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">MVP_Accel</span>
                 </div>
               </div>
               <div className="absolute bottom-10 left-0 group">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Network className="w-12 h-12 text-cyan-400" /></div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">API_Eng</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">API_Eng</span>
                 </div>
               </div>
               <div className="absolute bottom-10 right-0 group">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center relative -translate-x-4 hover:translate-x-0 transition-transform duration-300"><Layers className="w-12 h-12 text-white" /></div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase -translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Strategy</span>
                 </div>
               </div>
               <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">

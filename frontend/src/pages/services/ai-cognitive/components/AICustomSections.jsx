@@ -104,19 +104,19 @@ export const AILogoTrustSection = () => {
         <div className="flex flex-wrap justify-center gap-8 lg:gap-24 mb-16 border-b border-gray-100 pb-12">
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">Scale</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Enterprise Deployments</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Enterprise Deployments</p>
           </div>
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">Secure</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Governed Architecture</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Governed Architecture</p>
           </div>
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">Impact</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Measurable ROI</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Measurable ROI</p>
           </div>
         </div>
 
-        <p className="text-center text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] mb-10">Intelligence Partnerships & Ecosystem</p>
+        <p className="text-center text-[11px] font-black text-gray-300 uppercase tracking-[0.3em] mb-10">Intelligence Partnerships & Ecosystem</p>
         <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 lg:gap-x-20">
           {logos.map((logo, idx) => (
             <div key={idx} className="ai-logo grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-500 cursor-pointer">
@@ -193,7 +193,7 @@ export const AIArchitectureDiagram = ({ title, nodes }) => {
                 
                 <ul className="space-y-2">
                   {node.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-[13px] text-gray-600 dark:text-gray-400 font-medium">
+                    <li key={i} className="flex items-center gap-2 text-[14px] text-gray-600 dark:text-gray-400 font-medium">
                       <div className="w-1 h-1 rounded-full bg-brand-blue/50 group-hover:bg-brand-blue transition-colors"></div>
                       {feature}
                     </li>

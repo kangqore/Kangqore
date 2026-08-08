@@ -72,7 +72,7 @@ export const CampaignProblemsSection = () => {
           <div className="text-left max-w-2xl">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1.5px] w-16 bg-brand-blue"></div>
-              <span className="text-[10px] font-black text-brand-blue uppercase tracking-[0.3em]">The Challenge</span>
+              <span className="text-[11px] font-black text-brand-blue uppercase tracking-[0.3em]">The Challenge</span>
             </div>
             <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 font-display tracking-tight leading-[0.95]">
               Why Most Campaigns <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Underperform.</span>
@@ -171,7 +171,7 @@ export const WhyCampaignPlanningMatters = () => {
           <div>
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1.5px] w-16 bg-brand-blue"></div>
-              <span className="text-[10px] font-black text-brand-blue uppercase tracking-[0.3em]">The Philosophy</span>
+              <span className="text-[11px] font-black text-brand-blue uppercase tracking-[0.3em]">The Philosophy</span>
             </div>
             <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 font-display tracking-tight leading-[0.95]">
               Campaigns Fail Before They <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Launch.</span>
@@ -270,7 +270,7 @@ export const CampaignFrameworkSection = () => {
           <div ref={leftRef} className="sticky top-[20vh] lg:h-[60vh] flex flex-col justify-center">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1.5px] w-16 bg-brand-blue"></div>
-              <span className="text-[10px] font-black text-brand-blue uppercase tracking-[0.3em]">The Framework</span>
+              <span className="text-[11px] font-black text-brand-blue uppercase tracking-[0.3em]">The Framework</span>
             </div>
             <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 font-display tracking-tight leading-[1]">
               From Goal to <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Execution.</span>
@@ -377,7 +377,7 @@ export const WhatKangqoreDeliversSection = () => {
         <div className="mb-20">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1.5px] w-16 bg-brand-blue"></div>
-            <span className="text-[10px] font-black text-brand-blue uppercase tracking-[0.3em]">System Output</span>
+            <span className="text-[11px] font-black text-brand-blue uppercase tracking-[0.3em]">System Output</span>
           </div>
           <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 font-display tracking-tight leading-[0.95]">
             The Campaign <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400">Deliverables.</span>
@@ -397,10 +397,10 @@ export const WhatKangqoreDeliversSection = () => {
 
               <div className="flex flex-col">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[10px] font-mono font-bold text-brand-blue/40 group-hover:text-brand-blue transition-colors duration-300">
+                  <span className="text-[11px] font-mono font-bold text-brand-blue/40 group-hover:text-brand-blue transition-colors duration-300">
                     {item.id}
                   </span>
-                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest group-hover:text-gray-600 dark:text-gray-400 transition-colors duration-300">
+                  <span className="text-[11px] font-black text-gray-400 uppercase tracking-widest group-hover:text-gray-600 dark:text-gray-400 transition-colors duration-300">
                     {item.category}
                   </span>
                 </div>
@@ -412,7 +412,7 @@ export const WhatKangqoreDeliversSection = () => {
                 <div className="h-0.5 w-0 bg-gradient-to-r from-brand-blue to-cyan-400 group-hover:w-full transition-all duration-700 ease-out"></div>
                 
                 <div className="mt-4 flex items-center gap-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
-                  <span className="text-[10px] font-bold text-gray-900 dark:text-white uppercase tracking-wider">Ready for Execution</span>
+                  <span className="text-[11px] font-bold text-gray-900 dark:text-white uppercase tracking-wider">Ready for Execution</span>
                   <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
                 </div>
               </div>
@@ -454,7 +454,7 @@ export const BusinessImpactSection = () => {
         <div className="mb-16 max-w-4xl">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1.5px] w-16 bg-brand-blue"></div>
-            <span className="text-[10px] font-black text-brand-blue uppercase tracking-[0.3em]">The Impact</span>
+            <span className="text-[11px] font-black text-brand-blue uppercase tracking-[0.3em]">The Impact</span>
           </div>
           <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 font-display tracking-tight leading-[0.95]">
             What Strong Campaign Planning <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-cyan-400 italic">Delivers.</span>
@@ -565,21 +565,21 @@ export const CampaignLogoTrustSection = () => {
         <div className="flex flex-wrap justify-center gap-8 lg:gap-24 mb-16 border-b border-gray-100 pb-12">
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">100%</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Outcome-Led Strategies</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Outcome-Led Strategies</p>
           </div>
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">Omni</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Channel Orchestration</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Channel Orchestration</p>
           </div>
           <div className="text-center">
             <p className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1">$50M+</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Ad Spend Architected</p>
+            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Ad Spend Architected</p>
           </div>
         </div>
 
         <div className="flex items-center justify-center gap-4 mb-10">
           <div className="h-[1.5px] w-16 bg-gray-100 dark:bg-[#0a0a0c]"></div>
-          <span className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em]">Campaign Tech Partnerships</span>
+          <span className="text-[11px] font-black text-gray-300 uppercase tracking-[0.3em]">Campaign Tech Partnerships</span>
           <div className="h-[1.5px] w-16 bg-gray-100 dark:bg-[#0a0a0c]"></div>
         </div>
         
@@ -620,7 +620,7 @@ export const CampaignReadinessMagnet = () => {
           <div className="relative z-20">
             <div className="flex items-center justify-center gap-4 mb-8">
               <div className="h-[1.5px] w-16 bg-white dark:bg-black/40"></div>
-              <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">System Start</span>
+              <span className="text-[11px] font-black text-white uppercase tracking-[0.3em]">System Start</span>
               <div className="h-[1.5px] w-16 bg-white dark:bg-black/40"></div>
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 tracking-tight font-display">Don’t Launch Campaigns Blind.<br/>Build the Blueprint First.</h2>

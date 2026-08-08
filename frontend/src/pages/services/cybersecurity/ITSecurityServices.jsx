@@ -299,13 +299,13 @@ const ITSecurityServices = () => {
               <div className="absolute inset-0 opacity-[0.05]" 
                    style={{ background: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
 
-              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 flex flex-col gap-1 shadow-sm">
+              <div className="absolute top-10 left-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 flex flex-col gap-1 shadow-sm">
                 <div className="flex justify-between gap-4"><span>ID:</span> <span className="text-brand-blue">#KG_SEC_01</span></div>
                 <div className="flex justify-between gap-4"><span>LEVEL:</span> <span>ZERO_TRUST</span></div>
                 <div className="flex justify-between gap-4"><span>STATUS:</span> <span className="text-emerald-500">PROTECTED</span></div>
               </div>
 
-              <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[10px] text-gray-400 shadow-sm animate-pulse-subtle">
+              <div className="absolute bottom-10 right-10 p-2 border border-gray-200 rounded-lg bg-white dark:bg-gray-900 dark:border-gray-800/50 backdrop-blur-sm z-30 font-mono text-[11px] text-gray-400 shadow-sm animate-pulse-subtle">
                 <div className="text-brand-blue mb-1 font-bold tracking-widest uppercase">Intel Hub</div>
                 <div>SCANNING_NETWORK...</div>
                 <div>LATENCY: 2MS</div>
@@ -334,7 +334,7 @@ const ITSecurityServices = () => {
                     <div className="absolute inset-2 border border-blue-100 rounded-2xl"></div>
                     <Network className="w-14 h-14 text-blue-600 drop-shadow-sm" />
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Infrastructure</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Infrastructure</span>
                 </div>
               </div>
 
@@ -342,9 +342,9 @@ const ITSecurityServices = () => {
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-24 h-24 bg-cyan-500 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
                     <Fingerprint className="w-12 h-12 text-white" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[10px] font-bold border border-white/20">IAM</div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center text-white text-[11px] font-bold border border-white/20">IAM</div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Identity</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Identity</span>
                 </div>
               </div>
 
@@ -356,7 +356,7 @@ const ITSecurityServices = () => {
                       <Layers className="w-16 h-16 text-emerald-400" />
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data Fabric</span>
+                  <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase -translate-x-6 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Data Fabric</span>
                 </div>
               </div>
 

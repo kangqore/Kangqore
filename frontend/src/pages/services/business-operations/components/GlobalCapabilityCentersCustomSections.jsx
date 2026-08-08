@@ -296,7 +296,7 @@ export const GCCBuyerSegmentation = () => {
                <div className="w-14 h-14 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-slate-800 mb-6 group-hover:bg-brand-blue group-hover:text-white transition-colors">
                  {item.icon}
                </div>
-               <div className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-3">{item.tag}</div>
+               <div className="text-[11px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-3">{item.tag}</div>
                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-brand-blue transition-colors">{item.title}</h3>
                
                <div className="space-y-4 flex-1">
@@ -531,8 +531,8 @@ export const GCCMindsetTimeline = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="font-mono text-[10px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
-                        {item.kangqore && <div className="px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full text-[7px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore</div>}
+                        <div className="font-mono text-[11px] tracking-[0.2em] text-gray-400 font-bold uppercase">{item.phase}</div>
+                        {item.kangqore && <div className="px-2 py-0.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full text-[11px] font-bold tracking-[0.15em] text-brand-blue uppercase shrink-0">Kangqore</div>}
                       </div>
                       <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brand-blue transition-colors duration-300">{item.title}</h4>
                       <p className="text-gray-500 leading-relaxed font-light">{item.desc}</p>
@@ -744,10 +744,10 @@ export const GCCDiamondModel = () => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12">
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Our <strong className="text-brand-blue">GCC Execution Engine</strong> defines the right entity, infrastructure, and compliance boundaries before launch complexity leads to fragility.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 By unifying legal compliance, IT provisioning, talent acquisition, and agile execution, we ensure your Global Capability Center is production-ready and fully aligned with your HQ from Day 1.
               </p>
             </div>
@@ -799,22 +799,22 @@ export const GCCDiamondModel = () => {
 
                 {/* Text Labels */}
                 <div className="absolute top-[50px] right-1/2 mr-[180px] w-[320px] z-20">
-                  <ul className="space-y-1 text-[15px] text-gray-700 dark:text-gray-300 text-right font-medium">
+                  <ul className="space-y-1 text-[16px] text-gray-700 dark:text-gray-300 text-right font-medium">
                     {domains[0].lines.map((l, i) => <li key={i}>{l}</li>)}
                   </ul>
                 </div>
                 <div className="absolute top-[130px] left-1/2 ml-[190px] w-[320px] z-20">
-                  <ul className="space-y-1 text-[15px] text-gray-700 dark:text-gray-300 text-left font-medium">
+                  <ul className="space-y-1 text-[16px] text-gray-700 dark:text-gray-300 text-left font-medium">
                     {domains[1].lines.map((l, i) => <li key={i}>{l}</li>)}
                   </ul>
                 </div>
                 <div className="absolute bottom-[110px] right-1/2 mr-[180px] w-[320px] z-20">
-                  <ul className="space-y-1 text-[15px] text-gray-700 dark:text-gray-300 text-right font-medium">
+                  <ul className="space-y-1 text-[16px] text-gray-700 dark:text-gray-300 text-right font-medium">
                     {domains[2].lines.map((l, i) => <li key={i}>{l}</li>)}
                   </ul>
                 </div>
                 <div className="absolute bottom-[40px] left-1/2 ml-[190px] w-[320px] z-20">
-                  <ul className="space-y-1 text-[15px] text-gray-700 dark:text-gray-300 text-left font-medium">
+                  <ul className="space-y-1 text-[16px] text-gray-700 dark:text-gray-300 text-left font-medium">
                     {domains[3].lines.map((l, i) => <li key={i}>{l}</li>)}
                   </ul>
                 </div>

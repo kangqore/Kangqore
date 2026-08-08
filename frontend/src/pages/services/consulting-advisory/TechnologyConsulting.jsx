@@ -448,10 +448,10 @@ const TechnologyConsulting = () => {
           {/* LEFT: Intro Text */}
           <div className="w-full lg:w-[40%] xl:w-[35%] flex flex-col justify-center">
             <div className="relative pl-6 border-l-[3px] border-transparent" style={{ borderImage: 'linear-gradient(180deg, #2564ea, #4ab6d4) 1' }}>
-              <p className="text-[17px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
+              <p className="text-[16px] lg:text-lg text-gray-800 dark:text-gray-50 leading-relaxed font-medium mb-5">
                 Kangqore's Advisory Center of Excellence (CoE) addresses four critical technology decision domains — <strong className="text-brand-blue">Discovery & Validation</strong>, <strong className="text-brand-blue">Architecture & Audit</strong>, <strong className="text-brand-blue">Strategy & Roadmap</strong>, and <strong className="text-brand-blue">Transformation & Migration</strong>.
               </p>
-              <p className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-[16px] lg:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 We replace fragmented advisory with a unified consulting model. From concept validation and legacy assessment to cloud migration planning and digital transformation, our framework ensures strategic clarity, reduced risk, and measurable transformation outcomes.
               </p>
             </div>
@@ -509,8 +509,8 @@ const TechnologyConsulting = () => {
                         <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.20) 0%, transparent 100%)' }}></div>
                         <div className="absolute top-0 left-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.15), transparent)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Discovery &</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Validation</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Discovery &</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Validation</span>
                         </div>
                       </div>
                       {/* Top Right -> Architecture & Audit */}
@@ -522,8 +522,8 @@ const TechnologyConsulting = () => {
                         <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.15) 0%, transparent 100%)' }}></div>
                         <div className="absolute top-0 right-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(270deg, rgba(255,255,255,0.12), transparent)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Architecture &</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Audit</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Architecture &</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Audit</span>
                         </div>
                       </div>
                       {/* Bottom Left -> Strategy & Roadmap */}
@@ -535,8 +535,8 @@ const TechnologyConsulting = () => {
                         <div className="absolute bottom-0 left-0 right-0 h-[35%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.25) 0%, transparent 100%)' }}></div>
                         <div className="absolute top-0 left-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.10), transparent)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Strategy &</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Roadmap</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Strategy &</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>Roadmap</span>
                         </div>
                       </div>
                       {/* Bottom Right -> Transformation & Migration */}
@@ -548,8 +548,8 @@ const TechnologyConsulting = () => {
                         <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.20) 0%, transparent 100%)' }}></div>
                         <div className="absolute top-0 right-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(270deg, rgba(255,255,255,0.10), transparent)' }}></div>
                         <div className="-rotate-45 text-center flex flex-col justify-center relative z-10">
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Transformation</span>
-                          <span className="text-white font-extrabold text-[15px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>& Migration</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>Transformation</span>
+                          <span className="text-white font-extrabold text-[16px] leading-tight tracking-tight" style={{ textShadow: '0 2px 6px rgba(0,0,0,0.35)' }}>& Migration</span>
                         </div>
                       </div>
                     </div>
@@ -836,8 +836,8 @@ const TechnologyConsulting = () => {
                 <div className="absolute inset-0 bg-brand-blue/20 rounded-full animate-ping-slow"></div>
                 
                 <BrainCircuit className="w-16 h-16 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)] mb-2" />
-                <span className="font-mono text-[10px] text-white tracking-[0.2em] uppercase font-bold">ADVISORY</span>
-                <span className="font-mono text-[9px] text-cyan-400 tracking-[0.1em] mt-1">KERNEL_V2</span>
+                <span className="font-mono text-[11px] text-white tracking-[0.2em] uppercase font-bold">ADVISORY</span>
+                <span className="font-mono text-[11px] text-cyan-400 tracking-[0.1em] mt-1">KERNEL_V2</span>
               </div>
 
               {/* Orbiting Satellite Nodes */}
@@ -848,7 +848,7 @@ const TechnologyConsulting = () => {
                     <Search className="w-7 h-7 text-blue-500" />
                   </div>
                   <div className="bg-slate-900/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none absolute top-full mt-2">
-                    <div className="font-mono text-[9px] text-cyan-400 tracking-widest mb-0.5">PHASE 01</div>
+                    <div className="font-mono text-[11px] text-cyan-400 tracking-widest mb-0.5">PHASE 01</div>
                     <div className="text-white text-xs font-bold">Discovery & Audit</div>
                   </div>
                 </div>
@@ -858,7 +858,7 @@ const TechnologyConsulting = () => {
               <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 group z-30">
                 <div className="flex flex-col items-center gap-2">
                   <div className="bg-slate-900/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2">
-                    <div className="font-mono text-[9px] text-indigo-400 tracking-widest mb-0.5">PHASE 02</div>
+                    <div className="font-mono text-[11px] text-indigo-400 tracking-widest mb-0.5">PHASE 02</div>
                     <div className="text-white text-xs font-bold">Architecture Design</div>
                   </div>
                   <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl shadow-xl flex items-center justify-center border border-gray-100 hover:translate-x-2 hover:shadow-2xl hover:border-indigo-200 transition-all duration-300">
@@ -871,7 +871,7 @@ const TechnologyConsulting = () => {
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 group z-30">
                 <div className="flex flex-col items-center gap-2">
                   <div className="bg-slate-900/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none absolute bottom-full mb-2">
-                    <div className="font-mono text-[9px] text-purple-400 tracking-widest mb-0.5">PHASE 03</div>
+                    <div className="font-mono text-[11px] text-purple-400 tracking-widest mb-0.5">PHASE 03</div>
                     <div className="text-white text-xs font-bold">Strategic Roadmap</div>
                   </div>
                   <div className="w-16 h-16 bg-slate-900 rounded-2xl shadow-[0_15px_30px_rgba(0,0,0,0.2)] flex items-center justify-center border border-slate-700 hover:translate-y-2 hover:shadow-2xl hover:border-purple-400 transition-all duration-300">
@@ -884,7 +884,7 @@ const TechnologyConsulting = () => {
               <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 group z-30">
                 <div className="flex flex-col items-center gap-2">
                   <div className="bg-slate-900/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none absolute left-full ml-4 top-1/2 -translate-y-1/2">
-                    <div className="font-mono text-[9px] text-emerald-400 tracking-widest mb-0.5">PHASE 04</div>
+                    <div className="font-mono text-[11px] text-emerald-400 tracking-widest mb-0.5">PHASE 04</div>
                     <div className="text-white text-xs font-bold">Transformation</div>
                   </div>
                   <div className="w-16 h-16 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl shadow-xl flex items-center justify-center border border-gray-100 hover:-translate-x-2 hover:shadow-2xl hover:border-emerald-200 transition-all duration-300">
@@ -894,13 +894,13 @@ const TechnologyConsulting = () => {
               </div>
 
               {/* Floating Status Badges */}
-              <div className="absolute top-10 left-10 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/70 backdrop-blur-md z-30 font-mono text-[9px] text-gray-500 shadow-lg">
+              <div className="absolute top-10 left-10 p-3 border border-gray-200 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/70 backdrop-blur-md z-30 font-mono text-[11px] text-gray-500 shadow-lg">
                 <div className="flex justify-between gap-6 mb-1"><span>ADVISORY ID:</span> <span className="text-brand-blue font-bold">#KG_TECH_09</span></div>
                 <div className="flex justify-between gap-6"><span>SYNC STATUS:</span> <span className="text-emerald-500 font-bold">REAL-TIME</span></div>
               </div>
 
-              <div className="absolute bottom-10 right-10 p-3 border border-slate-700 rounded-xl bg-slate-900/90 backdrop-blur-md z-30 font-mono text-[9px] text-gray-400 shadow-xl">
-                <div className="text-cyan-400 mb-1.5 font-bold tracking-widest uppercase text-[10px]">Advisory Engine</div>
+              <div className="absolute bottom-10 right-10 p-3 border border-slate-700 rounded-xl bg-slate-900/90 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 shadow-xl">
+                <div className="text-cyan-400 mb-1.5 font-bold tracking-widest uppercase text-[11px]">Advisory Engine</div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
                   <span>MAPPING_DEPENDENCIES...</span>
