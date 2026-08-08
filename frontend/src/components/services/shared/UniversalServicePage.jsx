@@ -21,7 +21,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import SvcRuler from './SvcRuler';
 import ConciergeSection from '../../concierge/ConciergeSection';
-import { AIToolsSection } from '../cognition/AICustomSections';
+import { AIToolsSection, AIInsightsSection } from '../cognition/AICustomSections';
 import { servicesData } from '../../../data/servicesData';
 import ResponsiveImage from '../../media/ResponsiveImage';
 import Beams from '../../ui/Beams';
@@ -63,7 +63,6 @@ const TECH_STACK_ICON_COLORS = [
 ];
 
 // Deterministic icon from slug (no Math.random → stable across renders)
-const slugIcon = (slug) => ICON_POOL[Math.abs([...slug].reduce((a, c) => a + c.charCodeAt(0), 0)) % ICON_POOL.length];
 
 // ─── Fixed delivery content (same across all 60 service pages) ───────────────
 
@@ -904,11 +903,6 @@ export default function UniversalServicePage({ service: rawService, department }
     { q: `What outcomes can I expect?`,                        a: `Organizations that partner with Kangqore on ${service.name} typically achieve improved operational efficiency, accelerated delivery timelines, reduced risk, and measurable business impact aligned with their strategic objectives.` },
     { q: `How do I get started?`,                              a: `The first step is a 30-minute discovery call with a Kangqore specialist. We will assess your current state, understand your goals, and outline a clear path forward — with no commitment required.` },
   ];
-
-  // ── Related services (lookup from servicesData) ───────────────────────────
-  const relatedServices = (service.relatedServiceSlugs || []).slice(0, 3)
-    .map(slug => { const r = servicesData[slug]; return r ? { name: r.name, link: `/services/${slug}`, Icon: slugIcon(slug), desc: r.shortDescription } : null; })
-    .filter(Boolean);
 
   // ── Topic cluster: every sibling service in the same practice ─────────────
   // Three related links left each service page a near dead-end for crawlers and
@@ -2187,7 +2181,7 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
-      {service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && (
+      {service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && service.slug !== 'agentic-ai' && (
         <section id="svc-architecture" className="py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
@@ -2280,6 +2274,11 @@ const featureMicros   = service.featureMicros
 
           </div>
         </section>
+      )}
+
+      {/* ══════════════════════ CUSTOM AI INSIGHTS SECTION ══════════════════════ */}
+      {service.slug === 'agentic-ai' && (
+        <AIInsightsSection />
       )}
 
       {/* ══════════════════════ INDUSTRY USE CASES ══════════════════════ */}
@@ -2842,91 +2841,13 @@ const featureMicros   = service.featureMicros
         </div>
       </section>
 
-      {/* ══════════════════════ RELATED SERVICES ══════════════════════ */}
-      {relatedServices.length > 0 && (
-        <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-
-            {/* Header */}
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-14">
-              <div>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">EXTEND YOUR STRATEGY</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.2] tracking-tight text-white">
-                  Related <span className="bg-brand-gradient bg-clip-text text-transparent">Capabilities.</span>
-                </h2>
-              </div>
-              <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
-                Complementary services that extend and compound this investment.
-              </p>
-            </div>
-
-            {/* Asymmetric grid: 1 featured large + 2 stacked */}
-            <div className="grid lg:grid-cols-5 gap-3">
-
-              {/* Featured card */}
-              {relatedServices[0] && (() => {
-                const e = relatedServices[0];
-                const { Icon } = e;
-                return (
-                  <Link to={e.link} className="group lg:col-span-2 relative flex flex-col justify-between p-9 rounded-3xl border border-white/[0.08] bg-[#06090f] min-h-[360px] lg:min-h-[420px] overflow-hidden transition-all duration-500 hover:border-transparent hover:-translate-y-1 hover:shadow-[0_28px_56px_rgba(37,100,234,0.2)]">
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)' }} />
-                    {/* Ghost number */}
-                    <span aria-hidden="true" data-ghost="01" className="svc-ghost-num absolute -bottom-2 -right-2 text-[140px] font-black leading-none select-none text-white/[0.03] group-hover:text-white/[0.08] transition-colors duration-700 pointer-events-none" />
-                    {/* Top */}
-                    <div className="relative z-10">
-                      <div className="w-11 h-11 bg-white/[0.06] group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-cyan-400 group-hover:text-white transition-all duration-500 mb-7">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <span className="font-mono text-[9px] font-black tracking-[0.3em] text-white/60 group-hover:text-white/50 uppercase block mb-2 transition-colors duration-500">01 — RELATED</span>
-                    </div>
-                    {/* Bottom */}
-                    <div className="relative z-10">
-                      <h3 className="text-2xl lg:text-3xl font-black text-white mb-3 leading-tight">{e.name}</h3>
-                      <p className="text-white/40 group-hover:text-white text-sm font-medium leading-relaxed mb-7 transition-colors duration-500 max-w-xs">{e.desc}</p>
-                      <span className="inline-flex items-center gap-2 text-[10px] font-black tracking-[0.2em] uppercase text-white/60 group-hover:text-white transition-colors duration-500">
-                        Explore Capability <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })()}
-
-              {/* Right column: 2 stacked */}
-              <div className="lg:col-span-3 flex flex-col gap-3">
-                {relatedServices.slice(1).map((e, idx) => {
-                  const { Icon } = e;
-                  const n = String(idx + 2).padStart(2, '0');
-                  return (
-                    <Link key={e.name} to={e.link} className="group relative flex items-center gap-6 p-8 rounded-3xl border border-white/[0.08] bg-[#06090f] flex-1 overflow-hidden transition-all duration-500 hover:border-transparent hover:-translate-y-0.5 hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)]">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
-                      {/* Ghost number */}
-                      <span aria-hidden="true" data-ghost={n} className="svc-ghost-num absolute -bottom-3 -right-3 text-[100px] font-black leading-none select-none text-white/[0.03] group-hover:text-white/[0.08] transition-colors duration-700 pointer-events-none" />
-                      {/* Icon */}
-                      <div className="relative z-10 w-12 h-12 flex-shrink-0 bg-white/[0.06] group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-500">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      {/* Content */}
-                      <div className="relative z-10 flex-1 min-w-0">
-                        <div className="font-mono text-[8px] font-black tracking-[0.3em] text-white/18 group-hover:text-white/50 uppercase mb-1.5 transition-colors duration-500">{n} — RELATED</div>
-                        <h3 className="text-xl font-black text-white mb-1.5 truncate">{e.name}</h3>
-                        <p className="text-white/40 group-hover:text-white text-sm font-medium leading-snug line-clamp-2 transition-colors duration-500">{e.desc}</p>
-                      </div>
-                      {/* Arrow ring */}
-                      <div className="relative z-10 flex-shrink-0 w-9 h-9 rounded-full border border-white/[0.12] group-hover:border-white/40 group-hover:bg-white/10 flex items-center justify-center transition-all duration-500">
-                        <ArrowRight className="w-4 h-4 text-white/25 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-300" />
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-
-            </div>
-          </div>
-        </section>
-      )}
+      {/* RELATED SERVICES section removed — 744px of page height for 87 words
+          (11.7 words per 100px, among the lowest-density blocks on the page).
+          The two service links it carried are still emitted in the prerender
+          snapshot as <h2>Related Services</h2>, and the Practice Cluster below
+          keeps a human-facing path to sibling services, so internal linking and
+          topical clustering are preserved. `relatedServiceSlugs` in the data is
+          still read by the prerender generator and the JSON-LD graph. */}
 
       {/* ══════════════════════ PRACTICE CLUSTER ══════════════════════ */}
       {clusterSiblings.length > 0 && (
