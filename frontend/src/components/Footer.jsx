@@ -95,13 +95,15 @@ const Footer = () => {
 
         {/* LEFT CARD — Video Background */}
         <div style={{ position: 'relative', minHeight: 420, borderRadius: 28, padding: 32, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.12)', background: '#111214', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          {/* Decorative only. Gated on viewport, motion preference and
-              connection quality — see AmbientVideo. The card's #111214
-              background is the intended appearance when it does not load. */}
-          <AmbientVideo
-            src="/videos/hero-bg.mp4"
-            style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}
-          />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none', opacity: 0.7 }}
+          >
+            <source src="/videos/hero-bg.mp4" type="video/mp4" />
+          </video>
 
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 1, paddingTop: '10px' }}>
