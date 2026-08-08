@@ -19,7 +19,7 @@ import { requireAuth, requireRole } from '../middleware/rbac';
 import { KIMMP_VERSION } from './core/types';
 import { KimmpFlags } from './core/flags';
 import { computeCapabilityScorecard } from '../services/publicTrust.service';
-import { getLiveComplianceSignals, ensureFrameworkSeeded } from '../services/complianceReadiness.service';
+import { getLiveComplianceSignals, ensureFrameworkSeeded, getComplianceOverview } from '../services/complianceReadiness.service';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -9473,6 +9473,16 @@ kangqoreImmpRoutes.get('/platform/fedramp-moderate', requireAuth, requireRole(['
         disclaimer: 'Not an assessment. Same decision-gate logic as FedRAMP, scoped to the Australian public sector — pursue only if a real deal justifies it.',
       },
     })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /platform/compliance-overview — all four Overshadow Roadmap P2
+// frameworks (SOC2, ISO27001, FedRAMP, IRAP) in one place. Same shared
+// getComplianceOverview() the public /trust page calls — see
+// services/complianceReadiness.service.ts.
+kangqoreImmpRoutes.get('/platform/compliance-overview', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    res.json(await getComplianceOverview())
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 

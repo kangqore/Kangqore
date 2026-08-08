@@ -98,3 +98,51 @@ export async function ensureFrameworkSeeded(framework: 'SOC2' | 'ISO27001') {
   const seed = framework === 'SOC2' ? SOC2_SEED : ISO27001_SEED
   await (prisma as any).complianceControl.createMany({ data: seed, skipDuplicates: true })
 }
+
+export interface FrameworkReadiness {
+  framework:   'SOC2' | 'ISO27001'
+  readinessPct: number
+  controls: { total: number; in_place: number; partial: number; missing: number }
+}
+
+// Aggregate-only by design (counts and a percentage, nothing per-control) —
+// safe to serve from both the admin overview and the public /trust page,
+// same discipline as publicTrust.service.ts.
+export async function getFrameworkReadiness(framework: 'SOC2' | 'ISO27001'): Promise<FrameworkReadiness> {
+  await ensureFrameworkSeeded(framework)
+  const controls = await (prisma as any).complianceControl.findMany({ where: { framework } })
+  const summary = {
+    total: controls.length,
+    in_place: controls.filter((c: any) => c.status === 'IN_PLACE').length,
+    partial: controls.filter((c: any) => c.status === 'PARTIAL').length,
+    missing: controls.filter((c: any) => c.status === 'MISSING').length,
+  }
+  const readinessPct = summary.total > 0
+    ? Math.round(((summary.in_place + summary.partial * 0.5) / summary.total) * 100)
+    : 0
+  return { framework, readinessPct, controls: summary }
+}
+
+const GATE_NOTE = 'Decision point, not a task (Overshadow Roadmap P2.3/P2.4): pursue only behind a real, qualifying sponsoring pipeline. Speculative FedRAMP/IRAP engineering work before a real opportunity exists is the single easiest way to waste 18–24 months.'
+
+// One function backing both the internal Compliance Overview page and the
+// public /trust page's Compliance Readiness section — same shared-function
+// pattern as computeCapabilityScorecard() in publicTrust.service.ts, so the
+// two views can never quietly drift into different numbers.
+export async function getComplianceOverview() {
+  const [soc2, iso27001, liveSignals] = await Promise.all([
+    getFrameworkReadiness('SOC2'),
+    getFrameworkReadiness('ISO27001'),
+    getLiveComplianceSignals(),
+  ])
+  return {
+    soc2,
+    iso27001,
+    fedramp: { authorization: 'FedRAMP Moderate', status: 'NOT_STARTED', gateNote: GATE_NOTE },
+    irap:    { authorization: 'IRAP (Australian Government ISM)', status: 'NOT_STARTED', gateNote: GATE_NOTE },
+    liveSignals,
+    overallReadinessPct: Math.round((soc2.readinessPct + iso27001.readinessPct) / 2),
+    disclaimer: 'Aggregate internal audit-readiness across all four Overshadow Roadmap P2 frameworks. Not a certification for any of them — a SOC 2 report, ISO 27001 certificate, FedRAMP ATO, or IRAP assessment can only be issued by an independent external party after a real engagement.',
+    computedAt: new Date().toISOString(),
+  }
+}
