@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Robot, Plus, X, CaretDown, CaretUp, Play, Pause, Power, Skull,
-  Sliders, ArrowsClockwise, Wrench, ListChecks,
+  Sliders, ArrowsClockwise, Wrench, ListChecks, Sparkle,
 } from '@phosphor-icons/react'
 import { Loader2 } from 'lucide-react'
 import {
-  agentStudioService, MODEL_OPTIONS, type KimmpAgent, type AgentInput,
+  agentStudioService, MODEL_OPTIONS, type KimmpAgent, type AgentInput, type AgentTemplate,
 } from '../agentStudioService'
 import { promptRegistryService } from '@features/kimmp-gateway/promptRegistryService'
 
@@ -27,6 +27,29 @@ function LevelBadge({ level }: { level: number }) {
   )
 }
 
+// Overshadow Roadmap P3.1 — closing the "time-to-first-agent" gap for
+// non-technical builders: pick a real starter template instead of a blank
+// form. Only shown for new agents, not edits.
+function TemplatePicker({ onPick }: { onPick: (t: AgentTemplate) => void }) {
+  const { data: templates } = useQuery({ queryKey: ['agent-studio-templates'], queryFn: () => agentStudioService.templates() })
+  if (!templates || templates.length === 0) return null
+  return (
+    <div>
+      <p className="text-[9px] uppercase tracking-wide text-[var(--os-text-2)] mb-1.5">Start from a template</p>
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {templates.map(t => (
+          <button key={t.id} onClick={() => onPick(t)} title={t.description}
+            className="flex-shrink-0 w-40 text-left p-2.5 rounded-lg border border-[var(--os-border)] hover:border-[#579bfc]/50 bg-[var(--os-surface-0)] transition-colors">
+            <span className="text-base">{t.iconEmoji ?? '🤖'}</span>
+            <p className="text-[10.5px] font-semibold text-[var(--os-text-1)] mt-1 leading-tight">{t.name}</p>
+            <p className="text-[9px] text-[var(--os-text-2)] mt-0.5 line-clamp-2 leading-snug">{t.description}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function AgentBuilderForm({ agent, onClose }: { agent?: KimmpAgent; onClose: () => void }) {
   const qc = useQueryClient()
   const isEdit = !!agent
@@ -38,8 +61,19 @@ function AgentBuilderForm({ agent, onClose }: { agent?: KimmpAgent; onClose: () 
   const [systemPrompt, setSystemPrompt] = useState(agent?.systemPrompt ?? '')
   const [promptName, setPromptName] = useState(agent?.promptName ?? '')
   const [selectedTools, setSelectedTools] = useState<Set<string>>(new Set(agent?.tools ?? []))
+  const [fromTemplate, setFromTemplate] = useState<string | null>(null)
 
   const { data: tools } = useQuery({ queryKey: ['agent-studio-tools'], queryFn: () => agentStudioService.tools() })
+
+  const applyTemplate = (t: AgentTemplate) => {
+    setName(t.name.toUpperCase().replace(/[^A-Z0-9]+/g, '_').slice(0, 40))
+    setRole(t.manifest.role)
+    setDescription(t.description)
+    setSystemPrompt(t.manifest.systemPrompt)
+    setSelectedTools(new Set(t.manifest.suggestedTools))
+    setFromTemplate(t.id)
+    agentStudioService.markTemplateUsed(t.id)
+  }
   const { data: registry } = useQuery({ queryKey: ['prompt-registry'], queryFn: () => promptRegistryService.list() })
   const syncTools = useMutation({
     mutationFn: () => agentStudioService.syncTools(),
@@ -72,6 +106,13 @@ function AgentBuilderForm({ agent, onClose }: { agent?: KimmpAgent; onClose: () 
         <p className="text-xs font-bold text-[var(--os-text-1)]">{isEdit ? `Edit ${agent!.name}` : 'New agent'}</p>
         <button onClick={onClose}><X size={13} className="text-[var(--os-text-2)]" /></button>
       </div>
+
+      {!isEdit && !fromTemplate && <TemplatePicker onPick={applyTemplate} />}
+      {fromTemplate && (
+        <p className="text-[9.5px] text-emerald-400 flex items-center gap-1">
+          <Sparkle size={11} weight="fill" /> Pre-filled from a template — edit anything below before creating.
+        </p>
+      )}
 
       <div className="grid grid-cols-2 gap-2">
         <input value={name} onChange={e => setName(e.target.value)} placeholder="Agent name (e.g. RENEWAL_COACH)"

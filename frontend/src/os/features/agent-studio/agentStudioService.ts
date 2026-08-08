@@ -85,6 +85,16 @@ export interface AgentInput {
   promptName?: string | null
 }
 
+export interface AgentTemplate {
+  id: string
+  name: string
+  description: string
+  category: string
+  iconEmoji: string | null
+  installCount: number
+  manifest: { role: string; systemPrompt: string; suggestedTools: string[] }
+}
+
 export const agentStudioService = {
   list(): Promise<KimmpAgent[]> {
     return api.get('/admin/kangqore-immp/authority/agents').then(r => r.data.agents)
@@ -121,5 +131,13 @@ export const agentStudioService = {
   },
   performance(): Promise<{ agents: AgentPerformance[]; legacyBuckets: LegacyBucket[] }> {
     return api.get('/admin/kimmp-gateway/agents/performance').then(r => r.data)
+  },
+  templates(): Promise<AgentTemplate[]> {
+    return api.get('/admin/kangqore-immp/marketplace?type=AGENT').then(r => r.data.listings)
+  },
+  // Fire-and-forget install-count increment — a template is "used" the moment
+  // someone starts building from it, whether or not they finish and save.
+  markTemplateUsed(id: string): void {
+    api.post(`/admin/kangqore-immp/marketplace/${id}/install`).catch(() => {})
   },
 }

@@ -30,6 +30,10 @@ const BIDSPage = React.lazy(() => import('../pages/BIDSPage'));
 const TrustGovernancePage = React.lazy(() => import('../pages/TrustGovernancePage'));
 const GovernanceNativeWhitepaperPage = React.lazy(() => import('../pages/GovernanceNativeWhitepaperPage'));
 
+// Agent Studio — Overshadow Roadmap P3 ("Contest App Engine")
+const AgentStudioBenchmarkPage = React.lazy(() => import('../pages/AgentStudioBenchmarkPage'));
+const AgentMarketplacePage = React.lazy(() => import('../pages/AgentMarketplacePage'));
+
 // Legal & Compliance pages
 const PrivacyPolicy = React.lazy(() => import('../pages/legal/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('../pages/legal/TermsAndConditions'));
@@ -52,6 +56,8 @@ export const publicRoutes = [
   // Trust & Governance — Overshadow Roadmap P1 ("Publish the Proof")
   <Route key="trust" path="/trust" element={<TrustGovernancePage />} />,
   <Route key="trust-whitepaper" path="/trust/governance-native-vs-retrofitted" element={<GovernanceNativeWhitepaperPage />} />,
+  <Route key="trust-agent-benchmark" path="/trust/agent-studio-benchmark" element={<AgentStudioBenchmarkPage />} />,
+  <Route key="agent-marketplace" path="/marketplace" element={<AgentMarketplacePage />} />,
 
   // General pages
   <Route key="contact" path="/contact" element={<ContactUs />} />,

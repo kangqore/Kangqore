@@ -12,6 +12,7 @@ import { Router, Request, Response } from 'express'
 import logger from '../utils/logger'
 import { computeCapabilityScorecard, computeGovernanceSummary, computeEvalHealth } from '../services/publicTrust.service'
 import { getComplianceOverview } from '../services/complianceReadiness.service'
+import { getAgentStudioBenchmark } from '../services/agentStudioGrowth.service'
 
 export const publicTrustRouter = Router()
 
@@ -55,5 +56,17 @@ publicTrustRouter.get('/compliance-readiness', async (_req: Request, res: Respon
   } catch (err: any) {
     logger.warn('[public-trust] compliance-readiness failed: ' + err.message)
     res.status(500).json({ error: 'Unable to compute compliance readiness' })
+  }
+})
+
+// Overshadow Roadmap P3.1 — "publish the comparison, favorable or not."
+// Same function the internal benchmark route calls.
+publicTrustRouter.get('/agent-studio-benchmark', async (_req: Request, res: Response) => {
+  try {
+    const data = await getAgentStudioBenchmark()
+    res.json(data)
+  } catch (err: any) {
+    logger.warn('[public-trust] agent-studio-benchmark failed: ' + err.message)
+    res.status(500).json({ error: 'Unable to compute agent studio benchmark' })
   }
 })

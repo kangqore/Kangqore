@@ -321,6 +321,18 @@ const TrustGovernancePage = () => {
       <EvalHealthSection />
       <ComplianceReadinessSection />
 
+      {/* Agent Studio cross-links — Overshadow Roadmap P3 */}
+      <section className="py-10 border-t border-gray-100 dark:border-gray-900">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-wrap gap-6">
+          <Link to="/trust/agent-studio-benchmark" className="text-sm font-semibold text-brand-blue hover:underline">
+            Agent Studio build benchmark vs. App Engine →
+          </Link>
+          <Link to="/marketplace" className="text-sm font-semibold text-brand-blue hover:underline">
+            Agent &amp; governed action marketplace →
+          </Link>
+        </div>
+      </section>
+
       {/* Closing CTA */}
       <section className="py-16 lg:py-20 border-t border-gray-100 dark:border-gray-900">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
