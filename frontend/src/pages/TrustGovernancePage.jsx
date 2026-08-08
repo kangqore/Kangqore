@@ -213,6 +213,63 @@ function EvalHealthSection() {
   );
 }
 
+function GateBadge({ flag, label, status }) {
+  return (
+    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 py-3 flex items-center gap-3">
+      <span className="text-lg">{flag}</span>
+      <span className="text-sm font-semibold text-gray-900 dark:text-white flex-1">{label}</span>
+      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">{status}</span>
+    </div>
+  );
+}
+
+function ComplianceReadinessSection() {
+  const { data, error, loading } = useTrustData('compliance-readiness');
+  return (
+    <section id="compliance" className="py-16 lg:py-20 border-t border-gray-100 dark:border-gray-900 bg-[#FAFAFA] dark:bg-gray-950/40">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-4">
+          Compliance readiness
+        </h2>
+        <p className="text-lg text-gray-500 dark:text-gray-400 font-light max-w-3xl mb-4">
+          Not a certification page — an honest readiness view across the four programs we're actually
+          working through: SOC 2 Type II, ISO 27001:2022, FedRAMP, and IRAP.
+        </p>
+        {data && (
+          <p className="text-sm text-gray-400 max-w-3xl mb-10">{data.disclaimer}</p>
+        )}
+        {error && <p className="text-sm text-gray-400">Compliance readiness temporarily unavailable.</p>}
+        {loading && <div className="grid grid-cols-1 md:grid-cols-2 gap-6"><SkeletonRow /><SkeletonRow /></div>}
+        {data && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {[{ key: 'soc2', label: 'SOC 2 Type II' }, { key: 'iso27001', label: 'ISO 27001:2022' }].map(({ key, label }) => {
+              const fw = data[key];
+              return (
+                <div key={key} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{label}</span>
+                    <span className="text-xl font-bold text-brand-blue tabular-nums">{fw.readinessPct}%</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden mb-4">
+                    <div className="h-full bg-brand-blue rounded-full" style={{ width: `${fw.readinessPct}%` }} />
+                  </div>
+                  <div className="flex gap-5 text-sm">
+                    <span><span className="font-semibold text-gray-900 dark:text-white tabular-nums">{fw.controls.in_place}</span> <span className="text-gray-400">in place</span></span>
+                    <span><span className="font-semibold text-gray-900 dark:text-white tabular-nums">{fw.controls.partial}</span> <span className="text-gray-400">partial</span></span>
+                    <span><span className="font-semibold text-gray-900 dark:text-white tabular-nums">{fw.controls.missing}</span> <span className="text-gray-400">missing</span></span>
+                  </div>
+                </div>
+              );
+            })}
+            <GateBadge flag="🇺🇸" label="FedRAMP Moderate" status={data.fedramp.status} />
+            <GateBadge flag="🇦🇺" label="IRAP" status={data.irap.status} />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 const TrustGovernancePage = () => {
   const pageUrl = `${SITE_URL}/trust`;
 
@@ -262,6 +319,7 @@ const TrustGovernancePage = () => {
       <ScorecardSection />
       <GovernanceSection />
       <EvalHealthSection />
+      <ComplianceReadinessSection />
 
       {/* Closing CTA */}
       <section className="py-16 lg:py-20 border-t border-gray-100 dark:border-gray-900">

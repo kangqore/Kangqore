@@ -190,6 +190,7 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'kimmp-vertical-editions', label: 'Vertical Editions',      path: `${BASE}/kangqore-immp/vertical-editions`,           category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-vertical-analytics',label: 'Vertical Analytics',     path: `${BASE}/kangqore-immp/vertical-analytics`,          category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-sdk-v2',            label: 'SDK v2',                 path: `${BASE}/kangqore-immp/sdk-v2`,                      category: 'Governance', badge: 'new' },
+      { id: 'kimmp-compliance-overview', label: 'Compliance Overview',  path: `${BASE}/kangqore-immp/compliance-overview`,         category: 'Governance', badge: 'new' },
       { id: 'kimmp-soc2-audit',        label: 'SOC2 Type II',           path: `${BASE}/kangqore-immp/soc2-audit`,                  category: 'Governance', badge: 'new' },
       { id: 'kimmp-region-admin',      label: 'Region Admin',           path: `${BASE}/kangqore-immp/region-admin`,                category: 'Governance', badge: 'new' },
       { id: 'kimmp-privacy-dashboard', label: 'Privacy & GDPR',         path: `${BASE}/kangqore-immp/privacy-dashboard`,           category: 'Governance', badge: 'new' },

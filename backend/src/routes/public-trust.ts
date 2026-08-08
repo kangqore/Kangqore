@@ -11,6 +11,7 @@
 import { Router, Request, Response } from 'express'
 import logger from '../utils/logger'
 import { computeCapabilityScorecard, computeGovernanceSummary, computeEvalHealth } from '../services/publicTrust.service'
+import { getComplianceOverview } from '../services/complianceReadiness.service'
 
 export const publicTrustRouter = Router()
 
@@ -41,5 +42,18 @@ publicTrustRouter.get('/eval-health', async (_req: Request, res: Response) => {
   } catch (err: any) {
     logger.warn('[public-trust] eval-health failed: ' + err.message)
     res.status(500).json({ error: 'Unable to compute eval health' })
+  }
+})
+
+// Overshadow Roadmap P2 — audit-readiness across SOC2/ISO27001/FedRAMP/IRAP.
+// Same function the internal Compliance Overview page calls; aggregate-only
+// (readiness percentages and counts, never a per-control description).
+publicTrustRouter.get('/compliance-readiness', async (_req: Request, res: Response) => {
+  try {
+    const data = await getComplianceOverview()
+    res.json(data)
+  } catch (err: any) {
+    logger.warn('[public-trust] compliance-readiness failed: ' + err.message)
+    res.status(500).json({ error: 'Unable to compute compliance readiness' })
   }
 })

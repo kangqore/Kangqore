@@ -208,6 +208,8 @@ import { GateS282Page }              from './pages/GateS282Page'
 // S263–S272 Fortune 500 Enterprise Tier (Chapter 12 T2)
 import { Soc2TypeIIPage }                  from './pages/Soc2TypeIIPage'
 import { FedRampPage }                     from './pages/FedRampPage'
+// Overshadow Roadmap P2 — unified compliance readiness across all 4 frameworks
+import { ComplianceOverviewPage }          from './pages/ComplianceOverviewPage'
 import { DedicatedSuccessTeamsPage }       from './pages/DedicatedSuccessTeamsPage'
 import { ExecutiveBusinessReviewsPage }    from './pages/ExecutiveBusinessReviewsPage'
 import { F500SalesMotionPage }             from './pages/F500SalesMotionPage'
@@ -595,6 +597,7 @@ export function KIMMMModule() {
           {/* S263–S272 Fortune 500 Enterprise Tier (Chapter 12 T2) */}
           <Route path="soc2-type2-certification"       element={<Soc2TypeIIPage />}               />
           <Route path="fedramp-moderate"               element={<FedRampPage />}                  />
+          <Route path="compliance-overview"            element={<ComplianceOverviewPage />}       />
           <Route path="dedicated-success-teams"        element={<DedicatedSuccessTeamsPage />}    />
           <Route path="executive-business-reviews"     element={<ExecutiveBusinessReviewsPage />} />
           <Route path="f500-sales-motion"              element={<F500SalesMotionPage />}          />
