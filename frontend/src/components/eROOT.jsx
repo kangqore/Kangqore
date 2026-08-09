@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { X, ArrowRight, Sparkles, Activity } from 'lucide-react';
+import { isOverlayOpen, onOverlayChange, setOverlayOpen } from '../lib/overlayCoordinator';
 import { useAuth } from '../context/AuthContext';
 import useHumanContext from '../hooks/useHumanContext';
 
@@ -183,6 +184,18 @@ const EROOT = () => {
   const [visible, setVisible]   = useState(false);
   const [closing, setClosing]   = useState(false);
   const [isInHero, setIsInHero] = useState(true);
+
+  // Mirror this panel's state to the coordinator, and step aside if another
+  // floating panel opens while this one is showing.
+  useEffect(() => {
+    setOverlayOpen('eroot', visible);
+    return () => setOverlayOpen('eroot', false);
+  }, [visible]);
+
+  useEffect(
+    () => onOverlayChange(() => { if (isOverlayOpen('eroot')) setVisible(false); }),
+    [],
+  );
   const isHomepage = location.pathname === '/';
   
   if (location.pathname.startsWith('/kangqore-view')) return null;
@@ -210,6 +223,9 @@ const EROOT = () => {
 
     const reveal = () => {
       if (cancelled || !canShowEroot() || shownCountRef.current >= MAX_PER_SESSION) return;
+      // Never open on top of another floating panel — two panels anchored to
+      // the same corner overlap and bury the copy being read.
+      if (isOverlayOpen('eroot')) return;
       shownCountRef.current += 1;
       sessionStorage.setItem(SESSION_SHOWN_KEY, String(shownCountRef.current));
       setVisible(true);

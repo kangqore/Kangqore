@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff, ExternalLink, Square, Copy, Maximize2, Minimize2 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useConcierge, getSuggestedPrompts, stripSystemMetadata } from '../hooks/useConcierge';
+import { setOverlayOpen } from '../lib/overlayCoordinator';
 import { parseSchedulingRequest } from '../hooks/nlpSchedulingParser';
 import CitationBadge from './concierge/CitationBadge';
 import LeadCaptureInline from './concierge/LeadCaptureInline';
@@ -65,6 +66,13 @@ const EQoreChatbot = () => {
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
   const [proactiveGreeting, setProactiveGreeting] = useState(null);
   const [isSlideIn, setIsSlideIn] = useState(false);
+
+  // Tell the overlay coordinator when this panel is on screen, so the eROOT
+  // greeting does not reveal itself on top of it.
+  useEffect(() => {
+    setOverlayOpen('eqore', isSlideIn);
+    return () => setOverlayOpen('eqore', false);
+  }, [isSlideIn]);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const [isHovered, setIsHovered] = useState(false);
