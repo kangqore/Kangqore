@@ -100,6 +100,29 @@ export function resolveServiceFaqs(service) {
   return service?.customFAQs?.length ? service.customFAQs : genericServiceFaqs(service);
 }
 
+// An answer may carry paragraph breaks as a blank line. `a` stays a plain
+// string so the schema builders, the prerender generator and llms.txt keep
+// consuming it unchanged; only the two renderers split it.
+//
+// A 145-word answer set as one block is accurate and unreadable — the MLOps
+// answers below run to five distinct points each, and a wall of text buries the
+// fourth and fifth. Breaking on the argument boundaries costs nothing and loses
+// nothing, since the sentences are unchanged.
+
+/** Paragraphs of an answer, for rendering. */
+export function faqParagraphs(answer = '') {
+  return String(answer).split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
+}
+
+/**
+ * The answer as one flat string, for `acceptedAnswer.text`. Schema.org wants
+ * plain text there, and a quotable block should not carry layout characters an
+ * answer engine would have to strip.
+ */
+export function faqPlainText(answer = '') {
+  return faqParagraphs(answer).join(' ');
+}
+
 /** The five engagement tiers, when a service has not defined its own. */
 export function genericServicePackages(service) {
   const n = lowerServiceName(service?.name || 'enterprise service');
