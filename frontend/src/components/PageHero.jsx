@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import SecondaryButton from './ui/SecondaryButton';
+import { BackgroundBeams } from './ui/background-beams';
 
 /**
  * Reusable Page Hero Component
@@ -27,6 +28,7 @@ const PageHero = ({
   stats = [],
   showWave = false,
   videoBackground,
+  showBeams = false,
   breadcrumb,
   children
 }) => {
@@ -35,7 +37,9 @@ const PageHero = ({
       <section className="relative w-full h-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228] pt-[194px] lg:pt-[250px] pb-12">
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
-          {videoBackground ? (
+          {showBeams ? (
+            <BackgroundBeams />
+          ) : videoBackground ? (
             <video 
               autoPlay 
               loop 

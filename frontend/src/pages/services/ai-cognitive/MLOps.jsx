@@ -50,7 +50,7 @@ const MLOps = () => {
     shortDescription: 'From Fragmentation to Standardized AI Excellence',
     description: 'Bridge the gap between experimental AI and industrial-scale production. We implement the governance, automation, and infrastructure needed to turn complex models into reliable business assets.',
     image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=80',
-    videoBackground: '/videos/engineering-rd-bg.mp4',
+    showBeams: true,
     
     primaryButton: { text: 'Talk To Our Experts', link: '/contact' },
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },

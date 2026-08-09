@@ -98,11 +98,12 @@ function buildGraph({ svc, deptName, deptSlug, url, title, description }) {
     },
   ];
 
-  if (svc.customFAQs?.length) {
+  const faqs = resolveServiceFaqs(svc);
+  if (faqs.length) {
     graph.push({
       '@type': 'FAQPage',
       '@id': `${url}#faq`,
-      mainEntity: svc.customFAQs.map((f) => ({
+      mainEntity: faqs.map((f) => ({
         '@type': 'Question',
         name: f.q,
         acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -258,6 +259,10 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
 
 const { servicesData } = await importAsEsm(path.join(DATA_DIR, 'servicesData.js'));
 
+// Same resolver the React page and the runtime schema builder use, so the
+// snapshot cannot describe a different FAQ from the one a visitor sees.
+const { resolveServiceFaqs } = await importAsEsm(path.join(DATA_DIR, 'serviceFaqs.js'));
+
 // seoData imports a JSON module, which plain ESM import cannot resolve here.
 // Stub it out — only serviceSEO's flat title/description/keywords are needed.
 let serviceSEO = {};
@@ -317,6 +322,11 @@ if (process.argv.includes('--check')) {
         department: deptNames[svc.departmentSlug] || svc.departmentSlug,
         description: (serviceSEO[slug]?.description || svc.shortDescription || '').trim(),
         capabilities: (svc.capabilityAreas || []).map((a) => a.title),
+        // Deliberately `customFAQs` and not the resolver used for the page's
+        // FAQPage markup. On-page markup should describe what a visitor sees,
+        // so a generic FAQ still gets marked up. llms.txt is a curated index —
+        // emitting the same six generic questions under 58 services would fill
+        // it with duplicates and bury the services that have real answers.
         faqs: (svc.customFAQs || []).slice(0, 3).map((f) => ({ q: f.q, a: f.a })),
         method: (svc.toolsStack?.items || []).map((i) => ({ rule: i.title, detail: i.desc })),
         dataHandling: (svc.dataBoundary?.blocks || []).map((b) => ({ topic: b.label, detail: b.body })),
