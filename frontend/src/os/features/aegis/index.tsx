@@ -13,6 +13,7 @@ import { AegisAgentsPage }         from './pages/AegisAgentsPage'
 import { AegisCompliancePage }     from './pages/AegisCompliancePage'
 import { AegisLiveFeedPage }       from './pages/AegisLiveFeedPage'
 import { SecurityFindingsPage }    from './pages/SecurityFindingsPage'
+import { AiSecurityViewPage }      from './pages/AiSecurityViewPage'
 import { AegisPermissionsPage }    from './pages/AegisPermissionsPage'
 import { AegisBudgetPage }         from './pages/AegisBudgetPage'
 
@@ -86,6 +87,7 @@ export function AegisModule() {
             <Route path="permissions"     element={<AegisPermissionsPage />}    />
             <Route path="live"            element={<AegisLiveFeedPage />}       />
             <Route path="findings"        element={<SecurityFindingsPage />}    />
+            <Route path="ai-security-view" element={<AiSecurityViewPage />}     />
             <Route path="enforcement"     element={<AegisBudgetPage />}          />
             <Route path="*"               element={<Navigate to={BASE} replace />} />
           </Routes>

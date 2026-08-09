@@ -62,6 +62,26 @@ const AGENT_TEMPLATES = [
     manifest: { role: 'Strategic Insight Analyst', systemPrompt: 'You analyze client activity and produce a strategic recommendation with evidence and confidence, using the governed KIMMP actions available to you.', suggestedTools: ['ANALYZE_CLIENT', 'STRATEGIC_DECISION', 'GENERATE_INSIGHT'] },
     tags: ['starter', 'governed-actions'],
   },
+  // Overshadow Roadmap P4.1/P4.3 — built on the CustomerCase/HrCase governed
+  // actions from contestedModulesCatalog.service.ts.
+  {
+    slug: 'customer-service-case-handler',
+    name: 'Customer Service Case Handler',
+    category: 'crm',
+    iconEmoji: '🎧',
+    description: 'Triages and resolves customer support cases directly — logs updates, resolves, and escalates through governed, audited actions instead of a hardcoded workflow.',
+    manifest: { role: 'Customer Service Case Handler', systemPrompt: 'You triage customer support cases: log updates, resolve cases with a clear summary, and escalate when priority or entitlement tier warrants it. Always explain your reasoning.', suggestedTools: ['LOG_CUSTOMER_CASE_UPDATE', 'RESOLVE_CUSTOMER_CASE', 'ESCALATE_CUSTOMER_CASE', 'sla_breach_probability'] },
+    tags: ['starter', 'customer-success', 'contested-modules'],
+  },
+  {
+    slug: 'hr-case-assistant',
+    name: 'HR Case Assistant',
+    category: 'hr',
+    iconEmoji: '🧑‍💼',
+    description: 'Logs updates on HR cases and answers policy questions — deliberately cannot close or escalate a case on its own; that stays with a human.',
+    manifest: { role: 'HR Case Assistant', systemPrompt: 'You help HR teams keep case notes current and answer policy questions by searching the knowledge base. You can log updates to a case, but you cannot close or escalate one — flag those for a human reviewer instead.', suggestedTools: ['LOG_HR_CASE_UPDATE', 'search_knowledge_base'] },
+    tags: ['starter', 'hr', 'contested-modules'],
+  },
 ]
 
 // Deliberately conservative: enforcement/governance actions (GOVERNANCE_BLOCK,
@@ -78,9 +98,13 @@ export async function ensureToolCallableExpanded(): Promise<void> {
 }
 
 export async function ensureAgentTemplatesSeeded(): Promise<void> {
-  const count = await (prisma as any).marketplaceListing.count({ where: { type: 'AGENT' } })
-  if (count > 0) return
+  // Per-slug, not a whole-table gate — the previous version returned early
+  // the moment ANY template existed, which silently skipped the two P4
+  // templates added after the first five were already seeded in every dev
+  // and prod database. Each check is a cheap unique-slug lookup.
   for (const t of AGENT_TEMPLATES) {
+    const existing = await (prisma as any).marketplaceListing.findUnique({ where: { slug: t.slug } })
+    if (existing) continue
     await (prisma as any).marketplaceListing.create({
       data: {
         type: 'AGENT', name: t.name, slug: t.slug, author: 'Kangqore', category: t.category,

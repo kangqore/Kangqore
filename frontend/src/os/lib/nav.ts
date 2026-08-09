@@ -191,6 +191,7 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'kimmp-vertical-analytics',label: 'Vertical Analytics',     path: `${BASE}/kangqore-immp/vertical-analytics`,          category: 'Enterprise', badge: 'new' },
       { id: 'kimmp-sdk-v2',            label: 'SDK v2',                 path: `${BASE}/kangqore-immp/sdk-v2`,                      category: 'Governance', badge: 'new' },
       { id: 'kimmp-compliance-overview', label: 'Compliance Overview',  path: `${BASE}/kangqore-immp/compliance-overview`,         category: 'Governance', badge: 'new' },
+      { id: 'kimmp-contested-modules', label: 'Contested Modules',    path: `${BASE}/kangqore-immp/contested-modules`,           category: 'Governance', badge: 'new' },
       { id: 'kimmp-soc2-audit',        label: 'SOC2 Type II',           path: `${BASE}/kangqore-immp/soc2-audit`,                  category: 'Governance', badge: 'new' },
       { id: 'kimmp-region-admin',      label: 'Region Admin',           path: `${BASE}/kangqore-immp/region-admin`,                category: 'Governance', badge: 'new' },
       { id: 'kimmp-privacy-dashboard', label: 'Privacy & GDPR',         path: `${BASE}/kangqore-immp/privacy-dashboard`,           category: 'Governance', badge: 'new' },
@@ -239,6 +240,7 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'aegis-permissions',  label: 'Permissions',  path: `${BASE}/aegis/permissions`,  category: 'Shield' },
       { id: 'aegis-enforcement',  label: 'Enforcement',  path: `${BASE}/aegis/enforcement`,  category: 'Shield',      badge: 'new' },
       { id: 'aegis-findings',     label: 'Findings',     path: `${BASE}/aegis/findings`,     category: 'Governance',  badge: 'new' },
+      { id: 'aegis-ai-security-view', label: 'AI Security View', path: `${BASE}/aegis/ai-security-view`, category: 'Governance', badge: 'new' },
     ],
   },
   {
