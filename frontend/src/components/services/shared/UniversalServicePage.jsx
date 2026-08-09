@@ -2128,6 +2128,13 @@ const featureMicros   = service.featureMicros
                 const n = String(i + 1).padStart(2, '0');
                 const isWide = i === 0 || i === 3;
                 const ACCENT = ['#2564ea','#4ab6d4','#6366f1','#10b981'];
+                // Text needs its own palette. The label below was ACCENT[i] at
+                // 50% alpha, which lands at 1.77-2.83:1 on this #06090f card —
+                // and brand blue fails at 4.5:1 even at full opacity (3.88).
+                // These are the same hues lifted toward white until each clears
+                // 5:1, giving headroom over the AA floor. ACCENT itself still
+                // drives the icon tint and card wash, which carry no text.
+                const ACCENT_TEXT = ['#467bed','#4ab6d4','#6e71f2','#10b981'];
                 return (
                   <div
                     key={label}
@@ -2155,7 +2162,7 @@ const featureMicros   = service.featureMicros
                     {/* Content */}
                     <div className="relative z-10">
                       <p className="text-[11px] font-black tracking-[0.28em] uppercase mb-2 transition-colors duration-500"
-                        style={{ color: `${ACCENT[i]}80` }}>
+                        style={{ color: ACCENT_TEXT[i] }}>
                         {n} — {featureTitles[i]}
                       </p>
                       <h3 className="text-white/70 group-hover:text-white font-black text-lg leading-snug mb-2 transition-colors duration-300">
@@ -2303,7 +2310,7 @@ const featureMicros   = service.featureMicros
                 <div key={idx} className="group bg-[#000000] p-8 flex flex-col transition-all duration-500 hover:bg-[#060a10] cursor-pointer">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:text-cyan-400 transition-colors duration-300">{item.industry}</span>
-                    <span className="text-white/30 group-hover:text-cyan-400 text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none">+</span>
+                    <span className="text-white/50 group-hover:text-cyan-400 text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none">+</span>
                   </div>
                   
                   <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
@@ -2370,7 +2377,7 @@ const featureMicros   = service.featureMicros
                         {card.metricLabel}
                       </p>
                       {card.metricContext && (
-                        <p className="text-white/25 text-xs font-medium mt-1.5">{card.metricContext}</p>
+                        <p className="text-white/50 text-xs font-medium mt-1.5">{card.metricContext}</p>
                       )}
                     </div>
                     <div className="border-t border-white/[0.06] pt-6">
@@ -2918,8 +2925,8 @@ const featureMicros   = service.featureMicros
                 </a>
               </div>
               <div className="group/weeks flex flex-col gap-1 lg:items-end cursor-default select-none">
-                <span className="text-[11px] font-black tracking-[0.25em] uppercase text-white/30 group-hover/weeks:text-white/80 transition-colors duration-300">From first call to first agent</span>
-                <span className="text-white/25 text-[11px] font-semibold group-hover/weeks:text-white/70 transition-colors duration-300">Strategy → Build → Production in 8 weeks</span>
+                <span className="text-[11px] font-black tracking-[0.25em] uppercase text-white/50 group-hover/weeks:text-white/80 transition-colors duration-300">From first call to first agent</span>
+                <span className="text-white/50 text-[11px] font-semibold group-hover/weeks:text-white/70 transition-colors duration-300">Strategy → Build → Production in 8 weeks</span>
               </div>
             </div>
 

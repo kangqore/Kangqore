@@ -148,6 +148,7 @@ const GlobalAuthPrompt = () => {
         {/* Modal Close Button */}
         <button 
           onClick={handleCloseAuthModal}
+          aria-label="Close"
           className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition z-20"
         >
           <X className="w-5 h-5" />

@@ -42,14 +42,18 @@ const ALLOWED_SECTION_PADDING = ['py-32', 'py-24', 'py-16'];
 // /40 was the secondary body colour and had never passed AA; it accounted for
 // 28 of 28 settled contrast failures on /services/agentic-ai. Only `text-`
 // utilities are constrained — border-/bg-/via-white/40 carry no contrast duty.
-// Only /40 and /45 are forbidden — those are the two that produced measured
-// axe failures (28 of 28 settled violations on /services/agentic-ai came from
-// them, at 3.65-3.74 and 4.42). Lower opacities are the ghost-text convention
-// (large background numerals, dividers) where a contrast ratio is not the
-// right test, and blanket-banning them would flag deliberate decoration.
-// text-white/35 x18 sits between the two and is unreviewed — see the note at
-// the foot of this file.
-const BANNED_TEXT_OPACITY = [40, 45];
+// Banned because each was measured failing as real text, not assumed:
+//   /18 x2   label "DESIGN APPROACH PRINCIPLES"        /25 x10  /30 x7
+//   /35 x18  body copy and lists in ProductStrategyBIDS  /40 x115 /45 x19
+// On black these land between 2.0:1 and 4.4:1, under the 4.5 AA floor. Several
+// only brighten on hover, which does not help — WCAG judges the resting state.
+//
+// Deliberately NOT banned: /5, /10, /15 and /20 are icons (ChevronDown,
+// ArrowRight, member.icon) and bullet separators. Those are non-text, carry no
+// contrast duty at 1.4.3, and banning them would flag deliberate decoration.
+// The opacity value alone does not separate the two cases, so this list is
+// per-token evidence rather than a floor.
+const BANNED_TEXT_OPACITY = [18, 25, 30, 35, 40, 45];
 const TEXT_OPACITY_RX = /text-white\/(\d{1,3})\b/g;
 
 // Responsive prefixes are fine — py-16 md:py-24 is one rhythm expressed twice.
@@ -164,9 +168,3 @@ if (failed) {
   process.exit(1);
 }
 console.log('\ndesign tokens pass');
-
-// ── Unreviewed ────────────────────────────────────────────────────────────────
-// text-white/35 (18 uses in the services tree) composites to ~2.9:1 on black.
-// If any of those are body copy rather than decoration they fail AA, but I have
-// not measured them, so they are not banned here. Worth a pass with the
-// scroll-and-settle axe method before deciding.
