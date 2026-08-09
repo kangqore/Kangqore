@@ -937,6 +937,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
             { value: 'Global', label: 'Delivery', color: 'text-brand-cyan' },
           ]}
           videoBackground={videoBg}
+          showBeams={service.showBeams}
           breadcrumb={[
             { label: 'Home', link: '/' },
             { label: 'Services', link: '/services' },

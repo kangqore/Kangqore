@@ -21,11 +21,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import SvcRuler from './SvcRuler';
 import { CardRail } from './mobileRail';
+import { article, lowerServiceName, resolveServiceFaqs, genericServicePackages } from '../../../data/serviceFaqs';
 import ConciergeSection from '../../concierge/ConciergeSection';
 import { AIToolsSection, AIInsightsSection } from '../cognition/AICustomSections';
 import { servicesData } from '../../../data/servicesData';
 import ResponsiveImage from '../../media/ResponsiveImage';
 import Beams from '../../ui/Beams';
+import { BackgroundBeams } from '../../ui/background-beams';
 import GeminiComparisonSection from './GeminiComparisonSection';
 import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
 import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DModel';
@@ -309,12 +311,12 @@ function getParityService(service, department) {
   const whatIsTitle = service.whatIsTitle || name;
   const whatIsHighlight = service.whatIsHighlight || 'Engineered for Enterprise Scale.';
   const whatIsPara2 = service.whatIsPara2 || (
-    deptSlug === 'foundry' ? `Kangqore delivers end-to-end ${name.toLowerCase()} engineering, cloud architecture, and DevOps automation — building high-availability systems that scale effortlessly under heavy enterprise workloads.` :
-    deptSlug === 'reimagine' ? `Kangqore accelerates ${name.toLowerCase()} through proven modernization playbooks, technical debt reduction, and cloud-native re-platforming — delivering speed and agility without operational disruption.` :
-    deptSlug === 'shield' ? `Kangqore embeds robust ${name.toLowerCase()} controls, zero-trust security architecture, and regulatory compliance validation — protecting critical assets against emerging operational and cyber risks.` :
-    deptSlug === 'platforms' ? `Kangqore unifies ${name.toLowerCase()} across SaaS platforms, ERP systems, and enterprise APIs — creating seamless workflow integration and maximizing technology investment yield.` :
-    deptSlug === 'growth' ? `Kangqore powers ${name.toLowerCase()} through first-party data strategies, conversion rate engineering, and omnichannel AI marketing — driving measurable revenue and customer acquisition.` :
-    `Kangqore implements ${name.toLowerCase()} solutions that understand context, learn from operational data, and execute complex business workflows with continuous governance.`
+    deptSlug === 'foundry' ? `Kangqore delivers end-to-end ${lowerServiceName(name)} engineering, cloud architecture, and DevOps automation — building high-availability systems that scale effortlessly under heavy enterprise workloads.` :
+    deptSlug === 'reimagine' ? `Kangqore accelerates ${lowerServiceName(name)} through proven modernization playbooks, technical debt reduction, and cloud-native re-platforming — delivering speed and agility without operational disruption.` :
+    deptSlug === 'shield' ? `Kangqore embeds robust ${lowerServiceName(name)} controls, zero-trust security architecture, and regulatory compliance validation — protecting critical assets against emerging operational and cyber risks.` :
+    deptSlug === 'platforms' ? `Kangqore unifies ${lowerServiceName(name)} across SaaS platforms, ERP systems, and enterprise APIs — creating seamless workflow integration and maximizing technology investment yield.` :
+    deptSlug === 'growth' ? `Kangqore powers ${lowerServiceName(name)} through first-party data strategies, conversion rate engineering, and omnichannel AI marketing — driving measurable revenue and customer acquisition.` :
+    `Kangqore implements ${lowerServiceName(name)} solutions that understand context, learn from operational data, and execute complex business workflows with continuous governance.`
   );
   const whatIsEyebrow = service.whatIsEyebrow || `What ${name} services does Kangqore offer?`;
   const bannerBrandDesc = service.bannerBrandDesc || (
@@ -331,36 +333,36 @@ function getParityService(service, department) {
     ? service.businessMetrics
     : (
       deptSlug === 'foundry' ? [
-        { title: 'Deployment Velocity', desc: `Increase in deployment velocity and release frequency across ${name.toLowerCase()} pipelines.`, value: '10', suffix: 'x', metricLabel: 'Faster Releases', icon: 'Zap' },
+        { title: 'Deployment Velocity', desc: `Increase in deployment velocity and release frequency across ${lowerServiceName(name)} pipelines.`, value: '10', suffix: 'x', metricLabel: 'Faster Releases', icon: 'Zap' },
         { title: 'System Availability', desc: `High-availability uptime maintained across production workloads and cloud infrastructure.`, value: '99.99', suffix: '%', metricLabel: 'Uptime SLA', icon: 'Target' },
         { title: 'Infrastructure Savings', desc: `Reduction in cloud waste and infrastructure spending through automated resource optimization.`, value: '40', suffix: '%', metricLabel: 'Cost Reduction', icon: 'TrendingUp' },
         { title: 'Defect Reduction', desc: 'Decrease in production defects after implementing automated CI/CD quality gates.', value: '85', suffix: '%', metricLabel: 'Fewer Defects', icon: 'Shield' },
       ] :
       deptSlug === 'reimagine' ? [
-        { title: 'Modernization Velocity', desc: `Accelerated transformation cycle times for ${name.toLowerCase()} applications.`, value: '3', suffix: 'x', metricLabel: 'Faster Delivery', icon: 'Zap' },
+        { title: 'Modernization Velocity', desc: `Accelerated transformation cycle times for ${lowerServiceName(name)} applications.`, value: '3', suffix: 'x', metricLabel: 'Faster Delivery', icon: 'Zap' },
         { title: 'Technical Debt Elimination', desc: 'Systematic reduction of legacy codebase technical debt and maintenance overhead.', value: '75', suffix: '%', metricLabel: 'Debt Reduced', icon: 'TrendingUp' },
         { title: 'Latency Compression', desc: 'Improvement in system response times and transaction processing speed.', value: '60', suffix: '%', metricLabel: 'Faster Latency', icon: 'Target' },
         { title: 'Portfolio ROI', desc: 'Return on investment delivered across modernized enterprise applications.', value: '250', suffix: '%', metricLabel: 'Measurable ROI', icon: 'Shield' },
       ] :
       deptSlug === 'shield' ? [
-        { title: 'Threat Detection Rate', desc: `Improvement in threat detection and security event classification for ${name.toLowerCase()}.`, value: '99.8', suffix: '%', metricLabel: 'Detection Rate', icon: 'ShieldCheck' },
+        { title: 'Threat Detection Rate', desc: `Improvement in threat detection and security event classification for ${lowerServiceName(name)}.`, value: '99.8', suffix: '%', metricLabel: 'Detection Rate', icon: 'ShieldCheck' },
         { title: 'Incident Response Time', desc: 'Reduction in mean time to detect and remediate security incidents.', value: '70', suffix: '%', metricLabel: 'Faster Response', icon: 'Zap' },
         { title: 'Compliance Coverage', desc: 'Controls mapped and validated against ISO 27001, SOC 2, NIST, and GDPR standards.', value: '100', suffix: '%', metricLabel: 'Audit Readiness', icon: 'Target' },
         { title: 'Security Incident Reduction', desc: 'Reduction in security breaches after zero-trust control enforcement.', value: '85', suffix: '%', metricLabel: 'Fewer Incidents', icon: 'Lock' },
       ] :
       deptSlug === 'platforms' ? [
-        { title: 'Process Cycle Time', desc: `Reduction in end-to-end business process execution time across ${name.toLowerCase()}.`, value: '60', suffix: '%', metricLabel: 'Faster Cycle', icon: 'Zap' },
+        { title: 'Process Cycle Time', desc: `Reduction in end-to-end business process execution time across ${lowerServiceName(name)}.`, value: '60', suffix: '%', metricLabel: 'Faster Cycle', icon: 'Zap' },
         { title: 'Platform Adoption', desc: 'User adoption rate achieved across integrated enterprise platform workflows.', value: '95', suffix: '%', metricLabel: 'User Adoption', icon: 'Target' },
         { title: 'Integration Errors', desc: 'Reduction in data synchronization errors between enterprise platform silos.', value: '90', suffix: '%', metricLabel: 'Error Reduction', icon: 'TrendingUp' },
         { title: 'Enterprise TCO', desc: 'Lower total cost of ownership through platform consolidation and licensing efficiency.', value: '35', suffix: '%', metricLabel: 'TCO Reduction', icon: 'Shield' },
       ] :
       deptSlug === 'growth' ? [
-        { title: 'Conversion Rate Lift', desc: `Increase in user conversion rates engineered through ${name.toLowerCase()} optimization.`, value: '45', suffix: '%', metricLabel: 'Conversion Lift', icon: 'TrendingUp' },
+        { title: 'Conversion Rate Lift', desc: `Increase in user conversion rates engineered through ${lowerServiceName(name)} optimization.`, value: '45', suffix: '%', metricLabel: 'Conversion Lift', icon: 'TrendingUp' },
         { title: 'Acquisition Cost Reduction', desc: 'Decrease in customer acquisition cost (CAC) via precision targeted campaigns.', value: '35', suffix: '%', metricLabel: 'Lower CAC', icon: 'Target' },
         { title: 'Organic Traffic Surge', desc: 'Growth in high-intent organic search traffic and search engine visibility.', value: '180', suffix: '%', metricLabel: 'Traffic Growth', icon: 'Zap' },
         { title: 'Creative Productivity', desc: 'Savings in creative asset production costs using automated GenAI workflows.', value: '40', suffix: '%', metricLabel: 'Ops Savings', icon: 'Shield' },
       ] : [
-        { title: 'Accuracy & Quality', desc: `Improvement in operational accuracy and solution precision for ${name.toLowerCase()}.`, value: '94', suffix: '%', metricLabel: 'High Accuracy', icon: 'BrainCircuit' },
+        { title: 'Accuracy & Quality', desc: `Improvement in operational accuracy and solution precision for ${lowerServiceName(name)}.`, value: '94', suffix: '%', metricLabel: 'High Accuracy', icon: 'BrainCircuit' },
         { title: 'Process Automation', desc: 'End-to-end automation rate achieved across complex decision workflows.', value: '65', suffix: '%', metricLabel: 'Automated Rate', icon: 'Target' },
         { title: 'Insight Discovery', desc: 'Faster time to actionable insights derived from unstructured enterprise data.', value: '5', suffix: 'x', metricLabel: 'Faster Insights', icon: 'Zap' },
         { title: 'Production Models', desc: 'Scalable models and cognitive services operationalized across client estates.', value: '100', suffix: '+', metricLabel: 'Models Live', icon: 'Layers' },
@@ -372,7 +374,7 @@ function getParityService(service, department) {
     ? service.capabilityAreas
     : (
       deptSlug === 'foundry' ? [
-        { title: `${name} Architecture & Cloud Design`, desc: `Design resilient, high-availability cloud architectures tailored for ${name.toLowerCase()} workloads.`, items: [`Cloud Infrastructure: Architect multi-cloud architectures across AWS, Azure, and GCP for ${name.toLowerCase()}.`, `Scalability & Resilience: Engineer automated auto-scaling and failover capabilities for production systems.`, `Performance Engineering: Eliminate latency bottlenecks through rigorous performance tuning.`, `Infrastructure as Code: Provision repeatable environments using Terraform, Pulumi, and Ansible.`, `Container Orchestration: Deploy Kubernetes meshes for containerized microservices.`, `High Availability: Ensure 99.99% system availability with disaster recovery protocols.`] },
+        { title: `${name} Architecture & Cloud Design`, desc: `Design resilient, high-availability cloud architectures tailored for ${lowerServiceName(name)} workloads.`, items: [`Cloud Infrastructure: Architect multi-cloud architectures across AWS, Azure, and GCP for ${lowerServiceName(name)}.`, `Scalability & Resilience: Engineer automated auto-scaling and failover capabilities for production systems.`, `Performance Engineering: Eliminate latency bottlenecks through rigorous performance tuning.`, `Infrastructure as Code: Provision repeatable environments using Terraform, Pulumi, and Ansible.`, `Container Orchestration: Deploy Kubernetes meshes for containerized microservices.`, `High Availability: Ensure 99.99% system availability with disaster recovery protocols.`] },
         { title: `DevOps & CI/CD Automation`, desc: `Streamline software delivery pipelines with automated testing, build, and deployment automation.`, items: [`Automated Build Pipelines: Build robust CI/CD pipelines using GitHub Actions, GitLab, and Jenkins.`, `Shift-Left Security: Embed SAST/DAST security scanning directly into commit pipelines.`, `Environment Provisioning: Automate ephemeral preview environments for rapid QA validation.`, `Zero-Downtime Releases: Deploy blue/green and canary release strategies with automated rollback.`, `Dependency Management: Maintain secure, automated dependency scanning and updates.`, `Pipeline Observability: Track build times, test pass rates, and release frequency.`] },
         { title: `Quality Engineering & Testing`, desc: `Ensure code quality, performance, and security through continuous automated testing.`, items: [`Test Automation: Implement unit, integration, and end-to-end automated test suites.`, `Performance & Load Testing: Simulate high-concurrency traffic using k6 and Locust.`, `Security Testing: Conduct vulnerability assessments and penetration testing on endpoints.`, `API Contract Testing: Validate API contracts across microservice boundaries.`, `Regression Guardrails: Guarantee zero functional regression during continuous deployments.`, `Quality Telemetry: Track test coverage, code quality metrics, and technical debt.`] },
         { title: `Site Reliability & Observability`, desc: `Deliver 24/7 system visibility, automated incident remediation, and SLA tracking.`, items: [`Full-Stack Observability: Monitor metrics, logs, and distributed traces using Datadog and Grafana.`, `SLO & SLA Management: Define and track service level objectives and error budgets.`, `Automated Alerting: Configure intelligent incident alerting with PagerDuty integration.`, `Chaos Engineering: Conduct resilience experiments to validate failover systems under stress.`, `Log Management: Centralize log aggregation and structured log analysis.`, `Incident Post-Mortems: Drive continuous reliability improvements through blameless post-mortems.`] },
@@ -416,11 +418,11 @@ function getParityService(service, department) {
         { title: `Growth Funnel & Revenue Engineering`, desc: `Design and optimize end-to-end user journeys from initial impression to customer expansion.`, items: [`Funnel Architecture: Map complete customer acquisition, activation, and retention loops.`, `Lead Scoring & Nurturing: Build automated email nurture sequences based on user behavior.`, `Retention Engineering: Implement product-led growth (PLG) tactics to reduce customer churn.`, `Virality & Referral Loops: Engineer referral mechanics that turn users into brand advocates.`, `Pricing & Packaging Optimization: Experiment with pricing tiers to maximize Average Revenue Per User.`, `Revenue Analytics: Track CAC, LTV, payback period, and funnel drop-off metrics in real time.`] },
         { title: `Omnichannel Campaign Execution`, desc: `Plan and execute integrated marketing campaigns across digital and traditional channels.`, items: [`Campaign Strategy: Define campaign themes, target buyer personas, and messaging matrix.`, `Media Planning: Allocate media budgets strategically across channels for maximum impact.`, `Influencer & PR Integration: Coordinate digital PR and influencer amplification campaigns.`, `Event & Launch Marketing: Drive registration and engagement for virtual and live events.`, `Campaign Analytics: Deliver unified real-time reporting dashboards for executive leadership.`, `Continuous Optimization: Adjust campaign spend and messaging mid-flight based on performance.`] }
       ] : [
-        { title: `Managing ${name} Solution Quality`, desc: `Ensure ${name.toLowerCase()} solutions operate with consistent accuracy, reliability, and enterprise performance.`, items: [`Data & Pipeline Engineering: Design robust validation pipelines for ${name.toLowerCase()}.`, `Quality Assurance & Testing: Establish frameworks to evaluate accuracy and production readiness.`, `Risk & Anomaly Detection: Identify and mitigate anomalies and unmanaged risks early.`, `Continuous Telemetry: Monitor operational telemetry and maintain optimal system effectiveness.`, `Evaluation & Benchmarking: Measure systems against predefined quality metrics and benchmarks.`, `Resilience & Reliability: Improve fault tolerance and system recovery capabilities.`] },
-        { title: `Establishing Ethical Governance & Control`, desc: `Develop governance frameworks that ensure ${name.toLowerCase()} operates responsibly and transparently.`, items: [`Responsible Frameworks: Define governance principles guiding design, deployment, and operations.`, `Fairness & Transparency: Implement controls that promote explainability and equitable outcomes.`, `Explainable Architecture: Enable stakeholders to understand decision pathways and reasoning.`, `Accountability & Oversight: Establish structures defining ownership and approval workflows.`, `Human-in-the-Loop Oversight: Integrate human review mechanisms for high-impact decisions.`, `Governance Controls: Apply tailored controls for core enterprise systems.`] },
-        { title: `Enterprise ${name} Lifecycle Governance`, desc: `Establish enterprise-wide governance for managing ${name.toLowerCase()} across development and maintenance.`, items: [`Lifecycle Management: Govern solutions through development, deployment, and maintenance.`, `Version Control & Lineage: Maintain complete version history and operational reproducibility.`, `Deployment Release Gates: Implement controlled release management and gated approvals.`, `Performance Validation: Continuously validate reliability and business effectiveness.`, `Change Management: Manage updates and retraining cycles with minimal disruption.`, `Centralized Asset Registry: Maintain a single repository of metadata and documentation.`] },
-        { title: `Compliance & Risk Management`, desc: `Ensure ${name.toLowerCase()} complies with global regulations and risk requirements.`, items: [`Regulatory Alignment: Align solutions with international regulations and governance rules.`, `Data Privacy & Protection: Implement controls for anonymization and secure handling.`, `Audit & Policy Enforcement: Maintain audit trails and policy enforcement evidence.`, `Enterprise Risk Mitigation: Identify, assess, prioritize, and mitigate business risks.`, `Security & Access Governance: Protect assets through identity management and RBAC.`, `Compliance Monitoring: Continuously track compliance posture and generate reports.`] },
-        { title: `Security, Trust & Infrastructure`, desc: `Protect ${name.toLowerCase()} systems and enterprise data against security risks.`, items: [`Security Architecture: Design secure infrastructures with zero-trust security principles.`, `Threat & Injection Defense: Protect systems against data leakage and vulnerabilities.`, `Identity & Access Management: Enforce role-based access and least-privilege controls.`, `Threat Detection Telemetry: Continuously detect malicious behavior across environments.`, `Secrets Management: Secure API keys, tokens, and confidential enterprise assets.`, `Infrastructure Hardening: Implement encryption and secure deployment pipelines.`] },
+        { title: `Managing ${name} Solution Quality`, desc: `Ensure ${lowerServiceName(name)} solutions operate with consistent accuracy, reliability, and enterprise performance.`, items: [`Data & Pipeline Engineering: Design robust validation pipelines for ${lowerServiceName(name)}.`, `Quality Assurance & Testing: Establish frameworks to evaluate accuracy and production readiness.`, `Risk & Anomaly Detection: Identify and mitigate anomalies and unmanaged risks early.`, `Continuous Telemetry: Monitor operational telemetry and maintain optimal system effectiveness.`, `Evaluation & Benchmarking: Measure systems against predefined quality metrics and benchmarks.`, `Resilience & Reliability: Improve fault tolerance and system recovery capabilities.`] },
+        { title: `Establishing Ethical Governance & Control`, desc: `Develop governance frameworks that ensure ${lowerServiceName(name)} operates responsibly and transparently.`, items: [`Responsible Frameworks: Define governance principles guiding design, deployment, and operations.`, `Fairness & Transparency: Implement controls that promote explainability and equitable outcomes.`, `Explainable Architecture: Enable stakeholders to understand decision pathways and reasoning.`, `Accountability & Oversight: Establish structures defining ownership and approval workflows.`, `Human-in-the-Loop Oversight: Integrate human review mechanisms for high-impact decisions.`, `Governance Controls: Apply tailored controls for core enterprise systems.`] },
+        { title: `Enterprise ${name} Lifecycle Governance`, desc: `Establish enterprise-wide governance for managing ${lowerServiceName(name)} across development and maintenance.`, items: [`Lifecycle Management: Govern solutions through development, deployment, and maintenance.`, `Version Control & Lineage: Maintain complete version history and operational reproducibility.`, `Deployment Release Gates: Implement controlled release management and gated approvals.`, `Performance Validation: Continuously validate reliability and business effectiveness.`, `Change Management: Manage updates and retraining cycles with minimal disruption.`, `Centralized Asset Registry: Maintain a single repository of metadata and documentation.`] },
+        { title: `Compliance & Risk Management`, desc: `Ensure ${lowerServiceName(name)} complies with global regulations and risk requirements.`, items: [`Regulatory Alignment: Align solutions with international regulations and governance rules.`, `Data Privacy & Protection: Implement controls for anonymization and secure handling.`, `Audit & Policy Enforcement: Maintain audit trails and policy enforcement evidence.`, `Enterprise Risk Mitigation: Identify, assess, prioritize, and mitigate business risks.`, `Security & Access Governance: Protect assets through identity management and RBAC.`, `Compliance Monitoring: Continuously track compliance posture and generate reports.`] },
+        { title: `Security, Trust & Infrastructure`, desc: `Protect ${lowerServiceName(name)} systems and enterprise data against security risks.`, items: [`Security Architecture: Design secure infrastructures with zero-trust security principles.`, `Threat & Injection Defense: Protect systems against data leakage and vulnerabilities.`, `Identity & Access Management: Enforce role-based access and least-privilege controls.`, `Threat Detection Telemetry: Continuously detect malicious behavior across environments.`, `Secrets Management: Secure API keys, tokens, and confidential enterprise assets.`, `Infrastructure Hardening: Implement encryption and secure deployment pipelines.`] },
         { title: `Observability & Operations`, desc: `Provide continuous visibility into health, performance, cost, and reliability.`, items: [`Full Telemetry Observability: Monitor behavior, latency, throughput, and system health.`, `Operational Monitoring: Track service availability, response times, and resource usage.`, `Cost Optimization: Analyze infrastructure spending and resource efficiency.`, `Incident Management: Detect, investigate, and recover from failures rapidly.`, `Capacity Management: Plan and optimize infrastructure capacity for enterprise workloads.`, `Operational Analytics: Deliver executive dashboards and SLA reporting.`] },
         { title: `${name} Strategy & Transformation`, desc: `Establish operating models, frameworks, and strategic transformation roadmaps.`, items: [`Transformation Strategy: Define vision, principles, and strategic roadmaps.`, `Operating Model Design: Design governance structures, roles, and decision authorities.`, `Maturity Assessment: Evaluate capabilities, identify gaps, and build roadmaps.`, `Policy Management: Develop enterprise policies and governance standards.`, `Portfolio Governance: Prioritize and oversee enterprise initiatives and value realization.`, `Adoption & Change Management: Drive organizational readiness and change management.`] }
       ]
@@ -492,7 +494,7 @@ function getParityService(service, department) {
       colB: `Governed Enterprise ${name} (eQORE™)`,
       heading: `Legacy ${name} vs. Governed Enterprise ${name}`,
       rows: [
-        { dimension: 'Autonomy & Control', before: `Unmonitored ${name.toLowerCase()} processes with manual intervention and high error rates.`, after: `Governed execution — pre-action approval gates, policy controls, and automated kill-switches.` },
+        { dimension: 'Autonomy & Control', before: `Unmonitored ${lowerServiceName(name)} processes with manual intervention and high error rates.`, after: `Governed execution — pre-action approval gates, policy controls, and automated kill-switches.` },
         { dimension: 'Workflow Velocity', before: `Fragmented scripts and legacy silos with manual handoffs and no audit trails.`, after: `Continuous audit logging — automated policy enforcement and end-to-end execution.` },
         { dimension: 'System Reliability', before: `Silent system drift and unmonitored performance decay degrading quality over time.`, after: `Real-time drift detection — automated alerts trigger human-in-the-loop review before impact.` },
         { dimension: 'Data Integration', before: `Disconnected data stores creating data leakage and compliance vulnerabilities.`, after: `Centralized platform registry — enterprise-wide visibility, risk classification, and RBAC controls.` },
@@ -535,7 +537,7 @@ function getParityService(service, department) {
         { title: 'Omnichannel Campaign Execution Mesh', icon: 'Zap', description: 'Automated execution engine pushing personalized messaging across Search, Paid Social, Email, and Web.', features: ['Cross-Channel Push', 'GenAI Ad Workflows', 'Bid Optimization'] },
         { title: 'Attribution & CRO Analytics Dashboard', icon: 'Activity', description: 'Real-time revenue dashboard delivering multi-touch attribution metrics and experiment test results.', features: ['Multi-Touch Attribution', 'A/B Test Analytics', 'ROI Scorecards'] }
       ] : [
-        { title: 'Policy & Ethics Layer', icon: 'ShieldCheck', description: `Define enterprise ${name.toLowerCase()} principles, ethical guardrails, and automated risk classification across all systems.`, features: ['Risk Tiering', 'Ethical Guardrails', 'Usage Policies', 'Regulatory Alignment'] },
+        { title: 'Policy & Ethics Layer', icon: 'ShieldCheck', description: `Define enterprise ${lowerServiceName(name)} principles, ethical guardrails, and automated risk classification across all systems.`, features: ['Risk Tiering', 'Ethical Guardrails', 'Usage Policies', 'Regulatory Alignment'] },
         { title: 'Control & Orchestration Engine', icon: 'BrainCircuit', description: `Centralized system registries, automated release gates, behavioral boundaries, and lifecycle documentation.`, features: ['Central Registries', 'Release Gates', 'Behavior Limits', 'Version Control'] },
         { title: 'Data & Privacy Core', icon: 'Lock', description: `Strict oversight over enterprise data ingestion, masking, privacy protection, and lineage tracking.`, features: ['Data Masking', 'Consent Management', 'Lineage Tracking', 'PII Protection'] },
         { title: 'Execution Oversight & Telemetry', icon: 'Activity', description: `Real-time human-in-the-loop checkpoints, anomaly detection alerts, and emergency kill-switches.`, features: ['HITL Workflows', 'Immutable Audit Logs', 'Anomaly Alerts', 'Emergency Kill-Switches'] }
@@ -586,39 +588,33 @@ function getParityService(service, department) {
         { industry: 'Real Estate & Property', headline: `Omnichannel lead generation and automated CRM lead scoring sequences.`, agents: ['Lead Generation Lead', 'CRM Nurturing Specialist', 'Paid Social Architect'] },
         { industry: 'Higher Education & EdTech', headline: `Student enrollment growth funnels and personalized conversion landing pages.`, agents: ['Enrollment Growth Specialist', 'Landing Page Engineer', 'Conversion Analytics Lead'] }
       ] : [
-        { industry: 'Banking & Financial Services', headline: `Model risk management (MRM) and ${name.toLowerCase()} explainability.`, agents: [`${name} Risk Auditor Agent`, 'Regulatory Compliance Agent', 'Decision Explainability Agent'] },
-        { industry: 'Healthcare & Life Sciences', headline: `Clinical ${name.toLowerCase()} validation and patient data privacy.`, agents: ['Clinical Validation Agent', 'HIPAA Privacy Shield Agent', 'EHR Consent Agent'] },
-        { industry: 'Manufacturing & Industry', headline: `Industrial ${name.toLowerCase()} safety and automated QA compliance.`, agents: ['Industrial Safety Auditor', 'QA Compliance Agent', 'Predictive Maintenance Auditor'] },
-        { industry: 'Retail & Consumer Goods', headline: `Fairness and consumer data privacy controls for ${name.toLowerCase()}.`, agents: ['Pricing Fairness Agent', 'Bias Detection Agent', 'Consumer Privacy Agent'] },
-        { industry: 'IT & Infrastructure', headline: `Policy enforcement and multi-tenant security for ${name.toLowerCase()}.`, agents: ['Policy Enforcement Agent', 'Multi-Tenant Security Agent', 'API Governance Agent'] },
-        { industry: 'EdTech & Higher Ed', headline: `Student data privacy and ${name.toLowerCase()} evaluation fairness.`, agents: ['Student Privacy Agent', 'Evaluation Fairness Agent', 'Administrative Audit Agent'] }
+        { industry: 'Banking & Financial Services', headline: `Model risk management (MRM) and ${lowerServiceName(name)} explainability.`, agents: [`${name} Risk Auditor Agent`, 'Regulatory Compliance Agent', 'Decision Explainability Agent'] },
+        { industry: 'Healthcare & Life Sciences', headline: `Clinical ${lowerServiceName(name)} validation and patient data privacy.`, agents: ['Clinical Validation Agent', 'HIPAA Privacy Shield Agent', 'EHR Consent Agent'] },
+        { industry: 'Manufacturing & Industry', headline: `Industrial ${lowerServiceName(name)} safety and automated QA compliance.`, agents: ['Industrial Safety Auditor', 'QA Compliance Agent', 'Predictive Maintenance Auditor'] },
+        { industry: 'Retail & Consumer Goods', headline: `Fairness and consumer data privacy controls for ${lowerServiceName(name)}.`, agents: ['Pricing Fairness Agent', 'Bias Detection Agent', 'Consumer Privacy Agent'] },
+        { industry: 'IT & Infrastructure', headline: `Policy enforcement and multi-tenant security for ${lowerServiceName(name)}.`, agents: ['Policy Enforcement Agent', 'Multi-Tenant Security Agent', 'API Governance Agent'] },
+        { industry: 'EdTech & Higher Ed', headline: `Student data privacy and ${lowerServiceName(name)} evaluation fairness.`, agents: ['Student Privacy Agent', 'Evaluation Fairness Agent', 'Administrative Audit Agent'] }
       ]
     );
 
   // Service Packages Fallback
   const servicePackages = (service.servicePackages && service.servicePackages.length > 0)
     ? service.servicePackages
-    : [
-        { name: 'Strategy & Audit', description: `Comprehensive ${name.toLowerCase()} assessment, architecture review, and strategic execution roadmap.`, duration: '2–3 weeks', tier: 'Advisory' },
-        { name: 'Pilot Pod', description: `Targeted deployment of core ${name.toLowerCase()} capability for one high-impact business unit.`, duration: '8 weeks', tier: 'Pilot' },
-        { name: 'Platform Build', description: `Engineering enterprise-wide ${name.toLowerCase()} architecture, automated pipelines, and core system integration.`, duration: '16–24 weeks', tier: 'Platform' },
-        { name: 'Managed Operations', description: `24/7 production monitoring, incident response, performance optimization, and operational management.`, duration: 'Ongoing', tier: 'Managed' },
-        { name: 'Continuous Scale', description: `Enterprise-wide optimization, periodic capability upgrades, and continuous strategic tuning.`, duration: 'Ongoing', tier: 'Enterprise' }
-      ];
+    : genericServicePackages(service);
 
   // Outcome Cards Fallback
   const outcomeCard = service.outcomeCard || {
     illustrative: true,
     metric: deptSlug === 'foundry' ? '99.99%' : deptSlug === 'reimagine' ? '65%' : deptSlug === 'shield' ? '99.8%' : deptSlug === 'platforms' ? '60%' : deptSlug === 'growth' ? '+45%' : '65%',
-    metricLabel: `Improvement in ${name.toLowerCase()} operational performance`,
+    metricLabel: `Improvement in ${lowerServiceName(name)} operational performance`,
     industry: 'Global Enterprise Organization',
-    problem: `Legacy bottlenecks and fragmented tools severely impacted execution speed and created operational risks for ${name.toLowerCase()}.`,
-    outcome: `Kangqore engineered an integrated ${name.toLowerCase()} solution with automated pipelines — delivering measurable performance lift and 100% operational reliability.`
+    problem: `Legacy bottlenecks and fragmented tools severely impacted execution speed and created operational risks for ${lowerServiceName(name)}.`,
+    outcome: `Kangqore engineered an integrated ${lowerServiceName(name)} solution with automated pipelines — delivering measurable performance lift and 100% operational reliability.`
   };
   const outcomeCard2 = service.outcomeCard2 || {
     illustrative: true,
     metric: deptSlug === 'foundry' ? '10x' : deptSlug === 'reimagine' ? '3x' : deptSlug === 'shield' ? '100%' : deptSlug === 'platforms' ? '95%' : deptSlug === 'growth' ? '-35%' : '99.9%',
-    metricLabel: `Efficiency gain in ${name.toLowerCase()} workflows`,
+    metricLabel: `Efficiency gain in ${lowerServiceName(name)} workflows`,
     industry: 'Financial & Enterprise Services',
     problem: `Manual overhead and unmonitored system changes created continuous delay and compliance exposure.`,
     outcome: `Kangqore deployed automated governance, real-time telemetry, and streamlined workflows — achieving maximum operational yield.`
@@ -632,17 +628,10 @@ function getParityService(service, department) {
   // A third card now renders only when a service supplies real data for it.
   const outcomeCard3 = service.outcomeCard3 || null;
 
-  // Custom FAQs Fallback
-  const customFAQs = (service.customFAQs && service.customFAQs.length > 0)
-    ? service.customFAQs
-    : [
-        { q: `What makes Kangqore's approach to ${name} unique?`, a: `Kangqore combines deep domain engineering with automated governance, robust architecture standards, and measurable business KPIs. We don't just deliver tools — we engineer end-to-end capabilities that compound value over time.` },
-        { q: `How quickly can we see initial results from ${article(name)} ${name} engagement?`, a: `Our Strategy & Audit completes in 2–3 weeks, delivering a clear architecture and execution roadmap. A Pilot Pod delivers a production-grade capability in 8 weeks, giving you immediate operational ROI.` },
-        { q: `How do you handle integration with our existing systems?`, a: `We design reusable API layers, containerized microservices, and standardized connectors. Whether you run legacy mainframes, cloud-native meshes, or hybrid SaaS platforms, our architectures integrate seamlessly without interrupting live operations.` },
-        { q: `What governance and compliance standards are enforced?`, a: `Governance is built into every layer. Depending on your industry, we align controls with ISO 27001, SOC 2, GDPR, HIPAA, SOX, and NIST frameworks — producing immutable audit logs and real-time compliance dashboards.` },
-        { q: `Can you customize the solution for our specific industry requirements?`, a: `Yes. Every engagement leverages our industry-specific blueprints across Banking, Healthcare, Manufacturing, Retail, Technology, and Public Sector — ensuring domain compliance and business alignment from day one.` },
-        { q: `What ongoing operational support does Kangqore provide?`, a: `We offer Managed Operations and Continuous Scale packages — providing 24/7 monitoring, automated alerting, performance tuning, and periodic capability upgrades so your systems evolve with your business.` }
-      ];
+  // Custom FAQs Fallback. Resolved through data/serviceFaqs.js so the accordion,
+  // the runtime JSON-LD graph and the bot snapshot all show the same list —
+  // Google requires FAQ markup to match what is visible on the page.
+  const customFAQs = resolveServiceFaqs(service);
 
   // Custom Journey Fallback
   const customJourney = (service.customJourney && service.customJourney.length > 0)
@@ -691,7 +680,7 @@ function getParityService(service, department) {
   const conciergeChips = (service.conciergeChips && service.conciergeChips.length > 0)
     ? service.conciergeChips
     : [
-        `How fast can you assess our current ${name.toLowerCase()} environment?`,
+        `How fast can you assess our current ${lowerServiceName(name)} environment?`,
         `What architecture standards and governance controls come built-in?`,
         `How do you handle integration with legacy enterprise systems?`,
         `What timeline and delivery packages are available?`,
@@ -799,9 +788,10 @@ function getParityService(service, department) {
 // Service names are interpolated into prose, and 17 of the 62 begin with a
 // vowel ("Agentic AI Services", "AI Governance", "Analytics"), which rendered
 // as "a Agentic AI Services engagement". Article is chosen from the name.
-function article(name) {
-  return /^[aeiou]/i.test(String(name || '').trim()) ? 'an' : 'a';
-}
+// `article` moved to data/serviceFaqs.js so the prerender generator and the
+// schema builder resolve it identically. The old local copy tested the first
+// letter against /^[aeiou]/, which produced "a MLOps engagement" — acronyms are
+// read letter-by-letter, so the vowel test has to follow pronunciation.
 
 // Maps the free-text industry labels used in servicesData onto the canonical
 // /industries/* routes. Anything unmapped renders without a link rather than
@@ -995,7 +985,13 @@ const featureMicros   = service.featureMicros
       <div id="svc-hero" className="p-2 h-screen" style={{ backgroundColor: 'var(--page-bg, #000)' }}>
         <div className="relative w-full h-full overflow-hidden rounded-xl text-white">
 
-          {service.slug === 'agentic-ai' ? (
+          {service.showBeams ? (
+            <div className="absolute inset-0 w-full h-full bg-[#050505] overflow-hidden pointer-events-none">
+              <BackgroundBeams />
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/70 pointer-events-none z-10" />
+            </div>
+          ) : service.slug === 'agentic-ai' ? (
             <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
               <div className="absolute inset-0 z-0">
                 <Beams
@@ -2320,7 +2316,7 @@ const featureMicros   = service.featureMicros
                 <span className="bg-brand-gradient bg-clip-text text-transparent">your industry.</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
-                {service.industryLede || `Kangqore deploys ${service.name.toLowerCase()} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
+                {service.industryLede || `Kangqore deploys ${lowerServiceName(service.name)} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
               </p>
             </div>
             <CardRail label="Industry use cases" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
@@ -2853,15 +2849,29 @@ const featureMicros   = service.featureMicros
               const isOpen = openFaq === i;
               return (
                 <div key={i} className="border-t border-white/[0.06]">
-                  <button onClick={() => setOpenFaq(isOpen ? null : i)} className="w-full flex items-start justify-between gap-5 sm:gap-8 py-4 sm:py-7 text-left group">
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : i)}
+                    className="w-full flex items-start justify-between gap-5 sm:gap-8 py-4 sm:py-7 text-left group"
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${i}`}
+                  >
                     <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white'}`}>{faq.q}</span>
                     <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
                   </button>
-                  {isOpen && (
-                    <div className="pb-5 sm:pb-7 pr-6 sm:pr-12">
-                      <p className="text-white/70 text-base font-medium leading-relaxed">{faq.a}</p>
+                  {/* Every answer stays in the DOM and collapses via grid-template-rows
+                      rather than `{isOpen && …}`. Conditional rendering meant seven of
+                      eight answers did not exist in the markup — the FAQPage schema
+                      described text no crawler could find on the page, which is exactly
+                      the mismatch Google's FAQ guidance rejects. 0fr→1fr animates to the
+                      natural height, so no max-height has to be guessed. */}
+                  <div
+                    id={`faq-answer-${i}`}
+                    className={`grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+                  >
+                    <div className="min-h-0 overflow-hidden">
+                      <p className="pb-5 sm:pb-7 pr-6 sm:pr-12 text-white/70 text-base font-medium leading-relaxed">{faq.a}</p>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             })}
