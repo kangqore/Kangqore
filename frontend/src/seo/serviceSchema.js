@@ -7,7 +7,7 @@
 // servicesData so the 61 service pages stay in sync with one source of truth.
 // ────────────────────────────────────────────────────────────────────────────────
 
-import { resolveServiceFaqs } from '../data/serviceFaqs';
+import { resolveServiceFaqs, faqPlainText } from '../data/serviceFaqs';
 
 const SITE_URL = 'https://kangqore.com';
 const ORG_ID = `${SITE_URL}/#organization`;
@@ -78,7 +78,10 @@ export function buildServiceGraph({ svc, dept, pageUrl, pageTitle, pageDescripti
       mainEntity: faqs.map((f) => ({
         '@type': 'Question',
         name: f.q,
-        acceptedAnswer: { '@type': 'Answer', text: f.a },
+        // Flattened: an answer may carry paragraph breaks for rendering, and
+        // schema.org wants plain text here — a quotable block should not make an
+        // answer engine strip layout characters first.
+        acceptedAnswer: { '@type': 'Answer', text: faqPlainText(f.a) },
       })),
     });
   }

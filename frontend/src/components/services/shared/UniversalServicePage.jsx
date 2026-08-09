@@ -21,7 +21,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import SvcRuler from './SvcRuler';
 import { CardRail } from './mobileRail';
-import { article, lowerServiceName, resolveServiceFaqs, genericServicePackages } from '../../../data/serviceFaqs';
+import { article, lowerServiceName, resolveServiceFaqs, genericServicePackages, faqParagraphs } from '../../../data/serviceFaqs';
 import ConciergeSection from '../../concierge/ConciergeSection';
 import { AIToolsSection, AIInsightsSection } from '../cognition/AICustomSections';
 import { servicesData } from '../../../data/servicesData';
@@ -2869,7 +2869,11 @@ const featureMicros   = service.featureMicros
                     className={`grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
                   >
                     <div className="min-h-0 overflow-hidden">
-                      <p className="pb-5 sm:pb-7 pr-6 sm:pr-12 text-white/70 text-base font-medium leading-relaxed">{faq.a}</p>
+                      <div className="pb-5 sm:pb-7 pr-6 sm:pr-12 space-y-4">
+                        {faqParagraphs(faq.a).map((para, p) => (
+                          <p key={p} className="text-white/70 text-base font-medium leading-relaxed">{para}</p>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>

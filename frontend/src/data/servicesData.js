@@ -1246,44 +1246,63 @@ export const servicesData = {
       },
     ],
 
-    // Written against the questions buyers and answer engines actually ask —
-    // definitional ("what is"), disambiguating ("X vs Y") and decision-shaped
-    // ("when do we need"). The generic fallback in data/serviceFaqs.js asks
-    // vendor-shaped questions ("what makes your approach unique") that nothing
-    // cites and that four of six shared verbatim with the Big Data page.
-    // Answers lead with the definition so the first sentence is quotable alone.
+    // Answers carry paragraph breaks as a blank line (see faqParagraphs in
+    // data/serviceFaqs.js). Each of these runs to four or five distinct points;
+    // set as one block, the last two were buried. The sentences are unchanged —
+    // only the packaging is.
     customFAQs: [
       {
         q: 'What is MLOps?',
-        a: 'MLOps is the engineering discipline that keeps machine learning models working in production. It extends software delivery practice to the two things software does not have: a trained model whose behavior depends on data it saw during training, and live data whose distribution moves after release. In practice that means versioning models and the datasets behind them, automating the path from training run to serving endpoint, monitoring predictions rather than only uptime, and retraining on a schedule or a trigger. The test of an MLOps practice is not whether a model deploys — it is whether the model still performs six months later, and whether anyone can prove which data and code produced the version currently serving traffic.',
+        a: 'MLOps is the engineering discipline that keeps machine learning models working in production. It extends software delivery practice to the two things software does not have: a trained model whose behavior depends on data it saw during training, and live data whose distribution moves after release.\n\n'
+          + 'In practice that means versioning models and the datasets behind them, automating the path from training run to serving endpoint, monitoring predictions rather than only uptime, and retraining on a schedule or a trigger.\n\n'
+          + 'The test of an MLOps practice is not whether a model deploys. It is whether the model still performs six months later, and whether anyone can prove which data and code produced the version currently serving traffic.',
       },
       {
         q: 'How is MLOps different from DevOps?',
-        a: 'DevOps ships code; MLOps ships code, data, and a trained artifact whose quality degrades on its own. Three differences drive everything else. First, the release unit is a triple — model weights, the feature pipeline, and the serving code — and all three have to be versioned together or a rollback restores the wrong combination. Second, testing cannot be binary: a model does not pass or fail, it scores, so promotion gates are statistical thresholds against a holdout set rather than a green build. Third, a deployed model decays without any change to the code, because the world it was trained on moves — so monitoring has to watch input distributions and prediction quality, not just latency and error rates. A DevOps pipeline that treats a model as a binary blob will deploy it reliably and never notice it has stopped being right.',
+        a: 'DevOps ships code. MLOps ships code, data, and a trained artifact whose quality degrades on its own. Three differences drive everything else.\n\n'
+          + 'The release unit is a triple — model weights, the feature pipeline, and the serving code. All three have to be versioned together, or a rollback restores the wrong combination.\n\n'
+          + 'Testing cannot be binary. A model does not pass or fail, it scores, so promotion gates are statistical thresholds against a holdout set rather than a green build.\n\n'
+          + 'And a deployed model decays without any change to the code, because the world it was trained on moves. Monitoring has to watch input distributions and prediction quality, not just latency and error rates.\n\n'
+          + 'A DevOps pipeline that treats a model as a binary blob will deploy it reliably and never notice it has stopped being right.',
       },
       {
         q: 'What is the difference between MLOps and GenAIOps?',
-        a: 'GenAIOps is the operational practice for systems built on foundation models, and it inherits most of MLOps while changing what you control. In classic MLOps you own the training run, so quality is managed by retraining. With a foundation model you usually do not own the weights, so the levers move to prompts, retrieval, context assembly, guardrails, and model routing — and versioning has to cover prompt templates and retrieval indexes as first-class artifacts. Evaluation changes too: there is often no single correct output, so scoring shifts to graded rubrics, adversarial suites, and human review rather than accuracy against labels. Cost and latency become quality attributes because inference is metered per token. The registry, lineage, staged promotion, and drift monitoring carry over unchanged, which is why teams with a working MLOps foundation reach production GenAI faster than teams starting from nothing.',
+        a: 'GenAIOps is the operational practice for systems built on foundation models. It inherits most of MLOps while changing what you control.\n\n'
+          + 'In classic MLOps you own the training run, so quality is managed by retraining. With a foundation model you usually do not own the weights, so the levers move to prompts, retrieval, context assembly, guardrails, and model routing — and versioning has to cover prompt templates and retrieval indexes as first-class artifacts.\n\n'
+          + 'Evaluation changes too. There is often no single correct output, so scoring shifts to graded rubrics, adversarial suites, and human review rather than accuracy against labels. Cost and latency become quality attributes, because inference is metered per token.\n\n'
+          + 'The registry, lineage, staged promotion, and drift monitoring carry over unchanged. That is why teams with a working MLOps foundation reach production GenAI faster than teams starting from nothing.',
       },
       {
         q: 'When do we actually need a feature store?',
-        a: 'A feature store earns its cost when the same feature is computed in more than one place, and the two places disagree. The specific failure it prevents is training-serving skew: a feature engineered in a batch job for training and reimplemented in application code for inference will diverge, and the model degrades for reasons no monitoring dashboard attributes correctly. You need one when features are reused across several models or teams, when point-in-time correctness matters for training labels, or when low-latency serving requires precomputed values. You do not need one for a handful of models owned by a single team with features derived inside one pipeline — there, a feature store adds a system to operate for a problem you do not yet have. The honest sequencing is a model registry and lineage first, a feature store when reuse or skew becomes the actual constraint.',
+        a: 'A feature store earns its cost when the same feature is computed in more than one place, and the two places disagree.\n\n'
+          + 'The specific failure it prevents is training-serving skew: a feature engineered in a batch job for training and reimplemented in application code for inference will diverge, and the model degrades for reasons no monitoring dashboard attributes correctly.\n\n'
+          + 'You need one when features are reused across several models or teams, when point-in-time correctness matters for training labels, or when low-latency serving requires precomputed values. You do not need one for a handful of models owned by a single team with features derived inside one pipeline — there, a feature store adds a system to operate for a problem you do not yet have.\n\n'
+          + 'The honest sequencing is a model registry and lineage first, a feature store when reuse or skew becomes the actual constraint.',
       },
       {
         q: 'How do you detect and handle model drift?',
-        a: 'Drift is detected on three separate signals because they fail at different times. Input drift compares the live feature distribution against the training baseline and fires first, often before any quality change is measurable. Prediction drift watches the distribution of the model output, which catches problems when ground truth is delayed. Performance drift compares predictions against labels once they arrive, which is authoritative but always late. Kangqore instruments all three and ties them to defined responses rather than alerts alone: a threshold breach can trigger a retraining run, route traffic to the previous model version, or open a review with the accountable owner, depending on what the model does and what a wrong answer costs.',
+        a: 'Drift is detected on three separate signals, because they fail at different times.\n\n'
+          + 'Input drift compares the live feature distribution against the training baseline and fires first, often before any quality change is measurable. Prediction drift watches the distribution of the model output, which catches problems when ground truth is delayed. Performance drift compares predictions against labels once they arrive, which is authoritative but always late.\n\n'
+          + 'Kangqore instruments all three and ties them to defined responses rather than alerts alone. A threshold breach can trigger a retraining run, route traffic to the previous model version, or open a review with the accountable owner, depending on what the model does and what a wrong answer costs.',
       },
       {
         q: 'How long does it take to get a model into production?',
-        a: 'For a model that is already trained and validated, the constraint is rarely the deployment — it is the absence of a repeatable path. A first production deployment through a Pilot Pod typically runs eight weeks, and most of that is building the pipeline, registry, approval gates, and monitoring the model will travel through, not the deployment itself. Once that path exists, subsequent models move in days because they reuse it. The realistic answer for a team with no MLOps foundation is that the first model is a platform project and the second is a deployment.',
+        a: 'For a model that is already trained and validated, the constraint is rarely the deployment. It is the absence of a repeatable path.\n\n'
+          + 'A first production deployment through a Pilot Pod typically runs eight weeks, and most of that is building the pipeline, registry, approval gates, and monitoring the model will travel through — not the deployment itself. Once that path exists, subsequent models move in days because they reuse it.\n\n'
+          + 'The realistic answer for a team with no MLOps foundation is that the first model is a platform project and the second is a deployment.',
       },
       {
         q: 'What does the Kangqore MLOps stack actually use?',
-        a: 'We build on the tooling your platform already commits to rather than importing a fixed stack. On AWS that is typically SageMaker Pipelines with a model registry and SageMaker Model Monitor; on Azure, Azure ML with managed endpoints; on GCP, Vertex AI Pipelines and Model Registry. Where teams run their own, we use MLflow for tracking and registry, Kubeflow or Airflow for orchestration, Feast for feature serving, and KServe or BentoML for model serving on Kubernetes, with Terraform describing the infrastructure and Evidently or WhyLabs for drift monitoring. The choice is deliberate: an MLOps platform your engineers cannot operate after handover is a dependency, not a capability.',
+        a: 'We build on the tooling your platform already commits to, rather than importing a fixed stack.\n\n'
+          + 'On AWS that is typically SageMaker Pipelines with a model registry and SageMaker Model Monitor; on Azure, Azure ML with managed endpoints; on GCP, Vertex AI Pipelines and Model Registry.\n\n'
+          + 'Where teams run their own, we use MLflow for tracking and registry, Kubeflow or Airflow for orchestration, Feast for feature serving, and KServe or BentoML for model serving on Kubernetes, with Terraform describing the infrastructure and Evidently or WhyLabs for drift monitoring.\n\n'
+          + 'The choice is deliberate. An MLOps platform your engineers cannot operate after handover is a dependency, not a capability.',
       },
       {
         q: 'Who owns the platform after the engagement ends?',
-        a: 'You do. Every engagement ships infrastructure as code, runbooks for the failure modes we have actually seen in your environment, and a documented promotion path your engineers execute themselves before we leave. Knowledge transfer is scheduled work with named participants, not a document handed over at the end. Managed Operations is available where you would rather we run it, but it is a choice you make after you can already run it yourself — not a condition of the platform working.',
+        a: 'You do. Every engagement ships infrastructure as code, runbooks for the failure modes we have actually seen in your environment, and a documented promotion path your engineers execute themselves before we leave.\n\n'
+          + 'Knowledge transfer is scheduled work with named participants, not a document handed over at the end.\n\n'
+          + 'Managed Operations is available where you would rather we run it, but that is a choice you make after you can already run it yourself — not a condition of the platform working.',
       },
     ],
 

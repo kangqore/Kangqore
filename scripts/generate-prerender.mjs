@@ -106,7 +106,9 @@ function buildGraph({ svc, deptName, deptSlug, url, title, description }) {
       mainEntity: faqs.map((f) => ({
         '@type': 'Question',
         name: f.q,
-        acceptedAnswer: { '@type': 'Answer', text: f.a },
+        // Flat text: answers may carry paragraph breaks for rendering, and
+        // schema.org wants plain text in acceptedAnswer.
+        acceptedAnswer: { '@type': 'Answer', text: faqPlainText(f.a) },
       })),
     });
   }
@@ -145,7 +147,14 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
     .join('\n');
 
   const faqs = (svc.customFAQs || [])
-    .map((f) => `      <section><h3>${esc(f.q)}</h3><p>${esc(f.a)}</p></section>`)
+    .map((f) => {
+      // One <p> per paragraph, matching the React page. Emitting the raw
+      // string put a literal newline inside a single <p>, which HTML
+      // collapses — the snapshot showed a wall of text where the page shows
+      // four paragraphs.
+      const body = faqParagraphs(f.a).map((para) => `<p>${esc(para)}</p>`).join('');
+      return `      <section><h3>${esc(f.q)}</h3>${body}</section>`;
+    })
     .join('\n');
 
   // The React page renders these two sections from `toolsStack` and
@@ -261,7 +270,7 @@ const { servicesData } = await importAsEsm(path.join(DATA_DIR, 'servicesData.js'
 
 // Same resolver the React page and the runtime schema builder use, so the
 // snapshot cannot describe a different FAQ from the one a visitor sees.
-const { resolveServiceFaqs } = await importAsEsm(path.join(DATA_DIR, 'serviceFaqs.js'));
+const { resolveServiceFaqs, faqParagraphs, faqPlainText } = await importAsEsm(path.join(DATA_DIR, 'serviceFaqs.js'));
 
 // seoData imports a JSON module, which plain ESM import cannot resolve here.
 // Stub it out — only serviceSEO's flat title/description/keywords are needed.
@@ -327,7 +336,7 @@ if (process.argv.includes('--check')) {
         // so a generic FAQ still gets marked up. llms.txt is a curated index —
         // emitting the same six generic questions under 58 services would fill
         // it with duplicates and bury the services that have real answers.
-        faqs: (svc.customFAQs || []).slice(0, 3).map((f) => ({ q: f.q, a: f.a })),
+        faqs: (svc.customFAQs || []).slice(0, 3).map((f) => ({ q: f.q, a: faqPlainText(f.a) })),
         method: (svc.toolsStack?.items || []).map((i) => ({ rule: i.title, detail: i.desc })),
         dataHandling: (svc.dataBoundary?.blocks || []).map((b) => ({ topic: b.label, detail: b.body })),
       };
