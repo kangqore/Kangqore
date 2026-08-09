@@ -4,6 +4,7 @@ import { ArrowRight, Zap, Target, Layers, Shield, TrendingUp, Eye, BarChart3, Do
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ResponsiveImage from '../../media/ResponsiveImage';
+import { CardRail } from '../shared/mobileRail';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,7 +27,7 @@ export const AIChallengesSection = ({ title, subtitle, challenges }) => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-white dark:bg-black relative overflow-hidden">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white dark:bg-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="mb-16 text-left max-w-4xl">
           <h2 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-10 font-display tracking-tight leading-[0.95]">
@@ -159,7 +160,7 @@ export const AIArchitectureDiagram = ({ title, nodes }) => {
   }, []);
 
   return (
-    <section className="py-24 bg-gray-50 dark:bg-black relative overflow-hidden" ref={containerRef}>
+    <section className="py-16 md:py-24 bg-gray-50 dark:bg-black relative overflow-hidden" ref={containerRef}>
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <h2 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 font-display tracking-tight leading-[1]">
@@ -216,7 +217,7 @@ export const UseCasesMagnificationList = ({ title, useCases }) => {
   const [hoveredIdx, setHoveredIdx] = useState(null);
 
   return (
-    <section className="py-24 bg-white dark:bg-black relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-white dark:bg-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row gap-16 items-start">
           <div className="lg:w-1/3 lg:sticky lg:top-32">
@@ -323,7 +324,7 @@ export const AIAcceleratorRoadmap = ({ title, phases }) => {
   }, []);
 
   return (
-    <section className="pt-24 pb-48 lg:pb-[30vh] bg-white dark:bg-black relative">
+    <section className="pt-16 md:pt-24 pb-24 md:pb-48 lg:pb-[30vh] bg-white dark:bg-black relative">
       <div ref={containerRef} className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row gap-16 relative">
         <div className="w-full lg:w-1/3 hidden lg:block relative">
           <div ref={leftRef} className="sticky top-[20vh] lg:h-[60vh] flex flex-col justify-center">
@@ -423,7 +424,7 @@ export const AIMetricsSection = ({ metrics, hideHeading = false }) => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-[#0A0A0A] relative overflow-hidden">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-[#0A0A0A] relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(37,100,234,0.1),transparent_70%)] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
@@ -477,7 +478,7 @@ export const AIMetricsSection = ({ metrics, hideHeading = false }) => {
 // ═══════════════════════════════════════════════════════════════════════════════
 export const AITransformationMagnet = () => {
   return (
-    <section className="py-24 bg-white dark:bg-black">
+    <section className="py-16 md:py-24 bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative cta-section rounded-[32px] p-16 lg:p-24 text-center text-white overflow-hidden shadow-2xl bg-gradient-to-r from-brand-blue to-cyan-400">
           <div className="absolute -inset-20 z-0" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
@@ -534,7 +535,7 @@ export const AIToolsSection = ({
     ? React.cloneElement(image, { activeStep: openTool })
     : image;
   return (
-    <section className={`py-24 bg-black border-t border-white/[0.04] relative ${isCustomModel ? '' : 'overflow-hidden'}`}>
+    <section className={`py-16 md:py-24 bg-black border-t border-white/[0.04] relative ${isCustomModel ? '' : 'overflow-hidden'}`}>
       {/* Expanded 3D Canvas Background Panel (Full-Section overlay exceeding bounds) */}
       {isCustomModel && (
         <div className="absolute inset-x-0 -top-32 -bottom-32 z-0 pointer-events-none lg:pointer-events-auto">
@@ -686,7 +687,7 @@ export const AIFAQSection = ({ faqs = [] }) => {
   const [openFaq, setOpenFaq] = useState(0);
 
   return (
-    <section className="py-32 relative overflow-hidden bg-black">
+    <section className="py-16 md:py-32 relative overflow-hidden bg-black">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
           <div>
@@ -810,7 +811,7 @@ export const AIInsightsSection = () => {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-black border-t border-white/[0.05]">
+    <section className="py-16 md:py-24 relative overflow-hidden bg-black border-t border-white/[0.05]">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="mb-16">
           <div className="flex items-center gap-4 mb-4">
@@ -826,11 +827,11 @@ export const AIInsightsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <CardRail label="Execution loop stages" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {cards.map((card, idx) => (
-            <div 
+            <div
               key={idx}
-              className={`group relative rounded-2xl overflow-hidden h-[320px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/5 ${card.bgColor} ${card.textColor}`}
+              className={`group relative rounded-2xl overflow-hidden h-[340px] md:h-[320px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/5 ${card.bgColor} ${card.textColor}`}
             >
               {/* Card Title (Always visible at the top) */}
               <div className="relative z-10">
@@ -852,9 +853,13 @@ export const AIInsightsSection = () => {
                 loading="lazy"
               />
 
-              {/* Slide-up Details Panel (revealed on hover) */}
-              <div 
-                className={`absolute inset-0 pt-8 px-6 pb-6 transition-all duration-500 ease-in-out transform translate-y-full group-hover:translate-y-0 flex flex-col justify-between ${card.bgColor} ${card.textColor} z-20`}
+              {/* Slide-up details panel. Revealed on hover from `md` up; already
+                  in place below it, because the slide is driven purely by
+                  group-hover and no touch device fires that — on a phone the
+                  description and the capability list were unreachable, leaving a
+                  card that showed one word and an image. */}
+              <div
+                className={`absolute inset-0 pt-8 px-6 pb-6 transition-all duration-500 ease-in-out transform md:translate-y-full md:group-hover:translate-y-0 flex flex-col justify-between ${card.bgColor} ${card.textColor} z-20`}
               >
                 <div>
                   <h4 className="font-extrabold text-2xl leading-snug tracking-tight mb-3">
@@ -880,7 +885,7 @@ export const AIInsightsSection = () => {
               </div>
             </div>
           ))}
-        </div>
+        </CardRail>
       </div>
     </section>
   );

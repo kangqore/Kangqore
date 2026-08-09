@@ -411,7 +411,17 @@ export default function ProductStrategyBIDSPage() {
       <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <p className="text-[11px] font-black tracking-[0.45em] text-white/50 uppercase mb-7 text-center">DESIGN APPROACH PRINCIPLES</p>
-          <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+          {/* Overflows on a phone, and Chrome does not make an overflow
+              container focusable on its own — so the badges past the fold were
+              unreachable by keyboard. `justify-start` matters too: centring puts
+              the leading overflow outside the scrollable range entirely. */}
+          <div
+            className="flex flex-nowrap items-center justify-start sm:justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+            style={{ scrollbarWidth: 'none' }}
+            role="group"
+            aria-label="Design approach principles"
+            tabIndex={0}
+          >
             {['Strategy-Led Design', 'Research-Informed Decisions', 'Validated Prototyping', 'Scalable Design Systems', 'Accessibility-First Architecture', 'Design-to-Build Continuity', 'Adoption-Centred Launch Planning'].map((f, i, arr) => (
               <React.Fragment key={f}>
                 <span className="flex-shrink-0 text-white/60 text-[11px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
@@ -613,7 +623,10 @@ export default function ProductStrategyBIDSPage() {
               <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
                 <div className="relative z-10">
-                  <p className="text-[11px] font-black tracking-[0.4em] text-brand-blue group-hover:text-white/70 uppercase mb-3 transition-colors duration-500">THE FOUNDATION</p>
+                  {/* Not text-brand-blue: #2564ea on this #06090f card is 3.88:1,
+                      below the 4.5:1 AA floor even at full opacity. #467bed is the
+                      same hue lifted toward white until it clears 5:1. */}
+                  <p className="text-[11px] font-black tracking-[0.4em] text-[#467bed] group-hover:text-white/70 uppercase mb-3 transition-colors duration-500">THE FOUNDATION</p>
                   <p className="text-white/60 group-hover:text-white text-base font-light leading-relaxed italic transition-colors duration-500">
                     "An Enterprise Design Architecture prevents scaling debt and ensures that new feature development takes days, not months."
                   </p>

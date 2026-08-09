@@ -226,7 +226,7 @@ const LegacyEstate = () => {
       {/* Label for Legacy System */}
       <Html position={[0, 0.76, 0]} center distanceFactor={8}>
         <div 
-          className="text-center font-extrabold tracking-widest text-[9.5px] text-[#ef4444] bg-[#0f172a]/95 border border-[#ef4444]/45 px-2 py-0.5 rounded uppercase select-none shadow-[0_0_8px_rgba(239,68,68,0.4)]"
+          className="text-center font-extrabold tracking-widest text-[11px] text-[#ef4444] bg-[#0f172a]/95 border border-[#ef4444]/45 px-2 py-0.5 rounded uppercase select-none shadow-[0_0_8px_rgba(239,68,68,0.4)]"
           style={{ 
             fontFamily: 'Inter, sans-serif',
             transform: 'scale(0.38)', 
@@ -356,12 +356,12 @@ const AgentRuntime = ({ activeStep, setActiveStep }) => {
                 }}
               >
                 <div 
-                  className="text-center font-bold tracking-widest text-[7.5px] text-cyan-400 mb-0.5 select-none"
+                  className="text-center font-bold tracking-widest text-[11px] text-cyan-400 mb-0.5 select-none"
                 >
                   {step.stage}
                 </div>
                 <div 
-                  className={`font-black tracking-widest text-[9.5px] leading-tight ${
+                  className={`font-black tracking-widest text-[11px] leading-tight ${
                     isHovered ? 'text-white' : 'text-slate-200'
                   }`}
                 >
@@ -393,7 +393,7 @@ const CloudNativeServices = () => {
       {/* Label for Cloud Native Core Target State (Blue theme) */}
       <Html position={[0, -0.32, 0]} center distanceFactor={8}>
         <div 
-          className="text-center font-extrabold tracking-widest text-[9.5px] text-[#60a5fa] bg-[#0f172a]/95 border border-[#60a5fa]/45 px-2 py-0.5 rounded uppercase select-none shadow-[0_0_8px_rgba(96,165,250,0.4)]"
+          className="text-center font-extrabold tracking-widest text-[11px] text-[#60a5fa] bg-[#0f172a]/95 border border-[#60a5fa]/45 px-2 py-0.5 rounded uppercase select-none shadow-[0_0_8px_rgba(96,165,250,0.4)]"
           style={{ 
             fontFamily: 'Inter, sans-serif',
             transform: 'scale(0.38)', 

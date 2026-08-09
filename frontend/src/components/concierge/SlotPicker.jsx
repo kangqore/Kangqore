@@ -53,7 +53,7 @@ const SlotPicker = ({ leadId, slots, onBooked }) => {
             Select a Slot
           </span>
         </div>
-        <span className="text-[10px] text-white/60 font-medium">30 min</span>
+        <span className="text-[11px] text-white/60 font-medium">30 min</span>
       </div>
 
       <div className="p-3 space-y-2">
@@ -72,7 +72,7 @@ const SlotPicker = ({ leadId, slots, onBooked }) => {
               <span className={`text-[12px] font-semibold ${selectedId === slot.id ? 'text-cyan-300' : 'text-slate-300'}`}>
                 {slot.label}
               </span>
-              <span className="text-[10px] text-slate-500">Google Meet / Online</span>
+              <span className="text-[11px] text-slate-500">Google Meet / Online</span>
             </div>
             <ChevronRight className={`w-3.5 h-3.5 transition-all ${
               selectedId === slot.id ? 'text-cyan-400 translate-x-0.5' : 'text-slate-600'
@@ -81,7 +81,7 @@ const SlotPicker = ({ leadId, slots, onBooked }) => {
         ))}
 
         {error && (
-          <p className="text-[10px] text-red-400 px-1">{error}</p>
+          <p className="text-[11px] text-red-400 px-1">{error}</p>
         )}
 
         <button

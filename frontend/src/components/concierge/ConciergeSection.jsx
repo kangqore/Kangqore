@@ -239,7 +239,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
           <div className="flex items-center gap-4 mb-4">
             <div className={`h-[1px] w-12 ${inverted ? 'bg-white/40' : 'bg-gray-400 dark:bg-gray-600'}`}></div>
             <span className={`text-sm font-semibold uppercase tracking-widest ${inverted ? 'text-white/60' : 'text-gray-500 dark:text-gray-400'}`}>
-            eQORE AI<sup className="text-[10px] ml-0.5 opacity-70">™</sup> Assistant
+            eQORE AI<sup className="text-[11px] ml-0.5 opacity-70">™</sup> Assistant
             </span>
           </div>
           <h2
@@ -271,10 +271,10 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                 <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
               </div>
               <div>
-                <p className="text-[15px] font-semibold tracking-tight text-white">
+                <p className="text-[16px] font-semibold tracking-tight text-white">
                   eQORE
                 </p>
-                <p className="text-[10px] uppercase tracking-widest font-bold text-brand-cyan mt-0.5">
+                <p className="text-[11px] uppercase tracking-widest font-bold text-brand-cyan mt-0.5">
                   {streaming ? 'Syncing...' : 'System Active'}
                 </p>
               </div>
@@ -326,7 +326,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
             className="relative z-10 px-6 sm:px-8 py-8 max-h-[520px] overflow-y-auto custom-scrollbar bg-transparent scroll-smooth"
           >
             {restoring && (
-              <div className={`text-[10px] uppercase tracking-widest font-bold mb-3 flex items-center gap-2 ${inverted ? 'text-white/70' : 'text-slate-400 dark:text-slate-500'}`}>
+              <div className={`text-[11px] uppercase tracking-widest font-bold mb-3 flex items-center gap-2 ${inverted ? 'text-white/70' : 'text-slate-400 dark:text-slate-500'}`}>
                 <RefreshCw className="w-3 h-3 animate-spin" /> Restoring previous conversation
               </div>
             )}
@@ -363,7 +363,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                         )}
                       </div>
                       <div
-                        className={`px-5 py-4 rounded-3xl text-[15px] leading-relaxed whitespace-pre-wrap transition-all shadow-sm ${
+                        className={`px-5 py-4 rounded-3xl text-[16px] leading-relaxed whitespace-pre-wrap transition-all shadow-sm ${
                           isUser
                             ? 'bg-brand-blue text-white rounded-br-sm'
                             : msg.id === 'greeting'
@@ -390,7 +390,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
 
                     {!isUser && msg.done && msg.citations && msg.citations.length > 0 && (
                       <div className="flex flex-wrap items-center gap-1.5 ml-10">
-                        <span className={`text-[10px] uppercase tracking-widest font-bold ${inverted ? 'text-white/70' : 'text-slate-400 dark:text-slate-500'}`}>
+                        <span className={`text-[11px] uppercase tracking-widest font-bold ${inverted ? 'text-white/70' : 'text-slate-400 dark:text-slate-500'}`}>
                           Sources:{' '}
                           <a 
                             href="https://kangqore.com" 
@@ -412,7 +412,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                         <button
                           type="button"
                           onClick={() => copyMessage(msg)}
-                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded transition-colors ${inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'}`}
+                          className={`inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded transition-colors ${inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'}`}
                           title="Copy"
                         >
                           {copiedId === msg.id ? (
@@ -429,7 +429,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                           type="button"
                           onClick={() => retry(msg.id)}
                           disabled={streaming}
-                          className={`inline-flex items-center gap-1 text-[10px] disabled:opacity-50 px-1.5 py-0.5 rounded transition-colors ${inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'}`}
+                          className={`inline-flex items-center gap-1 text-[11px] disabled:opacity-50 px-1.5 py-0.5 rounded transition-colors ${inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'}`}
                           title="Retry this answer"
                         >
                           <RotateCcw className="w-3 h-3" /> Retry
@@ -438,7 +438,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                           type="button"
                           onClick={() => submitFeedback(msg.id, 'up')}
                           disabled={!conversationId || msg.feedback === 'up'}
-                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
+                          className={`inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded transition-colors ${
                             msg.feedback === 'up'
                               ? 'text-brand-cyan'
                               : inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'
@@ -451,7 +451,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                           type="button"
                           onClick={() => submitFeedback(msg.id, 'down')}
                           disabled={!conversationId || msg.feedback === 'down'}
-                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
+                          className={`inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded transition-colors ${
                             msg.feedback === 'down'
                               ? 'text-rose-400'
                               : inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'
@@ -544,7 +544,7 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
                 disabled={streaming}
                 aria-label="Ask eQORE AI a question"
                 placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
-                className={`w-full pl-6 pr-28 py-[18px] rounded-full text-[15px] focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg ${inverted ? 'bg-white/30 border border-white/50 text-white placeholder-white/75' : 'bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400'}`}
+                className={`w-full pl-6 pr-28 py-[18px] rounded-full text-[16px] focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg ${inverted ? 'bg-white/30 border border-white/50 text-white placeholder-white/75' : 'bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400'}`}
               />
               {voice.supported && (
                 <button

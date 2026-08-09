@@ -74,7 +74,7 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
               <p className="text-[11px] font-bold text-white/50 uppercase tracking-wider mb-0.5">
                 Understood
               </p>
-              <p className="text-[13px] text-white/90 font-medium leading-snug">
+              <p className="text-[14px] text-white/90 font-medium leading-snug">
                 {summary}
               </p>
               {parsedIntent?.durationHint && (
@@ -113,7 +113,7 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
             {/* Next available */}
             {pulse.nextAvailable && (
               <div className="flex items-center gap-2">
-                <Clock className="w-3.5 h-3.5 text-white/30" />
+                <Clock className="w-3.5 h-3.5 text-white/50" />
                 <span className="text-[12px] text-white/50">
                   Next slot:{' '}
                   <span className="text-white/80 font-semibold">
@@ -126,7 +126,7 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
             {/* Refreshed label */}
             <div className="flex items-center gap-1.5 pt-0.5">
               <RefreshCw className="w-2.5 h-2.5 text-white/20" />
-              <span className="text-[10px] text-white/60">
+              <span className="text-[11px] text-white/60">
                 Availability refreshed just now
               </span>
             </div>
@@ -136,7 +136,7 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
         {loadingPulse && (
           <div className="flex items-center gap-2 py-2">
             <RefreshCw className="w-3 h-3 text-cyan-400/50 animate-spin" />
-            <span className="text-[11px] text-white/30">Checking live availability...</span>
+            <span className="text-[11px] text-white/50">Checking live availability...</span>
           </div>
         )}
 

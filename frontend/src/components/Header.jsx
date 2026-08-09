@@ -286,7 +286,11 @@ const Header = ({ onMenuClick }) => {
             showUtilityBar ? 'mt-4 translate-y-[4px] opacity-100 h-9' : 'mt-0 -translate-y-full opacity-0 h-0 overflow-hidden'
           }`}
         >
-          <div className="flex justify-end items-center h-full px-8 text-[13px] font-medium tracking-wide">
+          {/* [&_a]/[&_button] min-h: 14px links in a 36px bar resolve to a 21px
+              hit box, under the 24px WCAG 2.2 AA target size (2.5.8). These six
+              were the only sub-24px controls left on desktop. The bar is h-9,
+              so 24px fits without changing its height. */}
+          <div className="flex justify-end items-center h-full px-8 text-[14px] font-medium tracking-wide [&_a]:min-h-[24px] [&_a]:inline-flex [&_a]:items-center [&_button]:min-h-[24px]">
             <div className={`flex items-center space-x-5 drop-shadow-md transition-colors duration-500 ${(isLightBackground && !isInHero) ? 'text-gray-900' : 'text-white'}`}>
                 <Link to="/careers" className={`transition-colors ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Careers</Link>
                 <Link to="/news" className={`transition-colors ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>News</Link>
@@ -324,7 +328,7 @@ const Header = ({ onMenuClick }) => {
                         ) : user.role === 'ADMIN' ? (
                           <img src="/assets/eqore_avatar.jpg" alt="Kangqore Admin" className="w-full h-full object-cover" />
                         ) : (
-                          <span className="text-[10px]">{user.name?.charAt(0).toUpperCase()}</span>
+                          <span className="text-[11px]">{user.name?.charAt(0).toUpperCase()}</span>
                         )}
                       </div>
                       <span>{user.name}</span>
@@ -456,7 +460,7 @@ const Header = ({ onMenuClick }) => {
                                       <IconComponent className={`w-5 h-5 transition-colors ${isActive ? 'text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`} />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                      <p className={`text-[13px] font-black uppercase tracking-wider transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`}>
+                                      <p className={`text-[14px] font-black uppercase tracking-wider transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700'}`}>
                                         {category.title}
                                       </p>
                                       <p className="text-[11px] text-gray-400 mt-0.5 font-medium">{category.serviceCount} Core Services</p>
@@ -495,7 +499,7 @@ const Header = ({ onMenuClick }) => {
                                       <Link
                                         to={`/services#${activeCat.slug}`}
                                         onClick={() => setActiveDropdown(null)}
-                                        className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[13px] font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-md shrink-0 mt-2"
+                                        className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[14px] font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-md shrink-0 mt-2"
                                       >
                                         Explore all the capabilities
                                         <ArrowRight className="w-4 h-4" />
@@ -512,10 +516,10 @@ const Header = ({ onMenuClick }) => {
                                         >
                                           <div className="flex items-start justify-between gap-4">
                                             <div className="flex-1 min-w-0">
-                                              <h5 className="text-[15px] font-black text-gray-900 dark:text-white transition-colors mb-2 leading-tight group-hover:text-brand-blue">
+                                              <h5 className="text-[16px] font-black text-gray-900 dark:text-white transition-colors mb-2 leading-tight group-hover:text-brand-blue">
                                                 {item.name}
                                                 {item.crossDepartment && (
-                                                  <span className="block mt-1 text-[10px] text-brand-blue font-black uppercase tracking-wider">
+                                                  <span className="block mt-1 text-[11px] text-brand-blue font-black uppercase tracking-wider">
                                                     Part of {item.crossDepartment}
                                                   </span>
                                                 )}
@@ -762,12 +766,12 @@ const Header = ({ onMenuClick }) => {
                                     {activeCat.fullName}
                                   </p>
                                   <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{activeCat.tagline}</h4>
-                                  <p className="text-[15px] text-gray-500 dark:text-gray-400 mt-3 font-medium max-w-2xl leading-relaxed">{activeCat.description}</p>
+                                  <p className="text-[16px] text-gray-500 dark:text-gray-400 mt-3 font-medium max-w-2xl leading-relaxed">{activeCat.description}</p>
                                 </div>
                                 <Link
                                   to={`/departments/${activeCat.slug}`}
                                   onClick={() => setActiveDropdown(null)}
-                                  className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[13px] font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-md shrink-0"
+                                  className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[14px] font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-md shrink-0"
                                 >
                                   Explore all the capabilities
                                   <ArrowRight className="w-4 h-4" />
@@ -783,9 +787,9 @@ const Header = ({ onMenuClick }) => {
                                     className="group flex flex-col py-1 text-gray-700 dark:text-gray-300 hover:text-brand-blue transition-colors"
                                   >
                                     <div className="flex items-center justify-between mb-1">
-                                      <span className="text-[15px] font-bold tracking-tight">{item.name}</span>
+                                      <span className="text-[16px] font-bold tracking-tight">{item.name}</span>
                                       {item.crossDepartment && (
-                                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full">
+                                        <span className="text-[11px] text-gray-400 font-bold uppercase tracking-wider px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full">
                                           {item.crossDepartment}
                                         </span>
                                       )}
@@ -819,9 +823,9 @@ const Header = ({ onMenuClick }) => {
                   <div className="w-full lg:w-[380px] bg-gray-50/50 dark:bg-gray-900/30 p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800/50 shrink-0">
                     <div className="flex-1">
                       <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">Who We Are</h3>
-                      <p className="text-[15px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Discover the engineering excellence and values driving global transformation.</p>
+                      <p className="text-[16px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Discover the engineering excellence and values driving global transformation.</p>
                     </div>
-                    <Link to="/about-us" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[13px] uppercase tracking-widest">
+                    <Link to="/about-us" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[14px] uppercase tracking-widest">
                       Our Story <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -836,7 +840,7 @@ const Header = ({ onMenuClick }) => {
                           onClick={() => setActiveDropdown(null)}
                           className="group flex flex-col py-1 text-gray-700 dark:text-gray-300 hover:text-brand-blue transition-colors"
                         >
-                          <span className="text-[15px] font-bold tracking-tight mb-1">{item.name}</span>
+                          <span className="text-[16px] font-bold tracking-tight mb-1">{item.name}</span>
                           <span className="w-8 h-[2px] bg-transparent group-hover:bg-brand-blue transition-colors duration-300"></span>
                         </Link>
                       ))}
@@ -861,9 +865,9 @@ const Header = ({ onMenuClick }) => {
                   <div className="w-full lg:w-[380px] bg-gray-50/50 dark:bg-gray-900/30 p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800/50 shrink-0">
                     <div className="flex-1">
                       <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">Industries We Serve</h3>
-                      <p className="text-[15px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Domain-specific engineering execution for global leaders.</p>
+                      <p className="text-[16px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Domain-specific engineering execution for global leaders.</p>
                     </div>
-                    <Link to="/contact" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[13px] uppercase tracking-widest">
+                    <Link to="/contact" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[14px] uppercase tracking-widest">
                       Industry Consultation <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -878,7 +882,7 @@ const Header = ({ onMenuClick }) => {
                           onClick={() => setActiveDropdown(null)}
                           className="group flex flex-col py-1 text-gray-700 dark:text-gray-300 hover:text-brand-blue transition-colors"
                         >
-                          <span className="text-[15px] font-bold tracking-tight mb-1">{item.name}</span>
+                          <span className="text-[16px] font-bold tracking-tight mb-1">{item.name}</span>
                           <span className="w-8 h-[2px] bg-transparent group-hover:bg-brand-blue transition-colors duration-300"></span>
                         </Link>
                       ))}
@@ -903,9 +907,9 @@ const Header = ({ onMenuClick }) => {
                   <div className="w-full lg:w-[380px] bg-gray-50/50 dark:bg-gray-900/30 p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800/50 shrink-0">
                     <div className="flex-1">
                       <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">Insights & Knowledge</h3>
-                      <p className="text-[15px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Expert perspectives on AI foundations, technical debt, and business velocity.</p>
+                      <p className="text-[16px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Expert perspectives on AI foundations, technical debt, and business velocity.</p>
                     </div>
-                    <Link to="/blogs" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[13px] uppercase tracking-widest">
+                    <Link to="/blogs" className="text-brand-blue font-bold flex items-center gap-2 hover:gap-3 transition-all mt-10 text-[14px] uppercase tracking-widest">
                       View All Insights <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -920,7 +924,7 @@ const Header = ({ onMenuClick }) => {
                           onClick={() => setActiveDropdown(null)}
                           className="group flex flex-col py-1 text-gray-700 dark:text-gray-300 hover:text-brand-blue transition-colors"
                         >
-                          <span className="text-[15px] font-bold tracking-tight mb-1">{item.name}</span>
+                          <span className="text-[16px] font-bold tracking-tight mb-1">{item.name}</span>
                           <span className="w-8 h-[2px] bg-transparent group-hover:bg-brand-blue transition-colors duration-300"></span>
                         </Link>
                       ))}
