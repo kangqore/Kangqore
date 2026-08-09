@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T21:41:32.756Z",
+  "generatedAt": "2026-08-09T18:57:58.031Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -225,7 +225,20 @@
         "AI Governance & Operational Assurance",
         "AI Performance, Cost & FinOps"
       ],
-      "faqs": [],
+      "faqs": [
+        {
+          "q": "What is MLOps?",
+          "a": "MLOps is the engineering discipline that keeps machine learning models working in production. It extends software delivery practice to the two things software does not have: a trained model whose behavior depends on data it saw during training, and live data whose distribution moves after release. In practice that means versioning models and the datasets behind them, automating the path from training run to serving endpoint, monitoring predictions rather than only uptime, and retraining on a schedule or a trigger. The test of an MLOps practice is not whether a model deploys — it is whether the model still performs six months later, and whether anyone can prove which data and code produced the version currently serving traffic."
+        },
+        {
+          "q": "How is MLOps different from DevOps?",
+          "a": "DevOps ships code; MLOps ships code, data, and a trained artifact whose quality degrades on its own. Three differences drive everything else. First, the release unit is a triple — model weights, the feature pipeline, and the serving code — and all three have to be versioned together or a rollback restores the wrong combination. Second, testing cannot be binary: a model does not pass or fail, it scores, so promotion gates are statistical thresholds against a holdout set rather than a green build. Third, a deployed model decays without any change to the code, because the world it was trained on moves — so monitoring has to watch input distributions and prediction quality, not just latency and error rates. A DevOps pipeline that treats a model as a binary blob will deploy it reliably and never notice it has stopped being right."
+        },
+        {
+          "q": "What is the difference between MLOps and GenAIOps?",
+          "a": "GenAIOps is the operational practice for systems built on foundation models, and it inherits most of MLOps while changing what you control. In classic MLOps you own the training run, so quality is managed by retraining. With a foundation model you usually do not own the weights, so the levers move to prompts, retrieval, context assembly, guardrails, and model routing — and versioning has to cover prompt templates and retrieval indexes as first-class artifacts. Evaluation changes too: there is often no single correct output, so scoring shifts to graded rubrics, adversarial suites, and human review rather than accuracy against labels. Cost and latency become quality attributes because inference is metered per token. The registry, lineage, staged promotion, and drift monitoring carry over unchanged, which is why teams with a working MLOps foundation reach production GenAI faster than teams starting from nothing."
+        }
+      ],
       "method": [],
       "dataHandling": []
     },

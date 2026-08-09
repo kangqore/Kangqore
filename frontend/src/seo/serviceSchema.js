@@ -7,6 +7,8 @@
 // servicesData so the 61 service pages stay in sync with one source of truth.
 // ────────────────────────────────────────────────────────────────────────────────
 
+import { resolveServiceFaqs } from '../data/serviceFaqs';
+
 const SITE_URL = 'https://kangqore.com';
 const ORG_ID = `${SITE_URL}/#organization`;
 
@@ -64,7 +66,11 @@ export function buildServiceGraph({ svc, dept, pageUrl, pageTitle, pageDescripti
     ...(offers.length ? { hasOfferCatalog: { '@type': 'OfferCatalog', name: `${svc.name} Capabilities`, itemListElement: offers } } : {}),
   });
 
-  const faqs = svc.customFAQs || [];
+  // Resolved, not read straight off `svc.customFAQs`. Only 4 of 62 services
+  // define their own, so gating on that field emitted FAQPage on 6% of pages
+  // while the other 58 rendered a visible six-question accordion carrying no
+  // markup at all. The resolver returns exactly what the page shows.
+  const faqs = resolveServiceFaqs(svc);
   if (faqs.length) {
     graph.push({
       '@type': 'FAQPage',
