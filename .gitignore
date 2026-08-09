@@ -100,6 +100,12 @@ frontend/node_modules/.cache/default-development/13.pack
 # Runtime logs (generated, never committed)
 backend/logs/
 
+# Playwright run artifacts. .last-run.json was tracked, so it showed as modified
+# after every test run and got swept into stashes and blanket `git add`s — five
+# of the repo's seven stashes ended up containing nothing but generated files.
+frontend/test-results/
+frontend/playwright-report/
+
 # Exploration / architecture test scripts (not production code)
 backend/src/test-*.ts
 backend/src/scripts/test-*.ts
