@@ -267,6 +267,19 @@ const Header = ({ onMenuClick }) => {
           setNavHovered(false);
         }}
       >
+        {/* Legibility scrim.
+            The header is transparent and its utility-bar text is hard-coded
+            white, so it was only readable when something dark happened to be
+            behind it. Light content scrolling under it — the Insights cards on
+            /services/agentic-ai — left the logo and the Careers/News/Login row
+            unreadable. A top-down gradient keeps white text legible over any
+            content without having to detect what is behind it, and fades out
+            before the nav pill so it does not read as a solid bar. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-full pointer-events-none bg-gradient-to-b from-black/80 via-black/40 to-transparent"
+        />
+
         {/* Top utility bar - Floating Pill */}
         <div 
           className={`hidden lg:block max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto transition-all duration-500 ease-in-out ${
