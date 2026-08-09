@@ -21,6 +21,8 @@ import { KimmpFlags } from './core/flags';
 import { computeCapabilityScorecard } from '../services/publicTrust.service';
 import { getLiveComplianceSignals, ensureFrameworkSeeded, getComplianceOverview } from '../services/complianceReadiness.service';
 import { getAgentStudioBenchmark } from '../services/agentStudioGrowth.service';
+import { getContestedModulesStatus } from '../services/contestedModulesCatalog.service';
+import { getAiSecurityView } from '../services/securityView.service';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -9493,6 +9495,22 @@ kangqoreImmpRoutes.get('/platform/compliance-overview', requireAuth, requireRole
 kangqoreImmpRoutes.get('/platform/agent-studio-benchmark', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
     res.json(await getAgentStudioBenchmark())
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /platform/contested-modules — Overshadow Roadmap P4.1/P4.3 real
+// build status (CustomerCase + HrCase ontology types, governed actions,
+// Object Sets, Agent Studio templates).
+kangqoreImmpRoutes.get('/platform/contested-modules', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    res.json(await getContestedModulesStatus())
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// GET /platform/ai-security-view — Overshadow Roadmap P4.2.
+kangqoreImmpRoutes.get('/platform/ai-security-view', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    res.json(await getAiSecurityView())
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 

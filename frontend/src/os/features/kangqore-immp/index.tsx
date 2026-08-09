@@ -210,6 +210,8 @@ import { Soc2TypeIIPage }                  from './pages/Soc2TypeIIPage'
 import { FedRampPage }                     from './pages/FedRampPage'
 // Overshadow Roadmap P2 — unified compliance readiness across all 4 frameworks
 import { ComplianceOverviewPage }          from './pages/ComplianceOverviewPage'
+// Overshadow Roadmap P4 — Win the Contested Modules
+import { ContestedModulesPage }            from './pages/ContestedModulesPage'
 import { DedicatedSuccessTeamsPage }       from './pages/DedicatedSuccessTeamsPage'
 import { ExecutiveBusinessReviewsPage }    from './pages/ExecutiveBusinessReviewsPage'
 import { F500SalesMotionPage }             from './pages/F500SalesMotionPage'
@@ -598,6 +600,7 @@ export function KIMMMModule() {
           <Route path="soc2-type2-certification"       element={<Soc2TypeIIPage />}               />
           <Route path="fedramp-moderate"               element={<FedRampPage />}                  />
           <Route path="compliance-overview"            element={<ComplianceOverviewPage />}       />
+          <Route path="contested-modules"              element={<ContestedModulesPage />}         />
           <Route path="dedicated-success-teams"        element={<DedicatedSuccessTeamsPage />}    />
           <Route path="executive-business-reviews"     element={<ExecutiveBusinessReviewsPage />} />
           <Route path="f500-sales-motion"              element={<F500SalesMotionPage />}          />
