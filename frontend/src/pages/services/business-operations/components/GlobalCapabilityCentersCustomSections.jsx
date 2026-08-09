@@ -100,7 +100,7 @@ export const GCCMarketContextStrip = () => {
                 
                 {/* Labels */}
                 <div className="text-white/80 font-medium text-sm mb-2 tracking-wide">{stat.label}</div>
-                <div className="text-white/35 text-xs font-light leading-relaxed">{stat.sub}</div>
+                <div className="text-white/50 text-xs font-light leading-relaxed">{stat.sub}</div>
                 
                 {/* Bottom accent line */}
                 <div className={`absolute bottom-0 left-8 right-8 h-[2px] rounded-full bg-gradient-to-r ${stat.accent} opacity-0 group-hover:opacity-40 transition-opacity duration-500`}></div>
@@ -111,7 +111,7 @@ export const GCCMarketContextStrip = () => {
 
         {/* Source citation — adds trust */}
         <div className="mt-10 text-center">
-          <p className="text-white/25 text-[11px] font-light tracking-wide">
+          <p className="text-white/50 text-[11px] font-light tracking-wide">
             Source: NASSCOM, Deloitte GCC Report 2025, EY India Attractiveness Survey
           </p>
         </div>
@@ -677,7 +677,7 @@ export const KangqoreCommandCenterDashboard = () => {
                       { l: 'Compliance Setup', s: 'Completed', c: 'text-emerald-400' },
                       { l: 'Workspace IT Prep', s: 'In Progress', c: 'text-cyan-400' },
                       { l: 'Talent Sourcing', s: 'Active', c: 'text-blue-400' },
-                      { l: 'First Sprint', s: 'Pending', c: 'text-white/30' }
+                      { l: 'First Sprint', s: 'Pending', c: 'text-white/50' }
                     ].map((st, i) => (
                       <div key={i} className="flex justify-between items-center bg-white dark:bg-gray-900 dark:border-gray-800/[0.03] p-3 rounded-lg border border-white/5">
                         <span className="text-white/80 text-sm">{st.l}</span>

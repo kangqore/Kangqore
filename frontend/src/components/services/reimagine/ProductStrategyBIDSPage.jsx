@@ -385,7 +385,7 @@ export default function ProductStrategyBIDSPage() {
             <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
               <span className="text-white font-black text-lg tracking-tight">Product Strategy & Design</span>
               <span className="hidden sm:block w-px h-5 bg-white/10" />
-              <span className="text-white/35 group-hover:text-white text-sm font-medium transition-colors duration-500">Reimagine — Digital Experience Practice</span>
+              <span className="text-white/50 group-hover:text-white text-sm font-medium transition-colors duration-500">Reimagine — Digital Experience Practice</span>
             </div>
             <a href="#psed-capabilities" className="relative z-10 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200 flex-shrink-0">
               View All Capabilities
@@ -410,7 +410,7 @@ export default function ProductStrategyBIDSPage() {
       {/* ─────────────────── BADGE STRIP ─────────────────── */}
       <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <p className="text-[11px] font-black tracking-[0.45em] text-white/18 uppercase mb-7 text-center">DESIGN APPROACH PRINCIPLES</p>
+          <p className="text-[11px] font-black tracking-[0.45em] text-white/50 uppercase mb-7 text-center">DESIGN APPROACH PRINCIPLES</p>
           <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
             {['Strategy-Led Design', 'Research-Informed Decisions', 'Validated Prototyping', 'Scalable Design Systems', 'Accessibility-First Architecture', 'Design-to-Build Continuity', 'Adoption-Centred Launch Planning'].map((f, i, arr) => (
               <React.Fragment key={f}>
@@ -432,7 +432,7 @@ export default function ProductStrategyBIDSPage() {
                 Design What Matters.<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Build What Wins.</span>
               </h2>
-              <p className="text-white/35 text-base font-medium leading-relaxed lg:pb-2">
+              <p className="text-white/50 text-base font-medium leading-relaxed lg:pb-2">
                 We unify business intent, user needs, and execution realities so you can build with greater confidence. Strategy, design, and build stay coherent without translation loss.
               </p>
             </div>
@@ -451,7 +451,7 @@ export default function ProductStrategyBIDSPage() {
                   >
                     <div className="flex items-center justify-between gap-4 mb-2">
                       <div className="flex items-center gap-4">
-                        <FeatureIcon className={`w-4 h-4 flex-shrink-0 transition-colors ${isOpen ? 'text-cyan-400' : 'text-white/25'}`} />
+                        <FeatureIcon className={`w-4 h-4 flex-shrink-0 transition-colors ${isOpen ? 'text-cyan-400' : 'text-white/50'}`} />
                         <p className={`font-black text-base leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55'}`}>{featureTitles[i]}</p>
                       </div>
                       <ChevronDown className={`w-4 h-4 text-white/20 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
@@ -499,7 +499,7 @@ export default function ProductStrategyBIDSPage() {
             <div className="relative z-10">
               <p className="text-[11px] font-black tracking-[0.4em] text-cyan-400/70 group-hover:text-white/70 uppercase mb-3 transition-colors duration-500">READY TO EXPLORE A DESIGN ENGAGEMENT?</p>
               <p className="text-white font-black text-xl leading-snug mb-2">Start with a 30-minute discovery call.</p>
-              <p className="text-white/35 group-hover:text-white text-sm font-medium leading-relaxed max-w-xl transition-colors duration-500">
+              <p className="text-white/50 group-hover:text-white text-sm font-medium leading-relaxed max-w-xl transition-colors duration-500">
                 Walk through the Kangqore Product Strategy & Design approach with a senior specialist. No commitment — a clear picture of how the engagement works and whether it fits your current priorities.
               </p>
             </div>
@@ -660,7 +660,7 @@ export default function ProductStrategyBIDSPage() {
                     >
                       <div className="flex items-center gap-5">
                         <span className={`w-2.5 h-2.5 flex-shrink-0 transition-colors duration-200 ${active ? 'bg-cyan-400' : 'bg-transparent'}`} />
-                        <span className={`text-base sm:text-lg lg:text-xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/25 group-hover:text-white/55'}`}>{c.title}</span>
+                        <span className={`text-base sm:text-lg lg:text-xl font-bold leading-snug transition-colors duration-200 ${active ? 'text-white' : 'text-white/50 group-hover:text-white/55'}`}>{c.title}</span>
                       </div>
                       <ChevronRight className={`lg:hidden w-4 h-4 text-white/20 flex-shrink-0 transition-transform duration-200 ${active ? 'rotate-90' : ''}`} />
                     </div>
@@ -748,22 +748,22 @@ export default function ProductStrategyBIDSPage() {
                     </div>
                   </div>
                   <div className="absolute top-[60px] right-1/2 mr-[165px] w-[320px] z-20">
-                    <ul className="space-y-1 text-sm text-white/35 text-right">
+                    <ul className="space-y-1 text-sm text-white/50 text-right">
                       <li>Ethnographic research •</li><li>Competitive teardowns •</li><li>Behavior tracking •</li><li>User intent mapping •</li>
                     </ul>
                   </div>
                   <div className="absolute top-[120px] left-1/2 ml-[180px] w-[320px] z-20">
-                    <ul className="space-y-1 text-sm text-white/35 text-left">
+                    <ul className="space-y-1 text-sm text-white/50 text-left">
                       <li>• MVP feature slicing</li><li>• Workflow logic trees</li><li>• ROI metric definitions</li><li>• Go-to-market orchestration</li>
                     </ul>
                   </div>
                   <div className="absolute bottom-[100px] right-1/2 mr-[165px] w-[320px] z-20">
-                    <ul className="space-y-1 text-sm text-white/35 text-right">
+                    <ul className="space-y-1 text-sm text-white/50 text-right">
                       <li>Transcendental interfaces •</li><li>Zero-friction interactions •</li><li>Micro-animation logic •</li><li>Deep brand embedding •</li>
                     </ul>
                   </div>
                   <div className="absolute bottom-[60px] left-1/2 ml-[165px] w-[320px] z-20">
-                    <ul className="space-y-1 text-sm text-white/35 text-left">
+                    <ul className="space-y-1 text-sm text-white/50 text-left">
                       <li>• React/Figma single truth</li><li>• Centralized token governance</li><li>• Multi-platform logic paths</li><li>• Agile developer handoff</li>
                     </ul>
                   </div>
@@ -825,7 +825,7 @@ export default function ProductStrategyBIDSPage() {
                         <span className="group-hover:text-white transition-colors duration-300">{d.title}</span>
                       </h4>
                       {/* Description */}
-                      <p className="text-white/30 group-hover:text-white/58 text-sm leading-relaxed transition-colors duration-300 lg:pt-1">
+                      <p className="text-white/50 group-hover:text-white/58 text-sm leading-relaxed transition-colors duration-300 lg:pt-1">
                         {d.text}
                       </p>
                     </div>
