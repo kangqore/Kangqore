@@ -20,6 +20,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import SvcRuler from './SvcRuler';
+import { CardRail } from './mobileRail';
 import ConciergeSection from '../../concierge/ConciergeSection';
 import { AIToolsSection, AIInsightsSection } from '../cognition/AICustomSections';
 import { servicesData } from '../../../data/servicesData';
@@ -234,7 +235,7 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
       </div>
 
       {/* Expanded Detail Overlay */}
-      <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl ${isVibrant ? 'bg-white/98 border-gray-200' : 'bg-[#0a0a0c]/98 border-white/10'} ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`}>
+      <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl ${isVibrant ? 'bg-white/98 border-gray-200' : 'bg-[#0a0a0c]/98 border-white/10'} ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`} tabIndex={isExpanded ? 0 : -1} inert={!isExpanded}>
         <div className="flex flex-col text-left">
           <div className="flex items-center justify-between mb-4">
             <span className={`text-[11px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono ${isVibrant ? 'text-gray-700 bg-gray-100/50 border-gray-300' : 'text-slate-300 bg-white/5 border-white/10'}`}>
@@ -258,7 +259,9 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
           </ul>
         </div>
         <div className={`pt-4 border-t mt-6 flex justify-between items-center pr-14 ${isVibrant ? 'border-gray-200' : 'border-white/5'}`}>
-          <a href="/contact" className={`inline-flex items-center gap-2 text-xs sm:text-sm font-bold transition-colors group/link ${isVibrant ? 'text-gray-900 hover:text-blue-600' : 'text-white hover:text-cyan-400'}`}>
+          {/* py-1 + min-h take the hit box from 16px to 24px — WCAG 2.2 AA
+              target size (2.5.8). The text metrics are unchanged. */}
+          <a href="/contact" className={`inline-flex items-center gap-2 py-1 min-h-[24px] text-xs sm:text-sm font-bold transition-colors group/link ${isVibrant ? 'text-gray-900 hover:text-blue-600' : 'text-white hover:text-cyan-400'}`}>
             Discuss This Capability
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
           </a>
@@ -1162,7 +1165,7 @@ const featureMicros   = service.featureMicros
       </div>
 
       {/* ══════════════════════ DEFINITION / OVERVIEW ══════════════════════ */}
-      <section id="svc-what" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="svc-what" className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div ref={defRef} className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 
           <div className="mb-14">
@@ -1188,7 +1191,7 @@ const featureMicros   = service.featureMicros
             </h2>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start mb-20">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] gap-20 lg:gap-16 items-start mb-20">
             <div>
               {/* data-speakable pairs with SpeakableSpecification in the page
                   schema: this is the passage a voice assistant reads aloud. */}
@@ -1203,8 +1206,8 @@ const featureMicros   = service.featureMicros
             {service.capabilityAreas ? (
               service.slug === 'agentic-ai-led-application-modernization' ? (
                 /* ── Agentic AI-led Modernization Flow Diagram ── */
-                <div className="flex items-center justify-center w-full">
-                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[420px]">
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible" role="group" aria-label="Architecture diagram — scroll sideways to see the full flow" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full min-w-[660px] sm:min-w-0">
                     <defs>
                       <linearGradient id="brand-grad" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stopColor="#2564ea"/>
@@ -1250,8 +1253,8 @@ const featureMicros   = service.featureMicros
                     <circle cx="100" cy="119" r="2.5" fill="#a855f7" fillOpacity="0.7"/>
                     <circle cx="75" cy="155" r="2.5" fill="#ea580c" fillOpacity="0.7"/>
                     {/* Text labels on left stack */}
-                    <text x="75" y="60" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">LEGACY CORE</text>
-                    <text x="75" y="121" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="8" fontFamily="monospace" letterSpacing="0.5">MONOLITH</text>
+                    <text x="75" y="60" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">LEGACY CORE</text>
+                    <text x="75" y="121" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace" letterSpacing="0.5">MONOLITH</text>
 
                     {/* ── CENTER: Modernization Agent Engine ── */}
                     <circle cx="270" cy="120" r="54" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
@@ -1278,12 +1281,12 @@ const featureMicros   = service.featureMicros
 
                     {/* Text labels in center */}
                     <text x="270" y="55" textAnchor="middle" fill="#00f0ff" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="sans-serif" letterSpacing="0.8">COGNITIVE ENGINE</text>
-                    <text x="270" y="195" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">MODERNIZATION ENGINE</text>
+                    <text x="270" y="195" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">MODERNIZATION ENGINE</text>
 
                     {/* ── RIGHT: Cloud Native Target ── */}
                     <circle cx="450" cy="70" r="18" fill="#0c0e14" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8"/>
-                    <circle cx="410" cy="140" r="18" fill="#0c0e14" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8"/>
-                    <circle cx="490" cy="140" r="18" fill="#0c0e14" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <circle cx="410" cy="140" r="20" fill="#0c0e14" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    <circle cx="490" cy="140" r="23" fill="#0c0e14" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8"/>
                     
                     {/* Connecting lines of the target mesh */}
                     <line x1="438" y1="83" x2="422" y2="124" stroke="#00f0ff" strokeWidth="1" strokeOpacity="0.5"/>
@@ -1291,13 +1294,13 @@ const featureMicros   = service.featureMicros
                     <line x1="428" y1="140" x2="472" y2="140" stroke="#00f0ff" strokeWidth="1" strokeOpacity="0.5"/>
 
                     {/* Labels inside microservices */}
-                    <text x="450" y="73" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">API</text>
-                    <text x="410" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">DB</text>
-                    <text x="490" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">K8S</text>
+                    <text x="450" y="73" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">API</text>
+                    <text x="410" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">DB</text>
+                    <text x="490" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">K8S</text>
 
                     {/* Text labels on right target */}
-                    <text x="450" y="44" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">CLOUD NATIVE</text>
-                    <text x="450" y="180" textAnchor="middle" fill="#00f0ff" fillOpacity="0.8" fontSize="8" fontFamily="monospace" letterSpacing="0.5">MICROSERVICES</text>
+                    <text x="450" y="44" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">CLOUD NATIVE</text>
+                    <text x="450" y="180" textAnchor="middle" fill="#00f0ff" fillOpacity="0.8" fontSize="9" fontFamily="monospace" letterSpacing="0.5">MICROSERVICES</text>
 
                     {/* ── Pipelines from Legacy to Engine, and Engine to Microservices ── */}
                     <path d="M 130 120 Q 180 90 216 120" fill="none" stroke="url(#legacy-orange)" strokeWidth="1.5" strokeOpacity="0.5" strokeDasharray="3 3"/>
@@ -1326,20 +1329,20 @@ const featureMicros   = service.featureMicros
                       {/* Scanning radar line */}
                       <line x1="-5" y1="16" x2="27" y2="16" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-modern)"/>
                     </g>
-                    <text x="97" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">1. CODE SCAN</text>
+                    <text x="97" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">1. CODE SCAN</text>
 
                     {/* Section 2: Code Refactoring */}
                     <g transform="translate(192, 290)">
                       {/* Input logic block */}
                       <rect x="0" y="10" width="14" height="14" rx="2" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
-                      <text x="7" y="20" textAnchor="middle" fill="white" fillOpacity="0.6" fontSize="8" fontFamily="monospace">&lt;</text>
+                      <text x="7" y="20" textAnchor="middle" fill="white" fillOpacity="0.6" fontSize="9" fontFamily="monospace">&lt;</text>
                       {/* Transform arrow */}
                       <path d="M 18 17 L 26 17" stroke="#00f0ff" strokeWidth="1.5" markerEnd="url(#diag-arrow-cyan)"/>
                       {/* Output microservices */}
                       <circle cx="36" cy="11" r="5" fill="none" stroke="#00f0ff" strokeWidth="1.2"/>
                       <circle cx="36" cy="23" r="5" fill="none" stroke="#00f0ff" strokeWidth="1.2"/>
                     </g>
-                    <text x="212" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">2. REFACTOR</text>
+                    <text x="212" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">2. REFACTOR</text>
 
                     {/* Section 3: Automated QA / Test */}
                     <g transform="translate(312, 290)">
@@ -1348,7 +1351,7 @@ const featureMicros   = service.featureMicros
                       {/* Checkmark inside */}
                       <path d="M 10 16 L 13 19 L 20 12" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </g>
-                    <text x="327" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">3. AUTO QA</text>
+                    <text x="327" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">3. AUTO QA</text>
 
                     {/* Section 4: Machine Speed stats */}
                     <g transform="translate(415, 290)">
@@ -1359,13 +1362,13 @@ const featureMicros   = service.featureMicros
                       <line x1="25" y1="25" x2="35" y2="12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
                       <circle cx="25" cy="25" r="3" fill="white"/>
                     </g>
-                    <text x="442" y="348" textAnchor="middle" fill="#00f0ff" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">4. MACHINE SPEED</text>
+                    <text x="442" y="348" textAnchor="middle" fill="#00f0ff" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">4. MACHINE SPEED</text>
                   </svg>
                 </div>
               ) : service.slug === 'ai-governance' ? (
                 /* ── AI Governance Flow Diagram ── */
-                <div className="flex items-center justify-center w-full lg:-mt-16">
-                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[420px]">
+                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="Architecture diagram — scroll sideways to see the full flow" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full min-w-[660px] sm:min-w-0">
                     <defs>
                       <linearGradient id="gov-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#2564ea"/>
@@ -1422,42 +1425,42 @@ const featureMicros   = service.featureMicros
                     <g transform="translate(100, 6)">
                       <rect x="0" y="0" width="340" height="22" rx="11" fill="#080c14" stroke="url(#gov-cyan)" strokeWidth="1" strokeOpacity="0.5" />
                       <circle cx="16" cy="11" r="3.5" fill="#00c875" filter="url(#glow-green-gov)" />
-                      <text x="28" y="14.5" fill="#00f0ff" fontSize="7.5" fontWeight="bold" fontFamily="monospace" letterSpacing="0.8">eQORE™ ENTERPRISE AI GOVERNANCE MATRIX :: NIST &amp; EU AI ACT COMPLIANT</text>
+                      <text x="28" y="14.5" fill="#00f0ff" fontSize="9" fontWeight="bold" fontFamily="monospace" letterSpacing="0.8">eQORE™ ENTERPRISE AI GOVERNANCE MATRIX :: NIST &amp; EU AI ACT COMPLIANT</text>
                     </g>
 
                     {/* ── LEFT COLUMN: INPUT & CAPABILITY CHIPS ── */}
-                    <text x="75" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">FRAMEWORK INPUTS</text>
+                    <text x="75" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">FRAMEWORK INPUTS</text>
                     
                     {/* Chip 1: Prompts & RAG */}
                     <g transform="translate(15, 54)">
                       <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
                       <circle cx="12" cy="13" r="3" fill="#f59e0b" />
-                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="7" fontFamily="monospace" fontWeight="bold">PROMPTS &amp; RAG DATA</text>
-                      <text x="22" y="20" fill="#fbbf24" fillOpacity="0.9" fontSize="6" fontFamily="monospace">INPUT SHIELDING</text>
+                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace" fontWeight="bold">PROMPTS &amp; RAG DATA</text>
+                      <text x="22" y="20" fill="#fbbf24" fillOpacity="0.9" fontSize="9" fontFamily="monospace">INPUT SHIELDING</text>
                     </g>
 
                     {/* Chip 2: Agent Actions */}
                     <g transform="translate(15, 88)">
                       <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
                       <circle cx="12" cy="13" r="3" fill="#ea580c" />
-                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="7" fontFamily="monospace" fontWeight="bold">AGENT TOOL ACTIONS</text>
-                      <text x="22" y="20" fill="#ea580c" fillOpacity="0.9" fontSize="6" fontFamily="monospace">POLICY INTERCEPT</text>
+                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace" fontWeight="bold">AGENT TOOL ACTIONS</text>
+                      <text x="22" y="20" fill="#ea580c" fillOpacity="0.9" fontSize="9" fontFamily="monospace">POLICY INTERCEPT</text>
                     </g>
 
                     {/* Chip 3: LLM & GenAI Models */}
                     <g transform="translate(15, 122)">
                       <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-cyan)" strokeWidth="1.2" strokeOpacity="0.8"/>
                       <circle cx="12" cy="13" r="3" fill="#00f0ff" />
-                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="7" fontFamily="monospace" fontWeight="bold">LLM &amp; GENAI MODELS</text>
-                      <text x="22" y="20" fill="#00f0ff" fillOpacity="0.9" fontSize="6" fontFamily="monospace">BIAS DRIFT &lt; 0.01%</text>
+                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace" fontWeight="bold">LLM &amp; GENAI MODELS</text>
+                      <text x="22" y="20" fill="#00f0ff" fillOpacity="0.9" fontSize="9" fontFamily="monospace">BIAS DRIFT &lt; 0.01%</text>
                     </g>
 
                     {/* Chip 4: Enterprise GRC */}
                     <g transform="translate(15, 156)">
                       <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-purple)" strokeWidth="1.2" strokeOpacity="0.8"/>
                       <circle cx="12" cy="13" r="3" fill="#a78bfa" />
-                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="7" fontFamily="monospace" fontWeight="bold">ENTERPRISE GRC</text>
-                      <text x="22" y="20" fill="#a78bfa" fillOpacity="0.9" fontSize="6" fontFamily="monospace">EU AI ACT TIERING</text>
+                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace" fontWeight="bold">ENTERPRISE GRC</text>
+                      <text x="22" y="20" fill="#a78bfa" fillOpacity="0.9" fontSize="9" fontFamily="monospace">EU AI ACT TIERING</text>
                     </g>
 
                     {/* Laser stream connectors (Left to Center Matrix) */}
@@ -1467,7 +1470,7 @@ const featureMicros   = service.featureMicros
                     <path d="M 133 169 C 160 169, 175 150, 194 150" stroke="url(#gov-purple)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#arrow-cyan-matrix)" />
 
                     {/* ── CENTER: 4-QUADRANT GOVERNANCE MATRIX & KERNEL (cx=270, cy=125) ── */}
-                    <text x="270" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">eQORE™ GOVERNANCE MATRIX</text>
+                    <text x="270" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">eQORE™ GOVERNANCE MATRIX</text>
                     
                     {/* Outer Regulatory Perimeter Circle (R=72) */}
                     <circle cx="270" cy="125" r="72" fill="#04070d" stroke="url(#gov-purple)" strokeWidth="1.5" filter="url(#glow-purple-gov)" />
@@ -1484,22 +1487,22 @@ const featureMicros   = service.featureMicros
                     {/* Top-Left Quadrant Node: ETHICS */}
                     <g transform="translate(230, 80)">
                       <circle cx="0" cy="0" r="4" fill="#f59e0b" filter="url(#glow-cyan-gov)" />
-                      <text x="-6" y="-6" textAnchor="end" fill="#fbbf24" fontSize="6.5" fontWeight="bold" fontFamily="monospace">RESPONSIBLE AI</text>
+                      <text x="-6" y="-6" textAnchor="end" fill="#fbbf24" fontSize="9" fontWeight="bold" fontFamily="monospace">RESPONSIBLE AI</text>
                     </g>
                     {/* Top-Right Quadrant Node: MODEL GOV */}
                     <g transform="translate(310, 80)">
                       <circle cx="0" cy="0" r="4" fill="#00f0ff" filter="url(#glow-cyan-gov)" />
-                      <text x="6" y="-6" fill="#00f0ff" fontSize="6.5" fontWeight="bold" fontFamily="monospace">MODEL GOVERNANCE</text>
+                      <text x="6" y="-6" fill="#00f0ff" fontSize="9" fontWeight="bold" fontFamily="monospace">MODEL GOVERNANCE</text>
                     </g>
                     {/* Bottom-Right Quadrant Node: RISK & SEC */}
                     <g transform="translate(310, 170)">
                       <circle cx="0" cy="0" r="4" fill="#7f53f9" />
-                      <text x="6" y="10" fill="#a78bfa" fontSize="6.5" fontWeight="bold" fontFamily="monospace">RISK &amp; SECURITY</text>
+                      <text x="6" y="10" fill="#a78bfa" fontSize="9" fontWeight="bold" fontFamily="monospace">RISK &amp; SECURITY</text>
                     </g>
                     {/* Bottom-Left Quadrant Node: OPS & AUDIT */}
                     <g transform="translate(230, 170)">
                       <circle cx="0" cy="0" r="4" fill="#00c875" />
-                      <text x="-6" y="10" textAnchor="end" fill="#00c875" fontSize="6.5" fontWeight="bold" fontFamily="monospace">OPS &amp; ASSURANCE</text>
+                      <text x="-6" y="10" textAnchor="end" fill="#00c875" fontSize="9" fontWeight="bold" fontFamily="monospace">OPS &amp; ASSURANCE</text>
                     </g>
 
                     {/* Center Hexagonal Engine Processor Kernel */}
@@ -1513,30 +1516,30 @@ const featureMicros   = service.featureMicros
                     <path d="M 342 125 L 410 125" stroke="url(#gov-green)" strokeWidth="2.5" filter="url(#glow-green-gov)" markerEnd="url(#arrow-green-matrix)" />
 
                     {/* ── RIGHT COLUMN: AUDIT VERIFIED COMPLIANCE LEDGER ── */}
-                    <text x="465" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="7.5" fontFamily="monospace" letterSpacing="0.8">VERIFIED OUTCOMES</text>
+                    <text x="465" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">VERIFIED OUTCOMES</text>
 
                     <g transform="translate(410, 52)">
                       <rect x="0" y="0" width="118" height="136" rx="10" fill="#080d16" stroke="url(#gov-green)" strokeWidth="1.5" filter="url(#glow-green-gov)" />
                       
                       {/* Badge Header */}
                       <rect x="8" y="8" width="102" height="18" rx="5" fill="#00c875" fillOpacity="0.15" />
-                      <text x="59" y="20.5" textAnchor="middle" fill="#00c875" fontSize="7.5" fontWeight="black" fontFamily="monospace">VERIFIED PASSPORT</text>
+                      <text x="59" y="20.5" textAnchor="middle" fill="#00c875" fontSize="9" fontWeight="black" fontFamily="monospace">VERIFIED PASSPORT</text>
 
                       {/* Checklist */}
-                      <text x="12" y="42" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
-                      <text x="23" y="42" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">EU AI Act Aligned</text>
+                      <text x="12" y="42" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
+                      <text x="23" y="42" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">EU AI Act Aligned</text>
 
-                      <text x="12" y="60" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
-                      <text x="23" y="60" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Model Quality &gt; 99.8%</text>
+                      <text x="12" y="60" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
+                      <text x="23" y="60" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">Model Quality &gt; 99.8%</text>
 
-                      <text x="12" y="78" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
-                      <text x="23" y="78" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Zero-Trust Shielded</text>
+                      <text x="12" y="78" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
+                      <text x="23" y="78" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">Zero-Trust Shielded</text>
 
-                      <text x="12" y="96" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
-                      <text x="23" y="96" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Immutable Audit Log</text>
+                      <text x="12" y="96" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
+                      <text x="23" y="96" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">Immutable Audit Log</text>
 
-                      <text x="12" y="114" fill="#00c875" fontSize="8.5" fontWeight="bold">✓</text>
-                      <text x="23" y="114" fill="white" fillOpacity="0.9" fontSize="7.5" fontFamily="monospace">Kill-Switch Ready</text>
+                      <text x="12" y="114" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
+                      <text x="23" y="114" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">Kill-Switch Ready</text>
                     </g>
 
                     {/* ── BOTTOM: 4-STAGE CONTINUOUS LIFECYCLE PIPELINE ── */}
@@ -1560,8 +1563,8 @@ const featureMicros   = service.featureMicros
                         <line x1="15" y1="0" x2="15" y2="30" stroke="white" strokeOpacity="0.3" />
                         <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
                       </g>
-                      <text x="60" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">1. RISK TIERING</text>
-                      <text x="60" y="80" textAnchor="middle" fill="#f59e0b" fontSize="6.5" fontFamily="monospace">ISO / EU AI ACT</text>
+                      <text x="60" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">1. RISK TIERING</text>
+                      <text x="60" y="80" textAnchor="middle" fill="#f59e0b" fontSize="9" fontFamily="monospace">ISO / EU AI ACT</text>
 
                       {/* Stage 2: Pre-Deploy Evaluation */}
                       <g transform="translate(165, 18)">
@@ -1572,16 +1575,16 @@ const featureMicros   = service.featureMicros
                         <line x1="18" y1="11" x2="22" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
                         <circle cx="15" cy="8" r="2" fill="#a78bfa" filter="url(#glow-purple-gov)"/>
                       </g>
-                      <text x="180" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">2. EXPLAINABILITY</text>
-                      <text x="180" y="80" textAnchor="middle" fill="#a78bfa" fontSize="6.5" fontFamily="monospace">SHAP &amp; LINEAGE</text>
+                      <text x="180" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">2. EXPLAINABILITY</text>
+                      <text x="180" y="80" textAnchor="middle" fill="#a78bfa" fontSize="9" fontFamily="monospace">SHAP &amp; LINEAGE</text>
 
                       {/* Stage 3: Runtime Policy Intercept */}
                       <g transform="translate(285, 18)">
                         <rect x="5" y="3" width="20" height="24" rx="4" fill="#0c101c" stroke="#00f0ff" strokeWidth="1.5" filter="url(#glow-cyan-gov)"/>
                         <path d="M 10 13 L 20 13 M 10 18 L 17 18 M 15 8 L 20 8" stroke="#00f0ff" strokeWidth="1.4" strokeLinecap="round" />
                       </g>
-                      <text x="300" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">3. POLICY GATE</text>
-                      <text x="300" y="80" textAnchor="middle" fill="#00f0ff" fontSize="6.5" fontFamily="monospace">PRE-ACTION CHECK</text>
+                      <text x="300" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">3. POLICY GATE</text>
+                      <text x="300" y="80" textAnchor="middle" fill="#00f0ff" fontSize="9" fontFamily="monospace">PRE-ACTION CHECK</text>
 
                       {/* Stage 4: Continuous Assurance */}
                       <g transform="translate(405, 18)">
@@ -1590,15 +1593,15 @@ const featureMicros   = service.featureMicros
                         <line x1="23" y1="26" x2="33" y2="13" stroke="white" strokeWidth="2" strokeLinecap="round"/>
                         <circle cx="23" cy="26" r="3" fill="#00c875"/>
                       </g>
-                      <text x="420" y="68" textAnchor="middle" fill="#00c875" fontSize="8" fontWeight="bold" fontFamily="monospace">4. AUDIT READY</text>
-                      <text x="420" y="80" textAnchor="middle" fill="#00c875" fontSize="6.5" fontWeight="bold" fontFamily="monospace">100% COVERED</text>
+                      <text x="420" y="68" textAnchor="middle" fill="#00c875" fontSize="9" fontWeight="bold" fontFamily="monospace">4. AUDIT READY</text>
+                      <text x="420" y="80" textAnchor="middle" fill="#00c875" fontSize="9" fontWeight="bold" fontFamily="monospace">100% COVERED</text>
                     </g>
                   </svg>
                 </div>
               ) : (
                 /* ── Agentic AI Flow Diagram ── */
-                <div className="flex items-center justify-center w-full lg:-mt-16">
-                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-h-[420px]">
+                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="Architecture diagram — scroll sideways to see the full flow" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full min-w-[660px] sm:min-w-0">
                     <defs>
                       <linearGradient id="agentic-orange" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#ea580c"/>
@@ -1666,17 +1669,17 @@ const featureMicros   = service.featureMicros
                     <line x1="45" y1="155" x2="105" y2="155" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
                     
                     {/* Active inputs indicator circles */}
-                    <circle cx="38" cy="83" r="2.5" fill="#ea580c"/>
-                    <circle cx="34" cy="119" r="2.5" fill="#f59e0b"/>
-                    <circle cx="38" cy="155" r="2.5" fill="#ea580c"/>
+                    <circle cx="30" cy="83" r="2.5" fill="#ea580c"/>
+                    <circle cx="26" cy="119" r="2.5" fill="#f59e0b"/>
+                    <circle cx="30" cy="155" r="2.5" fill="#ea580c"/>
 
                     {/* Text tags inside inputs */}
-                    <text x="75" y="86" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">SSE / WEBHOOKS</text>
-                    <text x="75" y="122" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">REST / GQL API</text>
-                    <text x="75" y="158" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="7.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">AMQP / KAFKA</text>
+                    <text x="75" y="86" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">SSE / WEBHOOKS</text>
+                    <text x="75" y="122" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">REST / GQL API</text>
+                    <text x="75" y="158" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">AMQP / KAFKA</text>
 
-                    <text x="75" y="52" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">WORKFLOW TRIGGERS</text>
-                    <text x="75" y="186" textAnchor="middle" fill="#ea580c" fillOpacity="0.8" fontSize="8" fontFamily="monospace" letterSpacing="0.5">INCOMING EVENTS</text>
+                    <text x="75" y="52" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">WORKFLOW TRIGGERS</text>
+                    <text x="75" y="186" textAnchor="middle" fill="#ea580c" fillOpacity="0.8" fontSize="9" fontFamily="monospace" letterSpacing="0.5">INCOMING EVENTS</text>
 
                     {/* ── CENTER: Cognitive Orchestrator & Planner Loop ── */}
                     {/* Main Orb */}
@@ -1698,13 +1701,13 @@ const featureMicros   = service.featureMicros
                     {/* Rotating Sub-Agent Satellites */}
                     {/* Satellite 1: CRM subagent */}
                     <circle cx="204" cy="120" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <text x="204" y="123" textAnchor="middle" fill="white" fontSize="7" fontWeight="black" fontFamily="monospace">RAG</text>
+                    <text x="204" y="123" textAnchor="middle" fill="white" fontSize="9" fontWeight="black" fontFamily="monospace">RAG</text>
                     {/* Satellite 2: Document parser subagent */}
                     <circle cx="270" cy="52" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <text x="270" y="55" textAnchor="middle" fill="white" fontSize="7" fontWeight="black" fontFamily="monospace">PLAN</text>
+                    <text x="270" y="55" textAnchor="middle" fill="white" fontSize="9" fontWeight="black" fontFamily="monospace">PLAN</text>
                     {/* Satellite 3: API call executor subagent */}
                     <circle cx="336" cy="120" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <text x="336" y="123" textAnchor="middle" fill="white" fontSize="7" fontWeight="black" fontFamily="monospace">EXEC</text>
+                    <text x="336" y="123" textAnchor="middle" fill="white" fontSize="9" fontWeight="black" fontFamily="monospace">EXEC</text>
 
                     {/* Satellite Orbits */}
                     <path d="M 270 52 C 200 52 204 120 204 120" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
@@ -1713,12 +1716,12 @@ const featureMicros   = service.featureMicros
                     <path d="M 336 120 C 336 120 332 52 270 52" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
 
                     {/* Text labels in center */}
-                    <text x="270" y="206" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">COGNITIVE ROUTING</text>
+                    <text x="270" y="206" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">COGNITIVE ROUTING</text>
 
                     {/* ── RIGHT: Targets & Orchestrated Outcomes ── */}
                     <circle cx="450" cy="70" r="18" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <circle cx="410" cy="140" r="18" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <circle cx="490" cy="140" r="18" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
+                    <circle cx="410" cy="140" r="20" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
+                    <circle cx="490" cy="140" r="23" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
                     
                     {/* Connecting lines of target node mesh */}
                     <line x1="438" y1="83" x2="422" y2="124" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.5"/>
@@ -1726,13 +1729,13 @@ const featureMicros   = service.featureMicros
                     <line x1="428" y1="140" x2="472" y2="140" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.5"/>
 
                     {/* Labels inside nodes */}
-                    <text x="450" y="73" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">MUTATE</text>
-                    <text x="410" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">COMMIT</text>
-                    <text x="490" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="8" fontFamily="monospace">CALLBACK</text>
+                    <text x="450" y="73" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">MUTATE</text>
+                    <text x="410" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">COMMIT</text>
+                    <text x="490" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">CALLBACK</text>
 
                     {/* Text labels on right target */}
-                    <text x="474" y="44" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="8" fontFamily="monospace" letterSpacing="0.5">WORKFLOW OUTCOME</text>
-                    <text x="450" y="180" textAnchor="middle" fill="#00c875" fillOpacity="0.8" fontSize="8" fontFamily="monospace" letterSpacing="0.5">AUTONOMOUS SYNC</text>
+                    <text x="474" y="44" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">WORKFLOW OUTCOME</text>
+                    <text x="450" y="180" textAnchor="middle" fill="#00c875" fillOpacity="0.8" fontSize="9" fontFamily="monospace" letterSpacing="0.5">AUTONOMOUS SYNC</text>
 
                     {/* ── Connecting Pipelines ── */}
                     <path d="M 130 120 Q 170 90 190 120" fill="none" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.5" strokeDasharray="3 3"/>
@@ -1743,12 +1746,12 @@ const featureMicros   = service.featureMicros
                     <rect x="418" y="52" width="112" height="80" rx="12" fill="#0b0f19" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-green)"/>
                     <path d="M 418 96 L 402 108 L 422 106 Z" fill="#0b0f19" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.8"/>
                     
-                    <text x="430" y="78" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
-                    <text x="444" y="78" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">Payload parsed</text>
-                    <text x="430" y="96" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
-                    <text x="444" y="96" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">DAG orchestrated</text>
-                    <text x="430" y="114" fill="#00c875" fontSize="8" fontWeight="black" fontFamily="sans-serif">✓</text>
-                    <text x="444" y="114" fill="white" fillOpacity="0.8" fontSize="8.5" fontFamily="monospace">Tx committed</text>
+                    <text x="430" y="78" fill="#00c875" fontSize="9" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="78" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace">Payload parsed</text>
+                    <text x="430" y="96" fill="#00c875" fontSize="9" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="96" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace">DAG orchestrated</text>
+                    <text x="430" y="114" fill="#00c875" fontSize="9" fontWeight="black" fontFamily="sans-serif">✓</text>
+                    <text x="444" y="114" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace">Tx committed</text>
 
                     {/* ── BOTTOM: Modernization Metrics & Status Panel ── */}
                     <rect x="40" y="274" width="460" height="90" rx="30" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
@@ -1769,7 +1772,7 @@ const featureMicros   = service.featureMicros
                       <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
                       <line x1="-5" y1="15" x2="35" y2="15" stroke="#ea580c" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-orange)" />
                     </g>
-                    <text x="97" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">1. INGEST</text>
+                    <text x="97" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">1. INGEST</text>
 
                     {/* Section 2: Orchestrate */}
                     <g transform="translate(192, 290)">
@@ -1781,14 +1784,14 @@ const featureMicros   = service.featureMicros
                       <line x1="10.5" y1="20" x2="19.5" y2="20" stroke="#7f53f9" strokeWidth="1.2" />
                       <circle cx="15" cy="8" r="2" fill="#7f53f9" filter="url(#glow-purple)"/>
                     </g>
-                    <text x="212" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">2. ORCHESTRATE</text>
+                    <text x="212" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">2. ORCHESTRATE</text>
 
                     {/* Section 3: Execute */}
                     <g transform="translate(312, 290)">
                       <rect x="5" y="4" width="20" height="22" rx="3" fill="none" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-cyan)"/>
                       <path d="M 11 12 L 19 12 M 11 17 L 17 17 M 15 8 L 19 8" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
                     </g>
-                    <text x="327" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="8" fontFamily="monospace">3. EXECUTE</text>
+                    <text x="327" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">3. EXECUTE</text>
 
                     {/* Section 4: Sync */}
                     <g transform="translate(415, 290)">
@@ -1797,7 +1800,7 @@ const featureMicros   = service.featureMicros
                       <line x1="25" y1="25" x2="35" y2="12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
                       <circle cx="25" cy="25" r="3" fill="white"/>
                     </g>
-                    <text x="442" y="348" textAnchor="middle" fill="#00c875" fillOpacity="0.9" fontSize="8" fontWeight="bold" fontFamily="monospace">4. SYNC</text>
+                    <text x="442" y="348" textAnchor="middle" fill="#00c875" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">4. SYNC</text>
                   </svg>
                 </div>
               ) ) : null}
@@ -1887,7 +1890,18 @@ const featureMicros   = service.featureMicros
         <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <p className="text-[11px] font-black tracking-[0.45em] text-white/60 uppercase mb-7 text-center">CORE CAPABILITY PRINCIPLES</p>
-            <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+            {/* Overflows below ~640px (547px of badges in a 342px gutter), and
+                Chrome does not make an overflow container focusable on its own,
+                so a keyboard-only visitor could not reach the badges past the
+                fold. `justify-start` matters too: a centred flex container puts
+                the leading overflow outside the scrollable range entirely. */}
+            <div
+              className="flex flex-nowrap items-center justify-start sm:justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+              style={{ scrollbarWidth: 'none' }}
+              role="group"
+              aria-label="Core capability principles"
+              tabIndex={0}
+            >
               {service.keyFeatures.map((f, i, arr) => (
                 <React.Fragment key={f}>
                   <span className="flex-shrink-0 text-white/60 text-[11px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
@@ -1924,7 +1938,7 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ CAPABILITIES ══════════════════════ */}
       {service.capabilityAreas ? (
         /* ── BENTO GRID (when capabilityAreas override is set) ── */
-        <section id="svc-capabilities" className="py-24 overflow-hidden relative" style={{ backgroundColor: '#000000' }}>
+        <section id="svc-capabilities" className="py-16 md:py-24 overflow-hidden relative" style={{ backgroundColor: '#000000' }}>
           <style dangerouslySetInnerHTML={{__html: `
             .svc-cap-desc {
               opacity: 1; transform: translateY(0);
@@ -1971,8 +1985,12 @@ const featureMicros   = service.featureMicros
               </div>
             </div>
 
-            {/* Bento Grid */}
-            <div className={`grid gap-3 grid-cols-1 ${capabilities.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
+            {/* Bento Grid — the single largest block on the mobile page: eight
+                380px cards stacked cost 3,124px. Below `sm` it becomes a rail. */}
+            <CardRail
+              label="Capability areas"
+              className={`grid gap-3 grid-cols-1 ${capabilities.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3'}`}
+            >
               {capabilities.map((cap, i) => {
                 const isExpanded = !!expandedCaps[i];
                 const isVibrant = service.capabilitiesTheme === 'vibrant-bento';
@@ -2021,12 +2039,12 @@ const featureMicros   = service.featureMicros
                   />
                 );
               })}
-            </div>
+            </CardRail>
           </div>
         </section>
       ) : (
         /* ── ORIGINAL LIST + DETAIL PANEL (all other services) ── */
-        <section id="svc-capabilities" className="py-32 relative" style={{ backgroundColor: '#000000' }}>
+        <section id="svc-capabilities" className="py-16 md:py-32 relative" style={{ backgroundColor: '#000000' }}>
           <div ref={capRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${capVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="mb-16">
               <div className="flex items-center gap-4 mb-4">
@@ -2101,7 +2119,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ PHILOSOPHY / FEATURES ══════════════════════ */}
       {service.slug !== 'agentic-ai-led-application-modernization' && (
-        <section className="py-32" style={{ backgroundColor: '#000000' }}>
+        <section className="py-16 md:py-32" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
             {/* Header */}
@@ -2122,7 +2140,7 @@ const featureMicros   = service.featureMicros
             </div>
 
             {/* Bento grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 auto-rows-[minmax(220px,auto)] gap-3">
+            <CardRail label="Delivery principles" className="grid grid-cols-1 sm:grid-cols-3 auto-rows-[minmax(220px,auto)] gap-3">
               {featureLabels.map((label, i) => {
                 const FIcon = featureIcons[i];
                 const n = String(i + 1).padStart(2, '0');
@@ -2175,7 +2193,7 @@ const featureMicros   = service.featureMicros
                   </div>
                 );
               })}
-            </div>
+            </CardRail>
 
           </div>
         </section>
@@ -2189,7 +2207,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
       {service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && service.slug !== 'agentic-ai' && (
-        <section id="svc-architecture" className="py-24" style={{ backgroundColor: '#000000' }}>
+        <section id="svc-architecture" className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
@@ -2290,7 +2308,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ INDUSTRY USE CASES ══════════════════════ */}
       {service.industryUseCases && (
-        <section className="py-24" style={{ backgroundColor: '#000000' }}>
+        <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="mb-14">
               <div className="flex items-center gap-4 mb-4">
@@ -2305,15 +2323,19 @@ const featureMicros   = service.featureMicros
                 {service.industryLede || `Kangqore deploys ${service.name.toLowerCase()} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
+            <CardRail label="Industry use cases" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.industryUseCases.map((item, idx) => (
                 <div key={idx} className="group bg-[#000000] p-8 flex flex-col transition-all duration-500 hover:bg-[#060a10] cursor-pointer">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:text-cyan-400 transition-colors duration-300">{item.industry}</span>
-                    <span className="text-white/50 group-hover:text-cyan-400 text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none">+</span>
+                    <span className="text-white/50 group-hover:text-cyan-400 text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none sm:inline hidden">+</span>
                   </div>
-                  
-                  <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
+
+                  {/* Expanded by default below `sm`. The collapse is driven purely
+                      by group-hover, which no touch device fires — so on a phone
+                      the headline, the agent list and the industry cross-link
+                      were all unreachable, not merely hidden. */}
+                  <div className="grid grid-rows-[1fr] sm:grid-rows-[0fr] sm:group-hover:grid-rows-[1fr] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
                     <div className="min-h-0 flex flex-col gap-4 mt-4">
                       <p className="text-white font-bold text-lg leading-snug">{item.headline}</p>
                       <ul className="space-y-2">
@@ -2330,7 +2352,7 @@ const featureMicros   = service.featureMicros
                       {industrySlug(item.industry) && (
                         <Link
                           to={`/industries/${industrySlug(item.industry)}`}
-                          className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400/80 hover:text-cyan-300 transition-colors"
+                          className="mt-2 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold text-cyan-400/80 hover:text-cyan-300 transition-colors"
                         >
                           {service.name} for {item.industry}
                           <ArrowRight className="w-3 h-3" />
@@ -2340,7 +2362,7 @@ const featureMicros   = service.featureMicros
                   </div>
                 </div>
               ))}
-            </div>
+            </CardRail>
           </div>
         </section>
       )}
@@ -2358,7 +2380,7 @@ const featureMicros   = service.featureMicros
         const pad = allCards.length === 3 ? 'p-8 lg:p-10' : 'p-10 lg:p-14';
         const metricSize = allCards.length === 3 ? 'clamp(2.8rem, 5vw, 4.5rem)' : 'clamp(3.5rem, 8vw, 6rem)';
         return (
-          <section className="py-24" style={{ backgroundColor: '#000000' }}>
+          <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
             <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
               <div className="flex items-center gap-4 mb-16">
@@ -2366,9 +2388,9 @@ const featureMicros   = service.featureMicros
                 <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">Engagement Outcomes</span>
               </div>
 
-              <div className={`grid gap-px ${gridCols} bg-white/[0.04] rounded-2xl overflow-hidden`}>
+              <CardRail label="Engagement outcomes" hairline className={`grid gap-px ${gridCols} bg-white/[0.04] rounded-2xl overflow-hidden`}>
                 {allCards.map((card, idx) => (
-                  <div key={idx} className={`bg-[#000000] ${pad} flex flex-col gap-8`}>
+                  <div key={idx} className={`bg-[#000000] p-6 sm:${pad} flex flex-col gap-6 sm:gap-8`}>
                     <div>
                       <span className="font-black leading-none text-white" style={{ fontSize: metricSize }}>
                         {card.metric}
@@ -2419,7 +2441,7 @@ const featureMicros   = service.featureMicros
                     </div>
                   </div>
                 ))}
-              </div>
+              </CardRail>
 
             </div>
           </section>
@@ -2446,7 +2468,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ JOURNEY TIMELINE ══════════════════════ */}
       {!service.servicePackages && (
-        <section id="svc-phases" className="py-32 overflow-hidden relative" style={{ backgroundColor: '#000000' }}>
+        <section id="svc-phases" className="py-16 md:py-32 overflow-hidden relative" style={{ backgroundColor: '#000000' }}>
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
           </div>
@@ -2553,7 +2575,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ SERVICE PACKAGES ══════════════════════ */}
       {service.servicePackages && (
-        <section className="py-24" style={{ backgroundColor: '#000000' }}>
+        <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="mb-14">
               <div className="flex items-center gap-4 mb-4">
@@ -2568,7 +2590,7 @@ const featureMicros   = service.featureMicros
                 {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
+            <CardRail label="Ways to start" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.servicePackages.map((pkg, idx) => (
                 <div key={idx} className="bg-[#000000] p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
                   <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
@@ -2581,7 +2603,7 @@ const featureMicros   = service.featureMicros
                   )}
                 </div>
               ))}
-            </div>
+            </CardRail>
           </div>
         </section>
       )}
@@ -2590,7 +2612,7 @@ const featureMicros   = service.featureMicros
       {/* Opt-out per service via hidePartnershipModel — the six claims here are
           generic to consultancy and add ~1,160px for ~93 words. */}
       {!service.hidePartnershipModel && (
-      <section id="svc-partnership" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="svc-partnership" className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-16">
             <div className="flex items-center gap-4 mb-4">
@@ -2602,12 +2624,12 @@ const featureMicros   = service.featureMicros
               <span className="bg-brand-gradient bg-clip-text text-transparent">Partnership Model</span>
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-start">
+          <CardRail label="How we work" className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-start">
             {HOW_WE_WORK.map((c, i) => {
               const elevated = i === 1 || i === 4;
               return (
                 <div key={c.n} className={`group relative flex flex-col transition-all duration-500 hover:-translate-y-2 ${elevated ? 'lg:-translate-y-4' : ''}`}>
-                  <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 group-hover:h-64 sm:group-hover:h-72 shadow-lg">
+                  <div className="w-full h-40 sm:h-64 rounded-2xl overflow-hidden transition-all duration-500 sm:group-hover:h-72 shadow-lg">
                     <img src={`/assets/engines/engine${(i % 6) + 1}.png`} alt={c.title} loading="lazy" decoding="async" width="600" height="400" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
                   <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20 group-hover:bg-[#06090f] flex flex-col flex-1">
@@ -2617,14 +2639,14 @@ const featureMicros   = service.featureMicros
                 </div>
               );
             })}
-          </div>
+          </CardRail>
         </div>
       </section>
       )}
 
       {/* ══════════════════════ TECH STACK (service-specific) ══════════════════════ */}
       {service.techStack && service.techStack.length > 0 && (
-        <section className="py-24" style={{ backgroundColor: '#000000' }}>
+        <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
             {/* Header */}
@@ -2723,7 +2745,7 @@ const featureMicros   = service.featureMicros
           representation to an enterprise buyer, so no service inherits it by
           default. Only add the key to a service whose facts you have confirmed. */}
       {service.dataBoundary && (
-        <section className="py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+        <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
@@ -2799,9 +2821,9 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ FAQ ══════════════════════ */}
-      <section id="svc-faq" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="svc-faq" className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div ref={faqRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${faqVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-32 items-end mb-10 sm:mb-20">
             <div>
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
@@ -2831,12 +2853,12 @@ const featureMicros   = service.featureMicros
               const isOpen = openFaq === i;
               return (
                 <div key={i} className="border-t border-white/[0.06]">
-                  <button onClick={() => setOpenFaq(isOpen ? null : i)} className="w-full flex items-start justify-between gap-8 py-7 text-left group">
+                  <button onClick={() => setOpenFaq(isOpen ? null : i)} className="w-full flex items-start justify-between gap-5 sm:gap-8 py-4 sm:py-7 text-left group">
                     <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white'}`}>{faq.q}</span>
                     <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
                   </button>
                   {isOpen && (
-                    <div className="pb-7 pr-12">
+                    <div className="pb-5 sm:pb-7 pr-6 sm:pr-12">
                       <p className="text-white/70 text-base font-medium leading-relaxed">{faq.a}</p>
                     </div>
                   )}
@@ -2872,7 +2894,9 @@ const featureMicros   = service.featureMicros
             </p>
 
             <nav aria-label={`Other ${department.name} services`}>
-              <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1">
+              {/* Two columns on mobile too. This is a link index, not prose —
+                  one column cost 527px of near-empty rows for 52 words. */}
+              <ul className="grid grid-cols-2 lg:grid-cols-3 gap-x-5 sm:gap-x-8 gap-y-1">
                 {clusterSiblings.map((s) => (
                   <li key={s.slug}>
                     <Link
@@ -2893,7 +2917,7 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ CTA ══════════════════════ */}
-      <section className="py-32" style={{ backgroundColor: '#000000' }}>
+      <section className="py-16 md:py-32" style={{ backgroundColor: '#000000' }}>
         <div ref={ctaRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="grid lg:grid-cols-[1fr_auto] gap-16 lg:gap-24 items-end">
 
@@ -2919,7 +2943,7 @@ const featureMicros   = service.featureMicros
                   Schedule a Demo
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                 </Link>
-                <a href="/assets/kangqore-agentic-ai-playbook.pdf" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-white/50 font-semibold text-sm hover:text-white transition-colors duration-200">
+                <a href="/assets/kangqore-agentic-ai-playbook.pdf" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 py-1 min-h-[24px] text-white/50 font-semibold text-sm hover:text-white transition-colors duration-200">
                   Download the Playbook
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
                 </a>

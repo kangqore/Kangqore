@@ -23,9 +23,15 @@ const SocialIcon = ({ social }) => (
   </a>
 );
 
+// 14px text in a block link resolves to a ~21px box — under the 24px WCAG 2.2
+// AA target size (2.5.8), and these 19 links were the largest single group of
+// undersized controls on the site. Pinning the line box to 24 and taking the
+// same 3px off the margin keeps the 35px pitch, so the footer renders at
+// exactly the height it did before.
 const navLinkStyle = {
   display: 'block', fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600,
-  color: 'inherit', marginBottom: 14, textDecoration: 'none', transition: 'color 0.2s',
+  color: 'inherit', minHeight: 24, lineHeight: '24px', marginBottom: 11,
+  textDecoration: 'none', transition: 'color 0.2s',
 };
 
 const Footer = () => {
@@ -188,7 +194,7 @@ const Footer = () => {
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 {legalLinks.map((l, i) => (
                   <React.Fragment key={l.name}>
-                    <Link to={l.path} style={{ fontSize: 11, color: '#4b5563', textDecoration: 'none', fontWeight: 500 }}
+                    <Link to={l.path} style={{ fontSize: 11, lineHeight: '24px', minHeight: 24, display: 'inline-flex', alignItems: 'center', color: '#4b5563', textDecoration: 'none', fontWeight: 500 }}
                       onMouseEnter={e => e.currentTarget.style.color = '#2564ea'}
                       onMouseLeave={e => e.currentTarget.style.color = '#4b5563'}
                     >{l.name}</Link>

@@ -73,8 +73,12 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
 
         {/* 3-Column Comparison Table with Gradient Accents */}
         <div className="rounded-3xl bg-[#030814]/90 backdrop-blur-xl overflow-hidden shadow-2xl">
-          {/* Table Header */}
-          <div className="grid grid-cols-1 md:grid-cols-12 bg-white/[0.02] text-xs font-black tracking-[0.2em] uppercase">
+          {/* Table Header. Hidden below `md`, where the three cells stack into a
+              190px block that no longer heads anything — and worse, the rows
+              below it then present two unlabelled paragraphs, so a phone reader
+              cannot tell which one is the rules-based side. The per-row labels
+              further down carry that job on mobile. */}
+          <div className="hidden md:grid grid-cols-1 md:grid-cols-12 bg-white/[0.02] text-xs font-black tracking-[0.2em] uppercase">
             <div className="md:col-span-3 p-5 sm:p-6 text-white/50">
               FEATURE
             </div>
@@ -114,7 +118,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                   }`}
                 >
                   {/* Feature Dimension Column */}
-                  <div className="md:col-span-3 p-5 sm:p-6 flex items-center justify-between">
+                  <div className="md:col-span-3 px-5 pt-4 pb-2 sm:p-6 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span
                         className="w-2.5 h-2.5 rounded-full transition-all duration-300"
@@ -132,7 +136,10 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                   </div>
 
                   {/* Traditional AI Column */}
-                  <div className="md:col-span-4 p-5 sm:p-6">
+                  <div className="md:col-span-4 px-5 pb-3 sm:p-6">
+                    <span className="md:hidden block text-[11px] font-black tracking-[0.2em] uppercase text-white/50 mb-1">
+                      Rules-based
+                    </span>
                     <p className={`text-sm leading-relaxed transition-colors ${
                       isHovered ? 'text-white/80' : 'text-white/50'
                     }`}>
@@ -141,12 +148,15 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                   </div>
 
                   {/* Agentic AI Column */}
-                  <div 
-                    className="md:col-span-5 p-5 sm:p-6 transition-all duration-300"
+                  <div
+                    className="md:col-span-5 px-5 py-4 sm:p-6 transition-all duration-300"
                     style={{
                       backgroundColor: isHovered ? 'rgba(37, 100, 234, 0.16)' : 'rgba(37, 100, 234, 0.06)'
                     }}
                   >
+                    <span className="md:hidden block text-[11px] font-black tracking-[0.2em] uppercase mb-1" style={GRADIENT_STYLE}>
+                      Agentic
+                    </span>
                     <p className={`text-sm leading-relaxed transition-colors ${
                       isHovered ? 'text-white font-bold' : 'text-white/95 font-semibold'
                     }`}>

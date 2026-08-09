@@ -952,3 +952,81 @@ html, body, #root { border-top: none !important; box-shadow: none !important; }
 .kq-skip-link:focus {
   transform: translateY(0);
 }
+
+/* ─── Mobile card rail ────────────────────────────────────────────────────────
+   Six repeater grids on the service template collapse to one column below
+   640px. Measured at 390x844 they cost 9,610px of a 26,340px page:
+
+     3,124px   8 cards   Service Capabilities        (DepartmentCarousel)
+     2,002px   6 cards   Partnership Model           (UniversalServicePage)
+     1,696px   5 cards   5-Stage Execution Loop      (AICustomSections)
+     1,271px   5 cards   Five ways to start          (UniversalServicePage)
+       916px   4 cards   Built for Impact            (UniversalServicePage)
+       601px   6 cards   Agents built for industry   (UniversalServicePage)
+
+   A stacked grid costs the sum of its cards; a rail costs one card. Nothing is
+   truncated or hidden — the cards keep their real size and content and are
+   reached by swiping instead of scrolling.
+
+   This lives in CSS rather than as Tailwind variants deliberately. Two of these
+   grids carry `overflow-hidden` and `gap-px bg-white/[0.04]` (a hairline-divider
+   technique), which a rail has to undo on mobile and restore on desktop. Doing
+   that with `sm:overflow-visible` next to the original `overflow-hidden` makes
+   the outcome depend on which utility Tailwind happens to emit last — same
+   specificity, same variant. A media query scoped to `max-width: 639px` cannot
+   collide with the desktop classes at all, because above that width the rule
+   simply does not exist.
+
+   The peek (cards at 86%) is load-bearing: a rail whose cards fill the viewport
+   reads as a single card and never gets swiped. The sliver of card two is the
+   only affordance that says there is more.
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 639px) {
+  .kq-rail {
+    display: flex !important;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.875rem !important;
+    overflow-x: auto;
+    /* Without this, a swipe past the last card triggers the browser's
+       back-navigation gesture. */
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 1.5rem;
+    /* Bleed to the screen edge so the peeking card is not boxed in by the
+       section gutter, then restore the gutter as padding. */
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-bottom: 0.75rem;
+    scrollbar-width: none;
+    /* The hairline-divider grids paint their separators with a container
+       background showing through 1px gaps. In a rail the gaps are real, so the
+       background would render as a slab behind the cards. */
+    background: transparent !important;
+    border-radius: 0 !important;
+  }
+  .kq-rail::-webkit-scrollbar { display: none; }
+
+  .kq-rail > * {
+    scroll-snap-align: start;
+    flex: 0 0 86%;
+    max-width: 86%;
+    border-radius: 1rem;
+  }
+
+  /* Cards that only had a radius because the container clipped them need their
+     own border once they are separate objects on a black background. */
+  .kq-rail--hairline > * {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* A rail is a scroll region, so it must not also be a scroll-reveal target —
+     GSAP/Framer transforms on the children fight scroll-snap positioning. */
+  .kq-rail > *[data-gsap] { transform: none !important; }
+}
+
+@media (max-width: 639px) and (prefers-reduced-motion: no-preference) {
+  .kq-rail { scroll-behavior: smooth; }
+}

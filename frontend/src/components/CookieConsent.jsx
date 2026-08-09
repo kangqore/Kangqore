@@ -118,9 +118,9 @@ const CookieConsent = () => {
                     }`}
                   >
                     {functionalCookies ? (
-                      <span className="text-[10px] text-[#1e62c9] font-bold">✓</span>
+                      <span className="text-[11px] text-[#1e62c9] font-bold">✓</span>
                     ) : (
-                      <span className="text-[10px] text-neutral-500 font-bold">✕</span>
+                      <span className="text-[11px] text-neutral-500 font-bold">✕</span>
                     )}
                   </span>
                 </button>
@@ -143,9 +143,9 @@ const CookieConsent = () => {
                     }`}
                   >
                     {targetingCookies ? (
-                      <span className="text-[10px] text-[#1e62c9] font-bold">✓</span>
+                      <span className="text-[11px] text-[#1e62c9] font-bold">✓</span>
                     ) : (
-                      <span className="text-[10px] text-neutral-500 font-bold">✕</span>
+                      <span className="text-[11px] text-neutral-500 font-bold">✕</span>
                     )}
                   </span>
                 </button>
@@ -168,9 +168,9 @@ const CookieConsent = () => {
                     }`}
                   >
                     {performanceCookies ? (
-                      <span className="text-[10px] text-[#1e62c9] font-bold">✓</span>
+                      <span className="text-[11px] text-[#1e62c9] font-bold">✓</span>
                     ) : (
-                      <span className="text-[10px] text-neutral-500 font-bold">✕</span>
+                      <span className="text-[11px] text-neutral-500 font-bold">✕</span>
                     )}
                   </span>
                 </button>
@@ -212,14 +212,14 @@ const CookieConsent = () => {
                   link, so consent remains informed. The long-form copy below
                   previously occupied ~45% of the first mobile viewport and
                   buried both hero CTAs. */}
-              <p className="lg:hidden text-[13px] text-slate-300 leading-snug font-normal">
+              <p className="lg:hidden text-[14px] text-slate-300 leading-snug font-normal">
                 We use cookies to run this site and understand how it is used.{' '}
                 <Link to="/cookies" className="text-white underline font-semibold">
                   Cookie policy
                 </Link>
               </p>
 
-              <p className="hidden lg:block text-[10px] md:text-[11px] text-slate-400 leading-relaxed font-normal">
+              <p className="hidden lg:block text-[11px] text-slate-400 leading-relaxed font-normal">
                 When you visit any website, it may store or retrieve information on your browser, mostly in the form of cookies.
                 This information might be about you, your preferences or your device and is mostly used to make the site work as you expect it to.
                 The information does not usually directly identify you, but it can give you a more personalized web experience.

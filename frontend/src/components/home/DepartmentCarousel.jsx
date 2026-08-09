@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { departmentsData, departmentsList } from '../../data/departmentsData';
 import { servicesData } from '../../data/servicesData';
+import { useIsRail } from '../services/shared/mobileRail';
 
 const carouselDepartments = departmentsList.map((slug, index) => {
   const dept = departmentsData[slug];
@@ -160,7 +161,7 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
       </div>
 
       {/* Expanded Detail Overlay */}
-      <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl bg-[#0a0a0c]/98 border-white/10 ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`}>
+      <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl bg-[#0a0a0c]/98 border-white/10 ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`} tabIndex={isExpanded ? 0 : -1} inert={!isExpanded}>
         <div className="flex flex-col text-left">
           <div className="flex items-center justify-between mb-4">
             <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono text-slate-300 bg-white/5 border-white/10">
@@ -211,6 +212,10 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
 const DepartmentCarousel = () => {
   const [expandedCaps, setExpandedCaps] = useState({});
   const sectionRef = useRef(null);
+  // Below `sm` the bento becomes a swipe rail (see `.kq-rail` in index.css).
+  // Eight stacked cards cost 3,124px there — the single largest block on the
+  // mobile service page.
+  const isRail = useIsRail();
   
   // Track scroll progress of this specific section for parallax effects
   const { scrollYProgress } = useScroll({
@@ -266,12 +271,15 @@ const DepartmentCarousel = () => {
           </div>
         </div>
 
-        <motion.div 
-          className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+        <motion.div
+          className="kq-rail grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
           variants={gridVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
+          role={isRail ? 'group' : undefined}
+          aria-label={isRail ? `Capabilities — scroll sideways to see all ${carouselDepartments.length}` : undefined}
+          tabIndex={isRail ? 0 : undefined}
         >
           {carouselDepartments.map((dept, i) => {
             const isExpanded = !!expandedCaps[i];

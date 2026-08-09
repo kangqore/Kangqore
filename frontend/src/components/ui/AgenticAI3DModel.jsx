@@ -124,7 +124,7 @@ const NeuralNetworkCore = ({ isActive }) => {
       {/* Neural Core Label */}
       <Html position={[0, 1.45, 0]} center distanceFactor={8}>
         <div 
-          className={`text-center font-extrabold tracking-widest text-[9.5px] bg-[#090d16] border px-3 py-1 rounded uppercase select-none transition-all duration-500 whitespace-nowrap ${
+          className={`text-center font-extrabold tracking-widest text-[11px] bg-[#090d16] border px-3 py-1 rounded uppercase select-none transition-all duration-500 whitespace-nowrap ${
             isActive 
               ? 'text-white border-white shadow-[0_0_20px_rgba(255,255,255,0.9)] scale-110' 
               : 'text-white/60 border-white/20 shadow-[0_0_8px_rgba(255,255,255,0.2)]'
@@ -234,7 +234,7 @@ const HolographicScanner = ({ isActive }) => {
             </mesh>
             <Html position={[0, 0.16, 0]} center distanceFactor={8}>
               <div 
-                className={`px-1.5 py-0.5 rounded font-mono font-black text-[8px] tracking-widest bg-black border transition-all duration-300 whitespace-nowrap ${
+                className={`px-1.5 py-0.5 rounded font-mono font-black text-[11px] tracking-widest bg-black border transition-all duration-300 whitespace-nowrap ${
                   isActive 
                     ? 'text-white border-white scale-105 shadow-[0_0_12px_rgba(255,255,255,0.8)]' 
                     : 'text-white/80 border-white/30 shadow-[0_0_4px_rgba(255,255,255,0.2)]'
@@ -254,7 +254,7 @@ const HolographicScanner = ({ isActive }) => {
       {/* Section Label */}
       <Html position={[1.4, 0, 0]} center distanceFactor={8}>
         <div 
-          className={`font-extrabold tracking-widest text-[9.5px] bg-[#090d16] border px-3 py-1 rounded uppercase select-none transition-all duration-500 whitespace-nowrap ${
+          className={`font-extrabold tracking-widest text-[11px] bg-[#090d16] border px-3 py-1 rounded uppercase select-none transition-all duration-500 whitespace-nowrap ${
             isActive 
               ? 'text-white border-white shadow-[0_0_20px_rgba(255,255,255,0.9)] scale-110' 
               : 'text-white/60 border-white/20 shadow-[0_0_8px_rgba(255,255,255,0.2)]'
@@ -334,7 +334,7 @@ const MicrochipStack = ({ isActive }) => {
             {idx === 0 && (
               <Html position={[0.85, 0, 0.85]} center distanceFactor={8}>
                 <div 
-                  className={`font-mono text-[8px] font-bold bg-black px-1.5 py-0.5 border rounded whitespace-nowrap transition-all duration-500 ${
+                  className={`font-mono text-[11px] font-bold bg-black px-1.5 py-0.5 border rounded whitespace-nowrap transition-all duration-500 ${
                     isActive 
                       ? 'text-white border-white shadow-[0_0_12px_rgba(255,255,255,0.8)]' 
                       : 'text-white/80 border-white/30 shadow-[0_0_4px_rgba(255,255,255,0.2)]'
@@ -351,7 +351,7 @@ const MicrochipStack = ({ isActive }) => {
             {idx === 1 && (
               <Html position={[0.85, 0, 0.85]} center distanceFactor={8}>
                 <div 
-                  className={`font-mono text-[8px] font-bold bg-black px-1.5 py-0.5 border rounded whitespace-nowrap transition-all duration-500 ${
+                  className={`font-mono text-[11px] font-bold bg-black px-1.5 py-0.5 border rounded whitespace-nowrap transition-all duration-500 ${
                     isActive 
                       ? 'text-white border-white shadow-[0_0_12px_rgba(255,255,255,0.8)]' 
                       : 'text-white/80 border-white/30 shadow-[0_0_4px_rgba(255,255,255,0.2)]'
@@ -368,7 +368,7 @@ const MicrochipStack = ({ isActive }) => {
             {idx === 2 && (
               <Html position={[0.85, 0, 0.85]} center distanceFactor={8}>
                 <div 
-                  className={`font-mono text-[8px] font-bold bg-black px-1.5 py-0.5 border rounded whitespace-nowrap transition-all duration-500 ${
+                  className={`font-mono text-[11px] font-bold bg-black px-1.5 py-0.5 border rounded whitespace-nowrap transition-all duration-500 ${
                     isActive 
                       ? 'text-white border-white shadow-[0_0_12px_rgba(255,255,255,0.8)]' 
                       : 'text-white/80 border-white/30 shadow-[0_0_4px_rgba(255,255,255,0.2)]'
@@ -389,7 +389,7 @@ const MicrochipStack = ({ isActive }) => {
       {/* Integration Label */}
       <Html position={[0, -0.25, 0]} center distanceFactor={8}>
         <div 
-          className={`font-extrabold tracking-widest text-[9.5px] bg-[#090d16] border px-3 py-1 rounded uppercase select-none transition-all duration-500 whitespace-nowrap ${
+          className={`font-extrabold tracking-widest text-[11px] bg-[#090d16] border px-3 py-1 rounded uppercase select-none transition-all duration-500 whitespace-nowrap ${
             isActive 
               ? 'text-white border-white shadow-[0_0_20px_rgba(255,255,255,0.9)] scale-110' 
               : 'text-white/60 border-white/20 shadow-[0_0_8px_rgba(255,255,255,0.2)]'
@@ -437,7 +437,7 @@ const GeodesicShield = ({ isActive }) => {
       {/* Governance Shield Label */}
       <Html position={[-1.4, 0.95, 0]} center distanceFactor={8}>
         <div 
-          className={`font-extrabold tracking-widest text-[9.5px] bg-[#090d16] border px-3 py-1 rounded uppercase select-none transition-all duration-500 whitespace-nowrap ${
+          className={`font-extrabold tracking-widest text-[11px] bg-[#090d16] border px-3 py-1 rounded uppercase select-none transition-all duration-500 whitespace-nowrap ${
             isActive 
               ? 'text-white border-white shadow-[0_0_20px_rgba(255,255,255,0.9)] scale-110' 
               : 'text-white/80 border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.25)]'

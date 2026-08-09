@@ -481,7 +481,7 @@ const EQoreChatbot = () => {
             </div>
             <div>
               <h3 className="font-display font-bold text-sm tracking-wide">eQORE</h3>
-              <p className="text-[6px] text-cyan-400/80 uppercase tracking-widest font-semibold">
+              <p className="text-[11px] text-cyan-400/80 uppercase tracking-widest font-semibold">
                 {streaming ? 'Thinking…' : 'AI Assistant'}
               </p>
             </div>
@@ -547,7 +547,7 @@ const EQoreChatbot = () => {
                       <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
                     </div>
                   )}
-                  <div className={`p-3.5 text-[13px] leading-relaxed shadow-sm whitespace-pre-wrap ${
+                  <div className={`p-3.5 text-[14px] leading-relaxed shadow-sm whitespace-pre-wrap ${
                     isUser
                       ? 'bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white rounded-2xl rounded-br-sm font-medium'
                       : 'bg-[#1a1a1e] border border-white/5 text-slate-200 rounded-2xl rounded-bl-sm'
@@ -592,7 +592,7 @@ const EQoreChatbot = () => {
                           <div className="flex justify-end mt-2">
                             <button
                               onClick={() => navigator.clipboard.writeText(msg.content)}
-                              className="text-slate-500 hover:text-white p-1 rounded transition-colors flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider"
+                              className="text-slate-500 hover:text-white p-1 rounded transition-colors flex items-center gap-1 text-[11px] uppercase font-bold tracking-wider"
                               title="Copy to clipboard"
                             >
                               <Copy className="w-3 h-3" /> Copy
@@ -606,7 +606,7 @@ const EQoreChatbot = () => {
 
                 {!isUser && msg.done && msg.citations && msg.citations.length > 0 && (
                   <div className="flex flex-wrap items-center gap-1.5 ml-8 mt-1">
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 dark:text-slate-500">
+                    <span className="text-[11px] uppercase tracking-widest font-bold text-slate-400 dark:text-slate-500">
                       Sources:{' '}
                       <a 
                         href="https://kangqore.com" 
@@ -684,7 +684,7 @@ const EQoreChatbot = () => {
                   </div>
                 )}
 
-                <span className={`text-[10px] text-slate-500 font-medium px-8 ${isUser ? 'text-right' : 'text-left'}`}>
+                <span className={`text-[11px] text-slate-500 font-medium px-8 ${isUser ? 'text-right' : 'text-left'}`}>
                   {msg.id === 'greeting' ? '' : formatTime(new Date())}
                 </span>
               </div>
@@ -696,7 +696,7 @@ const EQoreChatbot = () => {
           {/* Suggested Prompts (only show if no user messages yet) */}
           {!hasUserMessages && !streaming && (
             <div className="pt-4 flex flex-col gap-2">
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold ml-8">Suggested Queries</p>
+              <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold ml-8">Suggested Queries</p>
               <div className="flex flex-col gap-2 ml-8">
                  {floatingPrompts.map((prompt, idx) => (
                   <button
