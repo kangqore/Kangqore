@@ -14,6 +14,7 @@ import EROOT from './components/eROOT';
 
 // Import modular routes
 import { authRoutes, publicRoutes, industryRoutes, contentRoutes, serviceRoutes } from './routes';
+import { ErrorBoundary } from './os/components/ErrorBoundary';
 import { legacyRedirectRoutes } from './routes/legacyRedirectRoutes';
 // Import page components
 const HomePage = React.lazy(() => import('./pages/HomePage'));
@@ -237,6 +238,7 @@ function AppContent() {
       <a href="#main-content" className="kq-skip-link">Skip to content</a>
       <GlobalScrollAnimations />
       <WebVitalsReporter />
+      <ErrorBoundary>
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* Legacy URL redirects (76 entries) — MUST come first.
@@ -427,6 +429,7 @@ function AppContent() {
           } />
         </Routes>
       </Suspense>
+      </ErrorBoundary>
       <Toaster />
       <InstallPrompt />
       <OfflineIndicator />
