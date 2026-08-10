@@ -466,10 +466,10 @@ const dataScienceAI = {
       desc: 'Develop intelligent machine learning solutions that enable prediction, optimization, automation, and data-driven business decision-making.',
       bgImage: '/images/capabilities/agentic-governed-autonomy.png',
       items: [
-        { heading: 'Predictive Modelling & Forecasting', description: 'Develop advanced forecasting models for demand planning, financial forecasting, operational optimization, and strategic decision support.' },
+        { heading: 'Predictive Modeling & Forecasting', description: 'Develop advanced forecasting models for demand planning, financial forecasting, operational optimization, and strategic decision support.' },
         { heading: 'Classification & Anomaly Detection', description: 'Build intelligent classification and anomaly detection systems that identify fraud, operational risks, quality issues, and unusual behavior.' },
         { heading: 'Recommendation Intelligence', description: 'Create AI-powered recommendation systems that deliver personalised customer experiences and improve engagement, retention, and revenue.' },
-        { heading: 'Statistical & Quantitative Modelling', description: 'Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.' },
+        { heading: 'Statistical & Quantitative Modeling', description: 'Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.' },
         { heading: 'Feature Engineering & Model Development', description: 'Design high-quality data features and optimize machine learning models for improved predictive performance and scalability.' },
         { heading: 'Decision Intelligence', description: 'Combine machine learning, analytics, and business rules to support intelligent, explainable, and data-driven decision-making.' },
       ],
@@ -773,7 +773,7 @@ const mlops = {
       image: '/images/capabilities/agentic-governed-autonomy.png',
       desc: 'Accelerate AI development through governed engineering practices that enable reliable, repeatable, and production-ready machine learning delivery.',
       items: [
-        'Experiment Management: Capture datasets, parameters, metrics, artefacts, and experiments to ensure reproducibility, collaboration, and continuous innovation.',
+        'Experiment Management: Capture datasets, parameters, metrics, artifacts, and experiments to ensure reproducibility, collaboration, and continuous innovation.',
         'Model Development & Validation: Design, train, evaluate, validate, and optimize machine learning models for enterprise-grade production environments.',
         'Model Registry & Lifecycle Management: Maintain centralized repositories for managing model versions, approvals, documentation, metadata, and deployment status.',
         'Continuous Integration & Delivery: Automate testing, validation, packaging, and deployment of machine learning models through enterprise CI/CD pipelines.',

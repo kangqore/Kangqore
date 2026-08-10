@@ -23,12 +23,12 @@ function useTrustData(path) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let cancelled = false;
+    let aborted = false;
     fetch(`${API}/api/public/trust/${path}`)
       .then((r) => { if (!r.ok) throw new Error('bad response'); return r.json(); })
-      .then((json) => { if (!cancelled) { setData(json); setLoading(false); } })
-      .catch(() => { if (!cancelled) { setError(true); setLoading(false); } });
-    return () => { cancelled = true; };
+      .then((json) => { if (!aborted) { setData(json); setLoading(false); } })
+      .catch(() => { if (!aborted) { setError(true); setLoading(false); } });
+    return () => { aborted = true; };
   }, [path]);
 
   return { data, error, loading };

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T19:43:16.817Z",
+  "generatedAt": "2026-08-10T13:47:29.009Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -100,7 +100,7 @@
         },
         {
           "rule": "Gated, reversible, and cumulative",
-          "detail": "Agent output arrives as a reviewable change set carrying its tests, diff and rationale; architecture, data-model and go-live decisions require a named human approval, and each increment is versioned independently. The outcome is twofold: any single step rolls back without unwinding the rest, and the artefacts left behind — graph, rule set, test corpus, gating policies — carry into the next application, so effort per service falls as estate coverage rises."
+          "detail": "Agent output arrives as a reviewable change set carrying its tests, diff and rationale; architecture, data-model and go-live decisions require a named human approval, and each increment is versioned independently. The outcome is twofold: any single step rolls back without unwinding the rest, and the artifacts left behind — graph, rule set, test corpus, gating policies — carry into the next application, so effort per service falls as estate coverage rises."
         }
       ],
       "dataHandling": [
@@ -122,7 +122,7 @@
         },
         {
           "topic": "Retention — scoped to the engagement",
-          "detail": "Prompts, agent outputs and generated artefacts persist for the duration of the engagement and are deleted on completion. What survives is what we hand to you: the dependency graph, the test corpus, the audit ledger."
+          "detail": "Prompts, agent outputs and generated artifacts persist for the duration of the engagement and are deleted on completion. What survives is what we hand to you: the dependency graph, the test corpus, the audit ledger."
         },
         {
           "topic": "Certification",
@@ -239,7 +239,32 @@
           "a": "GenAIOps is the operational practice for systems built on foundation models. It inherits most of MLOps while changing what you control. In classic MLOps you own the training run, so quality is managed by retraining. With a foundation model you usually do not own the weights, so the levers move to prompts, retrieval, context assembly, guardrails, and model routing — and versioning has to cover prompt templates and retrieval indexes as first-class artifacts. Evaluation changes too. There is often no single correct output, so scoring shifts to graded rubrics, adversarial suites, and human review rather than accuracy against labels. Cost and latency become quality attributes, because inference is metered per token. The registry, lineage, staged promotion, and drift monitoring carry over unchanged. That is why teams with a working MLOps foundation reach production GenAI faster than teams starting from nothing."
         }
       ],
-      "method": [],
+      "method": [
+        {
+          "rule": "Pipelines & orchestration",
+          "detail": "SageMaker Pipelines, Vertex AI Pipelines, and Azure ML Pipelines on managed platforms. Kubeflow Pipelines or Apache Airflow where training and retraining jobs run on your own Kubernetes."
+        },
+        {
+          "rule": "Registry, tracking & lineage",
+          "detail": "MLflow for experiment tracking and model registry, with DVC for dataset versioning. On managed platforms, SageMaker Model Registry or Vertex AI Model Registry, so promotion history lives beside the artifacts it approved."
+        },
+        {
+          "rule": "Feature engineering & serving",
+          "detail": "Feast for open-source feature serving, SageMaker Feature Store or Vertex AI Feature Store where the platform provides one. Introduced when feature reuse or training-serving skew justifies it — not by default."
+        },
+        {
+          "rule": "Model serving",
+          "detail": "KServe or BentoML on Kubernetes, SageMaker endpoints and Vertex AI endpoints on managed platforms, with Triton Inference Server where GPU throughput is the constraint. Canary and shadow deployment on all of them."
+        },
+        {
+          "rule": "Monitoring & drift detection",
+          "detail": "Evidently or WhyLabs for input, prediction, and performance drift, wired into Prometheus and Grafana alongside the service metrics. SageMaker Model Monitor where the platform already collects the baselines."
+        },
+        {
+          "rule": "Infrastructure & governance",
+          "detail": "Terraform for the platform itself, so the environment is reproducible rather than hand-built. SHAP for explainability where a model decision has to be defensible, and immutable approval logs for regulated estates."
+        }
+      ],
       "dataHandling": []
     },
     {

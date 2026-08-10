@@ -402,7 +402,7 @@ export default function ProductStrategyExperienceDesign() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <p className="text-[11px] font-black tracking-[0.45em] text-white/50 uppercase mb-7 text-center">DESIGN APPROACH PRINCIPLES</p>
           <div className="flex flex-nowrap items-center justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
-            {['Strategy-Led Design', 'Research-Informed Decisions', 'Validated Prototyping', 'Scalable Design Systems', 'Accessibility-First Architecture', 'Design-to-Build Continuity', 'Adoption-Centred Launch Planning'].map((f, i, arr) => (
+            {['Strategy-Led Design', 'Research-Informed Decisions', 'Validated Prototyping', 'Scalable Design Systems', 'Accessibility-First Architecture', 'Design-to-Build Continuity', 'Adoption-Centered Launch Planning'].map((f, i, arr) => (
               <React.Fragment key={f}>
                 <span className="flex-shrink-0 text-white/50 text-[11px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
                 {i < arr.length - 1 && <span className="flex-shrink-0 mx-4 text-white/10 text-xs select-none">·</span>}

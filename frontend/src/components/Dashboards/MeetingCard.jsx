@@ -27,7 +27,7 @@ const MeetingCard = ({ consultation, onAction, isExpanded, onToggle }) => {
         const actionMessages = {
           'CONFIRM': 'Meeting confirmed! Calendar invite will be sent shortly.',
           'MODIFY': 'Request submitted. Our team will contact you with alternative time slots.',
-          'CANCEL': 'Meeting cancelled successfully.'
+          'CANCEL': 'Meeting canceled successfully.'
         };
         
         alert(actionMessages[action] || 'Action completed successfully!');
@@ -227,7 +227,7 @@ const MeetingCard = ({ consultation, onAction, isExpanded, onToggle }) => {
       {/* Expanded Content (Only for Rescheduled) */}
       {isExpanded && isRescheduled && (
         <div className="border-t border-amber-100 bg-amber-50/20 p-6 animate-in slide-in-from-top-2 cursor-auto" onClick={(e) => e.stopPropagation()}>
-          {/* Section A: Acknowledgement */}
+          {/* Section A: Acknowledgment */}
           <div className="mb-6">
             <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Your meeting has been rescheduled</h4>
             <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">

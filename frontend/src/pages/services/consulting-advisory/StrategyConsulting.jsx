@@ -477,7 +477,7 @@ const StrategyConsulting = () => {
         });
       }
 
-      // Add travelling data blips along the lines
+      // Add traveling data blips along the lines
       // We will create temporary SVG circles that follow the paths
       lineElements.forEach((line) => {
         const length = line.getTotalLength();

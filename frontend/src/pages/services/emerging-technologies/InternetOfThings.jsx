@@ -170,7 +170,7 @@ const InternetOfThings = () => {
       bgImage: '/images/capabilities/software-engineering.png',
       items: [
         'Requirement elicitation and opportunity analysis',
-        'Business process modelling and technology consulting',
+        'Business process modeling and technology consulting',
         'Problem statement definition and solution blueprinting',
         'Product and service enhancement strategy'
       ],

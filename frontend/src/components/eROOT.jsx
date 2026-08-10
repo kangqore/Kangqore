@@ -219,10 +219,10 @@ const EROOT = () => {
     // so bailing here would permanently disarm the triggers for anyone who has
     // not yet accepted. Suppression is evaluated at reveal time instead.
     let dwellTimer;
-    let cancelled = false;
+    let aborted = false;
 
     const reveal = () => {
-      if (cancelled || !canShowEroot() || shownCountRef.current >= MAX_PER_SESSION) return;
+      if (aborted || !canShowEroot() || shownCountRef.current >= MAX_PER_SESSION) return;
       // Never open on top of another floating panel — two panels anchored to
       // the same corner overlap and bury the copy being read.
       if (isOverlayOpen('eroot')) return;
@@ -250,7 +250,7 @@ const EROOT = () => {
     onScroll(); // in case the page loads already scrolled
 
     return () => {
-      cancelled = true;
+      aborted = true;
       clearTimeout(dwellTimer);
       window.removeEventListener('scroll', onScroll);
       document.removeEventListener('mouseout', onMouseOut);

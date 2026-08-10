@@ -1649,7 +1649,7 @@ export default function BIDSPage() {
                 },
                 {
                   title: 'Data handling & retention',
-                  body: 'All client data, supporting documentation, and findings artefacts are returned or securely deleted within 30 days of final deliverable sign-off. We retain no client data beyond the engagement scope.',
+                  body: 'All client data, supporting documentation, and findings artifacts are returned or securely deleted within 30 days of final deliverable sign-off. We retain no client data beyond the engagement scope.',
                 },
                 {
                   title: 'Proprietary diagnostic framework',

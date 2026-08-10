@@ -118,7 +118,7 @@ export default function WebhooksSettings() {
         <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-200 dark:border-gray-800">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Outbound Webhooks</h1>
-            <p className="text-gray-500">Send real-time HTTP POST requests when bookings are created, cancelled, or rescheduled.</p>
+            <p className="text-gray-500">Send real-time HTTP POST requests when bookings are created, canceled, or rescheduled.</p>
           </div>
           {!showForm && (
             <button onClick={() => setShowForm(true)}

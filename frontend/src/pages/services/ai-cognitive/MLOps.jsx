@@ -288,7 +288,7 @@ const MLOps = () => {
         title: 'AI Engineering & Lifecycle Management',
         bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'Experiment Management', description: 'Capture datasets, parameters, metrics, artefacts, and experiments to ensure reproducibility, collaboration, and continuous innovation.' },
+          { heading: 'Experiment Management', description: 'Capture datasets, parameters, metrics, artifacts, and experiments to ensure reproducibility, collaboration, and continuous innovation.' },
           { heading: 'Model Development & Validation', description: 'Design, train, evaluate, validate, and optimize machine learning models for enterprise-grade production environments.' },
           { heading: 'Model Registry & Lifecycle Management', description: 'Maintain centralized repositories for managing model versions, approvals, documentation, metadata, and deployment status.' },
           { heading: 'Continuous Integration & Delivery', description: 'Automate testing, validation, packaging, and deployment of machine learning models through enterprise CI/CD pipelines.' },
