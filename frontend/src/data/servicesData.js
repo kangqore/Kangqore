@@ -1246,6 +1246,16 @@ export const servicesData = {
       },
     ],
 
+    // The Partnership Model block is six claims every consultancy asserts, in
+    // text identical on all 61 pages that render it — it is a hardcoded
+    // constant, not data. On a thin page it is the only engagement story
+    // present and does real work. This page already tells that story with
+    // evidence: "Five ways to start" carries durations and tiers, and the FAQ
+    // answers who owns the platform afterwards with runbooks and a documented
+    // promotion path. Keeping both leaves the weaker version to undercut the
+    // stronger one, at 1,162px of desktop height for 93 words.
+    hidePartnershipModel: true,
+
     // ── Toolchain ──────────────────────────────────────────────────────────
     // The inherited Cognition default listed GPT-4o, Claude, Gemini, Pinecone,
     // Weaviate and LangSmith under the heading "MLOps Technology Stack". That is
