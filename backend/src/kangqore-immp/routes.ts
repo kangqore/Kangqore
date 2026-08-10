@@ -23,6 +23,7 @@ import { getLiveComplianceSignals, ensureFrameworkSeeded, getComplianceOverview 
 import { getAgentStudioBenchmark } from '../services/agentStudioGrowth.service';
 import { getContestedModulesStatus } from '../services/contestedModulesCatalog.service';
 import { getAiSecurityView } from '../services/securityView.service';
+import { getGtmPipelineSummary, isValidReferenceStage, isValidAnalystStatus } from '../services/gtmPipeline.service';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -9511,6 +9512,101 @@ kangqoreImmpRoutes.get('/platform/contested-modules', requireAuth, requireRole([
 kangqoreImmpRoutes.get('/platform/ai-security-view', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
     res.json(await getAiSecurityView())
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── Overshadow Roadmap P5 — GTM Pipeline (reference customers, BIDS proof
+// points, analyst relationships). Tracking tooling for a real process, never
+// a stand-in for it — see services/gtmPipeline.service.ts header.
+
+kangqoreImmpRoutes.get('/gtm-pipeline', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    res.json(await getGtmPipelineSummary())
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/gtm-pipeline/reference-customers', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { customerName, contactName, contactEmail, notes } = req.body ?? {}
+    if (!customerName?.trim()) return res.status(400).json({ error: 'customerName is required' })
+    const candidate = await (prisma as any).referenceCustomerCandidate.create({
+      data: { customerName: customerName.trim(), contactName: contactName || null, contactEmail: contactEmail || null, notes: notes || null },
+    })
+    res.status(201).json({ candidate })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.patch('/gtm-pipeline/reference-customers/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { stage, outcomeSummary, notes } = req.body ?? {}
+    if (stage !== undefined && !isValidReferenceStage(stage)) return res.status(400).json({ error: 'invalid stage' })
+    const candidate = await (prisma as any).referenceCustomerCandidate.update({
+      where: { id: req.params.id },
+      data: {
+        ...(stage !== undefined && { stage, ...(stage === 'PUBLISHED' && { publishedAt: new Date() }) }),
+        ...(outcomeSummary !== undefined && { outcomeSummary }),
+        ...(notes !== undefined && { notes }),
+      },
+    })
+    res.json({ candidate })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/gtm-pipeline/analyst-relationships', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { firm, analystName, category, notes } = req.body ?? {}
+    if (!firm?.trim()) return res.status(400).json({ error: 'firm is required' })
+    const relationship = await (prisma as any).analystRelationship.create({
+      data: { firm: firm.trim(), analystName: analystName || null, category: category || null, notes: notes || null },
+    })
+    res.status(201).json({ relationship })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.patch('/gtm-pipeline/analyst-relationships/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, lastBriefingAt, nextFollowUpAt, notes } = req.body ?? {}
+    if (status !== undefined && !isValidAnalystStatus(status)) return res.status(400).json({ error: 'invalid status' })
+    const relationship = await (prisma as any).analystRelationship.update({
+      where: { id: req.params.id },
+      data: {
+        ...(status !== undefined && { status }),
+        ...(lastBriefingAt !== undefined && { lastBriefingAt: lastBriefingAt ? new Date(lastBriefingAt) : null }),
+        ...(nextFollowUpAt !== undefined && { nextFollowUpAt: nextFollowUpAt ? new Date(nextFollowUpAt) : null }),
+        ...(notes !== undefined && { notes }),
+      },
+    })
+    res.json({ relationship })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/gtm-pipeline/bids-proof-points', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { engagementId, publicLabel, anonymized, baselineNote } = req.body ?? {}
+    if (!engagementId?.trim() || !publicLabel?.trim()) return res.status(400).json({ error: 'engagementId and publicLabel are required' })
+    const engagement = await (prisma as any).bidsScoringEngagement.findUnique({ where: { id: engagementId } })
+    if (!engagement || engagement.status !== 'COMPLETED') return res.status(400).json({ error: 'engagement must be a real, completed BIDS engagement' })
+    const publication = await (prisma as any).bidsProofPointPublication.create({
+      data: { engagementId, publicLabel: publicLabel.trim(), anonymized: anonymized ?? true, baselineNote: baselineNote || null },
+    })
+    res.status(201).json({ publication })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.patch('/gtm-pipeline/bids-proof-points/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, publicLabel, anonymized, baselineNote } = req.body ?? {}
+    if (status !== undefined && !['DRAFT', 'PUBLISHED'].includes(status)) return res.status(400).json({ error: 'invalid status' })
+    const publication = await (prisma as any).bidsProofPointPublication.update({
+      where: { id: req.params.id },
+      data: {
+        ...(status !== undefined && { status, ...(status === 'PUBLISHED' && { publishedAt: new Date() }) }),
+        ...(publicLabel !== undefined && { publicLabel }),
+        ...(anonymized !== undefined && { anonymized }),
+        ...(baselineNote !== undefined && { baselineNote }),
+      },
+    })
+    res.json({ publication })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
