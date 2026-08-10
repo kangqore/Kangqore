@@ -1596,8 +1596,8 @@ const featureMicros   = service.featureMicros
                 </div>
               ) : service.slug === 'mlops' ? (
                 /* ── MLOps ML Pipeline Diagram ── */
-                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — data to retrain" tabIndex={0}>
-                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/4 min-w-[495px] sm:min-w-0 mx-auto">
+                <div className="flex items-center justify-start sm:justify-end w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — data to retrain" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/4 min-w-[495px] sm:min-w-0 sm:ml-auto">
                     <defs>
                       <linearGradient id="ml-orange" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#ea580c"/>

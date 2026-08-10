@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 492" fill="none" role="img"
+     aria-label="Five MLOps stages — data, train, registry, serve, monitor — with the managed cloud service above each and the self-hosted open-source equivalent below, and a drift-triggered retraining loop from monitor back to train.">
+  <title>Five MLOps stages, two implementations</title>
+  <desc>One spine of five stages: data, train, registry, serve, monitor. Above it, the managed cloud service for each stage; below it, the self-hosted open-source equivalent. A dashed loop returns from monitor to train, labelled drift triggers retrain. Terraform describes the platform underneath all of it.</desc>
+
+  <defs>
+    <!-- A gradient in the default objectBoundingBox units is not rendered when
+         the referencing element's bounding box has zero width or height. The
+         spine and every connector here is a straight line, so these have to be
+         in user space. -->
+    <linearGradient id="mlSpine" gradientUnits="userSpaceOnUse" x1="16" y1="220" x2="504" y2="220">
+      <stop offset="0" stop-color="#2564ea"/>
+      <stop offset="1" stop-color="#4ab6d4"/>
+    </linearGradient>
+    <linearGradient id="mlStage" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="242">
+      <stop offset="0" stop-color="#131d31"/>
+      <stop offset="1" stop-color="#0a0f1a"/>
+    </linearGradient>
+    <linearGradient id="mlLoop" gradientUnits="userSpaceOnUse" x1="460" y1="0" x2="160" y2="0">
+      <stop offset="0" stop-color="#4ab6d4" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#2564ea" stop-opacity="0.3"/>
+    </linearGradient>
+    <marker id="mlArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4"/>
+    </marker>
+    <marker id="mlTick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fill-opacity="0.3"/>
+    </marker>
+  </defs>
+
+  <!-- ── Managed lane ───────────────────────────────────────────────────── -->
+  <text x="16" y="26" font-family="ui-monospace, monospace" font-size="12" font-weight="bold"
+        letter-spacing="1.6" fill="#4ab6d4">MANAGED</text>
+  <text x="92" y="26" font-family="ui-monospace, monospace" font-size="12"
+        fill="#ffffff" fill-opacity="0.4">cloud platform</text>
+
+  <g font-family="ui-monospace, monospace" font-size="12" text-anchor="middle" fill="#ffffff" fill-opacity="0.88">
+    <rect x="16"  y="44" width="88" height="46" rx="8" fill="#0a1220" stroke="#4ab6d4" stroke-opacity="0.32"/>
+    <text x="60"  y="66">Feature</text><text x="60"  y="82">Store</text>
+
+    <rect x="116" y="44" width="88" height="46" rx="8" fill="#0a1220" stroke="#4ab6d4" stroke-opacity="0.32"/>
+    <text x="160" y="66">SageMaker</text><text x="160" y="82">Pipelines</text>
+
+    <rect x="216" y="44" width="88" height="46" rx="8" fill="#0a1220" stroke="#4ab6d4" stroke-opacity="0.32"/>
+    <text x="260" y="66">Model</text><text x="260" y="82">Registry</text>
+
+    <rect x="316" y="44" width="88" height="46" rx="8" fill="#0a1220" stroke="#4ab6d4" stroke-opacity="0.32"/>
+    <text x="360" y="66">Vertex AI</text><text x="360" y="82">Endpoints</text>
+
+    <rect x="416" y="44" width="88" height="46" rx="8" fill="#0a1220" stroke="#4ab6d4" stroke-opacity="0.32"/>
+    <text x="460" y="66">Model</text><text x="460" y="82">Monitor</text>
+  </g>
+
+  <g stroke="#ffffff" stroke-opacity="0.18" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#mlTick)">
+    <line x1="60"  y1="92" x2="60"  y2="196"/>
+    <line x1="160" y1="92" x2="160" y2="196"/>
+    <line x1="260" y1="92" x2="260" y2="196"/>
+    <line x1="360" y1="92" x2="360" y2="196"/>
+    <line x1="460" y1="92" x2="460" y2="196"/>
+  </g>
+
+  <!-- ── The spine: the five stages every implementation shares ─────────── -->
+  <line x1="16" y1="220" x2="504" y2="220" stroke="url(#mlSpine)" stroke-width="2" stroke-opacity="0.5"/>
+
+  <g font-family="ui-monospace, monospace" text-anchor="middle">
+    <rect x="16"  y="200" width="88" height="40" rx="8" fill="url(#mlStage)" stroke="#2564ea" stroke-opacity="0.6" stroke-width="1.5"/>
+    <text x="60"  y="216" font-size="12" fill="#ffffff" fill-opacity="0.5">01</text>
+    <text x="60"  y="233" font-size="13" font-weight="bold" letter-spacing="0.8" fill="#ffffff">DATA</text>
+
+    <rect x="116" y="200" width="88" height="40" rx="8" fill="url(#mlStage)" stroke="#3080e6" stroke-opacity="0.6" stroke-width="1.5"/>
+    <text x="160" y="216" font-size="12" fill="#ffffff" fill-opacity="0.5">02</text>
+    <text x="160" y="233" font-size="13" font-weight="bold" letter-spacing="0.8" fill="#ffffff">TRAIN</text>
+
+    <rect x="216" y="200" width="88" height="40" rx="8" fill="url(#mlStage)" stroke="#3b9ce0" stroke-opacity="0.6" stroke-width="1.5"/>
+    <text x="260" y="216" font-size="12" fill="#ffffff" fill-opacity="0.5">03</text>
+    <text x="260" y="233" font-size="13" font-weight="bold" letter-spacing="0.8" fill="#ffffff">REGISTRY</text>
+
+    <rect x="316" y="200" width="88" height="40" rx="8" fill="url(#mlStage)" stroke="#43aad9" stroke-opacity="0.6" stroke-width="1.5"/>
+    <text x="360" y="216" font-size="12" fill="#ffffff" fill-opacity="0.5">04</text>
+    <text x="360" y="233" font-size="13" font-weight="bold" letter-spacing="0.8" fill="#ffffff">SERVE</text>
+
+    <rect x="416" y="200" width="88" height="40" rx="8" fill="url(#mlStage)" stroke="#4ab6d4" stroke-opacity="0.75" stroke-width="1.5"/>
+    <text x="460" y="216" font-size="12" fill="#ffffff" fill-opacity="0.5">05</text>
+    <text x="460" y="233" font-size="13" font-weight="bold" letter-spacing="0.8" fill="#ffffff">MONITOR</text>
+  </g>
+
+  <g stroke="#4ab6d4" stroke-opacity="0.55" stroke-width="1.5" marker-end="url(#mlArrow)">
+    <line x1="106" y1="220" x2="113" y2="220"/>
+    <line x1="206" y1="220" x2="213" y2="220"/>
+    <line x1="306" y1="220" x2="313" y2="220"/>
+    <line x1="406" y1="220" x2="413" y2="220"/>
+  </g>
+
+  <!-- ── Self-hosted lane ───────────────────────────────────────────────── -->
+  <g stroke="#ffffff" stroke-opacity="0.18" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#mlTick)">
+    <line x1="60"  y1="244" x2="60"  y2="290"/>
+    <line x1="160" y1="244" x2="160" y2="290"/>
+    <line x1="260" y1="244" x2="260" y2="290"/>
+    <line x1="360" y1="244" x2="360" y2="290"/>
+    <line x1="460" y1="244" x2="460" y2="290"/>
+  </g>
+
+  <g font-family="ui-monospace, monospace" font-size="12" text-anchor="middle" fill="#ffffff" fill-opacity="0.88">
+    <rect x="16"  y="294" width="88" height="46" rx="8" fill="#0a1220" stroke="#7f9cf5" stroke-opacity="0.32"/>
+    <text x="60"  y="316">Feast</text><text x="60"  y="332" fill-opacity="0.55">+ DVC</text>
+
+    <rect x="116" y="294" width="88" height="46" rx="8" fill="#0a1220" stroke="#7f9cf5" stroke-opacity="0.32"/>
+    <text x="160" y="316">Kubeflow</text><text x="160" y="332" fill-opacity="0.55">Airflow</text>
+
+    <rect x="216" y="294" width="88" height="46" rx="8" fill="#0a1220" stroke="#7f9cf5" stroke-opacity="0.32"/>
+    <text x="260" y="316">MLflow</text><text x="260" y="332" fill-opacity="0.55">registry</text>
+
+    <rect x="316" y="294" width="88" height="46" rx="8" fill="#0a1220" stroke="#7f9cf5" stroke-opacity="0.32"/>
+    <text x="360" y="316">KServe</text><text x="360" y="332" fill-opacity="0.55">BentoML</text>
+
+    <rect x="416" y="294" width="88" height="46" rx="8" fill="#0a1220" stroke="#7f9cf5" stroke-opacity="0.32"/>
+    <text x="460" y="316">Evidently</text><text x="460" y="332" fill-opacity="0.55">WhyLabs</text>
+  </g>
+
+  <!-- Sits below the retraining loop, not beside it: at y=362 the loop's left
+       leg terminates on the Kubeflow box and the arrowhead landed on this text. -->
+  <text x="16" y="418" font-family="ui-monospace, monospace" font-size="12" font-weight="bold"
+        letter-spacing="1.6" fill="#7f9cf5">SELF-HOSTED</text>
+  <text x="122" y="418" font-family="ui-monospace, monospace" font-size="12"
+        fill="#ffffff" fill-opacity="0.4">open source</text>
+
+  <!-- ── Retraining loop: monitor back to train ─────────────────────────── -->
+  <path d="M 460 344 C 460 392, 380 400, 280 400 C 210 400, 175 384, 162 348"
+        fill="none" stroke="url(#mlLoop)" stroke-width="1.8" stroke-dasharray="6 5"
+        marker-end="url(#mlArrow)" class="ml-loop"/>
+  <text x="330" y="418" text-anchor="middle" font-family="ui-monospace, monospace"
+        font-size="12" letter-spacing="1" fill="#4ab6d4" fill-opacity="0.95">DRIFT TRIGGERS RETRAIN</text>
+
+  <!-- Terraform sits under the whole platform, not at any one stage -->
+  <rect x="86" y="452" width="348" height="30" rx="8" fill="#0a1220" stroke="#ffffff" stroke-opacity="0.13"/>
+  <text x="260" y="472" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12"
+        fill="#ffffff" fill-opacity="0.6">Terraform — the platform itself, as code</text>
+
+  <style>
+    .ml-loop { animation: ml-flow 2.4s linear infinite; }
+    @keyframes ml-flow { to { stroke-dashoffset: -22; } }
+    @media (prefers-reduced-motion: reduce) { .ml-loop { animation: none; } }
+  </style>
+</svg>
