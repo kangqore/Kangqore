@@ -1180,8 +1180,18 @@ const featureMicros   = service.featureMicros
               )
             }
             <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
+              {/* `whatIsHighlightNewLine` puts the gradient clause on its own
+                  line without needing a second white line to carry the break.
+                  The <br> is suppressed below `sm`: forcing it there costs a
+                  third line, because the first clause already wraps at 28.8px
+                  in a 342px column. Desktop gets the deliberate break, mobile
+                  keeps natural wrapping. */}
               {service.whatIsTitle
-                ? <>{service.whatIsTitle}{service.whatIsTitleLine2 ? <><br />{service.whatIsTitleLine2}{' '}</> : ' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span></>
+                ? <>{service.whatIsTitle}{service.whatIsTitleLine2
+                    ? <><br />{service.whatIsTitleLine2}{' '}</>
+                    : service.whatIsHighlightNewLine
+                      ? <><br className="hidden sm:block" />{' '}</>
+                      : ' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span></>
                 : <>The complete {(sectionLine || service.name).toLowerCase()}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{sectionHighlight.toLowerCase()} framework.</span></>
               }
             </h2>
