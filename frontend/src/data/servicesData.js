@@ -1249,24 +1249,65 @@ export const servicesData = {
     // ── Toolchain ──────────────────────────────────────────────────────────
     // The inherited Cognition default listed GPT-4o, Claude, Gemini, Pinecone,
     // Weaviate and LangSmith under the heading "MLOps Technology Stack". That is
-    // a RAG stack: of sixteen tools named, two were MLOps — and the FAQ two
-    // sections below named SageMaker, Vertex AI, Kubeflow, Feast and KServe, so
-    // the page contradicted itself within one screen.
+    // a RAG stack: of sixteen tools named, two were MLOps.
+    //
+    // The tool names sit in `managed` and `selfHosted`, which render without
+    // interaction. They were previously inside `desc`, which only appears on
+    // hover — so the section showed six labels and nothing else, and the
+    // subtitle referred to an "open-source column" that did not exist in a
+    // single-column accordion. `desc` now carries the judgment rather than the
+    // list: when to reach for each, and when not to.
     toolsStack: {
       eyebrow: 'THE TOOLCHAIN',
-      title: 'The stack we actually',
-      titleHighlight: 'build on.',
-      subtitle: 'We work in the platform you have already committed to. The managed services below are the default on each cloud; the open-source column is what we use where you run your own control plane.',
+      title: 'Five stages,',
+      titleHighlight: 'two implementations.',
+      subtitle: 'The stages are the same wherever your models run. What changes is who operates them — a managed cloud service, or open source on your own cluster. We work in whichever you have already committed to.',
       items: [
-        { icon: 'Layers', title: 'Pipelines & orchestration', desc: 'SageMaker Pipelines, Vertex AI Pipelines, and Azure ML Pipelines on managed platforms. Kubeflow Pipelines or Apache Airflow where training and retraining jobs run on your own Kubernetes.' },
-        { icon: 'Database', title: 'Registry, tracking & lineage', desc: 'MLflow for experiment tracking and model registry, with DVC for dataset versioning. On managed platforms, SageMaker Model Registry or Vertex AI Model Registry, so promotion history lives beside the artifacts it approved.' },
-        { icon: 'Network', title: 'Feature engineering & serving', desc: 'Feast for open-source feature serving, SageMaker Feature Store or Vertex AI Feature Store where the platform provides one. Introduced when feature reuse or training-serving skew justifies it — not by default.' },
-        { icon: 'Cpu', title: 'Model serving', desc: 'KServe or BentoML on Kubernetes, SageMaker endpoints and Vertex AI endpoints on managed platforms, with Triton Inference Server where GPU throughput is the constraint. Canary and shadow deployment on all of them.' },
-        { icon: 'Eye', title: 'Monitoring & drift detection', desc: 'Evidently or WhyLabs for input, prediction, and performance drift, wired into Prometheus and Grafana alongside the service metrics. SageMaker Model Monitor where the platform already collects the baselines.' },
-        { icon: 'Shield', title: 'Infrastructure & governance', desc: 'Terraform for the platform itself, so the environment is reproducible rather than hand-built. SHAP for explainability where a model decision has to be defensible, and immutable approval logs for regulated estates.' },
+        {
+          icon: 'Layers',
+          title: 'Pipelines & orchestration',
+          managed: 'SageMaker Pipelines · Vertex AI Pipelines · Azure ML Pipelines',
+          selfHosted: 'Kubeflow Pipelines · Apache Airflow',
+          desc: 'Managed pipelines are the shorter path when your training jobs already run on the platform. Airflow earns its place when the same scheduler has to coordinate ML work alongside the rest of your data engineering, rather than beside it.',
+        },
+        {
+          icon: 'Database',
+          title: 'Registry, tracking & lineage',
+          managed: 'SageMaker Model Registry · Vertex AI Model Registry',
+          selfHosted: 'MLflow · DVC for datasets',
+          desc: 'This is the stage that makes an audit answerable: which data, which commit, which parameters produced the version now serving traffic. MLflow is the portable option when models will move between clouds; the managed registries keep promotion history beside the artifacts they approved.',
+        },
+        {
+          icon: 'Network',
+          title: 'Feature engineering & serving',
+          managed: 'SageMaker Feature Store · Vertex AI Feature Store',
+          selfHosted: 'Feast',
+          desc: 'Introduced when feature reuse across models, or training-serving skew, is the actual constraint — not by default. A feature store is a system to operate, and a single team with features derived inside one pipeline does not yet have the problem it solves.',
+        },
+        {
+          icon: 'Cpu',
+          title: 'Model serving',
+          managed: 'SageMaker endpoints · Vertex AI endpoints',
+          selfHosted: 'KServe · BentoML · Triton Inference Server',
+          desc: 'Canary and shadow deployment on all of them, so a new version is measured against the one it replaces before it takes traffic. Triton is the choice where GPU throughput rather than orchestration is the binding constraint.',
+        },
+        {
+          icon: 'Eye',
+          title: 'Monitoring & drift detection',
+          managed: 'SageMaker Model Monitor',
+          selfHosted: 'Evidently · WhyLabs · Prometheus and Grafana',
+          desc: 'Wired alongside the service metrics rather than into a separate dashboard, because a team that has to open two tools to answer "is the model fine" will check one of them. Input, prediction and performance drift are tracked as three signals, not one.',
+        },
+        {
+          icon: 'Shield',
+          title: 'Infrastructure & governance',
+          managed: 'Cloud-native IAM · KMS · audit logs',
+          selfHosted: 'Terraform · SHAP · immutable approval logs',
+          desc: 'Terraform describes the platform itself, so the environment is reproducible rather than hand-built and undocumented. SHAP where a model decision has to be defensible to someone outside the team, and approval records that cannot be edited after the fact in regulated estates.',
+        },
       ],
-      image: '/images/capabilities/agentic-ai-tools-dark-illustration.png',
-      imageAlt: 'MLOps toolchain across managed and self-hosted platforms',
+      image: '/images/capabilities/mlops-toolchain.svg',
+      imageAlt: 'Five MLOps stages — data, train, registry, serve, monitor — shown with the managed cloud service and the self-hosted open-source equivalent for each, and a drift-triggered retraining loop',
     },
 
     // ── Comparison frame ───────────────────────────────────────────────────

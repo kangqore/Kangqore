@@ -633,6 +633,28 @@ export const AIToolsSection = ({
                         >
                           {item.title}
                         </span>
+                        {/* Named tools stay visible. They are the substance of
+                            this section — and the thing a competitor page does
+                            not have — so hiding them behind hover meant the
+                            section read as six labels and nothing else until a
+                            visitor pointed at each row in turn. The expandable
+                            panel below now carries the judgment, not the list. */}
+                        {(item.managed || item.selfHosted) && (
+                          <span className="mt-2 flex flex-col gap-1.5">
+                            {item.managed && (
+                              <span className="flex flex-wrap items-baseline gap-x-2">
+                                <span className="text-[11px] font-black tracking-[0.18em] uppercase text-white/50 shrink-0">Managed</span>
+                                <span className="text-sm text-white/70 leading-snug">{item.managed}</span>
+                              </span>
+                            )}
+                            {item.selfHosted && (
+                              <span className="flex flex-wrap items-baseline gap-x-2">
+                                <span className="text-[11px] font-black tracking-[0.18em] uppercase text-white/50 shrink-0">Self-hosted</span>
+                                <span className="text-sm text-white/70 leading-snug">{item.selfHosted}</span>
+                              </span>
+                            )}
+                          </span>
+                        )}
                         {/* grid 0fr -> 1fr animates to the content's natural
                             height without hard-coding a max-height per item. */}
                         <span
