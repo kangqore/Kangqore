@@ -1594,6 +1594,248 @@ const featureMicros   = service.featureMicros
                     </g>
                   </svg>
                 </div>
+              ) : service.slug === 'mlops' ? (
+                /* ── MLOps ML Pipeline Diagram ── */
+                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — data to retrain" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/4 min-w-[495px] sm:min-w-0 mx-auto">
+                    <defs>
+                      <linearGradient id="ml-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ea580c"/>
+                        <stop offset="100%" stopColor="#f59e0b"/>
+                      </linearGradient>
+                      <linearGradient id="ml-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#00f0ff"/>
+                        <stop offset="100%" stopColor="#2564ea"/>
+                      </linearGradient>
+                      <linearGradient id="ml-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7f53f9"/>
+                        <stop offset="100%" stopColor="#a78bfa"/>
+                      </linearGradient>
+                      <linearGradient id="ml-indigo" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#6366f1"/>
+                        <stop offset="100%" stopColor="#818cf8"/>
+                      </linearGradient>
+                      <linearGradient id="ml-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#eab308"/>
+                        <stop offset="100%" stopColor="#fbbf24"/>
+                      </linearGradient>
+                      <linearGradient id="ml-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#00c875"/>
+                        <stop offset="100%" stopColor="#34d399"/>
+                      </linearGradient>
+                      <linearGradient id="ml-red" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ef4444"/>
+                        <stop offset="100%" stopColor="#f87171"/>
+                      </linearGradient>
+                      <linearGradient id="ml-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ec4899"/>
+                        <stop offset="100%" stopColor="#f472b6"/>
+                      </linearGradient>
+
+                      <filter id="glow-orange-ml">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-cyan-ml">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-purple-ml">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-indigo-ml">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-gold-ml">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-green-ml">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-red-ml">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <filter id="glow-pink-ml">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+
+                      <marker id="diag-arrow-orange-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#f59e0b" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-cyan-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#00f0ff" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-purple-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#a78bfa" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-indigo-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#818cf8" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-gold-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#fbbf24" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-green-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#34d399" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-red-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#f87171" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <marker id="diag-arrow-pink-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#f472b6" strokeWidth="1.2" fill="none"/>
+                      </marker>
+                      <clipPath id="capsule-clip-mlops">
+                        <rect x="35" y="270" width="470" height="96" rx="20"/>
+                      </clipPath>
+                    </defs>
+
+                    {/* ── ROW 1: PIPELINE UPSTREAM ── */}
+                    {/* Stage 1: DATA */}
+                    <rect x="20" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-orange)" strokeWidth="1.5" filter="url(#glow-orange-ml)"/>
+                    <text x="60" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">DATA</text>
+                    <text x="60" y="90" textAnchor="middle" fill="#ea580c" fontSize="9" fontFamily="monospace">Ingest &amp; Ver</text>
+
+                    {/* Stage 2: FEATURES */}
+                    <rect x="140" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-cyan)" strokeWidth="1.5" filter="url(#glow-cyan-ml)"/>
+                    <text x="180" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">FEATURES</text>
+                    <text x="180" y="90" textAnchor="middle" fill="#00f0ff" fontSize="9" fontFamily="monospace">Store &amp; Sync</text>
+
+                    {/* Stage 3: TRAINING */}
+                    <rect x="260" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-purple)" strokeWidth="1.5" filter="url(#glow-purple-ml)"/>
+                    <text x="300" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">TRAINING</text>
+                    <text x="300" y="90" textAnchor="middle" fill="#a78bfa" fontSize="9" fontFamily="monospace">Auto-Tuning</text>
+
+                    {/* Stage 4: REGISTRY */}
+                    <rect x="380" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-indigo)" strokeWidth="1.5" filter="url(#glow-indigo-ml)"/>
+                    <text x="420" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">REGISTRY</text>
+                    <text x="420" y="90" textAnchor="middle" fill="#818cf8" fontSize="9" fontFamily="monospace">Model Catalog</text>
+
+                    {/* ── ROW 2: PIPELINE DOWNSTREAM ── */}
+                    {/* Stage 5: GATE */}
+                    <rect x="380" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-gold)" strokeWidth="1.5" filter="url(#glow-gold-ml)"/>
+                    <text x="420" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">GATE</text>
+                    <text x="420" y="210" textAnchor="middle" fill="#fbbf24" fontSize="9" fontFamily="monospace">CI/CD Check</text>
+
+                    {/* Stage 6: SERVING */}
+                    <rect x="260" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-green)" strokeWidth="1.5" filter="url(#glow-green-ml)"/>
+                    <text x="300" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">SERVING</text>
+                    <text x="300" y="210" textAnchor="middle" fill="#34d399" fontSize="9" fontFamily="monospace">API Endpoint</text>
+
+                    {/* Stage 7: DRIFT */}
+                    <rect x="140" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-red)" strokeWidth="1.5" filter="url(#glow-red-ml)"/>
+                    <text x="180" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">DRIFT</text>
+                    <text x="180" y="210" textAnchor="middle" fill="#f87171" fontSize="9" fontFamily="monospace">Telemetry Mon</text>
+
+                    {/* Stage 8: RETRAIN */}
+                    <rect x="20" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-pink)" strokeWidth="1.5" filter="url(#glow-pink-ml)"/>
+                    <text x="60" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">RETRAIN</text>
+                    <text x="60" y="210" textAnchor="middle" fill="#f472b6" fontSize="9" fontFamily="monospace">Trigger Loop</text>
+
+                    {/* ── CONNECTIONS / PIPELINE ARROWS ── */}
+                    {/* Row 1 horizontal arrows */}
+                    <path d="M 100 80 L 132 80" fill="none" stroke="url(#ml-cyan)" strokeWidth="1.5" markerEnd="url(#diag-arrow-cyan-ml)"/>
+                    <path d="M 220 80 L 252 80" fill="none" stroke="url(#ml-purple)" strokeWidth="1.5" markerEnd="url(#diag-arrow-purple-ml)"/>
+                    <path d="M 340 80 L 372 80" fill="none" stroke="url(#ml-indigo)" strokeWidth="1.5" markerEnd="url(#diag-arrow-indigo-ml)"/>
+
+                    {/* Curved downward connector on the right */}
+                    <path d="M 420 105 C 420 120 420 160 420 167" fill="none" stroke="url(#ml-gold)" strokeWidth="1.5" markerEnd="url(#diag-arrow-gold-ml)"/>
+
+                    {/* Row 2 horizontal arrows (right to left) */}
+                    <path d="M 380 200 L 348 200" fill="none" stroke="url(#ml-green)" strokeWidth="1.5" markerEnd="url(#diag-arrow-green-ml)"/>
+                    <path d="M 260 200 L 228 200" fill="none" stroke="url(#ml-red)" strokeWidth="1.5" markerEnd="url(#diag-arrow-red-ml)"/>
+                    <path d="M 140 200 L 108 200" fill="none" stroke="url(#ml-pink)" strokeWidth="1.5" markerEnd="url(#diag-arrow-pink-ml)"/>
+
+                    {/* Upward loopback connector from RETRAIN to DATA */}
+                    <path d="M 60 175 L 60 113" fill="none" stroke="url(#ml-orange)" strokeWidth="1.5" strokeDasharray="3 3" markerEnd="url(#diag-arrow-orange-ml)"/>
+
+                    {/* Labels / System Titles */}
+                    <text x="270" y="32" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">ENTERPRISE ML LIFECYCLE (MLOPS)</text>
+
+                    {/* ── BOTTOM: 4-STAGE CONTINUOUS LIFECYCLE PIPELINE ── */}
+                    <g transform="translate(30, 256)">
+                      {/* Outer Capsule Container */}
+                      <rect x="0" y="0" width="480" height="96" rx="20" fill="#050810" stroke="white" strokeWidth="1.2" strokeOpacity="0.25"/>
+                      
+                      {/* Active Stage Highlights */}
+                      <rect x="120" y="0" width="120" height="96" fill="#121724" fillOpacity="0.5"/>
+                      <rect x="360" y="0" width="120" height="96" fill="url(#ml-green)" fillOpacity="0.12" clipPath="url(#capsule-clip-mlops)"/>
+                      
+                      {/* Segment Dividers */}
+                      <line x1="120" y1="0" x2="120" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
+                      <line x1="240" y1="0" x2="240" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
+                      <line x1="360" y1="0" x2="360" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
+
+                      {/* Stage 1: Build & Ingest */}
+                      <g transform="translate(45, 18)">
+                        <circle cx="15" cy="15" r="14" fill="#0c101c" stroke="#ea580c" strokeWidth="1.5" strokeOpacity="0.9"/>
+                        <circle cx="15" cy="15" r="6" fill="#ea580c" />
+                        <line x1="15" y1="0" x2="15" y2="30" stroke="white" strokeOpacity="0.3" />
+                        <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
+                      </g>
+                      <text x="60" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">1. INGESTION</text>
+                      <text x="60" y="80" textAnchor="middle" fill="#ea580c" fontSize="9" fontFamily="monospace">VERSIONED DATA</text>
+
+                      {/* Stage 2: Training & Validation */}
+                      <g transform="translate(165, 18)">
+                        <circle cx="15" cy="8" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
+                        <circle cx="6" cy="22" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
+                        <circle cx="24" cy="22" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
+                        <line x1="12" y1="11" x2="8" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
+                        <line x1="18" y1="11" x2="22" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
+                        <circle cx="15" cy="8" r="2" fill="#a78bfa" filter="url(#glow-purple-ml)"/>
+                      </g>
+                      <text x="180" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">2. PIPELINES</text>
+                      <text x="180" y="80" textAnchor="middle" fill="#a78bfa" fontSize="9" fontFamily="monospace">AUTO TRAINING</text>
+
+                      {/* Stage 3: Deployment Gate */}
+                      <g transform="translate(285, 18)">
+                        <rect x="5" y="3" width="20" height="24" rx="4" fill="#0c101c" stroke="#00f0ff" strokeWidth="1.5" filter="url(#glow-cyan-ml)"/>
+                        <path d="M 10 13 L 20 13 M 10 18 L 17 18 M 15 8 L 20 8" stroke="#00f0ff" strokeWidth="1.4" strokeLinecap="round" />
+                      </g>
+                      <text x="300" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">3. DEPLOY GATE</text>
+                      <text x="300" y="80" textAnchor="middle" fill="#00f0ff" fontSize="9" fontFamily="monospace">SAFETY &amp; BIAS</text>
+
+                      {/* Stage 4: Telemetry & Monitoring */}
+                      <g transform="translate(405, 18)">
+                        <path d="M 5 26 A 18 18 0 0 1 41 26" fill="none" stroke="white" strokeWidth="2" strokeOpacity="0.25" strokeLinecap="round"/>
+                        <path d="M 5 26 A 18 18 0 0 1 34 11" fill="none" stroke="#34d399" strokeWidth="3" strokeLinecap="round" filter="url(#glow-green-ml)"/>
+                        <line x1="23" y1="26" x2="33" y2="13" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                        <circle cx="23" cy="26" r="3" fill="#34d399"/>
+                      </g>
+                      <text x="420" y="68" textAnchor="middle" fill="#34d399" fontSize="9" fontWeight="bold" fontFamily="monospace">4. TELEMETRY</text>
+                      <text x="420" y="80" textAnchor="middle" fill="#34d399" fontSize="9" fontWeight="bold" fontFamily="monospace">DRIFT MONITOR</text>
+                    </g>
+                  </svg>
+                </div>
               ) : (
                 /* ── Agentic AI Flow Diagram ── */
                 <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="Architecture diagram — scroll sideways to see the full flow" tabIndex={0}>

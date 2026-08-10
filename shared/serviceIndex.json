@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T13:47:29.009Z",
+  "generatedAt": "2026-08-10T14:20:56.823Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -242,27 +242,27 @@
       "method": [
         {
           "rule": "Pipelines & orchestration",
-          "detail": "SageMaker Pipelines, Vertex AI Pipelines, and Azure ML Pipelines on managed platforms. Kubeflow Pipelines or Apache Airflow where training and retraining jobs run on your own Kubernetes."
+          "detail": "Managed pipelines are the shorter path when your training jobs already run on the platform. Airflow earns its place when the same scheduler has to coordinate ML work alongside the rest of your data engineering, rather than beside it."
         },
         {
           "rule": "Registry, tracking & lineage",
-          "detail": "MLflow for experiment tracking and model registry, with DVC for dataset versioning. On managed platforms, SageMaker Model Registry or Vertex AI Model Registry, so promotion history lives beside the artifacts it approved."
+          "detail": "This is the stage that makes an audit answerable: which data, which commit, which parameters produced the version now serving traffic. MLflow is the portable option when models will move between clouds; the managed registries keep promotion history beside the artifacts they approved."
         },
         {
           "rule": "Feature engineering & serving",
-          "detail": "Feast for open-source feature serving, SageMaker Feature Store or Vertex AI Feature Store where the platform provides one. Introduced when feature reuse or training-serving skew justifies it — not by default."
+          "detail": "Introduced when feature reuse across models, or training-serving skew, is the actual constraint — not by default. A feature store is a system to operate, and a single team with features derived inside one pipeline does not yet have the problem it solves."
         },
         {
           "rule": "Model serving",
-          "detail": "KServe or BentoML on Kubernetes, SageMaker endpoints and Vertex AI endpoints on managed platforms, with Triton Inference Server where GPU throughput is the constraint. Canary and shadow deployment on all of them."
+          "detail": "Canary and shadow deployment on all of them, so a new version is measured against the one it replaces before it takes traffic. Triton is the choice where GPU throughput rather than orchestration is the binding constraint."
         },
         {
           "rule": "Monitoring & drift detection",
-          "detail": "Evidently or WhyLabs for input, prediction, and performance drift, wired into Prometheus and Grafana alongside the service metrics. SageMaker Model Monitor where the platform already collects the baselines."
+          "detail": "Wired alongside the service metrics rather than into a separate dashboard, because a team that has to open two tools to answer \"is the model fine\" will check one of them. Input, prediction and performance drift are tracked as three signals, not one."
         },
         {
           "rule": "Infrastructure & governance",
-          "detail": "Terraform for the platform itself, so the environment is reproducible rather than hand-built. SHAP for explainability where a model decision has to be defensible, and immutable approval logs for regulated estates."
+          "detail": "Terraform describes the platform itself, so the environment is reproducible rather than hand-built and undocumented. SHAP where a model decision has to be defensible to someone outside the team, and approval records that cannot be edited after the fact in regulated estates."
         }
       ],
       "dataHandling": []
