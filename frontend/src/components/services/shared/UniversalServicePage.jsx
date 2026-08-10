@@ -1596,8 +1596,8 @@ const featureMicros   = service.featureMicros
                 </div>
               ) : service.slug === 'mlops' ? (
                 /* ── MLOps ML Pipeline Diagram ── */
-                <div className="flex items-center justify-start sm:justify-end w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — data to retrain" tabIndex={0}>
-                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/4 min-w-[495px] sm:min-w-0 sm:ml-auto">
+                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — data to retrain" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/4 min-w-[495px] sm:min-w-0 mx-auto">
                     <defs>
                       <linearGradient id="ml-orange" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#ea580c"/>
@@ -1720,62 +1720,62 @@ const featureMicros   = service.featureMicros
 
                     {/* ── ROW 1: PIPELINE UPSTREAM ── */}
                     {/* Stage 1: DATA */}
-                    <rect x="20" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-orange)" strokeWidth="1.5" filter="url(#glow-orange-ml)"/>
-                    <text x="60" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">DATA</text>
-                    <text x="60" y="90" textAnchor="middle" fill="#ea580c" fontSize="9" fontFamily="monospace">Ingest &amp; Ver</text>
+                    <rect x="44" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-orange)" strokeWidth="1.5" filter="url(#glow-orange-ml)"/>
+                    <text x="84" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">DATA</text>
+                    <text x="84" y="90" textAnchor="middle" fill="#ea580c" fontSize="9" fontFamily="monospace">Ingest &amp; Ver</text>
 
                     {/* Stage 2: FEATURES */}
-                    <rect x="140" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-cyan)" strokeWidth="1.5" filter="url(#glow-cyan-ml)"/>
-                    <text x="180" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">FEATURES</text>
-                    <text x="180" y="90" textAnchor="middle" fill="#00f0ff" fontSize="9" fontFamily="monospace">Store &amp; Sync</text>
+                    <rect x="168" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-cyan)" strokeWidth="1.5" filter="url(#glow-cyan-ml)"/>
+                    <text x="208" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">FEATURES</text>
+                    <text x="208" y="90" textAnchor="middle" fill="#00f0ff" fontSize="9" fontFamily="monospace">Store &amp; Sync</text>
 
                     {/* Stage 3: TRAINING */}
-                    <rect x="260" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-purple)" strokeWidth="1.5" filter="url(#glow-purple-ml)"/>
-                    <text x="300" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">TRAINING</text>
-                    <text x="300" y="90" textAnchor="middle" fill="#a78bfa" fontSize="9" fontFamily="monospace">Auto-Tuning</text>
+                    <rect x="292" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-purple)" strokeWidth="1.5" filter="url(#glow-purple-ml)"/>
+                    <text x="332" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">TRAINING</text>
+                    <text x="332" y="90" textAnchor="middle" fill="#a78bfa" fontSize="9" fontFamily="monospace">Auto-Tuning</text>
 
                     {/* Stage 4: REGISTRY */}
-                    <rect x="380" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-indigo)" strokeWidth="1.5" filter="url(#glow-indigo-ml)"/>
-                    <text x="420" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">REGISTRY</text>
-                    <text x="420" y="90" textAnchor="middle" fill="#818cf8" fontSize="9" fontFamily="monospace">Model Catalog</text>
+                    <rect x="416" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-indigo)" strokeWidth="1.5" filter="url(#glow-indigo-ml)"/>
+                    <text x="456" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">REGISTRY</text>
+                    <text x="456" y="90" textAnchor="middle" fill="#818cf8" fontSize="9" fontFamily="monospace">Model Catalog</text>
 
                     {/* ── ROW 2: PIPELINE DOWNSTREAM ── */}
                     {/* Stage 5: GATE */}
-                    <rect x="380" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-gold)" strokeWidth="1.5" filter="url(#glow-gold-ml)"/>
-                    <text x="420" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">GATE</text>
-                    <text x="420" y="210" textAnchor="middle" fill="#fbbf24" fontSize="9" fontFamily="monospace">CI/CD Check</text>
+                    <rect x="416" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-gold)" strokeWidth="1.5" filter="url(#glow-gold-ml)"/>
+                    <text x="456" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">GATE</text>
+                    <text x="456" y="210" textAnchor="middle" fill="#fbbf24" fontSize="9" fontFamily="monospace">CI/CD Check</text>
 
                     {/* Stage 6: SERVING */}
-                    <rect x="260" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-green)" strokeWidth="1.5" filter="url(#glow-green-ml)"/>
-                    <text x="300" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">SERVING</text>
-                    <text x="300" y="210" textAnchor="middle" fill="#34d399" fontSize="9" fontFamily="monospace">API Endpoint</text>
+                    <rect x="292" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-green)" strokeWidth="1.5" filter="url(#glow-green-ml)"/>
+                    <text x="332" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">SERVING</text>
+                    <text x="332" y="210" textAnchor="middle" fill="#34d399" fontSize="9" fontFamily="monospace">API Endpoint</text>
 
                     {/* Stage 7: DRIFT */}
-                    <rect x="140" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-red)" strokeWidth="1.5" filter="url(#glow-red-ml)"/>
-                    <text x="180" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">DRIFT</text>
-                    <text x="180" y="210" textAnchor="middle" fill="#f87171" fontSize="9" fontFamily="monospace">Telemetry Mon</text>
+                    <rect x="168" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-red)" strokeWidth="1.5" filter="url(#glow-red-ml)"/>
+                    <text x="208" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">DRIFT</text>
+                    <text x="208" y="210" textAnchor="middle" fill="#f87171" fontSize="9" fontFamily="monospace">Telemetry Mon</text>
 
                     {/* Stage 8: RETRAIN */}
-                    <rect x="20" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-pink)" strokeWidth="1.5" filter="url(#glow-pink-ml)"/>
-                    <text x="60" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">RETRAIN</text>
-                    <text x="60" y="210" textAnchor="middle" fill="#f472b6" fontSize="9" fontFamily="monospace">Trigger Loop</text>
+                    <rect x="44" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-pink)" strokeWidth="1.5" filter="url(#glow-pink-ml)"/>
+                    <text x="84" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">RETRAIN</text>
+                    <text x="84" y="210" textAnchor="middle" fill="#f472b6" fontSize="9" fontFamily="monospace">Trigger Loop</text>
 
                     {/* ── CONNECTIONS / PIPELINE ARROWS ── */}
                     {/* Row 1 horizontal arrows */}
-                    <path d="M 100 80 L 132 80" fill="none" stroke="url(#ml-cyan)" strokeWidth="1.5" markerEnd="url(#diag-arrow-cyan-ml)"/>
-                    <path d="M 220 80 L 252 80" fill="none" stroke="url(#ml-purple)" strokeWidth="1.5" markerEnd="url(#diag-arrow-purple-ml)"/>
-                    <path d="M 340 80 L 372 80" fill="none" stroke="url(#ml-indigo)" strokeWidth="1.5" markerEnd="url(#diag-arrow-indigo-ml)"/>
+                    <path d="M 124 80 L 160 80" fill="none" stroke="url(#ml-cyan)" strokeWidth="1.5" markerEnd="url(#diag-arrow-cyan-ml)"/>
+                    <path d="M 248 80 L 284 80" fill="none" stroke="url(#ml-purple)" strokeWidth="1.5" markerEnd="url(#diag-arrow-purple-ml)"/>
+                    <path d="M 372 80 L 408 80" fill="none" stroke="url(#ml-indigo)" strokeWidth="1.5" markerEnd="url(#diag-arrow-indigo-ml)"/>
 
                     {/* Curved downward connector on the right */}
-                    <path d="M 420 105 C 420 120 420 160 420 167" fill="none" stroke="url(#ml-gold)" strokeWidth="1.5" markerEnd="url(#diag-arrow-gold-ml)"/>
+                    <path d="M 456 105 C 456 120 456 160 456 167" fill="none" stroke="url(#ml-gold)" strokeWidth="1.5" markerEnd="url(#diag-arrow-gold-ml)"/>
 
                     {/* Row 2 horizontal arrows (right to left) */}
-                    <path d="M 380 200 L 348 200" fill="none" stroke="url(#ml-green)" strokeWidth="1.5" markerEnd="url(#diag-arrow-green-ml)"/>
-                    <path d="M 260 200 L 228 200" fill="none" stroke="url(#ml-red)" strokeWidth="1.5" markerEnd="url(#diag-arrow-red-ml)"/>
-                    <path d="M 140 200 L 108 200" fill="none" stroke="url(#ml-pink)" strokeWidth="1.5" markerEnd="url(#diag-arrow-pink-ml)"/>
+                    <path d="M 416 200 L 380 200" fill="none" stroke="url(#ml-green)" strokeWidth="1.5" markerEnd="url(#diag-arrow-green-ml)"/>
+                    <path d="M 292 200 L 256 200" fill="none" stroke="url(#ml-red)" strokeWidth="1.5" markerEnd="url(#diag-arrow-red-ml)"/>
+                    <path d="M 168 200 L 132 200" fill="none" stroke="url(#ml-pink)" strokeWidth="1.5" markerEnd="url(#diag-arrow-pink-ml)"/>
 
                     {/* Upward loopback connector from RETRAIN to DATA */}
-                    <path d="M 60 175 L 60 113" fill="none" stroke="url(#ml-orange)" strokeWidth="1.5" strokeDasharray="3 3" markerEnd="url(#diag-arrow-orange-ml)"/>
+                    <path d="M 84 175 L 84 113" fill="none" stroke="url(#ml-orange)" strokeWidth="1.5" strokeDasharray="3 3" markerEnd="url(#diag-arrow-orange-ml)"/>
 
                     {/* Labels / System Titles */}
                     <text x="270" y="32" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">ENTERPRISE ML LIFECYCLE (MLOPS)</text>
