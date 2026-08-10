@@ -1136,8 +1136,15 @@ export const servicesData = {
     showBeams: true,
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
-    shortDescription: 'Streamline ML model development, deployment, and operations',
-    fullDescription: 'Implement MLOps practices for efficient machine learning lifecycle management from development to production.',
+    // Renders as the first paragraph of the "what is" section and carries
+    // data-speakable, so it is the passage a voice assistant reads. Not the meta
+    // description — seoData supplies that.
+    shortDescription: 'Kangqore builds and runs the machine learning lifecycle as production infrastructure — owned by your engineers, not rented from us.',
+    // Becomes Service.description in the JSON-LD graph and the opening
+    // paragraph of the bot snapshot, so it is written for entity coverage
+    // rather than for rhythm: the nouns are the ones an answer engine matches
+    // this page to.
+    fullDescription: 'Production MLOps engineering: versioned data and features, reproducible training, model registry and lineage, promotion gated on evaluation, canary and shadow deployment, drift detection, and automated retraining — on managed cloud platforms or self-hosted open source.',
     keyFeatures: ['Model versioning', 'Automated pipelines', 'Continuous training', 'Model monitoring', 'Feature stores'],
     relatedServiceSlugs: ['data-science-ai', 'devops-as-a-service', 'ai-governance'],
     featured: false,
@@ -1151,7 +1158,12 @@ export const servicesData = {
     whatIsTitle: 'MLOps that keeps models',
     whatIsHighlightNewLine: true,
     whatIsHighlight: 'right in production.',
-    whatIsPara2: 'Kangqore implements ML pipeline automation, model monitoring, and continuous retraining infrastructure — so models move from notebook to production in weeks, not months, and stay accurate long after launch.',
+    // Deliberately not an argument about why MLOps is hard — the comparison
+    // section below already makes that case at length, and repeating it here
+    // would weaken both. This states scope and the operating principle, which
+    // is what the eyebrow above actually asks.
+    whatIsPara2: 'The scope is the whole path: data and features, training, registry, promotion, serving, monitoring, retraining. Built once, as one system, rather than assembled again for every model.',
+    whatIsPara3: 'We work in the platform you have already committed to and hand it over as infrastructure as code. Managed operations is available afterwards — it is not a condition of the thing working.',
     businessMetrics: [
       { title: 'Deployment Frequency', desc: 'Increase in model deployment frequency after MLOps pipeline implementation and CI/CD automation.', value: '5',  suffix: 'x',    metricLabel: 'Faster Deployment',    icon: 'Zap'       },
       { title: 'Model Accuracy Gain',  desc: 'Performance improvement through automated retraining, monitoring, and continuous feedback loops.',  value: '34', suffix: '%',    metricLabel: 'Accuracy Improvement', icon: 'TrendingUp'},
