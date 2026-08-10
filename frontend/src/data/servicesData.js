@@ -1142,9 +1142,14 @@ export const servicesData = {
     relatedServiceSlugs: ['data-science-ai', 'devops-as-a-service', 'ai-governance'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
-    whatIsTitle: 'MLOps That Gets Models',
-    whatIsTitleLine2: 'Into Production —',
-    whatIsHighlight: 'And Keeps Them There.',
+    // 60 characters over three lines, in Title Case, and the payoff clause
+    // ("Keeps Them There") named a place rather than a property — read quickly
+    // it suggests retention, not accuracy. 44 characters over two lines, in the
+    // sentence case every other heading on this page uses. "Right" is the
+    // differentiated claim: deploying is not the hard part, and the FAQ below
+    // makes the same argument at length.
+    whatIsTitle: 'MLOps that keeps models',
+    whatIsHighlight: 'right in production.',
     whatIsPara2: 'Kangqore implements ML pipeline automation, model monitoring, and continuous retraining infrastructure — so models move from notebook to production in weeks, not months, and stay accurate long after launch.',
     businessMetrics: [
       { title: 'Deployment Frequency', desc: 'Increase in model deployment frequency after MLOps pipeline implementation and CI/CD automation.', value: '5',  suffix: 'x',    metricLabel: 'Faster Deployment',    icon: 'Zap'       },
@@ -1255,6 +1260,33 @@ export const servicesData = {
     // promotion path. Keeping both leaves the weaker version to undercut the
     // stronger one, at 1,162px of desktop height for 93 words.
     hidePartnershipModel: true,
+
+    // ── Engagement outcomes ────────────────────────────────────────────────
+    // The Cognition fallback produced "99.9% Efficiency gain in MLOps workflows"
+    // and "100% operational reliability" — neither of which is a coherent
+    // quantity — over prose that fit any service in the practice.
+    //
+    // These remain illustrative, because they are not a named client. But an
+    // illustrative scenario still has to describe a mechanism and a change a
+    // reader can picture, and the metric has to be the arithmetic of the story
+    // rather than a number chosen first: two models a quarter becoming twelve
+    // is where the 6x comes from.
+    outcomeCard: {
+      illustrative: true,
+      metric: '6\u00d7',
+      metricLabel: 'More models promoted to production per quarter',
+      industry: 'Banking & Financial Services',
+      problem: 'A risk-modeling team could put two models a quarter into production. Each release meant hand-assembling the training data, re-running validation in a notebook, and writing the evidence pack for model risk review by hand — roughly six weeks of work that had to be repeated in full for every retrain.',
+      outcome: 'One pipeline now produces the model, its lineage record and the validation evidence in the same run, and promotion is gated on a holdout threshold rather than a review meeting. The same team ships twelve models a quarter, and a retrain costs days instead of restarting the six weeks.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '70%',
+      metricLabel: 'Fewer production incidents traced to model decay',
+      industry: 'Manufacturing & Industry',
+      problem: 'Demand forecasts degraded quietly between quarterly reviews. The first signal was usually a planner complaining about stock — weeks after the input distribution had already shifted — and nobody could say whether the model had drifted or the market had moved.',
+      outcome: 'Input, prediction and performance drift are now tracked as three separate signals, with thresholds wired to a retraining trigger rather than to an alert nobody owns. Decay surfaces while it is still a distribution change rather than a stockout, and incidents attributed to stale models fell by 70% across two quarters.',
+    },
 
     // ── Toolchain ──────────────────────────────────────────────────────────
     // The inherited Cognition default listed GPT-4o, Claude, Gemini, Pinecone,
