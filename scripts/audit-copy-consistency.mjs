@@ -51,12 +51,43 @@ const UK_FORMS = [
   'normalise', 'normalised', 'initialise', 'initialised',
   'visualise', 'visualised', 'visualisation', 'visualisations',
   'centralise', 'centralised', 'characterisation', 'characterise', 'characterised',
+
+  // The list above is entirely -ise/-our. That is one family of British forms,
+  // and the gate reported "0 UK forms" across 553 files while `artefacts`
+  // rendered in the MLOps capability copy. These are the families it could not
+  // see: -re, doubled-l inflections, and the individual words that do not
+  // pattern-match anything.
+  'artefact', 'artefacts',
+  'centre', 'centres', 'centred', 'centring', 'metre', 'metres', 'fibre', 'fibres',
+  'theatre', 'theatres', 'litre', 'litres',
+  'labelled', 'labelling', 'travelled', 'travelling', 'cancelled', 'cancelling',
+  'modelled', 'modelling', 'signalled', 'signalling', 'fuelled', 'levelled',
+  'enrol', 'enrols', 'enrolment', 'enrolments', 'instalment', 'instalments',
+  'judgement', 'judgements', 'acknowledgement', 'acknowledgements',
+  'ageing', 'grey', 'greyed', 'storey', 'storeys', 'sceptic', 'sceptical', 'sceptics',
+  'aluminium',
+  'practise', 'practised', 'practising', 'aeroplane', 'kerb', 'cheque', 'cheques',
 ];
+// Deliberately NOT listed: `dialogue` and `analogue`. Both are standard in US
+// prose for a conversation and a continuous signal — only the UI sense ("dialog
+// box") is reliably spelled short in US English, and the gate cannot tell the
+// senses apart. Flagging them produces false positives on ordinary copy.
 
 // Words that look British but are not ours to change. `createAnalyser` is the
 // Web Audio API's actual spelling — renaming it breaks the voice assistant.
 const SPELLING_EXCEPTIONS = [
   { pattern: /\banalyser(Ref)?\b/gi, why: 'Web Audio API spec spelling (createAnalyser)' },
+  // Prisma enum member. The frontend compares against the exact string the API
+  // returns, so respelling it here silently breaks every status filter and
+  // badge colour that keys off it.
+  { pattern: /\bCANCELLED\b/g, why: 'ConsultationStatus / MeetingStatus enum value in prisma/schema.prisma' },
+  // The lowercase form appears in the same role — status literals sent to and
+  // matched against the API, not prose shown to a reader.
+  { pattern: /'(all|pending|contacted|scheduled|completed|cancelled)'/g, why: 'consultation status literals matched against the API' },
+  // Asset filenames and a CSS class. Renaming the files is a separate change
+  // with its own risk, and the class name is not read by anyone.
+  { pattern: /[\w-]*-grey\.(png|jpg|svg|webp|avif)/g, why: 'shipped asset filenames' },
+  { pattern: /\b(vs-dot-grey|preGreyed)\b/g, why: 'CSS class and prop identifiers, not copy' },
 ];
 
 // ─── Rule 2: percentage claims allowed without an `illustrative` flag ─────────

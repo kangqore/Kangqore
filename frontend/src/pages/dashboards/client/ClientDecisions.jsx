@@ -409,7 +409,7 @@ const ClientDecisions = ({ isTabContent = false }) => {
                                                                 <span className="text-xs text-gray-700 dark:text-gray-300 font-medium">{item.authority_source}</span>
                                                             </div>
                                                             
-                                                            {/* Acknowledgement Action */}
+                                                            {/* Acknowledgment Action */}
                                                             {item.status === 'Approved' && !item.acknowledgedAt && (
                                                             <button 
                                                                 onClick={async (e) => {

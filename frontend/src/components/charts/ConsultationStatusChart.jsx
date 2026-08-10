@@ -28,7 +28,7 @@ const ConsultationStatusChart = ({ data, loading }) => {
     { name: 'Pending', value: data?.pending || 0, color: COLORS.PENDING },
     { name: 'Scheduled', value: data?.scheduled || 0, color: COLORS.SCHEDULED },
     { name: 'Completed', value: data?.completed || 0, color: COLORS.COMPLETED },
-    { name: 'Cancelled', value: data?.rejected || 0, color: COLORS.CANCELLED }, // Keeping prop name 'rejected' from backend for now to verify match
+    { name: 'Canceled', value: data?.rejected || 0, color: COLORS.CANCELLED }, // Keeping prop name 'rejected' from backend for now to verify match
   ].filter(item => item.value > 0);
 
   if (loading) {

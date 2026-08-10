@@ -753,7 +753,7 @@ export default function BIDSTataSteel() {
             {[
               { title: 'No persistent system access', body: 'Our diagnostic protocol is structured-interview and evidence-led. We do not require live API access, system credentials, or ongoing integration hooks to complete an engagement.' },
               { title: 'NDA-first, always', body: 'Mutual NDA executed before any discovery session, document review, or data sharing. Confidentiality is a pre-condition of the engagement, not an afterthought.' },
-              { title: 'Data handling & retention', body: 'All client data, supporting documentation, and findings artefacts are returned or securely deleted within 30 days of final deliverable sign-off.' },
+              { title: 'Data handling & retention', body: 'All client data, supporting documentation, and findings artifacts are returned or securely deleted within 30 days of final deliverable sign-off.' },
               { title: 'Proprietary diagnostic framework', body: 'The BIDS™ methodology — how we structure assessments, synthesise findings, and score pillars — is Kangqore\'s proprietary intellectual property, not disclosed or shared with third parties.' },
             ].map((item) => (
               <div key={item.title} style={{ border: '1px solid #e8e8e4', borderRadius: '8px', padding: '14px' }}>

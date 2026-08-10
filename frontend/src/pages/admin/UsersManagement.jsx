@@ -561,7 +561,7 @@ const UsersManagement = () => {
                       <td className="px-6 py-4">
                         {user.role === 'CLIENT' ? (
                           user.clientProfile?.rulesAcknowledgedAt ? (
-                            // Check if rules were updated after acknowledgement
+                            // Check if rules were updated after acknowledgment
                             user.clientProfile.rulesLastUpdated && 
                             new Date(user.clientProfile.rulesLastUpdated) > new Date(user.clientProfile.rulesAcknowledgedAt) ? (
                               <span className="text-amber-600 flex items-center gap-1.5 text-xs font-medium">

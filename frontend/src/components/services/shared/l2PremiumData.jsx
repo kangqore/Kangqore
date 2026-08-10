@@ -20,7 +20,7 @@ export const cloudComputingPremiumData = {
   coe: {
     label: 'Cloud Engineering CoE',
     intro: 'provides a structured blueprint that surrounds every cloud initiative with four layers of architectural validation — before scale, cost, or risk compound.',
-    body: 'We replace "lift-and-hope" with "architect-and-prove." By unifying assessment, landing-zone design, migration, and continuous operations, your cloud estate becomes a controlled performance asset rather than an unpredictable cost centre.',
+    body: 'We replace "lift-and-hope" with "architect-and-prove." By unifying assessment, landing-zone design, migration, and continuous operations, your cloud estate becomes a controlled performance asset rather than an unpredictable cost center.',
     quadrants: [
       { lines: ['Cloud', 'Assessment'], items: ['Workload discovery', 'Dependency mapping', 'TCO baseline', 'Migration readiness'] },
       { lines: ['Architecture', 'Design'], items: ['Landing-zone blueprint', 'Network & identity model', 'Well-Architected review', 'Scalability planning'] },

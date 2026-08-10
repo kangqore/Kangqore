@@ -648,7 +648,7 @@ const ClientSettings = () => {
                             {formData.governanceRules || "No governance rules have been defined for this client profile yet."}
                         </div>
 
-                        {/* Acknowledgement State */}
+                        {/* Acknowledgment State */}
                         <div className="border-t border-gray-100 pt-6 flex items-center justify-between">
                             <div>
                                 {formData.rulesAcknowledgedAt ? (
@@ -656,7 +656,7 @@ const ClientSettings = () => {
                                         // Case: Rules updated since last ack
                                         <div>
                                             <p className="text-amber-600 font-bold text-sm flex items-center gap-2">
-                                                <BadgeCheck className="w-4 h-4" /> Re-acknowledgement Required
+                                                <BadgeCheck className="w-4 h-4" /> Re-acknowledgment Required
                                             </p>
                                             <p className="text-xs text-gray-500 mt-1">Rules have changed since your last review.</p>
                                         </div>
@@ -675,7 +675,7 @@ const ClientSettings = () => {
                                     // Case: Never Acknowledged
                                     <div>
                                         <p className="text-amber-600 font-bold text-sm flex items-center gap-2">
-                                            <ShieldAlert className="w-4 h-4" /> Acknowledgement Pending
+                                            <ShieldAlert className="w-4 h-4" /> Acknowledgment Pending
                                         </p>
                                         <p className="text-xs text-gray-500 mt-1">Please review and acknowledge these governance rules.</p>
                                     </div>

@@ -413,7 +413,7 @@ export default function ProductStrategyBIDSPage() {
           <p className="text-[11px] font-black tracking-[0.45em] text-white/50 uppercase mb-7 text-center">DESIGN APPROACH PRINCIPLES</p>
           {/* Overflows on a phone, and Chrome does not make an overflow
               container focusable on its own — so the badges past the fold were
-              unreachable by keyboard. `justify-start` matters too: centring puts
+              unreachable by keyboard. `justify-start` matters too: centering puts
               the leading overflow outside the scrollable range entirely. */}
           <div
             className="flex flex-nowrap items-center justify-start sm:justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden"
@@ -422,7 +422,7 @@ export default function ProductStrategyBIDSPage() {
             aria-label="Design approach principles"
             tabIndex={0}
           >
-            {['Strategy-Led Design', 'Research-Informed Decisions', 'Validated Prototyping', 'Scalable Design Systems', 'Accessibility-First Architecture', 'Design-to-Build Continuity', 'Adoption-Centred Launch Planning'].map((f, i, arr) => (
+            {['Strategy-Led Design', 'Research-Informed Decisions', 'Validated Prototyping', 'Scalable Design Systems', 'Accessibility-First Architecture', 'Design-to-Build Continuity', 'Adoption-Centered Launch Planning'].map((f, i, arr) => (
               <React.Fragment key={f}>
                 <span className="flex-shrink-0 text-white/60 text-[11px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
                 {i < arr.length - 1 && <span className="flex-shrink-0 mx-4 text-white/10 text-xs select-none">·</span>}

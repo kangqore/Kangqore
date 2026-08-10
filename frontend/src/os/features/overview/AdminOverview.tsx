@@ -6941,8 +6941,8 @@ export function AdminOverview() {
           title={voiceActive ? 'End voice session' : 'Talk to WAANDA — voice to voice'}
           style={{
             position: 'absolute', bottom: 24, right: 24, zIndex: 200,
-            display: 'flex', alignItems: 'center', gap: 10,
-            padding: '10px 20px', borderRadius: 8, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 6,
+            padding: '6px 12px', borderRadius: 6, cursor: 'pointer',
             background: voiceActive
               ? `linear-gradient(135deg, ${VOICE_GREEN}28, ${VOICE_GREEN}0c)`
               : `linear-gradient(135deg, ${C}22, ${C}08)`,
@@ -6950,7 +6950,7 @@ export function AdminOverview() {
             boxShadow: voiceActive
               ? `0 0 20px ${VOICE_GREEN}30, 0 0 40px ${VOICE_GREEN}12`
               : `0 0 20px ${C}25, 0 0 40px ${C}10`,
-            fontFamily: 'monospace', fontSize: 11, fontWeight: 800,
+            fontFamily: 'monospace', fontSize: 10, fontWeight: 800,
             color: voiceActive ? VOICE_GREEN : C, letterSpacing: '0.15em', transition: 'all 0.3s',
           }}
         >

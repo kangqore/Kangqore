@@ -290,10 +290,10 @@ const DataScienceAI = () => {
         desc: 'Develop intelligent machine learning solutions that enable prediction, optimization, automation, and data-driven business decision-making.',
         bgImage: '/images/capabilities/agentic-governed-autonomy.png',
         items: [
-          { heading: 'Predictive Modelling & Forecasting', description: 'Develop advanced forecasting models for demand planning, financial forecasting, operational optimization, and strategic decision support.' },
+          { heading: 'Predictive Modeling & Forecasting', description: 'Develop advanced forecasting models for demand planning, financial forecasting, operational optimization, and strategic decision support.' },
           { heading: 'Classification & Anomaly Detection', description: 'Build intelligent classification and anomaly detection systems that identify fraud, operational risks, quality issues, and unusual behavior.' },
           { heading: 'Recommendation Intelligence', description: 'Create AI-powered recommendation systems that deliver personalised customer experiences and improve engagement, retention, and revenue.' },
-          { heading: 'Statistical & Quantitative Modelling', description: 'Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.' },
+          { heading: 'Statistical & Quantitative Modeling', description: 'Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.' },
           { heading: 'Feature Engineering & Model Development', description: 'Design high-quality data features and optimize machine learning models for improved predictive performance and scalability.' },
           { heading: 'Decision Intelligence', description: 'Combine machine learning, analytics, and business rules to support intelligent, explainable, and data-driven decision-making.' }
         ]

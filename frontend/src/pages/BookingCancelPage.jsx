@@ -36,9 +36,9 @@ export default function BookingCancelPage() {
           <div className="w-16 h-16 bg-rose-100 dark:bg-rose-900/30 rounded-full flex items-center justify-center mx-auto mb-5">
             <Check className="w-8 h-8 text-rose-500" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Meeting Cancelled</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Meeting Canceled</h1>
           <p className="text-gray-500 dark:text-gray-400 mb-6">
-            Your consultation has been cancelled and both parties have been notified.
+            Your consultation has been canceled and both parties have been notified.
           </p>
           {cancelledEvent && (
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 text-left text-sm text-gray-600 dark:text-gray-400 mb-6 space-y-1">
@@ -109,7 +109,7 @@ export default function BookingCancelPage() {
             className="w-full py-3 px-6 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-60"
           >
             {status === 'loading'
-              ? <><Loader2 className="w-4 h-4 animate-spin" /> Cancelling…</>
+              ? <><Loader2 className="w-4 h-4 animate-spin" /> Canceling…</>
               : 'Confirm Cancellation'}
           </button>
 

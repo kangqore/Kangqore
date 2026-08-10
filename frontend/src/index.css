@@ -1030,3 +1030,36 @@ html, body, #root { border-top: none !important; box-shadow: none !important; }
 @media (max-width: 639px) and (prefers-reduced-motion: no-preference) {
   .kq-rail { scroll-behavior: smooth; }
 }
+
+/* ─── Decorative card index ───────────────────────────────────────────────────
+   The large faint number behind each "Built for Impact" card. It was a <span>
+   of real text at 4% alpha — 1.07:1 against the card — and axe only stopped
+   reporting it because a paragraph happened to overlap it; once the generic
+   micro copy was removed, the failure surfaced on every service that supplies
+   no featureMicros.
+
+   `aria-hidden` is not the fix. It removes the node from the accessibility tree
+   but the text is still on screen, so WCAG 1.4.3 still applies and axe is right
+   to flag it. WCAG exempts pure decoration, and this is pure decoration — it
+   restates a position that document order already carries — so it belongs in
+   CSS, where it is generated content rather than a text node.
+   ────────────────────────────────────────────────────────────────────────── */
+.kq-card-index::after {
+  content: attr(data-index);
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.04);
+  transition: color 0.5s ease;
+  pointer-events: none;
+  user-select: none;
+}
+@media (min-width: 1024px) {
+  .kq-card-index::after { font-size: 6rem; }
+}
+.kq-card-index:hover::after { color: rgba(255, 255, 255, 0.07); }

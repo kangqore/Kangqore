@@ -397,7 +397,7 @@ function getParityService(service, department) {
         { title: `Data Privacy & Governance`, desc: `Protect sensitive enterprise data assets and ensure global privacy compliance.`, items: [`Data Classification: Automatically discover, label, and track sensitive enterprise data.`, `Data Masking & Anonymization: Protect PII and confidential records in non-production environments.`, `Encryption Infrastructure: Enforce AES-256 encryption at rest and TLS 1.3 in transit.`, `Consent & Rights Management: Implement automated GDPR/CCPA data subject request workflows.`, `DLP Policy Enforcement: Prevent unauthorized data exfiltration with Data Loss Prevention (DLP).`, `Cryptographic Key Vaults: Secure master keys and certificates with hardware security modules.`] },
         { title: `Operational Technology (OT) & SCADA Security`, desc: `Secure industrial control systems, IoT hardware, and operational technology environments.`, items: [`IT/OT Convergence Security: Bridge IT and OT networks safely without compromising safety.`, `Industrial Anomaly Detection: Detect non-standard traffic and commands on SCADA networks.`, `Asset Discovery: Map all connected OT hardware, PLCs, and industrial sensor endpoints.`, `Protocol Inspection: Deep packet inspection for Modbus, DNP3, and PROFINET industrial protocols.`, `Air-Gapped Protections: Secure legacy OT systems with hardware diodes and strict isolation.`, `OT Incident Playbooks: Tailor incident response plans to prevent physical operational disruption.`] },
         { title: `Finance & Operational Risk Management`, desc: `Identify, quantify, and mitigate operational, financial, and strategic enterprise risks.`, items: [`Risk Assessment Frameworks: Evaluate operational risks using NIST and ISO 31000 frameworks.`, `Financial Risk Modeling: Assess credit, market, and operational financial risk exposures.`, `Audit & Controls Validation: Validate internal financial and IT controls against SOX mandates.`, `Third-Party Risk Management: Audit vendor security postures and supply chain risks.`, `Business Continuity Planning: Develop Disaster Recovery (DR) and BCP recovery playbooks.`, `Governance Reporting: Deliver executive risk scorecards and board-level risk reporting.`] },
-        { title: `Quality Assurance & Security Testing`, desc: `Validate software security and compliance through rigorous penetration testing and QA.`, items: [`Penetration Testing: Conduct black-box, white-box, and grey-box security penetration tests.`, `Code Security Audits: Scan application codebases for OWASP Top 10 vulnerabilities.`, `Red Team Simulations: Simulate real-world cyber attacks to test defense posture.`, `Compliance Audits: Validate controls against ISO 27001, SOC 2, HIPAA, and PCI-DSS.`, `Automated QA Testing: Execute security and functional QA tests in CI/CD pipelines.`, `Remediation Guidance: Provide step-by-step developer remediation for security flaws.`] },
+        { title: `Quality Assurance & Security Testing`, desc: `Validate software security and compliance through rigorous penetration testing and QA.`, items: [`Penetration Testing: Conduct black-box, white-box, and gray-box security penetration tests.`, `Code Security Audits: Scan application codebases for OWASP Top 10 vulnerabilities.`, `Red Team Simulations: Simulate real-world cyber attacks to test defense posture.`, `Compliance Audits: Validate controls against ISO 27001, SOC 2, HIPAA, and PCI-DSS.`, `Automated QA Testing: Execute security and functional QA tests in CI/CD pipelines.`, `Remediation Guidance: Provide step-by-step developer remediation for security flaws.`] },
         { title: `Security Culture & Change Enablement`, desc: `Train employees and foster a security-first culture across the enterprise.`, items: [`Security Awareness Training: Conduct anti-phishing simulations and employee security training.`, `DevSecOps Enablement: Train developers on secure coding practices and threat modeling.`, `Policy & Standards Management: Draft and maintain clear enterprise security policies.`, `Executive Briefings: Provide board and C-suite briefings on cybersecurity risk posture.`, `Incident Simulation Exercises: Run tabletop crisis response exercises for leadership teams.`, `Continuous Security Posture: Track security posture scores and drive year-over-year progress.`] }
       ] :
       deptSlug === 'platforms' ? [
@@ -645,14 +645,15 @@ function getParityService(service, department) {
       ];
 
   // Feature Micros Fallback
+  // No fallback. The previous one was four fixed strings in a fixed order, so
+  // "Continuous training" was explained as "seamless integration with existing
+  // enterprise platforms" — four cards, four mismatches, on every page that did
+  // not override it. Generating a line from the label instead just restates the
+  // heading in more words. A service that has something to say here supplies
+  // `featureMicros`; the rest render the label alone, which is honest.
   const featureMicros = (service.featureMicros && service.featureMicros.length > 0)
     ? service.featureMicros
-    : [
-        `Engineered for high availability and enterprise scale.`,
-        `Automated governance and continuous compliance built-in.`,
-        `Seamless integration with existing enterprise platforms.`,
-        `Measurable business ROI delivered in weeks, not years.`
-      ];
+    : [];
 
   // Hero Strip Items Fallback
   const heroStripItems = (service.heroStripItems && service.heroStripItems.length > 0)
@@ -907,7 +908,6 @@ export default function UniversalServicePage({ service: rawService, department }
 
   // ── Feature accordion (first 4 keyFeatures) ──────────────────────────────
   const featureLabels   = service.keyFeatures.slice(0, 4);
-  const featureTitles   = featureLabels.map(f => f.split(' ')[0]);
 const featureMicros   = service.featureMicros
     ? service.featureMicros.slice(0, 4)
     : featureLabels.map(f => `Building ${f.toLowerCase()} maturity that scales with your business.`);
@@ -1889,7 +1889,7 @@ const featureMicros   = service.featureMicros
             {/* Overflows below ~640px (547px of badges in a 342px gutter), and
                 Chrome does not make an overflow container focusable on its own,
                 so a keyboard-only visitor could not reach the badges past the
-                fold. `justify-start` matters too: a centred flex container puts
+                fold. `justify-start` matters too: a centered flex container puts
                 the leading overflow outside the scrollable range entirely. */}
             <div
               className="flex flex-nowrap items-center justify-start sm:justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden"
@@ -2141,18 +2141,19 @@ const featureMicros   = service.featureMicros
                 const FIcon = featureIcons[i];
                 const n = String(i + 1).padStart(2, '0');
                 const isWide = i === 0 || i === 3;
+                // ACCENT drives the icon tint, the top border and the card
+                // wash — none of which carry text, so the palette is free to
+                // stay at brand values. The separate ACCENT_TEXT palette that
+                // used to sit here existed only for the eyebrow label, which is
+                // gone; brand blue is 3.88:1 on this #06090f card and could not
+                // be used for text. If a text element is ever added back here,
+                // it needs its own lifted palette, not ACCENT.
                 const ACCENT = ['#2564ea','#4ab6d4','#6366f1','#10b981'];
-                // Text needs its own palette. The label below was ACCENT[i] at
-                // 50% alpha, which lands at 1.77-2.83:1 on this #06090f card —
-                // and brand blue fails at 4.5:1 even at full opacity (3.88).
-                // These are the same hues lifted toward white until each clears
-                // 5:1, giving headroom over the AA floor. ACCENT itself still
-                // drives the icon tint and card wash, which carry no text.
-                const ACCENT_TEXT = ['#467bed','#4ab6d4','#6e71f2','#10b981'];
                 return (
                   <div
                     key={label}
-                    className={`group relative rounded-2xl overflow-hidden border border-white/[0.07] bg-[#06090f] p-7 flex flex-col justify-between hover:border-white/[0.14] transition-all duration-500 ${isWide ? 'sm:col-span-2' : 'sm:col-span-1'}`}
+                    data-index={n}
+                    className={`kq-card-index group relative rounded-2xl overflow-hidden border border-white/[0.07] bg-[#06090f] p-7 flex flex-col justify-between hover:border-white/[0.14] transition-all duration-500 ${isWide ? 'sm:col-span-2' : 'sm:col-span-1'}`}
                   >
                     {/* top accent line */}
                     <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl"
@@ -2162,10 +2163,14 @@ const featureMicros   = service.featureMicros
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl"
                       style={{ background: `radial-gradient(ellipse at top left, ${ACCENT[i]}0d 0%, transparent 65%)` }} />
 
-                    {/* Large bg number */}
-                    <span className="absolute bottom-4 right-5 font-mono text-[5rem] lg:text-[6rem] font-black leading-none select-none text-white/[0.04] group-hover:text-white/[0.07] transition-colors duration-500 tabular-nums">
-                      {n}
-                    </span>
+                    {/* The large background number is drawn by `.kq-card-index`
+                        in index.css, from the data-index attribute above. It used
+                        to be a <span> of real text at 4% alpha — 1.07:1 — which
+                        axe only stopped reporting because the micro paragraph
+                        happened to overlap it. `aria-hidden` does not help: the
+                        text is still on screen, so 1.4.3 still applies, and axe
+                        is right to say so. Pure ornament belongs in CSS, where it
+                        is not a text node at all. */}
 
                     {/* Icon */}
                     <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center border border-white/[0.08] group-hover:border-white/20 transition-all duration-500"
@@ -2175,16 +2180,20 @@ const featureMicros   = service.featureMicros
 
                     {/* Content */}
                     <div className="relative z-10">
-                      <p className="text-[11px] font-black tracking-[0.28em] uppercase mb-2 transition-colors duration-500"
-                        style={{ color: ACCENT_TEXT[i] }}>
-                        {n} — {featureTitles[i]}
-                      </p>
+                      {/* No eyebrow. It used to read `{n} — label.split(' ')[0]`,
+                          which on MLOps produced two cards both labeled "MODEL"
+                          ("Model versioning", "Model monitoring") and on every
+                          page restated a word the heading below already shows.
+                          The card is already numbered by the watermark behind
+                          it, so the index alone would only duplicate that. */}
                       <h3 className="text-white/70 group-hover:text-white font-black text-lg leading-snug mb-2 transition-colors duration-300">
                         {label}
                       </h3>
-                      <p className="text-white/50 group-hover:text-white/70 text-xs font-medium leading-relaxed transition-colors duration-500 max-w-sm">
-                        {featureMicros[i]}
-                      </p>
+                      {featureMicros[i] && (
+                        <p className="text-white/50 group-hover:text-white/70 text-xs font-medium leading-relaxed transition-colors duration-500 max-w-sm">
+                          {featureMicros[i]}
+                        </p>
+                      )}
                     </div>
                   </div>
                 );
@@ -2198,7 +2207,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
       {service.comparisonTable && (
-        <GeminiComparisonSection comparisonTable={service.comparisonTable} lede={service.comparisonLede} />
+        <GeminiComparisonSection comparisonTable={service.comparisonTable} lede={service.comparisonLede || service.comparisonTable?.lede} />
       )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
@@ -2312,8 +2321,11 @@ const featureMicros   = service.featureMicros
                 <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">BY INDUSTRY</span>
               </div>
               <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                Agents built for<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">your industry.</span>
+                {/* Per service. "Agents built for your industry" is right for
+                    one service and wrong for the rest — the MLOps page ran it
+                    over a list of models, pipelines and registries. */}
+                {service.industryHeading || 'Agents built for'}<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.industryHeadingHighlight || 'your industry.'}</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
                 {service.industryLede || `Kangqore deploys ${lowerServiceName(service.name)} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
@@ -2335,7 +2347,12 @@ const featureMicros   = service.featureMicros
                     <div className="min-h-0 flex flex-col gap-4 mt-4">
                       <p className="text-white font-bold text-lg leading-snug">{item.headline}</p>
                       <ul className="space-y-2">
-                        {item.agents.map((agent, i) => (
+                        {/* `items` is the neutral key; `agents` is kept for the
+                            four services that were written when this section was
+                            agent-specific. An MLOps page listing "Clinical
+                            Validation Agent" was describing a product we do not
+                            sell here. */}
+                        {(item.items || item.agents || []).map((agent, i) => (
                           <li key={i} className="flex items-start gap-2.5">
                             <div className="w-1 h-1 rounded-full bg-cyan-400 mt-2 flex-shrink-0" />
                             <span className="text-white/50 text-sm font-medium leading-relaxed">{agent}</span>
@@ -2420,7 +2437,7 @@ const featureMicros   = service.featureMicros
                           are templates rather than engagements — must not make that claim. */}
                       <p className="text-white/50 text-xs font-medium italic">
                         {card.illustrative
-                          ? 'Illustrative scenario — modelled on typical engagement patterns, not a specific client result.'
+                          ? 'Illustrative scenario — modeled on typical engagement patterns, not a specific client result.'
                           : 'Engagement confidential — details available on request.'}
                       </p>
                       {service.methodologyBrief && (
@@ -2449,7 +2466,7 @@ const featureMicros   = service.featureMicros
         <section className="py-16" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-8">
             <p className="text-2xl sm:text-3xl font-bold text-white leading-snug max-w-xl">
-              Your next workflow runs itself.
+              {service.midCta || 'Your next workflow runs itself.'}
             </p>
             <Link
               to="/contact"
@@ -2941,12 +2958,16 @@ const featureMicros   = service.featureMicros
                 <div className="h-[1px] w-12 bg-white/20" />
                 <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">NEXT STEP</span>
               </div>
+              {/* Per service. The default promises an agent in production, which
+                  is right for one service and wrong for the other 61 — on the
+                  MLOps page the packages directly above say "First Model to
+                  Production" and this contradicted them eight lines later. */}
               <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
-                One conversation.<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">One agent in production.</span>
+                {service.closingCta?.title || 'One conversation.'}<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.closingCta?.highlight || 'One agent in production.'}</span>
               </h2>
               <p className="text-white/50 text-lg font-medium leading-relaxed max-w-xl">
-                Talk through your highest-value workflow in 30 minutes — we will scope the right entry point and show you what a production agent looks like for your context.
+                {service.closingCta?.body || 'Talk through your highest-value workflow in 30 minutes — we will scope the right entry point and show you what a production agent looks like for your context.'}
               </p>
             </div>
 
@@ -2963,7 +2984,7 @@ const featureMicros   = service.featureMicros
                 </a>
               </div>
               <div className="group/weeks flex flex-col gap-1 lg:items-end cursor-default select-none">
-                <span className="text-[11px] font-black tracking-[0.25em] uppercase text-white/50 group-hover/weeks:text-white/80 transition-colors duration-300">From first call to first agent</span>
+                <span className="text-[11px] font-black tracking-[0.25em] uppercase text-white/50 group-hover/weeks:text-white/80 transition-colors duration-300">{service.closingCta?.proofLabel || 'From first call to first agent'}</span>
                 <span className="text-white/50 text-[11px] font-semibold group-hover/weeks:text-white/70 transition-colors duration-300">Strategy → Build → Production in 8 weeks</span>
               </div>
             </div>

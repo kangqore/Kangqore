@@ -63,7 +63,7 @@ const GrowthFunnelsConversion = () => {
         pills: ['Behavioral Science', 'Experimentation', 'AI Optimization', 'Full-Funnel Analytics'],
         features: [
           { title: 'Funnel Diagnostics', label: 'Audit', icon: <Search className="w-5 h-5 text-gray-400" />, content: 'We dissect the entire customer journey using analytics, session recordings, heatmaps, and behavioral data to identify hidden leakage points.' },
-          { title: 'Hypothesis Engine', label: 'Science', icon: <Activity className="w-5 h-5 text-gray-400" />, content: 'We run structured A/B, multivariate, and sequential testing programs with commercial KPIs at the centre of every decision.' },
+          { title: 'Hypothesis Engine', label: 'Science', icon: <Activity className="w-5 h-5 text-gray-400" />, content: 'We run structured A/B, multivariate, and sequential testing programs with commercial KPIs at the center of every decision.' },
           { title: 'CRO & UX Engineering', label: 'Conversion', icon: <MonitorPlay className="w-5 h-5 text-gray-400" />, content: 'We redesign landing pages, product flows, forms, and checkout systems to increase action rates.' },
           { title: 'AI Personalisation', label: 'Scale', icon: <Bot className="w-5 h-5 text-gray-400" />, content: 'Your funnel adapts dynamically based on audience segment, behavior, and context for real-time experience adaptation.' }
         ]
@@ -182,7 +182,7 @@ const GrowthFunnelsConversion = () => {
     },
     {
       title: 'Hypothesis-Driven Experimentation Engine',
-      description: 'We run structured A/B, multivariate, and sequential testing programs with commercial KPIs at the centre of every decision.',
+      description: 'We run structured A/B, multivariate, and sequential testing programs with commercial KPIs at the center of every decision.',
       bgImage: '/images/capabilities/business-strategy.png',
       items: ['Testing roadmap creation', 'Variant design & deployment', 'Statistical decision frameworks', 'AI-assisted idea prioritization', 'Continuous learning loops'],
       micro: 'Test with rigor.'
@@ -212,7 +212,7 @@ const GrowthFunnelsConversion = () => {
       title: 'Post-Conversion & Lifetime Value Optimization',
       description: 'We continue optimization after purchase to maximize revenue and reduce churn.',
       bgImage: '/images/capabilities/growth-marketing.png',
-      items: ['Onboarding journeys', 'Expansion revenue systems', 'Reactivation campaigns', 'Loyalty mechanics', 'Retention performance modelling'],
+      items: ['Onboarding journeys', 'Expansion revenue systems', 'Reactivation campaigns', 'Loyalty mechanics', 'Retention performance modeling'],
       micro: 'Grow after conversion.'
     },
     {

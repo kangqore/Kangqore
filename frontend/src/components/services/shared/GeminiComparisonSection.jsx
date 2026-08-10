@@ -17,6 +17,18 @@ const GRADIENT_STYLE = {
 export default function GeminiComparisonSection({ comparisonTable, lede }) {
   const [hoveredRow, setHoveredRow] = useState(null);
 
+  // The column labels used to be hard-coded to "TRADITIONAL AI / RULES-BASED
+  // AUTOMATION" vs "AGENTIC AI". That is the right framing for one service and
+  // wrong for the rest — on /services/mlops the heading read "Legacy MLOps vs.
+  // Governed Enterprise MLOps" while the columns underneath it still argued
+  // about agentic autonomy. The defaults are unchanged, so the pages that were
+  // correct stay correct.
+  const beforeLabel = comparisonTable?.beforeLabel || 'TRADITIONAL AI / RULES-BASED AUTOMATION';
+  const afterLabel = comparisonTable?.afterLabel || 'AGENTIC AI';
+  const afterBadge = comparisonTable?.afterBadge || 'AUTONOMOUS';
+  const beforeShort = comparisonTable?.beforeShort || 'Rules-based';
+  const afterShort = comparisonTable?.afterShort || 'Agentic';
+
   const rows = comparisonTable?.rows || [
     {
       dimension: 'AUTONOMY',
@@ -80,14 +92,14 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
               further down carry that job on mobile. */}
           <div className="hidden md:grid grid-cols-1 md:grid-cols-12 bg-white/[0.02] text-xs font-black tracking-[0.2em] uppercase">
             <div className="md:col-span-3 p-5 sm:p-6 text-white/50">
-              FEATURE
+              {comparisonTable?.dimensionLabel || 'FEATURE'}
             </div>
             <div className="md:col-span-4 p-5 sm:p-6 text-white/60">
-              TRADITIONAL AI / RULES-BASED AUTOMATION
+              {beforeLabel}
             </div>
             <div className="md:col-span-5 p-5 sm:p-6 flex items-center justify-between">
               <span style={GRADIENT_STYLE} className="font-black">
-                AGENTIC AI
+                {afterLabel}
               </span>
               <span 
                 className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-widest"
@@ -97,7 +109,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                   color: '#4ab6d4'
                 }}
               >
-                AUTONOMOUS
+                {afterBadge}
               </span>
             </div>
           </div>
@@ -138,7 +150,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                   {/* Traditional AI Column */}
                   <div className="md:col-span-4 px-5 pb-3 sm:p-6">
                     <span className="md:hidden block text-[11px] font-black tracking-[0.2em] uppercase text-white/50 mb-1">
-                      Rules-based
+                      {beforeShort}
                     </span>
                     <p className={`text-sm leading-relaxed transition-colors ${
                       isHovered ? 'text-white/80' : 'text-white/50'
@@ -155,7 +167,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                     }}
                   >
                     <span className="md:hidden block text-[11px] font-black tracking-[0.2em] uppercase mb-1" style={GRADIENT_STYLE}>
-                      Agentic
+                      {afterShort}
                     </span>
                     <p className={`text-sm leading-relaxed transition-colors ${
                       isHovered ? 'text-white font-bold' : 'text-white/95 font-semibold'

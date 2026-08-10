@@ -349,7 +349,7 @@ export const servicesData = {
     whatIsPara2: 'Intelligent agents scan full codebases, extract business logic, and validate cloud-native deployments autonomously — human-in-the-loop governance at every critical milestone. The outcome: measurable technical debt reduction, faster time-to-modern, and a continuous modernization capability that scales across the entire application portfolio.',
 
     // Framed around what the agents measurably produce, not generic program
-    // outcomes — each label names an artefact a buyer can ask to see.
+    // outcomes — each label names an artifact a buyer can ask to see.
     businessMetrics: [
       { title: 'Assessment Velocity',        desc: 'Dependency graphs, bounded-context maps and tech-debt scorecards for a multi-million-line estate arrive in days, because scanning is parallelized across agents rather than queued behind SME availability.', value: 'Assessment Velocity',        suffix: '',  metricLabel: '',  icon: 'Zap'        },
       { title: 'Technical Debt Retired',     desc: 'Every module is scored on coupling, duplication and test coverage before work starts, so debt reduction is tracked as a burn-down against a baseline instead of asserted at the end.',                       value: 'Technical Debt Retired',     suffix: '',  metricLabel: '',  icon: 'TrendingUp' },
@@ -441,7 +441,7 @@ export const servicesData = {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Identity, secrets and trust boundaries are re-derived for the decomposed architecture, because a monolith\u2019s implicit internal trust becomes an explicit attack surface the moment it is split.',
         items: [
-          'Security-by-Design: Embed controls, identity management, and threat modelling at every architecture and deployment layer.',
+          'Security-by-Design: Embed controls, identity management, and threat modeling at every architecture and deployment layer.',
           'Zero Trust Architecture: Implement identity-first access, microsegmentation, and continuous verification across the estate.',
           'Compliance Modernization: Map and validate controls against ISO 27001, SOC 2, GDPR, HIPAA, and sector requirements.',
           'Vulnerability Assessment & Remediation: Automated scanning, penetration testing, and remediation across modernized systems.',
@@ -453,7 +453,7 @@ export const servicesData = {
       colA: 'Traditional Modernization',
       colB: 'Agentic AI-led Modernization',
       rows: [
-        { dimension: 'Discovery',      before: 'Engineers read subsystems one at a time, and the business rules stay in the heads of whoever has been there longest.',   after: 'Static analysis covers the whole estate at once — producing a dependency graph, and recovering the embedded business rules as a written artefact that outlives staff turnover.' },
+        { dimension: 'Discovery',      before: 'Engineers read subsystems one at a time, and the business rules stay in the heads of whoever has been there longest.',   after: 'Static analysis covers the whole estate at once — producing a dependency graph, and recovering the embedded business rules as a written artifact that outlives staff turnover.' },
         { dimension: 'Planning',       before: 'A static migration playbook, drafted from partial discovery and defended as reality diverges from it.',                    after: 'A blueprint that is regenerated as each subsystem is understood, alongside architecture maps and runbooks derived from the source rather than drawn once and left to drift.' },
         { dimension: 'Transformation', before: 'Refactoring and language migration written by hand, module by module, at whatever pace headcount allows.',                 after: 'Agents execute the transformation and cross-language conversion against the recovered specification, leaving engineers reviewing diffs rather than authoring them.' },
         { dimension: 'Validation',     before: 'Test coverage is written after the fact — slow, partial, and highest-risk exactly where the code is oldest.',              after: 'Characterization tests are generated against legacy behavior before anything changes, so each cutover is proven equivalent rather than assumed correct.' },
@@ -622,7 +622,7 @@ export const servicesData = {
         },
         {
           label: 'Retention — scoped to the engagement',
-          body: 'Prompts, agent outputs and generated artefacts persist for the duration of the engagement and are deleted on completion. What survives is what we hand to you: the dependency graph, the test corpus, the audit ledger.',
+          body: 'Prompts, agent outputs and generated artifacts persist for the duration of the engagement and are deleted on completion. What survives is what we hand to you: the dependency graph, the test corpus, the audit ledger.',
         },
         {
           label: 'Certification',
@@ -670,7 +670,7 @@ export const servicesData = {
         {
           icon: 'Shield',
           title: 'Gated, reversible, and cumulative',
-          desc: 'Agent output arrives as a reviewable change set carrying its tests, diff and rationale; architecture, data-model and go-live decisions require a named human approval, and each increment is versioned independently. The outcome is twofold: any single step rolls back without unwinding the rest, and the artefacts left behind — graph, rule set, test corpus, gating policies — carry into the next application, so effort per service falls as estate coverage rises.',
+          desc: 'Agent output arrives as a reviewable change set carrying its tests, diff and rationale; architecture, data-model and go-live decisions require a named human approval, and each increment is versioned independently. The outcome is twofold: any single step rolls back without unwinding the rest, and the artifacts left behind — graph, rule set, test corpus, gating policies — carry into the next application, so effort per service falls as estate coverage rises.',
         },
       ],
     },
@@ -1057,10 +1057,10 @@ export const servicesData = {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Develop intelligent machine learning solutions that enable prediction, optimization, automation, and data-driven business decision-making.',
         items: [
-          'Predictive Modelling & Forecasting: Develop advanced forecasting models for demand planning, financial forecasting, operational optimization, and strategic decision support.',
+          'Predictive Modeling & Forecasting: Develop advanced forecasting models for demand planning, financial forecasting, operational optimization, and strategic decision support.',
           'Classification & Anomaly Detection: Build intelligent classification and anomaly detection systems that identify fraud, operational risks, quality issues, and unusual behavior.',
           'Recommendation Intelligence: Create AI-powered recommendation systems that deliver personalised customer experiences and improve engagement, retention, and revenue.',
-          'Statistical & Quantitative Modelling: Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.',
+          'Statistical & Quantitative Modeling: Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.',
           'Feature Engineering & Model Development: Design high-quality data features and optimize machine learning models for improved predictive performance and scalability.',
           'Decision Intelligence: Combine machine learning, analytics, and business rules to support intelligent, explainable, and data-driven decision-making.',
         ],
@@ -1171,7 +1171,7 @@ export const servicesData = {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Accelerate AI development through governed engineering practices that enable reliable, repeatable, and production-ready machine learning delivery.',
         items: [
-          'Experiment Management: Capture datasets, parameters, metrics, artefacts, and experiments to ensure reproducibility, collaboration, and continuous innovation.',
+          'Experiment Management: Capture datasets, parameters, metrics, artifacts, and experiments to ensure reproducibility, collaboration, and continuous innovation.',
           'Model Development & Validation: Design, train, evaluate, validate, and optimize machine learning models for enterprise-grade production environments.',
           'Model Registry & Lifecycle Management: Maintain centralized repositories for managing model versions, approvals, documentation, metadata, and deployment status.',
           'Continuous Integration & Delivery: Automate testing, validation, packaging, and deployment of machine learning models through enterprise CI/CD pipelines.',
@@ -1245,6 +1245,149 @@ export const servicesData = {
         ],
       },
     ],
+
+    // ── Toolchain ──────────────────────────────────────────────────────────
+    // The inherited Cognition default listed GPT-4o, Claude, Gemini, Pinecone,
+    // Weaviate and LangSmith under the heading "MLOps Technology Stack". That is
+    // a RAG stack: of sixteen tools named, two were MLOps — and the FAQ two
+    // sections below named SageMaker, Vertex AI, Kubeflow, Feast and KServe, so
+    // the page contradicted itself within one screen.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The stack we actually',
+      titleHighlight: 'build on.',
+      subtitle: 'We work in the platform you have already committed to. The managed services below are the default on each cloud; the open-source column is what we use where you run your own control plane.',
+      items: [
+        { icon: 'Layers', title: 'Pipelines & orchestration', desc: 'SageMaker Pipelines, Vertex AI Pipelines, and Azure ML Pipelines on managed platforms. Kubeflow Pipelines or Apache Airflow where training and retraining jobs run on your own Kubernetes.' },
+        { icon: 'Database', title: 'Registry, tracking & lineage', desc: 'MLflow for experiment tracking and model registry, with DVC for dataset versioning. On managed platforms, SageMaker Model Registry or Vertex AI Model Registry, so promotion history lives beside the artifacts it approved.' },
+        { icon: 'Network', title: 'Feature engineering & serving', desc: 'Feast for open-source feature serving, SageMaker Feature Store or Vertex AI Feature Store where the platform provides one. Introduced when feature reuse or training-serving skew justifies it — not by default.' },
+        { icon: 'Cpu', title: 'Model serving', desc: 'KServe or BentoML on Kubernetes, SageMaker endpoints and Vertex AI endpoints on managed platforms, with Triton Inference Server where GPU throughput is the constraint. Canary and shadow deployment on all of them.' },
+        { icon: 'Eye', title: 'Monitoring & drift detection', desc: 'Evidently or WhyLabs for input, prediction, and performance drift, wired into Prometheus and Grafana alongside the service metrics. SageMaker Model Monitor where the platform already collects the baselines.' },
+        { icon: 'Shield', title: 'Infrastructure & governance', desc: 'Terraform for the platform itself, so the environment is reproducible rather than hand-built. SHAP for explainability where a model decision has to be defensible, and immutable approval logs for regulated estates.' },
+      ],
+      image: '/images/capabilities/agentic-ai-tools-dark-illustration.png',
+      imageAlt: 'MLOps toolchain across managed and self-hosted platforms',
+    },
+
+    // ── Comparison frame ───────────────────────────────────────────────────
+    // Without these the section inherits the agentic-AI framing: a lede about
+    // "who decides the next step" and columns headed TRADITIONAL AI vs AGENTIC
+    // AI, under a heading about MLOps.
+    comparisonTable: {
+      heading: 'Notebook to production, and the gap in between.',
+      lede: 'Most teams can train a model. The difficulty is everything after: proving which data and code produced the version now serving traffic, noticing when it stops being right, and retraining without a person remembering to. An ad hoc path does each of those once, by hand. A platform does them every time, for every model.',
+      dimensionLabel: 'STAGE',
+      beforeLabel: 'AD HOC ML DELIVERY',
+      afterLabel: 'GOVERNED MLOPS PLATFORM',
+      afterBadge: 'REPRODUCIBLE',
+      beforeShort: 'Ad hoc',
+      afterShort: 'Platform',
+      rows: [
+        { dimension: 'Reproducibility', before: 'A model is a file on a laptop or in object storage. The notebook that produced it has moved on, and nobody can rebuild the exact version currently serving traffic.', after: 'Every model in a registry with the dataset version, code commit, parameters, and metrics that produced it — so any deployed version can be rebuilt or explained months later.' },
+        { dimension: 'Promotion', before: 'A person decides the model looks good enough and copies it to production. The threshold lives in their head, and it moves with the deadline.', after: 'Promotion gates are statistical thresholds against a holdout set, evaluated automatically. A model that scores below the gate does not progress, and the record of why is kept.' },
+        { dimension: 'Features', before: 'Features are engineered once for training and reimplemented in application code for inference. The two drift apart, and the model degrades for reasons no dashboard attributes correctly.', after: 'One definition serves both paths, with point-in-time correctness for training labels — so training-serving skew is designed out rather than debugged after it costs accuracy.' },
+        { dimension: 'Monitoring', before: 'Monitoring watches latency and error rates. A model that returns a confident wrong answer in ten milliseconds passes every check.', after: 'Input, prediction, and performance drift are tracked separately, because they fail at different times. Thresholds trigger retraining, rollback, or a review with a named owner.' },
+        { dimension: 'Retraining', before: 'Retraining happens when someone notices a complaint. The gap between decay and detection is measured in quarters.', after: 'Retraining runs on a schedule or a drift trigger, through the same gates as the original release — so the fix cannot bypass the checks the first version had to pass.' },
+      ],
+    },
+
+    // ── Architecture ───────────────────────────────────────────────────────
+    // The Cognition default renders an AI Governance stack — policy layers,
+    // consent management, kill-switches. Those are real, but they are not how
+    // an MLOps platform is structured, and none of it mentions training, a
+    // registry, or retraining on a page whose own badge strip lists exactly
+    // those.
+    architectureNodes: [
+      { title: 'Data & Feature Layer', icon: 'Database', description: 'Training data assembled with point-in-time correctness, and features defined once for both training and inference so the two paths cannot diverge.', features: ['Dataset Versioning', 'Feature Definitions', 'Point-in-Time Joins', 'Data Quality Checks'] },
+      { title: 'Training & Experimentation', icon: 'Cpu', description: 'Repeatable training runs with parameters, metrics, and artifacts captured automatically — so a result can be reproduced rather than remembered.', features: ['Experiment Tracking', 'Hyperparameter Search', 'Distributed Training', 'Reproducible Runs'] },
+      { title: 'Registry & Promotion', icon: 'Shield', description: 'Every candidate model registered with its lineage, then promoted through evaluation gates that compare it against the version currently serving.', features: ['Model Registry', 'Evaluation Gates', 'Approval Records', 'Staged Rollout'] },
+      { title: 'Serving & Monitoring', icon: 'Activity', description: 'Canary and shadow deployment into production, with drift tracked on inputs, predictions, and outcomes — and a retraining trigger wired to the thresholds.', features: ['Canary & Shadow Deploys', 'Drift Detection', 'Automated Rollback', 'Retraining Triggers'] },
+    ],
+
+    // One line per keyFeature, in the same order. Without these the cards
+    // render the label alone — the shared fallback used to supply four fixed
+    // strings that described none of them.
+    featureMicros: [
+      'Every model in the registry carries the dataset version, code commit and metrics that produced it, so a deployed version can be rebuilt months later.',
+      'One path from training run to serving endpoint, with the same evaluation gates on the first release and every retrain after it.',
+      'Retraining runs on a schedule or a drift trigger rather than on someone noticing a complaint two quarters late.',
+      'Input, prediction and performance drift tracked separately, because they fail at different times and only one of them is authoritative.',
+    ],
+
+    industryHeading: 'Models in production,',
+    industryHeadingHighlight: 'under your sector\u2019s rules.',
+
+    // ── Industries ─────────────────────────────────────────────────────────
+    // The inherited default listed eighteen "Agents" — Clinical Validation
+    // Agent, Pricing Fairness Agent, Student Privacy Agent. MLOps does not ship
+    // agents; it ships models, pipelines, and registries. The `items` key is the
+    // neutral one; `agents` remains supported for the services where it is
+    // accurate.
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Model risk management that survives an examination',
+        items: [
+          'Model inventory and lineage evidence aligned to SR 11-7 and the PRA model risk expectations',
+          'Challenger models run in shadow against the champion, with the comparison recorded',
+          'SHAP attributions retained per decision, so an adverse-action explanation can be reconstructed',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Clinical validation and the evidence trail behind it',
+        items: [
+          'Locked model versions with the validation dataset and performance record attached',
+          'Subgroup performance tracked separately, so degradation in one cohort is not hidden by the average',
+          'PHI kept out of training telemetry, with lineage proving which data a model saw',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industry',
+        headline: 'Predictive maintenance that keeps working after commissioning',
+        items: [
+          'Sensor drift separated from genuine equipment change before a retraining run is triggered',
+          'Edge model rollout with staged deployment and rollback across sites',
+          'Per-line retraining, because one line stopping does not mean the fleet model is wrong',
+        ],
+      },
+      {
+        industry: 'Retail & Consumer Goods',
+        headline: 'Demand and pricing models retrained against a moving market',
+        items: [
+          'Seasonal drift detection tuned so an expected peak is not scored as a failure',
+            'Feature reuse across demand, pricing, and personalization models from one definition',
+          'Fairness checks on pricing and eligibility outputs before promotion, not after complaint',
+        ],
+      },
+      {
+        industry: 'IT & Infrastructure',
+        headline: 'Multi-tenant model serving with cost visible per team',
+        items: [
+          'Namespace and RBAC isolation between tenants on shared training and serving infrastructure',
+          'GPU utilization and inference cost attributed to the team and model that incurred it',
+          'Autoscaling tuned for inference traffic, which spikes differently from web traffic',
+        ],
+      },
+      {
+        industry: 'EdTech & Higher Ed',
+        headline: 'Assessment and recommendation models with fairness on the record',
+        items: [
+          'Cohort-level performance monitoring so a model does not degrade for one intake unnoticed',
+          'Student data minimized in training sets with lineage evidence for audit',
+          'Human review required for any model output affecting progression or assessment',
+        ],
+      },
+    ],
+
+    // ── Calls to action ────────────────────────────────────────────────────
+    midCta: 'Your next model ships on rails.',
+    closingCta: {
+      title: 'One conversation.',
+      highlight: 'One model in production.',
+      body: 'Talk through the model you most need in production in 30 minutes — we will scope the right entry point and show you what its path to production looks like in your environment.',
+      proofLabel: 'From first call to first model in production',
+    },
 
     // Answers carry paragraph breaks as a blank line (see faqParagraphs in
     // data/serviceFaqs.js). Each of these runs to four or five distinct points;
@@ -1699,7 +1842,7 @@ export const servicesData = {
     whatIsTitle: 'RPA That Deploys Bots',
     whatIsTitleLine2: 'That Operate Without',
     whatIsHighlight: 'Supervision.',
-    whatIsPara2: 'Kangqore builds enterprise RPA programs from process assessment through Centre of Excellence establishment — deploying screen automation and cognitive bots that execute high-volume, rules-based workflows with accuracy targets agreed per process.',
+    whatIsPara2: 'Kangqore builds enterprise RPA programs from process assessment through Center of Excellence establishment — deploying screen automation and cognitive bots that execute high-volume, rules-based workflows with accuracy targets agreed per process.',
     businessMetrics: [
       { title: 'Operational Cost', desc: 'Average cost reduction achieved across IT and business process automation programs delivered by Kangqore.', value: '40',   suffix: '%',    metricLabel: 'Cost Reduction',   icon: 'Target'    },
       { title: 'Bot Accuracy',     desc: 'Execution accuracy across finance, HR, and insurance workflows — virtually eliminating manual processing errors.',  value: '99.8', suffix: '%',    metricLabel: 'Bot Accuracy',     icon: 'Shield'    },
