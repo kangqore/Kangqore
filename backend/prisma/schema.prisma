@@ -8469,3 +8469,61 @@ model Gen5RouterConfig {
   createdAt   DateTime @default(now())
   @@map("gen5_router_configs")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Overshadow Roadmap P5 — Proof Points & Analyst Validation.
+//
+// None of these three models represent a completed outcome — they're the
+// tracking infrastructure for real-world processes (customer-permission
+// conversations, publishing real BIDS results, analyst relationships) that
+// only a human can actually run. Every row starts at its earliest honest
+// stage; nothing here is pre-populated demo data.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model ReferenceCustomerCandidate {
+  id             String    @id @default(cuid())
+  customerName   String
+  contactName    String?
+  contactEmail   String?
+  stage          String    @default("IDENTIFIED") // IDENTIFIED | OUTREACH | PERMISSION_REQUESTED | PERMISSION_GRANTED | PUBLISHED | DECLINED
+  outcomeSummary String?   @db.Text  // real, measurable result — filled in once known, never guessed
+  notes          String?   @db.Text
+  ownerUserId    String?
+  publishedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([stage])
+  @@map("reference_customer_candidates")
+}
+
+model AnalystRelationship {
+  id             String    @id @default(cuid())
+  firm           String    // Gartner | Forrester | IDC | ...
+  analystName    String?
+  category       String?   // e.g. "low-code / agent-building", "ITSM"
+  status         String    @default("NOT_CONTACTED") // NOT_CONTACTED | OUTREACH_SENT | BRIEFED | ONGOING
+  lastBriefingAt DateTime?
+  nextFollowUpAt DateTime?
+  notes          String?   @db.Text
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status])
+  @@map("analyst_relationships")
+}
+
+model BidsProofPointPublication {
+  id            String    @id @default(cuid())
+  engagementId  String                          // real BidsScoringEngagement.id — never a fabricated one
+  publicLabel   String                          // e.g. "Mid-market logistics firm" if anonymized
+  anonymized    Boolean   @default(true)
+  baselineNote  String?   @db.Text              // free-text pre-engagement baseline, only if the team actually has one
+  status        String    @default("DRAFT")     // DRAFT | PUBLISHED
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([status])
+  @@map("bids_proof_point_publications")
+}
