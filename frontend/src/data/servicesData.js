@@ -1133,6 +1133,29 @@ export const servicesData = {
   'mlops': {
     slug: 'mlops',
     name: 'MLOps',
+    // Hero shape mirrors /services/agentic-ai: a five-word badge, a seven-word
+    // title with a hard line break, and the same size ramp and widths — so the
+    // two flagship pages read as one system rather than two designs.
+    //
+    // The badge replaces the Cognition department default, "Reasoning.
+    // Learning. Autonomous.", which is agentic-AI language and was the last
+    // agentic string above the fold on this page.
+    //
+    // The title deliberately avoids "in production": the section heading below
+    // already owns that phrase ("MLOps that keeps models right in production").
+    // This one claims the scope instead, and the gradient lands on "Lifecycle",
+    // which is the entity term buyers search on.
+    heroBadge: 'Machine Learning Built to Operate',
+    heroTitle: 'MLOps Services That\nRun the Full Model Lifecycle',
+    heroTitleSize: 'text-[1.6rem] sm:text-[1.92rem] lg:text-[2.688rem] xl:text-[3.6rem]',
+    heroMaxWidth: 'max-w-[78%]',
+    // The Cognition default ends "…Knowledge Graphs, Autonomous Agents, AI
+    // Governance" — three chips promising agents in the hero strip of an MLOps
+    // page, and the last agentic strings left above the fold.
+    heroStripItems: [
+      'Pipeline Automation', 'Model Registry & Lineage', 'Feature Stores', 'Gated Promotion',
+      'Canary & Shadow Release', 'Drift Detection', 'Automated Retraining', 'Model Governance',
+    ],
     showBeams: true,
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
@@ -1140,11 +1163,15 @@ export const servicesData = {
     // data-speakable, so it is the passage a voice assistant reads. Not the meta
     // description — seoData supplies that.
     shortDescription: 'Kangqore builds and runs the machine learning lifecycle as production infrastructure — owned by your engineers, not rented from us.',
-    // Becomes Service.description in the JSON-LD graph and the opening
-    // paragraph of the bot snapshot, so it is written for entity coverage
-    // rather than for rhythm: the nouns are the ones an answer engine matches
-    // this page to.
-    fullDescription: 'Production MLOps engineering: versioned data and features, reproducible training, model registry and lineage, promotion gated on evaluation, canary and shadow deployment, drift detection, and automated retraining — on managed cloud platforms or self-hosted open source.',
+    // Renders as the hero paragraph AND becomes Service.description in the
+    // JSON-LD graph. The previous value was written for the graph alone and ran
+    // to 35 words — six lines in the hero where agentic-ai sets two. This is 24,
+    // matching agentic-ai's 25, and still carries the entities that matter:
+    // pipelines, registry, lineage, promotion, drift, retraining. The terms it
+    // drops (canary and shadow release, managed versus self-hosted) are covered
+    // in the toolchain section and the FAQ, which the graph also indexes.
+    fullDescription: 'Production-grade MLOps engineering — versioned pipelines, a model registry with full lineage, promotion gated on evaluation, and drift-triggered retraining, so models keep performing long after release.',
+    fullDescriptionMaxWidth: 'max-w-[980px]',
     keyFeatures: ['Model versioning', 'Automated pipelines', 'Continuous training', 'Model monitoring', 'Feature stores'],
     relatedServiceSlugs: ['data-science-ai', 'devops-as-a-service', 'ai-governance'],
     featured: false,
