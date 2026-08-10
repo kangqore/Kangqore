@@ -1149,6 +1149,7 @@ export const servicesData = {
     // differentiated claim: deploying is not the hard part, and the FAQ below
     // makes the same argument at length.
     whatIsTitle: 'MLOps that keeps models',
+    whatIsHighlightNewLine: true,
     whatIsHighlight: 'right in production.',
     whatIsPara2: 'Kangqore implements ML pipeline automation, model monitoring, and continuous retraining infrastructure — so models move from notebook to production in weeks, not months, and stay accurate long after launch.',
     businessMetrics: [
