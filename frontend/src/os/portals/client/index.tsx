@@ -149,7 +149,7 @@ function ClientSidebar({ collapsed, onToggle, badgeCounts = {} }: {
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
   const { data: summary } = useClientDashboardSummary()
-  const accountManager = summary?.team.find(t => t.role === 'Delivery Lead') ?? summary?.team[0]
+  const accountManager = summary?.team?.find(t => t.role === 'Delivery Lead') ?? summary?.team?.[0]
 
   return (
     <aside
