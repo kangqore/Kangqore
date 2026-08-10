@@ -1142,9 +1142,14 @@ export const servicesData = {
     relatedServiceSlugs: ['data-science-ai', 'devops-as-a-service', 'ai-governance'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
-    whatIsTitle: 'MLOps That Gets Models',
-    whatIsTitleLine2: 'Into Production —',
-    whatIsHighlight: 'And Keeps Them There.',
+    // 60 characters over three lines, in Title Case, and the payoff clause
+    // ("Keeps Them There") named a place rather than a property — read quickly
+    // it suggests retention, not accuracy. 44 characters over two lines, in the
+    // sentence case every other heading on this page uses. "Right" is the
+    // differentiated claim: deploying is not the hard part, and the FAQ below
+    // makes the same argument at length.
+    whatIsTitle: 'MLOps that keeps models',
+    whatIsHighlight: 'right in production.',
     whatIsPara2: 'Kangqore implements ML pipeline automation, model monitoring, and continuous retraining infrastructure — so models move from notebook to production in weeks, not months, and stay accurate long after launch.',
     businessMetrics: [
       { title: 'Deployment Frequency', desc: 'Increase in model deployment frequency after MLOps pipeline implementation and CI/CD automation.', value: '5',  suffix: 'x',    metricLabel: 'Faster Deployment',    icon: 'Zap'       },
