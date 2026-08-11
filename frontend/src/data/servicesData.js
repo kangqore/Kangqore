@@ -1162,7 +1162,7 @@ export const servicesData = {
     // Renders as the first paragraph of the "what is" section and carries
     // data-speakable, so it is the passage a voice assistant reads. Not the meta
     // description — seoData supplies that.
-    shortDescription: 'Kangqore builds and runs the machine learning lifecycle as production infrastructure — owned by your engineers, not rented from us.',
+    shortDescription: 'Kangqore builds and runs the machine learning lifecycle as production infrastructure that is owned by your engineers instead of rented from us.',
     // Renders as the hero paragraph AND becomes Service.description in the
     // JSON-LD graph. The previous value was written for the graph alone and ran
     // to 35 words — six lines in the hero where agentic-ai sets two. This is 24,
@@ -1189,8 +1189,8 @@ export const servicesData = {
     // section below already makes that case at length, and repeating it here
     // would weaken both. This states scope and the operating principle, which
     // is what the eyebrow above actually asks.
-    whatIsPara2: 'The scope is the whole path: data and features, training, registry, promotion, serving, monitoring, retraining. Built once, as one system, rather than assembled again for every model.',
-    whatIsPara3: 'We work in the platform you have already committed to and hand it over as infrastructure as code. Managed operations is available afterwards — it is not a condition of the thing working.',
+    whatIsPara2: 'The scope covers the entire path: data and features, training, registry, promotion, serving, monitoring, and retraining. We build it once as one cohesive system, rather than assembling it repeatedly for every model.',
+    whatIsPara3: 'We work within your existing platform and deliver the final product as infrastructure as code. Managed operations are available afterward, but they are not required to keep your system running.',
     businessMetrics: [
       { title: 'Deployment Frequency', desc: 'Increase in model deployment frequency after MLOps pipeline implementation and CI/CD automation.', value: '5',  suffix: 'x',    metricLabel: 'Faster Deployment',    icon: 'Zap'       },
       { title: 'Model Accuracy Gain',  desc: 'Performance improvement through automated retraining, monitoring, and continuous feedback loops.',  value: '34', suffix: '%',    metricLabel: 'Accuracy Improvement', icon: 'TrendingUp'},
@@ -1421,10 +1421,54 @@ export const servicesData = {
     // registry, or retraining on a page whose own badge strip lists exactly
     // those.
     architectureNodes: [
-      { title: 'Data & Feature Layer', icon: 'Database', description: 'Training data assembled with point-in-time correctness, and features defined once for both training and inference so the two paths cannot diverge.', features: ['Dataset Versioning', 'Feature Definitions', 'Point-in-Time Joins', 'Data Quality Checks'] },
-      { title: 'Training & Experimentation', icon: 'Cpu', description: 'Repeatable training runs with parameters, metrics, and artifacts captured automatically — so a result can be reproduced rather than remembered.', features: ['Experiment Tracking', 'Hyperparameter Search', 'Distributed Training', 'Reproducible Runs'] },
-      { title: 'Registry & Promotion', icon: 'Shield', description: 'Every candidate model registered with its lineage, then promoted through evaluation gates that compare it against the version currently serving.', features: ['Model Registry', 'Evaluation Gates', 'Approval Records', 'Staged Rollout'] },
-      { title: 'Serving & Monitoring', icon: 'Activity', description: 'Canary and shadow deployment into production, with drift tracked on inputs, predictions, and outcomes — and a retraining trigger wired to the thresholds.', features: ['Canary & Shadow Deploys', 'Drift Detection', 'Automated Rollback', 'Retraining Triggers'] },
+      { 
+        title: 'Data & Feature Layer', 
+        icon: 'Database', 
+        description: 'Training data assembled with point-in-time correctness, and features defined once for both training and inference so the two paths cannot diverge.', 
+        features: ['Dataset Versioning', 'Feature Definitions', 'Point-in-Time Joins', 'Data Quality Checks'],
+        bgImage: '/images/services/mlops_data_layer.png',
+        bgColor: 'bg-[#ffffff]',
+        textColor: 'text-black',
+        descColor: 'text-black/80',
+        blendMode: 'multiply',
+        objectFit: 'contain'
+      },
+      { 
+        title: 'Training & Experimentation', 
+        icon: 'Cpu', 
+        description: 'Repeatable training runs with parameters, metrics, and artifacts captured automatically — so a result can be reproduced rather than remembered.', 
+        features: ['Experiment Tracking', 'Hyperparameter Tuning', 'Distributed Training', 'Artifact Management'],
+        bgImage: '/images/services/mlops_training.png',
+        bgColor: 'bg-[#0f151c]',
+        textColor: 'text-white',
+        descColor: 'text-white/80',
+        blendMode: 'screen',
+        objectFit: 'cover'
+      },
+      { 
+        title: 'Registry & Promotion', 
+        icon: 'Shield', 
+        description: 'Every candidate model registered with its lineage, then promoted through evaluation gates that compare it against the version currently serving.', 
+        features: ['Model Versioning', 'Model Lineage', 'Evaluation Gates', 'Security Scanning'],
+        bgImage: '/images/insights/pulse-of-change.png',
+        bgColor: 'bg-[#0b062b]',
+        textColor: 'text-white',
+        descColor: 'text-white/80',
+        blendMode: 'screen',
+        objectFit: 'cover'
+      },
+      { 
+        title: 'Serving & Monitoring', 
+        icon: 'Activity', 
+        description: 'Canary and shadow deployment into production, with drift tracked on inputs, predictions, and outcomes — and a retraining trigger wired to the thresholds.', 
+        features: ['Multi-Model Serving', 'Shadow Deployments', 'Drift Detection', 'Feedback Loops'],
+        bgImage: '/images/insights/leadership-principles.png',
+        bgColor: 'bg-[#ececec]',
+        textColor: 'text-black',
+        descColor: 'text-black/80',
+        blendMode: 'multiply',
+        objectFit: 'contain'
+      },
     ],
 
     // One line per keyFeature, in the same order. Without these the cards

@@ -525,12 +525,13 @@ export const AIToolsSection = ({
   // services that have not been given their own artwork are unaffected.
   image = '/images/capabilities/agentic-ai-tools-dark-illustration.png',
   imageAlt = 'Agentic AI Tools & Technology Illustration',
+  inlineModel = false,
 }) => {
   const iconMap = { Network, Brain, Layers, Shield, Eye, Database, Cpu, Search };
   // Nothing is open on load. A row is active only while it is hovered or
   // focused; leaving the list closes it again.
   const [openTool, setOpenTool] = useState(null);
-  const isCustomModel = typeof image !== 'string';
+  const isCustomModel = typeof image !== 'string' && !inlineModel;
   const customModelElement = isCustomModel && React.isValidElement(image)
     ? React.cloneElement(image, { activeStep: openTool })
     : image;
@@ -680,19 +681,25 @@ export const AIToolsSection = ({
             </div>
           </div>
 
-          {/* Right Column: Isometric Illustration (Only for standard image pages) */}
+          {/* Right Column: Isometric Illustration or Inline 3D Model */}
           {!isCustomModel && (
             <div className="w-full lg:w-1/2 flex items-center justify-center lg:sticky lg:top-28 lg:pt-24">
               <div className="relative max-w-lg w-full">
                 {/* Soft decorative background glow behind the illustration */}
                 <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none z-0" />
-                <ResponsiveImage
-                  src={image}
-                  alt={imageAlt}
-                  className="w-full h-auto object-contain relative z-10 animate-float"
-                  loading="lazy"
-                  sizes="(max-width:1024px) 100vw, 50vw"
-                />
+                {typeof image === 'string' ? (
+                  <ResponsiveImage
+                    src={image}
+                    alt={imageAlt}
+                    className="w-full h-auto object-contain relative z-10 animate-float"
+                    loading="lazy"
+                    sizes="(max-width:1024px) 100vw, 50vw"
+                  />
+                ) : (
+                  <div className="relative z-10 w-full">
+                    {customModelElement}
+                  </div>
+                )}
               </div>
             </div>
           )}

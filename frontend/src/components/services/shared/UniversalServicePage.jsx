@@ -32,6 +32,7 @@ import GeminiComparisonSection from './GeminiComparisonSection';
 import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
 import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DModel';
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
+import { MLOps3DModel } from '../../ui/MLOps3DModel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1197,16 +1198,16 @@ const featureMicros   = service.featureMicros
             </h2>
           </div>
 
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] gap-20 lg:gap-16 items-start mb-20">
+          <div className="grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.1fr)] gap-20 lg:gap-16 items-start mb-20">
             <div>
               {/* data-speakable pairs with SpeakableSpecification in the page
                   schema: this is the passage a voice assistant reads aloud. */}
-              <p data-speakable className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-8 font-light max-w-xl">{service.shortDescription}</p>
-              <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mb-0">
+              <p data-speakable className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-8 font-light max-w-2xl">{service.shortDescription}</p>
+              <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0">
                 {service.whatIsPara2 || <>A service can be technically delivered and still fail if the strategy and execution are misaligned.{' '}<span className="text-white">Kangqore closes that gap.</span></>}
               </p>
-              {service.whatIsPara3 && <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mt-8 mb-0">{service.whatIsPara3}</p>}
-              {service.whatIsPara4 && <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-xl text-white/60 mt-8 mb-0">{service.whatIsPara4}</p>}
+              {service.whatIsPara3 && <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">{service.whatIsPara3}</p>}
+              {service.whatIsPara4 && <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">{service.whatIsPara4}</p>}
             </div>
 
             {service.capabilityAreas ? (
@@ -1606,244 +1607,164 @@ const featureMicros   = service.featureMicros
                 </div>
               ) : service.slug === 'mlops' ? (
                 /* ── MLOps ML Pipeline Diagram ── */
-                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — data to retrain" tabIndex={0}>
-                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/4 min-w-[495px] sm:min-w-0 mx-auto">
+                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — human-in-the-loop" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
                     <defs>
-                      <linearGradient id="ml-orange" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#ea580c"/>
-                        <stop offset="100%" stopColor="#f59e0b"/>
+                      <linearGradient id="ml-blue-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#60a5fa"/>
+                        <stop offset="100%" stopColor="#2563eb"/>
                       </linearGradient>
-                      <linearGradient id="ml-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#00f0ff"/>
-                        <stop offset="100%" stopColor="#2564ea"/>
+                      <linearGradient id="ml-cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#22d3ee"/>
+                        <stop offset="100%" stopColor="#0891b2"/>
                       </linearGradient>
-                      <linearGradient id="ml-purple" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#7f53f9"/>
-                        <stop offset="100%" stopColor="#a78bfa"/>
-                      </linearGradient>
-                      <linearGradient id="ml-indigo" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#6366f1"/>
-                        <stop offset="100%" stopColor="#818cf8"/>
-                      </linearGradient>
-                      <linearGradient id="ml-gold" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#eab308"/>
-                        <stop offset="100%" stopColor="#fbbf24"/>
-                      </linearGradient>
-                      <linearGradient id="ml-green" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#00c875"/>
-                        <stop offset="100%" stopColor="#34d399"/>
-                      </linearGradient>
-                      <linearGradient id="ml-red" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#ef4444"/>
-                        <stop offset="100%" stopColor="#f87171"/>
-                      </linearGradient>
-                      <linearGradient id="ml-pink" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#ec4899"/>
-                        <stop offset="100%" stopColor="#f472b6"/>
+                      <linearGradient id="ml-slate-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#334155"/>
+                        <stop offset="100%" stopColor="#0f172a"/>
                       </linearGradient>
 
-                      <filter id="glow-orange-ml">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                      <filter id="glow-blue-intense">
+                        <feGaussianBlur stdDeviation="3" result="blur1"/>
+                        <feGaussianBlur stdDeviation="6" result="blur2"/>
                         <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-cyan-ml">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-purple-ml">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-indigo-ml">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-gold-ml">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-green-ml">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-red-ml">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-pink-ml">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
+                          <feMergeNode in="blur2"/>
+                          <feMergeNode in="blur1"/>
                           <feMergeNode in="SourceGraphic"/>
                         </feMerge>
                       </filter>
 
-                      <marker id="diag-arrow-orange-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#f59e0b" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="diag-arrow-cyan-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#00f0ff" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="diag-arrow-purple-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#a78bfa" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="diag-arrow-indigo-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#818cf8" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="diag-arrow-gold-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#fbbf24" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="diag-arrow-green-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#34d399" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="diag-arrow-red-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#f87171" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="diag-arrow-pink-ml" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#f472b6" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <clipPath id="capsule-clip-mlops">
-                        <rect x="35" y="270" width="470" height="96" rx="20"/>
-                      </clipPath>
+                      <filter id="glow-cyan-intense">
+                        <feGaussianBlur stdDeviation="3" result="blur1"/>
+                        <feGaussianBlur stdDeviation="6" result="blur2"/>
+                        <feMerge>
+                          <feMergeNode in="blur2"/>
+                          <feMergeNode in="blur1"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
                     </defs>
 
-                    {/* ── ROW 1: PIPELINE UPSTREAM ── */}
-                    {/* Stage 1: DATA */}
-                    <rect x="44" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-orange)" strokeWidth="1.5" filter="url(#glow-orange-ml)"/>
-                    <text x="84" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">DATA</text>
-                    <text x="84" y="90" textAnchor="middle" fill="#ea580c" fontSize="9" fontFamily="monospace">Ingest &amp; Ver</text>
+                    {/* ── BACKGROUND ORBITS / NETWORK ── */}
+                    <ellipse cx="270" cy="210" rx="160" ry="60" fill="none" stroke="#2563eb" strokeWidth="1" strokeOpacity="0.4" transform="rotate(-15 270 210)" />
+                    <ellipse cx="270" cy="210" rx="200" ry="80" fill="none" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.2" transform="rotate(25 270 210)" />
+                    
+                    {/* Data streams (background) */}
+                    <path d="M 0 100 C 150 50, 350 350, 540 300" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" strokeDasharray="4 4" />
+                    <path d="M 0 350 C 200 400, 300 50, 540 100" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" strokeDasharray="4 4" />
 
-                    {/* Stage 2: FEATURES */}
-                    <rect x="168" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-cyan)" strokeWidth="1.5" filter="url(#glow-cyan-ml)"/>
-                    <text x="208" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">FEATURES</text>
-                    <text x="208" y="90" textAnchor="middle" fill="#00f0ff" fontSize="9" fontFamily="monospace">Store &amp; Sync</text>
 
-                    {/* Stage 3: TRAINING */}
-                    <rect x="292" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-purple)" strokeWidth="1.5" filter="url(#glow-purple-ml)"/>
-                    <text x="332" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">TRAINING</text>
-                    <text x="332" y="90" textAnchor="middle" fill="#a78bfa" fontSize="9" fontFamily="monospace">Auto-Tuning</text>
+                    {/* ── LEFT: HUMAN ENGINEER / MLOPS CONSOLE ── */}
+                    {/* Connecting line */}
+                    <path d="M 120 280 C 150 280, 180 260, 205 235" fill="none" stroke="#22d3ee" strokeWidth="2" filter="url(#glow-cyan-intense)" strokeDasharray="6 6">
+                      <animate attributeName="stroke-dashoffset" from="12" to="0" dur="1s" repeatCount="indefinite" />
+                    </path>
 
-                    {/* Stage 4: REGISTRY */}
-                    <rect x="416" y="55" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-indigo)" strokeWidth="1.5" filter="url(#glow-indigo-ml)"/>
-                    <text x="456" y="78" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">REGISTRY</text>
-                    <text x="456" y="90" textAnchor="middle" fill="#818cf8" fontSize="9" fontFamily="monospace">Model Catalog</text>
-
-                    {/* ── ROW 2: PIPELINE DOWNSTREAM ── */}
-                    {/* Stage 5: GATE */}
-                    <rect x="416" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-gold)" strokeWidth="1.5" filter="url(#glow-gold-ml)"/>
-                    <text x="456" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">GATE</text>
-                    <text x="456" y="210" textAnchor="middle" fill="#fbbf24" fontSize="9" fontFamily="monospace">CI/CD Check</text>
-
-                    {/* Stage 6: SERVING */}
-                    <rect x="292" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-green)" strokeWidth="1.5" filter="url(#glow-green-ml)"/>
-                    <text x="332" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">SERVING</text>
-                    <text x="332" y="210" textAnchor="middle" fill="#34d399" fontSize="9" fontFamily="monospace">API Endpoint</text>
-
-                    {/* Stage 7: DRIFT */}
-                    <rect x="168" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-red)" strokeWidth="1.5" filter="url(#glow-red-ml)"/>
-                    <text x="208" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">DRIFT</text>
-                    <text x="208" y="210" textAnchor="middle" fill="#f87171" fontSize="9" fontFamily="monospace">Telemetry Mon</text>
-
-                    {/* Stage 8: RETRAIN */}
-                    <rect x="44" y="175" width="80" height="50" rx="8" fill="#080e1a" stroke="url(#ml-pink)" strokeWidth="1.5" filter="url(#glow-pink-ml)"/>
-                    <text x="84" y="198" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="monospace">RETRAIN</text>
-                    <text x="84" y="210" textAnchor="middle" fill="#f472b6" fontSize="9" fontFamily="monospace">Trigger Loop</text>
-
-                    {/* ── CONNECTIONS / PIPELINE ARROWS ── */}
-                    {/* Row 1 horizontal arrows */}
-                    <path d="M 124 80 L 160 80" fill="none" stroke="url(#ml-cyan)" strokeWidth="1.5" markerEnd="url(#diag-arrow-cyan-ml)"/>
-                    <path d="M 248 80 L 284 80" fill="none" stroke="url(#ml-purple)" strokeWidth="1.5" markerEnd="url(#diag-arrow-purple-ml)"/>
-                    <path d="M 372 80 L 408 80" fill="none" stroke="url(#ml-indigo)" strokeWidth="1.5" markerEnd="url(#diag-arrow-indigo-ml)"/>
-
-                    {/* Curved downward connector on the right */}
-                    <path d="M 456 105 C 456 120 456 160 456 167" fill="none" stroke="url(#ml-gold)" strokeWidth="1.5" markerEnd="url(#diag-arrow-gold-ml)"/>
-
-                    {/* Row 2 horizontal arrows (right to left) */}
-                    <path d="M 416 200 L 380 200" fill="none" stroke="url(#ml-green)" strokeWidth="1.5" markerEnd="url(#diag-arrow-green-ml)"/>
-                    <path d="M 292 200 L 256 200" fill="none" stroke="url(#ml-red)" strokeWidth="1.5" markerEnd="url(#diag-arrow-red-ml)"/>
-                    <path d="M 168 200 L 132 200" fill="none" stroke="url(#ml-pink)" strokeWidth="1.5" markerEnd="url(#diag-arrow-pink-ml)"/>
-
-                    {/* Upward loopback connector from RETRAIN to DATA */}
-                    <path d="M 84 175 L 84 113" fill="none" stroke="url(#ml-orange)" strokeWidth="1.5" strokeDasharray="3 3" markerEnd="url(#diag-arrow-orange-ml)"/>
-
-                    {/* Labels / System Titles */}
-                    <text x="270" y="32" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">ENTERPRISE ML LIFECYCLE (MLOPS)</text>
-
-                    {/* ── BOTTOM: 4-STAGE CONTINUOUS LIFECYCLE PIPELINE ── */}
-                    <g transform="translate(30, 256)">
-                      {/* Outer Capsule Container */}
-                      <rect x="0" y="0" width="480" height="96" rx="20" fill="#050810" stroke="white" strokeWidth="1.2" strokeOpacity="0.25"/>
+                    <g transform="translate(20, 220)">
+                      {/* Desk/Laptop */}
+                      <path d="M 10 90 L 110 90 L 95 60 L 25 60 Z" fill="#1e293b" stroke="#334155" strokeWidth="2" />
+                      <rect x="25" y="20" width="70" height="40" fill="#0f172a" stroke="#22d3ee" strokeWidth="1.5" filter="url(#glow-cyan-intense)" />
+                      {/* Screen content */}
+                      <line x1="30" y1="28" x2="60" y2="28" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="30" y1="36" x2="80" y2="36" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="30" y1="44" x2="50" y2="44" stroke="#e2e8f0" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="30" y1="52" x2="70" y2="52" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" />
                       
-                      {/* Active Stage Highlights */}
-                      <rect x="120" y="0" width="120" height="96" fill="#121724" fillOpacity="0.5"/>
-                      <rect x="360" y="0" width="120" height="96" fill="url(#ml-green)" fillOpacity="0.12" clipPath="url(#capsule-clip-mlops)"/>
-                      
-                      {/* Segment Dividers */}
-                      <line x1="120" y1="0" x2="120" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
-                      <line x1="240" y1="0" x2="240" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
-                      <line x1="360" y1="0" x2="360" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
-
-                      {/* Stage 1: Build & Ingest */}
-                      <g transform="translate(45, 18)">
-                        <circle cx="15" cy="15" r="14" fill="#0c101c" stroke="#ea580c" strokeWidth="1.5" strokeOpacity="0.9"/>
-                        <circle cx="15" cy="15" r="6" fill="#ea580c" />
-                        <line x1="15" y1="0" x2="15" y2="30" stroke="white" strokeOpacity="0.3" />
-                        <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
-                      </g>
-                      <text x="60" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">1. INGESTION</text>
-                      <text x="60" y="80" textAnchor="middle" fill="#ea580c" fontSize="9" fontFamily="monospace">VERSIONED DATA</text>
-
-                      {/* Stage 2: Training & Validation */}
-                      <g transform="translate(165, 18)">
-                        <circle cx="15" cy="8" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
-                        <circle cx="6" cy="22" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
-                        <circle cx="24" cy="22" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
-                        <line x1="12" y1="11" x2="8" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
-                        <line x1="18" y1="11" x2="22" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
-                        <circle cx="15" cy="8" r="2" fill="#a78bfa" filter="url(#glow-purple-ml)"/>
-                      </g>
-                      <text x="180" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">2. PIPELINES</text>
-                      <text x="180" y="80" textAnchor="middle" fill="#a78bfa" fontSize="9" fontFamily="monospace">AUTO TRAINING</text>
-
-                      {/* Stage 3: Deployment Gate */}
-                      <g transform="translate(285, 18)">
-                        <rect x="5" y="3" width="20" height="24" rx="4" fill="#0c101c" stroke="#00f0ff" strokeWidth="1.5" filter="url(#glow-cyan-ml)"/>
-                        <path d="M 10 13 L 20 13 M 10 18 L 17 18 M 15 8 L 20 8" stroke="#00f0ff" strokeWidth="1.4" strokeLinecap="round" />
-                      </g>
-                      <text x="300" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">3. DEPLOY GATE</text>
-                      <text x="300" y="80" textAnchor="middle" fill="#00f0ff" fontSize="9" fontFamily="monospace">SAFETY &amp; BIAS</text>
-
-                      {/* Stage 4: Telemetry & Monitoring */}
-                      <g transform="translate(405, 18)">
-                        <path d="M 5 26 A 18 18 0 0 1 41 26" fill="none" stroke="white" strokeWidth="2" strokeOpacity="0.25" strokeLinecap="round"/>
-                        <path d="M 5 26 A 18 18 0 0 1 34 11" fill="none" stroke="#34d399" strokeWidth="3" strokeLinecap="round" filter="url(#glow-green-ml)"/>
-                        <line x1="23" y1="26" x2="33" y2="13" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                        <circle cx="23" cy="26" r="3" fill="#34d399"/>
-                      </g>
-                      <text x="420" y="68" textAnchor="middle" fill="#34d399" fontSize="9" fontWeight="bold" fontFamily="monospace">4. TELEMETRY</text>
-                      <text x="420" y="80" textAnchor="middle" fill="#34d399" fontSize="9" fontWeight="bold" fontFamily="monospace">DRIFT MONITOR</text>
+                      {/* Human Silhouette */}
+                      <circle cx="60" cy="5" r="16" fill="#64748b" />
+                      <path d="M 30 50 C 30 25, 90 25, 90 50 L 95 90 L 25 90 Z" fill="#475569" />
+                      <path d="M 90 50 C 110 50, 110 65, 90 65" fill="none" stroke="#475569" strokeWidth="12" strokeLinecap="round" /> {/* Arm reaching out */}
                     </g>
+                    <text x="75" y="335" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="monospace">ML ENGINEER</text>
+                    <text x="75" y="350" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">HUMAN-IN-THE-LOOP</text>
+
+                    {/* ── TOP LEFT: AI AGENT / ROBOT ── */}
+                    <g transform="translate(60, 60)">
+                      <rect x="0" y="0" width="50" height="50" rx="12" fill="#0f172a" stroke="#60a5fa" strokeWidth="2" filter="url(#glow-blue-intense)" />
+                      <foreignObject x="5" y="5" width="40" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full flex items-center justify-center text-blue-400">
+                          <BrainCircuit size={28} />
+                        </div>
+                      </foreignObject>
+                    </g>
+                    <text x="85" y="125" textAnchor="middle" fill="#60a5fa" fontSize="9" fontWeight="bold" fontFamily="monospace">AI SUPERVISOR</text>
+
+                    {/* Connection from Agent to Globe */}
+                    <path d="M 110 85 C 150 85, 170 120, 220 175" fill="none" stroke="#60a5fa" strokeWidth="1.5" filter="url(#glow-blue-intense)" strokeDasharray="4 4">
+                       <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.8s" repeatCount="indefinite" />
+                    </path>
+
+                    {/* ── RIGHT: PRODUCTION / FACTORY & EDGE ── */}
+                    <g transform="translate(390, 200)">
+                      {/* Base platform */}
+                      <path d="M 0 80 L 120 80 L 100 30 L 20 30 Z" fill="#0f172a" stroke="#0891b2" strokeWidth="1.5" />
+                      
+                      {/* Factory Arm Base */}
+                      <path d="M 50 30 L 70 30 L 75 10 L 45 10 Z" fill="#334155" />
+                      {/* Robotic Arm Segments */}
+                      <path d="M 60 15 L 80 -25" fill="none" stroke="#475569" strokeWidth="8" strokeLinecap="round" />
+                      <circle cx="80" cy="-25" r="6" fill="#0891b2" filter="url(#glow-cyan-intense)" />
+                      <path d="M 80 -25 L 40 -50" fill="none" stroke="#475569" strokeWidth="6" strokeLinecap="round" />
+                      {/* Arm claw */}
+                      <path d="M 40 -50 L 30 -60 M 40 -50 L 50 -60" fill="none" stroke="#94a3b8" strokeWidth="3" strokeLinecap="round" />
+                      <circle cx="40" cy="-50" r="4" fill="#60a5fa" filter="url(#glow-blue-intense)" />
+                      
+                      {/* Server Rack / Edge Node */}
+                      <rect x="85" y="10" width="30" height="60" fill="#1e293b" stroke="#475569" strokeWidth="1.5" />
+                      <line x1="90" y1="20" x2="110" y2="20" stroke="#22d3ee" strokeWidth="2" />
+                      <line x1="90" y1="35" x2="110" y2="35" stroke="#22d3ee" strokeWidth="2" />
+                      <line x1="90" y1="50" x2="110" y2="50" stroke="#60a5fa" strokeWidth="2" />
+                    </g>
+                    <text x="450" y="305" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="monospace">PRODUCTION ENVIRONMENT</text>
+                    <text x="450" y="320" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">AUTOMATED EXECUTION</text>
+
+                    {/* Connecting line from Globe to Production */}
+                    <path d="M 315 180 C 350 180, 400 170, 430 150" fill="none" stroke="#60a5fa" strokeWidth="2" filter="url(#glow-blue-intense)" strokeDasharray="6 6">
+                      <animate attributeName="stroke-dashoffset" from="0" to="12" dur="1s" repeatCount="indefinite" />
+                    </path>
+                    <path d="M 310 215 C 340 230, 380 250, 410 260" fill="none" stroke="#22d3ee" strokeWidth="1.5" filter="url(#glow-cyan-intense)" />
+
+                    {/* ── FLOATING DATA NODES (Code, Analytics) ── */}
+                    <g transform="translate(390, 50)">
+                      <circle cx="25" cy="25" r="20" fill="#0f172a" stroke="#22d3ee" strokeWidth="1.5" strokeDasharray="2 4" />
+                      <foreignObject x="13" y="13" width="24" height="24">
+                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full text-cyan-400">
+                          <TrendingUp size={24} />
+                        </div>
+                      </foreignObject>
+                    </g>
+                    <path d="M 310 160 C 330 130, 360 100, 395 80" fill="none" stroke="#22d3ee" strokeWidth="1" strokeDasharray="3 3" />
+
+                    <g transform="translate(130, 30)">
+                      <circle cx="20" cy="20" r="16" fill="#0f172a" stroke="#60a5fa" strokeWidth="1.5" />
+                      <foreignObject x="10" y="10" width="20" height="20">
+                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full text-blue-400">
+                          <Network size={20} />
+                        </div>
+                      </foreignObject>
+                    </g>
+                    <path d="M 165 60 C 180 90, 200 120, 235 155" fill="none" stroke="#60a5fa" strokeWidth="1" strokeDasharray="3 3" />
+
+                    {/* ── CENTER GLOBE / CORE MODEL ── */}
+                    <g transform="translate(195, 135)">
+                      <circle cx="75" cy="75" r="75" fill="#0f172a" stroke="url(#ml-blue-glow)" strokeWidth="2" filter="url(#glow-blue-intense)"/>
+                      <circle cx="75" cy="75" r="75" fill="url(#ml-slate-grad)" fillOpacity="0.8"/>
+                      {/* Grid lines for globe effect */}
+                      <ellipse cx="75" cy="75" rx="35" ry="75" fill="none" stroke="white" strokeOpacity="0.15" strokeWidth="1"/>
+                      <ellipse cx="75" cy="75" rx="75" ry="25" fill="none" stroke="white" strokeOpacity="0.15" strokeWidth="1"/>
+                      <path d="M 15 35 Q 75 60 135 35" fill="none" stroke="white" strokeOpacity="0.1" strokeWidth="1" />
+                      <path d="M 15 115 Q 75 90 135 115" fill="none" stroke="white" strokeOpacity="0.1" strokeWidth="1" />
+                      
+                      {/* Center Node Icon */}
+                      <circle cx="75" cy="75" r="28" fill="#1e293b" stroke="#00f0ff" strokeWidth="1.5"/>
+                      <foreignObject x="55" y="55" width="40" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full flex items-center justify-center text-cyan-400">
+                          <Cpu size={24} />
+                        </div>
+                      </foreignObject>
+                    </g>
+                    <text x="270" y="325" textAnchor="middle" fill="#22d3ee" fontSize="12" fontWeight="bold" fontFamily="monospace" letterSpacing="2">MLOPS SERVICES</text>
+                    <text x="270" y="340" textAnchor="middle" fill="#60a5fa" fontSize="9" fontFamily="monospace">KEEPS MODELS RIGHT IN PRODUCTION</text>
+
                   </svg>
                 </div>
               ) : (
@@ -2077,36 +1998,7 @@ const featureMicros   = service.featureMicros
             ))}
           </div>
 
-          {/* Service identity bar */}
-          <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 px-8 bg-[#06090f] border border-white/[0.08] rounded-2xl mb-10 relative overflow-hidden hover:border-transparent transition-all duration-500">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-              <span className="text-white font-black text-lg tracking-tight">{service.name}</span>
-              <span className="hidden sm:block w-px h-5 bg-white/10" />
-              <div className="flex flex-col gap-0.5">
-                <span className="text-white/50 group-hover:text-white text-sm font-medium transition-colors duration-500">{service.bannerBrand ? `Kangqore ${service.bannerBrand}` : `Kangqore ${department.name} ™`}</span>
-                {service.bannerBrandDesc && (
-                  <span className="text-white/50 group-hover:text-white/65 text-[11px] font-medium tracking-wide transition-colors duration-500">{service.bannerBrandDesc}</span>
-                )}
-              </div>
-            </div>
-            <div className="relative z-10 flex flex-col sm:flex-row gap-3 flex-shrink-0">
-              {service.downloadAsset ? (
-                <a href={service.downloadAsset} download className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
-                  <Download className="w-4 h-4" />
-                  {service.downloadAssetTitle || 'Download the Playbook'}
-                </a>
-              ) : (
-                <Link to="/contact" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
-                  Book a Discovery Call
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              )}
-              <a href="#svc-capabilities" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-white/40 text-white font-bold text-sm tracking-wide hover:bg-white/10 transition-colors duration-200">
-                See Our Capabilities
-              </a>
-            </div>
-          </div>
+
 
           {/* Challenge / Solution block removed: the copy was service-agnostic
               boilerplate ("Organizations face growing complexity in delivering
@@ -2133,33 +2025,7 @@ const featureMicros   = service.featureMicros
         </div>
       </section>
 
-      {/* ══════════════════════ BADGE STRIP ══════════════════════ */}
-      {!service.hideBadgeStrip && (
-        <div className="border-t border-b border-white/[0.05] py-10" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <p className="text-[11px] font-black tracking-[0.45em] text-white/60 uppercase mb-7 text-center">CORE CAPABILITY PRINCIPLES</p>
-            {/* Overflows below ~640px (547px of badges in a 342px gutter), and
-                Chrome does not make an overflow container focusable on its own,
-                so a keyboard-only visitor could not reach the badges past the
-                fold. `justify-start` matters too: a centered flex container puts
-                the leading overflow outside the scrollable range entirely. */}
-            <div
-              className="flex flex-nowrap items-center justify-start sm:justify-center gap-0 overflow-x-auto [&::-webkit-scrollbar]:hidden"
-              style={{ scrollbarWidth: 'none' }}
-              role="group"
-              aria-label="Core capability principles"
-              tabIndex={0}
-            >
-              {service.keyFeatures.map((f, i, arr) => (
-                <React.Fragment key={f}>
-                  <span className="flex-shrink-0 text-white/60 text-[11px] font-bold tracking-[0.12em] whitespace-nowrap">{f}</span>
-                  {i < arr.length - 1 && <span className="flex-shrink-0 mx-4 text-white/10 text-xs select-none">·</span>}
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* ══════════════════════ eQORE AI CONCIERGE ══════════════════════ */}
       <div id="svc-concierge">
@@ -2365,96 +2231,9 @@ const featureMicros   = service.featureMicros
         </section>
       )}
 
-      {/* ══════════════════════ PHILOSOPHY / FEATURES ══════════════════════ */}
-      {service.slug !== 'agentic-ai-led-application-modernization' && (
-        <section className="py-16 md:py-32" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-
-            {/* Header */}
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
-              <div>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">THE PHILOSOPHY</span>
-                </div>
-                <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                  Built for Impact.<br />
-                  <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered with Precision.</span>
-                </h2>
-              </div>
-              <p className="text-white/50 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
-                Every decision stays coherent from strategy through delivery.
-              </p>
-            </div>
-
-            {/* Bento grid */}
-            <CardRail label="Delivery principles" className="grid grid-cols-1 sm:grid-cols-3 auto-rows-[minmax(220px,auto)] gap-3">
-              {featureLabels.map((label, i) => {
-                const FIcon = featureIcons[i];
-                const n = String(i + 1).padStart(2, '0');
-                const isWide = i === 0 || i === 3;
-                // ACCENT drives the icon tint, the top border and the card
-                // wash — none of which carry text, so the palette is free to
-                // stay at brand values. The separate ACCENT_TEXT palette that
-                // used to sit here existed only for the eyebrow label, which is
-                // gone; brand blue is 3.88:1 on this #06090f card and could not
-                // be used for text. If a text element is ever added back here,
-                // it needs its own lifted palette, not ACCENT.
-                const ACCENT = ['#2564ea','#4ab6d4','#6366f1','#10b981'];
-                return (
-                  <div
-                    key={label}
-                    data-index={n}
-                    className={`kq-card-index group relative rounded-2xl overflow-hidden border border-white/[0.07] bg-[#06090f] p-7 flex flex-col justify-between hover:border-white/[0.14] transition-all duration-500 ${isWide ? 'sm:col-span-2' : 'sm:col-span-1'}`}
-                  >
-                    {/* top accent line */}
-                    <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl"
-                      style={{ background: `linear-gradient(90deg, ${ACCENT[i]}, transparent)` }} />
-
-                    {/* faint bg glow */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl"
-                      style={{ background: `radial-gradient(ellipse at top left, ${ACCENT[i]}0d 0%, transparent 65%)` }} />
-
-                    {/* The large background number is drawn by `.kq-card-index`
-                        in index.css, from the data-index attribute above. It used
-                        to be a <span> of real text at 4% alpha — 1.07:1 — which
-                        axe only stopped reporting because the micro paragraph
-                        happened to overlap it. `aria-hidden` does not help: the
-                        text is still on screen, so 1.4.3 still applies, and axe
-                        is right to say so. Pure ornament belongs in CSS, where it
-                        is not a text node at all. */}
-
-                    {/* Icon */}
-                    <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center border border-white/[0.08] group-hover:border-white/20 transition-all duration-500"
-                      style={{ background: `${ACCENT[i]}14` }}>
-                      <FIcon className="w-4 h-4 transition-colors duration-500" style={{ color: `${ACCENT[i]}99` }} />
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative z-10">
-                      {/* No eyebrow. It used to read `{n} — label.split(' ')[0]`,
-                          which on MLOps produced two cards both labeled "MODEL"
-                          ("Model versioning", "Model monitoring") and on every
-                          page restated a word the heading below already shows.
-                          The card is already numbered by the watermark behind
-                          it, so the index alone would only duplicate that. */}
-                      <h3 className="text-white/70 group-hover:text-white font-black text-lg leading-snug mb-2 transition-colors duration-300">
-                        {label}
-                      </h3>
-                      {featureMicros[i] && (
-                        <p className="text-white/50 group-hover:text-white/70 text-xs font-medium leading-relaxed transition-colors duration-500 max-w-sm">
-                          {featureMicros[i]}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </CardRail>
-
-          </div>
-        </section>
-      )}
+      {/* PHILOSOPHY / FEATURES section removed — the badge strip already
+         renders keyFeatures in one line; this bento-card re-render added
+         ~923px on desktop with zero new information. */}
 
 
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
@@ -2493,59 +2272,53 @@ const featureMicros   = service.featureMicros
 
                 return (
                   <div 
-                    key={idx} 
-                    className="group relative rounded-2xl overflow-hidden min-h-[310px] flex flex-col justify-between p-6 border border-white/10 bg-[#060a12] transition-all duration-500 hover:border-cyan-400/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.9)] cursor-pointer"
+                    key={idx}
+                    className={`group relative rounded-2xl overflow-hidden min-h-[375px] md:min-h-[350px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/10 ${node.bgColor || 'bg-[#060a12]'} ${node.textColor || 'text-white'}`}
                   >
-                    {/* NORMAL STATE BACKGROUND: Background Image */}
-                    {node.bgImage && (
-                      <div className="absolute inset-0 w-full h-full group-hover:opacity-0 transition-opacity duration-500">
-                        <ResponsiveImage 
-                          src={node.bgImage} 
-                          alt={node.title} 
-                          className="w-full h-full object-cover object-center" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-black/90" />
-                      </div>
+                    {/* Card Title (Always visible at the top) */}
+                    <div className="relative z-10">
+                      <h3 className="font-extrabold text-2xl leading-snug tracking-tight drop-shadow-md">
+                        {node.title}
+                      </h3>
+                    </div>
+
+                    {/* Graphic/Illustration positioned absolutely at the bottom with seamless blend */}
+                    {(node.image || node.bgImage) && (
+                      <ResponsiveImage 
+                        src={node.image || node.bgImage} 
+                        alt={node.title} 
+                        className={`absolute bottom-0 left-0 right-0 w-full h-[65%] object-${node.objectFit || 'cover'} object-bottom transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none z-10`}
+                        style={{ 
+                          mixBlendMode: node.blendMode || 'normal',
+                          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 25%)',
+                          maskImage: 'linear-gradient(to bottom, transparent, black 25%)'
+                        }}
+                        loading="lazy"
+                      />
                     )}
 
-                    {/* HOVERED STATE BACKGROUND: Solid Background Colour */}
-                    <div className="absolute inset-0 bg-[#060a12] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-                    {/* CARD CONTENT LAYER */}
-                    <div className="relative z-10 flex flex-col h-full justify-between">
+                    {/* Slide-up details panel */}
+                    <div
+                      className={`absolute inset-0 pt-8 px-6 pb-6 transition-all duration-500 ease-in-out transform md:translate-y-full md:group-hover:translate-y-0 flex flex-col justify-between ${node.bgColor || 'bg-[#060a12]'} ${node.textColor || 'text-white'} z-20`}
+                    >
                       <div>
-                        {/* Title (Always visible) */}
-                        <h3 className="text-white font-black text-2xl tracking-tight leading-snug mb-3 drop-shadow-md">
+                        <h4 className="font-extrabold text-2xl leading-snug tracking-tight mb-3">
                           {node.title}
-                        </h3>
+                        </h4>
+                        <p className={`text-[12px] leading-relaxed font-semibold ${node.descColor || 'text-white/70'}`}>
+                          {node.description}
+                        </p>
 
-                        {/* NORMAL STATE: Description Text (Fades out on hover) */}
-                        <div className="group-hover:opacity-0 transition-opacity duration-300">
-                          <p className="text-white/70 text-xs font-medium leading-relaxed">
-                            {node.description}
-                          </p>
-                        </div>
-
-                        {/* HOVERED STATE: Capability List (Fades in on hover) */}
-                        <div className="absolute top-12 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none group-hover:pointer-events-auto">
-                          <ul className="space-y-2.5 pt-2">
+                        <div className="mt-4 pt-3 border-t border-current/10">
+                          <span className="block text-[11px] font-bold tracking-widest uppercase mb-2 opacity-60">Key Capabilities</span>
+                          <ul className="flex flex-col gap-y-1.5">
                             {node.features.map((f, i) => (
-                              <li key={i} className="flex items-center gap-2 text-xs text-white font-semibold">
-                                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
-                                {f}
+                              <li key={i} className="flex items-center gap-2 text-[11.5px] font-bold leading-tight">
+                                <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 flex-shrink-0" />
+                                <span>{f}</span>
                               </li>
                             ))}
                           </ul>
-                        </div>
-                      </div>
-
-                      {/* NORMAL STATE GRAPHICS (Bottom): Accent Stage Indicator & Graphic Icon (Fades out on hover) */}
-                      <div className="group-hover:opacity-0 transition-opacity duration-300 flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
-                        <span className="text-[11px] font-mono font-bold tracking-widest text-cyan-300 uppercase">
-                          STAGE 0{idx + 1}
-                        </span>
-                        <div className="w-7 h-7 rounded-xl flex items-center justify-center bg-white/10 border border-white/15">
-                          <NodeIcon className="w-3.5 h-3.5 text-cyan-300" />
                         </div>
                       </div>
                     </div>
@@ -2995,11 +2768,14 @@ const featureMicros   = service.featureMicros
               <AgenticModernization3DModel />
             ) : service.slug === 'agentic-ai' ? (
               <AgenticAI3DModel />
+            ) : service.slug === 'mlops' ? (
+              <MLOps3DModel />
             ) : (
               service.toolsStack.image
             )
           }
           imageAlt={service.toolsStack.imageAlt}
+          inlineModel={service.slug === 'mlops'}
         />
       )}
 
