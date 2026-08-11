@@ -1,5 +1,35 @@
 
-> frontend@0.1.0 start
-> craco start
+> frontend@0.1.0 predev
+> node scripts/download-video.js
 
-Something is already running on port 3000.
+Homepage background video already exists and is valid. Skipping download.
+
+> frontend@0.1.0 dev
+> vite --config vite.config.mjs
+
+
+  VITE v8.0.16  ready in 85 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: use --host to expose
+Browserslist: browsers data (caniuse-lite) is 8 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+warn - The class `duration-[1.2s]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;1.2s&rsqb;` to silence this warning.
+
+warn - The class `duration-[1.5s]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;1.5s&rsqb;` to silence this warning.
+
+warn - The class `duration-[1500ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;1500ms&rsqb;` to silence this warning.
+
+warn - The class `duration-[800ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;800ms&rsqb;` to silence this warning.
+
+warn - The class `ease-[cubic-bezier(0.16,1,0.3,1)]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.16,1,0.3,1)&rsqb;` to silence this warning.
+1:06:59 AM [vite] (client) [console.warn] i18next is maintained with support from locize.com — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com
+1:08:20 AM [vite] (client) [console.warn] i18next is maintained with support from locize.com — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com
+1:11:56 AM [vite] (client) [console.warn] i18next is maintained with support from locize.com — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com

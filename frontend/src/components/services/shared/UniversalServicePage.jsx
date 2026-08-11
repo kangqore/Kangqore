@@ -2313,7 +2313,7 @@ const featureMicros   = service.featureMicros
                           <span className="block text-[11px] font-bold tracking-widest uppercase mb-2 opacity-60">Key Capabilities</span>
                           <ul className="flex flex-col gap-y-1.5">
                             {node.features.map((f, i) => (
-                              <li key={i} className="flex items-center gap-2 text-[11.5px] font-bold leading-tight">
+                              <li key={i} className="flex items-center gap-2 text-[12px] font-bold leading-tight">
                                 <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 flex-shrink-0" />
                                 <span>{f}</span>
                               </li>
