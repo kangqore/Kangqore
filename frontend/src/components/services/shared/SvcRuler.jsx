@@ -61,10 +61,10 @@ export default function SvcRuler() {
             >
               {isActive && <div className="dot" />}
               <div className="tick" style={{ width: isActive ? '20px' : '8px' }} />
-              <span className="num ml-2.5 font-mono text-[11px] font-black tracking-[0.3em]">
+              <span className="num ml-2.5 font-mono text-[8px] font-black tracking-[0.3em]">
                 {num}
               </span>
-              <span className="label ml-2 text-[11px] font-bold tracking-[0.14em] uppercase whitespace-nowrap overflow-hidden">
+              <span className="label ml-2 text-[8px] font-bold tracking-[0.14em] uppercase whitespace-nowrap overflow-hidden">
                 {label}
               </span>
             </button>

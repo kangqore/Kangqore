@@ -2255,7 +2255,7 @@ const featureMicros   = service.featureMicros
                 <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
                   How It Works.<br />
                   <span className="bg-brand-gradient bg-clip-text text-transparent">
-                    {service.architectureNodes.length === 5 ? 'The 5-Stage Autonomous Execution Loop.' : 'The 4-Layer Stack.'}
+                    {service.architectureNodes.length === 5 ? 'The 5-Stage Autonomous Execution Loop.' : `The ${service.architectureNodes.length}-Layer Stack.`}
                   </span>
                 </h2>
               </div>
