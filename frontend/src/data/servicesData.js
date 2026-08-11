@@ -1192,10 +1192,10 @@ export const servicesData = {
     whatIsPara2: 'The scope covers the entire path: data and features, training, registry, promotion, serving, monitoring, and retraining. We build it once as one cohesive system, rather than assembling it repeatedly for every model.',
     whatIsPara3: 'We work within your existing platform and deliver the final product as infrastructure as code. Managed operations are available afterward, but they are not required to keep your system running.',
     businessMetrics: [
-      { title: 'Deployment Frequency', desc: 'Increase in model deployment frequency after MLOps pipeline implementation and CI/CD automation.', value: '5',  suffix: 'x',    metricLabel: 'Faster Deployment',    icon: 'Zap'       },
-      { title: 'Model Accuracy Gain',  desc: 'Performance improvement through automated retraining, monitoring, and continuous feedback loops.',  value: '34', suffix: '%',    metricLabel: 'Accuracy Improvement', icon: 'TrendingUp'},
-      { title: 'Production Incidents', desc: 'Reduction in model drift and production failures through proactive monitoring and automated alerts.', value: '80', suffix: '%',    metricLabel: 'Fewer Incidents',      icon: 'Target'    },
-      { title: 'Time to Production',   desc: 'End-to-end time from validated model to production deployment using automated MLOps pipelines.',      value: '2',  suffix: ' Wks', metricLabel: 'Deployment Speed',     icon: 'Layers'    },
+      { title: 'Deployment Speed', desc: 'Increase in model deployment frequency after MLOps pipeline implementation and CI/CD automation.', value: '90',  suffix: '%',    metricLabel: 'Faster Deployments',    icon: 'Zap'       },
+      { title: 'Infrastructure Cost',  desc: 'Reduction in operational and infrastructure costs through optimized compute and automated workflows.',  value: '50', suffix: '%',    metricLabel: 'Cost Savings', icon: 'TrendingUp'},
+      { title: 'Production Incidents', desc: 'Reduction in model drift and production failures through proactive monitoring and automated alerts.', value: '95', suffix: '%',    metricLabel: 'Incident Reduction',      icon: 'Target'    },
+      { title: 'Engineering Velocity',   desc: 'End-to-end acceleration of machine learning development and production release cycles.',      value: '3',  suffix: '×', metricLabel: 'Velocity Boost',     icon: 'Layers'    },
     ],
     capabilityAreas: [
       {
