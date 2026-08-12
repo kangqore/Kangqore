@@ -1112,22 +1112,46 @@ export const servicesData = {
     name: 'GenAI Business Services',
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
-    shortDescription: 'Implement generative AI solutions for business transformation',
+    // Renders as the first paragraph of the "what is" block and carries
+    // data-speakable, so it is the passage a voice assistant reads aloud for
+    // this service. It was "Implement generative AI solutions for business
+    // transformation" — seven words describing the category, in the one slot
+    // optimized for voice. Not the meta description; seoData supplies that.
+    shortDescription: 'Kangqore builds generative AI systems that retrieve from your own documents before they answer, and show the passage they used.',
     fullDescription: 'Leverage generative AI technologies including LLMs, image generation, and content creation for business applications.',
     keyFeatures: ['LLM implementation', 'Custom model fine-tuning', 'Content generation', 'Code generation', 'Enterprise AI assistants'],
     relatedServiceSlugs: ['agentic-ai', 'ai-governance', 'mlops'],
     featured: true,
     capabilitiesTheme: 'dark-bento-14',
     image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80',
-    whatIsTitle: 'Generative AI That',
-    whatIsTitleLine2: 'Transforms How Business',
-    whatIsHighlight: 'Gets Done.',
-    whatIsPara2: 'Kangqore implements LLMs, retrieval-augmented generation, and domain-specific fine-tuning so enterprises generate content, code, and decisions at 10× the speed of traditional workflows — without losing accuracy or governance control.',
+    // The eyebrow above is a question — "What does Kangqore build with
+    // generative AI?" — and the previous heading answered it with a slogan
+    // ("Generative AI That Transforms How Business Gets Done."). This answers
+    // it, and states the thesis the rest of the page argues: grounding.
+    whatIsTitle: 'Generative AI that answers',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'from your evidence.',
+    // The previous version claimed content, code and decisions "at 10x the
+    // speed of traditional workflows" — a multiplier with nothing behind it,
+    // in the paragraph a reader trusts most. The nouns were the good part and
+    // they are kept.
+    whatIsPara2: 'Retrieval-augmented generation over your corpus, prompt and context engineering held under version control, model routing that keeps cost proportionate to the question, and evaluation that runs on every change. Fine-tuning where form matters — after retrieval, not instead of it.',
+    // Four unsourced performance claims stood here: faster output, cost per
+    // asset, model accuracy, and a count of deployments across industries. The
+    // last two are the dangerous ones — an accuracy figure is unanswerable
+    // without naming the benchmark it was measured on, and a deployment count
+    // is a track-record assertion with no proof anywhere on the site. Both are
+    // the kind of number a procurement team asks you to evidence.
+    //
+    // These four are traceable to content elsewhere on this page: the first two
+    // are the durations in "Five ways to start", the third is the six layers in
+    // the toolchain section, and the fourth is a property of what we build
+    // rather than a measurement of how well it performed.
     businessMetrics: [
-      { title: 'Output Speed',      desc: 'Reduction in content and code generation time using enterprise LLMs versus traditional production workflows.', value: '70', suffix: '%', metricLabel: 'Faster Output',       icon: 'Zap'         },
-      { title: 'Cost Per Asset',    desc: 'Average cost reduction per generated document, code artifact, or report vs. manual production.',               value: '60', suffix: '%', metricLabel: 'Cost Reduction',      icon: 'Target'      },
-      { title: 'Model Accuracy',    desc: 'Fine-tuned enterprise model response accuracy on domain-specific knowledge and task benchmarks.',               value: '92', suffix: '%', metricLabel: 'Model Accuracy',      icon: 'BrainCircuit'},
-      { title: 'Use Cases Live',    desc: 'Enterprise generative AI applications deployed and running across clients spanning 8+ industries.',             value: '40', suffix: '+', metricLabel: 'Use Cases Deployed',  icon: 'Layers'      },
+      { title: 'Use-Case Triage',   desc: 'From your candidate list to a scored shortlist — which use cases have the evidence to be grounded, and which do not.',                        value: '2',  suffix: ' wks', metricLabel: 'To a Scored Shortlist', icon: 'Search'      },
+      { title: 'First Workflow',    desc: 'One workflow taken to production on your corpus, with retrieval, guardrails, an evaluation set and cost telemetry in place.',                   value: '8',  suffix: ' wks', metricLabel: 'To Production',        icon: 'Rocket'      },
+      { title: 'Standard Layers',   desc: 'Retrieval, orchestration, guardrails, evaluation, serving and tuning — each with a managed and a self-hosted option, chosen per constraint.',   value: '6',  suffix: '',     metricLabel: 'Layers Standardized',  icon: 'Layers'      },
+      { title: 'Cited Answers',     desc: 'Answers are returned with the passage they were drawn from, and the system declines rather than guessing when retrieval finds nothing relevant.', value: '100', suffix: '%',   metricLabel: 'Carry Their Source',   icon: 'BrainCircuit'},
     ],
     // ── Section eyebrow ────────────────────────────────────────────────────
     // The template default is `What ${name} services does Kangqore offer?`, and
