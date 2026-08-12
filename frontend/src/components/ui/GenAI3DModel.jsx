@@ -26,9 +26,9 @@ const obsidianShader = {
       float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 3.0);
       
       // Base dark glass color (deep purple/gray)
-      vec3 baseColor = vec3(0.05, 0.05, 0.08);
+      vec3 baseColor = vec3(0.145, 0.388, 0.922);
       // Rim highlight color (cyan/electric blue)
-      vec3 rimColor = vec3(0.133, 0.827, 0.933); // #38bdf8
+      vec3 rimColor = vec3(1.0, 1.0, 1.0); // #ffffff
       
       vec3 finalColor = mix(baseColor, rimColor, fresnel * 0.8);
       
@@ -107,7 +107,7 @@ const NeuralCore = () => {
             itemSize={3}
           />
         </bufferGeometry>
-        <pointsMaterial size={0.03} color="#38bdf8" transparent opacity={0.8} />
+        <pointsMaterial size={0.03} color="#ffffff" transparent opacity={0.8} />
       </points>
 
       {/* Neural Synapses */}
@@ -127,12 +127,12 @@ const NeuralCore = () => {
       <mesh ref={innerCoreRef}>
         <icosahedronGeometry args={[0.35, 0]} />
         <meshPhysicalMaterial 
-          color="#172554" 
+          color="#2563eb" 
           metalness={0.9} 
           roughness={0.1} 
           clearcoat={1.0}
           clearcoatRoughness={0.1}
-          emissive="#1e3a8a"
+          emissive="#3b82f6"
           emissiveIntensity={0.5}
         />
       </mesh>
@@ -151,10 +151,10 @@ const NeuralCore = () => {
       </mesh>
       
       {/* Floating Sparkles around the core */}
-      <Sparkles count={80} scale={3} size={1.5} speed={0.3} opacity={0.6} color="#38bdf8" />
+      <Sparkles count={80} scale={3} size={1.5} speed={0.3} opacity={0.6} color="#ffffff" />
       
       <Html position={[0, -1.4, 0]} center distanceFactor={8}>
-        <div className="text-[6px] font-bold text-white tracking-[0.25em] uppercase select-none whitespace-nowrap bg-blue-950/80 backdrop-blur-sm px-2.5 py-1 rounded border border-blue-800 shadow-[0_0_15px_rgba(96,165,250,0.3)]">
+        <div className="text-[6px] font-bold text-white tracking-[0.25em] uppercase select-none whitespace-nowrap bg-blue-600/80 backdrop-blur-sm px-2.5 py-1 rounded border border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]">
           Generative Core
         </div>
       </Html>
@@ -168,7 +168,7 @@ const ConnectionBeam = ({ activePos }) => {
   return (
     <Line
       points={[[0, 0, 0], activePos]}
-      color="#38bdf8"
+      color="#ffffff"
       lineWidth={4}
       transparent
       opacity={0.8}
@@ -227,7 +227,7 @@ const StageNode = ({ index, total, label, isActive, color, dualLabels, setNodePo
       {/* Solid inner core for nodes */}
       <mesh>
         <sphereGeometry args={[0.08, 16, 16]} />
-        <meshBasicMaterial color={isActive ? '#38bdf8' : '#1e40af'} transparent opacity={0.9} />
+        <meshBasicMaterial color={isActive ? '#ffffff' : '#60a5fa'} transparent opacity={0.9} />
       </mesh>
 
       {/* Active Glowing Rings */}
@@ -235,7 +235,7 @@ const StageNode = ({ index, total, label, isActive, color, dualLabels, setNodePo
         <group ref={ringRef}>
           <mesh rotation={[Math.PI/2, 0, 0]}>
             <torusGeometry args={[0.28, 0.015, 16, 64]} />
-            <meshBasicMaterial color="#38bdf8" transparent opacity={0.9} />
+            <meshBasicMaterial color="#ffffff" transparent opacity={0.9} />
           </mesh>
           <mesh rotation={[0, Math.PI/2, 0]}>
             <torusGeometry args={[0.38, 0.008, 16, 64]} />
@@ -247,27 +247,27 @@ const StageNode = ({ index, total, label, isActive, color, dualLabels, setNodePo
       {/* Orbit Trail */}
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[radius - 0.01, radius + 0.01, 128]} />
-        <meshBasicMaterial color="#1e40af" transparent opacity={0.2} side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#60a5fa" transparent opacity={0.2} side={THREE.DoubleSide} />
       </mesh>
 
       {/* Particles following the active node */}
       {isActive && (
-        <Sparkles count={25} scale={1.2} size={1.2} speed={0.8} opacity={0.8} color="#38bdf8" />
+        <Sparkles count={25} scale={1.2} size={1.2} speed={0.8} opacity={0.8} color="#ffffff" />
       )}
 
       {/* Label HTML */}
       <Html position={[0, 0.5, 0]} center distanceFactor={8} zIndexRange={[100, 0]}>
         <div className={`transition-all duration-300 flex flex-col items-center gap-1 select-none ${isActive ? 'scale-110 opacity-100' : 'scale-90 opacity-40 hover:opacity-70'}`}>
           <div className={`text-[7px] font-bold tracking-[0.15em] px-2.5 py-1 rounded border whitespace-nowrap bg-black/80 backdrop-blur-md ${
-            isActive ? 'text-white border-blue-400 shadow-[0_0_20px_rgba(96,165,250,0.5)]' : 'text-blue-200 border-blue-200/20'
+            isActive ? 'text-white border-white shadow-[0_0_20px_rgba(255,255,255,0.5)]' : 'text-white border-white/40'
           }`}>
             {label}
           </div>
           {isActive && dualLabels && (
-            <div className="flex gap-2 text-[6px] font-bold tracking-widest bg-black/50 px-1.5 py-0.5 rounded-sm border border-blue-200/20 backdrop-blur-sm">
-              <span className="text-blue-400 drop-shadow-[0_0_5px_rgba(96,165,250,0.8)]">MANAGED</span>
+            <div className="flex gap-2 text-[6px] font-bold tracking-widest bg-black/50 px-1.5 py-0.5 rounded-sm border border-white/40 backdrop-blur-sm">
+              <span className="text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">MANAGED</span>
               <span className="text-white/30">|</span>
-              <span className="text-blue-300 drop-shadow-[0_0_5px_rgba(147,197,253,0.8)]">SELF-HOSTED</span>
+              <span className="text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">SELF-HOSTED</span>
             </div>
           )}
         </div>
@@ -298,11 +298,11 @@ const InnerDataRings = () => {
           <meshBasicMaterial color="#3b82f6" transparent opacity={0.3} side={THREE.DoubleSide} />
           <mesh position={[1.105, 0, 0]}>
             <sphereGeometry args={[0.03, 16, 16]} />
-            <meshBasicMaterial color="#38bdf8" />
+            <meshBasicMaterial color="#ffffff" />
           </mesh>
         </mesh>
         <Html position={[1.1, 0, 0]} center distanceFactor={8}>
-           <div className="text-[5px] font-bold text-white tracking-widest bg-blue-900/80 px-1 py-0.5 rounded border border-blue-700 backdrop-blur-sm">CONTEXT</div>
+           <div className="text-[5px] font-bold text-white tracking-widest bg-blue-500/80 px-1 py-0.5 rounded border border-white/50 backdrop-blur-sm">CONTEXT</div>
         </Html>
       </group>
 
@@ -317,7 +317,7 @@ const InnerDataRings = () => {
           </mesh>
         </mesh>
         <Html position={[0, 1.3, 0]} center distanceFactor={8}>
-           <div className="text-[5px] font-bold text-white tracking-widest bg-blue-900/80 px-1 py-0.5 rounded border border-blue-700 backdrop-blur-sm">GROUNDING</div>
+           <div className="text-[5px] font-bold text-white tracking-widest bg-blue-500/80 px-1 py-0.5 rounded border border-white/50 backdrop-blur-sm">GROUNDING</div>
         </Html>
       </group>
 
@@ -328,11 +328,11 @@ const InnerDataRings = () => {
           <meshBasicMaterial color="#3b82f6" transparent opacity={0.3} side={THREE.DoubleSide} />
           <mesh position={[-1.505, 0, 0]}>
             <sphereGeometry args={[0.03, 16, 16]} />
-            <meshBasicMaterial color="#38bdf8" />
+            <meshBasicMaterial color="#ffffff" />
           </mesh>
         </mesh>
         <Html position={[-1.5, 0, 0]} center distanceFactor={8}>
-           <div className="text-[5px] font-bold text-white tracking-widest bg-blue-900/80 px-1 py-0.5 rounded border border-blue-700 backdrop-blur-sm">GUARDRAILS</div>
+           <div className="text-[5px] font-bold text-white tracking-widest bg-blue-500/80 px-1 py-0.5 rounded border border-white/50 backdrop-blur-sm">GUARDRAILS</div>
         </Html>
       </group>
     </group>
@@ -345,20 +345,20 @@ export const GenAI3DModel = ({ activeStep = null }) => {
 
   // The 6 layers for GenAI toolchain
   const stages = [
-    { label: "01 FOUNDATION", color: "#93c5fd" },
-    { label: "02 RETRIEVAL", color: "#93c5fd" },
-    { label: "03 ORCHESTRATE", color: "#93c5fd" },
-    { label: "04 GUARDRAILS",  color: "#93c5fd" },
-    { label: "05 EVALUATION",  color: "#93c5fd" },
-    { label: "06 TUNING",  color: "#93c5fd" },
+    { label: "01 FOUNDATION", color: "#ffffff" },
+    { label: "02 RETRIEVAL", color: "#ffffff" },
+    { label: "03 ORCHESTRATE", color: "#ffffff" },
+    { label: "04 GUARDRAILS",  color: "#ffffff" },
+    { label: "05 EVALUATION",  color: "#ffffff" },
+    { label: "06 TUNING",  color: "#ffffff" },
   ];
 
   return (
     <div className="w-full h-[500px] lg:h-[600px] relative pointer-events-auto cursor-grab active:cursor-grabbing">
       <Canvas camera={{ position: [0, 3.5, 8], fov: 45 }} dpr={[1, 2]}>
         {/* Environment Lights suitable for dark Obsidian theme */}
-        <ambientLight intensity={0.4} color="#172554" />
-        <pointLight position={[10, 10, 10]} intensity={2.0} color="#38bdf8" />
+        <ambientLight intensity={0.4} color="#2563eb" />
+        <pointLight position={[10, 10, 10]} intensity={2.0} color="#ffffff" />
         <pointLight position={[-10, -10, -10]} intensity={1.5} color="#60a5fa" />
         <spotLight position={[0, 5, 0]} intensity={1.5} color="#ffffff" penumbra={1} />
 

@@ -23,6 +23,18 @@ import { mountKpiRoutes } from '../kpi/routes';
 import { mountPerformanceRoutes } from '../performance/routes';
 import { mountCronRoutes } from '../cron/routes';
 import { KangqoreVisCronManager } from '../cron/KangqoreVisCronManager';
+import { mountInternationalSeoRoutes } from '../international-seo/routes';
+import { mountLocalSeoRoutes } from '../local-seo/routes';
+import { mountProgrammaticSeoRoutes } from '../programmatic-seo/routes';
+import { mountGeoRoutes } from '../geo/routes';
+import { mountCroRoutes } from '../cro/routes';
+import { mountUxOptimizationRoutes } from '../ux-optimization/routes';
+import { mountAccessibilityRoutes } from '../accessibility/routes';
+import { mountSemanticSeoRoutes } from '../semantic-seo/routes';
+import { mountVideoSeoRoutes } from '../video-seo/routes';
+import { mountImageSeoRoutes } from '../image-seo/routes';
+import { mountVoiceSearchRoutes } from '../voice-search/routes';
+import { mountMultimodalContentRoutes } from '../multimodal-content/routes';
 
 export interface KangqoreVisBootstrapOptions {
   app: Express;
@@ -47,6 +59,18 @@ const MODULE_IDS = [
   'data-sources',
   'cron',
   'kpi',
+  'international-seo',
+  'local-seo',
+  'programmatic-seo',
+  'geo',
+  'cro',
+  'ux-optimization',
+  'accessibility',
+  'semantic-seo',
+  'video-seo',
+  'image-seo',
+  'voice-search',
+  'multimodal-content',
 ];
 
 export function kangqoreVisBootstrap({ app }: KangqoreVisBootstrapOptions): void {
@@ -80,6 +104,18 @@ export function kangqoreVisBootstrap({ app }: KangqoreVisBootstrapOptions): void
   if (KangqoreVisFlags.conciergeBridge()) mountConciergeBridgeRoutes(app);
   if (KangqoreVisFlags.dataSources()) mountDataSourcesRoutes(app);
   if (KangqoreVisFlags.kpi()) mountKpiRoutes(app);
+  if (KangqoreVisFlags.internationalSeo()) mountInternationalSeoRoutes(app);
+  if (KangqoreVisFlags.localSeo()) mountLocalSeoRoutes(app);
+  if (KangqoreVisFlags.programmaticSeo()) mountProgrammaticSeoRoutes(app);
+  if (KangqoreVisFlags.geo()) mountGeoRoutes(app);
+  if (KangqoreVisFlags.cro()) mountCroRoutes(app);
+  if (KangqoreVisFlags.uxOptimization()) mountUxOptimizationRoutes(app);
+  if (KangqoreVisFlags.accessibility()) mountAccessibilityRoutes(app);
+  if (KangqoreVisFlags.semanticSeo()) mountSemanticSeoRoutes(app);
+  if (KangqoreVisFlags.videoSeo()) mountVideoSeoRoutes(app);
+  if (KangqoreVisFlags.imageSeo()) mountImageSeoRoutes(app);
+  if (KangqoreVisFlags.voiceSearch()) mountVoiceSearchRoutes(app);
+  if (KangqoreVisFlags.multimodalContent()) mountMultimodalContentRoutes(app);
   mountCronRoutes(app);
 
   KangqoreVisCronManager.initialize();
