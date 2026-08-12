@@ -188,7 +188,7 @@ const StageNode = ({ index, total, label, isActive, color, dualLabels, setNodePo
   
   // Pre-calculate fixed orbit parameters
   const angle = (index / total) * Math.PI * 2;
-  const radius = 2.6; // Slightly wider orbit for 6 items
+  const radius = 1.2; // Tight orbit around the central shell nucleus
   
   useFrame(({ clock }) => {
     // Slow orbit around the center

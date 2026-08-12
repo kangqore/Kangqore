@@ -2441,6 +2441,35 @@ model KangqoreVisContentAsset {
   @@map("kangqore_vis_content_assets")
 }
 
+// ─── VIS 3.1 — Opportunity Scoring ──────────────────────────────────────────
+// The first-class "Opportunity" object the VIS Intelligence Kernel produces:
+// evidence + confidence + visibility potential are real (scored from actual
+// signals); strategic alignment / business value / conversion potential /
+// effort are explicitly unscored until VIS 3.2/3.3 exist (see `dimensions`
+// json — each carries a status of AVAILABLE|UNAVAILABLE|CONFIGURED|ESTIMATED,
+// never a fabricated number).
+model KangqoreVisOpportunity {
+  id                       String   @id @default(cuid())
+  title                    String
+  entitySlugs              String[]
+  contributingCapabilities String[]
+  evidenceSignalIds        String[]
+  dimensions               Json
+  baseOpportunityScore     Float
+  priorityScore            Float
+  priorityTier             String   @default("LOW")
+  certainty                Float
+  recommendation           String   @db.Text
+  decisionId               String?
+  status                   String   @default("DETECTED")
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@index([priorityScore])
+  @@index([status])
+  @@map("kangqore_vis_opportunities")
+}
+
 enum InviteeStatus {
   PENDING
   ACCEPTED
