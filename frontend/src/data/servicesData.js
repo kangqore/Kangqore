@@ -1264,18 +1264,23 @@ export const servicesData = {
       //    contradicted by the hallucination FAQ and by row four of this table.
       //    Whatever replaces this heading must not reintroduce it.
       heading: 'Why Kangqore for GenAI?',
-      lede: 'Most generative AI reaches a convincing demo in two weeks. The gap to production is not model quality — it is everything that makes an answer trustworthy: where the facts came from, what the system refuses to say, how you know it is still right next month, and what it costs per thousand users rather than per demo.',
+      // Rewritten to answer the heading. It previously opened on the industry's
+      // demo-to-production gap, which followed from "A demo answers…" but not
+      // from a question about Kangqore. It now names what we do differently and
+      // then hands off to the five dimensions, so heading, lede and rows argue
+      // the same thing.
+      lede: 'Most generative AI reaches a convincing demo in two weeks, and stalls on everything that makes an answer trustworthy. We build for the five things that decide whether a system survives production: where the facts came from, who is allowed to see them, how you know it is still right next month, what it refuses to say, and what it costs per thousand users rather than per demo.',
       dimensionLabel: 'DIMENSION',
       beforeLabel: 'DEMO-GRADE GENAI',
-      afterLabel: 'GOVERNED ENTERPRISE GENAI',
+      afterLabel: 'WITH KANGQORE',
       afterBadge: 'GROUNDED',
       beforeShort: 'Demo-grade',
-      afterShort: 'Governed',
+      afterShort: 'With Kangqore',
       rows: [
-        { dimension: 'Grounding', before: 'The model answers from whatever it learned in pre-training. It is fluent about your business and occasionally wrong about it, and nothing distinguishes the two on screen.', after: 'Every answer is retrieved from your own corpus before it is generated, with the source passages returned alongside it — so a reader can check the claim, and an auditor can see what the model was looking at.' },
+        { dimension: 'Grounding', before: 'The model answers from whatever it learned in pre-training. It is fluent about your business and occasionally wrong about it, and nothing distinguishes the two on screen.', after: 'Every answer is retrieved from your own corpus before it is generated, with the source passages returned alongside it, so a reader can check the claim, and an auditor can see what the model was looking at.' },
         { dimension: 'Permissions', before: 'One index for everyone. A retrieval system that has read the whole intranet will happily quote the salary review to whoever asks.', after: 'Retrieval runs under the asking user\'s permissions, so the index cannot return a passage they could not already open. Access control lives in the retrieval layer, not in the prompt.' },
         { dimension: 'Evaluation', before: 'Quality is whatever the person demoing it thought looked good. There is no holdout set, because there is no single correct answer to hold out against.', after: 'Graded rubrics over a fixed question set, adversarial suites for the failure modes that matter, and human review on the sample that decides promotion. A prompt change that lowers the score does not ship.' },
-        { dimension: 'Guardrails', before: 'The system will attempt any question asked of it, including the ones it should decline, and there is no record of what it was asked.', after: 'Refusal is designed, not hoped for: input classification, output filters, and an escalation path for anything outside remit — with the prompt, the retrieved context and the response retained for audit.' },
+        { dimension: 'Guardrails', before: 'The system will attempt any question asked of it, including the ones it should decline, and there is no record of what it was asked.', after: 'Refusal is designed, not hoped for: input classification, output filters, and an escalation path for anything outside remit. The prompt, the retrieved context and the response are retained for audit.' },
         { dimension: 'Unit economics', before: 'Cost is a surprise at the end of the first full month, because inference is metered per token and nobody measured the tokens.', after: 'Token budgets per workflow, caching on the repeated questions that dominate real traffic, and routing that sends the easy majority to a smaller model. Cost per resolved query is a number you can quote.' },
       ],
     },
