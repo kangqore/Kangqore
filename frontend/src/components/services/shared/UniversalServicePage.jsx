@@ -13,7 +13,7 @@ import {
   TrendingUp, Users, BrainCircuit,
   ChevronDown, Activity, Shield,
   Globe, BarChart3, Network, Settings,
-  Plus, X, Download, ShieldCheck, Eye, Database, Lock,
+  Plus, X, Download, ShieldCheck, Eye, Database, Lock, UserCog
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
@@ -244,7 +244,6 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
             <span className={`text-[11px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono ${isVibrant ? 'text-gray-700 bg-gray-100/50 border-gray-300' : 'text-slate-300 bg-white/5 border-white/10'}`}>
               {cap.items.length} Sub-Capabilities
             </span>
-            <span className={`text-[11px] font-black tracking-[0.3em] uppercase font-mono ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>{cap.n}</span>
           </div>
           <h4 className={`text-xl sm:text-2xl font-bold mb-2 tracking-tight ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
             {cap.title}
@@ -1768,208 +1767,178 @@ const featureMicros   = service.featureMicros
                   </svg>
                 </div>
               ) : (
-                /* ── Agentic AI Flow Diagram ── */
-                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="Architecture diagram — scroll sideways to see the full flow" tabIndex={0}>
-                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full min-w-[660px] sm:min-w-0">
+                /* ── Agentic AI Flow Diagram (Upgraded) ── */
+                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="Agentic AI Pipeline diagram" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
                     <defs>
-                      <linearGradient id="agentic-orange" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#ea580c"/>
-                        <stop offset="100%" stopColor="#f59e0b"/>
+                      <linearGradient id="agentic-blue-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#3b82f6"/>
+                        <stop offset="100%" stopColor="#1d4ed8"/>
                       </linearGradient>
-                      <linearGradient id="agentic-purple" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#7f53f9"/>
-                        <stop offset="100%" stopColor="#a78bfa"/>
+                      <linearGradient id="agentic-cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#22d3ee"/>
+                        <stop offset="100%" stopColor="#0891b2"/>
                       </linearGradient>
-                      <linearGradient id="agentic-green" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#00c875"/>
-                        <stop offset="100%" stopColor="#34d399"/>
+                      <linearGradient id="agentic-slate-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#1e293b"/>
+                        <stop offset="100%" stopColor="#0f172a"/>
                       </linearGradient>
-                      <linearGradient id="agentic-blue" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#2564ea"/>
-                        <stop offset="100%" stopColor="#00f0ff"/>
-                      </linearGradient>
-                      <filter id="glow-orange">
-                        <feGaussianBlur stdDeviation="5" result="blur"/>
+
+                      <filter id="glow-blue-intense">
+                        <feGaussianBlur stdDeviation="3" result="blur1"/>
+                        <feGaussianBlur stdDeviation="6" result="blur2"/>
                         <feMerge>
-                          <feMergeNode in="blur"/>
+                          <feMergeNode in="blur2"/>
+                          <feMergeNode in="blur1"/>
                           <feMergeNode in="SourceGraphic"/>
                         </feMerge>
                       </filter>
-                      <filter id="glow-purple">
-                        <feGaussianBlur stdDeviation="6" result="blur"/>
+
+                      <filter id="glow-cyan-intense">
+                        <feGaussianBlur stdDeviation="3" result="blur1"/>
+                        <feGaussianBlur stdDeviation="6" result="blur2"/>
                         <feMerge>
-                          <feMergeNode in="blur"/>
+                          <feMergeNode in="blur2"/>
+                          <feMergeNode in="blur1"/>
                           <feMergeNode in="SourceGraphic"/>
                         </feMerge>
                       </filter>
-                      <filter id="glow-green">
-                        <feGaussianBlur stdDeviation="5" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-cyan">
-                        <feGaussianBlur stdDeviation="5" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <marker id="diag-arrow-purple" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#a78bfa" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="diag-arrow-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#34d399" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <clipPath id="capsule-clip-agent">
-                        <rect x="40" y="274" width="460" height="90" rx="30"/>
-                      </clipPath>
                     </defs>
 
-                    {/* ── LEFT: Workflow Triggers & Inputs ── */}
-                    <rect x="25" y="70" width="100" height="26" rx="6" fill="#0c0e14" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
-                    <rect x="20" y="106" width="110" height="26" rx="6" fill="#0c0e14" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
-                    <rect x="25" y="142" width="100" height="26" rx="6" fill="#0c0e14" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.8"/>
+                    {/* ── BACKGROUND ORBITS / NETWORK ── */}
+                    <ellipse cx="270" cy="210" rx="180" ry="80" fill="none" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3" transform="rotate(-15 270 210)" strokeDasharray="4 8" />
+                    <ellipse cx="270" cy="210" rx="220" ry="100" fill="none" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.2" transform="rotate(25 270 210)" strokeDasharray="12 4" />
                     
-                    {/* Inner items lines */}
-                    <line x1="45" y1="83" x2="105" y2="83" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
-                    <line x1="40" y1="119" x2="110" y2="119" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
-                    <line x1="45" y1="155" x2="105" y2="155" stroke="white" strokeOpacity="0.1" strokeWidth="1"/>
-                    
-                    {/* Active inputs indicator circles */}
-                    <circle cx="30" cy="83" r="2.5" fill="#ea580c"/>
-                    <circle cx="26" cy="119" r="2.5" fill="#f59e0b"/>
-                    <circle cx="30" cy="155" r="2.5" fill="#ea580c"/>
+                    {/* Data streams (background) */}
+                    <path d="M 0 100 C 150 50, 350 350, 540 300" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" strokeDasharray="4 4" />
+                    <path d="M 0 350 C 200 400, 300 50, 540 100" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" strokeDasharray="4 4" />
 
-                    {/* Text tags inside inputs */}
-                    <text x="75" y="86" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">SSE / WEBHOOKS</text>
-                    <text x="75" y="122" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">REST / GQL API</text>
-                    <text x="75" y="158" textAnchor="middle" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace" fontWeight="bold" letterSpacing="0.2">AMQP / KAFKA</text>
-
-                    <text x="75" y="52" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">WORKFLOW TRIGGERS</text>
-                    <text x="75" y="186" textAnchor="middle" fill="#ea580c" fillOpacity="0.8" fontSize="9" fontFamily="monospace" letterSpacing="0.5">INCOMING EVENTS</text>
-
-                    {/* ── CENTER: Cognitive Orchestrator & Planner Loop ── */}
-                    {/* Main Orb */}
-                    <circle cx="270" cy="120" r="54" stroke="white" strokeWidth="1.5" strokeOpacity="0.3"/>
-                    <circle cx="270" cy="120" r="48" fill="url(#agentic-purple)" fillOpacity="0.08" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.8"/>
-                    
-                    {/* Central Brain Hub */}
-                    <rect x="256" y="106" width="28" height="28" rx="6" fill="#111" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                    <circle cx="270" cy="120" r="4" fill="#7f53f9" filter="url(#glow-purple)"/>
-
-                    {/* Pin lines */}
-                    <line x1="262" y1="102" x2="262" y2="106" stroke="white" strokeWidth="1.2"/>
-                    <line x1="270" y1="102" x2="270" y2="106" stroke="white" strokeWidth="1.2"/>
-                    <line x1="278" y1="102" x2="278" y2="106" stroke="white" strokeWidth="1.2"/>
-                    <line x1="262" y1="134" x2="262" y2="138" stroke="white" strokeWidth="1.2"/>
-                    <line x1="270" y1="134" x2="270" y2="138" stroke="white" strokeWidth="1.2"/>
-                    <line x1="278" y1="134" x2="278" y2="138" stroke="white" strokeWidth="1.2"/>
-                    
-                    {/* Rotating Sub-Agent Satellites */}
-                    {/* Satellite 1: CRM subagent */}
-                    <circle cx="204" cy="120" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <text x="204" y="123" textAnchor="middle" fill="white" fontSize="9" fontWeight="black" fontFamily="monospace">RAG</text>
-                    {/* Satellite 2: Document parser subagent */}
-                    <circle cx="270" cy="52" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <text x="270" y="55" textAnchor="middle" fill="white" fontSize="9" fontWeight="black" fontFamily="monospace">PLAN</text>
-                    {/* Satellite 3: API call executor subagent */}
-                    <circle cx="336" cy="120" r="12" fill="#0c0e14" stroke="url(#agentic-purple)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <text x="336" y="123" textAnchor="middle" fill="white" fontSize="9" fontWeight="black" fontFamily="monospace">EXEC</text>
-
-                    {/* Satellite Orbits */}
-                    <path d="M 270 52 C 200 52 204 120 204 120" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
-                    <path d="M 204 120 C 204 120 208 188 270 188" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
-                    <path d="M 270 188 C 332 188 336 120 336 120" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
-                    <path d="M 336 120 C 336 120 332 52 270 52" stroke="white" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3 3"/>
-
-                    {/* Text labels in center */}
-                    <text x="270" y="206" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">COGNITIVE ROUTING</text>
-
-                    {/* ── RIGHT: Targets & Orchestrated Outcomes ── */}
-                    <circle cx="450" cy="70" r="18" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <circle cx="410" cy="140" r="20" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    <circle cx="490" cy="140" r="23" fill="#0c0e14" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.9"/>
-                    
-                    {/* Connecting lines of target node mesh */}
-                    <line x1="438" y1="83" x2="422" y2="124" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.5"/>
-                    <line x1="462" y1="83" x2="478" y2="124" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.5"/>
-                    <line x1="428" y1="140" x2="472" y2="140" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.5"/>
-
-                    {/* Labels inside nodes */}
-                    <text x="450" y="73" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">MUTATE</text>
-                    <text x="410" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">COMMIT</text>
-                    <text x="490" y="143" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">CALLBACK</text>
-
-                    {/* Text labels on right target */}
-                    <text x="474" y="44" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.5">WORKFLOW OUTCOME</text>
-                    <text x="450" y="180" textAnchor="middle" fill="#00c875" fillOpacity="0.8" fontSize="9" fontFamily="monospace" letterSpacing="0.5">AUTONOMOUS SYNC</text>
-
-                    {/* ── Connecting Pipelines ── */}
-                    <path d="M 130 120 Q 170 90 190 120" fill="none" stroke="url(#agentic-orange)" strokeWidth="1.5" strokeOpacity="0.5" strokeDasharray="3 3"/>
-                    <path d="M 350 120 Q 380 90 410 120" fill="none" stroke="url(#agentic-green)" strokeWidth="1.8" strokeOpacity="0.8" markerEnd="url(#diag-arrow-green)"/>
-
-                    {/* Resolved Checklist speech bubble */}
-                    <line x1="396" y1="118" x2="418" y2="108" stroke="white" strokeWidth="1" strokeOpacity="0.5"/>
-                    <rect x="418" y="52" width="112" height="80" rx="12" fill="#0b0f19" stroke="url(#agentic-green)" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-green)"/>
-                    <path d="M 418 96 L 402 108 L 422 106 Z" fill="#0b0f19" stroke="#00c875" strokeWidth="1.2" strokeOpacity="0.8"/>
-                    
-                    <text x="430" y="78" fill="#00c875" fontSize="9" fontWeight="black" fontFamily="sans-serif">✓</text>
-                    <text x="444" y="78" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace">Payload parsed</text>
-                    <text x="430" y="96" fill="#00c875" fontSize="9" fontWeight="black" fontFamily="sans-serif">✓</text>
-                    <text x="444" y="96" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace">DAG orchestrated</text>
-                    <text x="430" y="114" fill="#00c875" fontSize="9" fontWeight="black" fontFamily="sans-serif">✓</text>
-                    <text x="444" y="114" fill="white" fillOpacity="0.8" fontSize="9" fontFamily="monospace">Tx committed</text>
-
-                    {/* ── BOTTOM: Modernization Metrics & Status Panel ── */}
-                    <rect x="40" y="274" width="460" height="90" rx="30" stroke="white" strokeWidth="1.5" strokeOpacity="0.8"/>
-                    {/* Segment fills */}
-                    <rect x="155" y="274" width="115" height="90" fill="#1a1a1a" fillOpacity="0.5" clipPath="url(#capsule-clip-agent)"/>
-                    <rect x="385" y="274" width="115" height="90" fill="url(#agentic-green)" fillOpacity="0.1" clipPath="url(#capsule-clip-agent)"/>
-                    
-                    {/* Dividers */}
-                    <line x1="155" y1="274" x2="155" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
-                    <line x1="270" y1="274" x2="270" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
-                    <line x1="385" y1="274" x2="385" y2="364" stroke="white" strokeWidth="1" strokeOpacity="0.3"/>
-
-                    {/* Section 1: Ingest */}
-                    <g transform="translate(82, 290)">
-                      <circle cx="15" cy="15" r="12" fill="none" stroke="white" strokeOpacity="0.4" strokeWidth="1.2" />
-                      <circle cx="15" cy="15" r="6" fill="none" stroke="#ea580c" strokeOpacity="0.6" strokeWidth="1.2" />
-                      <line x1="15" y1="0" x2="15" y2="30" stroke="white" strokeOpacity="0.3" />
-                      <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
-                      <line x1="-5" y1="15" x2="35" y2="15" stroke="#ea580c" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-orange)" />
+                    {/* ── LEFT: ENTERPRISE SYSTEMS / SERVER CLUSTER ── */}
+                    <g transform="translate(10, 180)">
+                      {/* Rack 1 */}
+                      <rect x="0" y="20" width="40" height="90" rx="4" fill="#0f172a" stroke="#22d3ee" strokeWidth="1.5" filter="url(#glow-cyan-intense)" />
+                      <line x1="5" y1="35" x2="35" y2="35" stroke="#22d3ee" strokeWidth="2" />
+                      <line x1="5" y1="55" x2="25" y2="55" stroke="#60a5fa" strokeWidth="2" />
+                      <line x1="5" y1="75" x2="35" y2="75" stroke="#22d3ee" strokeWidth="2" />
+                      <circle cx="30" cy="55" r="3" fill="#22d3ee" />
+                      
+                      {/* Rack 2 */}
+                      <rect x="50" y="0" width="50" height="110" rx="4" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense)" />
+                      <line x1="60" y1="20" x2="90" y2="20" stroke="#3b82f6" strokeWidth="2" />
+                      <line x1="60" y1="40" x2="80" y2="40" stroke="#60a5fa" strokeWidth="2" />
+                      <line x1="60" y1="60" x2="90" y2="60" stroke="#3b82f6" strokeWidth="2" />
+                      <line x1="60" y1="80" x2="85" y2="80" stroke="#22d3ee" strokeWidth="2" />
+                      <circle cx="85" cy="40" r="4" fill="#60a5fa" />
+                      <circle cx="70" cy="100" r="3" fill="#ef4444" /> {/* Blinking error maybe */}
                     </g>
-                    <text x="97" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">1. INGEST</text>
+                    <text x="55" y="325" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="monospace">ENTERPRISE CLOUD</text>
+                    <text x="55" y="340" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">EVENTS &amp; TRIGGERS</text>
 
-                    {/* Section 2: Orchestrate */}
-                    <g transform="translate(192, 290)">
-                      <circle cx="15" cy="8" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
-                      <circle cx="6" cy="20" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
-                      <circle cx="24" cy="20" r="4.5" fill="none" stroke="white" strokeWidth="1.2" strokeOpacity="0.6"/>
-                      <line x1="12" y1="11" x2="8" y2="17" stroke="#7f53f9" strokeWidth="1.2" />
-                      <line x1="18" y1="11" x2="22" y2="17" stroke="#7f53f9" strokeWidth="1.2" />
-                      <line x1="10.5" y1="20" x2="19.5" y2="20" stroke="#7f53f9" strokeWidth="1.2" />
-                      <circle cx="15" cy="8" r="2" fill="#7f53f9" filter="url(#glow-purple)"/>
+                    {/* Connection from Servers to Core */}
+                    <path d="M 120 230 C 150 230, 180 220, 205 210" fill="none" stroke="#22d3ee" strokeWidth="2.5" filter="url(#glow-cyan-intense)" strokeDasharray="8 8">
+                      <animate attributeName="stroke-dashoffset" from="16" to="0" dur="1s" repeatCount="indefinite" />
+                    </path>
+                    {/* Agent Drone 1 carrying data */}
+                    <g transform="translate(150, 215)">
+                      <polygon points="0,-8 10,0 0,8 -10,0" fill="#22d3ee" filter="url(#glow-cyan-intense)" />
+                      <circle cx="0" cy="0" r="3" fill="#0f172a" />
                     </g>
-                    <text x="212" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">2. ORCHESTRATE</text>
 
-                    {/* Section 3: Execute */}
-                    <g transform="translate(312, 290)">
-                      <rect x="5" y="4" width="20" height="22" rx="3" fill="none" stroke="#00f0ff" strokeWidth="1.5" strokeOpacity="0.8" filter="url(#glow-cyan)"/>
-                      <path d="M 11 12 L 19 12 M 11 17 L 17 17 M 15 8 L 19 8" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+                    {/* ── TOP RIGHT: HUMAN AI COMMANDER ── */}
+                    <g transform="translate(380, 40)">
+                      {/* High-tech desk */}
+                      <path d="M 0 90 L 120 90 L 100 55 L 20 55 Z" fill="#1e293b" stroke="#3b82f6" strokeWidth="1.5" />
+                      {/* Console Screen */}
+                      <path d="M 25 20 Q 60 10 95 20 L 90 50 Q 60 40 30 50 Z" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense)" />
+                      {/* Screen UI */}
+                      <line x1="40" y1="28" x2="80" y2="28" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="35" y1="36" x2="65" y2="36" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="75" y1="36" x2="85" y2="36" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" />
+                      <circle cx="50" cy="45" r="4" fill="#ef4444" /> {/* Alert */}
+                      
+                      {/* Human Commander */}
+                      <circle cx="60" cy="-5" r="14" fill="#64748b" />
+                      <path d="M 35 45 C 35 15, 85 15, 85 45 L 90 90 L 30 90 Z" fill="#475569" />
+                      <path d="M 85 45 C 105 45, 105 60, 85 60" fill="none" stroke="#475569" strokeWidth="10" strokeLinecap="round" /> {/* Arm interacting */}
                     </g>
-                    <text x="327" y="348" textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="9" fontFamily="monospace">3. EXECUTE</text>
+                    <text x="440" y="155" textAnchor="middle" fill="#93c5fd" fontSize="10" fontWeight="bold" fontFamily="monospace">AI COMMANDER</text>
+                    <text x="440" y="170" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">HUMAN IN THE LOOP</text>
 
-                    {/* Section 4: Sync */}
-                    <g transform="translate(415, 290)">
-                      <path d="M 5 25 A 20 20 0 0 1 45 25" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.3" strokeLinecap="round"/>
-                      <path d="M 5 25 A 20 20 0 0 1 35 11" fill="none" stroke="#00c875" strokeWidth="3" strokeLinecap="round" filter="url(#glow-green)"/>
-                      <line x1="25" y1="25" x2="35" y2="12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                      <circle cx="25" cy="25" r="3" fill="white"/>
+                    {/* Connection from Core to Commander */}
+                    <path d="M 325 160 C 350 140, 380 120, 410 100" fill="none" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense)" strokeDasharray="6 6">
+                      <animate attributeName="stroke-dashoffset" from="12" to="0" dur="1s" repeatCount="indefinite" />
+                    </path>
+
+                    {/* ── BOTTOM RIGHT: EXECUTION PIPELINE / FACTORY ── */}
+                    <g transform="translate(370, 230)">
+                      {/* Pipeline Base */}
+                      <path d="M 0 80 L 140 80 L 115 30 L 25 30 Z" fill="#0f172a" stroke="#22d3ee" strokeWidth="2" filter="url(#glow-cyan-intense)" />
+                      {/* Factory Execution Node 1 */}
+                      <circle cx="40" cy="15" r="16" fill="#1e293b" stroke="#0891b2" strokeWidth="2" />
+                      <circle cx="40" cy="15" r="8" fill="#22d3ee" filter="url(#glow-cyan-intense)" />
+                      {/* Factory Execution Node 2 */}
+                      <circle cx="100" cy="15" r="16" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" />
+                      <circle cx="100" cy="15" r="8" fill="#3b82f6" filter="url(#glow-blue-intense)" />
+                      {/* Laser Cutter / Processor arm */}
+                      <path d="M 70 -25 L 70 5 L 85 10" fill="none" stroke="#475569" strokeWidth="6" strokeLinecap="round" />
+                      <circle cx="85" cy="10" r="3" fill="#ef4444" filter="url(#glow-blue-intense)" />
+                      <line x1="85" y1="13" x2="95" y2="25" stroke="#ef4444" strokeWidth="2" /> {/* Laser beam */}
+                      
+                      {/* Processing Data block on conveyor */}
+                      <rect x="35" y="45" width="20" height="15" rx="2" fill="#60a5fa" filter="url(#glow-blue-intense)" />
+                      <rect x="85" y="45" width="20" height="15" rx="2" fill="#22d3ee" filter="url(#glow-cyan-intense)" />
+                      {/* Conveyor Belt */}
+                      <line x1="20" y1="65" x2="120" y2="65" stroke="#475569" strokeWidth="4" strokeDasharray="8 4" />
                     </g>
-                    <text x="442" y="348" textAnchor="middle" fill="#00c875" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">4. SYNC</text>
+                    <text x="440" y="325" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="monospace">WORKFLOW EXECUTION</text>
+                    <text x="440" y="340" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">AUTONOMOUS COMMIT</text>
+
+                    {/* Connection from Core to Factory */}
+                    <path d="M 330 210 C 360 210, 390 220, 420 240" fill="none" stroke="#22d3ee" strokeWidth="2.5" filter="url(#glow-cyan-intense)" strokeDasharray="8 8">
+                      <animate attributeName="stroke-dashoffset" from="0" to="16" dur="1s" repeatCount="indefinite" />
+                    </path>
+                    {/* Agent Drone 2 carrying payload to execution */}
+                    <g transform="translate(370, 220)">
+                      <polygon points="0,-8 10,0 0,8 -10,0" fill="#3b82f6" filter="url(#glow-blue-intense)" />
+                      <circle cx="0" cy="0" r="3" fill="#0f172a" />
+                    </g>
+
+                    {/* ── TOP LEFT: RAG KNOWLEDGE BASE ── */}
+                    <g transform="translate(60, 40)">
+                      <path d="M 20 0 L 60 20 L 40 40 L 0 20 Z" fill="#1e293b" stroke="#60a5fa" strokeWidth="1.5" />
+                      <path d="M 20 15 L 60 35 L 40 55 L 0 35 Z" fill="#1e293b" stroke="#3b82f6" strokeWidth="1.5" />
+                      <path d="M 20 30 L 60 50 L 40 70 L 0 50 Z" fill="#0f172a" stroke="#1d4ed8" strokeWidth="2" filter="url(#glow-blue-intense)" />
+                      <circle cx="30" cy="25" r="4" fill="#60a5fa" />
+                    </g>
+                    <text x="90" y="130" textAnchor="middle" fill="#93c5fd" fontSize="9" fontWeight="bold" fontFamily="monospace">ENTERPRISE KNOWLEDGE</text>
+                    <path d="M 110 90 C 150 110, 180 140, 220 160" fill="none" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow-blue-intense)" strokeDasharray="4 4">
+                       <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.8s" repeatCount="indefinite" />
+                    </path>
+
+                    {/* ── CENTER GLOBE / ORCHESTRATOR BRAIN ── */}
+                    <g transform="translate(195, 135)">
+                      {/* Brain Core Outer */}
+                      <circle cx="75" cy="75" r="85" fill="#0f172a" stroke="url(#agentic-blue-glow)" strokeWidth="3" filter="url(#glow-blue-intense)"/>
+                      <circle cx="75" cy="75" r="85" fill="url(#agentic-slate-grad)" fillOpacity="0.9"/>
+                      
+                      {/* Brain Data Rings */}
+                      <circle cx="75" cy="75" r="65" fill="none" stroke="#22d3ee" strokeWidth="1.5" strokeDasharray="10 15">
+                        <animateTransform attributeName="transform" type="rotate" from="0 75 75" to="360 75 75" dur="10s" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="75" cy="75" r="45" fill="none" stroke="#60a5fa" strokeWidth="2" strokeDasharray="20 10">
+                        <animateTransform attributeName="transform" type="rotate" from="360 75 75" to="0 75 75" dur="7s" repeatCount="indefinite" />
+                      </circle>
+
+                      {/* Inner Core */}
+                      <circle cx="75" cy="75" r="28" fill="#1e293b" stroke="#00f0ff" strokeWidth="2" filter="url(#glow-cyan-intense)"/>
+                      <foreignObject x="55" y="55" width="40" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full flex items-center justify-center text-white">
+                          <BrainCircuit size={24} />
+                        </div>
+                      </foreignObject>
+                    </g>
+                    <text x="270" y="325" textAnchor="middle" fill="#93c5fd" fontSize="12" fontWeight="bold" fontFamily="monospace" letterSpacing="2">AGENTIC ORCHESTRATOR</text>
+                    <text x="270" y="340" textAnchor="middle" fill="#60a5fa" fontSize="9" fontFamily="monospace">REASON &gt; PLAN &gt; EXECUTE</text>
                   </svg>
                 </div>
               ) ) : null}
@@ -2137,6 +2106,21 @@ const featureMicros   = service.featureMicros
                   else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else if (i === 8) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else if (i === 9) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 12) {
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 3) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 7) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 8) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 11) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 14) {
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 3) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 7) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 8) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 11) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else if (i === 13) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 }
 
