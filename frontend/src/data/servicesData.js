@@ -1147,7 +1147,15 @@ export const servicesData = {
     // missing: the diagram beside this paragraph shows a GUARDRAILS stage and
     // the paragraph did not mention it, which under-sold the page against its
     // own artwork.
-    whatIsPara2: 'Retrieval-augmented generation over your corpus, prompt and context engineering held under version control, guardrails on both sides of the model, model routing that keeps cost proportionate to the question, and evaluation that runs on every change. Fine-tuning where form matters — after retrieval, not instead of it.',
+    whatIsPara2: 'Retrieval-augmented generation over your corpus, prompt and context engineering held under version control, guardrails on both sides of the model, model routing that keeps cost proportionate to the question, and evaluation that runs on every change. Fine-tuning where form matters, after retrieval rather than instead of it.',
+
+    // Two paragraphs added to carry the section's two remaining arguments:
+    // what survives a vendor change, and what the system does when it does not
+    // know. Both are elaborated later on the page (the ownership FAQ and the
+    // comparison table), so these are deliberately written in different
+    // sentences rather than lifted forward.
+    whatIsPara3: 'Model vendors are rented and replaced. What persists is the corpus, the retrieval configuration, the versioned prompts and the evaluation set that proves any of it works. Those are the durable assets, and they carry from the first workflow to the twentieth.',
+    whatIsPara4: 'When retrieval returns nothing relevant, the system says so. A refusal is an output, not a fault. An institution comes to rely on a system that admits the limits of what it holds, and stops relying on one that is fluent about everything.',
     // Four unsourced performance claims stood here: faster output, cost per
     // asset, model accuracy, and a count of deployments across industries. The
     // last two are the dangerous ones — an accuracy figure is unanswerable
@@ -1160,14 +1168,14 @@ export const servicesData = {
     // the toolchain section, and the fourth is a property of what we build
     // rather than a measurement of how well it performed.
     businessMetrics: [
-      { title: 'Use-Case Triage',   desc: 'From your candidate list to a scored shortlist — which use cases have the evidence to be grounded, and which do not.',                        value: '2',  suffix: ' wks', metricLabel: 'To a Scored Shortlist', icon: 'Search'      },
+      { title: 'Use-Case Triage',   desc: 'From your candidate list to a scored shortlist. Which use cases have the evidence to be grounded, and which do not.',                          value: '2',  suffix: ' wks', metricLabel: 'To a Scored Shortlist', icon: 'Search'      },
       { title: 'First Workflow',    desc: 'One workflow taken to production on your corpus, with retrieval, guardrails, an evaluation set and cost telemetry in place.',                   value: '8',  suffix: ' wks', metricLabel: 'To Production',        icon: 'Rocket'      },
       // Named "Toolchain Layers", not "Layers Standardized": the architecture
       // section on the same page is headed "The 4-Layer Stack", and two
       // different counts under one word read as an error even though both are
       // right. These six are the toolsStack rows; those four are the
       // architectureNodes.
-      { title: 'Toolchain Layers',  desc: 'Models, retrieval, orchestration, guardrails, evaluation and tuning — each with a managed and a self-hosted option, chosen per constraint.',   value: '6',  suffix: '',     metricLabel: 'Toolchain Layers',     icon: 'Layers'      },
+      { title: 'Toolchain Layers',  desc: 'Models, retrieval, orchestration, guardrails, evaluation and tuning. Each carries a managed and a self-hosted option, chosen per constraint.', value: '6',  suffix: '',     metricLabel: 'Toolchain Layers',     icon: 'Layers'      },
       { title: 'Cited Answers',     desc: 'Answers are returned with the passage they were drawn from, and the system declines rather than guessing when retrieval finds nothing relevant.', value: '100', suffix: '%',   metricLabel: 'Carry Their Source',   icon: 'BrainCircuit'},
     ],
     // ── Section eyebrow ────────────────────────────────────────────────────
