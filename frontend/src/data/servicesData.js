@@ -1125,7 +1125,7 @@ export const servicesData = {
     // is built on (retrieval, guardrails, evaluation, serving), shortDescription
     // makes the grounding claim. The previous copy promised image generation and
     // content creation, neither of which this page delivers.
-    fullDescription: 'Enterprise generative AI engineered for production — grounded retrieval, guardrails either side of the model, evaluation on every change, and unit economics that hold at volume.',
+    fullDescription: 'Enterprise generative AI engineered for production with grounded retrieval, strict guardrails and scalable unit economics.',
     keyFeatures: ['LLM implementation', 'Custom model fine-tuning', 'Content generation', 'Code generation', 'Enterprise AI assistants'],
     relatedServiceSlugs: ['agentic-ai', 'ai-governance', 'mlops'],
     featured: true,
