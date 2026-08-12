@@ -13,7 +13,7 @@ import { prisma } from '../../../lib/prisma';
 import logger from '../../../utils/logger';
 import type { CorrelationPattern } from '../../../kangqore-immp/correlation/kimmpCorrelation.service';
 import type { OpportunityDimensions, PriorityTier } from './types';
-import { DIMENSION_WEIGHTS, TOTAL_WEIGHT, EFFORT_MULTIPLIERS } from './weights';
+import { TOTAL_WEIGHT, EFFORT_MULTIPLIERS } from './weights';
 import { scoreEvidence } from './dimensions/evidence';
 import { scoreConfidence } from './dimensions/confidence';
 import { scoreVisibilityPotential } from './dimensions/visibilityPotential';
@@ -61,10 +61,10 @@ export class OpportunityScoringEngine {
         evidence: scoreEvidence(signals),
         confidence: scoreConfidence(pattern.confidence, signals),
         visibilityPotential: scoreVisibilityPotential(pattern.severity),
-        strategicAlignment: scoreStrategicAlignment(),
+        strategicAlignment: await scoreStrategicAlignment(entitySlugs),
         businessValue: scoreBusinessValue(),
-        conversionPotential: scoreConversionPotential(),
-        effort: scoreEffort(),
+        conversionPotential: await scoreConversionPotential(entitySlugs),
+        effort: await scoreEffort(entitySlugs),
       };
 
       // Weighted average over whatever's actually scored (excludes effort —

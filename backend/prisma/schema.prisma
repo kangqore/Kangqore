@@ -2187,6 +2187,7 @@ model KangqoreVisDataSource {
   updatedAt  DateTime                   @updatedAt
 
   ingestions KangqoreVisIngestionJob[]
+  outcomes   KangqoreVisOutcome[]
 
   @@map("kangqore_vis_data_sources")
 }
@@ -2468,6 +2469,54 @@ model KangqoreVisOpportunity {
   @@index([priorityScore])
   @@index([status])
   @@map("kangqore_vis_opportunities")
+}
+
+// ─── VIS 3.2 — Strategic Context ────────────────────────────────────────────
+// Which industries/services/products/pillars Kangqore itself considers
+// strategically important, for OpportunityScoringEngine's Strategic
+// Alignment dimension. Seeded from the CTO-approved
+// eqore-lead-intelligence/taxonomy/*.ts (see PriorityRegistryImporter),
+// then runtime-editable — not a competing source of truth, a superset with
+// weight/pillar/lifecycle fields the source taxonomy doesn't have.
+model KangqoreVisPriorityRegistry {
+  id               String    @id @default(cuid())
+  priorityIndustry String?
+  priorityService  String?
+  priorityProduct  String?
+  strategicPillar  String?
+  priorityWeight   Float     @default(0.5)
+  effectiveDate    DateTime  @default(now())
+  active           Boolean   @default(true)
+  source           String    @default("manual")
+  notes            String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([active])
+  @@map("kangqore_vis_priority_registry")
+}
+
+// ─── VIS 3.4 — Outcome Telemetry ────────────────────────────────────────────
+// Real metric values pulled from a connected data-source adapter
+// (google-search-console, google-analytics-4, etc. — see data-sources/).
+// As of this migration, zero adapters have credentials configured, so this
+// table is expected to be empty until a real adapter's fetch() is
+// implemented — that's intentional, not a bug (see OutcomeSyncService).
+model KangqoreVisOutcome {
+  id           String   @id @default(cuid())
+  dataSourceId String
+  blueprintId  String?
+  metric       String
+  value        Float
+  measuredAt   DateTime
+  capturedAt   DateTime @default(now())
+  raw          Json?
+
+  dataSource KangqoreVisDataSource @relation(fields: [dataSourceId], references: [id], onDelete: Cascade)
+
+  @@index([blueprintId])
+  @@index([metric, measuredAt])
+  @@map("kangqore_vis_outcomes")
 }
 
 enum InviteeStatus {
