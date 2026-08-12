@@ -1126,6 +1126,7 @@ export const servicesData = {
     // makes the grounding claim. The previous copy promised image generation and
     // content creation, neither of which this page delivers.
     fullDescription: 'Enterprise generative AI engineered for production with grounded retrieval, strict guardrails and scalable unit economics.',
+    fullDescriptionMaxWidth: 'max-w-[700px]',
     keyFeatures: ['LLM implementation', 'Custom model fine-tuning', 'Content generation', 'Code generation', 'Enterprise AI assistants'],
     relatedServiceSlugs: ['agentic-ai', 'ai-governance', 'mlops'],
     featured: true,
@@ -1183,6 +1184,57 @@ export const servicesData = {
     // this service's name already ends in "Services" — the page shipped reading
     // "WHAT GENAI BUSINESS SERVICES SERVICES DOES KANGQORE OFFER?".
     whatIsEyebrow: 'What does Kangqore build with generative AI?',
+
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'Every layer.',
+      titleHighlight: 'Deployed on your terms.',
+      subtitle: 'Model vendors change every few months and the stack around them does not. These are the six layers we standardize once and reuse across every team that follows. Both options at each layer are viable in production — which one you get depends on where your data is allowed to go, the volume it runs at, and who you want operating it at three in the morning.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Foundation models',
+          managed: 'GPT-4o · Claude · Gemini · Amazon Bedrock',
+          selfHosted: 'Llama · Mistral · Qwen on your own GPUs',
+          desc: 'Managed models are the fastest path to production. Self-hosted models are required when data privacy, latency, or specific domain tuning is paramount.',
+        },
+        {
+          icon: 'Database',
+          title: 'Retrieval & vector search',
+          managed: 'Azure AI Search · Vertex AI Search · Pinecone',
+          selfHosted: 'pgvector · Qdrant · Weaviate · OpenSearch',
+          desc: 'Vector databases store the embeddings used for retrieval. Managed options scale effortlessly, while self-hosted options integrate deeply with existing data infrastructure.',
+        },
+        {
+          icon: 'Network',
+          title: 'Orchestration & context',
+          managed: 'Azure AI Foundry · Vertex AI Agent Builder',
+          selfHosted: 'LangGraph · LlamaIndex · Semantic Kernel',
+          desc: 'The orchestration layer connects the user prompt to the retrieval engine and the foundation model. Open source frameworks give you absolute control over the execution graph.',
+        },
+        {
+          icon: 'Shield',
+          title: 'Guardrails & safety',
+          managed: 'Azure Content Safety · Bedrock Guardrails',
+          selfHosted: 'Llama Guard · NeMo Guardrails · custom classifiers',
+          desc: 'Guardrails intercept malicious prompts before they reach the model, and filter harmful outputs before they reach the user. Mandatory for any enterprise deployment.',
+        },
+        {
+          icon: 'Activity',
+          title: 'Evaluation & observability',
+          managed: 'Azure AI Evaluation · Vertex AI Evaluation',
+          selfHosted: 'Ragas · DeepEval · LangSmith · Langfuse · Phoenix',
+          desc: 'Evaluation frameworks run tests on every change to prove the system works. Observability platforms trace every call to diagnose latency and track costs.',
+        },
+        {
+          icon: 'Settings',
+          title: 'Fine-tuning & serving',
+          managed: 'Bedrock customization · Vertex AI tuning · OpenAI fine-tuning',
+          selfHosted: 'LoRA & QLoRA · vLLM · Text Generation Inference',
+          desc: 'Fine-tuning adapts a model to your specific domain or format. Self-hosted serving engines like vLLM maximize throughput and minimize latency for high-volume inference.',
+        },
+      ]
+    },
 
     // ── Hero ───────────────────────────────────────────────────────────────
     // Replaces the Cognition department defaults: the badge read "Reasoning.

@@ -2249,6 +2249,227 @@ model KangqoreVisGovernanceCheck {
   @@map("kangqore_vis_governance_checks")
 }
 
+// ─── Taxonomy expansion modules ─────────────────────────────────────────────
+// Standalone models (no formal relation back to KangqoreVisPageBlueprint,
+// same precedent as KangqoreVisBacklink / KangqoreVisKpiSnapshot above) — one
+// per new kangqore-vis module. blueprintId is a loose optional reference.
+
+model KangqoreVisLocaleTarget {
+  id         String   @id @default(cuid())
+  blueprintId String?
+  locale     String
+  hreflang   String
+  targetUrl  String
+  isDefault  Boolean  @default(false)
+  status     String   @default("ACTIVE")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([locale])
+  @@index([blueprintId])
+  @@map("kangqore_vis_locale_targets")
+}
+
+model KangqoreVisLocalListing {
+  id              String    @id @default(cuid())
+  businessName    String
+  addressLine     String
+  city            String
+  region          String
+  country         String
+  postalCode      String
+  phone           String?
+  gmbUrl          String?
+  napConsistent   Boolean   @default(false)
+  lastVerifiedAt  DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([city, country])
+  @@map("kangqore_vis_local_listings")
+}
+
+model KangqoreVisPageTemplate {
+  id                String    @id @default(cuid())
+  name              String    @unique
+  slugPattern       String
+  variableSchema    Json
+  pageType          String
+  generatedCount    Int       @default(0)
+  lastGeneratedAt   DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@map("kangqore_vis_page_templates")
+}
+
+model KangqoreVisAiCitation {
+  id         String   @id @default(cuid())
+  engine     String
+  prompt     String   @db.Text
+  citedUrl   String?
+  snippet    String?  @db.Text
+  cited      Boolean  @default(false)
+  checkedAt  DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  @@index([engine, checkedAt])
+  @@map("kangqore_vis_ai_citations")
+}
+
+model KangqoreVisExperiment {
+  id          String    @id @default(cuid())
+  name        String
+  hypothesis  String?   @db.Text
+  blueprintId String?
+  variantA    String    @db.Text
+  variantB    String    @db.Text
+  metric      String
+  status      String    @default("DRAFT")
+  winner      String?
+  startedAt   DateTime?
+  endedAt     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([blueprintId])
+  @@map("kangqore_vis_experiments")
+}
+
+model KangqoreVisUxFinding {
+  id          String   @id @default(cuid())
+  blueprintId String?
+  source      String
+  findingType String
+  severity    String   @default("MEDIUM")
+  description String   @db.Text
+  resolved    Boolean  @default(false)
+  foundAt     DateTime @default(now())
+
+  @@index([resolved])
+  @@index([blueprintId])
+  @@map("kangqore_vis_ux_findings")
+}
+
+model KangqoreVisA11yIssue {
+  id             String   @id @default(cuid())
+  blueprintId    String?
+  url            String
+  wcagCriterion  String?
+  impact         String
+  description    String   @db.Text
+  selector       String?
+  resolved       Boolean  @default(false)
+  scannedAt      DateTime @default(now())
+
+  @@index([resolved])
+  @@index([url])
+  @@map("kangqore_vis_a11y_issues")
+}
+
+model KangqoreVisTopicRelevance {
+  id             String   @id @default(cuid())
+  blueprintId    String?
+  queryTerm      String
+  relevanceScore Float
+  isGap          Boolean  @default(false)
+  scoredAt       DateTime @default(now())
+
+  @@index([blueprintId])
+  @@index([isGap])
+  @@map("kangqore_vis_topic_relevance")
+}
+
+model KangqoreVisVideoAsset {
+  id               String   @id @default(cuid())
+  blueprintId      String?
+  title            String
+  url              String
+  thumbnailUrl     String?
+  durationSeconds  Int?
+  transcript       String?  @db.Text
+  hasVideoSchema   Boolean  @default(false)
+  sitemapIncluded  Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([blueprintId])
+  @@map("kangqore_vis_video_assets")
+}
+
+model KangqoreVisImageAsset {
+  id               String   @id @default(cuid())
+  blueprintId      String?
+  url              String
+  altText          String?
+  width            Int?
+  height           Int?
+  lazyLoaded       Boolean  @default(false)
+  sitemapIncluded  Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([blueprintId])
+  @@map("kangqore_vis_image_assets")
+}
+
+model KangqoreVisVoiceQuery {
+  id                  String   @id @default(cuid())
+  blueprintId         String?
+  conversationalQuery String   @db.Text
+  speakableSelector   String?
+  answered            Boolean  @default(false)
+  createdAt           DateTime @default(now())
+
+  @@index([blueprintId])
+  @@index([answered])
+  @@map("kangqore_vis_voice_queries")
+}
+
+model KangqoreVisContentAsset {
+  id            String                 @id @default(cuid())
+  blueprintId   String?
+  format        String
+  url           String?
+  schemaKind    KangqoreVisSchemaKind?
+  coverageNote  String?                @db.Text
+  createdAt     DateTime               @default(now())
+
+  @@index([blueprintId])
+  @@index([format])
+  @@map("kangqore_vis_content_assets")
+}
+
+// ─── VIS 3.1 — Opportunity Scoring ──────────────────────────────────────────
+// The first-class "Opportunity" object the VIS Intelligence Kernel produces:
+// evidence + confidence + visibility potential are real (scored from actual
+// signals); strategic alignment / business value / conversion potential /
+// effort are explicitly unscored until VIS 3.2/3.3 exist (see `dimensions`
+// json — each carries a status of AVAILABLE|UNAVAILABLE|CONFIGURED|ESTIMATED,
+// never a fabricated number).
+model KangqoreVisOpportunity {
+  id                       String   @id @default(cuid())
+  title                    String
+  entitySlugs              String[]
+  contributingCapabilities String[]
+  evidenceSignalIds        String[]
+  dimensions               Json
+  baseOpportunityScore     Float
+  priorityScore            Float
+  priorityTier             String   @default("LOW")
+  certainty                Float
+  recommendation           String   @db.Text
+  decisionId               String?
+  status                   String   @default("DETECTED")
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@index([priorityScore])
+  @@index([status])
+  @@map("kangqore_vis_opportunities")
+}
+
 enum InviteeStatus {
   PENDING
   ACCEPTED

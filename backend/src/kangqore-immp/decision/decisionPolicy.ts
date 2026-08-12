@@ -186,6 +186,23 @@ export function decide(signal: SignalLike): DecisionProposal | null {
   }
 
   if (signal.signalCategory === 'CONTENT') {
+    // AUTHORITY_OPPORTUNITY is a strategic-tier finding — 3+ independent VIS
+    // capabilities converged on the same theme (see kimmpCorrelation.service.ts
+    // Rule 5), not a single-source content gap. Route it distinctly so the
+    // executor can draft a real page blueprint instead of just promoting an
+    // existing kimmpPageOpportunity.
+    if (signal.signalType === 'AUTHORITY_OPPORTUNITY') {
+      const p = Math.max(priority, 21);
+      return {
+        decisionType: 'AUTHORITY_OPPORTUNITY',
+        recommendedAction: signal.signalValue,
+        targetModule: 'vis',
+        reasoning: `Cross-module VIS correlation: ${signal.signalValue}`,
+        priority: p,
+        tier: tierForPriority(p),
+      };
+    }
+
     return {
       decisionType: 'CONTENT_OPPORTUNITY',
       recommendedAction: `Visitors are repeatedly asking about "${signal.signalValue}" — review the page opportunity and consider generating or publishing a page for this topic.`,
