@@ -1118,7 +1118,14 @@ export const servicesData = {
     // transformation" — seven words describing the category, in the one slot
     // optimized for voice. Not the meta description; seoData supplies that.
     shortDescription: 'Kangqore builds generative AI systems that retrieve from your own documents before they answer, and show the passage they used.',
-    fullDescription: 'Leverage generative AI technologies including LLMs, image generation, and content creation for business applications.',
+    // Renders as the hero paragraph and feeds Service.description in the JSON-LD,
+    // so it has to stand alone as a definition. It also sits roughly one screen
+    // above shortDescription, which is the data-speakable sentence — so the two
+    // divide the work rather than echo: this one names the four layers the page
+    // is built on (retrieval, guardrails, evaluation, serving), shortDescription
+    // makes the grounding claim. The previous copy promised image generation and
+    // content creation, neither of which this page delivers.
+    fullDescription: 'Enterprise generative AI engineered for production — grounded retrieval, guardrails either side of the model, evaluation on every change, and unit economics that hold at volume.',
     keyFeatures: ['LLM implementation', 'Custom model fine-tuning', 'Content generation', 'Code generation', 'Enterprise AI assistants'],
     relatedServiceSlugs: ['agentic-ai', 'ai-governance', 'mlops'],
     featured: true,

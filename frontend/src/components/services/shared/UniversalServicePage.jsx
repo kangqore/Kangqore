@@ -985,84 +985,22 @@ const featureMicros   = service.featureMicros
       <div id="svc-hero" className="p-2 h-screen" style={{ backgroundColor: 'var(--page-bg, #000)' }}>
         <div className="relative w-full h-full overflow-hidden rounded-xl text-white">
 
-          {service.showBeams ? (
-            <div className="absolute inset-0 w-full h-full bg-[#050505] overflow-hidden pointer-events-none">
-              <BackgroundBeams />
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent pointer-events-none z-10" />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/70 pointer-events-none z-10" />
-            </div>
-          ) : service.slug === 'agentic-ai' ? (
-            <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
-              <div className="absolute inset-0 z-0">
-                <Beams
-                  beamWidth={2}
-                  beamHeight={15}
-                  beamNumber={12}
-                  lightColor="#ffffff"
-                  speed={2}
-                  noiseIntensity={1.75}
-                  scale={0.2}
-                  rotation={0}
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent pointer-events-none z-10" />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none z-10" />
-            </div>
-          ) : service.slug === 'agentic-ai-led-application-modernization' ? (
-            <div className="absolute inset-0 w-full h-full bg-[#050505] overflow-hidden pointer-events-none">
-              <BackgroundNoiseGrid />
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent pointer-events-none z-10" />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/70 pointer-events-none z-10" />
-            </div>
-          ) : service.useAbstractHero ? (
-            <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
-              {/* Abstract Gradient Mesh */}
-              <div className="absolute -top-[20%] -left-[10%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-blue-600/20 via-cyan-500/10 to-transparent blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-              <div className="absolute top-[20%] -right-[15%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tl from-indigo-600/20 via-blue-500/10 to-transparent blur-[140px] animate-pulse" style={{ animationDuration: '12s' }} />
-              <div className="absolute -bottom-[20%] left-[20%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-t from-cyan-600/15 via-teal-500/5 to-transparent blur-[100px]" />
-
-              {/* Cybernetic Tech Grid */}
-              <div 
-                className="absolute inset-0 opacity-[0.14]" 
-                style={{
-                  backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px)`,
-                  backgroundSize: '4rem 4rem',
-                  maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
-                  WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)'
-                }}
+          <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 z-0">
+              <Beams
+                beamWidth={2}
+                beamHeight={15}
+                beamNumber={12}
+                lightColor="#ffffff"
+                speed={2}
+                noiseIntensity={1.75}
+                scale={0.2}
+                rotation={0}
               />
-
-              {/* Text-Free Animated Particle Field / Glowing Node Mesh */}
-              <svg className="absolute inset-0 w-full h-full opacity-35" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="hero-node-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.5" />
-                    <stop offset="50%" stopColor="#818cf8" stopOpacity="0.25" />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.05" />
-                  </linearGradient>
-                </defs>
-                <g stroke="url(#hero-node-grad)" strokeWidth="1" fill="none">
-                  <path d="M120,180 L380,110 L720,280 L1080,160 L1400,240 M380,110 L580,420 L920,380 M720,280 L1220,520 M280,580 L580,420 L980,660 M920,380 L1350,480" className="animate-pulse" style={{ animationDuration: '7s' }} />
-                </g>
-                <circle cx="120" cy="180" r="3" fill="#38bdf8" className="animate-ping" style={{ animationDuration: '3s' }} />
-                <circle cx="380" cy="110" r="2.5" fill="#818cf8" />
-                <circle cx="720" cy="280" r="4" fill="#38bdf8" />
-                <circle cx="1080" cy="160" r="3" fill="#60a5fa" />
-                <circle cx="580" cy="420" r="2.5" fill="#38bdf8" />
-                <circle cx="920" cy="380" r="3.5" fill="#818cf8" />
-                <circle cx="1220" cy="520" r="2.5" fill="#38bdf8" />
-                <circle cx="1400" cy="240" r="3" fill="#60a5fa" />
-              </svg>
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none" />
             </div>
-          ) : (
-            <>
-              <ResponsiveImage src={service.image} alt="" aria-hidden="true" loading="lazy" sizes="100vw" className="absolute inset-0 w-full h-full object-cover object-center" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/10 pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 pointer-events-none" />
-            </>
-          )}
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none z-10" />
+          </div>
 
           <div className="relative z-10 h-full flex flex-col justify-center">
             <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-16">
