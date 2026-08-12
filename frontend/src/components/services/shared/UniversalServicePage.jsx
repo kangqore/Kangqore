@@ -33,6 +33,7 @@ import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
 import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DModel';
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
 import { MLOps3DModel } from '../../ui/MLOps3DModel';
+import { GenAI3DModel } from '../../ui/GenAI3DModel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -3035,12 +3036,14 @@ const featureMicros   = service.featureMicros
               <AgenticAI3DModel />
             ) : service.slug === 'mlops' ? (
               <MLOps3DModel />
+            ) : service.slug === 'genai-business-services' ? (
+              <GenAI3DModel />
             ) : (
               service.toolsStack.image
             )
           }
           imageAlt={service.toolsStack.imageAlt}
-          inlineModel={service.slug === 'mlops'}
+          inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
         />
       )}
 
