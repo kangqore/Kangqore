@@ -1129,6 +1129,288 @@ export const servicesData = {
       { title: 'Model Accuracy',    desc: 'Fine-tuned enterprise model response accuracy on domain-specific knowledge and task benchmarks.',               value: '92', suffix: '%', metricLabel: 'Model Accuracy',      icon: 'BrainCircuit'},
       { title: 'Use Cases Live',    desc: 'Enterprise generative AI applications deployed and running across clients spanning 8+ industries.',             value: '40', suffix: '+', metricLabel: 'Use Cases Deployed',  icon: 'Layers'      },
     ],
+    // ── Section eyebrow ────────────────────────────────────────────────────
+    // The template default is `What ${name} services does Kangqore offer?`, and
+    // this service's name already ends in "Services" — the page shipped reading
+    // "WHAT GENAI BUSINESS SERVICES SERVICES DOES KANGQORE OFFER?".
+    whatIsEyebrow: 'What does Kangqore build with generative AI?',
+
+    // ── Hero ───────────────────────────────────────────────────────────────
+    // Replaces the Cognition department defaults: the badge read "Reasoning.
+    // Learning. Autonomous." and the strip ended "…Knowledge Graphs, Autonomous
+    // Agents, AI Governance" — agentic-AI language above the fold on a page
+    // about generative systems.
+    heroBadge: 'Generative AI Built to Ground',
+    heroStripItems: [
+      'Retrieval-Augmented Generation', 'Prompt & Context Engineering', 'Model Routing', 'Guardrails',
+      'Evaluation Suites', 'Fine-Tuning', 'Token Cost Control', 'Output Governance',
+    ],
+
+    // ── Comparison ─────────────────────────────────────────────────────────
+    // Without these the section inherits the agentic-AI framing: a lede about
+    // "who decides the next step" and columns headed TRADITIONAL AI vs AGENTIC
+    // AI, under a heading about generative AI.
+    comparisonTable: {
+      heading: 'A demo answers. A system answers correctly, every time.',
+      lede: 'Most generative AI reaches a convincing demo in two weeks. The gap to production is not model quality — it is everything that makes an answer trustworthy: where the facts came from, what the system refuses to say, how you know it is still right next month, and what it costs per thousand users rather than per demo.',
+      dimensionLabel: 'DIMENSION',
+      beforeLabel: 'DEMO-GRADE GENAI',
+      afterLabel: 'GOVERNED ENTERPRISE GENAI',
+      afterBadge: 'GROUNDED',
+      beforeShort: 'Demo-grade',
+      afterShort: 'Governed',
+      rows: [
+        { dimension: 'Grounding', before: 'The model answers from whatever it learned in pre-training. It is fluent about your business and occasionally wrong about it, and nothing distinguishes the two on screen.', after: 'Every answer is retrieved from your own corpus before it is generated, with the source passages returned alongside it — so a reader can check the claim, and an auditor can see what the model was looking at.' },
+        { dimension: 'Permissions', before: 'One index for everyone. A retrieval system that has read the whole intranet will happily quote the salary review to whoever asks.', after: 'Retrieval runs under the asking user\'s permissions, so the index cannot return a passage they could not already open. Access control lives in the retrieval layer, not in the prompt.' },
+        { dimension: 'Evaluation', before: 'Quality is whatever the person demoing it thought looked good. There is no holdout set, because there is no single correct answer to hold out against.', after: 'Graded rubrics over a fixed question set, adversarial suites for the failure modes that matter, and human review on the sample that decides promotion. A prompt change that lowers the score does not ship.' },
+        { dimension: 'Guardrails', before: 'The system will attempt any question asked of it, including the ones it should decline, and there is no record of what it was asked.', after: 'Refusal is designed, not hoped for: input classification, output filters, and an escalation path for anything outside remit — with the prompt, the retrieved context and the response retained for audit.' },
+        { dimension: 'Unit economics', before: 'Cost is a surprise at the end of the first full month, because inference is metered per token and nobody measured the tokens.', after: 'Token budgets per workflow, caching on the repeated questions that dominate real traffic, and routing that sends the easy majority to a smaller model. Cost per resolved query is a number you can quote.' },
+      ],
+    },
+
+    // ── Architecture ───────────────────────────────────────────────────────
+    // The Cognition default renders an AI Governance stack — policy layers,
+    // consent management, kill-switches. Those are real, but they are not how a
+    // generative system is built, and none of it mentions retrieval, prompts,
+    // evaluation or tokens on a page about generative AI.
+    architectureNodes: [
+      { title: 'Knowledge & Retrieval', icon: 'Database', description: 'Your documents chunked, embedded and indexed, with retrieval that runs under the asking user\'s permissions so an answer can never quote a source they could not open.', features: ['Chunking & Embedding', 'Hybrid Search', 'Permission-Aware Retrieval', 'Source Attribution'] },
+      { title: 'Orchestration & Context', icon: 'Network', description: 'Prompt templates and context assembly held as versioned artifacts, with routing that sends each request to the model that can answer it most cheaply.', features: ['Prompt Versioning', 'Context Assembly', 'Model Routing', 'Tool & Function Calling'] },
+      { title: 'Guardrails & Evaluation', icon: 'Shield', description: 'Refusal designed rather than hoped for, and quality measured on graded rubrics and adversarial suites — because there is no single correct answer to test against.', features: ['Input & Output Filters', 'Graded Rubrics', 'Adversarial Suites', 'Human Review Gates'] },
+      { title: 'Serving & Unit Economics', icon: 'Activity', description: 'Caching on the repeated questions that dominate real traffic, token budgets per workflow, and latency measured where the user waits rather than at the API.', features: ['Semantic Caching', 'Token Budgets', 'Latency SLOs', 'Per-Query Cost Telemetry'] },
+    ],
+
+    // ── Industries ─────────────────────────────────────────────────────────
+    // The inherited default listed eighteen "Agents" — Clinical Validation
+    // Agent, Pricing Fairness Agent, Consumer Privacy Agent — and interpolated
+    // the service name into prose, producing "Clinical GenAI business services
+    // validation". These name the work instead.
+    industryHeading: 'Generative systems,',
+    industryHeadingHighlight: 'grounded in your sector’s evidence.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Answers a compliance officer can trace to a document',
+        items: [
+          'Retrieval over policy, product and regulatory documents, with the source passage returned beside every answer',
+          'Adverse-action and complaint drafting where the underlying evidence is cited rather than paraphrased',
+          'Prompt, context and response retained per interaction, so a decision can be reconstructed months later',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Clinical drafting that never leaves the evidence behind',
+        items: [
+          'PHI redacted before retrieval and never written to prompt logs',
+          'Summaries grounded in the record they came from, with the passage shown for clinician review',
+          'Refusal on anything that would constitute diagnosis or dosing without a human in the loop',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industry',
+        headline: 'Thirty years of maintenance knowledge, searchable in a sentence',
+        items: [
+          'Retrieval across manuals, service bulletins and engineer field notes, including scanned documents',
+          'Procedure drafting that cites the revision it was generated from, so a superseded manual is visible',
+          'Deployment inside the plant network where equipment documentation cannot leave the site',
+        ],
+      },
+      {
+        industry: 'Retail & Consumer Goods',
+        headline: 'Catalog content at range scale, on brand and on claim',
+        items: [
+          'Product copy generated from attribute data rather than invented, with a brand rubric scored before publish',
+          'Regulated claims checked against an approved-claims list rather than left to the model',
+          'Localization that keeps the claim set intact across markets with different rules',
+        ],
+      },
+      {
+        industry: 'IT & Infrastructure',
+        headline: 'Incident context assembled while the incident is still open',
+        items: [
+          'Retrieval across runbooks, past incidents and change history to summarize what is likely happening',
+          'Draft remediation steps cited to the runbook that authorizes them, never freehand',
+          'Per-team token budgets and routing, so one noisy service cannot consume the inference spend',
+        ],
+      },
+      {
+        industry: 'EdTech & Higher Ed',
+        headline: 'Assessment and feedback with the reasoning shown',
+        items: [
+          'Feedback generated against a published rubric, with the criterion cited for each comment',
+          'Student data minimized before retrieval, with lineage evidence for audit',
+          'Human review required on anything affecting progression or a grade',
+        ],
+      },
+    ],
+
+    // ── Engagement outcomes ────────────────────────────────────────────────
+    // The Cognition fallback produced "99.9% Efficiency gain" and "100%
+    // operational reliability" — neither is a coherent quantity — over prose
+    // interpolated from the service name. These stay illustrative, but the
+    // metric is the arithmetic of the story rather than a number chosen first.
+    outcomeCard: {
+      illustrative: true,
+      metric: '4\\u00d7',
+      metricLabel: 'More questions resolved without a human',
+      industry: 'Banking & Financial Services',
+      problem: 'A support desk answered policy questions by hand because the first assistant they built was confidently wrong often enough that agents stopped trusting it. Deflection stalled at roughly one question in ten, and every wrong answer cost more to unpick than answering it manually would have.',
+      outcome: 'Answers are now retrieved from the policy corpus before they are generated, with the source passage shown beside each one, and the system declines rather than guesses when retrieval returns nothing relevant. Deflection moved from one question in ten to four, because agents could see what the answer was based on.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '62%',
+      metricLabel: 'Lower cost per resolved query',
+      industry: 'Retail & Consumer Goods',
+      problem: 'Every request went to the largest available model, including the repeated ones. The first full month of production inference cost several times the pilot estimate, and nobody could say which workflow was responsible.',
+      outcome: 'Semantic caching absorbed the repeated questions that made up most of real traffic, and routing sent the easy majority to a smaller model with the large one held for what needed it. Cost per resolved query fell 62% with no measured change in answer quality.',
+    },
+
+    // ── Engagement model ───────────────────────────────────────────────────
+    // Replaces the generic five tiers, whose descriptions were built from
+    // `${name.toLowerCase()}` and rendered "Comprehensive GenAI business
+    // services assessment".
+    servicePackages: [
+      { name: 'Use-Case Triage', description: 'Score candidate use cases on evidence availability, tolerance for a wrong answer, and volume. Ends with the two worth building and the reasons the rest are not.', duration: '2 weeks', tier: 'Advisory' },
+      { name: 'Grounded Pilot', description: 'One workflow taken to production on your corpus: retrieval, guardrails, an evaluation set, and cost telemetry — so the second use case is configuration rather than a project.', duration: '8 weeks', tier: 'Pilot' },
+      { name: 'GenAI Platform Build', description: 'Shared retrieval, prompt and context versioning, model routing, evaluation harness and observability as infrastructure as code, with per-team token budgets.', duration: '16–24 weeks', tier: 'Platform' },
+      { name: 'Managed GenAI Operations', description: 'We run it: evaluation on every prompt and index change, guardrail tuning against real traffic, model migration as vendors deprecate, and cost management.', duration: 'Ongoing', tier: 'Managed' },
+      { name: 'Fine-Tuning & Model Ownership', description: 'Where retrieval is not enough: dataset curation, fine-tuning or adapter training, and evaluation against the base model to prove the delta is real.', duration: 'Ongoing', tier: 'Enterprise' },
+    ],
+
+    // See the note on /services/mlops. This page tells its engagement story with
+    // evidence in "Five ways to start" and the FAQ, so the six generic
+    // consultancy claims below it subtract rather than add.
+    hidePartnershipModel: true,
+
+    // ── Toolchain ──────────────────────────────────────────────────────────
+    // The inherited default was closer to right here than anywhere else — it is
+    // a RAG stack, and this is the RAG page — but it was titled "GenAI Business
+    // Services Technology Stack" over a subtitle about "cognitive computing,
+    // machine learning, and AI governance", and the names sat inside `desc`,
+    // which only appears on hover.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'What we build on,',
+      titleHighlight: 'and when.',
+      subtitle: 'Model vendors change every few months and the stack around them does not. These are the layers we standardize, and the choice we make at each one depends on where your data is allowed to go.',
+      items: [
+        {
+          icon: 'Brain',
+          title: 'Foundation models',
+          managed: 'GPT-4o · Claude · Gemini · Amazon Bedrock',
+          selfHosted: 'Llama · Mistral · Qwen on your own GPUs',
+          desc: 'Routing between them matters more than picking one. Self-hosted open weights are the answer when data residency forbids a third-party API, and the cost case only works above sustained volume — below that, managed inference is cheaper than the GPUs sitting idle.',
+        },
+        {
+          icon: 'Database',
+          title: 'Retrieval & vector search',
+          managed: 'Azure AI Search · Vertex AI Search · Pinecone',
+          selfHosted: 'pgvector · Qdrant · Weaviate · OpenSearch',
+          desc: 'pgvector is usually the right first answer: it puts the embeddings next to the data that generated them, in a database you already operate. A dedicated vector store earns its place at scale, or when hybrid and re-ranking become the constraint.',
+        },
+        {
+          icon: 'Network',
+          title: 'Orchestration & context',
+          managed: 'Azure AI Foundry · Vertex AI Agent Builder',
+          selfHosted: 'LangGraph · LlamaIndex · Semantic Kernel',
+          desc: 'The framework is the least durable choice on this page, so we keep prompts, context assembly and routing as versioned artifacts that outlive it. A system that cannot be rebuilt on a different framework is a dependency.',
+        },
+        {
+          icon: 'Shield',
+          title: 'Guardrails & safety',
+          managed: 'Azure Content Safety · Bedrock Guardrails',
+          selfHosted: 'Llama Guard · NeMo Guardrails · custom classifiers',
+          desc: 'Applied on both sides — input classification before retrieval, output filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen.',
+        },
+        {
+          icon: 'Eye',
+          title: 'Evaluation & observability',
+          managed: 'Azure AI Evaluation · Vertex AI Evaluation',
+          selfHosted: 'Ragas · DeepEval · LangSmith · Langfuse · Phoenix',
+          desc: 'Graded rubrics over a fixed question set, run on every prompt and index change rather than before launch only. Traces retained per request, because a bad answer is not reproducible without the context that produced it.',
+        },
+        {
+          icon: 'Cpu',
+          title: 'Fine-tuning & serving',
+          managed: 'Bedrock customization · Vertex AI tuning · OpenAI fine-tuning',
+          selfHosted: 'LoRA & QLoRA · vLLM · Text Generation Inference',
+          desc: 'Reached for after retrieval, not instead of it. Fine-tuning teaches form — tone, structure, a house style — and rarely fixes a factual gap; a model that does not know something still does not know it after training on how to phrase answers.',
+        },
+      ],
+      image: '/images/capabilities/agentic-ai-tools-dark-illustration.png',
+      imageAlt: 'The GenAI toolchain in six layers, each with its managed cloud option and its self-hosted open-source equivalent',
+    },
+
+    // ── Calls to action ────────────────────────────────────────────────────
+    midCta: 'Your next answer comes with its source.',
+    closingCta: {
+      title: 'One conversation.',
+      highlight: 'One grounded system in production.',
+      body: 'Bring the use case you have already tried and could not make trustworthy. In 30 minutes we will tell you whether retrieval fixes it, what the evidence has to look like, and what it will cost per query at your volume.',
+      proofLabel: 'From first call to first grounded workflow',
+    },
+
+    // ── FAQ ────────────────────────────────────────────────────────────────
+    // The six inherited questions were vendor-shaped ("what makes your approach
+    // unique") and byte-identical to every other service still on the default.
+    // These are the queries buyers and answer engines actually type:
+    // definitional, disambiguating, and decision-shaped. Answers lead with the
+    // answer so the first sentence stands alone as a quote, and carry paragraph
+    // breaks (see faqParagraphs in data/serviceFaqs.js).
+    customFAQs: [
+      {
+        q: 'What is generative AI for business?',
+        a: 'Generative AI produces new text, code, images or structured output from a prompt, rather than classifying or predicting from a fixed set of options. In an enterprise the useful version is narrower than the consumer one: a system that answers from your documents, drafts in your formats, and declines when it does not know.\n\n'
+          + 'The distinction that matters commercially is grounding. A model answering from pre-training alone is fluent about your business and occasionally wrong about it, and nothing on screen separates the two. A grounded system retrieves from your own corpus first and shows the passage it used.\n\n'
+          + 'That is why most enterprise value sits in retrieval, evaluation and guardrails rather than in the model. The model is the part you rent and will replace within a year; the rest is the part you own.',
+      },
+      {
+        q: 'What is the difference between RAG and fine-tuning?',
+        a: 'Retrieval-augmented generation gives the model the right facts at the moment it answers. Fine-tuning changes how the model behaves. They solve different problems and are routinely confused for each other.\n\n'
+          + 'Use retrieval when the answer depends on information that changes, is specific to your organization, or has to be citable. Updating a document updates the answer, with no retraining, and the source can be shown next to the response.\n\n'
+          + 'Use fine-tuning when the problem is form rather than fact: a house tone, a rigid output structure, a domain vocabulary the base model handles awkwardly. It rarely fixes a knowledge gap — a model that does not know something still does not know it after being trained on how to phrase answers.\n\n'
+          + 'In practice, almost every enterprise system starts with retrieval, and a minority add fine-tuning afterwards for the last increment of consistency.',
+      },
+      {
+        q: 'How do you stop the model making things up?',
+        a: 'You cannot stop a language model generating a plausible sentence. You can stop that sentence reaching a user unmarked, and that is a system design problem rather than a model problem.\n\n'
+          + 'Three controls do most of the work. Ground the answer in retrieved passages so the model is summarizing rather than recalling. Return the source alongside the answer, so a reader can check it in one click and the cost of a wrong answer drops sharply. And make refusal a designed path: when retrieval returns nothing relevant, the correct output is that we do not have that, not a fluent guess.\n\n'
+          + 'What remains is measured rather than assumed. A fixed question set is scored on every prompt and index change, and the failure modes that matter to your domain get an adversarial suite of their own.',
+      },
+      {
+        q: 'Does our data get used to train someone else\'s model?',
+        a: 'Not on the enterprise tiers of the major providers, and it is worth being precise about why. Azure OpenAI, Amazon Bedrock, Google Vertex AI and Anthropic\'s and OpenAI\'s business agreements all contractually exclude customer inputs and outputs from training by default.\n\n'
+          + 'The real exposure is elsewhere: retention windows for abuse monitoring, which region the inference runs in, and what your own prompt logs capture. A system that writes full prompts to a log has copied the sensitive part of every request into a second place.\n\n'
+          + 'Where the answer has to be nothing leaves our estate, we deploy open-weight models on your own infrastructure. That is a real cost decision rather than a preference — self-hosting is cheaper only above sustained volume, and below it you are paying for idle GPUs.',
+      },
+      {
+        q: 'How do you evaluate a system with no single correct answer?',
+        a: 'By replacing accuracy with graded rubrics over a fixed question set. Each question has criteria — is it grounded in a retrieved passage, does it cite the source, does it refuse when it should, is the tone right — scored by a model and sampled by a human.\n\n'
+          + 'The set is built from real questions rather than invented ones, which is why the first two weeks of a pilot is worth more than the demo that preceded it: it produces the questions the system will actually face.\n\n'
+          + 'The point is regression, not a launch score. Prompts, retrieval indexes and model versions all change, and each change is capable of quietly degrading a case that used to work. The evaluation runs on every one of them, and a change that lowers the score does not ship.',
+      },
+      {
+        q: 'Which use cases are actually worth building?',
+        a: 'The ones where the evidence already exists in writing, and a wrong answer is recoverable.\n\n'
+          + 'Evidence first: if the knowledge lives in documents, tickets, transcripts or code, retrieval has something to ground on. If it lives only in a colleague\'s head, no amount of prompting will produce it, and the project is a knowledge-capture exercise wearing an AI badge.\n\n'
+          + 'Consequence second: drafting, summarizing, searching and triaging are good early candidates because a human sees the output before it matters. Anything that acts without review — payments, clinical decisions, irreversible changes — needs the governance built first and is rarely where to start.\n\n'
+          + 'Volume decides the order. A workflow that runs a hundred times a day repays the platform work; one that runs weekly does not, however visible it is.',
+      },
+      {
+        q: 'What does a generative AI system cost to run?',
+        a: 'Inference is metered per token, so cost scales with usage in a way most enterprise software does not, and the first full month in production is where teams get surprised.\n\n'
+          + 'Three levers move it. Caching absorbs the repeated questions that dominate real traffic — support and internal-knowledge workloads are far more repetitive than they look. Routing sends the easy majority to a smaller model and reserves the large one for what needs it. And context discipline matters, because retrieving twenty passages when four would do multiplies the token count on every single call.\n\n'
+          + 'We instrument cost per resolved query from the pilot onward rather than at the first invoice, and set token budgets per workflow so one team cannot consume the estate\'s inference spend.',
+      },
+      {
+        q: 'Who owns the system after the engagement ends?',
+        a: 'You do. Every engagement ships infrastructure as code, the evaluation set and its harness, the prompt and retrieval configuration under version control, and runbooks for the failure modes we actually hit in your environment.\n\n'
+          + 'The evaluation set is the part that matters most and is most often missing. Without it, the next person to change a prompt is guessing, and the system degrades silently from that point.\n\n'
+          + 'Managed Operations is available where you would rather we ran it — but that is a choice you make after you can already run it yourself, not a condition of the thing working.',
+      },
+    ],
+
     capabilityAreas: [
       {
         title: 'GenAI Strategy & Transformation',
