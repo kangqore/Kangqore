@@ -1142,7 +1142,12 @@ export const servicesData = {
     // speed of traditional workflows" — a multiplier with nothing behind it,
     // in the paragraph a reader trusts most. The nouns were the good part and
     // they are kept.
-    whatIsPara2: 'Retrieval-augmented generation over your corpus, prompt and context engineering held under version control, model routing that keeps cost proportionate to the question, and evaluation that runs on every change. Fine-tuning where form matters — after retrieval, not instead of it.',
+    // Enumerates the same six layers the toolchain section details, in the same
+    // order, so the summary and the detail agree. Guardrails was the one link
+    // missing: the diagram beside this paragraph shows a GUARDRAILS stage and
+    // the paragraph did not mention it, which under-sold the page against its
+    // own artwork.
+    whatIsPara2: 'Retrieval-augmented generation over your corpus, prompt and context engineering held under version control, guardrails on both sides of the model, model routing that keeps cost proportionate to the question, and evaluation that runs on every change. Fine-tuning where form matters — after retrieval, not instead of it.',
     // Four unsourced performance claims stood here: faster output, cost per
     // asset, model accuracy, and a count of deployments across industries. The
     // last two are the dangerous ones — an accuracy figure is unanswerable
@@ -1336,7 +1341,10 @@ export const servicesData = {
       eyebrow: 'THE TOOLCHAIN',
       title: 'What we build on,',
       titleHighlight: 'and when.',
-      subtitle: 'Model vendors change every few months and the stack around them does not. These are the layers we standardize, and the choice we make at each one depends on where your data is allowed to go.',
+      // Named one deciding axis (data residency) where there are three, and did
+      // not say the layers are standardized once and reused — which is what
+      // "at enterprise scale" actually means here, as against one team's pilot.
+      subtitle: 'Model vendors change every few months and the stack around them does not. These are the six layers we standardize once and reuse across every team that follows. Both options at each layer are viable in production — which one you get depends on where your data is allowed to go, the volume it runs at, and who you want operating it at three in the morning.',
       items: [
         {
           icon: 'Brain',
@@ -1350,28 +1358,28 @@ export const servicesData = {
           title: 'Retrieval & vector search',
           managed: 'Azure AI Search · Vertex AI Search · Pinecone',
           selfHosted: 'pgvector · Qdrant · Weaviate · OpenSearch',
-          desc: 'pgvector is usually the right first answer: it puts the embeddings next to the data that generated them, in a database you already operate. A dedicated vector store earns its place at scale, or when hybrid and re-ranking become the constraint.',
+          desc: 'pgvector is usually the right first answer: it puts the embeddings next to the data that generated them, in a database you already operate. A dedicated vector database earns its place once semantic search volume, hybrid ranking or re-ranking becomes the constraint — or once several teams index into the same store and need isolation between them.',
         },
         {
           icon: 'Network',
           title: 'Orchestration & context',
           managed: 'Azure AI Foundry · Vertex AI Agent Builder',
           selfHosted: 'LangGraph · LlamaIndex · Semantic Kernel',
-          desc: 'The framework is the least durable choice on this page, so we keep prompts, context assembly and routing as versioned artifacts that outlive it. A system that cannot be rebuilt on a different framework is a dependency.',
+          desc: 'The framework is the least durable choice on this page, so we keep prompts, context assembly and routing as versioned artifacts that outlive it. A system that cannot be rebuilt on a different framework is a dependency. Managed orchestration is the faster start and ties you to one cloud\'s agent runtime; you move to self-hosted when several teams need the same prompt and routing layer on their own release cycle.',
         },
         {
           icon: 'Shield',
           title: 'Guardrails & safety',
           managed: 'Azure Content Safety · Bedrock Guardrails',
           selfHosted: 'Llama Guard · NeMo Guardrails · custom classifiers',
-          desc: 'Applied on both sides — PII detection and moderation before retrieval, hallucination and jailbreak filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen. Red-teaming the deployment is part of acceptance, not a later exercise.',
+          desc: 'Applied on both sides — PII detection and moderation before retrieval, hallucination and jailbreak filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen. Red-teaming the deployment is part of acceptance, not a later exercise. Managed classifiers cover the common categories from day one; you self-host once the policy is specific to your sector and has to be versioned and audited alongside the prompts it governs.',
         },
         {
           icon: 'Eye',
           title: 'Evaluation & observability',
           managed: 'Azure AI Evaluation · Vertex AI Evaluation',
           selfHosted: 'Ragas · DeepEval · LangSmith · Langfuse · Phoenix',
-          desc: 'Graded rubrics over a fixed question set, run on every prompt and index change rather than before launch only. Traces retained per request, because a bad answer is not reproducible without the context that produced it.',
+          desc: 'Graded rubrics over a fixed question set, run on every prompt and index change rather than before launch only. Traces retained per request, because a bad answer is not reproducible without the context that produced it. Managed evaluation is enough while one team owns one system; a self-hosted harness earns its place once the evaluation set becomes an asset you version, share between teams and keep when we leave.',
         },
         {
           icon: 'Cpu',
