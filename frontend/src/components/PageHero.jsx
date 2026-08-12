@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import SecondaryButton from './ui/SecondaryButton';
-import { BackgroundBeams } from './ui/background-beams';
+import Beams from './ui/Beams';
 
 /**
  * Reusable Page Hero Component
@@ -37,28 +37,22 @@ const PageHero = ({
       <section className="relative w-full h-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228] pt-[194px] lg:pt-[250px] pb-12">
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
-          {showBeams ? (
-            <BackgroundBeams />
-          ) : videoBackground ? (
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              <source src={videoBackground} type="video/mp4" />
-            </video>
-          ) : (
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              {/* Subtle radial gradient grid for tech aesthetic */}
-              <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.05]"></div>
+          <div className="absolute inset-0 w-full h-full bg-[#02050b] overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 z-0">
+              <Beams
+                beamWidth={2}
+                beamHeight={15}
+                beamNumber={12}
+                lightColor="#ffffff"
+                speed={2}
+                noiseIntensity={1.75}
+                scale={0.2}
+                rotation={0}
+              />
             </div>
-          )}
-          
-          {/* Gradients matching home page depth */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none z-10" />
+          </div>
         </div>
         {/* Content Wrapper */}
         <div className="relative h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 z-10 flex flex-col pb-8 sm:pb-12">
