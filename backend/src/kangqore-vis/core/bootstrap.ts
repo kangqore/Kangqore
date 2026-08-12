@@ -36,6 +36,7 @@ import { mountImageSeoRoutes } from '../image-seo/routes';
 import { mountVoiceSearchRoutes } from '../voice-search/routes';
 import { mountMultimodalContentRoutes } from '../multimodal-content/routes';
 import { mountIntelligenceRoutes } from '../intelligence/routes';
+import { mountPriorityRegistryRoutes } from '../priority-registry/routes';
 
 export interface KangqoreVisBootstrapOptions {
   app: Express;
@@ -73,6 +74,7 @@ const MODULE_IDS = [
   'voice-search',
   'multimodal-content',
   'intelligence',
+  'priority-registry',
 ];
 
 export function kangqoreVisBootstrap({ app }: KangqoreVisBootstrapOptions): void {
@@ -119,6 +121,7 @@ export function kangqoreVisBootstrap({ app }: KangqoreVisBootstrapOptions): void
   if (KangqoreVisFlags.voiceSearch()) mountVoiceSearchRoutes(app);
   if (KangqoreVisFlags.multimodalContent()) mountMultimodalContentRoutes(app);
   if (KangqoreVisFlags.intelligence()) mountIntelligenceRoutes(app);
+  if (KangqoreVisFlags.priorityRegistry()) mountPriorityRegistryRoutes(app);
   mountCronRoutes(app);
 
   KangqoreVisCronManager.initialize();

@@ -36,6 +36,7 @@ export const KangqoreVisFlags = {
   voiceSearch: () => bool('KANGQORE_VIS_VOICE_SEARCH', true),
   multimodalContent: () => bool('KANGQORE_VIS_MULTIMODAL_CONTENT', true),
   intelligence: () => bool('KANGQORE_VIS_INTELLIGENCE', true),
+  priorityRegistry: () => bool('KANGQORE_VIS_PRIORITY_REGISTRY', true),
   cronEnabled: () => bool('KANGQORE_VIS_CRON_ENABLED', false),
   governanceMode: (): 'audit' | 'blocking' | 'off' => {
     const raw = (process.env.KANGQORE_VIS_GOVERNANCE_MODE ?? 'audit').toLowerCase().trim();

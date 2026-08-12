@@ -10,6 +10,7 @@
 
 import { prisma } from '../../lib/prisma';
 import { PageBlueprintService } from '../content-mapping/PageBlueprintService';
+import { candidateUrl } from './scoring/candidateUrl';
 import logger from '../../utils/logger';
 
 export interface DraftBlueprintResult {
@@ -24,12 +25,11 @@ export class VisOpportunityActioner {
     entitySlugs: string[];
     reasoning: string;
   }): Promise<DraftBlueprintResult> {
-    const slugs = [...new Set(params.entitySlugs)].sort();
-    if (slugs.length < 2) {
+    const url = candidateUrl(params.entitySlugs);
+    if (!url) {
       return { drafted: false, reason: 'AUTHORITY_OPPORTUNITY needs at least 2 entity slugs to draft an industry page.' };
     }
-    const [slugA, slugB] = slugs;
-    const url = `/industries/${slugA}/${slugB}`;
+    const [slugA, slugB] = url.replace('/industries/', '').split('/');
 
     try {
       const entities = await prisma.kangqoreVisEntity.findMany({ where: { slug: { in: [slugA, slugB] } } });
