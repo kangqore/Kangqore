@@ -1670,7 +1670,7 @@ const featureMicros   = service.featureMicros
                     {/* ── TOP LAYER: DURABLE ASSETS ── */}
                     <g transform="translate(60, 20)">
                       <rect x="0" y="0" width="600" height="70" rx="12" fill="url(#adv-panel-bg)" stroke="#334155" strokeWidth="1.5" />
-                      <text x="300" y="20" textAnchor="middle" fontFamily="monospace" fontSize="10" fontWeight="bold" letterSpacing="2" fill="#94a3b8">THE DURABLE ASSETS (PERSIST ACROSS WORKFLOWS)</text>
+                      <text x="300" y="20" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="2" fill="#94a3b8">THE DURABLE ASSETS (PERSIST ACROSS WORKFLOWS)</text>
                       
                       <g transform="translate(20, 30)">
                         <rect x="0" y="0" width="130" height="30" rx="6" fill="#1e293b" stroke="#60a5fa" strokeWidth="1" filter="url(#adv-glow-blue)"/>
@@ -1679,7 +1679,7 @@ const featureMicros   = service.featureMicros
                             <Database size={16} />
                           </div>
                         </foreignObject>
-                        <text x="32" y="19" fontFamily="monospace" fontSize="9" fontWeight="bold" fill="#ffffff">YOUR CORPUS</text>
+                        <text x="32" y="19" fontFamily="monospace" fontSize="12" fontWeight="bold" fill="#ffffff">YOUR CORPUS</text>
                       </g>
 
                       <g transform="translate(160, 30)">
@@ -1689,7 +1689,7 @@ const featureMicros   = service.featureMicros
                             <Settings size={16} />
                           </div>
                         </foreignObject>
-                        <text x="32" y="19" fontFamily="monospace" fontSize="9" fontWeight="bold" fill="#93c5fd">RETRIEVAL CONFIG</text>
+                        <text x="32" y="19" fontFamily="monospace" fontSize="12" fontWeight="bold" fill="#93c5fd">RETRIEVAL CONFIG</text>
                       </g>
 
                       <g transform="translate(305, 30)">
@@ -1699,7 +1699,7 @@ const featureMicros   = service.featureMicros
                             <Layers size={16} />
                           </div>
                         </foreignObject>
-                        <text x="32" y="19" fontFamily="monospace" fontSize="9" fontWeight="bold" fill="#93c5fd">VERSIONED PROMPTS</text>
+                        <text x="32" y="19" fontFamily="monospace" fontSize="12" fontWeight="bold" fill="#93c5fd">VERSIONED PROMPTS</text>
                       </g>
 
                       <g transform="translate(460, 30)">
@@ -1709,7 +1709,7 @@ const featureMicros   = service.featureMicros
                             <BarChart3 size={16} />
                           </div>
                         </foreignObject>
-                        <text x="32" y="19" fontFamily="monospace" fontSize="9" fontWeight="bold" fill="#93c5fd">EVALUATION SET</text>
+                        <text x="32" y="19" fontFamily="monospace" fontSize="12" fontWeight="bold" fill="#93c5fd">EVALUATION SET</text>
                       </g>
                     </g>
 
@@ -1730,8 +1730,8 @@ const featureMicros   = service.featureMicros
                       <path d="M 30 50 C 30 25, 90 25, 90 50 L 95 90 L 25 90 Z" fill="#475569" />
                       <path d="M 90 50 C 110 50, 110 65, 90 65" fill="none" stroke="#475569" strokeWidth="12" strokeLinecap="round" />
                     </g>
-                    <text x="85" y="375" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold" fontFamily="monospace">ASKING USER</text>
-                    <text x="85" y="390" textAnchor="middle" fill="#94a3b8" fontSize="9" fontFamily="monospace">SCOPED PERMISSIONS</text>
+                    <text x="85" y="375" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold" fontFamily="monospace">ASKING USER</text>
+                    <text x="85" y="390" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="monospace">SCOPED PERMISSIONS</text>
 
                     {/* ── TOP LEFT: RAG ENGINE (RETRIEVE/ASSEMBLE) ── */}
                     <g transform="translate(130, 130)">
@@ -1746,8 +1746,8 @@ const featureMicros   = service.featureMicros
                           <BrainCircuit size={24} />
                         </div>
                       </foreignObject>
-                      <text x="65" y="55" textAnchor="middle" fill="#ffffff" fontSize="10" fontWeight="bold" fontFamily="monospace">RETRIEVE &amp; ASSEMBLE</text>
-                      <text x="65" y="68" textAnchor="middle" fill="#93c5fd" fontSize="8" fontFamily="monospace">CONTEXT ENGINEERING</text>
+                      <text x="65" y="55" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold" fontFamily="monospace">RETRIEVE &amp; ASSEMBLE</text>
+                      <text x="65" y="68" textAnchor="middle" fill="#93c5fd" fontSize="12" fontFamily="monospace">CONTEXT ENGINEERING</text>
                     </g>
                     {/* Connection to Globe */}
                     <path d="M 210 200 C 240 220, 270 230, 290 240" fill="none" stroke="#60a5fa" strokeWidth="1.5" filter="url(#adv-glow-blue)" strokeDasharray="4 4">
@@ -1762,8 +1762,8 @@ const featureMicros   = service.featureMicros
                           <ShieldCheck size={24} />
                         </div>
                       </foreignObject>
-                      <text x="65" y="55" textAnchor="middle" fill="#ffffff" fontSize="10" fontWeight="bold" fontFamily="monospace">GUARDRAILS</text>
-                      <text x="65" y="68" textAnchor="middle" fill="#93c5fd" fontSize="8" fontFamily="monospace">ON BOTH SIDES OF MODEL</text>
+                      <text x="65" y="55" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold" fontFamily="monospace">GUARDRAILS</text>
+                      <text x="65" y="68" textAnchor="middle" fill="#93c5fd" fontSize="12" fontFamily="monospace">ON BOTH SIDES OF MODEL</text>
                     </g>
                     {/* Connection from Globe to Guardrails/Arm */}
                     <path d="M 430 240 C 470 210, 500 190, 520 180" fill="none" stroke="#60a5fa" strokeWidth="1.5" filter="url(#adv-glow-blue)" strokeDasharray="4 4">
@@ -1785,13 +1785,13 @@ const featureMicros   = service.featureMicros
                       <line x1="90" y1="35" x2="110" y2="35" stroke="#93c5fd" strokeWidth="2" />
                       <line x1="90" y1="50" x2="110" y2="50" stroke="#ffffff" strokeWidth="2" />
                     </g>
-                    <text x="560" y="345" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold" fontFamily="monospace">LLM GENERATION</text>
-                    <text x="560" y="360" textAnchor="middle" fill="#94a3b8" fontSize="9" fontFamily="monospace">MODEL ROUTING</text>
+                    <text x="560" y="345" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold" fontFamily="monospace">LLM GENERATION</text>
+                    <text x="560" y="360" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="monospace">MODEL ROUTING</text>
                     
                     {/* Fine-Tuning Tag */}
                     <g transform="translate(520, 375)">
                       <rect x="0" y="0" width="80" height="16" rx="4" fill="#1e293b" stroke="#334155" strokeWidth="1" />
-                      <text x="40" y="11" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#94a3b8">FINE-TUNING (OPT)</text>
+                      <text x="40" y="11" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="#94a3b8">FINE-TUNING (OPT)</text>
                     </g>
 
                     {/* Connecting line from Globe to Generation */}
@@ -1819,7 +1819,7 @@ const featureMicros   = service.featureMicros
                       </foreignObject>
                     </g>
                     <text x="360" y="380" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" fontFamily="monospace" letterSpacing="2">YOUR CORPUS</text>
-                    <text x="360" y="395" textAnchor="middle" fill="#93c5fd" fontSize="10" fontFamily="monospace">GROUNDED RETRIEVAL AND ASSEMBLY</text>
+                    <text x="360" y="395" textAnchor="middle" fill="#93c5fd" fontSize="12" fontFamily="monospace">GROUNDED RETRIEVAL AND ASSEMBLY</text>
 
 
                     {/* ── BOTTOM RIGHT: OUTCOMES ── */}
@@ -1841,8 +1841,8 @@ const featureMicros   = service.featureMicros
                           <Target size={20} />
                         </div>
                       </foreignObject>
-                      <text x="40" y="24" fontFamily="monospace" fontSize="11" fontWeight="bold" fill="#ffffff">ANSWER:</text>
-                      <text x="90" y="24" fontFamily="monospace" fontSize="9" fill="#e2e8f0" fillOpacity="0.9">shows the exact passage it used</text>
+                      <text x="40" y="24" fontFamily="monospace" fontSize="12" fontWeight="bold" fill="#ffffff">ANSWER:</text>
+                      <text x="90" y="24" fontFamily="monospace" fontSize="12" fill="#e2e8f0" fillOpacity="0.9">shows the exact passage it used</text>
                     </g>
 
                     {/* REFUSE Box */}
@@ -1853,8 +1853,8 @@ const featureMicros   = service.featureMicros
                           <Lock size={18} />
                         </div>
                       </foreignObject>
-                      <text x="40" y="24" fontFamily="monospace" fontSize="11" fontWeight="bold" fill="#60a5fa">REFUSAL:</text>
-                      <text x="95" y="24" fontFamily="monospace" fontSize="9" fill="#93c5fd" fillOpacity="0.9">nothing relevant; not a fault.</text>
+                      <text x="40" y="24" fontFamily="monospace" fontSize="12" fontWeight="bold" fill="#60a5fa">REFUSAL:</text>
+                      <text x="95" y="24" fontFamily="monospace" fontSize="12" fill="#93c5fd" fillOpacity="0.9">nothing relevant; not a fault.</text>
                     </g>
 
 
@@ -1866,7 +1866,7 @@ const featureMicros   = service.featureMicros
                           <Activity size={12} />
                         </div>
                       </foreignObject>
-                      <text x="300" y="13" textAnchor="middle" fontFamily="monospace" fontSize="9" fontWeight="bold" fill="#ffffff" letterSpacing="1">EVALUATION SET PROVES IT WORKS (RUNS ON EVERY CHANGE)</text>
+                      <text x="300" y="13" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" fill="#ffffff" letterSpacing="1">EVALUATION SET PROVES IT WORKS (RUNS ON EVERY CHANGE)</text>
                     </g>
                   </svg>
                 </div>
