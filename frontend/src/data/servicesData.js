@@ -1338,9 +1338,14 @@ export const servicesData = {
     // machine learning, and AI governance", and the names sat inside `desc`,
     // which only appears on hover.
     toolsStack: {
-      eyebrow: 'THE TOOLCHAIN',
-      title: 'What we build on,',
-      titleHighlight: 'and when.',
+      // "What we build on, and when." read too informally for a section that
+      // carries 37 named products and the whole architecture argument. The
+      // eyebrow now uses the term enterprise architects use for a documented,
+      // repeatable standard, and the heading names what the six rows actually
+      // do — select a vendor at each layer.
+      eyebrow: 'REFERENCE ARCHITECTURE',
+      title: 'Architecture and vendor selection,',
+      titleHighlight: 'layer by layer.',
       // Named one deciding axis (data residency) where there are three, and did
       // not say the layers are standardized once and reused — which is what
       // "at enterprise scale" actually means here, as against one team's pilot.
