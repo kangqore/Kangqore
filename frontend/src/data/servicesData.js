@@ -1340,10 +1340,11 @@ export const servicesData = {
     toolsStack: {
       // "What we build on, and when." read too informally for a section that
       // carries 37 named products and the whole architecture argument. The
-      // eyebrow now uses the term enterprise architects use for a documented,
-      // repeatable standard, and the heading names what the six rows actually
-      // do — select a vendor at each layer.
-      eyebrow: 'REFERENCE ARCHITECTURE',
+      // heading now names what the six rows actually do — select a vendor at
+      // each layer. Eyebrow stays THE TOOLCHAIN: it is the plain label for
+      // what follows, and "REFERENCE ARCHITECTURE" above a heading already
+      // saying "architecture" repeated the word twice in three lines.
+      eyebrow: 'THE TOOLCHAIN',
       title: 'Architecture and vendor selection,',
       titleHighlight: 'layer by layer.',
       // Named one deciding axis (data residency) where there are three, and did
