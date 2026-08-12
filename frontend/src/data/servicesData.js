@@ -1252,15 +1252,18 @@ export const servicesData = {
     // "who decides the next step" and columns headed TRADITIONAL AI vs AGENTIC
     // AI, under a heading about generative AI.
     comparisonTable: {
-      // Was "A demo answers. A system answers correctly, every time." — 54
-      // characters carrying an absolute the rest of the page spends 7,000 words
-      // refusing to make. The hallucination FAQ states plainly that you cannot
-      // stop a model producing a plausible sentence, and row four of this very
-      // table presents refusal as a designed output, so "correctly, every time"
-      // was contradicted twice over. "Shows its work" is the same contrast in
-      // 40 characters and is literally what the system does: returns the
-      // passage it drew from.
-      heading: 'A demo answers. A system shows its work.',
+      // Chosen deliberately as a vendor-framed heading. Two things to know if
+      // this section is edited later:
+      //
+      // 1. The rows below never name Kangqore — they compare DEMO-GRADE GENAI
+      //    against GOVERNED ENTERPRISE GENAI across five category dimensions.
+      //    The heading asks a vendor question the body answers at category
+      //    level. Aligning them means changing afterLabel and the lede too,
+      //    not just this string.
+      // 2. The earlier heading carried "correctly, every time", an absolute
+      //    contradicted by the hallucination FAQ and by row four of this table.
+      //    Whatever replaces this heading must not reintroduce it.
+      heading: 'Why Kangqore for GenAI?',
       lede: 'Most generative AI reaches a convincing demo in two weeks. The gap to production is not model quality — it is everything that makes an answer trustworthy: where the facts came from, what the system refuses to say, how you know it is still right next month, and what it costs per thousand users rather than per demo.',
       dimensionLabel: 'DIMENSION',
       beforeLabel: 'DEMO-GRADE GENAI',
