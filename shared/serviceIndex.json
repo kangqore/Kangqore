@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T12:58:00.271Z",
+  "generatedAt": "2026-08-12T14:09:41.746Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -242,19 +242,19 @@
         },
         {
           "rule": "Retrieval & vector search",
-          "detail": "pgvector is usually the right first answer: it puts the embeddings next to the data that generated them, in a database you already operate. A dedicated vector store earns its place at scale, or when hybrid and re-ranking become the constraint."
+          "detail": "pgvector is usually the right first answer: it puts the embeddings next to the data that generated them, in a database you already operate. A dedicated vector database earns its place once semantic search volume, hybrid ranking or re-ranking becomes the constraint — or once several teams index into the same store and need isolation between them."
         },
         {
           "rule": "Orchestration & context",
-          "detail": "The framework is the least durable choice on this page, so we keep prompts, context assembly and routing as versioned artifacts that outlive it. A system that cannot be rebuilt on a different framework is a dependency."
+          "detail": "The framework is the least durable choice on this page, so we keep prompts, context assembly and routing as versioned artifacts that outlive it. A system that cannot be rebuilt on a different framework is a dependency. Managed orchestration is the faster start and ties you to one cloud's agent runtime; you move to self-hosted when several teams need the same prompt and routing layer on their own release cycle."
         },
         {
           "rule": "Guardrails & safety",
-          "detail": "Applied on both sides — PII detection and moderation before retrieval, hallucination and jailbreak filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen. Red-teaming the deployment is part of acceptance, not a later exercise."
+          "detail": "Applied on both sides — PII detection and moderation before retrieval, hallucination and jailbreak filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen. Red-teaming the deployment is part of acceptance, not a later exercise. Managed classifiers cover the common categories from day one; you self-host once the policy is specific to your sector and has to be versioned and audited alongside the prompts it governs."
         },
         {
           "rule": "Evaluation & observability",
-          "detail": "Graded rubrics over a fixed question set, run on every prompt and index change rather than before launch only. Traces retained per request, because a bad answer is not reproducible without the context that produced it."
+          "detail": "Graded rubrics over a fixed question set, run on every prompt and index change rather than before launch only. Traces retained per request, because a bad answer is not reproducible without the context that produced it. Managed evaluation is enough while one team owns one system; a self-hosted harness earns its place once the evaluation set becomes an asset you version, share between teams and keep when we leave."
         },
         {
           "rule": "Fine-tuning & serving",
