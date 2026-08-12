@@ -153,7 +153,15 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
       // collapses — the snapshot showed a wall of text where the page shows
       // four paragraphs.
       const body = faqParagraphs(f.a).map((para) => `<p>${esc(para)}</p>`).join('');
-      return `      <section><h3>${esc(f.q)}</h3>${body}</section>`;
+      // Citations are the reason an answer engine trusts the claim above them,
+      // so they have to exist for the crawler that never runs our JS — which is
+      // the crawler that matters here. Real anchors, not text.
+      const cites = Array.isArray(f.sources) && f.sources.length
+        ? `<p>Sources: ${f.sources
+            .map((s) => `<a href="${esc(s.url)}" rel="noopener noreferrer">${esc(s.label)}</a>`)
+            .join(' · ')}</p>`
+        : '';
+      return `      <section><h3>${esc(f.q)}</h3>${body}${cites}</section>`;
     })
     .join('\n');
 

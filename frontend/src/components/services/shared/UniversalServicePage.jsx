@@ -2995,6 +2995,33 @@ const featureMicros   = service.featureMicros
                         {faqParagraphs(faq.a).map((para, p) => (
                           <p key={p} className="text-white/70 text-base font-medium leading-relaxed">{para}</p>
                         ))}
+                        {/* Citations. An answer that asserts what a third party
+                            does with your data should link the document that says
+                            so — it is the difference between a claim and a
+                            checkable one, and generative engines preferentially
+                            cite pages that themselves cite sources. Rendered as
+                            real anchors rather than bare URLs so the link text
+                            carries the publisher name. */}
+                        {Array.isArray(faq.sources) && faq.sources.length > 0 && (
+                          <div className="pt-1">
+                            <span className="block text-[11px] font-black tracking-[0.2em] uppercase text-white/50 mb-2">Sources</span>
+                            <ul className="flex flex-wrap gap-x-5 gap-y-2">
+                              {faq.sources.map((src) => (
+                                <li key={src.url}>
+                                  <a
+                                    href={src.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 py-1 min-h-[24px] text-sm font-semibold text-cyan-400/85 hover:text-cyan-300 underline underline-offset-4 transition-colors"
+                                  >
+                                    {src.label}
+                                    <ArrowRight className="w-3 h-3 shrink-0" />
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

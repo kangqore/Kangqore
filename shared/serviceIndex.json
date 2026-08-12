@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T09:55:36.323Z",
+  "generatedAt": "2026-08-12T10:57:29.335Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -204,7 +204,7 @@
       "url": "/services/genai-business-services",
       "name": "GenAI Business Services",
       "department": "Cognition",
-      "description": "Generative AI for the enterprise — LLM implementation, custom fine-tuning, content & code generation, and enterprise AI assistants. Powered by eQORE™.",
+      "description": "Enterprise generative AI: retrieval-augmented generation over your own documents, guardrails, evaluation and fine-tuning — answers that cite their source.",
       "capabilities": [
         "GenAI Strategy & Transformation",
         "Agentic AI & Autonomous Systems",
@@ -231,8 +231,8 @@
           "a": "Retrieval-augmented generation gives the model the right facts at the moment it answers. Fine-tuning changes how the model behaves. They solve different problems and are routinely confused for each other. Use retrieval when the answer depends on information that changes, is specific to your organization, or has to be citable. Updating a document updates the answer, with no retraining, and the source can be shown next to the response. Use fine-tuning when the problem is form rather than fact: a house tone, a rigid output structure, a domain vocabulary the base model handles awkwardly. It rarely fixes a knowledge gap — a model that does not know something still does not know it after being trained on how to phrase answers. In practice, almost every enterprise system starts with retrieval, and a minority add fine-tuning afterwards for the last increment of consistency."
         },
         {
-          "q": "How do you stop the model making things up?",
-          "a": "You cannot stop a language model generating a plausible sentence. You can stop that sentence reaching a user unmarked, and that is a system design problem rather than a model problem. Three controls do most of the work. Ground the answer in retrieved passages so the model is summarizing rather than recalling. Return the source alongside the answer, so a reader can check it in one click and the cost of a wrong answer drops sharply. And make refusal a designed path: when retrieval returns nothing relevant, the correct output is that we do not have that, not a fluent guess. What remains is measured rather than assumed. A fixed question set is scored on every prompt and index change, and the failure modes that matter to your domain get an adversarial suite of their own."
+          "q": "How do you stop the model hallucinating?",
+          "a": "Hallucination is a language model stating something false with the same fluency it states something true. You cannot stop a model generating a plausible sentence — you can stop that sentence reaching a user unmarked, and that is a system design problem rather than a model problem. Three controls do most of the work. Ground the answer in retrieved passages so the model is summarizing rather than recalling. Return the source alongside the answer, so a reader can check it in one click and the cost of a wrong answer drops sharply. And make refusal a designed path: when retrieval returns nothing relevant, the correct output is that we do not have that, not a fluent guess. What remains is measured rather than assumed. A fixed question set is scored on every prompt and index change, and the failure modes that matter to your domain get an adversarial suite of their own — including jailbreak attempts, prompt injection through retrieved documents, and the red-team cases your risk function asks about."
         }
       ],
       "method": [
@@ -250,7 +250,7 @@
         },
         {
           "rule": "Guardrails & safety",
-          "detail": "Applied on both sides — input classification before retrieval, output filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen."
+          "detail": "Applied on both sides — PII detection and moderation before retrieval, hallucination and jailbreak filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen. Red-teaming the deployment is part of acceptance, not a later exercise."
         },
         {
           "rule": "Evaluation & observability",
