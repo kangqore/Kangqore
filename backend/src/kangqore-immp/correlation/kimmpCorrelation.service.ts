@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { withWaandax } from '../llm/waandaxAnthropic'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { prisma } from '../../lib/prisma'
+import type { SignalIngestInput } from '../signals/signalSchema'
 
 export interface CorrelationPattern {
   name: string
@@ -10,6 +11,16 @@ export interface CorrelationPattern {
   severity: 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL'
   confidence: number
   detectedAt: string
+  /** Category the emitted meta-signal should carry. Defaults to 'RISK' (all
+   *  pre-existing patterns are risk/monitoring findings). Patterns that are
+   *  opportunities rather than risks (e.g. AUTHORITY_OPPORTUNITY) override
+   *  this so they route through the decision policy's CONTENT branch instead
+   *  of the RISK→human-handoff branch. */
+  category?: SignalIngestInput['signalCategory']
+  /** Overrides the emitted meta-signal's signalType. Defaults to
+   *  'CORRELATION_DETECTED'. Lets the decision policy distinguish specific
+   *  pattern types without string-parsing signalValue. */
+  signalType?: string
 }
 
 const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
@@ -43,8 +54,8 @@ export class KimmpCorrelationEngine {
     for (const p of all) {
       await SignalLedger.record({
         sourceModule:   'kimmp',
-        signalType:     'CORRELATION_DETECTED',
-        signalCategory: 'RISK',
+        signalType:     p.signalType ?? 'CORRELATION_DETECTED',
+        signalCategory: p.category ?? 'RISK',
         signalValue:    `[${p.name}] ${p.description}`,
         severity:       p.severity,
         confidence:     p.confidence,
@@ -116,6 +127,53 @@ export class KimmpCorrelationEngine {
         confidence:  90,
         detectedAt:  new Date().toISOString(),
       })
+    }
+
+    // Rule 5: AUTHORITY_OPPORTUNITY — 3+ distinct VIS capabilities (vis-*
+    // sourceModules) independently surface gaps that share 2+ common
+    // KangqoreVisEntity tags within the window. This is the cross-module
+    // "Healthcare + Agentic AI" pattern: no single capability sees it, but
+    // together they point at the same underlying theme.
+    const visSignals = signals.filter(
+      s => typeof s.sourceModule === 'string' && s.sourceModule.startsWith('vis-') &&
+        Array.isArray(s.metadata?.entitySlugs) && s.metadata.entitySlugs.length > 0
+    )
+    if (visSignals.length >= 3) {
+      const byPair = new Map<string, { signals: any[]; modules: Set<string> }>()
+      for (const s of visSignals) {
+        const slugs: string[] = s.metadata.entitySlugs
+        for (let i = 0; i < slugs.length; i++) {
+          for (let j = i + 1; j < slugs.length; j++) {
+            const key = [slugs[i], slugs[j]].sort().join('|')
+            const bucket = byPair.get(key) ?? { signals: [], modules: new Set<string>() }
+            bucket.signals.push(s)
+            bucket.modules.add(s.sourceModule)
+            byPair.set(key, bucket)
+          }
+        }
+      }
+
+      let best: { key: string; bucket: { signals: any[]; modules: Set<string> } } | null = null
+      for (const [key, bucket] of byPair) {
+        if (bucket.modules.size >= 3 && (!best || bucket.modules.size > best.bucket.modules.size)) {
+          best = { key, bucket }
+        }
+      }
+
+      if (best) {
+        const [slugA, slugB] = best.key.split('|')
+        const moduleCount = best.bucket.modules.size
+        patterns.push({
+          name:        'AUTHORITY_OPPORTUNITY',
+          description: `${moduleCount} VIS capabilities (${[...best.bucket.modules].join(', ')}) independently surfaced gaps around "${slugA}" + "${slugB}" — consider creating /industries/${slugA}/${slugB}, linking the ${slugA} and ${slugB} entities, adding citation-ready content, and optimizing the conversion path.`,
+          signalIds:   best.bucket.signals.slice(0, 8).map(s => s.id),
+          severity:    moduleCount >= 5 ? 'CRITICAL' : moduleCount >= 4 ? 'HIGH' : 'MODERATE',
+          confidence:  75,
+          detectedAt:  new Date().toISOString(),
+          category:    'CONTENT',
+          signalType:  'AUTHORITY_OPPORTUNITY',
+        })
+      }
     }
 
     return patterns

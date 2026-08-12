@@ -20,6 +20,14 @@ export const SIGNAL_SOURCE_MODULES = [
   'contact-form',
   'bids',
   'waanda.authority',
+  'vis-entity-architecture',
+  'vis-geo',
+  'vis-semantic-seo',
+  'vis-programmatic-seo',
+  'vis-ai-answerability',
+  'vis-eeat',
+  'vis-cro',
+  'vis-ux',
 ] as const;
 
 /** The kind of signal — drives which consumer cares about it. */

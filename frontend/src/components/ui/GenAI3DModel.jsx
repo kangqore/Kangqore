@@ -247,7 +247,7 @@ const StageNode = ({ index, total, label, isActive, color, dualLabels, setNodePo
       {/* Orbit Trail */}
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[radius - 0.01, radius + 0.01, 128]} />
-        <meshBasicMaterial color="#60a5fa" transparent opacity={0.2} side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#60a5fa" transparent opacity={0.1} side={THREE.DoubleSide} />
       </mesh>
 
       {/* Particles following the active node */}
@@ -295,7 +295,7 @@ const InnerDataRings = () => {
       <group rotation={[Math.PI / 3, 0, 0]}>
         <mesh ref={ring1Ref}>
           <ringGeometry args={[1.1, 1.11, 64]} />
-          <meshBasicMaterial color="#3b82f6" transparent opacity={0.3} side={THREE.DoubleSide} />
+          <meshBasicMaterial color="#3b82f6" transparent opacity={0.15} side={THREE.DoubleSide} />
           <mesh position={[1.105, 0, 0]}>
             <sphereGeometry args={[0.03, 16, 16]} />
             <meshBasicMaterial color="#ffffff" />
@@ -310,7 +310,7 @@ const InnerDataRings = () => {
       <group rotation={[-Math.PI / 4, Math.PI / 4, 0]}>
         <mesh ref={ring2Ref}>
           <ringGeometry args={[1.3, 1.31, 64]} />
-          <meshBasicMaterial color="#3b82f6" transparent opacity={0.3} side={THREE.DoubleSide} />
+          <meshBasicMaterial color="#3b82f6" transparent opacity={0.15} side={THREE.DoubleSide} />
           <mesh position={[0, 1.305, 0]}>
             <sphereGeometry args={[0.03, 16, 16]} />
             <meshBasicMaterial color="#60a5fa" />
@@ -325,7 +325,7 @@ const InnerDataRings = () => {
       <group rotation={[0, Math.PI / 2, Math.PI / 6]}>
         <mesh ref={ring3Ref}>
           <ringGeometry args={[1.5, 1.51, 64]} />
-          <meshBasicMaterial color="#3b82f6" transparent opacity={0.3} side={THREE.DoubleSide} />
+          <meshBasicMaterial color="#3b82f6" transparent opacity={0.15} side={THREE.DoubleSide} />
           <mesh position={[-1.505, 0, 0]}>
             <sphereGeometry args={[0.03, 16, 16]} />
             <meshBasicMaterial color="#ffffff" />

@@ -24,6 +24,7 @@ import { runHumanHandoff } from './executors/humanHandoffExecutor';
 import { runContentOpportunity } from './executors/contentOpportunityExecutor';
 import { runMarketAlert } from './executors/marketAlertExecutor';
 import { runResponsePolicy } from './executors/responsePolicyExecutor';
+import { runAuthorityOpportunity } from './executors/authorityOpportunityExecutor';
 
 export interface ExecutionResult {
   ok: boolean;
@@ -56,15 +57,17 @@ export class WorkflowExecutor {
       );
     }
 
-    // 2. Load the originating signal to get signalValue (used by some executors).
+    // 2. Load the originating signal to get signalValue/metadata (used by some executors).
     let signalValue: string | null = null;
+    let signalMetadata: Record<string, unknown> | null = null;
     if (decision.signalId) {
       try {
         const sig = await (prisma as any).kimmpSignal.findUnique({
           where: { id: decision.signalId },
-          select: { signalValue: true },
+          select: { signalValue: true, metadata: true },
         });
         signalValue = sig?.signalValue ?? null;
+        signalMetadata = sig?.metadata ?? null;
       } catch {
         // Non-blocking — executors degrade gracefully without signalValue.
       }
@@ -75,8 +78,10 @@ export class WorkflowExecutor {
       leadId: decision.leadId,
       conversationId: decision.conversationId,
       recommendedAction: decision.recommendedAction,
+      reasoning: decision.reasoning,
       priority: decision.priority,
       signalValue,
+      signalMetadata,
     };
 
     logger.info(
@@ -103,6 +108,8 @@ export class WorkflowExecutor {
             innerResult = await runHumanHandoff(execInput); break;
           case 'CONTENT_OPPORTUNITY':
             innerResult = await runContentOpportunity(execInput); break;
+          case 'AUTHORITY_OPPORTUNITY':
+            innerResult = await runAuthorityOpportunity(execInput); break;
           case 'MARKET_ALERT':
             innerResult = await runMarketAlert(execInput); break;
           case 'RESPONSE_POLICY':
