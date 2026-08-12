@@ -1338,9 +1338,15 @@ export const servicesData = {
     // machine learning, and AI governance", and the names sat inside `desc`,
     // which only appears on hover.
     toolsStack: {
+      // Two-beat declarative, in the register enterprise platform vendors use:
+      // a claim about control rather than a description of process. "Vendor
+      // selection" named the activity, which is consulting language; this names
+      // what the reader gets from it. Both beats are literal — six layers, each
+      // with a managed and a self-hosted option chosen against their own
+      // constraints — so it is a summary of the rows, not a slogan over them.
       eyebrow: 'THE TOOLCHAIN',
-      title: 'What we build on,',
-      titleHighlight: 'and when.',
+      title: 'Every layer.',
+      titleHighlight: 'Deployed on your terms.',
       // Named one deciding axis (data residency) where there are three, and did
       // not say the layers are standardized once and reused — which is what
       // "at enterprise scale" actually means here, as against one team's pilot.
