@@ -1275,7 +1275,7 @@ export const servicesData = {
     // metric is the arithmetic of the story rather than a number chosen first.
     outcomeCard: {
       illustrative: true,
-      metric: '4\\u00d7',
+      metric: '4×',
       metricLabel: 'More questions resolved without a human',
       industry: 'Banking & Financial Services',
       problem: 'A support desk answered policy questions by hand because the first assistant they built was confidently wrong often enough that agents stopped trusting it. Deflection stalled at roughly one question in ten, and every wrong answer cost more to unpick than answering it manually would have.',
@@ -1806,7 +1806,7 @@ export const servicesData = {
     // is where the 6x comes from.
     outcomeCard: {
       illustrative: true,
-      metric: '6\u00d7',
+      metric: '6×',
       metricLabel: 'More models promoted to production per quarter',
       industry: 'Banking & Financial Services',
       problem: 'A risk-modeling team could put two models a quarter into production. Each release meant hand-assembling the training data, re-running validation in a notebook, and writing the evidence pack for model risk review by hand — roughly six weeks of work that had to be repeated in full for every retrain.',
