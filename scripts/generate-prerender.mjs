@@ -218,9 +218,6 @@ ${blockList(svc.dataBoundary.blocks || [], 'label', 'body')}
 ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
 <link rel="canonical" href="${url}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<link rel="alternate" hreflang="en-GB" href="${url}">
-<link rel="alternate" hreflang="en-US" href="${url}">
-<link rel="alternate" hreflang="en-IN" href="${url}">
 <link rel="alternate" hreflang="x-default" href="${url}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kangqore">

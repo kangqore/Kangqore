@@ -85,12 +85,13 @@ const ServicePage = () => {
             description: pageDescription,
             image: ogImage,
           },
-          // Regional variants: the platform serves UK/US/EU/India from one URL,
-          // so every locale points at the canonical and x-default anchors it.
+          // There is one URL per service and no regional variant behind it, so
+          // en-GB/en-US/en-IN all pointed at the same href. That is legal markup
+          // that declares nothing: hreflang exists to disambiguate between
+          // alternates, and with a single alternate there is nothing to choose.
+          // x-default alone states the truth — this URL serves every locale.
+          // Reinstate the regional entries when regional pages actually exist.
           hreflang: [
-            { lang: 'en-GB', url: pageUrl },
-            { lang: 'en-US', url: pageUrl },
-            { lang: 'en-IN', url: pageUrl },
             { lang: 'x-default', url: pageUrl },
           ],
           jsonLd: [buildServiceGraph({ svc, dept, pageUrl, pageTitle, pageDescription, ogImage })],

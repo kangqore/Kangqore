@@ -210,7 +210,7 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
       {/* Default Content */}
       <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <div className="flex flex-col h-full">
-          <h3 className={`text-2xl lg:text-3xl font-bold mb-2 transition-transform duration-300 shrink-0 ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
+          <h3 id={`svc-cap-${i}-title`} className={`text-2xl lg:text-3xl font-bold mb-2 transition-transform duration-300 shrink-0 ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
             {cap.title}
           </h3>
           <p className={`text-xs lg:text-sm font-semibold mb-6 shrink-0 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>
@@ -238,18 +238,21 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
       </div>
 
       {/* Expanded Detail Overlay */}
-      <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl ${isVibrant ? 'bg-white/98 border-gray-200' : 'bg-[#0a0a0c]/98 border-white/10'} ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`} tabIndex={isExpanded ? 0 : -1} inert={!isExpanded}>
+      <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl ${isVibrant ? 'bg-white/98 border-gray-200' : 'bg-[#0a0a0c]/98 border-white/10'} ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`} tabIndex={isExpanded ? 0 : -1} inert={!isExpanded} aria-labelledby={`svc-cap-${i}-title`}>
         <div className="flex flex-col text-left">
           <div className="flex items-center justify-between mb-4">
             <span className={`text-[11px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono ${isVibrant ? 'text-gray-700 bg-gray-100/50 border-gray-300' : 'text-slate-300 bg-white/5 border-white/10'}`}>
               {cap.items.length} Sub-Capabilities
             </span>
           </div>
-          <h4 className={`text-xl sm:text-2xl font-bold mb-2 tracking-tight ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
+          {/* The overlay covers the card face, so a sighted reader still needs
+              the title for context — but it was an <h4> repeating the <h3>
+              behind it, which put all 14 titles into the outline twice. It is
+              now presentational, and the panel is labeled by that <h3>.
+              cap.desc was also repeated verbatim here; the reader has just
+              read it on the card face, so it is gone rather than duplicated. */}
+          <p aria-hidden="true" className={`text-xl sm:text-2xl font-bold mb-5 tracking-tight ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
             {cap.title}
-          </h4>
-          <p className={`text-xs sm:text-sm mb-5 leading-relaxed ${isVibrant ? 'text-gray-700' : 'text-slate-400'}`}>
-            {cap.desc}
           </p>
           <ul className="space-y-3">
             {cap.items.map((item, j) => (
@@ -806,6 +809,12 @@ const INDUSTRY_ROUTES = {
   'healthcare & life sciences': 'healthcare',
   'life sciences': 'life-science',
   manufacturing: 'manufacturing',
+  'manufacturing & industry': 'manufacturing',
+  'edtech & higher ed': 'edtech',
+  // No entry for "IT & Infrastructure" on purpose. The nearest route,
+  // /industries/information-services, is content platforms and knowledge
+  // management — not IT operations — so linking it would send a reader
+  // somewhere that does not answer the question the card raised.
   'retail & consumer': 'retail',
   'retail & consumer goods': 'retail',
   retail: 'retail',
@@ -821,6 +830,27 @@ const INDUSTRY_ROUTES = {
 function industrySlug(label) {
   return INDUSTRY_ROUTES[String(label || '').trim().toLowerCase()] || null;
 }
+
+// Quiet conversion point for the middle of the page. Measured on
+// /services/genai-business-services, there were 9,294px between the hero CTA
+// and the next one — the capability grid, the comparison table, the
+// architecture and the industries all carried no way to act. This is
+// deliberately lighter than the full-width mid-page band so the two do not
+// compete: a rule, a line of copy, and a link.
+const InlineCta = ({ text, cta = 'Talk through your workflow' }) => (
+  <section className="border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }}>
+    <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+      <p className="text-white/70 text-lg font-medium leading-snug max-w-2xl">{text}</p>
+      <Link
+        to="/contact"
+        className="flex-shrink-0 inline-flex items-center gap-2 py-2 min-h-[24px] text-sm font-black tracking-wide text-cyan-400 hover:text-cyan-300 transition-colors"
+      >
+        {cta}
+        <ArrowRight className="w-4 h-4" />
+      </Link>
+    </div>
+  </section>
+);
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function UniversalServicePage({ service: rawService, department }) {
@@ -2251,9 +2281,21 @@ const featureMicros   = service.featureMicros
          ~923px on desktop with zero new information. */}
 
 
+      {/* Closes the first half of the CTA gap — the capability grid alone runs
+          3,222px on this service with nothing actionable in it. */}
+      {service.capabilityAreas && service.inlineCtaAfterCapabilities && (
+        <InlineCta text={service.inlineCtaAfterCapabilities} />
+      )}
+
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
       {service.comparisonTable && (
         <GeminiComparisonSection comparisonTable={service.comparisonTable} lede={service.comparisonLede || service.comparisonTable?.lede} />
+      )}
+
+      {/* The comparison table is the most persuasive block on the page and had
+          no CTA attached to it — the next one was 2,415px further down. */}
+      {service.comparisonTable && service.inlineCtaAfterComparison && (
+        <InlineCta text={service.inlineCtaAfterComparison} cta="Bring us the one that failed" />
       )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
@@ -2292,7 +2334,7 @@ const featureMicros   = service.featureMicros
                   >
                     {/* Card Title (Always visible at the top) */}
                     <div className="relative z-10">
-                      <h3 className="font-extrabold text-2xl leading-snug tracking-tight drop-shadow-md">
+                      <h3 id={`svc-arch-${idx}-title`} className="font-extrabold text-2xl leading-snug tracking-tight drop-shadow-md">
                         {node.title}
                       </h3>
                     </div>
@@ -2315,11 +2357,14 @@ const featureMicros   = service.featureMicros
                     {/* Slide-up details panel */}
                     <div
                       className={`absolute inset-0 pt-8 px-6 pb-6 transition-all duration-500 ease-in-out transform md:translate-y-full md:group-hover:translate-y-0 flex flex-col justify-between ${node.bgColor || 'bg-[#060a12]'} ${node.textColor || 'text-white'} z-20`}
+                      aria-labelledby={`svc-arch-${idx}-title`}
                     >
                       <div>
-                        <h4 className="font-extrabold text-2xl leading-snug tracking-tight mb-3">
+                        {/* Presentational, not an <h4>: this panel slides over the
+                            card and repeated the <h3> underneath it. */}
+                        <p aria-hidden="true" className="font-extrabold text-2xl leading-snug tracking-tight mb-3">
                           {node.title}
-                        </h4>
+                        </p>
                         <p className={`text-[12px] leading-relaxed font-semibold ${node.descColor || 'text-white/70'}`}>
                           {node.description}
                         </p>
