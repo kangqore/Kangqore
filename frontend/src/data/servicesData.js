@@ -1200,7 +1200,7 @@ export const servicesData = {
     architectureNodes: [
       { title: 'Knowledge & Retrieval', icon: 'Database', description: 'Your documents chunked, embedded and indexed, with retrieval that runs under the asking user\'s permissions so an answer can never quote a source they could not open.', features: ['Chunking & Embedding', 'Hybrid Search', 'Permission-Aware Retrieval', 'Source Attribution'] },
       { title: 'Orchestration & Context', icon: 'Network', description: 'Prompt templates and context assembly held as versioned artifacts, with routing that sends each request to the model that can answer it most cheaply.', features: ['Prompt Versioning', 'Context Assembly', 'Model Routing', 'Tool & Function Calling'] },
-      { title: 'Guardrails & Evaluation', icon: 'Shield', description: 'Refusal designed rather than hoped for, and quality measured on graded rubrics and adversarial suites — because there is no single correct answer to test against.', features: ['Input & Output Filters', 'Graded Rubrics', 'Adversarial Suites', 'Human Review Gates'] },
+      { title: 'Guardrails & Evaluation', icon: 'Shield', description: 'PII redaction and moderation on the way in, hallucination and jailbreak checks on the way out, and quality measured on graded rubrics — because there is no single correct answer to test against.', features: ['PII Redaction & Moderation', 'Jailbreak & Injection Filters', 'Graded Rubrics', 'Human Review Gates'] },
       { title: 'Serving & Unit Economics', icon: 'Activity', description: 'Caching on the repeated questions that dominate real traffic, token budgets per workflow, and latency measured where the user waits rather than at the API.', features: ['Semantic Caching', 'Token Budgets', 'Latency SLOs', 'Per-Query Cost Telemetry'] },
     ],
 
@@ -1345,7 +1345,7 @@ export const servicesData = {
           title: 'Guardrails & safety',
           managed: 'Azure Content Safety · Bedrock Guardrails',
           selfHosted: 'Llama Guard · NeMo Guardrails · custom classifiers',
-          desc: 'Applied on both sides — input classification before retrieval, output filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen.',
+          desc: 'Applied on both sides — PII detection and moderation before retrieval, hallucination and jailbreak filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen. Red-teaming the deployment is part of acceptance, not a later exercise.',
         },
         {
           icon: 'Eye',
@@ -1397,16 +1397,26 @@ export const servicesData = {
           + 'In practice, almost every enterprise system starts with retrieval, and a minority add fine-tuning afterwards for the last increment of consistency.',
       },
       {
-        q: 'How do you stop the model making things up?',
-        a: 'You cannot stop a language model generating a plausible sentence. You can stop that sentence reaching a user unmarked, and that is a system design problem rather than a model problem.\n\n'
+        q: 'How do you stop the model hallucinating?',
+        a: 'Hallucination is a language model stating something false with the same fluency it states something true. You cannot stop a model generating a plausible sentence — you can stop that sentence reaching a user unmarked, and that is a system design problem rather than a model problem.\n\n'
           + 'Three controls do most of the work. Ground the answer in retrieved passages so the model is summarizing rather than recalling. Return the source alongside the answer, so a reader can check it in one click and the cost of a wrong answer drops sharply. And make refusal a designed path: when retrieval returns nothing relevant, the correct output is that we do not have that, not a fluent guess.\n\n'
-          + 'What remains is measured rather than assumed. A fixed question set is scored on every prompt and index change, and the failure modes that matter to your domain get an adversarial suite of their own.',
+          + 'What remains is measured rather than assumed. A fixed question set is scored on every prompt and index change, and the failure modes that matter to your domain get an adversarial suite of their own — including jailbreak attempts, prompt injection through retrieved documents, and the red-team cases your risk function asks about.',
       },
       {
         q: 'Does our data get used to train someone else\'s model?',
         a: 'Not on the enterprise tiers of the major providers, and it is worth being precise about why. Azure OpenAI, Amazon Bedrock, Google Vertex AI and Anthropic\'s and OpenAI\'s business agreements all contractually exclude customer inputs and outputs from training by default.\n\n'
           + 'The real exposure is elsewhere: retention windows for abuse monitoring, which region the inference runs in, and what your own prompt logs capture. A system that writes full prompts to a log has copied the sensitive part of every request into a second place.\n\n'
           + 'Where the answer has to be nothing leaves our estate, we deploy open-weight models on your own infrastructure. That is a real cost decision rather than a preference — self-hosting is cheaper only above sustained volume, and below it you are paying for idle GPUs.',
+        // Every URL verified to resolve before being published. An answer that
+        // asserts what a third party does with your data is worth little
+        // without the document that says so.
+        sources: [
+          { label: 'Azure OpenAI data, privacy and security', url: 'https://learn.microsoft.com/en-us/legal/cognitive-services/openai/data-privacy' },
+          { label: 'Amazon Bedrock data protection', url: 'https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html' },
+          { label: 'Google Vertex AI data governance', url: 'https://cloud.google.com/vertex-ai/generative-ai/docs/data-governance' },
+          { label: 'Anthropic commercial terms', url: 'https://www.anthropic.com/legal/commercial-terms' },
+          { label: 'OpenAI platform data usage', url: 'https://platform.openai.com/docs/guides/your-data' },
+        ],
       },
       {
         q: 'How do you evaluate a system with no single correct answer?',

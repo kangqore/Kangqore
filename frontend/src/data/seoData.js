@@ -383,8 +383,15 @@ export const serviceSEO = {
     url: '/services/data-science-ai',
   },
   'genai-business-services': {
-    title: 'GenAI Business Services — Cognition | Kangqore',
-    description: 'Generative AI for the enterprise — LLM implementation, custom fine-tuning, content & code generation, and enterprise AI assistants. Powered by eQORE™.',
+    // "— Cognition" spent a quarter of the title on an internal taxonomy term
+    // nobody searches. The replacement follows the pattern agentic-ai already
+    // uses ("— Autonomous AI Agents |") and spends the same characters on three
+    // terms that are real queries. "Generative AI" rather than "GenAI" because
+    // the long form carries the search volume.
+    title: 'Generative AI Services — RAG, Fine-Tuning & LLMs | Kangqore',
+    // Leads with the differentiator the page actually argues — grounding — so
+    // the SERP snippet says something the competing results do not.
+    description: 'Enterprise generative AI: retrieval-augmented generation over your own documents, guardrails, evaluation and fine-tuning — answers that cite their source.',
     keywords: 'generative AI, GenAI services, LLM implementation, custom AI fine-tuning, enterprise AI assistants',
     url: '/services/genai-business-services',
   },
