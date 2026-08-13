@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T19:53:26.182Z",
+  "generatedAt": "2026-08-13T20:25:22.401Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -135,7 +135,7 @@
       "url": "/services/ai-cognitive-computing",
       "name": "AI & Cognitive Computing",
       "department": "Cognition",
-      "description": "Cognitive computing systems that understand, reason, and learn from data — natural language understanding, pattern recognition, and machine reasoning.",
+      "description": "Enterprise cognitive computing: computer vision, document and language intelligence, speech, multimodal and edge AI — systems that read what your people read.",
       "capabilities": [
         "Machine Learning Engineering",
         "Decision Intelligence",

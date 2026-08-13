@@ -371,9 +371,13 @@ export const serviceSEO = {
     url: '/services/agentic-ai-led-application-modernization',
   },
   'ai-cognitive-computing': {
-    title: 'AI & Cognitive Computing — Cognition | Kangqore',
-    description: 'Cognitive computing systems that understand, reason, and learn from data — natural language understanding, pattern recognition, and machine reasoning.',
-    keywords: 'cognitive computing, natural language understanding, machine reasoning, pattern recognition, cognitive AI',
+    // Was 'AI & Cognitive Computing — Cognition | Kangqore', 47 chars with a
+    // quarter of it spent on an internal department name nobody searches. Now
+    // carries the three capability areas that actually get typed into a search
+    // box, and uses the space Google renders.
+    title: 'AI & Cognitive Computing — Vision, NLP & Speech | Kangqore',
+    description: 'Enterprise cognitive computing: computer vision, document and language intelligence, speech, multimodal and edge AI — systems that read what your people read.',
+    keywords: 'cognitive computing, computer vision, natural language processing, document intelligence, speech recognition, multimodal AI, edge AI, decision intelligence',
     url: '/services/ai-cognitive-computing',
   },
   'data-science-ai': {
