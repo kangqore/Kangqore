@@ -1760,11 +1760,11 @@ const featureMicros   = service.featureMicros
                     <text x="55" y="340" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">EU AI ACT &amp; NIST</text>
 
                     {/* Connection from Servers to Core */}
-                    <path d="M 120 230 C 150 230, 180 220, 205 210" fill="none" stroke="#22d3ee" strokeWidth="2.5" filter="url(#glow-cyan-intense-gov)" strokeDasharray="8 8">
+                    <path d="M 90 235 L 185 215" fill="none" stroke="#22d3ee" strokeWidth="2.5" filter="url(#glow-cyan-intense-gov)" strokeDasharray="8 8">
                       <animate attributeName="stroke-dashoffset" from="16" to="0" dur="1s" repeatCount="indefinite" />
                     </path>
                     {/* Drone 1 */}
-                    <g transform="translate(150, 215)">
+                    <g transform="translate(137, 225)">
                       <polygon points="0,-8 10,0 0,8 -10,0" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
                       <circle cx="0" cy="0" r="3" fill="#0f172a" />
                     </g>
@@ -1788,7 +1788,7 @@ const featureMicros   = service.featureMicros
                     <text x="440" y="170" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">ZERO-TRUST ARCHITECTURE</text>
 
                     {/* Connection from Core to Shield */}
-                    <path d="M 325 160 C 350 140, 380 120, 410 100" fill="none" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense-gov)" strokeDasharray="6 6">
+                    <path d="M 335 165 L 420 100" fill="none" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense-gov)" strokeDasharray="6 6">
                       <animate attributeName="stroke-dashoffset" from="12" to="0" dur="1s" repeatCount="indefinite" />
                     </path>
 
@@ -1812,10 +1812,10 @@ const featureMicros   = service.featureMicros
                     <text x="440" y="340" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">CONTINUOUS ASSURANCE</text>
 
                     {/* Connection from Core to Management */}
-                    <path d="M 330 210 C 360 210, 390 220, 420 240" fill="none" stroke="#22d3ee" strokeWidth="2.5" filter="url(#glow-cyan-intense-gov)" strokeDasharray="8 8">
+                    <path d="M 350 210 L 415 255" fill="none" stroke="#22d3ee" strokeWidth="2.5" filter="url(#glow-cyan-intense-gov)" strokeDasharray="8 8">
                       <animate attributeName="stroke-dashoffset" from="0" to="16" dur="1s" repeatCount="indefinite" />
                     </path>
-                    <g transform="translate(370, 220)">
+                    <g transform="translate(382, 232)">
                       <polygon points="0,-8 10,0 0,8 -10,0" fill="#3b82f6" filter="url(#glow-blue-intense-gov)" />
                       <circle cx="0" cy="0" r="3" fill="#0f172a" />
                     </g>
@@ -1831,7 +1831,7 @@ const featureMicros   = service.featureMicros
                     </g>
                     <text x="90" y="130" textAnchor="middle" fill="#93c5fd" fontSize="9" fontWeight="bold" fontFamily="monospace">TRUST</text>
                     <text x="90" y="145" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">TRANSPARENCY &amp; ETHICS</text>
-                    <path d="M 110 90 C 150 110, 180 140, 220 160" fill="none" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow-blue-intense-gov)" strokeDasharray="4 4">
+                    <path d="M 110 95 L 205 165" fill="none" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow-blue-intense-gov)" strokeDasharray="4 4">
                        <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.8s" repeatCount="indefinite" />
                     </path>
 
@@ -1840,19 +1840,28 @@ const featureMicros   = service.featureMicros
                       <circle cx="75" cy="75" r="85" fill="#0f172a" stroke="url(#gov-blue-glow)" strokeWidth="3" filter="url(#glow-blue-intense-gov)"/>
                       <circle cx="75" cy="75" r="85" fill="url(#gov-slate-grad)" fillOpacity="0.9"/>
                       
-                      <circle cx="75" cy="75" r="65" fill="none" stroke="#22d3ee" strokeWidth="1.5" strokeDasharray="10 15">
-                        <animateTransform attributeName="transform" type="rotate" from="0 75 75" to="360 75 75" dur="10s" repeatCount="indefinite" />
+                      {/* Advanced Grid Patterns */}
+                      <path d="M 20 75 L 130 75 M 75 20 L 75 130" stroke="#22d3ee" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="4 4" />
+                      <circle cx="75" cy="75" r="65" fill="none" stroke="#22d3ee" strokeWidth="1.5" strokeDasharray="5 15">
+                        <animateTransform attributeName="transform" type="rotate" from="0 75 75" to="360 75 75" dur="15s" repeatCount="indefinite" />
                       </circle>
+                      <circle cx="75" cy="75" r="55" fill="none" stroke="#3b82f6" strokeWidth="1" strokeDasharray="2 6" />
                       <circle cx="75" cy="75" r="45" fill="none" stroke="#60a5fa" strokeWidth="2" strokeDasharray="20 10">
-                        <animateTransform attributeName="transform" type="rotate" from="360 75 75" to="0 75 75" dur="7s" repeatCount="indefinite" />
+                        <animateTransform attributeName="transform" type="rotate" from="360 75 75" to="-360 75 75" dur="10s" repeatCount="indefinite" />
                       </circle>
 
-                      <circle cx="75" cy="75" r="28" fill="#1e293b" stroke="#00f0ff" strokeWidth="2" filter="url(#glow-cyan-intense-gov)"/>
-                      <foreignObject x="55" y="55" width="40" height="40">
-                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full flex items-center justify-center text-white">
-                          <ShieldCheck size={24} />
-                        </div>
-                      </foreignObject>
+                      {/* Advanced Cyber Lock */}
+                      <circle cx="75" cy="75" r="30" fill="#1e293b" stroke="#00f0ff" strokeWidth="2" filter="url(#glow-cyan-intense-gov)"/>
+                      <circle cx="75" cy="75" r="26" fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeDasharray="4 4">
+                        <animateTransform attributeName="transform" type="rotate" from="0 75 75" to="360 75 75" dur="4s" repeatCount="indefinite" />
+                      </circle>
+                      {/* Lock Shackle */}
+                      <path d="M 67 70 L 67 60 C 67 55, 83 55, 83 60 L 83 70" fill="none" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" />
+                      {/* Lock Body */}
+                      <rect x="63" y="70" width="24" height="18" rx="3" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
+                      {/* Keyhole */}
+                      <circle cx="75" cy="77" r="2.5" fill="#0f172a" />
+                      <line x1="75" y1="79" x2="75" y2="84" stroke="#0f172a" strokeWidth="2" strokeLinecap="round" />
                     </g>
                     <text x="270" y="325" textAnchor="middle" fill="#93c5fd" fontSize="12" fontWeight="bold" fontFamily="monospace" letterSpacing="2">AI GOVERNANCE</text>
                     <text x="270" y="340" textAnchor="middle" fill="#60a5fa" fontSize="9" fontFamily="monospace">EMBEDDED CONTROL LIFECYCLE</text>
