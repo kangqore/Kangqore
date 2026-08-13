@@ -2303,8 +2303,12 @@ const featureMicros   = service.featureMicros
               ) ) : null}
           </div>
 
-          {/* Stats row — full width */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-12 border-t border-white/[0.08] mb-16">
+          {/* Stats row — full width.
+              The outcome cards further down carry an "Illustrative scenario"
+              line and these did not, so the larger and more prominent numbers
+              were the unqualified ones. Any service flagging a metric
+              illustrative now gets the same disclaimer beneath them. */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-12 border-t border-white/[0.08]">
             {service.businessMetrics ? service.businessMetrics.map((m, i) => (
               <div key={i}>
                 <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
@@ -2325,6 +2329,12 @@ const featureMicros   = service.featureMicros
               </div>
             ))}
           </div>
+
+          {(service.businessMetrics || []).some((m) => m.illustrative) ? (
+            <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-16 max-w-3xl">
+              Illustrative figures — modeled on typical engagement patterns, not a specific client result.
+            </p>
+          ) : <div className="mb-16" />}
 
 
 
@@ -2615,7 +2625,7 @@ const featureMicros   = service.featureMicros
                 </h2>
               </div>
               <p className="text-white/50 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
-                Every deployment runs on a governed, modular architecture built for enterprise scale.
+                {service.architectureLede || 'Every deployment runs on a governed, modular architecture built for enterprise scale.'}
               </p>
             </div>
 
@@ -3373,7 +3383,7 @@ const featureMicros   = service.featureMicros
                 : <>The complete <span className="bg-brand-gradient bg-clip-text text-transparent">{department.name}</span> practice.</>}
             </h2>
             <p className="text-white/50 text-sm font-medium leading-relaxed max-w-2xl mb-10">
-              {service.name} is one of {clusterSiblings.length + 1} services in this practice. Explore how they combine.
+              {service.practiceLede || `${service.name} is one of ${clusterSiblings.length + 1} services in this practice. Explore how they combine.`}
             </p>
 
             <nav aria-label={`Other ${department.name} services`}>
