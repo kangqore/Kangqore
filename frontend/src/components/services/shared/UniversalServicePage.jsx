@@ -2615,12 +2615,17 @@ const featureMicros   = service.featureMicros
               <div>
                 <div className="flex items-center gap-4 mb-4">
                   <div className="h-[1px] w-12 bg-white/20" />
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">ARCHITECTURE & EXECUTION LOOP</span>
+                  {/* "EXECUTION LOOP" is agentic vocabulary, and it was
+                      hardcoded onto every service using this section — including
+                      pages about perception and reasoning, which do not execute
+                      anything. Opt-in overrides; unset services render as before. */}
+                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.architectureEyebrow || 'ARCHITECTURE & EXECUTION LOOP'}</span>
                 </div>
                 <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                  How It Works.<br />
+                  {service.architectureTitle || 'How It Works.'}<br />
                   <span className="bg-brand-gradient bg-clip-text text-transparent">
-                    {service.architectureNodes.length === 5 ? 'The 5-Stage Autonomous Execution Loop.' : `The ${service.architectureNodes.length}-Layer Stack.`}
+                    {service.architectureTitleHighlight
+                      || (service.architectureNodes.length === 5 ? 'The 5-Stage Autonomous Execution Loop.' : `The ${service.architectureNodes.length}-Layer Stack.`)}
                   </span>
                 </h2>
               </div>
@@ -2865,7 +2870,7 @@ const featureMicros   = service.featureMicros
               to="/contact"
               className="flex-shrink-0 inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.12)]"
             >
-              Schedule a Demo
+              {service.midCtaLabel || 'Schedule a Demo'}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -3437,11 +3442,11 @@ const featureMicros   = service.featureMicros
             <div className="flex flex-col gap-6 lg:items-end">
               <div className="flex flex-row items-center gap-6 flex-wrap">
                 <Link to="/contact" className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.12)]">
-                  Schedule a Demo
+                  {service.closingCta?.primaryLabel || 'Schedule a Demo'}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                 </Link>
                 <a href="/assets/kangqore-agentic-ai-playbook.pdf" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 py-1 min-h-[24px] text-white/50 font-semibold text-sm hover:text-white transition-colors duration-200">
-                  Download the Playbook
+                  {service.closingCta?.secondaryLabel || 'Download the Playbook'}
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
               </div>

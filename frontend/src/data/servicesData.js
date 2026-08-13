@@ -690,7 +690,12 @@ export const servicesData = {
     // processes" — a claim about resembling people rather than about doing
     // anything.
     shortDescription: 'Kangqore builds systems that read the material your people read: contracts, images, recordings and sensor streams, returned as something you can act on.',
-    fullDescription: 'Implement cognitive computing solutions that understand, reason, and learn from data to enhance business operations.',
+    // Renders as the hero paragraph and feeds Service.description in the
+    // JSON-LD, so it has to stand alone as a definition. It read "Implement
+    // cognitive computing solutions that understand, reason, and learn from
+    // data to enhance business operations" — four verbs, no object, and nothing
+    // a competitor could not also say.
+    fullDescription: 'Cognitive systems that read the material your organization already holds — contracts, imagery, recordings, sensor traces — and return an answer with the evidence behind it and a confidence you can act on.',
     keyFeatures: ['Natural language understanding', 'Pattern recognition', 'Machine reasoning', 'Knowledge management', 'Cognitive insights'],
     relatedServiceSlugs: ['agentic-ai', 'data-science-ai', 'genai-business-services'],
     featured: false,
@@ -705,10 +710,13 @@ export const servicesData = {
     industryHeading: 'Cognitive systems trained on',
     industryHeadingHighlight: 'your sector\'s evidence.',
     midCta: 'The answer is already in your documents. Nobody has time to read them.',
+    midCtaLabel: 'Show us a document',
     closingCta: {
       title: 'One conversation.',
       highlight: 'One system that understands.',
       body: 'Bring the data nobody can read at volume — the contracts, the images, the call recordings, the sensor streams. In 30 minutes we will tell you what a machine can reliably extract from it, what it cannot, and what that is worth.',
+      primaryLabel: 'Bring us your hardest document',
+      secondaryLabel: 'See the four stages',
     },
 
     // Department names are internal taxonomy. "The complete Cognition practice"
@@ -716,7 +724,7 @@ export const servicesData = {
     practiceLabel: 'RELATED SERVICES',
     practiceHeading: 'The rest of the',
     practiceHeadingHighlight: 'AI practice.',
-    practiceLede: 'Perception and reasoning are one layer. Generation, autonomy, operations and governance are separate services, and most programs use two or three of them together.',
+    practiceLede: 'Perception and reasoning are one layer of the stack. Generation, autonomy, operations and governance are separate services with their own pages, because a buyer asking about OCR and a buyer asking about model registries are not the same buyer. Most programs use two or three together.',
 
     // Same call as genai-business-services, mlops and ai-governance. This page
     // argues its engagement model with evidence in "Five ways to start" and ten
@@ -906,6 +914,9 @@ export const servicesData = {
     // the cards rendered a heading and a paragraph with nothing underneath.
     // The template default read "Every deployment runs on a governed, modular
     // architecture built for enterprise scale" — true of any page here.
+    architectureEyebrow: 'HOW THE PIPELINE FITS TOGETHER',
+    architectureTitle: 'Four stages.',
+    architectureTitleHighlight: 'Each one measurable on its own.',
     architectureLede: 'Four stages, in order. Each one is measurable on its own, which is how you find out whether a disappointing answer came from a bad model or from a page nobody could read in the first place.',
     architectureNodes: [
       {
@@ -1046,8 +1057,8 @@ export const servicesData = {
       metric: '87%',
       metricLabel: 'Of filings read without a human first',
       industry: 'Global Financial Services',
-      problem: 'Risk and compliance read regulatory filings, cross-border contracts and disclosure packs by hand because nothing else could. The queue ran weeks behind the publication dates, and the obligations that mattered were found late rather than missed outright, which is worse in a different way.',
-      outcome: 'Documents are now parsed on arrival, obligations extracted with the clause and page retained against each one, and anything below the confidence threshold routed to the team that used to read everything. They review the marginal cases instead of the whole queue, and the audit trail is a by-product rather than a reconstruction.',
+      problem: 'Risk and compliance read regulatory filings, cross-border contracts and disclosure packs by hand, because nothing else could. The queue ran weeks behind publication, and the obligations that mattered were found late rather than missed outright — which is worse in a different way, because late looks like coverage right up until an assessor checks the dates.',
+      outcome: 'Documents are parsed on arrival, obligations extracted with the clause and page retained against each one, and anything below the confidence threshold routed to the team that used to read everything. They review the marginal cases rather than the whole queue. If you are wondering what happens to the ones the model gets wrong: they surface as low-confidence, which is the point of measuring it.',
     },
     outcomeCard2: {
       illustrative: true,
@@ -1055,7 +1066,7 @@ export const servicesData = {
       metricLabel: 'Fewer records screened by hand',
       industry: 'Healthcare & Clinical Research',
       problem: 'Trial eligibility screening meant clinicians reading dense EHR notes and protocol documents across systems that did not talk to each other. Screening capacity, not patient availability, was the constraint on recruitment.',
-      outcome: 'Records are parsed against protocol criteria and returned as a ranked shortlist with the supporting passage attached to each match. A clinician still decides eligibility; what changed is that they read the twenty candidates worth reading rather than the six hundred that were not.',
+      outcome: 'Records are parsed against protocol criteria and returned as a ranked shortlist, each match carrying the passage that produced it. A clinician still decides eligibility — that line does not move. What changed is that they read the twenty candidates worth reading rather than the six hundred that were not, and can see in one click why each one surfaced.',
     },
     businessMetrics: [
       { illustrative: true, title: 'Data Comprehension',  desc: 'Improvement in unstructured data comprehension using multi-modal NLP and cognitive reasoning engines.',                              value: '87', suffix: '%',    metricLabel: 'Comprehension Accuracy', icon: 'BrainCircuit' },
