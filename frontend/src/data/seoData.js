@@ -630,8 +630,11 @@ export const serviceSEO = {
     url: '/services/finance-risk-management',
   },
   'ai-governance': {
-    title: 'AI Governance — Shield | Kangqore',
-    description: 'Responsible AI frameworks — ethical AI guidelines, bias detection and mitigation, model explainability, compliance monitoring, and risk assessment.',
+    // Was 'AI Governance — Shield | Kangqore', 33 chars, a quarter of it spent
+    // on the internal department name and 27 usable characters left empty. Now
+    // carries the two regulations a buyer actually searches alongside the term.
+    title: 'AI Governance — EU AI Act & NIST AI RMF | Kangqore',
+    description: 'Enterprise AI governance: risk classification against the EU AI Act, NIST AI RMF controls, model registry, explainability, bias testing and audit trails.',
     keywords: 'AI governance, responsible AI, AI ethics, bias detection, model explainability, AI compliance',
     url: '/services/ai-governance',
   },

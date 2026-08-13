@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T23:09:46.308Z",
+  "generatedAt": "2026-08-13T01:05:25.742Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -325,7 +325,7 @@
       "url": "/services/ai-governance",
       "name": "AI Governance",
       "department": "Shield",
-      "description": "Responsible AI frameworks — ethical AI guidelines, bias detection and mitigation, model explainability, compliance monitoring, and risk assessment.",
+      "description": "Enterprise AI governance: risk classification against the EU AI Act, NIST AI RMF controls, model registry, explainability, bias testing and audit trails.",
       "capabilities": [
         "Managing AI & GenAI Solution Quality",
         "Establishing Ethical AI Governance",
