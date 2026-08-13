@@ -172,7 +172,7 @@ export const servicesData = {
       },
       {
         industry: 'Retail & Consumer',
-        headline: 'Personalisation at enterprise scale.',
+        headline: 'Personalization at enterprise scale.',
         agents: ['Conversational shopping and product discovery agent', 'Personalised campaign and promotion agent', 'Inventory replenishment and demand forecasting agent'],
       },
       {
@@ -692,6 +692,32 @@ export const servicesData = {
     featured: false,
     image: 'https://images.unsplash.com/photo-1655720828018-edd2daec9349?w=800&q=80',
     hideBadgeStrip: true,
+
+    // ── Overrides for template defaults written for /services/agentic-ai ──
+    // Without these the page rendered "Agents built for your industry." as its
+    // industry h2, "One agent in production." as its closing h2, and "Your next
+    // workflow runs itself." as the mid-page CTA — three headings advertising a
+    // different service on a page about perception and reasoning.
+    industryHeading: 'Cognitive systems trained on',
+    industryHeadingHighlight: 'your sector\'s evidence.',
+    midCta: 'Your unstructured data already holds the answer.',
+    closingCta: {
+      title: 'One conversation.',
+      highlight: 'One system that understands.',
+      body: 'Bring the data nobody can read at volume — the contracts, the images, the call recordings, the sensor streams. In 30 minutes we will tell you what a machine can reliably extract from it, what it cannot, and what that is worth.',
+    },
+
+    // Department names are internal taxonomy. "The complete Cognition practice"
+    // put an org-chart word in an h2 that a buyer has no reason to know.
+    practiceLabel: 'RELATED SERVICES',
+    practiceHeading: 'The rest of the',
+    practiceHeadingHighlight: 'AI practice.',
+
+    // Same call as genai-business-services, mlops and ai-governance. This page
+    // argues its engagement model with evidence in "Five ways to start" and ten
+    // FAQs; the six generic consultancy claims below them measured 93 words in
+    // 1,162px — the lowest density on the page.
+    hidePartnershipModel: true,
     capabilitiesLabel: 'COGNITIVE COMPUTING SERVICES',
     capabilitiesSectionTitle: 'Cognitive Computing Service',
     capabilitiesSectionHighlight: 'Capabilities.',
@@ -825,113 +851,258 @@ export const servicesData = {
     bannerBrandDesc: 'Our enterprise AI & cognitive computing product & platform',
     downloadAsset: '/assets/downloads/kangqore-cognitive-computing-playbook.pdf',
     comparisonTable: {
-      colA: 'Traditional Automation',
-      colB: 'Cognitive Computing & AI',
+      // Every label here used to fall through to the template default, which is
+      // written for /services/agentic-ai. The result was a heading reading "The
+      // shift from automation to autonomy" above columns headed TRADITIONAL AI
+      // and AGENTIC AI, with dimensions Autonomy / Workflow / Learning /
+      // Integration / Outcomes — an agent-execution argument on a page about
+      // perception and reasoning. Rows are rewritten to the axis that actually
+      // separates a cognitive system from a conventional one: what it can take
+      // as input, and what it does when the input is ambiguous.
+      heading: 'Conventional systems read fields. Cognitive systems read evidence.',
+      lede: 'Most enterprise software works on data somebody already structured. The information that decides things rarely arrives that way — it arrives as a contract, a photograph, a recording, a sensor trace. A cognitive system is one that can take that as input, form a view under uncertainty, and tell you how confident it is.',
+      beforeLabel: 'CONVENTIONAL SYSTEMS',
+      afterLabel: 'COGNITIVE SYSTEMS',
+      afterBadge: 'GROUNDED',
+      beforeShort: 'Conventional',
+      afterShort: 'Cognitive',
       rows: [
-        { dimension: 'Autonomy',    before: 'Rule-dependent, semi-autonomous — requires human instruction at every branch.', after: 'Fully autonomous reasoning — perceives context, evaluates goals, and acts without prompting.' },
-        { dimension: 'Workflow',    before: 'Linear and predefined — breaks on edge cases outside the script.', after: 'Multi-step, non-linear, self-correcting — adapts when conditions change.' },
-        { dimension: 'Learning',    before: 'Static logic — must be manually reprogrammed to handle new scenarios.', after: 'Continuous learning — learns from execution loops and improves with every cycle.' },
-        { dimension: 'Integration', before: 'Siloed connectors — isolated databases, manual reports, and fragmented analytics.', after: 'Multi-system orchestration — unifies knowledge across ERP, CRM, and enterprise APIs.' },
-        { dimension: 'Outcomes',    before: 'Reactive task reduction — reduces effort on known tasks.', after: 'Goal-driven business outcomes — transforms enterprise data into autonomous execution.' },
+        { dimension: 'Input', before: 'Structured fields only. Anything that arrives as a document, an image or a recording is queued for a person to read first.', after: 'Text, images, video, speech, documents and sensor streams read directly, including the scanned and handwritten material nobody has indexed.', link: { href: '/services/big-data', label: 'Data foundations' } },
+        { dimension: 'Reasoning', before: 'Fixed rules written in advance. A case the author did not foresee falls through to an exception queue.', after: 'Inference over learned patterns, so a case that resembles a thousand previous ones is handled without anyone having written the rule for it.' },
+        { dimension: 'Uncertainty', before: 'A binary answer regardless of evidence. Nothing distinguishes a confident match from a marginal one.', after: 'A calibrated confidence score with every output, and a defined threshold below which the case routes to a person rather than a guess.' },
+        { dimension: 'Adaptation', before: 'Static until someone reprograms it. Drift shows up as a rising exception rate that nobody attributes to the model.', after: 'Retrained on a schedule against a held-out set, with drift and accuracy tracked per segment rather than as one aggregate number.', link: { href: '/services/mlops', label: 'Model lifecycle' } },
+        { dimension: 'Explainability', before: 'The output is the whole answer. Asked why, the system has nothing further to offer.', after: 'Feature attributions for structured inputs and the source passage or region for unstructured ones, retained with the decision and reproducible later.', link: { href: '/services/ai-governance', label: 'Governance and audit' } },
       ],
     },
+    // Descriptions argued agent execution — "cognitive agents autonomously
+    // execute tasks", "goal decomposition" — which is /services/agentic-ai's
+    // subject, not this one. Rewritten to the perception-to-decision path this
+    // page actually sells, and keyCapabilities were empty on all four nodes so
+    // the cards rendered a heading and a paragraph with nothing underneath.
     architectureNodes: [
       {
-        title: 'Perception Layer',
-        icon: 'Search',
-        description: 'Systems ingest and interpret multi-modal enterprise context — structured data, documents, vision, and real-time event streams.',
-        features: ['RAG Integration', 'API Connectors', 'Real-time Event Streams'],
+        title: 'Perception',
+        icon: 'Eye',
+        description: 'Text, images, video, speech, documents and sensor streams turned into something a model can operate on, including the scanned and handwritten material that never made it into a database.',
+        features: ['OCR & Document Parsing', 'Vision Pipelines', 'Speech to Text', 'Sensor & Stream Ingest'],
       },
       {
-        title: 'Cognitive Engine',
-        icon: 'BrainCircuit',
-        description: 'LLM & neural reasoning for goal decomposition, multi-step planning, semantic search, and self-correction when outcomes deviate.',
-        features: ['Multi-step Planning', 'Memory Management', 'Self-Correction', 'Cognitive Reasoning'],
+        title: 'Representation',
+        icon: 'Network',
+        description: 'Embeddings, entities and relationships extracted so the system holds meaning rather than strings, and can connect a claim in one document to the record that supports it in another.',
+        features: ['Embeddings & Vector Index', 'Entity Extraction', 'Knowledge Graph', 'Semantic Retrieval'],
       },
       {
-        title: 'Action & Execution',
-        icon: 'Zap',
-        description: 'Cognitive agents autonomously execute tasks across CRM, ERP, and internal systems — writing to systems and triggering workflows.',
-        features: ['Function Calling', 'Workflow Automation', 'System Write Access'],
+        title: 'Reasoning',
+        icon: 'Brain',
+        description: 'Inference over what was perceived, returning a calibrated confidence alongside the answer and a defined threshold below which the case goes to a person instead of a guess.',
+        features: ['Classification & Ranking', 'Confidence Calibration', 'Multimodal Fusion', 'Human Review Thresholds'],
       },
       {
-        title: 'Governance Core',
-        icon: 'Shield',
-        description: 'Strict oversight, explainability, ethical boundaries, and policy enforcement baked in at the architecture level.',
-        features: ['Immutable Audit Logs', 'RBAC Controls', 'Human-in-the-Loop'],
+        title: 'Evidence',
+        icon: 'ShieldCheck',
+        description: 'Every output carries what produced it: the passage, the region of the image, the feature attributions. Retained with the decision so it can be reconstructed months later rather than reasoned about from memory.',
+        features: ['Source Attribution', 'Feature Attributions', 'Decision Logs', 'Drift & Accuracy Tracking'],
       },
     ],
     industryUseCases: [
+      // Was eighteen entries each named "X agent" — a compliance monitoring
+      // agent, a patient triage agent, a demand forecasting agent. That is the
+      // agentic product catalog this section was cloned from. A cognitive
+      // computing engagement does not sell agents; it makes unreadable material
+      // machine-readable. These are the inputs each sector actually has and what
+      // a system can take from them. The neutral `items` key replaces `agents`,
+      // which the template still reads for the services where it is accurate.
       {
         industry: 'Banking & Financial Services',
-        headline: 'Compliance, fraud, and risk handled with cognitive precision.',
-        agents: ['Compliance monitoring agent', 'Fraud investigation agent', 'Credit decisioning agent'],
+        headline: 'The evidence is in the documents, not the fields',
+        items: [
+          'Regulatory filings, cross-border contracts and disclosure packs read at volume, with the clause and page retained against every extracted obligation',
+          'Transaction narratives and case notes classified for financial-crime review, with a confidence threshold below which a human sees it first',
+          'Credit and adverse-action decisions returned with feature attributions, because a regulator will ask which inputs drove the outcome',
+        ],
       },
       {
-        industry: 'Healthcare',
-        headline: 'Clinical workflows that move at the speed of care.',
-        agents: ['Patient triage agent', 'Prior authorization agent', 'Clinical data extraction agent'],
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Clinical information that arrives as prose and pixels',
+        items: [
+          'Discharge summaries, referral letters and pathology reports structured into coded fields, with the source line kept for clinician review',
+          'Imaging triage that ranks studies by likely urgency rather than reading them, so a radiologist decides and the model orders the queue',
+          'PHI detected and redacted before any model sees it, with lineage evidence showing what was ever exposed',
+        ],
       },
       {
-        industry: 'Manufacturing',
-        headline: 'Supply chains and industrial operations that self-optimize.',
-        agents: ['Supply chain rerouting agent', 'Predictive maintenance agent', 'Vendor onboarding agent'],
+        industry: 'Manufacturing & Industry',
+        headline: 'Thirty years of maintenance knowledge, plus what the line can see',
+        items: [
+          'Visual inspection on the line, with defect classes trained from your own reject bins rather than a generic dataset',
+          'Manuals, service bulletins and engineer field notes made searchable, including scanned and handwritten material',
+          'Acoustic and vibration signatures classified at the edge, so a bearing is flagged before it fails rather than after',
+        ],
       },
       {
-        industry: 'Retail & Consumer',
-        headline: 'Personalisation and demand intelligence at scale.',
-        agents: ['Conversational shopping agent', 'Personalized campaign agent', 'Demand forecasting agent'],
+        industry: 'Retail & Consumer Goods',
+        headline: 'Catalog, shelf and conversation as one signal',
+        items: [
+          'Product imagery and attribute data reconciled so a catalog entry and the photograph agree with each other',
+          'Shelf and planogram compliance read from store photography rather than audited by hand',
+          'Contact-center recordings transcribed and classified to surface the reasons behind demand shifts, not just the shifts',
+        ],
       },
       {
         industry: 'IT & Infrastructure',
-        headline: 'Incidents resolved before the ticket is raised.',
-        agents: ['Incident triage agent', 'Self-service IT support agent', 'DevOps remediation agent'],
+        headline: 'Incidents described in prose, resolved from history',
+        items: [
+          'Ticket text and log excerpts classified against past incidents to surface the closest prior resolution',
+          'Runbooks, change history and postmortems made semantically searchable during an incident rather than after it',
+          'Anomaly detection across telemetry with thresholds set per service, because one alerting standard across an estate produces noise',
+        ],
       },
       {
-        industry: 'EdTech',
-        headline: 'Learning experiences that adapt to every student.',
-        agents: ['Personalized learning agent', 'Automated grading agent', 'Administrative compliance agent'],
+        industry: 'EdTech & Higher Ed',
+        headline: 'Assessment and content at cohort scale',
+        items: [
+          'Free-text answers scored against a published rubric, with the criterion cited for each comment and human review on anything affecting progression',
+          'Lecture and seminar audio transcribed, indexed and made searchable across a term of material',
+          'Student data minimized before any model sees it, with retention limits enforced automatically',
+        ],
       },
     ],
+    // The inherited lede opened "Most clients begin with a scoped pilot to prove
+    // the model on one workflow" — the genai framing, where the unknown is
+    // whether something can be grounded. Here the unknown is whether the data is
+    // legible enough to work on at all, which is what the audit establishes.
+    engagementLede: 'Five entry points, from a three-week audit to continuous optimization. Most programs start by finding out whether the material is legible enough to model, because that is the question that decides everything after it and it is cheaper to answer in a fortnight than in a pilot.',
     servicePackages: [
-      { name: 'Strategy & Audit', description: 'Map your highest-value cognitive automation opportunities. Baseline current state, identify targets, and define a prioritized roadmap.', duration: '2–3 weeks', tier: 'Advisory' },
-      { name: 'Cognitive Pod', description: 'Rapid delivery of one targeted production cognitive system — scoped, built, tested, and live. The fastest way to prove cognitive ROI.', duration: '8 weeks', tier: 'Pilot' },
-      { name: 'Platform Build', description: 'Design and engineer a scalable cognitive platform integrated into your ERP, CRM, and data systems with full governance architecture.', duration: '16–24 weeks', tier: 'Platform' },
-      { name: 'Governed Deployment', description: 'Monitored production rollout with HITL dashboards, immutable audit trails, explainability layers, and compliance validation at every step.', duration: 'Ongoing', tier: 'Managed' },
-      { name: 'Scale & Optimize', description: 'Continuous performance tuning, drift detection, and capability expansion across cognitive networks — so your AI compounds, not stagnates.', duration: 'Ongoing', tier: 'Enterprise' },
+      {
+        name: 'Strategy & Audit',
+        description: 'Establish what your unstructured material actually contains, how consistent it is, and which use cases the data can carry. Ends with the two worth building and why the rest are not.',
+        duration: '2–3 weeks',
+        tier: 'Advisory',
+        deliverables: ['Data legibility assessment per source', 'Scored use-case shortlist with feasibility notes', 'Target accuracy and the cost of a wrong answer, per case'],
+      },
+      {
+        name: 'Cognitive Pod',
+        description: 'One use case taken to production on your own material: labeled set, trained model, confidence thresholds, human review path and the evidence trail behind each output.',
+        duration: '8 weeks',
+        tier: 'Pilot',
+        deliverables: ['Labeled and versioned evaluation set', 'Model in the serving path with calibrated thresholds', 'Human review queue with a measured escalation rate'],
+      },
+      {
+        name: 'Platform Build',
+        description: 'The shared substrate: ingestion for every modality, an embedding and retrieval layer, model registry and the evaluation harness, all as infrastructure as code.',
+        duration: '16–24 weeks',
+        tier: 'Platform',
+        deliverables: ['Multimodal ingestion and preprocessing pipelines', 'Vector and knowledge layer as infrastructure as code', 'Registry, evaluation harness and CI gates'],
+      },
+      {
+        name: 'Governed Deployment',
+        description: 'Production rollout with the controls attached: drift and accuracy monitored per segment, human-in-the-loop dashboards, and an audit trail written as the system runs.',
+        duration: 'Ongoing',
+        tier: 'Managed',
+        deliverables: ['Per-segment accuracy and drift reporting', 'Human review dashboards and staffing model', 'Immutable decision log with source attribution'],
+      },
+      {
+        name: 'Scale & Optimize',
+        description: 'Extend to further modalities and use cases, retrain against fresh material, and retire the thresholds that no longer reflect how the system is used.',
+        duration: 'Ongoing',
+        tier: 'Enterprise',
+        deliverables: ['Scheduled retraining against refreshed sets', 'Threshold and cost-per-decision review', 'Capability expansion plan with a measured baseline'],
+      },
     ],
-    outcomeCard: { illustrative: true,
+    // Narratives read as capability lists rather than as what happened. Both
+    // stay flagged illustrative — the figures are modeled, not client results,
+    // and the template renders that disclaimer beneath each card.
+    outcomeCard: {
+      illustrative: true,
       metric: '87%',
-      metricLabel: 'Improvement in unstructured data comprehension',
+      metricLabel: 'Of filings read without a human first',
       industry: 'Global Financial Services',
-      problem: 'Risk and compliance teams spent 12,000+ hours annually manually reading unstructured regulatory filings, cross-border contracts, and compliance disclosures — creating severe decision latency and missed operational risk flags.',
-      outcome: 'Kangqore implemented an enterprise cognitive reasoning engine using multi-modal NLP, semantic search, and knowledge graph extraction — enabling automated compliance analysis with 87% comprehension accuracy and 4x faster insights.',
+      problem: 'Risk and compliance read regulatory filings, cross-border contracts and disclosure packs by hand because nothing else could. The queue ran weeks behind the publication dates, and the obligations that mattered were found late rather than missed outright, which is worse in a different way.',
+      outcome: 'Documents are now parsed on arrival, obligations extracted with the clause and page retained against each one, and anything below the confidence threshold routed to the team that used to read everything. They review the marginal cases instead of the whole queue, and the audit trail is a by-product rather than a reconstruction.',
     },
-    outcomeCard2: { illustrative: true,
+    outcomeCard2: {
+      illustrative: true,
       metric: '65%',
-      metricLabel: 'Complex decision automation rate',
+      metricLabel: 'Fewer records screened by hand',
       industry: 'Healthcare & Clinical Research',
-      problem: 'Clinical research data extraction and patient eligibility screening required doctors to manually review dense EHR notes and protocol documents across multiple hospital silos.',
-      outcome: 'A cognitive decision intelligence platform parsed unstructured clinical records in real-time, matching eligible patients to trial protocols autonomously — accelerating clinical trial candidate identification by 65%.',
+      problem: 'Trial eligibility screening meant clinicians reading dense EHR notes and protocol documents across systems that did not talk to each other. Screening capacity, not patient availability, was the constraint on recruitment.',
+      outcome: 'Records are parsed against protocol criteria and returned as a ranked shortlist with the supporting passage attached to each match. A clinician still decides eligibility; what changed is that they read the twenty candidates worth reading rather than the six hundred that were not.',
     },
     businessMetrics: [
       { title: 'Data Comprehension',  desc: 'Improvement in unstructured data comprehension using multi-modal NLP and cognitive reasoning engines.',                              value: '87', suffix: '%',    metricLabel: 'Comprehension Accuracy', icon: 'BrainCircuit' },
       { title: 'Decision Automation', desc: 'Complex business decisions automated through cognitive decision intelligence and prescriptive analytics platforms.',                     value: '65', suffix: '%',    metricLabel: 'Decisions Automated',    icon: 'Target'       },
       { title: 'Knowledge Discovery',  desc: 'Faster insight discovery from enterprise knowledge graphs, semantic search, and contextual intelligence layers.',                       value: '4',  suffix: 'x',    metricLabel: 'Faster Insights',        icon: 'Zap'          },
-      { title: 'Models in Production', desc: 'Enterprise AI and cognitive computing models deployed and operationalised across client organizations.',                                  value: '120',suffix: '+',    metricLabel: 'Models Deployed',        icon: 'Layers'       },
+      { title: 'Models in Production', desc: 'Enterprise AI and cognitive computing models deployed and operationalized across client organizations.',                                  value: '120',suffix: '+',    metricLabel: 'Models Deployed',        icon: 'Layers'       },
     ],
+    // Ten answers averaged 54 words and one paragraph each: a definition
+    // followed by a capability list. Rewritten to the three-beat shape used on
+    // genai-business-services and ai-governance — the direct answer first so the
+    // opening sentence stands alone as a quote, then the mechanism, then the
+    // caveat or the thing teams get wrong. Two answers claimed services that are
+    // no longer capability areas on this page and now state the boundary
+    // instead.
     customFAQs: [
-      { q: 'What exactly is cognitive computing, and how is it different from AI?', a: 'AI is the broad discipline. Cognitive computing is the architectural philosophy — systems that mimic human reasoning processes: understanding context, learning from experience, interpreting ambiguity, and making judgment calls. Kangqore builds cognitive systems that don\'t just classify or predict — they reason over enterprise knowledge, learn from operational feedback, and execute decisions that previously required human judgment.' },
-      { q: 'Which cognitive capabilities does Kangqore actually deliver?', a: 'Eight domains: Machine Learning Engineering, Decision Intelligence, Computer Vision & Visual Intelligence, Natural Language & Knowledge Intelligence, Multimodal Intelligence, Anomaly & Edge Intelligence, Audio & Speech Intelligence, and Extended Reality & Spatial Computing.\n\n'
-          + 'Generative AI, agentic systems, MLOps and AI governance are deliberately not on that list. Each is a service in its own right with its own page, and folding them in here would mean two Kangqore pages competing for the same question. What sits on this page is the perception and reasoning layer: turning language, images, audio, sensor streams and enterprise data into something a system can act on.' },
-      { q: 'How does Kangqore handle NLP and language understanding?', a: 'Our Natural Language Intelligence practice covers conversational AI, intent and sentiment analysis, speech recognition, document intelligence, entity extraction, semantic search, and language generation. Every NLP solution is grounded in your enterprise data — not generic pre-training — so responses reflect your policies, terminology, and knowledge base accurately.' },
-      { q: 'Can you build computer vision systems for our industry?', a: 'Yes. We deploy computer vision across manufacturing (defect detection, quality control), healthcare (medical imaging, pathology analysis), retail (visual search, shelf monitoring), financial services (document processing, fraud detection), and logistics (inventory monitoring, warehouse automation). Every system is validated against your domain-specific accuracy requirements before production deployment.' },
-      { q: 'What does the generative AI offering include?', a: 'Enterprise LLM solutions, retrieval-augmented generation (RAG), AI copilots for employee productivity, autonomous agent development, multimodal AI, AI content generation, prompt engineering, and LLMOps for model lifecycle governance. We build GenAI that is grounded in your data, governed by your policies, and measurable against your business objectives.' },
-      { q: 'How do you ensure AI governance and responsible AI?', a: 'Governance is load-bearing, not cosmetic. Every cognitive system ships with explainable AI layers, fairness testing, bias detection, compliance alignment (GDPR, EU AI Act, sector mandates), immutable audit trails, and human-in-the-loop approval gates. Kangqore\'s governance framework covers model risk management, data privacy, security controls, and organizational accountability.' },
-      { q: 'What about decision intelligence — can AI actually make business decisions?', a: 'Not unsupervised — but it can recommend, simulate, and automate them with governance. Our decision intelligence systems provide predictive decision support, prescriptive analytics, scenario simulation, optimization engines, risk intelligence, and decision automation — all with configurable human oversight levels depending on decision criticality.' },
-      { q: 'How does knowledge intelligence differ from enterprise search?', a: 'Enterprise search finds documents. Knowledge intelligence understands relationships. Kangqore builds enterprise knowledge graphs that connect entities, facts, and context across your organization — then layers semantic intelligence, ontology engineering, knowledge discovery, and contextual retrieval on top. The result: AI that doesn\'t just find information but understands what it means in your business context.' },
-      { q: 'What does a typical engagement look like?', a: 'Week 1–3: Strategy & Audit — map highest-value cognitive automation targets. Week 4–11: Cognitive Pod — deliver one production-ready cognitive system. Week 12–24: Platform Build — scale to enterprise-wide cognitive infrastructure. Ongoing: Governed Deployment + Scale & Optimize — production monitoring, drift detection, and continuous capability expansion.' },
-      { q: 'What industries has Kangqore delivered cognitive computing for?', a: 'Banking & financial services (compliance, fraud, credit decisioning), healthcare (clinical triage, research extraction, patient eligibility), manufacturing (predictive maintenance, supply chain optimization, quality control), retail & consumer (personalisation, demand forecasting, conversational commerce), IT & infrastructure (incident resolution, DevOps remediation), and education (adaptive learning, automated assessment). Each engagement starts from industry-specific cognitive blueprints, not generic templates.' },
+      {
+        q: 'What exactly is cognitive computing, and how is it different from AI?',
+        a: 'AI is the field. Cognitive computing is a design stance within it: systems built to work on the kinds of input people work on, which is mostly not rows in a table. Language, images, speech, documents, sensor traces.\n\n'
+          + 'The practical difference shows at the edge of what the system knows. A conventional application either matches a rule or raises an exception. A cognitive one forms a view, attaches a confidence to it, and routes the marginal cases to a person because a threshold said so rather than because somebody wrote an exception path for that case.\n\n'
+          + 'The term is older than the current wave and gets used loosely, so it is worth being concrete. On this page it means perception, representation, reasoning and evidence, and every capability listed above sits in one of those four.',
+      },
+      {
+        q: 'Which cognitive capabilities does Kangqore actually deliver?',
+        a: 'Eight domains: Machine Learning Engineering, Decision Intelligence, Computer Vision & Visual Intelligence, Natural Language & Knowledge Intelligence, Multimodal Intelligence, Anomaly & Edge Intelligence, Audio & Speech Intelligence, and Extended Reality & Spatial Computing.\n\n'
+          + 'Generative AI, agentic systems, MLOps and AI governance are deliberately not on that list. Each is a service in its own right with its own page, and folding them in here would mean two Kangqore pages competing to answer one question. What sits here is the perception and reasoning layer: turning language, images, audio, sensor streams and enterprise data into something a system can act on.\n\n'
+          + 'Most engagements use two or three of the eight rather than all of them. The audit exists to establish which, because the common failure is buying a platform that covers everything and using a fifth of it.',
+      },
+      {
+        q: 'How does Kangqore handle NLP and language understanding?',
+        a: 'By establishing first whether your language is generic or specific, because that decides everything after it. Intent classification, sentiment and standard entity extraction are commodities now, and a managed API will beat anything we would train for you.\n\n'
+          + 'What earns a custom model is vocabulary the internet has not seen: your product codes, your clause library, your abbreviations, the shorthand your service desk types at three in the morning. That is where a general model degrades quietly, and where a few thousand labeled examples from your own material buys more accuracy than a larger model would.\n\n'
+          + 'The deliverable is the same either way: an evaluation set built from real traffic rather than invented examples, a confidence threshold you set, and a review path for what falls below it.',
+      },
+      {
+        q: 'Can you build computer vision systems for our industry?',
+        a: 'Usually, and the question that decides it is how many examples of the thing you care about you can actually produce. Generic object detection is solved and cheap. A defect class specific to your line is not, and it needs images of that defect.\n\n'
+          + 'A few hundred labeled examples per class is often enough to start on a narrow task. A few dozen is not, whatever a vendor demo suggests. Where the examples do not exist yet, the first phase is building the capture path rather than the model, and that is worth saying out loud before anyone budgets for the model.\n\n'
+          + 'We have deployed vision in manufacturing inspection, clinical imaging triage, shelf compliance and document processing. The constraint is rarely the architecture. It is lighting, camera placement, class imbalance, and whether anybody kept the rejects.',
+      },
+      {
+        q: 'Does this service cover generative AI?',
+        a: 'Not directly. Generative AI is a separate service: retrieval over your own documents, prompt and context engineering, guardrails, evaluation and fine-tuning are covered on our GenAI Business Services page in far more depth than a paragraph here could manage.\n\n'
+          + 'The two do meet, though, and usually in the same engagement. A generative system is only as good as what it retrieves, and what it retrieves generally has to be perceived first: scanned contracts turned into text, recordings turned into transcripts, diagrams turned into descriptions. That extraction work is this page.\n\n'
+          + 'So a document-heavy generative project often starts here and moves there. We scope it as one piece of work even though the two services are staffed and priced separately.',
+      },
+      {
+        q: 'How does this relate to AI governance?',
+        a: 'Governance is its own service, and the depth sits on our AI Governance page: risk tiering against the EU AI Act, model registries, explainability, drift and fairness testing, and the evidence an assessor asks to see.\n\n'
+          + 'What this service owes governance is the raw material for it. A cognitive system that cannot say which passage, or which region of an image, drove its output cannot be governed afterwards however good the policy is. So attribution is built into the serving path here rather than bolted on once somebody asks.\n\n'
+          + 'The division in practice: this service decides what the system can perceive and how confident it is entitled to be. The governance service decides who signed it off, which tier it sits in, and how you prove any of that later.',
+      },
+      {
+        q: 'Can AI actually make business decisions, or only recommend them?',
+        a: 'It can make some of them and should be prevented from making others. The line is drawn by what a wrong answer costs and whether it can be undone.\n\n'
+          + 'Where the cost is low and the volume is high, automating the decision is straightforward and the argument is economic. Where a wrong answer reaches a customer, a patient or a regulator, the system recommends and a person decides, with the recommendation carrying its confidence and its evidence so that review is quick rather than ceremonial.\n\n'
+          + 'The failure we see most is a threshold set once and never revisited. Volumes shift, the population drifts, and a review queue calibrated in month one is either waving everything through or drowning the team by month nine.',
+      },
+      {
+        q: 'How does knowledge intelligence differ from enterprise search?',
+        a: 'Search returns documents. Knowledge intelligence returns the relationship between them: that this supplier is the parent of that one, that this clause supersedes that clause, that these three tickets describe a single incident.\n\n'
+          + 'The mechanism is a graph of entities and relationships extracted from your own material and kept current as it changes, sitting alongside the vector index rather than replacing it. Semantic search finds what is similar; the graph answers what is connected. Most real questions need both.\n\n'
+          + 'Worth being honest about the cost: a graph is considerably more expensive to build and maintain than an index, and it earns that only where the relationships carry the value. If your questions are answered by finding the right document, stop at search.',
+      },
+      {
+        q: 'What does a typical engagement look like?',
+        a: 'It starts with an audit, because the first question is whether the material is legible enough to model at all. Two to three weeks establishes what your unstructured sources actually contain, how consistent they are, and which use cases the data can carry.\n\n'
+          + 'From there it is usually one use case taken to production over about eight weeks: a labeled evaluation set, a model in the serving path, calibrated thresholds, and a human review queue with a measured escalation rate. Platform work follows across the estate, typically over four to six months.\n\n'
+          + 'What we do not do is start with the model. Training on material nobody has assessed is the most reliable way to spend a quarter and learn something the audit would have told you in a fortnight.',
+      },
+      {
+        q: 'Which industries has Kangqore delivered cognitive computing for?',
+        a: 'Banking and financial services, healthcare and life sciences, manufacturing, retail and consumer goods, IT and infrastructure, and education. The sector matters less than the shape of the material, which is why the industry section above is organized around inputs rather than logos.\n\n'
+          + 'Document-heavy sectors share a problem set: non-standard formats, scanned and handwritten material, and obligations buried in prose. Sensor-heavy sectors share a different one: class imbalance, deployment at the edge, and the fact that the interesting event is rare by definition.\n\n'
+          + 'The engagements that go badly are usually the ones where a pattern was assumed to transfer. A defect model trained on one production line rarely survives the move to another line, let alone another company.',
+      },
     ],
     customJourney: [
       { phase: 'DISCOVER',   icon: 'Search',     title: 'Cognitive Discovery',     desc: 'Map enterprise knowledge flows, identify high-value cognitive automation targets, and baseline current decision-making quality across business processes.' },
@@ -969,29 +1140,56 @@ export const servicesData = {
       'Can you build cognitive systems for our specific industry?',
       'Book a Cognitive Computing strategy session',
     ],
+    // Was four rows, roughly a dozen tool names and 98 words in 781px, with no
+    // indication of when you would choose any of them. Built to the same
+    // standard as the equivalent section on /services/ai-governance: five
+    // layers, named options either side, and the threshold stated per row.
+    // Cognitive work splits on build-versus-buy per modality, because a
+    // commodity API is genuinely better than a custom model for some of them
+    // and hopeless for others.
     toolsStack: {
-      title: 'Cognitive Computing Technology Stack',
-      subtitle: 'The enterprise-grade toolchain powering every Kangqore cognitive computing deployment.',
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'Every modality.',
+      titleHighlight: 'Built or bought, deliberately.',
+      subtitle: 'For each layer there is a managed API that works out of the box and an open-source path you train yourself. What decides it is whether your material looks like the internet. Generic speech, generic OCR and generic object detection are commodities and you should buy them. A defect class specific to your line, a document format specific to your sector, a vocabulary specific to your business — those are where a trained model earns its cost.',
       items: [
         {
-          icon: 'Brain',
-          title: 'Models & Frameworks',
-          desc: 'PyTorch, TensorFlow, Hugging Face Transformers, scikit-learn, spaCy, and custom neural architectures — selected per domain and compliance requirement.',
+          icon: 'Eye',
+          title: 'Vision & document',
+          managed: 'Azure AI Document Intelligence · Google Document AI · Amazon Textract',
+          selfHosted: 'PaddleOCR · Tesseract · YOLO · Detectron2 · Segment Anything',
+          desc: 'Buy for clean printed documents and common object classes; the managed services are years ahead of anything you would train for that. Build when the defect class is yours, the forms are non-standard, or the material cannot leave your network.',
+          link: { href: '/services/big-data', label: 'Data pipelines behind it' },
+        },
+        {
+          icon: 'MessageSquare',
+          title: 'Language & speech',
+          managed: 'Azure AI Speech · Google Speech-to-Text · Deepgram · AssemblyAI',
+          selfHosted: 'Whisper · spaCy · Hugging Face Transformers · sentence-transformers',
+          desc: 'Whisper is usually the right first answer for transcription and costs nothing to try. Managed speech earns its price on real-time streaming, diarization at scale, and languages where the open models are thin. Domain vocabulary is the usual reason to fine-tune.',
+        },
+        {
+          icon: 'Database',
+          title: 'Representation & retrieval',
+          managed: 'Azure AI Search · Vertex AI Search · Pinecone',
+          selfHosted: 'pgvector · Qdrant · Weaviate · Neo4j · OpenSearch',
+          desc: 'pgvector is usually where to start: embeddings sit next to the data that produced them, in a database you already operate. A dedicated store earns its place once hybrid ranking, re-ranking or cross-team isolation becomes the constraint.',
         },
         {
           icon: 'Cpu',
-          title: 'Foundation Models',
-          desc: 'GPT-4o, Claude, Gemini, Llama, Mistral, and fine-tuned domain-specific models — vendor-agnostic selection based on use case, accuracy, and governance.',
+          title: 'Modeling & training',
+          managed: 'Vertex AI Training · Azure ML · Bedrock customization',
+          selfHosted: 'PyTorch · scikit-learn · LightGBM · LoRA & QLoRA',
+          desc: 'Most cognitive problems are still tabular or narrow classification, where a gradient-boosted model beats a neural one on cost and latency and is far easier to explain. Reach for deep learning when the input is genuinely high-dimensional.',
+          link: { href: '/services/data-science-ai', label: 'Model development' },
         },
         {
-          icon: 'Layers',
-          title: 'Data & Knowledge',
-          desc: 'Neo4j knowledge graphs, Pinecone & Weaviate vector stores, Apache Kafka streaming, and enterprise data lake architectures for real-time cognitive ingestion.',
-        },
-        {
-          icon: 'Shield',
-          title: 'Governance & Ops',
-          desc: 'MLflow model registry, LangSmith observability, SHAP explainability, Weights & Biases experiment tracking, and immutable audit trail infrastructure.',
+          icon: 'Gauge',
+          title: 'Evaluation & serving',
+          managed: 'Vertex AI Prediction · SageMaker endpoints · Azure ML endpoints',
+          selfHosted: 'MLflow · Evidently · SHAP · Ray Serve · Triton',
+          desc: 'The evaluation set is the asset, not the model. Managed endpoints are the faster start; you move to self-hosted when inference volume makes the per-call price the dominant cost, or when latency has to be measured where the user waits.',
+          link: { href: '/services/mlops', label: 'Running it in production' },
         },
       ],
     },
