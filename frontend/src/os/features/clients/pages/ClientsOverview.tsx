@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Search, AlertTriangle, Users, DollarSign, Star, CheckSquare, Trash2, ArrowUpRight } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { Search, AlertTriangle, Users, DollarSign, Star, CheckSquare, Trash2, ArrowUpRight, Swords } from 'lucide-react'
 import { useUIStore } from '@store/ui'
 import { Gen3WorkspacePanel } from '../../kangqore-immp/components/Gen3WorkspacePanel'
 import { usePageViews } from '@hooks/usePageViews'
@@ -55,6 +56,14 @@ export function ClientsOverview() {
   const navigate = useNavigate()
   usePageViews(['list', 'board'])
   const viewMode = useUIStore(s => s.viewMode)
+
+  // Overshadow Roadmap P7.1 — battlecard summary surfaced directly in the CRM,
+  // not just in a separate governance admin page.
+  const battlecards = useQuery({
+    queryKey: ['battlecards-summary'],
+    queryFn: () => api.get('/admin/kangqore-immp/battlecards').then(r => r.data),
+    staleTime: 5 * 60_000,
+  })
 
   function patchClient(id: string, patch: Partial<Parameters<typeof updateClient>[1]>) {
     updateClient(id, patch)
@@ -173,6 +182,26 @@ export function ClientsOverview() {
           </div>
         ))}
       </div>
+
+      {/* Competitive positioning — Overshadow Roadmap P7.1, CRM-embedded */}
+      {battlecards.data && (
+        <Link
+          to="/kangqore-view/admin/kangqore-immp/battlecards"
+          className="flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors hover:brightness-110"
+          style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
+        >
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#57935c22' }}>
+            <Swords className="w-4 h-4" style={{ color: '#57935c' }} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>Competitive Positioning</p>
+            <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>
+              {battlecards.data.summary.won} won &middot; {battlecards.data.summary.contested} contested &middot; {battlecards.data.summary.together} coexist — objection/response battlecards for every ServiceNow module
+            </p>
+          </div>
+          <ArrowUpRight className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--os-text-2)' }} />
+        </Link>
+      )}
 
       {/* Filters */}
       <div className="flex items-center gap-2 flex-wrap">

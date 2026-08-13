@@ -25,6 +25,7 @@ import { getContestedModulesStatus } from '../services/contestedModulesCatalog.s
 import { getAiSecurityView } from '../services/securityView.service';
 import { getGtmPipelineSummary, isValidReferenceStage, isValidAnalystStatus } from '../services/gtmPipeline.service';
 import { getPartnerEcosystemSummary, isValidRelationshipStage, isValidTierStatus } from '../services/partnerEcosystem.service';
+import { getBattlecards } from '../services/battlecardCatalog.service';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -9686,6 +9687,15 @@ kangqoreImmpRoutes.patch('/partner-ecosystem/relationships/:id', requireAuth, re
       },
     })
     res.json({ relationship })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── Overshadow Roadmap P7.1 — Battlecard Catalog (sales enablement, CRM-
+// embedded). See services/battlecardCatalog.service.ts header.
+
+kangqoreImmpRoutes.get('/battlecards', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    res.json(await getBattlecards())
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 

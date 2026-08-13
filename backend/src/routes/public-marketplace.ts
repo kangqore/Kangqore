@@ -10,6 +10,7 @@ import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import logger from '../utils/logger'
 import { ensureAgentTemplatesSeeded, ensureToolCallableExpanded } from '../services/agentStudioGrowth.service'
+import { getBattlecards } from '../services/battlecardCatalog.service'
 
 export const publicMarketplaceRouter = Router()
 
@@ -32,5 +33,17 @@ publicMarketplaceRouter.get('/agents', async (_req: Request, res: Response) => {
   } catch (err: any) {
     logger.warn('[public-marketplace] agents failed: ' + err.message)
     res.status(500).json({ error: 'Unable to list agent templates' })
+  }
+})
+
+// Overshadow Roadmap P7.1: the sales battlecard, public — a prospect can read
+// the same objection/response content a Kangqore rep would use, not just be
+// told the company has answers to the hard questions.
+publicMarketplaceRouter.get('/battlecards', async (_req: Request, res: Response) => {
+  try {
+    res.json(await getBattlecards())
+  } catch (err: any) {
+    logger.warn('[public-marketplace] battlecards failed: ' + err.message)
+    res.status(500).json({ error: 'Unable to list battlecards' })
   }
 })

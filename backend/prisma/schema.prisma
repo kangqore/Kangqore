@@ -4753,6 +4753,7 @@ model OntologyObjectType {
   semanticMappings SemanticTypeMapping[]
   objectSets     ObjectSet[]
   pipelines      OntologyPipeline[]
+  csvImportBatches OntologyCsvImportBatch[]
   subscriptions  OntologySubscription[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
@@ -4827,6 +4828,33 @@ model OntologyPipeline {
 
   @@index([enabled])
   @@map("ontology_pipelines")
+}
+
+// ─── Overshadow Roadmap P7.2 — Migration Accelerator ──────────────────────────
+// The "coexist first" answer to a forced rip-and-replace pitch: read a CSV
+// export (e.g. a ServiceNow CMDB export), map columns to an existing
+// OntologyObjectType's schema, and upsert real OntologyObjects — a one-shot
+// counterpart to OntologyPipeline's recurring INTERNAL/CSV sourceType, with
+// its own batch record for provenance (row/created/updated/error counts).
+
+model OntologyCsvImportBatch {
+  id           String              @id @default(cuid())
+  typeId       String
+  type         OntologyObjectType  @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  objectSetId  String?
+  objectSet    ObjectSet?          @relation(fields: [objectSetId], references: [id], onDelete: SetNull)
+  sourceLabel  String              @default("CSV Import")
+  fileName     String?
+  rowCount     Int                 @default(0)
+  createdCount Int                 @default(0)
+  updatedCount Int                 @default(0)
+  errorCount   Int                 @default(0)
+  errors       Json                @default("[]")
+  importedBy   String?
+  createdAt    DateTime            @default(now())
+
+  @@index([typeId])
+  @@map("ontology_csv_import_batches")
 }
 
 model OntologyRelationship {
@@ -5046,6 +5074,7 @@ model ObjectSet {
   updatedAt   DateTime             @updatedAt
 
   memberships ObjectSetMembership[]
+  csvImportBatches OntologyCsvImportBatch[]
 
   @@unique([name, createdBy])
   @@index([rootTypeId])
