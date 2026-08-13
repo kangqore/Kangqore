@@ -675,6 +675,28 @@ export const AIToolsSection = ({
                         </span>
                       </span>
                     </button>
+                    {/* Sibling of the button, never a child of it: the whole row
+                        is the accordion trigger, and an <a> inside a <button> is
+                        invalid HTML and steals the click. Collapses with the
+                        panel, and is `inert` while closed so it is not a hidden
+                        tab stop. Opt-in per row. */}
+                    {item.link?.href && (
+                      <div
+                        className="grid transition-all duration-500 ease-out motion-reduce:transition-none pl-[3.6rem]"
+                        style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                        inert={!isOpen}
+                      >
+                        <div className="overflow-hidden">
+                          <Link
+                            to={item.link.href}
+                            className={`inline-flex items-center gap-1.5 py-1 mb-3 min-h-[24px] text-xs font-semibold text-cyan-400/85 hover:text-cyan-300 underline underline-offset-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                          >
+                            {item.link.label}
+                            <span aria-hidden="true">&rarr;</span>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}

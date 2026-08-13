@@ -2425,10 +2425,10 @@ export const servicesData = {
       // already governance-specific; only the axis names were wrong. These five
       // are the axes an assessor actually works through.
       rows: [
-        { dimension: 'Oversight',    before: 'Unmonitored model outputs, with real risk of hallucination, bias and unauthorized actions.', after: 'Pre-action approval gates, behavior limits and kill-switches, with a human in the loop where the decision warrants one.' },
-        { dimension: 'Auditability', before: 'Ad-hoc scripts and unverified logic that break on edge cases and leave no audit trail.', after: 'Immutable, continuous audit logging and automated policy enforcement, so evidence is a by-product of running rather than a project.' },
+        { dimension: 'Oversight',    before: 'Unmonitored model outputs, with real risk of hallucination, bias and unauthorized actions.', after: 'Pre-action approval gates, behavior limits and kill-switches, with a human in the loop where the decision warrants one.', link: { href: '/services/it-security-services', label: 'AI security architecture' } },
+        { dimension: 'Auditability', before: 'Ad-hoc scripts and unverified logic that break on edge cases and leave no audit trail.', after: 'Immutable, continuous audit logging and automated policy enforcement, so evidence is a by-product of running rather than a project.', link: { href: '/services/quality-engineering-assurance', label: 'Testing and assurance' } },
         { dimension: 'Drift & bias', before: 'Silent model and data drift, where unmonitored decay degrades decision quality over months.', after: 'Scheduled drift and fairness testing with automated alerts that trigger human review before impact reaches a customer.' },
-        { dimension: 'Model inventory', before: 'Fragmented shadow AI, with unmapped models creating security and legal exposure nobody owns.', after: 'A central model registry carrying risk classification, named owners, RBAC and model cards for every system in production.' },
+        { dimension: 'Model inventory', before: 'Fragmented shadow AI, with unmapped models creating security and legal exposure nobody owns.', after: 'A central model registry carrying risk classification, named owners, RBAC and model cards for every system in production.', link: { href: '/services/mlops', label: 'Model registry and lifecycle' } },
         { dimension: 'Regulatory exposure', before: 'Compliance, reputational and legal risk, with no way to demonstrate conformity when asked.', after: 'Risk tiering mapped to the EU AI Act, controls mapped to the NIST AI RMF, and the documentation an assessor asks for held ready.' },
       ],
     },
@@ -2666,6 +2666,7 @@ export const servicesData = {
           title: 'Model registry & inventory',
           managed: 'Azure ML registry · Vertex AI Model Registry · Databricks Unity Catalog',
           selfHosted: 'MLflow · DVC · custom Postgres registry',
+          link: { href: '/services/mlops', label: 'How we run the model lifecycle' },
           desc: 'MLflow is usually the right first answer: it already holds your lineage and it costs nothing to make authoritative. A managed registry earns its place when the inventory has to span teams that do not share a platform, or when the audit trail itself must be immutable to the people maintaining it.',
         },
         {
@@ -2673,6 +2674,7 @@ export const servicesData = {
           title: 'Explainability & fairness',
           managed: 'Azure Responsible AI dashboard · Vertex Explainable AI · Fiddler',
           selfHosted: 'SHAP · LIME · Alibi · Fairlearn · Aequitas',
+          link: { href: '/services/data-science-ai', label: 'Model development and validation' },
           desc: 'SHAP for tabular and Fairlearn for group metrics cover most of what an assessor asks to see. Buy instead when explanations must be produced on demand for a regulator rather than in a notebook, which is the point at which reproducibility matters more than the method.',
         },
         {
@@ -2680,6 +2682,7 @@ export const servicesData = {
           title: 'Privacy & data controls',
           managed: 'Microsoft Purview · BigQuery DLP · Immuta',
           selfHosted: 'Presidio · OpenDP · Opacus · custom masking pipelines',
+          link: { href: '/services/it-security-services', label: 'Data protection and access control' },
           desc: 'Presidio handles PII detection and redaction well enough that most estates start there. A managed catalog earns its cost once purpose limitation has to be enforced across systems you do not own, because that is a policy problem before it is a detection problem.',
         },
         {
@@ -2687,6 +2690,7 @@ export const servicesData = {
           title: 'Monitoring & drift',
           managed: 'Arize · WhyLabs · Azure Monitor for ML',
           selfHosted: 'Evidently · NannyML · Prometheus & Grafana',
+          link: { href: '/services/managed-services', label: 'Who watches it in production' },
           desc: 'Evidently is enough while one team watches a handful of models. You move to a managed platform when drift has to be reviewed by people who did not build the model, since that is when a shared alert history stops being optional.',
         },
         {
@@ -2694,6 +2698,7 @@ export const servicesData = {
           title: 'Policy & audit trail',
           managed: 'ServiceNow AI governance · IBM watsonx.governance · Credo AI · OneTrust',
           selfHosted: 'Open Policy Agent · custom approval workflows · append-only ledgers',
+          link: { href: '/services/finance-risk-management', label: 'Enterprise risk and controls' },
           desc: 'Open Policy Agent puts enforcement in the request path, which is the only place policy is real. A GRC platform earns its license when governance has to be reported to a board or an assessor in a format they already accept, and that is a documentation requirement rather than a technical one.',
         },
       ],
