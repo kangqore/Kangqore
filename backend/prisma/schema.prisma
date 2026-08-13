@@ -8783,6 +8783,53 @@ model AnalystRelationship {
   @@map("analyst_relationships")
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// Overshadow Roadmap P6 — The Partner Ecosystem.
+//
+// PartnerTier defines the program structure — certification requirements,
+// revenue-share economics, enablement materials — the "structural
+// prerequisite before any real SI conversation can close" per P6.1. It ships
+// with zero seeded rows: revenue-share percentages and certification bars
+// are real business terms only Kangqore's own leadership can set, not
+// something this code invents on their behalf. PartnerRelationship tracks
+// real SI conversations against those tiers once they exist, same honest
+// empty-by-default discipline as P5's GTM pipeline.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model PartnerTier {
+  id                       String    @id @default(cuid())
+  name                     String    @unique
+  description              String?   @db.Text
+  certificationRequirements String?  @db.Text
+  revenueSharePct          Float?
+  enablementMaterialsNote  String?   @db.Text
+  status                   String    @default("DRAFT") // DRAFT | ACTIVE | RETIRED
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  relationships PartnerRelationship[]
+
+  @@map("partner_tiers")
+}
+
+model PartnerRelationship {
+  id            String       @id @default(cuid())
+  firmName      String
+  practiceArea  String?      // e.g. "ServiceNow-adjacent", "AI-transformation"
+  tierId        String?
+  tier          PartnerTier? @relation(fields: [tierId], references: [id], onDelete: SetNull)
+  contactName   String?
+  contactEmail  String?
+  stage         String       @default("IDENTIFIED") // IDENTIFIED | OUTREACH | NDA_SENT | TERMS_AGREED | CERTIFIED | ACTIVE | DECLINED
+  notes         String?      @db.Text
+  activatedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([stage])
+  @@map("partner_relationships")
+}
+
 model BidsProofPointPublication {
   id            String    @id @default(cuid())
   engagementId  String                          // real BidsScoringEngagement.id — never a fabricated one

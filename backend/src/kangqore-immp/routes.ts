@@ -24,6 +24,7 @@ import { getAgentStudioBenchmark } from '../services/agentStudioGrowth.service';
 import { getContestedModulesStatus } from '../services/contestedModulesCatalog.service';
 import { getAiSecurityView } from '../services/securityView.service';
 import { getGtmPipelineSummary, isValidReferenceStage, isValidAnalystStatus } from '../services/gtmPipeline.service';
+import { getPartnerEcosystemSummary, isValidRelationshipStage, isValidTierStatus } from '../services/partnerEcosystem.service';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -8359,9 +8360,25 @@ kangqoreImmpRoutes.get('/platform/professional-services', requireAuth, requireRo
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
+// Overshadow Roadmap P6.3 — this endpoint returned entirely hardcoded
+// numbers (devSignups: 487, docsPageViews: 12400, npm/pypi/github download
+// counts, plus Go/Java as "supported languages" that don't exist). Fixed to
+// real counts; the "no npm/pypi package exists yet" gap is disclosed, not hidden.
 kangqoreImmpRoutes.get('/platform/sdk-v3/stats', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
-    res.json({ version: '3.0.0', releaseDate: '2026-07-25', features: ['Streaming responses','Batch operations (1,000/req)','Async webhooks','Full TypeScript types','Code playground','API explorer'], endpoints: 42, languages: ['TypeScript','Python','Go','Java'], devSignups: 487, activeIntegrations: 23, docsPageViews: 12400, downloads: { npm: 1840, pypi: 620, github: 340 } })
+    const [apiKeyCount, ontologySubs, operationalSubs] = await Promise.all([
+      (prisma as any).programmaticApiKey.count({ where: { revoked: false } }),
+      (prisma as any).ontologySubscription.count({ where: { enabled: true } }).catch(() => 0),
+      (prisma as any).kimmpOperationalSubscription.count({ where: { enabled: true } }).catch(() => 0),
+    ])
+    res.json({
+      languages: ['TypeScript', 'Python'],
+      features: ['Live SDK generation from the real Ontology schema', 'Governed function-calling tools', 'HMAC-signed webhooks', 'Public OpenAPI docs at /api/docs'],
+      activeApiKeys: apiKeyCount,
+      activeWebhookSubscriptions: ontologySubs + operationalSubs,
+      published: { npm: false, pypi: false },
+      disclaimer: 'Active API keys and webhook subscriptions are real counts from this platform. No npm or PyPI package is published yet — the SDK is downloaded directly from an authenticated endpoint, not installed from a registry.',
+    })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
@@ -9607,6 +9624,71 @@ kangqoreImmpRoutes.patch('/gtm-pipeline/bids-proof-points/:id', requireAuth, req
       },
     })
     res.json({ publication })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+// ─── Overshadow Roadmap P6 — Partner Ecosystem (tier structure + SI
+// relationship tracking). See services/partnerEcosystem.service.ts header.
+
+kangqoreImmpRoutes.get('/partner-ecosystem', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+  try {
+    res.json(await getPartnerEcosystemSummary())
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/partner-ecosystem/tiers', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { name, description, certificationRequirements, revenueSharePct, enablementMaterialsNote } = req.body ?? {}
+    if (!name?.trim()) return res.status(400).json({ error: 'name is required' })
+    const tier = await (prisma as any).partnerTier.create({
+      data: { name: name.trim(), description: description || null, certificationRequirements: certificationRequirements || null, revenueSharePct: revenueSharePct ?? null, enablementMaterialsNote: enablementMaterialsNote || null },
+    })
+    res.status(201).json({ tier })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.patch('/partner-ecosystem/tiers/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { status, description, certificationRequirements, revenueSharePct, enablementMaterialsNote } = req.body ?? {}
+    if (status !== undefined && !isValidTierStatus(status)) return res.status(400).json({ error: 'invalid status' })
+    const tier = await (prisma as any).partnerTier.update({
+      where: { id: req.params.id },
+      data: {
+        ...(status !== undefined && { status }),
+        ...(description !== undefined && { description }),
+        ...(certificationRequirements !== undefined && { certificationRequirements }),
+        ...(revenueSharePct !== undefined && { revenueSharePct }),
+        ...(enablementMaterialsNote !== undefined && { enablementMaterialsNote }),
+      },
+    })
+    res.json({ tier })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.post('/partner-ecosystem/relationships', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { firmName, practiceArea, tierId, contactName, contactEmail, notes } = req.body ?? {}
+    if (!firmName?.trim()) return res.status(400).json({ error: 'firmName is required' })
+    const relationship = await (prisma as any).partnerRelationship.create({
+      data: { firmName: firmName.trim(), practiceArea: practiceArea || null, tierId: tierId || null, contactName: contactName || null, contactEmail: contactEmail || null, notes: notes || null },
+    })
+    res.status(201).json({ relationship })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
+})
+
+kangqoreImmpRoutes.patch('/partner-ecosystem/relationships/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { stage, tierId, notes } = req.body ?? {}
+    if (stage !== undefined && !isValidRelationshipStage(stage)) return res.status(400).json({ error: 'invalid stage' })
+    const relationship = await (prisma as any).partnerRelationship.update({
+      where: { id: req.params.id },
+      data: {
+        ...(stage !== undefined && { stage, ...(stage === 'ACTIVE' && { activatedAt: new Date() }) }),
+        ...(tierId !== undefined && { tierId }),
+        ...(notes !== undefined && { notes }),
+      },
+    })
+    res.json({ relationship })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 

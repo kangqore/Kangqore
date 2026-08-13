@@ -2263,6 +2263,7 @@ export const servicesData = {
     // out of 5,000 words — and it was a tagline any competitor could print.
     shortDescription: 'Kangqore helps you adopt AI and GenAI without inheriting the operational, compliance and reputational risk that usually arrives with it.',
     fullDescription: 'Kangqore enables organizations to adopt, scale, and operationalize AI responsibly by embedding governance, transparency, and control across the entire AI lifecycle.',
+    fullDescriptionMaxWidth: 'max-w-[700px]',
     keyFeatures: ['Quality assurance', 'Ethical AI principles', 'Model governance', 'Compliance & risk management', 'Explainable AI'],
     relatedServiceSlugs: ['agentic-ai', 'mlops', 'data-science-ai'],
     featured: true,
