@@ -1867,6 +1867,102 @@ const featureMicros   = service.featureMicros
                     <text x="270" y="340" textAnchor="middle" fill="#60a5fa" fontSize="9" fontFamily="monospace">EMBEDDED CONTROL LIFECYCLE</text>
                   </svg>
                 </div>
+              ) : service.slug === 'ai-cognitive-computing' ? (
+                /* ── Perception to Evidence ──
+                   Replaces the shared agentic default, which labeled this page
+                   AI COMMANDER, AGENTIC ORCHESTRATOR, AUTONOMOUS COMMIT and
+                   REASON > PLAN > EXECUTE — an agent execution loop above copy
+                   about reading documents, images and audio.
+
+                   The four stages match the architectureNodes below it exactly,
+                   so the summary and the detail cannot drift apart.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches the
+                   screen at 11.3px. Nothing here is smaller than 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="Cognitive pipeline — unstructured inputs through perception, representation and reasoning to an answer with its evidence, or a case routed to a person" tabIndex={0}>
+                  <svg viewBox="0 0 540 430" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>How a cognitive system turns unstructured input into an evidenced answer</title>
+                    <desc>Documents, images, speech and sensor streams are perceived, represented as embeddings and entities, and reasoned over. Outputs above the confidence threshold return with their source; the rest route to a person.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units are not rendered on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="cog-spine" gradientUnits="userSpaceOnUse" x1="26" y1="186" x2="514" y2="186">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="cog-stage" gradientUnits="userSpaceOnUse" x1="0" y1="160" x2="0" y2="212">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="cog-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="cog-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="cog-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── Inputs ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">WHAT YOU ALREADY HOLD</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">documents · images · video · speech · sensor streams</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#cog-tick)">
+                      <line x1="81" y1="94" x2="81" y2="156" />
+                    </g>
+                    <text x="92" y="130" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">including the scanned and handwritten</text>
+
+                    {/* ── The four stages, matching architectureNodes ── */}
+                    <line x1="26" y1="186" x2="514" y2="186" stroke="url(#cog-spine)" strokeWidth="2" strokeOpacity="0.45" />
+
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26" y="160" width="110" height="52" rx="9" fill="url(#cog-stage)" stroke="#2564ea" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="81" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">PERCEIVE</text>
+                      <text x="81" y="200" fontSize="12" fill="white" fillOpacity="0.55">OCR · vision · ASR</text>
+
+                      <rect x="152" y="160" width="110" height="52" rx="9" fill="url(#cog-stage)" stroke="#3080e6" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="207" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">REPRESENT</text>
+                      <text x="207" y="200" fontSize="12" fill="white" fillOpacity="0.55">embeddings</text>
+
+                      <rect x="278" y="160" width="110" height="52" rx="9" fill="url(#cog-stage)" stroke="#3b9ce0" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="333" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">REASON</text>
+                      <text x="333" y="200" fontSize="12" fill="white" fillOpacity="0.55">infer · rank</text>
+
+                      <rect x="404" y="160" width="110" height="52" rx="9" fill="url(#cog-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="459" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">EVIDENCE</text>
+                      <text x="459" y="200" fontSize="12" fill="white" fillOpacity="0.55">attribution</text>
+                    </g>
+
+                    <g stroke="#4ab6d4" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#cog-arrow)">
+                      <line x1="138" y1="186" x2="149" y2="186" />
+                      <line x1="264" y1="186" x2="275" y2="186" />
+                      <line x1="390" y1="186" x2="401" y2="186" />
+                    </g>
+
+                    {/* ── The confidence threshold decides the branch ── */}
+                    <text x="270" y="240" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">confidence threshold you set</text>
+
+                    <path d="M 459 214 C 459 254, 300 254, 160 254 C 150 254, 145 260, 145 272" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#cog-arrow)" />
+                    <path d="M 459 214 L 459 272" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#cog-arrow-amber)" />
+
+                    <rect x="26" y="276" width="238" height="62" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="145" y="300" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">ANSWER</text>
+                    <text x="145" y="320" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">with the source it used</text>
+
+                    <rect x="340" y="276" width="174" height="62" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="427" y="300" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">TO A PERSON</text>
+                    <text x="427" y="320" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">below the threshold</text>
+
+                    {/* ── Measurement runs across the whole path ── */}
+                    <rect x="26" y="364" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">accuracy and drift measured per segment, not in aggregate</text>
+                  </svg>
+                </div>
               ) : service.slug === 'mlops' ? (
                 /* ── MLOps ML Pipeline Diagram ── */
                 <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — human-in-the-loop" tabIndex={0}>
