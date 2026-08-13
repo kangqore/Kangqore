@@ -3265,10 +3265,16 @@ const featureMicros   = service.featureMicros
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
-              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{department.name}</span>
+              {/* Department names are internal taxonomy. "COGNITION" and "SHIELD"
+                  mean something on an org chart and nothing to a buyer, and this
+                  heading put one in an h2 on every service page. Opt-in override;
+                  services that do not set it render exactly as before. */}
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.practiceLabel || department.name}</span>
             </div>
             <h2 id="practice-cluster-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
-              The complete <span className="bg-brand-gradient bg-clip-text text-transparent">{department.name}</span> practice.
+              {service.practiceHeading
+                ? <>{service.practiceHeading}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{service.practiceHeadingHighlight}</span></>
+                : <>The complete <span className="bg-brand-gradient bg-clip-text text-transparent">{department.name}</span> practice.</>}
             </h2>
             <p className="text-white/50 text-sm font-medium leading-relaxed max-w-2xl mb-10">
               {service.name} is one of {clusterSiblings.length + 1} services in this practice. Explore how they combine.

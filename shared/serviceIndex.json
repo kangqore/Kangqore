@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T16:01:43.663Z",
+  "generatedAt": "2026-08-13T19:53:26.182Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -149,33 +149,37 @@
       "faqs": [
         {
           "q": "What exactly is cognitive computing, and how is it different from AI?",
-          "a": "AI is the broad discipline. Cognitive computing is the architectural philosophy — systems that mimic human reasoning processes: understanding context, learning from experience, interpreting ambiguity, and making judgment calls. Kangqore builds cognitive systems that don't just classify or predict — they reason over enterprise knowledge, learn from operational feedback, and execute decisions that previously required human judgment."
+          "a": "AI is the field. Cognitive computing is a design stance within it: systems built to work on the kinds of input people work on, which is mostly not rows in a table. Language, images, speech, documents, sensor traces. The practical difference shows at the edge of what the system knows. A conventional application either matches a rule or raises an exception. A cognitive one forms a view, attaches a confidence to it, and routes the marginal cases to a person because a threshold said so rather than because somebody wrote an exception path for that case. The term is older than the current wave and gets used loosely, so it is worth being concrete. On this page it means perception, representation, reasoning and evidence, and every capability listed above sits in one of those four."
         },
         {
           "q": "Which cognitive capabilities does Kangqore actually deliver?",
-          "a": "Eight domains: Machine Learning Engineering, Decision Intelligence, Computer Vision & Visual Intelligence, Natural Language & Knowledge Intelligence, Multimodal Intelligence, Anomaly & Edge Intelligence, Audio & Speech Intelligence, and Extended Reality & Spatial Computing. Generative AI, agentic systems, MLOps and AI governance are deliberately not on that list. Each is a service in its own right with its own page, and folding them in here would mean two Kangqore pages competing for the same question. What sits on this page is the perception and reasoning layer: turning language, images, audio, sensor streams and enterprise data into something a system can act on."
+          "a": "Eight domains: Machine Learning Engineering, Decision Intelligence, Computer Vision & Visual Intelligence, Natural Language & Knowledge Intelligence, Multimodal Intelligence, Anomaly & Edge Intelligence, Audio & Speech Intelligence, and Extended Reality & Spatial Computing. Generative AI, agentic systems, MLOps and AI governance are deliberately not on that list. Each is a service in its own right with its own page, and folding them in here would mean two Kangqore pages competing to answer one question. What sits here is the perception and reasoning layer: turning language, images, audio, sensor streams and enterprise data into something a system can act on. Most engagements use two or three of the eight rather than all of them. The audit exists to establish which, because the common failure is buying a platform that covers everything and using a fifth of it."
         },
         {
           "q": "How does Kangqore handle NLP and language understanding?",
-          "a": "Our Natural Language Intelligence practice covers conversational AI, intent and sentiment analysis, speech recognition, document intelligence, entity extraction, semantic search, and language generation. Every NLP solution is grounded in your enterprise data — not generic pre-training — so responses reflect your policies, terminology, and knowledge base accurately."
+          "a": "By establishing first whether your language is generic or specific, because that decides everything after it. Intent classification, sentiment and standard entity extraction are commodities now, and a managed API will beat anything we would train for you. What earns a custom model is vocabulary the internet has not seen: your product codes, your clause library, your abbreviations, the shorthand your service desk types at three in the morning. That is where a general model degrades quietly, and where a few thousand labeled examples from your own material buys more accuracy than a larger model would. The deliverable is the same either way: an evaluation set built from real traffic rather than invented examples, a confidence threshold you set, and a review path for what falls below it."
         }
       ],
       "method": [
         {
-          "rule": "Models & Frameworks",
-          "detail": "PyTorch, TensorFlow, Hugging Face Transformers, scikit-learn, spaCy, and custom neural architectures — selected per domain and compliance requirement."
+          "rule": "Vision & document",
+          "detail": "Buy for clean printed documents and common object classes; the managed services are years ahead of anything you would train for that. Build when the defect class is yours, the forms are non-standard, or the material cannot leave your network."
         },
         {
-          "rule": "Foundation Models",
-          "detail": "GPT-4o, Claude, Gemini, Llama, Mistral, and fine-tuned domain-specific models — vendor-agnostic selection based on use case, accuracy, and governance."
+          "rule": "Language & speech",
+          "detail": "Whisper is usually the right first answer for transcription and costs nothing to try. Managed speech earns its price on real-time streaming, diarization at scale, and languages where the open models are thin. Domain vocabulary is the usual reason to fine-tune."
         },
         {
-          "rule": "Data & Knowledge",
-          "detail": "Neo4j knowledge graphs, Pinecone & Weaviate vector stores, Apache Kafka streaming, and enterprise data lake architectures for real-time cognitive ingestion."
+          "rule": "Representation & retrieval",
+          "detail": "pgvector is usually where to start: embeddings sit next to the data that produced them, in a database you already operate. A dedicated store earns its place once hybrid ranking, re-ranking or cross-team isolation becomes the constraint."
         },
         {
-          "rule": "Governance & Ops",
-          "detail": "MLflow model registry, LangSmith observability, SHAP explainability, Weights & Biases experiment tracking, and immutable audit trail infrastructure."
+          "rule": "Modeling & training",
+          "detail": "Most cognitive problems are still tabular or narrow classification, where a gradient-boosted model beats a neural one on cost and latency and is far easier to explain. Reach for deep learning when the input is genuinely high-dimensional."
+        },
+        {
+          "rule": "Evaluation & serving",
+          "detail": "The evaluation set is the asset, not the model. Managed endpoints are the faster start; you move to self-hosted when inference volume makes the per-call price the dominant cost, or when latency has to be measured where the user waits."
         }
       ],
       "dataHandling": []
