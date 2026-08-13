@@ -2416,10 +2416,14 @@ export const servicesData = {
     whatIsPara2: 'We start from which regulatory requirements and industry standards actually apply to you, then build the controls that satisfy them: risk tiering against the EU AI Act, a model registry carrying owners and lineage, explainability wired into the serving path rather than produced afterwards, drift and fairness testing on a schedule, and policy enforced in the request path rather than published beside it.',
 
     // The durability argument, matching para 3 of the genai section.
-    whatIsPara3: 'Governance only pays for itself when it is aligned to what the business is actually trying to do, and there are four exposures worth naming separately. Operational, when a model degrades and nobody notices. Compliance, when a system is in scope and you cannot show it. Reputational, when a decision cannot be explained to the person it affected. And commercial, when controls slow every release equally regardless of risk.',
+    // The Read More break lands here, after a complete thought. The four
+    // exposures are split across para3 and para4 so the collapsed state ends
+    // on a full sentence rather than mid-clause.
+    whatIsPara3: 'Governance only pays for itself when it is aligned to what the business is actually trying to do, and there are four exposures worth naming separately. Operational, when a model degrades and nobody notices.',
 
     // The honest limit. Governance pages rarely admit that controls have a cost.
-    whatIsPara4: 'So controls are sized to the tier, and the evidence is written as the system runs rather than assembled before an assessment. A low-risk system gets an owner and monitoring; a high-risk one gets the documentation pack. Governance that treats everything as critical is routed around within two quarters, and what survives is the set of approvals people still read.',
+    whatIsPara4: 'Compliance, when a system is in scope and you cannot show it. Reputational, when a decision cannot be explained to the person it affected. And commercial, when controls slow every release equally regardless of the risk attached to it.',
+    whatIsPara5: 'So controls are sized to the tier, and the evidence is written as the system runs rather than assembled before an assessment. A low-risk system gets an owner and monitoring; a high-risk one gets the documentation pack. Governance that treats everything as critical is routed around within two quarters, and what survives is the set of approvals people still read.',
     bannerBrandDesc: 'Our enterprise AI governance & compliance framework',
     downloadAsset: '/assets/downloads/kangqore-ai-governance-playbook.pdf',
     downloadAssetTitle: 'Download the Playbook',
