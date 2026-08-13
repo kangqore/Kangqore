@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T01:05:25.742Z",
+  "generatedAt": "2026-08-13T09:15:37.493Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -351,20 +351,24 @@
       ],
       "method": [
         {
-          "rule": "Governance & Registry",
-          "detail": "MLflow model registry, custom governance dashboards, automated risk tiering engines, and enterprise-wide asset inventories."
+          "rule": "Model registry & inventory",
+          "detail": "MLflow is usually the right first answer: it already holds your lineage and it costs nothing to make authoritative. A managed registry earns its place when the inventory has to span teams that do not share a platform, or when the audit trail itself must be immutable to the people maintaining it."
         },
         {
-          "rule": "Explainability & Fairness",
-          "detail": "SHAP, LIME, and counterfactual explainability layers. Fairness metrics across protected characteristics with automated bias alerting."
+          "rule": "Explainability & fairness",
+          "detail": "SHAP for tabular and Fairlearn for group metrics cover most of what an assessor asks to see. Buy instead when explanations must be produced on demand for a regulator rather than in a notebook, which is the point at which reproducibility matters more than the method."
         },
         {
-          "rule": "Security & Privacy",
-          "detail": "Zero-Trust AI architecture, prompt sanitization, PII detection, data masking, differential privacy, and encrypted audit ledgers."
+          "rule": "Privacy & data controls",
+          "detail": "Presidio handles PII detection and redaction well enough that most estates start there. A managed catalog earns its cost once purpose limitation has to be enforced across systems you do not own, because that is a policy problem before it is a detection problem."
         },
         {
-          "rule": "Monitoring & Compliance",
-          "detail": "Real-time drift detection, performance telemetry, compliance dashboards, HITL approval workflows, and immutable regulatory evidence."
+          "rule": "Monitoring & drift",
+          "detail": "Evidently is enough while one team watches a handful of models. You move to a managed platform when drift has to be reviewed by people who did not build the model, since that is when a shared alert history stops being optional."
+        },
+        {
+          "rule": "Policy & audit trail",
+          "detail": "Open Policy Agent puts enforcement in the request path, which is the only place policy is real. A GRC platform earns its license when governance has to be reported to a board or an assessor in a format they already accept, and that is a documentation requirement rather than a technical one."
         }
       ],
       "dataHandling": []

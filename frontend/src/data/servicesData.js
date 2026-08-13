@@ -2291,98 +2291,109 @@ export const servicesData = {
     capabilitiesLabel: 'AI GOVERNANCE SERVICES',
     capabilitiesSectionTitle: 'AI Governance Framework',
     capabilitiesSectionHighlight: 'Capabilities.',
+    // ── Capability areas ──────────────────────────────────────────────────
+    // Rewritten 2026-08-13. The previous version carried roughly twenty times
+    // the boilerplate density measured in the comparison table on the same
+    // page, and four times the FAQ's, while the word "you" appeared zero times
+    // in 1,239 words. At about a third of the page's copy that was its largest
+    // quality gap, and the same defect /services/genai-business-services
+    // carried before PR #333.
+    //
+    // Sub-capability NAMES are unchanged: they are the searchable taxonomy and
+    // they feed the OfferCatalog JSON-LD. Only the prose after each colon is
+    // new. The card front splits on ':' so that format is load-bearing.
     capabilityAreas: [
       {
         title: 'Managing AI & GenAI Solution Quality',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Ensure AI and Generative AI systems operate with consistent accuracy, reliability, safety, and enterprise-grade performance throughout their lifecycle.',
+        desc: 'Quality measured on a schedule rather than assumed from the launch score, because a model degrades quietly while the dashboard keeps reporting green.',
         items: [
-          'Data Quality Engineering: Design robust data validation, cleansing, enrichment, and preprocessing pipelines that ensure trusted, high-quality inputs for AI systems.',
-          'Model Validation & Quality Assurance: Establish comprehensive testing frameworks to evaluate model accuracy, robustness, reliability, and production readiness.',
-          'AI Risk Detection: Identify and mitigate hallucinations, bias, anomalies, data quality issues, and unexpected model behavior before they impact business operations.',
-          'Performance Monitoring & Drift Management: Continuously monitor model performance, detect data and concept drift, and maintain optimal AI effectiveness in production environments.',
-          'AI Evaluation & Benchmarking: Measure AI models against predefined quality metrics, enterprise benchmarks, and business objectives to ensure consistent performance.',
-          'Reliability & Resilience Engineering: Improve AI system stability, fault tolerance, recovery capabilities, and operational resilience across enterprise workloads.',
-        ]
+          'Data Quality Engineering: Validation and cleansing before anything is trained on or indexed. Three near-identical versions of a policy in the corpus is how a system ends up citing the superseded one.',
+          'Model Validation & Quality Assurance: Test the system, not the model. Most production failures come from the data the model was handed rather than from the weights.',
+          'AI Risk Detection: Catch hallucination, bias and unexpected behavior in staging, where a wrong answer costs a rerun instead of a complaint.',
+          'Performance Monitoring & Drift Management: Watch the slow failures — accuracy sliding a point a month, one segment quietly diverging — that no single prediction would ever reveal.',
+          'AI Evaluation & Benchmarking: Your own question set decides promotion. Public benchmarks tell you what a model can do in general, not what it does on your data.',
+          'Reliability & Resilience Engineering: Decide what the system does when a model is unavailable or a score is missing, because both will happen during business hours.',
+        ],
       },
       {
         title: 'Establishing Ethical AI Governance',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Develop governance frameworks that ensure AI systems operate responsibly, transparently, fairly, and in alignment with organizational values and regulatory expectations.',
+        desc: 'Principles are cheap. What an assessor asks for is the control that enforces one, and the record showing it ran.',
         items: [
-          'Responsible AI Frameworks: Define enterprise-wide governance principles that guide the ethical design, deployment, and operation of AI systems.',
-          'Fairness & Transparency: Implement controls that minimize bias, improve explainability, and promote equitable AI outcomes across business processes.',
-          'Explainable AI: Enable stakeholders to understand AI reasoning, decision pathways, confidence levels, and supporting evidence for every recommendation.',
-          'Accountability & Oversight: Establish governance structures that define ownership, responsibility, approvals, and decision accountability throughout the AI lifecycle.',
-          'Human Oversight: Integrate human-in-the-loop governance mechanisms for reviewing, validating, and approving high-impact AI decisions.',
-          'Responsible GenAI & Agentic AI: Apply specialized governance controls for autonomous AI agents, Generative AI applications, and multi-agent ecosystems.',
-        ]
+          'Responsible AI Frameworks: Written standards tied to controls that actually execute, rather than principles nobody can point at anywhere in the system.',
+          'Fairness & Transparency: Test outcomes across the groups your process affects. A model inherits the skew in its training data, and nothing on screen reveals it.',
+          'Explainable AI: SHAP values and feature attributions returned with the decision, so a reviewer sees what drove it rather than a confidence score.',
+          'Accountability & Oversight: A named owner per system, an approval path for changes, and a register of what is live. Those three are what an auditor asks for first.',
+          'Human Oversight: Review placed where a wrong decision is expensive and removed where it is not, so approval stays meaningful instead of becoming a habit of clicking through.',
+          'Responsible GenAI & Agentic AI: Controls sized to what the system can actually do. A model that drafts text and one that can move money need different gates, and treating them alike fails in both directions.',
+        ],
       },
       {
         title: 'Model Governance',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Establish enterprise-wide governance for managing AI models across development, deployment, monitoring, and retirement.',
+        desc: 'Everything that keeps a model accountable after release: what changed, who approved it, and what you can roll back to.',
         items: [
-          'Model Lifecycle Management: Govern AI models through structured development, validation, deployment, monitoring, maintenance, and retirement processes.',
-          'Model Version Control: Maintain complete version history, documentation, lineage, and reproducibility across the AI development lifecycle.',
-          'Deployment Governance: Implement controlled approval workflows, release management, and production deployment processes for enterprise AI systems.',
-          'Performance Validation: Continuously validate model accuracy, reliability, robustness, and business effectiveness throughout production operations.',
-          'Change & Release Management: Manage governed model updates, rollback strategies, retraining cycles, and controlled releases with minimal operational disruption.',
-          'Model Registry & Documentation: Maintain a centralized repository containing model metadata, documentation, ownership, dependencies, approvals, and governance records.',
-        ]
+          'Model Lifecycle Management: A path from development into production and back out again, so models are retired deliberately instead of left running unowned.',
+          'Model Version Control: Weights, features, training data and configuration pinned together. Any one of them moving alone can change every decision the system makes.',
+          'Deployment Governance: Promotion gated on a check that can fail. A gate that has never blocked a release is documentation, not a control.',
+          'Performance Validation: Re-validate against the current population rather than the training sample, because that is where drift shows first.',
+          'Change & Release Management: A rollback that restores the model and its feature pipeline together, not just the artifact.',
+          'Model Registry & Documentation: A model card per system carrying intended use, known limits, owner and approval, so the answer to what this does is not a person who might leave.',
+        ],
       },
       {
         title: 'Compliance & AI Risk Management',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Ensure AI systems comply with global regulations, industry standards, organizational policies, and enterprise risk management requirements.',
+        desc: 'Map controls to the regimes you are actually under, then produce the evidence as a by-product of running rather than as a project before each audit.',
         items: [
-          'Regulatory Compliance: Align AI solutions with international regulations, industry standards, and organizational governance requirements throughout the AI lifecycle.',
-          'Data Privacy & Protection: Implement enterprise controls for data anonymisation, encryption, consent management, retention, and secure information handling.',
-          'Audit & Policy Enforcement: Maintain comprehensive audit trails, policy enforcement mechanisms, operational logs, and governance evidence for regulatory compliance.',
-          'AI Risk Management: Identify, assess, prioritize, and mitigate operational, ethical, regulatory, cybersecurity, and business risks associated with AI systems.',
-          'Security & Access Governance: Protect AI assets through identity management, role-based access control, zero-trust security, and continuous access monitoring.',
-          'Compliance Monitoring & Reporting: Continuously monitor compliance posture, generate governance reports, and demonstrate adherence to enterprise and regulatory obligations.',
-        ]
+          'Regulatory Compliance: Risk tiering against the EU AI Act, controls mapped to the NIST AI RMF, and the sector rules that apply to you rather than all of them at once.',
+          'Data Privacy & Protection: PII detected and redacted before training or retrieval, with retention limits enforced automatically instead of documented and hoped for.',
+          'Audit & Policy Enforcement: Policy enforced in the request path and logged there, so the audit trail is generated by the system rather than assembled afterwards.',
+          'AI Risk Management: Risk assessed per system and per use, because the same model is low risk in one workflow and high risk in the next.',
+          'Security & Access Governance: Least privilege across models, data and tools, with access reviewed on a schedule rather than only at onboarding.',
+          'Compliance Monitoring & Reporting: Continuous evidence rather than an annual scramble. The gap between assessments is where posture actually drifts.',
+        ],
       },
       {
         title: 'AI Security & Trust',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Protect AI systems, models, agents, and enterprise data against adversarial threats, unauthorised access, and emerging AI-specific security risks.',
+        desc: 'Treat the model as untrusted input to everything downstream of it, because its output is shaped by data and by whoever was able to write that data.',
         items: [
-          'AI Security Architecture: Design secure AI infrastructures with defense-in-depth principles, zero-trust security, and resilient system architectures.',
-          'Prompt & LLM Security: Protect Large Language Models against prompt injection, jailbreaks, data leakage, and adversarial manipulation.',
-          'Identity & Access Management: Enforce role-based access, least-privilege controls, authentication, and authorisation across AI systems and agents.',
-          'AI Threat Detection: Continuously detect malicious behavior, adversarial attacks, model abuse, and security anomalies across AI environments.',
-          'Secrets & Credential Management: Secure API keys, tokens, credentials, encryption keys, and confidential enterprise assets used by AI systems.',
-          'Secure AI Infrastructure: Implement encryption, network isolation, secure deployment pipelines, and infrastructure hardening for production AI workloads.',
-        ]
+          'AI Security Architecture: Defense in depth around the model, on the assumption that the model itself will eventually be made to say something it should not.',
+          'Prompt & LLM Security: Injection through retrieved documents is the route most teams forget to test. Instructions hidden in a page the model reads are indistinguishable from your own.',
+          'Identity & Access Management: Retrieval and tool calls run as the asking user, never as a service account with a view of everything.',
+          'AI Threat Detection: Watch for the patterns that precede abuse — probing, unusual token volumes, repeated refusals — rather than waiting for the incident that confirms it.',
+          'Secrets & Credential Management: Keys and tokens kept out of prompts and out of logs. A system that logs full prompts has copied its credentials somewhere else.',
+          'Secure AI Infrastructure: Network isolation, encryption and hardened deployment pipelines, sized to where your data is allowed to go.',
+        ],
       },
       {
         title: 'AI Observability & Operations',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Provide continuous visibility into AI system health, performance, cost, reliability, and operational effectiveness across the enterprise.',
+        desc: 'Running it day to day: traces you can replay, budgets per team, and a cost per decision you can quote rather than reconstruct after the invoice.',
         items: [
-          'AI Observability: Monitor AI behavior, inference quality, latency, token usage, and operational health across production environments.',
-          'Operational Monitoring: Track service availability, response times, throughput, resource utilization, and overall AI system performance.',
-          'Cost & Resource Optimization: Analyze AI infrastructure costs, token consumption, compute utilization, and resource efficiency to optimize operational spending.',
-          'Incident & Failure Management: Detect, investigate, respond to, and recover from AI failures through structured incident management processes.',
-          'Capacity & Scalability Management: Plan and optimize AI infrastructure capacity to support enterprise-scale workloads and future growth.',
-          'Operational Analytics & Reporting: Deliver executive dashboards, operational insights, SLA reporting, and continuous improvement metrics for AI operations.',
-        ]
+          'AI Observability: Traces that keep the input and the retrieved context alongside the output, because a bad decision cannot be diagnosed without knowing what the model saw.',
+          'Operational Monitoring: Latency measured where the user waits, not at the model boundary — retrieval, policy checks and guardrails all sit between the two.',
+          'Cost & Resource Optimization: Spend tracked per workflow, so the renewal conversation is about named use cases rather than one aggregate line.',
+          'Incident & Failure Management: A defined path for a wrong decision, not only for an outage. The fix is usually a configuration change, which is why it has to be revertible.',
+          'Capacity & Scalability Management: Rate limits and quotas are the real constraint on a managed API; self-hosted serving trades that for hardware you then have to keep busy.',
+          'Operational Analytics & Reporting: Report the numbers that decide renewal, and name the exceptions rather than smoothing them into an average.',
+        ],
       },
       {
         title: 'AI Governance Strategy & Transformation',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Help organizations establish enterprise-wide AI governance operating models, governance maturity, organizational readiness, and long-term AI transformation strategies.',
+        desc: 'Decide who owns what before you buy anything. Programs stall on ownership and decision rights far more often than on tooling.',
         items: [
-          'AI Governance Strategy: Define enterprise AI governance vision, principles, operating models, and strategic roadmaps aligned with business objectives.',
-          'AI Governance Operating Model: Design governance structures, roles, responsibilities, committees, decision authorities, and cross-functional governance processes.',
-          'AI Governance Maturity Assessment: Evaluate governance capabilities, identify gaps, benchmark against industry best practices, and develop improvement roadmaps.',
-          'AI Policy & Standards Management: Develop enterprise AI policies, governance standards, operating procedures, and control frameworks for consistent AI adoption.',
-          'AI Portfolio Governance: Prioritize, oversee, and govern enterprise AI initiatives, investments, programs, and business value realisation.',
-          'AI Adoption & Change Management: Drive organizational readiness through stakeholder engagement, governance awareness, training, communication, and change management programs.',
-        ]
-      }
+          'AI Governance Strategy: Sequence by risk and volume rather than by visibility. The system the board asked about is rarely the one that needs governing first.',
+          'AI Governance Operating Model: Settle who approves a model change, who signs off a risk tier, and who is paged when a decision is wrong. Those three questions stall more programs than technology does.',
+          'AI Governance Maturity Assessment: Find out where your models actually live and who is allowed to change them. Governance inherits every problem your platform estate already has.',
+          'AI Policy & Standards Management: Write down what staff may build and with which data, naming the tools. A policy easier to follow than to ignore is the only kind that changes behavior.',
+          'AI Portfolio Governance: Track which systems earn their risk. Some are worth the control burden and some should be switched off, and that decision needs a number attached to it.',
+          'AI Adoption & Change Management: Train people on what the controls will block as well as what they enable. Governance that only ever says no gets routed around.',
+        ],
+      },
     ],
     whatIsEyebrow: 'What AI Governance services does Kangqore offer?',
     whatIsTitle: 'AI Governance',
@@ -2511,12 +2522,48 @@ export const servicesData = {
         ],
       },
     ],
+    // The inherited lede opened "Most clients begin with a scoped pilot to prove
+    // the model on one workflow" — the genai framing, where the unknown is
+    // whether a model can be grounded. A governance buyer's unknown is which
+    // systems are in scope and what evidence is missing, so the lede now says
+    // that instead.
+    engagementLede: 'Five entry points, from a three-week audit to continuous assurance. Most programs start by finding out which systems are in scope and what evidence is missing, because building controls before you know your risk tiers is the most common way governance work stalls.',
     servicePackages: [
-      { name: 'Strategy & Audit', description: 'Comprehensive AI landscape inventory, regulatory risk classification (EU AI Act), and governance gap analysis.', duration: '2–3 weeks', tier: 'Advisory' },
-      { name: 'Guardrail Pod', description: 'Rapid deployment of model registries, SHAP explainability layers, and bias monitoring for one high-risk production AI model.', duration: '8 weeks', tier: 'Pilot' },
-      { name: 'Platform Governance', description: 'Engineering enterprise-wide model registries, automated CI/CD compliance gates, and data masking pipelines.', duration: '16–24 weeks', tier: 'Platform' },
-      { name: 'Managed Compliance', description: 'Ongoing production monitoring, model drift alerting, human-in-the-loop workflow management, and audit log maintenance.', duration: 'Ongoing', tier: 'Managed' },
-      { name: 'Continuous Assurance', description: 'Enterprise-wide AI risk assurance, periodic regulatory re-assessments, and continuous model governance tuning.', duration: 'Ongoing', tier: 'Enterprise' },
+      {
+        name: 'Strategy & Audit',
+        description: 'Inventory every AI system in production, classify each against EU AI Act risk tiers, and identify where evidence is missing rather than where controls are absent.',
+        duration: '2–3 weeks',
+        tier: 'Advisory',
+        deliverables: ['Model and system inventory with named owners', 'Risk tier classification per system', 'Gap analysis against the EU AI Act and NIST AI RMF'],
+      },
+      {
+        name: 'Guardrail Pod',
+        description: 'One high-risk production model taken to an auditable state: registry entry, explainability layer, bias monitoring and an approval path that holds.',
+        duration: '8 weeks',
+        tier: 'Pilot',
+        deliverables: ['Model registry entry with lineage and version pinning', 'SHAP explainability wired into the serving path', 'Bias and drift monitors with alert thresholds you set'],
+      },
+      {
+        name: 'Platform Governance',
+        description: 'The controls as infrastructure: a shared registry, compliance gates in CI/CD, data masking pipelines and policy enforced in the request path rather than in a document.',
+        duration: '16–24 weeks',
+        tier: 'Platform',
+        deliverables: ['Registry and policy engine as infrastructure as code', 'Release gates that block promotion on a failed check', 'Masking and lineage pipelines across training and prompt data'],
+      },
+      {
+        name: 'Managed Compliance',
+        description: 'We run it: drift and fairness testing on schedule, human-in-the-loop queues staffed, audit logs maintained, and the evidence pack kept current between assessments.',
+        duration: 'Ongoing',
+        tier: 'Managed',
+        deliverables: ['Monthly drift, bias and incident report', 'Maintained audit log and evidence pack', 'Change log tying every model version to its approval'],
+      },
+      {
+        name: 'Continuous Assurance',
+        description: 'Periodic re-assessment as the regulation moves and your estate grows, with control coverage re-tested rather than assumed to have held.',
+        duration: 'Ongoing',
+        tier: 'Enterprise',
+        deliverables: ['Re-assessment against the current text of each regime', 'Control coverage re-tested per system', 'Board-level risk summary with the exceptions named'],
+      },
     ],
     outcomeCard: { illustrative: true,
       metric: '100%',
@@ -2601,28 +2648,53 @@ export const servicesData = {
       'Book an AI Governance strategy session',
     ],
     toolsStack: {
-      title: 'AI Governance Technology Stack',
-      subtitle: 'The compliance-grade toolchain powering every Kangqore AI governance deployment.',
+      // Was four rows, twelve tool names and 83 words in 781px, with no
+      // indication of when you would pick any of them. The equivalent section on
+      // /services/genai-business-services carries six layers, 37 named products
+      // and a decision rule per row; this one is now built to the same standard.
+      // Governance splits on buy-versus-build rather than managed-versus-self-
+      // hosted, because a GRC platform and an open-source stack are the two real
+      // options and the choice turns on whether your controls have to be evidenced
+      // to somebody else.
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'Every control.',
+      titleHighlight: 'Evidenced, not asserted.',
+      subtitle: 'Governance tooling is bought or built, and the answer differs per layer. What decides it is who has to be convinced: an internal risk committee will accept your own dashboards, an external assessor generally wants an audited platform trail. These are the five layers we standardize and the threshold at each one.',
       items: [
         {
           icon: 'Database',
-          title: 'Governance & Registry',
-          desc: 'MLflow model registry, custom governance dashboards, automated risk tiering engines, and enterprise-wide asset inventories.',
+          title: 'Model registry & inventory',
+          managed: 'Azure ML registry · Vertex AI Model Registry · Databricks Unity Catalog',
+          selfHosted: 'MLflow · DVC · custom Postgres registry',
+          desc: 'MLflow is usually the right first answer: it already holds your lineage and it costs nothing to make authoritative. A managed registry earns its place when the inventory has to span teams that do not share a platform, or when the audit trail itself must be immutable to the people maintaining it.',
         },
         {
           icon: 'Eye',
-          title: 'Explainability & Fairness',
-          desc: 'SHAP, LIME, and counterfactual explainability layers. Fairness metrics across protected characteristics with automated bias alerting.',
+          title: 'Explainability & fairness',
+          managed: 'Azure Responsible AI dashboard · Vertex Explainable AI · Fiddler',
+          selfHosted: 'SHAP · LIME · Alibi · Fairlearn · Aequitas',
+          desc: 'SHAP for tabular and Fairlearn for group metrics cover most of what an assessor asks to see. Buy instead when explanations must be produced on demand for a regulator rather than in a notebook, which is the point at which reproducibility matters more than the method.',
         },
         {
           icon: 'Shield',
-          title: 'Security & Privacy',
-          desc: 'Zero-Trust AI architecture, prompt sanitization, PII detection, data masking, differential privacy, and encrypted audit ledgers.',
+          title: 'Privacy & data controls',
+          managed: 'Microsoft Purview · BigQuery DLP · Immuta',
+          selfHosted: 'Presidio · OpenDP · Opacus · custom masking pipelines',
+          desc: 'Presidio handles PII detection and redaction well enough that most estates start there. A managed catalog earns its cost once purpose limitation has to be enforced across systems you do not own, because that is a policy problem before it is a detection problem.',
         },
         {
           icon: 'Network',
-          title: 'Monitoring & Compliance',
-          desc: 'Real-time drift detection, performance telemetry, compliance dashboards, HITL approval workflows, and immutable regulatory evidence.',
+          title: 'Monitoring & drift',
+          managed: 'Arize · WhyLabs · Azure Monitor for ML',
+          selfHosted: 'Evidently · NannyML · Prometheus & Grafana',
+          desc: 'Evidently is enough while one team watches a handful of models. You move to a managed platform when drift has to be reviewed by people who did not build the model, since that is when a shared alert history stops being optional.',
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Policy & audit trail',
+          managed: 'ServiceNow AI governance · IBM watsonx.governance · Credo AI · OneTrust',
+          selfHosted: 'Open Policy Agent · custom approval workflows · append-only ledgers',
+          desc: 'Open Policy Agent puts enforcement in the request path, which is the only place policy is real. A GRC platform earns its license when governance has to be reported to a board or an assessor in a format they already accept, and that is a documentation requirement rather than a technical one.',
         },
       ],
     },
