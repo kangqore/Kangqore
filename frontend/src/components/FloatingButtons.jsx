@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogIn, LogOut, UserCircle, ArrowUp, ChevronUp, MessageCircle, Accessibility, Menu, X, ChevronRight, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Moon, Sun, Plus } from 'lucide-react';
+import { LogIn, LogOut, ChevronUp, Menu, X, ChevronRight, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Plus } from 'lucide-react';
 import { departmentData } from '../data/departmentData';
 import { useAuth } from '../context/AuthContext';
 import EQoreChatbot from './EQoreChatbot';
@@ -17,9 +17,6 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
   const [expandedMenu, setExpandedMenu] = useState(null);
   const [isOmniOpen, setIsOmniOpen] = useState(false);
   const [isYielding, setIsYielding] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('darkMode') === 'true';
-  });
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -123,15 +120,6 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
     }
   }, [showFullMenu]);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('darkMode', isDarkMode.toString());
-  }, [isDarkMode]);
-
   const handleLogout = () => {
     logout();
     setShowFullMenu(false);
@@ -166,10 +154,6 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
   const toggleMenu = (menuName) => {
     setExpandedMenu(expandedMenu === menuName ? null : menuName);
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
   };
 
   // Menu items data
@@ -316,12 +300,6 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
               <button onClick={() => setShowAccessibility(false)} className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center text-gray-400"><X className="w-4 h-4" /></button>
             </div>
             <div className="space-y-6">
-              <button onClick={toggleDarkMode} className="w-full py-4 px-5 rounded-2xl bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white flex items-center justify-between font-bold transition-all">
-                {isDarkMode ? "Dark Mode ON" : "Dark Mode OFF"}
-                <div className={`w-12 h-6 rounded-full relative transition-colors ${isDarkMode ? 'bg-brand-blue' : 'bg-gray-300'}`}>
-                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white dark:bg-black transition-all ${isDarkMode ? 'left-7' : 'left-1'}`}></div>
-                </div>
-              </button>
               <div className="flex gap-2 p-1.5 bg-gray-50 dark:bg-gray-900 rounded-2xl">
                 <button onClick={() => adjustFontSize(-10)} className="flex-1 py-2 font-black">A-</button>
                 <button onClick={() => { setFontSize(100); document.documentElement.style.fontSize = '100%'; }} className="flex-1 py-2 text-[10px] text-gray-400 uppercase">Reset</button>

@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LogOut, User, Bell, X, Sun, Moon, ChevronDown, Brain } from 'lucide-react'
+import { LogOut, User, Bell, X, ChevronDown, Brain } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { Avatar } from '@design-system/components/Avatar'
 import {
@@ -165,14 +165,7 @@ export function PortalNavbar({ portalName, tabs, basePath, accent = '#2564ea', n
   const navigate = useNavigate()
   const roleLabel = ROLE_LABEL[user?.role ?? ''] ?? (user?.role ?? 'User')
   const [notifOpen, setNotifOpen] = useState(false)
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'))
   const unread = notifications.filter(n => !n.read).length
-
-  const toggleTheme = useCallback(() => {
-    const nowDark = document.documentElement.classList.toggle('dark')
-    localStorage.setItem('kq-theme', nowDark ? 'dark' : 'light')
-    setIsDark(nowDark)
-  }, [])
 
   return (
     <>
@@ -230,13 +223,6 @@ export function PortalNavbar({ portalName, tabs, basePath, accent = '#2564ea', n
         <div className="flex items-center gap-4 px-4 flex-shrink-0">
           {/* Icon cluster */}
           <div className="flex items-center gap-1">
-            <button
-              onClick={toggleTheme}
-              className="w-8 h-8 flex items-center justify-center rounded-full text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
-              title={isDark ? 'Light mode' : 'Dark mode'}
-            >
-              {isDark ? <Sun className="w-[15px] h-[15px]" /> : <Moon className="w-[16px] h-[16px]" />}
-            </button>
             <button
               onClick={() => setNotifOpen(o => !o)}
               className="relative w-8 h-8 flex items-center justify-center rounded-full text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
