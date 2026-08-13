@@ -1156,12 +1156,21 @@ const featureMicros   = service.featureMicros
                   third line, because the first clause already wraps at 28.8px
                   in a 342px column. Desktop gets the deliberate break, mobile
                   keeps natural wrapping. */}
+              {/* The two break flags used to be mutually exclusive branches of
+                  one ternary, so a heading could have a break after line 1 or
+                  before the highlight, never both — and a three-line heading
+                  was unreachable. They compose now. Every previous combination
+                  renders identically: title alone, title + line2, and
+                  title + highlightNewLine all produce the same markup as
+                  before. */}
               {service.whatIsTitle
-                ? <>{service.whatIsTitle}{service.whatIsTitleLine2
-                    ? <><br />{service.whatIsTitleLine2}{' '}</>
-                    : service.whatIsHighlightNewLine
-                      ? <><br className="hidden sm:block" />{' '}</>
-                      : ' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span></>
+                ? <>
+                    {service.whatIsTitle}
+                    {service.whatIsTitleLine2 && <><br />{service.whatIsTitleLine2}</>}
+                    {service.whatIsHighlightNewLine && <br className="hidden sm:block" />}
+                    {' '}
+                    <span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span>
+                  </>
                 : <>The complete {(sectionLine || service.name).toLowerCase()}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{sectionHighlight.toLowerCase()} framework.</span></>
               }
             </h2>
@@ -1175,25 +1184,71 @@ const featureMicros   = service.featureMicros
               <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0">
                 {service.whatIsPara2 || <>A service can be technically delivered and still fail if the strategy and execution are misaligned.{' '}<span className="text-white">Kangqore closes that gap.</span></>}
               </p>
+              {/* Both paragraphs stay in the DOM at all times and collapse via
+                  grid-template-rows, the same pattern the FAQ uses.
+                  Previously whatIsPara3 was line-clamped and whatIsPara4 was
+                  rendered only when expanded — so para4 did not exist in the
+                  markup until somebody clicked, and neither paragraph reached
+                  the prerender snapshot. Content a crawler cannot see is
+                  content that was not published. `inert` keeps the collapsed
+                  text out of the tab order without hiding it from the parser. */}
+              {/* whatIsPara3 always shows in full; only whatIsPara4 collapses,
+                  and it collapses to nothing rather than to a fraction. The
+                  first cut used grid-template-rows: 0.34fr to preview part of
+                  the block, which cut a sentence in half and left dead space
+                  above the control. A partial-height teaser is worse than a
+                  clean break: the reader sees a rendering fault, not an
+                  affordance.
+
+                  Both paragraphs stay in the DOM either way. Before this they
+                  did not — para3 was line-clamped and para4 was rendered only
+                  once expanded, so no crawler ever saw it. `inert` keeps the
+                  collapsed paragraph out of the tab order while leaving it in
+                  the markup. */}
               {service.whatIsPara3 && (
                 <div className="mt-8">
-                  <p className={`text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0 transition-all duration-500 ${!isReadMoreExpanded ? 'line-clamp-2 sm:line-clamp-3' : ''}`}>
+                  <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0">
                     {service.whatIsPara3}
                   </p>
-                  
-                  {isReadMoreExpanded && service.whatIsPara4 && (
-                    <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
-                      {service.whatIsPara4}
-                    </p>
+
+                  {service.whatIsPara4 && (
+                    <div
+                      id="svc-whatis-more"
+                      className="grid transition-all duration-500 ease-out motion-reduce:transition-none"
+                      style={{ gridTemplateRows: isReadMoreExpanded ? '1fr' : '0fr' }}
+                      inert={!isReadMoreExpanded}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
+                          {service.whatIsPara4}
+                        </p>
+                        {service.whatIsPara5 && (
+                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
+                            {service.whatIsPara5}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   )}
-                  
-                  <button
-                    onClick={() => setIsReadMoreExpanded(!isReadMoreExpanded)}
-                    className="text-[#60a5fa] hover:text-white mt-4 font-semibold text-sm tracking-wide uppercase transition-colors flex items-center gap-2"
-                  >
-                    {isReadMoreExpanded ? 'Read Less' : 'Read More'}
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isReadMoreExpanded ? 'rotate-180' : ''}`} />
-                  </button>
+
+                  {/* Only rendered when there is a fourth paragraph to reveal.
+                      /services/mlops sets para3 and not para4, and would
+                      otherwise show a control that expands nothing.
+                      aria-expanded and aria-controls pair it with the panel. */}
+                  {service.whatIsPara4 && (
+                    <button
+                      onClick={() => setIsReadMoreExpanded(!isReadMoreExpanded)}
+                      aria-expanded={isReadMoreExpanded}
+                      aria-controls="svc-whatis-more"
+                      /* py-1 min-h takes this over the 24x24 floor. It measured
+                         110x20 and was the only WCAG 2.5.8 failure on three
+                         service pages. */
+                      className="text-[#60a5fa] hover:text-white mt-4 py-1 min-h-[24px] font-semibold text-sm tracking-wide uppercase transition-colors flex items-center gap-2"
+                    >
+                      {isReadMoreExpanded ? 'Read Less' : 'Read More'}
+                      <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isReadMoreExpanded ? 'rotate-180' : ''}`} />
+                    </button>
+                  )}
                 </div>
               )}
             </div>
