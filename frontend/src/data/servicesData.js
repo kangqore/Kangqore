@@ -685,7 +685,11 @@ export const servicesData = {
     heroBadge: 'Systems That Understand, Reason & Act',
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
-    shortDescription: 'Leverage cognitive technologies to mimic human thought processes',
+    // data-speakable: the one sentence a voice assistant reads out of ~6,000
+    // words, and it was "Leverage cognitive technologies to mimic human thought
+    // processes" — a claim about resembling people rather than about doing
+    // anything.
+    shortDescription: 'Kangqore builds systems that read the material your people read: contracts, images, recordings and sensor streams, returned as something you can act on.',
     fullDescription: 'Implement cognitive computing solutions that understand, reason, and learn from data to enhance business operations.',
     keyFeatures: ['Natural language understanding', 'Pattern recognition', 'Machine reasoning', 'Knowledge management', 'Cognitive insights'],
     relatedServiceSlugs: ['agentic-ai', 'data-science-ai', 'genai-business-services'],
@@ -700,7 +704,7 @@ export const servicesData = {
     // different service on a page about perception and reasoning.
     industryHeading: 'Cognitive systems trained on',
     industryHeadingHighlight: 'your sector\'s evidence.',
-    midCta: 'Your unstructured data already holds the answer.',
+    midCta: 'The answer is already in your documents. Nobody has time to read them.',
     closingCta: {
       title: 'One conversation.',
       highlight: 'One system that understands.',
@@ -712,6 +716,7 @@ export const servicesData = {
     practiceLabel: 'RELATED SERVICES',
     practiceHeading: 'The rest of the',
     practiceHeadingHighlight: 'AI practice.',
+    practiceLede: 'Perception and reasoning are one layer. Generation, autonomy, operations and governance are separate services, and most programs use two or three of them together.',
 
     // Same call as genai-business-services, mlops and ai-governance. This page
     // argues its engagement model with evidence in "Five ways to start" and ten
@@ -854,10 +859,20 @@ export const servicesData = {
       },
     ],
     whatIsEyebrow: 'What AI & Cognitive Computing services does Kangqore offer?',
-    whatIsTitle: 'AI & Cognitive Computing',
-    whatIsTitleLine2: 'Solutions That',
-    whatIsHighlight: 'Think, Learn & Act.',
-    whatIsPara2: 'Kangqore implements cognitive systems across NLP, knowledge reasoning, and adaptive learning — enabling enterprises to automate judgment-intensive decisions and surface insights from unstructured information at scale.',
+    // "Solutions That Think, Learn & Act." is a sentence any AI vendor can run.
+    // The heading now states what the systems take as input, which is the thing
+    // that separates this service from the rest of the practice.
+    whatIsTitle: 'Systems that read',
+    whatIsTitleLine2: 'what your people read,',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'at volume.',
+    // Enumerates the same four stages the architecture section and the hero
+    // diagram show, in the same order, so all three agree.
+    whatIsPara2: 'Perception turns documents, images, speech and sensor streams into something a model can work on. Representation holds meaning rather than strings, so a claim in one place can be connected to the record supporting it in another. Reasoning returns an answer with a calibrated confidence. Evidence keeps what produced it.',
+
+    whatIsPara3: 'What decides whether any of this is worth building is legibility, not ambition. If the knowledge exists in writing, in imagery or on tape, a machine has something to work from. If it lives only in somebody\'s judgment, no model recovers it, and the project is a knowledge-capture exercise wearing an AI badge.',
+
+    whatIsPara4: 'So the threshold matters more than the accuracy score. A system that answers ninety cases and hands you the ten it is unsure about is more useful than one that answers all hundred with the same untroubled confidence, because only the first tells you where to look.',
     bannerBrandDesc: 'Our enterprise AI & cognitive computing product & platform',
     downloadAsset: '/assets/downloads/kangqore-cognitive-computing-playbook.pdf',
     comparisonTable: {
@@ -889,6 +904,9 @@ export const servicesData = {
     // subject, not this one. Rewritten to the perception-to-decision path this
     // page actually sells, and keyCapabilities were empty on all four nodes so
     // the cards rendered a heading and a paragraph with nothing underneath.
+    // The template default read "Every deployment runs on a governed, modular
+    // architecture built for enterprise scale" — true of any page here.
+    architectureLede: 'Four stages, in order. Each one is measurable on its own, which is how you find out whether a disappointing answer came from a bad model or from a page nobody could read in the first place.',
     architectureNodes: [
       {
         title: 'Perception',
@@ -1040,10 +1058,10 @@ export const servicesData = {
       outcome: 'Records are parsed against protocol criteria and returned as a ranked shortlist with the supporting passage attached to each match. A clinician still decides eligibility; what changed is that they read the twenty candidates worth reading rather than the six hundred that were not.',
     },
     businessMetrics: [
-      { title: 'Data Comprehension',  desc: 'Improvement in unstructured data comprehension using multi-modal NLP and cognitive reasoning engines.',                              value: '87', suffix: '%',    metricLabel: 'Comprehension Accuracy', icon: 'BrainCircuit' },
-      { title: 'Decision Automation', desc: 'Complex business decisions automated through cognitive decision intelligence and prescriptive analytics platforms.',                     value: '65', suffix: '%',    metricLabel: 'Decisions Automated',    icon: 'Target'       },
-      { title: 'Knowledge Discovery',  desc: 'Faster insight discovery from enterprise knowledge graphs, semantic search, and contextual intelligence layers.',                       value: '4',  suffix: 'x',    metricLabel: 'Faster Insights',        icon: 'Zap'          },
-      { title: 'Models in Production', desc: 'Enterprise AI and cognitive computing models deployed and operationalized across client organizations.',                                  value: '120',suffix: '+',    metricLabel: 'Models Deployed',        icon: 'Layers'       },
+      { illustrative: true, title: 'Data Comprehension',  desc: 'Improvement in unstructured data comprehension using multi-modal NLP and cognitive reasoning engines.',                              value: '87', suffix: '%',    metricLabel: 'Comprehension Accuracy', icon: 'BrainCircuit' },
+      { illustrative: true, title: 'Decision Automation', desc: 'Complex business decisions automated through cognitive decision intelligence and prescriptive analytics platforms.',                     value: '65', suffix: '%',    metricLabel: 'Decisions Automated',    icon: 'Target'       },
+      { illustrative: true, title: 'Knowledge Discovery',  desc: 'Faster insight discovery from enterprise knowledge graphs, semantic search, and contextual intelligence layers.',                       value: '4',  suffix: 'x',    metricLabel: 'Faster Insights',        icon: 'Zap'          },
+      { illustrative: true, title: 'Models in Production', desc: 'Enterprise AI and cognitive computing models deployed and operationalized across client organizations.',                                  value: '120',suffix: '+',    metricLabel: 'Models Deployed',        icon: 'Layers'       },
     ],
     // Ten answers averaged 54 words and one paragraph each: a definition
     // followed by a capability list. Rewritten to the three-beat shape used on
@@ -1067,6 +1085,9 @@ export const servicesData = {
       },
       {
         q: 'How does Kangqore handle NLP and language understanding?',
+        sources: [
+          { label: 'Whisper: Robust Speech Recognition (OpenAI, arXiv)', url: 'https://arxiv.org/abs/2212.04356' },
+        ],
         a: 'By establishing first whether your language is generic or specific, because that decides everything after it. Intent classification, sentiment and standard entity extraction are commodities now, and a managed API will beat anything we would train for you.\n\n'
           + 'What earns a custom model is vocabulary the internet has not seen: your product codes, your clause library, your abbreviations, the shorthand your service desk types at three in the morning. That is where a general model degrades quietly, and where a few thousand labeled examples from your own material buys more accuracy than a larger model would.\n\n'
           + 'The deliverable is the same either way: an evaluation set built from real traffic rather than invented examples, a confidence threshold you set, and a review path for what falls below it.',
@@ -1085,12 +1106,19 @@ export const servicesData = {
       },
       {
         q: 'How does this relate to AI governance?',
+        sources: [
+          { label: 'NIST AI Risk Management Framework', url: 'https://www.nist.gov/itl/ai-risk-management-framework' },
+          { label: 'Model Cards for Model Reporting (Mitchell et al., arXiv)', url: 'https://arxiv.org/abs/1810.03993' },
+        ],
         a: 'Governance is its own service, and the depth sits on our AI Governance page: risk tiering against the EU AI Act, model registries, explainability, drift and fairness testing, and the evidence an assessor asks to see.\n\n'
           + 'What this service owes governance is the raw material for it. A cognitive system that cannot say which passage, or which region of an image, drove its output cannot be governed afterwards however good the policy is. So attribution is built into the serving path here rather than bolted on once somebody asks.\n\n'
           + 'The division in practice: this service decides what the system can perceive and how confident it is entitled to be. The governance service decides who signed it off, which tier it sits in, and how you prove any of that later.',
       },
       {
         q: 'Can AI actually make business decisions, or only recommend them?',
+        sources: [
+          { label: 'A Unified Approach to Interpreting Model Predictions — SHAP (Lundberg & Lee, arXiv)', url: 'https://arxiv.org/abs/1705.07874' },
+        ],
         a: 'It can make some of them and should be prevented from making others. The line is drawn by what a wrong answer costs and whether it can be undone.\n\n'
           + 'Where the cost is low and the volume is high, automating the decision is straightforward and the argument is economic. Where a wrong answer reaches a customer, a patient or a regulator, the system recommends and a person decides, with the recommendation carrying its confidence and its evidence so that review is quick rather than ceremonial.\n\n'
           + 'The failure we see most is a threshold set once and never revisited. Volumes shift, the population drifts, and a review queue calibrated in month one is either waving everything through or drowning the team by month nine.',
