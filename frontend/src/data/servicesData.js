@@ -2432,6 +2432,7 @@ export const servicesData = {
           desc: 'Pre-action check. Operational policies enforce limits on data access and tool usage before an action executes.',
         },
         {
+          illustrative: true,
           icon: 'BarChart2',
           title: 'Audit Ready',
           desc: '100% Covered. Immutable logs generated continuously, turning compliance into an operational byproduct rather than a retrospective project.',
