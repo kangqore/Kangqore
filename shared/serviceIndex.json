@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T09:49:05.458Z",
+  "generatedAt": "2026-08-13T10:11:12.628Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -338,15 +338,15 @@
       "faqs": [
         {
           "q": "What does AI governance actually mean in practice?",
-          "a": "AI governance is the operating system for trustworthy AI. It means every model, agent, and AI application in your enterprise has a defined owner, documented lifecycle, version-controlled deployment, explainable outputs, bias monitoring, compliance validation, and immutable audit trails. Kangqore implements this as infrastructure — not a policy document that sits in a drawer."
+          "a": "In practice it means every model, agent and AI application in your estate has four things: a named owner, a risk tier, a documented approval, and a trail showing what it did. If any one of those is missing for a system, that system is ungoverned regardless of what the policy says. The distinction that matters is where the controls live. A policy document describes what should happen. Governance infrastructure makes it happen in the request path: a model that has not been approved cannot be promoted, a decision that needed human review does not proceed without it, and the evidence is written as the system runs rather than assembled before an audit. The test is simple. Ask who owns your highest-impact model and when it was last validated. If that takes more than a few minutes to answer, what you have is documentation rather than governance."
         },
         {
           "q": "Why does our organization need AI governance now?",
-          "a": "Three forces are converging: the EU AI Act introduces mandatory compliance obligations with significant penalties for high-risk AI. Shadow AI usage is creating unmonitored model sprawl across departments. And generative AI and autonomous agents are making decisions that directly impact customers, revenue, and legal exposure. Governance is no longer optional — it's the difference between scaling AI and getting shut down by your regulator."
+          "a": "Three things converged. The EU AI Act became binding law with obligations attached to risk tier rather than to intent, so a system you did not think of as high-risk can be. Shadow AI spread faster than any inventory, in assistants and scripts built by teams who were not asking permission. And generative systems began making decisions that reach a customer directly rather than producing analysis a human reviews first. The cost asymmetry is what makes timing matter. Governing a system while it is being built adds weeks. Retrofitting governance onto twenty systems already in production, with no inventory and no lineage, is measured in quarters, and it is usually triggered by an external deadline rather than chosen. The answer is not to govern everything at once. Establish which systems are actually in scope, then start where a wrong decision reaches a customer."
         },
         {
           "q": "How is Kangqore's AI governance different from buying a GRC tool?",
-          "a": "GRC tools manage policies. Kangqore implements governance infrastructure. We build centralized model registries with automated risk tiering, CI/CD compliance gates that block non-compliant deployments, SHAP explainability layers for every production model, real-time drift detection and bias monitoring, human-in-the-loop approval workflows, and immutable cryptographic audit ledgers. This is engineering, not checkbox compliance."
+          "a": "A GRC platform records that a control exists. What we build makes the control run. Those are different jobs, and most estates need both. The failure mode is buying the first and assuming it did the second. Concretely: a registry that refuses to promote an unapproved model, CI gates that fail a deployment whose evaluation regressed, explainability wired into the serving path rather than produced in a notebook afterwards, and an audit trail the system writes as it runs. A GRC platform earns its license when governance has to be reported to a board or an external assessor in a format they already accept. That requirement is real. It is a documentation problem rather than an enforcement one, and neither substitutes for the other."
         }
       ],
       "method": [
