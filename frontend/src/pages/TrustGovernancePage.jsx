@@ -333,6 +333,9 @@ const TrustGovernancePage = () => {
           <Link to="/developers" className="text-sm font-semibold text-brand-blue hover:underline">
             Developer docs, SDK &amp; API reference →
           </Link>
+          <Link to="/solutions" className="text-sm font-semibold text-brand-blue hover:underline">
+            Solutions by role — CIO, CISO, CHRO, Customer Service →
+          </Link>
         </div>
       </section>
 

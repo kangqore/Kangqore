@@ -37,6 +37,10 @@ const AgentMarketplacePage = React.lazy(() => import('../pages/AgentMarketplaceP
 // Developers — Overshadow Roadmap P6.3 ("Developer Relations")
 const DevelopersPage = React.lazy(() => import('../pages/DevelopersPage'));
 
+// Solutions by role — Overshadow Roadmap P7.3 ("Persona-Targeted Campaigns")
+const SolutionsIndexPage = React.lazy(() => import('../pages/SolutionsIndexPage'));
+const PersonaSolutionPage = React.lazy(() => import('../pages/PersonaSolutionPage'));
+
 // Legal & Compliance pages
 const PrivacyPolicy = React.lazy(() => import('../pages/legal/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('../pages/legal/TermsAndConditions'));
@@ -62,6 +66,10 @@ export const publicRoutes = [
   <Route key="trust-agent-benchmark" path="/trust/agent-studio-benchmark" element={<AgentStudioBenchmarkPage />} />,
   <Route key="agent-marketplace" path="/marketplace" element={<AgentMarketplacePage />} />,
   <Route key="developers" path="/developers" element={<DevelopersPage />} />,
+
+  // Solutions by role — Overshadow Roadmap P7.3 ("Persona-Targeted Campaigns")
+  <Route key="solutions" path="/solutions" element={<SolutionsIndexPage />} />,
+  <Route key="solutions-persona" path="/solutions/:slug" element={<PersonaSolutionPage />} />,
 
   // General pages
   <Route key="contact" path="/contact" element={<ContactUs />} />,

@@ -14,6 +14,7 @@ import { ActionEngine } from '../services/actionEngine.service'
 import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.service'
 import { OntologyGeoService } from '../services/ontologyGeo.service'
 import { OntologyPipelineService } from '../services/ontologyPipeline.service'
+import { previewCsv, runCsvImport, listImportBatches } from '../services/ontologyCsvImport.service'
 import { OntologySdkGenerator } from '../services/ontologySdkGenerator.service'
 import { OntologyToolSchema } from '../services/ontologyToolSchema.service'
 import { OntologyWebhookSubscriptionService } from '../services/ontologyWebhookSubscription.service'
@@ -317,6 +318,47 @@ router.post('/pipelines/run-all', ...guard, async (_req, res) => {
   try {
     const results = await OntologyPipelineService.runAll()
     res.json({ results })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// ─── Migration Accelerator — Overshadow Roadmap P7.2 ───────────────────────────
+// A one-shot CSV → OntologyObject importer, marketed for "read a ServiceNow
+// CMDB export, populate the ontology" but generically CSV-shaped. See
+// services/ontologyCsvImport.service.ts header.
+
+router.post('/csv-import/preview', ...guard, async (req, res) => {
+  try {
+    const { text } = req.body ?? {}
+    if (!text || typeof text !== 'string') return res.status(400).json({ error: 'text is required' })
+    res.json(await previewCsv(text))
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/csv-import/run', ...guard, async (req, res) => {
+  try {
+    const { text, typeId, columnMapping, externalIdColumn, objectSetName, fileName } = req.body ?? {}
+    if (!text || typeof text !== 'string') return res.status(400).json({ error: 'text is required' })
+    if (!typeId) return res.status(400).json({ error: 'typeId is required' })
+    if (!columnMapping || typeof columnMapping !== 'object' || Object.keys(columnMapping).length === 0) {
+      return res.status(400).json({ error: 'columnMapping (ontologyField -> csvColumn) is required' })
+    }
+    const result = await runCsvImport({
+      text, typeId, columnMapping, externalIdColumn, objectSetName, fileName,
+      importedBy: (req as any).user?.id,
+    })
+    res.status(201).json(result)
+  } catch (e: any) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
+router.get('/csv-import/batches', ...guard, async (_req, res) => {
+  try {
+    res.json({ batches: await listImportBatches() })
   } catch (e: any) {
     res.status(500).json({ error: e.message })
   }
