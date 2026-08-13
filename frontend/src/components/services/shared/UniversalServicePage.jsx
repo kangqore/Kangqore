@@ -3162,15 +3162,25 @@ const featureMicros   = service.featureMicros
               const isOpen = openFaq === i;
               return (
                 <div key={i} className="border-t border-white/[0.06]">
-                  <button
-                    onClick={() => setOpenFaq(isOpen ? null : i)}
-                    className="w-full flex items-start justify-between gap-5 sm:gap-8 py-4 sm:py-7 text-left group"
-                    aria-expanded={isOpen}
-                    aria-controls={`faq-answer-${i}`}
-                  >
-                    <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white'}`}>{faq.q}</span>
-                    <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
-                  </button>
+                  {/* <h3> wraps the button rather than sitting inside it: the
+                      WAI-ARIA accordion pattern, and the only valid nesting —
+                      <button> takes phrasing content, so an <h3> within it is
+                      invalid HTML. Before this the questions were plain <span>s,
+                      which left every FAQ out of the document outline. They are
+                      the most query-shaped strings on any service page, so an
+                      answer engine segmenting the document had nothing to
+                      anchor them to. */}
+                  <h3 className="m-0">
+                    <button
+                      onClick={() => setOpenFaq(isOpen ? null : i)}
+                      className="w-full flex items-start justify-between gap-5 sm:gap-8 py-4 sm:py-7 text-left group"
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-answer-${i}`}
+                    >
+                      <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white'}`}>{faq.q}</span>
+                      <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
+                    </button>
+                  </h3>
                   {/* Every answer stays in the DOM and collapses via grid-template-rows
                       rather than `{isOpen && …}`. Conditional rendering meant seven of
                       eight answers did not exist in the markup — the FAQPage schema

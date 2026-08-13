@@ -2266,6 +2266,28 @@ export const servicesData = {
     featured: true,
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
     hideBadgeStrip: true,
+
+    // ── Overrides for template defaults written for /services/agentic-ai ──
+    // Without these four, an AI governance page rendered "Agents built for your
+    // industry." as its industry H2, "One agent in production." as its closing
+    // H2, and "Your next workflow runs itself." as its mid-page CTA. Fifty-four
+    // agentic and autonomy words on a page about oversight and conformity, and
+    // the two most prominent of them were headings.
+    industryHeading: 'Governance shaped by',
+    industryHeadingHighlight: 'your regulator.',
+    midCta: 'Know which models are running, and who signed them off.',
+    closingCta: {
+      title: 'One conversation.',
+      highlight: 'One estate you can evidence.',
+      body: 'Bring the AI you already have in production. In 30 minutes we will tell you which systems are in scope under the EU AI Act, what evidence you are missing, and what it takes to close the gap.',
+    },
+
+    // Same call as /services/genai-business-services and /services/mlops. This
+    // page argues its engagement model with evidence in "Five ways to start"
+    // and ten FAQs; the six generic consultancy claims below them measured 93
+    // words in 1,162px and subtract rather than add.
+    hidePartnershipModel: true,
+
     capabilitiesLabel: 'AI GOVERNANCE SERVICES',
     capabilitiesSectionTitle: 'AI Governance Framework',
     capabilitiesSectionHighlight: 'Capabilities.',
@@ -2374,12 +2396,29 @@ export const servicesData = {
       colA: 'Ungoverned AI',
       colB: 'Governed & Compliant AI',
       heading: 'Ungoverned AI vs. Governed & Compliant AI',
+      // Every label below used to fall through to the template default, which is
+      // written for /services/agentic-ai. The result was a heading reading
+      // "Ungoverned AI vs. Governed & Compliant AI" above columns headed
+      // TRADITIONAL AI / RULES-BASED AUTOMATION and AGENTIC AI, with a lede
+      // arguing that an agentic system "chooses the action itself". Governance
+      // was the subject of the heading and of every row, and of nothing in
+      // between.
+      lede: 'Most AI reaches production without anyone able to say which models are running, who signed them off, or what happens when one is wrong. Governance is the difference between an estate you can evidence to a regulator and one you discover during an incident.',
+      beforeLabel: 'UNGOVERNED AI',
+      afterLabel: 'GOVERNED & COMPLIANT AI',
+      afterBadge: 'AUDITABLE',
+      beforeShort: 'Ungoverned',
+      afterShort: 'Governed',
+      // Dimensions were Autonomy / Workflow / Learning / Integration / Outcomes,
+      // the agentic skeleton this table was cloned from. The row content was
+      // already governance-specific; only the axis names were wrong. These five
+      // are the axes an assessor actually works through.
       rows: [
-        { dimension: 'Autonomy',    before: 'Unmonitored model outputs — high risk of hallucination, bias, and unauthorized agent actions.', after: 'Governed execution — pre-action approval gates, behavior limits, and kill-switches.' },
-        { dimension: 'Workflow',    before: 'Ad-hoc scripts and unverified logic — breaks on edge cases without audit trails.', after: 'Continuous audit logging — automated policy enforcement and immutable compliance trails.' },
-        { dimension: 'Learning',    before: 'Silent model & data drift — unmonitored decay degrades decision quality over time.', after: 'Real-time drift detection — automated alerts trigger human-in-the-loop review before impact.' },
-        { dimension: 'Integration', before: 'Fragmented shadow AI deployments — unmapped models creating security and legal exposure.', after: 'Centralized model registry — enterprise-wide visibility, risk classification, and RBAC controls.' },
-        { dimension: 'Outcomes',    before: 'Compliance, reputational & legal risks — vulnerable to EU AI Act and GDPR violations.', after: 'Audit-ready business outcomes — scale AI rapidly with verified explainability and trust.' },
+        { dimension: 'Oversight',    before: 'Unmonitored model outputs, with real risk of hallucination, bias and unauthorized actions.', after: 'Pre-action approval gates, behavior limits and kill-switches, with a human in the loop where the decision warrants one.' },
+        { dimension: 'Auditability', before: 'Ad-hoc scripts and unverified logic that break on edge cases and leave no audit trail.', after: 'Immutable, continuous audit logging and automated policy enforcement, so evidence is a by-product of running rather than a project.' },
+        { dimension: 'Drift & bias', before: 'Silent model and data drift, where unmonitored decay degrades decision quality over months.', after: 'Scheduled drift and fairness testing with automated alerts that trigger human review before impact reaches a customer.' },
+        { dimension: 'Model inventory', before: 'Fragmented shadow AI, with unmapped models creating security and legal exposure nobody owns.', after: 'A central model registry carrying risk classification, named owners, RBAC and model cards for every system in production.' },
+        { dimension: 'Regulatory exposure', before: 'Compliance, reputational and legal risk, with no way to demonstrate conformity when asked.', after: 'Risk tiering mapped to the EU AI Act, controls mapped to the NIST AI RMF, and the documentation an assessor asks for held ready.' },
       ],
     },
     architectureNodes: [
@@ -2409,35 +2448,67 @@ export const servicesData = {
       },
     ],
     industryUseCases: [
+      // Was a list of eighteen entries each named "X agent" — a model risk
+      // auditor agent, a HIPAA privacy agent, a pricing fairness agent. That is
+      // the agentic product catalog this section was cloned from, and it sat
+      // directly under a heading about regulators. A governance engagement does
+      // not sell agents; it produces evidence. These are the artifacts each
+      // sector's assessor actually asks to see. The neutral `items` key
+      // replaces `agents`, which the template still reads for the four services
+      // where the section is genuinely agent-specific.
       {
         industry: 'Banking & Financial Services',
-        headline: 'Model risk management (MRM) and credit explainability.',
-        agents: ['Model risk auditor agent', 'Regulatory compliance agent', 'Credit explainability agent'],
+        headline: 'Model risk documentation an examiner will accept',
+        items: [
+          'Model risk documentation written to FCA and PRA model risk management expectations, held per model version',
+          'Adverse-action reasons traceable to the features that produced them, not reconstructed after a complaint',
+          'Validation evidence, challenger results and sign-off retained against every credit model in production',
+        ],
       },
       {
         industry: 'Healthcare & Life Sciences',
-        headline: 'Clinical AI validation and patient data privacy.',
-        agents: ['Clinical validation agent', 'HIPAA privacy agent', 'EHR consent agent'],
+        headline: 'Clinical validation that survives an inspection',
+        items: [
+          'Validation packs carrying an intended-use statement, performance by subgroup, and the limits of the claim',
+          'PHI minimized before training, with lineage evidence showing what the model was ever exposed to',
+          'Consent and purpose limitation enforced at record level rather than asserted in a policy document',
+        ],
       },
       {
         industry: 'Manufacturing & Industry',
-        headline: 'Industrial AI safety and automated QA compliance.',
-        agents: ['Industrial safety auditor', 'QA compliance agent', 'Predictive maintenance auditor'],
+        headline: 'Safety cases for models that move physical things',
+        items: [
+          'A written safety case wherever a model influences process control, with the failure modes enumerated',
+          'Model performance evidenced per line and per shift, because an aggregate number hides the line that drifted',
+          'Change control tying a model version to the batch records produced while it was live',
+        ],
       },
       {
         industry: 'Retail & Consumer Goods',
-        headline: 'Pricing fairness and consumer data privacy controls.',
-        agents: ['Pricing fairness agent', 'Bias detection agent', 'Consumer privacy agent'],
+        headline: 'Pricing and personalization you can defend',
+        items: [
+          'Disparate-impact testing on pricing and offer models before release, repeated on every retrain',
+          'Fairness metrics tracked across protected characteristics, with thresholds that block promotion',
+          'Consumer data purpose limits enforced in the feature store, so a dataset cannot silently change use',
+        ],
       },
       {
         industry: 'IT & Infrastructure',
-        headline: 'Copilot policy enforcement and multi-tenant security.',
-        agents: ['Copilot policy agent', 'Multi-tenant security agent', 'API governance agent'],
+        headline: 'Shadow AI you can actually see',
+        items: [
+          'Copilot and assistant usage policy enforced at the gateway rather than published as guidance',
+          'Tenant isolation evidenced in retrieval and in logs, not assumed from the deployment topology',
+          'A live inventory of models, prompts and AI-touching APIs, each with a named owner and a risk tier',
+        ],
       },
       {
-        industry: 'EdTech',
-        headline: 'Student data privacy and AI grading fairness.',
-        agents: ['Student privacy agent', 'AI grading fairness agent', 'Administrative audit agent'],
+        industry: 'EdTech & Higher Ed',
+        headline: 'Fairness evidence before anything affects a grade',
+        items: [
+          'Student data minimized before any model sees it, with retention limits enforced automatically',
+          'Grading and recommendation models tested for fairness across cohorts on a published schedule',
+          'Human review required on any output affecting progression, assessment or funding',
+        ],
       },
     ],
     servicePackages: [
@@ -2478,7 +2549,15 @@ export const servicesData = {
       { q: 'What does AI governance actually mean in practice?', a: 'AI governance is the operating system for trustworthy AI. It means every model, agent, and AI application in your enterprise has a defined owner, documented lifecycle, version-controlled deployment, explainable outputs, bias monitoring, compliance validation, and immutable audit trails. Kangqore implements this as infrastructure — not a policy document that sits in a drawer.' },
       { q: 'Why does our organization need AI governance now?', a: 'Three forces are converging: the EU AI Act introduces mandatory compliance obligations with significant penalties for high-risk AI. Shadow AI usage is creating unmonitored model sprawl across departments. And generative AI and autonomous agents are making decisions that directly impact customers, revenue, and legal exposure. Governance is no longer optional — it\'s the difference between scaling AI and getting shut down by your regulator.' },
       { q: 'How is Kangqore\'s AI governance different from buying a GRC tool?', a: 'GRC tools manage policies. Kangqore implements governance infrastructure. We build centralized model registries with automated risk tiering, CI/CD compliance gates that block non-compliant deployments, SHAP explainability layers for every production model, real-time drift detection and bias monitoring, human-in-the-loop approval workflows, and immutable cryptographic audit ledgers. This is engineering, not checkbox compliance.' },
-      { q: 'What regulations does your governance framework address?', a: 'EU AI Act (risk classification, transparency, conformity assessment), GDPR (data privacy, consent, right to explanation), HIPAA (clinical AI data protection), SOX (financial model auditability), NIST AI RMF (risk management framework), ISO 42001 (AI management system), and sector-specific mandates including FCA/PRA model risk management for financial services and FDA AI/ML guidance for healthcare.' },
+      { q: 'Which AI regulations apply to us, and which do we start with?', a: 'The two that decide most enterprise programs are the EU AI Act and the NIST AI Risk Management Framework. The Act is binding law and classifies each system by risk tier, with prohibited practices, high-risk obligations, transparency duties and conformity assessment attached to the tier. The NIST framework is voluntary and organizes controls under Govern, Map, Measure and Manage, which is why it is the practical scaffold even where the Act does not apply.\n\n'
+          + 'Around those sit ISO/IEC 42001 for an auditable AI management system, GDPR Article 22 for automated decisions affecting individuals, and the sector rules: FCA and PRA model risk management in financial services, FDA AI/ML guidance in healthcare, HIPAA for clinical data, SOX for model auditability. In the United States the Colorado AI Act and the FTC position on unfair or deceptive AI practices are the ones changing fastest.\n\n'
+          + 'We start from your risk tier rather than the framework. A system that is limited-risk under the Act does not need the documentation a high-risk one does, and building it anyway is the most common way governance programs stall.',
+        sources: [
+          { label: 'EU AI Act (Regulation 2024/1689)', url: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj' },
+          { label: 'European Commission AI regulatory framework', url: 'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai' },
+          { label: 'NIST AI Risk Management Framework', url: 'https://www.nist.gov/itl/ai-risk-management-framework' },
+          { label: 'NIST AI RMF 1.0 (full text)', url: 'https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf' },
+        ] },
       { q: 'How do you handle model risk management (MRM)?', a: 'Every model in your registry is assigned an automated risk tier (critical, high, medium, low) based on business impact, data sensitivity, regulatory exposure, and autonomy level. Critical and high-risk models require human-in-the-loop approval gates before deployment, continuous performance validation in production, and periodic re-assessment with documented evidence. This is the MRM standard that regulators expect — implemented as automated infrastructure.' },
       { q: 'Can you govern generative AI and autonomous agents specifically?', a: 'That\'s where governance matters most. Kangqore\'s framework includes prompt sanitization and injection defense, behavioral boundary enforcement for autonomous agents, agent-level RBAC with zero-trust permissions, output quality monitoring with hallucination detection, kill-switches for emergency agent termination, and complete prompt-to-response audit trails for every LLM interaction.' },
       { q: 'What does explainable AI look like in production?', a: 'Every production model ships with SHAP-based feature importance, confidence scoring on every prediction, counterfactual explanations ("what would need to change for a different outcome"), decision pathway visualization for complex multi-step reasoning, and human-readable audit reports that non-technical stakeholders and regulators can understand.' },
