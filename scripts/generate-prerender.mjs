@@ -240,6 +240,8 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
     <p>${esc(svc.fullDescription || svc.shortDescription || '')}</p>
     ${svc.shortDescription && svc.fullDescription ? `<p>${esc(svc.shortDescription)}</p>` : ''}
     ${svc.whatIsPara2 ? `<p>${esc(svc.whatIsPara2)}</p>` : ''}
+    ${svc.whatIsPara3 ? `<p>${esc(svc.whatIsPara3)}</p>` : ''}
+    ${svc.whatIsPara4 ? `<p>${esc(svc.whatIsPara4)}</p>` : ''}
 
     ${metrics ? `<h2>Business Outcomes</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
 
