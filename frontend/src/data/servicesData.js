@@ -690,12 +690,17 @@ export const servicesData = {
     // processes" — a claim about resembling people rather than about doing
     // anything.
     shortDescription: 'Kangqore builds systems that read the material your people read: contracts, images, recordings and sensor streams, returned as something you can act on.',
-    // Renders as the hero paragraph and feeds Service.description in the
-    // JSON-LD, so it has to stand alone as a definition. It read "Implement
-    // cognitive computing solutions that understand, reason, and learn from
-    // data to enhance business operations" — four verbs, no object, and nothing
-    // a competitor could not also say.
-    fullDescription: 'Cognitive systems that read the material your organization already holds — contracts, imagery, recordings, sensor traces — and return an answer with the evidence behind it and a confidence you can act on.',
+    // Hero paragraph and Service.description in the JSON-LD. The previous
+    // version ran four lines in a 520px column; the brief was two. Two-beat
+    // declarative: the first clause is what the machine does, the second is what
+    // the person does, and the point is that they are working from the same
+    // material rather than the machine handing down a verdict.
+    //
+    // Structure borrowed from a competitor line about systems that "make
+    // decisions with their human counterparts" — the idea, deliberately not the
+    // words. This page measures zero shared phrasing against that source at six
+    // words and above, and that is worth keeping.
+    fullDescription: 'Machines that read every contract, image and recording you hold. People who decide with all of it in front of them.',
     keyFeatures: ['Natural language understanding', 'Pattern recognition', 'Machine reasoning', 'Knowledge management', 'Cognitive insights'],
     relatedServiceSlugs: ['agentic-ai', 'data-science-ai', 'genai-business-services'],
     featured: false,
