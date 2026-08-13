@@ -1,52 +1,44 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@lib/api'
-import { CheckCircle2 } from 'lucide-react'
+import { AlertTriangle, CheckCircle2 } from 'lucide-react'
 
-const GREEN = '#10b981', BLUE = '#4fc3f7', AMBER = '#f59e0b', PURPLE = '#a78bfa'
+const GREEN = '#10b981', BLUE = '#4fc3f7', AMBER = '#f59e0b', GREY = '#8899aa'
 
 const TIER_ACCENT: Record<string, string> = { Bronze: '#cd7f32', Silver: BLUE, Gold: AMBER }
 
+// Overshadow Roadmap P6.3 — this page previously rendered fabricated
+// fallback numbers (512 "total certified" against a "500 target ✓ Reached")
+// even independent of the backend response, via `?? 512`-style defaults, plus
+// invented exam pass rates and prices. Rewritten to show only real counts —
+// currently 0, honestly, since no certification program has launched — with
+// the tier structure kept as a real proposal, not a claim anyone holds it.
 export function WaandaCertificationPage() {
   const q = useQuery({ queryKey: ['waanda-certification'], queryFn: () => api.get('/admin/kangqore-immp/platform/waanda-certification').then(r => r.data), staleTime: 60_000 })
   const d = q.data
 
   return (
     <div style={{ padding: '32px 40px', fontFamily: 'Inter, sans-serif', color: '#e4e8f0', maxWidth: 1100 }}>
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 11, color: AMBER, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>S247 · WAANDA Certification Programme</div>
-        <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: '#fff' }}>WAANDA Developer Certification</h1>
-        <p style={{ margin: '6px 0 0', color: '#8899aa', fontSize: 13 }}>Bronze / Silver / Gold developer tiers · certified WAANDA architect badge · proctored exam · 500-dev target</p>
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 11, color: AMBER, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>Overshadow Roadmap P6.3 — Developer Relations</div>
+        <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: '#fff' }}>Developer Certification — Program Proposal</h1>
+        <p style={{ margin: '6px 0 0', color: GREY, fontSize: 13 }}>Bronze / Silver / Gold tier structure, not a running program.</p>
       </div>
 
-      {/* Hero stats */}
-      <div style={{ background: `linear-gradient(135deg, ${AMBER}10, ${BLUE}08)`, border: `1px solid ${AMBER}28`, borderRadius: 14, padding: '20px 24px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 24 }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 48, fontWeight: 900, color: AMBER }}>{d?.totalCertified ?? 512}</div>
-          <div style={{ fontSize: 11, color: '#8899aa' }}>Total Certified</div>
+      {d?.disclaimer && (
+        <div style={{ background: `${AMBER}10`, border: `1px solid ${AMBER}30`, borderRadius: 10, padding: '10px 14px', marginBottom: 20, display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+          <AlertTriangle size={14} color={AMBER} style={{ flexShrink: 0, marginTop: 1 }} />
+          <span style={{ fontSize: 11.5, color: '#ccdde0', lineHeight: 1.6 }}>{d.disclaimer}</span>
         </div>
-        <div style={{ height: 56, width: 1, background: '#263250' }} />
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', gap: 20, marginBottom: 8 }}>
-            {[
-              { label: 'Target', value: d?.targetTotal ?? 500, color: '#8899aa' },
-              { label: 'Proctored', value: d?.proctored ? 'Yes' : 'No', color: GREEN },
-              { label: 'Architect Badge', value: d?.architectBadge ? 'Live' : '—', color: PURPLE },
-              { label: '500 Target', value: d?.target500 ? '✓ Reached' : 'In progress', color: AMBER },
-            ].map(st => (
-              <div key={st.label}>
-                <div style={{ fontSize: 14, fontWeight: 900, color: st.color }}>{st.value}</div>
-                <div style={{ fontSize: 9, color: '#8899aa' }}>{st.label}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{ width: '100%', height: 6, background: '#263250', borderRadius: 3, overflow: 'hidden' }}>
-            <div style={{ width: `${Math.min(100, Math.round(((d?.totalCertified ?? 512) / (d?.targetTotal ?? 500)) * 100))}%`, height: '100%', background: AMBER, borderRadius: 3 }} />
-          </div>
-          <div style={{ fontSize: 9, color: '#8899aa', marginTop: 4 }}>{d?.totalCertified ?? 512} / {d?.targetTotal ?? 500} certified ({Math.round(((d?.totalCertified ?? 512) / (d?.targetTotal ?? 500)) * 100)}%)</div>
+      )}
+
+      <div style={{ background: '#1a2235', border: `1px solid ${GREY}25`, borderRadius: 14, padding: '18px 24px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div style={{ fontSize: 40, fontWeight: 900, color: d?.programLaunched ? GREEN : GREY }}>{d?.totalCertified ?? 0}</div>
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#ccdde0' }}>Developers certified</div>
+          <div style={{ fontSize: 11, color: GREY }}>{d?.programLaunched ? 'Program is live' : 'No exam exists yet — program not launched'}</div>
         </div>
       </div>
 
-      {/* Tier cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
         {(d?.tiers ?? []).map((tier: any) => {
           const accent = TIER_ACCENT[tier.tier] ?? BLUE
@@ -56,26 +48,20 @@ export function WaandaCertificationPage() {
                 <span style={{ fontSize: 24 }}>{tier.badge}</span>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 900, color: accent }}>{tier.tier}</div>
-                  <div style={{ fontSize: 10, color: '#8899aa' }}>{tier.price} · valid {tier.validity}</div>
+                  <div style={{ fontSize: 10, color: GREY }}>Proposed tier</div>
                 </div>
                 <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
-                  <div style={{ fontSize: 18, fontWeight: 900, color: accent }}>{tier.certified}</div>
-                  <div style={{ fontSize: 9, color: '#8899aa' }}>certified</div>
+                  <div style={{ fontSize: 18, fontWeight: 900, color: accent }}>{tier.certified ?? 0}</div>
+                  <div style={{ fontSize: 9, color: GREY }}>certified</div>
                 </div>
               </div>
-              <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: '#8899aa', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Exams</div>
-                {(tier.exams ?? []).map((exam: string) => (
-                  <div key={exam} style={{ fontSize: 10, color: '#ccdde0', marginBottom: 4, paddingLeft: 8, borderLeft: `2px solid ${accent}30` }}>{exam}</div>
-                ))}
-              </div>
               <div>
-                <div style={{ fontSize: 10, fontWeight: 700, color: '#8899aa', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Skills Validated</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: GREY, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Skills this tier would validate</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                   {(tier.skills ?? []).map((sk: string) => (
                     <div key={sk} style={{ display: 'flex', alignItems: 'flex-start', gap: 5 }}>
                       <CheckCircle2 size={10} color={accent} style={{ marginTop: 1, flexShrink: 0 }} />
-                      <span style={{ fontSize: 10, color: '#8899aa' }}>{sk}</span>
+                      <span style={{ fontSize: 10, color: GREY }}>{sk}</span>
                     </div>
                   ))}
                 </div>

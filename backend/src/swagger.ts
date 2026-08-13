@@ -49,6 +49,11 @@ const options: swaggerJsdoc.Options = {
     './src/kangqore-immp/routes.ts',
     './src/kangqore-aegis/routes.ts',
     './src/v1/router.ts',
+    // Overshadow Roadmap P6.3 — swagger-jsdoc doesn't follow imports, so
+    // v1/router.ts mounting these sub-routers was never enough; their real
+    // @openapi JSDoc blocks were silently excluded from the live spec.
+    './src/v1/kimmpOps.ts',
+    './src/v1/ontology.ts',
   ],
 }
 

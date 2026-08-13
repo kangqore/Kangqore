@@ -8980,44 +8980,41 @@ kangqoreImmpRoutes.get('/platform/hackathon-program', requireAuth, requireRole([
   res.json({ prizePool: 50000, currency: 'GBP', prizes: PRIZES, tracks: TRACKS, timeline: TIMELINE, duration: '48h', registeredTeams: 124, submissionsExpected: 80, winnersPublishedToAppStore: true })
 })
 
-// S246 GET /platform/developer-community
+// Overshadow Roadmap P6.3 — this endpoint previously returned entirely
+// hardcoded fabricated numbers (2,140 "registered devs", a forum and Q&A
+// system that don't exist, and four GitHub repos with fake star counts that
+// were never published). Fixed to real data: the only genuine, queryable
+// proxy for developer adoption today is active API keys and webhook
+// subscriptions — everything else is honestly reported as not yet built.
 kangqoreImmpRoutes.get('/platform/developer-community', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
-  const STATS = { registeredDevs: 2140, forumPosts: 4820, qnaAnswered: 1930, showcaseApps: 47, ambassadors: 18, newsletterSubscribers: 1840 }
-  const OPEN_SOURCE = [
-    { repo: 'kangqore/sdk-v3-core',     stars: 312, description: 'Official SDK v3 core library — build WAANDA extensions', language: 'TypeScript' },
-    { repo: 'kangqore/connector-sdk',   stars: 248, description: 'Connector SDK for building Integration Hub connectors', language: 'TypeScript' },
-    { repo: 'kangqore/bids-components', stars: 187, description: 'BIDS™ React component library — open-source UI kit', language: 'TypeScript' },
-    { repo: 'kangqore/waanda-examples', stars: 421, description: 'Official example apps and extension templates', language: 'TypeScript' },
-  ]
-  const AMBASSADOR_BENEFITS = ['Early access to SDK previews', 'Direct line to engineering team', 'Featured developer spotlight', 'Ambassador badge + swag', '£500 annual credits', 'Co-present at Partner Summit']
-  res.json({ stats: STATS, openSourceRepos: OPEN_SOURCE, ambassadorBenefits: AMBASSADOR_BENEFITS, forums: true, qna: true, newsletter: 'Monthly', showcase: true })
+  try {
+    const [apiKeyCount, ontologySubs, operationalSubs] = await Promise.all([
+      (prisma as any).programmaticApiKey.count({ where: { revoked: false } }),
+      (prisma as any).ontologySubscription.count({ where: { enabled: true } }).catch(() => 0),
+      (prisma as any).kimmpOperationalSubscription.count({ where: { enabled: true } }).catch(() => 0),
+    ])
+    res.json({
+      stats: { activeApiKeys: apiKeyCount, activeWebhookSubscriptions: ontologySubs + operationalSubs },
+      openSourceRepos: [],
+      forums: false, qna: false, newsletter: null, showcase: false, ambassadorProgram: false,
+      disclaimer: 'No forum, Q&A system, newsletter, showcase, or ambassador program is implemented yet, and no open-source repository has been published — reported as false/empty rather than invented. Active API keys and webhook subscriptions above are real counts.',
+    })
+  } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// S247 GET /platform/waanda-certification
+// Overshadow Roadmap P6.3 — this endpoint previously returned fabricated
+// certification counts suspiciously just over each tier's target (312/300,
+// 148/150, 52/50) with invented exam pass rates and prices. No certification
+// program has actually launched — fixed to report that honestly. Tier
+// definitions kept as a real structural proposal (same spirit as PartnerTier
+// in partnerEcosystem.service.ts), not a claim that anyone is certified.
 kangqoreImmpRoutes.get('/platform/waanda-certification', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   const TIERS = [
-    {
-      tier: 'Bronze', badge: '🥉', targetDevs: 300, certified: 312, price: '£199',
-      exams: ['WAANDA Fundamentals (60q · 75% pass)', 'SDK v3 Basics (40q · 70% pass)'],
-      skills: ['WAANDA OS navigation', 'SDK v3 basics', 'Blueprint reading', 'Extension API fundamentals'],
-      validity: '1 year',
-    },
-    {
-      tier: 'Silver', badge: '🥈', targetDevs: 150, certified: 148, price: '£399',
-      exams: ['WAANDA Developer (80q · 80% pass)', 'Integration Lab (practical)', 'BIDS™ Integration Specialist (50q)'],
-      skills: ['Full SDK v3 proficiency', 'Connector development', 'BIDS™ extension development', 'Security & sandboxing'],
-      validity: '2 years',
-    },
-    {
-      tier: 'Gold', badge: '🥇', targetDevs: 50, certified: 52, price: '£799',
-      exams: ['WAANDA Architect (100q · 85% pass)', 'Architecture Review Board (panel)', 'Live build assessment (4h)'],
-      skills: ['Platform architecture design', 'Enterprise deployment patterns', 'Custom AI extension design', 'Partner onboarding delivery'],
-      validity: '3 years',
-    },
+    { tier: 'Bronze', badge: '🥉', certified: 0, skills: ['WAANDA OS navigation', 'SDK basics', 'Blueprint reading', 'Extension API fundamentals'] },
+    { tier: 'Silver', badge: '🥈', certified: 0, skills: ['Full SDK proficiency', 'Connector development', 'BIDS™ extension development', 'Security & sandboxing'] },
+    { tier: 'Gold',   badge: '🥇', certified: 0, skills: ['Platform architecture design', 'Enterprise deployment patterns', 'Custom AI extension design', 'Partner onboarding delivery'] },
   ]
-  const totalCertified = TIERS.reduce((s, t) => s + t.certified, 0)
-  const targetTotal = TIERS.reduce((s, t) => s + t.targetDevs, 0)
-  res.json({ tiers: TIERS, totalCertified, targetTotal, architectBadge: true, proctored: true, target500: totalCertified >= 500 })
+  res.json({ tiers: TIERS, totalCertified: 0, programLaunched: false, disclaimer: 'Tier structure is a real proposal, not a running program — no exam exists, no one is certified yet. Every prior number here (exam pass rates, prices, certified counts) was fabricated and has been removed.' })
 })
 
 // S248 GET /platform/marketplace-billing

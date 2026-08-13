@@ -330,6 +330,9 @@ const TrustGovernancePage = () => {
           <Link to="/marketplace" className="text-sm font-semibold text-brand-blue hover:underline">
             Agent &amp; governed action marketplace →
           </Link>
+          <Link to="/developers" className="text-sm font-semibold text-brand-blue hover:underline">
+            Developer docs, SDK &amp; API reference →
+          </Link>
         </div>
       </section>
 

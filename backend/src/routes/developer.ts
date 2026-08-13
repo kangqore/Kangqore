@@ -670,20 +670,20 @@ developerRouter.post('/webhook/sign', (_req: Request, res: Response) => {
   res.json({ signature: `sha256=${sig}`, timestamp: Date.now() })
 })
 
+// Overshadow Roadmap P6.3 — this previously listed 11 event types
+// (ois.updated, signal.created, partner.commission, etc.) that grep confirms
+// are never emitted anywhere in the codebase — pure aspirational
+// documentation disconnected from the two real webhook subsystems. Fixed to
+// the 4 event types that are actually deliverable today, matching the
+// defaults on OntologySubscription and KimmpOperationalSubscription.
 developerRouter.get('/webhook/event-types', (_req: Request, res: Response) => {
   res.json({
     eventTypes: [
-      { type: 'ois.updated',          description: 'OIS score recalculated', example: { oisScore: 88.5, label: 'AUTO' } },
-      { type: 'signal.created',       description: 'New KIMMP signal ingested', example: { signalType: 'deal_won', severity: 'HIGH' } },
-      { type: 'signal.escalated',     description: 'Signal severity upgraded to CRITICAL', example: { signalId: 'abc', severity: 'CRITICAL' } },
-      { type: 'decision.created',     description: 'New strategic decision triggered', example: { question: 'Should we expand?', confidence: 82 } },
-      { type: 'decision.resolved',    description: 'Decision outcome recorded', example: { decisionId: 'abc', selected: 'Expand in Q4' } },
-      { type: 'blueprint.published',  description: 'Blueprint published to marketplace', example: { name: 'FinTech Blueprint', version: '1.0' } },
-      { type: 'blueprint.installed',  description: 'Blueprint installed by customer', example: { blueprintId: 'abc', customerName: 'Acme' } },
-      { type: 'customer.ois_drop',    description: 'Customer OIS dropped >5 points', example: { tenantId: 'abc', drop: -6.2 } },
-      { type: 'customer.churned',     description: 'Customer churned', example: { tenantId: 'abc', oisAtChurn: 54 } },
-      { type: 'aegis.alert',          description: 'AEGIS raised a governance alert', example: { severity: 'HIGH', module: 'EGRESS' } },
-      { type: 'partner.commission',   description: 'Partner commission event created', example: { partnerId: 'abc', amount: 1500 } },
+      { type: 'object.created', system: 'Ontology Subscriptions', description: 'A new OntologyObject was created, optionally scoped to one object type', example: { objectId: 'abc', typeId: 'def', properties: {} } },
+      { type: 'object.updated', system: 'Ontology Subscriptions', description: 'An existing OntologyObject was updated', example: { objectId: 'abc', typeId: 'def', properties: {} } },
+      { type: 'eval.drift_alert', system: 'KIMMP Operational Subscriptions', description: 'A golden-prompt benchmark run scored a significant regression against the prior run', example: { id: 'run_abc', totalScore: 71.2, driftAlert: true, driftDelta: -6.4 } },
+      { type: 'budget.exceeded', system: 'KIMMP Operational Subscriptions', description: 'A per-user token budget was exceeded with hard-stop enforcement', example: { userId: 'user_abc', usedTokens: 120000, limitTokens: 100000 } },
     ],
+    disclaimer: 'These are the only event types either webhook subsystem actually emits — verified against the emitting code, not aspirational.',
   })
 })

@@ -275,8 +275,13 @@ app.use('/api/admin/developer', authenticate, developerRouter);
 app.use('/api/admin/itil', authenticate, authorize(['ADMIN']), itilRouter);
 
 // OpenAPI / Swagger docs — public, no auth required.
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// /spec must be registered BEFORE the /api/docs mount below: swaggerUi.setup()
+// is a catch-all that responds to any GET under /api/docs with the rendered
+// HTML shell and never calls next(), so if it were mounted first it would
+// permanently shadow /api/docs/spec — which is exactly what was happening
+// (Overshadow Roadmap P6.3 found this while verifying the swagger apis-glob fix).
 app.get('/api/docs/spec', (_req, res) => res.json(swaggerSpec));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 import adminOntologyRoutes from './routes/admin-ontology';
 app.use('/api/admin/ontology', adminOntologyRoutes);

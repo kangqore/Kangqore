@@ -2410,13 +2410,34 @@ export const servicesData = {
     whatIsTitleLine2: 'of adopting and using AI and',
     whatIsHighlightNewLine: true,
     whatIsHighlight: 'GenAI.',
-    // Enumerates the same four layers the architecture section details, in the
-    // same order, so summary and detail agree. The previous version closed on
-    // "scale safely with absolute control" — an absolute this page cannot
-    // support, on the page whose subject is evidence.
     whatIsPara2: 'We start from which regulatory requirements and industry standards actually apply to you, then build the controls that satisfy them: risk tiering against the EU AI Act, a model registry carrying owners and lineage, explainability wired into the serving path rather than produced afterwards, drift and fairness testing on a schedule, and policy enforced in the request path rather than published beside it.',
-
-    // The durability argument, matching para 3 of the genai section.
+    inlineModel: 'AIGovernance3DModel',
+    toolsStack: {
+      title: 'eQORE™ Enterprise AI Governance Matrix',
+      subtitle: 'NIST & EU AI Act Compliant Framework',
+      items: [
+        {
+          icon: 'Shield',
+          title: 'Risk Tiering',
+          desc: 'ISO / EU AI Act tiering. We start by categorizing models by risk, applying controls relative to their impact and exposure.',
+        },
+        {
+          icon: 'Search',
+          title: 'Explainability',
+          desc: 'SHAP & Lineage mapping. Every output can be traced back to its inputs and the reasoning path that generated it.',
+        },
+        {
+          icon: 'CheckCircle',
+          title: 'Policy Gate',
+          desc: 'Pre-action check. Operational policies enforce limits on data access and tool usage before an action executes.',
+        },
+        {
+          icon: 'BarChart2',
+          title: 'Audit Ready',
+          desc: '100% Covered. Immutable logs generated continuously, turning compliance into an operational byproduct rather than a retrospective project.',
+        },
+      ],
+    },
     // The Read More break lands here, after a complete thought. The four
     // exposures are split across para3 and para4 so the collapsed state ends
     // on a full sentence rather than mid-clause.

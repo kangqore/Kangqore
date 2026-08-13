@@ -34,6 +34,9 @@ const GovernanceNativeWhitepaperPage = React.lazy(() => import('../pages/Governa
 const AgentStudioBenchmarkPage = React.lazy(() => import('../pages/AgentStudioBenchmarkPage'));
 const AgentMarketplacePage = React.lazy(() => import('../pages/AgentMarketplacePage'));
 
+// Developers — Overshadow Roadmap P6.3 ("Developer Relations")
+const DevelopersPage = React.lazy(() => import('../pages/DevelopersPage'));
+
 // Legal & Compliance pages
 const PrivacyPolicy = React.lazy(() => import('../pages/legal/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('../pages/legal/TermsAndConditions'));
@@ -58,6 +61,7 @@ export const publicRoutes = [
   <Route key="trust-whitepaper" path="/trust/governance-native-vs-retrofitted" element={<GovernanceNativeWhitepaperPage />} />,
   <Route key="trust-agent-benchmark" path="/trust/agent-studio-benchmark" element={<AgentStudioBenchmarkPage />} />,
   <Route key="agent-marketplace" path="/marketplace" element={<AgentMarketplacePage />} />,
+  <Route key="developers" path="/developers" element={<DevelopersPage />} />,
 
   // General pages
   <Route key="contact" path="/contact" element={<ContactUs />} />,

@@ -214,6 +214,8 @@ import { ComplianceOverviewPage }          from './pages/ComplianceOverviewPage'
 import { ContestedModulesPage }            from './pages/ContestedModulesPage'
 // Overshadow Roadmap P5 — Proof Points & Analyst Validation
 import { GtmPipelinePage }                 from './pages/GtmPipelinePage'
+// Overshadow Roadmap P6 — The Partner Ecosystem
+import { PartnerEcosystemPage }            from './pages/PartnerEcosystemPage'
 import { DedicatedSuccessTeamsPage }       from './pages/DedicatedSuccessTeamsPage'
 import { ExecutiveBusinessReviewsPage }    from './pages/ExecutiveBusinessReviewsPage'
 import { F500SalesMotionPage }             from './pages/F500SalesMotionPage'
@@ -604,6 +606,7 @@ export function KIMMMModule() {
           <Route path="compliance-overview"            element={<ComplianceOverviewPage />}       />
           <Route path="contested-modules"              element={<ContestedModulesPage />}         />
           <Route path="gtm-pipeline"                   element={<GtmPipelinePage />}               />
+          <Route path="partner-ecosystem"              element={<PartnerEcosystemPage />}          />
           <Route path="dedicated-success-teams"        element={<DedicatedSuccessTeamsPage />}    />
           <Route path="executive-business-reviews"     element={<ExecutiveBusinessReviewsPage />} />
           <Route path="f500-sales-motion"              element={<F500SalesMotionPage />}          />

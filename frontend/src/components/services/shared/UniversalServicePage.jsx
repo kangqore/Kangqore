@@ -34,6 +34,7 @@ import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DMode
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
 import { MLOps3DModel } from '../../ui/MLOps3DModel';
 import { GenAI3DModel } from '../../ui/GenAI3DModel';
+import { AIGovernance3DModel } from '../../ui/AIGovernance3DModel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1413,239 +1414,6 @@ const featureMicros   = service.featureMicros
                       <circle cx="25" cy="25" r="3" fill="white"/>
                     </g>
                     <text x="442" y="348" textAnchor="middle" fill="#00f0ff" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">4. MACHINE SPEED</text>
-                  </svg>
-                </div>
-              ) : service.slug === 'ai-governance' ? (
-                /* ── AI Governance Flow Diagram ── */
-                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="Architecture diagram — scroll sideways to see the full flow" tabIndex={0}>
-                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full min-w-[660px] sm:min-w-0">
-                    <defs>
-                      <linearGradient id="gov-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#2564ea"/>
-                        <stop offset="100%" stopColor="#00f0ff"/>
-                      </linearGradient>
-                      <linearGradient id="gov-purple" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#7f53f9"/>
-                        <stop offset="100%" stopColor="#a78bfa"/>
-                      </linearGradient>
-                      <linearGradient id="gov-green" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#00c875"/>
-                        <stop offset="100%" stopColor="#34d399"/>
-                      </linearGradient>
-                      <linearGradient id="gov-gold" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#ea580c"/>
-                        <stop offset="100%" stopColor="#fbbf24"/>
-                      </linearGradient>
-
-                      <filter id="glow-cyan-gov" x="-30%" y="-30%" width="160%" height="160%">
-                        <feGaussianBlur stdDeviation="6" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-purple-gov" x="-30%" y="-30%" width="160%" height="160%">
-                        <feGaussianBlur stdDeviation="7" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="glow-green-gov" x="-30%" y="-30%" width="160%" height="160%">
-                        <feGaussianBlur stdDeviation="6" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-
-                      <marker id="arrow-cyan-matrix" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#00f0ff" strokeWidth="1.2" fill="none"/>
-                      </marker>
-                      <marker id="arrow-green-matrix" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                        <path d="M0,0.5 L5,3 L0,5.5" stroke="#34d399" strokeWidth="1.2" fill="none"/>
-                      </marker>
-
-                      <clipPath id="capsule-clip-gov">
-                        <rect x="35" y="270" width="470" height="96" rx="20"/>
-                      </clipPath>
-                    </defs>
-
-                    {/* ── TOP SYSTEM STATUS & FRAMEWORK BANNER ── */}
-                    <g transform="translate(100, 6)">
-                      <rect x="0" y="0" width="340" height="22" rx="11" fill="#080c14" stroke="url(#gov-cyan)" strokeWidth="1" strokeOpacity="0.5" />
-                      <circle cx="16" cy="11" r="3.5" fill="#00c875" filter="url(#glow-green-gov)" />
-                      <text x="28" y="14.5" fill="#00f0ff" fontSize="9" fontWeight="bold" fontFamily="monospace" letterSpacing="0.8">eQORE™ ENTERPRISE AI GOVERNANCE MATRIX :: NIST &amp; EU AI ACT COMPLIANT</text>
-                    </g>
-
-                    {/* ── LEFT COLUMN: INPUT & CAPABILITY CHIPS ── */}
-                    <text x="75" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">FRAMEWORK INPUTS</text>
-                    
-                    {/* Chip 1: Prompts & RAG */}
-                    <g transform="translate(15, 54)">
-                      <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
-                      <circle cx="12" cy="13" r="3" fill="#f59e0b" />
-                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace" fontWeight="bold">PROMPTS &amp; RAG DATA</text>
-                      <text x="22" y="20" fill="#fbbf24" fillOpacity="0.9" fontSize="9" fontFamily="monospace">INPUT SHIELDING</text>
-                    </g>
-
-                    {/* Chip 2: Agent Actions */}
-                    <g transform="translate(15, 88)">
-                      <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-gold)" strokeWidth="1.2" strokeOpacity="0.8"/>
-                      <circle cx="12" cy="13" r="3" fill="#ea580c" />
-                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace" fontWeight="bold">AGENT TOOL ACTIONS</text>
-                      <text x="22" y="20" fill="#ea580c" fillOpacity="0.9" fontSize="9" fontFamily="monospace">POLICY INTERCEPT</text>
-                    </g>
-
-                    {/* Chip 3: LLM & GenAI Models */}
-                    <g transform="translate(15, 122)">
-                      <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-cyan)" strokeWidth="1.2" strokeOpacity="0.8"/>
-                      <circle cx="12" cy="13" r="3" fill="#00f0ff" />
-                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace" fontWeight="bold">LLM &amp; GENAI MODELS</text>
-                      <text x="22" y="20" fill="#00f0ff" fillOpacity="0.9" fontSize="9" fontFamily="monospace">BIAS DRIFT &lt; 0.01%</text>
-                    </g>
-
-                    {/* Chip 4: Enterprise GRC */}
-                    <g transform="translate(15, 156)">
-                      <rect x="0" y="0" width="118" height="26" rx="6" fill="#080c14" stroke="url(#gov-purple)" strokeWidth="1.2" strokeOpacity="0.8"/>
-                      <circle cx="12" cy="13" r="3" fill="#a78bfa" />
-                      <text x="22" y="12" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace" fontWeight="bold">ENTERPRISE GRC</text>
-                      <text x="22" y="20" fill="#a78bfa" fillOpacity="0.9" fontSize="9" fontFamily="monospace">EU AI ACT TIERING</text>
-                    </g>
-
-                    {/* Laser stream connectors (Left to Center Matrix) */}
-                    <path d="M 133 67 C 160 67, 175 102, 194 102" stroke="url(#gov-gold)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#arrow-cyan-matrix)" />
-                    <path d="M 133 101 L 194 116" stroke="url(#gov-gold)" strokeWidth="1.5" strokeOpacity="0.9" markerEnd="url(#arrow-cyan-matrix)" />
-                    <path d="M 133 135 L 194 135" stroke="url(#gov-cyan)" strokeWidth="1.5" strokeOpacity="0.9" markerEnd="url(#arrow-cyan-matrix)" />
-                    <path d="M 133 169 C 160 169, 175 150, 194 150" stroke="url(#gov-purple)" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.7" markerEnd="url(#arrow-cyan-matrix)" />
-
-                    {/* ── CENTER: 4-QUADRANT GOVERNANCE MATRIX & KERNEL (cx=270, cy=125) ── */}
-                    <text x="270" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">eQORE™ GOVERNANCE MATRIX</text>
-                    
-                    {/* Outer Regulatory Perimeter Circle (R=72) */}
-                    <circle cx="270" cy="125" r="72" fill="#04070d" stroke="url(#gov-purple)" strokeWidth="1.5" filter="url(#glow-purple-gov)" />
-                    
-                    {/* Outer Radar Grid Marks */}
-                    <circle cx="270" cy="125" r="56" fill="#070b16" stroke="#00f0ff" strokeWidth="1" strokeDasharray="6 3" />
-                    <circle cx="270" cy="125" r="38" fill="none" stroke="white" strokeWidth="0.8" strokeOpacity="0.15" />
-
-                    {/* 4 Quadrant Accent Dividers */}
-                    <line x1="270" y1="53" x2="270" y2="197" stroke="white" strokeWidth="0.8" strokeOpacity="0.2" />
-                    <line x1="198" y1="125" x2="342" y2="125" stroke="white" strokeWidth="0.8" strokeOpacity="0.2" />
-
-                    {/* 4 Core Framework Capability Nodes */}
-                    {/* Top-Left Quadrant Node: ETHICS */}
-                    <g transform="translate(230, 80)">
-                      <circle cx="0" cy="0" r="4" fill="#f59e0b" filter="url(#glow-cyan-gov)" />
-                      <text x="-6" y="-6" textAnchor="end" fill="#fbbf24" fontSize="9" fontWeight="bold" fontFamily="monospace">RESPONSIBLE AI</text>
-                    </g>
-                    {/* Top-Right Quadrant Node: MODEL GOV */}
-                    <g transform="translate(310, 80)">
-                      <circle cx="0" cy="0" r="4" fill="#00f0ff" filter="url(#glow-cyan-gov)" />
-                      <text x="6" y="-6" fill="#00f0ff" fontSize="9" fontWeight="bold" fontFamily="monospace">MODEL GOVERNANCE</text>
-                    </g>
-                    {/* Bottom-Right Quadrant Node: RISK & SEC */}
-                    <g transform="translate(310, 170)">
-                      <circle cx="0" cy="0" r="4" fill="#7f53f9" />
-                      <text x="6" y="10" fill="#a78bfa" fontSize="9" fontWeight="bold" fontFamily="monospace">RISK &amp; SECURITY</text>
-                    </g>
-                    {/* Bottom-Left Quadrant Node: OPS & AUDIT */}
-                    <g transform="translate(230, 170)">
-                      <circle cx="0" cy="0" r="4" fill="#00c875" />
-                      <text x="-6" y="10" textAnchor="end" fill="#00c875" fontSize="9" fontWeight="bold" fontFamily="monospace">OPS &amp; ASSURANCE</text>
-                    </g>
-
-                    {/* Center Hexagonal Engine Processor Kernel */}
-                    <g transform="translate(248, 103)">
-                      <rect x="0" y="0" width="44" height="44" rx="10" fill="#080e1a" stroke="url(#gov-cyan)" strokeWidth="1.5" filter="url(#glow-cyan-gov)" />
-                      <path d="M 22 7 L 36 15 L 36 29 L 22 37 L 8 29 L 8 15 Z" fill="none" stroke="#00f0ff" strokeWidth="1.4" />
-                      <circle cx="22" cy="22" r="4" fill="#00f0ff" filter="url(#glow-cyan-gov)" />
-                    </g>
-
-                    {/* Output Laser Path (Center to Right Outcomes) */}
-                    <path d="M 342 125 L 410 125" stroke="url(#gov-green)" strokeWidth="2.5" filter="url(#glow-green-gov)" markerEnd="url(#arrow-green-matrix)" />
-
-                    {/* ── RIGHT COLUMN: AUDIT VERIFIED COMPLIANCE LEDGER ── */}
-                    <text x="465" y="42" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="9" fontFamily="monospace" letterSpacing="0.8">VERIFIED OUTCOMES</text>
-
-                    <g transform="translate(410, 52)">
-                      <rect x="0" y="0" width="118" height="136" rx="10" fill="#080d16" stroke="url(#gov-green)" strokeWidth="1.5" filter="url(#glow-green-gov)" />
-                      
-                      {/* Badge Header */}
-                      <rect x="8" y="8" width="102" height="18" rx="5" fill="#00c875" fillOpacity="0.15" />
-                      <text x="59" y="20.5" textAnchor="middle" fill="#00c875" fontSize="9" fontWeight="black" fontFamily="monospace">VERIFIED PASSPORT</text>
-
-                      {/* Checklist */}
-                      <text x="12" y="42" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
-                      <text x="23" y="42" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">EU AI Act Aligned</text>
-
-                      <text x="12" y="60" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
-                      <text x="23" y="60" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">Model Quality &gt; 99.8%</text>
-
-                      <text x="12" y="78" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
-                      <text x="23" y="78" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">Zero-Trust Shielded</text>
-
-                      <text x="12" y="96" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
-                      <text x="23" y="96" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">Immutable Audit Log</text>
-
-                      <text x="12" y="114" fill="#00c875" fontSize="9" fontWeight="bold">✓</text>
-                      <text x="23" y="114" fill="white" fillOpacity="0.9" fontSize="9" fontFamily="monospace">Kill-Switch Ready</text>
-                    </g>
-
-                    {/* ── BOTTOM: 4-STAGE CONTINUOUS LIFECYCLE PIPELINE ── */}
-                    <g transform="translate(30, 256)">
-                      {/* Outer Capsule Container */}
-                      <rect x="0" y="0" width="480" height="96" rx="20" fill="#050810" stroke="white" strokeWidth="1.2" strokeOpacity="0.25"/>
-                      
-                      {/* Active Stage Highlights */}
-                      <rect x="120" y="0" width="120" height="96" fill="#121724" fillOpacity="0.5"/>
-                      <rect x="360" y="0" width="120" height="96" fill="url(#gov-green)" fillOpacity="0.12" clipPath="url(#capsule-clip-gov)"/>
-                      
-                      {/* Segment Dividers */}
-                      <line x1="120" y1="0" x2="120" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
-                      <line x1="240" y1="0" x2="240" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
-                      <line x1="360" y1="0" x2="360" y2="96" stroke="white" strokeWidth="1" strokeOpacity="0.15"/>
-
-                      {/* Stage 1: Discovery & Risk Tiering */}
-                      <g transform="translate(45, 18)">
-                        <circle cx="15" cy="15" r="14" fill="#0c101c" stroke="#f59e0b" strokeWidth="1.5" strokeOpacity="0.9"/>
-                        <circle cx="15" cy="15" r="6" fill="#f59e0b" />
-                        <line x1="15" y1="0" x2="15" y2="30" stroke="white" strokeOpacity="0.3" />
-                        <line x1="0" y1="15" x2="30" y2="15" stroke="white" strokeOpacity="0.3" />
-                      </g>
-                      <text x="60" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">1. RISK TIERING</text>
-                      <text x="60" y="80" textAnchor="middle" fill="#f59e0b" fontSize="9" fontFamily="monospace">ISO / EU AI ACT</text>
-
-                      {/* Stage 2: Pre-Deploy Evaluation */}
-                      <g transform="translate(165, 18)">
-                        <circle cx="15" cy="8" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
-                        <circle cx="6" cy="22" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
-                        <circle cx="24" cy="22" r="4.5" fill="#0c101c" stroke="#a78bfa" strokeWidth="1.5"/>
-                        <line x1="12" y1="11" x2="8" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
-                        <line x1="18" y1="11" x2="22" y2="19" stroke="#7f53f9" strokeWidth="1.4" />
-                        <circle cx="15" cy="8" r="2" fill="#a78bfa" filter="url(#glow-purple-gov)"/>
-                      </g>
-                      <text x="180" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">2. EXPLAINABILITY</text>
-                      <text x="180" y="80" textAnchor="middle" fill="#a78bfa" fontSize="9" fontFamily="monospace">SHAP &amp; LINEAGE</text>
-
-                      {/* Stage 3: Runtime Policy Intercept */}
-                      <g transform="translate(285, 18)">
-                        <rect x="5" y="3" width="20" height="24" rx="4" fill="#0c101c" stroke="#00f0ff" strokeWidth="1.5" filter="url(#glow-cyan-gov)"/>
-                        <path d="M 10 13 L 20 13 M 10 18 L 17 18 M 15 8 L 20 8" stroke="#00f0ff" strokeWidth="1.4" strokeLinecap="round" />
-                      </g>
-                      <text x="300" y="68" textAnchor="middle" fill="white" fillOpacity="0.9" fontSize="9" fontWeight="bold" fontFamily="monospace">3. POLICY GATE</text>
-                      <text x="300" y="80" textAnchor="middle" fill="#00f0ff" fontSize="9" fontFamily="monospace">PRE-ACTION CHECK</text>
-
-                      {/* Stage 4: Continuous Assurance */}
-                      <g transform="translate(405, 18)">
-                        <path d="M 5 26 A 18 18 0 0 1 41 26" fill="none" stroke="white" strokeWidth="2" strokeOpacity="0.25" strokeLinecap="round"/>
-                        <path d="M 5 26 A 18 18 0 0 1 34 11" fill="none" stroke="#00c875" strokeWidth="3" strokeLinecap="round" filter="url(#glow-green-gov)"/>
-                        <line x1="23" y1="26" x2="33" y2="13" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                        <circle cx="23" cy="26" r="3" fill="#00c875"/>
-                      </g>
-                      <text x="420" y="68" textAnchor="middle" fill="#00c875" fontSize="9" fontWeight="bold" fontFamily="monospace">4. AUDIT READY</text>
-                      <text x="420" y="80" textAnchor="middle" fill="#00c875" fontSize="9" fontWeight="bold" fontFamily="monospace">100% COVERED</text>
-                    </g>
                   </svg>
                 </div>
               ) : service.slug === 'genai-business-services' ? (
@@ -3114,12 +2882,14 @@ const featureMicros   = service.featureMicros
               <MLOps3DModel />
             ) : service.slug === 'genai-business-services' ? (
               <GenAI3DModel />
+            ) : service.slug === 'ai-governance' ? (
+              <AIGovernance3DModel />
             ) : (
               service.toolsStack.image
             )
           }
           imageAlt={service.toolsStack.imageAlt}
-          inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
+          inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services' || service.slug === 'ai-governance'}
         />
       )}
 
