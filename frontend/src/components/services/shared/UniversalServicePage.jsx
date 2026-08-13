@@ -1743,21 +1743,18 @@ const featureMicros   = service.featureMicros
 
                     {/* ── LEFT: COMPLIANCE PIPELINE / SERVER CLUSTER ── */}
                     <g transform="translate(10, 180)">
-                      {/* Rack 1 */}
-                      <rect x="0" y="20" width="40" height="90" rx="4" fill="#0f172a" stroke="#22d3ee" strokeWidth="1.5" filter="url(#glow-cyan-intense-gov)" />
-                      <line x1="5" y1="35" x2="35" y2="35" stroke="#22d3ee" strokeWidth="2" />
-                      <line x1="5" y1="55" x2="25" y2="55" stroke="#60a5fa" strokeWidth="2" />
-                      <line x1="5" y1="75" x2="35" y2="75" stroke="#22d3ee" strokeWidth="2" />
-                      <circle cx="30" cy="55" r="3" fill="#22d3ee" />
-                      
-                      {/* Rack 2 */}
-                      <rect x="50" y="0" width="50" height="110" rx="4" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense-gov)" />
-                      <line x1="60" y1="20" x2="90" y2="20" stroke="#3b82f6" strokeWidth="2" />
-                      <line x1="60" y1="40" x2="80" y2="40" stroke="#60a5fa" strokeWidth="2" />
-                      <line x1="60" y1="60" x2="90" y2="60" stroke="#3b82f6" strokeWidth="2" />
-                      <line x1="60" y1="80" x2="85" y2="80" stroke="#22d3ee" strokeWidth="2" />
-                      <circle cx="85" cy="40" r="4" fill="#60a5fa" />
-                      <circle cx="70" cy="100" r="3" fill="#3b82f6" />
+                      {/* Secure Vault / Checkpoint */}
+                      <rect x="0" y="20" width="80" height="70" rx="8" fill="#0f172a" stroke="#22d3ee" strokeWidth="2" filter="url(#glow-cyan-intense-gov)" />
+                      <path d="M 10 35 L 70 35" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 2" />
+                      <path d="M 10 75 L 70 75" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 2" />
+                      {/* Checkmark inside a glowing circle */}
+                      <circle cx="40" cy="55" r="14" fill="#1e293b" stroke="#60a5fa" strokeWidth="2" filter="url(#glow-blue-intense-gov)" />
+                      <path d="M 34 55 L 38 59 L 46 51" fill="none" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      {/* AI nodes connecting */}
+                      <line x1="20" y1="20" x2="20" y2="10" stroke="#3b82f6" strokeWidth="2" />
+                      <circle cx="20" cy="10" r="3" fill="#60a5fa" />
+                      <line x1="60" y1="20" x2="60" y2="10" stroke="#3b82f6" strokeWidth="2" />
+                      <circle cx="60" cy="10" r="3" fill="#60a5fa" />
                     </g>
                     <text x="55" y="325" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="monospace">COMPLIANCE PIPELINE</text>
                     <text x="55" y="340" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">EU AI ACT &amp; NIST</text>
@@ -1797,18 +1794,19 @@ const featureMicros   = service.featureMicros
 
                     {/* ── BOTTOM RIGHT: RISK MANAGEMENT ── */}
                     <g transform="translate(370, 230)">
-                      <path d="M 0 80 L 140 80 L 115 30 L 25 30 Z" fill="#0f172a" stroke="#22d3ee" strokeWidth="2" filter="url(#glow-cyan-intense-gov)" />
-                      <circle cx="40" cy="15" r="16" fill="#1e293b" stroke="#0891b2" strokeWidth="2" />
-                      <circle cx="40" cy="15" r="8" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
-                      <circle cx="100" cy="15" r="16" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" />
-                      <circle cx="100" cy="15" r="8" fill="#3b82f6" filter="url(#glow-blue-intense-gov)" />
-                      
-                      <path d="M 70 -25 L 70 5 L 85 10" fill="none" stroke="#475569" strokeWidth="6" strokeLinecap="round" />
-                      <circle cx="85" cy="10" r="3" fill="#22d3ee" filter="url(#glow-blue-intense-gov)" />
-                      
-                      <rect x="35" y="45" width="20" height="15" rx="2" fill="#60a5fa" filter="url(#glow-blue-intense-gov)" />
-                      <rect x="85" y="45" width="20" height="15" rx="2" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
-                      <line x1="20" y1="65" x2="120" y2="65" stroke="#475569" strokeWidth="4" strokeDasharray="8 4" />
+                      {/* Radar / Continuous Assurance Scanner */}
+                      <circle cx="70" cy="40" r="35" fill="#0f172a" stroke="#22d3ee" strokeWidth="2" filter="url(#glow-cyan-intense-gov)" />
+                      {/* Radar grid and sweep */}
+                      <circle cx="70" cy="40" r="20" fill="none" stroke="#3b82f6" strokeWidth="1" strokeDasharray="4 4" />
+                      <line x1="35" y1="40" x2="105" y2="40" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.5" />
+                      <line x1="70" y1="5" x2="70" y2="75" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.5" />
+                      <path d="M 70 40 L 70 5 A 35 35 0 0 1 105 40 Z" fill="#60a5fa" fillOpacity="0.2" filter="url(#glow-blue-intense-gov)" />
+                      {/* Detected Risk Blip (Neutralized) */}
+                      <circle cx="85" cy="25" r="4" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
+                      <circle cx="50" cy="55" r="3" fill="#3b82f6" />
+                      {/* Connection node */}
+                      <circle cx="10" cy="70" r="3" fill="#3b82f6" filter="url(#glow-blue-intense-gov)" />
+                      <path d="M 10 70 L 35 40" fill="none" stroke="#3b82f6" strokeWidth="2" strokeDasharray="2 2" />
                     </g>
                     <text x="440" y="325" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="monospace">RISK MANAGEMENT</text>
                     <text x="440" y="340" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">CONTINUOUS ASSURANCE</text>
@@ -1824,10 +1822,12 @@ const featureMicros   = service.featureMicros
 
                     {/* ── TOP LEFT: TRUST ── */}
                     <g transform="translate(60, 40)">
-                      <path d="M 20 0 L 60 20 L 40 40 L 0 20 Z" fill="#1e293b" stroke="#60a5fa" strokeWidth="1.5" />
-                      <path d="M 20 15 L 60 35 L 40 55 L 0 35 Z" fill="#1e293b" stroke="#3b82f6" strokeWidth="1.5" />
-                      <path d="M 20 30 L 60 50 L 40 70 L 0 50 Z" fill="#0f172a" stroke="#1d4ed8" strokeWidth="2" filter="url(#glow-blue-intense-gov)" />
-                      <circle cx="30" cy="25" r="4" fill="#60a5fa" />
+                      {/* Transparency AI Eye */}
+                      <circle cx="30" cy="40" r="25" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense-gov)" />
+                      {/* Eye shape */}
+                      <path d="M 10 40 Q 30 20 50 40 Q 30 60 10 40 Z" fill="none" stroke="#60a5fa" strokeWidth="2" />
+                      <circle cx="30" cy="40" r="8" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
+                      <circle cx="30" cy="40" r="3" fill="#0f172a" />
                     </g>
                     <text x="90" y="130" textAnchor="middle" fill="#93c5fd" fontSize="9" fontWeight="bold" fontFamily="monospace">TRUST</text>
                     <text x="90" y="145" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">TRANSPARENCY &amp; ETHICS</text>
