@@ -15,8 +15,13 @@ jobs:
 
     strategy:
       matrix:
-        # Node 18 dropped: react-router-dom@7.x requires node>=20.0.0
-        node-version: [20.x]
+        # Node 20 dropped: vite@8 requires node ^20.19.0 || >=22.12.0, and
+        # backend/package.json already declares "engines": { "node": ">=22.0.0" }.
+        # Root cause of the "Build Frontend" step silently failing on main
+        # since a Node 20.x resolution flip (no dependency changes between the
+        # last-green and first-red commit) — CI now matches what every other
+        # part of this repo already assumes.
+        node-version: [22.x]
 
     steps:
     - uses: actions/checkout@v3

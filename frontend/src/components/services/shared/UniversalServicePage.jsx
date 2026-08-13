@@ -34,7 +34,7 @@ import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DMode
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
 import { MLOps3DModel } from '../../ui/MLOps3DModel';
 import { GenAI3DModel } from '../../ui/GenAI3DModel';
-import { AIGovernance3DModel } from '../../ui/AIGovernance3DModel';
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1694,6 +1694,170 @@ const featureMicros   = service.featureMicros
                     </g>
                   </svg>
                 </div>
+              ) : service.slug === 'ai-governance' ? (
+                /* ── AI Governance Flow Diagram (Agentic Layout) ── */
+                <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="AI Governance Pipeline diagram" tabIndex={0}>
+                  <svg viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <defs>
+                      <linearGradient id="gov-blue-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#3b82f6"/>
+                        <stop offset="100%" stopColor="#1d4ed8"/>
+                      </linearGradient>
+                      <linearGradient id="gov-cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#22d3ee"/>
+                        <stop offset="100%" stopColor="#0891b2"/>
+                      </linearGradient>
+                      <linearGradient id="gov-slate-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#1e293b"/>
+                        <stop offset="100%" stopColor="#0f172a"/>
+                      </linearGradient>
+
+                      <filter id="glow-blue-intense-gov">
+                        <feGaussianBlur stdDeviation="3" result="blur1"/>
+                        <feGaussianBlur stdDeviation="6" result="blur2"/>
+                        <feMerge>
+                          <feMergeNode in="blur2"/>
+                          <feMergeNode in="blur1"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+
+                      <filter id="glow-cyan-intense-gov">
+                        <feGaussianBlur stdDeviation="3" result="blur1"/>
+                        <feGaussianBlur stdDeviation="6" result="blur2"/>
+                        <feMerge>
+                          <feMergeNode in="blur2"/>
+                          <feMergeNode in="blur1"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+
+                    {/* ── BACKGROUND ORBITS / NETWORK ── */}
+                    <ellipse cx="270" cy="210" rx="180" ry="80" fill="none" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3" transform="rotate(-15 270 210)" strokeDasharray="4 8" />
+                    <ellipse cx="270" cy="210" rx="220" ry="100" fill="none" stroke="#0891b2" strokeWidth="1" strokeOpacity="0.2" transform="rotate(25 270 210)" strokeDasharray="12 4" />
+                    
+                    {/* Data streams (background) */}
+                    <path d="M 0 100 C 150 50, 350 350, 540 300" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" strokeDasharray="4 4" />
+                    <path d="M 0 350 C 200 400, 300 50, 540 100" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" strokeDasharray="4 4" />
+
+                    {/* ── LEFT: COMPLIANCE PIPELINE / SERVER CLUSTER ── */}
+                    <g transform="translate(10, 180)">
+                      {/* Secure Vault / Checkpoint */}
+                      <rect x="0" y="20" width="80" height="70" rx="8" fill="#0f172a" stroke="#22d3ee" strokeWidth="2" filter="url(#glow-cyan-intense-gov)" />
+                      <path d="M 10 35 L 70 35" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 2" />
+                      <path d="M 10 75 L 70 75" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 2" />
+                      {/* Checkmark inside a glowing circle */}
+                      <circle cx="40" cy="55" r="14" fill="#1e293b" stroke="#60a5fa" strokeWidth="2" filter="url(#glow-blue-intense-gov)" />
+                      <path d="M 34 55 L 38 59 L 46 51" fill="none" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      {/* AI nodes connecting */}
+                      <line x1="20" y1="20" x2="20" y2="10" stroke="#3b82f6" strokeWidth="2" />
+                      <circle cx="20" cy="10" r="3" fill="#60a5fa" />
+                      <line x1="60" y1="20" x2="60" y2="10" stroke="#3b82f6" strokeWidth="2" />
+                      <circle cx="60" cy="10" r="3" fill="#60a5fa" />
+                    </g>
+                    <text x="55" y="325" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="monospace">COMPLIANCE PIPELINE</text>
+                    <text x="55" y="340" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">EU AI ACT &amp; NIST</text>
+
+                    {/* Connection from Servers to Core */}
+                    <path d="M 120 230 C 150 230, 180 220, 205 210" fill="none" stroke="#22d3ee" strokeWidth="2.5" filter="url(#glow-cyan-intense-gov)" strokeDasharray="8 8">
+                      <animate attributeName="stroke-dashoffset" from="16" to="0" dur="1s" repeatCount="indefinite" />
+                    </path>
+                    {/* Drone 1 */}
+                    <g transform="translate(150, 215)">
+                      <polygon points="0,-8 10,0 0,8 -10,0" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
+                      <circle cx="0" cy="0" r="3" fill="#0f172a" />
+                    </g>
+
+                    {/* ── TOP RIGHT: CYBERSECURITY SHIELD ── */}
+                    <g transform="translate(380, 40)">
+                      {/* High-tech desk / terminal */}
+                      <path d="M 0 90 L 120 90 L 100 55 L 20 55 Z" fill="#1e293b" stroke="#3b82f6" strokeWidth="1.5" />
+                      <path d="M 25 20 Q 60 10 95 20 L 90 50 Q 60 40 30 50 Z" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense-gov)" />
+                      {/* Screen UI */}
+                      <line x1="40" y1="28" x2="80" y2="28" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="35" y1="36" x2="65" y2="36" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="75" y1="36" x2="85" y2="36" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" />
+                      
+                      {/* User silhouette */}
+                      <circle cx="60" cy="-5" r="14" fill="#64748b" />
+                      <path d="M 35 45 C 35 15, 85 15, 85 45 L 90 90 L 30 90 Z" fill="#475569" />
+                      <path d="M 85 45 C 105 45, 105 60, 85 60" fill="none" stroke="#475569" strokeWidth="10" strokeLinecap="round" />
+                    </g>
+                    <text x="440" y="155" textAnchor="middle" fill="#93c5fd" fontSize="10" fontWeight="bold" fontFamily="monospace">CYBERSECURITY SHIELD</text>
+                    <text x="440" y="170" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">ZERO-TRUST ARCHITECTURE</text>
+
+                    {/* Connection from Core to Shield */}
+                    <path d="M 325 160 C 350 140, 380 120, 410 100" fill="none" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense-gov)" strokeDasharray="6 6">
+                      <animate attributeName="stroke-dashoffset" from="12" to="0" dur="1s" repeatCount="indefinite" />
+                    </path>
+
+                    {/* ── BOTTOM RIGHT: RISK MANAGEMENT ── */}
+                    <g transform="translate(370, 230)">
+                      {/* Radar / Continuous Assurance Scanner */}
+                      <circle cx="70" cy="40" r="35" fill="#0f172a" stroke="#22d3ee" strokeWidth="2" filter="url(#glow-cyan-intense-gov)" />
+                      {/* Radar grid and sweep */}
+                      <circle cx="70" cy="40" r="20" fill="none" stroke="#3b82f6" strokeWidth="1" strokeDasharray="4 4" />
+                      <line x1="35" y1="40" x2="105" y2="40" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.5" />
+                      <line x1="70" y1="5" x2="70" y2="75" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.5" />
+                      <path d="M 70 40 L 70 5 A 35 35 0 0 1 105 40 Z" fill="#60a5fa" fillOpacity="0.2" filter="url(#glow-blue-intense-gov)" />
+                      {/* Detected Risk Blip (Neutralized) */}
+                      <circle cx="85" cy="25" r="4" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
+                      <circle cx="50" cy="55" r="3" fill="#3b82f6" />
+                      {/* Connection node */}
+                      <circle cx="10" cy="70" r="3" fill="#3b82f6" filter="url(#glow-blue-intense-gov)" />
+                      <path d="M 10 70 L 35 40" fill="none" stroke="#3b82f6" strokeWidth="2" strokeDasharray="2 2" />
+                    </g>
+                    <text x="440" y="325" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="monospace">RISK MANAGEMENT</text>
+                    <text x="440" y="340" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">CONTINUOUS ASSURANCE</text>
+
+                    {/* Connection from Core to Management */}
+                    <path d="M 330 210 C 360 210, 390 220, 420 240" fill="none" stroke="#22d3ee" strokeWidth="2.5" filter="url(#glow-cyan-intense-gov)" strokeDasharray="8 8">
+                      <animate attributeName="stroke-dashoffset" from="0" to="16" dur="1s" repeatCount="indefinite" />
+                    </path>
+                    <g transform="translate(370, 220)">
+                      <polygon points="0,-8 10,0 0,8 -10,0" fill="#3b82f6" filter="url(#glow-blue-intense-gov)" />
+                      <circle cx="0" cy="0" r="3" fill="#0f172a" />
+                    </g>
+
+                    {/* ── TOP LEFT: TRUST ── */}
+                    <g transform="translate(60, 40)">
+                      {/* Transparency AI Eye */}
+                      <circle cx="30" cy="40" r="25" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" filter="url(#glow-blue-intense-gov)" />
+                      {/* Eye shape */}
+                      <path d="M 10 40 Q 30 20 50 40 Q 30 60 10 40 Z" fill="none" stroke="#60a5fa" strokeWidth="2" />
+                      <circle cx="30" cy="40" r="8" fill="#22d3ee" filter="url(#glow-cyan-intense-gov)" />
+                      <circle cx="30" cy="40" r="3" fill="#0f172a" />
+                    </g>
+                    <text x="90" y="130" textAnchor="middle" fill="#93c5fd" fontSize="9" fontWeight="bold" fontFamily="monospace">TRUST</text>
+                    <text x="90" y="145" textAnchor="middle" fill="#64748b" fontSize="9" fontFamily="monospace">TRANSPARENCY &amp; ETHICS</text>
+                    <path d="M 110 90 C 150 110, 180 140, 220 160" fill="none" stroke="#3b82f6" strokeWidth="1.5" filter="url(#glow-blue-intense-gov)" strokeDasharray="4 4">
+                       <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.8s" repeatCount="indefinite" />
+                    </path>
+
+                    {/* ── CENTER GLOBE / AI GOVERNANCE BRAIN ── */}
+                    <g transform="translate(195, 135)">
+                      <circle cx="75" cy="75" r="85" fill="#0f172a" stroke="url(#gov-blue-glow)" strokeWidth="3" filter="url(#glow-blue-intense-gov)"/>
+                      <circle cx="75" cy="75" r="85" fill="url(#gov-slate-grad)" fillOpacity="0.9"/>
+                      
+                      <circle cx="75" cy="75" r="65" fill="none" stroke="#22d3ee" strokeWidth="1.5" strokeDasharray="10 15">
+                        <animateTransform attributeName="transform" type="rotate" from="0 75 75" to="360 75 75" dur="10s" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="75" cy="75" r="45" fill="none" stroke="#60a5fa" strokeWidth="2" strokeDasharray="20 10">
+                        <animateTransform attributeName="transform" type="rotate" from="360 75 75" to="0 75 75" dur="7s" repeatCount="indefinite" />
+                      </circle>
+
+                      <circle cx="75" cy="75" r="28" fill="#1e293b" stroke="#00f0ff" strokeWidth="2" filter="url(#glow-cyan-intense-gov)"/>
+                      <foreignObject x="55" y="55" width="40" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full flex items-center justify-center text-white">
+                          <ShieldCheck size={24} />
+                        </div>
+                      </foreignObject>
+                    </g>
+                    <text x="270" y="325" textAnchor="middle" fill="#93c5fd" fontSize="12" fontWeight="bold" fontFamily="monospace" letterSpacing="2">AI GOVERNANCE</text>
+                    <text x="270" y="340" textAnchor="middle" fill="#60a5fa" fontSize="9" fontFamily="monospace">EMBEDDED CONTROL LIFECYCLE</text>
+                  </svg>
+                </div>
               ) : service.slug === 'mlops' ? (
                 /* ── MLOps ML Pipeline Diagram ── */
                 <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — human-in-the-loop" tabIndex={0}>
@@ -2882,14 +3046,12 @@ const featureMicros   = service.featureMicros
               <MLOps3DModel />
             ) : service.slug === 'genai-business-services' ? (
               <GenAI3DModel />
-            ) : service.slug === 'ai-governance' ? (
-              <AIGovernance3DModel />
             ) : (
               service.toolsStack.image
             )
           }
           imageAlt={service.toolsStack.imageAlt}
-          inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services' || service.slug === 'ai-governance'}
+          inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
         />
       )}
 

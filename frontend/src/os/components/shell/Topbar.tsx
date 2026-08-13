@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Search, Bell, Settings, LogOut, User,
   ChevronDown, Grid3X3, ChevronRight, Plus, Maximize2, Minimize2,
-  Brain, Home, ArrowUpRight, Sun, Moon, Eye, Building2, Check, Loader2,
+  Brain, Home, ArrowUpRight, Eye, Building2, Check, Loader2,
 } from 'lucide-react'
 import {
   LightningIcon, SquaresFourIcon, TargetIcon, CpuIcon,
@@ -89,14 +89,6 @@ export function Topbar({ config }: { config?: any }) {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [switcherOpen, setSwitcherOpen] = useState(false)
   const switcherRef = useRef<HTMLDivElement>(null)
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'))
-
-  const toggleTheme = useCallback(() => {
-    const nowDark = document.documentElement.classList.toggle('dark')
-    localStorage.setItem('kq-theme', nowDark ? 'dark' : 'light')
-    setIsDark(nowDark)
-  }, [])
-
   useEffect(() => {
     const onChange = () => setIsFullscreen(!!document.fullscreenElement)
     document.addEventListener('fullscreenchange', onChange)
@@ -457,15 +449,6 @@ export function Topbar({ config }: { config?: any }) {
               className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
             >
               {isFullscreen ? <Minimize2 className="w-[15px] h-[15px]" /> : <Maximize2 className="w-[15px] h-[15px]" />}
-            </button>
-          </Tooltip>
-
-          <Tooltip content={isDark ? 'Light mode' : 'Dark mode'} side="bottom">
-            <button
-              onClick={toggleTheme}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
-            >
-              {isDark ? <Sun className="w-[15px] h-[15px]" /> : <Moon className="w-[16px] h-[16px]" />}
             </button>
           </Tooltip>
 

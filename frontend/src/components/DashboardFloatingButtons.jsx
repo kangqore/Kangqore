@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp, Accessibility, MessageCircle, Moon, Sun, Menu, X, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package } from 'lucide-react';
+import { ArrowUp, Accessibility, MessageCircle, Menu, X, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { departmentData } from '../data/departmentData';
 import EQoreChatbot from './EQoreChatbot';
@@ -11,9 +11,6 @@ const DashboardFloatingButtons = () => {
   const [expandedMenu, setExpandedMenu] = useState(null);
   const [fontSize, setFontSize] = useState(100);
   const [highContrast, setHighContrast] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('darkMode') === 'true';
-  });
   // State for hiding individual buttons
   const [hideAccessibility, setHideAccessibility] = useState(false);
   const [hideRightButtons, setHideRightButtons] = useState(false);
@@ -34,16 +31,6 @@ const DashboardFloatingButtons = () => {
     }
   }, [showFullMenu]);
 
-  // Apply dark mode on mount and change
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('darkMode', isDarkMode.toString());
-  }, [isDarkMode]);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -61,10 +48,6 @@ const DashboardFloatingButtons = () => {
   const toggleHighContrast = () => {
     setHighContrast(!highContrast);
     document.body.classList.toggle('high-contrast');
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
   };
 
   const toggleMenu = (menuName) => {
@@ -144,25 +127,6 @@ const DashboardFloatingButtons = () => {
               Accessibility & Display
             </h3>
             
-            {/* Dark Mode Toggle */}
-            <div className="mb-4">
-              <button
-                onClick={toggleDarkMode}
-                className={`w-full py-3 px-4 rounded-lg font-medium transition-all flex items-center justify-between ${
-                  isDarkMode 
-                    ? 'bg-gray-900 text-white' 
-                    : 'bg-gray-100 dark:bg-[#0a0a0c] hover:bg-gray-200 text-gray-900 dark:text-white'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  {isDarkMode ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-                  Dark Mode
-                </span>
-                <span className={`text-xs px-2 py-0.5 rounded ${isDarkMode ? 'bg-white dark:bg-black/20' : 'bg-gray-200'}`}>
-                  {isDarkMode ? 'ON' : 'OFF'}
-                </span>
-              </button>
-            </div>
 
             {/* Font Size */}
             <div className="mb-4">

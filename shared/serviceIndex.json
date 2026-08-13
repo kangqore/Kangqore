@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T11:04:14.116Z",
+  "generatedAt": "2026-08-13T16:01:43.663Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -138,15 +138,13 @@
       "description": "Cognitive computing systems that understand, reason, and learn from data — natural language understanding, pattern recognition, and machine reasoning.",
       "capabilities": [
         "Machine Learning Engineering",
-        "Computer Vision & Visual Intelligence",
-        "Natural Language Intelligence",
-        "Generative AI Services",
         "Decision Intelligence",
-        "Knowledge Intelligence",
-        "Autonomous & Agentic Systems",
-        "AI Engineering & MLOps",
-        "AI Governance & Responsible AI",
-        "Extended Reality (XR) Solutions"
+        "Computer Vision & Visual Intelligence",
+        "Natural Language & Knowledge Intelligence",
+        "Multimodal Intelligence",
+        "Anomaly, Event & Edge Intelligence",
+        "Audio & Speech Intelligence",
+        "Extended Reality & Spatial Computing"
       ],
       "faqs": [
         {
@@ -155,7 +153,7 @@
         },
         {
           "q": "Which cognitive capabilities does Kangqore actually deliver?",
-          "a": "We deliver across ten capability domains: Machine Learning Engineering, Computer Vision & Visual Intelligence, Natural Language Intelligence, Generative AI Services, Decision Intelligence, Knowledge Intelligence, Autonomous & Agentic Systems, AI Engineering & MLOps, AI Governance & Responsible AI, and Extended Reality Solutions. Each domain ships production-grade systems — not demos."
+          "a": "Eight domains: Machine Learning Engineering, Decision Intelligence, Computer Vision & Visual Intelligence, Natural Language & Knowledge Intelligence, Multimodal Intelligence, Anomaly & Edge Intelligence, Audio & Speech Intelligence, and Extended Reality & Spatial Computing. Generative AI, agentic systems, MLOps and AI governance are deliberately not on that list. Each is a service in its own right with its own page, and folding them in here would mean two Kangqore pages competing for the same question. What sits on this page is the perception and reasoning layer: turning language, images, audio, sensor streams and enterprise data into something a system can act on."
         },
         {
           "q": "How does Kangqore handle NLP and language understanding?",

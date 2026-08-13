@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ChevronDown, Globe, Menu, X, LogIn, LogOut, UserCircle, Search, Phone, ArrowRight, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Sun, Moon, Mic } from 'lucide-react';
+import { ChevronDown, Globe, Menu, X, LogIn, LogOut, UserCircle, Search, Phone, ArrowRight, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Mic } from 'lucide-react';
 import { navigationItems } from '../mock/mockData';
 import { useAuth } from '../context/AuthContext';
 import { departmentsData, departmentsList } from '../data/departmentsData';
 import { servicesData } from '../data/servicesData';
 import GlobalSearch from './GlobalSearch';
 import LanguageSwitcher from './LanguageSwitcher';
-import { useTheme } from '../context/ThemeContext';
 import Realistic3DIcon from './ui/Realistic3DIcon';
 import { useSmartNav } from '../hooks/useSmartNav';
 
@@ -19,7 +18,6 @@ const Header = ({ onMenuClick }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isInHero, setIsInHero] = useState(true);
   const [isHoveringTop, setIsHoveringTop] = useState(false);
@@ -298,15 +296,6 @@ const Header = ({ onMenuClick }) => {
                 <Link to="/investors" className={`transition-colors ${(isLightBackground && !isInHero) ? 'hover:text-gray-600' : 'hover:text-white/80'}`}>Investors</Link>
 
                 <LanguageSwitcher />
-                
-                {/* Dark Mode Toggle */}
-                <button
-                  onClick={toggleTheme}
-                  className={`p-1.5 rounded-full transition-colors ${(isLightBackground && !isInHero) ? 'hover:bg-black/10' : 'hover:bg-white/20'}`}
-                  aria-label="Toggle Dark Mode"
-                >
-                  {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                </button>
                 
                 {/* Login/Logout in top bar */}
                 {user ? (
