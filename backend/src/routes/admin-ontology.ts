@@ -13,6 +13,8 @@ import { ObjectSetService } from '../services/objectSet.service'
 import { ActionEngine } from '../services/actionEngine.service'
 import { seedEnterpriseActions, ACTION_LIBRARY } from '../services/actionLibrary.seed'
 import { connectorHealth, listConnectors } from '../services/connectors/registry'
+import { seedBlastRadiusPolicies } from '../services/policyEngine.service'
+import { installActionPack, listInstalledPacks, ITSM_PACK } from '../services/actionPack.service'
 import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.service'
 import { OntologyGeoService } from '../services/ontologyGeo.service'
 import { OntologyPipelineService } from '../services/ontologyPipeline.service'
@@ -544,6 +546,42 @@ router.get('/actions/library', ...guard, async (_req, res) => {
 router.post('/actions/library/seed', ...guard, async (_req, res) => {
   try {
     const result = await seedEnterpriseActions()
+    res.json({ ok: true, ...result })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// POST /actions/blast-radius-policies — seed REQUIRE_APPROVAL policies for high-blast actions
+router.post('/actions/blast-radius-policies', ...guard, async (_req, res) => {
+  try {
+    const result = await seedBlastRadiusPolicies()
+    res.json({ ok: true, ...result })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// POST /actions/packs/install — install an action pack from a JSON manifest
+// GET  /actions/packs         — list installed packs
+// GET  /actions/packs/example — return the built-in ITSM example pack manifest
+router.get('/actions/packs/example', ...guard, (_req, res) => res.json(ITSM_PACK))
+
+router.get('/actions/packs', ...guard, async (_req, res) => {
+  try {
+    res.json(await listInstalledPacks())
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/actions/packs/install', ...guard, async (req, res) => {
+  try {
+    const manifest = req.body
+    if (!manifest?.pack || !manifest?.category || !manifest?.actions) {
+      return res.status(400).json({ error: 'Invalid manifest: pack, category, and actions are required' })
+    }
+    const result = await installActionPack(manifest)
     res.json({ ok: true, ...result })
   } catch (e: any) {
     res.status(500).json({ error: e.message })
