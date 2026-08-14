@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ArrowRight, Cpu } from 'lucide-react';
 
 const FAQTeleprompter = ({ faqs }) => {
   const [faqIdx, setFaqIdx] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const containerRef = useRef(null);
 
   const currentFaq = faqs[faqIdx];
   const fullText = currentFaq?.a || '';
-  // Calculate dynamic duration: 30ms per character + 4 seconds pause at the end
-  const durationMs = Math.max(8000, (fullText.length * 30) + 4000);
+  // Calculate dynamic duration: 30ms per character + 10 seconds pause at the end
+  const durationMs = Math.max(8000, (fullText.length * 30) + 10000);
   const durationSec = (durationMs / 1000).toFixed(1);
 
   useEffect(() => {
@@ -42,6 +43,13 @@ const FAQTeleprompter = ({ faqs }) => {
     return () => clearInterval(typingInterval);
   }, [faqIdx, faqs]);
 
+  // Auto-scroll to bottom as text is typed
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [displayText]);
+
   if (!faqs || faqs.length === 0) return null;
 
   return (
@@ -59,14 +67,17 @@ const FAQTeleprompter = ({ faqs }) => {
       <div className="flex-1 flex flex-col gap-2 overflow-hidden relative">
         <div 
           key={faqIdx} 
-          className="flex flex-col w-full h-full"
-          style={{ animation: `faq-crawl ${durationSec}s linear forwards` }}
+          className="flex flex-col w-full h-full animate-fade-in-up"
         >
-          <div className="font-bold text-cyan-400 mb-1 flex gap-2 items-start">
+          <div className="font-bold text-cyan-400 mb-1 flex gap-2 items-start shrink-0">
             <span className="shrink-0">[Q]</span> 
             <span className="line-clamp-2">{faqs[faqIdx]?.q}</span>
           </div>
-          <div className="text-white/80 leading-relaxed overflow-hidden pr-1">
+          <div 
+            ref={containerRef}
+            className="text-white/80 leading-relaxed overflow-y-auto pr-1 whitespace-pre-wrap scrollbar-hide" 
+            style={{ maxHeight: '100%' }}
+          >
             <span className="text-white/40 mr-2 shrink-0">[A]</span>
             {displayText}
             {isTyping && <span className="inline-block w-1 h-3 bg-cyan-400 ml-1 animate-pulse" />}
