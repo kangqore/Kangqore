@@ -5033,8 +5033,10 @@ model ActionExecution {
   sourceModule   String?
   reasoning      String?
   policyId       String?         // KimmpPolicy that gated this execution, if any
+  idempotencyKey String?         // Caller-supplied dedup key; NULL values don't conflict (Postgres NULL != NULL in unique)
   createdAt      DateTime        @default(now())
 
+  @@unique([actionId, idempotencyKey])
   @@index([actionId])
   @@index([objectId])
   @@index([actorType, createdAt])

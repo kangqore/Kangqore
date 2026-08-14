@@ -252,6 +252,8 @@ export interface ExecuteInput {
   agentsMixed?: string[]
   sourceModule?: string
   reasoning?: string
+  // P4 — caller-supplied dedup key; same key + actionId = return existing execution (idempotent)
+  idempotencyKey?: string
 }
 
 // System actions are gated on the actor's own budget bucket — HUMAN actors are
@@ -289,6 +291,14 @@ export const ActionEngine = {
   },
 
   async execute(input: ExecuteInput) {
+    // Idempotency — return existing execution if caller supplied a key we've seen before
+    if (input.idempotencyKey) {
+      const existing = await (prisma.actionExecution as any).findUnique({
+        where: { actionId_idempotencyKey: { actionId: input.actionId, idempotencyKey: input.idempotencyKey } },
+      })
+      if (existing) return existing
+    }
+
     const t0 = Date.now()
     const actorType = input.actorType ?? 'HUMAN'
     const action = await prisma.ontologyAction.findUniqueOrThrow({
@@ -419,6 +429,7 @@ export const ActionEngine = {
         ...commonFields, effectsApplied: applied,
         status, errorMessage,
         policyId: policy.effect === 'NOTIFY' ? (policy.policyId ?? undefined) : undefined,
+        idempotencyKey: input.idempotencyKey ?? undefined,
         durationMs: Date.now() - t0,
       },
     })
