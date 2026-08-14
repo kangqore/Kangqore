@@ -57,7 +57,7 @@ const FAQTeleprompter = ({ faqs }) => {
       {/* Header */}
       <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
         <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <div className="w-1.5 h-1.5 rounded-full bg-brand-gradient animate-pulse" />
           <span className="text-white/60 font-bold uppercase tracking-wider text-[8px]">FAQ FEED</span>
         </div>
         <span className="text-white/60 text-[8px]">Q: {faqIdx + 1}/{faqs.length}</span>
@@ -69,7 +69,7 @@ const FAQTeleprompter = ({ faqs }) => {
           key={faqIdx} 
           className="flex flex-col w-full h-full animate-fade-in-up"
         >
-          <div className="font-bold text-cyan-400 mb-1 flex gap-2 items-start shrink-0">
+          <div className="font-bold bg-brand-gradient bg-clip-text text-transparent mb-1 flex gap-2 items-start shrink-0">
             <span className="shrink-0">[Q]</span> 
             <span className="line-clamp-2">{faqs[faqIdx]?.q}</span>
           </div>
@@ -80,7 +80,7 @@ const FAQTeleprompter = ({ faqs }) => {
           >
             <span className="text-white/40 mr-2 shrink-0">[A]</span>
             {displayText}
-            {isTyping && <span className="inline-block w-1 h-3 bg-cyan-400 ml-1 animate-pulse" />}
+            {isTyping && <span className="inline-block w-1 h-3 bg-brand-gradient ml-1 animate-pulse" />}
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@ const FAQTeleprompter = ({ faqs }) => {
         <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
           <div 
             key={`faq-progress-${faqIdx}`} 
-            className="h-full bg-cyan-500/50"
+            className="h-full bg-brand-gradient opacity-50"
             style={{ animation: `progress ${durationSec}s linear` }}
           />
         </div>
