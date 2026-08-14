@@ -1105,9 +1105,9 @@ const featureMicros   = service.featureMicros
                       style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))' }}
                     />
                     
-                    {/* Inner Background Layer (Glassmorphism) */}
+                    {/* Inner Background Layer (Transparent) */}
                     <div 
-                      className="relative z-10 flex items-center gap-3 bg-white/5 backdrop-blur-md px-3 py-2 w-full h-full"
+                      className="relative z-10 flex items-center gap-3 bg-transparent px-3 py-2 w-full h-full"
                       style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))' }}
                     >
                       {/* Top-Left Accent Bracket */}
