@@ -2,7 +2,7 @@
 // Pulls from GET /api/admin/intelligence/predictive
 
 import { useQuery } from '@tanstack/react-query'
-import { api } from '@/lib/api'
+import { api } from '@lib/api'
 import { RefreshCw, Folder, Users, User, GitBranch } from 'lucide-react'
 import { SeverityBadge, SignalCard, SectionHeader, ProbBar } from '../components'
 
