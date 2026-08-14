@@ -381,7 +381,7 @@ export const serviceSEO = {
     url: '/services/ai-cognitive-computing',
   },
   'data-science-ai': {
-    title: 'Data Science & AI — Cognition | Kangqore',
+    title: 'Data Science & AI — Predictive Modeling & ML | Kangqore',
     description: 'Data science with AI: predictive modeling, statistical analysis, feature engineering, and model deployment — turn data into business decisions.',
     keywords: 'data science, predictive modeling, AI modeling, feature engineering, model deployment, data visualization',
     url: '/services/data-science-ai',

@@ -1285,23 +1285,338 @@ export const servicesData = {
     name: 'Data Science & AI',
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
-    shortDescription: 'Extract insights and build predictive models from your data',
-    fullDescription: 'Combine data science expertise with AI capabilities to uncover insights, build models, and drive data-driven decisions.',
+    shortDescription: 'Kangqore builds predictive models that reach production and stay accurate there: forecasting, risk scoring, churn and pricing, monitored per segment.',
+    fullDescription: 'Models that survive contact with next quarter, wired into the decision they exist to make, with the confidence attached so a person knows when to overrule them.',
     keyFeatures: ['Predictive modeling', 'Statistical analysis', 'Feature engineering', 'Model deployment', 'Data visualization'],
     relatedServiceSlugs: ['mlops', 'analytics', 'big-data'],
     featured: false,
     image: '/images/capabilities/agentic-governed-autonomy.png',
-    whatIsTitle: 'Data Science & AI',
-    whatIsTitleLine2: 'That Turns Data Into',
-    whatIsHighlight: 'Predictable Revenue.',
-    whatIsPara2: 'Kangqore combines rigorous statistical analysis with production-grade machine learning to build, validate, and deploy models that move metrics — from customer churn prediction to demand forecasting and risk scoring.',
+    whatIsTitle: 'A notebook result',
+    whatIsTitleLine2: 'and a production model',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'are different objects.',
+    whatIsPara2: 'Most data science work fails somewhere between a validated result and a decision anybody makes differently. The model is fine. What is missing is the path from a prediction to an action, the monitoring that says whether it is still right, and a named person who is accountable when it is not.',
+
+    whatIsPara3: 'So the question we ask first is not what could be predicted, but which decision would change if the prediction existed. A churn model that is accurate but arrives after the renewal date has answered the wrong question precisely. If no decision moves, the work is analysis, and analysis is cheaper done once than productionized.',
+
+    whatIsPara4: 'Accuracy is also the wrong headline number on its own. Watch it per segment rather than in aggregate: an overall score holds steady for months while the segment you actually care about degrades underneath it, and nobody notices until a person who trusted the output is asked to explain a decision.',
     businessMetrics: [
       { title: 'Model Accuracy Gain',  desc: 'Average improvement over baseline heuristics after deploying Kangqore data science models.',                         value: '38', suffix: '%',    metricLabel: 'Accuracy Improvement', icon: 'Target'    },
       { title: 'Model Delivery Speed', desc: 'Time from data exploration to production-ready model using accelerated feature engineering pipelines.',                value: '6',  suffix: ' Wks', metricLabel: 'Model Delivery',       icon: 'Zap'       },
       { title: 'Revenue Uplift',       desc: 'Average revenue uplift from predictive models in pricing, churn reduction, and customer LTV applications.',            value: '22', suffix: '%',    metricLabel: 'Revenue Uplift',       icon: 'TrendingUp'},
       { title: 'Models Built',         desc: 'Custom AI/ML models built and deployed across retail, financial services, and healthcare industries.',                  value: '80', suffix: '+',    metricLabel: 'Models Deployed',      icon: 'Layers'    },
     ],
+    hidePartnershipModel: true,
+
+    // ── Toolchain ────────────────────────────────────────────────────────────
+    // The parity default described a stack "powering cognitive computing,
+    // machine learning, and AI governance" -- three services, one of which is
+    // this one.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'What we reach for,',
+      titleHighlight: 'and when we do not.',
+      subtitle: 'Tool choice is mostly determined by the shape of your data and how the result has to be explained. These are the defaults and the cases that override them.',
+      items: [
+        {
+          icon: 'Boxes',
+          title: 'Gradient-boosted trees',
+          managed: 'XGBoost, LightGBM, CatBoost',
+          selfHosted: 'Default for tabular data',
+          desc: 'Where most enterprise problems actually live. Wins on cost, latency and explainability against a neural network on the same table, and it is the baseline anything else has to beat.',
+        },
+        {
+          icon: 'Brain',
+          title: 'Deep learning',
+          managed: 'PyTorch, TensorFlow',
+          selfHosted: 'High-dimensional input only',
+          desc: 'Reached for when the input is genuinely images, audio, text or long sequences. Applied to a spreadsheet it costs more, explains less and rarely wins.',
+        },
+        {
+          icon: 'GitBranch',
+          title: 'Experiment tracking',
+          managed: 'MLflow, Weights & Biases',
+          selfHosted: 'From the first model, not the tenth',
+          desc: 'Added late, nobody can reconstruct which run produced the model now in production. Added early, it costs an afternoon.',
+          link: { label: 'MLOps', to: '/services/mlops' },
+        },
+        {
+          icon: 'ScanLine',
+          title: 'Explainability',
+          managed: 'SHAP, partial dependence',
+          selfHosted: 'Decided before the model',
+          desc: 'If a regulator or a customer will ask why, that constraint selects the model. Retrofitting an explanation onto an opaque one is where projects stall.',
+          link: { label: 'AI Governance', to: '/services/ai-governance' },
+        },
+        {
+          icon: 'Activity',
+          title: 'Drift and quality monitoring',
+          managed: 'Evidently, Great Expectations',
+          selfHosted: 'Per segment, not in aggregate',
+          desc: 'Catches the input distribution moving before the accuracy does. An aggregate score is the last place a problem shows up.',
+        },
+        {
+          icon: 'Workflow',
+          title: 'Orchestration',
+          managed: 'Airflow, Dagster, Prefect',
+          selfHosted: 'When retraining is scheduled',
+          desc: 'Worth it once retraining is real. Before that it is infrastructure for a pipeline that runs by hand twice a month.',
+        },
+      ],
+    },
+
+    // ── CTAs ─────────────────────────────────────────────────────────────────
+    midCta: 'You already have the data. The decision still takes a week.',
+    midCtaLabel: 'Bring us the decision',
+
+    closingCta: {
+      title: 'One decision.',
+      highlight: 'One model that changes it.',
+      body: 'Bring the decision that takes too long, and whatever data you already hold about it. In 30 minutes we will tell you what can be predicted well enough to act on, what cannot, and whether the bottleneck is the data or the process around it.',
+      primaryLabel: 'Bring us a decision',
+      secondaryLabel: 'See the four stages',
+      proofLabel: 'From first call to first model that changes a decision',
+    },
+
+    // ── eQORE ────────────────────────────────────────────────────────────────
+    conciergeChips: [
+      'How much history do we need before a model is worth building?',
+      'Do we need a data warehouse in place before you can start?',
+      'How would we know the model is still right in six months?',
+      'Can you explain a prediction to a regulator?',
+      'Book a decision review',
+    ],
+    conciergeHeading: 'From the decision that takes too long to a solution direction',
+    conciergeIntro: 'Describe the decision you want to make faster and the data you already hold about it, and eQORE will tell you which modeling approach applies, what it would take to get there, and where the honest answer is that a model will not help.',
+
+    // ── FAQ ──────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the questions asked in a first call.
+    customFAQs: [
+      {
+        q: 'How much data do we need before a model is worth building?',
+        a: 'It depends far more on how often the thing you are predicting happens than on how many rows you hold. Ten million transactions containing forty instances of the fraud pattern you care about is a small dataset for that problem, and a hundred thousand rows with a well-balanced outcome is often plenty.\n\nThe practical floor for most classification work is a few hundred examples of the rarer class, and enough history to cover at least one full cycle of whatever seasonality your business has. Predicting retail demand from nine months of data means the model has never seen a Christmas.\n\nIf you are below that, the useful move is usually not a model. It is instrumenting the process so the data exists in a year, which is a cheaper project and a prerequisite either way.',
+        sources: [
+          { label: 'scikit-learn: cross-validation', url: 'https://scikit-learn.org/stable/modules/cross_validation.html' },
+        ],
+      },
+      {
+        q: 'Do we need a data warehouse in place before you can start?',
+        a: 'No, and waiting for one is a common way to lose a year. A first model can be built against extracts, and the work of building it tells you which tables actually matter, which is better warehouse requirements than a workshop produces.\n\nWhat you do need is the ability to get the same data again on a schedule. A model trained on a one-off export that nobody can reproduce is a demonstration, not a system, and the gap between those two is where most of the cost sits.\n\nWhere a warehouse genuinely blocks us is when the same entity is identified differently in each source and there is no agreed key. That is a data problem no model solves, and it surfaces in week one rather than month six.',
+        sources: [
+          { label: 'Hidden Technical Debt in Machine Learning Systems (NeurIPS)', url: 'https://papers.nips.cc/paper_files/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html' },
+        ],
+      },
+      {
+        q: 'How would we know the model is still right in six months?',
+        a: 'Because it is monitored per segment, and because somebody owns the alert. Both halves matter: monitoring nobody reads is the same as no monitoring, and an aggregate accuracy number is the last place a problem becomes visible.\n\nWhat we watch is the input distribution as well as the output. Input drift arrives first and is the earlier warning, since a model whose incoming data has shifted is already wrong before the accuracy metric catches up.\n\nRetraining is then triggered by measured degradation rather than by the calendar. Quarterly retraining is a habit, not a control; it retrains models that were fine and leaves the one that broke in week two running.',
+        sources: [
+          { label: 'NIST AI Risk Management Framework', url: 'https://www.nist.gov/itl/ai-risk-management-framework' },
+        ],
+      },
+      {
+        q: 'Can you explain a prediction to a regulator?',
+        a: 'Yes, provided the requirement is stated before the model is chosen rather than after. Explainability is a design constraint: it rules some model families in and others out, and retrofitting an account of an opaque model is where these projects usually stall.\n\nIn practice that means feature contributions shipped alongside the prediction, so the person acting on it can see what drove it, and adverse action reasons produced in the same call where the decision affects an individual.\n\nUnder the EU AI Act, credit scoring and several other uses are classified high-risk, which brings documentation, logging and human oversight obligations that are much cheaper to build in than to add later.',
+        sources: [
+          { label: 'EU AI Act', url: 'https://artificialintelligenceact.eu/the-act/' },
+          { label: 'Kangqore AI Governance', url: '/services/ai-governance' },
+        ],
+      },
+      {
+        q: 'What is the difference between this service and your MLOps service?',
+        a: 'This service decides what to model, builds it and proves whether it works. MLOps is the machinery that keeps models running once there are several of them: registries, pipelines, reproducible retraining, rollback.\n\nA first model does not need that machinery, and buying it early is a common way to spend six months on infrastructure before answering whether the model is any good. The signal that you need it is usually the third or fourth model, or the first one somebody outside the team depends on.\n\nMost engagements start here and move there. Deciding you need both on day one is a decision to defer the only question that matters, which is whether the prediction changes anything.',
+        sources: [
+          { label: 'Kangqore MLOps', url: '/services/mlops' },
+        ],
+      },
+      {
+        q: 'Do you use classical models or deep learning?',
+        a: 'Whichever wins on your data, and on tabular data that is usually a gradient-boosted tree. XGBoost, LightGBM and CatBoost remain hard to beat on structured business data, and they are cheaper to serve and far easier to explain.\n\nDeep learning earns its place when the input is genuinely high-dimensional: images, audio, free text, long sequences. Applied to a spreadsheet it costs more, explains less and rarely improves on the boosted tree.\n\nWe set a baseline first, usually something deliberately simple, and require anything more complex to beat it by enough to justify the operational cost. A model two points better and four times slower is not better.',
+        sources: [],
+      },
+      {
+        q: 'What happens when accuracy drops after deployment?',
+        a: 'First we establish which of three things happened, because the fixes are unrelated. The input data changed, the world changed, or the pipeline broke. Pipeline breakage is the most common and the least interesting, and it looks exactly like model decay from the outside.\n\nIf the world genuinely moved, retraining on recent data is usually the answer, and the confidence threshold may need moving with it so more cases route to a person while the new pattern is still thin.\n\nThe case that needs care is a model still accurate in aggregate but degraded for one segment. That is the failure mode monitoring is built to catch, and the one an overall score hides for longest.',
+        sources: [
+          { label: 'NIST AI Risk Management Framework', url: 'https://www.nist.gov/itl/ai-risk-management-framework' },
+        ],
+      },
+      {
+        q: 'Who owns the model after handover?',
+        a: 'You do, including the training code, the feature definitions, the evaluation results and the runbook. We do not hold a model behind an interface you cannot inspect, and nothing here requires our involvement to retrain.\n\nHandover means a repository somebody other than the author can run, tests that fail when the data shape changes, and a written account of what the model does badly. That last document is the one teams skip and the one that matters when a prediction is questioned.\n\nWhere we stay involved it is because you asked for monitoring or a retraining cadence to be run, not because the artifacts are ours.',
+        sources: [],
+      },
+    ],
+
+    // ── Engagement packages ──────────────────────────────────────────────────
+    servicePackages: [
+      {
+        name: 'Decision Review',
+        description: 'Two weeks. Which decisions in your business would move if a prediction existed, and which would not.',
+        duration: '2 weeks',
+        tier: 'Entry',
+        deliverables: ['Decision inventory ranked by value of being right', 'Data legibility assessment per candidate', 'An honest list of what a model cannot help with', 'Recommended first build'],
+      },
+      {
+        name: 'Feasibility Model',
+        description: 'Four to six weeks. One model, built properly, evaluated honestly, with the answer allowed to be no.',
+        duration: '4-6 weeks',
+        tier: 'Proof',
+        deliverables: ['Baseline and candidate models', 'Per-segment accuracy and confidence thresholds', 'Cost of false positives and negatives in your terms', 'Go or no-go with the reasoning'],
+      },
+      {
+        name: 'Production Build',
+        description: 'Eight to twelve weeks. The model behind an endpoint, wired into the decision, with monitoring somebody owns.',
+        duration: '8-12 weeks',
+        tier: 'Build',
+        deliverables: ['Deployed model and serving path', 'Per-segment drift monitoring and alerting', 'Explainability output shipped with each prediction', 'Runbook and handover'],
+      },
+      {
+        name: 'Model Portfolio',
+        description: 'Ongoing. Several models in production, retrained on measured degradation rather than on a calendar.',
+        duration: 'Ongoing',
+        tier: 'Scale',
+        deliverables: ['Registry and reproducible retraining', 'Per-model accuracy and drift reporting', 'Retraining triggered by degradation', 'Quarterly portfolio review'],
+      },
+      {
+        name: 'Model Audit',
+        description: 'Three weeks. An independent read on models you already run, including the ones nobody has validated since launch.',
+        duration: '3 weeks',
+        tier: 'Assurance',
+        deliverables: ['Re-validation on current data', 'Leakage and drift findings', 'Explainability and documentation gaps', 'Remediation plan by severity'],
+      },
+    ],
+
+
+    // The template default compares RULES-BASED AUTOMATION with AGENTIC AI and
+    // explains that "an agentic system evaluates the current state against a
+    // goal" -- an argument for a different service, rendered under a heading
+    // about data science.
+    comparisonTable: {
+      heading: 'The gap is not modeling. It is everything after it.',
+      lede: 'Both columns describe competent statistical work. They differ in whether anything downstream of the model was built.',
+      beforeLabel: 'ANALYSIS THAT STOPS AT THE DECK',
+      afterLabel: 'MODELS THAT RUN THE DECISION',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'DECK',
+      afterShort: 'PRODUCTION',
+      rows: [
+        {
+          dimension: 'What is delivered',
+          before: 'A slide carrying an accuracy score, and a recommendation nobody owns.',
+          after: 'A model behind an endpoint, the decision it feeds, and the person accountable for that decision named.',
+        },
+        {
+          dimension: 'Whether it survives new data',
+          before: 'Validated once against whatever sample was available, then trusted indefinitely.',
+          after: 'Monitored per segment, because an aggregate score stays flat while one population quietly drifts.',
+        },
+        {
+          dimension: 'Who can explain a result',
+          before: 'The analyst who built it, if they still work here.',
+          after: 'Feature contributions ship with the prediction, so the person acting on it can see what drove it.',
+          link: { label: 'AI Governance', to: '/services/ai-governance' },
+        },
+        {
+          dimension: 'Cost of being wrong',
+          before: 'Discovered when somebody finally questions the number, which is usually late.',
+          after: 'Bounded up front: a confidence threshold decides which cases the model answers and which go to a person.',
+        },
+        {
+          dimension: 'What handover looks like',
+          before: 'A notebook, a CSV, and a conversation you have to remember.',
+          after: 'A repository, a pipeline, tests, and a runbook that someone other than the author can follow.',
+          link: { label: 'MLOps', to: '/services/mlops' },
+        },
+      ],
+    },
     hideBadgeStrip: true,
+    architectureEyebrow: 'HOW A MODEL REACHES A DECISION',
+    architectureTitle: 'Four stages.',
+    architectureTitleHighlight: 'The last two are where projects die.',
+    architectureLede: 'Feature work and model selection are the visible part and the smaller part. Validation and the monitoring that follows deployment are what decide whether the thing is still correct in six months.',
+    architectureNodes: [
+      {
+        title: 'Data & Features',
+        description: 'Where most of the accuracy actually comes from. A feature built out of your domain knowledge beats a larger model on the same data more often than vendors admit.',
+        features: [
+          'Source profiling and quality checks before any modeling starts',
+          'Feature construction from domain knowledge, not only from columns',
+          'Leakage checks, because a model that saw the future in training will look excellent and fail live',
+          'A feature definition both the model and the analyst can read',
+        ],
+      },
+      {
+        title: 'Modeling',
+        description: 'Chosen against cost, latency and your ability to explain the result, not only against a validation score.',
+        features: [
+          'Gradient-boosted trees first on tabular data, which is most enterprise data',
+          'Deep learning where the input is genuinely high-dimensional',
+          'A baseline you have to beat, so improvement is measurable',
+          'Explainability decided before the model, not retrofitted after it',
+        ],
+      },
+      {
+        title: 'Validation',
+        description: 'Where the honest answer is often that the model is not good enough yet, which is cheaper to learn here than in production.',
+        features: [
+          'Cross-validation on splits that respect time, so the past does not leak into the future',
+          'Per-segment accuracy, not a single aggregate number',
+          'A confidence threshold set deliberately, deciding what routes to a person',
+          'Cost of a false positive and a false negative stated in your terms, not in F1',
+        ],
+      },
+      {
+        title: 'Deployment & Monitoring',
+        description: 'The stage that turns a result into a decision, and the one most often scoped out of the original project.',
+        features: [
+          'The prediction delivered where the decision is made, not into a separate dashboard',
+          'Drift watched per segment, with an alert somebody owns',
+          'Retraining triggered by measured degradation rather than by calendar',
+          'A runbook for the day the model is wrong and someone has to answer for it',
+        ],
+      },
+    ],
+
+    // The parity default named six industries but described them through
+    // "Risk Auditor Agent" and "Regulatory Compliance Agent" -- agentic naming
+    // on a data science page. `items` rather than `agents` keeps the neutral key.
+    industryHeading: 'Models built for',
+    industryHeadingHighlight: 'the decision your sector makes.',
+    industryLede: 'The modeling technique travels between industries. What does not travel is the cost of being wrong, and that is what sets the threshold.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Credit risk, fraud and early-warning models where the regulator will ask how a decision was reached.',
+        items: ['Probability-of-default and IFRS 9 staging models', 'Fraud scoring tuned so the review queue is workable', 'Adverse action reasons produced with the score'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Readmission risk, trial recruitment and demand models where a clinician stays in the loop by design.',
+        items: ['Readmission and deterioration risk scoring', 'Protocol-matched patient shortlists with the supporting record', 'Capacity and demand forecasting by site'],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Yield, demand and failure prediction against sensor histories that were never collected for modeling.',
+        items: ['Demand forecasting at SKU and plant level', 'Yield and scrap-rate drivers ranked by contribution', 'Failure prediction where the labels are sparse'],
+      },
+      {
+        industry: 'Retail & E-Commerce',
+        headline: 'Pricing, churn and assortment models measured on margin rather than on click-through.',
+        items: ['Price elasticity by product and channel', 'Churn scoring early enough to act before renewal', 'Lifetime value used for spend allocation'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Pricing, reserving and claims triage where the model has to be explainable to an actuary and an auditor.',
+        items: ['Technical pricing and rating factor analysis', 'Reserving support with uncertainty stated', 'Claims triage routing the marginal cases to a person'],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'Load forecasting and asset failure prediction where a wrong call has a physical cost.',
+        items: ['Short and medium-term load forecasting', 'Asset failure prediction on unbalanced data', 'Network loss and anomaly detection'],
+      },
+    ],
+
     capabilitiesLabel: 'DATA SCIENCE & AI SERVICES',
     capabilitiesSectionTitle: 'Our',
     capabilitiesSectionHighlight: 'Capabilities.',
@@ -1341,7 +1656,7 @@ export const servicesData = {
           'Retrieval-Augmented Generation (RAG): Build enterprise RAG architectures that combine foundation models with trusted organizational knowledge for accurate and grounded AI responses.',
           'Enterprise Knowledge Intelligence: Develop intelligent search, semantic retrieval, and knowledge management platforms that unlock enterprise information.',
           'Domain-Specific Generative AI: Create industry-specific Generative AI applications tailored to unique business processes, regulations, and operational requirements.',
-          'Multi-Agent AI Systems: Develop collaborative AI agent ecosystems capable of coordinating complex workflows, autonomous task execution, and enterprise orchestration.',
+          'Experiment Design & Causal Inference: Establish whether a change caused an outcome or merely accompanied it, using controlled experiments where they are possible and quasi-experimental methods where they are not.',
           'AI Workflow Automation: Integrate Generative AI into enterprise workflows to automate repetitive processes, improve productivity, and accelerate business operations.',
         ],
       },
