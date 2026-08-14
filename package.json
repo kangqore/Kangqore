@@ -33,7 +33,9 @@
     "check:images": "node scripts/generate-images.mjs --check",
     "check:seo": "npm run check:sitemap && npm run check:prerender && npm run check:images",
     "compress": "node scripts/compress-build.mjs",
-    "build:web": "cd frontend && npm run build && cd .. && npm run gen:all && npm run compress"
+    "build:web": "cd frontend && npm run build && cd .. && npm run gen:all && npm run compress",
+    "audit:page-quality": "node scripts/audit-page-quality.mjs",
+    "audit:page-quality:all": "node scripts/audit-page-quality.mjs --all"
   },
   "devDependencies": {
     "sharp": "^0.35.3"
