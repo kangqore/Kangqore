@@ -93,7 +93,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'currency',      type: 'enum',       required: false, enum: ['GBP', 'USD', 'EUR'], description: 'Currency' },
         ],
         allowedRoles: ['ADMIN', 'EXECUTIVE'],
-        toolCallable: false,
+        toolCallable: true,
         validationRules: [
           {
             condition: { leaf: { op: 'gte', field: 'params.value', value: 0 } },
@@ -113,7 +113,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'notes',             type: 'string',     required: false, description: 'Approval notes' },
         ],
         allowedRoles: ['ADMIN', 'EXECUTIVE'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'CHANGE_EMPLOYEE',
@@ -127,7 +127,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'reason',        type: 'string',     required: true,  description: 'Business reason for change' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'CREATE_TICKET',
@@ -157,7 +157,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'reference',   type: 'string',     required: false, description: 'PO or reference number' },
         ],
         allowedRoles: ['ADMIN', 'EXECUTIVE'],
-        toolCallable: false,
+        toolCallable: true,
       },
     ],
   },
@@ -242,7 +242,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'agenda',          type: 'string', required: false, description: 'Meeting agenda' },
         ],
         allowedRoles: ['ADMIN', 'TEAM', 'EXECUTIVE'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'GENERATE_REPORT',
@@ -304,7 +304,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'draft',        type: 'boolean', required: false, description: 'Open as draft PR' },
         ],
         allowedRoles: ['ADMIN', 'TEAM'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'DEPLOY_SERVICE',
@@ -318,7 +318,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'notifyChannel', type: 'string', required: false, description: 'Slack channel to notify' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
         validationRules: [
           {
             condition: {
@@ -343,7 +343,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'immediate',     type: 'boolean', required: false, description: 'Skip pre-flight checks' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'CREATE_INCIDENT',
@@ -369,7 +369,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'notifyTeam',   type: 'boolean', required: false, description: 'Send Slack notification before restarting' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
     ],
   },
@@ -393,7 +393,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'config',        type: 'string', required: false, description: 'Configuration JSON (provider-specific)' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'SCALE_RESOURCE',
@@ -406,7 +406,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'reason',     type: 'string', required: false, description: 'Reason for scaling' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'ROTATE_SECRET',
@@ -418,7 +418,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'notifyOwner',   type: 'boolean', required: false, description: 'Notify secret owner by email' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'CREATE_ENVIRONMENT',
@@ -431,7 +431,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'ttlHours',  type: 'number', required: false, min: 1, max: 720, description: 'Auto-destroy after N hours (0 = permanent)' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'MODIFY_CONFIGURATION',
@@ -445,7 +445,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'restartRequired', type: 'boolean', required: false, description: 'Service restart needed after change' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
     ],
   },
@@ -468,7 +468,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'notes',          type: 'string',     required: false, description: 'Approval notes' },
         ],
         allowedRoles: ['ADMIN', 'EXECUTIVE'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'FLAG_TRANSACTION',
@@ -496,7 +496,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'urgency',       type: 'enum',   required: false, enum: ['STANDARD', 'URGENT', 'CRITICAL'], description: 'Urgency level' },
         ],
         allowedRoles: ['ADMIN', 'TEAM', 'EXECUTIVE'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'RECONCILE_ACCOUNT',
@@ -509,7 +509,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'tolerance',  type: 'number', required: false, min: 0, max: 100, description: 'Acceptable variance % before flagging' },
         ],
         allowedRoles: ['ADMIN', 'EXECUTIVE'],
-        toolCallable: false,
+        toolCallable: true,
       },
     ],
   },
@@ -534,7 +534,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'equipmentProfile', type: 'enum',       required: false, enum: ['STANDARD', 'ENGINEERING', 'EXECUTIVE', 'FIELD'], description: 'Equipment bundle' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'APPROVE_LEAVE',
@@ -547,7 +547,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'notes',       type: 'string',     required: false, description: 'Notes for the employee' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'CREATE_EMPLOYEE_CASE',
@@ -561,7 +561,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'assignedTo',   type: 'string',     required: false, description: 'HR case manager name' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
       {
         name: 'TRIGGER_TRAINING',
@@ -575,7 +575,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           { name: 'notifyEmployee', type: 'boolean',    required: false, description: 'Send notification to employee' },
         ],
         allowedRoles: ['ADMIN'],
-        toolCallable: false,
+        toolCallable: true,
       },
     ],
   },
@@ -686,6 +686,13 @@ export async function seedEnterpriseActions(): Promise<{ created: number; skippe
       })
 
       if (existing) {
+        // Sync toolCallable flag on existing actions (safe update)
+        if (existing.toolCallable !== action.toolCallable) {
+          await prisma.ontologyAction.update({
+            where: { id: existing.id },
+            data: { toolCallable: action.toolCallable },
+          })
+        }
         skipped++
         continue
       }
