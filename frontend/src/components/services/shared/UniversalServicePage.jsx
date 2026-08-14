@@ -1097,7 +1097,7 @@ const featureMicros   = service.featureMicros
                   <div 
                     key={i} 
                     aria-hidden={isDuplicate ? 'true' : undefined} 
-                    className="relative p-[1px] flex-shrink-0 cursor-default group hover:-translate-y-1 transition-transform duration-300 shadow-2xl"
+                    className="relative p-[1px] flex-shrink-0 cursor-default group hover:-translate-y-1 transition-transform duration-300"
                   >
                     {/* Outer Border Layer (provides the gray border) */}
                     <div 
@@ -1117,8 +1117,8 @@ const featureMicros   = service.featureMicros
                       
                       {/* HUD Inner Square */}
                       <div className="relative flex items-center justify-center w-6 h-6 border border-white/20 flex-shrink-0 bg-gradient-to-br from-white/10 to-transparent">
-                         {/* Glowing dot */}
-                         <div className="w-1.5 h-1.5 bg-white/50 shadow-[0_0_6px_1px_rgba(255,255,255,0.3)]" />
+                         {/* Dot without glowing shadow */}
+                         <div className="w-1.5 h-1.5 bg-white/50" />
                       </div>
 
                       {/* Data Values */}
