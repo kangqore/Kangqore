@@ -61,7 +61,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
         toolCallable: true,
         validationRules: [
           {
-            condition: { leaf: { op: 'contains', field: 'params.email', value: '@' } },
+            condition: { leaf: { source: 'param', op: 'contains', field: 'email', value: '@' } },
             errorMessage: 'Email must be a valid address',
             severity: 'BLOCK', order: 0,
           },
@@ -96,7 +96,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
         toolCallable: true,
         validationRules: [
           {
-            condition: { leaf: { op: 'gte', field: 'params.value', value: 0 } },
+            condition: { leaf: { source: 'param', op: 'gte', field: 'value', value: 0 } },
             errorMessage: 'Contract value must be 0 or greater',
             severity: 'BLOCK', order: 0,
           },
@@ -184,7 +184,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
         toolCallable: true,
         validationRules: [
           {
-            condition: { leaf: { op: 'contains', field: 'params.to', value: '@' } },
+            condition: { leaf: { source: 'param', op: 'contains', field: 'to', value: '@' } },
             errorMessage: 'Recipient must be a valid email address',
             severity: 'BLOCK', order: 0,
           },
@@ -285,7 +285,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
         toolCallable: true,
         validationRules: [
           {
-            condition: { leaf: { op: 'contains', field: 'params.repo', value: '/' } },
+            condition: { leaf: { source: 'param', op: 'contains', field: 'repo', value: '/' } },
             errorMessage: 'Repository must be in org/repo format (e.g. kangqore/backend)',
             severity: 'BLOCK', order: 0,
           },
@@ -323,8 +323,8 @@ export const ACTION_LIBRARY: CategoryDef[] = [
           {
             condition: {
               or: [
-                { leaf: { op: 'neq', field: 'params.environment', value: 'production' } },
-                { leaf: { op: 'exists', field: 'params.reason' } },
+                { leaf: { source: 'param', op: 'neq', field: 'environment', value: 'production' } },
+                { leaf: { source: 'param', op: 'exists', field: 'reason' } },
               ],
             },
             errorMessage: 'Production deployments require a reason',
@@ -691,6 +691,19 @@ export async function seedEnterpriseActions(): Promise<{ created: number; skippe
           await prisma.ontologyAction.update({
             where: { id: existing.id },
             data: { toolCallable: action.toolCallable },
+          })
+        }
+        // Sync validation rules — delete stale and re-insert from manifest
+        if (action.validationRules) {
+          await prisma.actionValidationRule.deleteMany({ where: { actionId: existing.id } })
+          await prisma.actionValidationRule.createMany({
+            data: action.validationRules.map(r => ({
+              actionId: existing.id,
+              condition: r.condition as any,
+              errorMessage: r.errorMessage,
+              severity: r.severity,
+              order: r.order,
+            })),
           })
         }
         skipped++
