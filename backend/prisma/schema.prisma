@@ -135,6 +135,8 @@ model User {
 
   // URGI™ Platform
   unifiedProfile  UnifiedRelationshipProfile?
+  // AEGIS — data marking clearances granted to this user (e.g. ["CONFIDENTIAL", "RESTRICTED"])
+  clearances      String[]                   @default([])
 
   @@map("users")
 }
@@ -4883,6 +4885,24 @@ model OntologyRelationship {
   @@index([targetId])
   @@index([validFrom, validTo])
   @@map("ontology_relationships")
+}
+
+// Enforces typed cardinality rules on OntologyRelationship writes.
+// ONE_TO_ONE: source→type has at most one, target←type has at most one
+// ONE_TO_MANY: source→type has at most one, target←type unlimited
+// MANY_TO_ONE: source→type unlimited, target←type has at most one
+// MANY_TO_MANY: no count constraint (unique edge still enforced by @@unique above)
+model OntologyCardinalityRule {
+  id               String   @id @default(cuid())
+  sourceType       String
+  targetType       String
+  relationshipType String
+  cardinality      String   // ONE_TO_ONE | ONE_TO_MANY | MANY_TO_ONE | MANY_TO_MANY
+  createdAt        DateTime @default(now())
+
+  @@unique([sourceType, targetType, relationshipType])
+  @@index([relationshipType])
+  @@map("ontology_cardinality_rules")
 }
 
 model OntologyEvent {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Brain, CheckCircle, AlertTriangle, XCircle, Download, ChevronDown, ChevronUp, Clock, TrendingUp, Zap, Flag, Radio, Database, Pencil, Check } from 'lucide-react'
+import { Brain, CheckCircle, AlertTriangle, XCircle, Download, ChevronDown, ChevronUp, Clock, TrendingUp, Zap, Flag, Radio, Database, Pencil, Check, Play, RefreshCw, Shield, Lock, Network } from 'lucide-react'
 import { api } from '@lib/api'
 
 type ControlStatus = 'PASS' | 'WARN' | 'FAIL'
@@ -611,6 +611,140 @@ function BreachReadinessScore() {
   )
 }
 
+// ── Phase 1 Governance Test Suite ─────────────────────────────────────────────
+
+interface TestResult {
+  id: string; name: string; category: string
+  passed: boolean; reason: string; durationMs: number
+}
+interface SuiteResult {
+  passed: number; failed: number; total: number; score: number
+  results: TestResult[]; runAt: string
+}
+
+const CATEGORY_ICON: Record<string, React.ReactNode> = {
+  identity:    <Lock className="w-3.5 h-3.5" />,
+  marking:     <Shield className="w-3.5 h-3.5" />,
+  approval:    <CheckCircle className="w-3.5 h-3.5" />,
+  cardinality: <Network className="w-3.5 h-3.5" />,
+  policy:      <Zap className="w-3.5 h-3.5" />,
+  action:      <Play className="w-3.5 h-3.5" />,
+}
+
+function GovernanceTestSuite() {
+  const [running, setRunning] = useState(false)
+  const [result, setResult] = useState<SuiteResult | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  async function runTests() {
+    setRunning(true); setError(null)
+    try {
+      const res = await api.get('/admin/aegis/compliance/run')
+      setResult(res.data)
+    } catch (e: any) {
+      setError(e?.response?.data?.error ?? e.message)
+    } finally {
+      setRunning(false)
+    }
+  }
+
+  const scoreColor = !result ? '#64748b'
+    : result.score >= 90 ? '#10b981'
+    : result.score >= 70 ? '#f59e0b'
+    : '#ef4444'
+
+  return (
+    <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+      <div className="flex items-center gap-3 px-5 py-4" style={{ borderBottom: '1px solid var(--os-border)' }}>
+        <Shield className="w-4 h-4 text-red-400" />
+        <div className="flex-1">
+          <p className="text-sm font-bold text-[var(--os-text-1)]">Phase 1 Governance Kill Zone — Adversarial Test Suite</p>
+          <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">12 live tests: identity, markings, approval, cardinality, policy, action validation</p>
+        </div>
+        {result && (
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="text-right">
+              <p className="text-2xl font-black tabular-nums" style={{ color: scoreColor }}>{result.score}<span className="text-sm">%</span></p>
+              <p className="text-[9px] font-bold" style={{ color: scoreColor }}>{result.passed}/{result.total} passed</p>
+            </div>
+          </div>
+        )}
+        <button onClick={runTests} disabled={running}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-bold transition-all disabled:opacity-50 flex-shrink-0"
+          style={{ background: running ? 'rgba(239,68,68,0.1)' : '#ef444415', color: '#ef4444', border: '1px solid #ef444430' }}>
+          {running
+            ? <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Running…</>
+            : <><Play className="w-3.5 h-3.5" /> Run Tests</>
+          }
+        </button>
+      </div>
+
+      {error && (
+        <div className="px-5 py-3 flex items-center gap-2" style={{ background: 'rgba(239,68,68,0.05)', borderBottom: '1px solid rgba(239,68,68,0.2)' }}>
+          <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+          <p className="text-xs text-red-400">{error}</p>
+        </div>
+      )}
+
+      {!result && !running && (
+        <div className="px-5 py-8 flex flex-col items-center gap-2">
+          <Shield className="w-8 h-8 text-[var(--os-text-2)]" />
+          <p className="text-sm text-[var(--os-text-2)]">Click "Run Tests" to verify all Phase 1 governance controls live</p>
+          <p className="text-[10px] text-[var(--os-text-2)]">Each test is self-contained and non-destructive — safe to run in production</p>
+        </div>
+      )}
+
+      {running && (
+        <div className="p-5 grid grid-cols-1 gap-2">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="h-10 rounded-xl animate-pulse" style={{ background: 'var(--os-surface-0)', animationDelay: `${i * 50}ms` }} />
+          ))}
+        </div>
+      )}
+
+      {result && (
+        <div className="divide-y" style={{ borderColor: 'var(--os-border)' }}>
+          {result.results.map(t => (
+            <div key={t.id} className="flex items-start gap-3 px-5 py-3">
+              <div className="flex-shrink-0 mt-0.5">
+                {t.passed
+                  ? <CheckCircle className="w-4 h-4 text-emerald-400" />
+                  : <XCircle className="w-4 h-4 text-red-400" />}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-mono font-bold text-[var(--os-text-2)]">{t.id}</span>
+                  <span className="text-[12px] font-semibold text-[var(--os-text-1)]">{t.name}</span>
+                  <span className="flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded"
+                    style={{ background: 'var(--os-surface-0)', color: 'var(--os-text-2)', border: '1px solid var(--os-border)' }}>
+                    {CATEGORY_ICON[t.category]} {t.category}
+                  </span>
+                </div>
+                <p className="text-[11px] mt-1 leading-relaxed"
+                  style={{ color: t.passed ? 'var(--os-text-2)' : '#ef4444' }}>
+                  {t.reason}
+                </p>
+              </div>
+              <span className="text-[9px] text-[var(--os-text-2)] flex-shrink-0 mt-0.5 tabular-nums">{t.durationMs}ms</span>
+            </div>
+          ))}
+          <div className="px-5 py-3 flex items-center justify-between">
+            <p className="text-[10px] text-[var(--os-text-2)]">
+              Run at {new Date(result.runAt).toLocaleString()} · {result.failed > 0
+                ? <span className="text-red-400 font-bold">{result.failed} test{result.failed > 1 ? 's' : ''} failed — governance kill zone not closed</span>
+                : <span className="text-emerald-400 font-bold">All tests passed — Phase 1 exit condition met</span>}
+            </p>
+            <button onClick={runTests} disabled={running}
+              className="flex items-center gap-1 text-[10px] text-[var(--os-text-2)] hover:text-violet-400 transition-colors">
+              <RefreshCw className="w-3 h-3" /> Re-run
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function AegisCompliancePage() {
   const [frameworkFilter, setFrameworkFilter] = useState<Framework | 'all'>('all')
   const [statusFilter, setStatusFilter] = useState<ControlStatus | 'issues'>('issues')
@@ -659,6 +793,9 @@ export function AegisCompliancePage() {
 
   return (
     <div className="space-y-5">
+
+      {/* Phase 1 Governance Kill Zone — adversarial test suite */}
+      <GovernanceTestSuite />
 
       {/* Certification Roadmap */}
       <CertificationRoadmap />
