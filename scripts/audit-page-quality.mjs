@@ -62,9 +62,13 @@ const BOILERPLATE = /\b(enterprise|organizational|framework|frameworks|governanc
 
 // Copy belonging to /services/agentic-ai that other pages used to inherit.
 // Kept as a regression check: this class of defect was live on 56 pages.
+//
+// "your industry." is deliberately NOT listed. It was the second line of the
+// agentic heading, but every department default written in #368 ends the same
+// way ("Intelligence built for / your industry."), so matching it alone flags
+// the fix as the defect. "Agents built for" is the part that was ever wrong.
 const AGENTIC_DEFAULTS = [
   'Agents built for',
-  'your industry.',
   'Your next workflow runs itself.',
   'One agent in production.',
   'what a production agent looks like',
