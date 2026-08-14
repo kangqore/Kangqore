@@ -53,14 +53,14 @@ const FAQTeleprompter = ({ faqs }) => {
   if (!faqs || faqs.length === 0) return null;
 
   return (
-    <div className="absolute inset-0 bg-white/[0.03] backdrop-blur-xl p-4 flex flex-col font-mono text-[10px] border border-white/10">
+    <div className="absolute inset-0 bg-white/[0.03] backdrop-blur-xl p-4 flex flex-col font-mono text-[11px] border border-white/10">
       {/* Header */}
       <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-brand-gradient animate-pulse" />
-          <span className="text-white/60 font-bold uppercase tracking-wider text-[8px]">FAQ FEED</span>
+          <span className="text-white/60 font-bold uppercase tracking-wider text-[11px]">FAQ FEED</span>
         </div>
-        <span className="text-white/60 text-[8px]">Q: {faqIdx + 1}/{faqs.length}</span>
+        <span className="text-white/60 text-[11px]">Q: {faqIdx + 1}/{faqs.length}</span>
       </div>
 
       {/* Content */}
@@ -78,7 +78,7 @@ const FAQTeleprompter = ({ faqs }) => {
             className="text-white/80 leading-relaxed overflow-y-auto pr-1 whitespace-pre-wrap scrollbar-hide" 
             style={{ maxHeight: '100%' }}
           >
-            <span className="text-white/40 mr-2 shrink-0">[A]</span>
+            <span className="text-white/50 mr-2 shrink-0">[A]</span>
             {displayText}
             {isTyping && <span className="inline-block w-1 h-3 bg-brand-gradient ml-1 animate-pulse" />}
           </div>
@@ -143,7 +143,7 @@ const CapabilityCycler = ({ capabilities }) => {
         <div className="absolute top-0 left-0 right-0 p-5">
           <div className="flex items-center gap-2 mb-1.5 opacity-80">
             <Cpu className="w-3 h-3 text-white" />
-            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/90">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
               Capability {capIdx + 1}/{capabilities.length}
             </p>
           </div>
