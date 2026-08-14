@@ -1187,13 +1187,28 @@ export const servicesData = {
       'Multi-modal intelligence — NLP, vision, speech, knowledge graphs & decision engines',
       'Proven delivery: 120+ models in production with measurable business outcomes',
     ],
+    // ── eQORE concierge ────────────────────────────────────────────────────
+    // The section carries the worst text density on the page: about a thousand
+    // pixels of the second-most-read screen position for roughly a hundred and
+    // ten words, a third of what its neighbours hold. The prompts were already
+    // service-specific but generic in register -- "What governance controls come
+    // built in?" is a question about no service in particular, and it is the
+    // exact boilerplate the rest of this page spent four passes removing.
+    //
+    // These four are the questions this service actually gets asked, and each
+    // restates an argument the page makes elsewhere: legibility decides
+    // feasibility, labeled volume decides cost, the confidence threshold decides
+    // what a person still sees, and the eight-area taxonomy is how work is
+    // scoped. They are also the only part of this block a crawler can read.
     conciergeChips: [
-      'Which cognitive computing capability fits our business challenge?',
-      'How fast can you deploy a production NLP or vision system?',
-      'What governance controls come built in?',
-      'Can you build cognitive systems for our specific industry?',
-      'Book a Cognitive Computing strategy session',
+      'Can you read handwritten forms and scanned documents, or only clean text?',
+      'How many labeled examples do we need before a model is worth training?',
+      'What happens to the cases the model is not confident about?',
+      'Which of the eight capability areas fits the data we actually have?',
+      'Book a data legibility review',
     ],
+    conciergeHeading: 'From the documents nobody can read at volume to a solution direction',
+    conciergeIntro: 'Describe the material you need read — the contracts, the scans, the recordings, the sensor traces — and eQORE will point you at the capability area that applies, what a machine can reliably extract from it, and where a person still has to decide.',
     // Was four rows, roughly a dozen tool names and 98 words in 781px, with no
     // indication of when you would choose any of them. Built to the same
     // standard as the equivalent section on /services/ai-governance: five

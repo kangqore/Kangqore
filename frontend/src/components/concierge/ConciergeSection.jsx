@@ -118,7 +118,15 @@ const DEFAULT_PROMPTS = [
   "Contact Us...",
 ];
 
-const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
+// `heading` is the lead-in only; the "Ask eQORE AI" mark and its trademark stay
+// fixed so the branding cannot be overridden away. Both fall back to the copy
+// that shipped on every page, so a service that sets neither is unchanged.
+const ConciergeSection = ({
+  inverted = false,
+  suggestedPrompts,
+  heading = 'From Business Questions to Solution Direction',
+  intro = 'eQORE helps leaders identify relevant Kangqore capabilities, understand possible solution paths, and connect with the right team for deeper consultation.',
+}) => {
   const prompts = suggestedPrompts || DEFAULT_PROMPTS;
   const {
     messages,
@@ -246,10 +254,10 @@ const ConciergeSection = ({ inverted = false, suggestedPrompts }) => {
             id="eqore-ai-heading"
             className={`text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight max-w-5xl ${inverted ? 'text-white' : 'text-gray-900 dark:text-white'}`}
           >
-            From Business Questions to Solution Direction — Ask <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI</span><sup className="bg-brand-gradient bg-clip-text text-transparent text-[0.45em] ml-0.5">™</sup>
+            {heading} — Ask <span className="bg-brand-gradient bg-clip-text text-transparent">eQORE AI</span><sup className="bg-brand-gradient bg-clip-text text-transparent text-[0.45em] ml-0.5">™</sup>
           </h2>
           <p className={`mt-6 text-lg leading-relaxed max-w-3xl ${inverted ? 'text-white/70' : 'text-gray-600 dark:text-gray-400'}`}>
-            eQORE helps leaders identify relevant Kangqore capabilities, understand possible solution paths, and connect with the right team for deeper consultation.
+            {intro}
           </p>
         </div>
 
