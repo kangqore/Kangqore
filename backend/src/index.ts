@@ -285,6 +285,9 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 import adminOntologyRoutes from './routes/admin-ontology';
 app.use('/api/admin/ontology', adminOntologyRoutes);
+
+import intelligenceRoutes from './routes/intelligence';
+app.use('/api/admin/intelligence', intelligenceRoutes);
 import adminKimmpGatewayRoutes from './routes/admin-kimmp-gateway';
 app.use('/api/admin/kimmp-gateway', adminKimmpGatewayRoutes);
 app.use('/api/admin/integrations', integrationsRouter);

@@ -1,0 +1,189 @@
+// AEGIS Authorization Engine — Universal Ontology Gateway
+//
+// Every read and every write to OntologyObject / OntologyRelationship must
+// pass through here. There is no alternate write path.
+//
+// Enforcement chain (in order):
+//   Identity / Clearance → Policy (ALLOW / DENY / REQUIRE_APPROVAL) → Cardinality → Commit
+//
+// SYSTEM_ACTOR bypasses policy and approval (internal sync operations) but
+// cardinality is always enforced — even internal services cannot violate schema.
+
+import { prisma } from '../lib/prisma'
+import { checkPolicy } from './policyEngine.service'
+import { CardinalityEngine } from './cardinalityEngine.service'
+import { CdcService } from '../lib/cdc/cdcService'
+
+export interface GatewayActor {
+  id: string
+  type: 'HUMAN' | 'KIMMP' | 'AEGIS' | 'API' | 'SYSTEM'
+  clearances: string[]  // data-marking labels this actor can read/write
+}
+
+// SYSTEM_ACTOR: used by internal sync services (canvasOntologyBridge, pipelines, etc.)
+// These bypass policy and approval but still respect cardinality.
+export const SYSTEM_ACTOR: GatewayActor = {
+  id: 'system',
+  type: 'SYSTEM',
+  clearances: ['*'],
+}
+
+export type GatewayStatus = 'OK' | 'DENIED' | 'PENDING_APPROVAL' | 'CARDINALITY_VIOLATION'
+
+export interface GatewayResult<T = any> {
+  status: GatewayStatus
+  data?: T
+  pendingId?: string
+  reason?: string
+}
+
+// ── Marking helpers ─────────────────────────────────────────────────────────
+
+function canAccess(markings: string[], clearances: string[]): boolean {
+  if (!markings || markings.length === 0) return true  // unmarked = public within tenant
+  if (clearances.includes('*')) return true             // SYSTEM sees all
+  return markings.every(m => clearances.includes(m))
+}
+
+// ── Policy gate ─────────────────────────────────────────────────────────────
+
+async function getGovernanceActionId(): Promise<string | null> {
+  const type = await prisma.ontologyObjectType.findUnique({ where: { name: 'System' } })
+  if (!type) return null
+  const action = await prisma.ontologyAction.findUnique({
+    where: { typeId_name: { typeId: type.id, name: 'GOVERNANCE_BLOCK' } },
+  })
+  return action?.id ?? null
+}
+
+async function policyGate(
+  trigger: string,
+  params: Record<string, any>,
+  actor: GatewayActor,
+  objectId?: string,
+): Promise<GatewayResult | null> {
+  if (actor.type === 'SYSTEM') return null  // system bypasses policy
+
+  const policy = await checkPolicy({ trigger, params, actorId: actor.id })
+
+  if (policy.effect === 'DENY') {
+    return { status: 'DENIED', reason: `Policy "${policy.policyName}": ${policy.reason}` }
+  }
+
+  if (policy.effect === 'REQUIRE_APPROVAL') {
+    const actionId = await getGovernanceActionId()
+    if (actionId) {
+      const pending = await prisma.pendingApproval.create({
+        data: {
+          actionId,
+          ...(objectId ? { objectId } : {}),
+          actorId: actor.id,
+          actorType: actor.type,
+          params,
+          policyId: policy.policyId ?? undefined,
+          policyName: policy.policyName ?? undefined,
+          reason: policy.reason,
+        },
+      })
+      return { status: 'PENDING_APPROVAL', pendingId: pending.id, reason: policy.reason }
+    }
+    // No system action seeded yet — fail safe: deny rather than permit
+    return { status: 'DENIED', reason: 'Approval required but system not configured — run /actions/seed-system first' }
+  }
+
+  return null  // ALLOW or NOTIFY — proceed
+}
+
+// ── Gateway ─────────────────────────────────────────────────────────────────
+
+export const OntologyGateway = {
+
+  // ── Read helpers (marking filter) ──────────────────────────────────────
+
+  filterObjects<T extends { markings?: any }>(objects: T[], actor: GatewayActor): T[] {
+    return objects.filter(o => canAccess((o.markings as string[]) ?? [], actor.clearances))
+  },
+
+  canRead(markings: string[] | null | undefined, actor: GatewayActor): boolean {
+    return canAccess(markings ?? [], actor.clearances)
+  },
+
+  // ── Object writes ──────────────────────────────────────────────────────
+
+  async createObject(actor: GatewayActor, data: Record<string, any>): Promise<GatewayResult> {
+    const gate = await policyGate('CREATE_OBJECT', data, actor)
+    if (gate) return gate
+
+    const obj = await prisma.ontologyObject.create({ data: data as any })
+    CdcService.emit('ontology_objects', 'INSERT', null, obj).catch(() => {})
+    return { status: 'OK', data: obj }
+  },
+
+  async updateObject(actor: GatewayActor, id: string, data: Record<string, any>): Promise<GatewayResult> {
+    // Marking check before policy: can this actor even see the object?
+    const existing = await prisma.ontologyObject.findUnique({ where: { id }, select: { markings: true } })
+    if (existing && !canAccess((existing.markings as string[]) ?? [], actor.clearances)) {
+      return { status: 'DENIED', reason: 'Insufficient clearance for this object\'s markings' }
+    }
+
+    const gate = await policyGate('UPDATE_OBJECT', { id, ...data }, actor, id)
+    if (gate) return gate
+
+    const obj = await prisma.ontologyObject.update({ where: { id }, data })
+    CdcService.emit('ontology_objects', 'UPDATE', null, obj).catch(() => {})
+    return { status: 'OK', data: obj }
+  },
+
+  // ── Relationship writes ────────────────────────────────────────────────
+
+  async createRelationship(
+    actor: GatewayActor,
+    data: {
+      sourceId: string; targetId: string; sourceType: string; targetType: string
+      relationshipType: string; [k: string]: any
+    },
+  ): Promise<GatewayResult> {
+    // Cardinality is always enforced — even for SYSTEM actors
+    const card = await CardinalityEngine.check(
+      data.sourceType, data.targetType, data.relationshipType,
+      data.sourceId, data.targetId,
+    )
+    if (!card.valid) return { status: 'CARDINALITY_VIOLATION', reason: card.violation! }
+
+    const gate = await policyGate('CREATE_RELATIONSHIP', data, actor)
+    if (gate) return gate
+
+    const rel = await prisma.ontologyRelationship.create({ data: data as any })
+    CdcService.emit('ontology_relationships', 'INSERT', null, rel).catch(() => {})
+    return { status: 'OK', data: rel }
+  },
+
+  async upsertRelationship(
+    actor: GatewayActor,
+    key: { sourceId: string; targetId: string; sourceType: string; targetType: string; relationshipType: string },
+    upsertData: { create: Record<string, any>; update: Record<string, any> },
+  ): Promise<GatewayResult> {
+    // Only check cardinality when creating (not updating an existing edge)
+    const existing = await prisma.ontologyRelationship.findUnique({
+      where: { sourceId_targetId_relationshipType: { sourceId: key.sourceId, targetId: key.targetId, relationshipType: key.relationshipType } },
+    })
+    if (!existing) {
+      const card = await CardinalityEngine.check(
+        key.sourceType, key.targetType, key.relationshipType,
+        key.sourceId, key.targetId,
+      )
+      if (!card.valid) return { status: 'CARDINALITY_VIOLATION', reason: card.violation! }
+    }
+
+    const gate = await policyGate('CREATE_RELATIONSHIP', key, actor)
+    if (gate) return gate
+
+    const rel = await prisma.ontologyRelationship.upsert({
+      where: { sourceId_targetId_relationshipType: { sourceId: key.sourceId, targetId: key.targetId, relationshipType: key.relationshipType } },
+      create: upsertData.create as any,
+      update: upsertData.update as any,
+    })
+    CdcService.emit('ontology_relationships', 'UPSERT', null, rel).catch(() => {})
+    return { status: 'OK', data: rel }
+  },
+}
