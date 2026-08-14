@@ -2371,7 +2371,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ eQORE AI CONCIERGE ══════════════════════ */}
       <div id="svc-concierge">
-        <ConciergeSection inverted suggestedPrompts={service.conciergeChips || [
+        <ConciergeSection inverted heading={service.conciergeHeading} intro={service.conciergeIntro} suggestedPrompts={service.conciergeChips || [
           `What is ${service.name}?`,
           `What capabilities does Kangqore offer for ${service.name}?`,
           `How does the ${service.name} engagement process work?`,
