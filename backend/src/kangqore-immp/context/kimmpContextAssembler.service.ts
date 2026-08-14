@@ -101,10 +101,14 @@ export class KimmpContextAssembler {
         select: { id: true, objective: true, progressPct: true, status: true, deadline: true },
       }).catch(() => []),
 
-      // Ontology graph snapshot
+      // Ontology graph snapshot — KIMMP is an internal system actor; it may
+      // read objects with no marking but must not surface CONFIDENTIAL/RESTRICTED
+      // objects into AI context unless the owning user has that clearance.
+      // We exclude marked objects from the AI snapshot entirely (fail-safe).
       opts.skipGraph ? Promise.resolve({ objects: [], relationships: [] }) :
       Promise.all([
         prisma.ontologyObject.findMany({
+          where: { markings: { isEmpty: true } },
           take: 50,
           include: { type: true },
           orderBy: { createdAt: 'desc' },
