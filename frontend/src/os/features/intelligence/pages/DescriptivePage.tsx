@@ -3,7 +3,7 @@
 
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { api } from '@/lib/api'
+import { api } from '@lib/api'
 import { RefreshCw, Folder, Users, AlertTriangle, Activity } from 'lucide-react'
 import { SeverityBadge, SignalCard, SectionHeader } from '../components'
 

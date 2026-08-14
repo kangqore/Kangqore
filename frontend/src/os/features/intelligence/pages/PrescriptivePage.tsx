@@ -3,7 +3,7 @@
 
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '@/lib/api'
+import { api } from '@lib/api'
 import { RefreshCw, Sparkles, CheckCircle, XCircle, Zap } from 'lucide-react'
 import { SeverityBadge, SignalCard } from '../components'
 
