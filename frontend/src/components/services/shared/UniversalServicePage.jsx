@@ -1097,19 +1097,9 @@ const featureMicros   = service.featureMicros
                   <div 
                     key={i} 
                     aria-hidden={isDuplicate ? 'true' : undefined} 
-                    className="relative p-[1px] flex-shrink-0 cursor-default group hover:-translate-y-1 transition-transform duration-300"
+                    className="relative flex items-center gap-3 px-3 py-2 flex-shrink-0 cursor-default group hover:-translate-y-1 transition-all duration-300 border border-white/20 hover:border-white/40"
+                    style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))' }}
                   >
-                    {/* Outer Border Layer (provides the gray border) */}
-                    <div 
-                      className="absolute inset-0 bg-white/20 group-hover:bg-white/40 transition-colors duration-300 z-0"
-                      style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))' }}
-                    />
-                    
-                    {/* Inner Background Layer (Transparent) */}
-                    <div 
-                      className="relative z-10 flex items-center gap-3 bg-transparent px-3 py-2 w-full h-full"
-                      style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))' }}
-                    >
                       {/* Top-Left Accent Bracket */}
                       <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/50" />
                       {/* Bottom-Right Accent Bracket */}
@@ -1130,7 +1120,6 @@ const featureMicros   = service.featureMicros
                           {cap.label}
                         </span>
                       </div>
-                    </div>
                   </div>
                 );
               })}
