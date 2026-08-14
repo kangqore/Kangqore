@@ -36,7 +36,7 @@ services:
       dockerfile: backend/Dockerfile
     container_name: kangqore-core-backend
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       PORT: 3000
       DATABASE_URL: postgresql://kangqore_user:${POSTGRES_PASSWORD:-kangqore_password}@postgres:5432/kangqore_core
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
@@ -57,14 +57,43 @@ services:
       TAVILY_API_KEY: ${TAVILY_API_KEY:-}
       KIMMP_SCOUT_CADENCE_TENDERS: ${KIMMP_SCOUT_CADENCE_TENDERS:-60}
       KIMMP_SCOUT_CADENCE_COMPETITORS: ${KIMMP_SCOUT_CADENCE_COMPETITORS:-120}
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-}
+      TEAMS_WEBHOOK_URL: ${TEAMS_WEBHOOK_URL:-}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      GITHUB_DEFAULT_REPO: ${GITHUB_DEFAULT_REPO:-}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY:-}
+      SENDGRID_FROM_EMAIL: ${SENDGRID_FROM_EMAIL:-noreply@kangqore.com}
+      DEPLOY_WEBHOOK_URL: ${DEPLOY_WEBHOOK_URL:-}
+      PAGERDUTY_ROUTING_KEY: ${PAGERDUTY_ROUTING_KEY:-}
     ports:
       - "5050:3000"
     depends_on:
       - postgres
       - redis
       - intelligence-layer
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/src
+          target: /app/backend/src
+        - action: sync
+          path: ./backend/tsconfig.json
+          target: /app/backend/tsconfig.json
+        - action: sync
+          path: ./frontend
+          target: /app/frontend
+          ignore:
+            - node_modules
+            - build
+    command: sh -c "npx prisma generate && npx tsx src/index.ts"
     volumes:
       - ./backend/uploads:/app/backend/uploads
+      - ./backend/src:/app/backend/src
+      - ./backend/prisma:/app/backend/prisma
+      - ./frontend:/app/frontend
+      - ./backend/tsconfig.json:/app/backend/tsconfig.json
+      - ./backend/package.json:/app/backend/package.json
+      - ./backend/package-lock.json:/app/backend/package-lock.json
     networks:
       - kangqore-network
 
