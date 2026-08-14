@@ -127,12 +127,35 @@ const GROUP_LABEL = {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const words = (t) => t.trim().split(/\s+/).filter(Boolean);
 const normTokens = (t) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter(Boolean);
-const stripHtml = (h) => {
-  const noScript = h.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '');
-  return noScript.replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-};
+
+/**
+ * Read a prerender snapshot the way the crawler it was written for reads it.
+ *
+ * This used to strip tags with regular expressions, which CodeQL flagged (a
+ * `<script[\s\S]*?</script>` filter does not survive malformed or unusual tags,
+ * and a single pass of `<[^>]+>` is incomplete sanitization). Both objections
+ * are correct about accuracy as well as safety, and there is no reason to hand
+ * roll an HTML parser here when a browser is already open.
+ *
+ * JavaScript is disabled deliberately: the snapshot exists for crawlers that do
+ * not execute it, so this measures exactly what they receive.
+ */
+async function readSnapshot(browser, slug) {
+  const file = path.join(SNAP_DIR, `${slug}.html`);
+  if (!fs.existsSync(file)) return { text: '', words: 0, citations: 0 };
+  const snapCtx = await browser.newContext({ javaScriptEnabled: false });
+  const page = await snapCtx.newPage();
+  try {
+    await page.goto(pathToFileURL(file).href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const out = await page.evaluate(() => ({
+      text: document.body.innerText,
+      citations: document.querySelectorAll('a[href^="http"]').length,
+    }));
+    return { text: out.text, words: out.text.trim().split(/\s+/).filter(Boolean).length, citations: out.citations };
+  } finally {
+    await snapCtx.close();
+  }
+}
 
 function allSlugs() {
   const src = fs.readFileSync(DATA, 'utf8');
@@ -157,7 +180,7 @@ function derivation(a, b) {
 }
 
 // ─── Measurement ──────────────────────────────────────────────────────────────
-async function measure(ctx, slug) {
+async function measure(browserRef, ctx, slug) {
   const page = await ctx.newPage();
   const pageErrors = [];
   page.on('pageerror', (e) => pageErrors.push(e.message));
@@ -227,14 +250,10 @@ async function measure(ctx, slug) {
   await page.close();
 
   // ── Snapshot coverage: what a crawler that never runs JS actually receives ──
-  const snapPath = path.join(SNAP_DIR, `${slug}.html`);
-  let snapWords = 0; let snapCitations = 0; let snapText = '';
-  if (fs.existsSync(snapPath)) {
-    const raw = fs.readFileSync(snapPath, 'utf8');
-    snapText = stripHtml(raw);
-    snapWords = words(snapText).length;
-    snapCitations = (raw.match(/<a [^>]*href="https?:\/\//g) || []).length;
-  }
+  const snap = await readSnapshot(browserRef, slug);
+  const snapWords = snap.words;
+  const snapCitations = snap.citations;
+  const snapText = snap.text;
 
   const pageWords = words(dom.text).length;
   const boilerHits = (dom.text.match(BOILERPLATE) || []).length;
@@ -256,8 +275,9 @@ async function measure(ctx, slug) {
     prev = h.level;
   }
 
-  const questionStrings = dom.heads.filter((h) => h.text.endsWith('?')).length
-    + (snapText.match(/\?/g) || []).length * 0; // headings only; snapshot text repeats them
+  // Headings only. The snapshot repeats the same questions, so counting it too
+  // would double every FAQ.
+  const questionStrings = dom.heads.filter((h) => h.text.endsWith('?')).length;
 
   const faqHeads = dom.heads.filter((h) => h.level === 3 && h.text.endsWith('?'));
   const faqIdx = dom.sections.findIndex((s) => /FAQ|frequently asked|hard questions/i.test(s.heading));
@@ -418,7 +438,7 @@ if (COMPARE) {
 const results = [];
 for (const slug of slugs) {
   try {
-    const m = await measure(ctx, slug);
+    const m = await measure(browser, ctx, slug);
     const sc = score(m);
     const deriv = compareText ? derivation(m.snapText || m.pageText || '', compareText) : null;
     results.push({ m, sc, deriv });
