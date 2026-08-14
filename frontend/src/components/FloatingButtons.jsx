@@ -229,7 +229,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
       {/* Unified Omni-Action Trigger - Moved to RIGHT */}
       <div 
-        className={`fixed bottom-[calc(2.25rem-0.2cm)] sm:bottom-[calc(2.75rem-0.2cm)] right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu || isErootActive ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
+        className={`fixed bottom-[calc(2.25rem-0.4cm)] sm:bottom-[calc(2.75rem-0.4cm)] right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu || isErootActive ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
       >
         {/* Standalone Scroll to Top - Rendered first to be at the very bottom in flex-col-reverse */}
         {isVisible && (

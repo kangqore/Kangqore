@@ -34,6 +34,7 @@ import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DMode
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
 import { MLOps3DModel } from '../../ui/MLOps3DModel';
 import { GenAI3DModel } from '../../ui/GenAI3DModel';
+import ServiceGlassCards from './ServiceGlassCards';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -1036,8 +1037,8 @@ const featureMicros   = service.featureMicros
           </div>
 
           <div className="relative z-10 h-full flex flex-col justify-center">
-            <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-16">
-              <div className={`${service.heroMaxWidth || 'max-w-[62%]'} mt-[1cm]`}>
+            <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-16 flex items-center justify-between">
+              <div className={`${service.heroMaxWidth || 'max-w-[62%]'} mt-[1cm] shrink-0`}>
 
                 {/* Typewriter badge */}
                 <div className="inline-flex items-center gap-3 mb-10 mt-[1cm]">
@@ -1076,6 +1077,11 @@ const featureMicros   = service.featureMicros
                 </p>
 
               </div>
+              
+              <ServiceGlassCards 
+                faqs={faqs} 
+                capabilities={service.capabilityAreas || service.keyFeatures.map((f, i) => ({ title: f, desc: featureMicros[i] }))} 
+              />
             </div>
           </div>
 
