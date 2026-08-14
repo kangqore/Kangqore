@@ -1097,31 +1097,40 @@ const featureMicros   = service.featureMicros
                   <div 
                     key={i} 
                     aria-hidden={isDuplicate ? 'true' : undefined} 
-                    className="relative flex items-center gap-4 bg-[#060a12] border border-white/15 rounded-2xl p-2 pr-6 shadow-2xl flex-shrink-0 cursor-default hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
+                    className="relative p-[1px] flex-shrink-0 cursor-default group hover:-translate-y-1 transition-transform duration-300 shadow-2xl"
                   >
-                    {/* Background Image overlay */}
-                    {cap.bgImage && (
-                      <ResponsiveImage
-                        src={cap.bgImage}
-                        alt=""
-                        aria-hidden="true"
-                        loading="lazy"
-                        sizes="300px"
-                        className="absolute inset-0 w-full h-full object-cover object-center opacity-40 group-hover:opacity-65 group-hover:scale-105 transition-all duration-500 pointer-events-none"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#060a12]/90 via-[#060a12]/60 to-[#060a12]/90 pointer-events-none z-0" />
-
-                    <div
-                      className="relative z-10 w-12 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{
-                        background: `linear-gradient(135deg, ${cap.color}55 0%, ${cap.color}cc 100%)`,
-                        boxShadow: `0 4px 14px ${cap.color}55`,
-                      }}
+                    {/* Outer Border Layer (provides the cyan border) */}
+                    <div 
+                      className="absolute inset-0 bg-[#22d3ee]/30 group-hover:bg-[#22d3ee]/70 transition-colors duration-300 z-0"
+                      style={{ clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))' }}
+                    />
+                    
+                    {/* Inner Background Layer */}
+                    <div 
+                      className="relative z-10 flex items-center gap-5 bg-[#060a12] px-5 py-4 w-full h-full"
+                      style={{ clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))' }}
                     >
-                      <Icon className="w-5 h-5 text-white drop-shadow" />
+                      {/* Top-Left Accent Bracket */}
+                      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#22d3ee]" />
+                      {/* Bottom-Right Accent Bracket */}
+                      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#22d3ee]" />
+                      
+                      {/* HUD Inner Square */}
+                      <div className="relative flex items-center justify-center w-12 h-12 border border-[#22d3ee]/30 flex-shrink-0 bg-gradient-to-br from-[#22d3ee]/10 to-transparent">
+                         {/* Glowing cyan dot */}
+                         <div className="w-2.5 h-2.5 bg-[#22d3ee] shadow-[0_0_10px_2px_rgba(34,211,238,0.6)]" />
+                      </div>
+
+                      {/* Data Values */}
+                      <div className="flex flex-col justify-center pr-4">
+                        <span className="text-white font-mono font-bold text-2xl leading-none">
+                          {String((i % HERO_CAPS.length) + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-[#22d3ee] font-mono text-[10px] tracking-widest uppercase mt-1.5 leading-tight">
+                          {cap.label}
+                        </span>
+                      </div>
                     </div>
-                    <span className="relative z-10 text-[14px] font-bold text-white/95 tracking-tight whitespace-nowrap drop-shadow-sm">{cap.label}</span>
                   </div>
                 );
               })}
