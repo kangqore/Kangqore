@@ -10,6 +10,7 @@ import { checkPolicy } from './policyEngine.service'
 import { CardinalityEngine } from './cardinalityEngine.service'
 import { AegisBudget } from '../kangqore-aegis/aegisBudget.service'
 import { getIO } from '../socket'
+import { dispatchToConnectors } from './connectors/registry'
 
 // ─── Typed parameters ───────────────────────────────────────────────────────
 
@@ -422,6 +423,12 @@ export const ActionEngine = {
           applied.push({ effectId: effect.id, effectType: 'WEBHOOK', error: e.message })
         }
       }
+
+      // Connector dispatch — route action to real integrations (Slack, GitHub, email, etc.)
+      const connectorResults = await dispatchToConnectors(action.name, params, input.actorId, actorType)
+      for (const cr of connectorResults) {
+        applied.push({ effectType: 'CONNECTOR', connector: cr.connector, status: cr.status, message: cr.message, data: cr.data })
+      }
     }
 
     const execution = await prisma.actionExecution.create({
@@ -504,6 +511,12 @@ export const ActionEngine = {
         } catch (e: any) {
           applied.push({ effectId: effect.id, effectType: 'WEBHOOK', error: e.message })
         }
+      }
+
+      // Connector dispatch — also fires on approval so approved actions reach real systems
+      const connectorResults = await dispatchToConnectors(pending.action.name, params, pending.actorId, pending.actorType)
+      for (const cr of connectorResults) {
+        applied.push({ effectType: 'CONNECTOR', connector: cr.connector, status: cr.status, message: cr.message, data: cr.data })
       }
     }
 

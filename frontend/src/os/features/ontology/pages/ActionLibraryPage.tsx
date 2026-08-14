@@ -3,7 +3,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Lightning, MagnifyingGlass, Play, Sparkle, Buildings, ChatText,
   GitBranch, Cloud, CurrencyDollar, Users, Brain, ArrowCounterClockwise,
-  CheckCircle, Warning, Lock, Robot,
+  CheckCircle, Warning, Lock, Robot, Plugs, PlugsConnected, Envelope,
+  SlackLogo, GithubLogo, Wrench,
 } from '@phosphor-icons/react'
 import { api } from '@lib/api'
 import { ActionRunModal } from '../components/ActionRunModal'
@@ -41,6 +42,18 @@ interface LibraryData {
   totalActions: number
   totalExecutions: number
   toolCallable: number
+}
+
+interface ConnectorStatus {
+  configured: boolean
+  vars: string[]
+}
+
+interface ConnectorHealthData {
+  health: Record<string, ConnectorStatus>
+  connectors: Array<{ name: string; actions: string[] }>
+  configured: number
+  total: number
 }
 
 // ── Icon map ──────────────────────────────────────────────────────────────────
@@ -196,6 +209,73 @@ function ActionCard({
   )
 }
 
+// ── Connector panel ───────────────────────────────────────────────────────────
+
+const CONNECTOR_META: Record<string, { label: string; Icon: React.ElementType; color: string }> = {
+  slack:       { label: 'Slack',       Icon: SlackLogo,       color: '#4A154B' },
+  teams:       { label: 'Teams',       Icon: ChatText,        color: '#6264A7' },
+  github:      { label: 'GitHub',      Icon: GithubLogo,      color: '#24292F' },
+  email:       { label: 'Email',       Icon: Envelope,        color: '#00875A' },
+  engineering: { label: 'Engineering', Icon: Wrench,          color: '#e2445c' },
+}
+
+function ConnectorPanel({ data }: { data: ConnectorHealthData }) {
+  const connectors = Object.entries(data.health)
+  const configuredCount = data.configured
+
+  return (
+    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-1)] p-4">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <PlugsConnected className="w-4 h-4 text-[var(--os-text-2)]" />
+          <span className="text-xs font-semibold text-[var(--os-text-1)]">Integration Connectors</span>
+        </div>
+        <span className="text-[10px] text-[var(--os-text-2)]">
+          {configuredCount}/{data.total} configured
+        </span>
+      </div>
+      <div className="grid grid-cols-5 gap-2">
+        {connectors.map(([key, status]) => {
+          const meta = CONNECTOR_META[key]
+          if (!meta) return null
+          const { label, Icon, color } = meta
+          return (
+            <div
+              key={key}
+              className="flex flex-col items-center gap-1.5 rounded-lg border p-3 text-center"
+              style={{
+                borderColor: status.configured ? `${color}55` : 'var(--os-border)',
+                background: status.configured ? `${color}11` : undefined,
+              }}
+            >
+              <Icon
+                className="w-5 h-5"
+                style={{ color: status.configured ? color : 'var(--os-text-2)' }}
+              />
+              <span className="text-[10px] font-semibold" style={{ color: status.configured ? color : 'var(--os-text-2)' }}>
+                {label}
+              </span>
+              {status.configured ? (
+                <span className="flex items-center gap-0.5 text-[9px] text-emerald-400">
+                  <CheckCircle className="w-2.5 h-2.5" weight="fill" /> Live
+                </span>
+              ) : (
+                <span className="text-[9px] text-[var(--os-text-2)]">{status.vars[0]}</span>
+              )}
+            </div>
+          )
+        })}
+      </div>
+      {configuredCount === 0 && (
+        <p className="text-[10px] text-[var(--os-text-2)] mt-3">
+          Add env vars to your <span className="font-mono">.env</span> file to enable live delivery.
+          Actions still execute, audit, and govern — connectors add real-world delivery on top.
+        </p>
+      )}
+    </div>
+  )
+}
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function ActionLibraryPage() {
@@ -207,6 +287,11 @@ export default function ActionLibraryPage() {
   const { data, isLoading, error } = useQuery<LibraryData>({
     queryKey: ['action-library'],
     queryFn: () => api.get('/admin/ontology/actions/library').then(r => r.data),
+  })
+
+  const { data: connectorData } = useQuery<ConnectorHealthData>({
+    queryKey: ['action-connectors'],
+    queryFn: () => api.get('/admin/ontology/actions/connectors').then(r => r.data),
   })
 
   const seedMutation = useMutation({
@@ -277,6 +362,9 @@ export default function ActionLibraryPage() {
         <StatTile label="AI-Callable" value={data.toolCallable} sub="KIMMP can invoke" />
         <StatTile label="Executions" value={data.totalExecutions.toLocaleString()} sub="all-time runs" />
       </div>
+
+      {/* Connector health */}
+      {connectorData && <ConnectorPanel data={connectorData} />}
 
       {/* Seed prompt when empty */}
       {isEmpty && (

@@ -12,6 +12,7 @@ import { CdcService } from '../lib/cdc/cdcService'
 import { ObjectSetService } from '../services/objectSet.service'
 import { ActionEngine } from '../services/actionEngine.service'
 import { seedEnterpriseActions, ACTION_LIBRARY } from '../services/actionLibrary.seed'
+import { connectorHealth, listConnectors } from '../services/connectors/registry'
 import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.service'
 import { OntologyGeoService } from '../services/ontologyGeo.service'
 import { OntologyPipelineService } from '../services/ontologyPipeline.service'
@@ -544,6 +545,18 @@ router.post('/actions/library/seed', ...guard, async (_req, res) => {
   try {
     const result = await seedEnterpriseActions()
     res.json({ ok: true, ...result })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// GET /actions/connectors — connector health + capability map
+router.get('/actions/connectors', ...guard, async (_req, res) => {
+  try {
+    const health = connectorHealth()
+    const connectors = listConnectors()
+    const configured = Object.values(health).filter(c => c.configured).length
+    res.json({ health, connectors, configured, total: Object.keys(health).length })
   } catch (e: any) {
     res.status(500).json({ error: e.message })
   }
