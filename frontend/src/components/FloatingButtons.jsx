@@ -251,7 +251,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
           }`}
           aria-label="Toggle Actions"
         >
-          {isOmniOpen ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+          {isOmniOpen ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5 translate-y-[0.2cm]" />}
         </button>
 
         <div className={`flex flex-col gap-4 transition-all duration-500 origin-bottom ${
