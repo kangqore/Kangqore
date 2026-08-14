@@ -6,20 +6,25 @@ const FAQTeleprompter = ({ faqs }) => {
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
 
+  const currentFaq = faqs[faqIdx];
+  const fullText = currentFaq?.a || '';
+  // Calculate dynamic duration: 30ms per character + 4 seconds pause at the end
+  const durationMs = Math.max(8000, (fullText.length * 30) + 4000);
+  const durationSec = (durationMs / 1000).toFixed(1);
+
   useEffect(() => {
     if (!faqs || faqs.length === 0) return;
     
-    const interval = setInterval(() => {
+    const timer = setTimeout(() => {
       setFaqIdx((prev) => (prev + 1) % faqs.length);
-    }, 8000); // cycle every 8s
+    }, durationMs);
 
-    return () => clearInterval(interval);
-  }, [faqs]);
+    return () => clearTimeout(timer);
+  }, [faqIdx, faqs, durationMs]);
 
   // Typewriter effect
   useEffect(() => {
     if (!faqs || faqs.length === 0) return;
-    const fullText = faqs[faqIdx]?.a || '';
     setDisplayText('');
     setIsTyping(true);
 
@@ -52,7 +57,11 @@ const FAQTeleprompter = ({ faqs }) => {
 
       {/* Content */}
       <div className="flex-1 flex flex-col gap-2 overflow-hidden relative">
-        <div key={faqIdx} className="animate-[faq-crawl_8s_linear_forwards] flex flex-col w-full h-full">
+        <div 
+          key={faqIdx} 
+          className="flex flex-col w-full h-full"
+          style={{ animation: `faq-crawl ${durationSec}s linear forwards` }}
+        >
           <div className="font-bold text-cyan-400 mb-1 flex gap-2 items-start">
             <span className="shrink-0">[Q]</span> 
             <span className="line-clamp-2">{faqs[faqIdx]?.q}</span>
@@ -68,7 +77,11 @@ const FAQTeleprompter = ({ faqs }) => {
       {/* Bottom Status */}
       <div className="mt-auto pt-2 flex items-center justify-between border-t border-white/5">
         <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-          <div key={`faq-progress-${faqIdx}`} className="h-full bg-cyan-500/50 animate-[progress_8s_linear]" />
+          <div 
+            key={`faq-progress-${faqIdx}`} 
+            className="h-full bg-cyan-500/50"
+            style={{ animation: `progress ${durationSec}s linear` }}
+          />
         </div>
       </div>
     </div>
