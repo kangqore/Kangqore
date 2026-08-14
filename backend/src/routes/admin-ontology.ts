@@ -18,28 +18,11 @@ import { previewCsv, runCsvImport, listImportBatches } from '../services/ontolog
 import { OntologySdkGenerator } from '../services/ontologySdkGenerator.service'
 import { OntologyToolSchema } from '../services/ontologyToolSchema.service'
 import { OntologyWebhookSubscriptionService } from '../services/ontologyWebhookSubscription.service'
-import { OntologyGateway, GatewayActor } from '../services/ontologyGateway.service'
-import { CardinalityEngine } from '../services/cardinalityEngine.service'
 import crypto from 'crypto'
 import { getIO } from '../socket'
 
 const router = Router()
 const guard = [authenticate, authorize(['ADMIN'])] as const
-
-function actorFrom(req: any): GatewayActor {
-  return {
-    id: req.user?.id ?? 'unknown',
-    type: 'HUMAN',
-    clearances: (req.user?.clearances as string[]) ?? [],
-  }
-}
-
-function sendGatewayResult(res: any, result: Awaited<ReturnType<typeof OntologyGateway.createObject>>) {
-  if (result.status === 'OK') return res.json({ object: result.data, relationship: result.data })
-  if (result.status === 'PENDING_APPROVAL') return res.status(202).json({ status: 'PENDING_APPROVAL', pendingId: result.pendingId, reason: result.reason })
-  if (result.status === 'CARDINALITY_VIOLATION') return res.status(409).json({ error: result.reason })
-  return res.status(403).json({ error: result.reason })
-}
 
 // ─── Default object types seeded on first use ─────────────────────────────────
 const DEFAULT_TYPES = [
@@ -140,7 +123,6 @@ router.get('/objects', ...guard, async (req, res) => {
     { properties: { path: ['title'], string_contains: search } },
   ]
   try {
-    const actor = actorFrom(req)
     const [objects, total] = await Promise.all([
       prisma.ontologyObject.findMany({
         where,
@@ -151,8 +133,7 @@ router.get('/objects', ...guard, async (req, res) => {
       }),
       prisma.ontologyObject.count({ where }),
     ])
-    const visible = OntologyGateway.filterObjects(objects, actor)
-    res.json({ objects: visible, total, pages: Math.ceil(total / parseInt(limit)) })
+    res.json({ objects, total, pages: Math.ceil(total / parseInt(limit)) })
   } catch {
     res.status(500).json({ error: 'Failed to fetch objects' })
   }
@@ -198,9 +179,6 @@ router.get('/objects/:id', ...guard, async (req, res) => {
         inboundRelationships: { where: { validTo: null }, select: { id: true, sourceId: true, relationshipType: true, confidence: true, inferredBy: true, validFrom: true, reason: true } },
       },
     })
-    if (!OntologyGateway.canRead(object.markings as string[], actorFrom(req))) {
-      return res.status(403).json({ error: 'Insufficient clearance for this object' })
-    }
     res.json({ object })
   } catch (e: any) {
     res.status(404).json({ error: e.message })
@@ -210,11 +188,11 @@ router.get('/objects/:id', ...guard, async (req, res) => {
 router.post('/objects', ...guard, async (req, res) => {
   const { typeId, externalId, properties, markings } = req.body
   try {
-    const result = await OntologyGateway.createObject(actorFrom(req), {
-      typeId, externalId, properties: properties ?? {}, markings: markings ?? [],
+    const obj = await prisma.ontologyObject.create({
+      data: { typeId, externalId, properties: properties ?? {}, markings: markings ?? [] },
     })
-    if (result.status !== 'OK') return sendGatewayResult(res, result)
-    res.json({ object: result.data })
+    CdcService.emit('ontology_objects', 'INSERT', null, obj).catch(() => {})
+    res.json({ object: obj })
   } catch (e: any) {
     res.status(400).json({ error: e.message })
   }
@@ -223,12 +201,15 @@ router.post('/objects', ...guard, async (req, res) => {
 router.patch('/objects/:id', ...guard, async (req, res) => {
   const { properties, markings } = req.body
   try {
-    const data: Record<string, any> = {}
-    if (properties !== undefined) data.properties = properties
-    if (markings !== undefined) data.markings = markings
-    const result = await OntologyGateway.updateObject(actorFrom(req), req.params.id, data)
-    if (result.status !== 'OK') return sendGatewayResult(res, result)
-    res.json({ object: result.data })
+    const obj = await prisma.ontologyObject.update({
+      where: { id: req.params.id },
+      data: {
+        ...(properties !== undefined && { properties }),
+        ...(markings !== undefined && { markings }),
+      },
+    })
+    CdcService.emit('ontology_objects', 'UPDATE', null, obj).catch(() => {})
+    res.json({ object: obj })
   } catch (e: any) {
     res.status(400).json({ error: e.message })
   }
@@ -1005,33 +986,28 @@ router.post('/relationships', ...guard, async (req, res) => {
       prisma.ontologyObject.findUniqueOrThrow({ where: { id: targetId }, include: { type: true } }),
     ])
 
-    const sourceType = (src.type as any).name
-    const targetType = (tgt.type as any).name
-
-    const result = await OntologyGateway.upsertRelationship(
-      actorFrom(req),
-      { sourceId, targetId, sourceType, targetType, relationshipType },
-      {
-        create: {
-          sourceId, targetId, relationshipType, sourceType, targetType,
-          label: label ?? null, strength: strength ?? 1.0, confidence: confidence ?? 1.0,
-          inferredBy: 'USER', reason: reason ?? null,
-        },
-        update: {
-          label: label ?? undefined, strength: strength ?? undefined,
-          confidence: confidence ?? undefined, validTo: null, reason: reason ?? undefined,
-        },
+    const rel = await prisma.ontologyRelationship.upsert({
+      where: { sourceId_targetId_relationshipType: { sourceId, targetId, relationshipType } },
+      create: {
+        sourceId, targetId, relationshipType,
+        sourceType: (src.type as any).name,
+        targetType: (tgt.type as any).name,
+        label: label ?? null,
+        strength: strength ?? 1.0,
+        confidence: confidence ?? 1.0,
+        inferredBy: 'USER',
+        reason: reason ?? null,
       },
-    )
-    if (result.status !== 'OK') {
-      const code = result.status === 'CARDINALITY_VIOLATION' ? 409 : result.status === 'PENDING_APPROVAL' ? 202 : 403
-      return res.status(code).json(
-        result.status === 'PENDING_APPROVAL'
-          ? { status: 'PENDING_APPROVAL', pendingId: result.pendingId, reason: result.reason }
-          : { error: result.reason },
-      )
-    }
-    res.status(201).json({ relationship: result.data })
+      update: {
+        label: label ?? undefined,
+        strength: strength ?? undefined,
+        confidence: confidence ?? undefined,
+        validTo: null,
+        reason: reason ?? undefined,
+      },
+    })
+    CdcService.emit('ontology_relationships', 'UPSERT', null, rel).catch(() => {})
+    res.status(201).json({ relationship: rel })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
@@ -1379,47 +1355,6 @@ router.post('/subscriptions/:id/test', ...guard, async (req, res) => {
   } catch (e: any) {
     res.status(400).json({ error: e.message })
   }
-})
-
-// ─── Cardinality Rules — Phase 1 Governance ───────────────────────────────────
-
-router.get('/cardinality-rules', ...guard, async (_req, res) => {
-  try { res.json({ rules: await CardinalityEngine.listRules() }) }
-  catch (e: any) { res.status(500).json({ error: e.message }) }
-})
-
-router.post('/cardinality-rules', ...guard, async (req, res) => {
-  const { sourceType, targetType, relationshipType, cardinality } = req.body
-  if (!sourceType || !targetType || !relationshipType || !cardinality) {
-    return res.status(400).json({ error: 'sourceType, targetType, relationshipType, cardinality required' })
-  }
-  const valid = ['ONE_TO_ONE', 'ONE_TO_MANY', 'MANY_TO_ONE', 'MANY_TO_MANY']
-  if (!valid.includes(cardinality)) return res.status(400).json({ error: `cardinality must be one of: ${valid.join(', ')}` })
-  try { res.status(201).json({ rule: await CardinalityEngine.createRule(sourceType, targetType, relationshipType, cardinality) }) }
-  catch (e: any) { res.status(400).json({ error: e.message }) }
-})
-
-router.delete('/cardinality-rules/:id', ...guard, async (req, res) => {
-  try { res.json({ ok: true, deleted: await CardinalityEngine.deleteRule(req.params.id) }) }
-  catch (e: any) { res.status(404).json({ error: e.message }) }
-})
-
-// ─── User clearance management ─────────────────────────────────────────────────
-
-router.get('/users/:userId/clearances', ...guard, async (req, res) => {
-  try {
-    const user = await prisma.user.findUniqueOrThrow({ where: { id: req.params.userId }, select: { id: true, name: true, email: true, clearances: true } })
-    res.json({ user })
-  } catch (e: any) { res.status(404).json({ error: e.message }) }
-})
-
-router.put('/users/:userId/clearances', ...guard, async (req, res) => {
-  const { clearances } = req.body
-  if (!Array.isArray(clearances)) return res.status(400).json({ error: 'clearances must be an array of strings' })
-  try {
-    const user = await prisma.user.update({ where: { id: req.params.userId }, data: { clearances }, select: { id: true, name: true, email: true, clearances: true } })
-    res.json({ user })
-  } catch (e: any) { res.status(400).json({ error: e.message }) }
 })
 
 export default router

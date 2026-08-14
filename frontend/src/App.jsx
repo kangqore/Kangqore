@@ -140,7 +140,6 @@ const WaandaModule       = React.lazy(() => import('./os/features/waanda').then(
 const DashboardHome      = React.lazy(() => import('./os/features/overview').then(m => ({ default: m.DashboardHome })));
 const AgentLogsModule    = React.lazy(() => import('./os/features/agent-logs').then(m => ({ default: m.AgentLogsModule })));
 const SystemsModule      = React.lazy(() => import('./os/features/systems').then(m => ({ default: m.SystemsModule })));
-const IntelligenceModule = React.lazy(() => import('./os/features/intelligence').then(m => ({ default: m.IntelligenceModule })));
 const WorkModule         = React.lazy(() => import('./os/features/work').then(m => ({ default: m.WorkModule })));
 const SettingsModule     = React.lazy(() => import('./os/features/settings').then(m => ({ default: m.SettingsModule })));
 const SchedulingModule   = React.lazy(() => import('./os/features/scheduling').then(m => ({ default: m.SchedulingModule })));
@@ -293,7 +292,6 @@ function AppContent() {
             <Route path="agent-studio/*"   element={<AgentStudioModule />}   />
             <Route path="agent-logs"       element={<AgentLogsModule />}     />
             <Route path="systems/*"        element={<SystemsModule />}       />
-            <Route path="intelligence/*"   element={<IntelligenceModule />}  />
             <Route path="work/*"           element={<WorkModule />}          />
             <Route path="scheduling/*"     element={<SchedulingModule />}    />
             <Route path="bids/*"           element={<BidsModule />}             />

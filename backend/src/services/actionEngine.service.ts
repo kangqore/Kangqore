@@ -7,7 +7,6 @@ import { Prisma } from '@prisma/client'
 import axios from 'axios'
 import { prisma } from '../lib/prisma'
 import { checkPolicy } from './policyEngine.service'
-import { CardinalityEngine } from './cardinalityEngine.service'
 import { AegisBudget } from '../kangqore-aegis/aegisBudget.service'
 import { getIO } from '../socket'
 
@@ -197,16 +196,11 @@ async function applyDbEffect(tx: Prisma.TransactionClient, effect: { effectType:
         tx.ontologyObjectType.findUnique({ where: { id: ctx.object.typeId }, select: { name: true } }),
         tx.ontologyObject.findUnique({ where: { id: targetId }, select: { type: { select: { name: true } } } }),
       ])
-      const srcTypeName = sourceType?.name ?? 'Unknown'
-      const tgtTypeName = target?.type?.name ?? 'Unknown'
-      const relType = config.relationshipType ?? 'RELATED_TO'
-      const card = await CardinalityEngine.check(srcTypeName, tgtTypeName, relType, ctx.object.id, targetId)
-      if (!card.valid) throw new Error(`Cardinality violation: ${card.violation}`)
       const rel = await tx.ontologyRelationship.create({
         data: {
           sourceId: ctx.object.id, targetId,
-          sourceType: srcTypeName, targetType: tgtTypeName,
-          relationshipType: relType,
+          sourceType: sourceType?.name ?? 'Unknown', targetType: target?.type?.name ?? 'Unknown',
+          relationshipType: config.relationshipType ?? 'RELATED_TO',
           label: config.label ?? undefined,
           inferredBy: ctx.actorType === 'HUMAN' ? 'USER' : ctx.actorType,
         },

@@ -37,7 +37,6 @@ export const authenticate = async (
         name: true,
         company: true,
         role: true,
-        clearances: true,
       }
     });
 

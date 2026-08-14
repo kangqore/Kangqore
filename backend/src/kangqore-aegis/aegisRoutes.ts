@@ -14,7 +14,6 @@ import { AegisBudget }                  from './aegisBudget.service'
 import { aegisConfig }                  from './aegisConfig'
 import { verifyAccessToken }            from '../services/token.service'
 import { prisma }                       from '../lib/prisma'
-import { runComplianceTests }           from './compliance/aegisComplianceTestSuite'
 
 export const aegisRouter = Router()
 
@@ -372,21 +371,4 @@ aegisRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) =
     overBudget: usage.overBudget, hardDeny: usage.hardDeny,
     since: usage.since.toISOString(),
   })
-})
-
-// ── Phase 1 Compliance Test Suite ─────────────────────────────────────────────
-// Runs 12 adversarial governance tests and returns a scored report.
-// Each test is self-contained and cleans up its own fixtures.
-
-aegisRouter.get('/compliance/run', async (req: Request, res: Response) => {
-  const auth = req.headers.authorization
-  if (!auth?.startsWith('Bearer ')) return res.status(401).json({ error: 'Auth required' })
-  const payload = verifyAccessToken(auth.substring(7)) as any
-  if (!payload || payload.role !== 'ADMIN') return res.status(403).json({ error: 'ADMIN only' })
-  try {
-    const result = await runComplianceTests()
-    res.json(result)
-  } catch (e: any) {
-    res.status(500).json({ error: e.message })
-  }
 })
