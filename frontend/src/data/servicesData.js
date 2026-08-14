@@ -1308,6 +1308,26 @@ export const servicesData = {
     ],
     hidePartnershipModel: true,
 
+    // ── Section headings that were still template defaults ──────────────────
+    // The outcomes block had an eyebrow and no h2, so it was the one section
+    // missing from the heading outline entirely.
+    outcomesEyebrow: 'WHAT THESE ENGAGEMENTS CHANGED',
+    outcomesHeading: 'The measure is not accuracy.',
+    outcomesHeadingHighlight: 'It is what happened next.',
+
+    // "Five ways to start. One partner throughout." is true of every service
+    // here. This page argues that you should not buy the machinery before you
+    // know the model is any good, so the heading says that.
+    engagementEyebrow: 'WHERE PROGRAMS ACTUALLY START',
+    engagementHeading: 'Start with one decision.',
+    engagementHeadingHighlight: 'Add models when the first one earns it.',
+    engagementLede: 'Almost nobody should begin with a model portfolio. The useful first question is whether a single prediction would change a single decision, and that is answerable in weeks rather than quarters.',
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Eight questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+
     // ── Toolchain ────────────────────────────────────────────────────────────
     // The parity default described a stack "powering cognitive computing,
     // machine learning, and AI governance" -- three services, one of which is
@@ -1493,6 +1513,7 @@ export const servicesData = {
     // goal" -- an argument for a different service, rendered under a heading
     // about data science.
     comparisonTable: {
+      eyebrow: 'WHERE THESE PROGRAMS STALL',
       heading: 'The gap is not modeling. It is everything after it.',
       lede: 'Both columns describe competent statistical work. They differ in whether anything downstream of the model was built.',
       beforeLabel: 'ANALYSIS THAT STOPS AT THE DECK',

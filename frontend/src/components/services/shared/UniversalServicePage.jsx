@@ -2891,10 +2891,20 @@ const featureMicros   = service.featureMicros
           <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
             <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
-              <div className="flex items-center gap-4 mb-16">
+              {/* The section shipped with an eyebrow and no h2 at all, so it was
+                  the one block on the page absent from the heading outline.
+                  Both are opt-in: a service that sets neither renders exactly
+                  as before. */}
+              <div className={`flex items-center gap-4 ${service.outcomesHeading ? 'mb-4' : 'mb-16'}`}>
                 <div className="h-[1px] w-8 bg-white/20" />
-                <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">Engagement Outcomes</span>
+                <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">{service.outcomesEyebrow || 'Engagement Outcomes'}</span>
               </div>
+              {service.outcomesHeading && (
+                <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-16 max-w-4xl">
+                  {service.outcomesHeading}<br />
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">{service.outcomesHeadingHighlight}</span>
+                </h2>
+              )}
 
               <CardRail label="Engagement outcomes" hairline className={`grid gap-px ${gridCols} bg-white/[0.04] rounded-2xl overflow-hidden`}>
                 {allCards.map((card, idx) => (
@@ -3088,11 +3098,11 @@ const featureMicros   = service.featureMicros
             <div className="mb-14">
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">HOW WE ENGAGE</span>
+                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.engagementEyebrow || 'HOW WE ENGAGE'}</span>
               </div>
               <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                Five ways to start.<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">One partner throughout.</span>
+                {service.engagementHeading || 'Five ways to start.'}<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.engagementHeadingHighlight || 'One partner throughout.'}</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
                 {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
@@ -3361,11 +3371,11 @@ const featureMicros   = service.featureMicros
             <div>
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">BEFORE YOU SIGN</span>
+                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.faqEyebrow || 'BEFORE YOU SIGN'}</span>
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.2] tracking-tight text-white">
-                The hard questions,<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">answered (FAQ).</span>
+                {service.faqHeading || 'The hard questions,'}<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.faqHeadingHighlight || 'answered (FAQ).'}</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-2xl">
                 {service.faqLede || `The questions below are the ones buyers actually ask in a first call — on scope, risk, timelines and what happens when something goes wrong. Answers are direct rather than promotional.`}

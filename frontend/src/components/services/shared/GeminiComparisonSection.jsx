@@ -65,7 +65,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
         <div className="mb-14">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] w-12 bg-white/20" />
-            <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">WHY IT MATTERS</span>
+            <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{comparisonTable?.eyebrow || 'WHY IT MATTERS'}</span>
           </div>
           <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3.2rem] font-extrabold leading-[1.15] tracking-tight text-white">
             {comparisonTable?.heading || (
