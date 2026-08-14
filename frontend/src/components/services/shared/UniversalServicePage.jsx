@@ -1099,26 +1099,26 @@ const featureMicros   = service.featureMicros
                     aria-hidden={isDuplicate ? 'true' : undefined} 
                     className="relative p-[1px] flex-shrink-0 cursor-default group hover:-translate-y-1 transition-transform duration-300 shadow-2xl"
                   >
-                    {/* Outer Border Layer (provides the cyan border) */}
+                    {/* Outer Border Layer (provides the gray border) */}
                     <div 
-                      className="absolute inset-0 bg-[#22d3ee]/30 group-hover:bg-[#22d3ee]/70 transition-colors duration-300 z-0"
+                      className="absolute inset-0 bg-white/20 group-hover:bg-white/40 transition-colors duration-300 z-0"
                       style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))' }}
                     />
                     
-                    {/* Inner Background Layer */}
+                    {/* Inner Background Layer (Glassmorphism) */}
                     <div 
-                      className="relative z-10 flex items-center gap-3 bg-[#060a12] px-3 py-2 w-full h-full"
+                      className="relative z-10 flex items-center gap-3 bg-white/5 backdrop-blur-md px-3 py-2 w-full h-full"
                       style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))' }}
                     >
                       {/* Top-Left Accent Bracket */}
-                      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#22d3ee]" />
+                      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/50" />
                       {/* Bottom-Right Accent Bracket */}
-                      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#22d3ee]" />
+                      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/50" />
                       
                       {/* HUD Inner Square */}
-                      <div className="relative flex items-center justify-center w-6 h-6 border border-[#22d3ee]/30 flex-shrink-0 bg-gradient-to-br from-[#22d3ee]/10 to-transparent">
-                         {/* Glowing cyan dot */}
-                         <div className="w-1.5 h-1.5 bg-[#22d3ee] shadow-[0_0_6px_1px_rgba(34,211,238,0.6)]" />
+                      <div className="relative flex items-center justify-center w-6 h-6 border border-white/20 flex-shrink-0 bg-gradient-to-br from-white/10 to-transparent">
+                         {/* Glowing dot */}
+                         <div className="w-1.5 h-1.5 bg-white/50 shadow-[0_0_6px_1px_rgba(255,255,255,0.3)]" />
                       </div>
 
                       {/* Data Values */}
@@ -1126,7 +1126,7 @@ const featureMicros   = service.featureMicros
                         <span className="text-white font-mono font-bold text-sm leading-none">
                           {String((i % HERO_CAPS.length) + 1).padStart(2, '0')}
                         </span>
-                        <span className="text-[#22d3ee] font-mono text-[7px] tracking-widest uppercase mt-1 leading-tight">
+                        <span className="text-white/50 font-mono text-[7px] tracking-widest uppercase mt-1 leading-tight">
                           {cap.label}
                         </span>
                       </div>
