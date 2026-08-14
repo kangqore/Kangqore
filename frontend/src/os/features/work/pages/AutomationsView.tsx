@@ -4,7 +4,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@lib/api'
-import { Plus, RefreshCw, Zap, Toggle3dRight, Trash2, PlayCircle } from 'lucide-react'
+import { Plus, RefreshCw, Zap, ToggleRight, Trash2, PlayCircle } from 'lucide-react'
 import { cn } from '@design-system/cn'
 
 interface WorkAutomation {
@@ -206,7 +206,7 @@ export function AutomationsView() {
                   className={cn('p-1.5 rounded hover:bg-[var(--os-bg-2)] transition-colors',
                     auto.isActive ? 'text-violet-400' : 'text-[var(--os-text-3)]')}
                   title={auto.isActive ? 'Pause' : 'Activate'}>
-                  <Toggle3dRight className="w-4 h-4" />
+                  <ToggleRight className="w-4 h-4" />
                 </button>
                 <button onClick={() => remove.mutate(auto.id)} disabled={remove.isPending}
                   className="p-1.5 rounded hover:bg-red-500/10 text-[var(--os-text-3)] hover:text-red-400 transition-colors">
