@@ -165,6 +165,23 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
     })
     .join('\n');
 
+  // The eQORE concierge occupies about a thousand pixels of the second-most-read
+  // position on the page and reached the snapshot as nothing at all, so a crawler
+  // that never runs our JS saw the page without it. Emitted only where a service
+  // has written its own prompts: the template fallback is identical on every
+  // page, and publishing the same four strings across 62 URLs would be worse
+  // than leaving them out.
+  //
+  // The block carries its own indentation and trailing blank line so that a
+  // service without prompts emits nothing at all: interpolating an empty string
+  // into the body below left two blank lines in all 58 snapshots that have no
+  // chips, which is 58 files of diff noise for no content.
+  const chips = Array.isArray(svc.conciergeChips) && svc.conciergeChips.length
+    ? `    <h2>Ask eQORE AI about ${esc(svc.name)}</h2>\n      <ul>\n${svc.conciergeChips
+        .map((c) => `        <li>${esc(c)}</li>`)
+        .join('\n')}\n      </ul>\n\n`
+    : '';
+
   // The React page renders these two sections from `toolsStack` and
   // `dataBoundary`, but the snapshot did not carry either — so bots and AI
   // crawlers received the page without its method or its security posture,
@@ -257,7 +274,7 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
     ${related ? `<h2>Related Services</h2>\n      <ul>\n${related}\n      </ul>` : ''}
     ${siblings ? `<h2>More in ${esc(deptName || 'this practice')}</h2>\n      <ul>\n${siblings}\n      </ul>` : ''}
 
-    <h2>Next Step</h2>
+${chips}    <h2>Next Step</h2>
     <p><a href="${BASE_URL}/contact">Talk to our experts about ${esc(svc.name)}</a></p>
   </article>
   <nav>
