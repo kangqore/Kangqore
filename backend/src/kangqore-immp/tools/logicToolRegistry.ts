@@ -14,7 +14,7 @@
 // ---------------------------------------------------------------------------
 
 import type Anthropic from '@anthropic-ai/sdk'
-import { ObjectRegistry } from '../../os/kore/language/ObjectRegistry'
+import { ObjectRegistry } from '../../kangqore-view/kore/language/ObjectRegistry'
 
 // ─── Result envelope ──────────────────────────────────────────────────────────
 
@@ -318,9 +318,9 @@ function growth_index(input: { revenue_growth: number; headcount_growth: number;
 
 // Enterprise Ontology & Knowledge ────────────────────────────────────────────────────────
 
-import { KeosKernel } from '../../os/kernel/KeosKernel';
-import { EnterpriseProvenanceService } from '../../os/kernel/EnterpriseProvenanceService';
-import { EnterpriseKnowledgeService } from '../../os/knowledge/EnterpriseKnowledgeService';
+import { KeosKernel } from '../../kangqore-view/kernel/KeosKernel';
+import { EnterpriseProvenanceService } from '../../kangqore-view/kernel/EnterpriseProvenanceService';
+import { EnterpriseKnowledgeService } from '../../kangqore-view/knowledge/EnterpriseKnowledgeService';
 
 async function query_enterprise_knowledge(input: { queryType: 'ontology' | 'history' | 'lessons' | 'concept', param?: string }): Promise<ToolResult> {
   try {

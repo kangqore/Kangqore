@@ -1,0 +1,168 @@
+import type { ActionPackManifest } from '../actionPack.service'
+
+export const HUBSPOT_PACK: ActionPackManifest = {
+  pack:        'kangqore/hubspot-v1',
+  version:     '1.0.0',
+  description: 'HubSpot CRM — contacts, companies, deals, tickets, workflows, lists',
+  author:      'Kangqore',
+  category: {
+    name:        'HubSpot',
+    displayName: 'HubSpot',
+    icon:        'Funnel',
+    color:       '#ff7a59',
+    description: 'Full HubSpot CRM lifecycle. Requires HUBSPOT_ACCESS_TOKEN.',
+  },
+  actions: [
+    {
+      name: 'CREATE_HS_CONTACT', displayName: 'Create HubSpot Contact',
+      description: 'Create a new contact in HubSpot CRM.',
+      parameters: [
+        { name: 'email',      type: 'string', required: true,  description: 'Contact email' },
+        { name: 'firstName',  type: 'string', required: false, description: 'First name' },
+        { name: 'lastName',   type: 'string', required: false, description: 'Last name' },
+        { name: 'phone',      type: 'string', required: false, description: 'Phone number' },
+        { name: 'company',    type: 'string', required: false, description: 'Company name' },
+        { name: 'jobTitle',   type: 'string', required: false, description: 'Job title' },
+        { name: 'ownerId',    type: 'string', required: false, description: 'HubSpot owner user ID' },
+        { name: 'lifecycleStage', type: 'enum', required: false, enum: ['subscriber', 'lead', 'marketingqualifiedlead', 'salesqualifiedlead', 'opportunity', 'customer', 'evangelist'], description: 'Lifecycle stage' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'UPDATE_HS_CONTACT', displayName: 'Update HubSpot Contact',
+      description: 'Update properties on a HubSpot contact.',
+      parameters: [
+        { name: 'contactId', type: 'string', required: true,  description: 'HubSpot contact ID' },
+        { name: 'property',  type: 'string', required: true,  description: 'Property name to update' },
+        { name: 'value',     type: 'string', required: true,  description: 'New value' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'MERGE_HS_CONTACTS', displayName: 'Merge HubSpot Contacts',
+      description: 'Merge a duplicate contact into a primary contact.',
+      parameters: [
+        { name: 'primaryContactId',   type: 'string', required: true,  description: 'Primary contact ID to keep' },
+        { name: 'duplicateContactId', type: 'string', required: true,  description: 'Duplicate contact ID to merge and delete' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_HS_COMPANY', displayName: 'Create HubSpot Company',
+      description: 'Create a new company in HubSpot.',
+      parameters: [
+        { name: 'name',       type: 'string', required: true,  description: 'Company name' },
+        { name: 'domain',     type: 'string', required: false, description: 'Company domain' },
+        { name: 'industry',   type: 'string', required: false, description: 'Industry' },
+        { name: 'size',       type: 'enum',   required: false, enum: ['1-10', '11-50', '51-200', '201-500', '501-1000', '1001-5000', '5001+'], description: 'Company size' },
+        { name: 'revenue',    type: 'number', required: false, min: 0, description: 'Annual revenue' },
+        { name: 'country',    type: 'string', required: false, description: 'Country' },
+        { name: 'ownerId',    type: 'string', required: false, description: 'HubSpot owner ID' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_HS_DEAL', displayName: 'Create HubSpot Deal',
+      description: 'Create a new deal in HubSpot CRM.',
+      parameters: [
+        { name: 'name',       type: 'string', required: true,  description: 'Deal name' },
+        { name: 'amount',     type: 'number', required: false, min: 0, description: 'Deal value' },
+        { name: 'stage',      type: 'string', required: true,  description: 'Deal pipeline stage ID or name' },
+        { name: 'closeDate',  type: 'date',   required: false, description: 'Expected close date' },
+        { name: 'ownerId',    type: 'string', required: false, description: 'Owner user ID' },
+        { name: 'pipeline',   type: 'string', required: false, description: 'Pipeline ID (default: default)' },
+        { name: 'contactIds', type: 'string', required: false, description: 'Comma-separated contact IDs to associate' },
+        { name: 'companyIds', type: 'string', required: false, description: 'Comma-separated company IDs to associate' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'UPDATE_HS_DEAL', displayName: 'Update HubSpot Deal',
+      description: 'Update deal fields in HubSpot.',
+      parameters: [
+        { name: 'dealId',    type: 'string', required: true,  description: 'HubSpot deal ID' },
+        { name: 'property',  type: 'string', required: true,  description: 'Property to update' },
+        { name: 'value',     type: 'string', required: true,  description: 'New value' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'MOVE_HS_DEAL_STAGE', displayName: 'Move HubSpot Deal Stage',
+      description: 'Move a HubSpot deal to a new pipeline stage.',
+      parameters: [
+        { name: 'dealId',    type: 'string', required: true,  description: 'Deal ID' },
+        { name: 'stageId',   type: 'string', required: true,  description: 'Target stage ID or name' },
+        { name: 'reason',    type: 'string', required: false, description: 'Move reason' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_HS_TICKET', displayName: 'Create HubSpot Ticket',
+      description: 'Create a support ticket in HubSpot Service Hub.',
+      parameters: [
+        { name: 'subject',     type: 'string', required: true,  description: 'Ticket subject' },
+        { name: 'description', type: 'string', required: false, description: 'Ticket body' },
+        { name: 'priority',    type: 'enum',   required: false, enum: ['LOW', 'MEDIUM', 'HIGH', 'URGENT'], description: 'Priority' },
+        { name: 'status',      type: 'string', required: false, description: 'Pipeline status ID' },
+        { name: 'ownerId',     type: 'string', required: false, description: 'Assigned owner ID' },
+        { name: 'contactId',   type: 'string', required: false, description: 'Associated contact ID' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'CLOSE_HS_TICKET', displayName: 'Close HubSpot Ticket',
+      description: 'Close a HubSpot support ticket.',
+      parameters: [
+        { name: 'ticketId',   type: 'string', required: true,  description: 'Ticket ID' },
+        { name: 'resolution', type: 'string', required: false, description: 'Resolution notes' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'ADD_TO_HS_LIST', displayName: 'Add to HubSpot List',
+      description: 'Add a contact to a static HubSpot list.',
+      parameters: [
+        { name: 'listId',    type: 'string', required: true,  description: 'Static list ID' },
+        { name: 'contactId', type: 'string', required: true,  description: 'Contact ID to add' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'ENROLL_HS_WORKFLOW', displayName: 'Enroll in HubSpot Workflow',
+      description: 'Enroll a contact or company in a HubSpot automation workflow.',
+      parameters: [
+        { name: 'workflowId', type: 'string', required: true,  description: 'Workflow ID' },
+        { name: 'contactId',  type: 'string', required: false, description: 'Contact ID to enroll' },
+        { name: 'companyId',  type: 'string', required: false, description: 'Company ID to enroll' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'LOG_HS_CALL', displayName: 'Log HubSpot Call',
+      description: 'Log a call activity against a HubSpot contact or deal.',
+      parameters: [
+        { name: 'contactId',  type: 'string', required: false, description: 'Contact ID' },
+        { name: 'dealId',     type: 'string', required: false, description: 'Deal ID' },
+        { name: 'notes',      type: 'string', required: true,  description: 'Call notes' },
+        { name: 'duration',   type: 'number', required: false, min: 1, description: 'Duration in minutes' },
+        { name: 'outcome',    type: 'enum',   required: false, enum: ['CONNECTED', 'NO_ANSWER', 'LEFT_VOICEMAIL', 'WRONG_NUMBER'], description: 'Call outcome' },
+        { name: 'direction',  type: 'enum',   required: false, enum: ['INBOUND', 'OUTBOUND'], description: 'Call direction' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_HS_TASK', displayName: 'Create HubSpot Task',
+      description: 'Create a follow-up task in HubSpot.',
+      parameters: [
+        { name: 'subject',    type: 'string', required: true,  description: 'Task subject' },
+        { name: 'body',       type: 'string', required: false, description: 'Task notes' },
+        { name: 'dueDate',    type: 'date',   required: false, description: 'Due date' },
+        { name: 'priority',   type: 'enum',   required: false, enum: ['LOW', 'MEDIUM', 'HIGH'], description: 'Priority' },
+        { name: 'type',       type: 'enum',   required: false, enum: ['EMAIL', 'CALL', 'TODO'], description: 'Task type' },
+        { name: 'ownerId',    type: 'string', required: false, description: 'Assigned owner' },
+        { name: 'contactId',  type: 'string', required: false, description: 'Associated contact ID' },
+      ],
+      allowedRoles: ['ADMIN', 'TEAM'], toolCallable: true,
+    },
+  ],
+}

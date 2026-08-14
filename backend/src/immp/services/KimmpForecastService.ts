@@ -1,4 +1,4 @@
-import { CapabilityRegistry } from '../../os/kernel/CapabilityRegistry';
+import { CapabilityRegistry } from '../../kangqore-view/kernel/CapabilityRegistry';
 
 export class KimmpForecastService {
   /**

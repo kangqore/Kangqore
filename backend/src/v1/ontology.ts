@@ -12,7 +12,7 @@
 import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import { ObjectSetService, QueryNode } from '../services/objectSet.service'
-import { ActionEngine } from '../services/actionEngine.service'
+import { ActionEngine } from '../kangqore-view/automation/ActionEngine'
 
 export const ontologyV1Router = Router()
 

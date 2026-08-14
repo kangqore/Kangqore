@@ -8,7 +8,7 @@
 import { prisma } from '../../lib/prisma'
 import { OntologyGateway, SYSTEM_ACTOR, GatewayActor } from '../../services/ontologyGateway.service'
 import { CardinalityEngine } from '../../services/cardinalityEngine.service'
-import { ActionEngine } from '../../services/actionEngine.service'
+import { ActionEngine } from '../../kangqore-view/automation/ActionEngine'
 import { checkPolicy } from '../../services/policyEngine.service'
 
 export interface TestResult {

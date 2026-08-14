@@ -1,8 +1,8 @@
-import { KeosKernel, MissionRequest } from '../../os/kernel/KeosKernel';
+import { KeosKernel, MissionRequest } from '../../kangqore-view/kernel/KeosKernel';
 import { AegisShield } from '../../kangqore-aegis/AegisShield';
-import { KeosEventBus } from '../../os/kernel/KeosEventBus';
-import { CapabilityRegistry } from '../../os/kernel/CapabilityRegistry';
-import { ActionEngine } from '../../services/actionEngine.service';
+import { KeosEventBus } from '../../kangqore-view/kernel/KeosEventBus';
+import { CapabilityRegistry } from '../../kangqore-view/kernel/CapabilityRegistry';
+import { ActionEngine } from '../../kangqore-view/automation/ActionEngine';
 
 // S298 — "AI Through Actions": every mission this dispatcher runs also writes
 // an ActionExecution row (actorType KIMMP) through the same engine humans and

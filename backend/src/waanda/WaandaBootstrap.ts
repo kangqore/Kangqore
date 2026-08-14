@@ -28,8 +28,8 @@
 //   VIS, ALIS, eQORE — adapter registered when their routers are mounted
 // ---------------------------------------------------------------------------
 
-import { DomainRegistry }   from '../os/edf/core/DomainRegistry'
-import { CapabilityRegistry } from '../os/kernel/CapabilityRegistry'
+import { DomainRegistry }   from '../kangqore-view/edf/core/DomainRegistry'
+import { CapabilityRegistry } from '../kangqore-view/kernel/CapabilityRegistry'
 import { WaandaAuthority }  from './WaandaAuthority'
 
 // AEGIS — governance shield
@@ -201,7 +201,7 @@ export const WAANDA = {
   async _bootKore(): Promise<void> {
     // KORE Runtime — KEOS twin runtime + language registries
     // Singletons initialize on first use; boot declares ownership.
-    const { KeosEventBus } = await import('../os/kernel/KeosEventBus')
+    const { KeosEventBus } = await import('../kangqore-view/kernel/KeosEventBus')
     KeosEventBus.publish('WAANDA_BOOT', { phase: 'KORE', timestamp: new Date().toISOString() })
     this.reportSubsystem('kore', {
       status:  'OPERATIONAL',

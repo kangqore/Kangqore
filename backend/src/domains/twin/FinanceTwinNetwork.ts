@@ -1,4 +1,4 @@
-import { ITwinNetwork, EnterpriseTwinSnapshot, TwinMutation } from '../../os/edtp/contracts/types';
+import { ITwinNetwork, EnterpriseTwinSnapshot, TwinMutation } from '../../kangqore-view/edtp/contracts/types';
 
 export class FinanceTwinNetwork implements ITwinNetwork {
   networkId = 'TWIN_FINANCE';

@@ -184,7 +184,7 @@ import publicContentRoutes from './routes/public_content';
 app.use('/api/admin/media', mediaRoutes);
 app.use('/api/admin/content', contentRoutes);
 // admin-ip routes (reserved for future use)
-import koreRoutes from './os/kore/api/kore.routes'; // NEW KEOS Layer
+import koreRoutes from './kangqore-view/kore/api/kore.routes'; // NEW KEOS Layer
 
 // SECURITY: do not re-mount kangqoreImmpRoutes here. It is already mounted below
 // at /api/admin/kangqore-immp behind aegisAccessLogger + aegisEgressMonitor; a second,
@@ -346,15 +346,15 @@ app.use('/api/os-workflows', osWorkflowsRoutes);
 // Enterprise Platform Fabrics — EDF (domain), EPF (prediction), ESF (simulation), EAF (agent)
 // Satisfy WEE Constitutional Law 3 and power ExperienceAPI in the Gen III Runtime.
 // CognitiveMirror polls /api/os/edf/domains + /api/os/epf/predictions every 30s.
-import edfRouter from './os/edf/edfRoutes';
-import epfRouter from './os/epf/epfRoutes';
-import esfRouter from './os/esf/esfRoutes';
-import eafRouter from './os/eaf/eafRoutes';
+import edfRouter from './kangqore-view/edf/edfRoutes';
+import epfRouter from './kangqore-view/epf/epfRoutes';
+import esfRouter from './kangqore-view/esf/esfRoutes';
+import eafRouter from './kangqore-view/eaf/eafRoutes';
 app.use('/api/os/edf', authenticate, edfRouter);
 app.use('/api/os/epf', authenticate, epfRouter);
 app.use('/api/os/esf', authenticate, esfRouter);
 app.use('/api/os/eaf', authenticate, authorize(['ADMIN']), eafRouter);
-import personalRouter from './os/personal/personalRoutes';
+import personalRouter from './kangqore-view/personal/personalRoutes';
 app.use('/api/os/personal', personalRouter);
 
 import adminClientsCrmRoutes   from './routes/admin-clients-crm';
@@ -516,6 +516,11 @@ server.listen(PORT, () => {
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
   console.log(`🌐 Frontend: http://localhost:${PORT}`);
   console.log(`🔌 Socket.io: Real-time enabled`);
+
+  // Kangqore-View Action Pack Auto-Installer — idempotent, runs at every boot
+  import('./kangqore-view/automation/PackAutoInstaller').then(({ installAllPacks }) =>
+    installAllPacks().catch((e: unknown) => console.error('[PackAutoInstaller] Failed:', e))
+  )
 
   // WAANDA Boot Sequence — single constitutional entry point for all subsystems
   WAANDA.boot().catch((e: unknown) => console.error('[WAANDA] Boot failed:', e));

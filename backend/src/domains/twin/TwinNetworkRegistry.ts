@@ -1,4 +1,4 @@
-import { ITwinNetwork } from '../../os/edtp/contracts/types';
+import { ITwinNetwork } from '../../kangqore-view/edtp/contracts/types';
 
 export class TwinNetworkRegistry {
   private static instance: TwinNetworkRegistry;

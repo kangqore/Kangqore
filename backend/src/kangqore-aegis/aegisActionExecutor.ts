@@ -15,7 +15,7 @@ import { createNotification }  from '../services/notificationService'
 import { emailService }        from '../services/email.service'
 import { AegisLedger }         from './aegisLedger.service'
 import { redisConnection }     from '../lib/redis'
-import { ActionEngine }        from '../services/actionEngine.service'
+import { ActionEngine }        from '../kangqore-view/automation/ActionEngine'
 import type { AegisAction }    from './aegisActionProposer'
 import type { AegisAgentResult } from './agents/types'
 
@@ -173,7 +173,7 @@ async function execFlagActor(action: AegisAction, result: AegisAgentResult): Pro
 }
 
 async function execEmitToWaanda(action: AegisAction, result: AegisAgentResult): Promise<void> {
-  const { KeosEventBus } = await import('../os/kernel/KeosEventBus')
+  const { KeosEventBus } = await import('../kangqore-view/kernel/KeosEventBus')
   KeosEventBus.publish('aegis.governance', {
     agentId:  result.agentId,
     engine:   result.engine,

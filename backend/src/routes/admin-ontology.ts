@@ -10,11 +10,12 @@ import { OntologyBranchService } from '../services/ontologyBranch.service'
 import { OntologyMerge } from '../services/ontologyMerge.service'
 import { CdcService } from '../lib/cdc/cdcService'
 import { ObjectSetService } from '../services/objectSet.service'
-import { ActionEngine } from '../services/actionEngine.service'
-import { seedEnterpriseActions, ACTION_LIBRARY } from '../services/actionLibrary.seed'
-import { connectorHealth, listConnectors } from '../services/connectors/registry'
+import { ActionEngine } from '../kangqore-view/automation/ActionEngine'
+import { seedEnterpriseActions, ACTION_LIBRARY } from '../kangqore-view/automation/ActionLibrary.seed'
+import { connectorHealth, listConnectors } from '../kangqore-view/automation/connectors/registry'
 import { seedBlastRadiusPolicies } from '../services/policyEngine.service'
-import { installActionPack, listInstalledPacks, ITSM_PACK } from '../services/actionPack.service'
+import { installActionPack, listInstalledPacks, ITSM_PACK } from '../kangqore-view/automation/ActionPack'
+import { installAllPacks } from '../kangqore-view/automation/PackAutoInstaller'
 import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.service'
 import { OntologyGeoService } from '../services/ontologyGeo.service'
 import { OntologyPipelineService } from '../services/ontologyPipeline.service'
@@ -583,6 +584,16 @@ router.post('/actions/packs/install', ...guard, async (req, res) => {
     }
     const result = await installActionPack(manifest)
     res.json({ ok: true, ...result })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/actions/packs/install-all', ...guard, async (_req, res) => {
+  try {
+    await installAllPacks()
+    const installed = await listInstalledPacks()
+    res.json({ ok: true, packs: installed.length, installed })
   } catch (e: any) {
     res.status(500).json({ error: e.message })
   }

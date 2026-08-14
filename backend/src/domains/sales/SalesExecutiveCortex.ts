@@ -1,5 +1,5 @@
-import { BaseExecutiveCortex } from '../../os/ecf/BaseExecutiveCortex';
-import { ExecutiveContextPackage } from '../../os/memory/types';
+import { BaseExecutiveCortex } from '../../kangqore-view/ecf/BaseExecutiveCortex';
+import { ExecutiveContextPackage } from '../../kangqore-view/memory/types';
 import { 
   ExecutiveDecision, 
   SituationReport, 
@@ -8,7 +8,7 @@ import {
   Goal,
   EnterpriseProposal,
   ExecutiveOpinion
-} from '../../os/ecf/contracts/types';
+} from '../../kangqore-view/ecf/contracts/types';
 import { 
   ISituationAssessmentEngine, 
   IOpportunityEngine, 
@@ -21,7 +21,7 @@ import {
   IDecisionReviewEngine,
   IReflectionEngine,
   ILearningEngine
-} from '../../os/ecf/engines/interfaces';
+} from '../../kangqore-view/ecf/engines/interfaces';
 import { AnalyticsRegistry } from '../analytics/AnalyticsRegistry';
 
 // Domain-Scoped Engines
