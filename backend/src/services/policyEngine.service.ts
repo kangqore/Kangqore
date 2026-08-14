@@ -111,6 +111,86 @@ export async function deletePolicy(id: string) {
 
 // ── Seed default policies ──────────────────────────────────────────────────────
 
+// Blast-radius policies — always upserted (independent of seedDefaultPolicies guard)
+export async function seedBlastRadiusPolicies(): Promise<{ upserted: number }> {
+  const policies = [
+    {
+      id: 'blast-deploy-service',
+      name: 'Require approval for service deployments',
+      description: 'DEPLOY_SERVICE has irreversible blast radius — always gates on human approval before connector fires',
+      trigger: 'DEPLOY_SERVICE',
+      condition: {},
+      effect: 'REQUIRE_APPROVAL',
+      priority: 100,
+    },
+    {
+      id: 'blast-rollback-deployment',
+      name: 'Require approval for rollbacks',
+      description: 'Rolling back a deployment changes live traffic — requires human sign-off',
+      trigger: 'ROLLBACK_DEPLOYMENT',
+      condition: {},
+      effect: 'REQUIRE_APPROVAL',
+      priority: 100,
+    },
+    {
+      id: 'blast-rotate-secret',
+      name: 'Require approval for secret rotation',
+      description: 'Rotating a secret invalidates existing consumers — requires explicit approval',
+      trigger: 'ROTATE_SECRET',
+      condition: {},
+      effect: 'REQUIRE_APPROVAL',
+      priority: 100,
+    },
+    {
+      id: 'blast-change-employee',
+      name: 'Require approval for employee changes',
+      description: 'CHANGE_EMPLOYEE (role, termination, access) has legal and HR implications — always approved',
+      trigger: 'CHANGE_EMPLOYEE',
+      condition: {},
+      effect: 'REQUIRE_APPROVAL',
+      priority: 100,
+    },
+    {
+      id: 'blast-approve-purchase',
+      name: 'Require approval for purchase orders',
+      description: 'All APPROVE_PURCHASE actions require a second human to confirm before committing spend',
+      trigger: 'APPROVE_PURCHASE',
+      condition: {},
+      effect: 'REQUIRE_APPROVAL',
+      priority: 100,
+    },
+    {
+      id: 'blast-create-enterprise-invoice',
+      name: 'Require approval for enterprise invoices',
+      description: 'Enterprise invoices represent financial commitments — must be human-approved',
+      trigger: 'CREATE_ENTERPRISE_INVOICE',
+      condition: {},
+      effect: 'REQUIRE_APPROVAL',
+      priority: 100,
+    },
+    {
+      id: 'blast-modify-configuration',
+      name: 'Audit all configuration changes',
+      description: 'Config changes affect live systems — always logged for audit even when auto-approved',
+      trigger: 'MODIFY_CONFIGURATION',
+      condition: {},
+      effect: 'NOTIFY',
+      priority: 90,
+    },
+  ]
+
+  let upserted = 0
+  for (const p of policies) {
+    await prisma.kimmpPolicy.upsert({
+      where: { id: p.id },
+      create: p as any,
+      update: { effect: p.effect, priority: p.priority, description: p.description },
+    })
+    upserted++
+  }
+  return { upserted }
+}
+
 export async function seedDefaultPolicies() {
   const count = await prisma.kimmpPolicy.count()
   if (count > 0) return
