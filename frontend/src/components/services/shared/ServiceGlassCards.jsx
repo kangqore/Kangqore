@@ -51,8 +51,8 @@ const FAQTeleprompter = ({ faqs }) => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col gap-2 overflow-hidden">
-        <div className="animate-fade-in-up">
+      <div className="flex-1 flex flex-col gap-2 overflow-hidden relative">
+        <div key={faqIdx} className="animate-fade-in-up absolute inset-0 flex flex-col">
           <div className="font-bold text-cyan-400 mb-1 flex gap-2 items-start">
             <span className="shrink-0">[Q]</span> 
             <span className="line-clamp-2">{faqs[faqIdx]?.q}</span>
@@ -124,18 +124,11 @@ const CapabilityCycler = ({ capabilities }) => {
             </p>
           </div>
           
-          <p
+          <div
             key={`title-${capIdx}`}
-            className="text-[10px] font-bold uppercase tracking-[0.15em] text-cyan-200 mb-1 animate-fade-in line-clamp-2"
+            className="text-lg xl:text-xl font-black text-white tracking-tight leading-[1.2] animate-fade-in-up h-full flex items-center overflow-hidden line-clamp-4 mt-2"
           >
             {currentCap.title}
-          </p>
-          
-          <div
-            key={`desc-${capIdx}`}
-            className="text-sm xl:text-base font-medium text-white/80 tracking-tight leading-[1.3] animate-fade-in h-[3.6rem] overflow-hidden line-clamp-3"
-          >
-            {currentCap.desc}
           </div>
         </div>
 
