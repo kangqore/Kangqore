@@ -1285,6 +1285,7 @@ export const servicesData = {
     name: 'Data Science & AI',
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
+    heroTitle: 'Data Science & AI\nfor Decisions You Can Defend',
     shortDescription: 'Kangqore builds predictive models that reach production and stay accurate there: forecasting, risk scoring, churn and pricing, monitored per segment.',
     fullDescription: 'Models that survive contact with next quarter, wired into the decision they exist to make, with the confidence attached so a person knows when to overrule them.',
     keyFeatures: ['Predictive modeling', 'Statistical analysis', 'Feature engineering', 'Model deployment', 'Data visualization'],
