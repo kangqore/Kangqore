@@ -283,9 +283,9 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
           <button onClick={openWhatsApp} className="w-12 h-12 bg-white dark:bg-gray-900 rounded-full shadow-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center group overflow-hidden" title="WhatsApp Support">
             <img src="/images/icons/whatsapp-3d.webp" alt="WhatsApp Support" className="w-[115%] h-[115%] max-w-none object-cover transition-transform duration-300 group-hover:scale-[1.25]" />
           </button>
-          <button onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} className="flex items-center justify-center group" title="Appearance Settings">
-            <svg className="w-12 h-12 transition-transform duration-300 group-hover:scale-110 text-brand-blue drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeWidth="0">
-              <path fillRule="evenodd" clipRule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Zm0-19.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM6.5 10a1.5 1.5 0 0 0 0 3h1.867l-1.393 4.873a1.5 1.5 0 1 0 2.884.825L12 11.237l2.142 7.461a1.5 1.5 0 1 0 2.884-.825L15.633 13H17.5a1.5 1.5 0 0 0 0-3h-11Z" />
+          <button onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} className="w-12 h-12 bg-gradient-to-b from-[#60a5fa] to-[#1d4ed8] shadow-[inset_0_-4px_6px_rgba(0,0,0,0.4),inset_0_4px_6px_rgba(255,255,255,0.4),0_8px_15px_rgba(29,78,216,0.4)] border border-blue-500 rounded-full flex items-center justify-center group transition-transform duration-300 hover:scale-[1.15] active:scale-95" title="Appearance Settings">
+            <svg className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeWidth="0">
+              <path d="M12 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM6.5 10a1.5 1.5 0 0 0 0 3h1.867l-1.393 4.873a1.5 1.5 0 1 0 2.884.825L12 11.237l2.142 7.461a1.5 1.5 0 1 0 2.884-.825L15.633 13H17.5a1.5 1.5 0 0 0 0-3h-11Z" />
             </svg>
           </button>
         </div>
