@@ -293,6 +293,87 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
 // by automatically providing domain-tailored fallbacks for Bento Grid, Comparison Matrix,
 // Architecture Stack, Industry Use Cases Grid, Outcome Cards, Service Packages, Business Metrics,
 // Custom FAQs, Journey Timeline, Hero Titles/Badges, Concierge Chips, Trust Signals, Tools Stack, and Playbook Asset.
+// ── Section copy that must not inherit the agentic defaults ─────────────────
+// Three blocks on this template had no per-department fallback, so any service
+// that did not write its own rendered the copy belonging to /services/agentic-ai:
+// 56 pages headed their industry grid "Agents built for your industry" and closed
+// with "One agent in production", under content about cloud migration, Salesforce
+// rollouts, penetration testing and SEO. The industry grid below the heading is
+// already department-aware, so the heading was the only part still contradicting it.
+//
+// Keyed by department, the way heroBadge and industryUseCases already are. One
+// entry fixes every service in that department, and `service.X ||` below keeps a
+// per-service override winning — which is how the five individually written pages
+// keep their own copy.
+const DEPT_SECTION_COPY = {
+  foundry: {
+    architectureEyebrow: 'ARCHITECTURE & DELIVERY MODEL',
+    industryHeading: 'Infrastructure built for',
+    industryHeadingHighlight: 'your industry.',
+    midCta: 'Uptime is an architecture decision, not a hope.',
+    closingCta: {
+      title: 'One architecture review.',
+      highlight: 'One system that holds under load.',
+      body: 'Bring the service that wakes people up at night — the one that degrades under load, or takes a week to deploy safely. In 30 minutes we will tell you what is architectural, what is operational, and which of the two is actually costing you.',
+    },
+  },
+  reimagine: {
+    architectureEyebrow: 'HOW A MIGRATION IS SEQUENCED',
+    industryHeading: 'Modernization shaped by',
+    industryHeadingHighlight: 'your industry.',
+    midCta: 'The old system still runs the business. That is the constraint.',
+    closingCta: {
+      title: 'One estate review.',
+      highlight: 'One migration you can defend.',
+      body: 'Bring the system nobody wants to touch — no tests, no documentation, one person who understands it. In 30 minutes we will tell you what can be replaced outright, what has to be strangled slowly, and what is cheaper to leave alone.',
+    },
+  },
+  shield: {
+    architectureEyebrow: 'HOW CONTROLS ARE ENFORCED',
+    industryHeading: 'Controls mapped to',
+    industryHeadingHighlight: 'your industry.',
+    midCta: 'The audit arrives whether the evidence is ready or not.',
+    closingCta: {
+      title: 'One control review.',
+      highlight: 'One posture you can evidence.',
+      body: 'Bring your last audit finding, or the control you already know would not survive one. In 30 minutes we will tell you what is a genuine gap, what is a documentation problem, and which of the two an assessor will actually fail you on.',
+    },
+  },
+  platforms: {
+    architectureEyebrow: 'HOW A ROLLOUT IS STRUCTURED',
+    industryHeading: 'Platform work grounded in',
+    industryHeadingHighlight: 'your industry.',
+    midCta: 'The license is bought. The value is in what you configure.',
+    closingCta: {
+      title: 'One platform review.',
+      highlight: 'One rollout people actually use.',
+      body: 'Bring the platform you have already paid for and the process it was meant to fix. In 30 minutes we will tell you what is a configuration problem, what is a process problem, and why adoption stalled where it did.',
+    },
+  },
+  growth: {
+    architectureEyebrow: 'HOW THE GROWTH LOOP IS BUILT',
+    industryHeading: 'Growth work tuned to',
+    industryHeadingHighlight: 'your industry.',
+    midCta: 'The traffic is already arriving. Most of it leaves.',
+    closingCta: {
+      title: 'One funnel review.',
+      highlight: 'One number that moves.',
+      body: 'Bring the channel that costs the most and the page it lands on. In 30 minutes we will tell you where the spend is being wasted, what the page is failing to do, and which single change is worth testing first.',
+    },
+  },
+  cognition: {
+    architectureEyebrow: 'ARCHITECTURE & DATA FLOW',
+    industryHeading: 'Intelligence built for',
+    industryHeadingHighlight: 'your industry.',
+    midCta: 'The data is already there. The decision still takes a week.',
+    closingCta: {
+      title: 'One data review.',
+      highlight: 'One decision that gets faster.',
+      body: 'Bring the decision that takes too long and the data you already hold about it. In 30 minutes we will tell you what a model can reliably predict, what it cannot, and whether the bottleneck is the data or the process around it.',
+    },
+  },
+};
+
 function getParityService(service, department) {
   if (!service) return service;
   const name = service.name || 'Enterprise Service';
@@ -310,6 +391,13 @@ function getParityService(service, department) {
     deptSlug === 'growth' ? 'Data-Driven. High-Velocity. Conversational.' :
     'Reasoning. Learning. Autonomous.'
   );
+  const deptCopy = DEPT_SECTION_COPY[deptSlug] || DEPT_SECTION_COPY.cognition;
+  const industryHeading = service.industryHeading || deptCopy.industryHeading;
+  const industryHeadingHighlight = service.industryHeadingHighlight || deptCopy.industryHeadingHighlight;
+  const architectureEyebrow = service.architectureEyebrow || deptCopy.architectureEyebrow;
+  const midCta = service.midCta || deptCopy.midCta;
+  const closingCta = service.closingCta || deptCopy.closingCta;
+
   const heroMaxWidth = service.heroMaxWidth || 'max-w-[82%]';
   const heroTitleSize = service.heroTitleSize || 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]';
 
@@ -762,6 +850,11 @@ function getParityService(service, department) {
 
   return {
     ...service,
+    architectureEyebrow,
+    industryHeading,
+    industryHeadingHighlight,
+    midCta,
+    closingCta,
     heroTitle,
     heroBadge,
     heroMaxWidth,

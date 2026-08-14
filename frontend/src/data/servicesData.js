@@ -23,6 +23,14 @@ export const servicesData = {
   'agentic-ai': {
     slug: 'agentic-ai',
     name: 'Agentic AI Services',
+    industryHeading: 'Agents built for',
+    industryHeadingHighlight: 'your industry.',
+    midCta: 'Your next workflow runs itself.',
+    closingCta: {
+      title: 'One conversation.',
+      highlight: 'One agent in production.',
+      body: 'Talk through your highest-value workflow in 30 minutes — we will scope the right entry point and show you what a production agent looks like for your context.',
+    },
     heroTitle: 'Agentic AI Services That\nExecute Your Enterprise Workflows',
     heroMaxWidth: 'max-w-[78%]',
     heroTitleSize: 'text-[1.6rem] sm:text-[1.92rem] lg:text-[2.688rem] xl:text-[3.6rem]',
@@ -327,6 +335,14 @@ export const servicesData = {
   'agentic-ai-led-application-modernization': {
     slug: 'agentic-ai-led-application-modernization',
     name: 'Agentic AI-led Application Modernization',
+    industryHeading: 'Agents built for',
+    industryHeadingHighlight: 'your industry.',
+    midCta: 'Your next workflow runs itself.',
+    closingCta: {
+      title: 'One conversation.',
+      highlight: 'One agent in production.',
+      body: 'Talk through your highest-value workflow in 30 minutes — we will scope the right entry point and show you what a production agent looks like for your context.',
+    },
     heroTitle: 'Agentic AI-led Application\nModernization at Machine Speed',
     heroMaxWidth: 'max-w-[82%]',
     heroTitleSize: 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]',
@@ -1541,6 +1557,9 @@ export const servicesData = {
     // consent management, kill-switches. Those are real, but they are not how a
     // generative system is built, and none of it mentions retrieval, prompts,
     // evaluation or tokens on a page about generative AI.
+    architectureEyebrow: 'HOW A RETRIEVAL SYSTEM IS BUILT',
+    architectureTitle: 'Four layers.',
+    architectureTitleHighlight: 'Each one you can inspect.',
     architectureNodes: [
       { title: 'Knowledge & Retrieval', icon: 'Database', description: 'Your documents chunked, embedded and indexed, with retrieval that runs under the asking user\'s permissions so an answer can never quote a source they could not open.', features: ['Chunking & Embedding', 'Hybrid Search', 'Permission-Aware Retrieval', 'Source Attribution'] },
       { title: 'Orchestration & Context', icon: 'Network', description: 'Prompt templates and context assembly held as versioned artifacts, with routing that sends each request to the model that can answer it most cheaply.', features: ['Prompt Versioning', 'Context Assembly', 'Model Routing', 'Tool & Function Calling'] },
@@ -2294,6 +2313,9 @@ export const servicesData = {
     // an MLOps platform is structured, and none of it mentions training, a
     // registry, or retraining on a page whose own badge strip lists exactly
     // those.
+    architectureEyebrow: 'HOW A MODEL REACHES PRODUCTION',
+    architectureTitle: 'The path from notebook',
+    architectureTitleHighlight: 'to something on call.',
     architectureNodes: [
       { 
         title: 'Data & Feature Layer', 
@@ -2730,6 +2752,9 @@ export const servicesData = {
         { dimension: 'Regulatory exposure', before: 'Compliance, reputational and legal risk, with no way to demonstrate conformity when asked.', after: 'Risk tiering mapped to the EU AI Act, controls mapped to the NIST AI RMF, and the documentation an assessor asks for held ready.' },
       ],
     },
+    architectureEyebrow: 'HOW GOVERNANCE IS ENFORCED',
+    architectureTitle: 'Controls that run,',
+    architectureTitleHighlight: 'not controls that are written down.',
     architectureNodes: [
       {
         title: 'Policy & Ethics Layer',
