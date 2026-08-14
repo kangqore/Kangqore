@@ -11,6 +11,8 @@ import { OntologyMerge } from '../services/ontologyMerge.service'
 import { CdcService } from '../lib/cdc/cdcService'
 import { ObjectSetService } from '../services/objectSet.service'
 import { ActionEngine } from '../services/actionEngine.service'
+import { seedEnterpriseActions, ACTION_LIBRARY } from '../services/actionLibrary.seed'
+import { connectorHealth, listConnectors } from '../services/connectors/registry'
 import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.service'
 import { OntologyGeoService } from '../services/ontologyGeo.service'
 import { OntologyPipelineService } from '../services/ontologyPipeline.service'
@@ -479,6 +481,82 @@ router.get('/actions/tool-schemas', ...guard, async (_req, res) => {
   try {
     const tools = await OntologyToolSchema.generateToolSchemas()
     res.json({ tools })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// ─── P4 — Enterprise Action Library ──────────────────────────────────────────
+// GET  /actions/library        — full library grouped by category with live stats
+// POST /actions/library/seed   — (re)seed the 37-action library (idempotent)
+// Both must precede /actions/:id to avoid the wildcard route swallowing them.
+
+router.get('/actions/library', ...guard, async (_req, res) => {
+  try {
+    const types = await prisma.ontologyObjectType.findMany({
+      where: { name: { in: ACTION_LIBRARY.map(c => c.name) } },
+      include: {
+        actions: {
+          include: {
+            _count: { select: { validationRules: true, effects: true, executionLog: true } },
+          },
+          orderBy: { name: 'asc' },
+        },
+      },
+    })
+
+    const categoryOrder = ACTION_LIBRARY.map(c => c.name)
+    const sorted = [...types].sort((a, b) => categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name))
+
+    const categories = sorted.map(t => ({
+      name: t.name,
+      displayName: t.displayName,
+      icon: t.icon,
+      color: t.color,
+      description: t.description,
+      count: t.actions.length,
+      totalExecutions: t.actions.reduce((s, a) => s + a.executions, 0),
+      toolCallableCount: t.actions.filter((a: any) => a.toolCallable).length,
+      actions: t.actions.map(a => ({
+        id: a.id,
+        name: a.name,
+        displayName: a.displayName,
+        description: a.description,
+        parameters: a.parameters,
+        allowedRoles: a.allowedRoles,
+        toolCallable: a.toolCallable,
+        executions: a.executions,
+        validationRuleCount: (a._count as any).validationRules,
+        effectCount: (a._count as any).effects,
+      })),
+    }))
+
+    const totalActions    = categories.reduce((s, c) => s + c.count, 0)
+    const totalExecutions = categories.reduce((s, c) => s + c.totalExecutions, 0)
+    const toolCallable    = categories.reduce((s, c) => s + c.toolCallableCount, 0)
+
+    res.json({ categories, totalActions, totalExecutions, toolCallable })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+router.post('/actions/library/seed', ...guard, async (_req, res) => {
+  try {
+    const result = await seedEnterpriseActions()
+    res.json({ ok: true, ...result })
+  } catch (e: any) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+// GET /actions/connectors — connector health + capability map
+router.get('/actions/connectors', ...guard, async (_req, res) => {
+  try {
+    const health = connectorHealth()
+    const connectors = listConnectors()
+    const configured = Object.values(health).filter(c => c.configured).length
+    res.json({ health, connectors, configured, total: Object.keys(health).length })
   } catch (e: any) {
     res.status(500).json({ error: e.message })
   }

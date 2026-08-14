@@ -16,23 +16,25 @@ import { LineageViewer }          from './pages/LineageViewer'
 import { MarkingsManager }        from './pages/MarkingsManager'
 import { OntologyVersioningPage } from './pages/OntologyVersioningPage'
 import { KoreTypesPage }          from './pages/KoreTypesPage'
+import ActionLibraryPage           from './pages/ActionLibraryPage'
 
 const TABS = [
-  { path: 'explorer',    label: 'Explorer',     icon: Network    },
-  { path: 'objects',     label: 'Objects',      icon: Boxes      },
-  { path: 'object-sets', label: 'Object Sets',  icon: Package    },
-  { path: 'actions',     label: 'Actions',      icon: Zap        },
-  { path: 'executions',  label: 'Execution Log', icon: ScrollText },
-  { path: 'policy-gate',  label: 'Policy Gate',  icon: ShieldCheck },
-  { path: 'approvals',   label: 'Approvals',    icon: HourglassIcon },
-  { path: 'map',          label: 'Map View',     icon: MapPin     },
-  { path: 'pipelines',    label: 'Pipelines',    icon: Workflow   },
-  { path: 'migration',    label: 'Migration Accelerator', icon: UploadCloud },
-  { path: 'developer',    label: 'Developer',    icon: Terminal   },
-  { path: 'lineage',     label: 'Lineage',      icon: GitBranch  },
-  { path: 'markings',    label: 'Markings',     icon: Shield     },
-  { path: 'versioning',  label: 'Versioning',   icon: GitMerge   },
-  { path: 'kore-types',  label: 'KORE Types',   icon: Cpu        },
+  { path: 'explorer',       label: 'Explorer',            icon: Network      },
+  { path: 'objects',        label: 'Objects',             icon: Boxes        },
+  { path: 'object-sets',    label: 'Object Sets',         icon: Package      },
+  { path: 'action-library', label: 'Action Library',      icon: Zap          },
+  { path: 'actions',        label: 'Actions',             icon: Zap          },
+  { path: 'executions',     label: 'Execution Log',       icon: ScrollText   },
+  { path: 'policy-gate',    label: 'Policy Gate',         icon: ShieldCheck  },
+  { path: 'approvals',      label: 'Approvals',           icon: HourglassIcon },
+  { path: 'map',            label: 'Map View',            icon: MapPin       },
+  { path: 'pipelines',      label: 'Pipelines',           icon: Workflow     },
+  { path: 'migration',      label: 'Migration Accelerator', icon: UploadCloud },
+  { path: 'developer',      label: 'Developer',           icon: Terminal     },
+  { path: 'lineage',        label: 'Lineage',             icon: GitBranch    },
+  { path: 'markings',       label: 'Markings',            icon: Shield       },
+  { path: 'versioning',     label: 'Versioning',          icon: GitMerge     },
+  { path: 'kore-types',     label: 'KORE Types',          icon: Cpu          },
 ]
 
 export function OntologyModule() {
@@ -66,6 +68,7 @@ export function OntologyModule() {
         <Route path="explorer"     element={<OntologyExplorer />}              />
         <Route path="objects"      element={<OntologyObjects />}               />
         <Route path="object-sets"  element={<ObjectSetsPage />}                />
+        <Route path="action-library" element={<ActionLibraryPage />}              />
         <Route path="actions"      element={<ActionsPage />}                   />
         <Route path="executions"   element={<ActionExecutionPage />}           />
         <Route path="policy-gate"  element={<PolicyGatePage />}                />
