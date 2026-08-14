@@ -1116,7 +1116,7 @@ const featureMicros   = service.featureMicros
                       <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/50" />
                       
                       {/* HUD Inner Square */}
-                      <div className="relative flex items-center justify-center w-6 h-6 border border-white/20 flex-shrink-0 bg-gradient-to-br from-white/10 to-transparent">
+                      <div className="relative flex items-center justify-center w-6 h-6 border border-white/20 flex-shrink-0">
                          {/* Dot without glowing shadow */}
                          <div className="w-1.5 h-1.5 bg-white/50" />
                       </div>
