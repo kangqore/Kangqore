@@ -167,7 +167,7 @@ const CapabilityCycler = ({ capabilities }) => {
 const ServiceGlassCards = ({ faqs, capabilities }) => {
   return (
     <div
-      className="hidden lg:flex flex-col gap-8 w-[200px] xl:w-[240px] shrink-0"
+      className="hidden lg:flex flex-col gap-8 w-[184px] xl:w-[208px] shrink-0 ml-auto"
       aria-roledescription="rotating informational cards"
     >
       <svg width="0" height="0" className="absolute pointer-events-none">
