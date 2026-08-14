@@ -280,8 +280,8 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
               Ask eQORE AI
             </div>
           </div>
-          <button onClick={openWhatsApp} className="w-12 h-12 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-full shadow-lg border border-gray-100 flex items-center justify-center group overflow-hidden" title="WhatsApp Support">
-            <img src="/images/icons/whatsapp-3d.webp" alt="WhatsApp Support" className="w-9 h-9 object-contain transition-transform duration-300 group-hover:scale-110" />
+          <button onClick={openWhatsApp} className="flex items-center justify-center group" title="WhatsApp Support">
+            <img src="/images/icons/whatsapp-3d.webp" alt="WhatsApp Support" className="w-[3.5rem] h-[3.5rem] object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-110" />
           </button>
           <button onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-full shadow-lg border border-gray-100 flex items-center justify-center group" title="Appearance Settings">
             <svg className="w-6 h-6 transition-transform group-hover:scale-110 text-brand-blue" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeWidth="0">
