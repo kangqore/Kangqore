@@ -52,12 +52,12 @@ const FAQTeleprompter = ({ faqs }) => {
 
       {/* Content */}
       <div className="flex-1 flex flex-col gap-2 overflow-hidden relative">
-        <div key={faqIdx} className="animate-fade-in-up absolute inset-0 flex flex-col">
+        <div key={faqIdx} className="animate-[faq-crawl_8s_linear_forwards] flex flex-col w-full h-full">
           <div className="font-bold text-cyan-400 mb-1 flex gap-2 items-start">
             <span className="shrink-0">[Q]</span> 
             <span className="line-clamp-2">{faqs[faqIdx]?.q}</span>
           </div>
-          <div className="text-white/80 leading-relaxed overflow-y-auto pr-1" style={{ maxHeight: 'calc(100% - 20px)' }}>
+          <div className="text-white/80 leading-relaxed overflow-hidden pr-1">
             <span className="text-white/40 mr-2 shrink-0">[A]</span>
             {displayText}
             {isTyping && <span className="inline-block w-1 h-3 bg-cyan-400 ml-1 animate-pulse" />}
