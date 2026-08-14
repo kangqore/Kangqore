@@ -288,6 +288,9 @@ app.use('/api/admin/ontology', adminOntologyRoutes);
 
 import intelligenceRoutes from './routes/intelligence';
 app.use('/api/admin/intelligence', intelligenceRoutes);
+
+import workRoutes from './routes/work';
+app.use('/api/admin/work', workRoutes);
 import adminKimmpGatewayRoutes from './routes/admin-kimmp-gateway';
 app.use('/api/admin/kimmp-gateway', adminKimmpGatewayRoutes);
 app.use('/api/admin/integrations', integrationsRouter);

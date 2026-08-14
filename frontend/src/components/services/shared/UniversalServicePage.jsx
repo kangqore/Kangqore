@@ -1116,7 +1116,7 @@ const featureMicros   = service.featureMicros
                         <span className="text-white font-mono font-bold text-sm leading-none">
                           {String((i % HERO_CAPS.length) + 1).padStart(2, '0')}
                         </span>
-                        <span className="text-white/50 font-mono text-[7px] tracking-widest uppercase mt-1 leading-tight">
+                        <span className="text-white/50 font-mono text-[11px] tracking-widest uppercase mt-1 leading-tight">
                           {cap.label}
                         </span>
                       </div>
