@@ -1,4 +1,4 @@
-import { EnterpriseDomain } from '../../os/edf/contracts/EnterpriseDomain';
+import { EnterpriseDomain } from '../../kangqore-view/edf/contracts/EnterpriseDomain';
 import { CustomerExecutiveCortex } from './CustomerExecutiveCortex';
 
 export const CustomerDomain: EnterpriseDomain = {

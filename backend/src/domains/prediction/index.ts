@@ -10,8 +10,8 @@
 //   - PredictionRegistry  — the business target catalogue
 // ---------------------------------------------------------------------------
 
-import { ModelRegistry }      from '../../os/epf/ModelRegistry'
-import { PredictionRegistry } from '../../os/epf/PredictionRegistry'
+import { ModelRegistry }      from '../../kangqore-view/epf/ModelRegistry'
+import { PredictionRegistry } from '../../kangqore-view/epf/PredictionRegistry'
 import { ChurnPredictionModel }   from './ChurnPredictionModel'
 import { RevenuePredictionModel } from './RevenuePredictionModel'
 

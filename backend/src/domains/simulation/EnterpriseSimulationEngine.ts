@@ -1,13 +1,13 @@
-import { EnterpriseProposal, ExecutiveDeliberationReport } from '../../os/ecf/contracts/types';
+import { EnterpriseProposal, ExecutiveDeliberationReport } from '../../kangqore-view/ecf/contracts/types';
 import { SimulationScenario, SimulationOutcome, EnterpriseSimulationReport } from './contracts/types';
-import { InferenceEngine } from '../../os/epf/InferenceEngine';
-import { PredictionRequest } from '../../os/epf/contracts/types';
-import { EnterpriseTimeEngine } from '../../os/edtp/EnterpriseTimeEngine';
-import { TwinHydrator } from '../../os/edtp/TwinHydrator';
+import { InferenceEngine } from '../../kangqore-view/epf/InferenceEngine';
+import { PredictionRequest } from '../../kangqore-view/epf/contracts/types';
+import { EnterpriseTimeEngine } from '../../kangqore-view/edtp/EnterpriseTimeEngine';
+import { TwinHydrator } from '../../kangqore-view/edtp/TwinHydrator';
 import { CustomerTwinNetwork } from '../twin/CustomerTwinNetwork';
 import { FinanceTwinNetwork } from '../twin/FinanceTwinNetwork';
-import { TwinEvolutionEngine } from '../../os/edtp/TwinEvolutionEngine';
-import { SimulationLedger } from '../../os/edtp/SimulationLedger';
+import { TwinEvolutionEngine } from '../../kangqore-view/edtp/TwinEvolutionEngine';
+import { SimulationLedger } from '../../kangqore-view/edtp/SimulationLedger';
 
 export class EnterpriseSimulationEngine {
   private readonly timeEngine = new EnterpriseTimeEngine();

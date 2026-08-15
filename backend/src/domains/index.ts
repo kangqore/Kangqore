@@ -7,7 +7,7 @@
 // registration instead of imports.
 // ---------------------------------------------------------------------------
 
-import { DomainRegistry }  from '../os/edf/core/DomainRegistry'
+import { DomainRegistry }  from '../kangqore-view/edf/core/DomainRegistry'
 import { SalesDomain }     from './sales/SalesDomain'
 import { CustomerDomain }  from './customer/CustomerDomain'
 import { AnalyticsDomain } from './analytics/AnalyticsDomain'

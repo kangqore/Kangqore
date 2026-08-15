@@ -4,7 +4,7 @@ import {
   PredictionRequest, 
   EnterprisePrediction, 
   EnterpriseFeature 
-} from '../../os/epf/contracts/types';
+} from '../../kangqore-view/epf/contracts/types';
 
 export class RevenuePredictionModel implements IPredictionModelPlugin {
   getMetadata(): PredictionModelMetadata {

@@ -35,10 +35,10 @@ import ticketsRoutes from '../routes/tickets';
 import uploadsRoutes from '../routes/uploads';
 import oauthRoutes from '../routes/oauth';
 import channelsRoutes from '../routes/channels';
-import edfRoutes from '../os/edf/edfRoutes';
-import epfRoutes from '../os/epf/epfRoutes';
-import eafRoutes from '../os/eaf/eafRoutes';
-import esfRoutes from '../os/esf/esfRoutes';
+import edfRoutes from '../kangqore-view/edf/edfRoutes';
+import epfRoutes from '../kangqore-view/epf/epfRoutes';
+import eafRoutes from '../kangqore-view/eaf/eafRoutes';
+import esfRoutes from '../kangqore-view/esf/esfRoutes';
 
 const router = Router();
 

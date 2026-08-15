@@ -1,0 +1,185 @@
+import type { ActionPackManifest } from '../ActionPack'
+
+export const STRIPE_PACK: ActionPackManifest = {
+  pack:        'kangqore/stripe-v1',
+  version:     '1.0.0',
+  description: 'Stripe Billing — customers, subscriptions, invoices, refunds, coupons',
+  author:      'Kangqore',
+  category: {
+    name:        'Stripe',
+    displayName: 'Stripe',
+    icon:        'CreditCard',
+    color:       '#635bff',
+    description: 'Full Stripe lifecycle. Requires STRIPE_SECRET_KEY.',
+  },
+  actions: [
+    {
+      name: 'CREATE_STRIPE_CUSTOMER', displayName: 'Create Stripe Customer',
+      description: 'Create a new customer in Stripe.',
+      parameters: [
+        { name: 'email',       type: 'string', required: true,  description: 'Customer email' },
+        { name: 'name',        type: 'string', required: false, description: 'Customer name' },
+        { name: 'phone',       type: 'string', required: false, description: 'Phone number' },
+        { name: 'description', type: 'string', required: false, description: 'Description' },
+        { name: 'metadata',    type: 'string', required: false, description: 'Custom metadata as JSON' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'UPDATE_STRIPE_CUSTOMER', displayName: 'Update Stripe Customer',
+      description: 'Update a Stripe customer record.',
+      parameters: [
+        { name: 'customerId',  type: 'string', required: true,  description: 'Stripe customer ID (cus_...)' },
+        { name: 'email',       type: 'string', required: false, description: 'New email' },
+        { name: 'name',        type: 'string', required: false, description: 'New name' },
+        { name: 'phone',       type: 'string', required: false, description: 'New phone' },
+        { name: 'description', type: 'string', required: false, description: 'Updated description' },
+        { name: 'metadata',    type: 'string', required: false, description: 'Updated metadata as JSON' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_STRIPE_SUBSCRIPTION', displayName: 'Create Stripe Subscription',
+      description: 'Create a new subscription for a Stripe customer.',
+      parameters: [
+        { name: 'customerId', type: 'string', required: true,  description: 'Stripe customer ID' },
+        { name: 'priceId',    type: 'string', required: true,  description: 'Stripe price ID (price_...)' },
+        { name: 'quantity',   type: 'number', required: false, min: 1, description: 'Quantity (default: 1)' },
+        { name: 'trialDays',  type: 'number', required: false, min: 0, description: 'Trial period in days' },
+        { name: 'coupon',     type: 'string', required: false, description: 'Coupon ID to apply' },
+        { name: 'metadata',   type: 'string', required: false, description: 'Subscription metadata as JSON' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'UPDATE_STRIPE_SUBSCRIPTION', displayName: 'Update Stripe Subscription',
+      description: 'Change the plan, quantity, or settings of a Stripe subscription.',
+      parameters: [
+        { name: 'subscriptionId', type: 'string', required: true,  description: 'Subscription ID (sub_...)' },
+        { name: 'priceId',        type: 'string', required: false, description: 'New price ID' },
+        { name: 'quantity',       type: 'number', required: false, min: 1, description: 'New quantity' },
+        { name: 'prorate',        type: 'boolean',required: false, description: 'Prorate the change (default: true)' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'CANCEL_STRIPE_SUBSCRIPTION', displayName: 'Cancel Stripe Subscription',
+      description: 'Cancel a Stripe subscription immediately or at period end.',
+      parameters: [
+        { name: 'subscriptionId',   type: 'string',  required: true,  description: 'Subscription ID' },
+        { name: 'atPeriodEnd',      type: 'boolean', required: false, description: 'Cancel at end of current period (default: true)' },
+        { name: 'cancellationReason',type: 'enum',   required: false, enum: ['too_expensive', 'missing_features', 'switched_service', 'unused', 'other'], description: 'Cancellation reason' },
+        { name: 'comment',          type: 'string',  required: false, description: 'Internal cancellation note' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'PAUSE_STRIPE_SUBSCRIPTION', displayName: 'Pause Stripe Subscription',
+      description: 'Pause a Stripe subscription billing temporarily.',
+      parameters: [
+        { name: 'subscriptionId', type: 'string', required: true,  description: 'Subscription ID' },
+        { name: 'resumesAt',      type: 'date',   required: false, description: 'Resume date (blank = indefinite pause)' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_STRIPE_INVOICE', displayName: 'Create Stripe Invoice',
+      description: 'Create a one-off invoice for a Stripe customer.',
+      parameters: [
+        { name: 'customerId',  type: 'string',  required: true,  description: 'Stripe customer ID' },
+        { name: 'description', type: 'string',  required: false, description: 'Invoice description' },
+        { name: 'daysUntilDue',type: 'number',  required: false, min: 0, description: 'Days until invoice is due' },
+        { name: 'autoAdvance', type: 'boolean', required: false, description: 'Auto-finalize the invoice' },
+        { name: 'metadata',    type: 'string',  required: false, description: 'Metadata as JSON' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'FINALIZE_STRIPE_INVOICE', displayName: 'Finalize Stripe Invoice',
+      description: 'Finalize a draft Stripe invoice to make it payable.',
+      parameters: [
+        { name: 'invoiceId',    type: 'string',  required: true,  description: 'Invoice ID (in_...)' },
+        { name: 'autoAdvance',  type: 'boolean', required: false, description: 'Automatically advance to payment collection' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'VOID_STRIPE_INVOICE', displayName: 'Void Stripe Invoice',
+      description: 'Void a finalized Stripe invoice (cannot be reversed).',
+      parameters: [
+        { name: 'invoiceId', type: 'string', required: true,  description: 'Invoice ID' },
+        { name: 'reason',    type: 'string', required: true,  description: 'Void reason for audit' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'SEND_STRIPE_INVOICE', displayName: 'Send Stripe Invoice',
+      description: 'Send a finalized Stripe invoice to the customer by email.',
+      parameters: [
+        { name: 'invoiceId', type: 'string', required: true,  description: 'Invoice ID' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_STRIPE_REFUND', displayName: 'Create Stripe Refund',
+      description: 'Issue a full or partial refund on a Stripe payment.',
+      parameters: [
+        { name: 'paymentIntentId', type: 'string', required: true,  description: 'Payment intent ID (pi_...)' },
+        { name: 'amount',          type: 'number', required: false, min: 1, description: 'Refund amount in smallest currency unit (blank = full)' },
+        { name: 'reason',          type: 'enum',   required: false, enum: ['duplicate', 'fraudulent', 'requested_by_customer'], description: 'Refund reason' },
+        { name: 'notes',           type: 'string', required: false, description: 'Internal notes' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_STRIPE_COUPON', displayName: 'Create Stripe Coupon',
+      description: 'Create a discount coupon in Stripe.',
+      parameters: [
+        { name: 'name',           type: 'string',  required: true,  description: 'Coupon name' },
+        { name: 'percentOff',     type: 'number',  required: false, min: 1, max: 100, description: 'Percent discount (mutually exclusive with amountOff)' },
+        { name: 'amountOff',      type: 'number',  required: false, min: 1, description: 'Fixed amount off in smallest currency unit' },
+        { name: 'currency',       type: 'enum',    required: false, enum: ['GBP', 'USD', 'EUR'], description: 'Currency (required if amountOff)' },
+        { name: 'duration',       type: 'enum',    required: true,  enum: ['forever', 'once', 'repeating'], description: 'Discount duration' },
+        { name: 'durationMonths', type: 'number',  required: false, min: 1, description: 'Months (required if duration=repeating)' },
+        { name: 'maxRedemptions', type: 'number',  required: false, min: 1, description: 'Max uses' },
+        { name: 'redeemBy',       type: 'date',    required: false, description: 'Expiry date' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'CREATE_STRIPE_PRICE', displayName: 'Create Stripe Price',
+      description: 'Create a new price for a Stripe product.',
+      parameters: [
+        { name: 'productId',       type: 'string', required: true,  description: 'Stripe product ID' },
+        { name: 'unitAmount',      type: 'number', required: true,  min: 1, description: 'Price in smallest currency unit (e.g. pence for GBP)' },
+        { name: 'currency',        type: 'enum',   required: true,  enum: ['GBP', 'USD', 'EUR'], description: 'Currency' },
+        { name: 'interval',        type: 'enum',   required: false, enum: ['month', 'year', 'week', 'day'], description: 'Billing interval (leave blank for one-time)' },
+        { name: 'intervalCount',   type: 'number', required: false, min: 1, description: 'Billing interval count (e.g. 3 for every 3 months)' },
+        { name: 'nickname',        type: 'string', required: false, description: 'Price nickname' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'APPLY_STRIPE_COUPON', displayName: 'Apply Stripe Coupon',
+      description: 'Apply a coupon to an existing Stripe customer or subscription.',
+      parameters: [
+        { name: 'couponId',        type: 'string', required: true,  description: 'Stripe coupon ID' },
+        { name: 'customerId',      type: 'string', required: false, description: 'Stripe customer ID (applies to all subscriptions)' },
+        { name: 'subscriptionId',  type: 'string', required: false, description: 'Specific subscription ID' },
+      ],
+      allowedRoles: ['ADMIN'], toolCallable: true,
+    },
+    {
+      name: 'GENERATE_STRIPE_REPORT', displayName: 'Generate Stripe Report',
+      description: 'Generate a Stripe financial or activity report for a period.',
+      parameters: [
+        { name: 'reportType', type: 'enum',   required: true,  enum: ['balance_summary', 'payouts', 'disputes', 'tax_summary', 'revenue_recognition'], description: 'Report type' },
+        { name: 'periodFrom', type: 'date',   required: true,  description: 'Report period start' },
+        { name: 'periodTo',   type: 'date',   required: true,  description: 'Report period end' },
+        { name: 'currency',   type: 'enum',   required: false, enum: ['GBP', 'USD', 'EUR'], description: 'Currency' },
+        { name: 'deliverTo',  type: 'string', required: false, description: 'Email to deliver report to' },
+      ],
+      allowedRoles: ['ADMIN', 'EXECUTIVE'], toolCallable: true,
+    },
+  ],
+}

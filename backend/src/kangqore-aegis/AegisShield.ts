@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { MissionRequest } from '../os/kernel/KeosKernel';
+import { MissionRequest } from '../kangqore-view/kernel/KeosKernel';
 import { getCorrelationId } from './AegisContext';
 
 export interface AegisEvaluationResult {
