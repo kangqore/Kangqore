@@ -73,12 +73,15 @@ kangqoreImmpRoutes.get('/tts', requireAuth, requireRole(['ADMIN']), async (req, 
   const text = raw.slice(0, 500).replace(/[^a-zA-Z0-9\s.,!?'"-]/g, ' ').trim()
   if (!text) return res.status(400).json({ error: 'text required' })
 
+  const tmpDir = path.resolve(os.tmpdir()) + path.sep
   const id      = crypto.randomBytes(8).toString('hex')
-  const wavPath = path.join(os.tmpdir(), `waanda_${id}.wav`)
+  const wavPath = path.resolve(os.tmpdir(), `waanda_${id}.wav`)
+  if (!wavPath.startsWith(tmpDir)) return res.status(400).json({ error: 'invalid path' })
 
   try {
     if (process.platform === 'darwin') {
-      const aiffPath = path.join(os.tmpdir(), `waanda_${id}.aiff`)
+      const aiffPath = path.resolve(os.tmpdir(), `waanda_${id}.aiff`)
+      if (!aiffPath.startsWith(tmpDir)) return res.status(400).json({ error: 'invalid path' })
       try {
         await new Promise<void>((resolve, reject) =>
           execFile('say', ['-v', 'Samantha', '-r', '155', '-o', aiffPath, text], e => e ? reject(e) : resolve())
