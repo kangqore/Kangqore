@@ -35,7 +35,8 @@ import { PromptRegistry } from '../wir/promptRegistry.service'
 // ─── Config ───────────────────────────────────────────────────────────────────
 
 const WAANDAX_URL   = process.env.WAANDAX_URL         || 'http://127.0.0.1:11435'
-const WAANDAX_MODEL = process.env.WAANDAX_MODEL        || ''
+const WAANDAX_MODEL = process.env.WAANDAX_MODEL        || 'waandax-3b'
+const WAANDAX_PRIMARY = process.env.WAANDAX_PRIMARY !== 'false' // WAANDAx as primary LLM engine
 const OPENAI_KEY    = process.env.OPENAI_API_KEY       || ''
 const GEMINI_KEY    = process.env.GEMINI_API_KEY       || ''
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY    || ''
@@ -538,28 +539,19 @@ async function _routedCallImpl(
     }
   }
 
-  // ── 1. WAANDAx (local MLX-LM) — serves up front ONLY when Claude can't ─────
-  // Platform policy (2026-07-25): Claude-first whenever it is usable; WAANDAx
-  // is the resilience layer. This slot activates when Claude has no key or its
-  // circuit breaker is open. Tool-carrying calls always skip it (no tool_use
-  // on the local model) — they reach WAANDAx only via the last resort below.
-  //
-  // cbAllow('claude') is called EXACTLY ONCE per request and cached below.
-  // cbAllow has a side effect: when the breaker is 'open' and the recovery
-  // timeout has elapsed, it flips to 'half-open' and returns true ONCE — a
-  // second call in the same request would see 'half-open' and return false,
-  // so the real Claude attempt at step 2 would never fire, cbSuccess/
-  // cbFailure would never be called, and the breaker would be stuck
-  // "recovering" forever — Claude could never self-heal even with credits
-  // restored. Caching the single result is what keeps recovery working.
-  const claudeUsable = !!ANTHROPIC_KEY && cbAllow('claude')
-  if (!claudeUsable && !options.tools?.length && await _waandaxAvailable() && cbAllow('waandax')) {
+  // ── 1. WAANDAx (Local Enterprise LLM Engine) — Primary Provider
+  // WAANDAx acts as the native system LLM, replacing Claude, ChatGPT, and Gemini.
+  // When WAANDAX_PRIMARY is enabled or external keys are absent, WAANDAx responds first.
+  const waandaxIsPrimary = WAANDAX_PRIMARY || !ANTHROPIC_KEY
+  const claudeUsable = !!ANTHROPIC_KEY && cbAllow('claude') && !waandaxIsPrimary
+
+  if (waandaxIsPrimary && !options.tools?.length && await _waandaxAvailable() && cbAllow('waandax')) {
     try {
       const { text, inputTokens, outputTokens } = await _callWaandax(system, user, maxTokens)
       _counts.waandax++
       markServed('waandax')
       cbSuccess('waandax')
-      _capture(system, user, text, claudeModel, 'waandax', meta).catch(() => {})
+      _capture(system, user, text, WAANDAX_MODEL, 'waandax', meta).catch(() => {})
       return {
         content: [{ type: 'text', text }],
         model: WAANDAX_MODEL,
@@ -567,10 +559,10 @@ async function _routedCallImpl(
       }
     } catch (err) {
       if (isWaandaxBusyError(err)) {
-        logger.debug('[KIMMP Router] WAANDAx slots full — passing to next provider (no CB penalty)')
+        logger.debug('[KIMMP Router] WAANDAx slots full — passing to fallback provider (no CB penalty)')
       } else {
         cbFailure('waandax')
-        logger.warn('[KIMMP Router] WAANDAx failed, trying next provider:', (err as Error).message)
+        logger.warn('[KIMMP Router] WAANDAx failed, trying cloud fallback:', (err as Error).message)
       }
     }
   }
