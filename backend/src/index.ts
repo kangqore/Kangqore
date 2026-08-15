@@ -197,8 +197,10 @@ app.use('/api/communities', communitiesRouter); // S71 — real communities back
 app.use('/api/uploads', uploadRoutes);
 app.use('/api/search', searchRoutes);
 import developerRoutes from './routes/developer.routes';
+import agentUxRoutes from './routes/agentUx.routes';
 app.use('/api/developer', developerRoutes);
 app.use('/api/marketplace', developerRoutes);
+app.use('/api/agent-ux', agentUxRoutes);
 app.use('/api/admin/analytics', analyticsRoutes); // NEW
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/chatbot', chatbotRoutes);

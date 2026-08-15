@@ -1,8 +1,9 @@
-// Work OS — Phase 3: Monday Superset
-// All WorkItems are enterprise OntologyObjects. Views are disposable; ontology is permanent.
+// Work OS — Phase 6: Make Agents the Primary UX
+// All WorkItems are enterprise OntologyObjects.
+// Intent-driven Agent Primary UX is the default workspace. Views (Board, Table, Timeline) are disposable.
 
 import { useLocation, Routes, Route, NavLink, Navigate } from 'react-router-dom'
-import { LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers } from 'lucide-react'
+import { LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BoardView }          from './pages/BoardView'
@@ -14,10 +15,12 @@ import { GoalsView }          from './pages/GoalsView'
 import { PortfolioView }      from './pages/PortfolioView'
 import { ExecutiveView }      from './pages/ExecutiveView'
 import { AutomationsView }    from './pages/AutomationsView'
+import AgentPrimaryUxView     from './pages/AgentPrimaryUxView'
 
 const BASE = '/kangqore-view/admin/work'
 
 const TABS = [
+  { path: 'agent-ux',   label: 'AI Agent Workspace (Primary UX)', icon: Sparkles, primary: true },
   { path: 'board',       label: 'Board',      icon: LayoutGrid         },
   { path: 'table',       label: 'Table',      icon: Table2             },
   { path: 'timeline',    label: 'Timeline',   icon: GanttChartSquare   },
@@ -37,7 +40,10 @@ export function WorkModule() {
         <div className="flex items-center gap-2 mb-3">
           <Layers className="w-5 h-5 text-[var(--os-text-2)]" />
           <h1 className="text-xl font-semibold text-[var(--os-text-1)]">Work OS</h1>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-400 font-medium">Ontology-backed</span>
+          <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold border border-blue-500/20 flex items-center gap-1">
+            <Sparkles className="w-3 h-3" />
+            Agent-First Operating System
+          </span>
         </div>
         <div className="flex items-center gap-0 border-b border-[var(--os-border)] overflow-x-auto">
           {TABS.map(tab => (
@@ -47,11 +53,12 @@ export function WorkModule() {
               className={({ isActive }) => cn(
                 'flex items-center gap-1.5 px-3.5 py-2.5 text-sm font-medium border-b-2 -mb-px whitespace-nowrap transition-all',
                 isActive
-                  ? 'border-violet-500 text-violet-400'
-                  : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
+                  ? 'border-blue-500 text-blue-400 font-semibold'
+                  : 'border-transparent text-[var(--os-text-2)] hover:text-[var(--os-text-1)]',
+                tab.primary && !pathname.includes(tab.path) && 'text-blue-300 hover:text-blue-200'
               )}
             >
-              <tab.icon className="w-3.5 h-3.5" />
+              <tab.icon className={cn('w-3.5 h-3.5', tab.primary && 'text-blue-400')} />
               {tab.label}
             </NavLink>
           ))}
@@ -60,7 +67,8 @@ export function WorkModule() {
       <AnimatePresence mode="wait" initial={false}>
         <motion.div key={pathname} initial={{opacity:0,y:4}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.12}}>
           <Routes>
-            <Route index element={<Navigate to="board" replace />} />
+            <Route index element={<Navigate to="agent-ux" replace />} />
+            <Route path="agent-ux"   element={<AgentPrimaryUxView />} />
             <Route path="board"       element={<BoardView />}          />
             <Route path="table"       element={<TableView />}          />
             <Route path="timeline"    element={<TimelineView />}       />
