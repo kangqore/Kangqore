@@ -158,7 +158,7 @@ export class MissionDispatcher {
     recordMissionAsAction(request, missionId, aegisResult, executionResult).catch(() => {});
 
     // Notify WAANDA that KEOS ran a mission (keeps lastActive timestamp real)
-    import('../../../../waanda/adapters/KeosAdapter').then(({ notifyKeosMissionRun }) => notifyKeosMissionRun()).catch(() => {})
+    import('../../../waanda/adapters/KeosAdapter').then(({ notifyKeosMissionRun }) => notifyKeosMissionRun()).catch(() => {})
 
     return executionResult;
   }

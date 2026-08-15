@@ -8,7 +8,7 @@
 import { prisma }           from '../../../lib/prisma';
 import { sonnet, textOf }   from '../llm/kimmpLLMRouter';
 import { TrustEngine }      from './trustEngine';
-import { computeGate8 }     from '../../../waanda/intelligence/gate8.service';
+import { computeGate8 }     from '../../waanda/intelligence/gate8.service';
 
 const SYSTEM_REVIEW =
   'You are WAANDA. Generate a structured weekly executive review for Kangqore Global. ' +

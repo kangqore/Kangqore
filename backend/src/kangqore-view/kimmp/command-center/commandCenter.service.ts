@@ -12,7 +12,7 @@ import { DecisionEngine }           from '../decision/decisionEngine.service';
 import { PredictionStore }          from '../prediction/predictionStore.service';
 import { WaandaTrainingPipeline }   from '../../waanda/training/trainingPipeline.service';
 import { KimmpCostTracker }         from '../governance/costTracker.service';
-import { computeGate8 }             from '../../../waanda/intelligence/gate8.service';
+import { computeGate8 }             from '../../waanda/intelligence/gate8.service';
 import { BusinessDomainsService, BusinessDomain } from './businessDomains.service';
 
 export interface CommandCenterSnapshot {

@@ -954,7 +954,7 @@ const NEXT_ACTION_MAP: Record<string, string> = {
   baseline_set:         'Record OIS baseline at POST /admin/gate8/baseline',
   team_invited:         'Invite team members at /admin/users',
   first_project:        'Create the first project at /admin/pmo/projects',
-  first_waanda_session: 'Run first WAANDA session at /kangqore-view/waanda',
+  first_waanda_session: 'Run first WAANDA session at /waanda',
 }
 
 export async function computeOnboardingChecklist() {

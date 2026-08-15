@@ -15,7 +15,7 @@ import { DecisionEngine }          from '../decision/decisionEngine.service';
 import { KimmpProactiveEngine }    from '../proactive/kimmpProactive.service';
 import { KimmpGoalEngine }         from '../goals/kimmpGoal.service';
 import { IntentAlignmentService }  from './intentAlignment.service';
-import { computeGate8, computeRecommendations } from '../../../waanda/intelligence/gate8.service';
+import { computeGate8, computeRecommendations } from '../../waanda/intelligence/gate8.service';
 import { haiku, textOf }           from '../llm/kimmpLLMRouter';
 
 // ── Action type constants ─────────────────────────────────────────────────────

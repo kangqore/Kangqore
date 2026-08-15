@@ -58,7 +58,7 @@ import { KimmpDigitalTwin } from './twin/kimmpTwin.service';
 import { KimmpSystemDispatcher } from './agents/systemDispatcher';
 import { SystemType, SYSTEM_AGENTS } from './agents/agentRegistry';
 import { SystemLearning } from './agents/systemLearning';
-import { invalidatePulseCache } from '../../waanda/intelligence/enterpriseService';
+import { invalidatePulseCache } from '../waanda/intelligence/enterpriseService';
 import { SystemRAG, RAGSystem, RAG_SYSTEMS, SYSTEM_DOC_TYPES } from './agents/systemRAG';
 import { prisma } from '../../lib/prisma';
 import { CommandCenterService } from './command-center/commandCenter.service';
@@ -1008,7 +1008,7 @@ Return ONLY a JSON array of node IDs in the suggested order. No prose, no fences
     const r = await haiku(system, user, 500)
     const raw = textOf(r).trim().replace(/```json?/g, '').replace(/```/g, '').trim()
     const parsed = JSON.parse(raw)
-    if (Array.isArray(parsed)) return res.json({ suggestedOrder: parsed, strategy: 'waanda' })
+    if (Array.isArray(parsed)) return res.json({ suggestedOrder: parsed, strategy: '../waanda' })
     throw new Error('not array')
   } catch {
     const TYPE_ORDER: Record<string, number> = {

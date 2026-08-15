@@ -204,7 +204,7 @@ export class EvolutionEngine {
 
     // WAANDA broadcasts GOVERNED mode to all subsystems — federated governance alignment
     try {
-      const { WaandaAuthority } = await import('../../../waanda/WaandaAuthority');
+      const { WaandaAuthority } = await import('../../waanda/WaandaAuthority');
       await WaandaAuthority.broadcastDirective('ALIGN', {
         mode:             'GOVERNED',
         governancePolicy: { requireApproval: true },

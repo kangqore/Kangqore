@@ -181,7 +181,7 @@ export class MorningBriefingService {
     // ── WAANDA strategic directives post-brief ───────────────────────────────
     // WAANDA uses the brief's intelligence to direct subsystems for the day.
     try {
-      const { WaandaAuthority } = await import('../../../waanda/WaandaAuthority');
+      const { WaandaAuthority } = await import('../../waanda/WaandaAuthority');
 
       // ALIS segment: time-of-day intent — morning = revenue growth,
       // midday = execution health, evening = market positioning

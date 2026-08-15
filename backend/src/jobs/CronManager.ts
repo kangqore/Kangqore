@@ -273,7 +273,7 @@ export class CronManager {
   private static scheduleProjectOpsHealthSweep() {
     cron.schedule('0 7 * * *', async () => {
       try {
-        const { sweepAllProjects } = await import('../waanda/intelligence/projectOps.service')
+        const { sweepAllProjects } = await import('../kangqore-view/waanda/intelligence/projectOps.service')
         const result = await sweepAllProjects()
         logger.info(`[CronManager] Project health sweep: ${result.assessed} projects, avg health ${result.avgHealth}`)
       } catch (err) {

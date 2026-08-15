@@ -129,7 +129,7 @@ export class CognitionOrchestrator {
     // ETI falling to/below 60: WAANDA directs KIMMP into conservative mode.
     // ETI recovering above 70: WAANDA automatically clears conservative mode.
     if (scoreAfter <= 60 && scoreAfter < scoreBefore) {
-      import('../../../waanda/WaandaAuthority').then(({ WaandaAuthority }) => {
+      import('../../waanda/WaandaAuthority').then(({ WaandaAuthority }) => {
         WaandaAuthority.issueDirective('KIMMP', 'CONFIGURE', {
           criticalThresholdRaised: true,
           autonomousActionsReduced: true,
@@ -137,7 +137,7 @@ export class CognitionOrchestrator {
         }, `ETI fell to ${scoreAfter} — KIMMP entering conservative mode`).catch(() => {})
       }).catch(() => {})
     } else if (scoreAfter > 70 && scoreBefore <= 60) {
-      import('../../../waanda/WaandaAuthority').then(({ WaandaAuthority }) => {
+      import('../../waanda/WaandaAuthority').then(({ WaandaAuthority }) => {
         WaandaAuthority.issueDirective('KIMMP', 'CONFIGURE', {
           conservativeModeCleared: true,
           etiScore: scoreAfter,
