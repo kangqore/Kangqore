@@ -3,11 +3,11 @@ import { Router } from 'express'
 import crypto from 'crypto'
 import { prisma } from '../lib/prisma'
 import { authenticate, authorize } from '../middleware/auth'
-import { complete, GATEWAY_MODEL_MAP } from '../services/kimmpGateway.service'
-import { checkBudget } from '../services/kimmpGatewayCore'
-import { PgvectorIndex } from '../services/pgvectorIndex.service'
-import { embedQuery, isEmbeddingsConfigured } from '../services/embeddings.service'
-import { KimmpOperationalWebhookService } from '../services/kimmpOperationalWebhook.service'
+import { complete, GATEWAY_MODEL_MAP } from '../kangqore-view/kimmp/gateway/KimmpGateway'
+import { checkBudget } from '../kangqore-view/kimmp/gateway/KimmpGatewayCore'
+import { PgvectorIndex } from '../kangqore-view/kimmp/knowledge/PgvectorIndex'
+import { embedQuery, isEmbeddingsConfigured } from '../kangqore-view/kimmp/knowledge/EmbeddingsService'
+import { KimmpOperationalWebhookService } from '../kangqore-view/kimmp/gateway/KimmpOperationalWebhook'
 
 const router = Router()
 const guard = [authenticate, authorize(['ADMIN'])] as const

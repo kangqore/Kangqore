@@ -11,8 +11,8 @@
 
 import { prisma }              from '../../../lib/prisma'
 import { emitToAdmins }        from '../../../socket'
-import { createNotification }  from '../../../services/notificationService'
-import { emailService }        from '../../../services/email.service'
+import { createNotification }  from '../../awareness/notifications/NotificationService'
+import { emailService }        from '../../eaf/channels/EmailService'
 import { AegisLedger }         from './aegisLedger.service'
 import { redisConnection }     from '../../../lib/redis'
 import { ActionEngine }        from '../../automation/ActionEngine'
@@ -208,7 +208,7 @@ async function execPatchLeadRiskScore(action: AegisAction, _result: AegisAgentRe
 async function execRevokeSession(action: AegisAction, result: AegisAgentResult): Promise<void> {
   const userId = (action.params.userId as string) ?? (result.metadata?.userId as string)
   if (!userId) return
-  const { deleteAllUserSessions } = await import('../../../services/session.service')
+  const { deleteAllUserSessions } = await import('../../kernel/auth/SessionService')
   await deleteAllUserSessions(userId).catch(() => {})
   await AegisLedger.logPolicyViolation({
     policy:   'AEGIS_SESSION_REVOKE',

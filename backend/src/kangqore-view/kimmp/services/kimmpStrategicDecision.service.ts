@@ -1,7 +1,7 @@
 import { prisma } from '../../../lib/prisma'
 import { sonnet, textOf } from '../llm/kimmpLLMRouter'
 import { runSimulation, SimulationType } from './kimmpSimulator.service'
-import { checkPolicy, PolicyEffect } from '../../../services/policyEngine.service'
+import { checkPolicy, PolicyEffect } from '../../esf/PolicyEngine'
 
 export interface DecisionOption {
   label:          string

@@ -1,7 +1,7 @@
 import { Router, Response, NextFunction } from 'express'
 import { PrismaClient }                   from '@prisma/client'
 import { authenticate, authorize, AuthenticatedRequest } from '../middleware/auth'
-import { CanvasOntologyBridge } from '../services/canvasOntologyBridge.service'
+import { CanvasOntologyBridge } from '../kangqore-view/eof/CanvasOntologyBridge'
 
 const router = Router()
 const prisma = new PrismaClient()

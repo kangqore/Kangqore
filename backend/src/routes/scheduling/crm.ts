@@ -2,8 +2,8 @@ import { Router } from 'express';
 import { prisma } from '../../lib/prisma';
 import { authenticate, AuthenticatedRequest as AuthRequest } from '../../middleware/auth';
 import { createError } from '../../middleware/errorHandler';
-import { HubspotService } from '../../services/hubspot.service';
-import { SalesforceService } from '../../services/salesforce.service';
+import { HubspotService } from '../../kangqore-view/eaf/scheduling/HubspotService';
+import { SalesforceService } from '../../kangqore-view/eaf/scheduling/SalesforceService';
 import { sanitizeRedirectUrl } from '../../utils/security';
 
 const router = Router();

@@ -11,7 +11,7 @@ import { DailyPlanService }    from '../command-center/dailyPlan.service';
 import { TrustEngine }         from './trustEngine';
 import { MemoryEngine }        from './memoryEngine';
 import { EvolutionEngine }     from './evolutionEngine';
-import { emailService }        from '../../../services/email.service';
+import { emailService }        from '../../eaf/channels/EmailService';
 
 export type BriefType = 'MORNING' | 'MIDDAY' | 'EVENING';
 

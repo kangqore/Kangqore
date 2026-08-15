@@ -9,7 +9,7 @@ import { AlisDemandResponder } from '../../../kangqore-alis/services/alisDemandR
 import { VisContentActioner } from '../../../kangqore-vis/services/visContentActioner.service'
 import { KimmpToolDispatch } from './kimmpToolDispatch.service'
 import type { Platform } from '../../../integrations/types'
-import { checkPolicy } from '../../../services/policyEngine.service'
+import { checkPolicy } from '../../esf/PolicyEngine'
 
 const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 

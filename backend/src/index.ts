@@ -89,7 +89,7 @@ import { initializeVoiceGateway } from './voice/voiceGateway';
 // Server restart trigger 12345678901234567890
 // Initialize Prisma Client
 import { prisma } from './lib/prisma';
-import { sendPushToAll } from './services/pushNotification.service';
+import { sendPushToAll } from './kangqore-view/awareness/notifications/PushNotificationService';
 export { prisma };
 
 // S82 — Push notifications: intercept all KimmpSignal creates, push on HIGH/CRITICAL

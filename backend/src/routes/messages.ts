@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { requireAuth, AuthRequest } from '../middleware/rbac';
 import { createError } from '../middleware/errorHandler';
-import { notifyNewMessage } from '../services/notificationService';
+import { notifyNewMessage } from '../kangqore-view/awareness/notifications/NotificationService';
 import { emitToUser, emitToAdmins } from '../socket';
 import Joi from 'joi';
 

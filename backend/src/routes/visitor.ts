@@ -9,10 +9,10 @@ import { prisma } from '../lib/prisma'
 import { requireAuth, requireRole } from '../middleware/rbac'
 import type { AuthRequest } from '../middleware/rbac'
 import logger from '../utils/logger'
-import { upsertPresence, getActivePresence } from '../services/visitorPresenceRegistry'
+import { upsertPresence, getActivePresence } from '../kangqore-view/awareness/VisitorPresenceRegistry'
 import { getIO } from '../socket'
 import { WaandaTrainingPipeline } from '../waanda-training'
-import { LeadEnrichmentService } from '../services/leadEnrichment.service'
+import { LeadEnrichmentService } from '../kangqore-view/awareness/LeadEnrichmentService'
 
 function extractIp(req: Request): string | null {
   const forwarded = req.headers['x-forwarded-for']

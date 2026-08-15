@@ -1,7 +1,7 @@
 import { Router, Response, NextFunction } from 'express'
 import { prisma } from '../lib/prisma'
 import { authenticate, authorize } from '../middleware/auth'
-import { emailService } from '../services/email.service'
+import { emailService } from '../kangqore-view/eaf/channels/EmailService'
 import type { AuthenticatedRequest } from '../middleware/auth'
 
 type Audience = 'clients' | 'partners' | 'investors' | 'careers'

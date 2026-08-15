@@ -1,7 +1,7 @@
 import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../../lib/prisma';
 import { authenticate, AuthenticatedRequest } from '../../middleware/auth';
-import { emailService } from '../../services/email.service';
+import { emailService } from '../../kangqore-view/eaf/channels/EmailService';
 import { startOfDay, endOfDay, format } from 'date-fns';
 import { json2csv } from 'json-2-csv';
 

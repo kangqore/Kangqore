@@ -1,7 +1,7 @@
 import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
-import { notifyMeetingScheduled } from '../services/notificationService';
+import { notifyMeetingScheduled } from '../kangqore-view/awareness/notifications/NotificationService';
 
 const router = Router();
 

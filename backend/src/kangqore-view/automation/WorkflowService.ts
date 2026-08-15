@@ -1,5 +1,5 @@
 import { prisma } from '../../lib/prisma';
-import { emailService } from '../../services/email.service';
+import { emailService } from '../eaf/channels/EmailService';
 import { webhookService } from '../eaf/scheduling/WebhookService';
 import logger from '../../utils/logger';
 

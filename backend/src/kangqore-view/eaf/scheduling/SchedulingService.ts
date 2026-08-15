@@ -1,6 +1,6 @@
 import { prisma } from '../../../lib/prisma';
 import { AvailabilityService } from './AvailabilityService';
-import { emailService } from '../../../services/email.service';
+import { emailService } from '../channels/EmailService';
 import { createError } from '../../../middleware/errorHandler';
 import { addMinutes } from 'date-fns';
 import { randomBytes } from 'crypto';
@@ -9,7 +9,7 @@ import { ZoomService } from './ZoomService';
 import { HubspotService } from './HubspotService';
 import { SalesforceService } from './SalesforceService';
 import { webhookService } from './WebhookService';
-import { workflowService } from '../../../services/workflow.service';
+import { workflowService } from '../../automation/WorkflowService';
 import { AuditLogger } from '../../../utils/auditLogger';
 import logger from '../../../utils/logger';
 

@@ -1,7 +1,7 @@
 import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
-import { IntelligenceService } from '../services/intelligenceService';
+import { IntelligenceService } from '../kangqore-view/awareness/IntelligenceService';
 import { createError } from '../middleware/errorHandler';
 
 const router = Router();

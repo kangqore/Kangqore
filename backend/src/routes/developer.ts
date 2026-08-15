@@ -7,7 +7,7 @@
 import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import crypto from 'crypto'
-import { OntologySdkGenerator } from '../services/ontologySdkGenerator.service'
+import { OntologySdkGenerator } from '../kangqore-view/eof/OntologySdkGenerator'
 
 export const developerRouter = Router()
 

@@ -6,7 +6,7 @@
 // ---------------------------------------------------------------------------
 
 import { Request, Response, NextFunction } from 'express'
-import { verifyAccessToken } from '../../../services/token.service'
+import { verifyAccessToken } from '../../kernel/auth/TokenService'
 import { AegisLedger } from './aegisLedger.service'
 import { AegisEventEmitter } from './aegisEventEmitter'
 import { aegisStorage, generateCorrelationId, AegisRequestContext } from './AegisContext'

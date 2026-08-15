@@ -8,12 +8,12 @@ import {
   embedDocuments,
   getEmbeddingModel,
   isEmbeddingsConfigured,
-} from '../services/embeddings.service';
+} from '../kangqore-view/kimmp/knowledge/EmbeddingsService';
 import {
   getIndexState,
   indexKnowledgeBase,
-} from '../services/concierge.retrieval';
-import { getKB, reloadKB } from '../services/kb-loader';
+} from '../kangqore-view/waanda/intelligence/ConciergeRetrieval';
+import { getKB, reloadKB } from '../kangqore-view/kimmp/knowledge/KbLoader';
 
 const router = Router();
 

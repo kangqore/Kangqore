@@ -2,8 +2,8 @@ import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
 import { createError } from '../middleware/errorHandler';
-import { notifyTicketUpdate } from '../services/notificationService';
-import { notifyClient } from '../services/clientEmail.service';
+import { notifyTicketUpdate } from '../kangqore-view/awareness/notifications/NotificationService';
+import { notifyClient } from '../kangqore-view/eaf/channels/ClientEmailService';
 
 const router = Router();
 

@@ -4,7 +4,7 @@
 import { Router }          from 'express'
 import { authenticate }    from '../middleware/auth'
 import { requireRole }     from '../middleware/rbac'
-import { SemanticMapper }  from '../services/semanticMapper.service'
+import { SemanticMapper }  from '../kangqore-view/eof/SemanticMapper'
 import { ConnectorRegistry } from '../integrations/registry'
 import '../integrations'   // registers all connectors
 

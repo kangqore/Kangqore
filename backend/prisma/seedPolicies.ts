@@ -1,4 +1,4 @@
-import { seedDefaultPolicies } from '../src/services/policyEngine.service'
+import { seedDefaultPolicies } from '../src/kangqore-view/esf/PolicyEngine'
 import { PrismaClient } from '@prisma/client'
 
 const p = new PrismaClient()

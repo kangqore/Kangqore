@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 import { prisma } from '../lib/prisma';
-import { emailService } from '../services/email.service';
+import { emailService } from '../kangqore-view/eaf/channels/EmailService';
 import logger from '../utils/logger';
 import { createError } from '../middleware/errorHandler';
 // import { requireAuth, requireRole, AuthRequest } from '../middleware/rbac';

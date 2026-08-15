@@ -1,7 +1,7 @@
 // Seed OntologyObject rows from real CRM/lead data, then auto-link to create relationships.
 // Idempotent — safe to re-run.
 import { PrismaClient } from '@prisma/client'
-import { autoLinkObjects } from '../src/services/ontologyAutoLink.service'
+import { autoLinkObjects } from '../src/kangqore-view/eof/OntologyAutoLink'
 
 const prisma = new PrismaClient()
 

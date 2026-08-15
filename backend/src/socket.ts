@@ -7,7 +7,7 @@ import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { prisma } from './lib/prisma';
-import { onConnect, onDisconnect, setPresence } from './services/presenceService';
+import { onConnect, onDisconnect, setPresence } from './kangqore-view/awareness/PresenceService';
 import { SwarmManager } from './kangqore-immp/orchestrator/swarmManager.service';
 import { SwarmActivityEngine } from './kangqore-immp/orchestrator/swarmActivity.engine';
 

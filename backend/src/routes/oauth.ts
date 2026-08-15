@@ -1,8 +1,8 @@
 
 import { Router } from 'express';
 import passport from 'passport';
-import { createSession } from '../services/session.service';
-import { extractRequestMetadata, createAuditLog, AUDIT_ACTIONS } from '../services/audit.service';
+import { createSession } from '../kangqore-view/kernel/auth/SessionService';
+import { extractRequestMetadata, createAuditLog, AUDIT_ACTIONS } from '../kangqore-view/kernel/audit/AuditService';
 import { sanitizeRedirectUrl } from '../utils/security';
 
 const router = Router();

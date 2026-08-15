@@ -2,8 +2,8 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { requireAuth, requireRole } from '../middleware/rbac';
 import { upload } from '../middleware/upload';
-import { createNotification } from '../services/notificationService';
-import { notifyClient } from '../services/clientEmail.service';
+import { createNotification } from '../kangqore-view/awareness/notifications/NotificationService';
+import { notifyClient } from '../kangqore-view/eaf/channels/ClientEmailService';
 
 const requireAdmin = requireRole(['ADMIN']);
 

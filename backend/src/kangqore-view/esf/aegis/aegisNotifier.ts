@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------------------
 
 import { prisma }              from '../../../lib/prisma'
-import { createNotification }  from '../../../services/notificationService'
+import { createNotification }  from '../../awareness/notifications/NotificationService'
 import { emitToAdmins }        from '../../../socket'
 import type { AegisAgentResult } from './agents/types'
 

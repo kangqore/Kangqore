@@ -4,9 +4,9 @@
 
 import { prisma } from '../../../lib/prisma'
 import { KimmpRag } from '../rag/kimmpRag.service'
-import { SemanticMapper } from '../../../services/semanticMapper.service'
-import type { ExternalRef, ResolvedEntity } from '../../../services/semanticMapper.service'
-import { ObjectSetService } from '../../../services/objectSet.service'
+import { SemanticMapper } from '../../eof/SemanticMapper'
+import type { ExternalRef, ResolvedEntity } from '../../eof/SemanticMapper'
+import { ObjectSetService } from '../../eof/ObjectSet'
 
 export interface EnterpriseContext {
   // Temporal

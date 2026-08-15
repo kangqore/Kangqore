@@ -6,10 +6,10 @@
 // Run via: GET /api/admin/aegis/compliance/run
 
 import { prisma } from '../../../../lib/prisma'
-import { OntologyGateway, SYSTEM_ACTOR, GatewayActor } from '../../../../services/ontologyGateway.service'
-import { CardinalityEngine } from '../../../../services/cardinalityEngine.service'
+import { OntologyGateway, SYSTEM_ACTOR, GatewayActor } from '../../../eof/OntologyGateway'
+import { CardinalityEngine } from '../../../eof/CardinalityEngine'
 import { ActionEngine } from '../../../automation/ActionEngine'
-import { checkPolicy } from '../../../../services/policyEngine.service'
+import { checkPolicy } from '../../PolicyEngine'
 
 export interface TestResult {
   id: string

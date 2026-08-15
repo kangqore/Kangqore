@@ -8,8 +8,8 @@
 import { Router, Response, NextFunction } from 'express'
 import { prisma } from '../lib/prisma'
 import { authenticate, authorize, AuthenticatedRequest } from '../middleware/auth'
-import { createNotification } from '../services/notificationService'
-import { notifyClient } from '../services/clientEmail.service'
+import { createNotification } from '../kangqore-view/awareness/notifications/NotificationService'
+import { notifyClient } from '../kangqore-view/eaf/channels/ClientEmailService'
 
 const router = Router()
 const AUTH = [authenticate, authorize(['ADMIN'])] as const
