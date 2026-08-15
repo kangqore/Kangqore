@@ -291,7 +291,7 @@ export const WAANDA = {
 
     // KB index + SystemRAG are heavy — defer until after port is bound
     setImmediate(() => {
-      import('../../services/concierge.retrieval').then(({ indexKnowledgeBase, startKbWatcher }) => {
+      import('./intelligence/ConciergeRetrieval').then(({ indexKnowledgeBase, startKbWatcher }) => {
         indexKnowledgeBase().catch(() => {}).finally(() => startKbWatcher())
       }).catch(() => {})
 

@@ -17,7 +17,7 @@
 // indexed and the quality of RAG-augmented reasoning has been verified.
 // ---------------------------------------------------------------------------
 
-import { retrieve } from '../../../services/concierge.retrieval';
+import { retrieve } from '../../waanda/intelligence/ConciergeRetrieval';
 import { KimmpFlags } from '../core/flags';
 import logger from '../../../utils/logger';
 

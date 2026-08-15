@@ -308,7 +308,7 @@ router.post('/:id/status', requireAuth, async (req: any, res: Response) => {
         // Resolve Obligation if Accepted
         if (status === 'ACCEPTED') {
             const obligations = await accountabilityService.getProjectObligations(deliverable.projectId, 'OPEN');
-            const pendingObligation = obligations.find(o => 
+            const pendingObligation = obligations.find((o: any) => 
                 o.obligationType === 'SIGN_OFF_REQUIRED' && 
                 o.description.includes(deliverable.title)
             );

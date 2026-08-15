@@ -19,7 +19,7 @@
 import type Anthropic from '@anthropic-ai/sdk'
 import crypto from 'crypto'
 import logger from '../../../utils/logger'
-import { logCall, scanPii, inferCallerModule } from '../../../services/kimmpGatewayCore'
+import { logCall, scanPii, inferCallerModule } from '../gateway/KimmpGatewayCore'
 import { PromptRegistry } from '../wir/promptRegistry.service'
 
 const WAANDAX_URL   = process.env.WAANDAX_URL   || 'http://127.0.0.1:11435'

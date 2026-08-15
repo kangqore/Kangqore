@@ -29,7 +29,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { prisma } from '../../../lib/prisma'
 import logger from '../../../utils/logger'
 import { waandaxSlot, isWaandaxBusyError } from './waandaxAnthropic'
-import { logCall, scanPii } from '../../../services/kimmpGatewayCore'
+import { logCall, scanPii } from '../gateway/KimmpGatewayCore'
 import { PromptRegistry } from '../wir/promptRegistry.service'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
