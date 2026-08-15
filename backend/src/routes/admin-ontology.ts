@@ -26,7 +26,7 @@ import { connectorHealth, listConnectors } from '../kangqore-view/automation/con
 import { seedBlastRadiusPolicies } from '../services/policyEngine.service'
 import { installActionPack, listInstalledPacks, ITSM_PACK } from '../kangqore-view/automation/ActionPack'
 import { installAllPacks } from '../kangqore-view/automation/PackAutoInstaller'
-import { OntologyToolSchema } from '../services/ontologyToolSchema.service'
+import { OntologyToolSchema } from '../kangqore-view/automation/OntologyToolSchema'
 import crypto from 'crypto'
 import { getIO } from '../socket'
 

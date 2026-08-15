@@ -9,7 +9,7 @@ import { authenticate, authorize } from '../middleware/auth'
 import { IntelligenceSignalEngine } from '../services/intelligenceSignalEngine.service'
 import { PredictiveEngine }         from '../services/predictiveEngine.service'
 import { PrescriptiveEngine }       from '../services/prescriptiveEngine.service'
-import { AutonomousOrchestrator }   from '../services/autonomousOrchestrator.service'
+import { AutonomousOrchestrator }   from '../kangqore-view/automation/AutonomousOrchestrator'
 
 const router = Router()
 const adminGuard = [authenticate, authorize(['ADMIN'])]

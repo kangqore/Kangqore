@@ -4,7 +4,7 @@
 import { Router }      from 'express'
 import { authenticate } from '../middleware/auth'
 import { requireRole }  from '../middleware/rbac'
-import { PackRegistry, PackCategory } from '../services/packRegistry.service'
+import { PackRegistry, PackCategory } from '../kangqore-view/automation/PackRegistryService'
 
 const router = Router()
 const guard  = [authenticate, requireRole(['ADMIN'])]

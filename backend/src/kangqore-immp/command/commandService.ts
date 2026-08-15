@@ -15,7 +15,7 @@ import { KimmpPlannerService, PlanStep } from '../planner/kimmpPlanner.service';
 import { isStrategicDecision, runStrategicDecision, StrategicDecisionResult } from '../services/kimmpStrategicDecision.service';
 import { routedCall } from '../llm/kimmpLLMRouter';
 import { LogicToolRegistry } from '../tools/logicToolRegistry';
-import { OntologyActionToolRegistry } from '../../services/ontologyActionToolRegistry.service';
+import { OntologyActionToolRegistry } from '../../kangqore-view/automation/OntologyActionToolRegistry';
 import { KnowledgeSearchTool } from '../../services/knowledgeSearchTool.service';
 
 // ─── Types ────────────────────────────────────────────────────────────────────

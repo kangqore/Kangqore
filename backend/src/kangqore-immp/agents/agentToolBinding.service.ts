@@ -9,7 +9,7 @@
 
 import type Anthropic from '@anthropic-ai/sdk'
 import { LogicToolRegistry } from '../tools/logicToolRegistry'
-import { OntologyActionToolRegistry } from '../../services/ontologyActionToolRegistry.service'
+import { OntologyActionToolRegistry } from '../../kangqore-view/automation/OntologyActionToolRegistry'
 import { KnowledgeSearchTool } from '../../services/knowledgeSearchTool.service'
 
 export interface ResolvedAgentTools {
