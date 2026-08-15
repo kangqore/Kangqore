@@ -2060,6 +2060,101 @@ const featureMicros   = service.featureMicros
                     <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">accuracy and drift measured per segment, not in aggregate</text>
                   </svg>
                 </div>
+              ) : service.slug === 'data-science-ai' ? (
+                /* ── Data to a decision ──
+                   Replaces the shared agentic default, which labeled a data
+                   science page AI COMMANDER, AGENTIC ORCHESTRATOR, AUTONOMOUS
+                   AGENTS and AUTONOMOUS COMMIT.
+
+                   The four stages match architectureNodes below it exactly, so
+                   the summary and the detail cannot drift apart.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is smaller than 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="Data science pipeline — records you already hold pass through features, a model and validation, then serve either a decision with its reason or a case routed to a person" tabIndex={0}>
+                  <svg viewBox="0 0 540 430" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>How a data science pipeline turns records into a decision</title>
+                    <desc>Transactions, claims, sensor readings and CRM records become features, feed a model, are validated per segment, and are served. Predictions above the confidence threshold return with the reason that drove them; the rest route to a person.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="ds-spine" gradientUnits="userSpaceOnUse" x1="26" y1="186" x2="514" y2="186">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="ds-stage" gradientUnits="userSpaceOnUse" x1="0" y1="160" x2="0" y2="212">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="ds-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="ds-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="ds-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── Inputs ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">WHAT YOU ALREADY RECORD</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">transactions · claims · sensor readings · CRM history</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#ds-tick)">
+                      <line x1="81" y1="94" x2="81" y2="156" />
+                    </g>
+                    <text x="92" y="130" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">including the columns nobody trusts yet</text>
+
+                    {/* ── The four stages, matching architectureNodes ── */}
+                    <line x1="26" y1="186" x2="514" y2="186" stroke="url(#ds-spine)" strokeWidth="2" strokeOpacity="0.45" />
+
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26" y="160" width="110" height="52" rx="9" fill="url(#ds-stage)" stroke="#2564ea" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="81" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">FEATURES</text>
+                      <text x="81" y="200" fontSize="12" fill="white" fillOpacity="0.55">joins · lineage</text>
+
+                      <rect x="152" y="160" width="110" height="52" rx="9" fill="url(#ds-stage)" stroke="#3080e6" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="207" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">MODEL</text>
+                      <text x="207" y="200" fontSize="12" fill="white" fillOpacity="0.55">baseline first</text>
+
+                      <rect x="278" y="160" width="110" height="52" rx="9" fill="url(#ds-stage)" stroke="#3b9ce0" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="333" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">VALIDATE</text>
+                      <text x="333" y="200" fontSize="12" fill="white" fillOpacity="0.55">per segment</text>
+
+                      <rect x="404" y="160" width="110" height="52" rx="9" fill="url(#ds-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="459" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">SERVE</text>
+                      <text x="459" y="200" fontSize="12" fill="white" fillOpacity="0.55">where it is used</text>
+                    </g>
+
+                    <g stroke="#4ab6d4" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#ds-arrow)">
+                      <line x1="138" y1="186" x2="149" y2="186" />
+                      <line x1="264" y1="186" x2="275" y2="186" />
+                      <line x1="390" y1="186" x2="401" y2="186" />
+                    </g>
+
+                    {/* ── The confidence threshold decides the branch ── */}
+                    <text x="270" y="240" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">confidence threshold you set</text>
+
+                    <path d="M 459 214 C 459 254, 300 254, 160 254 C 150 254, 145 260, 145 272" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#ds-arrow)" />
+                    <path d="M 459 214 L 459 272" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#ds-arrow-amber)" />
+
+                    <rect x="26" y="276" width="238" height="62" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="145" y="300" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">DECISION</text>
+                    <text x="145" y="320" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">with the reason attached</text>
+
+                    <rect x="340" y="276" width="174" height="62" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="427" y="300" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">TO A PERSON</text>
+                    <text x="427" y="320" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">below the threshold</text>
+
+                    {/* ── Measurement runs across the whole path ── */}
+                    <rect x="26" y="364" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">accuracy and drift watched per segment, not in aggregate</text>
+                  </svg>
+                </div>
               ) : service.slug === 'mlops' ? (
                 /* ── MLOps ML Pipeline Diagram ── */
                 <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="MLOps Pipeline diagram — human-in-the-loop" tabIndex={0}>
@@ -2891,10 +2986,20 @@ const featureMicros   = service.featureMicros
           <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
             <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
-              <div className="flex items-center gap-4 mb-16">
+              {/* The section shipped with an eyebrow and no h2 at all, so it was
+                  the one block on the page absent from the heading outline.
+                  Both are opt-in: a service that sets neither renders exactly
+                  as before. */}
+              <div className={`flex items-center gap-4 ${service.outcomesHeading ? 'mb-4' : 'mb-16'}`}>
                 <div className="h-[1px] w-8 bg-white/20" />
-                <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">Engagement Outcomes</span>
+                <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">{service.outcomesEyebrow || 'Engagement Outcomes'}</span>
               </div>
+              {service.outcomesHeading && (
+                <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-16 max-w-4xl">
+                  {service.outcomesHeading}<br />
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">{service.outcomesHeadingHighlight}</span>
+                </h2>
+              )}
 
               <CardRail label="Engagement outcomes" hairline className={`grid gap-px ${gridCols} bg-white/[0.04] rounded-2xl overflow-hidden`}>
                 {allCards.map((card, idx) => (
@@ -3088,11 +3193,11 @@ const featureMicros   = service.featureMicros
             <div className="mb-14">
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">HOW WE ENGAGE</span>
+                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.engagementEyebrow || 'HOW WE ENGAGE'}</span>
               </div>
               <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                Five ways to start.<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">One partner throughout.</span>
+                {service.engagementHeading || 'Five ways to start.'}<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.engagementHeadingHighlight || 'One partner throughout.'}</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
                 {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
@@ -3361,11 +3466,11 @@ const featureMicros   = service.featureMicros
             <div>
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">BEFORE YOU SIGN</span>
+                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.faqEyebrow || 'BEFORE YOU SIGN'}</span>
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.2] tracking-tight text-white">
-                The hard questions,<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">answered (FAQ).</span>
+                {service.faqHeading || 'The hard questions,'}<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.faqHeadingHighlight || 'answered (FAQ).'}</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-2xl">
                 {service.faqLede || `The questions below are the ones buyers actually ask in a first call — on scope, risk, timelines and what happens when something goes wrong. Answers are direct rather than promotional.`}

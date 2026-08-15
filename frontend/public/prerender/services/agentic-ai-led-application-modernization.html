@@ -114,6 +114,168 @@
         </ul>
       </section>
 
+        <h2>How this differs</h2>
+    
+      <table>
+        <caption>Before compared with After</caption>
+        <thead><tr><th scope="col">Dimension</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Discovery</th><td>Engineers read subsystems one at a time, and the business rules stay in the heads of whoever has been there longest.</td><td>Static analysis covers the whole estate at once — producing a dependency graph, and recovering the embedded business rules as a written artifact that outlives staff turnover.</td></tr>
+          <tr><th scope="row">Planning</th><td>A static migration playbook, drafted from partial discovery and defended as reality diverges from it.</td><td>A blueprint that is regenerated as each subsystem is understood, alongside architecture maps and runbooks derived from the source rather than drawn once and left to drift.</td></tr>
+          <tr><th scope="row">Transformation</th><td>Refactoring and language migration written by hand, module by module, at whatever pace headcount allows.</td><td>Agents execute the transformation and cross-language conversion against the recovered specification, leaving engineers reviewing diffs rather than authoring them.</td></tr>
+          <tr><th scope="row">Validation</th><td>Test coverage is written after the fact — slow, partial, and highest-risk exactly where the code is oldest.</td><td>Characterization tests are generated against legacy behavior before anything changes, so each cutover is proven equivalent rather than assumed correct.</td></tr>
+          <tr><th scope="row">Governance</th><td>Progress is reported in status decks; when something breaks, the reasoning behind the change is gone.</td><td>Every autonomous action runs inside declared policy limits and lands in an immutable audit trail, with named human sign-off at each gate.</td></tr>
+        </tbody>
+      </table>
+
+        <h2>How it works</h2>
+    
+      <section>
+        <h3>Assessment Agent</h3>
+        <p>Scans, maps, and scores the legacy codebase — quantifying technical debt, identifying migration candidates, and generating the modernization blueprint.</p>
+        <ul>
+          <li>Legacy Code Scanning</li>
+          <li>Dependency Mapping</li>
+          <li>Tech Debt Scoring</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Migration Planning Engine</h3>
+        <p>Generates a dynamic, prioritized migration roadmap — decomposing monoliths into bounded contexts and sequencing execution by risk and business value.</p>
+        <ul>
+          <li>Bounded Context Discovery</li>
+          <li>Migration Sequencing</li>
+          <li>Risk Prioritization</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Execution Agent</h3>
+        <p>Autonomously executes code transformation, re-platforming, and API modernization — with exception handling and human-in-the-loop escalation at critical gates.</p>
+        <ul>
+          <li>Code Transformation</li>
+          <li>Cloud Re-platforming</li>
+          <li>API Generation</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Validation &amp; Governance Agent</h3>
+        <p>Generates test suites, validates performance against baselines, and enforces governance checkpoints — producing immutable audit trails for every migration step.</p>
+        <ul>
+          <li>Test Suite Generation</li>
+          <li>Performance Validation</li>
+          <li>Audit Trails</li>
+        </ul>
+      </section>
+
+        <h2>Agents built for your industry.</h2>
+    
+      <section>
+        <h3>Banking &amp; Financial Services</h3>
+        <p>Core banking modernized. Compliance maintained.</p>
+        <ul>
+          <li>Legacy core banking assessment and migration blueprint agent</li>
+          <li>API layer generation and end-to-end testing agent</li>
+          <li>Regulatory compliance validation and audit agent</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Healthcare</h3>
+        <p>Clinical systems modernized without patient data risk.</p>
+        <ul>
+          <li>EHR/EMR dependency analysis and migration sequencing agent</li>
+          <li>HIPAA compliance validation and immutable audit agent</li>
+          <li>Integration testing and regression coverage agent</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Manufacturing</h3>
+        <p>ERP modernized and cloud-native without production disruption.</p>
+        <ul>
+          <li>ERP dependency mapping and microservices decomposition agent</li>
+          <li>Cloud-native containerisation and deployment agent</li>
+          <li>Performance baseline validation and load testing agent</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Retail &amp; E-Commerce</h3>
+        <p>Monolith decomposed into scalable microservices.</p>
+        <ul>
+          <li>E-commerce monolith bounded context discovery agent</li>
+          <li>Microservices scaffold generation and API contract agent</li>
+          <li>Load testing, performance optimization, and go-live agent</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Insurance</h3>
+        <p>Policy administration re-platformed at scale.</p>
+        <ul>
+          <li>Policy system assessment and technical debt scoring agent</li>
+          <li>Re-platforming execution and API modernization agent</li>
+          <li>Regression test suite generation and validation agent</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Telecommunications</h3>
+        <p>BSS/OSS modernized without service disruption.</p>
+        <ul>
+          <li>BSS/OSS dependency mapping and migration risk assessment agent</li>
+          <li>Cloud-native re-platforming execution and integration agent</li>
+          <li>End-to-end validation and compliance reporting agent</li>
+        </ul>
+      </section>
+
+        <h2>Engagement outcomes</h2>
+      <section>
+        <h3>Engagement — 60% Reduction in modernization timeline</h3>
+        <p>A financial services firm faced a 3-year manual migration program for their legacy core banking system — requiring 40+ engineers, fragile manual testing, and continuous rollback risk that blocked two prior attempts.</p>
+        <p>Kangqore deployed AI assessment agents to map dependencies in days, generated the microservices decomposition blueprint autonomously, and executed re-platforming sprints with 99% automated test coverage — cutting the modernization timeline by 60%.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+      <section>
+        <h3>Engagement — 3× Faster assessment than manual code review</h3>
+        <p>An insurance group needed a complete technical debt assessment of a 15-year-old policy administration system across 2.3M lines of code — a task that would take a manual team 6+ months and still produce an incomplete picture.</p>
+        <p>AI assessment agents scanned the full codebase in 11 days, producing a dependency map, tech debt scorecard, and prioritized migration roadmap — enabling the board to commit to modernization with evidence rather than estimates.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+
+        <h2>How we engage</h2>
+    <p>There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate. Durations below are calendar time including your approval gates — not agent runtime.</p>
+      <section>
+        <h3>Assessment &amp; Blueprint (2–3 weeks)</h3>
+        <p>AI-powered legacy codebase analysis, dependency mapping, tech debt scoring, and prioritized modernization roadmap.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>Pilot Modernization (8 weeks)</h3>
+        <p>Targeted modernization of one application, module, or service — from assessment through cloud-native deployment.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>Program Build (16–24 weeks)</h3>
+        <p>End-to-end re-platforming with microservices decomposition, API generation, and full governance architecture across the application portfolio.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>Governed Migration (Ongoing)</h3>
+        <p>Monitored migration rollout with HITL checkpoints, AI-generated test suites, audit trails, and compliance validation at every milestone.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>Scale &amp; Optimize (Ongoing)</h3>
+        <p>Continuous modernization sprints, performance optimization, and AI capability integration across the modernized estate — so the work compounds.</p>
+        <ul>
+
+        </ul>
+      </section>
+
         <h2>How an agentic modernization actually runs.</h2>
     <p>Five rules govern how an engagement executes against your estate. Each one is a method and the outcome it produces — what the agents do, and what you are left holding afterwards.</p>
       <ul>
@@ -165,6 +327,9 @@
         <li><a href="https://kangqore.com/services/business-process-management">Business Process Management</a></li>
         <li><a href="https://kangqore.com/services/intelligent-automation">Intelligent Automation</a></li>
       </ul>
+
+        <h2>One conversation. One agent in production.</h2>
+    <p>Talk through your highest-value workflow in 30 minutes — we will scope the right entry point and show you what a production agent looks like for your context.</p>
 
     <h2>Ask eQORE AI about Agentic AI-led Application Modernization</h2>
       <ul>

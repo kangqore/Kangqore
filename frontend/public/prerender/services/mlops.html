@@ -128,6 +128,172 @@
         </ul>
       </section>
 
+        <h2>Notebook to production, and the gap in between.</h2>
+    <p>Most teams can train a model. The difficulty is everything after: proving which data and code produced the version now serving traffic, noticing when it stops being right, and retraining without a person remembering to. An ad hoc path does each of those once, by hand. A platform does them every time, for every model.</p>
+      <table>
+        <caption>AD HOC ML DELIVERY compared with GOVERNED MLOPS PLATFORM</caption>
+        <thead><tr><th scope="col">Dimension</th><th scope="col">AD HOC ML DELIVERY</th><th scope="col">GOVERNED MLOPS PLATFORM</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Reproducibility</th><td>A model is a file on a laptop or in object storage. The notebook that produced it has moved on, and nobody can rebuild the exact version currently serving traffic.</td><td>Every model in a registry with the dataset version, code commit, parameters, and metrics that produced it — so any deployed version can be rebuilt or explained months later.</td></tr>
+          <tr><th scope="row">Promotion</th><td>A person decides the model looks good enough and copies it to production. The threshold lives in their head, and it moves with the deadline.</td><td>Promotion gates are statistical thresholds against a holdout set, evaluated automatically. A model that scores below the gate does not progress, and the record of why is kept.</td></tr>
+          <tr><th scope="row">Features</th><td>Features are engineered once for training and reimplemented in application code for inference. The two drift apart, and the model degrades for reasons no dashboard attributes correctly.</td><td>One definition serves both paths, with point-in-time correctness for training labels — so training-serving skew is designed out rather than debugged after it costs accuracy.</td></tr>
+          <tr><th scope="row">Monitoring</th><td>Monitoring watches latency and error rates. A model that returns a confident wrong answer in ten milliseconds passes every check.</td><td>Input, prediction, and performance drift are tracked separately, because they fail at different times. Thresholds trigger retraining, rollback, or a review with a named owner.</td></tr>
+          <tr><th scope="row">Retraining</th><td>Retraining happens when someone notices a complaint. The gap between decay and detection is measured in quarters.</td><td>Retraining runs on a schedule or a drift trigger, through the same gates as the original release — so the fix cannot bypass the checks the first version had to pass.</td></tr>
+        </tbody>
+      </table>
+
+        <h2>The path from notebook to something on call.</h2>
+    
+      <section>
+        <h3>Data &amp; Feature Layer</h3>
+        <p>Training data assembled with point-in-time correctness, and features defined once for both training and inference so the two paths cannot diverge.</p>
+        <ul>
+          <li>Dataset Versioning</li>
+          <li>Feature Definitions</li>
+          <li>Point-in-Time Joins</li>
+          <li>Data Quality Checks</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Training &amp; Experimentation</h3>
+        <p>Repeatable training runs with parameters, metrics, and artifacts captured automatically — so a result can be reproduced rather than remembered.</p>
+        <ul>
+          <li>Experiment Tracking</li>
+          <li>Hyperparameter Tuning</li>
+          <li>Distributed Training</li>
+          <li>Artifact Management</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Registry &amp; Promotion</h3>
+        <p>Every candidate model registered with its lineage, then promoted through evaluation gates that compare it against the version currently serving.</p>
+        <ul>
+          <li>Model Versioning</li>
+          <li>Model Lineage</li>
+          <li>Evaluation Gates</li>
+          <li>Security Scanning</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Serving &amp; Monitoring</h3>
+        <p>Canary and shadow deployment into production, with drift tracked on inputs, predictions, and outcomes — and a retraining trigger wired to the thresholds.</p>
+        <ul>
+          <li>Multi-Model Serving</li>
+          <li>Shadow Deployments</li>
+          <li>Drift Detection</li>
+          <li>Feedback Loops</li>
+        </ul>
+      </section>
+
+        <h2>Models in production, under your sector’s rules.</h2>
+    
+      <section>
+        <h3>Banking &amp; Financial Services</h3>
+        <p>Model risk management that survives an examination</p>
+        <ul>
+          <li>Model inventory and lineage evidence aligned to SR 11-7 and the PRA model risk expectations</li>
+          <li>Challenger models run in shadow against the champion, with the comparison recorded</li>
+          <li>SHAP attributions retained per decision, so an adverse-action explanation can be reconstructed</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Healthcare &amp; Life Sciences</h3>
+        <p>Clinical validation and the evidence trail behind it</p>
+        <ul>
+          <li>Locked model versions with the validation dataset and performance record attached</li>
+          <li>Subgroup performance tracked separately, so degradation in one cohort is not hidden by the average</li>
+          <li>PHI kept out of training telemetry, with lineage proving which data a model saw</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Manufacturing &amp; Industry</h3>
+        <p>Predictive maintenance that keeps working after commissioning</p>
+        <ul>
+          <li>Sensor drift separated from genuine equipment change before a retraining run is triggered</li>
+          <li>Edge model rollout with staged deployment and rollback across sites</li>
+          <li>Per-line retraining, because one line stopping does not mean the fleet model is wrong</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Retail &amp; Consumer Goods</h3>
+        <p>Demand and pricing models retrained against a moving market</p>
+        <ul>
+          <li>Seasonal drift detection tuned so an expected peak is not scored as a failure</li>
+          <li>Feature reuse across demand, pricing, and personalization models from one definition</li>
+          <li>Fairness checks on pricing and eligibility outputs before promotion, not after complaint</li>
+        </ul>
+      </section>
+      <section>
+        <h3>IT &amp; Infrastructure</h3>
+        <p>Multi-tenant model serving with cost visible per team</p>
+        <ul>
+          <li>Namespace and RBAC isolation between tenants on shared training and serving infrastructure</li>
+          <li>GPU utilization and inference cost attributed to the team and model that incurred it</li>
+          <li>Autoscaling tuned for inference traffic, which spikes differently from web traffic</li>
+        </ul>
+      </section>
+      <section>
+        <h3>EdTech &amp; Higher Ed</h3>
+        <p>Assessment and recommendation models with fairness on the record</p>
+        <ul>
+          <li>Cohort-level performance monitoring so a model does not degrade for one intake unnoticed</li>
+          <li>Student data minimized in training sets with lineage evidence for audit</li>
+          <li>Human review required for any model output affecting progression or assessment</li>
+        </ul>
+      </section>
+
+        <h2>Engagement outcomes</h2>
+      <section>
+        <h3>Banking &amp; Financial Services — 6× More models promoted to production per quarter</h3>
+        <p>A risk-modeling team could put two models a quarter into production. Each release meant hand-assembling the training data, re-running validation in a notebook, and writing the evidence pack for model risk review by hand — roughly six weeks of work that had to be repeated in full for every retrain.</p>
+        <p>One pipeline now produces the model, its lineage record and the validation evidence in the same run, and promotion is gated on a holdout threshold rather than a review meeting. The same team ships twelve models a quarter, and a retrain costs days instead of restarting the six weeks.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+      <section>
+        <h3>Manufacturing &amp; Industry — 70% Fewer production incidents traced to model decay</h3>
+        <p>Demand forecasts degraded quietly between quarterly reviews. The first signal was usually a planner complaining about stock — weeks after the input distribution had already shifted — and nobody could say whether the model had drifted or the market had moved.</p>
+        <p>Input, prediction and performance drift are now tracked as three separate signals, with thresholds wired to a retraining trigger rather than to an alert nobody owns. Decay surfaces while it is still a distribution change rather than a stockout, and incidents attributed to stale models fell by 70% across two quarters.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+
+        <h2>How we engage</h2>
+    
+      <section>
+        <h3>MLOps Maturity Assessment (2–3 weeks)</h3>
+        <p>Audit your current path from training run to production: versioning, promotion gates, monitoring coverage, and retraining triggers. Ends with a prioritized platform roadmap.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>First Model to Production (8 weeks)</h3>
+        <p>Build the pipeline, model registry, approval gates, and drift monitoring around one real model — so the second model is a deployment rather than a project.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>ML Platform Build (16–24 weeks)</h3>
+        <p>Enterprise pipeline, registry, lineage, and serving infrastructure as code, with a feature store where reuse or training-serving skew justifies one.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>Managed ML Operations (Ongoing)</h3>
+        <p>We run the platform: drift monitoring, retraining execution, incident response on model quality, and cost tuning across training and inference.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>GenAI Operations Extension (Ongoing)</h3>
+        <p>Extend the same registry, lineage, and evaluation discipline to foundation-model systems — prompt and retrieval versioning, graded evaluation suites, and model routing.</p>
+        <ul>
+
+        </ul>
+      </section>
+
         <h2>Five stages, two implementations.</h2>
     <p>The stages are the same wherever your models run. What changes is who operates them — a managed cloud service, or open source on your own cluster. We work in whichever you have already committed to.</p>
       <ul>
@@ -171,6 +337,9 @@
         <li><a href="https://kangqore.com/services/business-process-management">Business Process Management</a></li>
         <li><a href="https://kangqore.com/services/intelligent-automation">Intelligent Automation</a></li>
       </ul>
+
+        <h2>One conversation. One model in production.</h2>
+    <p>Talk through the model you most need in production in 30 minutes — we will scope the right entry point and show you what its path to production looks like in your environment.</p>
 
     <h2>Next Step</h2>
     <p><a href="https://kangqore.com/contact">Talk to our experts about MLOps</a></p>
