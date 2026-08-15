@@ -20,7 +20,7 @@ function run(trigger: 'schedule.1h' | 'schedule.6h' | 'schedule.24h'): void {
       // Forward verdicts to AegisAdapter for WAANDA health reporting
       import('./aegisScheduler').then(() => {}).catch(() => {})
       try {
-        const { updateAegisVerdicts } = require('../../../waanda/adapters/AegisAdapter')
+        const { updateAegisVerdicts } = require('../../waanda/adapters/AegisAdapter')
         updateAegisVerdicts({ clear: results.length - critical - warn, warn, critical })
       } catch {}
     })

@@ -6,7 +6,7 @@
 
 import { TrustEngine }          from './trustEngine';
 import { CoigEvolutionService } from './coigEvolution.service';
-import { computeGate8 }         from '../../../waanda/intelligence/gate8.service';
+import { computeGate8 }         from '../../waanda/intelligence/gate8.service';
 import { prisma }               from '../../../lib/prisma';
 
 export interface OIIDimension {

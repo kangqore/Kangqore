@@ -8,7 +8,7 @@ import { prisma }           from '../../../lib/prisma';
 import { sonnet, textOf }   from '../llm/kimmpLLMRouter';
 import { TrustEngine }      from './trustEngine';
 import { CoigEvolutionService } from './coigEvolution.service';
-import { computeGate8 }     from '../../../waanda/intelligence/gate8.service';
+import { computeGate8 }     from '../../waanda/intelligence/gate8.service';
 
 type LetterType = 'QUARTERLY' | 'ANNUAL' | 'BOARD' | 'INVESTOR';
 

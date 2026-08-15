@@ -43,7 +43,7 @@ export class LoopScheduler {
         LoopScheduler._lastRun = new Date()
 
         // After each loop cycle — collect health reports from all subsystems
-        import('../../../waanda/WaandaAuthority').then(({ WaandaAuthority }) => {
+        import('../../waanda/WaandaAuthority').then(({ WaandaAuthority }) => {
           WaandaAuthority.broadcastDirective('REPORT', {
             trigger: 'post-loop-cycle',
             timestamp: new Date().toISOString(),

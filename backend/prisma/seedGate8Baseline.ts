@@ -2,7 +2,7 @@
  * Seeds the Gate 8 BASELINE snapshot.
  * Run once: npx tsx prisma/seedGate8Baseline.ts
  */
-import { createGate8Snapshot } from '../src/waanda/intelligence/gate8.service'
+import { createGate8Snapshot } from '../src/kangqore-view/waanda/intelligence/gate8.service'
 import { prisma } from '../src/lib/prisma'
 
 async function main() {

@@ -1,6 +1,6 @@
 import cron, { ScheduledTask } from 'node-cron';
 import { KangqoreVisFlags } from '../core/flags';
-import { getVisPriorityModule } from '../../waanda/adapters/VisAdapter';
+import { getVisPriorityModule } from '../../kangqore-view/waanda/adapters/VisAdapter';
 import { SitemapService } from '../technical-seo/SitemapService';
 import { SchemaContentAuditor } from '../structured-data/SchemaContentAuditor';
 import { WebVitalsCollector } from '../performance/WebVitalsCollector';
@@ -94,7 +94,7 @@ export class KangqoreVisCronManager {
           async () => {
             try {
               await job.task();
-              import('../../waanda/adapters/VisAdapter').then(({ notifyVisCronRun }) => notifyVisCronRun()).catch(() => {})
+              import('../../kangqore-view/waanda/adapters/VisAdapter').then(({ notifyVisCronRun }) => notifyVisCronRun()).catch(() => {})
             } catch (err) {
               console.error(`kangqore-vis.cron.${job.id}.error`, err);
             }
@@ -150,7 +150,7 @@ export class KangqoreVisCronManager {
     if (!job) return { ok: false, error: 'unknown job' };
     try {
       await job.task();
-      import('../../waanda/adapters/VisAdapter').then(({ notifyVisCronRun }) => notifyVisCronRun()).catch(() => {})
+      import('../../kangqore-view/waanda/adapters/VisAdapter').then(({ notifyVisCronRun }) => notifyVisCronRun()).catch(() => {})
       return { ok: true };
     } catch (err) {
       return { ok: false, error: (err as Error).message };

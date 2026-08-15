@@ -58,7 +58,7 @@ import { alisRouter } from './kangqore-alis';
 import { kangqoreImmpRoutes } from './kangqore-immp';
 import { urgiRoutes } from './kangqore-immp/relationship-intelligence/api/urgi.routes';
 import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor } from './kangqore-aegis';
-import { waandaRouter } from './waanda/waandaRoutes';
+import { waandaRouter } from './kangqore-view/waanda/waandaRoutes';
 import { waandaTrainingRouter } from './kangqore-view/waanda/training';
 import { dataPrivacyRouter } from './routes/data-privacy';
 import { communitiesRouter } from './communities/routes';
@@ -71,7 +71,7 @@ import packsRouter           from './routes/packs';
 import cdcRouter             from './routes/cdc';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
-import { WAANDA } from './waanda/WaandaBootstrap';
+import { WAANDA } from './kangqore-view/waanda/WaandaBootstrap';
 import { authenticate, authorize } from './middleware/auth';
 import { apiKeyAuth } from './middleware/apiKeyAuth';
 import { v1RateLimiter } from './middleware/v1RateLimiter';
@@ -237,22 +237,22 @@ app.use('/api/eqore', eqorePublicRoutes);
 app.use('/api/admin/eqore', eqoreLeadIntelligenceRoutes);
 app.use('/api/admin/alis', authenticate, authorize(['ADMIN']), alisRouter);
 // Register ALIS + eQORE under WAANDA authority after mounts
-import('./waanda/adapters/AlisAdapter').then(({ AlisAdapter }) => {
-  import('./waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(AlisAdapter))
+import('./kangqore-view/waanda/adapters/AlisAdapter').then(({ AlisAdapter }) => {
+  import('./kangqore-view/waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(AlisAdapter))
 }).catch(() => {})
-import('./waanda/adapters/EqoreAdapter').then(({ EqoreAdapter }) => {
-  import('./waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(EqoreAdapter))
+import('./kangqore-view/waanda/adapters/EqoreAdapter').then(({ EqoreAdapter }) => {
+  import('./kangqore-view/waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(EqoreAdapter))
 }).catch(() => {})
 // BIDS™ — Business Diagnostic Intelligence System
 import bidsRoutes from './routes/bids';
 app.use('/api/admin/bids', bidsRoutes);
 import bidsClientRoutes from './routes/bids-client';
 app.use('/api/client/bids', bidsClientRoutes);
-app.use('/api/client/waanda', clientWaandaRoutes);
+app.use('/api/client/kangqore-view/waanda', clientWaandaRoutes);
 import { briefingRouter } from './routes/admin-briefing';
 app.use('/api/admin/briefing', briefingRouter);
 // WAANDA — Enterprise Cognitive OS boot manifest + domain registry + mission execution
-app.use('/api/admin/waanda', authenticate, authorize(['ADMIN']), waandaRouter);
+app.use('/api/admin/kangqore-view/waanda', authenticate, authorize(['ADMIN']), waandaRouter);
 
 // AEGIS — Autonomous Executive Governance & Intelligence Shield
 // Sits above KIMMP: sovereign audit dashboard for ADMIN only.
@@ -370,8 +370,8 @@ app.use('/api/admin/crm',          adminCrmSubentities);
 import { kangqoreVisBootstrap } from './kangqore-vis';
 kangqoreVisBootstrap({ app });
 // Register VIS under WAANDA authority after bootstrap
-import('./waanda/adapters/VisAdapter').then(({ VisAdapter }) => {
-  import('./waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(VisAdapter))
+import('./kangqore-view/waanda/adapters/VisAdapter').then(({ VisAdapter }) => {
+  import('./kangqore-view/waanda/WaandaAuthority').then(({ WaandaAuthority }) => WaandaAuthority.register(VisAdapter))
 }).catch(() => {})
 
 // Serve Uploaded Files with CORS headers for cross-origin access

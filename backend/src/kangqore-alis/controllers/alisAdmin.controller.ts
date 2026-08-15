@@ -102,7 +102,7 @@ export const AlisAdminController = {
   async emitMarketSignals(_req: Request, res: Response) {
     try {
       const result = await AlisSignalProducer.scanAndEmit();
-      try { require('../../waanda/adapters/AlisAdapter').notifyAlisSignalEmit() } catch {}
+      try { require('../../kangqore-view/waanda/adapters/AlisAdapter').notifyAlisSignalEmit() } catch {}
       res.json({ ok: true, ...result });
     } catch (e: any) {
       res.status(500).json({ error: 'ALIS signal scan failed', message: e.message });

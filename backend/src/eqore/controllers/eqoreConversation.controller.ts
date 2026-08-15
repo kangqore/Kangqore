@@ -10,7 +10,7 @@ import { KimmpEqoreInfluence } from '../../kangqore-immp/eqore-bridge/eqoreInflu
 import { SignalLedger } from '../../kangqore-immp/signals/signalLedger.service';
 import { WaandaUnderstand } from '../../kangqore-immp/relationship-intelligence';
 import logger from '../../utils/logger';
-import { isEqoreMaintenanceMode } from '../../waanda/adapters/EqoreAdapter';
+import { isEqoreMaintenanceMode } from '../../kangqore-view/waanda/adapters/EqoreAdapter';
 
 /** High-value intents that warrant a HIGH severity INTENT signal. */
 const HIGH_INTENT_INTENTS = new Set([
@@ -59,7 +59,7 @@ export class EqoreConversationController {
       }
 
       // Notify WAANDA that eQORE is active (keeps lastActive timestamp real)
-      import('../../waanda/adapters/EqoreAdapter').then(({ notifyEqoreConversation }) => notifyEqoreConversation()).catch(() => {})
+      import('../../kangqore-view/waanda/adapters/EqoreAdapter').then(({ notifyEqoreConversation }) => notifyEqoreConversation()).catch(() => {})
 
       // Add user message
       const userMessage = await prisma.eqoreMessage.create({

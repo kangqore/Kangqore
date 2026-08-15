@@ -332,7 +332,7 @@ export const AegisActionExecutor = {
       switch (pending.actionType) {
         case 'PAUSE_KIMMP_LOOP': {
           // WAANDA is the supreme authority — AEGIS escalates, WAANDA decides and issues the directive
-          const { WaandaAuthority } = await import('../../../waanda/WaandaAuthority')
+          const { WaandaAuthority } = await import('../../waanda/WaandaAuthority')
           await WaandaAuthority.receiveEscalation({
             from:    'AEGIS',
             threat:  (pending.params as any).reason ?? 'AEGIS L3 governance action triggered',

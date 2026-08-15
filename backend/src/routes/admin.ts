@@ -31,14 +31,14 @@ import { issueCertificate, approveCertificate, latestCertificate, listCertificat
 import { evaluateRelease, recordDeployment, recordOutcome, recordRollback, emergencyOverride, preflightCheck, listDecisions, listDeployments, listEnvironments } from '../scripts/rgs/rgsService';
 import { AegisLedger } from '../kangqore-aegis/aegisLedger.service';
 import { getFlightEvents } from '../scripts/flightRecorder/flightRecorderService';
-import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../waanda/intelligence/gate8.service';
-import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent, computeCoigWeekReport, computeOnboardingChecklist, listDeploymentHealth, computeRenewalRisk, generateQBR } from '../waanda/intelligence/enterpriseService';
-import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin } from '../waanda/intelligence/projectOps.service';
-import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../waanda/intelligence/enterpriseCoach.service';
-import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../waanda/intelligence/decisionEngine.service';
-import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint, addBlueprintGap, getBlueprintGaps, aggregateBlueprintGaps } from '../waanda/intelligence/blueprintService';
+import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../kangqore-view/waanda/intelligence/gate8.service';
+import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent, computeCoigWeekReport, computeOnboardingChecklist, listDeploymentHealth, computeRenewalRisk, generateQBR } from '../kangqore-view/waanda/intelligence/enterpriseService';
+import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin } from '../kangqore-view/waanda/intelligence/projectOps.service';
+import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../kangqore-view/waanda/intelligence/enterpriseCoach.service';
+import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../kangqore-view/waanda/intelligence/decisionEngine.service';
+import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint, addBlueprintGap, getBlueprintGaps, aggregateBlueprintGaps } from '../kangqore-view/waanda/intelligence/blueprintService';
 import { PackRegistry } from '../kangqore-view/automation/PackRegistryService';
-import { simulateEnterpriseTwin, listTwinScenarios, compareScenarios } from '../waanda/intelligence/enterpriseTwin.service';
+import { simulateEnterpriseTwin, listTwinScenarios, compareScenarios } from '../kangqore-view/waanda/intelligence/enterpriseTwin.service';
 import { computeCapabilityProfiles, getCapabilityProfiles, getRuntimeCallStats } from '../kangqore-immp/runtime/waandaRuntimeIntelligence.service';
 
 const clientSignalsService = new ClientSignalsService();

@@ -1,5 +1,5 @@
 import type { Express } from 'express';
-import { WAANDA } from '../../waanda/WaandaBootstrap';
+import { WAANDA } from '../../kangqore-view/waanda/WaandaBootstrap';
 import { KangqoreVisRegistry } from './KangqoreVisRegistry';
 import { KANGQORE_VIS_VERSION } from './types';
 import { KangqoreVisFlags, logFlagSummary } from './flags';

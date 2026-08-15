@@ -28,7 +28,7 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   risk:       ['risk', 'compliance', 'security', 'delivery', 'vulnerability', 'exposure', 'critical'],
   market:     ['competitor', 'tender', 'bid', 'india', 'international', 'region', 'territory', 'segment'],
   people:     ['hire', 'team', 'engineer', 'recruit', 'attrition', 'culture', 'talent', 'hr'],
-  product:    ['feature', 'product', 'roadmap', 'release', 'launch', 'platform', 'waanda', 'kimmp'],
+  product:    ['feature', 'product', 'roadmap', 'release', 'launch', 'platform', '../../waanda', 'kimmp'],
   financial:  ['arr', 'mrr', 'invoice', 'cash', 'overdue', 'budget', 'forecast', 'burn'],
   operational:['project', 'deliverable', 'deadline', 'milestone', 'sprint', 'ops', 'blocker'],
 };

@@ -2,7 +2,7 @@ import { KimmpDigitalTwin } from './kimmpTwin.service'
 import logger from '../../../utils/logger'
 
 function notifyKoreAfterCompute(): void {
-  import('../../../waanda/adapters/KoreAdapter')
+  import('../../waanda/adapters/KoreAdapter')
     .then(({ updateKoreTwinCount }) => updateKoreTwinCount(1))
     .catch(() => {})
 }

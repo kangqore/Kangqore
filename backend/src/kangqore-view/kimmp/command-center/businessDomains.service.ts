@@ -8,7 +8,7 @@
 import { prisma }           from '../../../lib/prisma';
 import { SignalLedger }     from '../signals/signalLedger.service';
 import { PredictionStore }  from '../prediction/predictionStore.service';
-import { computeGate8 }     from '../../../waanda/intelligence/gate8.service';
+import { computeGate8 }     from '../../waanda/intelligence/gate8.service';
 import { WaandaTrainingPipeline } from '../../waanda/training/trainingPipeline.service';
 
 export type DomainStatus = 'HEALTHY' | 'ATTENTION' | 'CRITICAL' | 'UNKNOWN';

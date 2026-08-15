@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------------------
 
 import { prisma } from '../../../lib/prisma';
-import { computeGate8 } from '../../../waanda/intelligence/gate8.service';
+import { computeGate8 } from '../../waanda/intelligence/gate8.service';
 
 export interface CoigSnapshot {
   date:    string;
