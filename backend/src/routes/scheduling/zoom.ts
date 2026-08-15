@@ -35,7 +35,7 @@ router.get('/connect', authenticate, (req: AuthRequest, res, next) => {
     if (!process.env.ZOOM_CLIENT_ID || !process.env.ZOOM_CLIENT_SECRET) {
       return next(createError('Zoom integration is not configured', 501));
     }
-    res.redirect(ZoomService.getAuthUrl(req.user.id));
+    res.redirect(sanitizeRedirectUrl(ZoomService.getAuthUrl(req.user.id)));
   } catch (error) {
     next(error);
   }

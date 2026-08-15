@@ -4,10 +4,27 @@
 
 const DEFAULT_FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000'
 
+function getHostname(urlStr: string): string {
+  try {
+    return new URL(urlStr).hostname
+  } catch {
+    return ''
+  }
+}
+
+const ALLOWED_HOSTNAMES = new Set([
+  getHostname(DEFAULT_FRONTEND_URL) || 'localhost',
+  'localhost',
+  '127.0.0.1',
+  'zoom.us',
+  'app.hubspot.com',
+  'login.salesforce.com',
+])
+
 /**
  * Sanitizes a target redirect URL to prevent Open Redirect vulnerabilities.
  * Ensures the target is either a relative path starting with '/' or belongs to
- * an allowed frontend origin.
+ * an allowed domain.
  */
 export function sanitizeRedirectUrl(targetUrl: string, defaultFallback = '/'): string {
   if (!targetUrl || typeof targetUrl !== 'string') {
@@ -28,14 +45,12 @@ export function sanitizeRedirectUrl(targetUrl: string, defaultFallback = '/'): s
 
   try {
     const targetParsed = new URL(trimmed)
-    const allowedParsed = new URL(DEFAULT_FRONTEND_URL)
+    const host = targetParsed.hostname.toLowerCase()
 
-    // Verify hostname matches allowed application frontend domain
-    if (targetParsed.hostname === allowedParsed.hostname) {
+    if (ALLOWED_HOSTNAMES.has(host) || Array.from(ALLOWED_HOSTNAMES).some(h => host.endsWith('.' + h))) {
       return targetParsed.toString()
     }
   } catch {
-    // If URL parsing fails, fallback to safe path
     return defaultFallback
   }
 

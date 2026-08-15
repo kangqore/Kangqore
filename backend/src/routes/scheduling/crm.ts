@@ -35,7 +35,7 @@ router.get('/hubspot/connect', authenticate, (req: AuthRequest, res, next) => {
     if (!process.env.HUBSPOT_CLIENT_ID || !process.env.HUBSPOT_CLIENT_SECRET) {
       return next(createError('HubSpot integration is not configured', 501));
     }
-    res.redirect(HubspotService.getAuthUrl(req.user.id));
+    res.redirect(sanitizeRedirectUrl(HubspotService.getAuthUrl(req.user.id)));
   } catch (error) { next(error); }
 });
 
@@ -65,7 +65,7 @@ router.get('/salesforce/connect', authenticate, (req: AuthRequest, res, next) =>
     if (!process.env.SALESFORCE_CLIENT_ID || !process.env.SALESFORCE_CLIENT_SECRET) {
       return next(createError('Salesforce integration is not configured', 501));
     }
-    res.redirect(SalesforceService.getAuthUrl(req.user.id));
+    res.redirect(sanitizeRedirectUrl(SalesforceService.getAuthUrl(req.user.id)));
   } catch (error) { next(error); }
 });
 

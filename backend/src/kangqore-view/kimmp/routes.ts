@@ -69,8 +69,8 @@ const kangqoreImmpRoutes = Router();
 // macOS: `say` → AIFF, `afconvert` → WAV
 // Linux: `espeak-ng` → WAV directly (Dockerfile installs espeak-ng)
 kangqoreImmpRoutes.get('/tts', requireAuth, requireRole(['ADMIN']), async (req, res) => {
-  const raw  = typeof req.query.text === 'string' ? req.query.text : ''
-  const text = raw.slice(0, 500).replace(/['"\\`$!;|&<>()]/g, ' ').trim()
+  const raw  = typeof req.query.text === 'string' ? req.query.text : typeof (req.body as any)?.text === 'string' ? (req.body as any).text : ''
+  const text = raw.slice(0, 500).replace(/[^a-zA-Z0-9\s.,!?'"-]/g, ' ').trim()
   if (!text) return res.status(400).json({ error: 'text required' })
 
   const id      = crypto.randomBytes(8).toString('hex')
@@ -108,7 +108,7 @@ kangqoreImmpRoutes.get('/tts', requireAuth, requireRole(['ADMIN']), async (req, 
 
 // ── STT — browser WAV → Whisper (no ffmpeg needed, reads PCM directly) ───────
 const sttUpload  = multer({ dest: os.tmpdir(), limits: { fileSize: 10 * 1024 * 1024 } })
-const STT_SCRIPT = path.join(__dirname, '../../scripts/waanda_stt.py')
+const STT_SCRIPT = path.resolve(process.cwd(), 'src/scripts/waanda_stt.py')
 const PYTHON3    = '/usr/bin/python3'
 
 kangqoreImmpRoutes.post('/stt', requireAuth, requireRole(['ADMIN']),
@@ -116,11 +116,15 @@ kangqoreImmpRoutes.post('/stt', requireAuth, requireRole(['ADMIN']),
   async (req: any, res) => {
     if (!req.file) return res.status(400).json({ error: 'audio required' })
 
-    const uploadedPath = req.file.path
-    const wavPath      = uploadedPath + '.wav'
+    const rawFilename  = path.basename(req.file.path).replace(/[^a-zA-Z0-9_-]/g, '')
+    const uploadedPath = path.resolve(os.tmpdir(), rawFilename)
+    if (!uploadedPath.startsWith(path.resolve(os.tmpdir()))) {
+      return res.status(400).json({ error: 'invalid file path' })
+    }
+    const wavPath = uploadedPath + '.wav'
 
     try {
-      await fsPromises.rename(uploadedPath, wavPath)
+      await fsPromises.rename(req.file.path, wavPath)
 
       const transcript = await new Promise<string>((resolve) => {
         execFile(PYTHON3, [STT_SCRIPT, wavPath], { timeout: 30_000 }, (err, stdout, stderr) => {
