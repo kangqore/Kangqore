@@ -4,27 +4,29 @@ import { authenticate, authorize } from '../middleware/auth'
 import {
   bfsGraph, fullGraph, shortestPath, impactGraph, centralityRanking,
 } from '../services/graphIntelligence.service'
-import { autoLinkObjects } from '../services/ontologyAutoLink.service'
-import { OntologyVersioning } from '../services/ontologyVersioning.service'
-import { OntologyBranchService } from '../services/ontologyBranch.service'
-import { OntologyMerge } from '../services/ontologyMerge.service'
+import {
+  autoLinkObjects,
+  OntologyVersioning,
+  OntologyBranchService,
+  OntologyMerge,
+  ObjectSetService,
+  OntologyTimeSeriesService,
+  OntologyGeoService,
+  OntologyPipelineService,
+  previewCsv, runCsvImport, listImportBatches,
+  OntologySdkGenerator,
+  OntologyWebhookSubscriptionService,
+  OntologyGateway, GatewayActor,
+  CardinalityEngine,
+} from '../kangqore-view/eof'
 import { CdcService } from '../lib/cdc/cdcService'
-import { ObjectSetService } from '../services/objectSet.service'
 import { ActionEngine } from '../kangqore-view/automation/ActionEngine'
 import { seedEnterpriseActions, ACTION_LIBRARY } from '../kangqore-view/automation/ActionLibrary.seed'
 import { connectorHealth, listConnectors } from '../kangqore-view/automation/connectors/registry'
 import { seedBlastRadiusPolicies } from '../services/policyEngine.service'
 import { installActionPack, listInstalledPacks, ITSM_PACK } from '../kangqore-view/automation/ActionPack'
 import { installAllPacks } from '../kangqore-view/automation/PackAutoInstaller'
-import { OntologyTimeSeriesService } from '../services/ontologyTimeSeries.service'
-import { OntologyGeoService } from '../services/ontologyGeo.service'
-import { OntologyPipelineService } from '../services/ontologyPipeline.service'
-import { previewCsv, runCsvImport, listImportBatches } from '../services/ontologyCsvImport.service'
-import { OntologySdkGenerator } from '../services/ontologySdkGenerator.service'
 import { OntologyToolSchema } from '../services/ontologyToolSchema.service'
-import { OntologyWebhookSubscriptionService } from '../services/ontologyWebhookSubscription.service'
-import { OntologyGateway, GatewayActor } from '../services/ontologyGateway.service'
-import { CardinalityEngine } from '../services/cardinalityEngine.service'
 import crypto from 'crypto'
 import { getIO } from '../socket'
 
