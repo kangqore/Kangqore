@@ -6,9 +6,8 @@
 
 import { Router } from 'express'
 import { authenticate, authorize } from '../middleware/auth'
-import { IntelligenceSignalEngine } from '../services/intelligenceSignalEngine.service'
-import { PredictiveEngine }         from '../services/predictiveEngine.service'
-import { PrescriptiveEngine }       from '../services/prescriptiveEngine.service'
+import { IntelligenceSignalEngine } from '../kangqore-view/awareness'
+import { PredictiveEngine, PrescriptiveEngine } from '../kangqore-view/perception'
 import { AutonomousOrchestrator }   from '../kangqore-view/automation/AutonomousOrchestrator'
 
 const router = Router()
