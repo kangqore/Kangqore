@@ -5,8 +5,8 @@
 import { Router } from 'express'
 import { authenticate, authorize } from '../middleware/auth'
 import { prisma } from '../lib/prisma'
-import { WorkItemService, seedWorkOntologyTypes } from '../services/workItem.service'
-import { DependencyGraphService } from '../services/dependencyGraph.service'
+import { WorkItemService, seedWorkOntologyTypes } from '../kangqore-view/kore/WorkItemService'
+import { DependencyGraphService } from '../kangqore-view/kore/DependencyGraph'
 import { WorkAutomationService } from '../services/workAutomation.service'
 
 const router = Router()
