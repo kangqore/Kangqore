@@ -3,7 +3,7 @@ import Joi from 'joi';
 import { prisma } from '../../lib/prisma';
 import { createError } from '../../middleware/errorHandler';
 import { authenticate, authorize, AuthenticatedRequest as AuthRequest } from '../../middleware/auth';
-import { SchedulingService } from '../../services/scheduling.service';
+import { SchedulingService } from '../../kangqore-view/eaf/scheduling/SchedulingService';
 
 const router = Router();
 

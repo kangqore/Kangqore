@@ -11,7 +11,7 @@ import { KimmpAgentCoordinator } from '../agents/kimmpAgentCoordinator.service'
 import { KimmpToolDispatch } from '../actions/kimmpToolDispatch.service'
 import { runStrategicDecision } from '../services/kimmpStrategicDecision.service'
 import { KimmpWorkflowMemory } from './kimmpWorkflowMemory.service'
-import { checkPolicy } from '../../../services/policyEngine.service'
+import { checkPolicy } from '../../esf/PolicyEngine'
 
 const MAX_RETRIES  = 3
 const BASE_DELAY   = 1_000 // ms

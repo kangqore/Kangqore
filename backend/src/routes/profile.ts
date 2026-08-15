@@ -6,7 +6,7 @@ import { authenticator } from 'otplib';
 import QRCode from 'qrcode';
 import { prisma } from '../lib/prisma';
 import { requireAuth, AuthRequest, blockRoleModification } from '../middleware/rbac';
-import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../services/audit.service';
+import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../kangqore-view/kernel/audit/AuditService';
 import { createError } from '../middleware/errorHandler';
 
 const router = Router();

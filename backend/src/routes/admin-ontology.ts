@@ -3,7 +3,7 @@ import { prisma } from '../lib/prisma'
 import { authenticate, authorize } from '../middleware/auth'
 import {
   bfsGraph, fullGraph, shortestPath, impactGraph, centralityRanking,
-} from '../services/graphIntelligence.service'
+} from '../kangqore-view/awareness/GraphIntelligence'
 import {
   autoLinkObjects,
   OntologyVersioning,
@@ -23,7 +23,7 @@ import { CdcService } from '../lib/cdc/cdcService'
 import { ActionEngine } from '../kangqore-view/automation/ActionEngine'
 import { seedEnterpriseActions, ACTION_LIBRARY } from '../kangqore-view/automation/ActionLibrary.seed'
 import { connectorHealth, listConnectors } from '../kangqore-view/automation/connectors/registry'
-import { seedBlastRadiusPolicies } from '../services/policyEngine.service'
+import { seedBlastRadiusPolicies } from '../kangqore-view/esf/PolicyEngine'
 import { installActionPack, listInstalledPacks, ITSM_PACK } from '../kangqore-view/automation/ActionPack'
 import { installAllPacks } from '../kangqore-view/automation/PackAutoInstaller'
 import { OntologyToolSchema } from '../kangqore-view/automation/OntologyToolSchema'

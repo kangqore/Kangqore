@@ -1,7 +1,7 @@
 import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { requireAuth, AuthRequest } from '../middleware/rbac';
-import { notifyNewEmail } from '../services/notificationService';
+import { notifyNewEmail } from '../kangqore-view/awareness/notifications/NotificationService';
 import { escapeHtml } from '../utils/sanitize';
 
 const router = Router();

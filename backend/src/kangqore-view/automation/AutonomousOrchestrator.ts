@@ -10,7 +10,7 @@
 import { prisma } from '../../lib/prisma'
 import { routedCall } from '../../kangqore-immp/llm/kimmpLLMRouter'
 import { ActionEngine } from './ActionEngine'
-import { checkPolicy } from '../../services/policyEngine.service'
+import { checkPolicy } from '../esf/PolicyEngine'
 
 const KIMMP_ACTOR_ID = 'kimmp-autonomous'
 

@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { workflowService } from '../services/workflow.service';
+import { workflowService } from '../kangqore-view/automation/WorkflowService';
 import logger from '../utils/logger';
 
 export class WorkflowExecutor {

@@ -1,10 +1,10 @@
 import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
-import { notifyGovernanceRole, createNotification } from '../services/notificationService';
-import { notifyClient } from '../services/clientEmail.service';
+import { notifyGovernanceRole, createNotification } from '../kangqore-view/awareness/notifications/NotificationService';
+import { notifyClient } from '../kangqore-view/eaf/channels/ClientEmailService';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
-import accountabilityService from '../services/AccountabilityService';
-import { createAuditLog, AUDIT_ACTIONS, extractRequestMetadata } from '../services/audit.service';
+import accountabilityService from '../kangqore-view/kore/AccountabilityService';
+import { createAuditLog, AUDIT_ACTIONS, extractRequestMetadata } from '../kangqore-view/kernel/audit/AuditService';
 
 const router = Router();
 

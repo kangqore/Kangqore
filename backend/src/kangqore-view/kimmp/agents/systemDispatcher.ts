@@ -43,7 +43,7 @@ import { runDebatePhase } from './debatePhase'
 import { AegisLedger } from '../../../kangqore-aegis/aegisLedger.service'
 import { WaandaTrainingPipeline, LocalReasonService } from '../../../waanda-training'
 import { sonnetWithTools, textOf } from '../llm/kimmpLLMRouter'
-import { SemanticMapper, ExternalRef } from '../../../services/semanticMapper.service'
+import { SemanticMapper, ExternalRef } from '../../eof/SemanticMapper'
 
 const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 

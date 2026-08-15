@@ -2,23 +2,23 @@ import { Router, Response, NextFunction } from 'express';
 import * as os from 'os';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
-import { saveSubscription } from '../services/pushNotification.service';
+import { saveSubscription } from '../kangqore-view/awareness/notifications/PushNotificationService';
 import { Role } from '@prisma/client';
 import { redisConnection } from '../lib/redis';
-import { cacheService } from '../services/cache.service';
-import { notifyNewEmail } from '../services/notificationService';
+import { cacheService } from '../kangqore-view/kernel/util/CacheService';
+import { notifyNewEmail } from '../kangqore-view/awareness/notifications/NotificationService';
 // import { generateToken } from '../utils/jwt'; // Removed incompatible utility
-import { generateTokenPair } from '../services/token.service';
+import { generateTokenPair } from '../kangqore-view/kernel/auth/TokenService';
 import { hashPassword } from '../utils/password';
 import { generateCustomId } from '../utils/idGenerator';
-import { ClientSignalsService } from '../services/ClientSignalsService';
-import { ClientConfusionService } from '../services/ClientConfusionService';
-import accountabilityService from '../services/AccountabilityService';
-import projectProgressService from '../services/ProjectProgressService';
+import { ClientSignalsService } from '../kangqore-view/awareness/ClientSignalsService';
+import { ClientConfusionService } from '../kangqore-view/awareness/ClientConfusionService';
+import accountabilityService from '../kangqore-view/kore/AccountabilityService';
+import projectProgressService from '../kangqore-view/kore/ProjectProgressService';
 import { SystemLearning } from '../kangqore-immp/agents/systemLearning';
 import { KimmpSystemDispatcher } from '../kangqore-immp/agents/systemDispatcher';
 import { SignalLedger } from '../kangqore-immp/signals/signalLedger.service';
-import { emailService } from '../services/email.service';
+import { emailService } from '../kangqore-view/eaf/channels/EmailService';
 import { getRouterStats, getCircuitBreakerStatus } from '../kangqore-immp/llm/kimmpLLMRouter';
 import { getRuntimeHealth, setProviderMaintenance } from '../kangqore-immp/runtime/waandaRuntime';
 import { getRedisHealth } from '../lib/redis';
@@ -3742,7 +3742,7 @@ router.post('/permissions', authenticate, authorize(['ADMIN']), async (req: Auth
       update: { action, grantedBy: req.user?.userId ?? 'system' },
       create: { userId, workspace, feature, action, grantedBy: req.user?.userId ?? 'system' },
     })
-    const { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } = await import('../services/audit.service')
+    const { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } = await import('../kangqore-view/kernel/audit/AuditService')
     await createAuditLog({
       userId: req.user?.userId,
       action: AUDIT_ACTIONS.PERMISSION_GRANTED,
@@ -3758,7 +3758,7 @@ router.post('/permissions', authenticate, authorize(['ADMIN']), async (req: Auth
 router.delete('/permissions/:id', authenticate, authorize(['ADMIN']), async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const scope = await (prisma as any).permissionScope.delete({ where: { id: req.params.id } })
-    const { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } = await import('../services/audit.service')
+    const { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } = await import('../kangqore-view/kernel/audit/AuditService')
     await createAuditLog({
       userId: req.user?.userId,
       action: AUDIT_ACTIONS.PERMISSION_REVOKED,

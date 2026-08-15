@@ -47,8 +47,8 @@ import { KIMMLearningScheduler } from '../../kangqore-immp/learning/kimmpLearnin
 // Infrastructure
 import { CronManager } from '../../jobs/CronManager'
 import { CdcService }  from '../../lib/cdc/cdcService'
-import { OntologyWebhookSubscriptionService } from '../../services/ontologyWebhookSubscription.service'
-import { KimmpOperationalWebhookService } from '../../services/kimmpOperationalWebhook.service'
+import { OntologyWebhookSubscriptionService } from '../eof/OntologyWebhookSubscription'
+import { KimmpOperationalWebhookService } from '../kimmp/gateway/KimmpOperationalWebhook'
 
 // ---------------------------------------------------------------------------
 // Types

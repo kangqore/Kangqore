@@ -12,7 +12,7 @@ import { AegisEngineDispatcher }        from './aegisEngineDispatcher'
 import { AegisActionExecutor }          from './aegisActionExecutor'
 import { AegisBudget }                  from './aegisBudget.service'
 import { aegisConfig }                  from './aegisConfig'
-import { verifyAccessToken }            from '../../../services/token.service'
+import { verifyAccessToken }            from '../../kernel/auth/TokenService'
 import { prisma }                       from '../../../lib/prisma'
 import { runComplianceTests }           from './compliance/aegisComplianceTestSuite'
 

@@ -4,7 +4,7 @@ import { prisma } from '../../lib/prisma';
 import { createError } from '../../middleware/errorHandler';
 import { authenticate, authorize, AuthenticatedRequest as AuthRequest } from '../../middleware/auth';
 import { addDays } from 'date-fns';
-import { emailService } from '../../services/email.service';
+import { emailService } from '../../kangqore-view/eaf/channels/EmailService';
 
 const router = Router();
 

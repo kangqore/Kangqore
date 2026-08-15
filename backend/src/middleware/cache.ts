@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { cacheService } from '../services/cache.service';
+import { cacheService } from '../kangqore-view/kernel/util/CacheService';
 
 /**
  * Middleware to cache successful GET responses

@@ -10,7 +10,7 @@
 // cardinality is always enforced — even internal services cannot violate schema.
 
 import { prisma } from '../../lib/prisma'
-import { checkPolicy } from '../../services/policyEngine.service'
+import { checkPolicy } from '../esf/PolicyEngine'
 import { CardinalityEngine } from './CardinalityEngine'
 import { CdcService } from '../../lib/cdc/cdcService'
 

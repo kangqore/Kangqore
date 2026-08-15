@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
-import { verifyAccessToken } from '../services/token.service';
+import { verifyAccessToken } from '../kangqore-view/kernel/auth/TokenService';
 import { createError } from './errorHandler';
 
 export interface AuthenticatedRequest extends Request {

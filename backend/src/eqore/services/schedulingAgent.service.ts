@@ -1,7 +1,7 @@
 import * as chrono from 'chrono-node';
 import { prisma } from '../../lib/prisma';
 import logger from '../../utils/logger';
-import { AvailabilityService, TimeSlot } from '../../services/availability.service';
+import { AvailabilityService, TimeSlot } from '../../kangqore-view/eaf/scheduling/AvailabilityService';
 import { EqoreSchedulingStatus } from '@prisma/client';
 import { addDays, startOfDay, endOfDay, format } from 'date-fns';
 
@@ -133,7 +133,7 @@ export class EqoreSchedulingAgentService {
     if (!eventType) throw new Error('Default event type not found');
 
     // Import SchedulingService dynamically to avoid circular dependencies if any
-    const { SchedulingService } = await import('../../services/scheduling.service');
+    const { SchedulingService } = await import('../../kangqore-view/eaf/scheduling/SchedulingService');
 
     // Race-condition check: ensure the slot is still available right before booking
     const availableSlots = await AvailabilityService.getAvailableSlots(eventType.id, new Date(selectedSlot.start), new Date(selectedSlot.end));

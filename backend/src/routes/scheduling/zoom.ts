@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { prisma } from '../../lib/prisma';
 import { authenticate, AuthenticatedRequest as AuthRequest } from '../../middleware/auth';
 import { createError } from '../../middleware/errorHandler';
-import { ZoomService } from '../../services/zoom.service';
+import { ZoomService } from '../../kangqore-view/eaf/scheduling/ZoomService';
 import { sanitizeRedirectUrl } from '../../utils/security';
 
 const router = Router();

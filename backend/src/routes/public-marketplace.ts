@@ -9,8 +9,8 @@
 import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import logger from '../utils/logger'
-import { ensureAgentTemplatesSeeded, ensureToolCallableExpanded } from '../services/agentStudioGrowth.service'
-import { getBattlecards } from '../services/battlecardCatalog.service'
+import { ensureAgentTemplatesSeeded, ensureToolCallableExpanded } from '../kangqore-view/kimmp/overshadow/AgentStudioGrowth'
+import { getBattlecards } from '../kangqore-view/kimmp/overshadow/BattlecardCatalog'
 
 export const publicMarketplaceRouter = Router()
 

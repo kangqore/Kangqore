@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express'
 import { prisma } from '../lib/prisma'
 import { requireAuth, AuthRequest } from '../middleware/rbac'
 import { createError } from '../middleware/errorHandler'
-import { emailService } from '../services/email.service'
+import { emailService } from '../kangqore-view/eaf/channels/EmailService'
 import crypto from 'crypto'
 
 const router = Router()

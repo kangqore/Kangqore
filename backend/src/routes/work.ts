@@ -7,7 +7,7 @@ import { authenticate, authorize } from '../middleware/auth'
 import { prisma } from '../lib/prisma'
 import { WorkItemService, seedWorkOntologyTypes } from '../kangqore-view/kore/WorkItemService'
 import { DependencyGraphService } from '../kangqore-view/kore/DependencyGraph'
-import { WorkAutomationService } from '../services/workAutomation.service'
+import { WorkAutomationService } from '../kangqore-view/automation/WorkAutomationService'
 
 const router = Router()
 const guard = [authenticate, authorize(['ADMIN'])]

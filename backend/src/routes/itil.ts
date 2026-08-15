@@ -6,8 +6,8 @@
  */
 import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
-import { slaDeadline, slaStatus, slaRemainingLabel } from '../services/slaEngine'
-import { runIncidentResponder } from '../services/incidentResponder'
+import { slaDeadline, slaStatus, slaRemainingLabel } from '../kangqore-view/kimmp/itil/SlaEngine'
+import { runIncidentResponder } from '../kangqore-view/kimmp/itil/IncidentResponder'
 
 export const itilRouter = Router()
 

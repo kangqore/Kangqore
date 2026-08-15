@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
 import { createError } from '../middleware/errorHandler';
-import accountabilityService from '../services/AccountabilityService';
+import accountabilityService from '../kangqore-view/kore/AccountabilityService';
 
 const router = Router();
 

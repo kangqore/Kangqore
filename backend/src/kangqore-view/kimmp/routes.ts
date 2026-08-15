@@ -1681,7 +1681,7 @@ import {
   getStrategicDecisionByStep,
   selectDecisionOption, recordDecisionOutcome, isStrategicDecision,
 } from './services/kimmpStrategicDecision.service'
-import { listPolicies, createPolicy, updatePolicy, deletePolicy, checkPolicy, seedDefaultPolicies } from '../../services/policyEngine.service'
+import { listPolicies, createPolicy, updatePolicy, deletePolicy, checkPolicy, seedDefaultPolicies } from '../esf/PolicyEngine'
 import { runSimulation } from './services/kimmpSimulator.service'
 
 kangqoreImmpRoutes.post('/strategic-decisions', requireAuth, requireRole(['ADMIN']), async (req, res) => {

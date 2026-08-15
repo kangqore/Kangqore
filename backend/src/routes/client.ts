@@ -2,8 +2,8 @@ import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { requireAuth, requireRole, AuthRequest } from '../middleware/rbac';
 import { createError } from '../middleware/errorHandler';
-import { notifyNewEmail } from '../services/notificationService';
-import accountabilityService from '../services/AccountabilityService';
+import { notifyNewEmail } from '../kangqore-view/awareness/notifications/NotificationService';
+import accountabilityService from '../kangqore-view/kore/AccountabilityService';
 import { escapeHtml } from '../utils/sanitize';
 
 const router = Router();

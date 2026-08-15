@@ -1,7 +1,7 @@
 import { Router, Response, NextFunction } from 'express'
 import { PrismaClient }                   from '@prisma/client'
 import { authenticate, authorize, AuthenticatedRequest } from '../middleware/auth'
-import { OntologyPipelineService } from '../services/ontologyPipeline.service'
+import { OntologyPipelineService } from '../kangqore-view/eof/OntologyPipeline'
 
 const router = Router()
 const prisma = new PrismaClient()

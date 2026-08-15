@@ -7,9 +7,9 @@ import {
   deleteSession, 
   deleteAllUserSessions,
   deleteSessionByToken 
-} from '../services/session.service';
-import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../services/audit.service';
-import { verifyRefreshToken } from '../services/token.service';
+} from '../kangqore-view/kernel/auth/SessionService';
+import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../kangqore-view/kernel/audit/AuditService';
+import { verifyRefreshToken } from '../kangqore-view/kernel/auth/TokenService';
 
 const router = Router();
 

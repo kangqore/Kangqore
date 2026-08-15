@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 import { prisma } from '../lib/prisma';
-import { emailService } from '../services/email.service';
+import { emailService } from '../kangqore-view/eaf/channels/EmailService';
 import logger from '../utils/logger';
 import { createError } from '../middleware/errorHandler';
 import {
@@ -13,11 +13,11 @@ import {
   ConciergeMessage,
   CONCIERGE_ROLE,
   CONCIERGE_MODEL_VERSION,
-} from '../services/concierge.service';
+} from '../kangqore-view/waanda/intelligence/ConciergeService';
 import { WaandaTrainingPipeline } from '../waanda-training/trainingPipeline.service';
-import { prefilter, HANDOFF_MESSAGE } from '../services/concierge.guardrails';
-import { classifyIntent } from '../services/concierge.intent';
-import { retrieve, ensureIndexLoaded } from '../services/concierge.retrieval';
+import { prefilter, HANDOFF_MESSAGE } from '../kangqore-view/waanda/intelligence/ConciergeGuardrails';
+import { classifyIntent } from '../kangqore-view/waanda/intelligence/ConciergeIntent';
+import { retrieve, ensureIndexLoaded } from '../kangqore-view/waanda/intelligence/ConciergeRetrieval';
 import { EqoreSchedulingAgentService } from '../eqore/services/schedulingAgent.service';
 import { EqoreTokenService } from '../eqore/session/token.service';
 import { getIO } from '../socket';

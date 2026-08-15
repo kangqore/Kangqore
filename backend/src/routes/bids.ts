@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express'
 import { prisma } from '../lib/prisma'
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth'
 import { BidsRoadmapAgent } from '../kangqore-immp/agents/bidsRoadmapAgent'
-import { emailService } from '../services/email.service'
+import { emailService } from '../kangqore-view/eaf/channels/EmailService'
 import { runBidsPillarAudit } from '../kangqore-immp/services/bidsPillarAudit.service'
 
 const router = Router()

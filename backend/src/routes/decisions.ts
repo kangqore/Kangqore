@@ -1,8 +1,8 @@
 import { Router, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { authenticate, AuthenticatedRequest, authorize } from '../middleware/auth';
-import accountabilityService from '../services/AccountabilityService';
-import { createAuditLog } from '../services/audit.service';
+import accountabilityService from '../kangqore-view/kore/AccountabilityService';
+import { createAuditLog } from '../kangqore-view/kernel/audit/AuditService';
 
 const router = Router();
 

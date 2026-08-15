@@ -1,11 +1,11 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 import { prisma } from '../lib/prisma';
-import { emailService } from '../services/email.service';
+import { emailService } from '../kangqore-view/eaf/channels/EmailService';
 import logger from '../utils/logger';
 import { createError } from '../middleware/errorHandler';
 import { requireAuth, requireRole, AuthRequest } from '../middleware/rbac';
-import { notifyNewEmail } from '../services/notificationService';
+import { notifyNewEmail } from '../kangqore-view/awareness/notifications/NotificationService';
 import { escapeHtml } from '../utils/sanitize';
 
 const router = Router();

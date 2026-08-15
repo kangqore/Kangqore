@@ -10,9 +10,9 @@
 
 import { Router, Request, Response } from 'express'
 import logger from '../utils/logger'
-import { computeCapabilityScorecard, computeGovernanceSummary, computeEvalHealth } from '../services/publicTrust.service'
-import { getComplianceOverview } from '../services/complianceReadiness.service'
-import { getAgentStudioBenchmark } from '../services/agentStudioGrowth.service'
+import { computeCapabilityScorecard, computeGovernanceSummary, computeEvalHealth } from '../kangqore-view/kimmp/overshadow/PublicTrust'
+import { getComplianceOverview } from '../kangqore-view/kimmp/overshadow/ComplianceReadiness'
+import { getAgentStudioBenchmark } from '../kangqore-view/kimmp/overshadow/AgentStudioGrowth'
 
 export const publicTrustRouter = Router()
 

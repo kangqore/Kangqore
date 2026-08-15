@@ -1,13 +1,13 @@
 import cron from 'node-cron';
 import { prisma } from '../lib/prisma';
-import { AccountabilityService } from '../services/AccountabilityService';
-import { emailService } from '../services/email.service';
-import { smsService } from '../services/sms.service';
+import { AccountabilityService } from '../kangqore-view/kore/AccountabilityService';
+import { emailService } from '../kangqore-view/eaf/channels/EmailService';
+import { smsService } from '../kangqore-view/eaf/channels/SmsService';
 import { WorkflowExecutor } from './WorkflowExecutor';
 import { addMinutes, addHours } from 'date-fns';
 import logger from '../utils/logger';
-import { createNotification } from '../services/notificationService';
-import { notifyClient } from '../services/clientEmail.service';
+import { createNotification } from '../kangqore-view/awareness/notifications/NotificationService';
+import { notifyClient } from '../kangqore-view/eaf/channels/ClientEmailService';
 
 const accountabilityService = new AccountabilityService();
 

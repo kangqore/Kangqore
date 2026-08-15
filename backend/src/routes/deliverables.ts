@@ -2,10 +2,10 @@ import { Router, Response, NextFunction, Request } from 'express';
 import { prisma } from '../lib/prisma';
 import { createError } from '../middleware/errorHandler';
 import { requireAuth, requireRole, AuthRequest } from '../middleware/rbac';
-import accountabilityService from '../services/AccountabilityService';
+import accountabilityService from '../kangqore-view/kore/AccountabilityService';
 // Fix: Service exports default instance
-import deliveryIntegrationService from '../services/DeliveryIntegrationService';
-import { createAuditLog, AUDIT_ACTIONS, extractRequestMetadata } from '../services/audit.service';
+import deliveryIntegrationService from '../kangqore-view/kore/DeliveryIntegrationService';
+import { createAuditLog, AUDIT_ACTIONS, extractRequestMetadata } from '../kangqore-view/kernel/audit/AuditService';
 
 const router = Router();
 // const prisma = new PrismaClient(); // Use shared instance

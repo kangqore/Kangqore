@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { IntelligenceService } from '../services/intelligenceService';
+import { IntelligenceService } from '../kangqore-view/awareness/IntelligenceService';
 
 const router = Router();
 const prisma = new PrismaClient();

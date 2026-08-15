@@ -29,7 +29,7 @@ export {
   deleteSessionByToken, 
   cleanupExpiredSessions, 
   updateSessionActivity 
-} from '../services/session.service';
+} from '../kangqore-view/kernel/auth/SessionService';
 
 // Re-export from services - Token management
 export { 
@@ -38,7 +38,7 @@ export {
   verifyRefreshToken, 
   decodeToken, 
   isTokenExpired 
-} from '../services/token.service';
+} from '../kangqore-view/kernel/auth/TokenService';
 
 // Re-export from utils
 export { hashPassword, comparePassword } from '../utils/password';

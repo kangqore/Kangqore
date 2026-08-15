@@ -11,7 +11,7 @@
 // (matches pre-S307 keys); a non-empty array allow-lists specific type/action names.
 import { Router, Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
-import { ObjectSetService, QueryNode } from '../services/objectSet.service'
+import { ObjectSetService, QueryNode } from '../kangqore-view/eof/ObjectSet'
 import { ActionEngine } from '../kangqore-view/automation/ActionEngine'
 
 export const ontologyV1Router = Router()

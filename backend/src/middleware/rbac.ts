@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken } from '../services/token.service';
-import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../services/audit.service';
+import { verifyAccessToken } from '../kangqore-view/kernel/auth/TokenService';
+import { createAuditLog, extractRequestMetadata, AUDIT_ACTIONS } from '../kangqore-view/kernel/audit/AuditService';
 import { prisma } from '../lib/prisma';
 
 /**
