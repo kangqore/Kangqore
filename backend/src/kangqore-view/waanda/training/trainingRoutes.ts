@@ -16,8 +16,8 @@ import { Router, Request, Response } from 'express'
 import { WaandaTrainingPipeline }    from './trainingPipeline.service'
 import { WaandaTrainingExporter }    from './trainingExporter.service'
 import { LocalReasonService }        from './localReason.service'
-import { prisma }                    from '../lib/prisma'
-import { exportCorpusJSONL }         from '../kangqore-immp/learning/kimmpLearning.service'
+import { prisma }                    from '../../../lib/prisma'
+import { exportCorpusJSONL }         from '../../kimmp/learning/kimmpLearning.service'
 
 export const waandaTrainingRouter = Router()
 

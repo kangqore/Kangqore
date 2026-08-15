@@ -59,7 +59,7 @@ import { kangqoreImmpRoutes } from './kangqore-immp';
 import { urgiRoutes } from './kangqore-immp/relationship-intelligence/api/urgi.routes';
 import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor } from './kangqore-aegis';
 import { waandaRouter } from './waanda/waandaRoutes';
-import { waandaTrainingRouter } from './waanda-training';
+import { waandaTrainingRouter } from './kangqore-view/waanda/training';
 import { dataPrivacyRouter } from './routes/data-privacy';
 import { communitiesRouter } from './communities/routes';
 import { developerRouter } from './routes/developer';
