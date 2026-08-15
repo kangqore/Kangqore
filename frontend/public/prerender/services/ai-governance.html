@@ -128,6 +128,182 @@
         </ul>
       </section>
 
+        <h2>Ungoverned AI vs. Governed &amp; Compliant AI</h2>
+    <p>Most AI reaches production without anyone able to say which models are running, who signed them off, or what happens when one is wrong. Governance is the difference between an estate you can evidence to a regulator and one you discover during an incident.</p>
+      <table>
+        <caption>UNGOVERNED AI compared with GOVERNED &amp; COMPLIANT AI</caption>
+        <thead><tr><th scope="col">Dimension</th><th scope="col">UNGOVERNED AI</th><th scope="col">GOVERNED &amp; COMPLIANT AI</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Oversight</th><td>Unmonitored model outputs, with real risk of hallucination, bias and unauthorized actions.</td><td>Pre-action approval gates, behavior limits and kill-switches, with a human in the loop where the decision warrants one.</td></tr>
+          <tr><th scope="row">Auditability</th><td>Ad-hoc scripts and unverified logic that break on edge cases and leave no audit trail.</td><td>Immutable, continuous audit logging and automated policy enforcement, so evidence is a by-product of running rather than a project.</td></tr>
+          <tr><th scope="row">Drift &amp; bias</th><td>Silent model and data drift, where unmonitored decay degrades decision quality over months.</td><td>Scheduled drift and fairness testing with automated alerts that trigger human review before impact reaches a customer.</td></tr>
+          <tr><th scope="row">Model inventory</th><td>Fragmented shadow AI, with unmapped models creating security and legal exposure nobody owns.</td><td>A central model registry carrying risk classification, named owners, RBAC and model cards for every system in production.</td></tr>
+          <tr><th scope="row">Regulatory exposure</th><td>Compliance, reputational and legal risk, with no way to demonstrate conformity when asked.</td><td>Risk tiering mapped to the EU AI Act, controls mapped to the NIST AI RMF, and the documentation an assessor asks for held ready.</td></tr>
+        </tbody>
+      </table>
+
+        <h2>Controls that run, not controls that are written down.</h2>
+    
+      <section>
+        <h3>Policy &amp; Ethics Layer</h3>
+        <p>Define enterprise AI principles, ethical guardrails, and automated risk classification across all models.</p>
+        <ul>
+          <li>Risk Tiering</li>
+          <li>Ethical Guardrails</li>
+          <li>Usage Policies</li>
+          <li>EU AI Act Alignment</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Model &amp; Agent Control</h3>
+        <p>Centralized model registries, automated release gates, behavioral boundaries, and lifecycle documentation.</p>
+        <ul>
+          <li>Model Registries</li>
+          <li>Release Gates</li>
+          <li>Behavior Limits</li>
+          <li>Version Control</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Data &amp; Privacy Core</h3>
+        <p>Strict oversight over training data, prompt engineering, data masking, and context store lineage.</p>
+        <ul>
+          <li>Data Masking</li>
+          <li>Consent Management</li>
+          <li>Lineage Tracking</li>
+          <li>PII Protection</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Execution Oversight</h3>
+        <p>Real-time human-in-the-loop checkpoints, anomaly detection alerts, and emergency kill-switches.</p>
+        <ul>
+          <li>HITL Workflows</li>
+          <li>Immutable Audit Logs</li>
+          <li>Anomaly Alerts</li>
+          <li>Emergency Kill-Switches</li>
+        </ul>
+      </section>
+
+        <h2>Governance shaped by your regulator.</h2>
+    
+      <section>
+        <h3>Banking &amp; Financial Services</h3>
+        <p>Model risk documentation an examiner will accept</p>
+        <ul>
+          <li>Model risk documentation written to FCA and PRA model risk management expectations, held per model version</li>
+          <li>Adverse-action reasons traceable to the features that produced them, not reconstructed after a complaint</li>
+          <li>Validation evidence, challenger results and sign-off retained against every credit model in production</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Healthcare &amp; Life Sciences</h3>
+        <p>Clinical validation that survives an inspection</p>
+        <ul>
+          <li>Validation packs carrying an intended-use statement, performance by subgroup, and the limits of the claim</li>
+          <li>PHI minimized before training, with lineage evidence showing what the model was ever exposed to</li>
+          <li>Consent and purpose limitation enforced at record level rather than asserted in a policy document</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Manufacturing &amp; Industry</h3>
+        <p>Safety cases for models that move physical things</p>
+        <ul>
+          <li>A written safety case wherever a model influences process control, with the failure modes enumerated</li>
+          <li>Model performance evidenced per line and per shift, because an aggregate number hides the line that drifted</li>
+          <li>Change control tying a model version to the batch records produced while it was live</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Retail &amp; Consumer Goods</h3>
+        <p>Pricing and personalization you can defend</p>
+        <ul>
+          <li>Disparate-impact testing on pricing and offer models before release, repeated on every retrain</li>
+          <li>Fairness metrics tracked across protected characteristics, with thresholds that block promotion</li>
+          <li>Consumer data purpose limits enforced in the feature store, so a dataset cannot silently change use</li>
+        </ul>
+      </section>
+      <section>
+        <h3>IT &amp; Infrastructure</h3>
+        <p>Shadow AI you can actually see</p>
+        <ul>
+          <li>Copilot and assistant usage policy enforced at the gateway rather than published as guidance</li>
+          <li>Tenant isolation evidenced in retrieval and in logs, not assumed from the deployment topology</li>
+          <li>A live inventory of models, prompts and AI-touching APIs, each with a named owner and a risk tier</li>
+        </ul>
+      </section>
+      <section>
+        <h3>EdTech &amp; Higher Ed</h3>
+        <p>Fairness evidence before anything affects a grade</p>
+        <ul>
+          <li>Student data minimized before any model sees it, with retention limits enforced automatically</li>
+          <li>Grading and recommendation models tested for fairness across cohorts on a published schedule</li>
+          <li>Human review required on any output affecting progression, assessment or funding</li>
+        </ul>
+      </section>
+
+        <h2>Engagement outcomes</h2>
+      <section>
+        <h3>Global Financial Institution — 100% EU AI Act audit readiness achieved</h3>
+        <p>Uncoordinated AI deployment across 40+ trading and risk departments created severe compliance vulnerability under emerging EU AI Act guidelines and model risk management mandates.</p>
+        <p>Kangqore deployed a centralized model governance platform with automated risk tiering, model lineage tracking, and SHAP explainability — achieving 100% audit readiness across all production models with zero deployment slowdown.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+      <section>
+        <h3>Healthcare &amp; Clinical Research Network — 95% Critical model incident risk reduction</h3>
+        <p>Diagnostic AI models and patient triage algorithms lacked real-time drift detection and human oversight gates, risking diagnostic error propagation across hospital systems.</p>
+        <p>Kangqore embedded human-in-the-loop approval workflows, real-time data drift alerts, and automated bias checks — reducing critical model incidents by 95% across 12 clinical nodes.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+
+        <h2>How we engage</h2>
+    <p>Five entry points, from a three-week audit to continuous assurance. Most programs start by finding out which systems are in scope and what evidence is missing, because building controls before you know your risk tiers is the most common way governance work stalls.</p>
+      <section>
+        <h3>Strategy &amp; Audit (2–3 weeks)</h3>
+        <p>Inventory every AI system in production, classify each against EU AI Act risk tiers, and identify where evidence is missing rather than where controls are absent.</p>
+        <ul>
+          <li>Model and system inventory with named owners</li>
+          <li>Risk tier classification per system</li>
+          <li>Gap analysis against the EU AI Act and NIST AI RMF</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Guardrail Pod (8 weeks)</h3>
+        <p>One high-risk production model taken to an auditable state: registry entry, explainability layer, bias monitoring and an approval path that holds.</p>
+        <ul>
+          <li>Model registry entry with lineage and version pinning</li>
+          <li>SHAP explainability wired into the serving path</li>
+          <li>Bias and drift monitors with alert thresholds you set</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Platform Governance (16–24 weeks)</h3>
+        <p>The controls as infrastructure: a shared registry, compliance gates in CI/CD, data masking pipelines and policy enforced in the request path rather than in a document.</p>
+        <ul>
+          <li>Registry and policy engine as infrastructure as code</li>
+          <li>Release gates that block promotion on a failed check</li>
+          <li>Masking and lineage pipelines across training and prompt data</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Managed Compliance (Ongoing)</h3>
+        <p>We run it: drift and fairness testing on schedule, human-in-the-loop queues staffed, audit logs maintained, and the evidence pack kept current between assessments.</p>
+        <ul>
+          <li>Monthly drift, bias and incident report</li>
+          <li>Maintained audit log and evidence pack</li>
+          <li>Change log tying every model version to its approval</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Continuous Assurance (Ongoing)</h3>
+        <p>Periodic re-assessment as the regulation moves and your estate grows, with control coverage re-tested rather than assumed to have held.</p>
+        <ul>
+          <li>Re-assessment against the current text of each regime</li>
+          <li>Control coverage re-tested per system</li>
+          <li>Board-level risk summary with the exceptions named</li>
+        </ul>
+      </section>
+
         <h2>Every control. Evidenced, not asserted.</h2>
     <p>Governance tooling is bought or built, and the answer differs per layer. What decides it is who has to be convinced: an internal risk committee will accept your own dashboards, an external assessor generally wants an audited platform trail. These are the five layers we standardize and the threshold at each one.</p>
       <ul>
@@ -165,6 +341,9 @@
         <li><a href="https://kangqore.com/services/quality-engineering-assurance">Quality Engineering &amp; Assurance</a></li>
         <li><a href="https://kangqore.com/services/operation-technology">Operation Technology (OT)</a></li>
       </ul>
+
+        <h2>One conversation. One estate you can evidence.</h2>
+    <p>Bring the AI you already have in production. In 30 minutes we will tell you which systems are in scope under the EU AI Act, what evidence you are missing, and what it takes to close the gap.</p>
 
     <h2>Ask eQORE AI about AI Governance</h2>
       <ul>

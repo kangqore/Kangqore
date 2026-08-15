@@ -62,9 +62,13 @@ const BOILERPLATE = /\b(enterprise|organizational|framework|frameworks|governanc
 
 // Copy belonging to /services/agentic-ai that other pages used to inherit.
 // Kept as a regression check: this class of defect was live on 56 pages.
+//
+// "your industry." is deliberately NOT listed. It was the second line of the
+// agentic heading, but every department default written in #368 ends the same
+// way ("Intelligence built for / your industry."), so matching it alone flags
+// the fix as the defect. "Agents built for" is the part that was ever wrong.
 const AGENTIC_DEFAULTS = [
   'Agents built for',
-  'your industry.',
   'Your next workflow runs itself.',
   'One agent in production.',
   'what a production agent looks like',
@@ -201,6 +205,9 @@ async function measure(browserRef, ctx, slug) {
           px: Math.round(r.height),
           words: t.split(/\s+/).filter(Boolean).length,
           heading: (s.querySelector('h1,h2')?.innerText || '').trim().replace(/\s+/g, ' ').slice(0, 60) || '(no heading)',
+          // Used to find the FAQ block. Matching the heading text was fragile:
+          // rewriting a page's FAQ heading made its own FAQ undetectable.
+          faqQs: [...s.querySelectorAll('h3')].filter((h) => h.innerText.trim().endsWith('?')).length,
         };
       })
       .filter((s) => s.px > 40);
@@ -280,7 +287,9 @@ async function measure(browserRef, ctx, slug) {
   const questionStrings = dom.heads.filter((h) => h.text.endsWith('?')).length;
 
   const faqHeads = dom.heads.filter((h) => h.level === 3 && h.text.endsWith('?'));
-  const faqIdx = dom.sections.findIndex((s) => /FAQ|frequently asked|hard questions/i.test(s.heading));
+  // The FAQ is whichever section holds the most question-form h3s, which does
+  // not depend on what that section is called.
+  const faqIdx = dom.sections.reduce((best, sec, idx) => (sec.faqQs > (dom.sections[best]?.faqQs ?? 0) ? idx : best), -1);
 
   const thin = dom.sections.filter((s) => s.words / Math.max(s.px, 1) * 100 < 10);
 

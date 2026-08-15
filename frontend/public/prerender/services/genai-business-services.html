@@ -214,6 +214,172 @@
         </ul>
       </section>
 
+        <h2>Why Kangqore for GenAI?</h2>
+    <p>Most generative AI reaches a convincing demo in two weeks, and stalls on everything that makes an answer trustworthy. We build for the five things that decide whether a system survives production: where the facts came from, who is allowed to see them, how you know it is still right next month, what it refuses to say, and what it costs per thousand users rather than per demo.</p>
+      <table>
+        <caption>DEMO-GRADE GENAI compared with WITH KANGQORE</caption>
+        <thead><tr><th scope="col">Dimension</th><th scope="col">DEMO-GRADE GENAI</th><th scope="col">WITH KANGQORE</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Grounding</th><td>The model answers from whatever it learned in pre-training. It is fluent about your business and occasionally wrong about it, and nothing distinguishes the two on screen.</td><td>Every answer is retrieved from your own corpus before it is generated, with the source passages returned alongside it, so a reader can check the claim, and an auditor can see what the model was looking at.</td></tr>
+          <tr><th scope="row">Permissions</th><td>One index for everyone. A retrieval system that has read the whole intranet will happily quote the salary review to whoever asks.</td><td>Retrieval runs under the asking user's permissions, so the index cannot return a passage they could not already open. Access control lives in the retrieval layer, not in the prompt.</td></tr>
+          <tr><th scope="row">Evaluation</th><td>Quality is whatever the person demoing it thought looked good. There is no holdout set, because there is no single correct answer to hold out against.</td><td>Graded rubrics over a fixed question set, adversarial suites for the failure modes that matter, and human review on the sample that decides promotion. A prompt change that lowers the score does not ship.</td></tr>
+          <tr><th scope="row">Guardrails</th><td>The system will attempt any question asked of it, including the ones it should decline, and there is no record of what it was asked.</td><td>Refusal is designed, not hoped for: input classification, output filters, and an escalation path for anything outside remit. The prompt, the retrieved context and the response are retained for audit.</td></tr>
+          <tr><th scope="row">Unit economics</th><td>Cost is a surprise at the end of the first full month, because inference is metered per token and nobody measured the tokens.</td><td>Token budgets per workflow, caching on the repeated questions that dominate real traffic, and routing that sends the easy majority to a smaller model. Cost per resolved query is a number you can quote.</td></tr>
+        </tbody>
+      </table>
+
+        <h2>Four layers. Each one you can inspect.</h2>
+    
+      <section>
+        <h3>Knowledge &amp; Retrieval</h3>
+        <p>Your documents chunked, embedded and indexed, with retrieval that runs under the asking user's permissions so an answer can never quote a source they could not open.</p>
+        <ul>
+          <li>Chunking &amp; Embedding</li>
+          <li>Hybrid Search</li>
+          <li>Permission-Aware Retrieval</li>
+          <li>Source Attribution</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Orchestration &amp; Context</h3>
+        <p>Prompt templates and context assembly held as versioned artifacts, with routing that sends each request to the model that can answer it most cheaply.</p>
+        <ul>
+          <li>Prompt Versioning</li>
+          <li>Context Assembly</li>
+          <li>Model Routing</li>
+          <li>Tool &amp; Function Calling</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Guardrails &amp; Evaluation</h3>
+        <p>PII redaction and moderation on the way in, hallucination and jailbreak checks on the way out, and quality measured on graded rubrics — because there is no single correct answer to test against.</p>
+        <ul>
+          <li>PII Redaction &amp; Moderation</li>
+          <li>Jailbreak &amp; Injection Filters</li>
+          <li>Graded Rubrics</li>
+          <li>Human Review Gates</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Serving &amp; Unit Economics</h3>
+        <p>Caching on the repeated questions that dominate real traffic, token budgets per workflow, and latency measured where the user waits rather than at the API.</p>
+        <ul>
+          <li>Semantic Caching</li>
+          <li>Token Budgets</li>
+          <li>Latency SLOs</li>
+          <li>Per-Query Cost Telemetry</li>
+        </ul>
+      </section>
+
+        <h2>Generative systems, grounded in your sector’s evidence.</h2>
+    
+      <section>
+        <h3>Banking &amp; Financial Services</h3>
+        <p>Answers a compliance officer can trace to a document</p>
+        <ul>
+          <li>Retrieval over policy, product and regulatory documents, with the source passage returned beside every answer</li>
+          <li>Adverse-action and complaint drafting where the underlying evidence is cited rather than paraphrased</li>
+          <li>Prompt, context and response retained per interaction, so a decision can be reconstructed months later</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Healthcare &amp; Life Sciences</h3>
+        <p>Clinical drafting that never leaves the evidence behind</p>
+        <ul>
+          <li>PHI redacted before retrieval and never written to prompt logs</li>
+          <li>Summaries grounded in the record they came from, with the passage shown for clinician review</li>
+          <li>Refusal on anything that would constitute diagnosis or dosing without a human in the loop</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Manufacturing &amp; Industry</h3>
+        <p>Thirty years of maintenance knowledge, searchable in a sentence</p>
+        <ul>
+          <li>Retrieval across manuals, service bulletins and engineer field notes, including scanned documents</li>
+          <li>Procedure drafting that cites the revision it was generated from, so a superseded manual is visible</li>
+          <li>Deployment inside the plant network where equipment documentation cannot leave the site</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Retail &amp; Consumer Goods</h3>
+        <p>Catalog content at range scale, on brand and on claim</p>
+        <ul>
+          <li>Product copy generated from attribute data rather than invented, with a brand rubric scored before publish</li>
+          <li>Regulated claims checked against an approved-claims list rather than left to the model</li>
+          <li>Localization that keeps the claim set intact across markets with different rules</li>
+        </ul>
+      </section>
+      <section>
+        <h3>IT &amp; Infrastructure</h3>
+        <p>Incident context assembled while the incident is still open</p>
+        <ul>
+          <li>Retrieval across runbooks, past incidents and change history to summarize what is likely happening</li>
+          <li>Draft remediation steps cited to the runbook that authorizes them, never freehand</li>
+          <li>Per-team token budgets and routing, so one noisy service cannot consume the inference spend</li>
+        </ul>
+      </section>
+      <section>
+        <h3>EdTech &amp; Higher Ed</h3>
+        <p>Assessment and feedback with the reasoning shown</p>
+        <ul>
+          <li>Feedback generated against a published rubric, with the criterion cited for each comment</li>
+          <li>Student data minimized before retrieval, with lineage evidence for audit</li>
+          <li>Human review required on anything affecting progression or a grade</li>
+        </ul>
+      </section>
+
+        <h2>Engagement outcomes</h2>
+      <section>
+        <h3>Banking &amp; Financial Services — 4× More questions resolved without a human</h3>
+        <p>A support desk answered policy questions by hand because the first assistant they built was confidently wrong often enough that agents stopped trusting it. Deflection stalled at roughly one question in ten, and every wrong answer cost more to unpick than answering it manually would have.</p>
+        <p>Answers are now retrieved from the policy corpus before they are generated, with the source passage shown beside each one, and the system declines rather than guesses when retrieval returns nothing relevant. Deflection moved from one question in ten to four, because agents could see what the answer was based on.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+      <section>
+        <h3>Retail &amp; Consumer Goods — 62% Lower cost per resolved query</h3>
+        <p>Every request went to the largest available model, including the repeated ones. The first full month of production inference cost several times the pilot estimate, and nobody could say which workflow was responsible.</p>
+        <p>Semantic caching absorbed the repeated questions that made up most of real traffic, and routing sent the easy majority to a smaller model with the large one held for what needed it. Cost per resolved query fell 62% with no measured change in answer quality.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+
+        <h2>How we engage</h2>
+    
+      <section>
+        <h3>Use-Case Triage (2 weeks)</h3>
+        <p>Score candidate use cases on evidence availability, tolerance for a wrong answer, and volume. Ends with the two worth building and the reasons the rest are not.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>Grounded Pilot (8 weeks)</h3>
+        <p>One workflow taken to production on your corpus: retrieval, guardrails, an evaluation set, and cost telemetry — so the second use case is configuration rather than a project.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>GenAI Platform Build (16–24 weeks)</h3>
+        <p>Shared retrieval, prompt and context versioning, model routing, evaluation harness and observability as infrastructure as code, with per-team token budgets.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>Managed GenAI Operations (Ongoing)</h3>
+        <p>We run it: evaluation on every prompt and index change, guardrail tuning against real traffic, model migration as vendors deprecate, and cost management.</p>
+        <ul>
+
+        </ul>
+      </section>
+      <section>
+        <h3>Fine-Tuning &amp; Model Ownership (Ongoing)</h3>
+        <p>Where retrieval is not enough: dataset curation, fine-tuning or adapter training, and evaluation against the base model to prove the delta is real.</p>
+        <ul>
+
+        </ul>
+      </section>
+
         <h2>Every layer. Deployed on your terms.</h2>
     <p>Model vendors change every few months and the stack around them does not. These are the six layers we standardize once and reuse across every team that follows. Both options at each layer are viable in production — which one you get depends on where your data is allowed to go, the volume it runs at, and who you want operating it at three in the morning.</p>
       <ul>
@@ -257,6 +423,9 @@
         <li><a href="https://kangqore.com/services/business-process-management">Business Process Management</a></li>
         <li><a href="https://kangqore.com/services/intelligent-automation">Intelligent Automation</a></li>
       </ul>
+
+        <h2>One conversation. One grounded system in production.</h2>
+    <p>Bring the use case you have already tried and could not make trustworthy. In 30 minutes we will tell you whether retrieval fixes it, what the evidence has to look like, and what it will cost per query at your volume.</p>
 
     <h2>Next Step</h2>
     <p><a href="https://kangqore.com/contact">Talk to our experts about GenAI Business Services</a></p>
