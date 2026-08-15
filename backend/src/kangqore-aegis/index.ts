@@ -1,12 +1,3 @@
-export { AegisLedger }             from './aegisLedger.service'
-export { aegisShield, aegisAccessLogger } from './aegisMiddleware'
-export { aegisRouter }             from './aegisRoutes'
-export { AegisSovereignty }        from './aegisSovereignty.service'
-export { aegisEgressMonitor }      from './aegisEgress.service'
-export { AegisPolicyEngine }       from './aegisPolicy.service'
-export { AegisEngineDispatcher }   from './aegisEngineDispatcher'
-export { AegisScheduler }          from './aegisScheduler'
-export { AegisEventEmitter }       from './aegisEventEmitter'
-export { AegisActionProposer }     from './aegisActionProposer'
-export { AegisActionExecutor }     from './aegisActionExecutor'
-export { getCorrelationId, getAegisContext, generateCorrelationId } from './AegisContext'
+// DEPRECATED: Migrated to kangqore-view/esf/aegis/index
+/** @deprecated Use 'kangqore-view/esf/aegis' instead */
+export * from '../kangqore-view/esf/aegis/index';
