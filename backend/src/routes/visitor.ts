@@ -11,7 +11,7 @@ import type { AuthRequest } from '../middleware/rbac'
 import logger from '../utils/logger'
 import { upsertPresence, getActivePresence } from '../kangqore-view/awareness/VisitorPresenceRegistry'
 import { getIO } from '../socket'
-import { WaandaTrainingPipeline } from '../waanda-training'
+import { WaandaTrainingPipeline } from '../kangqore-view/waanda/training'
 import { LeadEnrichmentService } from '../kangqore-view/awareness/LeadEnrichmentService'
 
 function extractIp(req: Request): string | null {

@@ -17,8 +17,8 @@
 // CORRECTED → negative example + stores the correction as the ideal output.
 // ---------------------------------------------------------------------------
 
-import { prisma } from '../lib/prisma'
-import logger    from '../utils/logger'
+import { prisma } from '../../../lib/prisma'
+import logger    from '../../../utils/logger'
 import { classifyCurriculum } from './curriculumClassifier'
 
 export type ExampleType = 'REASON' | 'SPEAK' | 'SYNTHESIS'

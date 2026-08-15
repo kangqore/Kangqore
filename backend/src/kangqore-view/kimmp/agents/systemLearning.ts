@@ -22,7 +22,7 @@ import { prisma } from '../../../lib/prisma'
 import logger from '../../../utils/logger'
 import { SystemType } from './agentRegistry'
 import { AgentType } from '../orchestrator/kimmpOrchestrator.service'
-import { WaandaTrainingPipeline } from '../../../waanda-training'
+import { WaandaTrainingPipeline } from '../../waanda/training'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

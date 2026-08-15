@@ -22,7 +22,7 @@ import Anthropic     from '@anthropic-ai/sdk'
 import { withWaandax } from '../llm/waandaxAnthropic'
 import { prisma }   from '../../../lib/prisma'
 import logger       from '../../../utils/logger'
-import { classifyCurriculum } from '../../../waanda-training/curriculumClassifier'
+import { classifyCurriculum } from '../../waanda/training/curriculumClassifier'
 
 const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 

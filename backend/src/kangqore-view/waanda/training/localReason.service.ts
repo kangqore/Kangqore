@@ -15,7 +15,7 @@
 // Falls back to Ollama, then to Claude if both are unavailable.
 // ---------------------------------------------------------------------------
 
-import logger from '../utils/logger'
+import logger from '../../../utils/logger'
 
 interface OAIChatResponse {
   choices?: { message?: { content?: string } }[]

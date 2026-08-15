@@ -11,7 +11,7 @@
 
 import { callLLM }                       from './agents/llm'
 import { getAgentTrajectory }            from './aegisMemory'
-import { WaandaTrainingPipeline }        from '../../../waanda-training/trainingPipeline.service'
+import { WaandaTrainingPipeline }        from '../../waanda/training/trainingPipeline.service'
 import type { AegisAgentResult }         from './agents/types'
 
 export type AegisActionType =

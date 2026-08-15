@@ -14,7 +14,7 @@ import {
   CONCIERGE_ROLE,
   CONCIERGE_MODEL_VERSION,
 } from '../kangqore-view/waanda/intelligence/ConciergeService';
-import { WaandaTrainingPipeline } from '../waanda-training/trainingPipeline.service';
+import { WaandaTrainingPipeline } from '../kangqore-view/waanda/training/trainingPipeline.service';
 import { prefilter, HANDOFF_MESSAGE } from '../kangqore-view/waanda/intelligence/ConciergeGuardrails';
 import { classifyIntent } from '../kangqore-view/waanda/intelligence/ConciergeIntent';
 import { retrieve, ensureIndexLoaded } from '../kangqore-view/waanda/intelligence/ConciergeRetrieval';
