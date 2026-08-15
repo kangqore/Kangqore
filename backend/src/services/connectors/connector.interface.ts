@@ -1,19 +1,3 @@
-export interface ConnectorResult {
-  connector: string
-  status: 'OK' | 'SKIPPED' | 'ERROR'
-  message: string
-  data?: Record<string, any>
-}
-
-export interface ConnectorContext {
-  actionName: string
-  params: Record<string, any>
-  actorId?: string | null
-  actorType?: string
-}
-
-export interface Connector {
-  name: string
-  supports(actionName: string): boolean
-  execute(ctx: ConnectorContext): Promise<ConnectorResult>
-}
+// DEPRECATED: Canonical version is kangqore-view/automation/connectors/connector.interface
+/** @deprecated Use 'kangqore-view/automation/connectors/connector.interface' instead */
+export * from '../../kangqore-view/automation/connectors/connector.interface';

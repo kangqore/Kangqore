@@ -37,7 +37,7 @@ import { assessProject, getProjectOps, sweepAllProjects, simulateTwin, getTwin }
 import { getLatestCoachingInsights, computeCoachingInsights, markInsightActed } from '../waanda/intelligence/enterpriseCoach.service';
 import { createDecision, resolveDecision, listDecisions as listEnterpriseDecisions, getDecision, listPolicies, createPolicy, togglePolicy, deletePolicy, checkPolicy } from '../waanda/intelligence/decisionEngine.service';
 import { listBlueprints, getBlueprint, generateBlueprint, importBlueprint, archiveBlueprint, activateBlueprint, validateBlueprint, addBlueprintGap, getBlueprintGaps, aggregateBlueprintGaps } from '../waanda/intelligence/blueprintService';
-import { PackRegistry } from '../services/packRegistry.service';
+import { PackRegistry } from '../kangqore-view/automation/PackRegistryService';
 import { simulateEnterpriseTwin, listTwinScenarios, compareScenarios } from '../waanda/intelligence/enterpriseTwin.service';
 import { computeCapabilityProfiles, getCapabilityProfiles, getRuntimeCallStats } from '../kangqore-immp/runtime/waandaRuntimeIntelligence.service';
 
