@@ -427,8 +427,9 @@ app.get(/\.(js|css|svg|json)$/, (req, res, next) => {
 
   // req.path is URL-decoded and normalised by Express; resolve and confirm the
   // result stays inside the build directory before reading anything.
+  const baseDir = path.resolve(frontendBuildPath) + path.sep;
   const candidate = path.resolve(frontendBuildPath, `.${req.path}.br`);
-  if (!candidate.startsWith(path.resolve(frontendBuildPath))) return next();
+  if (!candidate.startsWith(baseDir)) return next();
   if (!fs.existsSync(candidate)) return next();
 
   const type = BROTLI_TYPES[path.extname(req.path).toLowerCase()];

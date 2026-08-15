@@ -133,9 +133,11 @@ async function readNotesIn(dir: string, relDir: string): Promise<LoadedNote[]> {
     entries.sort((a, b) => (times.get(a) ?? 0) - (times.get(b) ?? 0))
   }
 
+  const baseResolved = path.resolve(dir) + path.sep
   for (const entry of entries) {
     if (!entry.endsWith('.md') || entry === 'MEMORY.md') continue
-    const full = path.join(dir, entry)
+    const full = path.resolve(dir, entry)
+    if (!full.startsWith(baseResolved)) continue
     let raw = ''
     try { raw = await fs.readFile(full, 'utf-8') } catch { continue }
     const { attrs, body } = parseFrontmatter(raw)
@@ -278,7 +280,11 @@ export async function addCapture(text: string): Promise<{ node: BrainNode; relat
     '',
   ].join('\n')
 
-  await fs.writeFile(path.join(capturesDir, `${slug}.md`), md, 'utf-8')
+  const targetFile = path.resolve(capturesDir, `${slug}.md`)
+  if (!targetFile.startsWith(path.resolve(capturesDir) + path.sep)) {
+    throw new Error('invalid capture slug path')
+  }
+  await fs.writeFile(targetFile, md, 'utf-8')
   invalidateBrain()
   const graph = await loadBrain(true)
   const node = graph.nodes.find(n => n.slug === slug)
