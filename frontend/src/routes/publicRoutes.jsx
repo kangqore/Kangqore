@@ -34,7 +34,9 @@ const GovernanceNativeWhitepaperPage = React.lazy(() => import('../pages/Governa
 const AgentStudioBenchmarkPage = React.lazy(() => import('../pages/AgentStudioBenchmarkPage'));
 const AgentMarketplacePage = React.lazy(() => import('../pages/AgentMarketplacePage'));
 
-// Developers — Overshadow Roadmap P6.3 ("Developer Relations")
+// Developers & App Ecosystem — Overshadow Roadmap Phase 5
+const DeveloperPortalPage = React.lazy(() => import('../pages/DeveloperPortalPage'));
+const AppMarketplacePage = React.lazy(() => import('../pages/AppMarketplacePage'));
 const DevelopersPage = React.lazy(() => import('../pages/DevelopersPage'));
 
 // Solutions by role — Overshadow Roadmap P7.3 ("Persona-Targeted Campaigns")
@@ -64,8 +66,8 @@ export const publicRoutes = [
   <Route key="trust" path="/trust" element={<TrustGovernancePage />} />,
   <Route key="trust-whitepaper" path="/trust/governance-native-vs-retrofitted" element={<GovernanceNativeWhitepaperPage />} />,
   <Route key="trust-agent-benchmark" path="/trust/agent-studio-benchmark" element={<AgentStudioBenchmarkPage />} />,
-  <Route key="agent-marketplace" path="/marketplace" element={<AgentMarketplacePage />} />,
-  <Route key="developers" path="/developers" element={<DevelopersPage />} />,
+  <Route key="agent-marketplace" path="/marketplace" element={<AppMarketplacePage />} />,
+  <Route key="developers" path="/developers" element={<DeveloperPortalPage />} />,
 
   // Solutions by role — Overshadow Roadmap P7.3 ("Persona-Targeted Campaigns")
   <Route key="solutions" path="/solutions" element={<SolutionsIndexPage />} />,
