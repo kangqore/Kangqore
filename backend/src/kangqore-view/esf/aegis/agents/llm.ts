@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { withWaandax } from '../../../../kangqore-immp/llm/waandaxAnthropic'
-import { logCall, scanPii } from '../../../../services/kimmpGatewayCore'
+import { logCall, scanPii } from '../../../kimmp/gateway/KimmpGatewayCore'
 import { PromptRegistry } from '../../../../kangqore-immp/wir/promptRegistry.service'
 
 const client = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))

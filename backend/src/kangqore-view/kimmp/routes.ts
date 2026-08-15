@@ -18,14 +18,14 @@ import logger from '../../utils/logger';
 import { requireAuth, requireRole } from '../../middleware/rbac';
 import { KIMMP_VERSION } from './core/types';
 import { KimmpFlags } from './core/flags';
-import { computeCapabilityScorecard } from '../../services/publicTrust.service';
-import { getLiveComplianceSignals, ensureFrameworkSeeded, getComplianceOverview } from '../../services/complianceReadiness.service';
-import { getAgentStudioBenchmark } from '../../services/agentStudioGrowth.service';
-import { getContestedModulesStatus } from '../../services/contestedModulesCatalog.service';
-import { getAiSecurityView } from '../../services/securityView.service';
-import { getGtmPipelineSummary, isValidReferenceStage, isValidAnalystStatus } from '../../services/gtmPipeline.service';
-import { getPartnerEcosystemSummary, isValidRelationshipStage, isValidTierStatus } from '../../services/partnerEcosystem.service';
-import { getBattlecards } from '../../services/battlecardCatalog.service';
+import { computeCapabilityScorecard } from './overshadow/PublicTrust';
+import { getLiveComplianceSignals, ensureFrameworkSeeded, getComplianceOverview } from './overshadow/ComplianceReadiness';
+import { getAgentStudioBenchmark } from './overshadow/AgentStudioGrowth';
+import { getContestedModulesStatus } from './overshadow/ContestedModulesCatalog';
+import { getAiSecurityView } from './overshadow/SecurityView';
+import { getGtmPipelineSummary, isValidReferenceStage, isValidAnalystStatus } from './overshadow/GtmPipeline';
+import { getPartnerEcosystemSummary, isValidRelationshipStage, isValidTierStatus } from './overshadow/PartnerEcosystem';
+import { getBattlecards } from './overshadow/BattlecardCatalog';
 import { BehaviorAnalysisController } from './controllers/behaviorAnalysis.controller';
 import { pageFactoryRoutes } from './page-factory/routes';
 import { brainRoutes } from './brain/brainRoutes';
@@ -1792,7 +1792,7 @@ import { WAOE } from './waoe/waoe.service'
 import { getMissionControlData } from './waoe/missionControl.service'
 import { WIR } from './wir/wir.service'
 import { PromptRegistry } from './wir/promptRegistry.service'
-import { unifiedSearch } from '../../services/unifiedKnowledgeSearch.service'
+import { unifiedSearch } from './knowledge/UnifiedKnowledgeSearch'
 import { EvaluationFramework } from './wir/evaluationFramework.service'
 import { CostIntelligence } from './wir/costIntelligence.service'
 import { AIModelRegistry } from './wir/modelRegistry.service'

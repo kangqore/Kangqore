@@ -16,7 +16,7 @@ import { isStrategicDecision, runStrategicDecision, StrategicDecisionResult } fr
 import { routedCall } from '../llm/kimmpLLMRouter';
 import { LogicToolRegistry } from '../tools/logicToolRegistry';
 import { OntologyActionToolRegistry } from '../../automation/OntologyActionToolRegistry';
-import { KnowledgeSearchTool } from '../../../services/knowledgeSearchTool.service';
+import { KnowledgeSearchTool } from '../knowledge/KnowledgeSearchTool';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

@@ -25,10 +25,10 @@ import {
   isEmbeddingsConfigured,
   getEmbeddingModel,
   EmbeddingsUnavailable,
-} from '../../../services/embeddings.service'
+} from '../knowledge/EmbeddingsService'
 import { SystemType } from './agentRegistry'
 import { AegisLedger } from '../../../kangqore-aegis/aegisLedger.service'
-import { PgvectorIndex } from '../../../services/pgvectorIndex.service'
+import { PgvectorIndex } from '../knowledge/PgvectorIndex'
 import { KimmpFlags } from '../core/flags'
 
 // ─── Types ────────────────────────────────────────────────────────────────────

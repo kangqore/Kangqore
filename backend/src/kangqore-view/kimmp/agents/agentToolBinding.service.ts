@@ -10,7 +10,7 @@
 import type Anthropic from '@anthropic-ai/sdk'
 import { LogicToolRegistry } from '../tools/logicToolRegistry'
 import { OntologyActionToolRegistry } from '../../automation/OntologyActionToolRegistry'
-import { KnowledgeSearchTool } from '../../../services/knowledgeSearchTool.service'
+import { KnowledgeSearchTool } from '../knowledge/KnowledgeSearchTool'
 
 export interface ResolvedAgentTools {
   tools: Anthropic.Tool[]

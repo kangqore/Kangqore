@@ -1355,7 +1355,7 @@ router.get('/accountability/project/:projectId/export', authenticate, authorize(
     
     const csv = [
       headers.join(','),
-      ...rows.map(row => row.join(','))
+      ...rows.map((row: string[]) => row.join(','))
     ].join('\n');
     
     // Set headers for download

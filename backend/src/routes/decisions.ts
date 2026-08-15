@@ -244,7 +244,7 @@ router.patch('/:id/status', authenticate, authorize(['ADMIN', 'CLIENT']), async 
 
       // Resolve the original obligation
       const obligations = await accountabilityService.getProjectObligations(updatedDecision.projectId, 'OPEN');
-      const pendingObligation = obligations.find(o => 
+      const pendingObligation = obligations.find((o: any) => 
           o.obligationType === 'APPROVAL_REQUIRED' && 
           o.description.includes(updatedDecision.title)
       );
