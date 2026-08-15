@@ -3,6 +3,7 @@ import { prisma } from '../../lib/prisma';
 import { authenticate, AuthenticatedRequest as AuthRequest } from '../../middleware/auth';
 import { createError } from '../../middleware/errorHandler';
 import { ZoomService } from '../../services/zoom.service';
+import { sanitizeRedirectUrl } from '../../utils/security';
 
 const router = Router();
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -34,7 +35,7 @@ router.get('/connect', authenticate, (req: AuthRequest, res, next) => {
     if (!process.env.ZOOM_CLIENT_ID || !process.env.ZOOM_CLIENT_SECRET) {
       return next(createError('Zoom integration is not configured', 501));
     }
-    res.redirect(ZoomService.getAuthUrl(req.user.id));
+    res.redirect(sanitizeRedirectUrl(ZoomService.getAuthUrl(req.user.id)));
   } catch (error) {
     next(error);
   }
@@ -49,14 +50,14 @@ router.get('/callback', async (req, res, next) => {
     const { code, state: userId, error } = req.query as Record<string, string>;
 
     if (error) {
-      return res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=${encodeURIComponent(error)}`);
+      return res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=${encodeURIComponent(error)}`));
     }
     if (!code || !userId) {
-      return res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=missing_params`);
+      return res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=missing_params`));
     }
 
     await ZoomService.handleCallback(code, userId);
-    res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?connected=zoom`);
+    res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?connected=zoom`));
   } catch (error) {
     next(error);
   }

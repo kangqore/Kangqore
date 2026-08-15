@@ -18,6 +18,22 @@ interface EmailTemplate {
   lastModified?: string
 }
 
+function safeSanitizeHtml(html: string): string {
+  if (typeof window === 'undefined') return html
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  const badElements = doc.querySelectorAll('script, iframe, object, embed')
+  badElements.forEach(el => el.remove())
+  const allElements = doc.querySelectorAll('*')
+  allElements.forEach(el => {
+    for (const attr of Array.from(el.attributes)) {
+      if (attr.name.startsWith('on') || attr.value.trim().toLowerCase().startsWith('javascript:')) {
+        el.removeAttribute(attr.name)
+      }
+    }
+  })
+  return doc.body.innerHTML
+}
+
 // Fallback templates for demo mode
 const FALLBACK_TEMPLATES: EmailTemplate[] = [
   { id: 't1', type: 'booking.confirmation', name: 'Booking Confirmation', subject: 'Your booking is confirmed — {{event_name}}',   bodyHtml: '<p>Hi {{attendee_name}},</p>\n<p>Your booking for <strong>{{event_name}}</strong> is confirmed.</p>\n<p>Date: {{date}}<br>Time: {{time}}<br>Location: {{location}}</p>\n<p>See you there!</p>', category: 'Scheduling', isActive: true },
@@ -150,7 +166,7 @@ function EditDrawer({
               {preview ? (
                 <div
                   className="min-h-64 p-4 rounded-lg bg-white text-[#1a1a2e] text-sm leading-relaxed border border-[var(--os-border)] overflow-auto"
-                  dangerouslySetInnerHTML={{ __html: bodyHtml }}
+                  dangerouslySetInnerHTML={{ __html: safeSanitizeHtml(bodyHtml) }}
                 />
               ) : (
                 <textarea

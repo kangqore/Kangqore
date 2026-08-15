@@ -25,7 +25,7 @@ export async function unifiedSearch(query: string, k = 8): Promise<UnifiedSearch
 
   const [kbMatches, sysMatches] = await Promise.all([
     PgvectorIndex.queryTopK('knowledge_chunks', emb, k),
-    PgvectorIndex.queryTopK('kimmp_system_knowledge', emb, k, 'active = true'),
+    PgvectorIndex.queryTopK('kimmp_system_knowledge', emb, k, { activeOnly: true }),
   ])
 
   const kb = getKB()

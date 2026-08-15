@@ -17,6 +17,7 @@
 
 import type { Request, Response, NextFunction } from 'express';
 import legacyRedirectsMap from '../data/legacyRedirects.generated.json';
+import { sanitizeRedirectUrl } from '../utils/security';
 
 type RedirectMap = Record<string, string>;
 const redirects = legacyRedirectsMap as RedirectMap;
@@ -44,7 +45,7 @@ export const legacyRedirectsMiddleware = (
   const queryIdx = req.url.indexOf('?');
   const queryString = queryIdx >= 0 ? req.url.slice(queryIdx) : '';
 
-  res.redirect(301, dest + queryString);
+  res.redirect(301, sanitizeRedirectUrl(dest + queryString));
 };
 
 export default legacyRedirectsMiddleware;

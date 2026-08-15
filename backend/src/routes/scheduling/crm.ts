@@ -4,6 +4,7 @@ import { authenticate, AuthenticatedRequest as AuthRequest } from '../../middlew
 import { createError } from '../../middleware/errorHandler';
 import { HubspotService } from '../../services/hubspot.service';
 import { SalesforceService } from '../../services/salesforce.service';
+import { sanitizeRedirectUrl } from '../../utils/security';
 
 const router = Router();
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -34,17 +35,17 @@ router.get('/hubspot/connect', authenticate, (req: AuthRequest, res, next) => {
     if (!process.env.HUBSPOT_CLIENT_ID || !process.env.HUBSPOT_CLIENT_SECRET) {
       return next(createError('HubSpot integration is not configured', 501));
     }
-    res.redirect(HubspotService.getAuthUrl(req.user.id));
+    res.redirect(sanitizeRedirectUrl(HubspotService.getAuthUrl(req.user.id)));
   } catch (error) { next(error); }
 });
 
 router.get('/hubspot/callback', async (req, res, next) => {
   try {
     const { code, state: userId, error } = req.query as Record<string, string>;
-    if (error) return res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=${encodeURIComponent(error)}`);
-    if (!code || !userId) return res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=missing_params`);
+    if (error) return res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=${encodeURIComponent(error)}`));
+    if (!code || !userId) return res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=missing_params`));
     await HubspotService.handleCallback(code, userId);
-    res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?connected=hubspot`);
+    res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?connected=hubspot`));
   } catch (error) { next(error); }
 });
 
@@ -64,17 +65,17 @@ router.get('/salesforce/connect', authenticate, (req: AuthRequest, res, next) =>
     if (!process.env.SALESFORCE_CLIENT_ID || !process.env.SALESFORCE_CLIENT_SECRET) {
       return next(createError('Salesforce integration is not configured', 501));
     }
-    res.redirect(SalesforceService.getAuthUrl(req.user.id));
+    res.redirect(sanitizeRedirectUrl(SalesforceService.getAuthUrl(req.user.id)));
   } catch (error) { next(error); }
 });
 
 router.get('/salesforce/callback', async (req, res, next) => {
   try {
     const { code, state: userId, error } = req.query as Record<string, string>;
-    if (error) return res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=${encodeURIComponent(error)}`);
-    if (!code || !userId) return res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=missing_params`);
+    if (error) return res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=${encodeURIComponent(error)}`));
+    if (!code || !userId) return res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?error=missing_params`));
     await SalesforceService.handleCallback(code, userId);
-    res.redirect(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?connected=salesforce`);
+    res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/kangqore-view/admin/settings/calendar?connected=salesforce`));
   } catch (error) { next(error); }
 });
 

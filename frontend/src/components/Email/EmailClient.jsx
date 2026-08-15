@@ -51,45 +51,26 @@ const EmailClient = ({ role }) => {
     }
   };
 
-  // Render formatted text (convert markdown to HTML)
+  // Render formatted text (convert markdown to HTML safely)
   const renderFormattedText = (text) => {
     if (!text) return '';
-    let html = text;
-    
-    // 1. Block-level replacements (Alignment, Quote, List)
-    // Align
-    html = html.replace(/\{\{align:(left|center|right)\}\}\n?([\s\S]+?)\n?\{\{\/align\}\}/g, '<div style="text-align:$1">$2</div>');
-    // Quote
-    html = html.replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-gray-300 pl-4 py-1 my-2 bg-gray-50 italic text-gray-700">$1</blockquote>');
-    // List Items
-    html = html.replace(/^• (.+)$/gm, '<li>$1</li>');
-    html = html.replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>'); // Numbered list simplistic approach
-    // Wrap lists
-    html = html.replace(/(<li>.+<\/li>\n?)+/g, '<ul class="list-disc ml-5 space-y-1 mb-2">$&</ul>');
-
-    // 2. Inline replacements
-    // Color & Bg
-    html = html.replace(/\{\{color:(#[a-fA-F0-9]{6})\}\}(.+?)\{\{\/color\}\}/g, '<span style="color:$1">$2</span>');
-    html = html.replace(/\{\{bg:(#[a-fA-F0-9]{6})\}\}(.+?)\{\{\/bg\}\}/g, '<span style="background-color:$1">$2</span>');
-    
-    // Font & Size
-    html = html.replace(/\{\{font:(.+?)\}\}(.+?)\{\{\/font\}\}/g, '<span style="font-family:$1, sans-serif">$2</span>');
-    html = html.replace(/\{\{size:(.+?)\}\}(.+?)\{\{\/size\}\}/g, (match, size, content) => {
-        const sizeMap = { 'small': '0.875rem', 'normal': '1rem', 'large': '1.25rem', 'huge': '1.5rem' };
-        return `<span style="font-size:${sizeMap[size] || size}">$2</span>`;
-    });
+    const safeText = String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+    let html = safeText;
 
     // Formatting
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
     html = html.replace(/__(.+?)__/g, '<u>$1</u>');
     html = html.replace(/~~(.+?)~~/g, '<s>$1</s>');
-    html = html.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" class="text-blue-600 hover:underline">$1</a>');
-
-    // Convert newlines to breaks if not in block
+    html = html.replace(/\[(.+?)\]\((https?:\/\/[^\s"']+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">$1</a>');
+    html = html.replace(/^• (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.+<\/li>\n?)+/g, '<ul class="list-disc ml-5 space-y-1 mb-2">$&</ul>');
     html = html.replace(/\n/g, '<br />');
-    
-    // Cleanup double breaks
     html = html.replace(/(<br \/>){3,}/g, '<br /><br />');
 
     return html;
