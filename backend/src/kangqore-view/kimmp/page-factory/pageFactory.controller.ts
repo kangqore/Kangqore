@@ -35,13 +35,14 @@ function handleDbError(error: unknown, res: Response): boolean {
 
 /** Derive a valid page slug from free text. */
 function slugify(s: string): string {
-  return (
-    s
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 80) || 'page'
-  );
+  const text = String(s || '').slice(0, 100).toLowerCase();
+  const rawSlug = text.replace(/[^a-z0-9]+/g, '-');
+  let start = 0;
+  let end = rawSlug.length;
+  while (start < end && rawSlug[start] === '-') start++;
+  while (end > start && rawSlug[end - 1] === '-') end--;
+  const slug = rawSlug.slice(start, end).slice(0, 80);
+  return slug || 'page';
 }
 
 export class PageFactoryController {

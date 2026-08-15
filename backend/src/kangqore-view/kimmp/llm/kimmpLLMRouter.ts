@@ -254,6 +254,11 @@ async function _callWaandax(system: string, user: string, maxTokens: number): Pr
 
 // ─── Provider: Claude (Anthropic) ────────────────────────────────────────────
 
+function sanitizeSystemPrompt(prompt: string): string {
+  if (!prompt || typeof prompt !== 'string') return ''
+  return String(prompt).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim()
+}
+
 async function _callClaude(
   claudeModel: string,
   system: string,
@@ -262,11 +267,12 @@ async function _callClaude(
   options: RouterOptions = {},
 ): Promise<{ text: string; toolCallCount: number; inputTokens: number; outputTokens: number; toolCalls: ToolCallRecord[] }> {
   const messages: Anthropic.MessageParam[] = [{ role: 'user', content: user }]
+  const cleanSystem = sanitizeSystemPrompt(system)
   const createParams: Anthropic.MessageCreateParamsNonStreaming = {
     model:       claudeModel,
     max_tokens:  maxTokens,
     temperature: 0.1,
-    system,
+    system:      cleanSystem,
     messages,
   }
   if (options.tools && options.tools.length > 0) {

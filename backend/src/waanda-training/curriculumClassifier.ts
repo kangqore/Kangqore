@@ -41,13 +41,13 @@ interface ClassifyParams {
 
 function fromConciergeIntent(intent?: string, text?: string): Curriculum {
   if (!intent && !text) return 'CONCIERGE'
-  const t = (intent || '') + ' ' + (text || '')
-  if (/pric|cost|fee|package|tier|plan/.test(t))            return 'REVENUE'
-  if (/compet|vs |versus|alternativ|better than/.test(t))   return 'SALES'
-  if (/bids|diagnostic|service|offering|what.*do/.test(t))  return 'SALES'
-  if (/schedul|meeting|call|book|demo/.test(t))             return 'SALES'
-  if (/deploy|implement|rollout|onboard/.test(t))           return 'OPERATIONS'
-  if (/govern|audit|compliance|policy/.test(t))             return 'GOVERNANCE'
+  const t = String((intent || '') + ' ' + (text || '')).slice(0, 300).toLowerCase()
+  if (/(?:pric|cost|fee|package|tier|plan)/.test(t)) return 'REVENUE'
+  if (/(?:compet|vs\s|versus|alternativ|better than)/.test(t)) return 'SALES'
+  if (t.includes('bids') || t.includes('diagnostic') || t.includes('service') || t.includes('offering') || (t.includes('what') && t.includes('do'))) return 'SALES'
+  if (/(?:schedul|meeting|call|book|demo)/.test(t)) return 'SALES'
+  if (/(?:deploy|implement|rollout|onboard)/.test(t)) return 'OPERATIONS'
+  if (/(?:govern|audit|compliance|policy)/.test(t)) return 'GOVERNANCE'
   return 'CONCIERGE'
 }
 

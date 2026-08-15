@@ -114,17 +114,22 @@ const PYTHON3    = '/usr/bin/python3'
 kangqoreImmpRoutes.post('/stt', requireAuth, requireRole(['ADMIN']),
   sttUpload.single('audio'),
   async (req: any, res) => {
-    if (!req.file) return res.status(400).json({ error: 'audio required' })
+    if (!req.file || !req.file.path) return res.status(400).json({ error: 'audio required' })
 
-    const rawFilename  = path.basename(req.file.path).replace(/[^a-zA-Z0-9_-]/g, '')
-    const uploadedPath = path.resolve(os.tmpdir(), rawFilename)
-    if (!uploadedPath.startsWith(path.resolve(os.tmpdir()))) {
+    const tmpDir = path.resolve(os.tmpdir()) + path.sep
+    const safeSourcePath = path.resolve(req.file.path)
+    if (!safeSourcePath.startsWith(tmpDir)) {
       return res.status(400).json({ error: 'invalid file path' })
     }
-    const wavPath = uploadedPath + '.wav'
+
+    const safeFilename = path.basename(safeSourcePath).replace(/[^a-zA-Z0-9_-]/g, '')
+    const wavPath = path.resolve(os.tmpdir(), `stt_${safeFilename}.wav`)
+    if (!wavPath.startsWith(tmpDir)) {
+      return res.status(400).json({ error: 'invalid target path' })
+    }
 
     try {
-      await fsPromises.rename(req.file.path, wavPath)
+      await fsPromises.rename(safeSourcePath, wavPath)
 
       const transcript = await new Promise<string>((resolve) => {
         execFile(PYTHON3, [STT_SCRIPT, wavPath], { timeout: 30_000 }, (err, stdout, stderr) => {

@@ -79,13 +79,13 @@ const SCENARIO_TEMPLATES: Record<string, Partial<Record<keyof PillarDeltas, [num
 
 // Lightweight keyword classifier — returns a template key or null if no match.
 function classifyScenario(scenario: string): string | null {
-  const s = scenario.toLowerCase()
-  if (/hire|recruit|onboard/.test(s) && /engineer|developer|dev|tech|talent/.test(s)) return 'hire_engineers'
-  if (/ai governance|govern.*ai|ai.*govern|compliance.*ai|ai.*policy/.test(s)) return 'adopt_ai_governance'
+  const s = String(scenario || '').slice(0, 300).toLowerCase()
+  if (/(?:hire|recruit|onboard)/.test(s) && /(?:engineer|developer|dev|tech|talent)/.test(s)) return 'hire_engineers'
+  if (s.includes('ai governance') || (s.includes('govern') && s.includes('ai')) || (s.includes('compliance') && s.includes('ai')) || (s.includes('ai') && s.includes('policy'))) return 'adopt_ai_governance'
   if (/\bbids\b/.test(s)) return 'implement_bids'
-  if (/ois|monitoring|dashboard|track.*kpi|kpi.*track/.test(s)) return 'add_ois_monitoring'
-  if (/automat|streamline|process.*improv|optimis|optimiz/.test(s)) return 'automate_processes'
-  if (/reduc.*headcount|layoff|retrench|downsize/.test(s)) return 'reduce_headcount'
+  if (s.includes('ois') || s.includes('monitoring') || s.includes('dashboard') || (s.includes('track') && s.includes('kpi'))) return 'add_ois_monitoring'
+  if (s.includes('automat') || s.includes('streamline') || s.includes('process') || s.includes('optimis') || s.includes('optimiz')) return 'automate_processes'
+  if ((s.includes('reduc') && s.includes('headcount')) || s.includes('layoff') || s.includes('retrench') || s.includes('downsize')) return 'reduce_headcount'
   return null
 }
 

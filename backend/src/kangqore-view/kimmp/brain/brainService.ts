@@ -293,11 +293,11 @@ export async function addCapture(text: string): Promise<{ node: BrainNode; relat
 // arbitrary files even if a caller passed a crafted slug.
 
 export async function deleteCapture(slug: string): Promise<boolean> {
-  if (!/^[a-z0-9-]+$/.test(slug)) return false
-  const dir = resolveBrainDir()
-  const capturesDir = path.join(dir, 'captures')
-  const target = path.join(capturesDir, `${slug}.md`)
-  if (path.dirname(target) !== capturesDir) return false
+  if (!slug || typeof slug !== 'string' || !/^[a-z0-9-]+$/.test(slug)) return false
+  const dir = path.resolve(resolveBrainDir())
+  const capturesDir = path.resolve(dir, 'captures')
+  const target = path.resolve(capturesDir, `${slug}.md`)
+  if (!target.startsWith(capturesDir + path.sep)) return false
   try {
     await fs.unlink(target)
   } catch {

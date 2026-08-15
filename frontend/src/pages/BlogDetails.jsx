@@ -8,6 +8,23 @@ import SEO from '../components/SEO';
 import ShareButtons from '../components/ShareButtons';
 import axios from 'axios';
 
+function safeSanitizeHtml(dirty) {
+  if (!dirty) return '';
+  if (typeof window !== 'undefined' && window.DOMParser) {
+    const doc = new DOMParser().parseFromString(String(dirty), 'text/html');
+    doc.querySelectorAll('script, iframe, object, embed, form').forEach(el => el.remove());
+    doc.querySelectorAll('*').forEach(el => {
+      for (const attr of Array.from(el.attributes)) {
+        if (attr.name.startsWith('on') || attr.value.toLowerCase().includes('javascript:')) {
+          el.removeAttribute(attr.name);
+        }
+      }
+    });
+    return doc.body.innerHTML;
+  }
+  return String(dirty).replace(/<[^>]*>/g, '');
+}
+
 const BlogDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -124,7 +141,7 @@ const BlogDetails = () => {
       />
       
       <div className="prose prose-lg max-w-none text-gray-600 dark:text-gray-400">
-        <div dangerouslySetInnerHTML={{ __html: String(blog.content || '').replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') }} />
+        <div dangerouslySetInnerHTML={{ __html: safeSanitizeHtml(blog.content) }} />
       </div>
     </ContentDetailLayout>
   );
