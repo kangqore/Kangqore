@@ -29,6 +29,11 @@ export interface VectorMatch {
   score: number // cosine similarity, 1 - distance
 }
 
+export interface QueryVectorOptions {
+  system?: string
+  activeOnly?: boolean
+}
+
 export const PgvectorIndex = {
   /** Write embeddingVector for one row at ingest time, alongside the existing
    *  Float[] write — keeps the index current without waiting for a backfill. */
@@ -73,29 +78,68 @@ export const PgvectorIndex = {
 
   /** Top-k nearest neighbours by cosine distance. Returns just id+score —
    *  callers resolve display content from their own source of truth. */
-  async queryTopK(table: VectorTable, queryEmbedding: number[], limit: number, extraWhere = ''): Promise<VectorMatch[]> {
+  async queryTopK(
+    table: VectorTable,
+    queryEmbedding: number[],
+    limit: number,
+    options?: QueryVectorOptions | string
+  ): Promise<VectorMatch[]> {
     const safeTable = getSafeTable(table)
     const safeLimit = Math.max(1, Math.min(100, Number(limit) || 10))
     const literal = toVectorLiteral(queryEmbedding)
 
-    let rows: Array<{ id: string; distance: number }>
-    if (extraWhere) {
-      // Validate extraWhere matches safe system identifier pattern (e.g. system = '...' AND active = true)
-      const isSystemMatch = /^system = '[a-zA-Z0-9_-]+' AND active = true$/.test(extraWhere)
-      if (isSystemMatch) {
-        rows = await prisma.$queryRaw<Array<{ id: string; distance: number }>>`
-          SELECT id, "embeddingVector" <=> ${literal}::vector AS distance FROM ${Prisma.raw(`"${safeTable}"`)} WHERE "embeddingVector" IS NOT NULL AND ${Prisma.raw(extraWhere)} ORDER BY "embeddingVector" <=> ${literal}::vector LIMIT ${safeLimit}
-        `
+    let systemFilter: string | undefined
+    let activeFilter = false
+
+    if (typeof options === 'object' && options !== null) {
+      systemFilter = options.system
+      activeFilter = options.activeOnly ?? false
+    } else if (typeof options === 'string') {
+      if (options === 'active = true') {
+        activeFilter = true
       } else {
-        rows = await prisma.$queryRaw<Array<{ id: string; distance: number }>>`
-          SELECT id, "embeddingVector" <=> ${literal}::vector AS distance FROM ${Prisma.raw(`"${safeTable}"`)} WHERE "embeddingVector" IS NOT NULL ORDER BY "embeddingVector" <=> ${literal}::vector LIMIT ${safeLimit}
-        `
+        const match = options.match(/system = '([a-zA-Z0-9_-]+)'/)
+        if (match) systemFilter = match[1]
+        if (options.includes('active = true')) activeFilter = true
       }
+    }
+
+    let rows: Array<{ id: string; distance: number }>
+
+    if (systemFilter && activeFilter) {
+      rows = await prisma.$queryRaw<Array<{ id: string; distance: number }>>`
+        SELECT id, "embeddingVector" <=> ${literal}::vector AS distance
+        FROM ${Prisma.raw(`"${safeTable}"`)}
+        WHERE "embeddingVector" IS NOT NULL AND system = ${systemFilter} AND active = true
+        ORDER BY "embeddingVector" <=> ${literal}::vector
+        LIMIT ${safeLimit}
+      `
+    } else if (systemFilter) {
+      rows = await prisma.$queryRaw<Array<{ id: string; distance: number }>>`
+        SELECT id, "embeddingVector" <=> ${literal}::vector AS distance
+        FROM ${Prisma.raw(`"${safeTable}"`)}
+        WHERE "embeddingVector" IS NOT NULL AND system = ${systemFilter}
+        ORDER BY "embeddingVector" <=> ${literal}::vector
+        LIMIT ${safeLimit}
+      `
+    } else if (activeFilter) {
+      rows = await prisma.$queryRaw<Array<{ id: string; distance: number }>>`
+        SELECT id, "embeddingVector" <=> ${literal}::vector AS distance
+        FROM ${Prisma.raw(`"${safeTable}"`)}
+        WHERE "embeddingVector" IS NOT NULL AND active = true
+        ORDER BY "embeddingVector" <=> ${literal}::vector
+        LIMIT ${safeLimit}
+      `
     } else {
       rows = await prisma.$queryRaw<Array<{ id: string; distance: number }>>`
-        SELECT id, "embeddingVector" <=> ${literal}::vector AS distance FROM ${Prisma.raw(`"${safeTable}"`)} WHERE "embeddingVector" IS NOT NULL ORDER BY "embeddingVector" <=> ${literal}::vector LIMIT ${safeLimit}
+        SELECT id, "embeddingVector" <=> ${literal}::vector AS distance
+        FROM ${Prisma.raw(`"${safeTable}"`)}
+        WHERE "embeddingVector" IS NOT NULL
+        ORDER BY "embeddingVector" <=> ${literal}::vector
+        LIMIT ${safeLimit}
       `
     }
+
     return rows.map(r => ({ id: r.id, score: 1 - Number(r.distance) }))
   },
 

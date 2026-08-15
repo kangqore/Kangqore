@@ -235,7 +235,7 @@ export class SystemRAG {
     if (KimmpFlags.pgvectorEnabled()) {
       const byId = new Map(index.map(d => [d.id, d]))
       const matches = await PgvectorIndex.queryTopK(
-        'kimmp_system_knowledge', queryEmb, topK * 10, `system = '${system}' AND active = true`,
+        'kimmp_system_knowledge', queryEmb, topK * 10, { system, activeOnly: true },
       ).catch(() => [])
       scored = matches
         .map((m: any) => { const doc = byId.get(m.id); return doc ? { doc, score: blend(m.score, doc.createdAt) } : null })
