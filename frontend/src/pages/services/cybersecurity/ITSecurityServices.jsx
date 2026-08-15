@@ -370,9 +370,9 @@ const ITSecurityServices = () => {
                 <path d="M250,250 L250,140" stroke="url(#sec-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
                 <path d="M250,250 L140,380" stroke="url(#sec-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
                 <path d="M250,250 L360,380" stroke="url(#sec-flow-grad)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
-                <circle r="4" fill="#2564ea"><animateMotion path="M250,250 L250,140" dur="2s" repeatCount="indefinite" /></circle>
-                <circle r="4" fill="#22d3ee"><animateMotion path="M250,250 L140,380" dur="2.5s" repeatCount="indefinite" /></circle>
-                <circle r="4" fill="#10b981"><animateMotion path="M250,250 L360,380" dur="3s" repeatCount="indefinite" /></circle>
+                <g><circle r="4" fill="#2564ea" /><animateMotion path="M250,250 L250,140" dur="2s" repeatCount="indefinite" /></g>
+                <g><circle r="4" fill="#22d3ee" /><animateMotion path="M250,250 L140,380" dur="2.5s" repeatCount="indefinite" /></g>
+                <g><circle r="4" fill="#10b981" /><animateMotion path="M250,250 L360,380" dur="3s" repeatCount="indefinite" /></g>
               </svg>
             </div>
           </div>

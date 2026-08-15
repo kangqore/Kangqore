@@ -588,9 +588,9 @@ const DiscoverFrameWorkshops = () => {
                   <path d="M250,250 L380,400" stroke="url(#exec-flow-grad)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
                   
                   {/* Moving Dots */}
-                  <circle r="3" fill="#0066FF"><animateMotion path="M250,250 L250,120" dur="2s" repeatCount="indefinite" /></circle>
-                  <circle r="3" fill="#00D2FF"><animateMotion path="M250,250 L120,400" dur="2.5s" repeatCount="indefinite" /></circle>
-                  <circle r="3" fill="#6366f1"><animateMotion path="M250,250 L380,400" dur="3s" repeatCount="indefinite" /></circle>
+                  <g><circle r="3" fill="#0066FF" /><animateMotion path="M250,250 L250,120" dur="2s" repeatCount="indefinite" /></g>
+                  <g><circle r="3" fill="#00D2FF" /><animateMotion path="M250,250 L120,400" dur="2.5s" repeatCount="indefinite" /></g>
+                  <g><circle r="3" fill="#6366f1" /><animateMotion path="M250,250 L380,400" dur="3s" repeatCount="indefinite" /></g>
                 </svg>
              </div>
           </div>
