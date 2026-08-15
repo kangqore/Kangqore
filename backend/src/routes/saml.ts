@@ -4,6 +4,7 @@ import { Strategy as SamlStrategy, type Profile, type VerifiedCallback } from '@
 import { Role } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 import { createSession } from '../services/session.service'
+import { sanitizeRedirectUrl } from '../utils/security'
 import { generateCustomId } from '../utils/idGenerator'
 import logger from '../utils/logger'
 
@@ -113,7 +114,7 @@ router.post('/callback', (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate('saml', { session: false }, async (err: Error | null, user: any) => {
     if (err || !user) {
       logger.error('SAML callback error', err)
-      return res.redirect(`${FRONTEND_URL}/login?sso_error=1`)
+      return res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/login?sso_error=1`))
     }
     try {
       const { tokens } = await createSession({
@@ -127,15 +128,15 @@ router.post('/callback', (req: Request, res: Response, next: NextFunction) => {
         JSON.stringify({ id: user.id, email: user.email, name: user.name, role: user.role })
       )
 
-      res.redirect(
+      res.redirect(sanitizeRedirectUrl(
         `${FRONTEND_URL}/sso/callback` +
         `?token=${tokens.accessToken}` +
         `&refreshToken=${tokens.refreshToken}` +
         `&user=${userPayload}`
-      )
+      ))
     } catch (sessionErr) {
       logger.error('SAML session creation error', sessionErr)
-      res.redirect(`${FRONTEND_URL}/login?sso_error=1`)
+      res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/login?sso_error=1`))
     }
   })(req, res, next)
 })

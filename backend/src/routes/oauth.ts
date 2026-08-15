@@ -3,6 +3,7 @@ import { Router } from 'express';
 import passport from 'passport';
 import { createSession } from '../services/session.service';
 import { extractRequestMetadata, createAuditLog, AUDIT_ACTIONS } from '../services/audit.service';
+import { sanitizeRedirectUrl } from '../utils/security';
 
 const router = Router();
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -31,10 +32,10 @@ const handleAuthSuccess = async (req: any, res: any) => {
     // Redirect to frontend with token
     // Using a temporary param or cookie is common. 
     // Here we append to URL fragment or query.
-    res.redirect(`${FRONTEND_URL}/auth/callback?token=${tokens.accessToken}&refreshToken=${tokens.refreshToken}&role=${user.role}`);
+    res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/auth/callback?token=${tokens.accessToken}&refreshToken=${tokens.refreshToken}&role=${user.role}`));
   } catch (error) {
     console.error('OAuth Success Handler Error:', error);
-    res.redirect(`${FRONTEND_URL}/login?error=auth_failed`);
+    res.redirect(sanitizeRedirectUrl(`${FRONTEND_URL}/login?error=auth_failed`));
   }
 };
 

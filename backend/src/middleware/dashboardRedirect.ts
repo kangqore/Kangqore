@@ -11,6 +11,7 @@
 // Placement in index.ts: after all /api/* mounts, alongside legacyRedirectsMiddleware.
 
 import type { Request, Response, NextFunction } from 'express';
+import { sanitizeRedirectUrl } from '../utils/security';
 
 export const dashboardRedirectMiddleware = (
   req: Request,
@@ -28,7 +29,7 @@ export const dashboardRedirectMiddleware = (
   const queryIdx = req.url.indexOf('?');
   const qs = queryIdx >= 0 ? req.url.slice(queryIdx) : '';
 
-  res.redirect(301, osPath + qs);
+  res.redirect(301, sanitizeRedirectUrl(osPath + qs));
 };
 
 export default dashboardRedirectMiddleware;

@@ -62,13 +62,18 @@ const AdminClientEmails = ({ embedded = false, folder = 'inbox' }) => {
     }
   };
 
-  // Render formatted text (convert markdown to HTML)
+  // Render formatted text (convert markdown to HTML safely)
   const renderFormattedText = (text) => {
     if (!text) return '';
-    // Convert color tags: {{color:#hex}}text{{/color}} -> <span style="color:#hex">text</span>
-    let html = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const safeText = String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+    let html = safeText.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
-    html = html.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" class="text-blue-500 underline">$1</a>');
+    html = html.replace(/\[(.+?)\]\((https?:\/\/[^\s"']+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-500 underline">$1</a>');
     html = html.replace(/^• (.+)$/gm, '<li>$1</li>');
     html = html.replace(/(<li>.+<\/li>\n?)+/g, '<ul class="list-disc ml-4">$&</ul>');
     return html;

@@ -124,7 +124,7 @@ const BlogDetails = () => {
       />
       
       <div className="prose prose-lg max-w-none text-gray-600 dark:text-gray-400">
-        <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+        <div dangerouslySetInnerHTML={{ __html: String(blog.content || '').replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') }} />
       </div>
     </ContentDetailLayout>
   );
