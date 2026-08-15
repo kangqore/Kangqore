@@ -143,6 +143,182 @@
         </ul>
       </section>
 
+        <h2>Conventional systems read fields. Cognitive systems read evidence.</h2>
+    <p>Most enterprise software works on data somebody already structured. The information that decides things rarely arrives that way — it arrives as a contract, a photograph, a recording, a sensor trace. A cognitive system is one that can take that as input, form a view under uncertainty, and tell you how confident it is.</p>
+      <table>
+        <caption>CONVENTIONAL SYSTEMS compared with COGNITIVE SYSTEMS</caption>
+        <thead><tr><th scope="col">Dimension</th><th scope="col">CONVENTIONAL SYSTEMS</th><th scope="col">COGNITIVE SYSTEMS</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Input</th><td>Structured fields only. Anything that arrives as a document, an image or a recording is queued for a person to read first.</td><td>Text, images, video, speech, documents and sensor streams read directly, including the scanned and handwritten material nobody has indexed.</td></tr>
+          <tr><th scope="row">Reasoning</th><td>Fixed rules written in advance. A case the author did not foresee falls through to an exception queue.</td><td>Inference over learned patterns, so a case that resembles a thousand previous ones is handled without anyone having written the rule for it.</td></tr>
+          <tr><th scope="row">Uncertainty</th><td>A binary answer regardless of evidence. Nothing distinguishes a confident match from a marginal one.</td><td>A calibrated confidence score with every output, and a defined threshold below which the case routes to a person rather than a guess.</td></tr>
+          <tr><th scope="row">Adaptation</th><td>Static until someone reprograms it. Drift shows up as a rising exception rate that nobody attributes to the model.</td><td>Retrained on a schedule against a held-out set, with drift and accuracy tracked per segment rather than as one aggregate number.</td></tr>
+          <tr><th scope="row">Explainability</th><td>The output is the whole answer. Asked why, the system has nothing further to offer.</td><td>Feature attributions for structured inputs and the source passage or region for unstructured ones, retained with the decision and reproducible later.</td></tr>
+        </tbody>
+      </table>
+
+        <h2>Four stages. Each one measurable on its own.</h2>
+    <p>Each stage has its own quality signal — perception accuracy, representation recall, reasoning calibration, evidence completeness. Measured separately, so a wrong answer tells you exactly which stage produced it.</p>
+      <section>
+        <h3>Perception</h3>
+        <p>Every modality your organization produces — documents, images, video, speech, sensor streams, scanned and handwritten material — converted into the structured form a model can reason over. Failure here is silent: the model works from an incomplete version of reality without knowing it.</p>
+        <ul>
+          <li>OCR &amp; Document Parsing</li>
+          <li>Image &amp; Video Pipelines</li>
+          <li>Speech Transcription &amp; Diarization</li>
+          <li>Sensor &amp; Stream Ingest</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Representation</h3>
+        <p>Meaning extracted, not strings stored. Embeddings, typed entities and relationships built so the same concept in two documents maps to the same node — and a claim in one can be connected to the record that supports or contradicts it in another.</p>
+        <ul>
+          <li>Embeddings &amp; Vector Index</li>
+          <li>Entity Extraction</li>
+          <li>Knowledge Graph</li>
+          <li>Cross-Document Linking</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Reasoning</h3>
+        <p>Inference over what was perceived and represented, with a calibrated confidence attached to every answer. A defined threshold routes cases below it to a human review queue. The system never answers with more certainty than the evidence warrants.</p>
+        <ul>
+          <li>Classification &amp; Ranking</li>
+          <li>Confidence Calibration</li>
+          <li>Uncertainty-Gated Review Queue</li>
+          <li>Human Review Thresholds</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Evidence</h3>
+        <p>Every output carries its provenance: the source passage, the image region, the feature attributions. Retained with the decision so it can be reconstructed and audited months later — from the record, not from memory.</p>
+        <ul>
+          <li>Source Attribution</li>
+          <li>Feature Attributions</li>
+          <li>Decision Logs</li>
+          <li>Drift &amp; Accuracy Tracking</li>
+        </ul>
+      </section>
+
+        <h2>Cognitive systems trained on your sector's evidence.</h2>
+    
+      <section>
+        <h3>Banking &amp; Financial Services</h3>
+        <p>The evidence is in the documents, not the fields</p>
+        <ul>
+          <li>Regulatory filings, cross-border contracts and disclosure packs read at volume, with the clause and page retained against every extracted obligation</li>
+          <li>Transaction narratives and case notes classified for financial-crime review, with a confidence threshold below which a human sees it first</li>
+          <li>Credit and adverse-action decisions returned with feature attributions, because a regulator will ask which inputs drove the outcome</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Healthcare &amp; Life Sciences</h3>
+        <p>Clinical information that arrives as prose and pixels</p>
+        <ul>
+          <li>Discharge summaries, referral letters and pathology reports structured into coded fields, with the source line kept for clinician review</li>
+          <li>Imaging triage that ranks studies by likely urgency rather than reading them, so a radiologist decides and the model orders the queue</li>
+          <li>PHI detected and redacted before any model sees it, with lineage evidence showing what was ever exposed</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Manufacturing &amp; Industry</h3>
+        <p>Thirty years of maintenance knowledge, plus what the line can see</p>
+        <ul>
+          <li>Visual inspection on the line, with defect classes trained from your own reject bins rather than a generic dataset</li>
+          <li>Manuals, service bulletins and engineer field notes made searchable, including scanned and handwritten material</li>
+          <li>Acoustic and vibration signatures classified at the edge, so a bearing is flagged before it fails rather than after</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Retail &amp; Consumer Goods</h3>
+        <p>Catalog, shelf and conversation as one signal</p>
+        <ul>
+          <li>Product imagery and attribute data reconciled so a catalog entry and the photograph agree with each other</li>
+          <li>Shelf and planogram compliance read from store photography rather than audited by hand</li>
+          <li>Contact-center recordings transcribed and classified to surface the reasons behind demand shifts, not just the shifts</li>
+        </ul>
+      </section>
+      <section>
+        <h3>IT &amp; Infrastructure</h3>
+        <p>Incidents described in prose, resolved from history</p>
+        <ul>
+          <li>Ticket text and log excerpts classified against past incidents to surface the closest prior resolution</li>
+          <li>Runbooks, change history and postmortems made semantically searchable during an incident rather than after it</li>
+          <li>Anomaly detection across telemetry with thresholds set per service, because one alerting standard across an estate produces noise</li>
+        </ul>
+      </section>
+      <section>
+        <h3>EdTech &amp; Higher Ed</h3>
+        <p>Assessment and content at cohort scale</p>
+        <ul>
+          <li>Free-text answers scored against a published rubric, with the criterion cited for each comment and human review on anything affecting progression</li>
+          <li>Lecture and seminar audio transcribed, indexed and made searchable across a term of material</li>
+          <li>Student data minimized before any model sees it, with retention limits enforced automatically</li>
+        </ul>
+      </section>
+
+        <h2>Engagement outcomes</h2>
+      <section>
+        <h3>Global Financial Services — 87% Of filings read without a human first</h3>
+        <p>Risk and compliance read regulatory filings, cross-border contracts and disclosure packs by hand, because nothing else could. The queue ran weeks behind publication, and the obligations that mattered were found late rather than missed outright — which is worse in a different way, because late looks like coverage right up until an assessor checks the dates.</p>
+        <p>Documents are parsed on arrival, obligations extracted with the clause and page retained against each one, and anything below the confidence threshold routed to the team that used to read everything. They review the marginal cases rather than the whole queue. If you are wondering what happens to the ones the model gets wrong: they surface as low-confidence, which is the point of measuring it.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+      <section>
+        <h3>Healthcare &amp; Clinical Research — 65% Fewer records screened by hand</h3>
+        <p>Trial eligibility screening meant clinicians reading dense EHR notes and protocol documents across systems that did not talk to each other. Screening capacity, not patient availability, was the constraint on recruitment.</p>
+        <p>Records are parsed against protocol criteria and returned as a ranked shortlist, each match carrying the passage that produced it. A clinician still decides eligibility — that line does not move. What changed is that they read the twenty candidates worth reading rather than the six hundred that were not, and can see in one click why each one surfaced.</p>
+        <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
+      </section>
+
+        <h2>How we engage</h2>
+    <p>Five entry points, from a three-week audit to continuous optimization. Most programs start by finding out whether the material is legible enough to model, because that is the question that decides everything after it and it is cheaper to answer in a fortnight than in a pilot.</p>
+      <section>
+        <h3>Strategy &amp; Audit (2–3 weeks)</h3>
+        <p>Establish what your unstructured material actually contains, how consistent it is, and which use cases the data can carry. Ends with the two worth building and why the rest are not.</p>
+        <ul>
+          <li>Data legibility assessment per source</li>
+          <li>Scored use-case shortlist with feasibility notes</li>
+          <li>Target accuracy and the cost of a wrong answer, per case</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Cognitive Pod (8 weeks)</h3>
+        <p>One use case taken to production on your own material: labeled set, trained model, confidence thresholds, human review path and the evidence trail behind each output.</p>
+        <ul>
+          <li>Labeled and versioned evaluation set</li>
+          <li>Model in the serving path with calibrated thresholds</li>
+          <li>Human review queue with a measured escalation rate</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Platform Build (16–24 weeks)</h3>
+        <p>The shared substrate: ingestion for every modality, an embedding and retrieval layer, model registry and the evaluation harness, all as infrastructure as code.</p>
+        <ul>
+          <li>Multimodal ingestion and preprocessing pipelines</li>
+          <li>Vector and knowledge layer as infrastructure as code</li>
+          <li>Registry, evaluation harness and CI gates</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Governed Deployment (Ongoing)</h3>
+        <p>Production rollout with the controls attached: drift and accuracy monitored per segment, human-in-the-loop dashboards, and an audit trail written as the system runs.</p>
+        <ul>
+          <li>Per-segment accuracy and drift reporting</li>
+          <li>Human review dashboards and staffing model</li>
+          <li>Immutable decision log with source attribution</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Scale &amp; Optimize (Ongoing)</h3>
+        <p>Extend to further modalities and use cases, retrain against fresh material, and retire the thresholds that no longer reflect how the system is used.</p>
+        <ul>
+          <li>Scheduled retraining against refreshed sets</li>
+          <li>Threshold and cost-per-decision review</li>
+          <li>Capability expansion plan with a measured baseline</li>
+        </ul>
+      </section>
+
         <h2>Every modality. Built or bought, deliberately.</h2>
     <p>For each layer there is a managed API that works out of the box and an open-source path you train yourself. What decides it is whether your material looks like the internet. Generic speech, generic OCR and generic object detection are commodities and you should buy them. A defect class specific to your line, a document format specific to your sector, a vocabulary specific to your business — those are where a trained model earns its cost.</p>
       <ul>
@@ -187,6 +363,9 @@
         <li><a href="https://kangqore.com/services/business-process-management">Business Process Management</a></li>
         <li><a href="https://kangqore.com/services/intelligent-automation">Intelligent Automation</a></li>
       </ul>
+
+        <h2>One conversation. One system that understands.</h2>
+    <p>Bring the data nobody can read at volume — the contracts, the images, the call recordings, the sensor streams. In 30 minutes we will tell you what a machine can reliably extract from it, what it cannot, and what that is worth.</p>
 
     <h2>Ask eQORE AI about AI &amp; Cognitive Computing</h2>
       <ul>

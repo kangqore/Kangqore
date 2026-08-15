@@ -1286,10 +1286,18 @@ export const servicesData = {
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     heroTitle: 'Data Science & AI\nfor Decisions You Can Defend',
+    // The Cognition defaults put "Reasoning. Learning. Autonomous." under the
+    // h1 and "Autonomous Agents" in the hero strip -- the last agentic strings
+    // above the fold on a page about predictive modeling.
+    heroBadge: 'Predictive. Validated. Accountable.',
+    heroStripItems: [
+      'Predictive Modeling', 'Feature Engineering', 'Forecasting', 'Anomaly Detection',
+      'Causal Inference', 'Model Validation', 'Drift Monitoring', 'Explainable Predictions',
+    ],
     shortDescription: 'Kangqore builds predictive models that reach production and stay accurate there: forecasting, risk scoring, churn and pricing, monitored per segment.',
     fullDescription: 'Models that survive contact with next quarter, wired into the decision they exist to make, with the confidence attached so a person knows when to overrule them.',
     keyFeatures: ['Predictive modeling', 'Statistical analysis', 'Feature engineering', 'Model deployment', 'Data visualization'],
-    relatedServiceSlugs: ['mlops', 'analytics', 'big-data'],
+    relatedServiceSlugs: ['mlops', 'analytics', 'big-data', 'ai-governance', 'genai-business-services', 'ai-cognitive-computing'],
     featured: false,
     image: '/images/capabilities/agentic-governed-autonomy.png',
     whatIsTitle: 'A notebook result',
@@ -1344,7 +1352,7 @@ export const servicesData = {
           title: 'Gradient-boosted trees',
           managed: 'XGBoost, LightGBM, CatBoost',
           selfHosted: 'Default for tabular data',
-          desc: 'Where most enterprise problems actually live. Wins on cost, latency and explainability against a neural network on the same table, and it is the baseline anything else has to beat.',
+          desc: 'Where most business problems actually live. Wins on cost, latency and explainability against a neural network on the same table, and it is the baseline anything else has to beat.',
         },
         {
           icon: 'Brain',
@@ -1375,6 +1383,7 @@ export const servicesData = {
           managed: 'Evidently, Great Expectations',
           selfHosted: 'Per segment, not in aggregate',
           desc: 'Catches the input distribution moving before the accuracy does. An aggregate score is the last place a problem shows up.',
+          link: { label: 'MLOps', to: '/services/mlops' },
         },
         {
           icon: 'Workflow',
@@ -1532,6 +1541,7 @@ export const servicesData = {
           dimension: 'Whether it survives new data',
           before: 'Validated once against whatever sample was available, then trusted indefinitely.',
           after: 'Monitored per segment, because an aggregate score stays flat while one population quietly drifts.',
+          link: { label: 'Analytics', to: '/services/analytics' },
         },
         {
           dimension: 'Who can explain a result',
@@ -1642,70 +1652,81 @@ export const servicesData = {
     capabilitiesLabel: 'DATA SCIENCE & AI SERVICES',
     capabilitiesSectionTitle: 'Our',
     capabilitiesSectionHighlight: 'Capabilities.',
+    // ── Capability areas ────────────────────────────────────────────────────
+    // Taxonomy and sub-capability NAMES are unchanged: they are the searchable
+    // register and they feed 30 Offer objects in the OfferCatalog JSON-LD. Only
+    // the prose is new. The supplied copy measured 2.55 per cent boilerplate
+    // with almost no second person, against 0.3 in the FAQ on the same page.
+    //
+    // Three of these five areas overlap sibling services outright -- generative
+    // AI, MLOps and AI governance each have their own page. Rather than delete
+    // taxonomy unilaterally, each now states the data-science slice it covers
+    // and links to the service that owns the rest, which also stops the two
+    // pages competing for the same query.
     capabilityAreas: [
       {
         title: 'Data Engineering & Modern Data Platforms',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Design scalable, secure, and modern data ecosystems that enable trusted analytics, artificial intelligence, and enterprise decision-making.',
+        desc: 'The part of a modeling project that takes the time. Most of what looks like a modeling problem turns out to be a join nobody could make reliably.',
         items: [
-          'Real-Time & Batch Data Engineering: Build high-performance data pipelines that process streaming and batch workloads to support operational intelligence and analytics at scale.',
-          'Data Lakehouse & Warehouse Architecture: Design modern lakehouse and warehouse platforms that unify structured, semi-structured, and unstructured enterprise data.',
-          'Event Streaming & Data Integration: Implement event-driven architectures that enable continuous data ingestion, real-time processing, and enterprise-wide data integration.',
-          'Data Quality Engineering: Establish automated data validation, profiling, cleansing, monitoring, and quality controls to ensure trusted enterprise data.',
-          'Data Governance & Lineage: Implement enterprise governance frameworks that provide data cataloguing, lineage tracking, metadata management, and policy enforcement.',
-          'Enterprise Data Architecture: Develop scalable, cloud-native data architectures that support analytics, AI workloads, and long-term digital transformation initiatives.',
+          'Real-Time & Batch Data Engineering: Pipelines that deliver the same fields tomorrow that they delivered today. A model trained on an extract nobody can reproduce is a demonstration, not a system.',
+          'Data Lakehouse & Warehouse Architecture: Storage shaped around the questions you actually ask. Designing it around every question you might one day ask is how these programs stall for a year.',
+          'Event Streaming & Data Integration: Continuous ingestion where a prediction has to arrive while the decision is still open. Batch is cheaper and correct more often than people expect.',
+          'Data Quality Engineering: Automated validation and profiling, because a silent schema change upstream looks exactly like model decay from the outside and is far more common.',
+          'Data Lineage & Cataloging: Knowing which source produced a value, which is the first question asked when somebody disputes a prediction and the hardest to answer after the fact.',
+          'Data Architecture: Structure that survives the second and third use case. The first model rarely justifies it; the fourth always does.',
         ],
       },
       {
         title: 'Machine Learning & Predictive Intelligence',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Develop intelligent machine learning solutions that enable prediction, optimization, automation, and data-driven business decision-making.',
+        desc: 'The core of this service. Models chosen against what you pay, what your users wait for, and whether you can explain the answer.',
         items: [
-          'Predictive Modeling & Forecasting: Develop advanced forecasting models for demand planning, financial forecasting, operational optimization, and strategic decision support.',
-          'Classification & Anomaly Detection: Build intelligent classification and anomaly detection systems that identify fraud, operational risks, quality issues, and unusual behavior.',
-          'Recommendation Intelligence: Create AI-powered recommendation systems that deliver personalised customer experiences and improve engagement, retention, and revenue.',
-          'Statistical & Quantitative Modeling: Apply advanced statistical methods, experimentation, and causal analysis to generate reliable business insights.',
-          'Feature Engineering & Model Development: Design high-quality data features and optimize machine learning models for improved predictive performance and scalability.',
-          'Decision Intelligence: Combine machine learning, analytics, and business rules to support intelligent, explainable, and data-driven decision-making.',
+          'Predictive Modeling & Forecasting: Forecast the thing you will act on rather than the thing easiest to predict. A churn model that lands after the renewal date has answered the wrong question precisely.',
+          'Classification & Anomaly Detection: Detection tuned so the review queue is one a person can work through. Threshold placement is the real work, because an alert nobody trusts is worse than none.',
+          'Recommendation Intelligence: Ranked with the reason attached. A recommendation nobody can interrogate is one nobody follows twice.',
+          'Statistical & Quantitative Modeling: Quantify how confident the answer is, not only what it is. Where evidence is thin, the honest output is a wide interval rather than a precise-looking number.',
+          'Feature Engineering & Model Development: Usually where the accuracy actually comes from. A feature built from your domain knowledge beats a larger model on the same data more often than vendors admit.',
+          'Decision Intelligence: The step from a prediction to an action somebody signs. Most analytics investment stops one short of it.',
         ],
       },
       {
         title: 'Generative AI & Intelligent Systems',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Design enterprise-grade Generative AI solutions that enhance productivity, automate knowledge work, and enable intelligent business operations.',
+        desc: 'Where a language model is the right tool for a data problem. Retrieval and grounding as a whole practice live on the generative AI page; this is the overlap.',
         items: [
-          'Enterprise Copilots & AI Assistants: Develop secure AI assistants that augment employees with contextual knowledge, automation, and intelligent decision support.',
-          'Retrieval-Augmented Generation (RAG): Build enterprise RAG architectures that combine foundation models with trusted organizational knowledge for accurate and grounded AI responses.',
-          'Enterprise Knowledge Intelligence: Develop intelligent search, semantic retrieval, and knowledge management platforms that unlock enterprise information.',
-          'Domain-Specific Generative AI: Create industry-specific Generative AI applications tailored to unique business processes, regulations, and operational requirements.',
+          'Enterprise Copilots & AI Assistants: Assistants over your own numbers, answering from the warehouse rather than from training data.',
+          'Retrieval-Augmented Generation (RAG): Grounding an answer in documents you control. Built in depth on the generative AI service; used here when the question spans text and tables at once.',
+          'Knowledge Intelligence: Structuring relationships your data assumes but never states, so retrieval can follow them rather than matching strings.',
+          'Domain-Specific Generative AI: Tuned on your vocabulary, for the cases where a general model degrades quietly on your product codes and shorthand.',
           'Experiment Design & Causal Inference: Establish whether a change caused an outcome or merely accompanied it, using controlled experiments where they are possible and quasi-experimental methods where they are not.',
-          'AI Workflow Automation: Integrate Generative AI into enterprise workflows to automate repetitive processes, improve productivity, and accelerate business operations.',
+          'AI Workflow Automation: Putting a model output where the work already happens. A prediction in a separate dashboard is a prediction nobody opens.',
         ],
       },
       {
         title: 'MLOps & AI Lifecycle Engineering',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Establish enterprise engineering practices that enable reliable, scalable, and governed deployment, operation, and continuous improvement of AI systems.',
+        desc: 'What a first model needs, which is much less than a portfolio needs. The full platform is a separate service, and buying it on day one defers the only question that matters.',
         items: [
-          'AI Deployment Pipelines: Implement automated CI/CD pipelines that streamline the development, testing, deployment, and delivery of AI solutions.',
-          'Model Lifecycle Management: Manage AI models across development, validation, deployment, monitoring, retraining, and retirement using governed lifecycle processes.',
-          'Model Versioning & Registry: Maintain centralized model repositories with complete version history, documentation, metadata, and reproducibility.',
-          'AI Performance Monitoring: Continuously monitor production models for accuracy, latency, throughput, reliability, and operational performance.',
-          'Drift Detection & Continuous Learning: Automatically detect data and concept drift while enabling continuous retraining and model optimization.',
-          'AI Observability: Provide end-to-end visibility into model behavior, inference quality, resource utilization, operational health, and production AI systems.',
+          'AI Deployment Pipelines: A path from a repository to a served model that somebody other than the author can run.',
+          'Model Lifecycle Management: Knowing which version answered which request, which becomes urgent the first time a prediction is disputed.',
+          'Model Versioning & Registry: Reproducing the model now in production. Added late, nobody can; added early, it costs an afternoon.',
+          'AI Performance Monitoring: Accuracy watched per segment. An aggregate number holds steady while the segment you care about degrades underneath it.',
+          'Drift Detection & Continuous Learning: Retraining triggered by measured degradation rather than by calendar. Quarterly retraining is a habit, not a control.',
+          'Observability: Latency, cost and failure surfaced next to accuracy, since a model too slow to use is as broken as one that is wrong.',
         ],
       },
       {
         title: 'AI Governance & Responsible AI',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Ensure enterprise AI systems operate responsibly, securely, transparently, and in compliance with organizational policies and regulatory requirements.',
+        desc: 'The obligations that attach to a model once it decides something about a person. Regulation, audit and control design are their own service; this is what a modeling engagement owes them.',
         items: [
-          'Responsible AI Frameworks: Establish governance principles and organizational frameworks that guide the responsible design, deployment, and operation of AI systems.',
-          'Fairness & Bias Management: Identify, measure, and mitigate bias across datasets, models, and AI-driven decision processes to promote equitable outcomes.',
-          'Explainable AI: Implement interpretable AI techniques that provide transparent reasoning, confidence scores, and understandable decision explanations.',
-          'AI Risk & Compliance: Manage AI-related operational, regulatory, ethical, and business risks while ensuring compliance with enterprise governance standards.',
-          'Audit & Governance Controls: Maintain comprehensive audit trails, governance policies, approval workflows, and operational controls for enterprise AI systems.',
-          'Privacy & Data Protection: Protect sensitive enterprise information through privacy-preserving AI practices, data governance, encryption, and regulatory compliance.',
+          'Responsible AI Practices: Decided before the model is chosen, because the requirement rules some model families out and retrofitting an explanation is where projects stall.',
+          'Fairness & Bias Management: Measured per protected group rather than assumed from an aggregate score, and stated in terms somebody can act on.',
+          'Explainable AI: Feature contributions shipped with the prediction, so the person acting on it can see what drove it and say so.',
+          'AI Risk & Compliance: Under the EU AI Act, credit scoring and several other uses are classified high-risk, which brings logging and oversight duties cheaper to build in than to add.',
+          'Audit Controls: A record of what the model saw and returned, produced as a by-product rather than reconstructed under pressure.',
+          'Privacy & Data Protection: What the model is allowed to learn from, agreed before training rather than during a review.',
         ],
       },
     ],

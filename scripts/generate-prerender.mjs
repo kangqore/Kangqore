@@ -165,6 +165,84 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
     })
     .join('\n');
 
+  // ── Blocks the snapshot never carried ──────────────────────────────────────
+  // Measured coverage before this: a crawler received 845 of 2,894 words on
+  // /services/data-science-ai, so seven words in ten were invisible to the
+  // audience the snapshot exists for. The missing blocks were not filler --
+  // the comparison table, the industry grid, the outcome narratives, the
+  // engagement packages and the closing argument are the most persuasive
+  // content on these pages.
+  //
+  // Internal links inside them are emitted as real anchors, because a crawler
+  // that cannot see a link cannot follow it.
+
+  const linkTo = (l) => (l && l.to ? ` <a href="${BASE_URL}${esc(l.to)}">${esc(l.label || l.to)}</a>` : '');
+
+  const comparison = svc.comparisonTable
+    ? `    <h2>${esc(svc.comparisonTable.heading || 'How this differs')}</h2>
+    ${svc.comparisonTable.lede ? `<p>${esc(svc.comparisonTable.lede)}</p>` : ''}
+      <table>
+        <caption>${esc(svc.comparisonTable.beforeLabel || 'Before')} compared with ${esc(svc.comparisonTable.afterLabel || 'After')}</caption>
+        <thead><tr><th scope="col">Dimension</th><th scope="col">${esc(svc.comparisonTable.beforeLabel || 'Before')}</th><th scope="col">${esc(svc.comparisonTable.afterLabel || 'After')}</th></tr></thead>
+        <tbody>
+${(svc.comparisonTable.rows || []).map((r) => `          <tr><th scope="row">${esc(r.dimension)}</th><td>${esc(r.before)}</td><td>${esc(r.after)}${linkTo(r.link)}</td></tr>`).join('\n')}
+        </tbody>
+      </table>`
+    : '';
+
+  const architecture = (svc.architectureNodes || []).length
+    ? `    <h2>${esc([svc.architectureTitle, svc.architectureTitleHighlight].filter(Boolean).join(' ') || 'How it works')}</h2>
+    ${svc.architectureLede ? `<p>${esc(svc.architectureLede)}</p>` : ''}
+${svc.architectureNodes.map((n) => `      <section>
+        <h3>${esc(n.title)}</h3>
+        ${n.description ? `<p>${esc(n.description)}</p>` : ''}
+        <ul>
+${(n.features || []).map((f) => `          <li>${esc(f)}</li>`).join('\n')}
+        </ul>
+      </section>`).join('\n')}`
+    : '';
+
+  const industries = (svc.industryUseCases || []).length
+    ? `    <h2>${esc([svc.industryHeading, svc.industryHeadingHighlight].filter(Boolean).join(' ') || 'By industry')}</h2>
+    ${svc.industryLede ? `<p>${esc(svc.industryLede)}</p>` : ''}
+${svc.industryUseCases.map((u) => `      <section>
+        <h3>${esc(u.industry)}</h3>
+        ${u.headline ? `<p>${esc(u.headline)}</p>` : ''}
+        <ul>
+${(u.items || u.agents || []).map((it) => `          <li>${esc(it)}</li>`).join('\n')}
+        </ul>
+      </section>`).join('\n')}`
+    : '';
+
+  // Narrative case studies. `metrics` above already emits the headline numbers.
+  const outcomes = [svc.outcomeCard, svc.outcomeCard2].filter(Boolean);
+  const outcomeBlock = outcomes.length
+    ? `    <h2>${esc([svc.outcomesHeading, svc.outcomesHeadingHighlight].filter(Boolean).join(' ') || 'Engagement outcomes')}</h2>
+${outcomes.map((o) => `      <section>
+        <h3>${esc(o.industry || 'Engagement')}${o.metric ? ` — ${esc(o.metric)} ${esc(o.metricLabel || '')}` : ''}</h3>
+        ${o.problem ? `<p>${esc(o.problem)}</p>` : ''}
+        ${o.outcome ? `<p>${esc(o.outcome)}</p>` : ''}
+        ${o.illustrative ? '<p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>' : ''}
+      </section>`).join('\n')}`
+    : '';
+
+  const packages = (svc.servicePackages || []).length
+    ? `    <h2>${esc([svc.engagementHeading, svc.engagementHeadingHighlight].filter(Boolean).join(' ') || 'How we engage')}</h2>
+    ${svc.engagementLede ? `<p>${esc(svc.engagementLede)}</p>` : ''}
+${svc.servicePackages.map((k) => `      <section>
+        <h3>${esc(k.name)}${k.duration ? ` (${esc(k.duration)})` : ''}</h3>
+        ${k.description ? `<p>${esc(k.description)}</p>` : ''}
+        <ul>
+${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
+        </ul>
+      </section>`).join('\n')}`
+    : '';
+
+  const closing = svc.closingCta
+    ? `    <h2>${esc([svc.closingCta.title, svc.closingCta.highlight].filter(Boolean).join(' '))}</h2>
+    ${svc.closingCta.body ? `<p>${esc(svc.closingCta.body)}</p>` : ''}`
+    : '';
+
   // The eQORE concierge occupies about a thousand pixels of the second-most-read
   // position on the page and reached the snapshot as nothing at all, so a crawler
   // that never runs our JS saw the page without it. Emitted only where a service
@@ -265,6 +343,16 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${capabilities}` : ''}
 
+    ${comparison}
+
+    ${architecture}
+
+    ${industries}
+
+    ${outcomeBlock}
+
+    ${packages}
+
     ${method}
 
     ${boundary}
@@ -273,6 +361,8 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
 
     ${related ? `<h2>Related Services</h2>\n      <ul>\n${related}\n      </ul>` : ''}
     ${siblings ? `<h2>More in ${esc(deptName || 'this practice')}</h2>\n      <ul>\n${siblings}\n      </ul>` : ''}
+
+    ${closing}
 
 ${chips}    <h2>Next Step</h2>
     <p><a href="${BASE_URL}/contact">Talk to our experts about ${esc(svc.name)}</a></p>
