@@ -104,7 +104,7 @@ export function useClientChangeRequests() {
 export function useClientFeedback() {
   return useQuery({
     queryKey: ['client', 'feedback'],
-    queryFn: () => api.get('/feedback').then(r => r.data ?? []),
+    queryFn: () => api.get('/feedback').then(r => Array.isArray(r.data) ? r.data : (r.data?.feedback ?? [])),
     staleTime: 1000 * 60 * 10,
   })
 }
