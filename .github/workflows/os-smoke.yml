@@ -1,8 +1,8 @@
 name: Kangqore OS — Smoke Tests
 
 # Runs on PRs that touch the frontend (Kangqore OS).
-# Starts the Vite dev server, injects demo auth, navigates all routes,
-# and asserts no white screens or error boundaries.
+# Builds static production bundle, starts preview server, injects demo auth,
+# navigates all routes, and asserts no white screens or error boundaries.
 on:
   pull_request:
     paths:
@@ -30,6 +30,10 @@ jobs:
       - name: Install Playwright browsers
         working-directory: frontend
         run: npx playwright install --with-deps chromium
+
+      - name: Build frontend static bundle
+        working-directory: frontend
+        run: npm run build
 
       - name: Run smoke tests
         working-directory: frontend
