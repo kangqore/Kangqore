@@ -83,7 +83,7 @@ export function ClientsOverview() {
   const totalARR   = clients.reduce((s, c) => s + c.arr, 0)
   const activeCount = clients.filter(c => c.status === 'active').length
   const atRisk      = clients.filter(c => c.health === 'at-risk' || c.health === 'critical').length
-  const avgNPS      = Math.round(clients.reduce((s, c) => s + c.satisfactionScore, 0) / clients.length)
+  const avgNPS      = clients.length > 0 ? Math.round(clients.reduce((s, c) => s + c.satisfactionScore, 0) / clients.length) : 0
 
   function openClient(id: string) {
     if (selecting) { toggleSelect(id); return }
