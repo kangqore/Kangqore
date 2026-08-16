@@ -23,6 +23,8 @@ import { withWaandax } from '../llm/waandaxAnthropic'
 import { prisma }   from '../../../lib/prisma'
 import logger       from '../../../utils/logger'
 import { classifyCurriculum } from '../../waanda/training/curriculumClassifier'
+import { critiqueDecision } from './adversarialCritic.service'
+import { getReflexPattern } from './kimmpReflex.service'
 
 const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
@@ -375,41 +377,32 @@ Return ONLY a JSON array with exactly ${targetCount} objects, no other text:
     return 0
   }
 
-  // Claude validates each synthetic example before it enters corpus
+  // Claude validates each synthetic example before it enters corpus using the Adversarial Critic
   let added = 0
   for (const ex of examples.slice(0, targetCount)) {
     if (!ex.userMessage || !ex.idealResponse) continue
 
-    const validationPrompt = `Rate this KIMMP training example on a scale of 1-10 for quality:
-USER: ${ex.userMessage}
-KIMMP: ${ex.idealResponse}
-
-Respond with ONLY a JSON object: {"score": 7, "valid": true}`
-
-    const validRaw = await callClaude(
-      'You are a quality rater for AI training data. Score on specificity, decisiveness, and executive relevance.',
-      validationPrompt,
-      100,
+    const criticResult = await critiqueDecision(
+      (ex.agentSystem as any) || 'KIMMP',
+      ex.userMessage,
+      ex.idealResponse
     )
 
-    let score = 7
-    try {
-      const vm = validRaw.match(/\{[\s\S]*\}/)
-      if (vm) { const v = JSON.parse(vm[0]); score = v.score ?? 7 }
-    } catch {}
+    if (!criticResult.passed) continue  // reject low-quality or hallucinated examples
 
-    if (score < 6) continue  // reject low-quality synthetic examples
+    const finalResponse = criticResult.correctedResponse || ex.idealResponse
+    const qualityScore = Math.max(0.7, criticResult.score / 10)
 
     const ok = await upsertExample({
       source: 'synthetic',
       systemPrompt: KIMMP_SYSTEM_PROMPT,
       userMessage: ex.userMessage,
-      idealResponse: ex.idealResponse,
-      quality: Math.round((score / 10) * 10) / 10,
+      idealResponse: finalResponse,
+      quality: qualityScore,
       approved: false,
       agentSystem:  ex.agentSystem ?? 'KIMMP',
       agentType:    'synthetic',
-      tags:         ['synthetic', ...(Array.isArray(ex.tags) ? ex.tags : [])],
+      tags:         ['synthetic', 'critic-approved', ...(Array.isArray(ex.tags) ? ex.tags : [])],
       modelVersion: 'claude-haiku-4-5-20251001',
     })
     if (ok) added++
