@@ -48,6 +48,12 @@ Layered signal-to-action pipeline running over live platform data:
 
 Ontology-backed work management — every `WorkItem` is an `OntologyObject` with typed enterprise relationships. Nine views: Board, Table, Timeline, Dependency Graph, Workload, Goals, Portfolio, Executive Command Center, Automations.
 
+### HATHAWAY — Kangqore Enterprise Operating System (KEOS)
+
+The overall operating environment, application shell, and mission kernel powering every workspace:
+
+- **HATHAWAY (KEOS — Kangqore Enterprise Operating System)** — Mission kernel, capability registry (`cap.*`), shell layout, widget runtime, and 9 enterprise workspace portals (Executive, Operations, Revenue, Intelligence, Governance, etc.)
+
 ### NOLAN — Kangqore's Ontology (Enterprise Ontology System)
 
 The universal semantic data architecture powering every business object and relationship across Kangqore:
