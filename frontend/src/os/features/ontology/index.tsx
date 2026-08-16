@@ -2,6 +2,7 @@ import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { Network, Boxes, GitBranch, Shield, GitMerge, Cpu, Package, Zap, ScrollText, ShieldCheck, HourglassIcon, MapPin, Workflow, Terminal, UploadCloud } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { OntologyExplorer }       from './pages/OntologyExplorer'
+import { OntologyGraphExplorer }  from './pages/OntologyGraphExplorer'
 import { OntologyObjects }        from './pages/OntologyObjects'
 import { ObjectSetsPage }         from './pages/ObjectSetsPage'
 import { ActionsPage }            from './pages/ActionsPage'
@@ -19,7 +20,8 @@ import { KoreTypesPage }          from './pages/KoreTypesPage'
 import ActionLibraryPage           from './pages/ActionLibraryPage'
 
 const TABS = [
-  { path: 'explorer',       label: 'Explorer',            icon: Network      },
+  { path: 'explorer',       label: 'Directory',           icon: Boxes        },
+  { path: 'graph',          label: 'Graph Explorer',      icon: Network      },
   { path: 'objects',        label: 'Objects',             icon: Boxes        },
   { path: 'object-sets',    label: 'Object Sets',         icon: Package      },
   { path: 'action-library', label: 'Action Library',      icon: Zap          },
@@ -66,6 +68,7 @@ export function OntologyModule() {
       <Routes>
         <Route index               element={<Navigate to="explorer" replace />} />
         <Route path="explorer"     element={<OntologyExplorer />}              />
+        <Route path="graph"        element={<OntologyGraphExplorer />}         />
         <Route path="objects"      element={<OntologyObjects />}               />
         <Route path="object-sets"  element={<ObjectSetsPage />}                />
         <Route path="action-library" element={<ActionLibraryPage />}              />
