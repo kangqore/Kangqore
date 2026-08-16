@@ -198,9 +198,11 @@ app.use('/api/uploads', uploadRoutes);
 app.use('/api/search', searchRoutes);
 import developerRoutes from './routes/developer.routes';
 import agentUxRoutes from './routes/agentUx.routes';
+import decisionEngineRoutes from './routes/decisionEngine.routes';
 app.use('/api/developer', developerRoutes);
 app.use('/api/marketplace', developerRoutes);
 app.use('/api/agent-ux', agentUxRoutes);
+app.use('/api/decision-engine', decisionEngineRoutes);
 app.use('/api/admin/analytics', analyticsRoutes); // NEW
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/chatbot', chatbotRoutes);
