@@ -48,9 +48,13 @@ Layered signal-to-action pipeline running over live platform data:
 
 Ontology-backed work management — every `WorkItem` is an `OntologyObject` with typed enterprise relationships. Nine views: Board, Table, Timeline, Dependency Graph, Workload, Goals, Portfolio, Executive Command Center, Automations.
 
-### Ontology Engine
+### NOLAN — Kangqore's Ontology (Enterprise Ontology System)
 
-Universal schema layer. Every business object (Project, Client, StaffMember, Decision, Risk, etc.) is an `OntologyObject` with typed relationships. The ontology is the single source of truth the AI reads from and writes to.
+The universal semantic data architecture powering every business object and relationship across Kangqore:
+
+- **NOLAN (Kangqore's Ontology)** — Master Enterprise Ontology System ($$\text{NOLAN} = \text{ROBERT} + \text{ALFRED}$$)
+- **ROBERT (EOF — Enterprise Ontology Framework)** — Schema rules, cardinality engine (`CardinalityEngine`), gateway pipelines (`OntologyGateway`), and recommendation algorithms
+- **ALFRED (KORE — Kangqore Object & Runtime Engine)** — Live digital twin state engine, object runtime, language registries, and Work OS primitives (`WorkItem`, `WorkPortfolio`)
 
 ---
 
