@@ -119,8 +119,13 @@ export function OnboardingWizard({ onComplete }: Props) {
     api.get('/admin/onboarding').then(r => {
       setState(r.data)
       setStep(r.data.currentStep ?? 1)
-    }).catch(() => {})
-  }, [])
+      if (r.data?.completed) {
+        onComplete()
+      }
+    }).catch(() => {
+      onComplete()
+    })
+  }, [onComplete])
 
   const saveStep = useCallback(async (nextStep: number, extraData: Record<string, unknown> = {}) => {
     setSaving(true)
