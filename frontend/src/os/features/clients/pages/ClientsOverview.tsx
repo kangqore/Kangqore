@@ -184,7 +184,7 @@ export function ClientsOverview() {
       </div>
 
       {/* Competitive positioning — Overshadow Roadmap P7.1, CRM-embedded */}
-      {battlecards.data && (
+      {battlecards.data?.summary && (
         <Link
           to="/kangqore-view/admin/kangqore-immp/battlecards"
           className="flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors hover:brightness-110"
