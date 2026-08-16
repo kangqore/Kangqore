@@ -3,7 +3,7 @@
 // Decision Matrix Engine evaluates 8 enterprise inputs and outputs structured prescriptive trade-offs.
 
 import { useLocation, Routes, Route, NavLink, Navigate } from 'react-router-dom'
-import { LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles, Scale } from 'lucide-react'
+import { LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles, Scale, Activity } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BoardView }          from './pages/BoardView'
@@ -17,6 +17,7 @@ import { ExecutiveView }      from './pages/ExecutiveView'
 import { AutomationsView }    from './pages/AutomationsView'
 import AgentPrimaryUxView     from './pages/AgentPrimaryUxView'
 import DecisionEngineView     from './pages/DecisionEngineView'
+import OutcomeIntelligenceView from './pages/OutcomeIntelligenceView'
 
 const BASE = '/kangqore-view/admin/work'
 
@@ -30,6 +31,7 @@ const TABS = [
   { path: 'workload',        label: 'Workload',        icon: Users              },
   { path: 'goals',           label: 'Goals',           icon: Target             },
   { path: 'portfolio',       label: 'Portfolio',       icon: Briefcase          },
+  { path: 'outcomes',        label: 'Outcomes',        icon: Activity           },
   { path: 'executive',       label: 'Command',         icon: BarChart3          },
   { path: 'automations',     label: 'Automations',     icon: Zap                },
 ]
@@ -79,6 +81,7 @@ export function WorkModule() {
             <Route path="workload"        element={<WorkloadView />}        />
             <Route path="goals"           element={<GoalsView />}           />
             <Route path="portfolio"       element={<PortfolioView />}       />
+            <Route path="outcomes"        element={<OutcomeIntelligenceView />} />
             <Route path="executive"       element={<ExecutiveView />}       />
             <Route path="automations"     element={<AutomationsView />}     />
           </Routes>
