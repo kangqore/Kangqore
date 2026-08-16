@@ -10,7 +10,7 @@
 
 import { test, expect, type Page } from '@playwright/test'
 
-const BASE = 'http://localhost:3000'
+const BASE = ''
 
 const PERF_THRESHOLD_MS  = 5000   // body must be populated within 5s
 const DCLD_THRESHOLD_MS  = 4000   // DOMContentLoaded within 4s
@@ -26,9 +26,10 @@ const results: PerfResult[] = []
 
 async function measurePage(page: Page, route: string): Promise<PerfResult> {
   // Pre-inject auth
-  await page.goto(`${BASE}/`)
-  await page.evaluate(() => {
+  await page.addInitScript(() => {
+    const demoUser = JSON.stringify({ id: 'demo-admin', name: 'C.O.D.E.', email: 'admin@kangqore.com', role: 'ADMIN' })
     localStorage.setItem('token', 'demo-token')
+    localStorage.setItem('user', demoUser)
     localStorage.setItem('role', 'ADMIN')
   })
 

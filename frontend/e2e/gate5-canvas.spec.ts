@@ -15,7 +15,7 @@
 
 import { test, expect, type Page } from '@playwright/test'
 
-const BASE     = 'http://localhost:3000'
+const BASE     = ''
 const API_BASE = 'http://localhost:5050'
 
 // Env vars injected by gate5Runner when it seeds a workflow
@@ -25,15 +25,14 @@ const SEED_WF_ID  = process.env.QEF_TEST_WORKFLOW_ID ?? ''
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
 
 async function withDemoAuth(page: Page, route: string) {
-  await page.goto(`${BASE}/`)
-  await page.evaluate(() => {
+  await page.addInitScript(() => {
     const demoUser = JSON.stringify({ id: 'demo-admin', name: 'C.O.D.E.', email: 'admin@kangqore.com', role: 'ADMIN' })
     localStorage.setItem('token', 'demo-token')
     localStorage.setItem('user', demoUser)
     localStorage.setItem('role', 'ADMIN')
   })
-  await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(1000)
+  await page.goto(route, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(400)
 }
 
 async function withSeedAuth(page: Page, route: string) {
