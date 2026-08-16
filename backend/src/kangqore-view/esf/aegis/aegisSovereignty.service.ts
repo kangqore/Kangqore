@@ -13,7 +13,7 @@ import logger from '../../../utils/logger'
 export type ClassificationLevel = 'PUBLIC' | 'INTERNAL' | 'CONFIDENTIAL' | 'RESTRICTED'
 
 export interface SovereigntyStamp {
-  owner:          string          // always 'ADMIN'
+  owner:          string          // always 'C.O.D.E. (Mahesh Kumar)'
   system:         string
   assetId:        string
   assetType:      string
@@ -61,7 +61,7 @@ export class AegisSovereignty {
     const retainUntil    = new Date(Date.now() + retainDays * 86_400_000).toISOString()
 
     const stamp: SovereigntyStamp = {
-      owner:          'ADMIN',
+      owner:          'C.O.D.E. (Mahesh Kumar)',
       system:         params.system,
       assetId:        params.assetId,
       assetType:      params.assetType,
@@ -76,7 +76,7 @@ export class AegisSovereignty {
       assetId:     params.assetId,
       assetType:   params.assetType,
       assetSource: params.source,
-      metadata:    { classification, retainUntil, owner: 'ADMIN' },
+      metadata:    { classification, retainUntil, owner: 'C.O.D.E. (Mahesh Kumar)' },
     }).catch(() => {})
 
     logger.debug(`[AEGIS:SOVEREIGNTY] Stamped ${params.assetType}:${params.assetId} → ${classification} (retain ${retainDays}d)`)
@@ -84,7 +84,7 @@ export class AegisSovereignty {
     return stamp
   }
 
-  // Summary of what the ADMIN owns across all systems
+  // Summary of what C.O.D.E. owns across all systems
   static async ownershipSummary(): Promise<{
     totalAssets:         number
     bySystem:            Record<string, number>
