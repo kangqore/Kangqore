@@ -43,6 +43,9 @@ const DevelopersPage = React.lazy(() => import('../pages/DevelopersPage'));
 const SolutionsIndexPage = React.lazy(() => import('../pages/SolutionsIndexPage'));
 const PersonaSolutionPage = React.lazy(() => import('../pages/PersonaSolutionPage'));
 
+// Enterprise Superset — Phase 13
+const EnterpriseSupersetPage = React.lazy(() => import('../pages/EnterpriseSupersetPage'));
+
 // Legal & Compliance pages
 const PrivacyPolicy = React.lazy(() => import('../pages/legal/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('../pages/legal/TermsAndConditions'));
@@ -72,6 +75,9 @@ export const publicRoutes = [
   // Solutions by role — Overshadow Roadmap P7.3 ("Persona-Targeted Campaigns")
   <Route key="solutions" path="/solutions" element={<SolutionsIndexPage />} />,
   <Route key="solutions-persona" path="/solutions/:slug" element={<PersonaSolutionPage />} />,
+
+  // Enterprise Superset — Phase 13
+  <Route key="enterprise-superset" path="/enterprise-superset" element={<EnterpriseSupersetPage />} />,
 
   // General pages
   <Route key="contact" path="/contact" element={<ContactUs />} />,
