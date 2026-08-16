@@ -9,7 +9,7 @@ import { Toaster }            from '@design-system/components/Toast'
 import { CommandPalette }     from '@components/shell/CommandPalette'
 import '../../os.css'
 
-import { ExecutiveOverview }  from './pages/ExecutiveOverview'
+import { ExecutiveCommandCenter }  from './pages/ExecutiveCommandCenter'
 import { ExecutiveStrategy }  from './pages/ExecutiveStrategy'
 import { ExecutiveKIMMP }     from './pages/ExecutiveKIMMP'
 import { ExecutiveBoard }     from './pages/ExecutiveBoard'
@@ -37,7 +37,7 @@ export function ExecutivePortal() {
             <PageTransition>
               <ModuleShell>
                 <Routes>
-                  <Route index              element={<ExecutiveOverview />}  />
+                  <Route index              element={<ExecutiveCommandCenter />}  />
                   <Route path="strategy"   element={<ExecutiveStrategy />}  />
                   <Route path="kimmp"      element={<ExecutiveKIMMP />}     />
                   <Route path="board"      element={<ExecutiveBoard />}     />
