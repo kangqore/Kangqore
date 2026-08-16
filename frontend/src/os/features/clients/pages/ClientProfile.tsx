@@ -158,6 +158,17 @@ export function ClientProfile() {
   const selectedId = useClientsStore(s => s.selectedId)
   const client = clients.find(c => c.id === selectedId) ?? clients[0]
 
+  if (!client) {
+    return (
+      <div className="p-8 text-center text-[var(--os-text-2)] space-y-3">
+        <p className="text-sm">No client selected or available.</p>
+        <button onClick={() => navigate('/kangqore-view/admin/clients')} className="text-xs px-3 py-1.5 rounded-lg bg-blue-600 text-white font-semibold shadow-sm">
+          View All Clients
+        </button>
+      </div>
+    )
+  }
+
   const interactions = clientInteractions(client.id)
   const slas         = clientSLAs(client.id)
   const milestones   = clientMilestones(client.id)
