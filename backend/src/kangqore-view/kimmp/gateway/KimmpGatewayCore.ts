@@ -13,17 +13,18 @@ const TRUNCATE = 2000
 // ── Cost estimation — approximate public list pricing (USD per million tokens).
 // Not tied to actual billing reconciliation; good enough for cost-visibility UI.
 const MODEL_PRICING: Record<string, { input: number; output: number }> = {
-  'opus':   { input: 15,    output: 75 },
-  'sonnet': { input: 3,     output: 15 },
-  'haiku':  { input: 0.8,   output: 4 },
-  'gpt-4o': { input: 2.5,   output: 10 },
-  'gemini': { input: 0.075, output: 0.3 },
+  'waandax': { input: 1.0,    output: 3.0 },
+  'opus':    { input: 15,     output: 75 },
+  'sonnet':  { input: 3,      output: 15 },
+  'haiku':   { input: 0.8,    output: 4 },
+  'gpt-4o':  { input: 2.5,    output: 10 },
+  'gemini':  { input: 0.075,  output: 0.3 },
 }
 
 function pricingFor(model: string): { input: number; output: number } {
   const lower = model.toLowerCase()
   const key = Object.keys(MODEL_PRICING).find(k => lower.includes(k))
-  return key ? MODEL_PRICING[key] : { input: 0, output: 0 } // local/gen2/waandax/none = no marginal $ cost
+  return key ? MODEL_PRICING[key] : { input: 1.0, output: 3.0 } // WAANDAx mainstream model default
 }
 
 export function estimateCost(model: string, inputTokens: number, outputTokens: number): number {

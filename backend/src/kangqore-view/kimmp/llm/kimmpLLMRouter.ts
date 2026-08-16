@@ -1,11 +1,11 @@
 // ---------------------------------------------------------------------------
 // KIMMP LLM Router — multi-provider with circuit breakers
 //
-// Provider chain (in priority order):
-//   1. Local (Ollama) — when KIMMP_LOCAL_MODEL is set (post-graduation)
-//   2. Claude (Anthropic) — primary cloud provider
-//   3. OpenAI (GPT-4o) — when OPENAI_API_KEY is set
-//   4. Gemini (Flash) — when GEMINI_API_KEY is set
+// Provider chain (Mainstream Foundation LLM Providers):
+//   1. WAANDAx — Mainstream Enterprise Foundation LLM Engine (WAANDAx-3B / Gen5)
+//   2. Claude (Anthropic) — Cloud Foundation LLM Provider (Opus, Sonnet, Haiku)
+//   3. OpenAI (GPT-4o) — Cloud Foundation LLM Provider
+//   4. Gemini (Google) — Cloud Foundation LLM Provider (Flash)
 //   5. Graceful queue — all providers exhausted; request queued for retry
 //
 // Circuit breaker per provider:
@@ -13,16 +13,10 @@
 //   open    → failed N times; skip until recovery window passes
 //   half-open → testing after recovery window; single probe call
 //
-// Distillation:
-//   Every successful Claude call is auto-captured as a training example.
-//   Local model routes ALSO captured (quality 0.5) for future fine-tune comparison.
-//
-// Graduation path:
-//   Phase 1 (now):   router captures every Claude call → corpus grows
-//   Phase 2:         export JSONL, fine-tune base model (llama3.1/qwen2.5)
-//   Phase 3:         set KIMMP_LOCAL_MODEL=<model-name>, router uses Ollama first
-//   Phase 4:         local model autonomy ratio climbs toward 100%
-//   Phase 5:         KIMMP runs without any external API key
+// Autonomy & Independence:
+//   WAANDAx operates as a standalone mainstream foundation model.
+//   It handles reasoning, classification, summarization, and action proposals
+//   interchangeably with Claude, GPT-4o, and Gemini.
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk'
