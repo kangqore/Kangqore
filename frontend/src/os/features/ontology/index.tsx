@@ -11,7 +11,7 @@ import { PolicyGatePage }         from './pages/PolicyGatePage'
 import { PendingApprovalsPage }   from './pages/PendingApprovalsPage'
 import { MapViewPage }            from './pages/MapViewPage'
 import { PipelineDashboardPage }  from './pages/PipelineDashboardPage'
-import { MigrationAcceleratorPage } from './pages/MigrationAcceleratorPage'
+import { MigrationStudioPage }      from './pages/MigrationStudioPage'
 import { DeveloperPortalPage }    from './pages/DeveloperPortalPage'
 import { LineageViewer }          from './pages/LineageViewer'
 import { MarkingsManager }        from './pages/MarkingsManager'
@@ -31,7 +31,7 @@ const TABS = [
   { path: 'approvals',      label: 'Approvals',           icon: HourglassIcon },
   { path: 'map',            label: 'Map View',            icon: MapPin       },
   { path: 'pipelines',      label: 'Pipelines',           icon: Workflow     },
-  { path: 'migration',      label: 'Migration Accelerator', icon: UploadCloud },
+  { path: 'migration',      label: 'Migration Studio',    icon: UploadCloud },
   { path: 'developer',      label: 'Developer',           icon: Terminal     },
   { path: 'lineage',        label: 'Lineage',             icon: GitBranch    },
   { path: 'markings',       label: 'Markings',            icon: Shield       },
@@ -78,7 +78,7 @@ export function OntologyModule() {
         <Route path="approvals"    element={<PendingApprovalsPage />}          />
         <Route path="map"          element={<MapViewPage />}                   />
         <Route path="pipelines"    element={<PipelineDashboardPage />}         />
-        <Route path="migration"    element={<MigrationAcceleratorPage />}      />
+        <Route path="migration"    element={<MigrationStudioPage />}           />
         <Route path="developer"    element={<DeveloperPortalPage />}           />
         <Route path="lineage"      element={<LineageViewer />}                 />
         <Route path="markings"     element={<MarkingsManager />}               />
