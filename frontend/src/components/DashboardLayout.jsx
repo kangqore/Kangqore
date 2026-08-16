@@ -17,6 +17,8 @@ import ClientNorthStar from './dashboard/ClientNorthStar';
 import { useClientDashboard } from '../hooks/useDashboardData';
 import { useSearch } from '../hooks/useSearch';
 import { useSocket } from '../hooks/useSocket';
+import { useAdaptiveContext } from '../context/AdaptiveContextManager';
+import WarRoom from './dashboard/WarRoom';
 
 // Debounce helper
 const useDebounce = (value, delay) => {
@@ -61,6 +63,9 @@ const DashboardLayout = ({ children, role, title, subtitle, headerActions }) => 
     retry: false,
     enabled: !!user
   });
+
+  // Adaptive UI Context for Phase VIS
+  const { layoutState } = useAdaptiveContext() || { layoutState: 'STANDARD' };
 
   // Real-time socket notifications
   const { onNotification, connected: socketConnected } = useSocket();
@@ -366,16 +371,22 @@ const DashboardLayout = ({ children, role, title, subtitle, headerActions }) => 
   const config = roleConfig[role] || roleConfig.client;
   const RoleIcon = config.icon;
 
-  if (!user) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#0a0a0c]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      <div className="flex h-screen items-center justify-center bg-gray-950">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex h-screen overflow-hidden bg-gray-950 text-gray-100 font-sans selection:bg-blue-500/30">
+      
+      {/* PHASE VIS: The Adaptive UI Layer */}
+      {layoutState === 'WAR_ROOM' && <WarRoom />}
+
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
       {/* Exit Impersonation Banner */}
       {localStorage.getItem('adminToken') && (
         <div className="bg-red-600 text-white px-4 py-2 text-center text-sm font-bold flex items-center justify-center gap-4 fixed top-0 w-full z-[60]">
