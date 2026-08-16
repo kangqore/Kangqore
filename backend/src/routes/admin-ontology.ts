@@ -50,14 +50,33 @@ function sendGatewayResult(res: any, result: Awaited<ReturnType<typeof OntologyG
 
 // ─── Default object types seeded on first use ─────────────────────────────────
 const DEFAULT_TYPES = [
-  { name: 'Client',   displayName: 'Client',   icon: 'Briefcase',     color: '#2564ea', description: 'Enterprise clients and their engagements' },
-  { name: 'Project',  displayName: 'Project',  icon: 'Kanban',        color: '#7c3aed', description: 'Active delivery projects and workstreams' },
-  { name: 'Lead',     displayName: 'Lead',     icon: 'Lightning',     color: '#d97706', description: 'Prospective clients in the revenue pipeline' },
-  { name: 'Supplier', displayName: 'Supplier', icon: 'Truck',         color: '#059669', description: 'Vendors and procurement entities' },
-  { name: 'Invoice',  displayName: 'Invoice',  icon: 'Receipt',       color: '#dc2626', description: 'Financial billing documents' },
-  { name: 'Proposal', displayName: 'Proposal', icon: 'FileText',      color: '#0891b2', description: 'Commercial proposals and RFP responses' },
-  { name: 'Resource', displayName: 'Resource', icon: 'User',          color: '#6366f1', description: 'Team members and their capacity allocation' },
-  { name: 'Risk',     displayName: 'Risk',     icon: 'Warning',       color: '#ef4444', description: 'Identified risks and mitigation plans' },
+  // Entities
+  { name: 'Person',     displayName: 'Person',     icon: 'User',          color: '#6366f1', description: 'Employees, contractors, and individuals' },
+  { name: 'Team',       displayName: 'Team',       icon: 'Users',         color: '#3b82f6', description: 'Organizational units and delivery squads' },
+  { name: 'Company',    displayName: 'Company',    icon: 'Building',      color: '#475569', description: 'Internal legal entities and subsidiaries' },
+  { name: 'Customer',   displayName: 'Customer',   icon: 'Briefcase',     color: '#2564ea', description: 'Enterprise clients and paying organizations' },
+  { name: 'Supplier',   displayName: 'Supplier',   icon: 'Truck',         color: '#059669', description: 'Vendors, partners, and procurement entities' },
+
+  // Delivery & Output
+  { name: 'Product',    displayName: 'Product',    icon: 'Cube',          color: '#8b5cf6', description: 'Software products and commercial offerings' },
+  { name: 'Project',    displayName: 'Project',    icon: 'Kanban',        color: '#7c3aed', description: 'Active delivery projects and workstreams' },
+  { name: 'Task',       displayName: 'Task',       icon: 'CheckCircle',   color: '#10b981', description: 'Granular units of work and action items' },
+  { name: 'Contract',   displayName: 'Contract',   icon: 'Scroll',        color: '#d97706', description: 'Legal agreements and MSAs' },
+  { name: 'Invoice',    displayName: 'Invoice',    icon: 'Receipt',       color: '#dc2626', description: 'Financial billing and accounts receivable' },
+
+  // IT & Operations
+  { name: 'Asset',      displayName: 'Asset',      icon: 'Laptop',        color: '#64748b', description: 'Physical and logical inventory' },
+  { name: 'Application',displayName: 'Application',icon: 'AppWindow',     color: '#ec4899', description: 'Internal tools and deployed software' },
+  { name: 'Infrastructure', displayName: 'Infrastructure', icon: 'Server', color: '#0ea5e9', description: 'Cloud resources and bare metal servers' },
+  { name: 'Incident',   displayName: 'Incident',   icon: 'Siren',         color: '#ef4444', description: 'Outages, breaches, and critical events' },
+  { name: 'Process',    displayName: 'Process',    icon: 'Workflow',      color: '#f59e0b', description: 'Standard operating procedures and workflows' },
+  { name: 'Location',   displayName: 'Location',   icon: 'MapPin',        color: '#14b8a6', description: 'Physical offices and data centers' },
+
+  // Governance & Intelligence
+  { name: 'Policy',     displayName: 'Policy',     icon: 'Shield',        color: '#84cc16', description: 'Compliance rules and AEGIS constraints' },
+  { name: 'Risk',       displayName: 'Risk',       icon: 'Warning',       color: '#ea580c', description: 'Identified enterprise risks and mitigations' },
+  { name: 'Decision',   displayName: 'Decision',   icon: 'Scale',         color: '#6366f1', description: 'Strategic choices and board resolutions' },
+  { name: 'Outcome',    displayName: 'Outcome',    icon: 'Target',        color: '#22c55e', description: 'Measured business results and OKRs' },
 ]
 
 // ─── Object Types ─────────────────────────────────────────────────────────────
