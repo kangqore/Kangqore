@@ -1,5 +1,5 @@
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
-import { Shield, List, Zap, BookOpen, ShieldOff, ArrowUpRight, FileText, Bot, ClipboardCheck, Radio, ShieldAlert, Wallet } from 'lucide-react'
+import { Shield, List, Zap, BookOpen, ShieldOff, ArrowUpRight, FileText, Bot, ClipboardCheck, Radio, ShieldAlert, Wallet, ShieldCheck } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AegisOverviewPage }       from './pages/AegisOverviewPage'
@@ -16,11 +16,13 @@ import { SecurityFindingsPage }    from './pages/SecurityFindingsPage'
 import { AiSecurityViewPage }      from './pages/AiSecurityViewPage'
 import { AegisPermissionsPage }    from './pages/AegisPermissionsPage'
 import { AegisBudgetPage }         from './pages/AegisBudgetPage'
+import { EnterpriseTrustView }     from './pages/EnterpriseTrustView'
 
 const BASE = '/kangqore-view/admin/aegis'
 
 const TABS = [
   { path: '',             end: true,  label: 'Overview',    icon: Shield         },
+  { path: 'trust',        end: false, label: 'Trust Center',icon: ShieldCheck      },
   { path: 'live',         end: false, label: 'Live Feed',   icon: Radio          },
   { path: 'agents',       end: false, label: 'Agents',      icon: Bot            },
   { path: 'compliance',   end: false, label: 'Compliance',  icon: ClipboardCheck },
@@ -75,7 +77,9 @@ export function AegisModule() {
           transition={{ duration: 0.15, ease: 'easeOut' }}
         >
           <Routes>
-            <Route index                  element={<AegisOverviewPage />}    />
+            <Route index element={<AegisOverviewPage />} />
+            <Route path="trust" element={<EnterpriseTrustView />} />
+            <Route path="live" element={<AegisLiveFeedPage />} />
             <Route path="agents"          element={<AegisAgentsPage />}      />
             <Route path="compliance"      element={<AegisCompliancePage />}  />
             <Route path="audit"           element={<AegisAuditPage />}       />

@@ -7,7 +7,7 @@ import {
   MessageSquare, BarChart2, LogOut, ChevronLeft,
   Bell, ChevronRight, Phone, Search, Settings, User,
   ChevronDown, SlidersHorizontal, BookOpen, Package, Brain,
-  X, Clock, Crosshair, Sun, Moon, Maximize2, Minimize2, Eye, Home, ArrowUpRight, Building2, Check, Loader2
+  X, Clock, Crosshair, Sun, Moon, Maximize2, Minimize2, Eye, Home, ArrowUpRight, Building2, Check, Loader2, ShieldCheck
 } from 'lucide-react'
 import {
   ChatCircleDotsIcon, CpuIcon, UsersThreeIcon, CrownSimpleIcon,
@@ -38,6 +38,7 @@ import { ClientSettings }          from './pages/ClientSettings'
 import { ClientKnowledge }         from './pages/ClientKnowledge'
 import { ClientServices }          from './pages/ClientServices'
 import { ClientWaanda }            from './pages/ClientWaanda'
+import { ClientTrustCenter }       from './pages/ClientTrustCenter'
 import { BidsIntakePage }          from './pages/BidsIntakePage'
 import { useAuthStore }            from '@store/auth'
 import {
@@ -102,6 +103,13 @@ const NAV_GROUPS = [
     color: '#00c875',
     items: [
       { path: 'services',        label: 'Services',   icon: Package,        end: false, badge: 0 },
+    ],
+  },
+  {
+    label: 'TRUST & SECURITY',
+    color: '#2564ea',
+    items: [
+      { path: 'trust',           label: 'Trust Center',icon: ShieldCheck,   end: false, badge: 0 },
     ],
   },
   {
@@ -900,6 +908,7 @@ export function ClientPortal() {
                   <Route path="knowledge"          element={<ClientKnowledge />}       />
                   <Route path="services"           element={<ClientServices />}        />
                   <Route path="settings"           element={<ClientSettings />}        />
+                  <Route path="trust"              element={<ClientTrustCenter />}     />
                   <Route path="bids/*"             element={<BidsIntakePage />}        />
                   <Route path="*"                  element={<Navigate to={BASE} replace />} />
                 </Routes>
