@@ -108,10 +108,11 @@ import GlobalScrollAnimations from './components/GlobalScrollAnimations';
 import WebVitalsReporter from './kangqore-vis/components/WebVitalsReporter';
 import { kangqoreVisAdminRoutes } from './kangqore-vis';
 
-// OS (dashboard) — lazy loaded per module
+// OS (dashboard) — core shell & home directly imported for zero cold-start delay
 import { ProtectedRoute as OSProtectedRoute } from './os/components/auth/ProtectedRoute';
+import { OSLayout } from './os/components/shell/OSLayout';
+import { DashboardHome } from './os/features/overview';
 const OSBootstrap        = React.lazy(() => import('./os/OSBootstrap').then(m => ({ default: m.OSBootstrap })));
-const OSLayout           = React.lazy(() => import('./os/components/shell/OSLayout').then(m => ({ default: m.OSLayout })));
 const UnauthorizedPage   = React.lazy(() => import('./os/pages/UnauthorizedPage').then(m => ({ default: m.UnauthorizedPage })));
 const StrategyModule     = React.lazy(() => import('./os/features/strategy').then(m => ({ default: m.StrategyModule })));
 const ProjectsModule     = React.lazy(() => import('./os/features/projects').then(m => ({ default: m.ProjectsModule })));
@@ -137,7 +138,6 @@ const KIMMMModule        = React.lazy(() => import('./os/features/kangqore-immp'
 const KimmpGatewayModule = React.lazy(() => import('./os/features/kimmp-gateway').then(m => ({ default: m.KimmpGatewayModule })));
 const AgentStudioModule  = React.lazy(() => import('./os/features/agent-studio').then(m => ({ default: m.AgentStudioModule })));
 const WaandaModule       = React.lazy(() => import('./os/features/waanda').then(m => ({ default: m.WaandaModule })));
-const DashboardHome      = React.lazy(() => import('./os/features/overview').then(m => ({ default: m.DashboardHome })));
 const AgentLogsModule    = React.lazy(() => import('./os/features/agent-logs').then(m => ({ default: m.AgentLogsModule })));
 const SystemsModule      = React.lazy(() => import('./os/features/systems').then(m => ({ default: m.SystemsModule })));
 const WorkModule         = React.lazy(() => import('./os/features/work').then(m => ({ default: m.WorkModule })));
