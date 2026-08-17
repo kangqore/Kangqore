@@ -64,13 +64,14 @@ function useDebounce<T>(value: T, ms: number): T {
 // ── Shared panel style ─────────────────────────────────────────────────────────
 
 const PANEL: React.CSSProperties = {
-  background:     'rgba(8,12,22,0.98)',
-  backdropFilter: 'blur(32px)',
-  border:         '1px solid rgba(255,255,255,0.08)',
-  boxShadow:      '0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.04)',
+  background:     'rgba(0, 0, 0, 0.55)',
+  backdropFilter: 'blur(48px)',
+  WebkitBackdropFilter: 'blur(48px)',
+  border:         '1px solid rgba(255,255,255,0.12)',
+  boxShadow:      '0 32px 80px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1)',
 }
 
-const SECTION_LABEL = 'px-3 pt-3 pb-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-600'
+const SECTION_LABEL = 'px-3 pt-2 pb-1 text-[8px] font-bold uppercase tracking-[0.15em] text-slate-500'
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
@@ -139,7 +140,10 @@ export function CommandPalette() {
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setOpen(true) }
+      if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')) { 
+        e.preventDefault(); 
+        setOpen(true);
+      }
     }
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
@@ -184,28 +188,28 @@ export function CommandPalette() {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             className="fixed inset-0 z-[150]"
-            style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)' }}
+            style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(12px)' }}
             onClick={() => setOpen(false)}
           />
 
           {/* Panel */}
           <motion.div
             key="cp-panel"
-            initial={{ opacity: 0, scale: 0.96, y: -16 }}
-            animate={{ opacity: 1, scale: 1, y: 0, transition: spring.snappy }}
-            exit={{ opacity: 0, scale: 0.97, transition: { duration: 0.1 } }}
-            className="fixed top-[13vh] left-1/2 -translate-x-1/2 z-[160] w-full max-w-[600px] px-4"
+            initial={{ opacity: 0, scale: 0.96, x: '-50%', y: 'calc(-50% - 16px)' }}
+            animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%', transition: spring.snappy }}
+            exit={{ opacity: 0, scale: 0.97, x: '-50%', y: '-50%', transition: { duration: 0.1 } }}
+            className="fixed top-1/2 left-1/2 z-[160] w-full max-w-[650px] px-4"
           >
             <div className="rounded-2xl overflow-hidden" style={PANEL}>
 
               {/* Input row */}
               <div
-                className="flex items-center gap-3 px-4 py-3.5"
-                style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+                className="flex items-center gap-4 px-6 py-6"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}
               >
                 {isFetching
-                  ? <Loader2 className="w-4 h-4 text-slate-500 animate-spin flex-shrink-0" />
-                  : <Search className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                  ? <Loader2 className="w-6 h-6 text-slate-400 animate-spin flex-shrink-0" />
+                  : <Search className="w-6 h-6 text-slate-400 flex-shrink-0" />
                 }
                 <input
                   ref={inputRef}
@@ -213,7 +217,7 @@ export function CommandPalette() {
                   onChange={e => setQuery(e.target.value)}
                   onKeyDown={onKeyDown}
                   placeholder="Search or jump to…"
-                  className="flex-1 bg-transparent text-sm text-white placeholder:text-slate-600 outline-none"
+                  className="flex-1 bg-transparent text-xl font-light text-white placeholder:text-slate-500 outline-none"
                 />
                 <kbd
                   className="hidden sm:flex items-center text-[10px] text-slate-700 font-mono px-1.5 py-1 rounded flex-shrink-0"
@@ -233,9 +237,9 @@ export function CommandPalette() {
                   <div className="p-2">
                     <p className={SECTION_LABEL}>Run action</p>
                     {noActions ? (
-                      <div className="py-8 text-center">
-                        <p className="text-sm text-slate-500">No actions match <span className="text-white font-medium">"{actionQuery || query}"</span></p>
-                        <p className="text-xs text-slate-700 mt-1">Try a shorter name, e.g. <span className="font-mono">/approve</span></p>
+                      <div className="py-6 text-center">
+                        <p className="text-[11px] text-slate-500">No actions match <span className="text-white font-medium">"{actionQuery || query}"</span></p>
+                        <p className="text-[10px] text-slate-700 mt-1">Try a shorter name, e.g. <span className="font-mono">/approve</span></p>
                       </div>
                     ) : (
                       <div className="space-y-0.5">
@@ -244,17 +248,17 @@ export function CommandPalette() {
                             key={a.id}
                             onMouseEnter={() => setActive(idx)}
                             onClick={() => runAction(a)}
-                            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors"
+                            className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-left transition-colors"
                             style={{ background: idx === activeIdx ? 'rgba(255,255,255,0.07)' : 'transparent' }}
                           >
-                            <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(87,155,252,0.1)', border: '1px solid rgba(87,155,252,0.2)' }}>
-                              <Play weight="fill" className="w-3.5 h-3.5" style={{ color: '#579bfc' }} />
+                            <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(87,155,252,0.1)', border: '1px solid rgba(87,155,252,0.2)' }}>
+                              <Play weight="fill" className="w-2.5 h-2.5" style={{ color: '#579bfc' }} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-[13px] font-medium text-slate-200 truncate">{a.displayName}</p>
-                              <p className="text-[11px] text-slate-600">{a.type?.displayName} · {a.parameters.length} param{a.parameters.length !== 1 ? 's' : ''}</p>
+                              <p className="text-[11px] font-medium text-slate-200 truncate">{a.displayName}</p>
+                              <p className="text-[9px] text-slate-600">{a.type?.displayName} · {a.parameters.length} param{a.parameters.length !== 1 ? 's' : ''}</p>
                             </div>
-                            <ArrowRight className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
+                            <ArrowRight className="w-3 h-3 text-slate-600 flex-shrink-0" />
                           </button>
                         ))}
                       </div>
@@ -274,19 +278,19 @@ export function CommandPalette() {
                           <button
                             key={a.label}
                             onClick={() => go(a.path)}
-                            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors hover:bg-white/5 group"
+                            className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-left transition-colors hover:bg-white/5 group"
                           >
                             <div
-                              className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                              className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
                               style={{ background: 'rgba(37,100,234,0.1)', border: '1px solid rgba(37,100,234,0.16)' }}
                             >
-                              <Icon weight="fill" className="w-3.5 h-3.5" style={{ color: '#60a5fa' }} />
+                              <Icon weight="fill" className="w-2.5 h-2.5" style={{ color: '#60a5fa' }} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-[13px] font-medium text-slate-300 group-hover:text-white transition-colors">{a.label}</p>
-                              <p className="text-[11px] text-slate-700">{a.hint}</p>
+                              <p className="text-[11px] font-medium text-slate-300 group-hover:text-white transition-colors">{a.label}</p>
+                              <p className="text-[9px] text-slate-700">{a.hint}</p>
                             </div>
-                            <Plus className="w-3 h-3 text-slate-700 flex-shrink-0" />
+                            <Plus className="w-2.5 h-2.5 text-slate-700 flex-shrink-0" />
                           </button>
                         )
                       })}
@@ -297,7 +301,7 @@ export function CommandPalette() {
                       <p className={SECTION_LABEL}>Navigate</p>
                       {navGroups.map(group => (
                         <div key={group.label} className="mb-2">
-                          <p className="px-3 py-1 text-[9px] font-semibold uppercase tracking-wider text-slate-700">{group.label}</p>
+                          <p className="px-3 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-slate-600">{group.label}</p>
                           <div className="grid grid-cols-2">
                             {group.items.map(item => {
                               const Icon = item.icon
@@ -305,10 +309,10 @@ export function CommandPalette() {
                                 <button
                                   key={item.id}
                                   onClick={() => go(item.path)}
-                                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-left transition-colors hover:bg-white/5 group"
+                                  className="flex items-center gap-2 px-3 py-1 rounded text-left transition-colors hover:bg-white/5 group"
                                 >
-                                  <Icon weight="fill" className="w-3.5 h-3.5 text-slate-700 group-hover:text-slate-400 flex-shrink-0 transition-colors" />
-                                  <span className="text-[12px] text-slate-500 group-hover:text-slate-200 transition-colors truncate">{item.label}</span>
+                                  <Icon weight="fill" className="w-3 h-3 text-slate-600 group-hover:text-slate-400 flex-shrink-0 transition-colors" />
+                                  <span className="text-[10px] text-slate-500 group-hover:text-slate-200 transition-colors truncate">{item.label}</span>
                                 </button>
                               )
                             })}
@@ -320,11 +324,11 @@ export function CommandPalette() {
 
                 ) : noResults ? (
                   /* ── No results ── */
-                  <div className="py-12 text-center">
-                    <p className="text-sm text-slate-500">
+                  <div className="py-10 text-center">
+                    <p className="text-[11px] text-slate-500">
                       No results for <span className="text-white font-medium">"{dq}"</span>
                     </p>
-                    <p className="text-xs text-slate-700 mt-1">Try a lead name, client, project or page</p>
+                    <p className="text-[10px] text-slate-700 mt-1">Try a lead name, client, project or page</p>
                   </div>
 
                 ) : (
@@ -343,12 +347,12 @@ export function CommandPalette() {
                               key={item.id}
                               onMouseEnter={() => setActive(idx)}
                               onClick={() => go(item.path)}
-                              className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors"
+                              className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-left transition-colors"
                               style={{ background: idx === activeIdx ? 'rgba(255,255,255,0.07)' : 'transparent' }}
                             >
-                              <Icon weight="fill" className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                              <span className="text-[13px] font-medium text-slate-200 flex-1">{item.label}</span>
-                              <ArrowUpRight className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
+                              <Icon weight="fill" className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+                              <span className="text-[11px] font-medium text-slate-200 flex-1">{item.label}</span>
+                              <ArrowUpRight className="w-3 h-3 text-slate-600 flex-shrink-0" />
                             </button>
                           )
                         })}
@@ -373,28 +377,28 @@ export function CommandPalette() {
                                 key={result.id}
                                 onMouseEnter={() => setActive(idx)}
                                 onClick={() => go(result.path)}
-                                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors"
+                                className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-left transition-colors"
                                 style={{ background: idx === activeIdx ? 'rgba(255,255,255,0.07)' : 'transparent' }}
                               >
                                 <div
-                                  className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                                  className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
                                   style={{ background: `${color}10`, border: `1px solid ${color}20` }}
                                 >
-                                  <Icon className="w-3.5 h-3.5" style={{ color }} />
+                                  <Icon className="w-2.5 h-2.5" style={{ color }} />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-[13px] font-medium text-white truncate">{result.title}</p>
+                                  <p className="text-[11px] font-medium text-white truncate">{result.title}</p>
                                   {result.subtitle && (
-                                    <p className="text-[11px] text-slate-500 truncate">{result.subtitle}</p>
+                                    <p className="text-[9px] text-slate-500 truncate">{result.subtitle}</p>
                                   )}
                                 </div>
                                 {result.meta && (
-                                  <span className="text-[10px] text-slate-600 font-mono capitalize flex-shrink-0">
+                                  <span className="text-[9px] text-slate-600 font-mono capitalize flex-shrink-0">
                                     {result.meta.replace(/_/g, ' ')}
                                   </span>
                                 )}
                                 {idx === activeIdx && (
-                                  <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#0ea5e9' }} />
+                                  <ArrowRight className="w-3 h-3 flex-shrink-0" style={{ color: '#0ea5e9' }} />
                                 )}
                               </button>
                             )
