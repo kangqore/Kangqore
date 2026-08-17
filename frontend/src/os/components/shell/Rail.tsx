@@ -327,22 +327,6 @@ export function Rail() {
           isActive={isClientPortal ? pathname.startsWith('/kangqore-view/client/settings') : activeItem?.id === 'settings'}
           onClick={() => isClientPortal ? navigate('/kangqore-view/client/settings') : handleClick(BOTTOM)}
         />
-
-        <Tooltip content={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'} side="right">
-          <button
-            onClick={toggleSidebar}
-            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)] cursor-pointer"
-          >
-            <SidebarSimpleIcon
-              weight="fill"
-              className={cn(
-                'w-[18px] h-[18px] transition-transform duration-300',
-                sidebarCollapsed ? 'rotate-180' : ''
-              )}
-            />
-          </button>
-        </Tooltip>
       </div>
     </aside>
   )
