@@ -8,6 +8,8 @@ import {
   BookOpenIcon,
   UsersIcon,
   BrainIcon,
+  TextOutdentIcon,
+  TextIndentIcon,
 } from '@phosphor-icons/react'
 import { Briefcase, CheckSquare, Calendar, FileText, FolderOpen, Headphones } from 'lucide-react'
 import { cn } from '@design-system/cn'
@@ -41,32 +43,43 @@ function RailBtn({
   isActive: boolean
   onClick: () => void
 }) {
+  const { railExpanded } = useUIStore()
+
+  const content = (
+    <button
+      onClick={onClick}
+      aria-label={label}
+      className={cn(
+        'h-10 flex items-center rounded-lg transition-all duration-150 relative cursor-pointer',
+        railExpanded ? 'w-[calc(100%-16px)] mx-2 px-3 justify-start gap-3' : 'w-10 mx-auto justify-center',
+        isActive
+          ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
+          : 'text-white/70 hover:bg-white/10 hover:text-white'
+      )}
+    >
+      <Icon weight={isActive ? 'fill' : 'regular'} className="w-[18px] h-[18px] flex-shrink-0" />
+      {railExpanded && <span className="text-sm font-medium whitespace-nowrap overflow-hidden text-ellipsis">{label}</span>}
+    </button>
+  )
+
+  if (railExpanded) return content
+
   return (
     <Tooltip content={label} side="right">
-      <button
-        onClick={onClick}
-        aria-label={label}
-        className={cn(
-          'w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 relative cursor-pointer',
-          isActive
-            ? 'bg-gradient-to-r from-os-blue to-os-cyan text-white shadow-sm'
-            : 'text-[var(--os-text-2)] hover:bg-slate-200/50 dark:hover:bg-white/[0.04] hover:text-[var(--os-text-1)]'
-        )}
-      >
-        <Icon weight={isActive ? 'fill' : 'regular'} className="w-[18px] h-[18px] flex-shrink-0" />
-      </button>
+      {content}
     </Tooltip>
   )
 }
 
 function Divider() {
-  return <div className="w-7 h-px bg-[var(--os-border)] my-1 mx-auto" />
+  const { railExpanded } = useUIStore()
+  return <div className={cn("h-px bg-white/10 my-1 mx-auto transition-all duration-300", railExpanded ? "w-[calc(100%-32px)]" : "w-7")} />
 }
 
 export function Rail() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { sidebarCollapsed, setSidebarCollapsed, toggleSidebar, pinnedRailId, setPinnedRailId } = useUIStore()
+  const { sidebarCollapsed, setSidebarCollapsed, toggleSidebar, pinnedRailId, setPinnedRailId, railExpanded, toggleRail } = useUIStore()
   const urlActiveItem = getActiveRailItem(pathname)
   const activeItem = pinnedRailId
     ? (RAIL_ITEMS.find(i => i.id === pinnedRailId) ?? urlActiveItem)
@@ -180,11 +193,28 @@ export function Rail() {
 
   return (
     <aside
-      className="flex-shrink-0 flex flex-col w-14 h-full bg-[var(--os-sidebar-bg)] border-r border-[var(--os-border)]"
+      className={cn(
+        "flex-shrink-0 flex flex-col h-full bg-[#323949] border-r border-[#323949] transition-all duration-300",
+        railExpanded ? "w-64" : "w-14"
+      )}
       style={{ zIndex: 40 }}
     >
+      <div className="flex items-center justify-end px-2 pt-3 pb-1 h-[44px]">
+        <button
+          onClick={toggleRail}
+          aria-label={railExpanded ? 'Collapse rail' : 'Expand rail'}
+          className="w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 text-white/70 hover:bg-white/10 hover:text-white cursor-pointer"
+        >
+          {railExpanded ? (
+            <TextOutdentIcon weight="regular" className="w-[18px] h-[18px]" />
+          ) : (
+            <TextIndentIcon weight="regular" className="w-[18px] h-[18px]" />
+          )}
+        </button>
+      </div>
+
       {/* Home */}
-      <div className="flex flex-col items-center pt-3 pb-2 gap-1">
+      <div className="flex flex-col items-center pb-2 gap-1">
         {isTeamPortal ? (
           <RailBtn
             label="Portal Home"
