@@ -466,27 +466,27 @@ export function Topbar({ config }: { config?: any }) {
         {/* User profile dropdown */}
         <DropdownRoot>
           <DropdownTrigger asChild>
-            <button className="flex items-center gap-2 h-9 px-1.5 rounded-os-md hover:bg-black/5 dark:hover:bg-white/10 transition-colors flex-shrink-0 group">
+            <button className="flex items-center gap-2 h-9 px-1.5 rounded-os-md hover:bg-white/10 transition-colors flex-shrink-0 group">
               <div className="relative flex-shrink-0">
                 <img
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&h=100&q=80"
                   alt={displayName}
-                  className="w-[28px] h-[28px] rounded-full object-cover border border-border-subtle"
+                  className="w-[28px] h-[28px] rounded-full object-cover border border-white/20"
                 />
-                <span className="absolute bottom-0 right-0 w-2 h-2 bg-success border border-white dark:border-black rounded-full" />
+                <span className="absolute bottom-0 right-0 w-2 h-2 bg-success border border-white rounded-full" />
               </div>
               <div className="text-left hidden md:block min-w-0">
-                <p className="text-[12px] font-medium text-text-primary leading-none mb-0.5 truncate transition-colors">{displayName}</p>
-                <p className="text-[9px] text-text-secondary leading-none">{displayRole}</p>
+                <p className="text-[12px] font-medium text-white leading-none mb-0.5 truncate transition-colors">{displayName}</p>
+                <p className="text-[9px] text-white/70 leading-none">{displayRole}</p>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-text-muted group-hover:text-text-secondary transition-colors flex-shrink-0" />
+              <ChevronDown className="w-3.5 h-3.5 text-white/50 group-hover:text-white/70 transition-colors flex-shrink-0" />
             </button>
           </DropdownTrigger>
           {userDropdown('end')}
         </DropdownRoot>
 
       </div>
-    </Surface>
+    </header>
 
     <QuickCreateModal mode={createMode} onClose={() => setCreateMode(null)} />
     </>
