@@ -16,8 +16,11 @@ import { type RailEntry, RAIL_ITEMS, getActiveRailItem } from '@lib/nav'
 import { useUIStore } from '@store/ui'
 
 const HOME     = RAIL_ITEMS.find(i => i.id === 'home')!
+const RECENT   = RAIL_ITEMS.find(i => i.id === 'recent')!
 const INTEL    = RAIL_ITEMS.filter(i => ['waanda','kimmp','keos','aegis','ontology','relay','intelligence'].includes(i.id))
 const BUSINESS = RAIL_ITEMS.filter(i => ['crm','core','operations'].includes(i.id))
+const TOOLS    = RAIL_ITEMS.filter(i => ['files','applications'].includes(i.id))
+const SUPPORT  = RAIL_ITEMS.find(i => i.id === 'support')!
 const BOTTOM   = RAIL_ITEMS.find(i => i.id === 'settings')!
 
 const VALID_DEPTS = [
@@ -197,12 +200,22 @@ export function Rail() {
             onClick={() => navigate('/kangqore-view/client')}
           />
         ) : (
-          <RailBtn
-            label={HOME.label}
-            icon={HOME.icon}
-            isActive={activeItem?.id === 'home'}
-            onClick={() => handleClick(HOME)}
-          />
+          <>
+            <RailBtn
+              label={HOME.label}
+              icon={HOME.icon}
+              isActive={activeItem?.id === 'home'}
+              onClick={() => handleClick(HOME)}
+            />
+            {RECENT && (
+              <RailBtn
+                label={RECENT.label}
+                icon={RECENT.icon}
+                isActive={activeItem?.id === 'recent'}
+                onClick={() => handleClick(RECENT)}
+              />
+            )}
+          </>
         )}
         <Divider />
       </div>
@@ -231,6 +244,18 @@ export function Rail() {
           ))
         ) : (
           <>
+            {TOOLS.map(item => (
+              <RailBtn
+                key={item.id}
+                label={item.label}
+                icon={item.icon}
+                isActive={activeItem?.id === item.id}
+                onClick={() => handleClick(item)}
+              />
+            ))}
+            
+            <Divider />
+
             {INTEL.map(item => (
               <RailBtn
                 key={item.id}
@@ -258,6 +283,14 @@ export function Rail() {
 
       {/* Settings + Collapse */}
       <div className="flex flex-col items-center pt-2 pb-3 gap-1 border-t border-[var(--os-border)]">
+        {SUPPORT && (
+          <RailBtn
+            label={SUPPORT.label}
+            icon={SUPPORT.icon}
+            isActive={activeItem?.id === 'support'}
+            onClick={() => handleClick(SUPPORT)}
+          />
+        )}
         <RailBtn
           label={BOTTOM.label}
           icon={BOTTOM.icon}
