@@ -18,8 +18,7 @@ export function ViewToggle() {
 
   return (
     <div
-      className="flex items-center rounded-lg p-0.5 gap-0.5"
-      style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
+      className="flex items-center rounded-lg p-0.5 gap-0.5 bg-white/5 border border-white/10"
     >
       {VIEWS.map(({ mode, icon: Icon, label }) => {
         const supported = supportedViews.includes(mode)
@@ -36,8 +35,8 @@ export function ViewToggle() {
               active && supported
                 ? 'bg-[#579bfc] text-white'
                 : supported
-                  ? 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
-                  : 'text-[var(--os-border)] cursor-not-allowed'
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-white/20 cursor-not-allowed'
             )}
           >
             <Icon className="w-3.5 h-3.5" />

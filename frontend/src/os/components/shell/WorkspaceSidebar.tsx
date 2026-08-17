@@ -83,7 +83,7 @@ export function WorkspaceSidebar() {
       >
         <div className="w-[220px] h-full flex flex-col">
           {activeRailItem && (
-            <div className="px-5 pt-5 pb-3 flex-shrink-0 flex items-center justify-between">
+            <div className="px-5 pt-6 lg:pt-8 pb-3 flex-shrink-0 flex items-center justify-between">
               <p
                 className="text-[11px] font-semibold text-text-secondary tracking-wide truncate"
               >
@@ -163,8 +163,8 @@ export function WorkspaceSidebar() {
         className={cn(
           "absolute z-50 flex items-center justify-center transition-all duration-300 text-text-muted hover:text-text-primary",
           sidebarCollapsed 
-            ? "top-3 -right-8 w-8 h-8 bg-surface-secondary/90 backdrop-blur-md border border-border border-l-0 rounded-r-lg shadow-sm"
-            : "top-3 right-3 w-8 h-8 rounded-lg hover:bg-black/5 dark:hover:bg-white/10"
+            ? "top-5 -right-8 w-8 h-8 bg-surface-secondary/90 backdrop-blur-md border border-border border-l-0 rounded-r-lg shadow-sm"
+            : "top-5 right-3 w-8 h-8 rounded-lg hover:bg-black/5 dark:hover:bg-white/10"
         )}
       >
         <SidebarSimpleIcon weight="fill" className={cn("w-4 h-4 transition-transform duration-300", sidebarCollapsed ? "rotate-180" : "")} />
