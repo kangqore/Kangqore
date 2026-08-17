@@ -446,6 +446,7 @@ import { queryClient } from './lib/queryClient';
 import { ThemeProvider } from './context/ThemeContext';
 import { PodcastProvider } from './context/PodcastContext';
 import { AdaptiveProvider } from './context/AdaptiveContextManager';
+import { TemporalProvider } from './context/TemporalContextManager';
 import PodcastMiniPlayer from './components/PodcastMiniPlayer';
 
 /**
@@ -462,10 +463,12 @@ function App() {
             <GlobalAuthPrompt />
             <EROOT />
             <AdaptiveProvider>
-              <PodcastProvider>
-                <AppContent />
-                <PodcastMiniPlayer />
-              </PodcastProvider>
+              <TemporalProvider>
+                <PodcastProvider>
+                  <AppContent />
+                  <PodcastMiniPlayer />
+                </PodcastProvider>
+              </TemporalProvider>
             </AdaptiveProvider>
           </AuthProvider>
         </ThemeProvider>
