@@ -19,6 +19,7 @@ import { useSearch } from '../hooks/useSearch';
 import { useSocket } from '../hooks/useSocket';
 import { useAdaptiveContext } from '../context/AdaptiveContextManager';
 import WarRoom from './dashboard/WarRoom';
+import TemporalSlider from './dashboard/TemporalSlider';
 
 // Debounce helper
 const useDebounce = (value, delay) => {
@@ -384,6 +385,9 @@ const DashboardLayout = ({ children, role, title, subtitle, headerActions }) => 
       
       {/* PHASE VIS: The Adaptive UI Layer */}
       {layoutState === 'WAR_ROOM' && <WarRoom />}
+
+      {/* PHASE TEMPORAL: The Enterprise Time Machine */}
+      <TemporalSlider />
 
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
