@@ -75,7 +75,7 @@ export function TasksPage() {
         <select
           value={partnerFilter}
           onChange={e => setPartner(e.target.value)}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc]"
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc]"
         >
           <option value="all">All Partners</option>
           {partners.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -87,7 +87,7 @@ export function TasksPage() {
               <button
                 key={s}
                 onClick={() => setStatus(s)}
-                className="px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all border"
+                className="px-3 py-1.5 rounded-2xl text-xs font-bold capitalize transition-all border"
                 style={
                   statusFilter === s
                     ? { background: sc, color: '#fff', borderColor: sc }
@@ -143,7 +143,7 @@ export function TasksPage() {
                     )
                   })}
                   {colTasks.length === 0 && (
-                    <div className="h-16 rounded-xl border-2 border-dashed border-[var(--os-border)] flex items-center justify-center text-xs text-[var(--os-text-2)]">
+                    <div className="h-16 rounded-2xl border-2 border-dashed border-[var(--os-border)] flex items-center justify-center text-xs text-[var(--os-text-2)]">
                       Empty
                     </div>
                   )}

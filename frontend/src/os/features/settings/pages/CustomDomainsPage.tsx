@@ -10,7 +10,7 @@ import { api, isDemo } from '@lib/api'
 function CopyField({ value }: { value: string }) {
   const [copied, setCopied] = useState(false)
   return (
-    <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-xs font-mono text-[var(--os-text-1)]">
+    <div className="flex items-center gap-2 px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-xs font-mono text-[var(--os-text-1)]">
       <span className="flex-1 truncate">{value}</span>
       <button
         onClick={() => { navigator.clipboard.writeText(value); setCopied(true); setTimeout(() => setCopied(false), 1500) }}
@@ -95,10 +95,10 @@ export function CustomDomainsPage() {
                 value={newDomain}
                 onChange={e => setNewDomain(e.target.value)}
                 placeholder="book.yourcompany.com"
-                className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
             </div>
-            <div className="border border-[var(--os-border)] rounded-xl overflow-hidden text-xs">
+            <div className="border border-[var(--os-border)] rounded-2xl overflow-hidden text-xs">
               <div className="px-4 py-2.5 border-b border-[var(--os-border)] bg-[var(--os-surface-0)]">
                 <p className="font-semibold text-[var(--os-text-1)]">DNS Configuration — add both records to your DNS provider</p>
               </div>

@@ -268,7 +268,7 @@ export function OISTrendPage() {
 
       {/* Top KPI cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Live OIS Score</p>
           <div className="flex items-end gap-3">
             <span className="text-3xl font-extrabold" style={{ color: '#14b8a6' }}>
@@ -279,7 +279,7 @@ export function OISTrendPage() {
           <p className="text-xs text-[var(--os-text-3)] mt-1">Operational Intelligence Score™</p>
         </div>
 
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Net Change</p>
           <span className={`text-2xl font-extrabold ${netChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
             {netChange >= 0 ? '+' : ''}{netChange}
@@ -287,7 +287,7 @@ export function OISTrendPage() {
           <p className="text-xs text-[var(--os-text-3)] mt-1">pts over {snapshots.length} snapshots</p>
         </div>
 
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">{fcast?.horizon ?? 30}-Day Forecast</p>
           {fcast ? (
             <>
@@ -306,7 +306,7 @@ export function OISTrendPage() {
           )}
         </div>
 
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Snapshots</p>
           <span className="text-2xl font-extrabold text-[var(--os-text-1)]">{snapshots.length}</span>
           <p className="text-xs text-[var(--os-text-3)] mt-1">Manual · post-deploy · auto</p>

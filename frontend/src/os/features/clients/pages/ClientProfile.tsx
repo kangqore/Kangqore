@@ -98,7 +98,7 @@ function InviteToPortalDrawer({
             <p className="text-sm font-semibold text-white">Invites sent</p>
           </div>
           {results.map(r => (
-            <div key={r.email} className="rounded-xl p-3.5" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+            <div key={r.email} className="rounded-2xl p-3.5" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
               <div className="flex items-center justify-between gap-2 mb-1">
                 <span className="text-sm font-semibold text-[var(--os-text-1)] truncate">{r.email}</span>
                 <Badge variant={r.status === 'created' ? 'success' : 'warning'} size="sm">
@@ -123,7 +123,7 @@ function InviteToPortalDrawer({
             <button
               key={ct.email}
               onClick={() => toggle(ct.email)}
-              className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
+              className="w-full flex items-center gap-3 p-3 rounded-2xl text-left transition-all"
               style={{
                 background: selected.has(ct.email) ? 'rgba(37,100,234,0.08)' : 'var(--os-surface-0)',
                 border: `1px solid ${selected.has(ct.email) ? 'rgba(37,100,234,0.3)' : 'var(--os-surface-0)'}`,
@@ -162,7 +162,7 @@ export function ClientProfile() {
     return (
       <div className="p-8 text-center text-[var(--os-text-2)] space-y-3">
         <p className="text-sm">No client selected or available.</p>
-        <button onClick={() => navigate('/kangqore-view/admin/clients')} className="text-xs px-3 py-1.5 rounded-lg bg-blue-600 text-white font-semibold shadow-sm">
+        <button onClick={() => navigate('/kangqore-view/admin/clients')} className="text-xs px-3 py-1.5 rounded-2xl bg-blue-600 text-white font-semibold shadow-sm">
           View All Clients
         </button>
       </div>
@@ -190,7 +190,7 @@ export function ClientProfile() {
         <select
           value={selectedId}
           onChange={e => setSelected(e.target.value)}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20"
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20"
         >
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -283,11 +283,11 @@ export function ClientProfile() {
                   <p className="text-xs text-[var(--os-text-2)] truncate">{ct.email}</p>
                 </div>
                 <div className="flex gap-1.5">
-                   <button className="w-7 h-7 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:bg-[#579bfc]/10 hover:text-[#579bfc] flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                   <button className="w-7 h-7 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:bg-[#579bfc]/10 hover:text-[#579bfc] flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
                      <Mail className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                    </button>
                    {ct.phone && (
-                     <button className="w-7 h-7 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                     <button className="w-7 h-7 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:bg-[#00c875]/10 hover:text-[#00c875] flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
                        <Phone className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                      </button>
                    )}
@@ -370,7 +370,7 @@ export function ClientProfile() {
               const Icon = INTERACTION_ICON[interaction.type]
               return (
                 <div key={interaction.id} className="py-3.5 first:pt-0 last:pb-0 flex items-start gap-3">
-                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${INTERACTION_COLOR[interaction.type]}`}>
+                  <div className={`w-7 h-7 rounded-2xl flex items-center justify-center flex-shrink-0 ${INTERACTION_COLOR[interaction.type]}`}>
                     <Icon className="w-3.5 h-3.5" />
                   </div>
                   <div className="flex-1 min-w-0">

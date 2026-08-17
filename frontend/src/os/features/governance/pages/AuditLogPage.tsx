@@ -111,7 +111,7 @@ export function AuditLogPage() {
         <div className="flex items-center gap-1.5">
           {actionGroups.map(g => (
             <button key={g.key} onClick={() => setGroupFilter(g.key)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all ${
                 groupFilter === g.key
                   ? 'bg-[#579bfc] text-white'
                   : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
@@ -140,7 +140,7 @@ export function AuditLogPage() {
                   return (
                     <li key={log.id} className="flex items-start gap-4 px-5 py-4 hover:bg-[var(--os-surface-0)] transition-colors">
                       {/* Action icon */}
-                      <div className={cn('w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5', GROUP_COLOR[group])}>
+                      <div className={cn('w-7 h-7 rounded-2xl flex items-center justify-center flex-shrink-0 mt-0.5', GROUP_COLOR[group])}>
                         {GROUP_ICON[group]}
                       </div>
 

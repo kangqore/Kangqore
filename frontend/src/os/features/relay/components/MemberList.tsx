@@ -38,7 +38,7 @@ export function MemberList({ channelId, onClose }: { channelId: string; onClose:
                 {status.toLowerCase()} — {group.length}
               </p>
               {group.map((m) => (
-                <div key={m.userId} className="flex items-center gap-3 px-4 py-2 hover:bg-[var(--os-card)] transition-colors mx-2 rounded-xl">
+                <div key={m.userId} className="flex items-center gap-3 px-4 py-2 hover:bg-[var(--os-card)] transition-colors mx-2 rounded-2xl">
                   <div className="relative flex-shrink-0">
                     <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 overflow-hidden border border-slate-200">
                       {m.user.avatarUrl

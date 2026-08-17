@@ -82,7 +82,7 @@ export function CapTablePage() {
           { label: 'Investor Count',     value: committedInvestors,                 icon: Users,    accent: '#fdab3d' },
         ].map(item => (
           <div key={item.label} className="os-card p-5 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${item.accent}18` }}>
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${item.accent}18` }}>
               <item.icon className="w-5 h-5" style={{ color: item.accent }} />
             </div>
             <div>

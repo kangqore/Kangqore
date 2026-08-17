@@ -70,7 +70,7 @@ function LeadQueueCard({ lead, isActive, onClick }: { lead: Lead; isActive: bool
   return (
     <button
       onClick={onClick}
-      className="w-full text-left p-3 rounded-xl transition-all duration-150 relative overflow-hidden group"
+      className="w-full text-left p-3 rounded-2xl transition-all duration-150 relative overflow-hidden group"
       style={{
         background: isActive ? `${sc}12` : 'transparent',
         border: `1px solid ${isActive ? sc : 'transparent'}`,
@@ -78,7 +78,7 @@ function LeadQueueCard({ lead, isActive, onClick }: { lead: Lead; isActive: bool
     >
       {isActive && <div className="absolute left-0 top-2 bottom-2 w-0.5 rounded-r" style={{ background: sc }} />}
       <div className="flex items-center gap-2.5 pl-1.5">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-white text-[11px] font-black"
+        <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0 text-white text-[11px] font-black"
           style={{ background: sc }}>
           {lead.company.slice(0, 2).toUpperCase()}
         </div>
@@ -201,11 +201,11 @@ export function LeadProfile() {
     return (
       <div className="flex gap-5 h-full animate-pulse">
         <div className="w-56 flex-shrink-0 space-y-2">
-          {[...Array(6)].map((_, i) => <div key={i} className="h-14 rounded-xl bg-slate-100" />)}
+          {[...Array(6)].map((_, i) => <div key={i} className="h-14 rounded-2xl bg-slate-100" />)}
         </div>
         <div className="flex-1 space-y-4">
           <div className="h-32 rounded-2xl bg-slate-100" />
-          <div className="h-8 rounded-xl bg-slate-100 w-full" />
+          <div className="h-8 rounded-2xl bg-slate-100 w-full" />
           <div className="grid grid-cols-3 gap-4">
             <div className="h-48 rounded-2xl bg-slate-100 col-span-2" />
             <div className="h-48 rounded-2xl bg-slate-100" />
@@ -293,13 +293,13 @@ export function LeadProfile() {
                 <a key={label}
                   href={href ?? '#'}
                   title={label}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all text-slate-500 hover:text-blue-600"
+                  className="w-8 h-8 rounded-2xl flex items-center justify-center border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all text-slate-500 hover:text-blue-600"
                 >
                   <Icon className="w-3.5 h-3.5" />
                 </a>
               ))}
               <div className="w-px h-5 bg-slate-200 mx-1" />
-              <span className="text-xs font-semibold text-blue-600 px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-100">
+              <span className="text-xs font-semibold text-blue-600 px-3 py-1.5 rounded-2xl bg-blue-50 border border-blue-100">
                 ₹{(lead.value / 1000).toFixed(0)}k deal
               </span>
             </div>
@@ -380,8 +380,8 @@ export function LeadProfile() {
 
             {/* eQORE transcript link */}
             {detailData?.sessionId && (
-              <div className="mb-4 p-3 rounded-xl flex items-center gap-3 bg-blue-50 border border-blue-100">
-                <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+              <div className="mb-4 p-3 rounded-2xl flex items-center gap-3 bg-blue-50 border border-blue-100">
+                <div className="w-7 h-7 rounded-2xl bg-blue-600 flex items-center justify-center flex-shrink-0">
                   <span className="text-white text-[9px] font-black">eQ</span>
                 </div>
                 <p className="text-xs font-medium text-blue-800 flex-1">eQORE conversation on file</p>
@@ -397,8 +397,8 @@ export function LeadProfile() {
                 const Icon = ACTIVITY_ICON[act.type]
                 const c    = ACTIVITY_COLOR[act.type]
                 return (
-                  <div key={act.id} className="flex items-start gap-3 p-3 rounded-xl hover:bg-white transition-colors">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                  <div key={act.id} className="flex items-start gap-3 p-3 rounded-2xl hover:bg-white transition-colors">
+                    <div className="w-7 h-7 rounded-2xl flex items-center justify-center flex-shrink-0"
                       style={{ background: c.bg, color: c.color }}>
                       <Icon className="w-3.5 h-3.5" />
                     </div>
@@ -439,7 +439,7 @@ export function LeadProfile() {
             </div>
 
             {/* Win probability */}
-            <div className="p-3 rounded-xl bg-slate-50">
+            <div className="p-3 rounded-2xl bg-slate-50">
               <div className="flex justify-between items-center mb-2">
                 <p className="text-[11px] font-semibold text-slate-500">Win probability</p>
                 <span className="text-sm font-black"
@@ -483,11 +483,11 @@ export function LeadProfile() {
 
             {/* Quick actions */}
             <div className="space-y-2 pt-2">
-              <button className="w-full py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90"
+              <button className="w-full py-2.5 rounded-2xl text-sm font-bold text-white transition-all hover:opacity-90"
                 style={{ background: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)' }}>
                 Send Email
               </button>
-              <button className="w-full py-2.5 rounded-xl text-sm font-semibold border border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center justify-center gap-1.5">
+              <button className="w-full py-2.5 rounded-2xl text-sm font-semibold border border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center justify-center gap-1.5">
                 Move Stage <ArrowUpRight className="w-3.5 h-3.5" />
               </button>
             </div>

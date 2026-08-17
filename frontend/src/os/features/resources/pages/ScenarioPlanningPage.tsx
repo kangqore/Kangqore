@@ -181,7 +181,7 @@ export function ScenarioPlanningPage() {
 
         {/* Skill gap alert */}
         {uncoveredSkills.length > 0 && (
-          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: '#e2445c10', border: '1px solid #e2445c40' }}>
+          <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ background: '#e2445c10', border: '1px solid #e2445c40' }}>
             <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#e2445c' }} />
             <div>
               <p className="text-sm font-bold mb-1.5" style={{ color: '#e2445c' }}>Hiring required for these skills</p>

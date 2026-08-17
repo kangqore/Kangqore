@@ -109,11 +109,11 @@ function TranscriptDetail({ id, onBack }: { id: string; onBack: () => void }) {
           {messages.map((m: any, i: number) => (
             <div key={i} className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               {m.role === 'assistant' && (
-                <div className="w-6 h-6 rounded-md bg-[var(--os-surface-0)] flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-2xl bg-[var(--os-surface-0)] flex items-center justify-center flex-shrink-0 mt-0.5">
                   <ChatCircle size={12} className="text-cyan-400" />
                 </div>
               )}
-              <div className={`max-w-[75%] rounded-xl px-3.5 py-2.5 text-[12px] leading-relaxed ${
+              <div className={`max-w-[75%] rounded-2xl px-3.5 py-2.5 text-[12px] leading-relaxed ${
                 m.role === 'user'
                   ? 'bg-blue-600/20 text-[var(--os-text-1)] rounded-br-sm'
                   : 'bg-[var(--os-surface-0)] text-[var(--os-text-1)] rounded-bl-sm'
@@ -232,14 +232,14 @@ export function EqoreTranscripts() {
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-1.5 rounded-lg border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)] transition-colors"
+                className="p-1.5 rounded-2xl border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)] transition-colors"
               >
                 <CaretLeft size={13} />
               </button>
               <button
                 onClick={() => setPage(p => Math.min(pages, p + 1))}
                 disabled={page === pages}
-                className="p-1.5 rounded-lg border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)] transition-colors"
+                className="p-1.5 rounded-2xl border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)] transition-colors"
               >
                 <CaretRight size={13} />
               </button>

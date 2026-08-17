@@ -161,7 +161,7 @@ export function GraphCanvas({ rootId, depth = 2, typeId, limit = 200, height = 5
   })
 
   return (
-    <div className={cn('relative rounded-lg border border-[var(--os-border)] overflow-hidden bg-[var(--os-surface-0)]', className)}>
+    <div className={cn('relative rounded-2xl border border-[var(--os-border)] overflow-hidden bg-[var(--os-surface-0)]', className)}>
 
       {/* Toolbar */}
       <div className="absolute top-3 left-3 z-10 flex items-center gap-2">

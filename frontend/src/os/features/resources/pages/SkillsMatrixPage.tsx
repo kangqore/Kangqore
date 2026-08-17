@@ -81,7 +81,7 @@ export function SkillsMatrixPage() {
 
       {/* Skill gap alert */}
       {gapSkills > 0 && (
-        <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: '#fdab3d10', border: '1px solid #fdab3d40' }}>
+        <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ background: '#fdab3d10', border: '1px solid #fdab3d40' }}>
           <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#fdab3d' }} />
           <div>
             <p className="text-sm font-bold mb-2" style={{ color: '#fdab3d' }}>Single-person dependency risks</p>

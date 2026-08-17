@@ -55,7 +55,7 @@ export function ConversationList({
             value={search}
             onChange={e => onSearch(e.target.value)}
             placeholder={`Search ${audienceLabel?.toLowerCase() ?? 'conversations'}…`}
-            className="w-full pl-8 pr-3 py-2 text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+            className="w-full pl-8 pr-3 py-2 text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
           />
         </div>
       </div>

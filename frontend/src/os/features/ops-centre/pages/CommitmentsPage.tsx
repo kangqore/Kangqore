@@ -215,7 +215,7 @@ export function CommitmentsPage() {
   return (
     <div className="space-y-5">
       {/* Live project health */}
-      <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
+      <div className="flex items-center gap-2 px-3 py-2 rounded-2xl"
         style={{ background: '#579bfc08', border: '1px solid #579bfc20' }}>
         <Database className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#579bfc' }} />
         <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>
@@ -304,7 +304,7 @@ export function CommitmentsPage() {
                   </div>
 
                   {/* KIMMP note */}
-                  <div className="mt-2 flex items-start gap-1.5 px-2.5 py-2 rounded-lg"
+                  <div className="mt-2 flex items-start gap-1.5 px-2.5 py-2 rounded-2xl"
                     style={{ background: '#7c3aed08', border: '1px solid #7c3aed18' }}>
                     <Brain className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: '#7c3aed' }} />
                     <p className="text-[11px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{c.kimmpNote}</p>

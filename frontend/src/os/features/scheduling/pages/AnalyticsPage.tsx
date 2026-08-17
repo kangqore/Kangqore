@@ -57,12 +57,12 @@ export function AnalyticsPage() {
     <div className="space-y-6">
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-1 bg-[var(--os-surface-0)] rounded-xl p-1">
+        <div className="flex items-center gap-1 bg-[var(--os-surface-0)] rounded-2xl p-1">
           {RANGES.map(r => (
             <button
               key={r.days}
               onClick={() => setDays(r.days)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${days === r.days ? 'bg-os-blue text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'}`}
+              className={`px-3 py-1.5 rounded-2xl text-sm font-medium transition-all ${days === r.days ? 'bg-os-blue text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'}`}
             >
               {r.label}
             </button>
@@ -71,7 +71,7 @@ export function AnalyticsPage() {
         <select
           value={eventTypeId}
           onChange={e => setEventTypeId(e.target.value)}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
         >
           <option value="">All event types</option>
           {eventTypes.map(et => <option key={et.id} value={et.id}>{et.name}</option>)}

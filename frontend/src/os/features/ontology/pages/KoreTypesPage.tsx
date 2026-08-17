@@ -25,7 +25,7 @@ function CreateTypeDrawer({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-md rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+      <div className="w-full max-w-md rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-[var(--os-text-1)]">New KORE Type</p>
           <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><X className="w-4 h-4" /></button>
@@ -35,7 +35,7 @@ function CreateTypeDrawer({ onClose }: { onClose: () => void }) {
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Name</label>
             <input
               autoFocus
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               placeholder="e.g. Contract, Proposal, Asset"
               value={name}
               onChange={e => setName(e.target.value)}
@@ -44,7 +44,7 @@ function CreateTypeDrawer({ onClose }: { onClose: () => void }) {
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Description (optional)</label>
             <input
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               placeholder="What does this type represent?"
               value={desc}
               onChange={e => setDesc(e.target.value)}
@@ -54,7 +54,7 @@ function CreateTypeDrawer({ onClose }: { onClose: () => void }) {
         <button
           onClick={() => create.mutate()}
           disabled={!name.trim() || create.isPending}
-          className="w-full py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {create.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Creating…</> : 'Create Type'}
         </button>
@@ -78,7 +78,7 @@ function AddPropertyDrawer({ objectName, onClose }: { objectName: string; onClos
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+      <div className="w-full max-w-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-[var(--os-text-1)]">Add Property — <span className="text-[var(--os-text-2)]">{objectName}</span></p>
           <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><X className="w-4 h-4" /></button>
@@ -88,7 +88,7 @@ function AddPropertyDrawer({ objectName, onClose }: { objectName: string; onClos
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Property Name</label>
             <input
               autoFocus
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               placeholder="e.g. status, dueDate, amount"
               value={propName}
               onChange={e => setPropName(e.target.value)}
@@ -97,7 +97,7 @@ function AddPropertyDrawer({ objectName, onClose }: { objectName: string; onClos
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Type</label>
             <select
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
               value={propType} onChange={e => setPropType(e.target.value)}
             >
               {PROP_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
@@ -111,7 +111,7 @@ function AddPropertyDrawer({ objectName, onClose }: { objectName: string; onClos
         <button
           onClick={() => add.mutate()}
           disabled={!propName.trim() || add.isPending}
-          className="w-full py-2 rounded-lg bg-[#059669] text-white text-sm font-semibold hover:bg-[#047857] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-2 rounded-2xl bg-[#059669] text-white text-sm font-semibold hover:bg-[#047857] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {add.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Adding…</> : 'Add Property'}
         </button>
@@ -133,7 +133,7 @@ function AddActionDrawer({ objectName, onClose }: { objectName: string; onClose:
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+      <div className="w-full max-w-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-[var(--os-text-1)]">Add Action — <span className="text-[var(--os-text-2)]">{objectName}</span></p>
           <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><X className="w-4 h-4" /></button>
@@ -143,7 +143,7 @@ function AddActionDrawer({ objectName, onClose }: { objectName: string; onClose:
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Action Name</label>
             <input
               autoFocus
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               placeholder="e.g. approve, escalate, archive"
               value={actionName}
               onChange={e => setActionName(e.target.value)}
@@ -152,7 +152,7 @@ function AddActionDrawer({ objectName, onClose }: { objectName: string; onClose:
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Description (optional)</label>
             <input
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               placeholder="What does this action do?"
               value={actionDesc}
               onChange={e => setActionDesc(e.target.value)}
@@ -162,7 +162,7 @@ function AddActionDrawer({ objectName, onClose }: { objectName: string; onClose:
         <button
           onClick={() => add.mutate()}
           disabled={!actionName.trim() || add.isPending}
-          className="w-full py-2 rounded-lg bg-[#d97706] text-white text-sm font-semibold hover:bg-[#b45309] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-2 rounded-2xl bg-[#d97706] text-white text-sm font-semibold hover:bg-[#b45309] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {add.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Adding…</> : 'Add Action'}
         </button>
@@ -186,7 +186,7 @@ function AddRelationshipDrawer({ objectName, allTypes, onClose }: { objectName: 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+      <div className="w-full max-w-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-[var(--os-text-1)]">Add Relationship — <span className="text-[var(--os-text-2)]">{objectName}</span></p>
           <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><X className="w-4 h-4" /></button>
@@ -195,19 +195,19 @@ function AddRelationshipDrawer({ objectName, allTypes, onClose }: { objectName: 
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Relation Name</label>
             <input autoFocus placeholder="e.g. hasMany, belongsTo, references"
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               value={relName} onChange={e => setRelName(e.target.value)} />
           </div>
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Target Type</label>
-            <select className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+            <select className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
               value={target} onChange={e => setTarget(e.target.value)}>
               {allTypes.filter(t => t !== objectName).map(t => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Cardinality</label>
-            <select className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+            <select className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
               value={cardinality} onChange={e => setCardinality(e.target.value as KoreRelationship['cardinality'])}>
               <option value="ONE_TO_ONE">1 : 1 (One to One)</option>
               <option value="ONE_TO_MANY">1 : N (One to Many)</option>
@@ -220,7 +220,7 @@ function AddRelationshipDrawer({ objectName, allTypes, onClose }: { objectName: 
           </label>
         </div>
         <button onClick={() => add.mutate()} disabled={!relName.trim() || !target || add.isPending}
-          className="w-full py-2 rounded-lg bg-[#7c3aed] text-white text-sm font-semibold hover:bg-[#6d28d9] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          className="w-full py-2 rounded-2xl bg-[#7c3aed] text-white text-sm font-semibold hover:bg-[#6d28d9] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
           {add.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Adding…</> : 'Add Relationship'}
         </button>
         {add.isError && <p className="text-[11px] text-red-400">Failed: {(add.error as Error).message}</p>}
@@ -295,7 +295,7 @@ function TypeDetail({ obj, allTypeNames }: { obj: KoreObject; allTypeNames: stri
             ) : (
               <div className="space-y-1.5">
                 {loaded.properties.map(p => (
-                  <div key={p.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
+                  <div key={p.id} className="flex items-center gap-2 px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
                     <span className="font-medium text-[var(--os-text-1)] truncate flex-1">{p.name}</span>
                     <span className="text-[9px] px-1.5 py-0.5 rounded bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)]">{p.type}</span>
                     {p.isRequired && <span className="text-[9px] text-amber-400">required</span>}
@@ -325,7 +325,7 @@ function TypeDetail({ obj, allTypeNames }: { obj: KoreObject; allTypeNames: stri
             ) : (
               <div className="space-y-1.5">
                 {loaded.actions.map(a => (
-                  <div key={a.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
+                  <div key={a.id} className="flex items-center gap-2 px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
                     <span className="font-medium text-[var(--os-text-1)] truncate flex-1">{a.name}</span>
                     {a.description && <span className="text-[10px] text-[var(--os-text-2)] truncate">{a.description}</span>}
                     <div className="flex gap-1 flex-shrink-0">
@@ -359,7 +359,7 @@ function TypeDetail({ obj, allTypeNames }: { obj: KoreObject; allTypeNames: stri
             ) : (
               <div className="space-y-1.5">
                 {relationships.map(r => (
-                  <div key={r.id} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-xs group">
+                  <div key={r.id} className="flex items-center gap-2 px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-xs group">
                     <span className="font-mono font-semibold text-violet-400 truncate">{obj.name}</span>
                     <span className="text-[var(--os-text-3)] shrink-0">·{r.relationName}·</span>
                     <span className="font-mono font-semibold text-[#579bfc] truncate flex-1">{r.targetObjectName}</span>
@@ -406,7 +406,7 @@ export function KoreTypesPage() {
         </div>
         <button
           onClick={() => setCreateDrawer(true)}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#579bfc] text-white text-xs font-semibold hover:bg-[#4a8ef5] transition-colors"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-[#579bfc] text-white text-xs font-semibold hover:bg-[#4a8ef5] transition-colors"
         >
           <Plus className="w-3.5 h-3.5" />New Type
         </button>

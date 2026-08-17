@@ -30,8 +30,8 @@ function KpiCard({ icon: Icon, label, value, sub, color }: {
   icon: any; label: string; value: number | string; sub?: string; color?: string
 }) {
   return (
-    <div className="border border-[var(--os-border)] rounded-xl p-4 bg-[var(--os-bg-1)] flex items-start gap-3">
-      <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0', color ?? 'bg-violet-500/10')}>
+    <div className="border border-[var(--os-border)] rounded-2xl p-4 bg-[var(--os-bg-1)] flex items-start gap-3">
+      <div className={cn('w-8 h-8 rounded-2xl flex items-center justify-center shrink-0', color ?? 'bg-violet-500/10')}>
         <Icon className={cn('w-4 h-4', color ? 'text-white' : 'text-violet-400')} />
       </div>
       <div>
@@ -87,7 +87,7 @@ export function ExecutiveView() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Status breakdown */}
-        <div className="border border-[var(--os-border)] rounded-xl p-4 bg-[var(--os-bg-1)]">
+        <div className="border border-[var(--os-border)] rounded-2xl p-4 bg-[var(--os-bg-1)]">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="w-4 h-4 text-violet-400" />
             <span className="text-sm font-medium text-[var(--os-text-1)]">By Status</span>
@@ -107,7 +107,7 @@ export function ExecutiveView() {
         </div>
 
         {/* Priority breakdown */}
-        <div className="border border-[var(--os-border)] rounded-xl p-4 bg-[var(--os-bg-1)]">
+        <div className="border border-[var(--os-border)] rounded-2xl p-4 bg-[var(--os-bg-1)]">
           <div className="flex items-center gap-2 mb-4">
             <AlertCircle className="w-4 h-4 text-amber-400" />
             <span className="text-sm font-medium text-[var(--os-text-1)]">By Priority</span>
@@ -130,7 +130,7 @@ export function ExecutiveView() {
 
       {/* Portfolio health */}
       {portfolios.length > 0 && (
-        <div className="border border-[var(--os-border)] rounded-xl p-4 bg-[var(--os-bg-1)]">
+        <div className="border border-[var(--os-border)] rounded-2xl p-4 bg-[var(--os-bg-1)]">
           <div className="text-sm font-medium text-[var(--os-text-1)] mb-4">Portfolio Health</div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {portfolios.map(p => (
@@ -154,7 +154,7 @@ export function ExecutiveView() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Blocked items */}
         {blocked.length > 0 && (
-          <div className="border border-red-500/20 rounded-xl p-4 bg-red-500/5">
+          <div className="border border-red-500/20 rounded-2xl p-4 bg-red-500/5">
             <div className="text-sm font-medium text-red-400 mb-3">Blocked Items ({blocked.length})</div>
             <div className="space-y-2">
               {blocked.map(item => (
@@ -172,7 +172,7 @@ export function ExecutiveView() {
 
         {/* Recently completed */}
         {completed.length > 0 && (
-          <div className="border border-emerald-500/20 rounded-xl p-4 bg-emerald-500/5">
+          <div className="border border-emerald-500/20 rounded-2xl p-4 bg-emerald-500/5">
             <div className="text-sm font-medium text-emerald-400 mb-3">Recently Completed</div>
             <div className="space-y-2">
               {completed.map(item => (

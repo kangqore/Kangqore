@@ -160,7 +160,7 @@ export function AegisLiveFeedPage() {
     <div className="flex flex-col h-full" style={{ minHeight: '70vh' }}>
 
       {/* Sovereignty doctrine header */}
-      <div className="rounded-xl border border-[#7c3aed]/30 bg-[#7c3aed]/[0.04] px-5 py-4 mb-4">
+      <div className="rounded-2xl border border-[#7c3aed]/30 bg-[#7c3aed]/[0.04] px-5 py-4 mb-4">
         <div className="flex items-center gap-3 mb-2">
           <div className="relative flex-shrink-0">
             <Shield className="w-5 h-5 text-[#7c3aed]" />
@@ -186,7 +186,7 @@ export function AegisLiveFeedPage() {
               key={type}
               onClick={() => setFilter(f => f === type ? '' : type)}
               className={cn(
-                'flex items-center gap-1.5 text-[10px] font-mono px-2 py-1 rounded-lg border transition-all',
+                'flex items-center gap-1.5 text-[10px] font-mono px-2 py-1 rounded-2xl border transition-all',
                 filter === type
                   ? 'border-current'
                   : 'border-[var(--os-border)] hover:border-current'
@@ -198,7 +198,7 @@ export function AegisLiveFeedPage() {
             </button>
           ))}
           {autonomousCount > 0 && (
-            <span className="flex items-center gap-1.5 text-[10px] font-mono px-2 py-1 rounded-lg border border-[var(--os-border)] text-[#7c3aed]">
+            <span className="flex items-center gap-1.5 text-[10px] font-mono px-2 py-1 rounded-2xl border border-[var(--os-border)] text-[#7c3aed]">
               ⚡ {autonomousCount} autonomous
             </span>
           )}
@@ -211,7 +211,7 @@ export function AegisLiveFeedPage() {
         <button
           onClick={() => setPaused(p => !p)}
           className={cn(
-            'text-[10px] font-mono px-2.5 py-1 rounded-lg border transition-all',
+            'text-[10px] font-mono px-2.5 py-1 rounded-2xl border transition-all',
             paused
               ? 'border-[#fdab3d]/50 text-[#fdab3d] bg-[#fdab3d]/10'
               : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
@@ -222,7 +222,7 @@ export function AegisLiveFeedPage() {
       </div>
 
       {/* Feed */}
-      <div className="flex-1 overflow-y-auto rounded-xl border border-[var(--os-border)] bg-[var(--os-card)]" style={{ maxHeight: '65vh' }}>
+      <div className="flex-1 overflow-y-auto rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)]" style={{ maxHeight: '65vh' }}>
         {/* Column headers */}
         <div className="sticky top-0 flex items-center gap-3 px-4 py-2 bg-[var(--os-card)] border-b border-[var(--os-border)] z-10">
           <span className="w-2 flex-shrink-0" />

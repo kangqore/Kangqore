@@ -66,7 +66,7 @@ export function AuditLogPage() {
         <select
           value={action}
           onChange={e => { setAction(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
         >
           <option value="">All actions</option>
           {ACTION_OPTIONS.map(a => <option key={a} value={a}>{a}</option>)}
@@ -75,14 +75,14 @@ export function AuditLogPage() {
           type="date"
           value={from}
           onChange={e => { setFrom(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
         />
         <span className="text-[var(--os-text-2)] text-sm">to</span>
         <input
           type="date"
           value={to}
           onChange={e => { setTo(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
         />
         {(action || from || to) && (
           <button
@@ -130,11 +130,11 @@ export function AuditLogPage() {
         <div className="flex items-center justify-between text-sm text-[var(--os-text-2)]">
           <span>{total} total</span>
           <div className="flex items-center gap-2">
-            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-[var(--os-border)] disabled:opacity-30">
+            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] border border-[var(--os-border)] disabled:opacity-30">
               <ChevronLeft className="w-4 h-4" />
             </button>
             <span>Page {page} of {totalPages}</span>
-            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-[var(--os-border)] disabled:opacity-30">
+            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] border border-[var(--os-border)] disabled:opacity-30">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>

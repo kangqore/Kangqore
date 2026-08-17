@@ -254,7 +254,7 @@ const CERTS = [
 
 function CertificationRoadmap() {
   return (
-    <div className="rounded-xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+    <div className="rounded-2xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
       <div className="flex items-center gap-2 mb-4">
         <Flag className="w-3.5 h-3.5 text-violet-400" />
         <p className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-wider">Certification Roadmap</p>
@@ -312,7 +312,7 @@ function AuditCountdown() {
   const urgency    = daysLeft < 30 ? '#e2445c' : daysLeft < 60 ? '#fdab3d' : '#7f53f9'
 
   return (
-    <div className="rounded-xl p-5 flex items-center gap-6" style={{ background: `${urgency}06`, border: `1px solid ${urgency}20` }}>
+    <div className="rounded-2xl p-5 flex items-center gap-6" style={{ background: `${urgency}06`, border: `1px solid ${urgency}20` }}>
       <div className="flex-shrink-0 text-center">
         <p className="text-4xl font-black tabular-nums" style={{ color: urgency }}>{daysLeft}</p>
         <p className="text-[10px] font-bold" style={{ color: urgency }}>days</p>
@@ -373,7 +373,7 @@ function ResolutionImpact({ currentScore }: { currentScore: number }) {
   const projScore   = Math.min(100, currentScore + totalGain)
 
   return (
-    <div className="rounded-xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+    <div className="rounded-2xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
       <div className="flex items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
@@ -390,7 +390,7 @@ function ResolutionImpact({ currentScore }: { currentScore: number }) {
 
       <div className="space-y-2">
         {QUICK_WINS.map((w) => (
-          <div key={w.action} className="flex items-start gap-3 rounded-lg p-3"
+          <div key={w.action} className="flex items-start gap-3 rounded-2xl p-3"
             style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
             <Zap className="w-3.5 h-3.5 text-violet-400 flex-shrink-0 mt-0.5" />
             <div className="flex-1 min-w-0">
@@ -491,7 +491,7 @@ function ControlRow({ control, liveStatus, liveCheckedAt, engineId }: {
   const sc = STATUS_COLOR[effectiveStatus]
 
   return (
-    <div className="rounded-xl overflow-hidden transition-all"
+    <div className="rounded-2xl overflow-hidden transition-all"
       style={{
         background: 'var(--os-card)',
         border: `1px solid ${effectiveStatus === 'FAIL' ? '#e2445c30' : 'var(--os-border)'}`,
@@ -525,7 +525,7 @@ function ControlRow({ control, liveStatus, liveCheckedAt, engineId }: {
                     <Radio className="w-2 h-2" /> LIVE
                   </span>
                 )}
-                <span className="text-[10px] font-bold px-2 py-1 rounded-lg"
+                <span className="text-[10px] font-bold px-2 py-1 rounded-2xl"
                   style={{ color: sc, background: `${sc}10`, border: `1px solid ${sc}30` }}>
                   {effectiveStatus}
                 </span>
@@ -543,7 +543,7 @@ function ControlRow({ control, liveStatus, liveCheckedAt, engineId }: {
             </div>
 
             {control.kimmpSignal && (
-              <div className="mt-2.5 flex items-start gap-2 px-3 py-2 rounded-lg"
+              <div className="mt-2.5 flex items-start gap-2 px-3 py-2 rounded-2xl"
                 style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.15)' }}>
                 <Brain className="w-3 h-3 text-purple-400 flex-shrink-0 mt-0.5" />
                 <p className="text-[11px] text-[var(--os-text-1)] leading-relaxed">{control.kimmpSignal}</p>
@@ -574,7 +574,7 @@ function BreachReadinessScore() {
   const color = score >= 80 ? '#00c875' : score >= 60 ? '#fdab3d' : '#e2445c'
 
   return (
-    <div className="rounded-xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+    <div className="rounded-2xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
       <div className="flex items-start justify-between gap-4 mb-4">
         <div>
           <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider mb-1">KIMMP Breach Readiness Score</p>
@@ -599,7 +599,7 @@ function BreachReadinessScore() {
           { label: 'Response',   score: 74, note: 'IRP documented; DR test overdue' },
           { label: 'Recovery',   score: 58, note: 'RPO/RTO untested since H1 2025' },
         ] as const).map(d => (
-          <div key={d.label} className="rounded-lg p-2.5" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+          <div key={d.label} className="rounded-2xl p-2.5" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
             <p className="text-lg font-bold tabular-nums"
               style={{ color: d.score >= 80 ? '#00c875' : d.score >= 60 ? '#fdab3d' : '#e2445c' }}>{d.score}</p>
             <p className="text-[10px] font-bold text-[var(--os-text-2)]">{d.label}</p>
@@ -670,7 +670,7 @@ function GovernanceTestSuite() {
           </div>
         )}
         <button onClick={runTests} disabled={running}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-bold transition-all disabled:opacity-50 flex-shrink-0"
+          className="flex items-center gap-2 px-4 py-2 rounded-2xl text-[12px] font-bold transition-all disabled:opacity-50 flex-shrink-0"
           style={{ background: running ? 'rgba(239,68,68,0.1)' : '#ef444415', color: '#ef4444', border: '1px solid #ef444430' }}>
           {running
             ? <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Running…</>
@@ -697,7 +697,7 @@ function GovernanceTestSuite() {
       {running && (
         <div className="p-5 grid grid-cols-1 gap-2">
           {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="h-10 rounded-xl animate-pulse" style={{ background: 'var(--os-surface-0)', animationDelay: `${i * 50}ms` }} />
+            <div key={i} className="h-10 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)', animationDelay: `${i * 50}ms` }} />
           ))}
         </div>
       )}
@@ -811,7 +811,7 @@ export function AegisCompliancePage() {
 
       {/* Summary strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="rounded-xl p-4 col-span-2 lg:col-span-1"
+        <div className="rounded-2xl p-4 col-span-2 lg:col-span-1"
           style={{ background: 'var(--os-card)', border: '1px solid rgba(124,58,237,0.25)' }}>
           <p className="text-4xl font-black text-[var(--os-text-1)] tabular-nums">{score}<span className="text-lg text-[var(--os-text-2)]">%</span></p>
           <p className="text-[10px] text-purple-400 font-bold mt-0.5">Overall compliance score</p>
@@ -827,7 +827,7 @@ export function AegisCompliancePage() {
           { label: 'Warning',  count: warn, color: '#fdab3d' },
           { label: 'Failing',  count: fail, color: '#e2445c' },
         ] as const).map(s => (
-          <div key={s.label} className="rounded-xl p-4"
+          <div key={s.label} className="rounded-2xl p-4"
             style={{ background: 'var(--os-card)', border: `1px solid ${s.color}20` }}>
             <p className="text-3xl font-bold text-[var(--os-text-1)] tabular-nums">{s.count}</p>
             <p className="text-[10px] mt-0.5" style={{ color: s.color }}>{s.label}</p>
@@ -842,7 +842,7 @@ export function AegisCompliancePage() {
         </div>
 
         {/* Audit evidence export */}
-        <div className="rounded-xl p-5 flex flex-col gap-3" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+        <div className="rounded-2xl p-5 flex flex-col gap-3" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
           <div>
             <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider mb-1">Audit Evidence Package</p>
             <p className="text-[11px] text-[var(--os-text-2)] leading-relaxed">
@@ -862,7 +862,7 @@ export function AegisCompliancePage() {
               </div>
             ))}
           </div>
-          <button className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-[12px] font-bold transition-all hover:opacity-90"
+          <button className="flex items-center justify-center gap-2 w-full py-2.5 rounded-2xl text-[12px] font-bold transition-all hover:opacity-90"
             style={{ background: 'linear-gradient(135deg, #7f53f9 0%, #2564ea 100%)', color: '#fff' }}>
             <Download className="w-3.5 h-3.5" />
             Export Audit Package
@@ -874,7 +874,7 @@ export function AegisCompliancePage() {
       {/* Filters */}
       <div className="flex gap-2 flex-wrap">
         <button onClick={() => setStatusFilter('issues')}
-          className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
+          className="text-[11px] font-semibold px-3 py-1.5 rounded-2xl transition-all"
           style={{
             background: statusFilter === 'issues' ? 'rgba(226,68,92,0.1)' : 'var(--os-card)',
             border: `1px solid ${statusFilter === 'issues' ? 'rgba(226,68,92,0.3)' : 'var(--os-border)'}`,
@@ -884,7 +884,7 @@ export function AegisCompliancePage() {
         </button>
         {(['PASS', 'WARN', 'FAIL', 'all'] as const).map(s => (
           <button key={s} onClick={() => setStatusFilter(s)}
-            className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
+            className="text-[11px] font-semibold px-3 py-1.5 rounded-2xl transition-all"
             style={{
               background: statusFilter === s ? `${STATUS_COLOR[s as ControlStatus] ?? 'rgba(100,116,139'}0.1)` : 'var(--os-card)',
               border: `1px solid ${statusFilter === s ? `${STATUS_COLOR[s as ControlStatus] ?? 'rgba(100,116,139'}0.3)` : 'var(--os-border)'}`,
@@ -896,7 +896,7 @@ export function AegisCompliancePage() {
         <div className="w-px bg-[var(--os-border)]" />
         {frameworks.map(f => (
           <button key={f} onClick={() => setFrameworkFilter(frameworkFilter === f ? 'all' : f)}
-            className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
+            className="text-[11px] font-semibold px-3 py-1.5 rounded-2xl transition-all"
             style={{
               background: frameworkFilter === f ? `${FRAMEWORK_COLOR[f]}14` : 'var(--os-card)',
               border: `1px solid ${frameworkFilter === f ? `${FRAMEWORK_COLOR[f]}35` : 'var(--os-border)'}`,
@@ -978,7 +978,7 @@ function LiveSoc2Controls() {
           <Database className="w-4 h-4" style={{ color: '#7c3aed' }} />
           <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{framework === 'SOC2' ? 'SOC2' : 'ISO 27001'} Readiness Checkpoints</p>
         </button>
-        <div className="flex rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid var(--os-border)' }} onClick={e => e.stopPropagation()}>
+        <div className="flex rounded-2xl overflow-hidden flex-shrink-0" style={{ border: '1px solid var(--os-border)' }} onClick={e => e.stopPropagation()}>
           {(['SOC2', 'ISO27001'] as const).map(fw => (
             <button key={fw} onClick={() => setFramework(fw)}
               className="text-[10px] font-bold px-2.5 py-1 transition-colors"
@@ -996,7 +996,7 @@ function LiveSoc2Controls() {
 
       {!collapsed && (
         isLoading ? (
-          <div className="p-5 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 rounded-xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}</div>
+          <div className="p-5 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}</div>
         ) : (
           <div className="divide-y" style={{ borderColor: 'var(--os-border)' }}>
             {controls.map(c => {
@@ -1018,7 +1018,7 @@ function LiveSoc2Controls() {
                       {c.lastTestedAt && <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-2)' }}>Last tested: {new Date(c.lastTestedAt).toLocaleDateString()}</p>}
                     </div>
                     <button onClick={() => { setEditingId(editing ? null : c.id); setEditForm({ status: c.status, evidenceNote: c.evidenceNote ?? '' }) }}
-                      className="flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg flex-shrink-0"
+                      className="flex items-center gap-1 text-[10px] px-2 py-1 rounded-2xl flex-shrink-0"
                       style={{ background: 'var(--os-surface-0)', color: 'var(--os-text-2)' }}>
                       <Pencil className="w-3 h-3" /> Edit
                     </button>
@@ -1028,22 +1028,22 @@ function LiveSoc2Controls() {
                     <div className="mt-3 flex items-center gap-3 pl-10">
                       <select value={editForm.status}
                         onChange={e => setEditForm(f => ({ ...f, status: e.target.value }))}
-                        className="px-2 py-1.5 text-[10px] rounded-lg border focus:outline-none"
+                        className="px-2 py-1.5 text-[10px] rounded-2xl border focus:outline-none"
                         style={{ borderColor: 'var(--os-border)', background: 'var(--os-surface-0)', color: 'var(--os-text-1)' }}>
                         {['IN_PLACE', 'PARTIAL', 'MISSING'].map(s => <option key={s}>{s}</option>)}
                       </select>
                       <input value={editForm.evidenceNote}
                         onChange={e => setEditForm(f => ({ ...f, evidenceNote: e.target.value }))}
                         placeholder="Evidence note…"
-                        className="flex-1 px-2 py-1.5 text-[10px] rounded-lg border focus:outline-none"
+                        className="flex-1 px-2 py-1.5 text-[10px] rounded-2xl border focus:outline-none"
                         style={{ borderColor: 'var(--os-border)', background: 'var(--os-surface-0)', color: 'var(--os-text-1)' }} />
                       <button disabled={update.isPending}
                         onClick={() => update.mutate({ id: c.id, payload: { status: editForm.status, evidenceNote: editForm.evidenceNote } })}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-[10px] font-bold disabled:opacity-40"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-2xl text-[10px] font-bold disabled:opacity-40"
                         style={{ background: '#10b981', color: '#fff' }}>
                         <Check className="w-3 h-3" /> Save
                       </button>
-                      <button onClick={() => setEditingId(null)} className="text-[10px] px-2 py-1.5 rounded-lg" style={{ color: 'var(--os-text-2)' }}>Cancel</button>
+                      <button onClick={() => setEditingId(null)} className="text-[10px] px-2 py-1.5 rounded-2xl" style={{ color: 'var(--os-text-2)' }}>Cancel</button>
                     </div>
                   )}
                 </div>

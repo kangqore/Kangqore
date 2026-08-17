@@ -63,7 +63,7 @@ function AddMarkingModal({ onClose }: { onClose: () => void }) {
                 {f.label}
               </label>
               <input
-                className="w-full bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg px-3 py-2 text-xs text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] focus:outline-none focus:border-[var(--os-accent)]"
+                className="w-full bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-xs text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] focus:outline-none focus:border-[var(--os-accent)]"
                 placeholder={f.placeholder}
                 value={(form as any)[f.key]}
                 onChange={e => setForm(prev => ({ ...prev, [f.key]: e.target.value }))}
@@ -85,7 +85,7 @@ function AddMarkingModal({ onClose }: { onClose: () => void }) {
                 <button
                   key={c}
                   onClick={() => setForm(f => ({ ...f, classification: c }))}
-                  className={`flex flex-col items-center gap-1 py-2 rounded-xl border text-[10px] font-semibold transition-all ${
+                  className={`flex flex-col items-center gap-1 py-2 rounded-2xl border text-[10px] font-semibold transition-all ${
                     form.classification === c ? s.badge : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:border-[var(--os-text-2)]'
                   }`}
                 >
@@ -107,7 +107,7 @@ function AddMarkingModal({ onClose }: { onClose: () => void }) {
               <button
                 key={p}
                 onClick={() => togglePurpose(p)}
-                className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold border transition-all ${
+                className={`px-2.5 py-1 rounded-2xl text-[10px] font-semibold border transition-all ${
                   form.purposes.includes(p)
                     ? 'bg-[var(--os-accent)]/20 border-[var(--os-accent)] text-[var(--os-accent)]'
                     : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
@@ -125,14 +125,14 @@ function AddMarkingModal({ onClose }: { onClose: () => void }) {
         <div className="flex justify-end gap-2 pt-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] border border-[var(--os-border)] transition-all"
+            className="px-4 py-2 rounded-2xl text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] border border-[var(--os-border)] transition-all"
           >
             Cancel
           </button>
           <button
             onClick={() => create.mutate(form)}
             disabled={!form.table || !form.rowId || create.isPending}
-            className="px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--os-accent)] text-white disabled:opacity-40 hover:opacity-90 transition-opacity"
+            className="px-4 py-2 rounded-2xl text-xs font-semibold bg-[var(--os-accent)] text-white disabled:opacity-40 hover:opacity-90 transition-opacity"
           >
             {create.isPending ? 'Saving…' : 'Apply Marking'}
           </button>
@@ -181,7 +181,7 @@ export function MarkingsManager() {
         <span className="text-[11px] font-semibold text-[var(--os-text-1)]">MBAC Markings</span>
         <button
           onClick={() => setShowAdd(true)}
-          className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-[var(--os-accent)] text-white hover:opacity-90 transition-opacity"
+          className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-semibold bg-[var(--os-accent)] text-white hover:opacity-90 transition-opacity"
         >
           <Plus size={12} weight="bold" /> Add Marking
         </button>
@@ -279,7 +279,7 @@ export function MarkingsManager() {
                   <td className="px-4 py-3">
                     <button
                       onClick={() => remove.mutate(m.id)}
-                      className="p-1.5 rounded-lg hover:bg-red-500/10 hover:text-red-400 text-[var(--os-text-2)] transition-colors"
+                      className="p-1.5 rounded-2xl hover:bg-red-500/10 hover:text-red-400 text-[var(--os-text-2)] transition-colors"
                     >
                       <Trash size={13} />
                     </button>

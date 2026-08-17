@@ -154,7 +154,7 @@ function CreateSnapshotModal({ onClose, onCreated }: { onClose: () => void; onCr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl w-full max-w-md p-6 shadow-2xl">
+      <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl w-full max-w-md p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-semibold text-[var(--os-text-1)] flex items-center gap-2">
             <Tag className="w-4 h-4 text-[#579bfc]" />
@@ -168,12 +168,12 @@ function CreateSnapshotModal({ onClose, onCreated }: { onClose: () => void; onCr
           <div>
             <label className="block text-xs font-medium text-[var(--os-text-2)] mb-1">Label *</label>
             <input value={label} onChange={e => setLabel(e.target.value)} placeholder="e.g. Pre-migration baseline"
-              className="w-full px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-[#579bfc]/40" />
+              className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-[#579bfc]/40" />
           </div>
           <div>
             <label className="block text-xs font-medium text-[var(--os-text-2)] mb-1">Description</label>
             <textarea value={desc} onChange={e => setDesc(e.target.value)} rows={2} placeholder="What changed or why this snapshot matters"
-              className="w-full px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none resize-none" />
+              className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none resize-none" />
           </div>
           <label className="flex items-center gap-2 text-sm text-[var(--os-text-1)] cursor-pointer">
             <input type="checkbox" checked={publish} onChange={e => setPublish(e.target.checked)} className="rounded" />
@@ -182,9 +182,9 @@ function CreateSnapshotModal({ onClose, onCreated }: { onClose: () => void; onCr
         </div>
         {mut.isError && <p className="mt-3 text-xs text-[#e2445c]">{String((mut.error as any)?.message ?? 'Error')}</p>}
         <div className="flex gap-2 mt-5 justify-end">
-          <button onClick={onClose} className="px-4 py-2 text-sm rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mut.mutate()} disabled={!label.trim() || mut.isPending}
-            className="px-4 py-2 text-sm rounded-lg bg-[#579bfc] text-white font-medium disabled:opacity-50 hover:bg-[#579bfc]/90">
+            className="px-4 py-2 text-sm rounded-2xl bg-[#579bfc] text-white font-medium disabled:opacity-50 hover:bg-[#579bfc]/90">
             {mut.isPending ? 'Capturing…' : 'Capture'}
           </button>
         </div>
@@ -210,7 +210,7 @@ function CreateBranchModal({ snapshots, onClose, onCreated }: { snapshots: Snaps
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl w-full max-w-md p-6 shadow-2xl">
+      <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl w-full max-w-md p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-semibold text-[var(--os-text-1)] flex items-center gap-2">
             <GitBranch className="w-4 h-4 text-[#7c3aed]" />
@@ -222,17 +222,17 @@ function CreateBranchModal({ snapshots, onClose, onCreated }: { snapshots: Snaps
           <div>
             <label className="block text-xs font-medium text-[var(--os-text-2)] mb-1">Branch name *</label>
             <input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. feature/new-risk-model"
-              className="w-full px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-[#7c3aed]/40" />
+              className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-[#7c3aed]/40" />
           </div>
           <div>
             <label className="block text-xs font-medium text-[var(--os-text-2)] mb-1">Description</label>
             <textarea value={desc} onChange={e => setDesc(e.target.value)} rows={2} placeholder="What are you prototyping?"
-              className="w-full px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none resize-none" />
+              className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none resize-none" />
           </div>
           <div>
             <label className="block text-xs font-medium text-[var(--os-text-2)] mb-1">Fork from snapshot</label>
             <select value={baseId} onChange={e => setBaseId(e.target.value)}
-              className="w-full px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none">
+              className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none">
               <option value="">Live ontology (HEAD)</option>
               {snapshots.filter(s => s.status === 'PUBLISHED').map(s => (
                 <option key={s.id} value={s.id}>{s.version} — {s.label}</option>
@@ -242,9 +242,9 @@ function CreateBranchModal({ snapshots, onClose, onCreated }: { snapshots: Snaps
         </div>
         {mut.isError && <p className="mt-3 text-xs text-[#e2445c]">{String((mut.error as any)?.message ?? 'Error')}</p>}
         <div className="flex gap-2 mt-5 justify-end">
-          <button onClick={onClose} className="px-4 py-2 text-sm rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mut.mutate()} disabled={!name.trim() || mut.isPending}
-            className="px-4 py-2 text-sm rounded-lg bg-[#7c3aed] text-white font-medium disabled:opacity-50 hover:bg-[#7c3aed]/90">
+            className="px-4 py-2 text-sm rounded-2xl bg-[#7c3aed] text-white font-medium disabled:opacity-50 hover:bg-[#7c3aed]/90">
             {mut.isPending ? 'Creating…' : 'Create Branch'}
           </button>
         </div>
@@ -276,7 +276,7 @@ function RequestMergeModal({ branch, onClose, onCreated }: { branch: BranchRecor
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl w-full max-w-xl shadow-2xl flex flex-col max-h-[90vh]">
+      <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl w-full max-w-xl shadow-2xl flex flex-col max-h-[90vh]">
         <div className="flex items-center justify-between p-5 pb-0">
           <h3 className="font-semibold text-[var(--os-text-1)] flex items-center gap-2">
             <Send className="w-4 h-4 text-[#7c3aed]" />
@@ -289,16 +289,16 @@ function RequestMergeModal({ branch, onClose, onCreated }: { branch: BranchRecor
           <div>
             <label className="block text-xs font-medium text-[var(--os-text-2)] mb-1">Title *</label>
             <input value={title} onChange={e => setTitle(e.target.value)}
-              className="w-full px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-[#7c3aed]/40" />
+              className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-[#7c3aed]/40" />
           </div>
           <div>
             <label className="block text-xs font-medium text-[var(--os-text-2)] mb-1">Description</label>
             <textarea value={desc} onChange={e => setDesc(e.target.value)} rows={2} placeholder="Explain what this merge achieves"
-              className="w-full px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none resize-none" />
+              className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none resize-none" />
           </div>
 
           {/* Impact preview */}
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-4">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-4">
             <div className="flex items-center gap-2 mb-3">
               <ShieldAlert className="w-4 h-4 text-[var(--os-text-2)]" />
               <span className="text-xs font-semibold text-[var(--os-text-1)]">Change Impact Analysis</span>
@@ -316,7 +316,7 @@ function RequestMergeModal({ branch, onClose, onCreated }: { branch: BranchRecor
                     ['Types −', report.summary.typesDeleted, '#e2445c'],
                     ['Objs −', report.summary.objectsDeleted, '#e2445c'],
                   ].map(([label, val, color]) => (
-                    <div key={label as string} className="rounded-lg p-2 text-center" style={{ background: `${color}10` }}>
+                    <div key={label as string} className="rounded-2xl p-2 text-center" style={{ background: `${color}10` }}>
                       <p className="text-[11px] text-[var(--os-text-2)]">{label}</p>
                       <p className="text-base font-bold" style={{ color: color as string }}>{val}</p>
                     </div>
@@ -340,9 +340,9 @@ function RequestMergeModal({ branch, onClose, onCreated }: { branch: BranchRecor
         {mut.isError && <p className="px-5 text-xs text-[#e2445c]">{String((mut.error as any)?.message ?? 'Error')}</p>}
 
         <div className="flex gap-2 p-5 pt-3 justify-end border-t border-[var(--os-border)]">
-          <button onClick={onClose} className="px-4 py-2 text-sm rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mut.mutate()} disabled={!title.trim() || mut.isPending}
-            className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-[#7c3aed] text-white font-medium disabled:opacity-50 hover:bg-[#7c3aed]/90">
+            className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-2xl bg-[#7c3aed] text-white font-medium disabled:opacity-50 hover:bg-[#7c3aed]/90">
             <Send className="w-3.5 h-3.5" />
             {mut.isPending ? 'Submitting…' : 'Submit for Review'}
           </button>
@@ -372,7 +372,7 @@ function SnapshotRow({ snap, onRefresh }: { snap: SnapshotSummary; onRefresh: ()
   })
 
   return (
-    <div className="border border-[var(--os-border)] rounded-xl bg-[var(--os-card)] overflow-hidden">
+    <div className="border border-[var(--os-border)] rounded-2xl bg-[var(--os-card)] overflow-hidden">
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[var(--os-surface-0)] transition-colors" onClick={() => setExpanded(!expanded)}>
         <button className="text-[var(--os-text-2)]">
           {expanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
@@ -405,13 +405,13 @@ function SnapshotRow({ snap, onRefresh }: { snap: SnapshotSummary; onRefresh: ()
             <div className="flex items-center gap-2">
               {snap.status === 'DRAFT' && (
                 <button onClick={() => publish.mutate()} disabled={publish.isPending}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-[#00c875]/10 text-[#00c875] hover:bg-[#00c875]/20 font-medium disabled:opacity-50">
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl bg-[#00c875]/10 text-[#00c875] hover:bg-[#00c875]/20 font-medium disabled:opacity-50">
                   <CheckCircle2 className="w-3.5 h-3.5" />{publish.isPending ? 'Publishing…' : 'Publish'}
                 </button>
               )}
               {snap.status === 'PUBLISHED' && (
                 <button onClick={() => archive.mutate()} disabled={archive.isPending}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
                   <Archive className="w-3.5 h-3.5" />Archive
                 </button>
               )}
@@ -420,14 +420,14 @@ function SnapshotRow({ snap, onRefresh }: { snap: SnapshotSummary; onRefresh: ()
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-[#e2445c] font-medium">Roll back live ontology to this snapshot?</span>
                     <button onClick={() => rollback.mutate()} disabled={rollback.isPending}
-                      className="px-3 py-1.5 text-xs rounded-lg bg-[#e2445c] text-white font-medium disabled:opacity-50">
+                      className="px-3 py-1.5 text-xs rounded-2xl bg-[#e2445c] text-white font-medium disabled:opacity-50">
                       {rollback.isPending ? 'Rolling back…' : 'Confirm'}
                     </button>
                     <button onClick={() => setConfirmRollback(false)} className="text-xs text-[var(--os-text-2)]">Cancel</button>
                   </div>
                 ) : (
                   <button onClick={() => setConfirmRollback(true)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[#e2445c]/40 text-[#e2445c] hover:bg-[#e2445c]/5 font-medium">
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl border border-[#e2445c]/40 text-[#e2445c] hover:bg-[#e2445c]/5 font-medium">
                     <RotateCcw className="w-3.5 h-3.5" />Rollback
                   </button>
                 )
@@ -460,7 +460,7 @@ function BranchRow({ branch, onRefresh }: { branch: BranchRecord; onRefresh: () 
 
   return (
     <>
-      <div className="border border-[var(--os-border)] rounded-xl bg-[var(--os-card)] overflow-hidden">
+      <div className="border border-[var(--os-border)] rounded-2xl bg-[var(--os-card)] overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[var(--os-surface-0)] transition-colors" onClick={() => setExpanded(!expanded)}>
           <button className="text-[var(--os-text-2)]">
             {expanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
@@ -505,21 +505,21 @@ function BranchRow({ branch, onRefresh }: { branch: BranchRecord; onRefresh: () 
             {branch.status === 'OPEN' && (
               <div className="flex items-center gap-2">
                 <button onClick={() => setShowMergeModal(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-[#7c3aed]/10 text-[#7c3aed] hover:bg-[#7c3aed]/20 font-medium">
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl bg-[#7c3aed]/10 text-[#7c3aed] hover:bg-[#7c3aed]/20 font-medium">
                   <Send className="w-3 h-3" />Request Merge
                 </button>
                 {confirmAbandon ? (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-[#e2445c] font-medium">Abandon this branch?</span>
                     <button onClick={() => abandon.mutate()} disabled={abandon.isPending}
-                      className="px-3 py-1.5 text-xs rounded-lg bg-[#e2445c] text-white font-medium disabled:opacity-50">
+                      className="px-3 py-1.5 text-xs rounded-2xl bg-[#e2445c] text-white font-medium disabled:opacity-50">
                       {abandon.isPending ? 'Abandoning…' : 'Confirm'}
                     </button>
                     <button onClick={() => setConfirmAbandon(false)} className="text-xs text-[var(--os-text-2)]">Cancel</button>
                   </div>
                 ) : (
                   <button onClick={() => setConfirmAbandon(true)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[#e2445c]/40 text-[#e2445c] hover:bg-[#e2445c]/5 font-medium">
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl border border-[#e2445c]/40 text-[#e2445c] hover:bg-[#e2445c]/5 font-medium">
                     <Trash2 className="w-3 h-3" />Abandon
                   </button>
                 )}
@@ -574,7 +574,7 @@ function MergeRequestRow({ mr, onRefresh }: { mr: MergeRequest; onRefresh: () =>
   }[mr.status]
 
   return (
-    <div className="border border-[var(--os-border)] rounded-xl bg-[var(--os-card)] overflow-hidden">
+    <div className="border border-[var(--os-border)] rounded-2xl bg-[var(--os-card)] overflow-hidden">
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[var(--os-surface-0)] transition-colors" onClick={() => setExpanded(!expanded)}>
         <button className="text-[var(--os-text-2)]">
           {expanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
@@ -604,7 +604,7 @@ function MergeRequestRow({ mr, onRefresh }: { mr: MergeRequest; onRefresh: () =>
           {/* Impact analysis */}
           {impactQ.isLoading && <p className="text-xs text-[var(--os-text-2)]">Loading impact analysis…</p>}
           {report && (
-            <div className="rounded-xl border border-[var(--os-border)] p-3 space-y-2">
+            <div className="rounded-2xl border border-[var(--os-border)] p-3 space-y-2">
               <div className="flex items-center gap-2">
                 <ShieldAlert className="w-3.5 h-3.5 text-[var(--os-text-2)]" />
                 <span className="text-xs font-semibold text-[var(--os-text-1)]">Impact Analysis</span>
@@ -630,20 +630,20 @@ function MergeRequestRow({ mr, onRefresh }: { mr: MergeRequest; onRefresh: () =>
                 <>
                   <textarea value={note} onChange={e => setNote(e.target.value)} rows={2}
                     placeholder={action === 'approve' ? 'Approval note (optional)' : 'Reason for rejection (required)'}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none resize-none" />
+                    className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none resize-none" />
                   <div className="flex gap-2">
                     {action === 'approve' ? (
                       <button onClick={() => approve.mutate()} disabled={approve.isPending}
-                        className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-[#00c875] text-white font-medium disabled:opacity-50">
+                        className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-2xl bg-[#00c875] text-white font-medium disabled:opacity-50">
                         <CheckCheck className="w-3.5 h-3.5" />{approve.isPending ? 'Approving…' : 'Approve & Merge'}
                       </button>
                     ) : (
                       <button onClick={() => reject.mutate()} disabled={reject.isPending || !note.trim()}
-                        className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg bg-[#e2445c] text-white font-medium disabled:opacity-50">
+                        className="flex items-center gap-1.5 px-4 py-2 text-sm rounded-2xl bg-[#e2445c] text-white font-medium disabled:opacity-50">
                         <XCircle className="w-3.5 h-3.5" />{reject.isPending ? 'Rejecting…' : 'Reject'}
                       </button>
                     )}
-                    <button onClick={() => { setAction(null); setNote('') }} className="px-4 py-2 text-sm rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
+                    <button onClick={() => { setAction(null); setNote('') }} className="px-4 py-2 text-sm rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
                       Cancel
                     </button>
                   </div>
@@ -652,11 +652,11 @@ function MergeRequestRow({ mr, onRefresh }: { mr: MergeRequest; onRefresh: () =>
               {!action && (
                 <div className="flex gap-2">
                   <button onClick={() => setAction('approve')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-[#00c875]/10 text-[#00c875] hover:bg-[#00c875]/20 font-medium">
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl bg-[#00c875]/10 text-[#00c875] hover:bg-[#00c875]/20 font-medium">
                     <CheckCheck className="w-3 h-3" />Approve
                   </button>
                   <button onClick={() => setAction('reject')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[#e2445c]/40 text-[#e2445c] hover:bg-[#e2445c]/5 font-medium">
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl border border-[#e2445c]/40 text-[#e2445c] hover:bg-[#e2445c]/5 font-medium">
                     <XCircle className="w-3 h-3" />Reject
                   </button>
                 </div>
@@ -723,11 +723,11 @@ export function OntologyVersioningPage() {
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowCreateBranch(true)}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border border-[var(--os-border)] text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]">
+            className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]">
             <GitBranch className="w-3.5 h-3.5" />New Branch
           </button>
           <button onClick={() => setShowCreateSnap(true)}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg bg-[#579bfc] text-white font-medium hover:bg-[#579bfc]/90">
+            className="flex items-center gap-1.5 px-3 py-2 text-sm rounded-2xl bg-[#579bfc] text-white font-medium hover:bg-[#579bfc]/90">
             <Plus className="w-3.5 h-3.5" />Capture Snapshot
           </button>
         </div>
@@ -742,8 +742,8 @@ export function OntologyVersioningPage() {
           { label: 'Merges Done',   value: mrStats?.merged     ?? 0, icon: GitMerge,     color: '#00c875' },
           { label: 'Pending Review',value: pendingCount,              icon: Clock,        color: pendingCount > 0 ? '#fdab3d' : '#888' },
         ].map(s => (
-          <div key={s.label} className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${s.color}15` }}>
+          <div key={s.label} className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-2xl flex items-center justify-center" style={{ background: `${s.color}15` }}>
               <s.icon className="w-4 h-4" style={{ color: s.color }} />
             </div>
             <div>
@@ -756,7 +756,7 @@ export function OntologyVersioningPage() {
 
       {/* Latest published banner */}
       {vsStats?.latestPublished && (
-        <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#00c875]/5 border border-[#00c875]/20">
+        <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#00c875]/5 border border-[#00c875]/20">
           <CheckCircle2 className="w-4 h-4 text-[#00c875]" />
           <div className="text-sm text-[var(--os-text-1)]">
             Current canonical release:{' '}
@@ -768,7 +768,7 @@ export function OntologyVersioningPage() {
 
       {/* Pending review alert */}
       {pendingCount > 0 && (
-        <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#fdab3d]/5 border border-[#fdab3d]/20 cursor-pointer" onClick={() => setActiveTab('merge-requests')}>
+        <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#fdab3d]/5 border border-[#fdab3d]/20 cursor-pointer" onClick={() => setActiveTab('merge-requests')}>
           <Clock className="w-4 h-4 text-[#fdab3d]" />
           <div className="text-sm text-[var(--os-text-1)]">
             <span className="font-semibold text-[#fdab3d]">{pendingCount} merge request{pendingCount !== 1 ? 's' : ''}</span> awaiting your review.
@@ -801,10 +801,10 @@ export function OntologyVersioningPage() {
         <div className="space-y-2">
           {snapsQuery.isLoading && <p className="text-sm text-[var(--os-text-2)]">Loading…</p>}
           {!snapsQuery.isLoading && snaps.length === 0 && (
-            <div className="rounded-xl border border-dashed border-[var(--os-border)] p-8 text-center">
+            <div className="rounded-2xl border border-dashed border-[var(--os-border)] p-8 text-center">
               <Tag className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-2" />
               <p className="text-sm text-[var(--os-text-2)]">No snapshots yet</p>
-              <button onClick={() => setShowCreateSnap(true)} className="mt-3 px-4 py-2 text-sm rounded-lg bg-[#579bfc] text-white">
+              <button onClick={() => setShowCreateSnap(true)} className="mt-3 px-4 py-2 text-sm rounded-2xl bg-[#579bfc] text-white">
                 Capture First Snapshot
               </button>
             </div>
@@ -818,10 +818,10 @@ export function OntologyVersioningPage() {
         <div className="space-y-2">
           {branchQuery.isLoading && <p className="text-sm text-[var(--os-text-2)]">Loading…</p>}
           {!branchQuery.isLoading && branches.length === 0 && (
-            <div className="rounded-xl border border-dashed border-[var(--os-border)] p-8 text-center">
+            <div className="rounded-2xl border border-dashed border-[var(--os-border)] p-8 text-center">
               <GitBranch className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-2" />
               <p className="text-sm text-[var(--os-text-2)]">No branches yet</p>
-              <button onClick={() => setShowCreateBranch(true)} className="mt-3 px-4 py-2 text-sm rounded-lg bg-[#7c3aed] text-white">
+              <button onClick={() => setShowCreateBranch(true)} className="mt-3 px-4 py-2 text-sm rounded-2xl bg-[#7c3aed] text-white">
                 Create First Branch
               </button>
             </div>
@@ -835,7 +835,7 @@ export function OntologyVersioningPage() {
         <div className="space-y-2">
           {mrQuery.isLoading && <p className="text-sm text-[var(--os-text-2)]">Loading…</p>}
           {!mrQuery.isLoading && mrs.length === 0 && (
-            <div className="rounded-xl border border-dashed border-[var(--os-border)] p-8 text-center">
+            <div className="rounded-2xl border border-dashed border-[var(--os-border)] p-8 text-center">
               <GitMerge className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-2" />
               <p className="text-sm text-[var(--os-text-2)]">No merge requests yet</p>
               <p className="text-xs text-[var(--os-text-2)] mt-1">Open a branch, stage changes, then submit for review.</p>

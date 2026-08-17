@@ -38,7 +38,7 @@ export function CapacityPage() {
       {/* Overload warnings */}
       {overloaded.length > 0 && (
         <div
-          className="flex items-center gap-3 p-4 rounded-xl flex-wrap"
+          className="flex items-center gap-3 p-4 rounded-2xl flex-wrap"
           style={{ background: '#e2445c10', border: '1px solid #e2445c40' }}
         >
           <span className="text-sm font-bold" style={{ color: '#e2445c' }}>Overloaded:</span>
@@ -130,7 +130,7 @@ export function CapacityPage() {
                           <Tooltip content={`${uw}% utilized`} side="top">
                             <div className="flex flex-col items-center gap-1">
                               <div
-                                className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[10px] font-black"
+                                className="w-7 h-7 rounded-2xl flex items-center justify-center text-white text-[10px] font-black"
                                 style={{ background: wc }}
                               >
                                 {uw}

@@ -232,20 +232,20 @@ function InsightCard({ insight }: { insight: KIMMPInsight }) {
               onChange={e => setCorrection(e.target.value)}
               placeholder="What would the correct insight be?"
               rows={2}
-              className="w-full text-[12px] px-3 py-2 rounded-xl border border-[var(--os-border)] bg-white text-slate-800 resize-none focus:outline-none focus:ring-1"
+              className="w-full text-[12px] px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-white text-slate-800 resize-none focus:outline-none focus:ring-1"
               style={{ borderColor: `${c}50` }}
             />
             <div className="flex gap-2">
               <button
                 onClick={submitCorrection}
-                className="text-[11px] font-bold px-3 py-1 rounded-lg text-white"
+                className="text-[11px] font-bold px-3 py-1 rounded-2xl text-white"
                 style={{ background: c }}
               >
                 Submit correction
               </button>
               <button
                 onClick={() => setCorrecting(false)}
-                className="text-[11px] text-[var(--os-text-2)] px-3 py-1 rounded-lg hover:bg-black/5"
+                className="text-[11px] text-[var(--os-text-2)] px-3 py-1 rounded-2xl hover:bg-black/5"
               >
                 Cancel
               </button>
@@ -521,7 +521,7 @@ function OneSignal({ insight }: { insight: KIMMPInsight | null }) {
       </div>
       <p className="text-[28px] font-black leading-snug relative z-10 text-slate-800">
         {display.title}.{' '}
-        <span className="px-3 py-1 rounded-xl shadow-sm" style={{ color: c, background: `${c}15` }}>{display.action || 'Action pending...'}</span>
+        <span className="px-3 py-1 rounded-2xl shadow-sm" style={{ color: c, background: `${c}15` }}>{display.action || 'Action pending...'}</span>
       </p>
       <div className="mt-8 flex items-center gap-6 flex-wrap relative z-10">
         <div className="flex items-center gap-2.5 text-[14px] font-black text-slate-600 bg-white px-5 py-2.5 rounded-full shadow-sm">
@@ -639,7 +639,7 @@ export function BriefingPage() {
         </div>
 
         {/* Autonomy widget */}
-        <div className="flex-shrink-0 px-4 py-2.5 rounded-xl flex items-center gap-3"
+        <div className="flex-shrink-0 px-4 py-2.5 rounded-2xl flex items-center gap-3"
           style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
           <div className="text-center">
             <p className="text-base font-black tabular-nums" style={{ color: '#a78bfa' }}>{autonomy}%</p>

@@ -21,14 +21,14 @@ function ObjectRefField({ value, onChange }: { value: string; onChange: (id: str
   return (
     <div>
       <input
-        className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+        className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
         placeholder="Search objects…"
         value={value ? search || value : search}
         onChange={e => { setSearch(e.target.value); onChange('') }}
       />
       {isFetching && <p className="text-[10px] text-[var(--os-text-2)] mt-1">Searching…</p>}
       {data?.objects && data.objects.length > 0 && !value && (
-        <div className="mt-1 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] max-h-32 overflow-y-auto">
+        <div className="mt-1 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] max-h-32 overflow-y-auto">
           {data.objects.map((o: any) => (
             <button key={o.id} type="button"
               onClick={() => { onChange(o.id); setSearch(o.externalId ?? o.id.slice(0, 12)) }}
@@ -52,7 +52,7 @@ function ObjectSetField({ value, onChange }: { value: string; onChange: (id: str
   })
   return (
     <select
-      className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+      className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
       value={value} onChange={e => onChange(e.target.value)}
     >
       <option value="">Select an Object Set…</option>
@@ -113,13 +113,13 @@ export function ActionParamForm({ action, objectId, disabled, onExecuted }: {
               </label>
               {p.type === 'boolean' ? (
                 <button type="button" onClick={() => setField(p.name, !values[p.name])}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${values[p.name] ? 'bg-[#579bfc] text-white border-[#579bfc]' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}
+                  className={`px-3 py-1.5 rounded-2xl text-xs font-semibold border ${values[p.name] ? 'bg-[#579bfc] text-white border-[#579bfc]' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}
                 >
                   {values[p.name] ? 'True' : 'False'}
                 </button>
               ) : p.type === 'enum' ? (
                 <select
-                  className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+                  className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
                   value={values[p.name] ?? ''} onChange={e => setField(p.name, e.target.value)}
                 >
                   <option value="">Select…</option>
@@ -133,7 +133,7 @@ export function ActionParamForm({ action, objectId, disabled, onExecuted }: {
                 <input
                   type={p.type === 'number' ? 'number' : p.type === 'date' ? 'date' : 'text'}
                   min={p.min} max={p.max}
-                  className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+                  className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
                   value={values[p.name] ?? ''}
                   onChange={e => setField(p.name, p.type === 'number' ? Number(e.target.value) : e.target.value)}
                 />
@@ -162,7 +162,7 @@ export function ActionParamForm({ action, objectId, disabled, onExecuted }: {
         onClick={() => run.mutate()}
         disabled={!canRun}
         title={disabled ? 'Save the action before running it' : undefined}
-        className="w-full py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {run.isPending
           ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Running…</>
@@ -188,7 +188,7 @@ export function ActionRunModal({ action, objectId, onClose, onExecuted }: {
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-md rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4 max-h-[85vh] overflow-y-auto">
+      <div className="w-full max-w-md rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4 max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-semibold text-[var(--os-text-1)]">{action.displayName}</p>

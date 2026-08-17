@@ -81,22 +81,22 @@ export function VisitorsOverview() {
 
       {/* Sub-nav */}
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-[11px] font-semibold text-[var(--os-text-1)] px-3 py-1.5 bg-[var(--os-surface-0)] rounded-lg border border-[var(--os-border)]">Visitors</span>
+        <span className="text-[11px] font-semibold text-[var(--os-text-1)] px-3 py-1.5 bg-[var(--os-surface-0)] rounded-2xl border border-[var(--os-border)]">Visitors</span>
         <Link
           to="/kangqore-view/admin/visitors/pipeline"
-          className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
+          className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
         >
           <Columns size={12} /> Pipeline
         </Link>
         <Link
           to="/kangqore-view/admin/visitors/transcripts"
-          className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
+          className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
         >
           <ChatCircle size={12} /> Transcripts
         </Link>
         <Link
           to="/kangqore-view/admin/visitors/analytics"
-          className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
+          className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
         >
           <Target size={12} /> eQORE Analytics
         </Link>
@@ -124,12 +124,12 @@ export function VisitorsOverview() {
 
       {/* Filters + search */}
       <div className="flex items-center gap-3 flex-wrap">
-        <div className="flex items-center gap-1 bg-[var(--os-surface-0)] rounded-lg p-1 border border-[var(--os-border)]">
+        <div className="flex items-center gap-1 bg-[var(--os-surface-0)] rounded-2xl p-1 border border-[var(--os-border)]">
           {(['all', 'hot', 'stitched', 'fresh'] as const).map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 text-[11px] font-semibold rounded-md capitalize transition-all ${
+              className={`px-3 py-1.5 text-[11px] font-semibold rounded-2xl capitalize transition-all ${
                 filter === f
                   ? 'bg-[var(--os-surface-0)] text-[var(--os-text-1)]'
                   : 'text-[var(--os-text-2)] hover:text-[var(--os-text-2)]'
@@ -139,7 +139,7 @@ export function VisitorsOverview() {
             </button>
           ))}
         </div>
-        <div className="flex items-center gap-2 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg px-3 py-2 flex-1 max-w-xs">
+        <div className="flex items-center gap-2 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl px-3 py-2 flex-1 max-w-xs">
           <MagnifyingGlass size={13} className="text-[var(--os-text-2)]" />
           <input
             value={search}
@@ -302,14 +302,14 @@ export function VisitorsOverview() {
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-1.5 rounded-lg border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)] transition-colors"
+                className="p-1.5 rounded-2xl border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)] transition-colors"
               >
                 <CaretLeft size={13} />
               </button>
               <button
                 onClick={() => setPage(p => Math.min(pages, p + 1))}
                 disabled={page === pages}
-                className="p-1.5 rounded-lg border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)] transition-colors"
+                className="p-1.5 rounded-2xl border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)] transition-colors"
               >
                 <CaretRight size={13} />
               </button>

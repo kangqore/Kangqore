@@ -87,7 +87,7 @@ function ObjectSetBuilder({ existing, onClose }: { existing: ObjectSet | null; o
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-xl rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4 max-h-[85vh] overflow-y-auto">
+      <div className="w-full max-w-xl rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4 max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-[var(--os-text-1)]">{existing ? 'Edit Object Set' : 'New Object Set'}</p>
           <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><X className="w-4 h-4" /></button>
@@ -97,7 +97,7 @@ function ObjectSetBuilder({ existing, onClose }: { existing: ObjectSet | null; o
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Name</label>
             <input
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               placeholder='e.g. "Enterprise accounts with OIS below 70"'
               value={name} onChange={e => setName(e.target.value)}
             />
@@ -105,21 +105,21 @@ function ObjectSetBuilder({ existing, onClose }: { existing: ObjectSet | null; o
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Description (optional)</label>
             <input
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               value={description} onChange={e => setDescription(e.target.value)}
             />
           </div>
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Tags (comma-separated)</label>
             <input
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               value={tags} onChange={e => setTags(e.target.value)}
             />
           </div>
           <div className="flex items-end">
             <button
               onClick={() => setIsPublic(p => !p)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
+              className="flex items-center gap-2 px-3 py-2 rounded-2xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
             >
               {isPublic ? <Globe size={13} weight="fill" className="text-[#579bfc]" /> : <Lock size={13} />}
               {isPublic ? 'Public' : 'Private'}
@@ -132,7 +132,7 @@ function ObjectSetBuilder({ existing, onClose }: { existing: ObjectSet | null; o
           <div className="flex items-center justify-between mb-2">
             <label className="text-[11px] text-[var(--os-text-2)]">Conditions</label>
             {rows.length > 1 && (
-              <div className="flex items-center gap-0.5 rounded-lg border border-[var(--os-border)] overflow-hidden">
+              <div className="flex items-center gap-0.5 rounded-2xl border border-[var(--os-border)] overflow-hidden">
                 {(['intersection', 'union'] as const).map(c => (
                   <button key={c} onClick={() => setCombinator(c)}
                     className={`px-2.5 py-1 text-[10px] font-bold uppercase ${combinator === c ? 'bg-[#579bfc] text-white' : 'text-[var(--os-text-2)]'}`}
@@ -148,18 +148,18 @@ function ObjectSetBuilder({ existing, onClose }: { existing: ObjectSet | null; o
               <div key={i} className="flex items-center gap-1.5">
                 <input
                   list="objectset-field-presets"
-                  className="flex-[1.4] px-2 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none"
+                  className="flex-[1.4] px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none"
                   placeholder="field"
                   value={r.field} onChange={e => updateRow(i, { field: e.target.value })}
                 />
                 <select
-                  className="px-2 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none"
+                  className="px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none"
                   value={r.op} onChange={e => updateRow(i, { op: e.target.value as FilterOp })}
                 >
                   {Object.entries(OP_LABELS).map(([op, label]) => <option key={op} value={op}>{label}</option>)}
                 </select>
                 <input
-                  className="flex-1 px-2 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none"
+                  className="flex-1 px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none"
                   placeholder="value"
                   value={typeof r.value === 'string' || typeof r.value === 'number' ? r.value : JSON.stringify(r.value ?? '')}
                   onChange={e => updateRow(i, { value: coerceValue(e.target.value) })}
@@ -186,7 +186,7 @@ function ObjectSetBuilder({ existing, onClose }: { existing: ObjectSet | null; o
         </div>
 
         {/* Live preview */}
-        <div className="rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] px-3 py-2.5 flex items-center gap-2">
+        <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] px-3 py-2.5 flex items-center gap-2">
           {previewing
             ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[var(--os-text-2)]" />
             : <Stack size={14} className="text-[#579bfc]" />}
@@ -198,7 +198,7 @@ function ObjectSetBuilder({ existing, onClose }: { existing: ObjectSet | null; o
         <button
           onClick={() => save.mutate()}
           disabled={!name || save.isPending}
-          className="w-full py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {save.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : existing ? 'Save Changes' : 'Create Object Set'}
         </button>
@@ -258,19 +258,19 @@ function ObjectSetCard({ set, onEdit }: { set: ObjectSet; onEdit: () => void }) 
         <span className="text-[10px] text-[var(--os-text-2)]">{timeAgo(set.lastRunAt)}</span>
         <div className="flex items-center gap-1">
           <button onClick={() => togglePublic.mutate()} title={set.isPublic ? 'Public — click to make private' : 'Private — click to make public'}
-            className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]">
+            className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]">
             {set.isPublic ? <Globe size={13} weight="fill" className="text-[#579bfc]" /> : <Lock size={13} />}
           </button>
-          <button onClick={onEdit} title="Edit" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]">
+          <button onClick={onEdit} title="Edit" className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]">
             <PencilSimple size={13} />
           </button>
           <button onClick={() => run.mutate()} disabled={run.isPending} title="Run"
-            className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[#579bfc] hover:bg-[var(--os-surface-0)]">
+            className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[#579bfc] hover:bg-[var(--os-surface-0)]">
             {run.isPending ? <Loader2 size={13} className="animate-spin" /> : <Play size={13} weight="fill" />}
           </button>
           {!set.isSystem && (
             <button onClick={() => confirm(`Delete "${set.name}"?`) && remove.mutate()} title="Delete"
-              className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)]">
+              className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)]">
               <Trash size={13} />
             </button>
           )}
@@ -314,7 +314,7 @@ export function ObjectSetsPage() {
             <button
               onClick={() => seed.mutate()}
               disabled={seed.isPending || seeded}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] disabled:opacity-50 hover:text-[var(--os-text-1)] transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] disabled:opacity-50 hover:text-[var(--os-text-1)] transition-colors"
             >
               {seeded ? <CheckCircle size={13} weight="bold" /> : <Sparkle size={13} />}
               {seeded ? 'Seeded' : 'Seed system sets'}
@@ -322,7 +322,7 @@ export function ObjectSetsPage() {
           )}
           <button
             onClick={() => { setEditing(null); setShowBuilder(true) }}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 transition-opacity"
           >
             <Plus size={13} weight="bold" /> New Object Set
           </button>

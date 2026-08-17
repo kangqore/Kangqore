@@ -46,7 +46,7 @@ export function ObjectCard({ objectId, compact = false }: { objectId: string; co
     <div className="os-card p-4 space-y-3">
       <div className="flex items-center gap-2">
         <span
-          className="w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black flex-shrink-0"
+          className="w-6 h-6 rounded-2xl flex items-center justify-center text-[10px] font-black flex-shrink-0"
           style={{ background: `${data.type.color ?? '#579bfc'}22`, color: data.type.color ?? '#579bfc' }}
         >
           {data.type.displayName?.charAt(0) ?? '?'}

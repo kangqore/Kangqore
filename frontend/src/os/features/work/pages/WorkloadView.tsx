@@ -60,7 +60,7 @@ export function WorkloadView() {
       </div>
 
       {data.length === 0 ? (
-        <div className="border border-[var(--os-border)] rounded-xl h-64 flex items-center justify-center text-sm text-[var(--os-text-2)]">
+        <div className="border border-[var(--os-border)] rounded-2xl h-64 flex items-center justify-center text-sm text-[var(--os-text-2)]">
           No items with assignees yet. Assign work items to team members to see capacity.
         </div>
       ) : (
@@ -71,7 +71,7 @@ export function WorkloadView() {
             const label = loadLabel(member.totalEstimatedHours)
 
             return (
-              <div key={member.assigneeId} className="border border-[var(--os-border)] rounded-xl p-4 bg-[var(--os-bg-1)]">
+              <div key={member.assigneeId} className="border border-[var(--os-border)] rounded-2xl p-4 bg-[var(--os-bg-1)]">
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <div className="flex items-center gap-2">

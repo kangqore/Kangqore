@@ -82,13 +82,13 @@ export function CareersOverview() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Department</label>
-              <select value={form.department} onChange={e => set('department', e.target.value)} className="w-full border border-[var(--os-border)] rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+              <select value={form.department} onChange={e => set('department', e.target.value)} className="w-full border border-[var(--os-border)] rounded-2xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30">
                 {['engineering','product','sales','delivery','ops','design'].map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
             <div>
               <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Type</label>
-              <select value={form.type} onChange={e => set('type', e.target.value)} className="w-full border border-[var(--os-border)] rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+              <select value={form.type} onChange={e => set('type', e.target.value)} className="w-full border border-[var(--os-border)] rounded-2xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30">
                 {['full-time','part-time','contract','freelance'].map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>

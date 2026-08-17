@@ -50,9 +50,9 @@ export function WorkflowsPage() {
       </div>
 
       {isLoading ? (
-        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 rounded-xl bg-[var(--os-surface-0)] animate-pulse" />)}</div>
+        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 rounded-2xl bg-[var(--os-surface-0)] animate-pulse" />)}</div>
       ) : workflows.length === 0 ? (
-        <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] py-12 text-center">
+        <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] py-12 text-center">
           <GitBranch className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-2" />
           <p className="text-sm text-[var(--os-text-2)]">No workflows yet. Launch a goal from the Operations page.</p>
         </div>
@@ -62,7 +62,7 @@ export function WorkflowsPage() {
             <div
               key={wf.id}
               onClick={() => setSelected(wf === selected ? null : wf)}
-              className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 cursor-pointer hover:border-[#579bfc]/40 transition-colors"
+              className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 cursor-pointer hover:border-[#579bfc]/40 transition-colors"
             >
               <div className="flex items-start gap-3">
                 <GitBranch className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#579bfc]" />
@@ -97,7 +97,7 @@ export function WorkflowsPage() {
                     {wf.dag.nodes.map((node: any, idx: number) => (
                       <div key={node.id} className="flex items-center gap-2">
                         <span className="text-[10px] text-[var(--os-text-2)] w-5 text-right">{idx + 1}</span>
-                        <div className={cn('flex items-center gap-1.5 px-2 py-1 rounded-lg text-[11px]', node.critical ? 'bg-red-500/10 border border-red-500/20 text-red-300' : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)]')}>
+                        <div className={cn('flex items-center gap-1.5 px-2 py-1 rounded-2xl text-[11px]', node.critical ? 'bg-red-500/10 border border-red-500/20 text-red-300' : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)]')}>
                           <span className="font-mono text-[9px] text-[var(--os-text-2)]">{node.type}</span>
                           <span>{node.title}</span>
                           {node.critical && <span className="text-[9px] text-red-400 ml-1">CRITICAL</span>}

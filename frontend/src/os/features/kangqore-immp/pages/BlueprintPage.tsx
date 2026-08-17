@@ -150,14 +150,14 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
             <span>•</span>
             <span>{data.industry ?? '—'}</span>
             <span>•</span>
-            <span className="px-2 py-0.5 rounded-md text-[9px] font-black" style={{ color: STATUS_COLOR[data.status], background: `${STATUS_COLOR[data.status]}15` }}>{data.status}</span>
+            <span className="px-2 py-0.5 rounded-2xl text-[9px] font-black" style={{ color: STATUS_COLOR[data.status], background: `${STATUS_COLOR[data.status]}15` }}>{data.status}</span>
           </div>
         </div>
         
         <div className="flex items-center gap-2">
           <button
             onClick={downloadSpec}
-            className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-500 font-bold border border-indigo-500/20 rounded-xl px-4 py-2 text-xs transition-all shadow-sm"
+            className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-500 font-bold border border-indigo-500/20 rounded-2xl px-4 py-2 text-xs transition-all shadow-sm"
           >
             <Download className="w-4 h-4" /> Download
           </button>
@@ -165,7 +165,7 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
             <button
               onClick={() => activateMut.mutate()}
               disabled={activateMut.isPending}
-              className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl px-4 py-2 text-xs transition-all shadow-sm shadow-emerald-500/10"
+              className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl px-4 py-2 text-xs transition-all shadow-sm shadow-emerald-500/10"
             >
               <CheckCircle2 className="w-4 h-4" /> Activate
             </button>
@@ -174,7 +174,7 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
             <button
               onClick={() => archiveMut.mutate()}
               disabled={archiveMut.isPending}
-              className="flex items-center gap-1.5 bg-white/[0.04] hover:bg-white/[0.08] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] font-bold border border-[var(--os-border)] rounded-xl px-4 py-2 text-xs transition-all"
+              className="flex items-center gap-1.5 bg-white/[0.04] hover:bg-white/[0.08] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] font-bold border border-[var(--os-border)] rounded-2xl px-4 py-2 text-xs transition-all"
             >
               <Archive className="w-4 h-4" /> Archive
             </button>
@@ -184,7 +184,7 @@ function BlueprintDetail({ blueprintId }: { blueprintId: string }) {
 
       {/* Checksum */}
       {data.checksum && (
-        <div className="text-[10px] text-[var(--os-text-3)] font-mono bg-black/10 border border-[var(--os-border)]/40 p-3 rounded-xl word-break-all">
+        <div className="text-[10px] text-[var(--os-text-3)] font-mono bg-black/10 border border-[var(--os-border)]/40 p-3 rounded-2xl word-break-all">
           <span className="font-bold text-[var(--os-text-2)]">checksum:</span> {data.checksum}
         </div>
       )}
@@ -328,7 +328,7 @@ export function BlueprintPage() {
           </div>
           <button
             onClick={() => navigate('/kangqore-view/admin/kangqore-immp/blueprint-customize')}
-            className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl px-3 py-1.5 text-[11px] font-bold transition-all"
+            className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-2xl px-3 py-1.5 text-[11px] font-bold transition-all"
           >
             <Wand2 className="w-3.5 h-3.5" />
             Wizard
@@ -352,7 +352,7 @@ export function BlueprintPage() {
                 <input
                   value={value}
                   onChange={e => setter(e.target.value)}
-                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
+                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
                 />
               </div>
             ))}
@@ -365,7 +365,7 @@ export function BlueprintPage() {
                 <select
                   value={generatePack}
                   onChange={e => { setGeneratePack(e.target.value); setGenerateIndustry(e.target.value) }}
-                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
+                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
                 >
                   <option value="professional-services">Professional Services</option>
                   <option value="legal">Legal</option>
@@ -386,7 +386,7 @@ export function BlueprintPage() {
                 <select
                   value={generateSize}
                   onChange={e => setGenerateSize(e.target.value)}
-                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
+                  className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
                 >
                   <option value="STARTUP">Startup</option>
                   <option value="SME">SME</option>
@@ -405,7 +405,7 @@ export function BlueprintPage() {
           <button
             onClick={() => generateMut.mutate()}
             disabled={generateMut.isPending}
-            className="mt-4 w-full flex items-center justify-center gap-1.5 bg-indigo-500 hover:bg-indigo-600 text-white border-none rounded-xl py-2.5 text-xs font-bold transition-all shadow-md shadow-indigo-500/10"
+            className="mt-4 w-full flex items-center justify-center gap-1.5 bg-indigo-500 hover:bg-indigo-600 text-white border-none rounded-2xl py-2.5 text-xs font-bold transition-all shadow-md shadow-indigo-500/10"
           >
             <Zap className="w-4 h-4" />
             {generateMut.isPending ? 'Generating…' : 'Generate Blueprint'}
@@ -432,19 +432,19 @@ export function BlueprintPage() {
                 placeholder="Blueprint name"
                 value={importName}
                 onChange={e => setImportName(e.target.value)}
-                className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
+                className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-xs text-[var(--os-text-1)] outline-none"
               />
               <textarea
                 placeholder="Paste blueprint.json here…"
                 value={importText}
                 onChange={e => { setImportText(e.target.value); setValidationResult(null) }}
                 rows={6}
-                className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-xl px-3 py-2 text-[11px] text-[var(--os-text-1)] outline-none font-mono resize-y"
+                className="w-full bg-white/[0.02] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-[11px] text-[var(--os-text-1)] outline-none font-mono resize-y"
               />
 
               {validationResult && (
                 <div className={cn(
-                  'text-[11px] p-3 rounded-xl border font-semibold',
+                  'text-[11px] p-3 rounded-2xl border font-semibold',
                   validationResult.valid ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500' : 'bg-red-500/10 border-red-500/30 text-red-500'
                 )}>
                   {validationResult.valid
@@ -464,14 +464,14 @@ export function BlueprintPage() {
                 <button
                   onClick={() => validateMut.mutate()}
                   disabled={!importText.trim() || validateMut.isPending}
-                  className="flex-1 bg-white/[0.04] hover:bg-white/[0.08] text-[var(--os-text-1)] border border-[var(--os-border)] rounded-xl py-2 text-xs font-bold transition-all"
+                  className="flex-1 bg-white/[0.04] hover:bg-white/[0.08] text-[var(--os-text-1)] border border-[var(--os-border)] rounded-2xl py-2 text-xs font-bold transition-all"
                 >
                   Validate
                 </button>
                 <button
                   onClick={() => importMut.mutate()}
                   disabled={!importText.trim() || importMut.isPending}
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-black border-none rounded-xl py-2 text-xs font-bold transition-all shadow-md shadow-amber-500/10"
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-black border-none rounded-2xl py-2 text-xs font-bold transition-all shadow-md shadow-amber-500/10"
                 >
                   {importMut.isPending ? 'Importing…' : 'Import'}
                 </button>

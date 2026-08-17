@@ -81,14 +81,14 @@ export function PillarsPage() {
           </p>
         </div>
         {!isLoading && stats.total > 0 && (
-          <div className="px-3 py-1.5 rounded-lg" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+          <div className="px-3 py-1.5 rounded-2xl" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
             <span className="text-xs" style={{ color: 'var(--os-text-2)' }}>
               All 16 pillars applied across{' '}
               <span className="font-bold" style={{ color: 'var(--os-text-1)' }}>{stats.total}</span> engagement{stats.total !== 1 ? 's' : ''}
             </span>
           </div>
         )}
-        {isLoading && <div className="h-7 w-44 rounded-lg animate-pulse" style={{ background: 'var(--os-surface-0)' }} />}
+        {isLoading && <div className="h-7 w-44 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />}
       </div>
 
       {PILLAR_GROUPS.map(group => (

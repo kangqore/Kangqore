@@ -20,7 +20,7 @@ const CONDITION_OPS = ['eq', 'neq', 'gt', 'gte', 'lt', 'lte', 'contains', 'in', 
 const ROLES = ['ADMIN', 'TEAM', 'EXECUTIVE', 'CLIENT', 'PARTNER', 'INVESTOR', 'ANALYST', 'JOB_SEEKER', 'JOURNALIST', 'VISITOR']
 
 const ROW = 'flex items-center gap-1.5'
-const INPUT = 'px-2 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none'
+const INPUT = 'px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none'
 
 // ── Key/value editor — shared by effect configuration forms ──────────────────
 function KeyValueEditor({ value, onChange, placeholder }: {
@@ -54,7 +54,7 @@ function SortableParamRow({ p, onChange, onRemove }: { p: ActionParameterDef; on
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: p.name || Math.random().toString() })
   return (
     <div ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.5 : 1 }}
-      className="rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] p-2.5 space-y-1.5">
+      className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-2.5 space-y-1.5">
       <div className={ROW}>
         <button {...attributes} {...listeners} className="cursor-grab text-[var(--os-text-2)] flex-shrink-0"><DotsSixVertical className="w-3.5 h-3.5" /></button>
         <input className={`${INPUT} flex-1`} placeholder="paramName" value={p.name} onChange={e => onChange({ ...p, name: e.target.value })} />
@@ -124,7 +124,7 @@ function ValidationRuleRow({ rule, params, onChange, onRemove }: {
 }) {
   const cond = rule.condition
   return (
-    <div className="rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] p-2.5 space-y-1.5">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-2.5 space-y-1.5">
       <div className={ROW}>
         <select className={INPUT} value={cond.source} onChange={e => onChange({ ...rule, condition: { ...cond, source: e.target.value as 'param' | 'object' } })}>
           <option value="param">param</option>
@@ -169,7 +169,7 @@ function EffectRow({ effect, params, onChange, onRemove }: {
   const objectRefParams = params.filter(p => p.type === 'object-ref')
 
   return (
-    <div className="rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] p-2.5 space-y-2">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-2.5 space-y-2">
       <div className={ROW}>
         <select className={`${INPUT} flex-1`} value={effect.effectType} onChange={e => onChange({ effectType: e.target.value as EffectType, configuration: {} })}>
           {EFFECT_TYPES.map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
@@ -285,7 +285,7 @@ function ActionFormBuilder({ existing, onClose }: { existing: OntologyAction | n
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-2xl rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-5 max-h-[88vh] overflow-y-auto">
+      <div className="w-full max-w-2xl rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-5 max-h-[88vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-[var(--os-text-1)]">{existing ? 'Edit Action' : 'New Action'}</p>
           <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><X className="w-4 h-4" /></button>
@@ -295,29 +295,29 @@ function ActionFormBuilder({ existing, onClose }: { existing: OntologyAction | n
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Object Type</label>
-            <select className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={typeId} onChange={e => setTypeId(e.target.value)} disabled={!!existing}>
+            <select className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={typeId} onChange={e => setTypeId(e.target.value)} disabled={!!existing}>
               <option value="">Select…</option>
               {types.map((t: any) => <option key={t.id} value={t.id}>{t.displayName}</option>)}
             </select>
           </div>
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Name (code identifier)</label>
-            <input className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" placeholder="ApproveInvoice" value={name} onChange={e => setName(e.target.value)} disabled={!!existing} />
+            <input className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" placeholder="ApproveInvoice" value={name} onChange={e => setName(e.target.value)} disabled={!!existing} />
           </div>
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Display Name</label>
-            <input className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" placeholder="Approve Invoice" value={displayName} onChange={e => setDisplayName(e.target.value)} />
+            <input className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" placeholder="Approve Invoice" value={displayName} onChange={e => setDisplayName(e.target.value)} />
           </div>
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Description</label>
-            <input className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={description} onChange={e => setDescription(e.target.value)} />
+            <input className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={description} onChange={e => setDescription(e.target.value)} />
           </div>
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Allowed Roles</label>
             <div className="flex flex-wrap gap-1.5">
               {ROLES.map(r => (
                 <button key={r} type="button" onClick={() => toggleRole(r)}
-                  className={`px-2 py-1 rounded-md text-[10px] font-semibold border ${allowedRoles.includes(r) ? 'bg-[#579bfc] text-white border-[#579bfc]' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}
+                  className={`px-2 py-1 rounded-2xl text-[10px] font-semibold border ${allowedRoles.includes(r) ? 'bg-[#579bfc] text-white border-[#579bfc]' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}
                 >{r}</button>
               ))}
             </div>
@@ -334,7 +334,7 @@ function ActionFormBuilder({ existing, onClose }: { existing: OntologyAction | n
         </div>
 
         {previewAction && (
-          <div className="rounded-lg border border-dashed border-[var(--os-border)] p-3">
+          <div className="rounded-2xl border border-dashed border-[var(--os-border)] p-3">
             <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--os-text-2)] mb-2">Form preview</p>
             <ActionParamForm action={previewAction} disabled />
           </div>
@@ -375,7 +375,7 @@ function ActionFormBuilder({ existing, onClose }: { existing: OntologyAction | n
         <button
           onClick={() => save.mutate()}
           disabled={!displayName || (!existing && (!typeId || !name)) || save.isPending}
-          className="w-full py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {save.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : existing ? 'Save Changes' : 'Create Action'}
         </button>
@@ -419,12 +419,12 @@ function ActionCard({ action, onEdit, onRun }: { action: OntologyAction; onEdit:
         </div>
         <div className="flex items-center gap-1">
           <button onClick={() => toggleTool.mutate()} title={action.toolCallable ? 'Tool-callable — Claude may invoke this action' : 'Not tool-callable — click to expose to Claude via tool-use'}
-            className={`p-1.5 rounded-md ${action.toolCallable ? 'text-[#22d3ee] bg-[#22d3ee]/10' : 'text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]'}`}>
+            className={`p-1.5 rounded-2xl ${action.toolCallable ? 'text-[#22d3ee] bg-[#22d3ee]/10' : 'text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]'}`}>
             <Wrench size={13} weight={action.toolCallable ? 'fill' : 'regular'} />
           </button>
-          <button onClick={onEdit} title="Edit" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]"><PencilSimple size={13} /></button>
-          <button onClick={onRun} title="Run" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[#579bfc] hover:bg-[var(--os-surface-0)]"><Play size={13} weight="fill" /></button>
-          <button onClick={() => confirm(`Delete "${action.displayName}"?`) && remove.mutate()} title="Delete" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)]"><Trash size={13} /></button>
+          <button onClick={onEdit} title="Edit" className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]"><PencilSimple size={13} /></button>
+          <button onClick={onRun} title="Run" className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[#579bfc] hover:bg-[var(--os-surface-0)]"><Play size={13} weight="fill" /></button>
+          <button onClick={() => confirm(`Delete "${action.displayName}"?`) && remove.mutate()} title="Delete" className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)]"><Trash size={13} /></button>
         </div>
       </div>
     </div>
@@ -446,7 +446,7 @@ export function ActionsPage() {
           <h2 className="text-lg font-black text-[var(--os-text-1)] flex items-center gap-2"><Lightning size={18} /> Actions</h2>
           <p className="text-xs text-[var(--os-text-2)] mt-0.5">Typed, validated, write-back actions — the same execution path humans and KIMMP both run through.</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowBuilder(true) }} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 transition-opacity">
+        <button onClick={() => { setEditing(null); setShowBuilder(true) }} className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 transition-opacity">
           <Plus size={13} weight="bold" /> New Action
         </button>
       </div>

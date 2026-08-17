@@ -61,14 +61,14 @@ function CreateOrgModal({ onClose }: { onClose: () => void }) {
           value={name}
           onChange={e => setName(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter' && name.trim()) create.mutate() }}
-          className="w-full px-3 py-2.5 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+          className="w-full px-3 py-2.5 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
         />
         <div className="flex justify-end gap-2 mt-5">
-          <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 rounded-2xl text-sm font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]">Cancel</button>
           <button
             disabled={!name.trim() || create.isPending}
             onClick={() => create.mutate()}
-            className="px-5 py-2 rounded-xl text-sm font-bold text-white disabled:opacity-40"
+            className="px-5 py-2 rounded-2xl text-sm font-bold text-white disabled:opacity-40"
             style={{ background: '#2564ea' }}
           >
             {create.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create'}
@@ -103,23 +103,23 @@ function InviteModal({ orgId, onClose }: { orgId: string; onClose: () => void })
             placeholder="Email address *"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+            className="w-full px-3 py-2.5 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
           />
           <select
             value={role}
             onChange={e => setRole(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+            className="w-full px-3 py-2.5 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
           >
             <option value="MEMBER">Member</option>
             <option value="ADMIN">Admin</option>
           </select>
         </div>
         <div className="flex justify-end gap-2 mt-5">
-          <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 rounded-2xl text-sm font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]">Cancel</button>
           <button
             disabled={!email.trim() || invite.isPending}
             onClick={() => invite.mutate()}
-            className="px-5 py-2 rounded-xl text-sm font-bold text-white disabled:opacity-40"
+            className="px-5 py-2 rounded-2xl text-sm font-bold text-white disabled:opacity-40"
             style={{ background: '#2564ea' }}
           >
             {invite.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Send Invite'}
@@ -173,7 +173,7 @@ function OrgPanel({ orgId }: { orgId: string }) {
 
   if (isLoading) return (
     <div className="space-y-2 mt-4">
-      {[1,2,3].map(i => <div key={i} className="h-12 rounded-xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
+      {[1,2,3].map(i => <div key={i} className="h-12 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
     </div>
   )
 
@@ -198,23 +198,23 @@ function OrgPanel({ orgId }: { orgId: string }) {
               autoFocus
               value={editName}
               onChange={e => setEditName(e.target.value)}
-              className="flex-1 px-3 py-2 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+              className="flex-1 px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
             />
             <button
               onClick={() => updateOrg.mutate({ name: editName })}
               disabled={!editName.trim() || updateOrg.isPending}
-              className="p-2 rounded-xl text-white disabled:opacity-40"
+              className="p-2 rounded-2xl text-white disabled:opacity-40"
               style={{ background: '#2564ea' }}
             >
               {updateOrg.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
             </button>
-            <button onClick={() => setEditing(false)} className="p-2 rounded-xl text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]">
+            <button onClick={() => setEditing(false)} className="p-2 rounded-2xl text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)]">
               <X className="w-4 h-4" />
             </button>
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(37,100,234,0.08)', border: '1px solid rgba(37,100,234,0.15)' }}>
+            <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(37,100,234,0.08)', border: '1px solid rgba(37,100,234,0.15)' }}>
               <Building2 className="w-4 h-4 text-[#2564ea]" />
             </div>
             <div>
@@ -232,7 +232,7 @@ function OrgPanel({ orgId }: { orgId: string }) {
           {isAdmin && (
             <button
               onClick={() => setInviting(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold text-white"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[10px] font-bold text-white"
               style={{ background: '#2564ea' }}
             >
               <Plus className="w-3 h-3" /> Invite
@@ -252,7 +252,7 @@ function OrgPanel({ orgId }: { orgId: string }) {
                   <p className="text-[10px] text-[var(--os-text-2)] truncate">{m.email}</p>
                 </div>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider"
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-2xl text-[9px] font-bold uppercase tracking-wider"
                     style={{ background: `${ROLE_C[m.orgRole] ?? '#579bfc'}15`, color: ROLE_C[m.orgRole] ?? '#579bfc' }}>
                     <RoleIcon className="w-2.5 h-2.5" /> {m.orgRole}
                   </span>
@@ -318,7 +318,7 @@ function OrgPanel({ orgId }: { orgId: string }) {
             <button
               onClick={() => { if (confirm(`Delete "${org.name}"? This cannot be undone.`)) deleteOrg.mutate() }}
               disabled={deleteOrg.isPending}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold text-white disabled:opacity-40"
               style={{ background: '#e2445c' }}
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -356,7 +356,7 @@ export function OrganizationPage() {
         </div>
         <button
           onClick={() => setCreating(true)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold text-white"
           style={{ background: '#2564ea' }}
         >
           <Plus className="w-3.5 h-3.5" /> New Org
@@ -365,7 +365,7 @@ export function OrganizationPage() {
 
       {isLoading ? (
         <div className="space-y-2">
-          {[1,2].map(i => <div key={i} className="h-14 rounded-xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
+          {[1,2].map(i => <div key={i} className="h-14 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
         </div>
       ) : orgs.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-[var(--os-border)] py-12 text-center">
@@ -387,7 +387,7 @@ export function OrganizationPage() {
                     setSwitchingId(org.id)
                     try { await switchOrg(org.id) } finally { setSwitchingId(null) }
                   }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all"
                   style={activeOrgId === org.id
                     ? { background: '#2564ea', color: '#fff' }
                     : { background: 'var(--os-surface-0)', color: 'var(--os-text-2)', border: '1px solid var(--os-border)' }}

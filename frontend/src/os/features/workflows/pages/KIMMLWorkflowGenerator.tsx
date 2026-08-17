@@ -62,7 +62,7 @@ function StepCard({ step, index }: { step: GeneratedWorkflow['steps'][0]; index:
     <div className="flex gap-3 items-start">
       {/* connector */}
       <div className="flex flex-col items-center">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+        <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0"
           style={{ background: `${cfg.color}14`, border: `1px solid ${cfg.color}30` }}>
           <Icon style={{ width: 14, height: 14, color: cfg.color }} />
         </div>
@@ -136,7 +136,7 @@ export function KIMMLWorkflowGenerator() {
 
       {/* Header */}
       <div className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
           style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)' }}>
           <Brain style={{ width: 18, height: 18, color: '#a78bfa' }} />
         </div>
@@ -149,7 +149,7 @@ export function KIMMLWorkflowGenerator() {
       </div>
 
       {/* KIMMP-native triggers */}
-      <div className="rounded-xl p-4" style={{ background: 'rgba(226,68,92,0.04)', border: '1px solid rgba(226,68,92,0.1)' }}>
+      <div className="rounded-2xl p-4" style={{ background: 'rgba(226,68,92,0.04)', border: '1px solid rgba(226,68,92,0.1)' }}>
         <div className="flex items-center gap-2 mb-3">
           <Zap style={{ width: 14, height: 14, color: '#e2445c' }} />
           <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-2)]">KIMMP-Native Triggers — not available in any other workflow tool</p>
@@ -160,7 +160,7 @@ export function KIMMLWorkflowGenerator() {
               setDescription(prev => prev ? prev : `When ${t.label.toLowerCase()}, `)
               textRef.current?.focus()
             }}
-              className="text-left p-2.5 rounded-lg transition-all hover:opacity-90"
+              className="text-left p-2.5 rounded-2xl transition-all hover:opacity-90"
               style={{ background: `${t.color}08`, border: `1px solid ${t.color}18` }}>
               <div className="text-sm mb-1">{t.icon}</div>
               <p className="text-[11px] font-bold leading-tight" style={{ color: t.color }}>{t.label}</p>
@@ -171,7 +171,7 @@ export function KIMMLWorkflowGenerator() {
       </div>
 
       {/* Description input */}
-      <div className="rounded-xl overflow-hidden bg-[var(--os-card)] border border-[var(--os-border)]">
+      <div className="rounded-2xl overflow-hidden bg-[var(--os-card)] border border-[var(--os-border)]">
         <div className="px-4 py-3 border-b border-[var(--os-border)] flex items-center justify-between">
           <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--os-text-2)]">Describe your workflow in plain English</p>
           <p className="text-[10px] text-[var(--os-text-2)]">{description.length} chars</p>
@@ -193,7 +193,7 @@ export function KIMMLWorkflowGenerator() {
           <div className="flex flex-wrap gap-1.5">
             {EXAMPLES.map((ex, i) => (
               <button key={i} onClick={() => { setDescription(ex); textRef.current?.focus() }}
-                className="text-[10px] px-2.5 py-1.5 rounded-lg text-left transition-all hover:opacity-80"
+                className="text-[10px] px-2.5 py-1.5 rounded-2xl text-left transition-all hover:opacity-80"
                 style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
                 {ex.slice(0, 60)}…
               </button>
@@ -203,7 +203,7 @@ export function KIMMLWorkflowGenerator() {
 
         <div className="px-4 pb-4 flex items-center gap-3">
           <button onClick={generate} disabled={!description.trim() || loading}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-40"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold transition-all disabled:opacity-40"
             style={{ background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.35)', color: '#a78bfa' }}>
             {loading
               ? <><span className="animate-spin">⟳</span> KIMMP is designing…</>
@@ -221,7 +221,7 @@ export function KIMMLWorkflowGenerator() {
 
       {/* Error */}
       {error && (
-        <div className="flex items-start gap-3 px-4 py-3 rounded-xl"
+        <div className="flex items-start gap-3 px-4 py-3 rounded-2xl"
           style={{ background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.2)' }}>
           <AlertTriangle style={{ width: 14, height: 14, color: '#e2445c' }} className="mt-0.5 flex-shrink-0" />
           <div>
@@ -235,7 +235,7 @@ export function KIMMLWorkflowGenerator() {
       {result && (
         <div className="space-y-4">
           {/* Intent header */}
-          <div className="rounded-xl p-4 flex items-start gap-3"
+          <div className="rounded-2xl p-4 flex items-start gap-3"
             style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.2)' }}>
             <CheckCircle2 style={{ width: 16, height: 16, color: '#a78bfa' }} className="flex-shrink-0 mt-0.5" />
             <div className="flex-1 min-w-0">
@@ -264,7 +264,7 @@ export function KIMMLWorkflowGenerator() {
           <div className="grid grid-cols-3 gap-4">
 
             {/* Steps */}
-            <div className="col-span-2 rounded-xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+            <div className="col-span-2 rounded-2xl p-5" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
               <p className="text-[9px] font-bold uppercase tracking-wider text-[var(--os-text-2)] mb-4">
                 Workflow Steps — {result.steps.length} step{result.steps.length !== 1 ? 's' : ''}
               </p>
@@ -277,11 +277,11 @@ export function KIMMLWorkflowGenerator() {
 
             {/* Risk + KIMMP note */}
             <div className="space-y-3">
-              <div className="rounded-xl p-4" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+              <div className="rounded-2xl p-4" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
                 <RiskMeter score={result.riskScore} />
               </div>
 
-              <div className="rounded-xl p-4" style={{ background: 'rgba(124,58,237,0.05)', border: '1px solid rgba(124,58,237,0.15)' }}>
+              <div className="rounded-2xl p-4" style={{ background: 'rgba(124,58,237,0.05)', border: '1px solid rgba(124,58,237,0.15)' }}>
                 <div className="flex items-center gap-1.5 mb-2">
                   <Brain style={{ width: 12, height: 12, color: '#a78bfa' }} />
                   <p className="text-[9px] font-bold uppercase tracking-wider text-purple-400">KIMMP Recommendation</p>
@@ -290,7 +290,7 @@ export function KIMMLWorkflowGenerator() {
               </div>
 
               {/* Activate button */}
-              <button className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all hover:opacity-90"
+              <button className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold transition-all hover:opacity-90"
                 style={{ background: 'rgba(0,200,117,0.1)', border: '1px solid rgba(0,200,117,0.25)', color: '#00c875' }}>
                 <ArrowRight style={{ width: 14, height: 14 }} />
                 Save & Activate

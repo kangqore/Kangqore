@@ -478,7 +478,7 @@ function WaandaEventsTab() {
     <div className="space-y-4">
 
       {/* Stats strip */}
-      <div className="grid grid-cols-5 divide-x rounded-xl overflow-hidden"
+      <div className="grid grid-cols-5 divide-x rounded-2xl overflow-hidden"
         style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
         {types.map((t, i) => {
           const c = EVT_COLOR[t]
@@ -496,12 +496,12 @@ function WaandaEventsTab() {
         <div className="relative flex-1 min-w-48">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" style={{ width: 13, height: 13 }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search events…"
-            className="w-full pl-8 pr-3 py-2 text-sm bg-transparent text-white placeholder:text-slate-700 rounded-lg outline-none"
+            className="w-full pl-8 pr-3 py-2 text-sm bg-transparent text-white placeholder:text-slate-700 rounded-2xl outline-none"
             style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.025)' }} />
         </div>
         {(['all', ...types] as const).map(t => (
           <button key={t} onClick={() => setTypeFilter(t as WaandaEventType | 'all')}
-            className="text-[11px] font-semibold px-3 py-2 rounded-lg transition-all flex-shrink-0"
+            className="text-[11px] font-semibold px-3 py-2 rounded-2xl transition-all flex-shrink-0"
             style={{
               background: typeFilter === t ? `${EVT_COLOR[t as WaandaEventType]?.bg ?? 'rgba(124,58,237,0.1)'}` : 'rgba(255,255,255,0.025)',
               border: `1px solid ${typeFilter === t ? (EVT_COLOR[t as WaandaEventType]?.border ?? 'rgba(124,58,237,0.3)') : 'rgba(255,255,255,0.08)'}`,
@@ -511,7 +511,7 @@ function WaandaEventsTab() {
           </button>
         ))}
         <button onClick={() => refetch()}
-          className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors flex-shrink-0"
+          className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-2xl transition-colors flex-shrink-0"
           style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.025)', color: '#64748b' }}>
           <RefreshCw className={isFetching ? 'animate-spin' : ''} style={{ width: 13, height: 13 }} />
         </button>
@@ -522,7 +522,7 @@ function WaandaEventsTab() {
       {isLoading ? (
         <div className="space-y-1">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="h-10 rounded-lg animate-pulse" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }} />
+            <div key={i} className="h-10 rounded-2xl animate-pulse" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }} />
           ))}
         </div>
       ) : filtered.length === 0 ? (
@@ -532,7 +532,7 @@ function WaandaEventsTab() {
           <p className="text-xs text-slate-600 mt-1">Events are written each time WAANDA emits a HUD signal.</p>
         </div>
       ) : (
-        <div className="rounded-xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
+        <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
           {filtered.map(ev => <WaandaEventRow key={ev.id} ev={ev} />)}
         </div>
       )}
@@ -624,7 +624,7 @@ function AgentPipeline({ agents, results }: { agents: string[]; results: any[] }
               {/* Node */}
               <div className="flex flex-col items-center" style={{ width: 88 }}>
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-2 relative"
+                  className="w-11 h-11 rounded-2xl flex items-center justify-center mb-2 relative"
                   style={{
                     background: failed ? 'rgba(239,68,68,0.08)' : `${color}12`,
                     border: `1px solid ${failed ? 'rgba(239,68,68,0.25)' : color + '30'}`,
@@ -676,7 +676,7 @@ function AgentTraceBlock({ result }: { result: any }) {
   const color = agentColor(result.agentType)
   const failed = result.success === false
   return (
-    <div className="rounded-lg overflow-hidden" style={{ border: `1px solid ${open ? color + '22' : 'rgba(10,15,30,0.5)'}` }}>
+    <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${open ? color + '22' : 'rgba(10,15,30,0.5)'}` }}>
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors"
@@ -703,7 +703,7 @@ function AgentTraceBlock({ result }: { result: any }) {
       {open && (
         <div className="px-4 pb-3 pt-0" style={{ borderTop: `1px solid ${color}15` }}>
           {result.output
-            ? <pre className="text-[11px] text-slate-400 whitespace-pre-wrap leading-relaxed mt-3 p-3 rounded-lg font-mono overflow-x-auto" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(10,15,30,0.5)' }}>{result.output}</pre>
+            ? <pre className="text-[11px] text-slate-400 whitespace-pre-wrap leading-relaxed mt-3 p-3 rounded-2xl font-mono overflow-x-auto" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(10,15,30,0.5)' }}>{result.output}</pre>
             : <p className="text-[11px] text-slate-600 mt-3 italic">No output recorded.</p>
           }
         </div>
@@ -768,7 +768,7 @@ function RunDetail({ run }: { run: any }) {
         {agentsUsed.length > 0 && (
           <section>
             <SectionLabel>Agent Pipeline · {agentsUsed.length} agents</SectionLabel>
-            <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
+            <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
               <AgentPipeline agents={agentsUsed} results={agentResults} />
             </div>
           </section>
@@ -977,7 +977,7 @@ function AnalyticsOverlay({ logs, onClose }: { logs: any[]; onClose: () => void 
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
       transition={{ duration: 0.2 }}
-      className="rounded-xl p-5 grid grid-cols-1 xl:grid-cols-2 gap-6"
+      className="rounded-2xl p-5 grid grid-cols-1 xl:grid-cols-2 gap-6"
       style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}
     >
       {/* Agent usage */}
@@ -1131,18 +1131,18 @@ function LiveFeedTab() {
         <div className="relative flex-1 min-w-40 max-w-xs">
           <Search style={{ width: 13, height: 13, position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--os-text-3)' }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search logs…"
-            className="w-full pl-7 pr-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none focus:border-blue-500/50" />
+            className="w-full pl-7 pr-3 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none focus:border-blue-500/50" />
         </div>
         <select value={roleFilter} onChange={e => setRole(e.target.value as SwarmRole)}
-          className="px-2 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none">
+          className="px-2 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none">
           {SWARM_ROLES.map(r => <option key={r} value={r}>{r === 'ALL' ? 'All Roles' : r}</option>)}
         </select>
         <select value={sevFilter} onChange={e => setSev(e.target.value as SwarmSev)}
-          className="px-2 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none">
+          className="px-2 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none">
           {SWARM_SEV.map(s => <option key={s} value={s}>{s === 'ALL' ? 'All Severity' : s}</option>)}
         </select>
         <button onClick={exportCSV} disabled={!filtered.length}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-30">
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-30">
           <FileDown style={{ width: 13, height: 13 }} /> Export CSV
         </button>
         {entries.length > 0 && (
@@ -1154,7 +1154,7 @@ function LiveFeedTab() {
       </div>
 
       {/* Log tail */}
-      <div className="rounded-xl border border-[var(--os-border)] overflow-hidden font-mono text-[11px]"
+      <div className="rounded-2xl border border-[var(--os-border)] overflow-hidden font-mono text-[11px]"
         style={{ background: '#050914', minHeight: 320, maxHeight: 560, overflowY: 'auto' }}>
         {!entries.length && (
           <div className="flex items-center justify-center h-32 text-[var(--os-text-3)]">
@@ -1292,7 +1292,7 @@ function KIMMLearningTab() {
     return (
       <div className="space-y-3">
         {[1,2,3].map(i => (
-          <div key={i} className="h-20 rounded-xl animate-pulse" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }} />
+          <div key={i} className="h-20 rounded-2xl animate-pulse" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }} />
         ))}
       </div>
     )
@@ -1304,7 +1304,7 @@ function KIMMLearningTab() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${stageCol}18`, border: `1px solid ${stageCol}30` }}>
+          <div className="w-8 h-8 rounded-2xl flex items-center justify-center" style={{ background: `${stageCol}18`, border: `1px solid ${stageCol}30` }}>
             <Dna style={{ width: 16, height: 16, color: stageCol }} />
           </div>
           <div>
@@ -1318,12 +1318,12 @@ function KIMMLearningTab() {
         </div>
         <div className="flex gap-2">
           <button onClick={downloadCorpus}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-2xl transition-colors"
             style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)', color: '#64748b' }}>
             <FileDown style={{ width: 13, height: 13 }} />Export JSONL
           </button>
           <button onClick={() => triggerRun.mutate()} disabled={triggerRun.isPending}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-2xl transition-colors disabled:opacity-50"
             style={{ border: `1px solid ${stageCol}30`, background: `${stageCol}0d`, color: stageCol }}>
             <Play style={{ width: 13, height: 13 }} className={triggerRun.isPending ? 'animate-pulse' : ''} />
             {triggerRun.isPending ? 'Running…' : 'Run Learning Cycle'}
@@ -1332,7 +1332,7 @@ function KIMMLearningTab() {
       </div>
 
       {/* Graduation progress */}
-      <div className="rounded-xl p-5" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
+      <div className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600 mb-0.5">Graduation Progress — Fine-Tune Ready at 1,000 Approved</p>
@@ -1353,7 +1353,7 @@ function KIMMLearningTab() {
           <span className="text-[9px] text-slate-700">1,000</span>
         </div>
         {s.readyForFineTune && (
-          <p className="text-[11px] font-bold mt-3 text-center px-3 py-2 rounded-lg"
+          <p className="text-[11px] font-bold mt-3 text-center px-3 py-2 rounded-2xl"
             style={{ background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)', color: '#34d399' }}>
             KIMMP is ready for fine-tuning. Export the JSONL corpus and submit to your provider.
           </p>
@@ -1361,7 +1361,7 @@ function KIMMLearningTab() {
       </div>
 
       {/* Distillation Pipeline — Claude→KIMMP knowledge transfer */}
-      <div className="rounded-xl p-5" style={{ background: 'rgba(167,139,250,0.04)', border: '1px solid rgba(167,139,250,0.12)' }}>
+      <div className="rounded-2xl p-5" style={{ background: 'rgba(167,139,250,0.04)', border: '1px solid rgba(167,139,250,0.12)' }}>
         <div className="flex items-start justify-between mb-4">
           <div>
             <p className="text-[9px] font-bold uppercase tracking-wider mb-0.5" style={{ color: '#a78bfa' }}>Distillation Pipeline — Claude Training KIMMP</p>
@@ -1409,7 +1409,7 @@ function KIMMLearningTab() {
             { label: 'Distilled Examples',      value: (rs.distillationCount ?? 0).toLocaleString(), color: '#a78bfa' },
             { label: 'Distillation Phase',      value: rs.phase ?? 'distilling',               color: '#fdab3d' },
           ].map(item => (
-            <div key={item.label} className="rounded-lg px-3 py-2.5 text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
+            <div key={item.label} className="rounded-2xl px-3 py-2.5 text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
               <p className="text-[8px] font-bold uppercase tracking-wider text-slate-700 mb-1">{item.label}</p>
               <p className="text-sm font-bold capitalize" style={{ color: item.color }}>{item.value}</p>
             </div>
@@ -1451,7 +1451,7 @@ function KIMMLearningTab() {
           { label: 'From Dispatches',value: s.bySource?.dispatch ?? 0,     color: SOURCE_COLOR.dispatch  },
           { label: 'Synthetic',      value: s.bySource?.synthetic ?? 0,    color: SOURCE_COLOR.synthetic },
         ].map(item => (
-          <div key={item.label} className="rounded-xl px-4 py-3 text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
+          <div key={item.label} className="rounded-2xl px-4 py-3 text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
             <p className="text-[9px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">{item.label}</p>
             <p className="text-xl font-bold" style={{ color: item.color }}>{typeof item.value === 'number' ? item.value.toLocaleString() : item.value}</p>
           </div>
@@ -1460,7 +1460,7 @@ function KIMMLearningTab() {
 
       {/* By system */}
       {s.bySystem && Object.keys(s.bySystem).length > 0 && (
-        <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
+        <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
           <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-3">Examples by System</p>
           <div className="space-y-2">
             {Object.entries(s.bySystem as Record<string, number>)
@@ -1485,7 +1485,7 @@ function KIMMLearningTab() {
       <div className="grid grid-cols-2 gap-4">
 
         {/* Recent examples */}
-        <div className="rounded-xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
+        <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
           <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(10,15,30,0.5)' }}>
             <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">Training Examples</p>
             <span className="text-[9px] text-slate-700">{total.toLocaleString()} total</span>
@@ -1529,7 +1529,7 @@ function KIMMLearningTab() {
         </div>
 
         {/* Run history */}
-        <div className="rounded-xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
+        <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
           <div className="px-4 py-3" style={{ borderBottom: '1px solid rgba(10,15,30,0.5)' }}>
             <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">Learning Cycle History</p>
           </div>
@@ -1570,7 +1570,7 @@ function KIMMLearningTab() {
       </div>
 
       {/* Stage roadmap */}
-      <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
+      <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(10,15,30,0.5)' }}>
         <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-4">KIMMP Graduation Roadmap</p>
         <div className="flex items-start gap-0">
           {[
@@ -1709,7 +1709,7 @@ export function AgentLogsModule() {
       {/* ── Page header ── */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(37,100,234,0.12)', border: '1px solid rgba(37,100,234,0.2)' }}>
+          <div className="w-8 h-8 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(37,100,234,0.12)', border: '1px solid rgba(37,100,234,0.2)' }}>
             <ScrollText style={{ width: 16, height: 16, color: '#2564ea' }} />
           </div>
           <div>
@@ -1726,7 +1726,7 @@ export function AgentLogsModule() {
           {logs.length > 0 && (
             <button
               onClick={() => setShowAnalytics(v => !v)}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-2xl transition-colors"
               style={{
                 border: `1px solid ${showAnalytics ? 'rgba(124,58,237,0.4)' : 'var(--os-border)'}`,
                 background: showAnalytics ? 'rgba(124,58,237,0.1)' : 'var(--os-surface-0)',
@@ -1738,14 +1738,14 @@ export function AgentLogsModule() {
           )}
           <button
             onClick={exportJSON} disabled={!filtered.length}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors disabled:opacity-30"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-2xl transition-colors disabled:opacity-30"
             style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)', color: 'var(--os-text-2)' }}
           >
             <Download style={{ width: 13, height: 13 }} />Export
           </button>
           <button
             onClick={() => refetch()}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-2xl transition-colors"
             style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)', color: 'var(--os-text-2)' }}
           >
             <RefreshCw className={isFetching ? 'animate-spin' : ''} style={{ width: 13, height: 13 }} />
@@ -1787,22 +1787,22 @@ export function AgentLogsModule() {
           <input
             value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Search questions…"
-            className="w-full pl-8 pr-3 py-2 text-sm bg-transparent text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] rounded-lg outline-none"
+            className="w-full pl-8 pr-3 py-2 text-sm bg-transparent text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] rounded-2xl outline-none"
             style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}
           />
         </div>
-        <select value={intentFilter} onChange={e => setIntent(e.target.value)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
+        <select value={intentFilter} onChange={e => setIntent(e.target.value)} className="px-3 py-2 text-xs font-medium rounded-2xl outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
           {allIntents.map(i => <option key={i} value={i}>{i === 'ALL' ? 'All Intents' : i}</option>)}
         </select>
-        <select value={agentFilter} onChange={e => setAgent(e.target.value)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
+        <select value={agentFilter} onChange={e => setAgent(e.target.value)} className="px-3 py-2 text-xs font-medium rounded-2xl outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
           {allAgents.map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Agents' : a}</option>)}
         </select>
         <div className="flex items-center gap-1.5">
           <span className="text-[10px] text-[var(--os-text-2)]">Conf ≥</span>
-          <input type="number" min={0} max={100} value={minConf} onChange={e => setMinConf(Number(e.target.value))} className="w-14 px-2 py-2 text-xs text-[var(--os-text-1)] rounded-lg outline-none text-center tabular-nums" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }} />
+          <input type="number" min={0} max={100} value={minConf} onChange={e => setMinConf(Number(e.target.value))} className="w-14 px-2 py-2 text-xs text-[var(--os-text-1)] rounded-2xl outline-none text-center tabular-nums" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }} />
           <span className="text-[10px] text-[var(--os-text-2)]">%</span>
         </div>
-        <select value={sortBy} onChange={e => setSort(e.target.value as any)} className="px-3 py-2 text-xs font-medium rounded-lg outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
+        <select value={sortBy} onChange={e => setSort(e.target.value as any)} className="px-3 py-2 text-xs font-medium rounded-2xl outline-none text-[var(--os-text-1)]" style={{ border: '1px solid var(--os-border)', background: 'var(--os-surface-0)' }}>
           <option value="date">Newest first</option>
           <option value="confidence">By confidence</option>
           <option value="duration">By duration</option>
@@ -1810,7 +1810,7 @@ export function AgentLogsModule() {
         {hasFilters && (
           <button
             onClick={() => { setSearch(''); setIntent('ALL'); setAgent('ALL'); setMinConf(0) }}
-            className="text-[11px] font-semibold px-2.5 py-2 rounded-lg"
+            className="text-[11px] font-semibold px-2.5 py-2 rounded-2xl"
             style={{ color: '#ef4444', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
           >
             Clear
@@ -1823,7 +1823,7 @@ export function AgentLogsModule() {
       {isLoading ? (
         <div className="space-y-2">
           {[1, 2, 3, 4].map(i => (
-            <div key={i} className="rounded-xl px-5 py-4 animate-pulse flex items-center gap-4" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+            <div key={i} className="rounded-2xl px-5 py-4 animate-pulse flex items-center gap-4" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
               <div className="w-9 h-9 rounded-full flex-shrink-0 bg-[var(--os-border)]" />
               <div className="flex-1 space-y-2">
                 <div className="h-4 rounded w-3/4 bg-[var(--os-border)]" />
@@ -1845,7 +1845,7 @@ export function AgentLogsModule() {
 
           {/* ── Left: Run list ── */}
           <div
-            className="flex flex-col flex-shrink-0 rounded-xl overflow-hidden"
+            className="flex flex-col flex-shrink-0 rounded-2xl overflow-hidden"
             style={{ width: 340, background: 'var(--os-card)', border: '1px solid var(--os-border)' }}
           >
             {/* List header */}
@@ -1881,7 +1881,7 @@ export function AgentLogsModule() {
 
           {/* ── Right: Detail ── */}
           <div
-            className="flex-1 flex flex-col rounded-xl overflow-hidden"
+            className="flex-1 flex flex-col rounded-2xl overflow-hidden"
             style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}
           >
             <AnimatePresence mode="wait">

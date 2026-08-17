@@ -118,7 +118,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {emailAttachments.map((a, i) => (
                         <a key={i} href={a.url} target="_blank" rel="noopener noreferrer"
-                          className={cn('flex items-center gap-1 text-[11px] px-2 py-1 rounded-lg',
+                          className={cn('flex items-center gap-1 text-[11px] px-2 py-1 rounded-2xl',
                             isOutbound ? 'bg-blue-700/50 text-blue-100 hover:bg-blue-700' : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] hover:bg-[var(--os-card)]')}>
                           <FileText className="w-3 h-3" />{a.name}
                         </a>
@@ -147,7 +147,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
         {attachments.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-2">
             {attachments.map((a, i) => (
-              <span key={i} className="flex items-center gap-1.5 text-[11px] bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] px-2 py-1 rounded-lg">
+              <span key={i} className="flex items-center gap-1.5 text-[11px] bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] px-2 py-1 rounded-2xl">
                 <FileText className="w-3 h-3 text-[var(--os-text-2)]" />
                 {a.name}
                 <button onClick={() => removeAttachment(i)} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)] ml-0.5">
@@ -166,7 +166,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors disabled:opacity-50"
+            className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors disabled:opacity-50"
             title="Attach file"
           >
             {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Paperclip className="w-4 h-4" />}
@@ -178,7 +178,7 @@ export function EmailThread({ contact, emails, onReply, isPending, loading }: Pr
             onKeyDown={onKeyDown}
             rows={2}
             placeholder={`Reply to ${contact.name}… (⌘↵ to send)`}
-            className="flex-1 resize-none border border-[var(--os-border)] rounded-xl px-3 py-2.5 text-sm text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 leading-relaxed"
+            className="flex-1 resize-none border border-[var(--os-border)] rounded-2xl px-3 py-2.5 text-sm text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 leading-relaxed"
           />
           <Button
             variant="primary"

@@ -72,7 +72,7 @@ export function PartnerOrgPage() {
           </p>
         </div>
         <button onClick={() => setShowForm(true)}
-          className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg"
+          className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-2xl"
           style={{ background: PURP, color: '#fff' }}>
           <Plus className="w-3.5 h-3.5" /> Onboard Partner
         </button>
@@ -86,9 +86,9 @@ export function PartnerOrgPage() {
           { label: 'Gold / Platinum', value: orgs.filter(o => ['GOLD','PLATINUM'].includes(o.tier)).length, icon: Award, color: AMB },
           { label: 'Avg OIS Boost', value: `+${(orgs.reduce((s,o) => s + o.oisBoostAvg, 0) / Math.max(orgs.length, 1)).toFixed(1)}`, icon: TrendingUp, color: BLUE },
         ].map(s => (
-          <div key={s.label} className="rounded-xl p-4 flex items-center gap-3"
+          <div key={s.label} className="rounded-2xl p-4 flex items-center gap-3"
             style={{ background: CARD, border: `1px solid ${BDR}` }}>
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+            <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ background: `${s.color}18` }}>
               <s.icon className="w-4 h-4" style={{ color: s.color }} />
             </div>
@@ -106,9 +106,9 @@ export function PartnerOrgPage() {
           <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: T2 }}>All Partners</p>
           {orgs.map(o => (
             <button key={o.id} onClick={() => setSelected(o.id)}
-              className="w-full text-left rounded-xl p-4 flex items-center gap-3 transition-colors"
+              className="w-full text-left rounded-2xl p-4 flex items-center gap-3 transition-colors"
               style={{ background: selected === o.id ? `${PURP}18` : CARD, border: `1px solid ${selected === o.id ? PURP : BDR}` }}>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base font-black"
+              <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 text-base font-black"
                 style={{ background: `${TIER_COLOR[o.tier]}20`, color: TIER_COLOR[o.tier] }}>
                 {o.name[0]}
               </div>
@@ -127,7 +127,7 @@ export function PartnerOrgPage() {
         {/* Detail */}
         <div className="lg:col-span-2">
           {!org && !selected && (
-            <div className="rounded-xl p-12 flex flex-col items-center justify-center gap-3 h-full"
+            <div className="rounded-2xl p-12 flex flex-col items-center justify-center gap-3 h-full"
               style={{ background: CARD, border: `1px dashed ${BDR}` }}>
               <Building2 className="w-8 h-8" style={{ color: T2 }} />
               <p className="text-sm" style={{ color: T2 }}>Select a partner to view details</p>
@@ -136,7 +136,7 @@ export function PartnerOrgPage() {
           {org && (
             <div className="space-y-4">
               {/* Header */}
-              <div className="rounded-xl p-5" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+              <div className="rounded-2xl p-5" style={{ background: CARD, border: `1px solid ${BDR}` }}>
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h3 className="text-lg font-black" style={{ color: T1 }}>{org.name}</h3>
@@ -153,7 +153,7 @@ export function PartnerOrgPage() {
                     { l: 'Total Revenue', v: fmt(org.totalRevenue) },
                     { l: 'OIS Boost Avg', v: `+${org.oisBoostAvg.toFixed(1)}` },
                   ].map(x => (
-                    <div key={x.l} className="rounded-lg p-3 text-center"
+                    <div key={x.l} className="rounded-2xl p-3 text-center"
                       style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}` }}>
                       <p className="text-base font-bold" style={{ color: T1 }}>{x.v}</p>
                       <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: T2 }}>{x.l}</p>
@@ -171,14 +171,14 @@ export function PartnerOrgPage() {
                 <button
                   onClick={() => commMut.mutate({ id: org.id, grossAmount: 5000 })}
                   disabled={commMut.isPending}
-                  className="mt-3 text-xs font-semibold px-3 py-1.5 rounded-lg"
+                  className="mt-3 text-xs font-semibold px-3 py-1.5 rounded-2xl"
                   style={{ background: `${GRN}18`, color: GRN }}>
                   + Add Commission Event (£5k demo)
                 </button>
               </div>
 
               {/* Commission ledger */}
-              <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+              <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
                 <div className="px-5 py-3 flex items-center gap-2" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
                   <Banknote className="w-4 h-4" style={{ color: T2 }} />
                   <p className="text-sm font-semibold" style={{ color: T1 }}>Commission Ledger</p>
@@ -228,7 +228,7 @@ export function PartnerOrgPage() {
                 <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>{f.label}</label>
                 <input
                   type={f.type}
-                  className="w-full text-sm px-3 py-2 rounded-lg"
+                  className="w-full text-sm px-3 py-2 rounded-2xl"
                   style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}
                   placeholder={f.placeholder}
                   value={(form as any)[f.key]}
@@ -239,7 +239,7 @@ export function PartnerOrgPage() {
             <div>
               <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Tier</label>
               <select
-                className="w-full text-sm px-3 py-2 rounded-lg"
+                className="w-full text-sm px-3 py-2 rounded-2xl"
                 style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}
                 value={form.tier} onChange={e => setForm(p => ({ ...p, tier: e.target.value as Tier }))}>
                 {TIERS.map(t => <option key={t}>{t}</option>)}
@@ -247,7 +247,7 @@ export function PartnerOrgPage() {
             </div>
             <div className="flex gap-2 pt-1">
               <button onClick={() => setShowForm(false)}
-                className="flex-1 text-sm py-2 rounded-lg" style={{ background: `${BDR}50`, color: T2 }}>
+                className="flex-1 text-sm py-2 rounded-2xl" style={{ background: `${BDR}50`, color: T2 }}>
                 Cancel
               </button>
               <button
@@ -258,7 +258,7 @@ export function PartnerOrgPage() {
                   specialisms: form.specialisms ? form.specialisms.split(',').map(s => s.trim()) : [],
                 })}
                 disabled={createMut.isPending || !form.name || !form.contactEmail}
-                className="flex-1 text-sm font-semibold py-2 rounded-lg"
+                className="flex-1 text-sm font-semibold py-2 rounded-2xl"
                 style={{ background: PURP, color: '#fff' }}>
                 {createMut.isPending ? 'Creating…' : 'Onboard'}
               </button>

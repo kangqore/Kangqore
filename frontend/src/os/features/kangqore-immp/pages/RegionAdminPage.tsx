@@ -66,7 +66,7 @@ export function RegionAdminPage() {
           const flag  = REGION_FLAG[r.region]  ?? '🌐'
           const distEntry = dist.find(d => d.region === r.region)
           return (
-            <div key={r.id} className="rounded-xl p-4 space-y-3"
+            <div key={r.id} className="rounded-2xl p-4 space-y-3"
               style={{ background: `${color}0c`, border: `1.5px solid ${color}30` }}>
               <div className="flex items-start justify-between">
                 <span className="text-2xl">{flag}</span>
@@ -93,15 +93,15 @@ export function RegionAdminPage() {
 
       {/* Distribution bar */}
       {dist.length > 0 && (
-        <div className="rounded-xl p-5" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+        <div className="rounded-2xl p-5" style={{ background: CARD, border: `1px solid ${BDR}` }}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-sm font-semibold" style={{ color: T1 }}>Fleet Distribution — {total} tenants</p>
             <button onClick={() => qc.invalidateQueries({ queryKey: ['regions-distribution'] })}
-              className="p-1 rounded-lg" style={{ color: T2 }}>
+              className="p-1 rounded-2xl" style={{ color: T2 }}>
               <RefreshCw className="w-3.5 h-3.5" />
             </button>
           </div>
-          <div className="flex h-6 rounded-lg overflow-hidden gap-0.5">
+          <div className="flex h-6 rounded-2xl overflow-hidden gap-0.5">
             {dist.map(d => {
               const color = REGION_COLOR[d.region] ?? BLUE
               return (
@@ -122,7 +122,7 @@ export function RegionAdminPage() {
       )}
 
       {/* Assign region panel */}
-      <div className="rounded-xl p-5 space-y-4" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+      <div className="rounded-2xl p-5 space-y-4" style={{ background: CARD, border: `1px solid ${BDR}` }}>
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4" style={{ color: BLUE }} />
           <p className="text-sm font-semibold" style={{ color: T1 }}>Assign Tenant Region</p>
@@ -131,7 +131,7 @@ export function RegionAdminPage() {
           <div>
             <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Tenant</label>
             <select value={assignTenantId} onChange={e => setAssignTenantId(e.target.value)}
-              className="w-full text-sm px-3 py-2 rounded-lg"
+              className="w-full text-sm px-3 py-2 rounded-2xl"
               style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}>
               <option value="">Select tenant…</option>
               {tenants.map((t: any) => (
@@ -142,7 +142,7 @@ export function RegionAdminPage() {
           <div>
             <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Region</label>
             <select value={assignRegion} onChange={e => setAssignRegion(e.target.value)}
-              className="w-full text-sm px-3 py-2 rounded-lg"
+              className="w-full text-sm px-3 py-2 rounded-2xl"
               style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}>
               {['US','UK','EU','INDIA'].map(r => (
                 <option key={r} value={r}>{REGION_FLAG[r]} {r}</option>
@@ -153,7 +153,7 @@ export function RegionAdminPage() {
         <button
           onClick={() => { if (assignTenantId) assignMut.mutate({ tenantId: assignTenantId, region: assignRegion }) }}
           disabled={!assignTenantId || assignMut.isPending}
-          className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg"
+          className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-2xl"
           style={{ background: BLUE, color: '#fff', opacity: (!assignTenantId || assignMut.isPending) ? 0.5 : 1 }}>
           <Globe2 className="w-3.5 h-3.5" />
           {assignMut.isPending ? 'Assigning…' : 'Assign Region'}
@@ -164,7 +164,7 @@ export function RegionAdminPage() {
       </div>
 
       {/* Tenant table */}
-      <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+      <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
         <div className="px-5 py-3 flex items-center gap-2" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
           <Shield className="w-4 h-4" style={{ color: T2 }} />
           <p className="text-sm font-semibold" style={{ color: T1 }}>All Tenants — Region Assignment</p>

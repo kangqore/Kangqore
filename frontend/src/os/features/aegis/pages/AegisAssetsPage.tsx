@@ -75,7 +75,7 @@ export function AegisAssetsPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Banner */}
-      <div className="bg-emerald-900/20 border border-emerald-500/20 rounded-xl p-4 flex items-start gap-3">
+      <div className="bg-emerald-900/20 border border-emerald-500/20 rounded-2xl p-4 flex items-start gap-3">
         <BookOpen className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-sm font-semibold text-emerald-300 mb-0.5">Intelligence Registry</p>

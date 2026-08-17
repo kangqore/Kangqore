@@ -38,7 +38,7 @@ function Metric({ label, value, sub, color = '#2564ea' }: {
   label: string; value: string | number | null; sub?: string; color?: string
 }) {
   return (
-    <div className="rounded-lg px-3 py-2.5" style={{ background: `${color}08`, border: `1px solid ${color}18` }}>
+    <div className="rounded-2xl px-3 py-2.5" style={{ background: `${color}08`, border: `1px solid ${color}18` }}>
       <p className="text-[9px] font-bold uppercase tracking-wider mb-1" style={{ color: `${color}80` }}>{label}</p>
       {value == null
         ? <p className="text-base font-bold" style={{ color: '#64748b' }}>—</p>
@@ -143,7 +143,7 @@ function EqorePanel() {
       {agentsOpen && (
         <div className="space-y-1.5 mb-4">
           {EQORE_AGENTS.map(a => (
-            <div key={a.name} className="flex items-start gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.12)' }}>
+            <div key={a.name} className="flex items-start gap-2 px-3 py-2 rounded-2xl" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.12)' }}>
               <Brain className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: '#7c3aed' }} />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold text-white">{a.name}</p>
@@ -224,7 +224,7 @@ function LeadIntelPanel() {
           { name: 'Next Best Question', desc: 'Taxonomy-driven follow-up', status: 'active' },
           { name: 'Service Matcher',   desc: 'Intent → Kangqore service',  status: 'active' },
         ].map(e => (
-          <div key={e.name} className="flex items-center gap-2 px-3 py-1.5 rounded-lg" style={{ background: 'rgba(37,100,234,0.06)', border: '1px solid rgba(37,100,234,0.12)' }}>
+          <div key={e.name} className="flex items-center gap-2 px-3 py-1.5 rounded-2xl" style={{ background: 'rgba(37,100,234,0.06)', border: '1px solid rgba(37,100,234,0.12)' }}>
             <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#059669' }} />
             <p className="text-xs font-semibold text-white flex-1">{e.name}</p>
             <p className="text-[10px]" style={{ color: '#94a3b8' }}>{e.desc}</p>
@@ -307,7 +307,7 @@ function AlisPanel() {
           { name: 'Revenue Forecaster',     desc: 'Pipeline revenue projection' },
           { name: 'VIS Sync',               desc: 'Feeds signals to kangqore-vis' },
         ].map(e => (
-          <div key={e.name} className="flex items-center gap-2 px-3 py-1.5 rounded-lg" style={{ background: 'rgba(5,150,105,0.06)', border: '1px solid rgba(5,150,105,0.12)' }}>
+          <div key={e.name} className="flex items-center gap-2 px-3 py-1.5 rounded-2xl" style={{ background: 'rgba(5,150,105,0.06)', border: '1px solid rgba(5,150,105,0.12)' }}>
             <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#059669' }} />
             <p className="text-xs font-semibold text-white flex-1">{e.name}</p>
             <p className="text-[10px]" style={{ color: '#94a3b8' }}>{e.desc}</p>
@@ -440,7 +440,7 @@ function ActionButton({ icon: Icon, label, loading, onClick, color }: {
     <button
       onClick={onClick}
       disabled={loading}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-opacity disabled:opacity-50"
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[11px] font-semibold transition-opacity disabled:opacity-50"
       style={{ color, background: `${color}14`, border: `1px solid ${color}30` }}
     >
       <Icon className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
@@ -469,7 +469,7 @@ function SystemCard({
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex items-center gap-3">
           <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+            className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
             style={{ background: accent }}
           >
             <Icon className="w-4.5 h-4.5 text-white" />
@@ -483,7 +483,7 @@ function SystemCard({
           <StatusBadge status={status} />
           <button
             onClick={onRefresh}
-            className="w-6 h-6 flex items-center justify-center rounded-lg transition-colors"
+            className="w-6 h-6 flex items-center justify-center rounded-2xl transition-colors"
             style={{ color: '#475569' }}
             title="Refresh"
           >

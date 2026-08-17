@@ -127,13 +127,13 @@ export function WaandaGen3Page() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-lg border" style={{ color: T2, borderColor: BDR }}><RefreshCw className="w-3 h-3" /></button>
+            <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-2xl border" style={{ color: T2, borderColor: BDR }}><RefreshCw className="w-3 h-3" /></button>
             <button onClick={() => setShowPerf(p => !p)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold border"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold border"
               style={showPerf ? { background: PURP, color: '#fff', borderColor: PURP } : { color: T2, borderColor: BDR }}>
               <BarChart2 className="w-3 h-3" /> Performance
             </button>
-            <button onClick={() => setShowCreate(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold" style={{ background: PURP, color: '#fff' }}><Plus className="w-3.5 h-3.5" /> New Plan</button>
+            <button onClick={() => setShowCreate(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold" style={{ background: PURP, color: '#fff' }}><Plus className="w-3.5 h-3.5" /> New Plan</button>
           </div>
         </div>
       </div>
@@ -177,7 +177,7 @@ export function WaandaGen3Page() {
         <div className="py-16 text-center rounded-2xl border" style={{ borderColor: BDR }}>
           <Cpu className="w-8 h-8 mx-auto mb-3 opacity-30" style={{ color: T2 }} />
           <p className="text-sm font-medium mb-3" style={{ color: T2 }}>No decomposition plans yet</p>
-          <button onClick={() => setShowCreate(true)} className="px-4 py-2 rounded-xl text-xs font-bold" style={{ background: PURP, color: '#fff' }}>Create First Plan</button>
+          <button onClick={() => setShowCreate(true)} className="px-4 py-2 rounded-2xl text-xs font-bold" style={{ background: PURP, color: '#fff' }}>Create First Plan</button>
         </div>
       ) : (
         <div className="space-y-3">
@@ -199,7 +199,7 @@ function ResultDrawer({ result, role }: { result: string; role: string }) {
   }
 
   return (
-    <div className="mt-3 rounded-xl border overflow-hidden" style={{ borderColor: `${PURP}30`, background: `${PURP}05` }}>
+    <div className="mt-3 rounded-2xl border overflow-hidden" style={{ borderColor: `${PURP}30`, background: `${PURP}05` }}>
       <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: `${PURP}20` }}>
         <div className="flex items-center gap-2">
           <Cpu className="w-3 h-3" style={{ color: PURP }} />
@@ -208,7 +208,7 @@ function ResultDrawer({ result, role }: { result: string; role: string }) {
         </div>
         <button
           onClick={copy}
-          className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg transition-all"
+          className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-2xl transition-all"
           style={{ background: copied ? `${GRN}15` : `${PURP}10`, color: copied ? GRN : PURP }}
         >
           {copied ? <CheckCircle2 className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -240,7 +240,7 @@ function PlanCard({ plan }: { plan: Plan }) {
   return (
     <div className="rounded-2xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
       <div className="flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-[var(--os-surface-0)]" onClick={() => setExpanded(e => !e)}>
-        <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${statusColor}15` }}>
+        <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${statusColor}15` }}>
           {plan.status === 'DONE'   ? <CheckCircle2 className="w-4 h-4" style={{ color: GRN }} />
           : plan.status === 'FAILED' ? <XCircle className="w-4 h-4" style={{ color: RED }} />
           : plan.status === 'ACTIVE' ? <Loader2 className="w-4 h-4 animate-spin" style={{ color: BLUE }} />
@@ -272,7 +272,7 @@ function PlanCard({ plan }: { plan: Plan }) {
               const tc = STATUS_COLOR[t.status] ?? T2
               return (
                 <div key={t.id} className="flex items-center gap-1 flex-shrink-0">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-bold border"
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-2xl text-[10px] font-bold border"
                     style={{ background: `${tc}12`, borderColor: `${tc}30`, color: tc }}>
                     {t.status === 'ACTIVE' && <Loader2 className="w-2.5 h-2.5 animate-spin" />}
                     {t.status === 'DONE' && <CheckCircle2 className="w-2.5 h-2.5" />}
@@ -292,7 +292,7 @@ function PlanCard({ plan }: { plan: Plan }) {
             const roleColor = ROLE_COLOR[t.agentRole] ?? T2
             const isOpen = expandedTask === t.id
             return (
-              <div key={t.id} className="rounded-xl border overflow-hidden" style={{ borderColor: BDR }}>
+              <div key={t.id} className="rounded-2xl border overflow-hidden" style={{ borderColor: BDR }}>
                 <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={() => setExpandedTask(isOpen ? null : t.id)} style={{ background: SURF }}>
                   <span className="text-[10px] font-black w-5 text-center" style={{ color: T2 }}>{idx + 1}</span>
                   {t.status === 'ACTIVE' && <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" style={{ color: BLUE }} />}
@@ -354,12 +354,12 @@ function Gen3PerformancePanel() {
           <p className="text-sm font-bold" style={{ color: T1 }}>Gen 3 Performance Dashboard</p>
           <span className="px-2 py-0.5 rounded text-[9px] font-bold" style={{ background: `${PURP}15`, color: PURP }}>S111</span>
         </div>
-        <button onClick={() => refetch()} className="p-1.5 rounded-lg" style={{ color: T2 }}>
+        <button onClick={() => refetch()} className="p-1.5 rounded-2xl" style={{ color: T2 }}>
           <RefreshCw className="w-3.5 h-3.5" />
         </button>
       </div>
 
-      {isLoading && <div className="h-32 rounded-xl animate-pulse" style={{ background: SURF }} />}
+      {isLoading && <div className="h-32 rounded-2xl animate-pulse" style={{ background: SURF }} />}
 
       {perf && (
         <>
@@ -372,7 +372,7 @@ function Gen3PerformancePanel() {
               { label: 'Success rate', value: `${perf.summary.planSuccessRate}%`, color: GRN },
               { label: 'Avg duration', value: perf.summary.avgPlanDurationMs > 0 ? `${(perf.summary.avgPlanDurationMs / 1000).toFixed(1)}s` : '—', color: AMB },
             ].map(s => (
-              <div key={s.label} className="rounded-xl p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
+              <div key={s.label} className="rounded-2xl p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
                 <p className="text-[9px] font-bold uppercase tracking-wider mb-1" style={{ color: T2 }}>{s.label}</p>
                 <p className="text-lg font-black" style={{ color: s.color }}>{s.value}</p>
               </div>
@@ -413,7 +413,7 @@ function Gen3PerformancePanel() {
                 {perf.recentPlans.slice(0, 6).map(p => {
                   const sc = STATUS_COLOR[p.status] ?? T2
                   return (
-                    <div key={p.id} className="flex items-center gap-3 px-3 py-2 rounded-lg" style={{ background: SURF }}>
+                    <div key={p.id} className="flex items-center gap-3 px-3 py-2 rounded-2xl" style={{ background: SURF }}>
                       <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: sc }} />
                       <span className="flex-1 text-[11px] truncate" style={{ color: T1 }}>{p.goal}</span>
                       <span className="text-[10px] font-mono flex-shrink-0" style={{ color: T2 }}>{p.subtaskCount} tasks</span>
@@ -455,12 +455,12 @@ function CreatePlanForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClient>
         <p className="text-sm font-bold" style={{ color: T1 }}>Decompose New Goal</p>
         <button onClick={onClose} className="text-xs" style={{ color: T2 }}>Cancel</button>
       </div>
-      <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: `${BLUE}10`, border: `1px solid ${BLUE}25` }}>
+      <div className="flex items-center gap-2 px-3 py-2 rounded-2xl" style={{ background: `${BLUE}10`, border: `1px solid ${BLUE}25` }}>
         <Zap className="w-3.5 h-3.5 flex-shrink-0" style={{ color: BLUE }} />
         <p className="text-xs" style={{ color: T2 }}>Gen 3 will decompose your goal into 6 sequential subtasks and <strong style={{ color: BLUE }}>execute them automatically</strong> — no manual advancement required.</p>
       </div>
       {concurrencyError && (
-        <div className="px-3 py-2 rounded-xl text-xs" style={{ background: `${RED}10`, border: `1px solid ${RED}25`, color: RED }}>
+        <div className="px-3 py-2 rounded-2xl text-xs" style={{ background: `${RED}10`, border: `1px solid ${RED}25`, color: RED }}>
           {concurrencyError}
         </div>
       )}
@@ -468,11 +468,11 @@ function CreatePlanForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClient>
         <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Strategic Goal</p>
         <textarea value={goal} onChange={e => { setGoal(e.target.value); setConcurrencyError('') }} rows={3}
           placeholder="e.g. Identify the top 3 reasons Customer Zero's COIG velocity dropped in Q3 and propose corrective actions"
-          className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none resize-none"
+          className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none resize-none"
           style={{ borderColor: BDR, background: SURF, color: T1 }} />
       </div>
       <button disabled={!goal.trim() || create.isPending} onClick={() => create.mutate()}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
         style={{ background: PURP, color: '#fff' }}>
         <Cpu className="w-4 h-4" />
         {create.isPending ? 'Decomposing & Executing…' : 'Create & Auto-Execute'}

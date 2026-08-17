@@ -84,7 +84,7 @@ export function AegisBudgetPage() {
       {/* Global enforcement status */}
       {budget?.global && (
         <div className="grid grid-cols-3 gap-4">
-          <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+          <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
             <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Egress Size Limit</p>
             <p className="text-2xl font-black" style={{ color: BLUE }}>{budget.global.egressSizeLimitKb} KB</p>
             <p className="text-[11px] mt-1" style={{ color: T2 }}>Responses exceeding this are hard-denied at the AEGIS egress layer</p>
@@ -93,7 +93,7 @@ export function AegisBudgetPage() {
               <span className="text-[10px] font-bold" style={{ color: CRIMSON }}>Hard Deny Active</span>
             </div>
           </div>
-          <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+          <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
             <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>L3 Rollback</p>
             <p className="text-2xl font-black" style={{ color: GRN }}>AUTO</p>
             <p className="text-[11px] mt-1" style={{ color: T2 }}>KIMMP signal snapshot created before every L3 governance action (PAUSE, BLOCK, QUARANTINE)</p>
@@ -102,7 +102,7 @@ export function AegisBudgetPage() {
               <span className="text-[10px] font-bold" style={{ color: GRN }}>Phase 3 Live</span>
             </div>
           </div>
-          <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+          <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
             <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Tenant Budgets</p>
             <p className="text-2xl font-black" style={{ color: PURP }}>{budget.totalTenants}</p>
             <p className="text-[11px] mt-1" style={{ color: T2 }}>Tenants with configured call budgets</p>
@@ -118,11 +118,11 @@ export function AegisBudgetPage() {
       <div className="flex items-center justify-between">
         <p className="text-sm font-bold" style={{ color: T1 }}>Tenant Budgets</p>
         <div className="flex items-center gap-2">
-          <button onClick={() => refetch()} className="p-1.5 rounded-lg" style={{ color: T2 }}>
+          <button onClick={() => refetch()} className="p-1.5 rounded-2xl" style={{ color: T2 }}>
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
           <button onClick={() => setShowAdd(s => !s)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold"
             style={{ background: 'rgba(226,68,92,0.1)', color: CRIMSON, border: '1px solid rgba(226,68,92,0.2)' }}>
             <Plus className="w-3.5 h-3.5" /> Add Budget
           </button>
@@ -130,7 +130,7 @@ export function AegisBudgetPage() {
       </div>
 
       {showAdd && (
-        <div className="rounded-xl border p-4 space-y-3" style={{ background: CARD, borderColor: BDR }}>
+        <div className="rounded-2xl border p-4 space-y-3" style={{ background: CARD, borderColor: BDR }}>
           <p className="text-xs font-bold" style={{ color: T1 }}>New Tenant Budget</p>
           <div className="grid grid-cols-2 gap-3">
             {[
@@ -142,7 +142,7 @@ export function AegisBudgetPage() {
                 <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>{label}</p>
                 <input value={(form as any)[field]} onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
                   placeholder={ph}
-                  className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+                  className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
                   style={{ borderColor: BDR, background: SURF, color: T1 }} />
               </div>
             ))}
@@ -154,19 +154,19 @@ export function AegisBudgetPage() {
           </div>
           <div className="flex gap-2">
             <button disabled={!form.tenantId.trim() || addMut.isPending} onClick={() => addMut.mutate()}
-              className="px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+              className="px-4 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
               style={{ background: CRIMSON, color: '#fff' }}>
               {addMut.isPending ? 'Saving…' : 'Save Budget'}
             </button>
-            <button onClick={() => setShowAdd(false)} className="px-4 py-2 rounded-xl text-xs font-bold" style={{ color: T2 }}>Cancel</button>
+            <button onClick={() => setShowAdd(false)} className="px-4 py-2 rounded-2xl text-xs font-bold" style={{ color: T2 }}>Cancel</button>
           </div>
         </div>
       )}
 
-      {isLoading && <div className="space-y-2">{[1,2].map(i => <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: SURF }} />)}</div>}
+      {isLoading && <div className="space-y-2">{[1,2].map(i => <div key={i} className="h-16 rounded-2xl animate-pulse" style={{ background: SURF }} />)}</div>}
 
       {(budget?.tenants?.length ?? 0) === 0 && !showAdd && (
-        <div className="py-12 text-center rounded-xl border" style={{ borderColor: BDR }}>
+        <div className="py-12 text-center rounded-2xl border" style={{ borderColor: BDR }}>
           <ShieldCheck className="w-8 h-8 mx-auto mb-2 opacity-20" style={{ color: T2 }} />
           <p className="text-sm font-medium" style={{ color: T2 }}>No tenant budgets configured</p>
           <p className="text-xs mt-1" style={{ color: T2 }}>Egress enforcement and L3 rollback are active globally.</p>
@@ -174,9 +174,9 @@ export function AegisBudgetPage() {
       )}
 
       {(budget?.tenants ?? []).map(t => (
-        <div key={t.tenantId} className="rounded-xl border" style={{ background: CARD, borderColor: BDR }}>
+        <div key={t.tenantId} className="rounded-2xl border" style={{ background: CARD, borderColor: BDR }}>
           <div className="flex items-center gap-4 px-4 py-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+            <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ background: `${PURP}15` }}>
               <Wallet className="w-4 h-4" style={{ color: PURP }} />
             </div>
@@ -188,7 +188,7 @@ export function AegisBudgetPage() {
             </div>
             <button
               onClick={() => setSelectedTenant(selectedTenant === t.tenantId ? null : t.tenantId)}
-              className="px-3 py-1.5 rounded-lg text-[10px] font-bold"
+              className="px-3 py-1.5 rounded-2xl text-[10px] font-bold"
               style={{ background: `${BLUE}15`, color: BLUE }}>
               {selectedTenant === t.tenantId ? 'Hide' : 'Check Usage'}
             </button>
@@ -197,15 +197,15 @@ export function AegisBudgetPage() {
           {selectedTenant === t.tenantId && usage && (
             <div className="px-4 pb-4 border-t" style={{ borderColor: BDR }}>
               <div className="mt-3 grid grid-cols-3 gap-3">
-                <div className="rounded-lg p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
+                <div className="rounded-2xl p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
                   <p className="text-[9px] font-bold uppercase mb-1" style={{ color: T2 }}>Calls Used</p>
                   <p className="text-xl font-black" style={{ color: usage.overBudget ? RED : GRN }}>{usage.callCount}</p>
                 </div>
-                <div className="rounded-lg p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
+                <div className="rounded-2xl p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
                   <p className="text-[9px] font-bold uppercase mb-1" style={{ color: T2 }}>Budget</p>
                   <p className="text-xl font-black" style={{ color: PURP }}>{usage.budget ?? '∞'}</p>
                 </div>
-                <div className="rounded-lg p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
+                <div className="rounded-2xl p-3 border text-center" style={{ background: SURF, borderColor: BDR }}>
                   <p className="text-[9px] font-bold uppercase mb-1" style={{ color: T2 }}>Status</p>
                   <div className="flex items-center justify-center gap-1 mt-1">
                     {usage.overBudget

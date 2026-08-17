@@ -115,7 +115,7 @@ export function MessagePane({ channel }: { channel: Channel }) {
           <MessageInput channelId={channel.id} placeholder={`Message ${channel.name}`} />
         )}
         {channel.type === 'ANNOUNCEMENT' && (
-          <div className="px-4 py-4 m-4 rounded-xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[12px] font-bold text-[var(--os-text-2)] text-center shadow-sm">
+          <div className="px-4 py-4 m-4 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[12px] font-bold text-[var(--os-text-2)] text-center shadow-sm">
             Only admins can post in announcement channels.
           </div>
         )}

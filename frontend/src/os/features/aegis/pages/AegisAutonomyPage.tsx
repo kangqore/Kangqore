@@ -88,7 +88,7 @@ export function AegisAutonomyPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Banner */}
-      <div className="bg-violet-900/20 border border-violet-500/20 rounded-xl p-4 flex items-start gap-3">
+      <div className="bg-violet-900/20 border border-violet-500/20 rounded-2xl p-4 flex items-start gap-3">
         <Zap className="w-4 h-4 text-violet-400 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-sm font-semibold text-violet-300 mb-0.5">Autonomy Boundary Monitor</p>

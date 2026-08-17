@@ -79,9 +79,9 @@ export function IssueTracker() {
   if (isLoading) {
     return (
       <div className="space-y-5 animate-pulse">
-        <div className="h-8 w-40 rounded-lg" style={{ background: 'var(--os-surface-0)' }} />
-        <div className="h-12 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
-        <div className="h-96 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="h-8 w-40 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="h-12 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="h-96 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
       </div>
     )
   }
@@ -119,7 +119,7 @@ export function IssueTracker() {
             key={idx}
             value={sel.value}
             onChange={e => sel.onChange(e.target.value)}
-            className="h-9 rounded-xl text-sm pl-3 pr-8 outline-none"
+            className="h-9 rounded-2xl text-sm pl-3 pr-8 outline-none"
             style={{ border: '1px solid var(--os-border)', background: 'var(--os-card)', color: 'var(--os-text-1)' }}
           >
             {sel.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -128,7 +128,7 @@ export function IssueTracker() {
         <select
           value={projectFilter}
           onChange={e => setProject(e.target.value)}
-          className="h-9 rounded-xl text-sm pl-3 pr-8 outline-none"
+          className="h-9 rounded-2xl text-sm pl-3 pr-8 outline-none"
           style={{ border: '1px solid var(--os-border)', background: 'var(--os-card)', color: 'var(--os-text-1)' }}
         >
           <option value="all">All Projects</option>

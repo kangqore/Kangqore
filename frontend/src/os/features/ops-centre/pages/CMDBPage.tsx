@@ -74,7 +74,7 @@ function AddModal({ onClose }: { onClose: () => void }) {
         value={form[k]}
         onChange={e => setForm(f => ({ ...f, [k]: e.target.value }))}
         placeholder={placeholder}
-        className="w-full px-3 py-2 text-xs rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+        className="w-full px-3 py-2 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
       />
     </div>
   )
@@ -96,7 +96,7 @@ function AddModal({ onClose }: { onClose: () => void }) {
               <select
                 value={form.ciType}
                 onChange={e => setForm(f => ({ ...f, ciType: e.target.value }))}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+                className="w-full px-3 py-2 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
               >
                 {['SERVER','WORKSTATION','APPLICATION','NETWORK','DATABASE','SERVICE','OTHER'].map(t => <option key={t} value={t}>{t}</option>)}
               </select>
@@ -106,7 +106,7 @@ function AddModal({ onClose }: { onClose: () => void }) {
               <select
                 value={form.environment}
                 onChange={e => setForm(f => ({ ...f, environment: e.target.value }))}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+                className="w-full px-3 py-2 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
               >
                 {['PROD','STAGING','DEV'].map(e => <option key={e} value={e}>{e}</option>)}
               </select>
@@ -123,11 +123,11 @@ function AddModal({ onClose }: { onClose: () => void }) {
           {field('description', 'Description')}
         </div>
         <div className="flex justify-end gap-2 mt-5">
-          <button onClick={onClose} className="px-4 py-2 rounded-xl text-xs font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-colors">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 rounded-2xl text-xs font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-colors">Cancel</button>
           <button
             disabled={!form.name.trim() || create.isPending}
             onClick={() => create.mutate()}
-            className="px-5 py-2 rounded-xl text-xs font-bold text-white disabled:opacity-40"
+            className="px-5 py-2 rounded-2xl text-xs font-bold text-white disabled:opacity-40"
             style={{ background: '#579bfc' }}
           >
             {create.isPending ? 'Adding…' : 'Add CI'}
@@ -174,21 +174,21 @@ export function CMDBPage() {
       <div className="flex items-center gap-2 mb-4 flex-wrap">
         <button
           onClick={() => setAdding(true)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold text-white"
           style={{ background: '#579bfc' }}
         >
           <Plus className="w-3.5 h-3.5" /> Add CI
         </button>
         <div className="flex items-center gap-1.5 ml-auto flex-wrap">
-          <select value={filterType}   onChange={e => setType(e.target.value)}   className="px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none">
+          <select value={filterType}   onChange={e => setType(e.target.value)}   className="px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none">
             <option value="">All types</option>
             {['SERVER','WORKSTATION','APPLICATION','NETWORK','DATABASE','SERVICE','OTHER'].map(t => <option key={t} value={t}>{t}</option>)}
           </select>
-          <select value={filterEnv}    onChange={e => setEnv(e.target.value)}    className="px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none">
+          <select value={filterEnv}    onChange={e => setEnv(e.target.value)}    className="px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none">
             <option value="">All envs</option>
             {['PROD','STAGING','DEV'].map(e => <option key={e} value={e}>{e}</option>)}
           </select>
-          <select value={filterStatus} onChange={e => setStatus(e.target.value)} className="px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none">
+          <select value={filterStatus} onChange={e => setStatus(e.target.value)} className="px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none">
             <option value="">All statuses</option>
             {['OPERATIONAL','MAINTENANCE','DECOMMISSIONED'].map(s => <option key={s} value={s}>{s}</option>)}
           </select>
@@ -199,7 +199,7 @@ export function CMDBPage() {
       <div className="rounded-2xl border border-[var(--os-border)] overflow-hidden" style={{ background: 'var(--os-card)' }}>
         {isLoading ? (
           <div className="p-6 space-y-2">
-            {[1,2,3,4].map(i => <div key={i} className="h-12 rounded-lg animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
+            {[1,2,3,4].map(i => <div key={i} className="h-12 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
           </div>
         ) : rows.length === 0 ? (
           <div className="py-12 text-center">
@@ -233,7 +233,7 @@ export function CMDBPage() {
                         <span className="text-[10px] font-bold" style={{ color: CI_TYPE_COLOUR[ci.ciType] ?? 'var(--os-text-2)' }}>{ci.ciType}</span>
                       </td>
                       <td className="px-3 py-3 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider" style={{ background: stc.bg, color: stc.text }}>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-2xl text-[10px] font-bold uppercase tracking-wider" style={{ background: stc.bg, color: stc.text }}>
                           {ci.status}
                         </span>
                       </td>

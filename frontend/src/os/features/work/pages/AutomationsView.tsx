@@ -62,7 +62,7 @@ function CreateAutomationModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-[var(--os-bg-1)] border border-[var(--os-border)] rounded-xl shadow-2xl w-full max-w-md mx-4 p-6"
+      <div className="bg-[var(--os-bg-1)] border border-[var(--os-border)] rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6"
            onClick={e => e.stopPropagation()}>
         <h2 className="text-base font-semibold text-[var(--os-text-1)] mb-4">New Automation</h2>
         <div className="space-y-3">
@@ -72,7 +72,7 @@ function CreateAutomationModal({ onClose }: { onClose: () => void }) {
                     onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="What does this automation do?" />
 
           {/* Trigger */}
-          <div className="p-3 bg-[var(--os-bg-2)] rounded-lg border border-[var(--os-border)]">
+          <div className="p-3 bg-[var(--os-bg-2)] rounded-2xl border border-[var(--os-border)]">
             <div className="text-xs font-semibold text-violet-400 mb-2 uppercase tracking-wide">When</div>
             <select className={inp} value={form.triggerType} onChange={e => setForm(f => ({ ...f, triggerType: e.target.value }))}>
               {Object.entries(TRIGGER_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
@@ -83,7 +83,7 @@ function CreateAutomationModal({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* Action */}
-          <div className="p-3 bg-[var(--os-bg-2)] rounded-lg border border-[var(--os-border)]">
+          <div className="p-3 bg-[var(--os-bg-2)] rounded-2xl border border-[var(--os-border)]">
             <div className="text-xs font-semibold text-emerald-400 mb-2 uppercase tracking-wide">Then</div>
             <select className={inp} value={form.actionType} onChange={e => setForm(f => ({ ...f, actionType: e.target.value }))}>
               {Object.entries(ACTION_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
@@ -154,7 +154,7 @@ export function AutomationsView() {
       </div>
 
       {data.length === 0 ? (
-        <div className="border border-[var(--os-border)] rounded-xl h-64 flex flex-col items-center justify-center gap-3 text-[var(--os-text-2)]">
+        <div className="border border-[var(--os-border)] rounded-2xl h-64 flex flex-col items-center justify-center gap-3 text-[var(--os-text-2)]">
           <Zap className="w-8 h-8 opacity-30" />
           <div className="text-sm">No automations yet.</div>
           <div className="text-xs text-[var(--os-text-3)]">Create rules like: "When status → DONE, notify assignee"</div>
@@ -163,11 +163,11 @@ export function AutomationsView() {
         <div className="space-y-2">
           {data.map(auto => (
             <div key={auto.id} className={cn(
-              'border rounded-xl p-4 bg-[var(--os-bg-1)] flex items-start gap-4 transition-colors',
+              'border rounded-2xl p-4 bg-[var(--os-bg-1)] flex items-start gap-4 transition-colors',
               auto.isActive ? 'border-[var(--os-border)]' : 'border-[var(--os-border)] opacity-60'
             )}>
               {/* Icon */}
-              <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0',
+              <div className={cn('w-8 h-8 rounded-2xl flex items-center justify-center shrink-0',
                 auto.isActive ? 'bg-violet-500/10' : 'bg-[var(--os-bg-2)]')}>
                 <Zap className={cn('w-4 h-4', auto.isActive ? 'text-violet-400' : 'text-[var(--os-text-3)]')} />
               </div>

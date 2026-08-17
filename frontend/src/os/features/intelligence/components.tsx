@@ -23,7 +23,7 @@ export function SignalCard({ severity, children }: { severity: string; children:
   const s = severity as Severity
   return (
     <div className={cn(
-      'border border-[var(--os-border)] border-l-2 rounded-lg px-4 py-3',
+      'border border-[var(--os-border)] border-l-2 rounded-2xl px-4 py-3',
       SEVERITY_RING[s] ?? SEVERITY_RING.LOW,
     )}>
       {children}

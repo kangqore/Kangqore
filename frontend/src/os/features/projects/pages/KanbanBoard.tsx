@@ -1,13 +1,9 @@
 import { useState, useMemo } from 'react'
-import {
-  DndContext, DragOverlay, closestCorners, PointerSensor, useSensor, useSensors,
-  type DragStartEvent, type DragEndEvent,
-} from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core'
 import { GripVertical, CalendarDays, Zap } from 'lucide-react'
 import { Avatar } from '@design-system/components/Avatar'
-import { cn } from '@design-system/cn'
+import { Board, BoardColumn, BoardCard } from '@design-system/Board'
+import { StatusBadge, StatusVariant } from '@design-system/StatusBadge'
 import { useProjectsStore } from '../store'
 import type { Task, TaskStatus, Priority } from '../types'
 
@@ -51,79 +47,52 @@ function relDue(iso: string): { label: string; color: string; warn: boolean } {
 // ── Task card ──────────────────────────────────────────────────────────────────
 
 function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.id })
   const pri   = PRIORITY_CONFIG[task.priority]
   const due   = task.dueDate ? relDue(task.dueDate) : null
   const desc  = task.description?.trim()
+  
+  const priorityStatusMap: Record<string, StatusVariant> = {
+    critical: 'danger',
+    high: 'warning',
+    medium: 'info',
+    low: 'success',
+  }
 
   return (
-    <div
-      ref={setNodeRef}
-      style={{
-        transform: CSS.Transform.toString(transform),
-        transition,
-        background: 'var(--os-card)',
-        border: '1px solid var(--os-border)',
-        borderLeft: `3px solid ${pri.color}`,
-        borderRadius: 10,
-        boxShadow: dragging
-          ? `0 16px 48px rgba(0,0,0,0.22), 0 0 0 1px ${pri.color}44`
-          : 'var(--os-shadow-card)',
-        transform: dragging
-          ? `${CSS.Transform.toString(transform) ?? ''} rotate(1.5deg) scale(1.02)`
-          : CSS.Transform.toString(transform) ?? undefined,
-        opacity: isDragging && !dragging ? 0.2 : 1,
-        userSelect: 'none',
-        cursor: 'grab',
-      }}
-    >
+    <BoardCard id={task.id} isOverlay={dragging}>
       {/* Drag handle row */}
-      <div style={{ display: 'flex', alignItems: 'center', padding: '8px 10px 0', gap: 6 }}>
+      <div className="flex items-center pb-2 gap-1.5">
         <button
-          {...attributes}
-          {...listeners}
-          style={{
-            background: 'none', border: 'none', cursor: 'grab', padding: '2px 3px',
-            color: 'var(--os-text-4)', display: 'flex', alignItems: 'center', flexShrink: 0,
-          }}
+          className="bg-transparent border-none cursor-grab text-text-muted flex items-center shrink-0 hover:text-text-primary"
+          style={{ padding: '2px 3px' }}
         >
-          <GripVertical style={{ width: 12, height: 12 }} />
+          <GripVertical className="w-3.5 h-3.5" />
         </button>
         {/* Priority badge */}
-        <span style={{
-          fontSize: 9, fontWeight: 800, padding: '2px 6px', borderRadius: 4,
-          background: pri.bg, color: pri.color,
-          letterSpacing: '0.07em', textTransform: 'uppercase',
-        }}>
-          {pri.label}
-        </span>
-        <span style={{
-          fontSize: 9, fontFamily: 'monospace', color: 'var(--os-text-4)', marginLeft: 'auto',
-        }}>
+        <StatusBadge status={priorityStatusMap[task.priority] ?? 'default'} label={pri.label} />
+        
+        <span className="text-[9px] font-mono text-text-muted ml-auto">
           {task.id.slice(0, 6).toUpperCase()}
         </span>
       </div>
 
       {/* Body */}
-      <div style={{ padding: '6px 12px 10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div className="px-1 pb-1 flex flex-col gap-1.5">
         {/* Title */}
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, lineHeight: 1.4 }}>
+        <p className="text-xs font-bold text-text-primary m-0 leading-snug">
           {task.title}
         </p>
 
         {/* Description snippet */}
         {desc && (
-          <p style={{
-            fontSize: 10, color: 'var(--os-text-4)', margin: 0, lineHeight: 1.5,
-            overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
-          }}>
+          <p className="text-[10px] text-text-secondary m-0 leading-relaxed line-clamp-2">
             {desc}
           </p>
         )}
 
         {/* Labels */}
         {task.labels.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          <div className="flex flex-wrap gap-1 mt-1">
             {task.labels.map(l => (
               <span key={l} style={{
                 fontSize: 9, padding: '1px 6px', borderRadius: 3,
@@ -135,102 +104,47 @@ function TaskCard({ task, dragging = false }: { task: Task; dragging?: boolean }
         )}
 
         {/* Footer: due date + points + avatar */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 6, marginTop: 2,
-          paddingTop: 8, borderTop: '1px solid var(--os-border-subtle)',
-        }}>
+        <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-border-subtle">
           {due && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <CalendarDays style={{ width: 10, height: 10, color: due.color, flexShrink: 0 }} />
+            <div className="flex items-center gap-1">
+              <CalendarDays className="w-3 h-3 shrink-0" style={{ color: due.color }} />
               <span style={{ fontSize: 9, color: due.color, fontWeight: due.warn ? 700 : 400 }}>{due.label}</span>
             </div>
           )}
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 3,
-              background: 'var(--os-surface-0)', borderRadius: 4, padding: '2px 6px',
-            }}>
-              <Zap style={{ width: 8, height: 8, color: '#fdab3d' }} />
-              <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--os-text-2)' }}>{task.storyPoints}</span>
+          <div className="ml-auto flex items-center gap-1.5">
+            <div className="flex items-center gap-1 bg-surface-base rounded px-1.5 py-0.5">
+              <Zap className="w-2 h-2 text-warning" />
+              <span className="text-[9px] font-bold text-text-secondary">{task.storyPoints}</span>
             </div>
             <Avatar name={task.assignee} size="xs" />
           </div>
         </div>
       </div>
-    </div>
+    </BoardCard>
   )
 }
 
 // ── Column ─────────────────────────────────────────────────────────────────────
 
 function Column({
-  col, tasks, isDragOver,
+  col, tasks,
 }: {
   col: typeof COL_CONFIG[0]
   tasks: Task[]
-  isDragOver?: boolean
 }) {
   const totalPts = tasks.reduce((s, t) => s + t.storyPoints, 0)
 
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', minWidth: 272, width: 272, gap: 0,
-    }}>
-      {/* Column header */}
-      <div style={{
-        background: col.color + '10',
-        borderRadius: '10px 10px 0 0',
-        borderTop: `3px solid ${col.color}`,
-        borderLeft: `1px solid ${col.color}30`,
-        borderRight: `1px solid ${col.color}30`,
-        padding: '10px 12px',
-        display: 'flex', alignItems: 'center', gap: 6,
-      }}>
-        <span style={{ width: 8, height: 8, borderRadius: '50%', background: col.color, flexShrink: 0 }} />
-        <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--os-text-1)', flex: 1 }}>{col.label}</span>
-        <span style={{
-          fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10,
-          background: col.color + '20', color: col.color,
-        }}>{tasks.length}</span>
-        {totalPts > 0 && (
-          <span style={{
-            fontSize: 9, fontWeight: 600, color: 'var(--os-text-4)',
-            display: 'flex', alignItems: 'center', gap: 2,
-          }}>
-            <Zap style={{ width: 8, height: 8 }} />{totalPts}
+    <BoardColumn id={col.id} title={col.label} items={tasks.map(t => t.id)}>
+      {tasks.length === 0 && (
+        <div className="flex-1 flex flex-col items-center justify-center min-h-[80px] opacity-40">
+          <span className="text-[10px] font-semibold text-text-muted uppercase tracking-widest">
+            Drop here
           </span>
-        )}
-      </div>
-
-      {/* Drop zone */}
-      <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
-        <div style={{
-          flex: 1, minHeight: 140,
-          display: 'flex', flexDirection: 'column', gap: 8,
-          padding: 10,
-          background: isDragOver ? col.color + '07' : 'var(--os-surface-0)',
-          border: tasks.length === 0 && isDragOver
-            ? `2px dashed ${col.color}80`
-            : `1px solid ${col.color}20`,
-          borderTop: 'none',
-          borderRadius: '0 0 10px 10px',
-          transition: 'background 0.15s, border-color 0.15s',
-        }}>
-          {tasks.length === 0 && (
-            <div style={{
-              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexDirection: 'column', gap: 4, minHeight: 80,
-            }}>
-              <span style={{
-                fontSize: 10, fontWeight: 600, color: col.color + 'aa',
-                textTransform: 'uppercase', letterSpacing: '0.08em',
-              }}>Drop here</span>
-            </div>
-          )}
-          {tasks.map(t => <TaskCard key={t.id} task={t} />)}
         </div>
-      </SortableContext>
-    </div>
+      )}
+      {tasks.map(t => <TaskCard key={t.id} task={t} />)}
+    </BoardColumn>
   )
 }
 
@@ -248,9 +162,6 @@ export function KanbanBoard() {
   const { projects, tasks, selectedProjectId, setSelectedProject, moveTask, isLoading } = useProjectsStore()
   const [activeTask,     setActiveTask]     = useState<Task | null>(null)
   const [priFilter,      setPriFilter]      = useState<Priority | 'all'>('all')
-  const [dragOverColId,  setDragOverColId]  = useState<TaskStatus | null>(null)
-
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
 
   const selectedProject = projects.find(p => p.id === selectedProjectId) ?? projects[0]
   const activeProjects  = projects.filter(p => p.status !== 'completed')
@@ -267,7 +178,6 @@ export function KanbanBoard() {
 
   function onDragEnd({ active, over }: DragEndEvent) {
     setActiveTask(null)
-    setDragOverColId(null)
     if (!over) return
     const overId = over.id as string
     const col      = COL_CONFIG.find(c => c.id === overId)
@@ -408,38 +318,23 @@ export function KanbanBoard() {
 
       {/* Board columns */}
       {activeProjects.length === 0 ? (
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center', height: 240,
-          background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12,
-        }}>
-          <p style={{ fontSize: 13, color: 'var(--os-text-4)' }}>No active projects</p>
+        <div className="flex items-center justify-center h-[240px] bg-surface-elevated border border-border rounded-2xl">
+          <p className="text-sm text-text-muted">No active projects</p>
         </div>
       ) : (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCorners}
+        <Board
           onDragStart={onDragStart}
-          onDragOver={({ over }) => {
-            if (!over) { setDragOverColId(null); return }
-            const col = COL_CONFIG.find(c => c.id === over.id)
-            setDragOverColId(col?.id ?? null)
-          }}
           onDragEnd={onDragEnd}
+          activeCard={activeTask ? <TaskCard task={activeTask} dragging /> : null}
         >
-          <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 16 }}>
-            {COL_CONFIG.map(col => (
-              <Column
-                key={col.id}
-                col={col}
-                tasks={boardTasks.filter(t => t.status === col.id)}
-                isDragOver={dragOverColId === col.id}
-              />
-            ))}
-          </div>
-          <DragOverlay>
-            {activeTask && <TaskCard task={activeTask} dragging />}
-          </DragOverlay>
-        </DndContext>
+          {COL_CONFIG.map(col => (
+            <Column
+              key={col.id}
+              col={col}
+              tasks={boardTasks.filter(t => t.status === col.id)}
+            />
+          ))}
+        </Board>
       )}
 
       {/* Column summary footer */}

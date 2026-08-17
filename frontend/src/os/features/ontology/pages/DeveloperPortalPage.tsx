@@ -38,7 +38,7 @@ function InterfacePreview({ type }: { type: SdkTypeShape }) {
     '}',
   ]
   return (
-    <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-3 overflow-x-auto leading-relaxed text-[var(--os-text-1)]">
+    <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-3 overflow-x-auto leading-relaxed text-[var(--os-text-1)]">
       {lines.join('\n')}
     </pre>
   )
@@ -60,7 +60,7 @@ function PlaygroundTab() {
           <button
             key={t.id}
             onClick={() => setSelected(t.id)}
-            className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold border ${activeType?.id === t.id ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'}`}
+            className={`px-3 py-1.5 rounded-2xl text-[11px] font-semibold border ${activeType?.id === t.id ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'}`}
           >
             {t.displayName}
           </button>
@@ -98,10 +98,10 @@ function DownloadRow() {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <a href="/api/admin/ontology/sdk/typescript" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
+        <a href="/api/admin/ontology/sdk/typescript" className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border border-[var(--os-border)] text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
           <Download size={12} /> TypeScript
         </a>
-        <a href="/api/admin/ontology/sdk/python" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
+        <a href="/api/admin/ontology/sdk/python" className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border border-[var(--os-border)] text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
           <Download size={12} /> Python
         </a>
       </div>
@@ -172,20 +172,20 @@ function WebhooksTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-xs text-[var(--os-text-2)]">Partners register a URL to receive HMAC-signed POSTs on object.created / object.updated.</p>
-        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold">
+        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold">
           <Plus size={12} /> New subscription
         </button>
       </div>
 
       {showForm && (
         <div className="os-card p-4 space-y-2">
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="Subscription name" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
-          <input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://partner.example.com/webhook" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Subscription name" className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://partner.example.com/webhook" className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
           <div className="flex items-center gap-2">
-            <button onClick={() => create.mutate()} disabled={create.isPending || !name.trim() || !url.trim()} className="px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+            <button onClick={() => create.mutate()} disabled={create.isPending || !name.trim() || !url.trim()} className="px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
               {create.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Create'}
             </button>
-            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
+            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-2xl text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
           </div>
         </div>
       )}
@@ -206,13 +206,13 @@ function WebhooksTab() {
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <button onClick={() => toggle.mutate(s)} className={`text-[9px] font-semibold px-2 py-1 rounded-md border ${s.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+                <button onClick={() => toggle.mutate(s)} className={`text-[9px] font-semibold px-2 py-1 rounded-2xl border ${s.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
                   {s.enabled ? 'Enabled' : 'Disabled'}
                 </button>
-                <button onClick={() => test.mutate(s.id)} title="Send test event" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[#579bfc]">
+                <button onClick={() => test.mutate(s.id)} title="Send test event" className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[#579bfc]">
                   {test.isPending ? <Loader2 size={13} className="animate-spin" /> : <Play size={13} weight="fill" />}
                 </button>
-                <button onClick={() => remove.mutate(s.id)} className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-red-400"><Trash size={13} /></button>
+                <button onClick={() => remove.mutate(s.id)} className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400"><Trash size={13} /></button>
               </div>
             </div>
           ))}
@@ -255,20 +255,20 @@ function OperationalWebhooksTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-xs text-[var(--os-text-2)]">Partners register a URL to receive HMAC-signed POSTs on eval.drift_alert (Gate 3) / budget.exceeded (hard-stop budgets).</p>
-        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold">
+        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold">
           <Plus size={12} /> New subscription
         </button>
       </div>
 
       {showForm && (
         <div className="os-card p-4 space-y-2">
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="Subscription name" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
-          <input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://partner.example.com/webhook" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Subscription name" className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://partner.example.com/webhook" className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
           <div className="flex items-center gap-2">
-            <button onClick={() => create.mutate()} disabled={create.isPending || !name.trim() || !url.trim()} className="px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+            <button onClick={() => create.mutate()} disabled={create.isPending || !name.trim() || !url.trim()} className="px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
               {create.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Create'}
             </button>
-            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
+            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-2xl text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
           </div>
         </div>
       )}
@@ -289,13 +289,13 @@ function OperationalWebhooksTab() {
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <button onClick={() => toggle.mutate(s)} className={`text-[9px] font-semibold px-2 py-1 rounded-md border ${s.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+                <button onClick={() => toggle.mutate(s)} className={`text-[9px] font-semibold px-2 py-1 rounded-2xl border ${s.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
                   {s.enabled ? 'Enabled' : 'Disabled'}
                 </button>
-                <button onClick={() => test.mutate(s.id)} title="Send test event" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[#579bfc]">
+                <button onClick={() => test.mutate(s.id)} title="Send test event" className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[#579bfc]">
                   {test.isPending ? <Loader2 size={13} className="animate-spin" /> : <Play size={13} weight="fill" />}
                 </button>
-                <button onClick={() => remove.mutate(s.id)} className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-red-400"><Trash size={13} /></button>
+                <button onClick={() => remove.mutate(s.id)} className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400"><Trash size={13} /></button>
               </div>
             </div>
           ))}
@@ -329,7 +329,7 @@ function KeysTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-xs text-[var(--os-text-2)]">Scope a key to specific object types — leave empty for unrestricted platform access.</p>
-        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold">
+        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold">
           <Plus size={12} /> New key
         </button>
       </div>
@@ -338,32 +338,32 @@ function KeysTab() {
         <div className="os-card p-4 border-emerald-500/30 space-y-2">
           <div className="flex items-center gap-2 text-emerald-400"><CheckCircle size={14} weight="fill" /><p className="text-xs font-bold">Store this token now — it will not be shown again</p></div>
           <div className="flex items-center gap-2">
-            <code className="flex-1 text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-md px-2 py-1.5 text-[var(--os-text-1)] truncate">{newToken}</code>
-            <button onClick={() => navigator.clipboard.writeText(newToken)} className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><Copy size={13} /></button>
-            <button onClick={() => setNewToken(null)} className="p-1.5 rounded-md text-[var(--os-text-2)]"><X size={13} /></button>
+            <code className="flex-1 text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl px-2 py-1.5 text-[var(--os-text-1)] truncate">{newToken}</code>
+            <button onClick={() => navigator.clipboard.writeText(newToken)} className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><Copy size={13} /></button>
+            <button onClick={() => setNewToken(null)} className="p-1.5 rounded-2xl text-[var(--os-text-2)]"><X size={13} /></button>
           </div>
         </div>
       )}
 
       {showForm && (
         <div className="os-card p-4 space-y-2">
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="Key name (e.g. Nexus Intelligence Partner)" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Key name (e.g. Nexus Intelligence Partner)" className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
           <div className="flex flex-wrap gap-1.5">
             {(schema?.types ?? []).map(t => (
               <button
                 key={t.id}
                 onClick={() => setScopedTypes(s => s.includes(t.name) ? s.filter(x => x !== t.name) : [...s, t.name])}
-                className={`px-2 py-1 rounded-md text-[10px] font-semibold border ${scopedTypes.includes(t.name) ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}
+                className={`px-2 py-1 rounded-2xl text-[10px] font-semibold border ${scopedTypes.includes(t.name) ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}
               >
                 {t.displayName}
               </button>
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => create.mutate()} disabled={create.isPending || !name.trim()} className="px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+            <button onClick={() => create.mutate()} disabled={create.isPending || !name.trim()} className="px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
               {create.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Create'}
             </button>
-            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
+            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-2xl text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
           </div>
         </div>
       )}
@@ -383,7 +383,7 @@ function KeysTab() {
                   {k.scopedObjectTypes.length === 0 ? 'Unrestricted' : `Scoped: ${k.scopedObjectTypes.join(', ')}`}
                 </p>
               </div>
-              <button onClick={() => revoke.mutate(k.id)} className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-red-400 flex-shrink-0"><Trash size={13} /></button>
+              <button onClick={() => revoke.mutate(k.id)} className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400 flex-shrink-0"><Trash size={13} /></button>
             </div>
           ))}
         </div>

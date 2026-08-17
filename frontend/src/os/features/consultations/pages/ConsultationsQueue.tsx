@@ -99,7 +99,7 @@ function ConsultationDrawer({
       <div className="space-y-5">
         {/* Overdue alert */}
         {overdue && (
-          <div className="flex items-center gap-2.5 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+          <div className="flex items-center gap-2.5 p-3 bg-amber-50 border border-amber-200 rounded-2xl">
             <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0" />
             <p className="text-sm text-amber-700 font-medium">
               {consultation.status === 'PENDING'
@@ -185,7 +185,7 @@ function ConsultationDrawer({
               </div>
             )}
             {consultation.message && (
-              <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl">
+              <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl">
                 <div className="flex items-center gap-1.5 mb-1.5">
                   <MessageSquare className="w-3 h-3 text-[var(--os-text-2)]" />
                   <span className="text-[10px] font-semibold text-[var(--os-text-2)] uppercase tracking-wide">Message</span>
@@ -215,7 +215,7 @@ function ConsultationDrawer({
               <select
                 value={meetingMode}
                 onChange={e => setMeetingMode(e.target.value)}
-                className="w-full border border-[var(--os-border)] rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                className="w-full border border-[var(--os-border)] rounded-2xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
               >
                 <option value="">Select…</option>
                 <option value="VIDEO">Video call</option>
@@ -357,7 +357,7 @@ export function ConsultationsQueue() {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all ${
                 statusFilter === s
                   ? 'bg-[#579bfc] text-white'
                   : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'

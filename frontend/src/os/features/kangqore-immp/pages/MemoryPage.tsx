@@ -112,7 +112,7 @@ export function MemoryPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center flex-shrink-0 shadow-lg">
+        <div className="w-8 h-8 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center flex-shrink-0 shadow-lg">
           <BookOpen className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
@@ -157,7 +157,7 @@ export function MemoryPage() {
               <div className="space-y-3">
                 {acknowledgedSignals.map(signal => (
                   <div key={signal.id} className="flex items-center gap-4 p-5 transition-transform hover:-translate-y-1" style={{ background: 'rgba(34,197,94,0.06)', borderRadius: 'var(--os-radius-xl)', boxShadow: '0 16px 32px rgba(34,197,94,0.1)' }}>
-                    <div className="w-8 h-8 rounded-xl bg-green-500 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-2xl bg-green-500 flex items-center justify-center flex-shrink-0">
                       <Check className="w-4 h-4 text-white" />
                     </div>
                     <p className="flex-1 text-sm font-bold text-[var(--os-text-2)] line-through opacity-70">{signal.title}</p>
@@ -165,7 +165,7 @@ export function MemoryPage() {
                     <button
                       onClick={() => unacknowledgeSignal(signal.id)}
                       title="Restore to active signals"
-                      className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all bg-white shadow-sm"
+                      className="w-8 h-8 rounded-2xl flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all bg-white shadow-sm"
                     >
                       <RotateCcw className="w-4 h-4" />
                     </button>

@@ -87,27 +87,27 @@ export function MapViewPage() {
       <div className="os-card p-3 flex flex-wrap items-end gap-3">
         <div>
           <label className="text-[10px] text-[var(--os-text-2)] block mb-1">Latitude</label>
-          <input value={searchLat} onChange={e => setSearchLat(e.target.value)} className="w-24 px-2 py-1.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={searchLat} onChange={e => setSearchLat(e.target.value)} className="w-24 px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
         </div>
         <div>
           <label className="text-[10px] text-[var(--os-text-2)] block mb-1">Longitude</label>
-          <input value={searchLng} onChange={e => setSearchLng(e.target.value)} className="w-24 px-2 py-1.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={searchLng} onChange={e => setSearchLng(e.target.value)} className="w-24 px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
         </div>
         <div>
           <label className="text-[10px] text-[var(--os-text-2)] block mb-1">Radius (km)</label>
-          <input value={searchRadius} onChange={e => setSearchRadius(e.target.value)} className="w-20 px-2 py-1.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={searchRadius} onChange={e => setSearchRadius(e.target.value)} className="w-20 px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
         </div>
         <button onClick={() => search.mutate()} disabled={search.isPending}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50">
+          className="flex items-center gap-1.5 px-3 py-2 rounded-2xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50">
           {search.isPending ? <Loader2 size={13} className="animate-spin" /> : <MagnifyingGlass size={13} />} Search
         </button>
         {matchedIds && (
           <>
             <span className="text-xs text-[var(--os-text-2)]">{matchedIds.size} matches</span>
             <input value={setName} onChange={e => setSetName(e.target.value)} placeholder="Object Set name…"
-              className="flex-1 min-w-[140px] px-2 py-1.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+              className="flex-1 min-w-[140px] px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
             <button onClick={() => saveSet.mutate()} disabled={saveSet.isPending || saved}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[var(--os-accent)] text-white text-xs font-semibold disabled:opacity-50">
+              className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-[var(--os-accent)] text-white text-xs font-semibold disabled:opacity-50">
               {saveSet.isPending ? <Loader2 size={13} className="animate-spin" /> : <FloppyDisk size={13} weight="fill" />}
               {saved ? 'Saved as Object Set' : 'Save as Object Set'}
             </button>
@@ -156,13 +156,13 @@ export function MapViewPage() {
 
       {cluster && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && setOpenCluster(null)}>
-          <div className="w-full max-w-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 space-y-2 max-h-[70vh] overflow-y-auto">
+          <div className="w-full max-w-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 space-y-2 max-h-[70vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-1">
               <p className="text-sm font-semibold text-[var(--os-text-1)]">{cluster.items.length} object{cluster.items.length !== 1 ? 's' : ''}</p>
               <button onClick={() => setOpenCluster(null)}><X size={14} className="text-[var(--os-text-2)]" /></button>
             </div>
             {cluster.items.map(({ o }) => (
-              <div key={o.id} className="px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-xs">
+              <div key={o.id} className="px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-xs">
                 <p className="font-semibold text-[var(--os-text-1)]">{o.properties?.name ?? o.id.slice(0, 8)}</p>
                 <p className="text-[10px] text-[var(--os-text-2)] mt-0.5">{o.type?.displayName} · {o.location.lat.toFixed(3)}, {o.location.lng.toFixed(3)}</p>
               </div>

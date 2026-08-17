@@ -53,7 +53,7 @@ function PolicyFormModal({ onClose, onSave, saving }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-lg rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+      <div className="w-full max-w-lg rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-[var(--os-text-1)]">New Policy</p>
           <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)] text-xl leading-none">×</button>
@@ -63,7 +63,7 @@ function PolicyFormModal({ onClose, onSave, saving }: {
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Policy Name *</label>
             <input
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
               placeholder="e.g. Block high-value Salesforce writes"
               value={name} onChange={e => setName(e.target.value)}
             />
@@ -71,7 +71,7 @@ function PolicyFormModal({ onClose, onSave, saving }: {
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Description</label>
             <input
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
               placeholder="What does this policy do?"
               value={description} onChange={e => setDescription(e.target.value)}
             />
@@ -79,7 +79,7 @@ function PolicyFormModal({ onClose, onSave, saving }: {
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Trigger</label>
             <select
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
               value={trigger} onChange={e => setTrigger(e.target.value)}
             >
               {TRIGGER_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
@@ -88,7 +88,7 @@ function PolicyFormModal({ onClose, onSave, saving }: {
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Effect</label>
             <select
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
               value={effect} onChange={e => setEffect(e.target.value)}
             >
               {EFFECT_OPTIONS.map(e => <option key={e} value={e}>{e}</option>)}
@@ -101,12 +101,12 @@ function PolicyFormModal({ onClose, onSave, saving }: {
           <label className="text-[11px] text-[var(--os-text-2)] mb-1.5 block">Condition (optional)</label>
           <div className="grid grid-cols-3 gap-2">
             <input
-              className="px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
+              className="px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
               placeholder="Field (e.g. params.platform)"
               value={condField} onChange={e => setCondField(e.target.value)}
             />
             <select
-              className="px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
+              className="px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
               value={condOp} onChange={e => setCondOp(e.target.value)}
             >
               {['eq', 'ne', 'gt', 'gte', 'lt', 'lte', 'contains', 'in', 'notIn', 'exists'].map(o => (
@@ -114,7 +114,7 @@ function PolicyFormModal({ onClose, onSave, saving }: {
               ))}
             </select>
             <input
-              className="px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
+              className="px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
               placeholder="Value"
               value={condValue} onChange={e => setCondValue(e.target.value)}
             />
@@ -131,7 +131,7 @@ function PolicyFormModal({ onClose, onSave, saving }: {
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Priority (higher = evaluated first)</label>
             <input
               type="number"
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none"
               value={priority} onChange={e => setPriority(parseInt(e.target.value) || 0)}
             />
           </div>
@@ -141,11 +141,11 @@ function PolicyFormModal({ onClose, onSave, saving }: {
           <button
             onClick={() => onSave({ name, description: description || undefined, trigger, condition, effect, priority })}
             disabled={!name.trim() || saving}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50"
           >
             {saving ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : 'Create Policy'}
           </button>
-          <button onClick={onClose} className="px-4 py-2 rounded-lg border border-[var(--os-border)] text-sm text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 rounded-2xl border border-[var(--os-border)] text-sm text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
         </div>
       </div>
     </div>
@@ -247,7 +247,7 @@ export function PoliciesPage() {
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5]"
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5]"
         >
           <Plus className="w-3.5 h-3.5" /> New Policy
         </button>
@@ -269,7 +269,7 @@ export function PoliciesPage() {
       </div>
 
       {/* How it works */}
-      <div className="rounded-xl border border-[#579bfc]/20 bg-[#579bfc]/[0.03] px-4 py-3">
+      <div className="rounded-2xl border border-[#579bfc]/20 bg-[#579bfc]/[0.03] px-4 py-3">
         <div className="flex items-center gap-2 mb-1">
           <Info className="w-3.5 h-3.5 text-[#579bfc]" />
           <p className="text-[11px] font-semibold text-[#579bfc]">How policies work</p>
@@ -359,23 +359,23 @@ function IPAllowlistSection() {
           value={newCidr}
           onChange={e => setNewCidr(e.target.value)}
           placeholder="e.g. 203.0.113.0/24 or 10.0.0.1"
-          className="flex-1 px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm font-mono text-[var(--os-text-1)] outline-none focus:border-blue-500/50"
+          className="flex-1 px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm font-mono text-[var(--os-text-1)] outline-none focus:border-blue-500/50"
         />
         <button
           onClick={() => add.mutate()}
           disabled={!newCidr.trim() || add.isPending}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-semibold hover:bg-blue-500/20 disabled:opacity-40"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-semibold hover:bg-blue-500/20 disabled:opacity-40"
         >
           {add.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />} Add
         </button>
       </div>
 
       {isLoading ? (
-        <div className="h-8 rounded-lg animate-pulse bg-[var(--os-surface-0)]" />
+        <div className="h-8 rounded-2xl animate-pulse bg-[var(--os-surface-0)]" />
       ) : list.length === 0 ? (
         <p className="text-[11px] text-[var(--os-text-3)] italic px-1">No IP restrictions — all IPs allowed.</p>
       ) : (
-        <div className="rounded-lg border border-[var(--os-border)] divide-y divide-[var(--os-border)] overflow-hidden">
+        <div className="rounded-2xl border border-[var(--os-border)] divide-y divide-[var(--os-border)] overflow-hidden">
           {list.map(cidr => (
             <div key={cidr} className="flex items-center gap-3 px-4 py-2.5 bg-[var(--os-card)] hover:bg-[var(--os-surface-0)] group">
               <span className="text-sm font-mono text-[var(--os-text-1)] flex-1">{cidr}</span>
@@ -411,30 +411,30 @@ function SSOConfigSection() {
         <span className="text-[11px] text-[var(--os-text-3)]">Configure your Identity Provider for single sign-on.</span>
       </div>
 
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">IdP SSO URL</label>
             <input value={idpUrl} onChange={e => setIdpUrl(e.target.value)}
               placeholder="https://idp.example.com/sso/saml"
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-violet-500/50" />
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-violet-500/50" />
           </div>
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Entity ID (Issuer)</label>
             <input value={entityId} onChange={e => setEntityId(e.target.value)}
               placeholder="https://idp.example.com/metadata"
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-violet-500/50" />
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-violet-500/50" />
           </div>
         </div>
         <div>
           <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">SAML Metadata XML</label>
           <textarea rows={5} value={metadata} onChange={e => setMetadata(e.target.value)}
             placeholder="Paste your IdP metadata XML here…"
-            className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] font-mono text-[var(--os-text-1)] outline-none focus:border-violet-500/50 resize-none" />
+            className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] font-mono text-[var(--os-text-1)] outline-none focus:border-violet-500/50 resize-none" />
         </div>
         <div className="flex items-center gap-3">
           <button onClick={() => save.mutate()} disabled={save.isPending}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-violet-500/10 border border-violet-500/30 text-violet-400 text-sm font-semibold hover:bg-violet-500/20 disabled:opacity-40">
+            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-violet-500/10 border border-violet-500/30 text-violet-400 text-sm font-semibold hover:bg-violet-500/20 disabled:opacity-40">
             {save.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : 'Save SSO Config'}
           </button>
           {saved && <span className="flex items-center gap-1 text-xs font-bold text-green-500"><CheckCircle2 className="w-3.5 h-3.5" /> Saved</span>}
@@ -462,7 +462,7 @@ function SessionTimeoutSection() {
         <h3 className="text-sm font-bold text-[var(--os-text-1)]">Session Timeout</h3>
       </div>
 
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
         {[
           { label: 'Idle Timeout',     sub: 'Log out after N minutes of inactivity',  value: idle,     set: setIdle,     min: 5,   max: 480,  step: 5  },
           { label: 'Absolute Timeout', sub: 'Force re-login after N minutes total',   value: absolute, set: setAbsolute, min: 60,  max: 10080, step: 60 },
@@ -488,7 +488,7 @@ function SessionTimeoutSection() {
         ))}
         <div className="flex items-center gap-3 pt-1">
           <button onClick={() => save.mutate()} disabled={save.isPending}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold hover:bg-amber-500/20 disabled:opacity-40">
+            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold hover:bg-amber-500/20 disabled:opacity-40">
             {save.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : 'Save Timeout Rules'}
           </button>
           {saved && <span className="flex items-center gap-1 text-xs font-bold text-green-500"><CheckCircle2 className="w-3.5 h-3.5" /> Saved</span>}

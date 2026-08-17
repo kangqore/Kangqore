@@ -141,7 +141,7 @@ function OIITab() {
   return (
     <div className="space-y-6">
       {/* OII Hero */}
-      <div className="rounded-xl border border-os bg-os-card p-6">
+      <div className="rounded-2xl border border-os bg-os-card p-6">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-medium uppercase tracking-widest text-os-4">
@@ -178,7 +178,7 @@ function OIITab() {
         const first = pts[0], last = pts[pts.length - 1]
         const delta = last.score - first.score
         return (
-          <div className="rounded-xl border border-os bg-os-card p-5">
+          <div className="rounded-2xl border border-os bg-os-card p-5">
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs font-semibold uppercase tracking-widest text-os-4">OII History</p>
               <span className={`text-xs font-bold tabular-nums ${delta >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
@@ -198,7 +198,7 @@ function OIITab() {
       })()}
 
       {/* 9 Dimensions */}
-      <div className="rounded-xl border border-os bg-os-card p-5">
+      <div className="rounded-2xl border border-os bg-os-card p-5">
         <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-os-4">
           9 Intelligence Dimensions
         </p>
@@ -224,7 +224,7 @@ function OIITab() {
 
       {/* COIG Trend */}
       {coig && (
-        <div className="rounded-xl border border-os bg-os-card p-5">
+        <div className="rounded-2xl border border-os bg-os-card p-5">
           <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-os-4">
             COIG Velocity
           </p>
@@ -290,7 +290,7 @@ function ReviewsTab() {
         <button
           onClick={() => generate.mutate()}
           disabled={generate.isPending}
-          className="flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-os-1 hover:bg-violet-500 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-2xl bg-violet-600 px-3 py-1.5 text-xs font-medium text-os-1 hover:bg-violet-500 disabled:opacity-50"
         >
           {generate.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
           Generate Now
@@ -304,20 +304,20 @@ function ReviewsTab() {
       )}
 
       {reviews.length === 0 && !isLoading && (
-        <div className="rounded-xl border border-os bg-os-card p-8 text-center text-sm text-os-4">
+        <div className="rounded-2xl border border-os bg-os-card p-8 text-center text-sm text-os-4">
           No reviews yet — click "Generate Now" to produce the first weekly review
         </div>
       )}
 
       <div className="space-y-3">
         {reviews.map(r => (
-          <div key={r.id} className="rounded-xl border border-os bg-os-card">
+          <div key={r.id} className="rounded-2xl border border-os bg-os-card">
             <button
               className="flex w-full items-center justify-between p-4"
               onClick={() => setExpanded(expanded === r.id ? null : r.id)}
             >
               <div className="flex items-center gap-3">
-                <div className="rounded-md bg-violet-900/50 p-1.5">
+                <div className="rounded-2xl bg-violet-900/50 p-1.5">
                   <BookOpen className="h-3.5 w-3.5 text-violet-400" />
                 </div>
                 <div className="text-left">
@@ -347,7 +347,7 @@ function ReviewsTab() {
                     { label: 'Lessons', v: r.lessonCount },
                     { label: 'Patterns', v: r.patternCount },
                   ].map(m => (
-                    <div key={m.label} className="rounded-lg bg-os-card p-2">
+                    <div key={m.label} className="rounded-2xl bg-os-card p-2">
                       <p className="text-lg font-bold text-os-1">{m.v}</p>
                       <p className="text-[10px] text-os-4">{m.label}</p>
                     </div>
@@ -389,7 +389,7 @@ function RetrospectivesTab() {
         <button
           onClick={() => generate.mutate()}
           disabled={generate.isPending}
-          className="flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-os-1 hover:bg-violet-500 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-2xl bg-violet-600 px-3 py-1.5 text-xs font-medium text-os-1 hover:bg-violet-500 disabled:opacity-50"
         >
           {generate.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
           Generate This Week
@@ -403,20 +403,20 @@ function RetrospectivesTab() {
       )}
 
       {retros.length === 0 && !isLoading && (
-        <div className="rounded-xl border border-os bg-os-card p-8 text-center text-sm text-os-4">
+        <div className="rounded-2xl border border-os bg-os-card p-8 text-center text-sm text-os-4">
           No retrospectives yet — click "Generate This Week" to create the first
         </div>
       )}
 
       <div className="space-y-3">
         {retros.map(r => (
-          <div key={r.id} className="rounded-xl border border-os bg-os-card">
+          <div key={r.id} className="rounded-2xl border border-os bg-os-card">
             <button
               className="flex w-full items-center justify-between p-4"
               onClick={() => setExpanded(expanded === r.id ? null : r.id)}
             >
               <div className="flex items-center gap-3">
-                <div className="rounded-md bg-blue-900/50 p-1.5">
+                <div className="rounded-2xl bg-blue-900/50 p-1.5">
                   <Activity className="h-3.5 w-3.5 text-blue-400" />
                 </div>
                 <div className="text-left">
@@ -488,7 +488,7 @@ function LettersTab() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-os bg-os-card p-4">
+      <div className="rounded-2xl border border-os bg-os-card p-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-os-4">
           Generate Enterprise Letter
         </p>
@@ -496,7 +496,7 @@ function LettersTab() {
           <select
             value={genType}
             onChange={e => setGenType(e.target.value as LetterType)}
-            className="rounded-lg border border-os bg-os-card px-3 py-1.5 text-xs text-os-1 focus:outline-none"
+            className="rounded-2xl border border-os bg-os-card px-3 py-1.5 text-xs text-os-1 focus:outline-none"
           >
             {LETTER_TYPES.map(t => (
               <option key={t} value={t} className="bg-gray-900">{t}</option>
@@ -506,12 +506,12 @@ function LettersTab() {
             value={period}
             onChange={e => setPeriod(e.target.value)}
             placeholder="Q3-2026"
-            className="rounded-lg border border-os bg-os-card px-3 py-1.5 text-xs text-os-1 placeholder:text-os-4 focus:outline-none"
+            className="rounded-2xl border border-os bg-os-card px-3 py-1.5 text-xs text-os-1 placeholder:text-os-4 focus:outline-none"
           />
           <button
             onClick={() => generate.mutate()}
             disabled={generate.isPending || !period}
-            className="flex items-center gap-1.5 rounded-lg bg-violet-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-violet-500 disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-2xl bg-violet-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-violet-500 disabled:opacity-50"
           >
             {generate.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Scroll className="h-3 w-3" />}
             Generate
@@ -526,20 +526,20 @@ function LettersTab() {
       )}
 
       {letters.length === 0 && !isLoading && (
-        <div className="rounded-xl border border-os bg-os-card p-8 text-center text-sm text-os-4">
+        <div className="rounded-2xl border border-os bg-os-card p-8 text-center text-sm text-os-4">
           No letters yet — generate the first one above
         </div>
       )}
 
       <div className="space-y-3">
         {letters.map(l => (
-          <div key={l.id} className="rounded-xl border border-os bg-os-card">
+          <div key={l.id} className="rounded-2xl border border-os bg-os-card">
             <button
               className="flex w-full items-center justify-between p-4"
               onClick={() => setExpanded(expanded === l.id ? null : l.id)}
             >
               <div className="flex items-center gap-3">
-                <div className="rounded-md bg-amber-900/50 p-1.5">
+                <div className="rounded-2xl bg-amber-900/50 p-1.5">
                   <FileText className="h-3.5 w-3.5 text-amber-400" />
                 </div>
                 <div className="text-left">
@@ -598,7 +598,7 @@ function ScorecardsTab() {
           <button
             key={w}
             onClick={() => setWindow(w)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+            className={`rounded-2xl px-3 py-1.5 text-xs font-medium transition-colors ${
               window === w ? 'bg-violet-600 text-white' : 'text-os-4 hover:text-os-2'
             }`}
           >
@@ -624,7 +624,7 @@ function ScorecardsTab() {
           {metrics.map(m => {
             const Icon = m.icon
             return (
-              <div key={m.label} className="rounded-xl border border-os bg-os-card p-4">
+              <div key={m.label} className="rounded-2xl border border-os bg-os-card p-4">
                 <Icon className={`mb-2 h-4 w-4 ${m.color}`} />
                 <p className="text-2xl font-bold text-os-1">{m.value}</p>
                 <p className="mt-0.5 text-[10px] text-os-4">{m.label}</p>
@@ -636,7 +636,7 @@ function ScorecardsTab() {
 
       {/* Decision quality breakdown */}
       {sc && (
-        <div className="rounded-xl border border-os bg-os-card p-5">
+        <div className="rounded-2xl border border-os bg-os-card p-5">
           <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-os-4">
             Execution Quality
           </p>
@@ -701,7 +701,7 @@ export default function ReflectionPage() {
     <div className="space-y-6 p-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="rounded-xl bg-violet-900/50 p-2.5">
+        <div className="rounded-2xl bg-violet-900/50 p-2.5">
           <Brain className="h-5 w-5 text-violet-400" />
         </div>
         <div>

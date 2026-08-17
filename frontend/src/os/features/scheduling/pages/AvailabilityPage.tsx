@@ -122,7 +122,7 @@ export function AvailabilityPage() {
             <select
               value={timezone}
               onChange={e => setTimezone(e.target.value)}
-              className="h-10 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 w-full sm:w-64 shadow-sm transition-all cursor-pointer"
+              className="h-10 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 w-full sm:w-64 shadow-sm transition-all cursor-pointer"
             >
               {TIMEZONES.map(tz => <option key={tz} value={tz}>{tz}</option>)}
             </select>
@@ -150,10 +150,10 @@ export function AvailabilityPage() {
                 {slot.enabled ? (
                   <div className="flex items-center gap-3 flex-1">
                     <input type="time" value={slot.start} onChange={e => setTime(day, 'start', e.target.value)}
-                      className="h-9 w-[120px] rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all" />
+                      className="h-9 w-[120px] rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all" />
                     <span className="text-[var(--os-text-2)] text-sm font-medium">–</span>
                     <input type="time" value={slot.end} onChange={e => setTime(day, 'end', e.target.value)}
-                      className="h-9 w-[120px] rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all" />
+                      className="h-9 w-[120px] rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all" />
                   </div>
                 ) : (
                   <div className="flex-1 text-sm text-[var(--os-text-2)] font-medium italic">

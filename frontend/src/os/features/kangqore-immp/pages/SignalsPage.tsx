@@ -81,7 +81,7 @@ function SignalRow({ signal }: { signal: Signal }) {
             <Badge variant={sev.badge} size="sm" dot>{signal.severity}</Badge>
             <span className="text-[11px] font-bold text-[var(--os-text-2)]">{signal.signalType.replace(/_/g, ' ')}</span>
             <span className="text-[11px] font-bold text-[var(--os-text-2)] border-l border-[var(--os-border)] pl-2">{signal.sourceModule}</span>
-            <span className="text-[11px] font-bold text-blue-600 ml-auto bg-blue-50 px-2 py-0.5 rounded-md">{signal.confidence}% conf</span>
+            <span className="text-[11px] font-bold text-blue-600 ml-auto bg-blue-50 px-2 py-0.5 rounded-2xl">{signal.confidence}% conf</span>
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0 mt-0.5">
@@ -92,7 +92,7 @@ function SignalRow({ signal }: { signal: Signal }) {
 
       {expanded && (
         <div className="px-6 pb-5">
-          <div className="ml-14 rounded-xl border border-[var(--os-border)] overflow-hidden" style={{ background: 'var(--os-card)' }}>
+          <div className="ml-14 rounded-2xl border border-[var(--os-border)] overflow-hidden" style={{ background: 'var(--os-card)' }}>
             <div className="px-4 py-2.5 border-b border-[var(--os-border)]" style={{ background: 'var(--os-surface-0)' }}>
               <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--os-text-2)]">Signal Detail</p>
             </div>
@@ -132,7 +132,7 @@ function PatternCard({ pattern }: { pattern: CorrelationPattern }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3">
             <p className="text-base font-bold text-[var(--os-text-1)]">{pattern.pattern}</p>
-            <span className="ml-auto text-[11px] font-bold px-2 py-1 rounded-md flex-shrink-0 text-purple-600 bg-purple-100">
+            <span className="ml-auto text-[11px] font-bold px-2 py-1 rounded-2xl flex-shrink-0 text-purple-600 bg-purple-100">
               {pattern.confidence}%
             </span>
           </div>
@@ -140,7 +140,7 @@ function PatternCard({ pattern }: { pattern: CorrelationPattern }) {
           {pattern.signals?.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-3">
               {pattern.signals.map((s, i) => (
-                <span key={i} className="text-[10px] font-bold px-2 py-1 rounded-md text-purple-600 bg-purple-50">{s}</span>
+                <span key={i} className="text-[10px] font-bold px-2 py-1 rounded-2xl text-purple-600 bg-purple-50">{s}</span>
               ))}
             </div>
           )}
@@ -197,7 +197,7 @@ export function SignalsPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center flex-shrink-0 shadow-lg">
+        <div className="w-8 h-8 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center flex-shrink-0 shadow-lg">
           <Activity className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
@@ -209,7 +209,7 @@ export function SignalsPage() {
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => refetch()}
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
+            className="w-10 h-10 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
           >
             <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin' : ''}`} />
           </button>
@@ -275,7 +275,7 @@ export function SignalsPage() {
             <button
               key={f}
               onClick={() => setSevFilter(f)}
-              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-1.5 rounded-2xl text-xs font-bold transition-all ${
                 sevFilter === f
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-slate-100'
@@ -291,7 +291,7 @@ export function SignalsPage() {
             <button
               key={f}
               onClick={() => setCatFilter(f)}
-              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-1.5 rounded-2xl text-xs font-bold transition-all ${
                 catFilter === f
                   ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20'
                   : 'bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-slate-100'

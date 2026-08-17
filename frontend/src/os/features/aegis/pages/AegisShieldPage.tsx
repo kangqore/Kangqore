@@ -158,7 +158,7 @@ export function AegisShieldPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Banner */}
-      <div className="bg-rose-900/20 border border-rose-500/20 rounded-xl p-4 flex items-start gap-3">
+      <div className="bg-rose-900/20 border border-rose-500/20 rounded-2xl p-4 flex items-start gap-3">
         <ShieldOff className="w-4 h-4 text-rose-400 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-sm font-semibold text-rose-300 mb-0.5">Access Shield Log</p>

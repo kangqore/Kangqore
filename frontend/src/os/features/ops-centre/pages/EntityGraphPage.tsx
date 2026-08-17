@@ -60,7 +60,7 @@ export function EntityGraphPage() {
     <div className="space-y-4">
 
       {/* Stats bar */}
-      <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
+      <div className="flex items-center gap-2 px-3 py-2 rounded-2xl"
         style={{ background: 'rgba(37,100,234,0.06)', border: '1px solid rgba(37,100,234,0.15)' }}>
         <Database className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
         <p className="text-[11px] text-[var(--os-text-2)]">
@@ -91,13 +91,13 @@ export function EntityGraphPage() {
       </div>
 
       {autoLink.isSuccess && (autoLink.data as any) && (
-        <div className="px-3 py-2 rounded-lg text-[11px] text-green-400 border border-green-500/20 bg-green-500/5">
+        <div className="px-3 py-2 rounded-2xl text-[11px] text-green-400 border border-green-500/20 bg-green-500/5">
           Auto-link complete: {(autoLink.data as any).created} created · {(autoLink.data as any).skipped} skipped
         </div>
       )}
 
       {/* KIMMP banner */}
-      <div className="rounded-xl p-3.5 flex items-start gap-3"
+      <div className="rounded-2xl p-3.5 flex items-start gap-3"
         style={{ background: 'rgba(124,58,237,0.05)', border: '1px solid rgba(124,58,237,0.12)' }}>
         <Brain className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
         <div>
@@ -115,7 +115,7 @@ export function EntityGraphPage() {
         <button
           onClick={() => setActiveTypeId(undefined)}
           className={cn(
-            'text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-colors',
+            'text-[10px] font-bold px-2.5 py-1 rounded-2xl border transition-colors',
             !activeTypeId
               ? 'bg-[#579bfc]/15 border-[#579bfc]/30 text-[#579bfc]'
               : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
@@ -130,7 +130,7 @@ export function EntityGraphPage() {
             <button
               key={typeName}
               onClick={() => setActiveTypeId(isActive ? undefined : matchType?.id)}
-              className="text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-colors"
+              className="text-[10px] font-bold px-2.5 py-1 rounded-2xl border transition-colors"
               style={isActive
                 ? { color, background: `${color}20`, borderColor: `${color}50` }
                 : { color: typeColor(typeName), background: `${typeColor(typeName)}0c`, borderColor: `${typeColor(typeName)}20` }
@@ -144,7 +144,7 @@ export function EntityGraphPage() {
 
       {/* Canvas */}
       {nodes.length === 0 && !graphLoading ? (
-        <div className="flex flex-col items-center justify-center py-24 gap-3 rounded-xl"
+        <div className="flex flex-col items-center justify-center py-24 gap-3 rounded-2xl"
           style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
           <GitBranch className="w-8 h-8 text-[var(--os-text-2)]" />
           <p className="text-sm text-[var(--os-text-2)]">No entities in the ontology graph yet.</p>

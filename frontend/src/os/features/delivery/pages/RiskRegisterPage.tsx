@@ -205,7 +205,7 @@ function RiskDrawer({
         {risk.clientAcceptedBy && (
           <>
             <Divider />
-            <div className="p-3 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#00c875] border-y border-r border-[var(--os-border)] border-t-white/20 rounded-xl">
+            <div className="p-3 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#00c875] border-y border-r border-[var(--os-border)] border-t-white/20 rounded-2xl">
               <p className="text-xs text-slate-750 font-semibold">
                 Accepted by {risk.clientAcceptedBy}
                 {risk.clientAcceptedAt && ` on ${new Date(risk.clientAcceptedAt).toLocaleDateString('en-GB')}`}
@@ -261,7 +261,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Severity</label>
             <select value={form.severity} onChange={e => set('severity', e.target.value)}
-              className="w-full border border-[var(--os-border)] border-t-white/20 rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-[var(--os-border)] border-t-white/20 rounded-2xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskSeverity[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -270,7 +270,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Probability</label>
             <select value={form.probability} onChange={e => set('probability', e.target.value)}
-              className="w-full border border-[var(--os-border)] border-t-white/20 rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-[var(--os-border)] border-t-white/20 rounded-2xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskProbability[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -279,7 +279,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Impact</label>
             <select value={form.impact} onChange={e => set('impact', e.target.value)}
-              className="w-full border border-[var(--os-border)] border-t-white/20 rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-[var(--os-border)] border-t-white/20 rounded-2xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as RiskImpact[]).map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
@@ -288,7 +288,7 @@ function AddRiskDrawer({ onAdd, onClose }: { onAdd: (r: Partial<Risk>) => void; 
           <div>
             <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Trend</label>
             <select value={form.trend} onChange={e => set('trend', e.target.value)}
-              className="w-full border border-[var(--os-border)] border-t-white/20 rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-[var(--os-border)] border-t-white/20 rounded-2xl px-3 py-2 text-sm text-[var(--os-text-1)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               <option value="STABLE">Stable</option>
               <option value="INCREASING">Increasing</option>
               <option value="DECREASING">Decreasing</option>
@@ -353,7 +353,7 @@ function ImpactMatrix({ risks }: { risks: Risk[] }) {
                   const count = countAt(prob, imp)
                   return (
                     <td key={imp} className="py-1.5 px-2">
-                      <div className={`rounded-lg border h-10 flex items-center justify-center font-bold transition-all ${cellColor(prob, imp)}`}>
+                      <div className={`rounded-2xl border h-10 flex items-center justify-center font-bold transition-all ${cellColor(prob, imp)}`}>
                         {count > 0 ? count : <span className="opacity-30">·</span>}
                       </div>
                     </td>
@@ -492,7 +492,7 @@ export function RiskRegisterPage() {
             <button
               key={s}
               onClick={() => setStatusFilter(s as RiskStatus | 'ALL')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all ${
                 statusFilter === s
                   ? 'bg-os-blue text-white'
                   : 'bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border border-[var(--os-border)] border-t-white/20 text-[var(--os-text-1)] hover:border-blue-300'

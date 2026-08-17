@@ -342,7 +342,7 @@ export function ModulePerformancePage() {
               return (
                 <div
                   key={meta.key}
-                  className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5 space-y-4"
+                  className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5 space-y-4"
                   style={{ borderLeft: `3px solid ${color}` }}
                 >
                   {/* Header */}
@@ -380,7 +380,7 @@ export function ModulePerformancePage() {
                     {meta.modules.map(m => (
                       <span
                         key={m}
-                        className="text-xs px-2 py-0.5 rounded-md"
+                        className="text-xs px-2 py-0.5 rounded-2xl"
                         style={{ background: color + '12', color, border: `1px solid ${color}22` }}
                       >
                         {m}

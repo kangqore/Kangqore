@@ -114,12 +114,12 @@ export function DependencyGraphView({ projectId, portfolioId }: Props) {
       </div>
 
       {nodes.length === 0 ? (
-        <div className="border border-[var(--os-border)] rounded-xl flex items-center justify-center h-64 text-sm text-[var(--os-text-2)]">
+        <div className="border border-[var(--os-border)] rounded-2xl flex items-center justify-center h-64 text-sm text-[var(--os-text-2)]">
           No ontology-linked work items with relationships yet.<br />
           Add &ldquo;blocks&rdquo; or &ldquo;dependsOn&rdquo; relationships between items to see the graph.
         </div>
       ) : (
-        <div className="border border-[var(--os-border)] rounded-xl overflow-auto bg-[var(--os-bg-2)]">
+        <div className="border border-[var(--os-border)] rounded-2xl overflow-auto bg-[var(--os-bg-2)]">
           <svg width={svgW} height={svgH} style={{ minHeight: 300 }}>
             <g transform={`translate(0, ${-minY + 40})`}>
               {/* Edges */}

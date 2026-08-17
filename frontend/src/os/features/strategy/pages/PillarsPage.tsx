@@ -52,7 +52,7 @@ export function PillarsPage() {
             <button
               key={f.value}
               onClick={() => setHealthFilter(f.value)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+              className={`px-4 py-2 rounded-2xl text-xs font-semibold transition-all duration-200 ${
                 healthFilter === f.value
                   ? 'bg-[#579bfc] text-white shadow-sm'
                   : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:border-blue-300'
@@ -109,11 +109,11 @@ export function PillarsPage() {
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4 mt-2">
-                    <div className="bg-[var(--os-surface-0)] rounded-xl p-4 border border-[var(--os-border)] flex flex-col justify-center">
+                    <div className="bg-[var(--os-surface-0)] rounded-2xl p-4 border border-[var(--os-border)] flex flex-col justify-center">
                       <p className="text-2xl font-black text-[var(--os-text-1)]">{pillar.programCount}</p>
                       <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider mt-0.5">Programs</p>
                     </div>
-                    <div className="bg-[var(--os-surface-0)] rounded-xl p-4 border border-[var(--os-border)] flex flex-col justify-center">
+                    <div className="bg-[var(--os-surface-0)] rounded-2xl p-4 border border-[var(--os-border)] flex flex-col justify-center">
                       <p className="text-2xl font-black text-[var(--os-text-1)]">{pillar.okrCount}</p>
                       <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-wider mt-0.5">OKRs</p>
                     </div>

@@ -70,7 +70,7 @@ export function PlatformLaunchPage() {
           </p>
         </div>
         {declared && (
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl"
+          <div className="flex items-center gap-2 px-4 py-2 rounded-2xl"
             style={{ background: `${GRN}12`, border: `1px solid ${GRN}30` }}>
             <CheckCircle2 className="w-4 h-4" style={{ color: GRN }} />
             <span className="text-sm font-black" style={{ color: GRN }}>v1.0.0 Declared</span>
@@ -79,7 +79,7 @@ export function PlatformLaunchPage() {
       </div>
 
       {/* Readiness score */}
-      <div className="rounded-xl p-6 space-y-4" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+      <div className="rounded-2xl p-6 space-y-4" style={{ background: CARD, border: `1px solid ${BDR}` }}>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-semibold" style={{ color: T1 }}>Gate 9 — Platform Completeness</p>
@@ -96,7 +96,7 @@ export function PlatformLaunchPage() {
       </div>
 
       {/* Criteria checklist */}
-      <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+      <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
         <div className="px-5 py-3 flex items-center gap-2" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
           <Rocket className="w-4 h-4" style={{ color: T2 }} />
           <p className="text-sm font-semibold" style={{ color: T1 }}>Gate 9 Criteria</p>
@@ -120,7 +120,7 @@ export function PlatformLaunchPage() {
 
       {/* Declare button */}
       {!declared && (
-        <div className="rounded-xl p-5 flex items-center gap-4"
+        <div className="rounded-2xl p-5 flex items-center gap-4"
           style={{ background: allPassed ? `${GRN}0a` : `${AMB}0a`, border: `1px solid ${allPassed ? GRN : AMB}30` }}>
           <div className="flex-1">
             <p className="text-sm font-semibold" style={{ color: T1 }}>
@@ -135,7 +135,7 @@ export function PlatformLaunchPage() {
           <button
             onClick={() => declareMut.mutate()}
             disabled={!allPassed || declareMut.isPending}
-            className="flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl flex-shrink-0"
+            className="flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-2xl flex-shrink-0"
             style={{
               background: allPassed ? GRN : `${AMB}40`,
               color: allPassed ? '#fff' : AMB,
@@ -148,7 +148,7 @@ export function PlatformLaunchPage() {
       )}
 
       {declared && declaration && (
-        <div className="rounded-xl p-5" style={{ background: `${GRN}08`, border: `1px solid ${GRN}25` }}>
+        <div className="rounded-2xl p-5" style={{ background: `${GRN}08`, border: `1px solid ${GRN}25` }}>
           <div className="flex items-center gap-3 mb-3">
             <CheckCircle2 className="w-5 h-5" style={{ color: GRN }} />
             <p className="text-base font-black" style={{ color: GRN }}>Kangqore Platform v{declaration.version} — Officially Declared</p>
@@ -170,7 +170,7 @@ export function PlatformLaunchPage() {
           {CHAPTER9_TRACKS.map(track => {
             const meta  = STATUS_META[track.status]
             return (
-              <div key={track.id} className="rounded-xl p-4 space-y-2"
+              <div key={track.id} className="rounded-2xl p-4 space-y-2"
                 style={{ background: `${track.color}08`, border: `1px solid ${track.color}25` }}>
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">

@@ -6,7 +6,7 @@ import type { PaymentStatus } from '../types'
 function SkeletonBar() {
   return (
     <div className="flex items-center gap-4 animate-pulse">
-      <div className="w-9 h-9 rounded-xl bg-slate-700 flex-shrink-0" />
+      <div className="w-9 h-9 rounded-2xl bg-slate-700 flex-shrink-0" />
       <div className="flex-1 space-y-2">
         <div className="h-3 w-1/3 rounded bg-slate-700" />
         <div className="h-2 rounded bg-slate-800" />
@@ -116,7 +116,7 @@ export function EarningsPage() {
             const pctPaid = p.totalEarned > 0 ? Math.round((pPaid / p.totalEarned) * 100) : 0
             return (
               <div key={p.id} className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-xs text-white" style={{ background: '#579bfc' }}>
+                <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 font-bold text-xs text-white" style={{ background: '#579bfc' }}>
                   {p.logo}
                 </div>
                 <div className="flex-1 min-w-0">

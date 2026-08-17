@@ -59,7 +59,7 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
 
   return (
     <div
-      className={`group relative flex gap-3 px-4 py-0.5 ${!isConsecutive ? 'pt-3' : ''} hover:bg-[var(--os-surface-0)] transition-colors rounded-xl mx-2`}
+      className={`group relative flex gap-3 px-4 py-0.5 ${!isConsecutive ? 'pt-3' : ''} hover:bg-[var(--os-surface-0)] transition-colors rounded-2xl mx-2`}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => { setHover(false); setEmojiPickerOpen(false) }}
     >
@@ -91,7 +91,7 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
             <span className="text-[11px] font-medium text-[var(--os-text-3)]">
               {formatDistanceToNow(new Date(msg.createdAt), { addSuffix: true })}
             </span>
-            {msg.isPinned && <span className="text-[10px] font-bold text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-md">📌 pinned</span>}
+            {msg.isPinned && <span className="text-[10px] font-bold text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-2xl">📌 pinned</span>}
           </div>
         )}
 
@@ -109,7 +109,7 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
                 if (e.key === 'Escape') setEditing(false)
               }}
               rows={2}
-              className="w-full bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg px-3 py-2 text-[13px] text-[var(--os-text-1)] outline-none resize-none focus:border-os-blue focus:ring-1 focus:ring-os-blue transition-all"
+              className="w-full bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-[13px] text-[var(--os-text-1)] outline-none resize-none focus:border-os-blue focus:ring-1 focus:ring-os-blue transition-all"
             />
             <div className="flex gap-2 text-[11px] font-bold">
               <button onClick={handleEdit} className="text-os-blue hover:underline">Save</button>
@@ -127,13 +127,13 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
         {msg.attachments?.map((att) => (
           <div key={att.url} className="mt-2">
             {att.mimeType?.startsWith('image/') ? (
-              <img src={att.url} alt={att.name} className="max-w-xs max-h-48 rounded-xl object-cover border border-[var(--os-border)] shadow-sm" />
+              <img src={att.url} alt={att.name} className="max-w-xs max-h-48 rounded-2xl object-cover border border-[var(--os-border)] shadow-sm" />
             ) : (
               <a
                 href={att.url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[12px] font-bold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-card)] transition-colors shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[12px] font-bold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-card)] transition-colors shadow-sm"
               >
                 📎 {att.name}
               </a>
@@ -155,7 +155,7 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
         {!isDeleted && (msg._count?.replies ?? 0) > 0 && onThreadOpen && (
           <button
             onClick={() => onThreadOpen(msg)}
-            className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-bold text-os-blue bg-os-blue/5 hover:bg-os-blue/10 transition-colors border border-os-blue/10"
+            className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[12px] font-bold text-os-blue bg-os-blue/5 hover:bg-os-blue/10 transition-colors border border-os-blue/10"
           >
             <ChatCircle size={14} weight="bold" />
             {msg._count!.replies} {msg._count!.replies === 1 ? 'reply' : 'replies'}
@@ -165,18 +165,18 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
 
       {/* Hover toolbar */}
       {hover && !isDeleted && !editing && (
-        <div className="absolute right-4 -top-3 flex items-center gap-1 bg-[var(--os-card)] border border-[var(--os-border)] rounded-lg px-1.5 py-1 shadow-md z-10 animate-in fade-in zoom-in duration-100">
+        <div className="absolute right-4 -top-3 flex items-center gap-1 bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl px-1.5 py-1 shadow-md z-10 animate-in fade-in zoom-in duration-100">
           {/* Quick emoji */}
           <div className="relative">
             <button
               onClick={() => setEmojiPickerOpen((v) => !v)}
-              className="p-1.5 rounded-md hover:bg-[var(--os-surface-0)] text-[var(--os-text-3)] hover:text-[var(--os-text-1)] transition-colors"
+              className="p-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] text-[var(--os-text-3)] hover:text-[var(--os-text-1)] transition-colors"
               title="React"
             >
               <Smiley size={16} />
             </button>
             {emojiPickerOpen && (
-              <div className="absolute bottom-full right-0 mb-2 flex gap-1 bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl px-2 py-2 shadow-xl z-20">
+              <div className="absolute bottom-full right-0 mb-2 flex gap-1 bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl px-2 py-2 shadow-xl z-20">
                 {QUICK_EMOJIS.map((e) => (
                   <button
                     key={e}
@@ -192,7 +192,7 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
           {onThreadOpen && (
             <button
               onClick={() => onThreadOpen(msg)}
-              className="p-1.5 rounded-md hover:bg-[var(--os-surface-0)] text-[var(--os-text-3)] hover:text-[var(--os-text-1)] transition-colors"
+              className="p-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] text-[var(--os-text-3)] hover:text-[var(--os-text-1)] transition-colors"
               title="Reply in thread"
             >
               <ChatCircle size={16} />
@@ -201,7 +201,7 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
           {isMine && (
             <button
               onClick={() => { setEditing(true); setEditContent(msg.content) }}
-              className="p-1.5 rounded-md hover:bg-[var(--os-surface-0)] text-[var(--os-text-3)] hover:text-[var(--os-text-1)] transition-colors"
+              className="p-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] text-[var(--os-text-3)] hover:text-[var(--os-text-1)] transition-colors"
               title="Edit"
             >
               <PencilSimple size={16} />
@@ -209,7 +209,7 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
           )}
           <button
             onClick={handlePin}
-            className={`p-1.5 rounded-md hover:bg-[var(--os-surface-0)] transition-colors ${msg.isPinned ? 'text-amber-500' : 'text-[var(--os-text-3)] hover:text-[var(--os-text-1)]'}`}
+            className={`p-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] transition-colors ${msg.isPinned ? 'text-amber-500' : 'text-[var(--os-text-3)] hover:text-[var(--os-text-1)]'}`}
             title={msg.isPinned ? 'Unpin' : 'Pin'}
           >
             <PushPin size={16} />
@@ -217,7 +217,7 @@ export function MessageBubble({ msg, channelId, currentUserId, isConsecutive = f
           {(isMine || true) && (
             <button
               onClick={handleDelete}
-              className="p-1.5 rounded-md hover:bg-rose-50 text-[var(--os-text-3)] hover:text-rose-500 transition-colors"
+              className="p-1.5 rounded-2xl hover:bg-rose-50 text-[var(--os-text-3)] hover:text-rose-500 transition-colors"
               title="Delete"
             >
               <Trash size={16} />

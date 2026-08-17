@@ -19,7 +19,7 @@ function fmt(n: number) { return n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(2)
 function MetricCard({ label, value, sub, color, Icon }: { label: string; value: string; sub?: string; color: string; Icon: React.ElementType }) {
   return (
     <div className="rounded-2xl p-5 border flex items-start gap-4" style={{ background: CARD, borderColor: BDR }}>
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+      <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
         style={{ background: `${color}12`, border: `1px solid ${color}25` }}>
         <Icon className="w-5 h-5" style={{ color }} />
       </div>
@@ -81,7 +81,7 @@ function AiSignalIntelPanel() {
       </div>
       <div className="space-y-2">
         {top3.map(c => (
-          <div key={c.signalType} className="flex items-center gap-3 p-2 rounded-lg" style={{ background: SURF }}>
+          <div key={c.signalType} className="flex items-center gap-3 p-2 rounded-2xl" style={{ background: SURF }}>
             <div className="flex-1 min-w-0">
               <p className="text-[11px] font-bold truncate" style={{ color: T1 }}>{c.signalType.replace(/_/g, ' ')}</p>
               <p className="text-[10px]" style={{ color: T2 }}>{c.sampleSize} signals</p>
@@ -153,7 +153,7 @@ export function RevenueIntelPage() {
 
       {/* Metric row */}
       {revLoading ? (
-        <div className="rounded-xl p-6 text-center border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="rounded-2xl p-6 text-center border" style={{ background: CARD, borderColor: BDR }}>
           <p className="text-sm" style={{ color: T2 }}>Loading revenue data…</p>
         </div>
       ) : (
@@ -204,7 +204,7 @@ export function RevenueIntelPage() {
           ) : (
             <div className="space-y-2">
               {customers.sort((a, b) => b.churnProbability - a.churnProbability).slice(0, 6).map((c) => (
-                <div key={c.customerId} className="flex items-center gap-3 p-2 rounded-lg" style={{ background: SURF }}>
+                <div key={c.customerId} className="flex items-center gap-3 p-2 rounded-2xl" style={{ background: SURF }}>
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold truncate" style={{ color: T1 }}>{c.customerId.slice(0, 12)}…</p>
                     <p className="text-[10px]" style={{ color: T2 }}>{c.playbook} · {c.renewalProximityDays}d to renewal</p>
@@ -228,7 +228,7 @@ export function RevenueIntelPage() {
           <span className="ml-auto text-[10px]" style={{ color: T2 }}>{rev?.totalCharges ?? 0} total</span>
         </div>
         {(rev?.recentCharges ?? []).length === 0 ? (
-          <div className="rounded-xl p-4 border text-center" style={{ background: SURF, borderColor: BDR }}>
+          <div className="rounded-2xl p-4 border text-center" style={{ background: SURF, borderColor: BDR }}>
             <p className="text-xs" style={{ color: T2 }}>No charges yet — record the first revenue event from KEOS Billing.</p>
           </div>
         ) : (
@@ -267,7 +267,7 @@ export function RevenueIntelPage() {
       <AiSignalIntelPanel />
 
       {/* Info callout */}
-      <div className="rounded-xl p-4 border flex items-start gap-3"
+      <div className="rounded-2xl p-4 border flex items-start gap-3"
         style={{ background: 'rgba(59,130,246,0.05)', borderColor: 'rgba(59,130,246,0.2)' }}>
         <TrendingUp className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: BLUE }} />
         <p className="text-xs" style={{ color: T2 }}>

@@ -114,11 +114,11 @@ export function EnterpriseGraphPage() {
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setColorMode(m => m === 'type' ? 'workflow' : 'type')}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
+            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
             <Palette size={13} /> Color by {colorMode === 'type' ? 'Type' : 'Workflow'}
           </button>
           <button onClick={analyzeGraph} disabled={analyzing || graph.nodes.length === 0}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 disabled:opacity-50">
+            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 disabled:opacity-50">
             {analyzing ? <Loader2 size={13} className="animate-spin" /> : <MagicWand size={13} weight="fill" />}
             {analyzing ? 'Analyzing…' : 'Analyze this graph'}
           </button>
@@ -203,7 +203,7 @@ export function EnterpriseGraphPage() {
               <div className="space-y-1.5">
                 {(raw?.workflows ?? []).filter(w => graph.nodes.some(n => n.workflowId === w.id)).map(w => (
                   <button key={w.id} onClick={() => goToWorkflow(w.id)}
-                    className="w-full flex items-center justify-between gap-2 text-left group px-2 py-1 rounded-lg hover:bg-[var(--os-surface-0)]">
+                    className="w-full flex items-center justify-between gap-2 text-left group px-2 py-1 rounded-2xl hover:bg-[var(--os-surface-0)]">
                     <span className="text-[11px] text-[var(--os-text-2)] group-hover:text-[var(--os-text-1)] truncate">{w.name}</span>
                     <ArrowSquareOut size={11} className="text-[var(--os-text-2)] flex-shrink-0" />
                   </button>

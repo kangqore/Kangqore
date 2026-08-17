@@ -92,7 +92,7 @@ export function PartnerProfile() {
         <select
           value={selectedId}
           onChange={e => setSelected(e.target.value)}
-          className="ml-auto h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc]"
+          className="ml-auto h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc]"
         >
           {partners.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
@@ -180,7 +180,7 @@ export function PartnerProfile() {
             {deliverables.map(d => {
               const dc = DELIVERABLE_COLOR[d.status]
               return (
-                <div key={d.id} className="px-4 py-3 rounded-xl border border-[var(--os-border)] hover:bg-[var(--os-surface-0)]">
+                <div key={d.id} className="px-4 py-3 rounded-2xl border border-[var(--os-border)] hover:bg-[var(--os-surface-0)]">
                   <div className="flex items-start justify-between gap-2 mb-1">
                     <p className="text-sm font-medium text-[var(--os-text-1)]">{d.title}</p>
                     <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full flex-shrink-0" style={{ background: `${dc}20`, color: dc }}>
@@ -211,7 +211,7 @@ export function PartnerProfile() {
               const nc = NOTE_COLOR[note.type]
               return (
                 <div key={note.id} className="flex items-start gap-3">
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: nc.bg }}>
+                  <div className="w-7 h-7 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: nc.bg }}>
                     <Icon className="w-3.5 h-3.5" style={{ color: nc.icon }} />
                   </div>
                   <div className="flex-1 min-w-0">

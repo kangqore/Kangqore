@@ -100,7 +100,7 @@ function CodeBlock({ code, lang }: { code: string; lang: string }) {
     setTimeout(() => setCopied(false), 2000)
   }
   return (
-    <div className="relative rounded-xl overflow-hidden" style={{ background: '#0f172a', border: `1px solid ${BDR}` }}>
+    <div className="relative rounded-2xl overflow-hidden" style={{ background: '#0f172a', border: `1px solid ${BDR}` }}>
       <div className="flex items-center justify-between px-4 py-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <span className="text-[10px] font-mono font-semibold" style={{ color: '#64748b' }}>{lang}</span>
         <button onClick={copy} className="flex items-center gap-1 text-[10px] font-semibold transition-colors"
@@ -156,17 +156,17 @@ export function SDKv2Page() {
         </div>
         <div className="flex gap-2">
           <button onClick={downloadTS}
-            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg"
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-2xl"
             style={{ background: BLUE, color: '#fff' }}>
             <Download className="w-3.5 h-3.5" /> TypeScript SDK
           </button>
           <button onClick={downloadPY}
-            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg"
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-2xl"
             style={{ background: GRN, color: '#fff' }}>
             <Download className="w-3.5 h-3.5" /> Python SDK
           </button>
           <button onClick={downloadSpec}
-            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg"
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-2xl"
             style={{ background: AMB, color: '#fff' }}>
             <Download className="w-3.5 h-3.5" /> OpenAPI Spec
           </button>
@@ -181,9 +181,9 @@ export function SDKv2Page() {
           { l: 'Webhook Events', v: events.length || '11', icon: Webhook, c: AMB },
           { l: 'Auth Methods', v: '1 (Bearer)', icon: Key, c: GRN },
         ].map(s => (
-          <div key={s.l} className="rounded-xl p-4 flex items-center gap-3"
+          <div key={s.l} className="rounded-2xl p-4 flex items-center gap-3"
             style={{ background: CARD, border: `1px solid ${BDR}` }}>
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+            <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ background: `${s.c}18` }}>
               <s.icon className="w-4 h-4" style={{ color: s.c }} />
             </div>
@@ -196,10 +196,10 @@ export function SDKv2Page() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 rounded-xl" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+      <div className="flex gap-1 p-1 rounded-2xl" style={{ background: CARD, border: `1px solid ${BDR}` }}>
         {TABS.map(t => (
           <button key={t} onClick={() => setTab(t)}
-            className="flex-1 text-xs font-semibold py-2 rounded-lg transition-colors"
+            className="flex-1 text-xs font-semibold py-2 rounded-2xl transition-colors"
             style={{ background: tab === t ? PURP : 'transparent', color: tab === t ? '#fff' : T2 }}>
             {t}
           </button>
@@ -208,7 +208,7 @@ export function SDKv2Page() {
 
       {tab === 'TypeScript' && (
         <div className="space-y-4">
-          <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: `${BLUE}12`, border: `1px solid ${BLUE}40` }}>
+          <div className="flex items-center gap-2 p-3 rounded-2xl" style={{ background: `${BLUE}12`, border: `1px solid ${BLUE}40` }}>
             <Terminal className="w-4 h-4 flex-shrink-0" style={{ color: BLUE }} />
             <code className="text-xs font-mono" style={{ color: T1 }}>
               # No install needed — download and import directly<br />
@@ -221,7 +221,7 @@ export function SDKv2Page() {
 
       {tab === 'Python' && (
         <div className="space-y-4">
-          <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: `${GRN}12`, border: `1px solid ${GRN}40` }}>
+          <div className="flex items-center gap-2 p-3 rounded-2xl" style={{ background: `${GRN}12`, border: `1px solid ${GRN}40` }}>
             <Terminal className="w-4 h-4 flex-shrink-0" style={{ color: GRN }} />
             <code className="text-xs font-mono" style={{ color: T1 }}>pip install requests  &nbsp;&nbsp; # only dependency</code>
           </div>
@@ -231,21 +231,21 @@ export function SDKv2Page() {
 
       {tab === 'OpenAPI' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 rounded-xl"
+          <div className="flex items-center justify-between p-4 rounded-2xl"
             style={{ background: `${AMB}12`, border: `1px solid ${AMB}40` }}>
             <div>
               <p className="text-sm font-semibold" style={{ color: T1 }}>OpenAPI 3.1 Specification</p>
               <p className="text-xs mt-0.5" style={{ color: T2 }}>Import into Postman, Insomnia, or any OpenAPI toolchain</p>
             </div>
             <button onClick={downloadSpec}
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg"
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-2xl"
               style={{ background: AMB, color: '#fff' }}>
               <Download className="w-3.5 h-3.5" /> openapi.json
             </button>
           </div>
           <div className="space-y-2">
             {paths.map((p: string) => (
-              <div key={p} className="flex items-center gap-3 px-4 py-3 rounded-xl"
+              <div key={p} className="flex items-center gap-3 px-4 py-3 rounded-2xl"
                 style={{ background: CARD, border: `1px solid ${BDR}` }}>
                 <code className="text-xs font-mono flex-1" style={{ color: PURP }}>{p}</code>
                 <div className="flex gap-1">
@@ -270,7 +270,7 @@ export function SDKv2Page() {
           <p className="text-xs font-semibold uppercase tracking-widest mt-2" style={{ color: T2 }}>Event Types</p>
           <div className="space-y-2">
             {events.map((e: any) => (
-              <div key={e.type} className="rounded-xl px-4 py-3 flex items-start gap-3"
+              <div key={e.type} className="rounded-2xl px-4 py-3 flex items-start gap-3"
                 style={{ background: CARD, border: `1px solid ${BDR}` }}>
                 <code className="text-xs font-mono font-bold flex-shrink-0 pt-0.5"
                   style={{ color: PURP }}>{e.type}</code>

@@ -54,7 +54,7 @@ export function PartnerCertificationPage() {
           </p>
         </div>
         <button onClick={() => setShowForm(true)}
-          className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg"
+          className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-2xl"
           style={{ background: PURP, color: '#fff' }}>
           <Plus className="w-3.5 h-3.5" /> Issue Certificate
         </button>
@@ -63,7 +63,7 @@ export function PartnerCertificationPage() {
       {/* Cert tier cards */}
       <div className="grid grid-cols-3 gap-3">
         {Object.entries(CERT_COLOR).map(([certType, color]) => (
-          <div key={certType} className="rounded-xl p-4 space-y-2"
+          <div key={certType} className="rounded-2xl p-4 space-y-2"
             style={{ background: `${color}0c`, border: `1.5px solid ${color}30` }}>
             <div className="flex items-center gap-2">
               <Award className="w-5 h-5" style={{ color }} />
@@ -95,7 +95,7 @@ export function PartnerCertificationPage() {
           { l: 'Avg Commission Boost', v: activeCerts > 0 ? '+4%' : '—', color: AMB },
           { l: 'Leaderboard Entries', v: lb.length, color: PURP },
         ].map(s => (
-          <div key={s.l} className="rounded-xl p-4 text-center" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+          <div key={s.l} className="rounded-2xl p-4 text-center" style={{ background: CARD, border: `1px solid ${BDR}` }}>
             <p className="text-2xl font-black" style={{ color: s.color }}>{s.v}</p>
             <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: T2 }}>{s.l}</p>
           </div>
@@ -103,10 +103,10 @@ export function PartnerCertificationPage() {
       </div>
 
       {/* Tab toggle */}
-      <div className="flex gap-1 p-1 rounded-xl" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+      <div className="flex gap-1 p-1 rounded-2xl" style={{ background: CARD, border: `1px solid ${BDR}` }}>
         {(['certs', 'leaderboard'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
-            className="flex-1 text-xs font-semibold py-2 rounded-lg transition-colors"
+            className="flex-1 text-xs font-semibold py-2 rounded-2xl transition-colors"
             style={{ background: tab === t ? PURP : 'transparent', color: tab === t ? '#fff' : T2 }}>
             {t === 'certs' ? 'Certifications' : 'Partner Leaderboard'}
           </button>
@@ -114,7 +114,7 @@ export function PartnerCertificationPage() {
       </div>
 
       {tab === 'certs' && (
-        <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+        <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
           <div style={{ background: CARD }}>
             {certs.length === 0 && (
               <p className="text-sm text-center py-8" style={{ color: T2 }}>No certifications issued yet.</p>
@@ -124,7 +124,7 @@ export function PartnerCertificationPage() {
               return (
                 <div key={c.id} className="flex items-center gap-3 px-5 py-4"
                   style={{ borderBottom: i < certs.length - 1 ? `1px solid ${BDR}` : undefined }}>
-                  <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
                     style={{ background: `${color}18` }}>
                     <Award className="w-4 h-4" style={{ color }} />
                   </div>
@@ -149,7 +149,7 @@ export function PartnerCertificationPage() {
       )}
 
       {tab === 'leaderboard' && (
-        <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+        <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
           <div className="px-5 py-3 flex items-center gap-2" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
             <TrendingUp className="w-4 h-4" style={{ color: T2 }} />
             <p className="text-sm font-semibold" style={{ color: T1 }}>Partners ranked by total revenue</p>
@@ -189,7 +189,7 @@ export function PartnerCertificationPage() {
             <div>
               <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Partner</label>
               <select value={form.partnerId} onChange={e => setForm(p => ({ ...p, partnerId: e.target.value }))}
-                className="w-full text-sm px-3 py-2 rounded-lg"
+                className="w-full text-sm px-3 py-2 rounded-2xl"
                 style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}>
                 <option value="">Select partner…</option>
                 {partners.map((p: any) => <option key={p.id} value={p.id}>{p.name} ({p.tier})</option>)}
@@ -198,7 +198,7 @@ export function PartnerCertificationPage() {
             <div>
               <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Certification Type</label>
               <select value={form.certType} onChange={e => setForm(p => ({ ...p, certType: e.target.value }))}
-                className="w-full text-sm px-3 py-2 rounded-lg"
+                className="w-full text-sm px-3 py-2 rounded-2xl"
                 style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}>
                 <option value="CERTIFIED_IMPLEMENTER">Certified Implementer (+2% commission)</option>
                 <option value="CERTIFIED_INTEGRATOR">Certified Integrator (+5% commission)</option>
@@ -208,22 +208,22 @@ export function PartnerCertificationPage() {
             <div>
               <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Assessment Score (%)</label>
               <input type="number" min="0" max="100"
-                className="w-full text-sm px-3 py-2 rounded-lg"
+                className="w-full text-sm px-3 py-2 rounded-2xl"
                 style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}
                 value={form.score} onChange={e => setForm(p => ({ ...p, score: e.target.value }))} />
             </div>
-            <div className="rounded-xl p-3" style={{ background: `${PURP}12`, border: `1px solid ${PURP}30` }}>
+            <div className="rounded-2xl p-3" style={{ background: `${PURP}12`, border: `1px solid ${PURP}30` }}>
               <p className="text-xs" style={{ color: T2 }}>
                 <Star className="w-3 h-3 inline mr-1" style={{ color: PURP }} />
                 Certification valid for 12 months. Commission rate will be boosted automatically on issue.
               </p>
             </div>
             <div className="flex gap-2 pt-1">
-              <button onClick={() => setShowForm(false)} className="flex-1 text-sm py-2 rounded-lg" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
+              <button onClick={() => setShowForm(false)} className="flex-1 text-sm py-2 rounded-2xl" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
               <button
                 onClick={() => certifyMut.mutate({ partnerId: form.partnerId, certType: form.certType, score: parseFloat(form.score) })}
                 disabled={certifyMut.isPending || !form.partnerId}
-                className="flex-1 text-sm font-semibold py-2 rounded-lg" style={{ background: PURP, color: '#fff', opacity: !form.partnerId ? 0.5 : 1 }}>
+                className="flex-1 text-sm font-semibold py-2 rounded-2xl" style={{ background: PURP, color: '#fff', opacity: !form.partnerId ? 0.5 : 1 }}>
                 {certifyMut.isPending ? 'Issuing…' : 'Issue Certificate'}
               </button>
             </div>

@@ -77,7 +77,7 @@ export function HCIPLiveFeed() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {sessions.map(s => (
           <div key={s.sessionId} onClick={() => openReplay(s.sessionId)} 
-               className="p-4 rounded-xl cursor-pointer transition-all hover:-translate-y-1"
+               className="p-4 rounded-2xl cursor-pointer transition-all hover:-translate-y-1"
                style={{ background: 'var(--os-card)', border: `1px solid ${getPersonaColor(s.persona)}30` }}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] text-[var(--os-text-2)] font-mono truncate mr-2">{s.sessionId.split('-')[0]}</span>
@@ -99,7 +99,7 @@ export function HCIPLiveFeed() {
           </div>
         ))}
         {sessions.length === 0 && (
-          <div className="col-span-full p-8 text-center text-[var(--os-text-2)] text-sm border border-dashed rounded-xl" style={{ borderColor: 'var(--os-border)' }}>
+          <div className="col-span-full p-8 text-center text-[var(--os-text-2)] text-sm border border-dashed rounded-2xl" style={{ borderColor: 'var(--os-border)' }}>
             No active sessions detected on the public website.
           </div>
         )}
@@ -116,7 +116,7 @@ export function HCIPLiveFeed() {
             {/* Header */}
             <div className="px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--os-border)', background: 'var(--os-card)' }}>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-purple-500/10 text-purple-400">
+                <div className="w-8 h-8 flex items-center justify-center rounded-2xl bg-purple-500/10 text-purple-400">
                   <Brain className="w-4 h-4" />
                 </div>
                 <div>
@@ -144,7 +144,7 @@ export function HCIPLiveFeed() {
                     </div>
                     <p className="text-[11px] text-[var(--os-text-2)] font-mono">{evt.page}</p>
                     {evt.metadata && Object.keys(evt.metadata).length > 0 && evt.eventType !== 'PAGE_VIEW' && (
-                      <pre className="mt-2 p-2 rounded-lg text-[10px] overflow-x-auto" style={{ background: 'var(--os-card)', color: 'var(--os-text-2)' }}>
+                      <pre className="mt-2 p-2 rounded-2xl text-[10px] overflow-x-auto" style={{ background: 'var(--os-card)', color: 'var(--os-text-2)' }}>
                         {JSON.stringify(evt.metadata, null, 2)}
                       </pre>
                     )}

@@ -25,7 +25,7 @@ function TypeCard({ type }: { type: any }) {
     >
       <div className="flex items-start justify-between">
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
           style={{ background: `${color}20`, border: `1px solid ${color}40` }}
         >
           <Icon size={20} style={{ color }} />
@@ -98,11 +98,11 @@ export function OntologyExplorer() {
             <input
               type="text"
               placeholder="Semantic Search: 'Find all active client contracts over $100k'..."
-              className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl py-4 pl-12 pr-6 focus:outline-none focus:ring-2 focus:ring-[#579bfc]/50 transition-all"
+              className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-2xl py-4 pl-12 pr-6 focus:outline-none focus:ring-2 focus:ring-[#579bfc]/50 transition-all"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#579bfc] text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors">
+            <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#579bfc] text-white text-xs font-bold px-4 py-2 rounded-2xl hover:bg-blue-500 transition-colors">
               Query Graph
             </button>
           </div>
@@ -117,7 +117,7 @@ export function OntologyExplorer() {
             <button
               onClick={() => seed.mutate()}
               disabled={seed.isPending || seeded}
-              className="px-3 py-1.5 text-xs font-bold bg-[var(--os-accent)] text-white rounded-md hover:opacity-90 disabled:opacity-50"
+              className="px-3 py-1.5 text-xs font-bold bg-[var(--os-accent)] text-white rounded-2xl hover:opacity-90 disabled:opacity-50"
             >
               {seed.isPending ? 'Seeding...' : 'Seed Enterprise Objects'}
             </button>
@@ -140,7 +140,7 @@ export function OntologyExplorer() {
         
         <div className="os-card p-6 border-dashed border-2 hover:border-[#579bfc]/50 transition-colors cursor-pointer group">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500">
+            <div className="p-2 bg-blue-500/10 rounded-2xl text-blue-500">
               <LayoutTemplate className="w-5 h-5" />
             </div>
             <h3 className="font-bold text-[var(--os-text-1)]">Industry Ontologies</h3>
@@ -153,7 +153,7 @@ export function OntologyExplorer() {
 
         <div className="os-card p-6 border-dashed border-2 hover:border-[#f59e0b]/50 transition-colors cursor-pointer group">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-amber-500/10 rounded-lg text-amber-500">
+            <div className="p-2 bg-amber-500/10 rounded-2xl text-amber-500">
               <Puzzle className="w-5 h-5" />
             </div>
             <h3 className="font-bold text-[var(--os-text-1)]">Customer Extensions</h3>

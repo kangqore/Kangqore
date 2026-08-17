@@ -22,7 +22,7 @@ const SLA_TREND_OPTIONS = [
 ]
 
 const inputStyle = { background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }
-const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-[var(--os-text-1)] placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
+const inputClass = 'w-full rounded-2xl px-3 py-2 text-[13px] text-[var(--os-text-1)] placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
 const EMPTY_SLA = { clientId: '', metric: '', target: '', current: '', unit: '%', period: 'Monthly', status: 'met' as const, trend: 'stable' as const }
 
 function AddSLAModal({ clients, onClose }: { clients: { id: string; name: string }[]; onClose: () => void }) {
@@ -94,7 +94,7 @@ function AddSLAModal({ clients, onClose }: { clients: { id: string; name: string
         <div className="flex justify-end gap-2 pt-1">
           <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mutate()} disabled={isPending || !form.clientId || !form.metric}
-            className="px-4 py-1.5 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50"
+            className="px-4 py-1.5 rounded-2xl text-[13px] font-semibold text-white disabled:opacity-50"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             {isPending ? 'Saving…' : 'Add Metric'}
           </button>
@@ -146,7 +146,7 @@ export function SLADashboard() {
             </>
           )}
           <button onClick={() => setShowAdd(true)}
-            className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-white text-[13px] font-semibold"
+            className="flex items-center gap-1.5 h-8 px-3 rounded-2xl text-white text-[13px] font-semibold"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             <Plus className="w-3.5 h-3.5" /> Add SLA
           </button>
@@ -158,7 +158,7 @@ export function SLADashboard() {
           <Shield className="w-10 h-10 text-slate-800" />
           <p className="text-sm font-semibold text-[var(--os-text-2)]">No SLA metrics yet</p>
           <p className="text-xs text-[var(--os-text-2)] max-w-xs">Add your first SLA metric to start tracking compliance across clients.</p>
-          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-white text-[13px] font-semibold mt-2"
+          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-2xl text-white text-[13px] font-semibold mt-2"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             <Plus className="w-3.5 h-3.5" /> Add first SLA metric
           </button>
@@ -172,7 +172,7 @@ export function SLADashboard() {
           { label: `${atRisk} At Risk`, color: 'bg-[#fdab3d] text-white shadow-[0_2px_8px_rgba(253,171,61,0.25)] border-transparent'  },
           { label: `${breached} Breached`, color: breached > 0 ? 'bg-[#e2445c] text-white shadow-[0_2px_8px_rgba(226,68,92,0.25)] border-transparent' : 'bg-slate-200 text-[var(--os-text-1)] border-transparent' },
         ].map(c => (
-          <span key={c.label} className={`text-sm font-bold px-4 py-2 rounded-xl border ${c.color}`}>{c.label}</span>
+          <span key={c.label} className={`text-sm font-bold px-4 py-2 rounded-2xl border ${c.color}`}>{c.label}</span>
         ))}
       </div>
 
@@ -209,7 +209,7 @@ export function SLADashboard() {
           <Card key={client.id} padding="none">
             <CardHeader className="px-5 pt-5 pb-3">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
+                <div className="w-7 h-7 rounded-2xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center">
                   <span className="text-white font-bold text-xs">{client.logo}</span>
                 </div>
                 <CardTitle>{client.name}</CardTitle>

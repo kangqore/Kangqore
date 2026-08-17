@@ -30,7 +30,7 @@ function FieldMappingEditor({ pipeline, onClose }: { pipeline: OntologyPipeline;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-md rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+      <div className="w-full max-w-md rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-[var(--os-text-1)]">{pipeline.name} — Field Mapping</p>
           <button onClick={onClose}><X size={14} className="text-[var(--os-text-2)]" /></button>
@@ -40,10 +40,10 @@ function FieldMappingEditor({ pipeline, onClose }: { pipeline: OntologyPipeline;
           {rows.map(([k, v], i) => (
             <div key={i} className="flex items-center gap-1.5">
               <input value={k} onChange={e => setRows(rows.map((r, idx) => idx === i ? [e.target.value, r[1]] : r))}
-                placeholder="ontologyProperty" className="flex-1 px-2 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+                placeholder="ontologyProperty" className="flex-1 px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
               <span className="text-[var(--os-text-2)] text-xs">←</span>
               <input value={v} onChange={e => setRows(rows.map((r, idx) => idx === i ? [r[0], e.target.value] : r))}
-                placeholder="sourceField" className="flex-1 px-2 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+                placeholder="sourceField" className="flex-1 px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
               <button onClick={() => setRows(rows.filter((_, idx) => idx !== i))} className="text-[var(--os-text-2)] hover:text-red-400 p-1"><Trash size={12} /></button>
             </div>
           ))}
@@ -52,7 +52,7 @@ function FieldMappingEditor({ pipeline, onClose }: { pipeline: OntologyPipeline;
           <Plus size={12} /> Add field
         </button>
         <button onClick={() => save.mutate()} disabled={save.isPending}
-          className="w-full py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 flex items-center justify-center gap-2">
+          className="w-full py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 flex items-center justify-center gap-2">
           {save.isPending ? <Loader2 size={14} className="animate-spin" /> : 'Save Mapping'}
         </button>
       </div>
@@ -90,12 +90,12 @@ function PipelineCard({ pipeline }: { pipeline: OntologyPipeline }) {
       </div>
 
       <div className="flex items-center justify-between pt-2 border-t border-[var(--os-border)]">
-        <button onClick={() => toggle.mutate()} className={`text-[10px] font-semibold px-2 py-1 rounded-md border ${pipeline.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+        <button onClick={() => toggle.mutate()} className={`text-[10px] font-semibold px-2 py-1 rounded-2xl border ${pipeline.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
           {pipeline.enabled ? 'Enabled' : 'Disabled'}
         </button>
         <div className="flex items-center gap-1">
-          <button onClick={() => setEditing(true)} title="Edit field mapping" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]"><PencilSimple size={13} /></button>
-          <button onClick={() => run.mutate()} disabled={run.isPending} title="Run now" className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[#579bfc] hover:bg-[var(--os-surface-0)]">
+          <button onClick={() => setEditing(true)} title="Edit field mapping" className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)]"><PencilSimple size={13} /></button>
+          <button onClick={() => run.mutate()} disabled={run.isPending} title="Run now" className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[#579bfc] hover:bg-[var(--os-surface-0)]">
             {run.isPending ? <Loader2 size={13} className="animate-spin" /> : <Play size={13} weight="fill" />}
           </button>
         </div>
@@ -130,13 +130,13 @@ export function PipelineDashboardPage() {
         <div className="flex items-center gap-2">
           {pipelines.length === 0 && !isLoading && (
             <button onClick={() => seed.mutate()} disabled={seed.isPending || seeded}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50">
+              className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50">
               {seeded ? <CheckCircle size={13} weight="bold" /> : <Sparkle size={13} />} {seeded ? 'Seeded' : 'Seed Built-in Pipelines'}
             </button>
           )}
           {pipelines.length > 0 && (
             <button onClick={() => runAll.mutate()} disabled={runAll.isPending}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 disabled:opacity-50">
+              className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 disabled:opacity-50">
               {runAll.isPending ? <Loader2 size={13} className="animate-spin" /> : <Play size={13} weight="fill" />} Run All
             </button>
           )}

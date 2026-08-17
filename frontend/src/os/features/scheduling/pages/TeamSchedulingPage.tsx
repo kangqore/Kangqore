@@ -157,12 +157,12 @@ export function TeamSchedulingPage() {
                 value={memberQuery}
                 onChange={e => { setMemberQuery(e.target.value); searchUsers(e.target.value) }}
                 placeholder="Search by name or email…"
-                className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-9 pr-3 focus:outline-none focus:border-blue-400"
+                className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-9 pr-3 focus:outline-none focus:border-blue-400"
               />
               {searching && <Spinner size="sm" className="absolute right-3 top-1/2 -translate-y-1/2" />}
             </div>
             {memberResults.length > 0 && (
-              <div className="border border-[var(--os-border)] rounded-xl overflow-hidden divide-y divide-[var(--os-border)]">
+              <div className="border border-[var(--os-border)] rounded-2xl overflow-hidden divide-y divide-[var(--os-border)]">
                 {memberResults.map(u => {
                   const alreadyAdded = members.some(m => m.user.userId === u.id)
                   return (
@@ -199,7 +199,7 @@ export function TeamSchedulingPage() {
                   </div>
                   <button
                     onClick={() => removeMember(m.user.userId)}
-                    className="p-1.5 rounded-lg text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)] transition-colors"
+                    className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)] transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -256,17 +256,17 @@ export function TeamSchedulingPage() {
                 <div className="flex gap-1 shrink-0">
                   <button
                     onClick={() => setManagingId(et.id)}
-                    className="p-1.5 rounded-lg text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+                    className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
                     title="Manage members"
                   >
                     <Users className="w-4 h-4" />
                   </button>
-                  <button onClick={() => open(et)} className="p-1.5 rounded-lg text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors">
+                  <button onClick={() => open(et)} className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors">
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => { if (confirm('Delete this team event type?')) remove(et.id) }}
-                    className="p-1.5 rounded-lg text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)] transition-colors"
+                    className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)] transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -293,7 +293,7 @@ export function TeamSchedulingPage() {
                 value={form.name}
                 onChange={e => set('name', e.target.value)}
                 placeholder="Team intro call"
-                className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
+                className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
               />
             </div>
 
@@ -305,7 +305,7 @@ export function TeamSchedulingPage() {
                   min={5}
                   value={form.duration}
                   onChange={e => set('duration', Number(e.target.value))}
-                  className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
+                  className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
                 />
               </div>
               <div>
@@ -313,7 +313,7 @@ export function TeamSchedulingPage() {
                 <select
                   value={form.assignmentStrategy}
                   onChange={e => set('assignmentStrategy', e.target.value)}
-                  className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
+                  className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400"
                 >
                   <option value="ROUND_ROBIN">Round Robin</option>
                   <option value="COLLECTIVE">Collective</option>

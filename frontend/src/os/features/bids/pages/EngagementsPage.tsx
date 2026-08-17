@@ -51,7 +51,7 @@ function NewEngagementModal({ onClose }: { onClose: () => void }) {
             <h3 className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>New BIDS™ Engagement</h3>
             <p className="text-xs mt-0.5" style={{ color: 'var(--os-text-3)' }}>Create a new diagnostic engagement</p>
           </div>
-          <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors hover:bg-[var(--os-surface-0)]"
+          <button onClick={onClose} className="w-7 h-7 rounded-2xl flex items-center justify-center transition-colors hover:bg-[var(--os-surface-0)]"
             style={{ color: 'var(--os-text-3)' }}>
             <X className="w-4 h-4" />
           </button>
@@ -68,7 +68,7 @@ function NewEngagementModal({ onClose }: { onClose: () => void }) {
                 value={form[key]}
                 onChange={set(key)}
                 placeholder={placeholder}
-                className="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none"
+                className="w-full rounded-2xl px-4 py-2.5 text-sm focus:outline-none"
                 style={{
                   background: 'var(--os-surface-0)',
                   border: '1px solid var(--os-border)',
@@ -82,7 +82,7 @@ function NewEngagementModal({ onClose }: { onClose: () => void }) {
             <select
               value={form.industry}
               onChange={set('industry')}
-              className="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none"
+              className="w-full rounded-2xl px-4 py-2.5 text-sm focus:outline-none"
               style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}
             >
               {INDUSTRIES.map(i => <option key={i} value={i}>{i}</option>)}
@@ -95,7 +95,7 @@ function NewEngagementModal({ onClose }: { onClose: () => void }) {
               onChange={set('notes')}
               rows={3}
               placeholder="Initial context, scope notes..."
-              className="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none resize-none"
+              className="w-full rounded-2xl px-4 py-2.5 text-sm focus:outline-none resize-none"
               style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}
             />
           </div>
@@ -104,7 +104,7 @@ function NewEngagementModal({ onClose }: { onClose: () => void }) {
         <div className="flex items-center gap-3 px-6 py-4 border-t border-[var(--os-border)]">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors hover:bg-[var(--os-surface-0)]"
+            className="flex-1 py-2.5 rounded-2xl text-sm font-medium transition-colors hover:bg-[var(--os-surface-0)]"
             style={{ border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}
           >
             Cancel
@@ -112,7 +112,7 @@ function NewEngagementModal({ onClose }: { onClose: () => void }) {
           <button
             onClick={() => create.mutate(form)}
             disabled={!form.clientName || create.isPending}
-            className="flex-1 py-2.5 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
+            className="flex-1 py-2.5 rounded-2xl text-white text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
             style={{ background: '#579bfc' }}
           >
             {create.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
@@ -155,7 +155,7 @@ export function EngagementsPage() {
         </div>
         <button
           onClick={() => setShowNew(true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2 px-4 py-2 rounded-2xl text-white text-sm font-semibold hover:opacity-90 transition-opacity"
           style={{ background: '#579bfc' }}
         >
           <Plus className="w-4 h-4" />
@@ -197,7 +197,7 @@ export function EngagementsPage() {
           </div>
           <button
             onClick={() => setShowNew(true)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-white text-sm font-semibold hover:opacity-90 transition-opacity"
             style={{ background: '#579bfc' }}
           >
             <Plus className="w-4 h-4" />
@@ -217,7 +217,7 @@ export function EngagementsPage() {
               >
                 <div className="h-1.5 rounded-full -mx-4 -mt-4 mb-1" style={{ background: m.color }} />
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
                     style={{ background: '#579bfc18', border: '1px solid #579bfc30' }}>
                     <Building2 className="w-4 h-4" style={{ color: '#579bfc' }} />
                   </div>
@@ -262,7 +262,7 @@ export function EngagementsPage() {
                   idx < engagements.length - 1 ? 'border-b border-[var(--os-border)]' : ''
                 )}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
                   style={{ background: '#579bfc18', border: '1px solid #579bfc30' }}>
                   <Building2 className="w-5 h-5" style={{ color: '#579bfc' }} />
                 </div>
@@ -322,7 +322,7 @@ function ActivateButton({ engagementId, onClick }: { engagementId: string; onCli
     <button
       onClick={handle}
       disabled={activate.isPending}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors hover:opacity-80"
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[11px] font-bold transition-colors hover:opacity-80"
       style={{ background: '#2564ea18', color: '#2564ea', border: '1px solid #2564ea30' }}
     >
       {activate.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Unlock className="w-3 h-3" />}

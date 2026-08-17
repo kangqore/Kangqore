@@ -134,7 +134,7 @@ export function TableView({ projectId, portfolioId }: Props) {
         </button>
       </div>
 
-      <div className="border border-[var(--os-border)] rounded-xl overflow-hidden">
+      <div className="border border-[var(--os-border)] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-[var(--os-bg-2)] border-b border-[var(--os-border)]">

@@ -143,14 +143,14 @@ export default function DecisionEngineView() {
       <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
         <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">8 Live Enterprise Ingestion Sources:</span>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 text-[11px] font-semibold text-slate-300">
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-center">NOLAN Ontology</div>
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-center">Telemetry Bus</div>
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-center">Outcome History</div>
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-center">AEGIS Policies</div>
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-center text-blue-400">WAANDAx LLM</div>
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-center">WorkGoal OKRs</div>
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-center">Constraints</div>
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-center text-purple-400">Executive Rules</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">NOLAN Ontology</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Telemetry Bus</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Outcome History</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">AEGIS Policies</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center text-blue-400">WAANDAx LLM</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">WorkGoal OKRs</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Constraints</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center text-purple-400">Executive Rules</div>
         </div>
       </div>
 
@@ -161,12 +161,12 @@ export default function DecisionEngineView() {
           value={decisionContext}
           onChange={e => setDecisionContext(e.target.value)}
           placeholder="State decision context..."
-          className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-purple-500"
+          className="w-full px-4 py-2.5 rounded-2xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-purple-500"
         />
         <button
           onClick={handleEvaluate}
           disabled={isEvaluating}
-          className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs shadow-lg shadow-purple-500/20 shrink-0 flex items-center gap-2"
+          className="px-6 py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs shadow-lg shadow-purple-500/20 shrink-0 flex items-center gap-2"
         >
           {isEvaluating ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
           <span>Re-Evaluate Matrix</span>
@@ -198,13 +198,13 @@ export default function DecisionEngineView() {
 
               {/* Impact Badges */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 space-y-1">
+                <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-1">
                   <div className="text-xs font-semibold text-emerald-400">EXPECTED PRIMARY IMPACT</div>
                   <div className="text-lg font-extrabold text-white">{matrix.expectedImpact.primaryMetric}</div>
                   <div className="text-[11px] text-slate-400">{matrix.expectedImpact.secondaryMetric}</div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 space-y-1">
+                <div className="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 space-y-1">
                   <div className="text-xs font-semibold text-purple-400">ROI MULTIPLIER</div>
                   <div className="text-lg font-extrabold text-white">{matrix.expectedImpact.roiMultiplier}x ROI</div>
                   <div className="text-[11px] text-slate-400">Resource efficiency gain</div>
@@ -221,7 +221,7 @@ export default function DecisionEngineView() {
 
               <div className="space-y-3">
                 {matrix.alternatives.map(alt => (
-                  <div key={alt.id} className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                  <div key={alt.id} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-sm text-white">{alt.title}</span>
                       <span className="px-2.5 py-0.5 rounded bg-rose-500/10 text-rose-400 text-xs font-mono">
@@ -248,7 +248,7 @@ export default function DecisionEngineView() {
                 <AlertTriangle className="w-4 h-4 text-amber-400" />
                 Risk & Failure Probability
               </h4>
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1 text-xs">
+              <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Risk Level:</span>
                   <span className="font-bold text-amber-400">{matrix.riskAssessment.level}</span>
@@ -270,19 +270,19 @@ export default function DecisionEngineView() {
                 AEGIS Governance & Approval Gate
               </h4>
 
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">
+              <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">
                 <div className="text-slate-400">Required Role: <span className="text-purple-400">{matrix.approvalGate.requiredRole}</span></div>
                 <div className="text-slate-400 break-all">Token: <span className="text-blue-400">{matrix.approvalGate.approvalToken}</span></div>
               </div>
 
               {approvalResult ? (
-                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold text-center">
+                <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold text-center">
                   ✅ Decision Approved & Governed Action Executed!
                 </div>
               ) : (
                 <button
                   onClick={() => setShowApprovalModal(true)}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
+                  className="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
                 >
                   <Lock className="w-4 h-4" />
                   Approve & Execute Decision
@@ -303,7 +303,7 @@ export default function DecisionEngineView() {
               <p className="text-xs text-slate-400">Confirm cryptographic token execution for resource reallocation.</p>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">
+            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">
               <div className="text-slate-400">Required Gate: <span className="text-purple-400">{matrix?.approvalGate?.requiredRole}</span></div>
               <div className="text-slate-400">Expected Impact: <span className="text-emerald-400">{matrix?.expectedImpact?.primaryMetric}</span></div>
               <div className="text-slate-400 break-all">Token: <span className="text-blue-400">{matrix?.approvalGate?.approvalToken}</span></div>
@@ -312,14 +312,14 @@ export default function DecisionEngineView() {
             <div className="flex items-center justify-end gap-3">
               <button
                 onClick={() => setShowApprovalModal(false)}
-                className="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700"
+                className="px-4 py-2 rounded-2xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700"
               >
                 Cancel
               </button>
               <button
                 onClick={handleApprove}
                 disabled={isApproving}
-                className="px-5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-lg shadow-emerald-500/20 flex items-center gap-2"
+                className="px-5 py-2 rounded-2xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-lg shadow-emerald-500/20 flex items-center gap-2"
               >
                 {isApproving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
                 Confirm & Commit Execution

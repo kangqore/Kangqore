@@ -85,7 +85,7 @@ export function TimelineView({ projectId, portfolioId }: Props) {
         </button>
       </div>
 
-      <div className="border border-[var(--os-border)] rounded-xl overflow-hidden">
+      <div className="border border-[var(--os-border)] rounded-2xl overflow-hidden">
         {/* Month headers */}
         <div className="flex border-b border-[var(--os-border)] bg-[var(--os-bg-2)]">
           <div className="w-52 shrink-0 border-r border-[var(--os-border)] px-3 py-2 text-xs font-medium text-[var(--os-text-2)]">

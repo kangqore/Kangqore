@@ -158,7 +158,7 @@ export function ClientsOverview() {
         </div>
         <button
           onClick={() => { setSelecting(s => !s); if (selecting) setSelectedIds(new Set()) }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-colors"
           style={{ background: selecting ? '#579bfc22' : 'var(--os-surface-0)', color: selecting ? '#579bfc' : 'var(--os-text-2)', border: `1px solid ${selecting ? '#579bfc44' : 'var(--os-border)'}` }}
         >
           <CheckSquare className="w-3.5 h-3.5" />
@@ -190,7 +190,7 @@ export function ClientsOverview() {
           className="flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors hover:brightness-110"
           style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}
         >
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#57935c22' }}>
+          <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: '#57935c22' }}>
             <Swords className="w-4 h-4" style={{ color: '#57935c' }} />
           </div>
           <div className="flex-1 min-w-0">
@@ -208,7 +208,7 @@ export function ClientsOverview() {
         <Input placeholder="Search clients…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-56" value={search} onChange={e => setSearch(e.target.value)} />
         {(['all','strategic','enterprise','standard','starter'] as const).map(t => (
           <button key={t} onClick={() => setTier(t)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all"
+            className="px-3 py-1.5 rounded-2xl text-xs font-bold capitalize transition-all"
             style={{
               background: tierFilter === t ? '#579bfc' : 'var(--os-surface-0)',
               color: tierFilter === t ? 'white' : 'var(--os-text-2)',
@@ -220,7 +220,7 @@ export function ClientsOverview() {
         {selecting && visible.length > 0 && (
           <button
             onClick={toggleAll}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold ml-auto transition-colors"
+            className="px-3 py-1.5 rounded-2xl text-xs font-bold ml-auto transition-colors"
             style={{ background: 'var(--os-surface-0)', color: 'var(--os-text-2)', border: '1px solid var(--os-border)' }}
           >
             {visible.every(c => selectedIds.has(c.id)) ? 'Deselect All' : `Select All (${visible.length})`}
@@ -263,7 +263,7 @@ export function ClientsOverview() {
                       )}
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-white font-bold text-xs"
+                          <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0 text-white font-bold text-xs"
                             style={{ background: TIER_BG[client.tier] }}>
                             {client.logo}
                           </div>
@@ -341,7 +341,7 @@ export function ClientsOverview() {
             )}
             <div className="flex items-start gap-4 mt-1">
               {/* Logo with health border */}
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-black text-sm shadow-lg"
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-white font-black text-sm shadow-lg"
                 style={{ background: TIER_BG[client.tier], boxShadow: `0 4px 12px ${TIER_BG[client.tier]}44` }}>
                 {client.logo}
               </div>

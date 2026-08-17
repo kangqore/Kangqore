@@ -106,7 +106,7 @@ function EventRow({ event, isNew }: { event: CDCEvent; isNew: boolean }) {
 
       {expanded && (
         <div className="px-10 pb-3">
-          <pre className="text-[10px] font-mono text-[var(--os-text-2)] bg-[var(--os-surface-0)] rounded-lg p-3 overflow-x-auto max-h-48">
+          <pre className="text-[10px] font-mono text-[var(--os-text-2)] bg-[var(--os-surface-0)] rounded-2xl p-3 overflow-x-auto max-h-48">
             {JSON.stringify({ before: event.before, after: event.after }, null, 2)}
           </pre>
         </div>
@@ -186,14 +186,14 @@ export function DataFabricTab() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg border border-[var(--os-border)]" style={{ color: BUS_COLOR }}>
+          <span className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-2xl border border-[var(--os-border)]" style={{ color: BUS_COLOR }}>
             <Server className="w-3 h-3" />
             {BUS_LABEL}
           </span>
           <button
             onClick={() => setPaused(!paused)}
             className={cn(
-              'px-3 py-1.5 text-xs rounded-lg font-medium transition-all',
+              'px-3 py-1.5 text-xs rounded-2xl font-medium transition-all',
               paused
                 ? 'bg-[#00c875] text-white'
                 : 'border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
@@ -212,8 +212,8 @@ export function DataFabricTab() {
           { label: 'In Ring Buffer',  value: stats?.ringSize        ?? 0, icon: BarChart3, color: '#fdab3d' },
           { label: 'Live in View',    value: events.length,               icon: Radio,     color: '#7c3aed' },
         ].map(s => (
-          <div key={s.label} className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${s.color}15` }}>
+          <div key={s.label} className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-2xl flex items-center justify-center" style={{ background: `${s.color}15` }}>
               <s.icon className="w-4 h-4" style={{ color: s.color }} />
             </div>
             <div>
@@ -245,7 +245,7 @@ export function DataFabricTab() {
 
       {/* Live stream */}
       {activeView === 'stream' && (
-        <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+        <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
           <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--os-border)] bg-[var(--os-surface-0)]">
             <div className="flex items-center gap-2 text-xs text-[var(--os-text-2)]">
               {!paused && <span className="w-2 h-2 rounded-full bg-[#00c875] animate-pulse" />}
@@ -280,7 +280,7 @@ export function DataFabricTab() {
             <p className="text-sm text-[var(--os-text-2)]">No events captured yet.</p>
           )}
           {stats?.topTables.map(t => (
-            <div key={t.table} className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-4">
+            <div key={t.table} className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="font-mono text-sm font-semibold text-[#579bfc]">{t.table}</span>
                 <span className="text-xs text-[var(--os-text-2)]">{t.total.toLocaleString()} total</span>
@@ -292,7 +292,7 @@ export function DataFabricTab() {
                   { label: 'DELETE', value: t.deletes, color: '#e2445c' },
                   { label: 'UPSERT', value: t.upserts, color: '#fdab3d' },
                 ].map(op => (
-                  <div key={op.label} className="rounded-lg p-2 text-center" style={{ background: `${op.color}10` }}>
+                  <div key={op.label} className="rounded-2xl p-2 text-center" style={{ background: `${op.color}10` }}>
                     <p className="text-[10px] font-mono font-bold" style={{ color: op.color }}>{op.label}</p>
                     <p className="text-lg font-bold text-[var(--os-text-1)]">{op.value}</p>
                   </div>
@@ -307,7 +307,7 @@ export function DataFabricTab() {
       {activeView === 'broker' && broker && (
         <div className="space-y-5">
           {/* Verdict banner */}
-          <div className="rounded-xl border border-[#00c875]/30 bg-[#00c875]/5 p-4">
+          <div className="rounded-2xl border border-[#00c875]/30 bg-[#00c875]/5 p-4">
             <div className="flex items-center gap-2 mb-2">
               <CheckCircle2 className="w-4 h-4 text-[#00c875]" />
               <span className="font-semibold text-[var(--os-text-1)]">
@@ -320,7 +320,7 @@ export function DataFabricTab() {
           </div>
 
           {/* Comparison table */}
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
             <div className="grid grid-cols-[1.5fr_1fr_1fr_80px] text-xs font-semibold text-[var(--os-text-2)] px-4 py-2.5 bg-[var(--os-surface-0)] border-b border-[var(--os-border)]">
               <span>Dimension</span>
               <span className="text-center">NATS</span>

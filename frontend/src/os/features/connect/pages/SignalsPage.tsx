@@ -152,7 +152,7 @@ export function SignalsPage() {
             <button
               key={level}
               onClick={() => setLevelFilter(levelFilter === level ? 'all' : level)}
-              className={`p-3 rounded-xl border text-center transition-all ${
+              className={`p-3 rounded-2xl border text-center transition-all ${
                 levelFilter === level
                   ? 'border-white/25 bg-slate-800/60'
                   : 'border-[var(--os-border)] bg-slate-900/40 hover:border-[var(--os-border)]'
@@ -190,7 +190,7 @@ export function SignalsPage() {
             <div key={sig.id} className="p-5 rounded-2xl border border-[var(--os-border)] bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 hover:border-[var(--os-border)] transition-colors">
               <div className="flex items-start gap-4">
                 {/* Source logo */}
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black text-white flex-shrink-0 bg-slate-800 border border-[var(--os-border)]">
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-xs font-black text-white flex-shrink-0 bg-slate-800 border border-[var(--os-border)]">
                   {sig.sourceLogo}
                 </div>
 
@@ -212,7 +212,7 @@ export function SignalsPage() {
                   <p className="text-sm text-[var(--os-text-1)] leading-relaxed mb-2">{sig.description}</p>
 
                   {sig.kimmpAction && (
-                    <div className="flex items-start gap-2 mt-3 p-3 rounded-xl bg-[#0d1117] border border-[#2E2854]">
+                    <div className="flex items-start gap-2 mt-3 p-3 rounded-2xl bg-[#0d1117] border border-[#2E2854]">
                       <Brain className="w-3.5 h-3.5 text-purple-400 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="text-[9px] font-black tracking-widest text-purple-400 uppercase">KIMMP Recommendation</span>

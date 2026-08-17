@@ -89,11 +89,11 @@ export function SecurityFindingsPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-lg border" style={{ color: T2, borderColor: BDR }}>
+            <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-2xl border" style={{ color: T2, borderColor: BDR }}>
               <RefreshCw className="w-3 h-3" />
             </button>
             <button onClick={() => setShowCreate(true)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold"
               style={{ background: RED, color: '#fff' }}>
               <Plus className="w-3.5 h-3.5" /> Log Finding
             </button>
@@ -125,7 +125,7 @@ export function SecurityFindingsPage() {
             const cfg = SEV_CFG[sev]
             return (
               <button key={sev} onClick={() => setSeverityFilter(sev)}
-                className="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors"
+                className="px-2.5 py-1 rounded-2xl text-[10px] font-bold transition-colors"
                 style={severityFilter === sev
                   ? (cfg ? { background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` } : { background: SURF, color: T1, border: `1px solid ${BDR}` })
                   : { background: SURF, color: T2, border: `1px solid ${BDR}` }}>
@@ -139,7 +139,7 @@ export function SecurityFindingsPage() {
             const cfg = STATUS_CFG[st]
             return (
               <button key={st} onClick={() => setStatusFilter(st)}
-                className="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors"
+                className="px-2.5 py-1 rounded-2xl text-[10px] font-bold transition-colors"
                 style={statusFilter === st
                   ? (cfg ? { background: cfg.bg, color: cfg.color } : { background: SURF, color: T1 })
                   : { background: SURF, color: T2, border: `1px solid ${BDR}` }}>
@@ -169,7 +169,7 @@ export function SecurityFindingsPage() {
                 <div className="flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-[var(--os-surface-0)] transition-colors"
                   onClick={() => setExpanded(open ? null : f.id)}>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="text-[10px] font-black px-2 py-1 rounded-lg" style={{ background: sev.bg, color: sev.color, border: `1px solid ${sev.border}` }}>
+                    <span className="text-[10px] font-black px-2 py-1 rounded-2xl" style={{ background: sev.bg, color: sev.color, border: `1px solid ${sev.border}` }}>
                       {f.severity}
                     </span>
                     <AlertTriangle className="w-4 h-4" style={{ color: sev.color === '#fff' ? RED : sev.color }} />
@@ -193,7 +193,7 @@ export function SecurityFindingsPage() {
                       {f.status !== 'RESOLVED' && (
                         <button onClick={() => resolve.mutate({ id: f.id, status: 'RESOLVED' })}
                           disabled={resolve.isPending}
-                          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+                          className="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
                           style={{ background: 'rgba(16,185,129,0.1)', color: GRN }}>
                           <Check className="w-3.5 h-3.5" /> Mark Resolved
                         </button>
@@ -201,7 +201,7 @@ export function SecurityFindingsPage() {
                       {f.status === 'OPEN' && (
                         <button onClick={() => resolve.mutate({ id: f.id, status: 'IN_PROGRESS' })}
                           disabled={resolve.isPending}
-                          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+                          className="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
                           style={{ background: 'rgba(245,158,11,0.1)', color: AMB }}>
                           In Progress
                         </button>
@@ -209,7 +209,7 @@ export function SecurityFindingsPage() {
                       {f.status !== 'WONT_FIX' && (
                         <button onClick={() => resolve.mutate({ id: f.id, status: 'WONT_FIX' })}
                           disabled={resolve.isPending}
-                          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+                          className="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
                           style={{ background: SURF, color: T2 }}>
                           <X className="w-3.5 h-3.5" /> Won't Fix
                         </button>
@@ -245,7 +245,7 @@ function CreateFindingForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClie
     <div>
       <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>{label}</p>
       <input value={form[field]} onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
-        placeholder={ph} className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+        placeholder={ph} className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
         style={{ borderColor: BDR, background: SURF, color: T1 }} />
     </div>
   )
@@ -263,7 +263,7 @@ function CreateFindingForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClie
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Severity</p>
           <select value={form.severity} onChange={e => setForm(f => ({ ...f, severity: e.target.value }))}
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
             style={{ borderColor: BDR, background: SURF, color: T1 }}>
             {['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'INFO'].map(s => <option key={s}>{s}</option>)}
           </select>
@@ -273,12 +273,12 @@ function CreateFindingForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClie
         <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Description</p>
         <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
           rows={3} placeholder="Describe the finding, impact, and reproduction steps…"
-          className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none resize-none"
+          className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none resize-none"
           style={{ borderColor: BDR, background: SURF, color: T1 }} />
       </div>
       <button disabled={!form.title.trim() || !form.description.trim() || create.isPending}
         onClick={() => create.mutate()}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
         style={{ background: RED, color: '#fff' }}>
         <ShieldAlert className="w-4 h-4" />
         {create.isPending ? 'Logging…' : 'Log Finding'}

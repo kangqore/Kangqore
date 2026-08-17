@@ -54,7 +54,7 @@ function ChangeRow({ cr }: { cr: ChangeRequest }) {
           <p className="text-[10px] text-[var(--os-text-2)]">{cr.project.name}</p>
         </td>
         <td className="px-2 py-3 whitespace-nowrap">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold" style={{ background: sc.bg, color: sc.text }}>
+          <span className="inline-flex items-center px-2 py-0.5 rounded-2xl text-[10px] font-bold" style={{ background: sc.bg, color: sc.text }}>
             {sc.label}
           </span>
         </td>
@@ -112,7 +112,7 @@ function ChangeRow({ cr }: { cr: ChangeRequest }) {
                             key={s}
                             onClick={() => update.mutate({ status: s })}
                             disabled={update.isPending}
-                            className="px-3 py-1.5 rounded-lg text-[10px] font-bold transition-colors disabled:opacity-40"
+                            className="px-3 py-1.5 rounded-2xl text-[10px] font-bold transition-colors disabled:opacity-40"
                             style={{ background: c?.bg, color: c?.text }}
                           >
                             {c?.label ?? s}
@@ -167,7 +167,7 @@ export function ChangePipeline() {
               <button
                 key={s}
                 onClick={() => setStatus(filterStatus === s ? '' : s)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[10px] font-bold transition-all"
                 style={{
                   background: filterStatus === s ? (c?.text ?? '#579bfc') : (c?.bg ?? 'rgba(87,155,252,0.1)'),
                   color:      filterStatus === s ? '#fff'                  : (c?.text ?? '#579bfc'),
@@ -190,7 +190,7 @@ export function ChangePipeline() {
       <div className="rounded-2xl border border-[var(--os-border)] overflow-hidden" style={{ background: 'var(--os-card)' }}>
         {isLoading ? (
           <div className="p-6 space-y-2">
-            {[1,2,3].map(i => <div key={i} className="h-10 rounded-lg animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
+            {[1,2,3].map(i => <div key={i} className="h-10 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
           </div>
         ) : rows.length === 0 ? (
           <div className="py-12 text-center">

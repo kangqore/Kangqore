@@ -153,7 +153,7 @@ function StatPill({ label, value, color, icon: Icon }: { label: string; value: a
     <div className="flex-1 min-w-[140px] rounded-2xl border border-white/80 bg-gradient-to-br from-white to-slate-50/80 px-5 py-4 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.06)] transition-all duration-300 relative overflow-hidden group">
       <div className="absolute inset-0 bg-gradient-to-br from-[#4F46E5]/[0.02] to-[#EC4899]/[0.02] opacity-0 group-hover:opacity-100 transition-opacity z-0" />
       <div className="flex items-center gap-2 mb-3 relative z-10">
-        <div className="p-1.5 rounded-md shadow-sm bg-white border border-slate-100" style={{ color: color ?? '#64748b' }}>
+        <div className="p-1.5 rounded-2xl shadow-sm bg-white border border-slate-100" style={{ color: color ?? '#64748b' }}>
           <Icon className="w-3.5 h-3.5" />
         </div>
         <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{label}</span>
@@ -210,8 +210,8 @@ function ETIMiniPanel() {
 
   const color = eti.overall >= 80 ? '#00c875' : eti.overall >= 60 ? '#fdab3d' : '#e2445c'
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
-      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-base font-black" style={{ background: color + '20', color }}>
+    <div className="flex items-center gap-3 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
+      <div className="w-9 h-9 rounded-2xl flex items-center justify-center text-base font-black" style={{ background: color + '20', color }}>
         {eti.grade}
       </div>
       <div>
@@ -285,13 +285,13 @@ function TodayView({ ois, navigate, queryClient }: { ois: number | null; navigat
     <div className="space-y-5">
 
       {/* Timeline window toggle */}
-      <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100/80 backdrop-blur-sm w-fit border border-slate-200/50 shadow-sm">
+      <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-100/80 backdrop-blur-sm w-fit border border-slate-200/50 shadow-sm">
         {windowTabs.map(t => (
           <button
             key={t.key}
             onClick={() => setWindow(t.key)}
             className={cn(
-              'px-4 py-1.5 text-[11px] font-bold rounded-lg transition-all duration-300',
+              'px-4 py-1.5 text-[11px] font-bold rounded-2xl transition-all duration-300',
               window_ === t.key ? 'bg-white text-indigo-600 shadow-[0_2px_8px_rgb(0,0,0,0.08)]' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
             )}
           >
@@ -327,7 +327,7 @@ function TodayView({ ois, navigate, queryClient }: { ois: number | null; navigat
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
                     {band && (
-                      <div className="flex items-center gap-1.5 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] px-3 py-1.5">
+                      <div className="flex items-center gap-1.5 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-3 py-1.5">
                         <Gauge className="w-3.5 h-3.5" style={{ color: band.color }} />
                         <span className="text-sm font-bold tabular-nums" style={{ color: band.color }}>{ois}</span>
                         <span className="text-[10px] text-[var(--os-text-2)]">OIS</span>
@@ -336,7 +336,7 @@ function TodayView({ ois, navigate, queryClient }: { ois: number | null; navigat
                     <button
                       onClick={refreshPlan}
                       disabled={isRefreshing}
-                      className="p-1.5 rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors"
+                      className="p-1.5 rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors"
                       title="Refresh today's plan"
                     >
                       <RefreshCw className={cn('w-3.5 h-3.5', isRefreshing && 'animate-spin')} />
@@ -363,7 +363,7 @@ function TodayView({ ois, navigate, queryClient }: { ois: number | null; navigat
                       <div
                         key={action.id}
                         className={cn(
-                          'flex items-start gap-4 p-4 rounded-xl border transition-all duration-300 group',
+                          'flex items-start gap-4 p-4 rounded-2xl border transition-all duration-300 group',
                           action.done
                             ? 'border-slate-100 bg-slate-50 opacity-60'
                             : 'border-slate-200 bg-white hover:border-indigo-200 hover:shadow-md hover:shadow-indigo-500/5'
@@ -375,7 +375,7 @@ function TodayView({ ois, navigate, queryClient }: { ois: number | null; navigat
                         >
                           {action.done
                             ? <CheckSquare className="w-5 h-5 text-emerald-500" />
-                            : <div className="w-5 h-5 rounded-md border-2 border-slate-300 group-hover:border-indigo-400 transition-colors" />
+                            : <div className="w-5 h-5 rounded-2xl border-2 border-slate-300 group-hover:border-indigo-400 transition-colors" />
                           }
                         </button>
                         <div className="flex-1 min-w-0">
@@ -397,7 +397,7 @@ function TodayView({ ois, navigate, queryClient }: { ois: number | null; navigat
                           {!action.done && (
                             <button
                               onClick={() => navigate(action.targetPath)}
-                              className="text-[11px] font-bold text-slate-400 hover:text-indigo-600 flex items-center gap-1 transition-colors bg-slate-50 hover:bg-indigo-50 px-3 py-1.5 rounded-lg"
+                              className="text-[11px] font-bold text-slate-400 hover:text-indigo-600 flex items-center gap-1 transition-colors bg-slate-50 hover:bg-indigo-50 px-3 py-1.5 rounded-2xl"
                             >
                               Open <ArrowRight className="w-3 h-3" />
                             </button>
@@ -415,20 +415,20 @@ function TodayView({ ois, navigate, queryClient }: { ois: number | null; navigat
                   <div className="rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50 p-5 shadow-sm relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 w-24 h-24 bg-amber-400 rounded-full blur-2xl opacity-10 group-hover:opacity-20 transition-opacity" />
                     <div className="flex items-center gap-2 mb-4 relative z-10">
-                      <div className="p-1.5 rounded-lg bg-amber-100/80 text-amber-600 shadow-sm">
+                      <div className="p-1.5 rounded-2xl bg-amber-100/80 text-amber-600 shadow-sm">
                         <Lightbulb className="w-4 h-4" />
                       </div>
                       <h3 className="text-sm font-black text-slate-800">Executive Leverage</h3>
                     </div>
                     <div className="space-y-3 relative z-10">
                       {plan.quickWins.map((qw, i) => (
-                        <div key={i} className="group/item bg-white/60 p-3 rounded-xl border border-white hover:bg-white hover:shadow-sm transition-all">
+                        <div key={i} className="group/item bg-white/60 p-3 rounded-2xl border border-white hover:bg-white hover:shadow-sm transition-all">
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1">
                               <p className="text-[12px] font-bold text-slate-800 leading-tight">{qw.title}</p>
                               <p className="text-[11px] font-semibold text-emerald-600 mt-1">{qw.leverageOutcome}</p>
                             </div>
-                            <div className="flex items-center gap-1 flex-shrink-0 bg-white/80 px-2 py-1 rounded-md text-[10px] font-bold text-slate-500 shadow-sm">
+                            <div className="flex items-center gap-1 flex-shrink-0 bg-white/80 px-2 py-1 rounded-2xl text-[10px] font-bold text-slate-500 shadow-sm">
                               <Timer className="w-3 h-3 text-slate-400" />
                               <span>{qw.estimatedMins}m</span>
                             </div>
@@ -449,14 +449,14 @@ function TodayView({ ois, navigate, queryClient }: { ois: number | null; navigat
                   <div className="rounded-2xl border border-rose-100 bg-gradient-to-br from-rose-50 to-red-50 p-5 shadow-sm relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 w-24 h-24 bg-rose-400 rounded-full blur-2xl opacity-10 group-hover:opacity-20 transition-opacity" />
                     <div className="flex items-center gap-2 mb-4 relative z-10">
-                      <div className="p-1.5 rounded-lg bg-rose-100 text-rose-600 shadow-sm">
+                      <div className="p-1.5 rounded-2xl bg-rose-100 text-rose-600 shadow-sm">
                         <AlertTriangle className="w-4 h-4" />
                       </div>
                       <h3 className="text-sm font-black text-slate-800">Blockers</h3>
                     </div>
                     <div className="space-y-3 relative z-10">
                       {plan.blockers.map((bl, i) => (
-                        <div key={i} className="bg-white/60 p-3 rounded-xl border border-white hover:bg-white hover:shadow-sm transition-all border-l-4 border-l-rose-400">
+                        <div key={i} className="bg-white/60 p-3 rounded-2xl border border-white hover:bg-white hover:shadow-sm transition-all border-l-4 border-l-rose-400">
                           <p className="text-[12px] font-bold text-slate-800 leading-tight">{bl.title}</p>
                           <div className="flex items-center gap-1.5 mt-1.5">
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{bl.source}</span>
@@ -545,7 +545,7 @@ function TimelineView({ data, window_, lens, navigate }: { data: any; window_: s
             <div key={i} className="flex gap-5 pb-4 relative group">
               {/* Timeline dot */}
               <div
-                className={`w-10 h-10 rounded-xl bg-gradient-to-br ${dotBg} shadow-[0_4px_12px_rgb(0,0,0,0.1)] flex items-center justify-center flex-shrink-0 z-10 transition-transform group-hover:scale-110 group-hover:-rotate-3`}
+                className={`w-10 h-10 rounded-2xl bg-gradient-to-br ${dotBg} shadow-[0_4px_12px_rgb(0,0,0,0.1)] flex items-center justify-center flex-shrink-0 z-10 transition-transform group-hover:scale-110 group-hover:-rotate-3`}
               >
                 {e.type === 'DECISION'  && <Zap className="w-4 h-4 text-white" />}
                 {e.type === 'MISSION'   && <Target className="w-4 h-4 text-white" />}
@@ -559,19 +559,19 @@ function TimelineView({ data, window_, lens, navigate }: { data: any; window_: s
                   <div className="flex-1">
                     <p className="text-[13px] font-bold text-slate-800 leading-tight">{e.event}</p>
                     {e.consequence && (
-                      <div className="flex items-center gap-1.5 mt-2 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-100/50">
+                      <div className="flex items-center gap-1.5 mt-2 bg-slate-50 px-2.5 py-1.5 rounded-2xl border border-slate-100/50">
                         <ArrowRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
                         <p className="text-[11px] font-medium text-slate-600">{e.consequence}</p>
                       </div>
                     )}
                     {e.intentLabel && (
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-[#a78bfa] mt-2 inline-flex px-2 py-0.5 bg-[#a78bfa]/10 rounded-md">Intent: {e.intentLabel}</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-[#a78bfa] mt-2 inline-flex px-2 py-0.5 bg-[#a78bfa]/10 rounded-2xl">Intent: {e.intentLabel}</p>
                     )}
                   </div>
                   <div className="flex flex-col items-end gap-2 flex-shrink-0">
                     <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{timeAgo(e.timestamp)}</span>
                     <span
-                      className="text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-md shadow-sm"
+                      className="text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-2xl shadow-sm"
                       style={{
                         background: (e.status === 'APPROVED' || e.status === 'COMPLETE' || e.status === 'ACHIEVED' ? '#10b981' : e.status === 'DISMISSED' ? '#f43f5e' : '#0ea5e9'),
                         color: 'white',
@@ -611,7 +611,7 @@ function DomainCard({ domain, isExpanded, onClick }: { domain: BusinessDomain; i
       <div className="px-5 pt-5 pb-4 relative z-10">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style={{ background: color + '15' }}>
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: color + '15' }}>
               <Icon className="w-5 h-5" style={{ color }} />
             </div>
             <span className="text-sm font-extrabold text-slate-800">{domain.label}</span>
@@ -669,8 +669,8 @@ function BusinessView({ domains, navigate }: { domains: BusinessDomain[]; naviga
       {(criticalCount > 0 || attentionCount > 0) && (
         <div className="flex items-center gap-3 px-5 py-4 rounded-2xl border border-amber-200/50 bg-gradient-to-r from-amber-50 to-orange-50 shadow-sm relative overflow-hidden text-[12px]">
           <div className="absolute top-0 left-0 bottom-0 w-1 bg-amber-400" />
-          {criticalCount > 0 && <span className="text-rose-600 font-bold bg-rose-100 px-2.5 py-1 rounded-md">{criticalCount} CRITICAL</span>}
-          {attentionCount > 0 && <span className="text-amber-700 font-bold bg-amber-200/50 px-2.5 py-1 rounded-md">{attentionCount} NEED ATTENTION</span>}
+          {criticalCount > 0 && <span className="text-rose-600 font-bold bg-rose-100 px-2.5 py-1 rounded-2xl">{criticalCount} CRITICAL</span>}
+          {attentionCount > 0 && <span className="text-amber-700 font-bold bg-amber-200/50 px-2.5 py-1 rounded-2xl">{attentionCount} NEED ATTENTION</span>}
           <span className="ml-auto text-slate-500 font-medium italic">Tap a domain to drill down</span>
         </div>
       )}
@@ -720,21 +720,21 @@ function ObjectivesView() {
           <h2 className="text-sm font-bold text-[var(--os-text-1)]">Enterprise Objectives</h2>
           <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">What the company is pursuing. Intents align to these.</p>
         </div>
-        <button onClick={() => setShowForm(p => !p)} className="flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors">
+        <button onClick={() => setShowForm(p => !p)} className="flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors">
           <Plus className="w-3 h-3" /> Add objective
         </button>
       </div>
 
       {showForm && (
-        <div className="rounded-xl border border-[color:var(--os-blue)]/30 bg-[color:var(--os-blue)]/5 p-4 space-y-3">
+        <div className="rounded-2xl border border-[color:var(--os-blue)]/30 bg-[color:var(--os-blue)]/5 p-4 space-y-3">
           <input
             placeholder="Objective title (e.g. Acquire 10 lighthouse customers)"
             value={form.title}
             onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
-            className="w-full text-sm bg-transparent border border-[var(--os-border)] rounded-lg px-3 py-2 text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none focus:border-[color:var(--os-blue)]"
+            className="w-full text-sm bg-transparent border border-[var(--os-border)] rounded-2xl px-3 py-2 text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none focus:border-[color:var(--os-blue)]"
           />
           <div className="flex gap-2">
-            <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} className="flex-1 text-xs bg-[var(--os-card)] border border-[var(--os-border)] rounded-lg px-2 py-2 text-[var(--os-text-1)] outline-none">
+            <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} className="flex-1 text-xs bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl px-2 py-2 text-[var(--os-text-1)] outline-none">
               {['growth', 'product', 'financial', 'operational', 'market'].map(c => <option key={c} value={c}>{c}</option>)}
             </select>
             <input
@@ -742,20 +742,20 @@ function ObjectivesView() {
               type="number"
               value={form.rank}
               onChange={e => setForm(p => ({ ...p, rank: e.target.value }))}
-              className="w-24 text-xs bg-transparent border border-[var(--os-border)] rounded-lg px-2 py-2 text-[var(--os-text-1)] outline-none"
+              className="w-24 text-xs bg-transparent border border-[var(--os-border)] rounded-2xl px-2 py-2 text-[var(--os-text-1)] outline-none"
             />
           </div>
           <input
             placeholder="Measured by (optional)"
             value={form.measuredBy}
             onChange={e => setForm(p => ({ ...p, measuredBy: e.target.value }))}
-            className="w-full text-xs bg-transparent border border-[var(--os-border)] rounded-lg px-3 py-2 text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none"
+            className="w-full text-xs bg-transparent border border-[var(--os-border)] rounded-2xl px-3 py-2 text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none"
           />
           <div className="flex items-center gap-2">
             <button
               onClick={() => createMutation.mutate({ ...form, rank: Number(form.rank) })}
               disabled={!form.title || createMutation.isPending}
-              className="text-[11px] px-3 py-1.5 rounded-lg bg-[color:var(--os-blue)] text-white hover:opacity-90 transition-opacity disabled:opacity-40"
+              className="text-[11px] px-3 py-1.5 rounded-2xl bg-[color:var(--os-blue)] text-white hover:opacity-90 transition-opacity disabled:opacity-40"
             >
               {createMutation.isPending ? 'Saving…' : 'Save Objective'}
             </button>
@@ -779,24 +779,24 @@ function ObjectivesView() {
               <div key={obj.id} className={cn('rounded-2xl border transition-all duration-300 relative overflow-hidden group', isExp ? 'border-indigo-200 bg-white shadow-md' : 'border-slate-200 bg-slate-50/50 hover:bg-white hover:shadow-sm hover:border-slate-300')}>
                 {isExp && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />}
                 <div className="flex items-start gap-4 p-5 cursor-pointer" onClick={() => setExpanded(p => p === obj.id ? null : obj.id)}>
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-[13px] font-black shadow-sm" style={{ background: catColor + '15', color: catColor, border: `1px solid ${catColor}30` }}>
+                  <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 text-[13px] font-black shadow-sm" style={{ background: catColor + '15', color: catColor, border: `1px solid ${catColor}30` }}>
                     {String(obj.rank).padStart(2, '0')}
                   </div>
                   <div className="flex-1 min-w-0 pt-0.5">
                     <div className="flex items-center gap-3 mb-1.5">
                       <span className="text-sm font-black text-slate-800">{obj.title}</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider" style={{ background: catColor + '15', color: catColor }}>{obj.category}</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-2xl uppercase tracking-wider" style={{ background: catColor + '15', color: catColor }}>{obj.category}</span>
                     </div>
                     {obj.measuredBy && <p className="text-[11px] font-medium text-slate-500 mb-1">Measured by: <span className="font-semibold text-slate-700">{obj.measuredBy}</span></p>}
                     {obj.vision && <p className="text-[12px] font-medium text-indigo-600 italic">"{obj.vision}"</p>}
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0 pt-1">
                     {obj.intents && obj.intents.length > 0 && (
-                      <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">{obj.intents.length} intent{obj.intents.length > 1 ? 's' : ''}</span>
+                      <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-2xl">{obj.intents.length} intent{obj.intents.length > 1 ? 's' : ''}</span>
                     )}
                     <button
                       onClick={e => { e.stopPropagation(); achieveMutation.mutate(obj.id) }}
-                      className="text-[11px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors border border-emerald-100"
+                      className="text-[11px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-2xl transition-colors border border-emerald-100"
                     >
                       Mark achieved
                     </button>
@@ -806,10 +806,10 @@ function ObjectivesView() {
                 {isExp && obj.intents && obj.intents.length > 0 && (
                   <div className="border-t border-slate-100 px-5 py-4 bg-slate-50/50 space-y-2">
                     {obj.intents.map(intent => (
-                      <div key={intent.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-white border border-slate-100 shadow-sm text-[12px]">
+                      <div key={intent.id} className="flex items-center gap-3 p-2.5 rounded-2xl bg-white border border-slate-100 shadow-sm text-[12px]">
                         <div className="w-2 h-2 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.6)]" />
                         <span className="font-semibold text-slate-700 flex-1">{intent.label}</span>
-                        <span className="font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">{intent.timeframe}</span>
+                        <span className="font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-2xl">{intent.timeframe}</span>
                       </div>
                     ))}
                   </div>
@@ -823,10 +823,10 @@ function ObjectivesView() {
               <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Achieved</p>
               <div className="space-y-3">
                 {achieved.map(obj => (
-                  <div key={obj.id} className="flex items-center gap-3 p-4 rounded-xl bg-emerald-50/50 border border-emerald-100 opacity-80">
+                  <div key={obj.id} className="flex items-center gap-3 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 opacity-80">
                     <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                     <span className="text-sm font-bold text-slate-700">{obj.title}</span>
-                    <span className="text-[10px] font-black px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700 ml-auto tracking-wider">ACHIEVED</span>
+                    <span className="text-[10px] font-black px-2.5 py-1 rounded-2xl bg-emerald-100 text-emerald-700 ml-auto tracking-wider">ACHIEVED</span>
                   </div>
                 ))}
               </div>
@@ -879,7 +879,7 @@ function IntentsSection() {
         className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r hover:from-purple-50 hover:to-white transition-colors"
       >
         <div className="flex items-center gap-3">
-          <div className="p-1.5 rounded-lg bg-purple-100 text-purple-600 shadow-sm">
+          <div className="p-1.5 rounded-2xl bg-purple-100 text-purple-600 shadow-sm">
             <Flame className="w-4 h-4" />
           </div>
           <span className="text-base font-black text-slate-800">Strategic North Stars</span>
@@ -906,28 +906,28 @@ function IntentsSection() {
                 const catColor = CATEGORY_COLORS[intent.category] ?? '#888'
                 const isActive = intent.status === 'ACTIVE'
                 return (
-                  <div key={intent.id} className={cn('flex items-start gap-4 p-4 rounded-xl border transition-all duration-300', isActive ? 'bg-white border-slate-200 shadow-sm hover:shadow-md hover:border-purple-200' : 'bg-slate-50 border-slate-100 opacity-60')}>
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-[11px] font-black shadow-sm" style={{ background: catColor + '15', color: catColor, border: `1px solid ${catColor}30` }}>
+                  <div key={intent.id} className={cn('flex items-start gap-4 p-4 rounded-2xl border transition-all duration-300', isActive ? 'bg-white border-slate-200 shadow-sm hover:shadow-md hover:border-purple-200' : 'bg-slate-50 border-slate-100 opacity-60')}>
+                    <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0 text-[11px] font-black shadow-sm" style={{ background: catColor + '15', color: catColor, border: `1px solid ${catColor}30` }}>
                       {idx + 1}
                     </div>
                     <div className="flex-1 min-w-0 pt-0.5">
                       <p className="text-[13px] font-black text-slate-800">{intent.label}</p>
                       <div className="flex items-center gap-2 mt-2 flex-wrap">
-                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-widest" style={{ background: catColor + '15', color: catColor }}>{intent.category}</span>
-                        <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">{intent.timeframe}</span>
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-2xl uppercase tracking-widest" style={{ background: catColor + '15', color: catColor }}>{intent.category}</span>
+                        <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-2xl">{intent.timeframe}</span>
                         {intent.objective?.title && (
-                          <span className="text-[10px] font-bold text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100 truncate max-w-[200px]">→ {intent.objective.title}</span>
+                          <span className="text-[10px] font-bold text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-2xl border border-indigo-100 truncate max-w-[200px]">→ {intent.objective.title}</span>
                         )}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0 pt-1">
                       <button
                         onClick={() => statusMutation.mutate({ id: intent.id, status: isActive ? 'PAUSED' : 'ACTIVE' })}
-                        className="text-[11px] font-bold text-slate-500 hover:text-indigo-600 transition-colors bg-slate-100 hover:bg-indigo-50 px-3 py-1.5 rounded-lg"
+                        className="text-[11px] font-bold text-slate-500 hover:text-indigo-600 transition-colors bg-slate-100 hover:bg-indigo-50 px-3 py-1.5 rounded-2xl"
                       >
                         {isActive ? 'Pause' : 'Resume'}
                       </button>
-                      <button onClick={() => deleteMutation.mutate(intent.id)} className="text-[11px] font-bold text-rose-500 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition-colors">✕</button>
+                      <button onClick={() => deleteMutation.mutate(intent.id)} className="text-[11px] font-bold text-rose-500 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-2xl transition-colors">✕</button>
                     </div>
                   </div>
                 )
@@ -939,36 +939,36 @@ function IntentsSection() {
                   <Plus className="w-3 h-3" /> Add intent
                 </button>
               ) : (
-                <div className="rounded-lg border border-[color:var(--os-blue)]/20 bg-[color:var(--os-blue)]/5 p-3 space-y-2">
+                <div className="rounded-2xl border border-[color:var(--os-blue)]/20 bg-[color:var(--os-blue)]/5 p-3 space-y-2">
                   <input
                     placeholder="Intent (e.g. Increase EBITDA margin to 32%)"
                     value={form.label}
                     onChange={e => setForm(p => ({ ...p, label: e.target.value }))}
-                    className="w-full text-xs bg-transparent border border-[var(--os-border)] rounded-lg px-2.5 py-2 text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none focus:border-[color:var(--os-blue)]"
+                    className="w-full text-xs bg-transparent border border-[var(--os-border)] rounded-2xl px-2.5 py-2 text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none focus:border-[color:var(--os-blue)]"
                   />
                   <div className="flex gap-2">
-                    <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} className="flex-1 text-[11px] bg-[var(--os-card)] border border-[var(--os-border)] rounded-lg px-2 py-1.5 text-[var(--os-text-1)] outline-none">
+                    <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} className="flex-1 text-[11px] bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl px-2 py-1.5 text-[var(--os-text-1)] outline-none">
                       {['growth', 'efficiency', 'risk', 'market', 'people', 'product', 'financial', 'operational'].map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                     <input
                       placeholder="Timeframe"
                       value={form.timeframe}
                       onChange={e => setForm(p => ({ ...p, timeframe: e.target.value }))}
-                      className="w-28 text-[11px] bg-transparent border border-[var(--os-border)] rounded-lg px-2 py-1.5 text-[var(--os-text-1)] outline-none"
+                      className="w-28 text-[11px] bg-transparent border border-[var(--os-border)] rounded-2xl px-2 py-1.5 text-[var(--os-text-1)] outline-none"
                     />
                     <input
                       type="number"
                       placeholder="#"
                       value={form.rank}
                       onChange={e => setForm(p => ({ ...p, rank: e.target.value }))}
-                      className="w-12 text-[11px] bg-transparent border border-[var(--os-border)] rounded-lg px-2 py-1.5 text-[var(--os-text-1)] outline-none"
+                      className="w-12 text-[11px] bg-transparent border border-[var(--os-border)] rounded-2xl px-2 py-1.5 text-[var(--os-text-1)] outline-none"
                     />
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => createMutation.mutate({ ...form, rank: Number(form.rank) })}
                       disabled={!form.label || createMutation.isPending}
-                      className="text-[11px] px-3 py-1 rounded-lg bg-[color:var(--os-blue)] text-white disabled:opacity-40"
+                      className="text-[11px] px-3 py-1 rounded-2xl bg-[color:var(--os-blue)] text-white disabled:opacity-40"
                     >
                       {createMutation.isPending ? 'Saving…' : 'Save'}
                     </button>
@@ -1001,10 +1001,10 @@ function PreflightPanel({ decisionId, onConfirm, onCancel, isPending }: { decisi
 
   const Actions = () => (
     <div className="flex items-center gap-2 pt-1">
-      <button onClick={onConfirm} disabled={isPending} className="flex items-center gap-1 text-[11px] px-3 py-1 rounded-md bg-[#00c875]/10 text-[#00c875] hover:bg-[#00c875]/20 transition-colors">
+      <button onClick={onConfirm} disabled={isPending} className="flex items-center gap-1 text-[11px] px-3 py-1 rounded-2xl bg-[#00c875]/10 text-[#00c875] hover:bg-[#00c875]/20 transition-colors">
         <CheckCircle2 className="w-3 h-3" /> Yes, approve
       </button>
-      <button onClick={onCancel} className="flex items-center gap-1 text-[11px] px-3 py-1 rounded-md text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors">
+      <button onClick={onCancel} className="flex items-center gap-1 text-[11px] px-3 py-1 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors">
         <XCircle className="w-3 h-3" /> No
       </button>
     </div>
@@ -1013,7 +1013,7 @@ function PreflightPanel({ decisionId, onConfirm, onCancel, isPending }: { decisi
   if (isError || !brief) return <div className="mt-2 space-y-2"><p className="text-[11px] text-[var(--os-text-2)]">Brief unavailable — proceed?</p><Actions /></div>
 
   return (
-    <div className="mt-2 rounded-lg border border-[color:var(--os-blue)]/30 bg-[color:var(--os-blue)]/5 p-3 space-y-2">
+    <div className="mt-2 rounded-2xl border border-[color:var(--os-blue)]/30 bg-[color:var(--os-blue)]/5 p-3 space-y-2">
       <div className="flex items-start gap-2">
         <Sparkles className="w-3.5 h-3.5 text-[#b89eff] flex-shrink-0 mt-0.5" />
         <p className="text-[11px] text-[var(--os-text-1)] leading-relaxed">{brief.narrative}</p>
@@ -1083,7 +1083,7 @@ function SystemView({ data, liveSignals, navigate, queryClient }: { data: Comman
           ) : (
             <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
               {mergedSignals.map((sig, i) => (
-                <div key={sig.id ?? i} className="flex items-start gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                <div key={sig.id ?? i} className="flex items-start gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
                   <div className="w-2.5 h-2.5 rounded-full mt-1.5 flex-shrink-0 shadow-[0_0_8px_currentColor] opacity-80 group-hover:opacity-100 transition-opacity" style={{ color: SEV_COLOR[sig.severity] ?? '#aaa', background: SEV_COLOR[sig.severity] ?? '#aaa' }} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
@@ -1109,26 +1109,26 @@ function SystemView({ data, liveSignals, navigate, queryClient }: { data: Comman
                 const isPreflighting = preflightId === dec.id
                 const tier = dec.tier ?? 'OPERATIONAL'
                 return (
-                  <div key={dec.id} className={cn('rounded-xl border p-4 space-y-3 transition-all duration-300 relative overflow-hidden group', isPreflighting ? 'border-indigo-300 bg-indigo-50/30 shadow-md' : 'border-slate-200 bg-white hover:border-indigo-200 hover:shadow-md')}>
+                  <div key={dec.id} className={cn('rounded-2xl border p-4 space-y-3 transition-all duration-300 relative overflow-hidden group', isPreflighting ? 'border-indigo-300 bg-indigo-50/30 shadow-md' : 'border-slate-200 bg-white hover:border-indigo-200 hover:shadow-md')}>
                     {isPreflighting && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-400 to-purple-400" />}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                          <span className="text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider" style={{ background: (TIER_COLOR[tier] ?? '#888') + '22', color: TIER_COLOR[tier] ?? '#888' }}>{tier}</span>
-                          <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">{dec.decisionType}</span>
+                          <span className="text-[10px] font-black px-2 py-0.5 rounded-2xl uppercase tracking-wider" style={{ background: (TIER_COLOR[tier] ?? '#888') + '22', color: TIER_COLOR[tier] ?? '#888' }}>{tier}</span>
+                          <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-2xl">{dec.decisionType}</span>
                         </div>
                         <p className="text-sm font-bold text-slate-800 line-clamp-2">{dec.recommendedAction ?? dec.summary}</p>
                       </div>
-                      <span className="text-[10px] font-bold text-slate-400 tabular-nums flex-shrink-0 bg-slate-50 px-2 py-1 rounded-lg">{timeAgo(dec.createdAt)}</span>
+                      <span className="text-[10px] font-bold text-slate-400 tabular-nums flex-shrink-0 bg-slate-50 px-2 py-1 rounded-2xl">{timeAgo(dec.createdAt)}</span>
                     </div>
                     {isPreflighting ? (
                       <PreflightPanel decisionId={dec.id} isPending={decisionMutation.isPending} onConfirm={() => decisionMutation.mutate({ id: dec.id, status: 'APPROVED' })} onCancel={() => setPreflightId(null)} />
                     ) : (
                       <div className="flex items-center gap-2 pt-1 border-t border-slate-100 mt-2">
-                        <button onClick={() => setPreflightId(dec.id)} disabled={decisionMutation.isPending} className="mt-2 flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors border border-emerald-100">
+                        <button onClick={() => setPreflightId(dec.id)} disabled={decisionMutation.isPending} className="mt-2 flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-2xl bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors border border-emerald-100">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Approve
                         </button>
-                        <button onClick={() => decisionMutation.mutate({ id: dec.id, status: 'DISMISSED' })} disabled={decisionMutation.isPending} className="mt-2 flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-100 transition-colors border border-rose-100">
+                        <button onClick={() => decisionMutation.mutate({ id: dec.id, status: 'DISMISSED' })} disabled={decisionMutation.isPending} className="mt-2 flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-2xl bg-rose-50 text-rose-500 hover:bg-rose-100 transition-colors border border-rose-100">
                           <XCircle className="w-3.5 h-3.5" /> Dismiss
                         </button>
                       </div>
@@ -1146,16 +1146,16 @@ function SystemView({ data, liveSignals, navigate, queryClient }: { data: Comman
         <div className="absolute -right-4 -top-4 w-32 h-32 bg-rose-400 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition-opacity" />
         <div className="flex items-center justify-between mb-5 relative z-10">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-rose-100 text-rose-600 shadow-sm">
+            <div className="p-2 rounded-2xl bg-rose-100 text-rose-600 shadow-sm">
               <TrendingDown className="w-4 h-4" />
             </div>
             <h3 className="text-base font-black text-slate-800">At-Risk Revenue</h3>
-            {predictions.highRiskCount > 0 && <span className="text-[11px] font-bold px-2.5 py-1 rounded-md bg-rose-100 text-rose-700 shadow-sm">{predictions.highRiskCount} HIGH RISK</span>}
+            {predictions.highRiskCount > 0 && <span className="text-[11px] font-bold px-2.5 py-1 rounded-2xl bg-rose-100 text-rose-700 shadow-sm">{predictions.highRiskCount} HIGH RISK</span>}
           </div>
-          <button onClick={() => navigate(`${BASE}/decision-engine`)} className="flex items-center gap-1 text-[11px] font-bold text-slate-400 hover:text-rose-600 transition-colors bg-slate-50 hover:bg-rose-50 px-3 py-1.5 rounded-lg">Decision Engine <ChevronRight className="w-3 h-3" /></button>
+          <button onClick={() => navigate(`${BASE}/decision-engine`)} className="flex items-center gap-1 text-[11px] font-bold text-slate-400 hover:text-rose-600 transition-colors bg-slate-50 hover:bg-rose-50 px-3 py-1.5 rounded-2xl">Decision Engine <ChevronRight className="w-3 h-3" /></button>
         </div>
         {predictions.atRisk.length === 0 ? (
-          <div className="flex items-center justify-center gap-2 text-sm font-bold text-slate-500 py-8 bg-slate-50 rounded-xl border border-slate-100"><TrendingUp className="w-5 h-5 text-emerald-500" />No at-risk leads detected.</div>
+          <div className="flex items-center justify-center gap-2 text-sm font-bold text-slate-500 py-8 bg-slate-50 rounded-2xl border border-slate-100"><TrendingUp className="w-5 h-5 text-emerald-500" />No at-risk leads detected.</div>
         ) : (
           <div className="overflow-x-auto relative z-10">
             <table className="w-full text-xs">
@@ -1171,7 +1171,7 @@ function SystemView({ data, liveSignals, navigate, queryClient }: { data: Comman
                     <td className="py-3 pr-4 font-mono font-semibold text-slate-500 truncate max-w-[120px]">{p.leadId?.slice(-8) ?? '—'}</td>
                     <td className="py-3 pr-4 text-right font-semibold text-slate-700 tabular-nums">{p.conversionProbability != null ? `${Math.round(p.conversionProbability * 100)}%` : '—'}</td>
                     <td className="py-3 pr-4 text-right font-black text-slate-800 tabular-nums">{p.acvEstimate ? `₹${p.acvEstimate.toLocaleString()}` : '—'}</td>
-                    <td className="py-3"><span className="px-2.5 py-1 rounded-md text-[10px] font-black tracking-wider" style={{ background: (SEV_COLOR[p.deliveryRisk] ?? '#aaa') + '22', color: SEV_COLOR[p.deliveryRisk] ?? '#888' }}>{p.deliveryRisk}</span></td>
+                    <td className="py-3"><span className="px-2.5 py-1 rounded-2xl text-[10px] font-black tracking-wider" style={{ background: (SEV_COLOR[p.deliveryRisk] ?? '#aaa') + '22', color: SEV_COLOR[p.deliveryRisk] ?? '#888' }}>{p.deliveryRisk}</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -1185,33 +1185,33 @@ function SystemView({ data, liveSignals, navigate, queryClient }: { data: Comman
         <div className="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm relative overflow-hidden group">
           <div className="absolute -right-4 -top-4 w-32 h-32 bg-emerald-400 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition-opacity" />
           <div className="flex items-center gap-3 mb-5 relative z-10">
-            <div className="p-2 rounded-xl bg-emerald-100 text-emerald-600 shadow-sm"><BookOpen className="w-4 h-4" /></div>
+            <div className="p-2 rounded-2xl bg-emerald-100 text-emerald-600 shadow-sm"><BookOpen className="w-4 h-4" /></div>
             <h3 className="text-base font-black text-slate-800">WAANDA Training</h3>
           </div>
           {!training ? <p className="text-sm font-bold text-slate-500 relative z-10">Unavailable</p> : (
             <div className="space-y-3 relative z-10">
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span className="text-[12px] font-bold text-slate-500">Total examples</span><span className="text-sm font-black text-slate-800 tabular-nums">{training.total.toLocaleString()}</span></div>
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span className="text-[12px] font-bold text-slate-500">Export-ready</span><span className="text-sm font-black text-slate-800 tabular-nums">{training.exportReady.toLocaleString()}</span></div>
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span className="text-[12px] font-bold text-slate-500">Fine-tune ready</span><span className={cn('text-[12px] font-black px-2 py-0.5 rounded-md', training.estimatedReadyForFinetune ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600')}>{training.estimatedReadyForFinetune ? 'Yes' : `No (need ${1000 - training.exportReady} more)`}</span></div>
+              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl"><span className="text-[12px] font-bold text-slate-500">Total examples</span><span className="text-sm font-black text-slate-800 tabular-nums">{training.total.toLocaleString()}</span></div>
+              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl"><span className="text-[12px] font-bold text-slate-500">Export-ready</span><span className="text-sm font-black text-slate-800 tabular-nums">{training.exportReady.toLocaleString()}</span></div>
+              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl"><span className="text-[12px] font-bold text-slate-500">Fine-tune ready</span><span className={cn('text-[12px] font-black px-2 py-0.5 rounded-2xl', training.estimatedReadyForFinetune ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600')}>{training.estimatedReadyForFinetune ? 'Yes' : `No (need ${1000 - training.exportReady} more)`}</span></div>
             </div>
           )}
-          <button onClick={() => navigate(`${BASE}/training`)} className="mt-4 flex items-center justify-center w-full gap-1 text-[11px] font-bold text-slate-500 hover:text-emerald-600 transition-colors bg-slate-50 hover:bg-emerald-50 py-2.5 rounded-xl border border-transparent hover:border-emerald-100 relative z-10">View Gen 2 training <ChevronRight className="w-3 h-3" /></button>
+          <button onClick={() => navigate(`${BASE}/training`)} className="mt-4 flex items-center justify-center w-full gap-1 text-[11px] font-bold text-slate-500 hover:text-emerald-600 transition-colors bg-slate-50 hover:bg-emerald-50 py-2.5 rounded-2xl border border-transparent hover:border-emerald-100 relative z-10">View Gen 2 training <ChevronRight className="w-3 h-3" /></button>
         </div>
         
         <div className="rounded-2xl border border-indigo-100 bg-white p-6 shadow-sm relative overflow-hidden group">
           <div className="absolute -right-4 -top-4 w-32 h-32 bg-indigo-400 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition-opacity" />
           <div className="flex items-center gap-3 mb-5 relative z-10">
-            <div className="p-2 rounded-xl bg-indigo-100 text-indigo-600 shadow-sm"><DollarSign className="w-4 h-4" /></div>
+            <div className="p-2 rounded-2xl bg-indigo-100 text-indigo-600 shadow-sm"><DollarSign className="w-4 h-4" /></div>
             <h3 className="text-base font-black text-slate-800">LLM Spend (30d)</h3>
           </div>
           {!cost ? <p className="text-sm font-bold text-slate-500 relative z-10">Unavailable</p> : (
             <div className="space-y-3 relative z-10">
-              <div className="flex items-center justify-between p-3 bg-indigo-50/50 rounded-xl border border-indigo-100/50"><span className="text-[12px] font-bold text-slate-500">Total spend</span><span className="text-sm font-black text-indigo-700 tabular-nums">{fmtUsd(cost.totalEstimatedUsd)}</span></div>
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span className="text-[12px] font-bold text-slate-500">Total calls</span><span className="text-sm font-black text-slate-800 tabular-nums">{cost.totalCalls.toLocaleString()}</span></div>
-              {topOp && <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span className="text-[12px] font-bold text-slate-500">Top operation</span><span className="text-[12px] font-black text-slate-700 truncate ml-2">{topOp[0]}</span></div>}
+              <div className="flex items-center justify-between p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100/50"><span className="text-[12px] font-bold text-slate-500">Total spend</span><span className="text-sm font-black text-indigo-700 tabular-nums">{fmtUsd(cost.totalEstimatedUsd)}</span></div>
+              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl"><span className="text-[12px] font-bold text-slate-500">Total calls</span><span className="text-sm font-black text-slate-800 tabular-nums">{cost.totalCalls.toLocaleString()}</span></div>
+              {topOp && <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl"><span className="text-[12px] font-bold text-slate-500">Top operation</span><span className="text-[12px] font-black text-slate-700 truncate ml-2">{topOp[0]}</span></div>}
             </div>
           )}
-          <button onClick={() => navigate(`${BASE}/ai-governance`)} className="mt-4 flex items-center justify-center w-full gap-1 text-[11px] font-bold text-slate-500 hover:text-indigo-600 transition-colors bg-slate-50 hover:bg-indigo-50 py-2.5 rounded-xl border border-transparent hover:border-indigo-100 relative z-10">View AI Health <ChevronRight className="w-3 h-3" /></button>
+          <button onClick={() => navigate(`${BASE}/ai-governance`)} className="mt-4 flex items-center justify-center w-full gap-1 text-[11px] font-bold text-slate-500 hover:text-indigo-600 transition-colors bg-slate-50 hover:bg-indigo-50 py-2.5 rounded-2xl border border-transparent hover:border-indigo-100 relative z-10">View AI Health <ChevronRight className="w-3 h-3" /></button>
         </div>
       </div>
     </div>
@@ -1282,7 +1282,7 @@ function BriefView() {
           <select
             value={briefType}
             onChange={e => setBriefType(e.target.value as any)}
-            className="text-[12px] font-bold bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-slate-700 outline-none hover:border-indigo-200 transition-colors cursor-pointer shadow-sm"
+            className="text-[12px] font-bold bg-white border border-slate-200 rounded-2xl px-3 py-2.5 text-slate-700 outline-none hover:border-indigo-200 transition-colors cursor-pointer shadow-sm"
           >
             <option value="MORNING">Morning Brief</option>
             <option value="MIDDAY">Midday Drift</option>
@@ -1291,7 +1291,7 @@ function BriefView() {
           <button
             onClick={generate}
             disabled={generating}
-            className="flex items-center gap-2 text-[12px] font-bold px-4 py-2.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition-colors disabled:opacity-50 shadow-sm shadow-indigo-600/20"
+            className="flex items-center gap-2 text-[12px] font-bold px-4 py-2.5 rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700 transition-colors disabled:opacity-50 shadow-sm shadow-indigo-600/20"
           >
             {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             Generate Now
@@ -1312,7 +1312,7 @@ function BriefView() {
           <div className="rounded-3xl border border-slate-100 bg-white p-7 shadow-sm space-y-6 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-indigo-100 to-purple-50 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity pointer-events-none" />
             <div className="flex items-center gap-2 relative z-10 flex-wrap">
-              <span className="text-sm font-black px-3 py-1.5 rounded-lg" style={{ background: (BRIEF_TYPE_COLOR[latest.briefType] ?? '#888') + '20', color: BRIEF_TYPE_COLOR[latest.briefType] ?? '#888' }}>
+              <span className="text-sm font-black px-3 py-1.5 rounded-2xl" style={{ background: (BRIEF_TYPE_COLOR[latest.briefType] ?? '#888') + '20', color: BRIEF_TYPE_COLOR[latest.briefType] ?? '#888' }}>
                 {BRIEF_TYPE_LABEL[latest.briefType] ?? latest.briefType}
               </span>
               <span className="text-[12px] font-bold text-slate-400 mx-1">·</span>
@@ -1320,7 +1320,7 @@ function BriefView() {
               {latest.oisScore != null && (
                 <>
                   <span className="text-[12px] font-bold text-slate-400 mx-1">·</span>
-                  <span className="text-[12px] font-black px-2.5 py-1 rounded-md" style={{ background: oisBand(latest.oisScore).color + '20', color: oisBand(latest.oisScore).color }}>OIS {latest.oisScore}</span>
+                  <span className="text-[12px] font-black px-2.5 py-1 rounded-2xl" style={{ background: oisBand(latest.oisScore).color + '20', color: oisBand(latest.oisScore).color }}>OIS {latest.oisScore}</span>
                 </>
               )}
             </div>
@@ -1328,7 +1328,7 @@ function BriefView() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
               {paras.map((p, i) => (
                 <div key={p.key} className="flex gap-4 p-4 rounded-2xl bg-slate-50/80 border border-slate-100 hover:bg-white hover:shadow-sm hover:border-slate-200 transition-all">
-                  <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-[12px] font-black shadow-sm" style={{ background: PARA_COLORS[i] + '18', color: PARA_COLORS[i], border: `1px solid ${PARA_COLORS[i]}30` }}>
+                  <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0 text-[12px] font-black shadow-sm" style={{ background: PARA_COLORS[i] + '18', color: PARA_COLORS[i], border: `1px solid ${PARA_COLORS[i]}30` }}>
                     {i + 1}
                   </div>
                   <div>
@@ -1351,7 +1351,7 @@ function BriefView() {
                       <span className="text-[12px] font-bold" style={{ color: BRIEF_TYPE_COLOR[b.briefType] ?? '#888' }}>{BRIEF_TYPE_LABEL[b.briefType] ?? b.briefType}</span>
                       <span className="text-[11px] font-semibold text-slate-400">{new Date(b.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
                     </div>
-                    {b.oisScore != null && <span className="text-[11px] font-black px-2 py-1 rounded-md" style={{ background: oisBand(b.oisScore).color + '15', color: oisBand(b.oisScore).color }}>OIS {b.oisScore}</span>}
+                    {b.oisScore != null && <span className="text-[11px] font-black px-2 py-1 rounded-2xl" style={{ background: oisBand(b.oisScore).color + '15', color: oisBand(b.oisScore).color }}>OIS {b.oisScore}</span>}
                   </div>
                 ))}
               </div>
@@ -1420,7 +1420,7 @@ function AutopilotView() {
         <button
           onClick={triggerTick}
           disabled={ticking || activeMissions.length === 0}
-          className="flex items-center gap-2 text-[12px] font-bold px-4 py-2.5 rounded-xl bg-slate-800 text-white hover:bg-slate-700 transition-colors disabled:opacity-50 shadow-sm"
+          className="flex items-center gap-2 text-[12px] font-bold px-4 py-2.5 rounded-2xl bg-slate-800 text-white hover:bg-slate-700 transition-colors disabled:opacity-50 shadow-sm"
         >
           {ticking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
           Run Tick
@@ -1431,7 +1431,7 @@ function AutopilotView() {
       <div className="flex items-center gap-4 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none" style={{ background: etiColor }} />
         <div className="flex items-center gap-3 relative z-10">
-          <div className="p-2.5 rounded-xl shadow-sm" style={{ background: etiColor + '20', color: etiColor }}>
+          <div className="p-2.5 rounded-2xl shadow-sm" style={{ background: etiColor + '20', color: etiColor }}>
             <Power className="w-5 h-5" />
           </div>
           <div>
@@ -1441,9 +1441,9 @@ function AutopilotView() {
         </div>
         <div className="flex-1 text-right relative z-10">
           {etiScore >= 80 ? (
-            <span className="text-[12px] font-black px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100">✓ AUTONOMOUS eligible</span>
+            <span className="text-[12px] font-black px-3 py-1.5 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100">✓ AUTONOMOUS eligible</span>
           ) : (
-            <span className="text-[12px] font-bold px-3 py-1.5 rounded-lg bg-slate-50 text-slate-500 border border-slate-100">
+            <span className="text-[12px] font-bold px-3 py-1.5 rounded-2xl bg-slate-50 text-slate-500 border border-slate-100">
               Need {80 - etiScore} more points for AUTONOMOUS
             </span>
           )}
@@ -1459,7 +1459,7 @@ function AutopilotView() {
           <button
             onClick={() => createMission.mutate({ mode: 'SUPERVISED' })}
             disabled={createMission.isPending}
-            className="mt-2 text-[12px] font-bold px-5 py-2.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition-all shadow-sm shadow-indigo-600/20 disabled:opacity-50"
+            className="mt-2 text-[12px] font-bold px-5 py-2.5 rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700 transition-all shadow-sm shadow-indigo-600/20 disabled:opacity-50"
           >
             {createMission.isPending ? 'Creating…' : 'Start Supervised Mission'}
           </button>
@@ -1474,24 +1474,24 @@ function AutopilotView() {
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none" style={{ background: modeColor }} />
                 <div className="flex items-center justify-between mb-4 relative z-10">
                   <div className="flex items-center gap-2">
-                    <div className="p-1.5 rounded-lg" style={{ background: modeColor + '15', color: modeColor }}>
+                    <div className="p-1.5 rounded-2xl" style={{ background: modeColor + '15', color: modeColor }}>
                       <Bot className="w-4 h-4" />
                     </div>
                     <span className="text-[13px] font-black tracking-wide" style={{ color: modeColor }}>{m.mode}</span>
-                    <span className="text-[10px] font-black px-2 py-0.5 rounded-md ml-1 tracking-widest" style={{ background: (m.status === 'ACTIVE' ? '#00c875' : '#888') + '15', color: m.status === 'ACTIVE' ? '#00c875' : '#888' }}>
+                    <span className="text-[10px] font-black px-2 py-0.5 rounded-2xl ml-1 tracking-widest" style={{ background: (m.status === 'ACTIVE' ? '#00c875' : '#888') + '15', color: m.status === 'ACTIVE' ? '#00c875' : '#888' }}>
                       {m.status}
                     </span>
                   </div>
-                  <span className="text-[11px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg tabular-nums">{actionCount} action{actionCount !== 1 ? 's' : ''}</span>
+                  <span className="text-[11px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-2xl tabular-nums">{actionCount} action{actionCount !== 1 ? 's' : ''}</span>
                 </div>
                 {actionCount > 0 && (
                   <div className="space-y-2 relative z-10">
                     {(m.actions as any[]).slice(-3).map((a: any, i: number) => (
-                      <div key={i} className="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-[11px] font-semibold">
+                      <div key={i} className="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-100 text-[11px] font-semibold">
                         <span className="text-slate-400 flex-shrink-0 font-bold">{i + 1}.</span>
                         <span className="text-slate-700">{typeof a === 'string' ? a : a?.action ?? JSON.stringify(a)}</span>
-                        {m.mode === 'SUPERVISED' && <span className="ml-auto text-amber-500 font-bold flex-shrink-0 px-2 py-0.5 bg-amber-50 rounded-md">Proposed</span>}
-                        {m.mode === 'AUTONOMOUS' && <span className="ml-auto text-emerald-600 font-bold flex-shrink-0 px-2 py-0.5 bg-emerald-50 rounded-md">Executed</span>}
+                        {m.mode === 'SUPERVISED' && <span className="ml-auto text-amber-500 font-bold flex-shrink-0 px-2 py-0.5 bg-amber-50 rounded-2xl">Proposed</span>}
+                        {m.mode === 'AUTONOMOUS' && <span className="ml-auto text-emerald-600 font-bold flex-shrink-0 px-2 py-0.5 bg-emerald-50 rounded-2xl">Executed</span>}
                       </div>
                     ))}
                   </div>
@@ -1589,7 +1589,7 @@ function SimulatorView() {
                   <div key={d.name} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 hover:bg-white hover:shadow-sm transition-all group">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-[13px] font-bold text-slate-700">{d.name}</span>
-                      <span className={`text-[13px] font-black tabular-nums px-2.5 py-1 rounded-lg ${d.delta >= 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-600'}`}>
+                      <span className={`text-[13px] font-black tabular-nums px-2.5 py-1 rounded-2xl ${d.delta >= 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-600'}`}>
                         {d.delta >= 0 ? '+' : ''}{d.delta}
                       </span>
                     </div>
@@ -1660,9 +1660,9 @@ function CandidatesView() {
       <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-slate-200 to-slate-50 rounded-full blur-3xl opacity-20 pointer-events-none group-hover:opacity-30 transition-opacity" />
       <div className="flex items-center justify-between mb-5 relative z-10">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-slate-100 text-slate-600 shadow-sm"><Shield className="w-5 h-5" /></div>
+          <div className="p-2.5 rounded-2xl bg-slate-100 text-slate-600 shadow-sm"><Shield className="w-5 h-5" /></div>
           <span className="text-base font-black text-slate-800">Promotion Mode</span>
-          <span className={`text-[11px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border shadow-sm ${govMode === 'GOVERNED' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-amber-50 text-amber-600 border-amber-100'}`}>
+          <span className={`text-[11px] font-black uppercase tracking-widest px-3 py-1.5 rounded-2xl border shadow-sm ${govMode === 'GOVERNED' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-amber-50 text-amber-600 border-amber-100'}`}>
             {govMode}
           </span>
           {govData?.setBy && <span className="text-[11px] font-bold text-slate-400">set by {govData.setBy}</span>}
@@ -1672,7 +1672,7 @@ function CandidatesView() {
             <button
               onClick={() => setMode.mutate('GOVERNED')}
               disabled={setMode.isPending}
-              className="text-[11px] font-bold px-4 py-2 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-100 disabled:opacity-50 shadow-sm transition-colors"
+              className="text-[11px] font-bold px-4 py-2 rounded-2xl bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-100 disabled:opacity-50 shadow-sm transition-colors"
             >
               {setMode.isPending ? '…' : 'Force GOVERNED'}
             </button>
@@ -1681,7 +1681,7 @@ function CandidatesView() {
             <button
               onClick={() => setMode.mutate('BOOTSTRAP')}
               disabled={setMode.isPending}
-              className="text-[11px] font-bold px-4 py-2 rounded-xl bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-100 disabled:opacity-50 shadow-sm transition-colors"
+              className="text-[11px] font-bold px-4 py-2 rounded-2xl bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-100 disabled:opacity-50 shadow-sm transition-colors"
             >
               {setMode.isPending ? '…' : 'Revert BOOTSTRAP'}
             </button>
@@ -1691,7 +1691,7 @@ function CandidatesView() {
       {Object.keys(readiness).length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 relative z-10">
           {Object.entries(readiness).map(([key, r]: [string, any]) => (
-            <div key={key} className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-white hover:border-slate-200 hover:shadow-sm transition-all">
+            <div key={key} className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-2xl hover:bg-white hover:border-slate-200 hover:shadow-sm transition-all">
               {r.met
                 ? <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                 : <XCircle     className="w-4 h-4 text-slate-300 shrink-0" />}
@@ -1703,10 +1703,10 @@ function CandidatesView() {
       )}
       <div className="relative z-10">
         {govMode === 'BOOTSTRAP' && allMet && (
-          <p className="text-[12px] font-bold text-emerald-600 mt-4 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-lg">All thresholds met — WAANDA will auto-upgrade on the next cognition cycle.</p>
+          <p className="text-[12px] font-bold text-emerald-600 mt-4 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-2xl">All thresholds met — WAANDA will auto-upgrade on the next cognition cycle.</p>
         )}
         {govMode === 'BOOTSTRAP' && !allMet && (
-          <p className="text-[12px] font-bold text-slate-500 mt-4 px-4 py-2 bg-slate-50 border border-slate-100 rounded-lg">WAANDA is in BOOTSTRAP mode — knowledge artifacts are auto-promoted. WAANDA will self-upgrade to GOVERNED when all thresholds are cleared.</p>
+          <p className="text-[12px] font-bold text-slate-500 mt-4 px-4 py-2 bg-slate-50 border border-slate-100 rounded-2xl">WAANDA is in BOOTSTRAP mode — knowledge artifacts are auto-promoted. WAANDA will self-upgrade to GOVERNED when all thresholds are cleared.</p>
         )}
         {govData?.reason && (
           <p className="text-[11px] font-bold text-slate-400 mt-3 italic">Reason: {govData.reason}</p>
@@ -1741,10 +1741,10 @@ function CandidatesView() {
             <div className="flex items-start justify-between gap-4 relative z-10">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
-                  <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md ${c.kind === 'PRINCIPLE' ? 'bg-violet-50 text-violet-600 border border-violet-100' : 'bg-amber-50 text-amber-600 border border-amber-100'}`}>
+                  <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-2xl ${c.kind === 'PRINCIPLE' ? 'bg-violet-50 text-violet-600 border border-violet-100' : 'bg-amber-50 text-amber-600 border border-amber-100'}`}>
                     {c.kind}
                   </span>
-                  <span className="text-[11px] font-bold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">{c.domain}</span>
+                  <span className="text-[11px] font-bold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-2xl border border-slate-100">{c.domain}</span>
                   <span className="text-[11px] font-black tabular-nums text-slate-400">{Math.round(c.confidence * 100)}% confidence</span>
                 </div>
                 <p className="text-sm font-bold text-slate-700 leading-relaxed mb-2">{c.statement ?? c.title}</p>
@@ -1754,14 +1754,14 @@ function CandidatesView() {
                 <button
                   onClick={() => promote.mutate({ kind: c.kind, id: c.id })}
                   disabled={promote.isPending}
-                  className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-50 text-emerald-600 text-[12px] font-bold hover:bg-emerald-100 border border-emerald-100 disabled:opacity-50 whitespace-nowrap transition-colors shadow-sm"
+                  className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-2xl bg-emerald-50 text-emerald-600 text-[12px] font-bold hover:bg-emerald-100 border border-emerald-100 disabled:opacity-50 whitespace-nowrap transition-colors shadow-sm"
                 >
                   {promote.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />} Approve
                 </button>
                 <button
                   onClick={() => reject.mutate({ kind: c.kind, id: c.id })}
                   disabled={reject.isPending}
-                  className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-rose-50 text-rose-500 text-[12px] font-bold hover:bg-rose-100 border border-rose-100 disabled:opacity-50 whitespace-nowrap transition-colors shadow-sm"
+                  className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-2xl bg-rose-50 text-rose-500 text-[12px] font-bold hover:bg-rose-100 border border-rose-100 disabled:opacity-50 whitespace-nowrap transition-colors shadow-sm"
                 >
                   {reject.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <XCircle className="w-3.5 h-3.5" />} Reject
                 </button>
@@ -1811,7 +1811,7 @@ export function CommandCenterPage() {
   )
 
   if (isError || !data) return (
-    <div className="flex items-center gap-2 text-sm text-[#e2445c] p-4 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)]">
+    <div className="flex items-center gap-2 text-sm text-[#e2445c] p-4 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)]">
       <XCircle className="w-4 h-4 flex-shrink-0" />Command Center could not load. Backend may be starting up.
     </div>
   )
@@ -1840,13 +1840,13 @@ export function CommandCenterPage() {
         </div>
         <div className="flex items-center gap-3">
           {ois && band && (
-            <div className="flex items-center gap-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-2">
+            <div className="flex items-center gap-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-2">
               <Gauge className="w-4 h-4" style={{ color: band.color }} />
               <span className="text-sm font-bold tabular-nums" style={{ color: band.color }}>OIS {ois.score}</span>
               <span className="text-[11px] text-[var(--os-text-2)]">{band.label}</span>
             </div>
           )}
-          <button onClick={() => queryClient.invalidateQueries({ queryKey: ['kimmp-command-center'] })} className="p-2 rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors" title="Refresh">
+          <button onClick={() => queryClient.invalidateQueries({ queryKey: ['kimmp-command-center'] })} className="p-2 rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors" title="Refresh">
             <RefreshCw className="w-4 h-4" />
           </button>
         </div>

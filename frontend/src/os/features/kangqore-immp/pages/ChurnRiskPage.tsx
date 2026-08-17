@@ -99,7 +99,7 @@ export function ChurnRiskPage() {
               12-signal weighted health model. GREEN ≥70, AMBER ≥40, RED &lt;40. Auto-fires KIMMP alert when tier degrades.
             </p>
           </div>
-          <button onClick={() => { scores.refetch(); churnRisk.refetch() }} className="flex items-center gap-1 text-xs px-3 py-2 rounded-lg border" style={{ color: T2, borderColor: BDR }}>
+          <button onClick={() => { scores.refetch(); churnRisk.refetch() }} className="flex items-center gap-1 text-xs px-3 py-2 rounded-2xl border" style={{ color: T2, borderColor: BDR }}>
             <RefreshCw className="w-3 h-3" /> Refresh
           </button>
         </div>
@@ -124,11 +124,11 @@ export function ChurnRiskPage() {
         <div className="flex items-center gap-3">
           <p className="text-xs font-semibold flex-1" style={{ color: T2 }}>Compute health score for customer ID:</p>
           <input value={computingFor ?? ''} onChange={e => setComputingFor(e.target.value)}
-            placeholder="customer-id or cuid…" className="px-3 py-2 text-xs rounded-lg border w-64 focus:outline-none"
+            placeholder="customer-id or cuid…" className="px-3 py-2 text-xs rounded-2xl border w-64 focus:outline-none"
             style={{ borderColor: BDR, background: SURF, color: T1 }} />
           <button disabled={!computingFor?.trim() || compute.isPending}
             onClick={() => computingFor?.trim() && compute.mutate(computingFor.trim())}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
             style={{ background: PURP, color: '#fff' }}>
             <Activity className="w-3.5 h-3.5" />
             {compute.isPending ? 'Computing…' : 'Compute'}
@@ -188,7 +188,7 @@ export function ChurnRiskPage() {
             {selected.playbook.map((step, i) => {
               const Icon = PLAYBOOK_ICON[step] ?? Activity
               return (
-                <div key={step} className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: SURF }}>
+                <div key={step} className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ background: SURF }}>
                   <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0"
                     style={{ background: 'rgba(239,68,68,0.1)', color: RED }}>{i + 1}</div>
                   <Icon className="w-4 h-4 flex-shrink-0" style={{ color: RED }} />
@@ -204,7 +204,7 @@ export function ChurnRiskPage() {
               { label: 'Renewal (days)', value: selected.latestScore.renewalProximityDays           },
               { label: 'Last Decision', value: `${selected.latestScore.daysSinceLastDecision}d ago`},
             ].map(s => (
-              <div key={s.label} className="rounded-xl p-3" style={{ background: 'rgba(239,68,68,0.05)', border: `1px solid rgba(239,68,68,0.15)` }}>
+              <div key={s.label} className="rounded-2xl p-3" style={{ background: 'rgba(239,68,68,0.05)', border: `1px solid rgba(239,68,68,0.15)` }}>
                 <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>{s.label}</p>
                 <p className="text-sm font-bold" style={{ color: T1 }}>{s.value}</p>
               </div>

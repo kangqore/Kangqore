@@ -38,7 +38,7 @@ function diffLines(a: string, b: string): Array<{ type: 'same' | 'add' | 'remove
 function DiffView({ before, after }: { before: string; after: string }) {
   const lines = diffLines(before, after)
   return (
-    <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-3 overflow-x-auto leading-relaxed">
+    <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-3 overflow-x-auto leading-relaxed">
       {lines.map((l, i) => (
         <div key={i} style={{
           background: l.type === 'add' ? 'rgba(16,185,129,0.12)' : l.type === 'remove' ? 'rgba(239,68,68,0.12)' : 'transparent',
@@ -67,11 +67,11 @@ function NewPromptWizard({ onClose }: { onClose: () => void }) {
     return (
       <div className="os-card p-4 space-y-3 border-emerald-500/30">
         <p className="text-xs font-bold text-[var(--os-text-1)]">Registered. Paste this into a call site:</p>
-        <code className="block text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-md px-3 py-2 text-[var(--os-text-1)]">
+        <code className="block text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-[var(--os-text-1)]">
           {`{ promptName: '${created}' }`}
         </code>
         <p className="text-[10px] text-[var(--os-text-2)]">Pass it as the 5th arg meta field on <code>sonnet()</code>/<code>haiku()</code>/<code>opus()</code>, or the 4th arg on AEGIS's <code>callLLM()</code> — the caller's existing inline string stays as a safe fallback.</p>
-        <button onClick={onClose} className="px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold">Done</button>
+        <button onClick={onClose} className="px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold">Done</button>
       </div>
     )
   }
@@ -79,17 +79,17 @@ function NewPromptWizard({ onClose }: { onClose: () => void }) {
   return (
     <div className="os-card p-4 space-y-2">
       <input value={name} onChange={e => setName(e.target.value)} placeholder="prompt name (e.g. renewal_summarizer_system)"
-        className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+        className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
       <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="System prompt content" rows={5}
-        className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none font-mono" />
+        className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none font-mono" />
       <input value={notes} onChange={e => setNotes(e.target.value)} placeholder="Notes (optional)"
-        className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+        className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
       <div className="flex items-center gap-2">
         <button onClick={() => create.mutate()} disabled={create.isPending || !name.trim() || !content.trim()}
-          className="px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+          className="px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
           {create.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Register'}
         </button>
-        <button onClick={onClose} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
+        <button onClick={onClose} className="px-3 py-1.5 rounded-2xl text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
       </div>
     </div>
   )
@@ -148,19 +148,19 @@ function PromptCard({ summary }: { summary: PromptNameSummary }) {
 
           <div>
             <p className="text-[9px] uppercase tracking-wide text-[var(--os-text-2)] mb-1">Active content (v{summary.activeVersion})</p>
-            <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-3 whitespace-pre-wrap text-[var(--os-text-1)]">{active?.content}</pre>
+            <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-3 whitespace-pre-wrap text-[var(--os-text-1)]">{active?.content}</pre>
           </div>
 
           <div className="flex items-center gap-1.5 flex-wrap">
             {versions.map(v => (
               <button key={v} onClick={() => setCompareVersion(v === compareVersion ? null : v)}
-                className={`px-2 py-1 rounded-md text-[10px] font-semibold border ${v === summary.activeVersion ? 'border-emerald-500/30 text-emerald-400' : compareVersion === v ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+                className={`px-2 py-1 rounded-2xl text-[10px] font-semibold border ${v === summary.activeVersion ? 'border-emerald-500/30 text-emerald-400' : compareVersion === v ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
                 v{v}
               </button>
             ))}
             {compareVersion !== null && compareVersion !== summary.activeVersion && (
               <button onClick={() => rollback.mutate(compareVersion)} disabled={rollback.isPending}
-                className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold text-amber-400 border border-amber-500/30">
+                className="flex items-center gap-1 px-2 py-1 rounded-2xl text-[10px] font-semibold text-amber-400 border border-amber-500/30">
                 <ArrowsClockwise size={11} /> Roll back to v{compareVersion}
               </button>
             )}
@@ -192,7 +192,7 @@ export function PromptRegistryStudioPage() {
           </h1>
           <p className="text-xs text-[var(--os-text-2)]">Every system prompt is versioned, stored, and retrievable by name — roll back a bad prompt in seconds.</p>
         </div>
-        <button onClick={() => setShowWizard(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[var(--os-accent)] text-white text-xs font-semibold">
+        <button onClick={() => setShowWizard(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-[var(--os-accent)] text-white text-xs font-semibold">
           <Plus size={13} /> Register new prompt
         </button>
       </div>

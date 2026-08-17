@@ -44,8 +44,8 @@ export function ReasoningExplorer({ sessionId }: { sessionId: string }) {
   const { trace, alternatives } = data;
 
   const Step = ({ icon: Icon, title, value, detail, highlight = false }: any) => (
-    <div className={`relative flex items-start gap-4 p-4 rounded-xl border transition-all duration-300 ${highlight ? 'border-cyan-500/30 bg-cyan-500/[0.04]' : 'border-[var(--os-border)] bg-white/[0.02]'}`}>
-      <div className={`p-2 rounded-lg ${highlight ? 'bg-cyan-500/20 text-cyan-500' : 'bg-white/[0.05] text-[var(--os-text-2)]'}`}>
+    <div className={`relative flex items-start gap-4 p-4 rounded-2xl border transition-all duration-300 ${highlight ? 'border-cyan-500/30 bg-cyan-500/[0.04]' : 'border-[var(--os-border)] bg-white/[0.02]'}`}>
+      <div className={`p-2 rounded-2xl ${highlight ? 'bg-cyan-500/20 text-cyan-500' : 'bg-white/[0.05] text-[var(--os-text-2)]'}`}>
         <Icon className="w-5 h-5" />
       </div>
       <div className="flex-1">
@@ -120,7 +120,7 @@ export function ReasoningExplorer({ sessionId }: { sessionId: string }) {
               </h4>
               <div className="space-y-3">
                 {alternatives.map((alt, idx) => (
-                  <div key={idx} className="p-3 bg-red-500/[0.03] border border-red-500/20 rounded-xl">
+                  <div key={idx} className="p-3 bg-red-500/[0.03] border border-red-500/20 rounded-2xl">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-[var(--os-text-1)] font-semibold text-sm">{alt.action}</span>
                       <span className="text-red-500 text-xs font-mono font-bold">{alt.confidence}% Conf</span>

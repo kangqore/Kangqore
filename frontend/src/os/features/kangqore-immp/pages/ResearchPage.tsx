@@ -59,7 +59,7 @@ function ResultCard({ result }: { result: ResearchResult }) {
               <Clock className="w-3.5 h-3.5" />
               {formatRelative(result.createdAt)}
             </span>
-            <span className="ml-auto text-[11px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-md">{result.confidence}% confidence</span>
+            <span className="ml-auto text-[11px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-2xl">{result.confidence}% confidence</span>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@ function ResultCard({ result }: { result: ResearchResult }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <p className="text-sm font-bold text-blue-600 hover:underline truncate cursor-pointer">{s.title}</p>
-                    <span className="text-[11px] font-bold px-2 py-1 rounded-lg bg-[var(--os-card)] border border-[var(--os-border)] text-[var(--os-text-2)] flex-shrink-0">{sourceDomain}</span>
+                    <span className="text-[11px] font-bold px-2 py-1 rounded-2xl bg-[var(--os-card)] border border-[var(--os-border)] text-[var(--os-text-2)] flex-shrink-0">{sourceDomain}</span>
                   </div>
                   <p className="text-xs font-medium text-[var(--os-text-2)] mt-1 line-clamp-2 leading-relaxed">{s.snippet}</p>
                 </div>
@@ -154,7 +154,7 @@ export function ResearchPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+        <div className="w-8 h-8 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center flex-shrink-0 shadow-lg">
           <Search className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
@@ -165,7 +165,7 @@ export function ResearchPage() {
         </div>
         <button
           onClick={() => refetch()}
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
+          className="w-10 h-10 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
@@ -226,7 +226,7 @@ export function ResearchPage() {
                 <button
                   key={s.label}
                   onClick={() => submit(s.label, s.domain)}
-                  className="text-xs font-bold px-3 py-1.5 rounded-xl bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:bg-slate-100 hover:text-[var(--os-text-1)] transition-colors"
+                  className="text-xs font-bold px-3 py-1.5 rounded-2xl bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:bg-slate-100 hover:text-[var(--os-text-1)] transition-colors"
                 >
                   {s.label}
                 </button>

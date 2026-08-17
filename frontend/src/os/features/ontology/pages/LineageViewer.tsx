@@ -49,7 +49,7 @@ function LineageChain({ record }: { record: any }) {
             <span className="text-[10px] text-[var(--os-text-2)] italic">No sources logged</span>
           ) : (
             sources.map((s: any, i: number) => (
-              <div key={i} className="flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 rounded-lg px-2.5 py-1.5">
+              <div key={i} className="flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 rounded-2xl px-2.5 py-1.5">
                 <Database size={11} className="text-blue-400 flex-shrink-0" />
                 <span className="text-[10px] font-mono text-blue-300">
                   {s.table}
@@ -69,7 +69,7 @@ function LineageChain({ record }: { record: any }) {
 
         {/* Output */}
         {output ? (
-          <div className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 rounded-lg px-2.5 py-1.5">
+          <div className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 rounded-2xl px-2.5 py-1.5">
             <Database size={11} className="text-green-400 flex-shrink-0" />
             <span className="text-[10px] font-mono text-green-300">
               {output.table}
@@ -84,7 +84,7 @@ function LineageChain({ record }: { record: any }) {
 
       {/* Decision text */}
       {record.decisionText && (
-        <div className="bg-[var(--os-surface-0)] rounded-xl p-3 border border-[var(--os-border)]">
+        <div className="bg-[var(--os-surface-0)] rounded-2xl p-3 border border-[var(--os-border)]">
           <p className="text-[11px] text-[var(--os-text-1)] leading-relaxed">{record.decisionText}</p>
         </div>
       )}
@@ -204,14 +204,14 @@ export function LineageViewer() {
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="p-1.5 rounded-lg border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)]"
+              className="p-1.5 rounded-2xl border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)]"
             >
               <CaretLeft size={13} />
             </button>
             <button
               onClick={() => setPage(p => Math.min(pages, p + 1))}
               disabled={page === pages}
-              className="p-1.5 rounded-lg border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)]"
+              className="p-1.5 rounded-2xl border border-[var(--os-border)] disabled:opacity-30 hover:bg-[var(--os-surface-0)]"
             >
               <CaretRight size={13} />
             </button>

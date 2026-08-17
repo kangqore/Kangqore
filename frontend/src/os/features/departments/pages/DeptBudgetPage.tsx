@@ -21,7 +21,7 @@ export function DeptBudgetPage() {
           { label: 'Remaining H1',         value: `₹${Math.round(totalBudget() * 0.5) - totalSpent()}k`, sub: 'Available H1 budget' },
           { label: 'H2 Budget',            value: `₹${Math.round(totalBudget() * 0.5)}k`,    sub: 'Allocated, not started' },
         ].map(item => (
-          <div key={item.label} className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+          <div key={item.label} className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
             <p className="text-xs text-[var(--os-text-2)] mb-1">{item.label}</p>
             <p className="text-2xl font-bold tracking-tight text-[var(--os-text-1)]">{item.value}</p>
             <p className="text-xs text-[var(--os-text-2)] mt-1">{item.sub}</p>
@@ -74,7 +74,7 @@ export function DeptBudgetPage() {
                 {/* Quarterly breakdown */}
                 <div className="grid grid-cols-4 gap-3">
                   {quarters.map(q => (
-                    <div key={q.label} className={`rounded-xl p-3 border border-[var(--os-border)] bg-[var(--os-surface-0)] ${!q.done ? 'opacity-60' : ''}`}>
+                    <div key={q.label} className={`rounded-2xl p-3 border border-[var(--os-border)] bg-[var(--os-surface-0)] ${!q.done ? 'opacity-60' : ''}`}>
                       <p className="text-xs font-semibold text-[var(--os-text-2)] mb-1">{q.label}</p>
                       <p className="text-sm font-bold text-[var(--os-text-1)]">₹{q.budget}k</p>
                       {q.done ? (

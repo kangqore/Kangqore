@@ -45,7 +45,7 @@ export function OKRsPage() {
             <button
               key={q}
               onClick={() => setSelectedQuarter(q)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+              className={`px-4 py-2 rounded-2xl text-xs font-semibold transition-all duration-200 ${
                 selectedQuarter === q
                   ? 'bg-[#579bfc] text-white shadow-sm'
                   : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:border-blue-300'
@@ -90,7 +90,7 @@ export function OKRsPage() {
             <button
               key={f.value}
               onClick={() => setStatusFilter(f.value)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+              className={`px-4 py-2 rounded-2xl text-xs font-semibold transition-all duration-200 ${
                 statusFilter === f.value
                   ? 'bg-[#579bfc] text-white shadow-sm'
                   : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:border-blue-300'
@@ -103,7 +103,7 @@ export function OKRsPage() {
         <select
           value={pillarFilter}
           onChange={e => setPillarFilter(e.target.value)}
-          className="h-10 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-4 pr-10 outline-none focus:border-blue-400"
+          className="h-10 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-4 pr-10 outline-none focus:border-blue-400"
         >
           <option value="all">All Pillars</option>
           {pillars.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}

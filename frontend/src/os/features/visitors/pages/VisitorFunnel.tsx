@@ -72,7 +72,7 @@ export function VisitorFunnel() {
               <div className="flex items-center gap-3">
                 {/* Stage number */}
                 <div
-                  className="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black flex-shrink-0"
+                  className="w-6 h-6 rounded-2xl flex items-center justify-center text-[10px] font-black flex-shrink-0"
                   style={{ background: stage.dimColor, color: stage.color }}
                 >
                   {i + 1}
