@@ -72,6 +72,7 @@ import cdcRouter             from './routes/cdc';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
 import { WAANDA } from './kangqore-view/waanda/WaandaBootstrap';
+import { hyperGraphDaemon } from './kangqore-view/kernel/hypergraph/hyperGraphSync.daemon';
 import { authenticate, authorize } from './middleware/auth';
 import { apiKeyAuth } from './middleware/apiKeyAuth';
 import { v1RateLimiter } from './middleware/v1RateLimiter';
@@ -529,6 +530,9 @@ server.listen(PORT, () => {
   import('./kangqore-view/automation/PackAutoInstaller').then(({ installAllPacks }) =>
     installAllPacks().catch((e: unknown) => console.error('[PackAutoInstaller] Failed:', e))
   )
+
+  // KERNEL: Hyper-Graph Boot Sequence (In-Memory Traversal Engine)
+  hyperGraphDaemon.bootSequence().catch((e: unknown) => console.error('[HyperGraph] Boot failed:', e));
 
   // WAANDA Boot Sequence — single constitutional entry point for all subsystems
   WAANDA.boot().catch((e: unknown) => console.error('[WAANDA] Boot failed:', e));
