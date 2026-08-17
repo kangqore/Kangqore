@@ -1,4 +1,4 @@
-import logger from '../../../../utils/logger'
+import logger from '../../../utils/logger'
 import { SynapseSignal, SubsystemType } from './synapseMesh.service'
 
 interface SignalInterception {
@@ -10,8 +10,8 @@ interface SignalInterception {
 interface GodfatherDirective {
   active: boolean
   directiveMessage: string
-  haltAllOrigins?: SubsystemType[]
-  forceRedirects?: Map<SubsystemType, SubsystemType> // Map Origin -> Forced Target
+  haltAllOrigins: SubsystemType[]
+  forceRedirects: Map<SubsystemType, SubsystemType> // Map Origin -> Forced Target
 }
 
 /**

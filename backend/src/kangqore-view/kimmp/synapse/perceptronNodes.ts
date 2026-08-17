@@ -1,6 +1,6 @@
 import { synapseMesh, SynapseSignal } from './synapseMesh.service'
-import logger from '../../../../utils/logger'
-import { getIO } from '../../../../socket'
+import logger from '../../../utils/logger'
+import { getIO } from '../../../socket'
 
 /**
  * PerceptronNodes

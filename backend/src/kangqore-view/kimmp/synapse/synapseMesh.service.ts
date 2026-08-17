@@ -1,4 +1,4 @@
-import logger from '../../../../utils/logger'
+import logger from '../../../utils/logger'
 import { codeOverlord } from './codeOverlord.service'
 
 export type SubsystemType = 'NOLAN' | 'AEGIS' | 'ALIS' | 'HCIP' | 'EQORE' | 'VIS' | 'KIMMP'
