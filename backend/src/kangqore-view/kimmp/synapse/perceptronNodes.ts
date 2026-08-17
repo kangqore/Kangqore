@@ -1,5 +1,6 @@
 import { synapseMesh, SynapseSignal } from './synapseMesh.service'
-import logger from '../../../../utils/logger'
+import logger from '../../../utils/logger'
+import { getIO } from '../../../socket'
 
 /**
  * PerceptronNodes
@@ -48,8 +49,18 @@ export function bootPerceptronNetwork() {
 
   // 6. VIS (Visual Intelligence Node)
   synapseMesh.registerNode('VIS', async (signal: SynapseSignal) => {
-    if (signal.signalType === 'ONTOLOGY_SHIFT') {
-      logger.info(`[Perceptron:VIS] Received ontology shift from ${signal.origin}. Dynamically re-rendering UI layouts...`)
+    if (signal.signalType === 'UX_ANOMALY' || signal.signalType === 'ONTOLOGY_SHIFT') {
+      logger.info(`[Perceptron:VIS] Received visual shift trigger from ${signal.origin}. Emitting War Room layout to frontend...`)
+      
+      const io = getIO()
+      if (io) {
+        io.emit('vis:layout_shift', {
+          layoutState: 'WAR_ROOM',
+          context: signal.payload,
+          origin: signal.origin,
+          timestamp: signal.timestamp
+        })
+      }
     }
   })
 

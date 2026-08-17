@@ -445,6 +445,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
 import { ThemeProvider } from './context/ThemeContext';
 import { PodcastProvider } from './context/PodcastContext';
+import { AdaptiveProvider } from './context/AdaptiveContextManager';
 import PodcastMiniPlayer from './components/PodcastMiniPlayer';
 
 /**
@@ -460,10 +461,12 @@ function App() {
           <AuthProvider>
             <GlobalAuthPrompt />
             <EROOT />
-            <PodcastProvider>
-              <AppContent />
-              <PodcastMiniPlayer />
-            </PodcastProvider>
+            <AdaptiveProvider>
+              <PodcastProvider>
+                <AppContent />
+                <PodcastMiniPlayer />
+              </PodcastProvider>
+            </AdaptiveProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
