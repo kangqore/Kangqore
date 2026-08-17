@@ -219,14 +219,14 @@ export function Rail() {
           <RailBtn
             label="Portal Home"
             icon={HouseIcon}
-            isActive={pathname === '/kangqore-view/team' || pathname === '/kangqore-view/team/'}
+            isActive={pathname === '/kangqore-view/team' || pathname === '/kangqore-view/team/' || !teamItems.some(i => isPortalItemActive(i.path))}
             onClick={() => navigate('/kangqore-view/team')}
           />
         ) : isClientPortal ? (
           <RailBtn
             label="Client Home"
             icon={HouseIcon}
-            isActive={pathname === '/kangqore-view/client' || pathname === '/kangqore-view/client/'}
+            isActive={pathname === '/kangqore-view/client' || pathname === '/kangqore-view/client/' || !clientItems.some(i => isPortalItemActive(i.path))}
             onClick={() => navigate('/kangqore-view/client')}
           />
         ) : (
@@ -234,7 +234,7 @@ export function Rail() {
             <RailBtn
               label={HOME.label}
               icon={HOME.icon}
-              isActive={activeItem?.id === 'home'}
+              isActive={!activeItem || activeItem.id === 'home'}
               onClick={() => handleClick(HOME)}
             />
             {RECENT && (

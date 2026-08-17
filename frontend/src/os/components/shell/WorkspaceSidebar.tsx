@@ -160,10 +160,14 @@ export function WorkspaceSidebar() {
     {sidebarItems.length > 0 && (
       <button
         onClick={toggleSidebar}
-        className="absolute -right-3 top-6 z-50 w-6 h-6 rounded-full bg-white border border-border shadow-sm flex items-center justify-center text-text-muted hover:text-text-primary transition-all duration-300"
-        style={{ transform: sidebarCollapsed ? 'rotate(180deg)' : 'none' }}
+        className={cn(
+          "absolute z-50 flex items-center justify-center transition-all duration-300 text-text-muted hover:text-text-primary",
+          sidebarCollapsed 
+            ? "top-3 -right-8 w-8 h-8 bg-surface-secondary/90 backdrop-blur-md border border-border border-l-0 rounded-r-lg shadow-sm"
+            : "top-3 right-3 w-8 h-8 rounded-lg hover:bg-black/5 dark:hover:bg-white/10"
+        )}
       >
-        <SidebarSimpleIcon weight="fill" className="w-[12px] h-[12px]" />
+        <SidebarSimpleIcon weight="fill" className={cn("w-4 h-4 transition-transform duration-300", sidebarCollapsed ? "rotate-180" : "")} />
       </button>
     )}
     </div>
