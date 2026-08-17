@@ -16,7 +16,7 @@ import { type RailEntry, RAIL_ITEMS, getActiveRailItem } from '@lib/nav'
 import { useUIStore } from '@store/ui'
 
 const HOME     = RAIL_ITEMS.find(i => i.id === 'home')!
-const INTEL    = RAIL_ITEMS.filter(i => ['waanda','kimmp','keos','aegis','ontology','neural-network','relay','intelligence'].includes(i.id))
+const INTEL    = RAIL_ITEMS.filter(i => ['waanda','kimmp','keos','aegis','ontology','relay','intelligence'].includes(i.id))
 const BUSINESS = RAIL_ITEMS.filter(i => ['crm','core','operations'].includes(i.id))
 const BOTTOM   = RAIL_ITEMS.find(i => i.id === 'settings')!
 

@@ -146,7 +146,6 @@ const SettingsModule     = React.lazy(() => import('./os/features/settings').the
 const SchedulingModule   = React.lazy(() => import('./os/features/scheduling').then(m => ({ default: m.SchedulingModule })));
 const AegisModule        = React.lazy(() => import('./os/features/aegis').then(m => ({ default: m.AegisModule })));
 const OntologyModule     = React.lazy(() => import('./os/features/ontology').then(m => ({ default: m.OntologyModule })));
-const NeuralNetworkModule = React.lazy(() => import('./os/features/neural-network').then(m => ({ default: m.NeuralNetworkModule })));
 const UrgiStudioModule    = React.lazy(() => import('./os/features/urgi-studio/RelationshipStudio'));
 const BidsModule         = React.lazy(() => import('./os/features/bids').then(m => ({ default: m.BidsModule })));
 const MarketplaceModule  = React.lazy(() => import('./os/features/marketplace').then(m => ({ default: m.MarketplaceModule })));
@@ -300,7 +299,6 @@ function AppContent() {
             <Route path="ops-centre/*"     element={<OpsCentreModule />}        />
             <Route path="aegis/*"          element={<AegisModule />}            />
             <Route path="ontology/*"       element={<OntologyModule />}         />
-            <Route path="neural-network/*" element={<NeuralNetworkModule />}    />
             <Route path="kangqore-urgi/*"    element={<UrgiStudioModule />}       />
             <Route path="settings/*"       element={<SettingsModule />}      />
             <Route path="relay/*"          element={<RelayPage />}           />

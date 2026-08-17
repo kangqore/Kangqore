@@ -272,21 +272,6 @@ export const RAIL_ITEMS: RailEntry[] = [
     ],
   },
   {
-    id: 'neural-network',
-    label: 'Neural Network',
-    icon: ShareNetworkIcon,
-    defaultPath: `${BASE}/neural-network`,
-    matchPrefixes: [`${BASE}/neural-network`],
-    sidebarItems: [
-      { id: 'nn-cortex',      label: '3D Neural Cortex',   path: `${BASE}/neural-network`,                 category: 'Cortex' },
-      { id: 'nn-identity',    label: 'Identity Neurons',    path: `${BASE}/neural-network?group=identity`,    category: 'Cortex' },
-      { id: 'nn-arch',        label: 'Architecture Stack',  path: `${BASE}/neural-network?group=architecture`,category: 'Cortex' },
-      { id: 'nn-commercial',  label: 'Commercial Synapses', path: `${BASE}/neural-network?group=commercial`,  category: 'Cortex' },
-      { id: 'nn-ops',         label: 'Ops Telemetry',       path: `${BASE}/neural-network?group=ops`,         category: 'Cortex' },
-      { id: 'nn-captures',    label: 'Star Captures',       path: `${BASE}/neural-network?group=capture`,     category: 'Cortex', badge: 'live' },
-    ],
-  },
-  {
     id: 'relay',
     label: 'RELAY',
     icon: ChatCircleDotsIcon,
@@ -455,7 +440,6 @@ export const navGroups: NavGroup[] = [
       { id: 'systems',        label: 'Systems',        icon: HardDrivesIcon,      path: `${BASE}/systems`        },
       { id: 'aegis',          label: 'AEGIS',          icon: ShieldCheckeredIcon, path: `${BASE}/aegis`          },
       { id: 'ontology',       label: 'Ontology',       icon: GraphIcon,           path: `${BASE}/ontology`       },
-      { id: 'neural-network', label: 'Neural Network', icon: ShareNetworkIcon,    path: `${BASE}/neural-network` },
       { id: 'agent-logs',     label: 'Agent Logs',     icon: ScrollIcon,          path: `${BASE}/agent-logs`     },
       { id: 'analytics',      label: 'Analytics',      icon: ChartBarIcon,        path: `${BASE}/analytics`,
         children: [

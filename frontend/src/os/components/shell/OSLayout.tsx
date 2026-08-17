@@ -72,7 +72,6 @@ export function OSLayout() {
   const isWaandaGUI      = pathname === WAANDA_ROOT || pathname === `${WAANDA_ROOT}/`
   const isWaandaSubroute = !isWaandaGUI && pathname.startsWith(`${WAANDA_ROOT}/`)
   const isRelay          = pathname.includes('/relay')
-  const isNeuralNetwork  = pathname.includes('/neural-network')
   const isUrgi           = pathname.includes('/kangqore-urgi')
 
   const rootStyle = isWaandaGUI ? WAANDA_TOKENS : LIGHT_TOKENS
@@ -82,10 +81,10 @@ export function OSLayout() {
       {!isWaandaGUI && <AmbientBackground />}
       {!isWaandaGUI && <Topbar />}
       <div className="flex flex-1 min-h-0 relative z-10 w-full overflow-hidden">
-        {!isWaandaGUI && !isNeuralNetwork && <div className="hidden md:flex h-full"><Rail /></div>}
-        {!isWaandaGUI && !isNeuralNetwork && <WorkspaceSidebar />}
+        {!isWaandaGUI && <div className="hidden md:flex h-full"><Rail /></div>}
+        {!isWaandaGUI && <WorkspaceSidebar />}
 
-        <div className={`flex flex-col flex-1 min-w-0 overflow-hidden m-0 z-10 os-main-content${isWaandaGUI ? ' !bg-black' : (isNeuralNetwork ? ' !bg-black !m-0 md:!my-0 md:!mr-0 md:!rounded-none' : ' md:my-2 md:mr-2 md:rounded-2xl')}${!isWaandaGUI && !isNeuralNetwork ? ' pb-[56px] md:pb-0' : ''}`}>
+        <div className={`flex flex-col flex-1 min-w-0 overflow-hidden m-0 z-10 os-main-content${isWaandaGUI ? ' !bg-black' : ' md:my-2 md:mr-2 md:rounded-2xl'}${!isWaandaGUI ? ' pb-[56px] md:pb-0' : ''}`}>
           {isWaandaGUI ? (
             <main className="flex-1 overflow-y-auto overflow-x-hidden !bg-black !m-0 !rounded-none !border-none">
               <ModuleShell>
@@ -104,12 +103,6 @@ export function OSLayout() {
                 <Suspense fallback={<ContentLoader />}><Outlet /></Suspense>
               </ModuleShell>
             </div>
-          ) : isNeuralNetwork ? (
-            <main className="flex-1 overflow-hidden m-0 p-0 bg-black relative">
-              <ModuleShell>
-                <Suspense fallback={<ContentLoader />}><Outlet /></Suspense>
-              </ModuleShell>
-            </main>
           ) : isRelay ? (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
               <ModuleShell>
@@ -128,7 +121,7 @@ export function OSLayout() {
         </div>
       </div>
 
-      {!isWaandaGUI && !isNeuralNetwork && <MobileNav />}
+      {!isWaandaGUI && <MobileNav />}
       <NotificationPanel />
       <Toaster />
       <CommandPalette />
