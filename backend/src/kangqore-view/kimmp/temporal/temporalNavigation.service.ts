@@ -1,5 +1,6 @@
 import logger from '../../../utils/logger'
 import { OntologyTimeSeriesService } from '../../eof/OntologyTimeSeries'
+import { aegisDeterminism } from '../../esf/aegis/aegisDeterminism.service'
 
 /**
  * TemporalNavigationService
@@ -36,8 +37,15 @@ export class TemporalNavigationService {
     logger.info(`[TemporalFabric] Invoking KIMMP Simulation Engine (WAANDAx LLM) for predictive trajectory of ${objectId} at ${targetCoordinate.toISOString()}`)
     
     // Mocking the WAANDAx simulation for the semantic response
+    let rawProjectedRiskScore = 0.84 // E.g., WAANDAx hallucinates a very high risk score
+    
+    // AEGIS Determinism Leash: Clamp the WAANDAx prediction to historical physics
+    const riskCheck = await aegisDeterminism.verifyPrediction(objectId, 'riskScore', rawProjectedRiskScore)
+
     const simulatedData = {
-      projectedRiskScore: 0.84,
+      projectedRiskScore: riskCheck.clampedValue, // The safe, bounded value
+      rawWaandaxScore: rawProjectedRiskScore,
+      isHallucination: riskCheck.isHallucination,
       confidenceInterval: 0.92,
       simulatedAnomalies: [
         'High probability of capacity collapse due to current velocity vector.'
