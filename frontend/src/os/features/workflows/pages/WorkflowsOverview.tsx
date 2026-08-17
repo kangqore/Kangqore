@@ -36,7 +36,7 @@ function WorkflowCard({ wf }: { wf: Workflow }) {
       <CardBody className="p-5">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[var(--os-surface-0)] border border-[var(--os-border)] flex items-center justify-center flex-shrink-0">
+            <div className="w-9 h-9 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] flex items-center justify-center flex-shrink-0">
               <GitBranch className="w-4 h-4 text-[var(--os-text-2)]" />
             </div>
             <div>

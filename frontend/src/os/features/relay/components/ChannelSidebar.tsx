@@ -23,7 +23,7 @@ function ChannelRow({ ch, isActive, onClick }: { ch: Channel; isActive: boolean;
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-2 px-3 py-1.5 rounded-xl text-left transition-all group ${
+      className={`w-full flex items-center gap-2 px-3 py-1.5 rounded-2xl text-left transition-all group ${
         isActive
           ? 'bg-slate-100/80 text-[var(--os-text-1)] shadow-sm border border-[var(--os-border)]'
           : 'text-[var(--os-text-2)] hover:bg-slate-50 hover:text-[var(--os-text-1)] border border-transparent'
@@ -100,7 +100,7 @@ export function ChannelSidebar({ activeChannelId, onSelect }: Props) {
           </button>
         </div>
         {/* Search */}
-        <div className="flex items-center gap-2 bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-os-blue/20 transition-all">
+        <div className="flex items-center gap-2 bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-os-blue/20 transition-all">
           <MagnifyingGlass size={12} className="text-[var(--os-text-3)] flex-shrink-0" />
           <input
             value={search}

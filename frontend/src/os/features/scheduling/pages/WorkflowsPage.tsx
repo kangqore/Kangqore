@@ -108,7 +108,7 @@ export function WorkflowsPage() {
             <div>
               <label className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest block mb-1.5">Event type (optional)</label>
               <select value={form.eventTypeId} onChange={e => set('eventTypeId', e.target.value)}
-                className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400">
+                className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400">
                 <option value="">All event types</option>
                 {eventTypes.map(et => <option key={et.id} value={et.id}>{et.name}</option>)}
               </select>
@@ -118,7 +118,7 @@ export function WorkflowsPage() {
               <div>
                 <label className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest block mb-1.5">Trigger</label>
                 <select value={form.trigger} onChange={e => set('trigger', e.target.value)}
-                  className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400">
+                  className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400">
                   <option value="ON_BOOKED">Immediately when booked</option>
                   <option value="BEFORE_EVENT">Before event starts</option>
                   <option value="AFTER_EVENT">After event ends</option>
@@ -130,9 +130,9 @@ export function WorkflowsPage() {
                   <label className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest block mb-1.5">Offset</label>
                   <div className="flex gap-2">
                     <input type="number" min={1} value={form.offsetValue} onChange={e => set('offsetValue', Number(e.target.value))}
-                      className="w-20 h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400" />
+                      className="w-20 h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400" />
                     <select value={form.offsetUnit} onChange={e => set('offsetUnit', e.target.value)}
-                      className="flex-1 h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-2 focus:outline-none focus:border-blue-400">
+                      className="flex-1 h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-2 focus:outline-none focus:border-blue-400">
                       <option value="minutes">minutes</option>
                       <option value="hours">hours</option>
                       <option value="days">days</option>
@@ -145,7 +145,7 @@ export function WorkflowsPage() {
             <div>
               <label className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest block mb-1.5">Action</label>
               <select value={form.action} onChange={e => set('action', e.target.value)}
-                className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400">
+                className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400">
                 <option value="SEND_EMAIL">Send Email</option>
                 <option value="CALL_WEBHOOK">Trigger Webhook</option>
               </select>
@@ -156,7 +156,7 @@ export function WorkflowsPage() {
                 <div>
                   <label className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest block mb-1.5">Recipient</label>
                   <select value={form.emailRecipient} onChange={e => set('emailRecipient', e.target.value)}
-                    className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400">
+                    className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400">
                     <option value="invitee">Invitee</option>
                     <option value="host">Host</option>
                     <option value="both">Both</option>
@@ -166,7 +166,7 @@ export function WorkflowsPage() {
                   <label className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest block mb-1.5">Subject (optional)</label>
                   <input type="text" value={form.emailSubject} onChange={e => set('emailSubject', e.target.value)}
                     placeholder="Your meeting is confirmed"
-                    className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400" />
+                    className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400" />
                 </div>
               </div>
             )}
@@ -176,7 +176,7 @@ export function WorkflowsPage() {
                 <label className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest block mb-1.5">Webhook URL *</label>
                 <input type="url" value={form.webhookUrl} onChange={e => set('webhookUrl', e.target.value)}
                   placeholder="https://your-app.com/webhook"
-                  className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400" />
+                  className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-blue-400" />
               </div>
             )}
 
@@ -205,7 +205,7 @@ export function WorkflowsPage() {
           <Card key={wf.id}>
             <CardBody className="p-4">
               <div className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-xl bg-[var(--os-surface-0)] border border-[var(--os-border)] flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] flex items-center justify-center flex-shrink-0">
                   {wf.action === 'SEND_EMAIL'
                     ? <Mail className="w-4 h-4 text-blue-400" />
                     : <Webhook className="w-4 h-4 text-purple-400" />
@@ -222,7 +222,7 @@ export function WorkflowsPage() {
                 </div>
                 <Badge variant="neutral" size="sm">{wf.action === 'SEND_EMAIL' ? 'Email' : 'Webhook'}</Badge>
                 <button onClick={() => { if (confirm('Delete workflow?')) remove(wf.id) }}
-                  className="p-1.5 rounded-lg text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)] transition-colors">
+                  className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-surface-0)] transition-colors">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>

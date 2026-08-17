@@ -12,7 +12,7 @@ function SkeletonCard() {
   return (
     <div className="os-card p-5 animate-pulse">
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-xl bg-slate-700 flex-shrink-0" />
+        <div className="w-12 h-12 rounded-2xl bg-slate-700 flex-shrink-0" />
         <div className="flex-1 space-y-2">
           <div className="h-4 w-2/3 rounded bg-slate-700" />
           <div className="h-3 w-1/3 rounded bg-slate-800" />
@@ -118,7 +118,7 @@ export function PartnersOverview() {
             <button
               key={t}
               onClick={() => setTier(t)}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all border"
+              className="px-3 py-1.5 rounded-2xl text-xs font-bold capitalize transition-all border"
               style={
                 tierFilter === t
                   ? { background: tb?.bg ?? '#579bfc', color: tb?.text ?? '#fff', borderColor: tb?.bg ?? '#579bfc' }
@@ -154,7 +154,7 @@ export function PartnersOverview() {
                     <tr key={partner.id} onClick={() => open(partner.id)} className="hover:bg-[var(--os-surface-0)] transition-colors cursor-pointer">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-xs text-white" style={{ background: '#579bfc' }}>
+                          <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0 font-bold text-xs text-white" style={{ background: '#579bfc' }}>
                             {partner.logo}
                           </div>
                           <div className="min-w-0">
@@ -211,7 +211,7 @@ export function PartnersOverview() {
             >
               <div className="flex items-start gap-4">
                 {/* Avatar */}
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm text-white" style={{ background: '#579bfc' }}>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 font-bold text-sm text-white" style={{ background: '#579bfc' }}>
                   {partner.logo}
                 </div>
                 <div className="flex-1 min-w-0">

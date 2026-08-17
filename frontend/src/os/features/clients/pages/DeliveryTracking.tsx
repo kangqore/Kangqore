@@ -24,7 +24,7 @@ const STATUS_COLOR: Record<MilestoneStatus, string> = {
   delayed:     'bg-red-500',
 }
 const inputStyle = { background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }
-const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-[var(--os-text-1)] placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
+const inputClass = 'w-full rounded-2xl px-3 py-2 text-[13px] text-[var(--os-text-1)] placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
 
 function AddMilestoneModal({ clients, onClose }: { clients: { id: string; name: string }[]; onClose: () => void }) {
   const qc = useQueryClient()
@@ -80,7 +80,7 @@ function AddMilestoneModal({ clients, onClose }: { clients: { id: string; name: 
         <div className="flex justify-end gap-2 pt-1">
           <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mutate()} disabled={isPending || !form.clientId || !form.title || !form.dueDate}
-            className="px-4 py-1.5 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50"
+            className="px-4 py-1.5 rounded-2xl text-[13px] font-semibold text-white disabled:opacity-50"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             {isPending ? 'Saving…' : 'Add Milestone'}
           </button>
@@ -114,7 +114,7 @@ export function DeliveryTracking() {
           <p className="text-sm text-[var(--os-text-2)] mt-0.5">{milestones.length} milestones across {activeClients.length} clients</p>
         </div>
         <button onClick={() => setShowAdd(true)}
-          className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-white text-[13px] font-semibold"
+          className="flex items-center gap-1.5 h-8 px-3 rounded-2xl text-white text-[13px] font-semibold"
           style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
           <Plus className="w-3.5 h-3.5" /> Add Milestone
         </button>
@@ -125,7 +125,7 @@ export function DeliveryTracking() {
           <Truck className="w-10 h-10 text-slate-800" />
           <p className="text-sm font-semibold text-[var(--os-text-2)]">No milestones yet</p>
           <p className="text-xs text-[var(--os-text-2)] max-w-xs">Add milestones to track delivery progress across your client engagements.</p>
-          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-white text-[13px] font-semibold mt-2"
+          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-2xl text-white text-[13px] font-semibold mt-2"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             <Plus className="w-3.5 h-3.5" /> Add first milestone
           </button>
@@ -157,7 +157,7 @@ export function DeliveryTracking() {
             <Card key={client.id}>
               {/* Client header */}
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-os-blue to-os-cyan flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-bold text-sm">{client.logo}</span>
                 </div>
                 <div className="flex-1 min-w-0">

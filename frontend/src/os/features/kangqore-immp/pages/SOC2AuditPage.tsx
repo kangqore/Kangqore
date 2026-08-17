@@ -84,7 +84,7 @@ export function SOC2AuditPage() {
           </p>
         </div>
         <button onClick={() => setShowForm(true)}
-          className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg"
+          className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-2xl"
           style={{ background: PURP, color: '#fff' }}>
           <Plus className="w-3.5 h-3.5" /> New Audit Period
         </button>
@@ -99,7 +99,7 @@ export function SOC2AuditPage() {
           { code: 'PI', label: 'Processing Integrity', color: AMB  },
           { code: 'P',  label: 'Privacy',             color: RED  },
         ].map(tc => (
-          <div key={tc.code} className="rounded-xl p-3 text-center"
+          <div key={tc.code} className="rounded-2xl p-3 text-center"
             style={{ background: `${tc.color}12`, border: `1px solid ${tc.color}40` }}>
             <p className="text-lg font-black" style={{ color: tc.color }}>{tc.code}</p>
             <p className="text-[10px] mt-0.5" style={{ color: T2 }}>{tc.label}</p>
@@ -113,7 +113,7 @@ export function SOC2AuditPage() {
           <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: T2 }}>Audit Periods</p>
           {periods.map(p => (
             <button key={p.id} onClick={() => setSelected(p.id)}
-              className="w-full text-left rounded-xl p-4 space-y-1.5 transition-colors"
+              className="w-full text-left rounded-2xl p-4 space-y-1.5 transition-colors"
               style={{ background: selected === p.id ? `${PURP}18` : CARD, border: `1px solid ${selected === p.id ? PURP : BDR}` }}>
               <div className="flex items-start justify-between gap-2">
                 <p className="text-sm font-semibold" style={{ color: T1 }}>{p.label}</p>
@@ -136,7 +136,7 @@ export function SOC2AuditPage() {
         {/* Detail */}
         <div className="lg:col-span-2">
           {!period && (
-            <div className="rounded-xl p-12 flex flex-col items-center justify-center gap-3 h-full"
+            <div className="rounded-2xl p-12 flex flex-col items-center justify-center gap-3 h-full"
               style={{ background: CARD, border: `1px dashed ${BDR}` }}>
               <Shield className="w-8 h-8" style={{ color: T2 }} />
               <p className="text-sm" style={{ color: T2 }}>Select an audit period</p>
@@ -146,7 +146,7 @@ export function SOC2AuditPage() {
           {period && (
             <div className="space-y-4">
               {/* Header */}
-              <div className="rounded-xl p-5" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+              <div className="rounded-2xl p-5" style={{ background: CARD, border: `1px solid ${BDR}` }}>
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h3 className="font-black text-base" style={{ color: T1 }}>{period.label}</h3>
@@ -160,14 +160,14 @@ export function SOC2AuditPage() {
                     <button
                       onClick={() => collectMut.mutate(period.id)}
                       disabled={collectMut.isPending}
-                      className="text-xs font-semibold px-3 py-1.5 rounded-lg"
+                      className="text-xs font-semibold px-3 py-1.5 rounded-2xl"
                       style={{ background: `${BLUE}18`, color: BLUE }}>
                       {collectMut.isPending ? 'Collecting…' : '⚡ Collect Evidence'}
                     </button>
                     <a
                       href={`/api/admin/kangqore-immp/soc2/periods/${period.id}/export`}
                       download
-                      className="text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1"
+                      className="text-xs font-semibold px-3 py-1.5 rounded-2xl flex items-center gap-1"
                       style={{ background: `${GRN}18`, color: GRN }}>
                       <Download className="w-3 h-3" /> Export
                     </a>
@@ -181,20 +181,20 @@ export function SOC2AuditPage() {
                       <label className="text-[10px] uppercase tracking-wider" style={{ color: T2 }}>Controls Passed (per auditor)</label>
                       <input type="number" min={0} value={verdictForm.controlsPassed}
                         onChange={e => setVerdictForm(f => ({ ...f, controlsPassed: Number(e.target.value) }))}
-                        className="w-full text-sm px-3 py-1.5 rounded-lg mt-1"
+                        className="w-full text-sm px-3 py-1.5 rounded-2xl mt-1"
                         style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }} />
                     </div>
                     <div>
                       <label className="text-[10px] uppercase tracking-wider" style={{ color: T2 }}>Controls Failed (per auditor)</label>
                       <input type="number" min={0} value={verdictForm.controlsFailed}
                         onChange={e => setVerdictForm(f => ({ ...f, controlsFailed: Number(e.target.value) }))}
-                        className="w-full text-sm px-3 py-1.5 rounded-lg mt-1"
+                        className="w-full text-sm px-3 py-1.5 rounded-2xl mt-1"
                         style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }} />
                     </div>
                     <div className="col-span-2 flex gap-2">
-                      <button onClick={() => setEditingVerdict(false)} className="flex-1 text-xs py-1.5 rounded-lg" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
+                      <button onClick={() => setEditingVerdict(false)} className="flex-1 text-xs py-1.5 rounded-2xl" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
                       <button onClick={() => verdictMut.mutate({ id: period.id, ...verdictForm })} disabled={verdictMut.isPending}
-                        className="flex-1 text-xs font-semibold py-1.5 rounded-lg" style={{ background: PURP, color: '#fff' }}>
+                        className="flex-1 text-xs font-semibold py-1.5 rounded-2xl" style={{ background: PURP, color: '#fff' }}>
                         {verdictMut.isPending ? 'Saving…' : 'Save auditor verdict'}
                       </button>
                     </div>
@@ -206,7 +206,7 @@ export function SOC2AuditPage() {
                       { l: 'Controls Failed', v: period.controlsFailed, color: RED },
                       { l: 'Pass Rate', v: `${passRate}%`, color: passRate >= 80 ? GRN : passRate >= 60 ? AMB : RED },
                     ].map(x => (
-                      <div key={x.l} className="rounded-lg p-3 text-center"
+                      <div key={x.l} className="rounded-2xl p-3 text-center"
                         style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}` }}>
                         <p className="text-xl font-black" style={{ color: x.color }}>{x.v}</p>
                         <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: T2 }}>{x.l}</p>
@@ -237,7 +237,7 @@ export function SOC2AuditPage() {
                 <div className="flex gap-2 mt-4">
                   {['IN_PROGRESS','SUBMITTED','COMPLETE'].map(s => (
                     <button key={s} onClick={() => statusMut.mutate({ id: period.id, status: s })}
-                      className="text-xs font-semibold px-2 py-1 rounded-lg transition-colors"
+                      className="text-xs font-semibold px-2 py-1 rounded-2xl transition-colors"
                       style={{
                         background: period.status === s ? `${STATUS_COLOR[s]}30` : `${BDR}30`,
                         color: period.status === s ? STATUS_COLOR[s] : T2,
@@ -249,7 +249,7 @@ export function SOC2AuditPage() {
               </div>
 
               {/* Evidence table */}
-              <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+              <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
                 <div className="px-5 py-3 flex items-center gap-2" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
                   <Database className="w-4 h-4" style={{ color: T2 }} />
                   <p className="text-sm font-semibold" style={{ color: T1 }}>Evidence Log — {period.evidence?.length ?? 0} controls</p>
@@ -263,7 +263,7 @@ export function SOC2AuditPage() {
                   {period.evidence?.map((e, i) => (
                     <div key={e.id} className="flex items-center gap-3 px-5 py-3"
                       style={{ borderBottom: i < period.evidence.length - 1 ? `1px solid ${BDR}` : undefined }}>
-                      <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                      <div className="w-7 h-7 rounded-2xl flex items-center justify-center flex-shrink-0"
                         style={{ background: `${CTRL_COLOR[e.evidenceType] ?? PURP}18` }}>
                         <Lock className="w-3.5 h-3.5" style={{ color: CTRL_COLOR[e.evidenceType] ?? PURP }} />
                       </div>
@@ -309,7 +309,7 @@ export function SOC2AuditPage() {
                 <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>{f.label}</label>
                 <input
                   type={f.type}
-                  className="w-full text-sm px-3 py-2 rounded-lg"
+                  className="w-full text-sm px-3 py-2 rounded-2xl"
                   style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}
                   placeholder={f.placeholder}
                   value={(form as any)[f.key]}
@@ -317,7 +317,7 @@ export function SOC2AuditPage() {
                 />
               </div>
             ))}
-            <div className="rounded-xl p-3" style={{ background: `${BLUE}12`, border: `1px solid ${BLUE}30` }}>
+            <div className="rounded-2xl p-3" style={{ background: `${BLUE}12`, border: `1px solid ${BLUE}30` }}>
               <p className="text-xs" style={{ color: T2 }}>
                 <Clock className="w-3 h-3 inline mr-1" style={{ color: BLUE }} />
                 After creation, click <strong style={{ color: T1 }}>Collect Evidence</strong> to auto-pull 10 SOC2 controls from AEGIS audit logs, security findings, and access records.
@@ -325,7 +325,7 @@ export function SOC2AuditPage() {
             </div>
             <div className="flex gap-2 pt-1">
               <button onClick={() => setShowForm(false)}
-                className="flex-1 text-sm py-2 rounded-lg" style={{ background: `${BDR}50`, color: T2 }}>
+                className="flex-1 text-sm py-2 rounded-2xl" style={{ background: `${BDR}50`, color: T2 }}>
                 Cancel
               </button>
               <button
@@ -334,7 +334,7 @@ export function SOC2AuditPage() {
                   periodStart: form.periodStart, periodEnd: form.periodEnd,
                 })}
                 disabled={createMut.isPending || !form.label || !form.periodStart || !form.periodEnd}
-                className="flex-1 text-sm font-semibold py-2 rounded-lg"
+                className="flex-1 text-sm font-semibold py-2 rounded-2xl"
                 style={{ background: PURP, color: '#fff' }}>
                 {createMut.isPending ? 'Starting…' : 'Start Audit'}
               </button>

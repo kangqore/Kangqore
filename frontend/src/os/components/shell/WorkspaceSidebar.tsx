@@ -1,7 +1,9 @@
 import { Fragment } from 'react'
+import { SidebarSimpleIcon } from '@phosphor-icons/react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { cn } from '@design-system/cn'
+import { Surface } from '@design-system/primitives/Surface'
 import { getActiveRailItem, RAIL_ITEMS } from '@lib/nav'
 import { useUIStore } from '@store/ui'
 import { useKIMMPStore } from '@store/kimmp'
@@ -60,7 +62,7 @@ function isItemActive(item: RailSidebarItem, pathname: string, searchParams: URL
 export function WorkspaceSidebar() {
   const { pathname } = useLocation()
   const [searchParams] = useSearchParams()
-  const { sidebarCollapsed, pinnedRailId } = useUIStore()
+  const { sidebarCollapsed, toggleSidebar, pinnedRailId } = useUIStore()
   const badges = useBadgeCounts()
 
   const activeRailItem = pinnedRailId
@@ -69,25 +71,26 @@ export function WorkspaceSidebar() {
   const sidebarItems = activeRailItem?.sidebarItems ?? []
 
   return (
-    <aside
-      className={cn(
-        'flex-shrink-0 h-full overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-        'bg-[var(--os-sidebar-bg)] border-r border-[var(--os-border)]',
-        sidebarCollapsed ? 'w-0' : 'w-[176px]',
-      )}
-      style={{ zIndex: 39 }}
-    >
-      <div className="w-[176px] h-full flex flex-col">
-        {activeRailItem && (
-          <div className="px-5 pt-5 pb-3 flex-shrink-0">
-            <p
-              className="text-[10px] font-semibold tracking-widest uppercase truncate"
-              style={{ color: 'var(--os-text-3)' }}
-            >
-              {activeRailItem.label}
-            </p>
-          </div>
+    <div className="relative h-full flex-shrink-0" style={{ zIndex: 39 }}>
+      <Surface
+        as="aside"
+        variant="glass"
+        className={cn(
+          'h-full overflow-hidden transition-all duration-300 ease-spring',
+          'border-r border-border bg-surface-secondary/80 backdrop-blur-os-thick',
+          sidebarCollapsed ? 'w-0 border-r-0' : 'w-[220px]',
         )}
+      >
+        <div className="w-[220px] h-full flex flex-col">
+          {activeRailItem && (
+            <div className="px-5 pt-6 lg:pt-8 pb-3 flex-shrink-0 flex items-center justify-between">
+              <p
+                className="text-[11px] font-semibold text-text-secondary tracking-wide truncate"
+              >
+                {activeRailItem.label}
+              </p>
+            </div>
+          )}
 
         <nav className="flex-1 overflow-y-auto overflow-x-hidden pb-4 px-2 space-y-1">
           {(() => {
@@ -111,28 +114,19 @@ export function WorkspaceSidebar() {
                   key={item.id}
                   to={item.path}
                   className={cn(
-                    'flex items-center gap-2 h-8 rounded-lg px-3 text-[13px] font-medium transition-all duration-300 group relative overflow-hidden',
+                    'flex items-center gap-2 h-8 rounded-os-md px-3 text-[13px] font-medium transition-colors group relative overflow-hidden',
                     active
-                      ? 'text-white shadow-[0_4px_12px_rgba(255,107,107,0.3)]'
-                      : 'text-[var(--os-text-2)] hover:bg-slate-100 hover:text-slate-900'
+                      ? 'bg-brand-primary text-white'
+                      : 'text-text-primary hover:bg-black/5 dark:hover:bg-white/10'
                   )}
                 >
-                  {/* Vibrant Gradient Background for active state */}
-                  {active && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] via-[#FF8E53] to-[#FFA939] opacity-100 z-0" />
-                  )}
-                  {/* Hover effect background */}
-                  {!active && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B]/10 to-[#FFA939]/10 opacity-0 group-hover:opacity-100 transition-opacity z-0" />
-                  )}
-                  
                   <span className="flex-1 truncate relative z-10">{item.label}</span>
                   
                   {count > 0 && (
                     <span
                       className={cn(
-                        'relative z-10 flex-shrink-0 min-w-[18px] h-[18px] rounded-full text-[10px] font-bold flex items-center justify-center px-1 shadow-sm transition-transform group-hover:scale-110',
-                        active ? 'bg-white/30 text-white backdrop-blur-sm' : 'bg-gradient-to-br from-[#FF6B6B] to-[#FF8E53] text-white'
+                        'relative z-10 flex-shrink-0 min-w-[18px] h-[18px] rounded-full text-[10px] font-bold flex items-center justify-center px-1 shadow-sm',
+                        active ? 'bg-white/20 text-white' : 'bg-text-muted text-white'
                       )}
                     >
                       {count > 99 ? '99+' : count}
@@ -148,7 +142,7 @@ export function WorkspaceSidebar() {
                 {Object.entries(grouped).map(([category, items]) => (
                   <Fragment key={category}>
                     <div className="mt-4 mb-1.5 px-3">
-                      <p className="text-[10px] font-extrabold tracking-[0.2em] uppercase bg-clip-text text-transparent bg-gradient-to-r from-slate-400 to-slate-500">
+                      <p className="text-[11px] font-semibold tracking-wide text-text-secondary">
                         {category}
                       </p>
                     </div>
@@ -160,6 +154,23 @@ export function WorkspaceSidebar() {
           })()}
         </nav>
       </div>
-    </aside>
+    </Surface>
+
+    {/* Floating Toggle Button */}
+    {sidebarItems.length > 0 && (
+      <button
+        onClick={toggleSidebar}
+        className={cn(
+          "absolute z-50 flex items-center justify-center transition-all duration-300 text-text-muted hover:text-text-primary",
+          sidebarCollapsed 
+            ? "top-5 -right-8 w-8 h-8 bg-surface-secondary/90 backdrop-blur-md border border-border border-l-0 rounded-r-lg shadow-sm"
+            : "top-5 right-3 w-8 h-8 rounded-lg hover:bg-black/5 dark:hover:bg-white/10"
+        )}
+      >
+        <SidebarSimpleIcon weight="fill" className={cn("w-4 h-4 transition-transform duration-300", sidebarCollapsed ? "rotate-180" : "")} />
+      </button>
+    )}
+    </div>
   )
 }
+

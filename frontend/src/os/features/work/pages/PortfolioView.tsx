@@ -38,7 +38,7 @@ function CreatePortfolioModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-[var(--os-bg-1)] border border-[var(--os-border)] rounded-xl shadow-2xl w-full max-w-md mx-4 p-6"
+      <div className="bg-[var(--os-bg-1)] border border-[var(--os-border)] rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6"
            onClick={e => e.stopPropagation()}>
         <h2 className="text-base font-semibold text-[var(--os-text-1)] mb-4">New Portfolio</h2>
         <div className="space-y-3">
@@ -99,17 +99,17 @@ export function PortfolioView() {
       </div>
 
       {data.length === 0 ? (
-        <div className="border border-[var(--os-border)] rounded-xl h-64 flex items-center justify-center text-sm text-[var(--os-text-2)]">
+        <div className="border border-[var(--os-border)] rounded-2xl h-64 flex items-center justify-center text-sm text-[var(--os-text-2)]">
           No portfolios yet. Create one to group related projects and initiatives.
         </div>
       ) : (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
           {data.map(p => (
-            <div key={p.id} className="border border-[var(--os-border)] rounded-xl p-5 bg-[var(--os-bg-1)] hover:bg-[var(--os-bg-hover)] transition-colors flex flex-col gap-3">
+            <div key={p.id} className="border border-[var(--os-border)] rounded-2xl p-5 bg-[var(--os-bg-1)] hover:bg-[var(--os-bg-hover)] transition-colors flex flex-col gap-3">
               {/* Header */}
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-2xl bg-violet-500/10 flex items-center justify-center shrink-0">
                     <Briefcase className="w-4 h-4 text-violet-400" />
                   </div>
                   <div className="min-w-0">

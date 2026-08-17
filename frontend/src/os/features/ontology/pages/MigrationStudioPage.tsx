@@ -47,7 +47,7 @@ export function MigrationStudioPage() {
             </p>
           </div>
           {step !== 'idle' && (
-            <button onClick={() => { setStep('idle'); setSelectedConnector(null) }} className="text-xs font-bold text-white/50 hover:text-white transition-colors bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+            <button onClick={() => { setStep('idle'); setSelectedConnector(null) }} className="text-xs font-bold text-white/50 hover:text-white transition-colors bg-white/10 px-3 py-1.5 rounded-2xl border border-white/10">
               Cancel Migration
             </button>
           )}
@@ -164,9 +164,9 @@ function MappingView({ connector, onNext }: any) {
         {/* Legacy Flat Model */}
         <div className="w-64 space-y-4">
           <div className="text-xs font-black uppercase text-[var(--os-text-3)] mb-4">{connector} (Flat)</div>
-          <div className="p-4 bg-[var(--os-surface)] border border-red-500/20 rounded-xl">Boards</div>
-          <div className="p-4 bg-[var(--os-surface)] border border-red-500/20 rounded-xl">Items</div>
-          <div className="p-4 bg-[var(--os-surface)] border border-red-500/20 rounded-xl">Status Columns</div>
+          <div className="p-4 bg-[var(--os-surface)] border border-red-500/20 rounded-2xl">Boards</div>
+          <div className="p-4 bg-[var(--os-surface)] border border-red-500/20 rounded-2xl">Items</div>
+          <div className="p-4 bg-[var(--os-surface)] border border-red-500/20 rounded-2xl">Status Columns</div>
         </div>
 
         {/* Translation */}
@@ -178,16 +178,16 @@ function MappingView({ connector, onNext }: any) {
         {/* Semantic Graph */}
         <div className="w-64 space-y-4 relative">
           <div className="text-xs font-black uppercase text-emerald-500 mb-4">Kangqore Graph</div>
-          <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-600 dark:text-emerald-400 font-bold flex justify-between">Projects <span>(Node)</span></div>
-          <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-600 dark:text-emerald-400 font-bold flex justify-between">Tasks <span>(Node)</span></div>
+          <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-emerald-600 dark:text-emerald-400 font-bold flex justify-between">Projects <span>(Node)</span></div>
+          <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-emerald-600 dark:text-emerald-400 font-bold flex justify-between">Tasks <span>(Node)</span></div>
           <div className="p-4 border-l-2 border-emerald-500 ml-4 pl-4 text-xs font-bold text-[var(--os-text-2)]">HAS_TASK (Edge)</div>
-          <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-600 dark:text-emerald-400 font-bold flex justify-between">Milestone <span>(Property)</span></div>
+          <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-emerald-600 dark:text-emerald-400 font-bold flex justify-between">Milestone <span>(Property)</span></div>
         </div>
 
       </div>
 
       <div className="flex justify-end mt-6">
-        <button onClick={onNext} className="bg-[var(--os-accent)] text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity shadow-lg">
+        <button onClick={onNext} className="bg-[var(--os-accent)] text-white px-6 py-2.5 rounded-2xl text-sm font-bold hover:opacity-90 transition-opacity shadow-lg">
           Approve Topology & Continue
         </button>
       </div>
@@ -215,7 +215,7 @@ function SandboxView({ onNext }: any) {
       </p>
 
       <div className="space-y-4 max-w-2xl">
-        <div className="flex items-center justify-between p-4 bg-[var(--os-surface-hover)] border border-[var(--os-border)] rounded-xl">
+        <div className="flex items-center justify-between p-4 bg-[var(--os-surface-hover)] border border-[var(--os-border)] rounded-2xl">
           <div className="flex items-center gap-3">
             <Workflow className="w-5 h-5 text-indigo-500" />
             <div>
@@ -226,7 +226,7 @@ function SandboxView({ onNext }: any) {
           <Check className="w-5 h-5 text-emerald-500" />
         </div>
 
-        <div className="flex items-center justify-between p-4 bg-red-500/5 border border-red-500/20 rounded-xl">
+        <div className="flex items-center justify-between p-4 bg-red-500/5 border border-red-500/20 rounded-2xl">
           <div className="flex items-center gap-3">
             <Zap className="w-5 h-5 text-red-500" />
             <div>
@@ -257,7 +257,7 @@ function CompleteView() {
         Your workspace has been successfully migrated and upgraded into the Kangqore Semantic Ontology.
       </p>
       
-      <Link to="/kangqore-view/admin/ontology/graph" className="bg-white text-black dark:bg-white dark:text-black px-6 py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity">
+      <Link to="/kangqore-view/admin/ontology/graph" className="bg-white text-black dark:bg-white dark:text-black px-6 py-3 rounded-2xl text-sm font-bold hover:opacity-90 transition-opacity">
         Explore Your New Enterprise Graph
       </Link>
     </div>

@@ -91,8 +91,8 @@ function AlertCard({ alert, onDismiss }: { alert: ProactiveAlert; onDismiss: (id
         <div className="flex-1 min-w-0 mt-0.5">
           <div className="flex items-center gap-2 flex-wrap mb-2">
             <Badge variant={sev.badge} size="sm" dot>{alert.severity}</Badge>
-            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${catColor}`}>{alert.category}</span>
-            <span className="text-[11px] text-[var(--os-text-2)] bg-[var(--os-surface-0)] px-2 py-0.5 rounded-md">{ruleLabel}</span>
+            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-2xl ${catColor}`}>{alert.category}</span>
+            <span className="text-[11px] text-[var(--os-text-2)] bg-[var(--os-surface-0)] px-2 py-0.5 rounded-2xl">{ruleLabel}</span>
             <span className="text-[11px] font-semibold text-[var(--os-text-2)] ml-auto">{formatRelative(alert.createdAt)}</span>
           </div>
           <p className="text-base font-bold text-[var(--os-text-1)]">{alert.title}</p>
@@ -100,7 +100,7 @@ function AlertCard({ alert, onDismiss }: { alert: ProactiveAlert; onDismiss: (id
         </div>
         <button
           onClick={() => onDismiss(alert.id)}
-          className="w-8 h-8 rounded-xl flex items-center justify-center text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-all flex-shrink-0"
+          className="w-8 h-8 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-all flex-shrink-0"
           title="Dismiss"
         >
           <X className="w-4 h-4" />
@@ -114,7 +114,7 @@ function AlertCard({ alert, onDismiss }: { alert: ProactiveAlert; onDismiss: (id
           {alert.actionType === 'NAVIGATE' && alert.actionPayload?.route && (
             <button
               onClick={handleAction}
-              className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-[11px] font-bold text-blue-600 hover:text-blue-800 hover:bg-blue-100 flex-shrink-0 transition-colors"
+              className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-blue-50 text-[11px] font-bold text-blue-600 hover:text-blue-800 hover:bg-blue-100 flex-shrink-0 transition-colors"
             >
               Go <ExternalLink className="w-3.5 h-3.5" />
             </button>
@@ -179,7 +179,7 @@ export function AlertsPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-sm">
+        <div className="w-8 h-8 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-sm">
           <Bell className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
@@ -191,7 +191,7 @@ export function AlertsPage() {
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => refetch()}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
+            className="w-8 h-8 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
@@ -199,7 +199,7 @@ export function AlertsPage() {
             <button
               onClick={() => dismissAllMut.mutate()}
               disabled={dismissAllMut.isPending}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] shadow-sm transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] shadow-sm transition-colors"
             >
               <CheckCheck className="w-4 h-4" />
               Dismiss All
@@ -249,7 +249,7 @@ export function AlertsPage() {
         <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--os-text-2)] mb-4">Active Rules</p>
         <div className="flex flex-wrap gap-2">
           {Object.entries(RULE_LABELS).map(([k, v]) => (
-            <span key={k} className="text-xs font-bold px-3 py-1.5 rounded-xl bg-[var(--os-surface-0)] text-[var(--os-text-1)]">{v}</span>
+            <span key={k} className="text-xs font-bold px-3 py-1.5 rounded-2xl bg-[var(--os-surface-0)] text-[var(--os-text-1)]">{v}</span>
           ))}
         </div>
       </div>

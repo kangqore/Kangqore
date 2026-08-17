@@ -60,14 +60,14 @@ export function ScoringPage() {
   if (isLoading && leads.length === 0) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-56 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+        <div className="h-8 w-56 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="h-48 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
-          <div className="lg:col-span-2 h-48 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+          <div className="h-48 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
+          <div className="lg:col-span-2 h-48 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-32 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+            <div key={i} className="h-32 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
           ))}
         </div>
       </div>
@@ -97,7 +97,7 @@ export function ScoringPage() {
     <div className="space-y-6">
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: '#579bfc' }}>
+          <div className="w-7 h-7 rounded-2xl flex items-center justify-center" style={{ background: '#579bfc' }}>
             <span className="text-white text-xs font-bold">eQ</span>
           </div>
           <h2 className="text-xl font-black tracking-tight text-white">eQORE Lead Scoring</h2>

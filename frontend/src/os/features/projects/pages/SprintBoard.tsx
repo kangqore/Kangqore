@@ -45,11 +45,11 @@ export function SprintBoard() {
   if (isLoading) {
     return (
       <div className="space-y-5 animate-pulse">
-        <div className="h-8 w-40 rounded-lg" style={{ background: 'var(--os-surface-0)' }} />
-        <div className="h-40 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="h-8 w-40 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="h-40 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="h-56 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
-          <div className="h-56 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />
+          <div className="h-56 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
+          <div className="h-56 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
         </div>
       </div>
     )
@@ -66,7 +66,7 @@ export function SprintBoard() {
         <select
           value={selectedProjectId}
           onChange={e => setSelectedProject(e.target.value)}
-          className="ml-auto h-9 rounded-xl text-sm pl-3 pr-8 outline-none"
+          className="ml-auto h-9 rounded-2xl text-sm pl-3 pr-8 outline-none"
           style={{ border: '1px solid var(--os-border)', background: 'var(--os-card)', color: 'var(--os-text-1)' }}
         >
           {projects.filter(p => p.status !== 'planned').map(p => (

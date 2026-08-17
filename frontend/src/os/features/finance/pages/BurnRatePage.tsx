@@ -27,7 +27,7 @@ function KpiSkeleton() {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       {[0,1,2,3].map(i => (
-        <div key={i} className="h-24 rounded-xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />
+        <div key={i} className="h-24 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />
       ))}
     </div>
   )

@@ -78,7 +78,7 @@ export function EnginesPage() {
           </p>
         </div>
         {!isLoading && stats.total > 0 && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg"
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl"
             style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
             <span className="text-xs" style={{ color: 'var(--os-text-2)' }}>
               <span className="font-bold" style={{ color: 'var(--os-text-1)' }}>{stats.total}</span> engagement{stats.total !== 1 ? 's' : ''} running
@@ -86,7 +86,7 @@ export function EnginesPage() {
             </span>
           </div>
         )}
-        {isLoading && <div className="h-7 w-32 rounded-lg animate-pulse" style={{ background: 'var(--os-surface-0)' }} />}
+        {isLoading && <div className="h-7 w-32 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />}
       </div>
 
       {/* Engine cards */}

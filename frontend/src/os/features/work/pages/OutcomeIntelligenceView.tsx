@@ -72,7 +72,7 @@ export default function OutcomeIntelligenceView() {
             key={`${activeWorkflow.id}-action`}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex-1 w-full p-5 rounded-xl bg-slate-950 border border-slate-800 relative z-10 flex flex-col items-center text-center space-y-3"
+            className="flex-1 w-full p-5 rounded-2xl bg-slate-950 border border-slate-800 relative z-10 flex flex-col items-center text-center space-y-3"
           >
             <div className="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
               <Zap className="w-5 h-5 text-blue-400" />
@@ -92,7 +92,7 @@ export default function OutcomeIntelligenceView() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="flex-1 w-full p-5 rounded-xl bg-slate-950 border border-slate-800 relative z-10 flex flex-col items-center text-center space-y-3"
+            className="flex-1 w-full p-5 rounded-2xl bg-slate-950 border border-slate-800 relative z-10 flex flex-col items-center text-center space-y-3"
           >
             <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
               <Layers className="w-5 h-5 text-purple-400" />
@@ -112,7 +112,7 @@ export default function OutcomeIntelligenceView() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="flex-1 w-full p-5 rounded-xl bg-slate-950 border border-slate-800 relative z-10 flex flex-col items-center text-center space-y-3"
+            className="flex-1 w-full p-5 rounded-2xl bg-slate-950 border border-slate-800 relative z-10 flex flex-col items-center text-center space-y-3"
           >
             <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-amber-400" />
@@ -132,7 +132,7 @@ export default function OutcomeIntelligenceView() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex-1 w-full p-5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 shadow-[0_0_30px_-5px_rgba(16,185,129,0.15)] relative z-10 flex flex-col items-center text-center space-y-3"
+            className="flex-1 w-full p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 shadow-[0_0_30px_-5px_rgba(16,185,129,0.15)] relative z-10 flex flex-col items-center text-center space-y-3"
           >
             <div className="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
               <Target className="w-5 h-5 text-emerald-400" />
@@ -159,7 +159,7 @@ export default function OutcomeIntelligenceView() {
               <div 
                 key={wf.id} 
                 onClick={() => setActiveWorkflow(wf)}
-                className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                className={`p-4 rounded-2xl border cursor-pointer transition-all ${
                   activeWorkflow.id === wf.id 
                     ? 'bg-slate-950 border-emerald-500/40 shadow-lg' 
                     : 'bg-slate-900/40 border-slate-800 hover:border-slate-700 hover:bg-slate-900'
@@ -201,7 +201,7 @@ export default function OutcomeIntelligenceView() {
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-4">
+            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
               <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                 <span className="text-xs text-slate-400">Target Result Achieved</span>
                 {activeWorkflow.status === 'VERIFIED' ? (
@@ -225,7 +225,7 @@ export default function OutcomeIntelligenceView() {
             </div>
 
             {activeWorkflow.status !== 'VERIFIED' && (
-              <button className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+              <button className="w-full py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
                 <RefreshCw className="w-4 h-4" />
                 Force Telemetry Re-Sync
               </button>

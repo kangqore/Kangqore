@@ -189,7 +189,7 @@ export function AegisEgressPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Banner */}
-      <div className="bg-amber-900/20 border border-amber-500/20 rounded-xl p-4 flex items-start gap-3">
+      <div className="bg-amber-900/20 border border-amber-500/20 rounded-2xl p-4 flex items-start gap-3">
         <ArrowUpRight className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-sm font-semibold text-amber-300 mb-0.5">Intelligence Egress Control</p>

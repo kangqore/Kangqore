@@ -35,7 +35,7 @@ function GoalRow({ goal, depth = 0 }: { goal: WorkGoal; depth?: number }) {
   return (
     <div>
       <div className={cn(
-        'border border-[var(--os-border)] rounded-xl p-4 mb-2 bg-[var(--os-bg-1)] hover:bg-[var(--os-bg-hover)] transition-colors',
+        'border border-[var(--os-border)] rounded-2xl p-4 mb-2 bg-[var(--os-bg-1)] hover:bg-[var(--os-bg-hover)] transition-colors',
         depth > 0 && 'ml-6 border-l-2 border-l-violet-500/30'
       )}>
         <div className="flex items-start gap-3">
@@ -103,7 +103,7 @@ function CreateGoalModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-[var(--os-bg-1)] border border-[var(--os-border)] rounded-xl shadow-2xl w-full max-w-md mx-4 p-6"
+      <div className="bg-[var(--os-bg-1)] border border-[var(--os-border)] rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6"
            onClick={e => e.stopPropagation()}>
         <h2 className="text-base font-semibold text-[var(--os-text-1)] mb-4">New Goal</h2>
         <div className="space-y-3">
@@ -168,7 +168,7 @@ export function GoalsView() {
       </div>
 
       {roots.length === 0 ? (
-        <div className="border border-[var(--os-border)] rounded-xl h-64 flex items-center justify-center text-sm text-[var(--os-text-2)]">
+        <div className="border border-[var(--os-border)] rounded-2xl h-64 flex items-center justify-center text-sm text-[var(--os-text-2)]">
           No goals yet. Create one to track OKRs and milestones.
         </div>
       ) : (

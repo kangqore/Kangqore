@@ -123,7 +123,7 @@ function VitalCard({ label, value, sub, color, icon: Icon, pulse }: {
   return (
     <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-5 py-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
       <div className="flex items-start justify-between">
-        <div className="p-2 rounded-lg transition-transform duration-500 group-hover:scale-110" style={{ background: color ? `${color}15` : 'rgba(255, 255, 255, 0.05)' }}>
+        <div className="p-2 rounded-2xl transition-transform duration-500 group-hover:scale-110" style={{ background: color ? `${color}15` : 'rgba(255, 255, 255, 0.05)' }}>
           <Icon className={cn('w-4 h-4', pulse && 'animate-pulse')} style={{ color: color ?? 'var(--os-text-2)' }} />
         </div>
         <span className="text-[10px] text-[var(--os-text-3)] font-bold uppercase tracking-widest mt-1">{label}</span>
@@ -199,7 +199,7 @@ export function MissionControlPage() {
   if (isLoading || !data) {
     return (
       <div className="space-y-4 animate-pulse">
-        {[1,2,3].map(i => <div key={i} className="h-24 rounded-xl bg-[var(--os-surface-0)]" />)}
+        {[1,2,3].map(i => <div key={i} className="h-24 rounded-2xl bg-[var(--os-surface-0)]" />)}
       </div>
     )
   }
@@ -215,7 +215,7 @@ export function MissionControlPage() {
 
       {/* ── Enterprise Pulse ── */}
       {pulse?.sentence && (
-        <div className="flex items-start gap-3 rounded-xl border border-[#eab30844] bg-[#eab30811] px-4 py-3">
+        <div className="flex items-start gap-3 rounded-2xl border border-[#eab30844] bg-[#eab30811] px-4 py-3">
           <Sparkles className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#eab308' }} />
           <p className="text-[12px] text-[var(--os-text-1)] leading-relaxed">{pulse.sentence}</p>
         </div>
@@ -234,7 +234,7 @@ export function MissionControlPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate(`/kangqore-view/admin/workflows/canvas?seed=ois&score=${score.score}`)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#7f53f925] bg-[#7f53f910] text-[11px] text-[#7f53f9] hover:bg-[#7f53f920] transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border border-[#7f53f925] bg-[#7f53f910] text-[11px] text-[#7f53f9] hover:bg-[#7f53f920] transition-colors"
           >
             <Network className="w-3 h-3" />
             Graph View
@@ -242,7 +242,7 @@ export function MissionControlPage() {
           <button
             onClick={() => runCycle.mutate()}
             disabled={runCycle.isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[#579bfc]"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border border-[var(--os-border)] text-[11px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[#579bfc]"
           >
             {runCycle.isPending
               ? <Loader2 className="w-3 h-3 animate-spin" />
@@ -256,7 +256,7 @@ export function MissionControlPage() {
       <div className="grid grid-cols-5 gap-3">
 
         {/* Arc */}
-        <div className="col-span-1 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] flex flex-col items-center justify-center py-3 px-2">
+        <div className="col-span-1 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] flex flex-col items-center justify-center py-3 px-2">
           <HealthArc score={score.score} color={score.color} label={score.label} />
           <p className="text-[10px] text-[var(--os-text-2)] mt-1 text-center">Enterprise Health</p>
         </div>
@@ -270,7 +270,7 @@ export function MissionControlPage() {
 
       {/* ── Health breakdown ── */}
       {score.breakdown.length > 0 && (
-        <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
+        <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
           <p className="text-[10px] font-semibold text-[var(--os-text-2)] uppercase tracking-widest mb-2.5">Health Breakdown</p>
           <div className="space-y-1.5">
             {score.breakdown.map(f => (
@@ -298,7 +298,7 @@ export function MissionControlPage() {
         <div className="space-y-4">
 
           {/* Blocked approvals */}
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
             <div className="px-4 py-2.5 border-b border-[var(--os-border)] flex items-center gap-2">
               <Clock className="w-3.5 h-3.5 text-[#fdab3d]" />
               <p className="text-[11px] font-semibold text-[var(--os-text-1)]">Blocked Approvals</p>
@@ -320,7 +320,7 @@ export function MissionControlPage() {
                     <button
                       onClick={() => approve.mutate(r.id)}
                       disabled={approve.isPending}
-                      className="mt-2 flex items-center gap-1 px-2.5 py-1 rounded-lg bg-green-500/20 text-green-400 text-[10px] font-semibold hover:bg-green-500/30 disabled:opacity-50"
+                      className="mt-2 flex items-center gap-1 px-2.5 py-1 rounded-2xl bg-green-500/20 text-green-400 text-[10px] font-semibold hover:bg-green-500/30 disabled:opacity-50"
                     >
                       <ThumbsUp className="w-2.5 h-2.5" /> Approve
                     </button>
@@ -331,7 +331,7 @@ export function MissionControlPage() {
           </div>
 
           {/* Autonomous opportunities */}
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
             <div className="px-4 py-2.5 border-b border-[var(--os-border)] flex items-center gap-2">
               <Zap className="w-3.5 h-3.5 text-[#579bfc]" />
               <p className="text-[11px] font-semibold text-[var(--os-text-1)]">Autonomous Opportunities</p>
@@ -356,7 +356,7 @@ export function MissionControlPage() {
         <div className="space-y-4">
 
           {/* KIMMP Recommendations */}
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
             <div className="px-4 py-2.5 border-b border-[var(--os-border)] flex items-center gap-2">
               <Brain className="w-3.5 h-3.5 text-[#7c3aed]" />
               <p className="text-[11px] font-semibold text-[var(--os-text-1)]">WAANDA Recommendations</p>
@@ -382,7 +382,7 @@ export function MissionControlPage() {
           </div>
 
           {/* Active signals */}
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
             <div className="px-4 py-2.5 border-b border-[var(--os-border)] flex items-center gap-2">
               <Activity className="w-3.5 h-3.5 text-[#fdab3d]" />
               <p className="text-[11px] font-semibold text-[var(--os-text-1)]">Active Signals</p>
@@ -410,7 +410,7 @@ export function MissionControlPage() {
         <div className="space-y-4">
 
           {/* Integration status */}
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
             <div className="px-4 py-2.5 border-b border-[var(--os-border)] flex items-center gap-2">
               <Plug className="w-3.5 h-3.5 text-[#00c875]" />
               <p className="text-[11px] font-semibold text-[var(--os-text-1)]">Integrations</p>
@@ -440,7 +440,7 @@ export function MissionControlPage() {
 
           {/* Wave 1 — Project Intelligence */}
           {portfolio && portfolio.length > 0 && (
-            <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+            <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
               <div className="px-4 py-2.5 border-b border-[var(--os-border)] flex items-center gap-2">
                 <FolderKanban className="w-3.5 h-3.5 text-[#0ea5e9]" />
                 <p className="text-[11px] font-semibold text-[var(--os-text-1)]">Project Intelligence</p>
@@ -480,7 +480,7 @@ export function MissionControlPage() {
                   const hColor = p.health >= 80 ? '#00c875' : p.health >= 60 ? '#fdab3d' : '#e2445c'
                   return (
                     <div key={p.projectId} className="px-4 py-2.5 flex items-start gap-3">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-bold"
+                      <div className="flex-shrink-0 w-8 h-8 rounded-2xl flex items-center justify-center text-[11px] font-bold"
                         style={{ background: `${hColor}22`, color: hColor }}>
                         {Math.round(p.health)}
                       </div>
@@ -515,7 +515,7 @@ export function MissionControlPage() {
           )}
 
           {/* Recent activity feed */}
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
             <div className="px-4 py-2.5 border-b border-[var(--os-border)] flex items-center gap-2">
               <TrendingUp className="w-3.5 h-3.5 text-[#579bfc]" />
               <p className="text-[11px] font-semibold text-[var(--os-text-1)]">Activity</p>

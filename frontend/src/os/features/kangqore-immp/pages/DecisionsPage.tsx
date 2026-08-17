@@ -54,7 +54,7 @@ function SimulationCard({ sim }: { sim: any }) {
   const color = severityColor[sim.impact?.severity] ?? '#9ca3af'
 
   return (
-    <div className="mt-4 rounded-xl border p-4 space-y-2" style={{ borderColor: `${color}30`, background: `${color}06` }}>
+    <div className="mt-4 rounded-2xl border p-4 space-y-2" style={{ borderColor: `${color}30`, background: `${color}06` }}>
       <div className="flex items-center gap-2">
         <BarChart2 className="w-3.5 h-3.5" style={{ color }} />
         <p className="text-[11px] font-bold uppercase tracking-wide" style={{ color }}>
@@ -92,7 +92,7 @@ function DecisionCard({
 
   return (
     <div className={cn(
-      'rounded-xl border transition-all',
+      'rounded-2xl border transition-all',
       isResolved ? 'border-green-500/20 bg-green-500/[0.02]' : 'border-[var(--os-border)] bg-[var(--os-card)]',
     )}>
       {/* Header */}
@@ -149,7 +149,7 @@ function DecisionCard({
                   <div
                     key={i}
                     className={cn(
-                      'rounded-xl border p-4 transition-all',
+                      'rounded-2xl border p-4 transition-all',
                       isSelected
                         ? 'border-green-500/40 bg-green-500/[0.05]'
                         : isRecommended && !isResolved
@@ -214,7 +214,7 @@ function DecisionCard({
                       <button
                         onClick={() => onSelect(opt.label)}
                         className={cn(
-                          'w-full py-1.5 rounded-lg text-[11px] font-semibold border transition-colors',
+                          'w-full py-1.5 rounded-2xl text-[11px] font-semibold border transition-colors',
                           isRecommended
                             ? 'bg-[#579bfc] border-[#579bfc] text-white hover:bg-[#4a8ef5]'
                             : 'bg-[var(--os-card)] border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]',
@@ -230,7 +230,7 @@ function DecisionCard({
           </div>
 
           {/* KIMMP Recommendation */}
-          <div className="rounded-xl border border-[#7c3aed]/20 bg-[#7c3aed]/[0.04] p-4">
+          <div className="rounded-2xl border border-[#7c3aed]/20 bg-[#7c3aed]/[0.04] p-4">
             <div className="flex items-center gap-2 mb-2">
               <Zap className="w-3.5 h-3.5 text-purple-400" />
               <p className="text-[10px] font-bold uppercase tracking-widest text-purple-400">KIMMP Recommendation</p>
@@ -260,14 +260,14 @@ function DecisionCard({
               <p className="text-[11px] font-semibold text-[var(--os-text-2)] mb-2">Record what happened (closes the learning loop)</p>
               <div className="flex gap-2">
                 <input
-                  className="flex-1 px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+                  className="flex-1 px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
                   placeholder="e.g. Chose Option A — revenue increased 12% in Q3"
                   value={outcomeText}
                   onChange={e => setOutcomeText(e.target.value)}
                 />
                 <button
                   onClick={() => { if (outcomeText.trim()) { onOutcome(outcomeText); setOutcomeText('') } }}
-                  className="px-3 py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5]"
+                  className="px-3 py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5]"
                 >
                   Save
                 </button>
@@ -312,7 +312,7 @@ function DecisionComposer({ onResult }: { onResult: (d: StrategicDecision) => vo
   })
 
   return (
-    <div className="rounded-xl border border-[#7c3aed]/20 bg-[#7c3aed]/[0.04] p-5 space-y-3">
+    <div className="rounded-2xl border border-[#7c3aed]/20 bg-[#7c3aed]/[0.04] p-5 space-y-3">
       <div className="flex items-center gap-2">
         <Brain className="w-4 h-4 text-purple-400" />
         <p className="text-sm font-bold text-purple-300">Ask KIMMP for a Strategic Decision</p>
@@ -322,7 +322,7 @@ function DecisionComposer({ onResult }: { onResult: (d: StrategicDecision) => vo
       </p>
 
       <textarea
-        className="w-full px-4 py-3 rounded-xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#7c3aed] resize-none"
+        className="w-full px-4 py-3 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#7c3aed] resize-none"
         rows={3}
         placeholder='e.g. "Should we expand to the UAE market or double down on UK enterprise clients?"'
         value={question}
@@ -332,7 +332,7 @@ function DecisionComposer({ onResult }: { onResult: (d: StrategicDecision) => vo
       {/* Optional simulation */}
       <div className="grid grid-cols-3 gap-2">
         <select
-          className="px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-2)] outline-none"
+          className="px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-2)] outline-none"
           value={simType} onChange={e => setSimType(e.target.value)}
         >
           <option value="">No simulation</option>
@@ -343,14 +343,14 @@ function DecisionComposer({ onResult }: { onResult: (d: StrategicDecision) => vo
         </select>
         {simType === 'REVENUE_IMPACT' && (
           <input
-            className="col-span-2 px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
+            className="col-span-2 px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
             placeholder="Client ID (optional)"
             value={clientId} onChange={e => setClientId(e.target.value)}
           />
         )}
         {simType === 'DEPENDENCY_CHAIN' && (
           <input
-            className="col-span-2 px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
+            className="col-span-2 px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
             placeholder="Project ID (optional)"
             value={projectId} onChange={e => setProjectId(e.target.value)}
           />
@@ -360,7 +360,7 @@ function DecisionComposer({ onResult }: { onResult: (d: StrategicDecision) => vo
       <button
         onClick={() => ask.mutate()}
         disabled={!question.trim() || ask.isPending}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#7c3aed] text-white text-sm font-semibold hover:bg-[#6d31d4] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#7c3aed] text-white text-sm font-semibold hover:bg-[#6d31d4] disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {ask.isPending ? <><Loader2 className="w-4 h-4 animate-spin" /> Analysing…</> : <><Brain className="w-4 h-4" /> Run Decision Analysis</>}
       </button>
@@ -404,7 +404,7 @@ export function DecisionsPage() {
           { label: 'Pending',         value: pending,         icon: Clock,        color: 'text-amber-400' },
           { label: 'Resolved',        value: history.length - pending, icon: CheckCircle2, color: 'text-green-400' },
         ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3 flex items-center gap-3">
+          <div key={label} className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3 flex items-center gap-3">
             <Icon className={cn('w-5 h-5 flex-shrink-0', color)} />
             <div>
               <p className={cn('text-xl font-bold tabular-nums', color)}>{value}</p>
@@ -437,9 +437,9 @@ export function DecisionsPage() {
       <div>
         <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-3">Decision History</p>
         {isLoading ? (
-          <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] animate-pulse" />)}</div>
+          <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] animate-pulse" />)}</div>
         ) : history.length === 0 ? (
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-5 py-10 text-center">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-5 py-10 text-center">
             <Brain className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-2" />
             <p className="text-sm text-[var(--os-text-2)]">No strategic decisions yet. Ask KIMMP a strategic question above.</p>
           </div>

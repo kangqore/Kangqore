@@ -115,12 +115,12 @@ export function MarketplacePage() {
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => setView('revenue')}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold"
               style={view === 'revenue' ? { background: AMB, color: '#fff' } : { background: 'rgba(245,158,11,0.1)', color: AMB, border: `1px solid rgba(245,158,11,0.2)` }}>
               <BarChart3 className="w-3.5 h-3.5" /> Revenue
             </button>
             <button onClick={() => setView('submit')}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold"
               style={{ background: 'rgba(20,184,166,0.1)', color: TEAL, border: `1px solid rgba(20,184,166,0.2)` }}>
               <Plus className="w-3.5 h-3.5" /> Submit Listing
             </button>
@@ -135,7 +135,7 @@ export function MarketplacePage() {
         <>
           {/* Search + filters */}
           <div className="flex items-center gap-3">
-            <div className="flex-1 flex items-center gap-2 px-3 py-2.5 rounded-xl border" style={{ background: SURF, borderColor: BDR }}>
+            <div className="flex-1 flex items-center gap-2 px-3 py-2.5 rounded-2xl border" style={{ background: SURF, borderColor: BDR }}>
               <Search className="w-4 h-4 flex-shrink-0" style={{ color: T2 }} />
               <input value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Search agents, integrations, packs…"
@@ -147,7 +147,7 @@ export function MarketplacePage() {
           <div className="flex gap-2 flex-wrap">
             {CATEGORIES.map(c => (
               <button key={c} onClick={() => setCategory(c)}
-                className="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
+                className="px-3 py-1.5 rounded-2xl text-xs font-bold transition-colors"
                 style={category === c ? { background: TEAL, color: '#fff' } : { background: SURF, color: T2, border: `1px solid ${BDR}` }}>
                 {c === 'All' ? 'All categories' : c.charAt(0).toUpperCase() + c.slice(1)}
               </button>
@@ -160,7 +160,7 @@ export function MarketplacePage() {
               const cfg = TYPE_CFG[t]
               return (
                 <button key={t} onClick={() => setType(t)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-colors"
                   style={type === t ? { background: cfg?.bg ?? SURF, color: cfg?.color ?? T1, border: `1px solid ${cfg?.color ?? BDR}30` }
                                     : { background: SURF, color: T2, border: `1px solid ${BDR}` }}>
                   {cfg && <cfg.icon className="w-3 h-3" />}
@@ -226,7 +226,7 @@ function ListingCard({ listing, onInstall, onView, installing }: {
       onClick={onView}>
       <div className="p-4 flex-1">
         <div className="flex items-start gap-3 mb-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-lg" style={{ background: cfg.bg }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 text-lg" style={{ background: cfg.bg }}>
             {listing.iconEmoji}
           </div>
           <div className="flex-1 min-w-0">
@@ -251,7 +251,7 @@ function ListingCard({ listing, onInstall, onView, installing }: {
         </div>
 
         {listing.oisImpact && (
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg" style={{ background: 'rgba(16,185,129,0.08)', border: `1px solid rgba(16,185,129,0.15)` }}>
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-2xl" style={{ background: 'rgba(16,185,129,0.08)', border: `1px solid rgba(16,185,129,0.15)` }}>
             <Zap className="w-3 h-3" style={{ color: GRN }} />
             <span className="text-[10px] font-bold" style={{ color: GRN }}>{listing.oisImpact}</span>
           </div>
@@ -266,7 +266,7 @@ function ListingCard({ listing, onInstall, onView, installing }: {
           {listing.price === 0 ? 'Free' : `$${listing.price}/mo`}
         </span>
         <button onClick={e => { e.stopPropagation(); onInstall() }} disabled={installing}
-          className="flex items-center gap-1 px-3 py-1 rounded-lg text-[10px] font-bold disabled:opacity-40"
+          className="flex items-center gap-1 px-3 py-1 rounded-2xl text-[10px] font-bold disabled:opacity-40"
           style={{ background: cfg.bg, color: cfg.color }}>
           Install
         </button>
@@ -305,7 +305,7 @@ function ListingDetail({ listing, onBack, onInstall, installing }: {
             </div>
             <p className="text-xs" style={{ color: T2 }}>by {listing.author} · {listing.category} · {listing.installCount} installs</p>
             {listing.oisImpact && (
-              <div className="flex items-center gap-1.5 mt-2 px-3 py-1.5 rounded-lg w-fit" style={{ background: 'rgba(16,185,129,0.08)', border: `1px solid rgba(16,185,129,0.15)` }}>
+              <div className="flex items-center gap-1.5 mt-2 px-3 py-1.5 rounded-2xl w-fit" style={{ background: 'rgba(16,185,129,0.08)', border: `1px solid rgba(16,185,129,0.15)` }}>
                 <Zap className="w-3.5 h-3.5" style={{ color: GRN }} />
                 <span className="text-xs font-bold" style={{ color: GRN }}>OIS impact: {listing.oisImpact}</span>
               </div>
@@ -316,7 +316,7 @@ function ListingDetail({ listing, onBack, onInstall, installing }: {
               {listing.price === 0 ? 'Free' : `$${listing.price}/mo`}
             </p>
             <button onClick={onInstall} disabled={installing}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
               style={{ background: cfg.color, color: '#fff' }}>
               <Download className="w-4 h-4" />
               {installing ? 'Installing…' : 'Install Now'}
@@ -328,7 +328,7 @@ function ListingDetail({ listing, onBack, onInstall, installing }: {
 
         <div className="flex flex-wrap gap-1.5">
           {listing.tags.map(t => (
-            <span key={t} className="text-xs px-2 py-1 rounded-lg" style={{ background: SURF, color: T2 }}>{t}</span>
+            <span key={t} className="text-xs px-2 py-1 rounded-2xl" style={{ background: SURF, color: T2 }}>{t}</span>
           ))}
         </div>
       </div>
@@ -367,7 +367,7 @@ function SubmitView({ qc, onBack }: { qc: ReturnType<typeof useQueryClient>; onB
     <div>
       <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>{label ?? field.replace(/([A-Z])/g, ' $1').trim()}</p>
       <input value={(form as any)[field]} onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
-        placeholder={ph} className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+        placeholder={ph} className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
         style={{ borderColor: BDR, background: SURF, color: T1 }} />
     </div>
   )
@@ -383,7 +383,7 @@ function SubmitView({ qc, onBack }: { qc: ReturnType<typeof useQueryClient>; onB
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Type</p>
           <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
             style={{ borderColor: BDR, background: SURF, color: T1 }}>
             {['AGENT', 'INTEGRATION', 'PACK', 'WORKFLOW'].map(t => <option key={t}>{t}</option>)}
           </select>
@@ -391,7 +391,7 @@ function SubmitView({ qc, onBack }: { qc: ReturnType<typeof useQueryClient>; onB
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Category</p>
           <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
             style={{ borderColor: BDR, background: SURF, color: T1 }}>
             {['intelligence', 'productivity', 'crm', 'finance', 'hr', 'ops'].map(c => <option key={c}>{c}</option>)}
           </select>
@@ -418,7 +418,7 @@ function SubmitView({ qc, onBack }: { qc: ReturnType<typeof useQueryClient>; onB
 
       <button disabled={!form.name.trim() || !form.description.trim() || create.isPending}
         onClick={() => create.mutate()}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
         style={{ background: TEAL, color: '#fff' }}>
         <ArrowRight className="w-4 h-4" />
         {create.isPending ? 'Publishing…' : 'Publish Listing'}
@@ -529,7 +529,7 @@ function SeedListingsHint() {
       <p className="text-xs font-semibold" style={{ color: T2 }}>Coming to the marketplace:</p>
       <div className="grid grid-cols-4 gap-3">
         {SEED.map(s => (
-          <div key={s.name} className="rounded-xl p-4 border opacity-50" style={{ background: CARD, borderColor: BDR }}>
+          <div key={s.name} className="rounded-2xl p-4 border opacity-50" style={{ background: CARD, borderColor: BDR }}>
             <div className="text-2xl mb-2">{s.emoji}</div>
             <p className="text-xs font-bold mb-1" style={{ color: T1 }}>{s.name}</p>
             <div className="flex items-center justify-between">

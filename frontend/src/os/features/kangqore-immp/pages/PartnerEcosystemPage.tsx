@@ -37,20 +37,20 @@ function TiersPanel({ tiers }: { tiers: Tier[] }) {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: T2 }}>Partner Tiers — the structural prerequisite (P6.1)</p>
-        <button onClick={() => setShowForm(s => !s)} className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg" style={{ background: `${PURP}18`, color: PURP }}>
+        <button onClick={() => setShowForm(s => !s)} className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-2xl" style={{ background: `${PURP}18`, color: PURP }}>
           <Plus className="w-3.5 h-3.5" /> Define tier
         </button>
       </div>
       {showForm && (
         <div className="flex gap-2">
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="Tier name (e.g. Certified Implementation Partner)" className="flex-1 text-sm px-3 py-2 rounded-lg" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
-          <button onClick={() => create.mutate()} disabled={!name.trim() || create.isPending} className="text-xs font-semibold px-3 py-2 rounded-lg" style={{ background: PURP, color: '#fff' }}>Add</button>
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Tier name (e.g. Certified Implementation Partner)" className="flex-1 text-sm px-3 py-2 rounded-2xl" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
+          <button onClick={() => create.mutate()} disabled={!name.trim() || create.isPending} className="text-xs font-semibold px-3 py-2 rounded-2xl" style={{ background: PURP, color: '#fff' }}>Add</button>
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {tiers.length === 0 && <p className="text-xs text-center py-8 col-span-2" style={{ color: T2 }}>No tiers defined yet — this is the real prerequisite before any SI conversation can close.</p>}
         {tiers.map(t => (
-          <div key={t.id} className="rounded-lg p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+          <div key={t.id} className="rounded-2xl p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
             <div className="flex items-center justify-between gap-2">
               <span className="text-sm font-semibold" style={{ color: T1 }}>{t.name}</span>
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: `${SURF}`, color: T2 }}>{t.status}</span>
@@ -83,7 +83,7 @@ function RelationshipsPanel({ data }: { data: Summary }) {
     <div className="space-y-3">
       <div className="grid grid-cols-7 gap-2">
         {REL_STAGES.map(s => (
-          <div key={s} className="rounded-lg p-2 text-center" style={{ background: SURF, border: `1px solid ${BDR}` }}>
+          <div key={s} className="rounded-2xl p-2 text-center" style={{ background: SURF, border: `1px solid ${BDR}` }}>
             <p className="text-base font-black" style={{ color: STAGE_COLOR[s] }}>{data.byStage[s] ?? 0}</p>
             <p className="text-[7.5px] uppercase tracking-wide mt-0.5" style={{ color: T2 }}>{s.replace('_', ' ')}</p>
           </div>
@@ -91,21 +91,21 @@ function RelationshipsPanel({ data }: { data: Summary }) {
       </div>
       <div className="flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: T2 }}>Anchor SI Relationships (P6.2)</p>
-        <button onClick={() => setShowForm(s => !s)} className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg" style={{ background: `${PURP}18`, color: PURP }}>
+        <button onClick={() => setShowForm(s => !s)} className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-2xl" style={{ background: `${PURP}18`, color: PURP }}>
           <Plus className="w-3.5 h-3.5" /> Add firm
         </button>
       </div>
       {showForm && (
         <div className="flex gap-2">
-          <input value={firmName} onChange={e => setFirmName(e.target.value)} placeholder="Real SI firm name" className="flex-1 text-sm px-3 py-2 rounded-lg" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
-          <input value={practiceArea} onChange={e => setPracticeArea(e.target.value)} placeholder="Practice area (optional)" className="flex-1 text-sm px-3 py-2 rounded-lg" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
-          <button onClick={() => create.mutate()} disabled={!firmName.trim() || create.isPending} className="text-xs font-semibold px-3 py-2 rounded-lg" style={{ background: PURP, color: '#fff' }}>Add</button>
+          <input value={firmName} onChange={e => setFirmName(e.target.value)} placeholder="Real SI firm name" className="flex-1 text-sm px-3 py-2 rounded-2xl" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
+          <input value={practiceArea} onChange={e => setPracticeArea(e.target.value)} placeholder="Practice area (optional)" className="flex-1 text-sm px-3 py-2 rounded-2xl" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
+          <button onClick={() => create.mutate()} disabled={!firmName.trim() || create.isPending} className="text-xs font-semibold px-3 py-2 rounded-2xl" style={{ background: PURP, color: '#fff' }}>Add</button>
         </div>
       )}
       <div className="space-y-2">
         {data.relationships.length === 0 && <p className="text-xs text-center py-8" style={{ color: T2 }}>No SI relationships logged yet.</p>}
         {data.relationships.map(r => (
-          <div key={r.id} className="rounded-lg p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+          <div key={r.id} className="rounded-2xl p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
             <div className="flex items-center justify-between gap-2 mb-1">
               <span className="text-sm font-semibold" style={{ color: T1 }}>{r.firmName}{r.practiceArea ? ` · ${r.practiceArea}` : ''}{r.tier ? ` · ${r.tier.name}` : ''}</span>
               <StageBadge value={r.stage} />
@@ -139,7 +139,7 @@ export function PartnerEcosystemPage() {
         </p>
       </div>
 
-      <div className="rounded-xl p-3 flex items-start gap-2.5" style={{ background: `${AMB}12`, border: `1px solid ${AMB}30` }}>
+      <div className="rounded-2xl p-3 flex items-start gap-2.5" style={{ background: `${AMB}12`, border: `1px solid ${AMB}30` }}>
         <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: AMB }} />
         <p className="text-xs leading-relaxed" style={{ color: T2 }}>{data?.disclaimer}</p>
       </div>

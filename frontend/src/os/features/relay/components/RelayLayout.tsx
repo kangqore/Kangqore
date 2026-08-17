@@ -18,7 +18,7 @@ class PaneBoundary extends Component<{ children: ReactNode; channelId: string },
           <p className="text-sm font-semibold">Couldn't load this channel.</p>
           <button
             onClick={() => this.setState({ crashed: false })}
-            className="text-xs font-bold px-4 py-2 rounded-xl bg-[var(--os-card)] border border-[var(--os-border)] hover:bg-slate-50 transition-colors shadow-sm"
+            className="text-xs font-bold px-4 py-2 rounded-2xl bg-[var(--os-card)] border border-[var(--os-border)] hover:bg-slate-50 transition-colors shadow-sm"
           >
             Retry
           </button>

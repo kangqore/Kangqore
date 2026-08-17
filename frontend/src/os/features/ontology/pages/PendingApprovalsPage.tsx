@@ -53,21 +53,21 @@ function PendingCard({ item }: { item: PendingApproval }) {
       </div>
 
       {item.policyName && (
-        <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 px-3 py-2">
+        <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 px-3 py-2">
           <p className="text-[11px] font-semibold text-amber-400">{item.policyName}</p>
           {item.reason && <p className="text-[10px] text-[var(--os-text-2)] mt-0.5">{item.reason}</p>}
         </div>
       )}
 
-      <pre className="text-[10px] bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-2 overflow-x-auto max-h-24">{JSON.stringify(item.params, null, 2)}</pre>
+      <pre className="text-[10px] bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-2 overflow-x-auto max-h-24">{JSON.stringify(item.params, null, 2)}</pre>
 
       <div className="flex items-center gap-2 pt-2 border-t border-[var(--os-border)]">
         <button onClick={() => approve.mutate()} disabled={busy}
-          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 disabled:opacity-50">
+          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 disabled:opacity-50">
           {approve.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check size={13} weight="bold" />} Approve
         </button>
         <button onClick={() => reject.mutate()} disabled={busy}
-          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-semibold hover:bg-red-500/20 disabled:opacity-50">
+          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-semibold hover:bg-red-500/20 disabled:opacity-50">
           {reject.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <X size={13} weight="bold" />} Reject
         </button>
       </div>
@@ -91,7 +91,7 @@ export function PendingApprovalsPage() {
           <h2 className="text-lg font-black text-[var(--os-text-1)] flex items-center gap-2"><HourglassMedium size={18} /> Human-in-the-Loop</h2>
           <p className="text-xs text-[var(--os-text-2)] mt-0.5">KIMMP escalates here when a Policy requires ADMIN sign-off before effects apply.</p>
         </div>
-        <div className="flex items-center gap-0.5 rounded-lg border border-[var(--os-border)] overflow-hidden">
+        <div className="flex items-center gap-0.5 rounded-2xl border border-[var(--os-border)] overflow-hidden">
           {(['PENDING', 'ALL'] as const).map(s => (
             <button key={s} onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 text-[10px] font-bold uppercase ${statusFilter === s ? 'bg-[#579bfc] text-white' : 'text-[var(--os-text-2)]'}`}

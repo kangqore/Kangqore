@@ -95,10 +95,10 @@ export function WaandaGen2Page() {
       </div>
 
       {/* Tab bar */}
-      <div className="flex gap-1 p-1 rounded-xl border" style={{ background: SURF, borderColor: BDR, width: 'fit-content' }}>
+      <div className="flex gap-1 p-1 rounded-2xl border" style={{ background: SURF, borderColor: BDR, width: 'fit-content' }}>
         {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL'], ['health', 'Gen 2 Health'], ['autonomy', 'Autonomy'], ['diff', 'Quality Diff']] as const).map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)}
-            className="px-4 py-1.5 rounded-lg text-xs font-bold transition-colors"
+            className="px-4 py-1.5 rounded-2xl text-xs font-bold transition-colors"
             style={tab === id ? { background: PURP, color: '#fff' } : { color: T2 }}>
             {label}
           </button>
@@ -162,7 +162,7 @@ function AnnotateTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
             { label: 'Needs review',     value: stats.unapproved, color: AMB },
             { label: 'Graduation',       value: `${Math.min(100, Math.round((stats.q10 / 1000) * 100))}%`, color: PURP },
           ].map(s => (
-            <div key={s.label} className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+            <div key={s.label} className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
               <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: T2 }}>{s.label}</p>
               <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
             </div>
@@ -172,7 +172,7 @@ function AnnotateTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 
       {/* Progress to 1000 examples */}
       {stats && (
-        <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs font-bold" style={{ color: T1 }}>Progress to Gen 2 graduation</p>
             <p className="text-xs font-bold" style={{ color: PURP }}>{stats.q10} / 1,000 approved</p>
@@ -188,25 +188,25 @@ function AnnotateTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
       <div className="flex items-center gap-2">
         {(['all', 'pending', 'approved', 'rejected'] as const).map(f => (
           <button key={f} onClick={() => setFilter(f)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
+            className="px-3 py-1.5 rounded-2xl text-xs font-bold transition-colors"
             style={filter === f ? { background: PURP, color: '#fff' } : { background: SURF, color: T2, border: `1px solid ${BDR}` }}>
             {f.charAt(0).toUpperCase() + f.slice(1)}
           </button>
         ))}
-        <button onClick={() => refetch()} className="ml-auto p-1.5 rounded-lg" style={{ color: T2 }}>
+        <button onClick={() => refetch()} className="ml-auto p-1.5 rounded-2xl" style={{ color: T2 }}>
           <RefreshCw className="w-3.5 h-3.5" />
         </button>
       </div>
 
       {/* Example list */}
       {isLoading && (
-        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-20 rounded-xl animate-pulse" style={{ background: SURF }} />)}</div>
+        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-20 rounded-2xl animate-pulse" style={{ background: SURF }} />)}</div>
       )}
       {!isLoading && examples.length === 0 && (
         <div className="py-12 text-center text-sm" style={{ color: T2 }}>No examples in this category yet.</div>
       )}
       {examples.map(ex => (
-        <div key={ex.id} className="rounded-xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
+        <div key={ex.id} className="rounded-2xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
           <div className="flex items-start gap-3 px-4 py-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
@@ -223,7 +223,7 @@ function AnnotateTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
               <p className="text-xs font-medium line-clamp-2" style={{ color: T1 }}>{ex.userMessage}</p>
             </div>
             <button onClick={() => setExpanded(expanded === ex.id ? null : ex.id)}
-              className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+              className="w-6 h-6 rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ color: T2 }}>
               <ChevronRight className={`w-3.5 h-3.5 transition-transform ${expanded === ex.id ? 'rotate-90' : ''}`} />
             </button>
@@ -239,7 +239,7 @@ function AnnotateTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                 ].map(({ label, content }) => (
                   <div key={label}>
                     <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: T2 }}>{label}</p>
-                    <pre className="text-[11px] font-mono whitespace-pre-wrap rounded-lg p-3 max-h-36 overflow-y-auto"
+                    <pre className="text-[11px] font-mono whitespace-pre-wrap rounded-2xl p-3 max-h-36 overflow-y-auto"
                       style={{ background: SURF, color: T1, border: `1px solid ${BDR}` }}>
                       {content}
                     </pre>
@@ -261,7 +261,7 @@ function AnnotateTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                 onClick={() => rate.mutate({ id: ex.id, rating: rating as RatingLabel })}
                 disabled={rate.isPending}
                 title={label}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-bold disabled:opacity-40 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-2xl text-[10px] font-bold disabled:opacity-40 transition-colors"
                 style={{
                   background: `${color}12`,
                   color,
@@ -347,14 +347,14 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
       <div className="flex items-center justify-between">
         <p className="text-sm font-bold" style={{ color: T1 }}>Fine-tune Jobs</p>
         <button onClick={() => setShowCreate(s => !s)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold"
           style={{ background: 'rgba(124,58,237,0.1)', color: PURP, border: `1px solid rgba(124,58,237,0.2)` }}>
           <Plus className="w-3.5 h-3.5" /> New Job
         </button>
       </div>
 
       {showCreate && (
-        <div className="rounded-xl border p-4 space-y-3" style={{ background: CARD, borderColor: BDR }}>
+        <div className="rounded-2xl border p-4 space-y-3" style={{ background: CARD, borderColor: BDR }}>
           <p className="text-xs font-bold" style={{ color: T1 }}>New fine-tune job</p>
           <div className="grid grid-cols-2 gap-3">
             {[
@@ -365,14 +365,14 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                 <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>{label}</p>
                 <input value={(form as any)[field]} onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
                   placeholder={ph}
-                  className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+                  className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
                   style={{ borderColor: BDR, background: SURF, color: T1 }} />
               </div>
             ))}
             <div>
               <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Provider</p>
               <select value={form.provider} onChange={e => setForm(f => ({ ...f, provider: e.target.value }))}
-                className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+                className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
                 style={{ borderColor: BDR, background: SURF, color: T1 }}>
                 {['ANTHROPIC', 'TOGETHER', 'HUGGINGFACE', 'OPENAI'].map(p => <option key={p}>{p}</option>)}
               </select>
@@ -381,7 +381,7 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
               <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Min quality (0–1)</p>
               <input type="number" min="0.5" max="1.0" step="0.1" value={form.minQuality}
                 onChange={e => setForm(f => ({ ...f, minQuality: e.target.value }))}
-                className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+                className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
                 style={{ borderColor: BDR, background: SURF, color: T1 }} />
             </div>
           </div>
@@ -389,22 +389,22 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
             <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Notes (optional)</p>
             <input value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
               placeholder="Training notes..."
-              className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+              className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
               style={{ borderColor: BDR, background: SURF, color: T1 }} />
           </div>
           <div className="flex gap-2">
             <button disabled={!form.name.trim() || create.isPending}
               onClick={() => create.mutate()}
-              className="px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+              className="px-4 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
               style={{ background: PURP, color: '#fff' }}>
               {create.isPending ? 'Creating…' : 'Create Job'}
             </button>
-            <button onClick={() => setShowCreate(false)} className="px-4 py-2 rounded-xl text-xs font-bold" style={{ color: T2 }}>Cancel</button>
+            <button onClick={() => setShowCreate(false)} className="px-4 py-2 rounded-2xl text-xs font-bold" style={{ color: T2 }}>Cancel</button>
           </div>
         </div>
       )}
 
-      {isLoading && <div className="space-y-2">{[1,2].map(i => <div key={i} className="h-24 rounded-xl animate-pulse" style={{ background: SURF }} />)}</div>}
+      {isLoading && <div className="space-y-2">{[1,2].map(i => <div key={i} className="h-24 rounded-2xl animate-pulse" style={{ background: SURF }} />)}</div>}
       {!isLoading && jobs.length === 0 && !showCreate && (
         <div className="py-12 text-center text-sm" style={{ color: T2 }}>No fine-tune jobs yet.</div>
       )}
@@ -417,9 +417,9 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         const pr = pollResults[job.id]
         const isAutoRegistered = pr?.fineTunedModelId && pr?.providerStatus === 'succeeded'
         return (
-          <div key={job.id} className="rounded-xl border" style={{ background: CARD, borderColor: BDR }}>
+          <div key={job.id} className="rounded-2xl border" style={{ background: CARD, borderColor: BDR }}>
             <div className="flex items-start gap-3 px-4 py-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: cfg.bg }}>
+              <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: cfg.bg }}>
                 <Cpu className="w-4 h-4" style={{ color: cfg.color }} />
               </div>
               <div className="flex-1 min-w-0">
@@ -468,7 +468,7 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
               <div className="flex flex-col gap-1.5 flex-shrink-0">
                 {job.providerJobId && (
                   <button onClick={() => pollJob(job.id)} disabled={polling[job.id]}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold disabled:opacity-40"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[10px] font-bold disabled:opacity-40"
                     style={{ background: 'rgba(87,155,252,0.1)', color: BLUE, border: `1px solid rgba(87,155,252,0.2)` }}>
                     <Radio className="w-3 h-3" /> {polling[job.id] ? 'Polling…' : 'Poll Status'}
                   </button>
@@ -476,7 +476,7 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                 {next && (
                   <button onClick={() => advance.mutate({ id: job.id, status: next })}
                     disabled={advance.isPending}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold disabled:opacity-40"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[10px] font-bold disabled:opacity-40"
                     style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.color}30` }}>
                     → {next}
                   </button>
@@ -537,7 +537,7 @@ function ExportTab() {
           </div>
         </div>
         <button onClick={handleExport} disabled={exporting}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-50 transition-colors"
           style={{ background: PURP, color: '#fff' }}>
           <Download className="w-4 h-4" />
           {exporting ? 'Preparing…' : 'Download JSONL'}
@@ -546,7 +546,7 @@ function ExportTab() {
 
       <div className="rounded-2xl p-5 border" style={{ background: CARD, borderColor: BDR }}>
         <p className="text-sm font-bold mb-3" style={{ color: T1 }}>Format reference</p>
-        <pre className="text-xs font-mono rounded-xl p-4 overflow-x-auto leading-relaxed"
+        <pre className="text-xs font-mono rounded-2xl p-4 overflow-x-auto leading-relaxed"
           style={{ background: SURF, border: `1px solid ${BDR}`, color: T2 }}>{`# Anthropic fine-tuning format (default)
 {"messages":[
   {"role":"system","content":"<KIMMP system prompt>"},
@@ -642,7 +642,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   return (
     <div className="space-y-5">
       {/* ── S86: Graduation + Circuit Breaker Panel ─────────────────────── */}
-      <div className="rounded-xl p-4 border grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ background: CARD, borderColor: BDR }}>
+      <div className="rounded-2xl p-4 border grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ background: CARD, borderColor: BDR }}>
         {/* Graduate button */}
         <div>
           <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Gen2 Graduation</p>
@@ -653,7 +653,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           <button
             onClick={() => graduateMut.mutate()}
             disabled={!readyToGraduate || graduateMut.isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all"
             style={{ background: readyToGraduate ? 'rgba(16,185,129,0.15)' : 'rgba(100,100,100,0.1)', color: readyToGraduate ? GRN : T2, cursor: readyToGraduate ? 'pointer' : 'not-allowed' }}
             title={readyToGraduate ? 'Set Gen2 to 25% traffic' : `Need ${threshold} approved examples`}
           >
@@ -683,7 +683,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           <button
             onClick={() => { if (confirm('Trip circuit and revert all Gen2 traffic to 0%?')) circuitTripMut.mutate('>5% error rate — manual trip') }}
             disabled={circuitTripMut.isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all"
             style={{ background: 'rgba(239,68,68,0.1)', color: RED }}
           >
             <XCircle className="w-3 h-3" />
@@ -696,7 +696,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
       </div>
 
       {/* ── WAANDAx Server Status ────────────────────────────────────────────── */}
-      <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+      <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full" style={{ background: routerStats?.waandaxAvailable ? GRN : RED }} />
@@ -709,7 +709,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
             <a
               href="/api/admin/kangqore-immp/learning/export-jsonl"
               download
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold"
               style={{ background: 'rgba(124,58,237,0.1)', color: PURP, textDecoration: 'none' }}
             >
               <Download className="w-3 h-3" /> Export JSONL
@@ -737,7 +737,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           </div>
         </div>
         {!routerStats?.waandaxAvailable && (
-          <div className="mt-3 p-2 rounded-lg font-mono text-[10px]" style={{ background: 'rgba(239,68,68,0.06)', color: RED, border: '1px solid rgba(239,68,68,0.2)' }}>
+          <div className="mt-3 p-2 rounded-2xl font-mono text-[10px]" style={{ background: 'rgba(239,68,68,0.06)', color: RED, border: '1px solid rgba(239,68,68,0.2)' }}>
             cd ~/.kimmp-venv && mlx_lm.server --model {routerStats?.waandaxModel ?? '$WAANDAX_MODEL'} --port 11435
           </div>
         )}
@@ -749,7 +749,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
       </div>
 
       {/* Router stats header */}
-      <div className="rounded-xl p-4 border flex items-center justify-between" style={{ background: CARD, borderColor: BDR }}>
+      <div className="rounded-2xl p-4 border flex items-center justify-between" style={{ background: CARD, borderColor: BDR }}>
         <div>
           <p className="text-xs font-bold mb-1" style={{ color: T1 }}>Live Router Stats</p>
           <p className="text-[11px]" style={{ color: T2 }}>
@@ -760,7 +760,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         </div>
         <button
           onClick={() => { refetchStats(); refetchModels() }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-medium"
           style={{ background: 'rgba(124,58,237,0.1)', color: PURP }}
         >
           <RefreshCw className="w-3 h-3" /> Refresh
@@ -775,7 +775,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         ) : (
           <div className="grid grid-cols-5 gap-2">
             {providers.map((p: any) => (
-              <div key={p.name} className="rounded-xl p-3 border text-center" style={{ background: CARD, borderColor: BDR }}>
+              <div key={p.name} className="rounded-2xl p-3 border text-center" style={{ background: CARD, borderColor: BDR }}>
                 <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: T2 }}>{p.name}</p>
                 <p className="text-sm font-black mb-1" style={{ color: HEALTH_COLOR[p.health] ?? T2 }}>{p.health}</p>
                 <p className="text-[11px]" style={{ color: T2 }}>{p.calls} calls</p>
@@ -788,7 +788,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 
       {/* A/B routing bar */}
       {routerStats && routerStats.callsTotal > 0 && (
-        <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
           <p className="text-xs font-bold mb-2" style={{ color: T1 }}>A/B Routing Distribution</p>
           <div className="h-3 rounded-full overflow-hidden flex">
             {providers.filter((p: any) => p.calls > 0).map((p: any) => (
@@ -812,7 +812,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 
       {/* Deployed Gen2 model banner */}
       {deployedModel ? (
-        <div className="rounded-xl p-4 border flex items-center gap-3"
+        <div className="rounded-2xl p-4 border flex items-center gap-3"
           style={{ background: 'rgba(16,185,129,0.06)', borderColor: 'rgba(16,185,129,0.2)' }}>
           <CheckCircle className="w-5 h-5 flex-shrink-0" style={{ color: GRN }} />
           <div className="flex-1 min-w-0">
@@ -825,14 +825,14 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           <button
             onClick={() => deployMut.mutate({ id: deployedModel.id, deploy: false })}
             disabled={deployMut.isPending}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium"
+            className="px-3 py-1.5 rounded-2xl text-xs font-medium"
             style={{ background: 'rgba(239,68,68,0.1)', color: RED }}
           >
             Undeploy
           </button>
         </div>
       ) : (
-        <div className="rounded-xl p-4 border flex items-center gap-3"
+        <div className="rounded-2xl p-4 border flex items-center gap-3"
           style={{ background: 'rgba(245,158,11,0.05)', borderColor: 'rgba(245,158,11,0.2)' }}>
           <AlertCircle className="w-5 h-5 flex-shrink-0" style={{ color: AMB }} />
           <div>
@@ -848,7 +848,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         {modelsLoading ? (
           <p className="text-xs" style={{ color: T2 }}>Loading…</p>
         ) : models.length === 0 ? (
-          <div className="rounded-xl p-5 border text-center" style={{ background: CARD, borderColor: BDR }}>
+          <div className="rounded-2xl p-5 border text-center" style={{ background: CARD, borderColor: BDR }}>
             <Cpu className="w-8 h-8 mx-auto mb-2 opacity-30" />
             <p className="text-sm font-medium" style={{ color: T2 }}>No Gen 2 models registered</p>
             <p className="text-[11px] mt-1" style={{ color: T2 }}>
@@ -858,7 +858,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         ) : (
           <div className="space-y-2">
             {models.map((m: any) => (
-              <div key={m.id} className="rounded-xl p-4 border flex items-center gap-3" style={{ background: CARD, borderColor: BDR }}>
+              <div key={m.id} className="rounded-2xl p-4 border flex items-center gap-3" style={{ background: CARD, borderColor: BDR }}>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <p className="text-sm font-bold truncate" style={{ color: T1 }}>{m.name}</p>
@@ -877,7 +877,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                   <button
                     onClick={() => deployMut.mutate({ id: m.id, deploy: true })}
                     disabled={deployMut.isPending}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-semibold transition-all"
                     style={{ background: 'rgba(124,58,237,0.1)', color: PURP }}
                   >
                     <ChevronRight className="w-3 h-3" /> Deploy
@@ -886,7 +886,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                   <button
                     onClick={() => deployMut.mutate({ id: m.id, deploy: false })}
                     disabled={deployMut.isPending}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium"
+                    className="px-3 py-1.5 rounded-2xl text-xs font-medium"
                     style={{ background: 'rgba(239,68,68,0.1)', color: RED }}
                   >
                     Undeploy
@@ -900,7 +900,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 
       {/* Phase indicator */}
       {routerStats && (
-        <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
           <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Router Phase</p>
           <div className="flex items-center gap-3">
             {['distilling', 'pre-graduation', 'routing'].map((phase, i) => {
@@ -1036,7 +1036,7 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           <button
             disabled={update.isPending || slider === null || slider === config?.gen2TrafficPct}
             onClick={() => slider !== null && update.mutate(slider)}
-            className="mt-4 flex items-center gap-2 w-full justify-center px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+            className="mt-4 flex items-center gap-2 w-full justify-center px-4 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
             style={{ background: PURP, color: '#fff' }}>
             <Sliders className="w-3.5 h-3.5" />
             {update.isPending ? 'Applying…' : 'Apply Split'}
@@ -1142,7 +1142,7 @@ function QualityDiffTab() {
   return (
     <div className="space-y-4">
       {/* Intro */}
-      <div className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+      <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
         <div className="flex items-center gap-2 mb-1">
           <GitMerge className="w-4 h-4" style={{ color: PURP }} />
           <p className="text-sm font-bold" style={{ color: T1 }}>Gen 1 vs Gen 2 Quality Diff</p>
@@ -1153,24 +1153,24 @@ function QualityDiffTab() {
       </div>
 
       {/* Input */}
-      <div className="rounded-xl border p-4 space-y-3" style={{ background: CARD, borderColor: BDR }}>
+      <div className="rounded-2xl border p-4 space-y-3" style={{ background: CARD, borderColor: BDR }}>
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Test prompt</p>
           <textarea value={prompt} onChange={e => setPrompt(e.target.value)} rows={3}
             placeholder="e.g. What are the top 3 risks for a customer whose OIS velocity dropped below 80% at Day 45?"
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none resize-none"
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none resize-none"
             style={{ borderColor: BDR, background: SURF, color: T1 }} />
         </div>
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>System context (optional)</p>
           <input value={context} onChange={e => setContext(e.target.value)}
             placeholder="Additional context to include in system prompt…"
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
             style={{ borderColor: BDR, background: SURF, color: T1 }} />
         </div>
         {error && <p className="text-xs" style={{ color: RED }}>{error}</p>}
         <button disabled={!prompt.trim() || running} onClick={run}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
           style={{ background: PURP, color: '#fff' }}>
           <Cpu className="w-4 h-4" />
           {running ? 'Running comparison…' : 'Run Gen 1 vs Gen 2'}
@@ -1188,7 +1188,7 @@ function QualityDiffTab() {
               { label: 'Speed ratio', value: result.speedupRatio ? `${result.speedupRatio}×` : '—', color: isGen2Faster ? GRN : RED },
               { label: 'Total time', value: `${result.totalMs}ms`, color: T2 },
             ].map(s => (
-              <div key={s.label} className="rounded-xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
+              <div key={s.label} className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
                 <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: T2 }}>{s.label}</p>
                 <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
               </div>
@@ -1201,7 +1201,7 @@ function QualityDiffTab() {
               { key: 'gen1', label: 'Gen 1 · Claude', data: result.gen1, accent: BLUE },
               { key: 'gen2', label: `Gen 2 · ${result.gen2.provider === 'gen1' ? 'Claude (WAANDAx offline)' : 'WAANDAx'}`, data: result.gen2, accent: result.gen2.provider === 'gen1' ? AMB : PURP },
             ].map(({ key, label, data, accent }) => (
-              <div key={key} className="rounded-xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
+              <div key={key} className="rounded-2xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: BDR, background: SURF }}>
                   <span className="w-2 h-2 rounded-full" style={{ background: accent }} />
                   <span className="text-xs font-bold" style={{ color: accent }}>{label}</span>
@@ -1226,7 +1226,7 @@ function QualityDiffTab() {
           </div>
 
           {/* Model info */}
-          <div className="rounded-xl p-3 border" style={{ background: SURF, borderColor: BDR }}>
+          <div className="rounded-2xl p-3 border" style={{ background: SURF, borderColor: BDR }}>
             <p className="text-[10px]" style={{ color: T2 }}>
               Gen 1: <span className="font-mono" style={{ color: T1 }}>{result.gen1.model}</span> ·
               Gen 2: <span className="font-mono" style={{ color: T1 }}>{result.gen2.model}</span> ·

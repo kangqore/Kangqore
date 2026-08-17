@@ -200,7 +200,7 @@ function LeadCard({
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition, background: stageBg }}
       className={cn(
-        'rounded-xl p-3 select-none text-white shadow-sm transition-all duration-150',
+        'rounded-2xl p-3 select-none text-white shadow-sm transition-all duration-150',
         'hover:brightness-110 hover:scale-[1.02]',
         isDragging && !dragging && 'opacity-30',
         dragging && 'shadow-xl rotate-1 scale-105',
@@ -218,7 +218,7 @@ function LeadCard({
               className="w-3.5 h-3.5 rounded bg-white/20 border-white/40 accent-white cursor-pointer flex-shrink-0"
             />
           )}
-          <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+          <div className="w-7 h-7 rounded-2xl bg-white/20 flex items-center justify-center flex-shrink-0">
             <span className="text-[11px] font-bold text-white">{initials}</span>
           </div>
           <div className="min-w-0">
@@ -268,7 +268,7 @@ function TableView({
 }) {
   const allSelected = leads.length > 0 && leads.every(l => selected.has(l.id))
   return (
-    <div className="overflow-x-auto rounded-xl border border-[var(--os-border)] shadow-[var(--os-shadow-card)]">
+    <div className="overflow-x-auto rounded-2xl border border-[var(--os-border)] shadow-[var(--os-shadow-card)]">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-[var(--os-border)]" style={{ background: 'var(--os-surface-0)' }}>
@@ -308,7 +308,7 @@ function TableView({
               </td>
               <td className="px-4 py-3" onClick={() => onOpen(lead.id)}>
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0" style={{ background: STAGE_DOT[lead.stage] }}>
+                  <div className="w-7 h-7 rounded-2xl flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0" style={{ background: STAGE_DOT[lead.stage] }}>
                     {lead.company.slice(0,2).toUpperCase()}
                   </div>
                   <span className="font-semibold text-white">{lead.company}</span>
@@ -442,15 +442,15 @@ export function LeadsPipeline() {
   if (isLoading && leads.length === 0) {
     return (
       <div className="space-y-5">
-        <div className="h-8 w-64 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+        <div className="h-8 w-64 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-24 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+            <div key={i} className="h-24 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
           ))}
         </div>
         <div className="flex gap-3 overflow-x-auto pb-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="min-w-[210px] w-[210px] h-64 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+            <div key={i} className="min-w-[210px] w-[210px] h-64 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
           ))}
         </div>
       </div>
@@ -505,7 +505,7 @@ export function LeadsPipeline() {
               return (
                 <div key={stage.id} className="flex flex-col min-w-[220px] w-[220px]">
                   {/* Column header with colored top bar */}
-                  <div className="rounded-xl overflow-hidden mb-2">
+                  <div className="rounded-2xl overflow-hidden mb-2">
                     <div className="h-1 w-full" style={{ background: stage.bg }} />
                     <div className="flex items-center gap-2 px-3 py-2" style={{ background: 'var(--os-surface-0)' }}>
                       <span className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>{stage.label}</span>
@@ -518,7 +518,7 @@ export function LeadsPipeline() {
                     )}
                   </div>
                   <SortableContext id={stage.id} items={stageLeads.map(l => l.id)} strategy={verticalListSortingStrategy}>
-                    <div className={cn('flex flex-col gap-2 p-2 rounded-xl min-h-[100px] flex-1 border border-[var(--os-border)]',
+                    <div className={cn('flex flex-col gap-2 p-2 rounded-2xl min-h-[100px] flex-1 border border-[var(--os-border)]',
                       stageLeads.length === 0 && 'items-center justify-center'
                     )} style={{ background: 'var(--os-surface-0)' }}>
                       {stageLeads.length === 0 && <p className="text-xs py-4" style={{ color: 'var(--os-text-2)' }}>Drop here</p>}

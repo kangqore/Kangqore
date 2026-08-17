@@ -103,7 +103,7 @@ export function EventTypesPage() {
             <div key={et.id} className={`os-card p-5 ${et.isActive ? '' : 'opacity-60'}`}>
               {/* Icon + name */}
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#579bfc18' }}>
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: '#579bfc18' }}>
                   <CalendarCheck className="w-5 h-5" style={{ color: '#579bfc' }} />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -135,13 +135,13 @@ export function EventTypesPage() {
               <div className="flex gap-2 pt-3 border-t border-[var(--os-border)]">
                 <button
                   onClick={() => open(et)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-semibold border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
                 >
                   <Pencil className="w-3.5 h-3.5" /> Edit
                 </button>
                 <button
                   onClick={() => { if (confirm('Delete this event type?')) remove(et.id) }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-transparent text-[var(--os-text-2)] hover:text-[#e2445c] hover:border-[#e2445c]/30 hover:bg-[#e2445c]/10 transition-colors ml-auto"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-semibold border border-transparent text-[var(--os-text-2)] hover:text-[#e2445c] hover:border-[#e2445c]/30 hover:bg-[#e2445c]/10 transition-colors ml-auto"
                 >
                   <Trash2 className="w-3.5 h-3.5" /> Delete
                 </button>
@@ -172,7 +172,7 @@ export function EventTypesPage() {
                   value={(form as Record<string, unknown>)[key] as string}
                   onChange={e => set(key, e.target.value)}
                   placeholder={placeholder}
-                  className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
+                  className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
                 />
               </div>
             ))}
@@ -185,7 +185,7 @@ export function EventTypesPage() {
                   min={5}
                   value={form.duration}
                   onChange={e => set('duration', Number(e.target.value))}
-                  className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
+                  className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
                 />
               </div>
               <div>
@@ -193,7 +193,7 @@ export function EventTypesPage() {
                 <select
                   value={form.videoProvider}
                   onChange={e => set('videoProvider', e.target.value)}
-                  className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
+                  className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
                 >
                   <option value="JITSI">Jitsi (built-in)</option>
                   <option value="ZOOM">Zoom</option>

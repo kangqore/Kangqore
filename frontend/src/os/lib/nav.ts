@@ -35,6 +35,9 @@ import {
   MagicWandIcon,
   RobotIcon,
   TrophyIcon,
+  ClockIcon,
+  FolderOpenIcon,
+  LifebuoyIcon,
 } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
 
@@ -375,6 +378,38 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'workflows',   label: 'Workflows',   path: `${BASE}/workflows`   },
       { id: 'departments', label: 'Departments', path: `${BASE}/departments` },
     ],
+  },
+  {
+    id: 'recent',
+    label: 'Recent',
+    icon: ClockIcon,
+    defaultPath: `${BASE}/recent`,
+    matchPrefixes: [`${BASE}/recent`],
+    sidebarItems: [],
+  },
+  {
+    id: 'files',
+    label: 'Files',
+    icon: FolderOpenIcon,
+    defaultPath: `${BASE}/files`,
+    matchPrefixes: [`${BASE}/files`],
+    sidebarItems: [],
+  },
+  {
+    id: 'applications',
+    label: 'Applications',
+    icon: SquaresFourIcon,
+    defaultPath: `${BASE}/applications`,
+    matchPrefixes: [`${BASE}/applications`],
+    sidebarItems: [],
+  },
+  {
+    id: 'support',
+    label: 'Support',
+    icon: LifebuoyIcon,
+    defaultPath: `${BASE}/support`,
+    matchPrefixes: [`${BASE}/support`],
+    sidebarItems: [],
   },
   {
     id: 'settings',

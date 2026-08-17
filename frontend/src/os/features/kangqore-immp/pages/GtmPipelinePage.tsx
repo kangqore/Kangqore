@@ -50,25 +50,25 @@ function ReferenceCustomersTab({ data }: { data: Summary['referenceCustomers'] }
     <div className="space-y-4">
       <div className="grid grid-cols-6 gap-2">
         {REF_STAGES.map(s => (
-          <div key={s} className="rounded-lg p-2.5 text-center" style={{ background: SURF, border: `1px solid ${BDR}` }}>
+          <div key={s} className="rounded-2xl p-2.5 text-center" style={{ background: SURF, border: `1px solid ${BDR}` }}>
             <p className="text-lg font-black" style={{ color: STAGE_COLOR[s] }}>{data.byStage[s] ?? 0}</p>
             <p className="text-[8px] uppercase tracking-wide mt-0.5" style={{ color: T2 }}>{s.replace('_', ' ')}</p>
           </div>
         ))}
       </div>
-      <button onClick={() => setShowForm(s => !s)} className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg" style={{ background: `${PURP}18`, color: PURP }}>
+      <button onClick={() => setShowForm(s => !s)} className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-2xl" style={{ background: `${PURP}18`, color: PURP }}>
         <Plus className="w-3.5 h-3.5" /> Add candidate
       </button>
       {showForm && (
         <div className="flex gap-2">
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="Real customer name" className="flex-1 text-sm px-3 py-2 rounded-lg" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
-          <button onClick={() => create.mutate()} disabled={!name.trim() || create.isPending} className="text-xs font-semibold px-3 py-2 rounded-lg" style={{ background: PURP, color: '#fff' }}>Add</button>
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Real customer name" className="flex-1 text-sm px-3 py-2 rounded-2xl" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
+          <button onClick={() => create.mutate()} disabled={!name.trim() || create.isPending} className="text-xs font-semibold px-3 py-2 rounded-2xl" style={{ background: PURP, color: '#fff' }}>Add</button>
         </div>
       )}
       <div className="space-y-2">
         {data.candidates.length === 0 && <p className="text-xs text-center py-8" style={{ color: T2 }}>No candidates logged yet — add the first real one above.</p>}
         {data.candidates.map(c => (
-          <div key={c.id} className="rounded-lg p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+          <div key={c.id} className="rounded-2xl p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
             <div className="flex items-center justify-between gap-2 mb-1">
               <span className="text-sm font-semibold" style={{ color: T1 }}>{c.customerName}</span>
               <StageBadge value={c.stage} />
@@ -107,26 +107,26 @@ function AnalystsTab({ data }: { data: Summary['analystRelationships'] }) {
     <div className="space-y-4">
       <div className="grid grid-cols-4 gap-2">
         {ANALYST_STATUSES.map(s => (
-          <div key={s} className="rounded-lg p-2.5 text-center" style={{ background: SURF, border: `1px solid ${BDR}` }}>
+          <div key={s} className="rounded-2xl p-2.5 text-center" style={{ background: SURF, border: `1px solid ${BDR}` }}>
             <p className="text-lg font-black" style={{ color: T1 }}>{data.byStatus[s] ?? 0}</p>
             <p className="text-[8px] uppercase tracking-wide mt-0.5" style={{ color: T2 }}>{s.replace('_', ' ')}</p>
           </div>
         ))}
       </div>
-      <button onClick={() => setShowForm(s => !s)} className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg" style={{ background: `${PURP}18`, color: PURP }}>
+      <button onClick={() => setShowForm(s => !s)} className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-2xl" style={{ background: `${PURP}18`, color: PURP }}>
         <Plus className="w-3.5 h-3.5" /> Add relationship
       </button>
       {showForm && (
         <div className="flex gap-2">
-          <input value={firm} onChange={e => setFirm(e.target.value)} placeholder="Firm (e.g. Gartner)" className="flex-1 text-sm px-3 py-2 rounded-lg" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
-          <input value={category} onChange={e => setCategory(e.target.value)} placeholder="Category (optional)" className="flex-1 text-sm px-3 py-2 rounded-lg" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
-          <button onClick={() => create.mutate()} disabled={!firm.trim() || create.isPending} className="text-xs font-semibold px-3 py-2 rounded-lg" style={{ background: PURP, color: '#fff' }}>Add</button>
+          <input value={firm} onChange={e => setFirm(e.target.value)} placeholder="Firm (e.g. Gartner)" className="flex-1 text-sm px-3 py-2 rounded-2xl" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
+          <input value={category} onChange={e => setCategory(e.target.value)} placeholder="Category (optional)" className="flex-1 text-sm px-3 py-2 rounded-2xl" style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }} />
+          <button onClick={() => create.mutate()} disabled={!firm.trim() || create.isPending} className="text-xs font-semibold px-3 py-2 rounded-2xl" style={{ background: PURP, color: '#fff' }}>Add</button>
         </div>
       )}
       <div className="space-y-2">
         {data.relationships.length === 0 && <p className="text-xs text-center py-8" style={{ color: T2 }}>No analyst relationships logged yet.</p>}
         {data.relationships.map(r => (
-          <div key={r.id} className="rounded-lg p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+          <div key={r.id} className="rounded-2xl p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
             <div className="flex items-center justify-between gap-2 mb-1">
               <span className="text-sm font-semibold" style={{ color: T1 }}>{r.firm}{r.category ? ` · ${r.category}` : ''}</span>
               <StageBadge value={r.status} />
@@ -164,12 +164,12 @@ function BidsProofPointsTab({ data }: { data: Summary['bidsProofPoints'] }) {
         {data.eligibleEngagements.length === 0 && <p className="text-xs text-center py-8" style={{ color: T2 }}>No completed BIDS engagements with a score yet — this fills in as real engagements finish.</p>}
         <div className="space-y-2">
           {data.eligibleEngagements.map(e => (
-            <div key={e.id} className="flex items-center gap-3 rounded-lg p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+            <div key={e.id} className="flex items-center gap-3 rounded-2xl p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
               <div className="flex-1 min-w-0">
                 <span className="text-sm font-semibold" style={{ color: T1 }}>{e.title}</span>
                 <span className="text-xs ml-2" style={{ color: T2 }}>{e.verticalPack} · score {e.overallScore.toFixed(0)}{e.scoreGrade ? ` (${e.scoreGrade})` : ''}</span>
               </div>
-              <button onClick={() => draft.mutate(e.id)} disabled={draft.isPending} className="text-[10px] font-semibold px-2.5 py-1.5 rounded-lg" style={{ background: `${GRN}18`, color: GRN }}>Draft proof point</button>
+              <button onClick={() => draft.mutate(e.id)} disabled={draft.isPending} className="text-[10px] font-semibold px-2.5 py-1.5 rounded-2xl" style={{ background: `${GRN}18`, color: GRN }}>Draft proof point</button>
             </div>
           ))}
         </div>
@@ -179,10 +179,10 @@ function BidsProofPointsTab({ data }: { data: Summary['bidsProofPoints'] }) {
         {data.publications.length === 0 && <p className="text-xs text-center py-8" style={{ color: T2 }}>No proof points drafted yet.</p>}
         <div className="space-y-2">
           {data.publications.map(p => (
-            <div key={p.id} className="flex items-center gap-3 rounded-lg p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+            <div key={p.id} className="flex items-center gap-3 rounded-2xl p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
               <span className="flex-1 text-sm font-semibold" style={{ color: T1 }}>{p.publicLabel}</span>
               <StageBadge value={p.status} />
-              {p.status === 'DRAFT' && <button onClick={() => publish.mutate(p.id)} disabled={publish.isPending} className="text-[10px] font-semibold px-2.5 py-1.5 rounded-lg" style={{ background: `${GRN}18`, color: GRN }}>Publish</button>}
+              {p.status === 'DRAFT' && <button onClick={() => publish.mutate(p.id)} disabled={publish.isPending} className="text-[10px] font-semibold px-2.5 py-1.5 rounded-2xl" style={{ background: `${GRN}18`, color: GRN }}>Publish</button>}
             </div>
           ))}
         </div>
@@ -206,7 +206,7 @@ export function GtmPipelinePage() {
         </p>
       </div>
 
-      <div className="rounded-xl p-3 flex items-start gap-2.5" style={{ background: `${AMB}12`, border: `1px solid ${AMB}30` }}>
+      <div className="rounded-2xl p-3 flex items-start gap-2.5" style={{ background: `${AMB}12`, border: `1px solid ${AMB}30` }}>
         <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: AMB }} />
         <p className="text-xs leading-relaxed" style={{ color: T2 }}>{data?.disclaimer}</p>
       </div>

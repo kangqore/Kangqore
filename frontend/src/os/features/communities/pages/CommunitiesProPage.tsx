@@ -123,7 +123,7 @@ export function CommunitiesProPage() {
           <button
             onClick={handleDigest}
             disabled={digestLoading}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold transition-colors disabled:opacity-50"
           >
             <Zap className="w-3.5 h-3.5" />
             {digestLoading ? 'Generating…' : 'KIMMP Weekly Digest'}
@@ -135,12 +135,12 @@ export function CommunitiesProPage() {
       </div>
 
       {/* Mode tabs */}
-      <div className="flex gap-1 bg-gray-100 dark:bg-white/5 rounded-xl p-1 w-fit">
+      <div className="flex gap-1 bg-gray-100 dark:bg-white/5 rounded-2xl p-1 w-fit">
         {(['feed', 'search', 'moderation'] as const).map(m => (
           <button
             key={m}
             onClick={() => setMode(m)}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold capitalize transition-all ${
+            className={`px-4 py-1.5 rounded-2xl text-xs font-bold capitalize transition-all ${
               mode === m
                 ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm'
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
@@ -160,12 +160,12 @@ export function CommunitiesProPage() {
       {mode === 'feed' && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex gap-1 bg-gray-100 dark:bg-white/5 rounded-lg p-0.5">
+            <div className="flex gap-1 bg-gray-100 dark:bg-white/5 rounded-2xl p-0.5">
               {(['hot', 'new', 'top'] as const).map(s => (
                 <button
                   key={s}
                   onClick={() => setSort(s)}
-                  className={`px-3 py-1 rounded-md text-xs font-bold capitalize transition-colors ${
+                  className={`px-3 py-1 rounded-2xl text-xs font-bold capitalize transition-colors ${
                     sort === s ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'
                   }`}
                 >
@@ -173,7 +173,7 @@ export function CommunitiesProPage() {
                 </button>
               ))}
             </div>
-            <button onClick={loadFeed} className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" title="Refresh">
+            <button onClick={loadFeed} className="p-1.5 rounded-2xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" title="Refresh">
               <RefreshCw className="w-3.5 h-3.5 text-gray-400" />
             </button>
           </div>
@@ -191,7 +191,7 @@ export function CommunitiesProPage() {
               placeholder="Search posts by title, body, or tag…"
               value={searchQ}
               onChange={e => handleSearchChange(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
+              className="w-full pl-9 pr-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
             />
           </div>
           {searchQ.trim().length >= 2 ? (
@@ -211,13 +211,13 @@ export function CommunitiesProPage() {
             {loading ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-20 rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse" />
+                  <div key={i} className="h-20 rounded-2xl bg-gray-100 dark:bg-white/5 animate-pulse" />
                 ))}
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {stats.map(c => (
-                  <div key={c.id} className="p-4 rounded-xl bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 space-y-2">
+                  <div key={c.id} className="p-4 rounded-2xl bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 space-y-2">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: c.color }} />
                       <span className="text-xs font-bold text-gray-900 dark:text-white truncate">{c.name}</span>
@@ -244,7 +244,7 @@ export function CommunitiesProPage() {
             {loading ? (
               <div className="space-y-2">
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-16 rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse" />
+                  <div key={i} className="h-16 rounded-2xl bg-gray-100 dark:bg-white/5 animate-pulse" />
                 ))}
               </div>
             ) : flagged.length === 0 ? (
@@ -277,7 +277,7 @@ function PostList({ posts, loading, onDelete, onPin, showMod }: {
     return (
       <div className="space-y-3">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-20 rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse" />
+          <div key={i} className="h-20 rounded-2xl bg-gray-100 dark:bg-white/5 animate-pulse" />
         ))}
       </div>
     )
@@ -302,7 +302,7 @@ function PostRow({ post, onDelete, onPin, showMod }: {
 }) {
   const [expanded, setExpanded] = useState(false)
   return (
-    <div className={`rounded-xl border transition-colors ${
+    <div className={`rounded-2xl border transition-colors ${
       post.flagCount > 0
         ? 'border-amber-200 dark:border-amber-500/20 bg-amber-50 dark:bg-amber-500/5'
         : post.pinned
@@ -313,7 +313,7 @@ function PostRow({ post, onDelete, onPin, showMod }: {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
             {post.community && (
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md" style={{ backgroundColor: post.community.color + '20', color: post.community.color }}>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-2xl" style={{ backgroundColor: post.community.color + '20', color: post.community.color }}>
                 {post.community.name}
               </span>
             )}
@@ -342,18 +342,18 @@ function PostRow({ post, onDelete, onPin, showMod }: {
             <button
               onClick={() => onPin(post.id, post.pinned)}
               title={post.pinned ? 'Unpin' : 'Pin'}
-              className={`p-1.5 rounded-lg transition-colors ${post.pinned ? 'text-violet-500 bg-violet-100 dark:bg-violet-500/10' : 'text-gray-400 hover:text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-500/10'}`}
+              className={`p-1.5 rounded-2xl transition-colors ${post.pinned ? 'text-violet-500 bg-violet-100 dark:bg-violet-500/10' : 'text-gray-400 hover:text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-500/10'}`}
             >
               <Pin className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => onDelete(post.id)}
               title="Delete post"
-              className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+              className="p-1.5 rounded-2xl text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
-            <button onClick={() => setExpanded(e => !e)} className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+            <button onClick={() => setExpanded(e => !e)} className="p-1.5 rounded-2xl text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
               <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-180' : ''}`} />
             </button>
           </div>
@@ -374,7 +374,7 @@ function FlaggedRow({ post, onDelete, onRefresh }: {
     onRefresh()
   }
   return (
-    <div className="p-4 rounded-xl border border-amber-200 dark:border-amber-500/20 bg-amber-50 dark:bg-amber-500/5 flex items-start gap-3">
+    <div className="p-4 rounded-2xl border border-amber-200 dark:border-amber-500/20 bg-amber-50 dark:bg-amber-500/5 flex items-start gap-3">
       <Flag className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-gray-900 dark:text-white">{post.title}</p>
@@ -389,14 +389,14 @@ function FlaggedRow({ post, onDelete, onRefresh }: {
         <button
           onClick={handleClear}
           title="Mark reviewed (keep post)"
-          className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors"
+          className="p-1.5 rounded-2xl text-gray-400 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors"
         >
           <CheckCircle className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={() => onDelete(post.id)}
           title="Delete post"
-          className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+          className="p-1.5 rounded-2xl text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>

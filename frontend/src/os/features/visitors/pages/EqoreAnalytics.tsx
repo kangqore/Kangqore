@@ -64,24 +64,24 @@ export function EqoreAnalytics() {
         <div className="flex items-center gap-2">
           <Link
             to="/kangqore-view/admin/visitors"
-            className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all"
+            className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] flex items-center gap-1.5 px-3 py-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all"
           >
             <ArrowLeft size={12} /> Visitors
           </Link>
-          <span className="text-[11px] font-semibold text-[var(--os-text-1)] px-3 py-1.5 bg-[var(--os-surface-0)] rounded-lg border border-[var(--os-border)]">eQORE Analytics</span>
+          <span className="text-[11px] font-semibold text-[var(--os-text-1)] px-3 py-1.5 bg-[var(--os-surface-0)] rounded-2xl border border-[var(--os-border)]">eQORE Analytics</span>
           <Link
             to="/kangqore-view/admin/visitors/transcripts"
-            className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-lg hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
+            className="text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] px-3 py-1.5 rounded-2xl hover:bg-[var(--os-surface-0)] border border-transparent hover:border-[var(--os-border)] transition-all flex items-center gap-1.5"
           >
             <ChatCircle size={12} /> Transcripts
           </Link>
         </div>
-        <div className="flex items-center gap-1 bg-[var(--os-surface-0)] rounded-lg p-1 border border-[var(--os-border)]">
+        <div className="flex items-center gap-1 bg-[var(--os-surface-0)] rounded-2xl p-1 border border-[var(--os-border)]">
           {DAYS_OPTIONS.map(d => (
             <button
               key={d}
               onClick={() => setDays(d)}
-              className={`px-3 py-1.5 text-[11px] font-semibold rounded-md transition-all ${
+              className={`px-3 py-1.5 text-[11px] font-semibold rounded-2xl transition-all ${
                 days === d
                   ? 'bg-[var(--os-card)] text-[var(--os-text-1)] shadow-sm'
                   : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'

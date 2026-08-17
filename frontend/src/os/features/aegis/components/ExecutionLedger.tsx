@@ -94,7 +94,7 @@ function LedgerRow({ entry, isExpanded, onToggle }: { entry: LedgerEntry, isExpa
     <motion.div 
       layout
       className={cn(
-        "rounded-xl border transition-all duration-300 overflow-hidden",
+        "rounded-2xl border transition-all duration-300 overflow-hidden",
         isExpanded ? "bg-[var(--os-surface)] border-[var(--os-border)] shadow-xl" : "bg-[var(--os-surface-hover)] border-transparent hover:border-[var(--os-border)]",
         isBlocked ? "border-red-500/20" : ""
       )}
@@ -186,7 +186,7 @@ function LedgerRow({ entry, isExpanded, onToggle }: { entry: LedgerEntry, isExpa
                   <div className="mt-2 space-y-2">
                     {entry.changed.length === 0 ? <span className="text-[var(--os-text-3)]">No changes executed.</span> : null}
                     {entry.changed.map((c, i) => (
-                      <div key={i} className="text-xs bg-[var(--os-surface)] rounded-md overflow-hidden border border-[var(--os-border)]">
+                      <div key={i} className="text-xs bg-[var(--os-surface)] rounded-2xl overflow-hidden border border-[var(--os-border)]">
                         <div className="flex items-center gap-2 p-2 border-b border-[var(--os-border)]/50 bg-black/20">
                           <span className={cn(
                             "text-[10px] font-bold uppercase tracking-wider px-1.5 rounded",

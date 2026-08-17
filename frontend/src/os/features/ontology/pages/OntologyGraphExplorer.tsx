@@ -34,12 +34,12 @@ export function OntologyGraphExplorer() {
       
       {/* Toolbar */}
       <div className="absolute top-4 left-4 right-4 z-10 flex justify-between items-center pointer-events-none">
-        <div className="bg-black/60 backdrop-blur-md border border-white/10 px-4 py-2 rounded-xl flex items-center gap-2 pointer-events-auto">
+        <div className="bg-black/60 backdrop-blur-md border border-white/10 px-4 py-2 rounded-2xl flex items-center gap-2 pointer-events-auto">
           <Network className="w-5 h-5 text-indigo-400" />
           <span className="text-white font-bold text-sm tracking-tight">Enterprise Graph Explorer</span>
         </div>
         
-        <div className="bg-black/60 backdrop-blur-md border border-white/10 flex items-center rounded-xl pointer-events-auto">
+        <div className="bg-black/60 backdrop-blur-md border border-white/10 flex items-center rounded-2xl pointer-events-auto">
           <button onClick={() => setScale(s => Math.min(s + 0.2, 2))} className="p-2 text-white/70 hover:text-white hover:bg-white/10 transition-colors rounded-l-xl"><ZoomIn className="w-4 h-4" /></button>
           <div className="w-px h-4 bg-white/20" />
           <button onClick={() => setScale(s => Math.max(s - 0.2, 0.5))} className="p-2 text-white/70 hover:text-white hover:bg-white/10 transition-colors"><ZoomOut className="w-4 h-4" /></button>
@@ -96,7 +96,7 @@ export function OntologyGraphExplorer() {
             {MOCK_NODES.map(node => (
               <div
                 key={node.id}
-                className="absolute w-40 h-16 -ml-20 -mt-8 bg-black border border-white/20 rounded-xl flex flex-col items-center justify-center shadow-lg hover:border-indigo-500 hover:shadow-indigo-500/20 transition-all cursor-pointer group"
+                className="absolute w-40 h-16 -ml-20 -mt-8 bg-black border border-white/20 rounded-2xl flex flex-col items-center justify-center shadow-lg hover:border-indigo-500 hover:shadow-indigo-500/20 transition-all cursor-pointer group"
                 style={{ left: node.x, top: node.y }}
               >
                 <span className="text-[10px] font-black tracking-widest text-indigo-400 uppercase">{node.type}</span>

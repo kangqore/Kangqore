@@ -37,7 +37,7 @@ export function ChannelHeader({ channel, memberCount, onToggleMembers, onSearch,
         {onPins && (
           <button
             onClick={onPins}
-            className="flex items-center gap-1 px-2 py-1 rounded-lg text-white/50 hover:text-white hover:bg-white/5 transition-colors text-[11px]"
+            className="flex items-center gap-1 px-2 py-1 rounded-2xl text-white/50 hover:text-white hover:bg-white/5 transition-colors text-[11px]"
             title="Pinned messages"
           >
             <PushPin size={14} />
@@ -46,7 +46,7 @@ export function ChannelHeader({ channel, memberCount, onToggleMembers, onSearch,
         {onSearch && (
           <button
             onClick={onSearch}
-            className="flex items-center gap-1 px-2 py-1 rounded-lg text-white/50 hover:text-white hover:bg-white/5 transition-colors text-[11px]"
+            className="flex items-center gap-1 px-2 py-1 rounded-2xl text-white/50 hover:text-white hover:bg-white/5 transition-colors text-[11px]"
             title="Search"
           >
             <MagnifyingGlass size={14} />
@@ -54,7 +54,7 @@ export function ChannelHeader({ channel, memberCount, onToggleMembers, onSearch,
         )}
         <button
           onClick={onToggleMembers}
-          className={`flex items-center gap-1 px-2 py-1 rounded-lg transition-colors text-[11px] ${
+          className={`flex items-center gap-1 px-2 py-1 rounded-2xl transition-colors text-[11px] ${
             membersOpen ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white hover:bg-white/5'
           }`}
           title="Members"

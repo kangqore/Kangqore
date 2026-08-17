@@ -222,26 +222,26 @@ export function WANDAActivityPage() {
 
       {/* KPI strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Total Signals</p>
           <span className="text-3xl font-extrabold text-blue-400">{kpi?.total ?? signalList.length}</span>
           <p className="text-xs text-[var(--os-text-3)] mt-1">Active in ledger</p>
         </div>
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Avg Confidence</p>
           <span className="text-3xl font-extrabold text-green-400">
             {kpi?.avgConfidence != null ? `${kpi.avgConfidence.toFixed(0)}%` : '—'}
           </span>
           <p className="text-xs text-[var(--os-text-3)] mt-1">Signal quality</p>
         </div>
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Pending Decisions</p>
           <span className={`text-3xl font-extrabold ${pendingDec > 0 ? 'text-amber-400' : 'text-green-400'}`}>
             {pendingDec}
           </span>
           <p className="text-xs text-[var(--os-text-3)] mt-1">{resolvedDec} resolved total</p>
         </div>
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">AI Cost (MTD)</p>
           <span className="text-3xl font-extrabold text-violet-400">
             {cost?.totalCost != null ? `$${cost.totalCost.toFixed(2)}` : '—'}
@@ -428,7 +428,7 @@ export function WANDAActivityPage() {
                 { label: 'API Calls',    value: cost.callCount   != null ? String(cost.callCount) : '—' },
                 { label: 'Avg / Call',   value: cost.avgCostPerCall != null ? `$${cost.avgCostPerCall.toFixed(4)}` : '—' },
               ].map(item => (
-                <div key={item.label} className="bg-[var(--os-bg2)] rounded-lg p-3">
+                <div key={item.label} className="bg-[var(--os-bg2)] rounded-2xl p-3">
                   <p className="text-xs text-[var(--os-text-3)] mb-1">{item.label}</p>
                   <p className="text-lg font-bold font-mono text-[var(--os-text-1)]">{item.value}</p>
                 </div>

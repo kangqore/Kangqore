@@ -98,7 +98,7 @@ export function WaandaMissionControl() {
             <div key={alert.id} className="relative overflow-hidden rounded-2xl bg-red-500/[0.04] border border-red-500/30 p-5 shadow-[0_8px_32px_rgba(239,68,68,0.08)] backdrop-blur-md transition-all duration-300 hover:border-red-500/50">
               <div className="absolute inset-0 bg-[url('/scanline.png')] opacity-10 pointer-events-none mix-blend-overlay" />
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-red-500/20 rounded-xl border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                <div className="p-3 bg-red-500/20 rounded-2xl border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
                   <ShieldAlert className="w-6 h-6 text-red-500 animate-[spin_3s_linear_infinite]" />
                 </div>
                 <div className="flex-1">
@@ -111,7 +111,7 @@ export function WaandaMissionControl() {
                     TIME: {alert.time} {'//'} WAANDA IS MONITORING RECOVERY PROTOCOLS
                   </p>
                 </div>
-                <button className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold rounded-lg border border-red-500/25 text-xs transition-colors backdrop-blur-sm shadow-md" onClick={() => handleAcknowledge(alert.id)}>
+                <button className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold rounded-2xl border border-red-500/25 text-xs transition-colors backdrop-blur-sm shadow-md" onClick={() => handleAcknowledge(alert.id)}>
                   ACKNOWLEDGE
                 </button>
               </div>
@@ -122,7 +122,7 @@ export function WaandaMissionControl() {
 
       {/* 1. Mission Status */}
       <div className="flex items-center gap-4">
-        <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-indigo-600 to-purple-600 shadow-[0_4px_12px_rgba(79,70,229,0.2)]">
+        <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-indigo-600 to-purple-600 shadow-[0_4px_12px_rgba(79,70,229,0.2)]">
           <ActivitySquare className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1 min-w-0">
@@ -144,7 +144,7 @@ export function WaandaMissionControl() {
 
       {/* 2. Alert Center */}
       {alerts.length > 0 && (
-        <div className="rounded-xl p-4 bg-rose-500/10 border border-rose-500/20 flex flex-col gap-2">
+        <div className="rounded-2xl p-4 bg-rose-500/10 border border-rose-500/20 flex flex-col gap-2">
           <h3 className="text-xs font-bold text-rose-500 uppercase flex items-center gap-2">
             <ShieldAlert className="w-4 h-4" /> Critical Alerts
           </h3>
@@ -157,19 +157,19 @@ export function WaandaMissionControl() {
       )}
 
       {/* 3. Business Objectives */}
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
         <h3 className="text-xs font-bold text-[var(--os-text-3)] uppercase mb-4 flex items-center gap-2">
           <Shield className="w-4 h-4" /> Active Business Objectives
         </h3>
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl bg-white/[0.02] border border-[var(--os-border)] hover:border-emerald-500/20 transition-colors">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-[var(--os-border)] hover:border-emerald-500/20 transition-colors">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-bold text-[var(--os-text-1)]">Increase Enterprise Conversions</span>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">Active</span>
             </div>
             <p className="text-xs text-[var(--os-text-2)]">Targeting VP/Director personas in active evaluation.</p>
           </div>
-          <div className="p-4 rounded-xl bg-white/[0.02] border border-[var(--os-border)] hover:border-amber-500/20 transition-colors">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-[var(--os-border)] hover:border-amber-500/20 transition-colors">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-bold text-[var(--os-text-1)]">Reduce Pricing Shock</span>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20">Active</span>
@@ -180,7 +180,7 @@ export function WaandaMissionControl() {
       </div>
 
       {/* 4. Priority Queue */}
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
         <h3 className="text-xs font-bold text-[var(--os-text-3)] uppercase mb-4 flex items-center gap-2">
           <Server className="w-4 h-4" /> Priority Operator Queue
         </h3>
@@ -192,10 +192,10 @@ export function WaandaMissionControl() {
         ) : (
           <div className="space-y-4">
             {queue.map((item: any, i: number) => (
-              <div key={item.recommendation?.id || item.recommendation?.objective || i} className="p-5 rounded-xl bg-white/[0.02] border border-[var(--os-border)] flex items-start gap-4 transition-all duration-300 hover:border-indigo-500/40 hover:-translate-y-0.5 shadow-sm">
+              <div key={item.recommendation?.id || item.recommendation?.objective || i} className="p-5 rounded-2xl bg-white/[0.02] border border-[var(--os-border)] flex items-start gap-4 transition-all duration-300 hover:border-indigo-500/40 hover:-translate-y-0.5 shadow-sm">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
                       Priority {item.recommendation.priority}
                     </span>
                     <span className="text-xs font-semibold text-[var(--os-text-2)]">
@@ -271,7 +271,7 @@ export function WaandaMissionControl() {
 function MetricCard({ title, value, trend, icon: Icon, color = "#6366f1" }: any) {
   return (
     <div className="p-5 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] backdrop-blur-md shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex items-start gap-4 group">
-      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:rotate-[10deg]" style={{ background: `${color}12`, border: `1px solid ${color}25` }}>
+      <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:rotate-[10deg]" style={{ background: `${color}12`, border: `1px solid ${color}25` }}>
         <Icon className="w-6 h-6" style={{ color }} />
       </div>
       <div>

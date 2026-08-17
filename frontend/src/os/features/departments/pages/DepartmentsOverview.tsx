@@ -40,14 +40,14 @@ function DeptCard({ dept }: { dept: Department }) {
     <motion.div
       variants={staggerChild}
       whileHover={{ y: -3, transition: spring.smooth }}
-      className="bg-[var(--os-card)] rounded-xl border border-[var(--os-border)] overflow-hidden shadow-sm flex flex-col"
+      className="bg-[var(--os-card)] rounded-2xl border border-[var(--os-border)] overflow-hidden shadow-sm flex flex-col"
       style={{ borderTop: `2px solid ${dept.color}` }}
     >
       {/* Header */}
       <div className="px-5 pt-5 pb-4 flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+            className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
             style={{ background: `${dept.color}18` }}
           >
             <Building2 className="w-4 h-4" style={{ color: dept.color }} />
@@ -65,7 +65,7 @@ function DeptCard({ dept }: { dept: Department }) {
       {/* Division head */}
       <div className="px-5 pb-4">
         <div
-          className="flex items-center gap-3 p-3 rounded-xl"
+          className="flex items-center gap-3 p-3 rounded-2xl"
           style={{ background: `${dept.color}0c` }}
         >
           <Avatar name={dept.head} size="sm" />
@@ -148,7 +148,7 @@ function DeptCard({ dept }: { dept: Department }) {
       <div className="px-5 pb-4 flex-1">
         <div className="grid grid-cols-2 gap-2">
           {dept.kpis.slice(0, 4).map(kpi => (
-            <div key={kpi.metric} className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-2.5">
+            <div key={kpi.metric} className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-2.5">
               <TrendIcon trend={kpi.trend} />
               <p className="text-xs font-semibold text-[var(--os-text-1)] leading-tight mt-1">{kpi.value}</p>
               <p className="text-[10px] text-[var(--os-text-2)] leading-tight mt-0.5 truncate">{kpi.metric}</p>
@@ -162,14 +162,14 @@ function DeptCard({ dept }: { dept: Department }) {
         {dept.services.slice(0, 3).map(s => (
           <span
             key={s}
-            className="text-[10px] px-2 py-0.5 rounded-md font-medium"
+            className="text-[10px] px-2 py-0.5 rounded-2xl font-medium"
             style={{ background: `${dept.color}12`, color: dept.color }}
           >
             {s}
           </span>
         ))}
         {dept.services.length > 3 && (
-          <span className="text-[10px] px-2 py-0.5 rounded-md text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] font-medium">
+          <span className="text-[10px] px-2 py-0.5 rounded-2xl text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] font-medium">
             +{dept.services.length - 3} more
           </span>
         )}

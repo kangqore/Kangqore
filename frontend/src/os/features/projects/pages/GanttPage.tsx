@@ -49,13 +49,13 @@ export function GanttPage() {
   if (isLoading) {
     return (
       <div className="space-y-4 animate-pulse">
-        <div className="h-8 w-40 rounded-lg" style={{ background: 'var(--os-surface-0)' }} />
-        <div className="rounded-xl overflow-hidden" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
+        <div className="h-8 w-40 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)' }}>
           <div className="h-10" style={{ borderBottom: '1px solid var(--os-border)' }} />
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="h-14 flex items-center px-4" style={{ borderBottom: '1px solid var(--os-border)' }}>
               <div className="w-40 h-4 rounded mr-4 flex-shrink-0" style={{ background: 'var(--os-surface-0)' }} />
-              <div className="flex-1 h-6 rounded-lg" style={{ marginLeft: `${i * 8}%`, width: `${30 + i * 5}%`, background: 'var(--os-surface-0)' }} />
+              <div className="flex-1 h-6 rounded-2xl" style={{ marginLeft: `${i * 8}%`, width: `${30 + i * 5}%`, background: 'var(--os-surface-0)' }} />
             </div>
           ))}
         </div>
@@ -70,7 +70,7 @@ export function GanttPage() {
         <p className="text-sm mt-0.5" style={{ color: 'var(--os-text-2)' }}>Project timelines — 2026</p>
       </div>
 
-      <div className="rounded-xl overflow-hidden" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', boxShadow: 'var(--os-shadow-card)' }}>
+      <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', boxShadow: 'var(--os-shadow-card)' }}>
         {/* Month header */}
         <div className="flex" style={{ borderBottom: '1px solid var(--os-border)' }}>
           <div className="w-64 flex-shrink-0 px-4 py-3 text-[10px] font-semibold uppercase tracking-widest" style={{ borderRight: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
@@ -146,7 +146,7 @@ export function GanttPage() {
 
                   {/* Project bar */}
                   <div
-                    className="absolute top-3 h-8 rounded-lg flex items-center px-2 overflow-hidden"
+                    className="absolute top-3 h-8 rounded-2xl flex items-center px-2 overflow-hidden"
                     style={{
                       left: `${offset}%`,
                       width: `${Math.max(width, 2)}%`,
@@ -156,7 +156,7 @@ export function GanttPage() {
                   >
                     {/* Progress fill overlay */}
                     <div
-                      className="absolute top-0 bottom-0 rounded-lg bg-black/30"
+                      className="absolute top-0 bottom-0 rounded-2xl bg-black/30"
                       style={{ width: `${100 - project.progress}%`, right: 0, left: 'auto' }}
                     />
                     {width > 8 && (

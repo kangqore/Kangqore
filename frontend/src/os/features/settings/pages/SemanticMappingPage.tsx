@@ -109,7 +109,7 @@ function AddMappingModal({
             <select
               value={platform}
               onChange={e => { setPlatform(e.target.value); setExternalType('') }}
-              className="mt-1 w-full text-sm px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
+              className="mt-1 w-full text-sm px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
             >
               <option value="">Select platform…</option>
               {connectorCoverage.map(c => (
@@ -124,7 +124,7 @@ function AddMappingModal({
               <select
                 value={externalType}
                 onChange={e => handleExternalTypeChange(e.target.value)}
-                className="mt-1 w-full text-sm px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
+                className="mt-1 w-full text-sm px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
               >
                 <option value="">Select type…</option>
                 {selectedConnector.entityTypes.map(e => (
@@ -136,7 +136,7 @@ function AddMappingModal({
                 value={externalType}
                 onChange={e => setExternalType(e.target.value)}
                 placeholder="e.g. Account, Contact, Issue…"
-                className="mt-1 w-full text-sm px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
+                className="mt-1 w-full text-sm px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
               />
             )}
           </div>
@@ -146,7 +146,7 @@ function AddMappingModal({
             <select
               value={ontologyTypeId}
               onChange={e => setOntologyTypeId(e.target.value)}
-              className="mt-1 w-full text-sm px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
+              className="mt-1 w-full text-sm px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
             >
               <option value="">Select ontology type…</option>
               {ontologyTypes.map(o => (
@@ -161,19 +161,19 @@ function AddMappingModal({
               type="number"
               value={priority}
               onChange={e => setPriority(Number(e.target.value))}
-              className="mt-1 w-full text-sm px-3 py-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
+              className="mt-1 w-full text-sm px-3 py-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
             />
           </div>
         </div>
 
         <div className="flex justify-end gap-2 pt-2">
-          <button onClick={onClose} className="text-sm px-4 py-2 rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)]">
+          <button onClick={onClose} className="text-sm px-4 py-2 rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)]">
             Cancel
           </button>
           <button
             onClick={() => valid && onSave({ platform, externalType, ontologyTypeId, priority })}
             disabled={!valid}
-            className="text-sm px-4 py-2 rounded-lg bg-[#579bfc] text-white font-medium disabled:opacity-40"
+            className="text-sm px-4 py-2 rounded-2xl bg-[#579bfc] text-white font-medium disabled:opacity-40"
           >
             Create mapping
           </button>
@@ -241,14 +241,14 @@ export function SemanticMappingPage() {
         </div>
         <button
           onClick={() => setShowAdd(true)}
-          className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg bg-[#579bfc] text-white font-medium"
+          className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-2xl bg-[#579bfc] text-white font-medium"
         >
           <Plus className="w-3.5 h-3.5" /> Add mapping
         </button>
       </div>
 
       {/* Example flow */}
-      <div className="rounded-xl border border-[#7c3aed]/20 bg-[#7c3aed]/[0.03] px-5 py-4">
+      <div className="rounded-2xl border border-[#7c3aed]/20 bg-[#7c3aed]/[0.03] px-5 py-4">
         <p className="text-[10px] font-bold text-[#7c3aed] uppercase tracking-widest mb-2">How it works</p>
         <div className="flex items-center gap-2 flex-wrap text-[11px] font-mono">
           {['Salesforce Account:A67890', '→', 'HubSpot Company:12345', '→', 'Internal Client:client-abc', '→', 'OntologyObject: "Acme Corp"'].map((t, i) => (
@@ -269,7 +269,7 @@ export function SemanticMappingPage() {
           { label: 'Admin confirmed', value: stats?.confirmedRefs ?? 0,   color: '#00c875' },
           { label: 'Auto-linked',     value: stats?.autoRefs ?? 0,        color: '#fdab3d' },
         ].map(({ label, value, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
+          <div key={label} className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
             <p className="text-xl font-bold tabular-nums" style={{ color }}>{value}</p>
             <p className="text-[10px] text-[var(--os-text-2)]">{label}</p>
           </div>
@@ -277,7 +277,7 @@ export function SemanticMappingPage() {
       </div>
 
       {/* Type mappings table */}
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
         <div className="px-4 py-3 border-b border-[var(--os-border)] flex items-center justify-between">
           <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--os-text-2)]">Type Mappings ({typeMappings.length})</p>
         </div>
@@ -325,7 +325,7 @@ export function SemanticMappingPage() {
       </div>
 
       {/* Instance refs */}
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden">
         <div className="px-4 py-3 border-b border-[var(--os-border)] flex items-center justify-between">
           <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--os-text-2)]">Entity References ({refsTotal})</p>
           {Object.keys(stats?.byPlatform ?? {}).length > 0 && (
@@ -389,7 +389,7 @@ export function SemanticMappingPage() {
       </div>
 
       {/* Auto-link tip */}
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] px-4 py-3 flex items-start gap-3">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] px-4 py-3 flex items-start gap-3">
         <Zap className="w-3.5 h-3.5 text-[#fdab3d] flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-[11px] font-semibold text-[var(--os-text-1)]">Auto-link</p>

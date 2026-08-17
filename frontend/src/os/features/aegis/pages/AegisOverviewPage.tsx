@@ -10,8 +10,8 @@ function StatCard({ icon: Icon, label, value, color }: {
   icon: React.ElementType; label: string; value: number | string; color: string
 }) {
   return (
-    <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl p-5 flex items-center gap-4">
-      <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${color}`}>
+    <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-5 flex items-center gap-4">
+      <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${color}`}>
         <Icon className="w-5 h-5 text-white" />
       </div>
       <div>
@@ -174,7 +174,7 @@ export function AegisOverviewPage() {
       {isLoading ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl p-5 h-20 animate-pulse" />
+            <div key={i} className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-5 h-20 animate-pulse" />
           ))}
         </div>
       ) : (
@@ -196,11 +196,11 @@ export function AegisOverviewPage() {
 
       {/* Agent Corps Health Summary */}
       {agentSummary && (
-        <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl p-5 space-y-5">
+        <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-5 space-y-5">
           {/* Header row */}
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-violet-600/20 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-2xl bg-violet-600/20 flex items-center justify-center">
                 <Bot className="w-4 h-4 text-violet-400" />
               </div>
               <div>
@@ -244,7 +244,7 @@ export function AegisOverviewPage() {
                 <div
                   key={engine}
                   title={latest?.summary ?? 'No run yet'}
-                  className={`flex items-center gap-1.5 border rounded-lg px-2.5 py-2 ${s.chip} cursor-default`}
+                  className={`flex items-center gap-1.5 border rounded-2xl px-2.5 py-2 ${s.chip} cursor-default`}
                 >
                   <VerdictIcon verdict={verdict} />
                   <span className="text-[11px] font-medium truncate">{ENGINE_LABEL[engine] ?? engine}</span>
@@ -258,7 +258,7 @@ export function AegisOverviewPage() {
       {/* Sovereignty breakdown */}
       {sovereignty && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl p-5 space-y-3">
+          <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2 mb-1">
               <Shield className="w-3.5 h-3.5 text-violet-400" />
               <h3 className="text-xs font-semibold text-[var(--os-text-1)] uppercase tracking-widest">Sovereignty Engine</h3>
@@ -279,7 +279,7 @@ export function AegisOverviewPage() {
             ))}
           </div>
 
-          <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl p-5 space-y-3">
+          <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2 mb-1">
               <FileText className="w-3.5 h-3.5 text-cyan-400" />
               <h3 className="text-xs font-semibold text-[var(--os-text-1)] uppercase tracking-widest">Policy Engine</h3>
@@ -301,7 +301,7 @@ export function AegisOverviewPage() {
           <h3 className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest mb-3">Activations by System</h3>
           <div className="flex flex-wrap gap-2">
             {Object.entries(ledger.systemBreakdown as Record<string, number>).map(([sys, count]) => (
-              <div key={sys} className="flex items-center gap-2 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg px-3 py-1.5">
+              <div key={sys} className="flex items-center gap-2 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl px-3 py-1.5">
                 <span className="text-xs font-mono text-[var(--os-text-1)]">{sys}</span>
                 <span className="text-xs font-bold text-[var(--os-text-1)]">{count}</span>
               </div>
@@ -316,7 +316,7 @@ export function AegisOverviewPage() {
           <h3 className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-widest mb-3">7 Active Components</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {(health.components as string[]).map((name: string) => (
-              <div key={name} className={`flex items-center gap-2 border rounded-lg px-3 py-2.5 ${COMPONENT_COLORS[name] ?? 'bg-[var(--os-surface-0)] border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+              <div key={name} className={`flex items-center gap-2 border rounded-2xl px-3 py-2.5 ${COMPONENT_COLORS[name] ?? 'bg-[var(--os-surface-0)] border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
                 <ArrowUpRight className="w-3 h-3 flex-shrink-0 opacity-60" />
                 <span className="text-xs font-medium">{name}</span>
               </div>
@@ -326,7 +326,7 @@ export function AegisOverviewPage() {
       )}
 
       {/* Status banner */}
-      <div className={`border rounded-xl p-5 ${overallVerdict === 'CRITICAL' ? 'bg-rose-900/15 border-rose-500/25' : overallVerdict === 'WARN' ? 'bg-amber-900/15 border-amber-500/25' : 'bg-violet-900/20 border-violet-500/20'}`}>
+      <div className={`border rounded-2xl p-5 ${overallVerdict === 'CRITICAL' ? 'bg-rose-900/15 border-rose-500/25' : overallVerdict === 'WARN' ? 'bg-amber-900/15 border-amber-500/25' : 'bg-violet-900/20 border-violet-500/20'}`}>
         <div className="flex items-center gap-2 mb-2">
           <Shield className={`w-4 h-4 ${overallVerdict === 'CRITICAL' ? 'text-rose-400' : overallVerdict === 'WARN' ? 'text-amber-400' : 'text-violet-400'}`} />
           <span className={`text-sm font-semibold ${overallVerdict === 'CRITICAL' ? 'text-rose-300' : overallVerdict === 'WARN' ? 'text-amber-300' : 'text-violet-300'}`}>

@@ -58,10 +58,10 @@ function PackCard({ pack, onActivate, activating, blueprintId }: {
   if (!meta) return null
 
   return (
-    <div className="rounded-xl border overflow-hidden" style={{ background: CARD, borderColor: pack.installed ? `${TEAL}40` : BDR }}>
+    <div className="rounded-2xl border overflow-hidden" style={{ background: CARD, borderColor: pack.installed ? `${TEAL}40` : BDR }}>
       <div className="p-5">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0"
             style={{ background: `${meta.color}12`, border: `1px solid ${meta.color}25` }}>
             {pack.icon}
           </div>
@@ -93,7 +93,7 @@ function PackCard({ pack, onActivate, activating, blueprintId }: {
               <button
                 onClick={onActivate}
                 disabled={activating || !blueprintId}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:opacity-90"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all hover:opacity-90"
                 style={{
                   background: activating ? SURF : meta.color,
                   color: activating ? T2 : '#fff',
@@ -106,7 +106,7 @@ function PackCard({ pack, onActivate, activating, blueprintId }: {
             )}
             <button
               onClick={() => setExpanded(e => !e)}
-              className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-[10px] font-medium"
+              className="flex items-center gap-1 px-2 py-1.5 rounded-2xl text-[10px] font-medium"
               style={{ background: SURF, color: T2 }}
             >
               {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -123,7 +123,7 @@ function PackCard({ pack, onActivate, activating, blueprintId }: {
               <p className="text-[9px] font-bold uppercase tracking-wider mb-2" style={{ color: BLUE }}>Ontology Types</p>
               <div className="space-y-1.5">
                 {pack.contents.ontologyTypes.map(t => (
-                  <div key={t.name} className="rounded-lg px-3 py-2 border" style={{ borderColor: `${BLUE}20`, background: `${BLUE}06` }}>
+                  <div key={t.name} className="rounded-2xl px-3 py-2 border" style={{ borderColor: `${BLUE}20`, background: `${BLUE}06` }}>
                     <p className="text-[11px] font-bold" style={{ color: T1 }}>{t.displayName}</p>
                     <p className="text-[10px]" style={{ color: T2 }}>{t.description}</p>
                   </div>
@@ -136,7 +136,7 @@ function PackCard({ pack, onActivate, activating, blueprintId }: {
               <p className="text-[9px] font-bold uppercase tracking-wider mb-2" style={{ color: PURP }}>Agents</p>
               <div className="space-y-1.5">
                 {pack.contents.agents.map(a => (
-                  <div key={a.name} className="rounded-lg px-3 py-2 border" style={{ borderColor: `${PURP}20`, background: `${PURP}06` }}>
+                  <div key={a.name} className="rounded-2xl px-3 py-2 border" style={{ borderColor: `${PURP}20`, background: `${PURP}06` }}>
                     <p className="text-[11px] font-bold" style={{ color: T1 }}>{a.name} <span className="font-normal text-[9px] ml-1" style={{ color: PURP }}>{a.role}</span></p>
                     <p className="text-[10px]" style={{ color: T2 }}>{a.description}</p>
                   </div>
@@ -149,7 +149,7 @@ function PackCard({ pack, onActivate, activating, blueprintId }: {
               <p className="text-[9px] font-bold uppercase tracking-wider mb-2" style={{ color: RED }}>Policies</p>
               <div className="space-y-1.5">
                 {pack.contents.policies.map(p => (
-                  <div key={p.name} className="rounded-lg px-3 py-2 border" style={{ borderColor: `${RED}20`, background: `${RED}06` }}>
+                  <div key={p.name} className="rounded-2xl px-3 py-2 border" style={{ borderColor: `${RED}20`, background: `${RED}06` }}>
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="text-[11px] font-bold flex-1" style={{ color: T1 }}>{p.name}</p>
                       <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: `${RED}15`, color: RED }}>{p.effect}</span>
@@ -165,7 +165,7 @@ function PackCard({ pack, onActivate, activating, blueprintId }: {
               <p className="text-[9px] font-bold uppercase tracking-wider mb-2" style={{ color: AMB }}>Workflows</p>
               <div className="space-y-1.5">
                 {pack.contents.workflows.map(w => (
-                  <div key={w.name} className="rounded-lg px-3 py-2 border" style={{ borderColor: `${AMB}20`, background: `${AMB}06` }}>
+                  <div key={w.name} className="rounded-2xl px-3 py-2 border" style={{ borderColor: `${AMB}20`, background: `${AMB}06` }}>
                     <p className="text-[11px] font-bold" style={{ color: T1 }}>{w.name} <span className="font-normal text-[9px] ml-1" style={{ color: T2 }}>{w.stepCount} steps</span></p>
                     <p className="text-[10px]" style={{ color: T2 }}>{w.description}</p>
                   </div>
@@ -253,7 +253,7 @@ export function PackActivationPage() {
               value={blueprintId}
               onChange={e => setBlueprintId(e.target.value)}
               placeholder="cldxxx… (CustomerBlueprint ID)"
-              className="w-full rounded-lg px-3 py-2 text-xs outline-none"
+              className="w-full rounded-2xl px-3 py-2 text-xs outline-none"
               style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }}
             />
           </div>
@@ -268,7 +268,7 @@ export function PackActivationPage() {
       {/* Pack cards */}
       <div className="space-y-3">
         {packs.length === 0 ? (
-          <div className="rounded-xl p-6 text-center border" style={{ background: CARD, borderColor: BDR }}>
+          <div className="rounded-2xl p-6 text-center border" style={{ background: CARD, borderColor: BDR }}>
             <p className="text-sm" style={{ color: T2 }}>Loading industry packs…</p>
           </div>
         ) : packs.map(pack => (
@@ -287,7 +287,7 @@ export function PackActivationPage() {
       </div>
 
       {/* Info callout */}
-      <div className="rounded-xl p-4 border flex items-start gap-3"
+      <div className="rounded-2xl p-4 border flex items-start gap-3"
         style={{ background: 'rgba(59,130,246,0.05)', borderColor: 'rgba(59,130,246,0.2)' }}>
         <FileText className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: BLUE }} />
         <p className="text-xs" style={{ color: T2 }}>

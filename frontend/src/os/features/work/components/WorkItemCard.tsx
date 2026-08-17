@@ -28,7 +28,7 @@ export function WorkItemCard({ item, compact, onClick, draggable, onDragStart }:
       onDragStart={onDragStart}
       onClick={onClick}
       className={cn(
-        'border border-[var(--os-border)] rounded-lg bg-[var(--os-bg-1)] p-3 cursor-pointer',
+        'border border-[var(--os-border)] rounded-2xl bg-[var(--os-bg-1)] p-3 cursor-pointer',
         'hover:border-[var(--os-border-2)] hover:shadow-sm transition-all select-none',
         compact && 'p-2',
       )}

@@ -70,7 +70,7 @@ export function OKRCard({ objective }: { objective: Objective }) {
             <p className="text-[10px] font-bold text-[var(--os-text-2)] uppercase tracking-widest mb-1">Key Results</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {objective.keyResults.map(kr => (
-                <div key={kr.id} className={cn('p-4 rounded-xl', 'bg-[var(--os-surface-0)] border border-[var(--os-border)] flex flex-col justify-between gap-3')}>
+                <div key={kr.id} className={cn('p-4 rounded-2xl', 'bg-[var(--os-surface-0)] border border-[var(--os-border)] flex flex-col justify-between gap-3')}>
                   <div>
                     <div className="flex items-start justify-between gap-3 mb-2">
                       <p className="text-xs font-bold text-[var(--os-text-1)] leading-relaxed flex-1">{kr.title}</p>

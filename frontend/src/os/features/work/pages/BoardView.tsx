@@ -119,7 +119,7 @@ export function BoardView({ projectId, portfolioId }: Props) {
               onDragLeave={() => setDragOver(null)}
               onDrop={e => handleDrop(e, col)}
               className={cn(
-                'flex flex-col gap-2 min-h-[400px] rounded-xl border-t-2 border border-[var(--os-border)] bg-[var(--os-bg-2)] p-3 transition-colors',
+                'flex flex-col gap-2 min-h-[400px] rounded-2xl border-t-2 border border-[var(--os-border)] bg-[var(--os-bg-2)] p-3 transition-colors',
                 COL_ACCENT[col],
                 isDragTarget && 'bg-violet-500/5 border-violet-500/30',
               )}
@@ -153,7 +153,7 @@ export function BoardView({ projectId, portfolioId }: Props) {
                   />
                 ))}
                 {colItems.length === 0 && (
-                  <div className="flex-1 flex items-center justify-center text-xs text-[var(--os-text-3)] py-8 border-2 border-dashed border-[var(--os-border)] rounded-lg">
+                  <div className="flex-1 flex items-center justify-center text-xs text-[var(--os-text-3)] py-8 border-2 border-dashed border-[var(--os-border)] rounded-2xl">
                     Drop here
                   </div>
                 )}

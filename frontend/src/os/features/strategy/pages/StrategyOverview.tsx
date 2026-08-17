@@ -51,7 +51,7 @@ export function StrategyOverview() {
             <button
               key={q}
               onClick={() => setSelectedQuarter(q)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+              className={`px-4 py-2 rounded-2xl text-xs font-semibold transition-all duration-200 ${
                 selectedQuarter === q
                   ? 'bg-[#579bfc] text-white shadow-sm'
                   : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:border-blue-300'
@@ -137,7 +137,7 @@ export function StrategyOverview() {
               <CardTitle className="text-base font-bold">Portfolio Budget</CardTitle>
               <p className="text-xs text-[var(--os-text-2)]">Pillar spent distribution</p>
             </div>
-            <span className="text-sm font-bold text-[var(--os-text-1)] bg-[var(--os-surface-0)] px-3 py-1 rounded-md border border-[var(--os-border)]">
+            <span className="text-sm font-bold text-[var(--os-text-1)] bg-[var(--os-surface-0)] px-3 py-1 rounded-2xl border border-[var(--os-border)]">
               ₹{(totalSpent / 1000).toFixed(0)}k / ₹{(totalBudget / 1000).toFixed(0)}k
             </span>
           </CardHeader>

@@ -99,19 +99,19 @@ export function AegisPermissionsPage() {
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Fine-grained RBAC — {scopes.length} active grant{scopes.length !== 1 ? 's' : ''}</p>
           </div>
         </div>
-        <button onClick={load} className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" title="Refresh">
+        <button onClick={load} className="p-1.5 rounded-2xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" title="Refresh">
           <RefreshCw className="w-3.5 h-3.5 text-gray-400" />
         </button>
       </div>
 
       {error && (
-        <div className="px-3 py-2 rounded-lg bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-xs text-red-600 dark:text-red-400">
+        <div className="px-3 py-2 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-xs text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
 
       {/* Grant form */}
-      <form onSubmit={handleGrant} className="p-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.02] space-y-3">
+      <form onSubmit={handleGrant} className="p-4 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.02] space-y-3">
         <h3 className="text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
           <Plus className="w-3.5 h-3.5" />
           Grant Permission
@@ -123,12 +123,12 @@ export function AegisPermissionsPage() {
             value={gUserId}
             onChange={e => setGUserId(e.target.value)}
             required
-            className="col-span-2 sm:col-span-1 px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
+            className="col-span-2 sm:col-span-1 px-3 py-1.5 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
           />
           <select
             value={gWorkspace}
             onChange={e => setGWorkspace(e.target.value)}
-            className="px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
+            className="px-3 py-1.5 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
           >
             {WORKSPACES.map(w => <option key={w}>{w}</option>)}
           </select>
@@ -138,12 +138,12 @@ export function AegisPermissionsPage() {
             value={gFeature}
             onChange={e => setGFeature(e.target.value)}
             required
-            className="px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
+            className="px-3 py-1.5 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
           />
           <select
             value={gAction}
             onChange={e => setGAction(e.target.value as 'READ' | 'WRITE' | 'ADMIN')}
-            className="px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
+            className="px-3 py-1.5 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
           >
             {ACTIONS.map(a => <option key={a}>{a}</option>)}
           </select>
@@ -151,7 +151,7 @@ export function AegisPermissionsPage() {
         <button
           type="submit"
           disabled={granting || !gUserId.trim() || !gFeature.trim()}
-          className="px-4 py-1.5 rounded-lg bg-[#e2445c] hover:bg-[#c73850] text-white text-xs font-bold transition-colors disabled:opacity-50"
+          className="px-4 py-1.5 rounded-2xl bg-[#e2445c] hover:bg-[#c73850] text-white text-xs font-bold transition-colors disabled:opacity-50"
         >
           {granting ? 'Granting…' : 'Grant'}
         </button>
@@ -165,7 +165,7 @@ export function AegisPermissionsPage() {
           placeholder="Filter by user ID, workspace, or feature…"
           value={filter}
           onChange={e => setFilter(e.target.value)}
-          className="w-full pl-9 pr-4 py-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
+          className="w-full pl-9 pr-4 py-2 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#e2445c]/30"
         />
       </div>
 
@@ -173,7 +173,7 @@ export function AegisPermissionsPage() {
       {loading ? (
         <div className="space-y-2">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-14 rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse" />
+            <div key={i} className="h-14 rounded-2xl bg-gray-100 dark:bg-white/5 animate-pulse" />
           ))}
         </div>
       ) : Object.keys(grouped).length === 0 ? (
@@ -183,7 +183,7 @@ export function AegisPermissionsPage() {
       ) : (
         <div className="space-y-4">
           {Object.entries(grouped).map(([userId, userScopes]) => (
-            <div key={userId} className="rounded-xl border border-gray-200 dark:border-white/[0.06] overflow-hidden">
+            <div key={userId} className="rounded-2xl border border-gray-200 dark:border-white/[0.06] overflow-hidden">
               <div className="px-4 py-2 bg-gray-50 dark:bg-white/[0.02] border-b border-gray-200 dark:border-white/[0.06]">
                 <span className="text-xs font-bold text-gray-700 dark:text-gray-300 font-mono">{userId}</span>
                 <span className="ml-2 text-[10px] text-gray-400">{userScopes.length} scope{userScopes.length !== 1 ? 's' : ''}</span>

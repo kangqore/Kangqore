@@ -67,7 +67,7 @@ function UninstallModal({ pack, onClose, onDone }: { pack: PackListing; onClose:
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl w-full max-w-sm p-6 shadow-2xl">
+      <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl w-full max-w-sm p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-[var(--os-text-1)]">Uninstall Pack</h3>
           <button onClick={onClose}><X className="w-4 h-4 text-[var(--os-text-2)]" /></button>
@@ -78,9 +78,9 @@ function UninstallModal({ pack, onClose, onDone }: { pack: PackListing; onClose:
         </p>
         {mut.isError && <p className="text-xs text-[#e2445c] mb-3">{String((mut.error as any)?.message)}</p>}
         <div className="flex gap-2 justify-end">
-          <button onClick={onClose} className="px-4 py-2 text-sm rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mut.mutate()} disabled={mut.isPending}
-            className="px-4 py-2 text-sm rounded-lg bg-[#e2445c] text-white font-medium disabled:opacity-50">
+            className="px-4 py-2 text-sm rounded-2xl bg-[#e2445c] text-white font-medium disabled:opacity-50">
             {mut.isPending ? 'Uninstalling…' : 'Uninstall'}
           </button>
         </div>
@@ -105,7 +105,7 @@ function PackCard({ pack, onRefresh }: { pack: PackListing; onRefresh: () => voi
   return (
     <>
       <div className={cn(
-        'rounded-xl border bg-[var(--os-card)] overflow-hidden transition-all',
+        'rounded-2xl border bg-[var(--os-card)] overflow-hidden transition-all',
         pack.installed ? 'border-[#00c875]/30' : 'border-[var(--os-border)]'
       )}>
         {/* Header */}
@@ -267,7 +267,7 @@ function PackCard({ pack, onRefresh }: { pack: PackListing; onRefresh: () => voi
           {pack.installed ? (
             <button
               onClick={() => setShowUninstall(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[#e2445c] hover:border-[#e2445c]/40 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[#e2445c] hover:border-[#e2445c]/40 transition-colors"
             >
               <Trash2 className="w-3 h-3" />Uninstall
             </button>
@@ -275,7 +275,7 @@ function PackCard({ pack, onRefresh }: { pack: PackListing; onRefresh: () => voi
             <button
               onClick={() => install.mutate()}
               disabled={install.isPending}
-              className="flex items-center gap-1.5 px-4 py-1.5 text-xs rounded-lg bg-[#579bfc] text-white font-medium hover:bg-[#579bfc]/90 disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-1.5 text-xs rounded-2xl bg-[#579bfc] text-white font-medium hover:bg-[#579bfc]/90 disabled:opacity-50"
             >
               <Download className="w-3 h-3" />
               {install.isPending ? 'Installing…' : 'Install'}
@@ -379,7 +379,7 @@ export function PacksPage() {
       {query.isLoading && <p className="text-sm text-[var(--os-text-2)]">Loading packs…</p>}
 
       {!query.isLoading && packs.length === 0 && (
-        <div className="rounded-xl border border-dashed border-[var(--os-border)] p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-[var(--os-border)] p-10 text-center">
           <Package className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-2" />
           <p className="text-sm text-[var(--os-text-2)]">No packs in this category</p>
         </div>

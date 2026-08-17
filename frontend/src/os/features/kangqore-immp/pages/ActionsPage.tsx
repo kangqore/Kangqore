@@ -98,7 +98,7 @@ function ApprovalCard({
         <div className="flex-1 min-w-0 mt-0.5">
           <p className="text-base font-bold text-[var(--os-text-1)]">{approval.action}</p>
           <div className="flex items-center gap-3 mt-2 flex-wrap">
-            <span className={`text-[11px] font-bold px-2 py-1 rounded-md border ${lvlColor}`}>
+            <span className={`text-[11px] font-bold px-2 py-1 rounded-2xl border ${lvlColor}`}>
               L{approval.level} — {LEVEL_LABELS[approval.level] ?? 'Approval Required'}
             </span>
             {approval.tool && <Badge variant="neutral" size="sm">{approval.tool}</Badge>}
@@ -109,7 +109,7 @@ function ApprovalCard({
           <button
             onClick={() => onApprove(approval.id)}
             disabled={processing}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all disabled:opacity-50 hover:opacity-90 hover:-translate-y-0.5"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold text-white transition-all disabled:opacity-50 hover:opacity-90 hover:-translate-y-0.5"
             style={{ background: 'linear-gradient(135deg, #00c875 0%, #10b981 100%)', boxShadow: '0 8px 24px rgba(0,200,117,0.35)' }}
           >
             {processing ? <Spinner size="sm" /> : <Check className="w-4 h-4" />}
@@ -118,7 +118,7 @@ function ApprovalCard({
           <button
             onClick={() => onDeny(approval.id)}
             disabled={processing}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-red-50 text-red-600 hover:bg-red-100 transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold bg-red-50 text-red-600 hover:bg-red-100 transition-colors disabled:opacity-50"
           >
             <X className="w-4 h-4" />
             Deny
@@ -147,7 +147,7 @@ function ExternalApiPreview({ params }: { params: Record<string, any> }) {
   const kvPairs = Object.entries(p).filter(([, v]) => v !== undefined && v !== null && typeof v !== 'object').slice(0, 5)
 
   return (
-    <div className="ml-16 mt-2 rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] overflow-hidden">
+    <div className="ml-16 mt-2 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] overflow-hidden">
       <div className="flex items-center gap-2 px-3 py-2 border-b border-[var(--os-border)] bg-[var(--os-card)]">
         <span className="text-base">{icon}</span>
         <span className="text-[11px] font-bold text-[var(--os-text-1)]">{displayName}</span>
@@ -184,7 +184,7 @@ function HistoryRow({ action }: { action: ActionHistory }) {
         )}
       </div>
       <div className="flex items-center gap-3 text-[11px] font-bold text-[var(--os-text-2)] flex-shrink-0">
-        {action.reviewedBy && <span className="bg-[var(--os-surface-0)] px-2 py-1 rounded-md">by {action.reviewedBy.slice(0, 12)}</span>}
+        {action.reviewedBy && <span className="bg-[var(--os-surface-0)] px-2 py-1 rounded-2xl">by {action.reviewedBy.slice(0, 12)}</span>}
         <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5"/>{formatRelative(action.requestedAt)}</span>
         <Badge variant={action.status === 'APPROVED' ? 'success' : 'danger'} size="sm">{action.status}</Badge>
       </div>
@@ -242,7 +242,7 @@ function ProposeForm() {
             value={context}
             onChange={e => setContext(e.target.value)}
             placeholder="Context (optional)"
-            className="flex-1 text-sm font-medium border border-[var(--os-border)] bg-[var(--os-surface-0)] rounded-xl px-4 py-3 outline-none focus:border-blue-400 text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] transition-colors"
+            className="flex-1 text-sm font-medium border border-[var(--os-border)] bg-[var(--os-surface-0)] rounded-2xl px-4 py-3 outline-none focus:border-blue-400 text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] transition-colors"
           />
           <button
             onClick={propose}
@@ -270,7 +270,7 @@ function ProposeForm() {
                 <p className="text-base font-bold text-[var(--os-text-1)] leading-tight">{result.action}</p>
                 <p className="text-sm font-medium text-[var(--os-text-2)] mt-1.5">{result.description}</p>
               </div>
-              <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border flex-shrink-0 ${LEVEL_COLORS[result.level] ?? LEVEL_COLORS[3]}`}>
+              <span className={`text-[11px] font-bold px-2.5 py-1 rounded-2xl border flex-shrink-0 ${LEVEL_COLORS[result.level] ?? LEVEL_COLORS[3]}`}>
                 L{result.level}
               </span>
             </div>
@@ -281,9 +281,9 @@ function ProposeForm() {
               </div>
             )}
             <div className="flex items-center gap-3 text-[11px] font-bold text-[var(--os-text-2)]">
-              <span className="bg-white border border-[var(--os-border)] px-2 py-1 rounded-md">Tool: <strong className="text-[var(--os-text-1)]">{result.tool}</strong></span>
+              <span className="bg-white border border-[var(--os-border)] px-2 py-1 rounded-2xl">Tool: <strong className="text-[var(--os-text-1)]">{result.tool}</strong></span>
               {result.requiresApproval && (
-                <span className="text-amber-600 flex items-center gap-1.5 bg-amber-50 px-2 py-1 rounded-md">
+                <span className="text-amber-600 flex items-center gap-1.5 bg-amber-50 px-2 py-1 rounded-2xl">
                   <AlertTriangle className="w-3.5 h-3.5" />
                   Requires approval before execution
                 </span>
@@ -372,7 +372,7 @@ export function ActionsPage() {
           )}
           <button
             onClick={refresh}
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
+            className="w-10 h-10 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
@@ -450,7 +450,7 @@ export function ActionsPage() {
           <button
             key={t.key}
             onClick={() => setTab(t.key as Tab)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold transition-all ${
               tab === t.key
                 ? 'bg-[var(--os-card)] shadow-sm text-[var(--os-text-1)]'
                 : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-slate-100'

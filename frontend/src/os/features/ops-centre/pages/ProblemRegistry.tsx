@@ -34,7 +34,7 @@ const PRI_C = {
 function StatusBadge({ s }: { s: string }) {
   const c = STATUS_C[s] ?? STATUS_C['OPEN']
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider"
+    <span className="inline-flex items-center px-2 py-0.5 rounded-2xl text-[10px] font-bold uppercase tracking-wider"
       style={{ background: c.bg, color: c.text }}>
       {s.replace('_', ' ')}
     </span>
@@ -65,29 +65,29 @@ function CreateModal({ onClose }: { onClose: () => void }) {
             placeholder="Problem title *"
             value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+            className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
           />
           <textarea
             placeholder="Description *"
             rows={3}
             value={form.description}
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] resize-none"
+            className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] resize-none"
           />
           <select
             value={form.priority}
             onChange={e => setForm(f => ({ ...f, priority: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+            className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
           >
             {['P1','P2','P3','P4'].map(p => <option key={p} value={p}>{p}</option>)}
           </select>
         </div>
         <div className="flex justify-end gap-2 mt-5">
-          <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-colors">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 rounded-2xl text-sm font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-colors">Cancel</button>
           <button
             disabled={!form.title.trim() || create.isPending}
             onClick={() => create.mutate()}
-            className="px-5 py-2 rounded-xl text-sm font-bold text-white disabled:opacity-40"
+            className="px-5 py-2 rounded-2xl text-sm font-bold text-white disabled:opacity-40"
             style={{ background: '#579bfc' }}
           >
             {create.isPending ? 'Creating…' : 'Create Problem'}
@@ -151,7 +151,7 @@ function ProblemRow({ prb }: { prb: Problem }) {
                       onChange={e => setRc(e.target.value)}
                       onClick={e => e.stopPropagation()}
                       placeholder="Document the root cause…"
-                      className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] resize-none"
+                      className="w-full px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] resize-none"
                     />
                   </div>
                   <div>
@@ -162,14 +162,14 @@ function ProblemRow({ prb }: { prb: Problem }) {
                       onChange={e => setWa(e.target.value)}
                       onClick={e => e.stopPropagation()}
                       placeholder="Known workaround for affected users…"
-                      className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] resize-none"
+                      className="w-full px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] resize-none"
                     />
                   </div>
                   <div className="flex gap-2" onClick={e => e.stopPropagation()}>
                     <button
                       onClick={() => update.mutate({ rootCause: rc, workaround: wa })}
                       disabled={update.isPending}
-                      className="px-3 py-1.5 rounded-lg text-xs font-bold text-white disabled:opacity-40"
+                      className="px-3 py-1.5 rounded-2xl text-xs font-bold text-white disabled:opacity-40"
                       style={{ background: '#579bfc' }}
                     >
                       Save
@@ -178,7 +178,7 @@ function ProblemRow({ prb }: { prb: Problem }) {
                       <button
                         onClick={() => update.mutate({ status: 'RESOLVED' })}
                         disabled={update.isPending}
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold"
+                        className="px-3 py-1.5 rounded-2xl text-xs font-bold"
                         style={{ background: 'rgba(0,200,117,0.1)', color: '#00c875' }}
                       >
                         Mark Resolved
@@ -195,7 +195,7 @@ function ProblemRow({ prb }: { prb: Problem }) {
                   ) : (
                     <div className="space-y-1.5">
                       {prb.incidents.map(inc => (
-                        <div key={inc.id} className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-[var(--os-border)]" style={{ background: 'var(--os-card)' }}>
+                        <div key={inc.id} className="flex items-center gap-2 px-2.5 py-1.5 rounded-2xl border border-[var(--os-border)]" style={{ background: 'var(--os-card)' }}>
                           <span className="text-[10px] font-mono font-bold text-[var(--os-text-2)]">{inc.number}</span>
                           <span className="text-xs text-[var(--os-text-1)] flex-1 truncate">{inc.title}</span>
                           <span className="text-[9px] font-bold" style={{ color: PRI_C[inc.priority] ?? '#579bfc' }}>{inc.priority}</span>
@@ -234,7 +234,7 @@ export function ProblemRegistry() {
       <div className="flex items-center gap-2 mb-4">
         <button
           onClick={() => setCreating(true)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold text-white"
           style={{ background: '#7c3aed' }}
         >
           <Plus className="w-3.5 h-3.5" /> New Problem
@@ -243,7 +243,7 @@ export function ProblemRegistry() {
           <select
             value={filterStatus}
             onChange={e => setStatus(e.target.value)}
-            className="px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
+            className="px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
           >
             <option value="">All statuses</option>
             {['OPEN','INVESTIGATING','KNOWN_ERROR','RESOLVED','CLOSED'].map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
@@ -255,7 +255,7 @@ export function ProblemRegistry() {
       <div className="rounded-2xl border border-[var(--os-border)] overflow-hidden" style={{ background: 'var(--os-card)' }}>
         {isLoading ? (
           <div className="p-6 space-y-2">
-            {[1,2,3].map(i => <div key={i} className="h-10 rounded-lg animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
+            {[1,2,3].map(i => <div key={i} className="h-10 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
           </div>
         ) : rows.length === 0 ? (
           <div className="py-12 text-center">

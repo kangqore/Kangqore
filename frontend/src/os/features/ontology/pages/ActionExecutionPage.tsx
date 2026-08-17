@@ -190,11 +190,11 @@ function ExecutionDetailDrawer({ id, onClose }: { id: string; onClose: () => voi
         </div>
         <div>
           <p className="text-[10px] uppercase tracking-wide text-[var(--os-text-2)] mb-1">Params submitted</p>
-          <pre className="text-[11px] bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-2.5 overflow-x-auto">{JSON.stringify(execution.params, null, 2)}</pre>
+          <pre className="text-[11px] bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-2.5 overflow-x-auto">{JSON.stringify(execution.params, null, 2)}</pre>
         </div>
         <div>
           <p className="text-[10px] uppercase tracking-wide text-[var(--os-text-2)] mb-1">Effects applied</p>
-          <pre className="text-[11px] bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-2.5 overflow-x-auto">{JSON.stringify(execution.effectsApplied, null, 2)}</pre>
+          <pre className="text-[11px] bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-2.5 overflow-x-auto">{JSON.stringify(execution.effectsApplied, null, 2)}</pre>
         </div>
         {execution.errorMessage && (
           <div>
@@ -240,7 +240,7 @@ export function ActionExecutionPage() {
         <button
           onClick={() => seedSystem.mutate()}
           disabled={seedSystem.isPending || seeded}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50 transition-colors"
           title="Seed the system Actions (ANALYZE_CLIENT, RUN_AGENT, GENERATE_INSIGHT, STRATEGIC_DECISION, GOVERNANCE_BLOCK, BUDGET_DENY) that MissionDispatcher and AEGIS route through"
         >
           {seeded ? 'System Actions Seeded' : seedSystem.isPending ? 'Seeding…' : 'Seed System Actions'}
@@ -251,13 +251,13 @@ export function ActionExecutionPage() {
       <AiActionFeed />
 
       <div className="flex items-center gap-2">
-        <select className="px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" value={actorType} onChange={e => { setActorType(e.target.value); setPage(1) }}>
+        <select className="px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" value={actorType} onChange={e => { setActorType(e.target.value); setPage(1) }}>
           <option value="">All actors</option>
           <option value="HUMAN">Human</option>
           <option value="KIMMP">KIMMP</option>
           <option value="AEGIS">AEGIS</option>
         </select>
-        <select className="px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" value={status} onChange={e => { setStatus(e.target.value); setPage(1) }}>
+        <select className="px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" value={status} onChange={e => { setStatus(e.target.value); setPage(1) }}>
           <option value="">All statuses</option>
           <option value="SUCCESS">Success</option>
           <option value="FAILED">Failed</option>
@@ -298,9 +298,9 @@ export function ActionExecutionPage() {
 
       {data && data.pages > 1 && (
         <div className="flex items-center justify-center gap-2">
-          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} className="px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-xs text-[var(--os-text-2)] disabled:opacity-40">Prev</button>
+          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} className="px-3 py-1.5 rounded-2xl border border-[var(--os-border)] text-xs text-[var(--os-text-2)] disabled:opacity-40">Prev</button>
           <span className="text-xs text-[var(--os-text-2)]">{page} / {data.pages}</span>
-          <button onClick={() => setPage(p => Math.min(data.pages, p + 1))} disabled={page >= data.pages} className="px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-xs text-[var(--os-text-2)] disabled:opacity-40">Next</button>
+          <button onClick={() => setPage(p => Math.min(data.pages, p + 1))} disabled={page >= data.pages} className="px-3 py-1.5 rounded-2xl border border-[var(--os-border)] text-xs text-[var(--os-text-2)] disabled:opacity-40">Next</button>
         </div>
       )}
 

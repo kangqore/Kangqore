@@ -223,7 +223,7 @@ export function InvestorsOverview() {
             .slice(0, 6)
             .map(inv => (
               <div key={inv.id} className="flex items-center gap-4 px-4 py-3 hover:bg-[var(--os-surface-0)]">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: inv.status === 'committed' ? '#00c87520' : '#9aa0b020' }}>
+                <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: inv.status === 'committed' ? '#00c87520' : '#9aa0b020' }}>
                   {inv.status === 'committed'
                     ? <CheckCircle2 className="w-4 h-4" style={{ color: '#00c875' }} />
                     : <Clock className="w-4 h-4 text-[var(--os-text-2)]" />

@@ -47,7 +47,7 @@ export function OpsCentreModule() {
         </div>
 
         {/* Signal Pyramid widget */}
-        <div className="flex-shrink-0 flex items-end gap-1 px-4 py-2.5 rounded-xl"
+        <div className="flex-shrink-0 flex items-end gap-1 px-4 py-2.5 rounded-2xl"
           style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
           <Brain className="w-3.5 h-3.5 mb-1 mr-1" style={{ color: '#7c3aed' }} />
           {SIGNAL_PYRAMID.map((lvl, i) => (

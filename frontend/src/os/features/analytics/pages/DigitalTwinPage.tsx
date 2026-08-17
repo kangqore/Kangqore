@@ -259,7 +259,7 @@ function PillarPanel({
   const color = simScore >= 85 ? '#10b981' : simScore >= 72 ? '#f59e0b' : '#ef4444'
 
   return (
-    <div className="border border-[var(--os-border)] rounded-xl overflow-hidden">
+    <div className="border border-[var(--os-border)] rounded-2xl overflow-hidden">
       <button
         className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-[var(--os-bg2)] transition-colors"
         onClick={() => setOpen(o => !o)}
@@ -352,7 +352,7 @@ function SaveScenarioModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-md rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
+      <div className="w-full max-w-md rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Save className="w-4 h-4 text-teal-400" />
@@ -364,7 +364,7 @@ function SaveScenarioModal({
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Scenario Description (sent to KIMMP)</label>
             <textarea rows={3}
-              className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-teal-500 resize-none"
+              className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-teal-500 resize-none"
               value={scenario} onChange={e => setScenario(e.target.value)} />
           </div>
           <div>
@@ -372,14 +372,14 @@ function SaveScenarioModal({
             <div className="flex gap-2">
               {([30, 60, 90] as const).map(h => (
                 <button key={h} onClick={() => setHorizon(h)}
-                  className={`flex-1 py-2 rounded-lg text-sm font-semibold border transition-all ${horizon === h ? 'bg-teal-500/20 border-teal-500 text-teal-400' : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:border-teal-500/40'}`}>
+                  className={`flex-1 py-2 rounded-2xl text-sm font-semibold border transition-all ${horizon === h ? 'bg-teal-500/20 border-teal-500 text-teal-400' : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:border-teal-500/40'}`}>
                   {h}d
                 </button>
               ))}
             </div>
           </div>
           {oisDelta !== 0 && (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)]">
               <span className="text-[11px] text-[var(--os-text-3)]">Current lever delta</span>
               <span className={`text-sm font-bold ml-auto ${oisDelta > 0 ? 'text-green-500' : 'text-red-400'}`}>
                 {oisDelta > 0 ? '+' : ''}{oisDelta.toFixed(1)} pts
@@ -388,7 +388,7 @@ function SaveScenarioModal({
           )}
         </div>
         <button onClick={() => save.mutate()} disabled={!scenario.trim() || save.isPending}
-          className="w-full py-2 rounded-lg bg-teal-600 text-white text-sm font-semibold hover:bg-teal-500 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          className="w-full py-2 rounded-2xl bg-teal-600 text-white text-sm font-semibold hover:bg-teal-500 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
           {save.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : <><Save className="w-3.5 h-3.5" />Save & Run KIMMP Simulation</>}
         </button>
         {save.isError && <p className="text-[11px] text-red-400">Failed: {(save.error as any)?.response?.data?.error || 'Unknown error'}</p>}
@@ -410,7 +410,7 @@ function SavedScenariosPanel() {
   })
 
   return (
-    <div className="border border-[var(--os-border)] rounded-xl overflow-hidden">
+    <div className="border border-[var(--os-border)] rounded-2xl overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center gap-3 px-5 py-3.5 hover:bg-[var(--os-bg2)] transition-colors bg-[var(--os-card)]"
@@ -430,7 +430,7 @@ function SavedScenariosPanel() {
           ) : (
             <div className="space-y-2">
               {scenarios.map((s) => (
-                <div key={s.id} className="flex items-start gap-3 px-4 py-3 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
+                <div key={s.id} className="flex items-start gap-3 px-4 py-3 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-xs">
                   <div className="flex-1 min-w-0">
                     <p className="text-[var(--os-text-1)] font-medium leading-snug truncate">{s.scenario}</p>
                     <p className="text-[var(--os-text-3)] mt-1">{s.horizon}d horizon · {new Date(s.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
@@ -526,7 +526,7 @@ export function DigitalTwinPage() {
       {/* OIS comparison header */}
       <div className="grid grid-cols-3 gap-4">
         {/* Baseline */}
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-3)] mb-1 uppercase tracking-wider font-semibold">Baseline OIS</p>
           <div className="flex items-end gap-2">
             <span className="text-3xl font-extrabold text-[var(--os-text-2)]">{baselineOIS.toFixed(1)}</span>
@@ -536,7 +536,7 @@ export function DigitalTwinPage() {
         </div>
 
         {/* Simulated */}
-        <div className={`rounded-xl p-5 border-2 transition-all ${anyChanged ? 'border-teal-500/40 bg-teal-500/5' : 'border-[var(--os-border)] bg-[var(--os-card)]'}`}>
+        <div className={`rounded-2xl p-5 border-2 transition-all ${anyChanged ? 'border-teal-500/40 bg-teal-500/5' : 'border-[var(--os-border)] bg-[var(--os-card)]'}`}>
           <p className="text-xs text-[var(--os-text-3)] mb-1 uppercase tracking-wider font-semibold">Simulated OIS</p>
           <div className="flex items-end gap-2">
             <span className="text-3xl font-extrabold text-teal-400">{simOIS.toFixed(1)}</span>
@@ -546,7 +546,7 @@ export function DigitalTwinPage() {
         </div>
 
         {/* Delta */}
-        <div className={`rounded-xl p-5 border transition-all ${oisDelta > 0 ? 'bg-green-500/5 border-green-500/30' : oisDelta < 0 ? 'bg-red-500/5 border-red-500/30' : 'bg-[var(--os-card)] border-[var(--os-border)]'}`}>
+        <div className={`rounded-2xl p-5 border transition-all ${oisDelta > 0 ? 'bg-green-500/5 border-green-500/30' : oisDelta < 0 ? 'bg-red-500/5 border-red-500/30' : 'bg-[var(--os-card)] border-[var(--os-border)]'}`}>
           <p className="text-xs text-[var(--os-text-3)] mb-1 uppercase tracking-wider font-semibold">OIS Delta</p>
           <span className={`text-3xl font-extrabold ${oisDelta > 0 ? 'text-green-500' : oisDelta < 0 ? 'text-red-400' : 'text-[var(--os-text-3)]'}`}>
             {oisDelta > 0 ? '+' : ''}{oisDelta.toFixed(1)}
@@ -556,7 +556,7 @@ export function DigitalTwinPage() {
       </div>
 
       {/* KIMMP insight */}
-      <div className="flex items-start gap-3 px-5 py-3.5 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)]">
+      <div className="flex items-start gap-3 px-5 py-3.5 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)]">
         <Cpu className="w-4 h-4 text-violet-400 flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-xs font-semibold text-violet-400 mb-0.5">KIMMP · Digital Twin Analysis</p>
@@ -566,7 +566,7 @@ export function DigitalTwinPage() {
           <div className="ml-auto flex items-center gap-3 flex-shrink-0">
             <button
               onClick={() => setSaveModal(true)}
-              className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-teal-500/10 border border-teal-500/30 text-teal-400 hover:bg-teal-500/20 transition-colors"
+              className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-2xl bg-teal-500/10 border border-teal-500/30 text-teal-400 hover:bg-teal-500/20 transition-colors"
             >
               <Save className="w-3 h-3" /> Save Scenario
             </button>

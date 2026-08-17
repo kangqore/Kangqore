@@ -40,7 +40,7 @@ function ForecastCard({ insight }: { insight: Insight }) {
     <div className="rounded-[32px] overflow-hidden transition-all" style={{ background: `${c}10`, boxShadow: `0 24px 48px ${c}20` }}>
       {/* Forecast badge strip */}
       <div className="flex items-center gap-2 px-8 pt-6 pb-2">
-        <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-[#7c3aed20] text-[#7c3aed] uppercase tracking-widest">
+        <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2 py-0.5 rounded-2xl bg-[#7c3aed20] text-[#7c3aed] uppercase tracking-widest">
           <TrendingUp className="w-2.5 h-2.5" />
           Forecast
         </span>
@@ -56,7 +56,7 @@ function ForecastCard({ insight }: { insight: Insight }) {
       <div className="p-8 pt-3">
         <div className="flex items-start justify-between gap-3 mb-2.5">
           <div className="flex items-start gap-3">
-            <div className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${config.bg} text-white shadow-sm`}>
+            <div className={`mt-0.5 w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0 ${config.bg} text-white shadow-sm`}>
               <config.Icon className="w-4 h-4" />
             </div>
             <div>
@@ -69,7 +69,7 @@ function ForecastCard({ insight }: { insight: Insight }) {
               </div>
             </div>
           </div>
-          <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider ${config.bg} text-white flex-shrink-0`}>
+          <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-2xl uppercase tracking-wider ${config.bg} text-white flex-shrink-0`}>
             {insight.impact}
           </span>
         </div>
@@ -80,7 +80,7 @@ function ForecastCard({ insight }: { insight: Insight }) {
           <div className="ml-11 space-y-3 mb-3 pt-3 border-t border-[var(--os-border)]">
             <p className="text-sm text-[var(--os-text-1)] leading-relaxed">{insight.detail}</p>
             {insight.forecastBasis && (
-              <div className="flex items-start gap-2 bg-[#7c3aed10] border border-[var(--os-border)] rounded-xl p-3">
+              <div className="flex items-start gap-2 bg-[#7c3aed10] border border-[var(--os-border)] rounded-2xl p-3">
                 <Database className="w-4 h-4 text-[#7c3aed] flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-[10px] font-bold text-[#7c3aed] uppercase tracking-widest mb-0.5">Forecast basis</p>
@@ -88,7 +88,7 @@ function ForecastCard({ insight }: { insight: Insight }) {
                 </div>
               </div>
             )}
-            <div className="flex items-start gap-2 bg-[#579bfc10] border border-[var(--os-border)] rounded-xl p-3">
+            <div className="flex items-start gap-2 bg-[#579bfc10] border border-[var(--os-border)] rounded-2xl p-3">
               <ArrowRight className="w-4 h-4 text-[#579bfc] flex-shrink-0 mt-0.5" />
               <p className="text-sm font-medium text-[var(--os-text-1)]">{insight.action}</p>
             </div>
@@ -121,7 +121,7 @@ export function ForecastPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+        <div className="w-8 h-8 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-lg">
           <TrendingUp className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
@@ -173,7 +173,7 @@ export function ForecastPage() {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-2xl text-sm font-medium border transition-all ${
                 filter === cat
                   ? 'bg-[#7c3aed] text-white border-[#7c3aed]'
                   : 'bg-[var(--os-card)] text-[var(--os-text-2)] border-[var(--os-border)] hover:border-[#7c3aed] hover:text-[#7c3aed]'

@@ -80,8 +80,8 @@ export function ExecutiveDashboardPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-lg border" style={{ color: T2, borderColor: BDR }}><RefreshCw className="w-3 h-3" /></button>
-            <button onClick={() => setShowBuilder(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold" style={{ background: BLUE, color: '#fff' }}><Plus className="w-3.5 h-3.5" /> Build Report</button>
+            <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-2xl border" style={{ color: T2, borderColor: BDR }}><RefreshCw className="w-3 h-3" /></button>
+            <button onClick={() => setShowBuilder(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold" style={{ background: BLUE, color: '#fff' }}><Plus className="w-3.5 h-3.5" /> Build Report</button>
           </div>
         </div>
       </div>
@@ -123,7 +123,7 @@ export function ExecutiveDashboardPage() {
               <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: T2 }}>Customer Health Tiers</p>
               <div className="flex gap-6">
                 {([['GREEN', GRN], ['AMBER', AMB], ['RED', RED]] as const).map(([tier, color]) => (
-                  <div key={tier} className="flex-1 rounded-xl p-4 text-center" style={{ background: `${color}10`, border: `1px solid ${color}30` }}>
+                  <div key={tier} className="flex-1 rounded-2xl p-4 text-center" style={{ background: `${color}10`, border: `1px solid ${color}30` }}>
                     <p className="text-3xl font-black mb-1" style={{ color }}>{dash.tierBreakdown[tier]}</p>
                     <p className="text-[10px] font-bold" style={{ color }}>{tier}</p>
                   </div>
@@ -175,7 +175,7 @@ export function ExecutiveDashboardPage() {
             <div className="py-16 text-center rounded-2xl border" style={{ borderColor: BDR }}>
               <FileText className="w-8 h-8 mx-auto mb-3 opacity-30" style={{ color: T2 }} />
               <p className="text-sm font-medium mb-3" style={{ color: T2 }}>No reports generated yet</p>
-              <button onClick={() => setShowBuilder(true)} className="px-4 py-2 rounded-xl text-xs font-bold" style={{ background: BLUE, color: '#fff' }}>Build First Report</button>
+              <button onClick={() => setShowBuilder(true)} className="px-4 py-2 rounded-2xl text-xs font-bold" style={{ background: BLUE, color: '#fff' }}>Build First Report</button>
             </div>
           ) : (
             reports.map(r => <ReportCard key={r.id} report={r} />)
@@ -186,7 +186,7 @@ export function ExecutiveDashboardPage() {
       {tab === 'scheduled' && (
         <div className="space-y-3">
           {showScheduleForm && <ScheduleForm qc={qc} onClose={() => setShowScheduleForm(false)} />}
-          <button onClick={() => setShowScheduleForm(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold" style={{ background: PURP, color: '#fff' }}>
+          <button onClick={() => setShowScheduleForm(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold" style={{ background: PURP, color: '#fff' }}>
             <Plus className="w-3.5 h-3.5" /> Schedule Report
           </button>
           {scheduled.map(s => (
@@ -225,7 +225,7 @@ function ReportCard({ report }: { report: ReportDoc }) {
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: `${GRN}15`, color: GRN }}>{report.status}</span>
-          <button onClick={e => { e.stopPropagation(); window.print() }} className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg border" style={{ color: T2, borderColor: BDR }}><Printer className="w-3 h-3" /></button>
+          <button onClick={e => { e.stopPropagation(); window.print() }} className="flex items-center gap-1 text-xs px-2 py-1 rounded-2xl border" style={{ color: T2, borderColor: BDR }}><Printer className="w-3 h-3" /></button>
         </div>
       </div>
       {expanded && d && (
@@ -237,7 +237,7 @@ function ReportCard({ report }: { report: ReportDoc }) {
               { label: 'OIS Delta', value: d.oisDelta != null ? (d.oisDelta > 0 ? `+${d.oisDelta.toFixed(1)}` : d.oisDelta.toFixed(1)) : '—', color: d.oisDelta > 0 ? GRN : RED },
               { label: 'Avg NPS', value: d.avgNps != null ? d.avgNps : '—', color: PURP },
             ].map(s => (
-              <div key={s.label} className="rounded-xl p-3 text-center" style={{ background: SURF }}>
+              <div key={s.label} className="rounded-2xl p-3 text-center" style={{ background: SURF }}>
                 <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: T2 }}>{s.label}</p>
                 <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
               </div>
@@ -248,7 +248,7 @@ function ReportCard({ report }: { report: ReportDoc }) {
               <p className="text-[10px] font-semibold uppercase tracking-wider mb-2" style={{ color: T2 }}>Top 5 Signals</p>
               <div className="space-y-1">
                 {d.topSignals.map((s: any, i: number) => (
-                  <div key={i} className="flex items-center gap-3 px-3 py-2 rounded-lg" style={{ background: SURF }}>
+                  <div key={i} className="flex items-center gap-3 px-3 py-2 rounded-2xl" style={{ background: SURF }}>
                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: AMB + '20', color: AMB }}>{s.priority?.toUpperCase()}</span>
                     <span className="text-xs flex-1" style={{ color: T1 }}>{s.title}</span>
                     <span className="text-[10px]" style={{ color: T2 }}>{new Date(s.date).toLocaleDateString()}</span>
@@ -283,7 +283,7 @@ function CustomerReportBuilder({ qc, onClose }: { qc: any; onClose: () => void }
           <p className="text-sm font-bold" style={{ color: T1 }}>Report generated: {generated.title}</p>
         </div>
         <p className="text-xs mb-4" style={{ color: T2 }}>Switch to "Generated Reports" tab to view and print.</p>
-        <button onClick={onClose} className="px-4 py-2 rounded-xl text-xs font-bold" style={{ background: SURF, color: T1 }}>Close</button>
+        <button onClick={onClose} className="px-4 py-2 rounded-2xl text-xs font-bold" style={{ background: SURF, color: T1 }}>Close</button>
       </div>
     )
   }
@@ -299,24 +299,24 @@ function CustomerReportBuilder({ qc, onClose }: { qc: any; onClose: () => void }
           <div key={field}>
             <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>{label}</p>
             <input value={(form as any)[field]} onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
-              placeholder={ph} className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+              placeholder={ph} className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
               style={{ borderColor: BDR, background: SURF, color: T1 }} />
           </div>
         ))}
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Date From</p>
           <input type="date" value={form.dateFrom} onChange={e => setForm(f => ({ ...f, dateFrom: e.target.value }))}
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none" style={{ borderColor: BDR, background: SURF, color: T1 }} />
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none" style={{ borderColor: BDR, background: SURF, color: T1 }} />
         </div>
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Date To</p>
           <input type="date" value={form.dateTo} onChange={e => setForm(f => ({ ...f, dateTo: e.target.value }))}
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none" style={{ borderColor: BDR, background: SURF, color: T1 }} />
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none" style={{ borderColor: BDR, background: SURF, color: T1 }} />
         </div>
       </div>
       <button disabled={!form.customerId || !form.dateFrom || !form.dateTo || generate.isPending}
         onClick={() => generate.mutate()}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
         style={{ background: BLUE, color: '#fff' }}>
         <Download className="w-4 h-4" />
         {generate.isPending ? 'Generating…' : 'Generate Report'}
@@ -345,21 +345,21 @@ function ScheduleForm({ qc, onClose }: { qc: any; onClose: () => void }) {
           <div key={f}>
             <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>{label}</p>
             <input value={(form as any)[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
-              placeholder={ph} className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+              placeholder={ph} className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
               style={{ borderColor: BDR, background: SURF, color: T1 }} />
           </div>
         ))}
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Template</p>
           <select value={form.template} onChange={e => setForm(p => ({ ...p, template: e.target.value }))}
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none" style={{ borderColor: BDR, background: SURF, color: T1 }}>
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none" style={{ borderColor: BDR, background: SURF, color: T1 }}>
             {['EXECUTIVE', 'HEALTH', 'COMPLIANCE'].map(t => <option key={t}>{t}</option>)}
           </select>
         </div>
       </div>
       <button disabled={!form.title || !form.cronExpr || !form.recipients || create.isPending}
         onClick={() => create.mutate()}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
         style={{ background: PURP, color: '#fff' }}>
         <Mail className="w-4 h-4" />
         {create.isPending ? 'Scheduling…' : 'Schedule Report'}

@@ -180,7 +180,7 @@ export function ReportsPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+        <div className="w-8 h-8 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg">
           <FileText className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
@@ -191,7 +191,7 @@ export function ReportsPage() {
         </div>
         <button
           onClick={() => refetch()}
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
+          className="w-10 h-10 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
@@ -216,7 +216,7 @@ export function ReportsPage() {
               <button
                 onClick={() => generate(rt.type)}
                 disabled={!!generating}
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[var(--os-card)] shadow-[0_8px_16px_rgba(0,0,0,0.04)] text-xs font-bold transition-all disabled:opacity-50"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-2xl bg-[var(--os-card)] shadow-[0_8px_16px_rgba(0,0,0,0.04)] text-xs font-bold transition-all disabled:opacity-50"
                 style={{ color: rt.color }}
               >
                 {isRunning ? <Spinner size="sm" /> : <Play className="w-4 h-4" />}
@@ -228,7 +228,7 @@ export function ReportsPage() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600">{error}</div>
+        <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3 text-sm text-red-600">{error}</div>
       )}
 
       {/* Latest generated */}

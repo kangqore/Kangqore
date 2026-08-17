@@ -16,7 +16,7 @@ const DEPT_COLORS: Record<string, string> = {
 function OrgNodeCard({ node }: { node: OrgNode }) {
   const color = DEPT_COLORS[node.department] ?? 'bg-[var(--os-surface-0)] border-[var(--os-border)] text-[var(--os-text-2)]'
   return (
-    <div className={`rounded-xl border p-3 min-w-[160px] text-center ${color}`}>
+    <div className={`rounded-2xl border p-3 min-w-[160px] text-center ${color}`}>
       <Avatar name={node.name} size="sm" className="mx-auto mb-2" />
       <p className="text-sm font-semibold leading-tight">{node.name}</p>
       <p className="text-xs opacity-70 mt-0.5">{node.title}</p>
@@ -48,7 +48,7 @@ export function OrgChartPage() {
         {departments.map(d => (
           <div
             key={d.id}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium ${DEPT_COLORS[d.name] ?? 'bg-[var(--os-surface-0)] border-[var(--os-border)] text-[var(--os-text-2)]'}`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-2xl border text-xs font-medium ${DEPT_COLORS[d.name] ?? 'bg-[var(--os-surface-0)] border-[var(--os-border)] text-[var(--os-text-2)]'}`}
           >
             <span>{d.name}</span>
             <Badge variant="neutral" size="sm">{d.headcount}</Badge>

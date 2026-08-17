@@ -80,7 +80,7 @@ function Field({
           readOnly={readOnly}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="w-full h-10 rounded-xl text-sm outline-none transition-all"
+          className="w-full h-10 rounded-2xl text-sm outline-none transition-all"
           style={{
             background: readOnly ? 'var(--os-surface-0)' : 'var(--os-card)',
             border: `1px solid ${focused ? 'rgba(37,100,234,0.5)' : 'var(--os-border)'}`,
@@ -118,7 +118,7 @@ function SaveBtn({ onClick, loading, disabled, label = 'Save changes', demoLabel
     <button
       onClick={onClick}
       disabled={loading || disabled || demo}
-      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all disabled:opacity-40"
+      className="flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-semibold transition-all disabled:opacity-40"
       style={{ background: 'rgba(37,100,234,0.15)', border: '1px solid rgba(37,100,234,0.3)', color: '#2564ea' }}
     >
       {loading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
@@ -140,7 +140,7 @@ function SectionHeader({ icon: Icon, title, subtitle }: {
 }) {
   return (
     <div className="flex items-start gap-3 pb-1 border-b border-[var(--os-border)]">
-      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+      <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0 mt-0.5"
         style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.2)' }}>
         <Icon className="w-4 h-4 text-purple-400" />
       </div>
@@ -415,7 +415,7 @@ export function ProfilePage() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={logout}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-semibold transition-all"
               style={{ color: '#e2445c', background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.2)' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(226,68,92,0.15)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(226,68,92,0.08)' }}
@@ -428,7 +428,7 @@ export function ProfilePage() {
                 try { await api.post('/auth/logout-all') } catch { /* best-effort */ }
                 logout()
               }}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-semibold transition-all"
               style={{ color: '#e2445c', background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.2)' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(226,68,92,0.15)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(226,68,92,0.08)' }}

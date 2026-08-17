@@ -148,12 +148,12 @@ export function HiringCalculatorPage() {
       <Card>
         <CardHeader><CardTitle>Pipeline demand translation</CardTitle></CardHeader>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
-          <div className="p-4 bg-slate-900 rounded-xl">
+          <div className="p-4 bg-slate-900 rounded-2xl">
             <p className="text-xs text-[var(--os-text-2)] mb-1 flex items-center gap-1.5"><TrendingUp className="w-3.5 h-3.5" />Forecast pipeline</p>
             <p className="text-xl font-bold text-[var(--os-text-1)]">{fmt(pipelineValue)}</p>
             <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">{WIN_RATE_PCT * 100}% assumed win rate</p>
           </div>
-          <div className="p-4 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#0073ea] border-y border-r border-[var(--os-border)] border-t-white/20 rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="p-4 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#0073ea] border-y border-r border-[var(--os-border)] border-t-white/20 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
             <p className="text-xs text-[#0073ea] font-semibold mb-1.5 flex items-center gap-1.5"><DollarSign className="w-3.5 h-3.5" />Expected wins</p>
             <p className="text-xl font-bold text-[var(--os-text-1)]">{fmt(expectedWins)}</p>
             <p className="text-[11px] text-[var(--os-text-2)] mt-1">
@@ -163,7 +163,7 @@ export function HiringCalculatorPage() {
               }
             </p>
           </div>
-          <div className={`p-4 rounded-xl border-y border-r border-[var(--os-border)] border-t-white/20 border-l-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 ${capacityGap > 0 ? 'border-l-[#e2445c]' : 'border-l-[#00c875]'}`}>
+          <div className={`p-4 rounded-2xl border-y border-r border-[var(--os-border)] border-t-white/20 border-l-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 ${capacityGap > 0 ? 'border-l-[#e2445c]' : 'border-l-[#00c875]'}`}>
             <p className={`text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${capacityGap > 0 ? 'text-[#e2445c]' : 'text-[#00c875]'}`}>
               <AlertTriangle className="w-3.5 h-3.5" />Demand vs capacity
             </p>
@@ -233,7 +233,7 @@ export function HiringCalculatorPage() {
             <div key={i}>
               {i > 0 && <div className="h-px bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 mb-4" />}
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-xl bg-[#0073ea] flex items-center justify-center flex-shrink-0 text-white font-extrabold text-sm shadow-[0_2px_6px_rgba(0,115,234,0.2)]">
+                <div className="w-8 h-8 rounded-2xl bg-[#0073ea] flex items-center justify-center flex-shrink-0 text-white font-extrabold text-sm shadow-[0_2px_6px_rgba(0,115,234,0.2)]">
                   {i + 1}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -252,7 +252,7 @@ export function HiringCalculatorPage() {
         </div>
 
         {hiresNeeded > 0 && (
-          <div className="mt-4 p-3 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#fdab3d] border-y border-r border-[var(--os-border)] border-t-white/20 rounded-xl">
+          <div className="mt-4 p-3 bg-slate-900/40 backdrop-blur-2xl saturate-200 shadow-[inset_0_1px_0_var(--os-border),0_8px_32px_rgba(0,0,0,0.3)] ring-1 ring-white/10 border-l-4 border-l-[#fdab3d] border-y border-r border-[var(--os-border)] border-t-white/20 rounded-2xl">
             <p className="text-xs text-[var(--os-text-1)] font-medium">
               At current pipeline conversion rate, start hiring now — average time-to-hire is {monthsToFill} months.
               Delaying risks capacity crunch in Q3.

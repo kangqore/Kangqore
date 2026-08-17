@@ -50,7 +50,7 @@ const STATUS_COLOR: Record<string, string> = {
 function ModelCard({ model }: { model: ModelHealth }) {
   const color = STATUS_COLOR[model.status] ?? '#8b8b8b'
   return (
-    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 space-y-3">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 space-y-3">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-[12px] font-semibold text-[var(--os-text-1)]">{model.displayName}</p>
@@ -66,7 +66,7 @@ function ModelCard({ model }: { model: ModelHealth }) {
           ['Failure %',    `${model.failureRate}%`],
           ['Calls',        model.callCount],
         ].map(([label, value]) => (
-          <div key={label as string} className="rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] px-2 py-1.5">
+          <div key={label as string} className="rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] px-2 py-1.5">
             <p className="text-[12px] font-bold text-[var(--os-text-1)]">{value}</p>
             <p className="text-[9px] text-[var(--os-text-2)]">{label}</p>
           </div>
@@ -147,7 +147,7 @@ export function AIGovernancePage() {
   })
 
   if (isLoading || !data) {
-    return <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-20 rounded-xl bg-[var(--os-surface-0)] animate-pulse" />)}</div>
+    return <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-20 rounded-2xl bg-[var(--os-surface-0)] animate-pulse" />)}</div>
   }
 
   const { models, costs, prompts, agentQuality, router } = data
@@ -189,7 +189,7 @@ export function AIGovernancePage() {
           { label: 'Prompt versions',    value: prompts.reduce((s, p) => s + p.totalVersions, 0), color: undefined, icon: FileText },
           { label: 'Autonomy ratio',     value: `${Math.round(router.autonomyRatio * 100)}%`, color: router.autonomyRatio > 0.2 ? '#00c875' : undefined, icon: Zap },
         ].map(({ label, value, color, icon: Icon }) => (
-          <div key={label} className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
+          <div key={label} className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
             <div className="flex items-center gap-1.5 mb-1">
               <Icon className="w-3.5 h-3.5" style={{ color: color ?? 'var(--os-text-2)' }} />
             </div>
@@ -200,7 +200,7 @@ export function AIGovernancePage() {
       </div>
 
       {/* Distillation status */}
-      <div className="rounded-xl border border-[#7c3aed]/20 bg-[#7c3aed]/[0.03] px-4 py-3 flex items-center gap-4">
+      <div className="rounded-2xl border border-[#7c3aed]/20 bg-[#7c3aed]/[0.03] px-4 py-3 flex items-center gap-4">
         <Activity className="w-4 h-4 text-[#7c3aed] flex-shrink-0" />
         <div className="flex-1">
           <p className="text-[11px] font-semibold text-[#7c3aed]">Gen 2 Training Pipeline</p>
@@ -326,7 +326,7 @@ export function AIGovernancePage() {
             </div>
           ) : (
             agentQuality.map(aq => (
-              <div key={aq.agentType} className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 space-y-3">
+              <div key={aq.agentType} className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <p className="text-[12px] font-semibold text-[var(--os-text-1)]">{aq.agentType}</p>
                   <div className="flex items-center gap-2">

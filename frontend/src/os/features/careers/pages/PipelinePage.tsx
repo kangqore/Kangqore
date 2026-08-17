@@ -30,7 +30,7 @@ export function PipelinePage() {
           <button
             key={r.id}
             onClick={() => setSelectedRole(r.id)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
+            className={`px-3 py-1.5 rounded-2xl text-sm font-medium border transition-all ${
               r.id === selectedRoleId
                 ? 'bg-blue-600 text-white border-blue-600'
                 : 'bg-[var(--os-surface-0)] text-[var(--os-text-2)] border-[var(--os-border)] hover:border-blue-300'
@@ -63,7 +63,7 @@ export function PipelinePage() {
                 </div>
                 <div className="space-y-2">
                   {stageCandidates.map(c => (
-                    <div key={c.id} className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-3 shadow-sm">
+                    <div key={c.id} className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-3 shadow-sm">
                       <div className="flex items-center gap-2 mb-2">
                         <Avatar name={c.name} size="xs" />
                         <p className="text-sm font-medium text-[var(--os-text-1)] truncate">{c.name}</p>
@@ -87,7 +87,7 @@ export function PipelinePage() {
                     </div>
                   ))}
                   {stageCandidates.length === 0 && (
-                    <div className="border-2 border-dashed border-[var(--os-border)] rounded-xl p-4 text-center">
+                    <div className="border-2 border-dashed border-[var(--os-border)] rounded-2xl p-4 text-center">
                       <p className="text-xs text-[var(--os-text-2)]">No candidates</p>
                     </div>
                   )}

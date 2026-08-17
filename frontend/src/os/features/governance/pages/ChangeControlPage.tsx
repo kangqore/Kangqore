@@ -161,19 +161,19 @@ function CRDetailDrawer({
         <div>
           <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-3">Impact</p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl">
+            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl">
               <p className="text-[11px] text-[var(--os-text-2)] mb-0.5">Cost impact</p>
               <p className={`text-sm font-bold ${cr.costImpact != null && cr.costImpact < 0 ? 'text-green-600' : 'text-amber-600'}`}>
                 {fmtCost(cr.costImpact)}
               </p>
             </div>
-            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl">
+            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl">
               <p className="text-[11px] text-[var(--os-text-2)] mb-0.5">Timeline impact</p>
               <p className="text-sm font-bold text-[var(--os-text-1)]">{cr.timeImpact ?? '—'}</p>
             </div>
           </div>
           {cr.rejectionImpact && (
-            <div className="mt-2 p-3 bg-amber-50 border border-amber-100 rounded-xl">
+            <div className="mt-2 p-3 bg-amber-50 border border-amber-100 rounded-2xl">
               <p className="text-[11px] text-amber-600 font-semibold mb-0.5">If rejected</p>
               <p className="text-sm text-amber-700">{cr.rejectionImpact}</p>
             </div>
@@ -256,7 +256,7 @@ export function ChangeControlPage() {
         <div className="flex items-center gap-1.5 flex-wrap">
           {(['ALL','PENDING_APPROVAL','UNDER_REVIEW','APPROVED','REJECTED','IMPLEMENTED'] as const).map(s => (
             <button key={s} onClick={() => setFilter(s)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all ${
                 filter === s
                   ? 'bg-[#579bfc] text-white'
                   : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'

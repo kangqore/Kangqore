@@ -100,7 +100,7 @@ function OptionCard({
 }) {
   return (
     <div className={cn(
-      'rounded-xl border p-4 transition-all relative',
+      'rounded-2xl border p-4 transition-all relative',
       isSelected   ? 'border-[#00c875] bg-[#00c875]/5'
       : isRecommended ? 'border-[#579bfc]/50 bg-[#579bfc]/5'
       : 'border-[var(--os-border)] bg-[var(--os-surface-0)]'
@@ -163,7 +163,7 @@ function OptionCard({
         <button
           onClick={onSelect}
           className={cn(
-            'w-full mt-1 py-1.5 text-xs font-medium rounded-lg transition-all',
+            'w-full mt-1 py-1.5 text-xs font-medium rounded-2xl transition-all',
             isRecommended
               ? 'bg-[#579bfc] text-white hover:bg-[#579bfc]/90'
               : 'bg-[var(--os-card)] border border-[var(--os-border)] text-[var(--os-text-1)] hover:border-[#579bfc]/50'
@@ -202,7 +202,7 @@ function DecisionResult({ d, onRefresh }: { d: StrategicDecision; onRefresh: () 
   return (
     <div className="space-y-4">
       {/* Situation */}
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-4">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-4">
         <div className="flex items-center gap-2 mb-2">
           <BarChart3 className="w-3.5 h-3.5 text-[#579bfc]" />
           <p className="text-xs font-bold text-[var(--os-text-2)] uppercase tracking-wider">Current Situation</p>
@@ -221,8 +221,8 @@ function DecisionResult({ d, onRefresh }: { d: StrategicDecision; onRefresh: () 
       </div>
 
       {/* KIMMP Recommendation banner */}
-      <div className="rounded-xl border border-[#579bfc]/30 bg-[#579bfc]/5 p-4 flex items-start gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[#579bfc] flex items-center justify-center shrink-0">
+      <div className="rounded-2xl border border-[#579bfc]/30 bg-[#579bfc]/5 p-4 flex items-start gap-3">
+        <div className="w-8 h-8 rounded-2xl bg-[#579bfc] flex items-center justify-center shrink-0">
           <Lightbulb className="w-4 h-4 text-white" />
         </div>
         <div>
@@ -257,7 +257,7 @@ function DecisionResult({ d, onRefresh }: { d: StrategicDecision; onRefresh: () 
 
       {/* Outcome recorder */}
       {d.selected && (
-        <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-4">
+        <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] p-4">
           <p className="text-xs font-bold text-[var(--os-text-2)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
             <Target className="w-3.5 h-3.5 text-[#fdab3d]" />Outcome
           </p>
@@ -270,17 +270,17 @@ function DecisionResult({ d, onRefresh }: { d: StrategicDecision; onRefresh: () 
                 onChange={e => setOutcome(e.target.value)}
                 rows={2}
                 placeholder="What actually happened after selecting this option?"
-                className="w-full px-3 py-2 text-sm bg-[var(--os-card)] border border-[var(--os-border)] rounded-lg text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] resize-none outline-none focus:border-[#579bfc]/50"
+                className="w-full px-3 py-2 text-sm bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] resize-none outline-none focus:border-[#579bfc]/50"
               />
               <div className="flex gap-2">
                 <button
                   onClick={() => outcomeMut.mutate()}
                   disabled={!outcome.trim() || outcomeMut.isPending}
-                  className="px-3 py-1.5 text-xs rounded-lg bg-[#579bfc] text-white font-medium disabled:opacity-50"
+                  className="px-3 py-1.5 text-xs rounded-2xl bg-[#579bfc] text-white font-medium disabled:opacity-50"
                 >
                   {outcomeMut.isPending ? 'Saving…' : 'Record outcome'}
                 </button>
-                <button onClick={() => setRecordingOut(false)} className="px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)]">Cancel</button>
+                <button onClick={() => setRecordingOut(false)} className="px-3 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)]">Cancel</button>
               </div>
             </div>
           ) : (
@@ -305,7 +305,7 @@ function DecisionResult({ d, onRefresh }: { d: StrategicDecision; onRefresh: () 
             Simulation Preview
           </button>
           {showSim && (
-            <div className="mt-2 rounded-xl border border-[#fdab3d]/30 bg-[#fdab3d]/5 p-4">
+            <div className="mt-2 rounded-2xl border border-[#fdab3d]/30 bg-[#fdab3d]/5 p-4">
               <pre className="text-xs text-[var(--os-text-1)] whitespace-pre-wrap font-mono leading-relaxed overflow-auto max-h-48">
                 {JSON.stringify(d.simulation, null, 2)}
               </pre>
@@ -349,7 +349,7 @@ function HistoryItem({ d, isActive, onClick }: { d: StrategicDecision; isActive:
     <button
       onClick={onClick}
       className={cn(
-        'w-full text-left p-3 rounded-lg transition-all border text-xs',
+        'w-full text-left p-3 rounded-2xl transition-all border text-xs',
         isActive
           ? 'border-[#579bfc]/40 bg-[#579bfc]/5'
           : 'border-[var(--os-border)] hover:border-[var(--os-border)] hover:bg-[var(--os-surface-0)]'
@@ -420,7 +420,7 @@ export function DecisionPanel() {
 
       {/* Panel header */}
       <div className="px-6 py-4 border-b border-[var(--os-border)] flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+        <div className="w-8 h-8 rounded-2xl flex items-center justify-center"
           style={{ background: 'linear-gradient(135deg, #7c3aed, #2564ea)' }}>
           <Scale className="w-4 h-4 text-white" />
         </div>
@@ -431,7 +431,7 @@ export function DecisionPanel() {
         <button
           onClick={() => setShowHistory(!showHistory)}
           className={cn(
-            'ml-auto flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border transition-all',
+            'ml-auto flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl border transition-all',
             showHistory
               ? 'border-[#579bfc]/40 bg-[#579bfc]/10 text-[#579bfc]'
               : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
@@ -473,14 +473,14 @@ export function DecisionPanel() {
                 onChange={e => setQuestion(e.target.value)}
                 rows={3}
                 placeholder="Ask a strategic question… e.g. 'Should we expand into the UK market this quarter?' or 'Which of these two clients should we prioritise for renewal?'"
-                className="w-full px-4 py-3 text-sm bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] resize-none outline-none focus:border-[#579bfc]/50 transition-colors pr-12"
+                className="w-full px-4 py-3 text-sm bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] resize-none outline-none focus:border-[#579bfc]/50 transition-colors pr-12"
                 onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && question.trim() && !askMut.isPending) askMut.mutate() }}
               />
               {question.trim() && (
                 <button
                   onClick={() => askMut.mutate()}
                   disabled={askMut.isPending}
-                  className="absolute right-3 bottom-3 w-7 h-7 rounded-lg bg-[#7c3aed] text-white flex items-center justify-center hover:bg-[#7c3aed]/90 disabled:opacity-50 transition-colors"
+                  className="absolute right-3 bottom-3 w-7 h-7 rounded-2xl bg-[#7c3aed] text-white flex items-center justify-center hover:bg-[#7c3aed]/90 disabled:opacity-50 transition-colors"
                 >
                   {askMut.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
                 </button>
@@ -495,7 +495,7 @@ export function DecisionPanel() {
                   value={options}
                   onChange={e => setOptions(e.target.value)}
                   placeholder="e.g. Expand now, Wait 6 months, Partner first"
-                  className="w-full px-3 py-2 text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none focus:border-[#579bfc]/50"
+                  className="w-full px-3 py-2 text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none focus:border-[#579bfc]/50"
                 />
               </div>
               <div>
@@ -503,7 +503,7 @@ export function DecisionPanel() {
                 <select
                   value={simType}
                   onChange={e => setSimType(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg text-[var(--os-text-1)] outline-none focus:border-[#579bfc]/50"
+                  className="w-full px-3 py-2 text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl text-[var(--os-text-1)] outline-none focus:border-[#579bfc]/50"
                 >
                   {SIM_TYPES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                 </select>
@@ -515,7 +515,7 @@ export function DecisionPanel() {
               <button
                 onClick={() => askMut.mutate()}
                 disabled={!question.trim() || askMut.isPending}
-                className="flex items-center gap-2 px-4 py-2 text-xs rounded-xl font-medium bg-[#7c3aed] text-white hover:bg-[#7c3aed]/90 disabled:opacity-50 transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-xs rounded-2xl font-medium bg-[#7c3aed] text-white hover:bg-[#7c3aed]/90 disabled:opacity-50 transition-all"
               >
                 {askMut.isPending
                   ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Thinking…</>
@@ -532,10 +532,10 @@ export function DecisionPanel() {
           {/* Loading skeleton */}
           {askMut.isPending && (
             <div className="space-y-3 animate-pulse">
-              <div className="h-20 rounded-xl bg-[var(--os-surface-0)]" />
+              <div className="h-20 rounded-2xl bg-[var(--os-surface-0)]" />
               <div className="grid grid-cols-2 gap-3">
-                <div className="h-36 rounded-xl bg-[var(--os-surface-0)]" />
-                <div className="h-36 rounded-xl bg-[var(--os-surface-0)]" />
+                <div className="h-36 rounded-2xl bg-[var(--os-surface-0)]" />
+                <div className="h-36 rounded-2xl bg-[var(--os-surface-0)]" />
               </div>
             </div>
           )}
@@ -564,7 +564,7 @@ export function DecisionPanel() {
 
           {/* Empty state */}
           {!activeDecision && !askMut.isPending && (
-            <div className="rounded-xl border border-dashed border-[var(--os-border)] p-10 text-center">
+            <div className="rounded-2xl border border-dashed border-[var(--os-border)] p-10 text-center">
               <Scale className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-3" />
               <p className="text-sm font-medium text-[var(--os-text-1)] mb-1">No active analysis</p>
               <p className="text-xs text-[var(--os-text-2)]">

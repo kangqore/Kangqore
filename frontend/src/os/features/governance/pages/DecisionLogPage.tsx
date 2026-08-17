@@ -101,7 +101,7 @@ function DecisionDrawer({
         {decision.rationale && (
           <div>
             <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-2">Rationale</p>
-            <div className="p-3 bg-green-50 border border-green-100 rounded-xl">
+            <div className="p-3 bg-green-50 border border-green-100 rounded-2xl">
               <p className="text-sm text-[var(--os-text-1)] leading-relaxed">{decision.rationale}</p>
             </div>
           </div>
@@ -111,7 +111,7 @@ function DecisionDrawer({
         {decision.tradeoffs && (
           <div>
             <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-2">Trade-offs</p>
-            <div className="p-3 bg-amber-50 border border-amber-100 rounded-xl">
+            <div className="p-3 bg-amber-50 border border-amber-100 rounded-2xl">
               <p className="text-sm text-[var(--os-text-1)] leading-relaxed">{decision.tradeoffs}</p>
             </div>
           </div>
@@ -123,19 +123,19 @@ function DecisionDrawer({
         <div>
           <p className="text-xs font-semibold text-[var(--os-text-2)] uppercase tracking-wide mb-3">Impact</p>
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl text-center">
+            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl text-center">
               <TrendingDown className="w-4 h-4 text-[var(--os-text-2)] mx-auto mb-1" />
               <p className="text-[11px] text-[var(--os-text-2)] mb-0.5">Time</p>
               <p className="text-sm font-bold text-[var(--os-text-1)]">{decision.impactTime ?? '—'}</p>
             </div>
-            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl text-center">
+            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl text-center">
               <DollarSign className="w-4 h-4 text-[var(--os-text-2)] mx-auto mb-1" />
               <p className="text-[11px] text-[var(--os-text-2)] mb-0.5">Cost</p>
               <p className={`text-sm font-bold ${decision.impactCost != null && decision.impactCost < 0 ? 'text-green-600' : 'text-amber-600'}`}>
                 {fmtCost(decision.impactCost)}
               </p>
             </div>
-            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-xl text-center">
+            <div className="p-3 bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl text-center">
               <TrendingUp className="w-4 h-4 text-[var(--os-text-2)] mx-auto mb-1" />
               <p className="text-[11px] text-[var(--os-text-2)] mb-0.5">Risk</p>
               <p className="text-sm font-bold text-[var(--os-text-1)]">{decision.impactRisk ?? '—'}</p>
@@ -231,7 +231,7 @@ function AddDecisionDrawer({ onAdd, onClose }: { onAdd: (d: Partial<Decision>) =
           <div>
             <label className="block text-xs font-semibold text-[var(--os-text-2)] mb-1.5">Priority</label>
             <select value={form.priority} onChange={e => set('priority', e.target.value as Priority)}
-              className="w-full border border-[var(--os-border)] rounded-xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
+              className="w-full border border-[var(--os-border)] rounded-2xl px-3 py-2 text-sm text-[var(--os-text-1)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400">
               {(['LOW','MEDIUM','HIGH','CRITICAL'] as Priority[]).map(p => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
@@ -334,7 +334,7 @@ export function DecisionLogPage() {
         <div className="flex items-center gap-1.5">
           {(['ALL','PENDING_APPROVAL','APPROVED','REJECTED','DEFERRED'] as const).map(s => (
             <button key={s} onClick={() => setFilter(s)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all ${
                 filter === s
                   ? 'bg-[#579bfc] text-white'
                   : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'

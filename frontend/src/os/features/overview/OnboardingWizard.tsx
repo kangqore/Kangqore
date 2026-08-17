@@ -198,7 +198,7 @@ export function OnboardingWizard({ onComplete }: Props) {
             {/* Skip button */}
             <button
               onClick={handleSkip}
-              className="absolute top-4 right-4 p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+              className="absolute top-4 right-4 p-1.5 rounded-2xl text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
               title="Skip onboarding"
             >
               <X className="w-4 h-4" />
@@ -254,7 +254,7 @@ export function OnboardingWizard({ onComplete }: Props) {
                     placeholder="e.g. 72.4"
                     value={ois}
                     onChange={e => setOis(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500/30"
+                    className="w-full px-4 py-2.5 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500/30"
                   />
                   <p className="text-[11px] text-gray-400 mt-1.5">Leave blank to skip — you can set this later in KIMMP → Gate 8.</p>
                 </div>
@@ -268,7 +268,7 @@ export function OnboardingWizard({ onComplete }: Props) {
                 <button
                   onClick={handleNext}
                   disabled={saving}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-white text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
                   style={{ backgroundColor: stepDef.color }}
                 >
                   {step === STEPS.length ? (

@@ -45,7 +45,7 @@ function CallDetailModal({ call, onClose }: { call: LlmCallLog; onClose: () => v
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
+      <div className="w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-[var(--os-text-1)]">{call.model} · {call.provider}</p>
           <button onClick={onClose}><X size={14} className="text-[var(--os-text-2)]" /></button>
@@ -61,7 +61,7 @@ function CallDetailModal({ call, onClose }: { call: LlmCallLog; onClose: () => v
           <div className="text-[10px] text-amber-400">PII detected: {call.piiPatterns.join(', ')}</div>
         )}
         {regression?.flagged && (
-          <div className="flex items-center gap-1.5 text-[10px] text-red-400 bg-red-500/10 border border-red-500/30 rounded-md px-2.5 py-1.5">
+          <div className="flex items-center gap-1.5 text-[10px] text-red-400 bg-red-500/10 border border-red-500/30 rounded-2xl px-2.5 py-1.5">
             <Warning size={12} weight="fill" />
             <span>This prompt version was active during a Gate 3 drift alert ({regression.driftDelta.toFixed(1)}pt drop, score {regression.totalScore.toFixed(0)}, {new Date(regression.at).toLocaleDateString()}).</span>
           </div>
@@ -71,7 +71,7 @@ function CallDetailModal({ call, onClose }: { call: LlmCallLog; onClose: () => v
             call (P6), its eval quality (P5), and the tools it invoked (P3),
             all in the same view as the raw prompt/response. */}
         {detail?.agent && (
-          <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+          <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)]">
             <div className="flex items-center gap-1.5 min-w-0">
               <Robot size={12} className="text-[var(--os-text-2)] flex-shrink-0" />
               <span className="text-[11px] font-bold text-[var(--os-text-1)] truncate">{detail.agent.name}</span>
@@ -85,7 +85,7 @@ function CallDetailModal({ call, onClose }: { call: LlmCallLog; onClose: () => v
         {detail && detail.toolExecutions.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {detail.toolExecutions.map(ex => (
-              <span key={ex.id} className="flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-semibold bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+              <span key={ex.id} className="flex items-center gap-1.5 px-2 py-1 rounded-2xl text-[10px] font-semibold bg-[var(--os-surface-0)] border border-[var(--os-border)]">
                 <Wrench size={10} className="text-[var(--os-text-2)]" />
                 <span className="text-[var(--os-text-1)]">{ex.action?.displayName ?? ex.action?.name ?? 'Unknown action'}</span>
                 <span style={{ color: statusColor(ex.status) }}>{ex.status}</span>
@@ -96,11 +96,11 @@ function CallDetailModal({ call, onClose }: { call: LlmCallLog; onClose: () => v
 
         <div>
           <p className="text-[9px] uppercase tracking-wide text-[var(--os-text-2)] mb-1">Prompt</p>
-          <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-3 whitespace-pre-wrap text-[var(--os-text-1)]">{call.prompt}</pre>
+          <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-3 whitespace-pre-wrap text-[var(--os-text-1)]">{call.prompt}</pre>
         </div>
         <div>
           <p className="text-[9px] uppercase tracking-wide text-[var(--os-text-2)] mb-1">Response</p>
-          <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-lg p-3 whitespace-pre-wrap text-[var(--os-text-1)]">{call.response || (call.errorMessage ?? '(empty)')}</pre>
+          <pre className="text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-3 whitespace-pre-wrap text-[var(--os-text-1)]">{call.response || (call.errorMessage ?? '(empty)')}</pre>
         </div>
       </div>
     </div>
@@ -174,13 +174,13 @@ function CallLogTab() {
       <div className="flex items-center gap-2">
         {['KIMMP', 'AEGIS', 'HUMAN'].map(a => (
           <button key={a} onClick={() => setFilters(f => ({ ...f, actorType: f.actorType === a ? undefined : a }))}
-            className={`px-2.5 py-1 rounded-md text-[10px] font-semibold border ${filters.actorType === a ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+            className={`px-2.5 py-1 rounded-2xl text-[10px] font-semibold border ${filters.actorType === a ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
             {a}
           </button>
         ))}
         {['SUCCESS', 'ERROR', 'BLOCKED'].map(s => (
           <button key={s} onClick={() => setFilters(f => ({ ...f, status: f.status === s ? undefined : s }))}
-            className={`px-2.5 py-1 rounded-md text-[10px] font-semibold border ${filters.status === s ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+            className={`px-2.5 py-1 rounded-2xl text-[10px] font-semibold border ${filters.status === s ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
             {s}
           </button>
         ))}
@@ -380,7 +380,7 @@ function PiiIncidentsTab() {
         <div className="flex items-center gap-2 flex-wrap">
           {(configs ?? []).map(c => (
             <button key={c.id} onClick={() => activate.mutate(c.id)}
-              className={`px-2.5 py-1 rounded-md text-[10px] font-semibold border ${c.active ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+              className={`px-2.5 py-1 rounded-2xl text-[10px] font-semibold border ${c.active ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
               {c.name} · {c.mode}
             </button>
           ))}
@@ -430,23 +430,23 @@ function BudgetsTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-xs text-[var(--os-text-2)]">Monthly token budgets, computed live from the call log — no separate counter to drift.</p>
-        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold">
+        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold">
           <Plus size={12} /> New budget
         </button>
       </div>
 
       {showForm && (
         <div className="os-card p-4 space-y-2">
-          <input value={userId} onChange={e => setUserId(e.target.value)} placeholder="User ID" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
-          <input value={limit} onChange={e => setLimit(e.target.value)} type="number" placeholder="Monthly token limit" className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={userId} onChange={e => setUserId(e.target.value)} placeholder="User ID" className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <input value={limit} onChange={e => setLimit(e.target.value)} type="number" placeholder="Monthly token limit" className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
           <label className="flex items-center gap-1.5 text-[11px] text-[var(--os-text-2)]">
             <input type="checkbox" checked={hardStop} onChange={e => setHardStop(e.target.checked)} /> Hard stop (429 over limit)
           </label>
           <div className="flex items-center gap-2">
-            <button onClick={() => create.mutate()} disabled={create.isPending || !userId.trim()} className="px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+            <button onClick={() => create.mutate()} disabled={create.isPending || !userId.trim()} className="px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
               {create.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Create'}
             </button>
-            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
+            <button onClick={() => setShowForm(false)} className="px-3 py-1.5 rounded-2xl text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
           </div>
         </div>
       )}
@@ -504,7 +504,7 @@ function ToolCallsTab() {
           </div>
           <div className="flex flex-wrap gap-1.5">
             {executions.map(ex => (
-              <span key={ex.id} className="flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-semibold bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+              <span key={ex.id} className="flex items-center gap-1.5 px-2 py-1 rounded-2xl text-[10px] font-semibold bg-[var(--os-surface-0)] border border-[var(--os-border)]">
                 <Wrench size={10} className="text-[var(--os-text-2)]" />
                 <span className="text-[var(--os-text-1)]">{ex.action?.displayName ?? ex.action?.name ?? 'Unknown action'}</span>
                 {ex.object && <span className="text-[var(--os-text-2)]">on {ex.object.type.displayName}</span>}
@@ -547,7 +547,7 @@ function IndexHealthTab() {
       <div className="flex items-center justify-between">
         <p className="text-xs text-[var(--os-text-2)]">pgvector HNSW index over the two embedding stores — semantic search that used to scan every row now queries a real index.</p>
         <button onClick={() => backfill.mutate()} disabled={backfill.isPending}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
           {backfill.isPending ? <Loader2 size={12} className="animate-spin" /> : 'Run backfill'}
         </button>
       </div>
@@ -602,15 +602,15 @@ function IndexHealthTab() {
         <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--os-text-2)]">Try unified search</p>
         <div className="flex items-center gap-2">
           <input value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && query.trim() && search.mutate()}
-            placeholder="Search both knowledge stores…" className="flex-1 px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
-          <button onClick={() => search.mutate()} disabled={search.isPending || !query.trim()} className="p-2 rounded-md bg-[var(--os-accent)] text-white disabled:opacity-50">
+            placeholder="Search both knowledge stores…" className="flex-1 px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          <button onClick={() => search.mutate()} disabled={search.isPending || !query.trim()} className="p-2 rounded-2xl bg-[var(--os-accent)] text-white disabled:opacity-50">
             {search.isPending ? <Loader2 size={13} className="animate-spin" /> : <MagnifyingGlass size={13} />}
           </button>
         </div>
         {search.data && (
           <div className="space-y-1.5">
             {search.data.length === 0 ? <p className="text-[11px] text-[var(--os-text-2)]">No results</p> : search.data.map(r => (
-              <div key={r.id} className="p-2.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+              <div key={r.id} className="p-2.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)]">
                 <div className="flex items-center justify-between">
                   <p className="text-[11px] font-bold text-[var(--os-text-1)]">{r.title}</p>
                   <span className="text-[9px] text-[var(--os-text-2)] tabular-nums">{r.score.toFixed(3)}</span>

@@ -108,7 +108,7 @@ export default function AgentPrimaryUxView() {
           <button
             onClick={() => handleRunIntent()}
             disabled={isExecuting}
-            className="absolute right-2.5 top-2.5 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 flex items-center gap-2 transition-all disabled:opacity-50"
+            className="absolute right-2.5 top-2.5 px-6 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 flex items-center gap-2 transition-all disabled:opacity-50"
           >
             {isExecuting ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             <span>Execute Intent</span>
@@ -127,7 +127,7 @@ export default function AgentPrimaryUxView() {
                   setIntentInput(sample.text)
                   handleRunIntent(sample.text)
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 transition-all"
               >
                 <Icon className="w-3.5 h-3.5 text-blue-400" />
                 <span>"{sample.text}"</span>
@@ -158,7 +158,7 @@ export default function AgentPrimaryUxView() {
               {/* Stage Stepper List */}
               <div className="space-y-4">
                 {activeExecution.stages.map((step, idx) => (
-                  <div key={idx} className="flex items-start gap-4 p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                  <div key={idx} className="flex items-start gap-4 p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80">
                     <div className="w-7 h-7 rounded-full bg-blue-500/20 border border-blue-500/40 text-blue-400 font-bold text-xs flex items-center justify-center shrink-0">
                       {idx + 1}
                     </div>
@@ -188,7 +188,7 @@ export default function AgentPrimaryUxView() {
                 {activeExecution.simulations.map((sim, idx) => (
                   <div 
                     key={idx} 
-                    className={`p-3 rounded-xl border text-xs space-y-1 ${
+                    className={`p-3 rounded-2xl border text-xs space-y-1 ${
                       sim.recommended 
                         ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' 
                         : 'bg-slate-950 border-slate-800 text-slate-400'
@@ -213,7 +213,7 @@ export default function AgentPrimaryUxView() {
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 AEGIS Security Governance Token
               </h4>
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">
+              <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">
                 <div className="text-slate-500">Status: <span className="text-emerald-400">APPROVED</span></div>
                 <div className="text-slate-500 break-all">Token: <span className="text-blue-400">{activeExecution.approvalToken}</span></div>
               </div>
@@ -226,11 +226,11 @@ export default function AgentPrimaryUxView() {
                 Governed Execution Telemetry
               </h4>
               <div className="grid grid-cols-2 gap-2 text-center text-xs">
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
                   <div className="text-xl font-extrabold text-blue-400">{activeExecution.executionOutcome.resourcesReassigned}</div>
                   <div className="text-[10px] text-slate-400">FTEs Reassigned</div>
                 </div>
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
                   <div className="text-xl font-extrabold text-emerald-400">{activeExecution.executionOutcome.schedulesUpdated}</div>
                   <div className="text-[10px] text-slate-400">Schedules Updated</div>
                 </div>

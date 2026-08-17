@@ -135,7 +135,7 @@ export function AssignmentsPage() {
                           {alloc ? (
                             <Tooltip content={`${alloc.projectName} — ${alloc.hoursPerWeek}h/wk (${alloc.allocationPct}%)`} side="top">
                               <div
-                                className="inline-flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-xl cursor-default"
+                                className="inline-flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-2xl cursor-default"
                                 style={{
                                   background: p.color + '18',
                                   border: `1px solid ${p.color}40`,

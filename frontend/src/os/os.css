@@ -72,33 +72,36 @@
 :root {
 
   /* ── Surfaces (depth stack: 0 = deepest, 3 = most elevated) ── */
-  --os-bg:        #060b18;
-  --os-surface-0: #0d1117;
-  --os-surface-1: #151C2F;
-  --os-surface-2: #1a2340;
-  --os-surface-3: #1f2a4a;
-  --os-glass:     rgba(21, 28, 47, 0.72);
+  --os-bg:        #F4F4F5;
+  --os-surface-0: #FFFFFF;
+  --os-surface-1: #F9FAFB;
+  --os-surface-2: #F3F4F6;
+  --os-surface-3: #E5E7EB;
+  --os-glass:     rgba(255, 255, 255, 0.85);
   --os-glass-blur: blur(20px) saturate(180%);
 
-  /* ── Borders ── */
-  --os-border:         #2E2854;
-  --os-border-subtle:  rgba(46, 40, 84, 0.45);
-  --os-border-strong:  #3d3870;
+  /* ── Card Backgrounds (Globally Solid) ── */
+  --os-card:      #FFFFFF;
+
+  /* ── Borders (Subtle, Light) ── */
+  --os-border:         #E5E7EB;
+  --os-border-subtle:  #F3F4F6;
+  --os-border-strong:  #D1D5DB;
 
   /* ── Brand ── */
   --os-blue:     #2564ea;
   --os-cyan:     #4ab6d4;
   --os-blue-dim: rgba(37,  100, 234, 0.14);
   --os-cyan-dim: rgba(74,  182, 212, 0.12);
-  --os-blue-glow: rgba(37, 100, 234, 0.35);
-  --os-cyan-glow: rgba(74, 182, 212, 0.25);
+  --os-blue-glow: rgba(37, 100, 234, 0.25);
+  --os-cyan-glow: rgba(74, 182, 212, 0.15);
 
   /* ── Text (1 = loudest, 5 = quietest) ── */
-  --os-text-1: #ffffff;
-  --os-text-2: #e2e8f0;
-  --os-text-3: #94a3b8;
-  --os-text-4: #64748b;
-  --os-text-5: #475569;
+  --os-text-1: #111827;
+  --os-text-2: #4B5563;
+  --os-text-3: #6B7280;
+  --os-text-4: #9CA3AF;
+  --os-text-5: #D1D5DB;
 
   /* ── Status ── */
   --os-success:     #059669;
@@ -177,9 +180,9 @@
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    var(--os-surface-1) 25%,
-    var(--os-surface-2) 50%,
-    var(--os-surface-1) 75%
+    var(--os-surface-2) 25%,
+    var(--os-surface-3) 50%,
+    var(--os-surface-2) 75%
   );
   background-size: 800px 100%;
   animation: shimmer 1.4s ease-in-out infinite;
@@ -189,25 +192,25 @@
 /* This class MUST be defined here (not just as a CSS variable).                */
 /* Every panel in DashboardHome uses className="os-card p-5 rounded-2xl".       */
 .os-card {
-  background:  var(--os-card, #151C2F);
-  border:      1px solid var(--os-border, #2E2854);
+  background:  var(--os-card, #FFFFFF);
+  border:      1px solid var(--os-border, #E5E7EB);
   box-shadow:  var(--os-shadow-card, var(--os-shadow-sm));
   transition:  box-shadow 180ms ease, border-color 180ms ease;
 }
 
 .os-card:hover {
-  border-color: var(--os-border-strong, #3d3870);
+  border-color: var(--os-border-strong, #D1D5DB);
 }
 
 .os-glass-card {
-  background: rgba(21, 28, 47, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(46, 40, 84, 0.45);
+  border: 1px solid var(--os-border-subtle);
 }
 
 .os-glass-strong {
-  background: rgba(21, 28, 47, 0.90);
+  background: rgba(255, 255, 255, 0.90);
   backdrop-filter: blur(32px) saturate(200%);
   -webkit-backdrop-filter: blur(32px) saturate(200%);
   border: 1px solid var(--os-border);
@@ -245,23 +248,20 @@
 
 /* Admin Bento Theme Overrides */
 .admin-bento-theme {
-  --os-card: rgba(255, 255, 255, 0.7);
-  --os-border: rgba(255, 255, 255, 0.8);
+  --os-card: #FFFFFF;
+  --os-border: #E5E7EB;
   --os-shadow-card: 0 12px 40px rgba(0, 0, 0, 0.04);
   --os-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.02);
   --os-text-1: #111827;
-  --os-text-2: #4b5563;
-  --os-text-3: #9ca3af;
-  --os-radius-xl: 32px;
-  --page-bg: transparent !important;
+  --os-text-2: #4B5563;
+  --os-text-3: #6B7280;
+  --page-bg: #F4F4F5 !important;
 }
 
 .admin-bento-theme .os-card {
   background: var(--os-card);
   border: 1px solid var(--os-border);
   box-shadow: var(--os-shadow-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border-radius: var(--os-radius-xl);
 }
 

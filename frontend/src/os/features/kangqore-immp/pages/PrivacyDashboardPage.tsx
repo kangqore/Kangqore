@@ -68,12 +68,12 @@ export function PrivacyDashboardPage() {
         </div>
         <div className="flex gap-2">
           <button onClick={() => setShowDPA(true)}
-            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg"
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-2xl"
             style={{ background: `${PURP}18`, color: PURP, border: `1px solid ${PURP}30` }}>
             <FileText className="w-3.5 h-3.5" /> Generate DPA
           </button>
           <button onClick={() => setShowForm(true)}
-            className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg"
+            className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-2xl"
             style={{ background: BLUE, color: '#fff' }}>
             <Plus className="w-3.5 h-3.5" /> New Request
           </button>
@@ -88,7 +88,7 @@ export function PrivacyDashboardPage() {
           { l: 'Overdue',         v: overdue,          color: RED  },
           { l: 'Completed',       v: requests.filter(r => r.status === 'COMPLETE').length, color: GRN },
         ].map(s => (
-          <div key={s.l} className="rounded-xl p-4 text-center" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+          <div key={s.l} className="rounded-2xl p-4 text-center" style={{ background: CARD, border: `1px solid ${BDR}` }}>
             <p className="text-2xl font-black" style={{ color: s.color }}>{s.v}</p>
             <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: T2 }}>{s.l}</p>
           </div>
@@ -98,7 +98,7 @@ export function PrivacyDashboardPage() {
       {/* Rights types banner */}
       <div className="grid grid-cols-3 gap-3">
         {['ACCESS','ERASURE','PORTABILITY'].map(type => (
-          <div key={type} className="rounded-xl p-4 flex items-center gap-3"
+          <div key={type} className="rounded-2xl p-4 flex items-center gap-3"
             style={{ background: `${TYPE_COLOR[type]}0c`, border: `1px solid ${TYPE_COLOR[type]}30` }}>
             <span className="text-2xl">{TYPE_ICON[type]}</span>
             <div>
@@ -114,7 +114,7 @@ export function PrivacyDashboardPage() {
       </div>
 
       {/* Requests table */}
-      <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+      <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
         <div className="px-5 py-3 flex items-center gap-2" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
           <Lock className="w-4 h-4" style={{ color: T2 }} />
           <p className="text-sm font-semibold" style={{ color: T1 }}>Active Data Requests</p>
@@ -148,7 +148,7 @@ export function PrivacyDashboardPage() {
                 {r.status === 'PENDING' && (
                   <button onClick={() => processMut.mutate(r.id)}
                     disabled={processMut.isPending}
-                    className="text-xs font-semibold px-2 py-1 rounded-lg"
+                    className="text-xs font-semibold px-2 py-1 rounded-2xl"
                     style={{ background: `${BLUE}18`, color: BLUE }}>
                     {processMut.isPending ? '…' : 'Process'}
                   </button>
@@ -161,7 +161,7 @@ export function PrivacyDashboardPage() {
       </div>
 
       {/* Retention policies */}
-      <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+      <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
         <div className="px-5 py-3" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
           <p className="text-sm font-semibold" style={{ color: T1 }}>Data Retention Policies</p>
         </div>
@@ -173,7 +173,7 @@ export function PrivacyDashboardPage() {
                 <p className="text-xs font-semibold" style={{ color: T1 }}>{p.dataType}</p>
                 <p className="text-[10px] mt-0.5" style={{ color: T2 }}>{p.basis}</p>
               </div>
-              <span className="text-xs font-bold px-2 py-1 rounded-lg font-variant-numeric"
+              <span className="text-xs font-bold px-2 py-1 rounded-2xl font-variant-numeric"
                 style={{ background: `${BLUE}12`, color: BLUE }}>
                 {Math.round(p.retentionDays / 365)}yr
               </span>
@@ -190,7 +190,7 @@ export function PrivacyDashboardPage() {
             <div>
               <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Request Type</label>
               <select value={form.requestType} onChange={e => setForm(p => ({ ...p, requestType: e.target.value }))}
-                className="w-full text-sm px-3 py-2 rounded-lg"
+                className="w-full text-sm px-3 py-2 rounded-2xl"
                 style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}>
                 <option value="ACCESS">Access — Subject Access Request</option>
                 <option value="ERASURE">Erasure — Right to be Forgotten</option>
@@ -200,28 +200,28 @@ export function PrivacyDashboardPage() {
             <div>
               <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Requested By</label>
               <input type="text" placeholder="Name or email of data subject"
-                className="w-full text-sm px-3 py-2 rounded-lg"
+                className="w-full text-sm px-3 py-2 rounded-2xl"
                 style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}
                 value={form.requestedBy} onChange={e => setForm(p => ({ ...p, requestedBy: e.target.value }))} />
             </div>
             <div>
               <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>Tenant ID (optional)</label>
               <input type="text" placeholder="TenantOrganisation.id"
-                className="w-full text-sm px-3 py-2 rounded-lg"
+                className="w-full text-sm px-3 py-2 rounded-2xl"
                 style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}
                 value={form.tenantId} onChange={e => setForm(p => ({ ...p, tenantId: e.target.value }))} />
             </div>
-            <div className="rounded-xl p-3" style={{ background: `${AMB}12`, border: `1px solid ${AMB}30` }}>
+            <div className="rounded-2xl p-3" style={{ background: `${AMB}12`, border: `1px solid ${AMB}30` }}>
               <p className="text-xs" style={{ color: T2 }}>
                 <Clock className="w-3 h-3 inline mr-1" style={{ color: AMB }} />
                 30-day statutory deadline will be automatically set. Process via the ⚡ Process button once created.
               </p>
             </div>
             <div className="flex gap-2 pt-1">
-              <button onClick={() => setShowForm(false)} className="flex-1 text-sm py-2 rounded-lg" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
+              <button onClick={() => setShowForm(false)} className="flex-1 text-sm py-2 rounded-2xl" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
               <button onClick={() => createMut.mutate({ requestType: form.requestType, requestedBy: form.requestedBy || undefined, tenantId: form.tenantId || undefined })}
                 disabled={createMut.isPending}
-                className="flex-1 text-sm font-semibold py-2 rounded-lg" style={{ background: BLUE, color: '#fff' }}>
+                className="flex-1 text-sm font-semibold py-2 rounded-2xl" style={{ background: BLUE, color: '#fff' }}>
                 {createMut.isPending ? 'Creating…' : 'Create Request'}
               </button>
             </div>
@@ -245,16 +245,16 @@ export function PrivacyDashboardPage() {
               <div key={f.key}>
                 <label className="text-xs font-semibold mb-1 block" style={{ color: T2 }}>{f.label}</label>
                 <input type="text" placeholder={f.placeholder}
-                  className="w-full text-sm px-3 py-2 rounded-lg"
+                  className="w-full text-sm px-3 py-2 rounded-2xl"
                   style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}
                   value={(dpaForm as any)[f.key]}
                   onChange={e => setDpaForm(p => ({ ...p, [f.key]: e.target.value }))} />
               </div>
             ))}
             <div className="flex gap-2 pt-1">
-              <button onClick={() => setShowDPA(false)} className="flex-1 text-sm py-2 rounded-lg" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
+              <button onClick={() => setShowDPA(false)} className="flex-1 text-sm py-2 rounded-2xl" style={{ background: `${BDR}50`, color: T2 }}>Cancel</button>
               <button onClick={downloadDPA}
-                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold py-2 rounded-lg" style={{ background: PURP, color: '#fff' }}>
+                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold py-2 rounded-2xl" style={{ background: PURP, color: '#fff' }}>
                 <Download className="w-3.5 h-3.5" /> Download DPA
               </button>
             </div>

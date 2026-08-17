@@ -96,7 +96,7 @@ export function MessageInput({ channelId, placeholder = 'Message…', onSent }: 
       {attachments.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-2">
           {attachments.map((att, i) => (
-            <div key={i} className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs font-bold text-[var(--os-text-2)] shadow-sm">
+            <div key={i} className="flex items-center gap-1.5 px-2 py-1 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs font-bold text-[var(--os-text-2)] shadow-sm">
               📎 {att.name}
               <button onClick={() => setAttachments((p) => p.filter((_, j) => j !== i))} className="text-[var(--os-text-3)] hover:text-rose-500">×</button>
             </div>

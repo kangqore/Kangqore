@@ -101,13 +101,13 @@ export function VisitorPipeline() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search pages, UTM, eQORE…"
-            className="h-8 rounded-lg border px-3 text-xs bg-transparent outline-none"
+            className="h-8 rounded-2xl border px-3 text-xs bg-transparent outline-none"
             style={{ borderColor: 'var(--os-border)', color: 'var(--os-text-1)' }}
           />
           <select
             value={country}
             onChange={e => setCountry(e.target.value)}
-            className="h-8 rounded-lg border px-2 text-xs bg-transparent outline-none"
+            className="h-8 rounded-2xl border px-2 text-xs bg-transparent outline-none"
             style={{ borderColor: 'var(--os-border)', color: 'var(--os-text-1)' }}
           >
             <option value="">All countries</option>
@@ -120,11 +120,11 @@ export function VisitorPipeline() {
       {isLoading ? (
         <div className="flex gap-4">
           {COLUMNS.map(col => (
-            <div key={col.id} className="flex-1 min-w-[200px] rounded-xl p-3 animate-pulse"
+            <div key={col.id} className="flex-1 min-w-[200px] rounded-2xl p-3 animate-pulse"
               style={{ background: col.bg, border: `1px solid ${col.color}22` }}>
               <div className="h-4 w-24 rounded mb-3" style={{ background: `${col.color}20` }} />
               {[1, 2, 3].map(i => (
-                <div key={i} className="rounded-lg p-3 mb-2" style={{ background: 'var(--os-surface-0)' }}>
+                <div key={i} className="rounded-2xl p-3 mb-2" style={{ background: 'var(--os-surface-0)' }}>
                   <div className="h-3 w-3/4 rounded mb-2" style={{ background: 'var(--os-border)' }} />
                   <div className="h-2 w-1/2 rounded" style={{ background: 'var(--os-border)' }} />
                 </div>
@@ -138,7 +138,7 @@ export function VisitorPipeline() {
             {COLUMNS.map(col => {
               const items = bucketed[col.id]
               return (
-                <div key={col.id} className="flex-1 min-w-[200px] rounded-xl p-3"
+                <div key={col.id} className="flex-1 min-w-[200px] rounded-2xl p-3"
                   style={{ background: col.bg, border: `1px solid ${col.color}22` }}>
 
                   {/* Column header */}
@@ -160,7 +160,7 @@ export function VisitorPipeline() {
                       <button
                         key={v.id}
                         onClick={() => navigate(`/kangqore-view/admin/visitors/${v.id}`)}
-                        className="text-left rounded-lg p-3 transition-all hover:shadow-sm w-full"
+                        className="text-left rounded-2xl p-3 transition-all hover:shadow-sm w-full"
                         style={{
                           background:   'var(--os-card, var(--os-surface-0))',
                           border:       '1px solid var(--os-border)',
@@ -229,7 +229,7 @@ export function VisitorPipeline() {
                     ))}
 
                     {items.length === 0 && (
-                      <div className="rounded-lg p-4 text-center"
+                      <div className="rounded-2xl p-4 text-center"
                         style={{ border: `2px dashed ${col.color}30` }}>
                         <p className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>No visitors</p>
                       </div>

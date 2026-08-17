@@ -11,6 +11,7 @@ import {
   TrendUpIcon, GlobeIcon, ChatCircleDotsIcon,
 } from '@phosphor-icons/react'
 import { useRelayStore } from '@features/relay/store'
+import { Surface } from '@design-system/primitives/Surface'
 import { Tooltip } from '@design-system/components/Tooltip'
 import { usePagePresence } from '@hooks/usePagePresence'
 import { PagePresenceBubbles } from '../PagePresenceBubbles'
@@ -225,35 +226,18 @@ export function Topbar({ config }: { config?: any }) {
   return (
     <>
     <header
-      className="flex-shrink-0 h-[60px] flex items-center justify-between w-full px-6 sticky top-0"
-      style={{
-        zIndex: 40,
-        background: 'var(--os-topbar-bg, var(--os-card))',
-        borderBottom: '1px solid var(--os-topbar-border, var(--os-border))',
-      }}
+      className="flex-shrink-0 h-[60px] flex items-center justify-between w-full px-6 sticky top-0 bg-[#323949] border-b border-black/10"
+      style={{ zIndex: 40 }}
     >
       {/* LEFT AREA: "Kangqore view" logo */}
-      <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 select-none group">
-        <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-transform duration-300 group-hover:scale-105 flex items-center justify-center bg-gradient-to-tr from-[#2564ea] to-[#0ea5e9]">
-          <img
-            src="/favicon.jpg"
-            alt="Kangqore"
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
-          />
-          <Brain className="w-4 h-4 text-white absolute" style={{ zIndex: -1 }} />
-        </div>
+      {/* LEFT AREA: Title */}
+      <div className="flex items-center gap-2.5 flex-shrink-0 select-none group">
         <div className="flex flex-col">
-          <span className="text-[14px] font-black tracking-tight leading-none text-[var(--os-text-1)]">
-            Kangqore
-          </span>
-          <span className="text-[10px] font-semibold text-[#2564ea] tracking-wider uppercase leading-none mt-0.5">
-            View
+          <span className="text-[13px] font-semibold tracking-tight leading-none text-white">
+            Kangqore View
           </span>
         </div>
-      </Link>
+      </div>
 
       {/* CENTER AREA: Switcher & Breadcrumbs + Search capsule */}
       <div className="flex-1 flex items-center justify-center gap-4 max-w-[580px] mx-4 hidden md:flex min-w-0">
@@ -262,12 +246,7 @@ export function Topbar({ config }: { config?: any }) {
           <div className="relative" ref={switcherRef}>
             <button
               onClick={() => setSwitcherOpen(o => !o)}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all"
-              style={{
-                background: 'rgba(37, 100, 234, 0.08)',
-                color: '#2564ea',
-                border: '1px solid rgba(37, 100, 234, 0.15)',
-              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-os-md text-[12px] font-medium transition-colors bg-white/5 hover:bg-white/10 text-white border border-white/10"
             >
               {portalLabel}
               <ChevronDown className="w-3 h-3" />
@@ -361,25 +340,19 @@ export function Topbar({ config }: { config?: any }) {
             )}
           </div>
 
-          <ChevronRight className="w-3 h-3 text-[var(--os-text-3)] flex-shrink-0" />
-          <span className="text-[12px] font-semibold text-[var(--os-text-1)] truncate">{currentModule?.label ?? 'Overview'}</span>
+          <ChevronRight className="w-3 h-3 text-white/50 flex-shrink-0" />
+          <span className="text-[12px] font-semibold text-white truncate">{currentModule?.label ?? 'Overview'}</span>
         </div>
 
         {/* Search capsule */}
         <button
           onClick={() => openSearch(true)}
-          className="flex-1 h-9 flex items-center gap-2.5 px-4 text-[12px] rounded-lg transition-colors min-w-0"
-          style={{
-            background: 'var(--os-surface-0)',
-            border: '1px solid var(--os-border)',
-            color: 'var(--os-text-2)',
-          }}
+          className="flex-1 h-8 flex items-center gap-2.5 px-3 text-[12px] rounded-os-md transition-colors min-w-0 bg-white/5 hover:bg-white/10 border border-white/10 shadow-sm text-white/70"
         >
-          <Search className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--os-text-3)' }} />
-          <span className="flex-1 text-left truncate" style={{ color: 'var(--os-text-2)' }}>Search...</span>
+          <Search className="w-3.5 h-3.5 flex-shrink-0" />
+          <span className="flex-1 text-left truncate">Search...</span>
           <kbd
-            className="hidden lg:flex items-center justify-center text-[9px] font-sans rounded-md px-1.5 py-0.5 leading-none flex-shrink-0"
-            style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}
+            className="hidden lg:flex items-center justify-center text-[9px] font-sans rounded px-1.5 py-0.5 leading-none flex-shrink-0 bg-black/20 text-white/70 border border-white/10 shadow-sm"
           >
             ⌘K
           </kbd>
@@ -397,7 +370,7 @@ export function Topbar({ config }: { config?: any }) {
           <Tooltip content="Messages" side="bottom">
             <button
               onClick={() => navigate(`/kangqore-view/${currentPortalId ?? 'admin'}/relay`)}
-              className="relative w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+              className="relative w-8 h-8 rounded-os-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
             >
               <ChatCircleDotsIcon weight="duotone" className="w-[18px] h-[18px]" />
               {totalMentions > 0 && (
@@ -416,7 +389,7 @@ export function Topbar({ config }: { config?: any }) {
               <div className="relative">
                 <button
                   onClick={() => setPresenceOpen(o => !o)}
-                  className="relative w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+                  className="relative w-8 h-8 rounded-os-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
                 >
                   <Eye className="w-[17px] h-[17px]" />
                   <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-green-500 border-2 border-[var(--os-card)] animate-pulse" />
@@ -429,7 +402,7 @@ export function Topbar({ config }: { config?: any }) {
           <Tooltip content="Notifications" side="bottom">
             <button
               onClick={openNotificationPanel}
-              className="relative w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+              className="relative w-8 h-8 rounded-os-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
             >
               <Bell className="w-[17px] h-[17px]" />
               {unreadCount > 0 && (
@@ -446,7 +419,7 @@ export function Topbar({ config }: { config?: any }) {
           <Tooltip content={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'} side="bottom">
             <button
               onClick={toggleFullscreen}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors"
+              className="w-8 h-8 rounded-os-md flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
             >
               {isFullscreen ? <Minimize2 className="w-[15px] h-[15px]" /> : <Maximize2 className="w-[15px] h-[15px]" />}
             </button>
@@ -456,7 +429,7 @@ export function Topbar({ config }: { config?: any }) {
             <div className="relative" ref={newRef}>
               <button
                 onClick={() => setNewOpen(o => !o)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-surface-0)] transition-colors active:scale-95 flex-shrink-0"
+                className="w-8 h-8 rounded-os-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors active:scale-95 flex-shrink-0"
               >
                 <Plus className="w-[16px] h-[16px]" />
               </button>
@@ -488,25 +461,25 @@ export function Topbar({ config }: { config?: any }) {
         </div>
 
         {/* Separator */}
-        <div className="w-px h-5 bg-[var(--os-border)] flex-shrink-0" />
+        <div className="w-px h-5 bg-border flex-shrink-0" />
 
         {/* User profile dropdown */}
         <DropdownRoot>
           <DropdownTrigger asChild>
-            <button className="flex items-center gap-2 h-9 px-1.5 rounded-xl hover:bg-[var(--os-surface-0)] transition-colors flex-shrink-0 group">
+            <button className="flex items-center gap-2 h-9 px-1.5 rounded-os-md hover:bg-white/10 transition-colors flex-shrink-0 group">
               <div className="relative flex-shrink-0">
                 <img
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&h=100&q=80"
                   alt={displayName}
-                  className="w-[28px] h-[28px] rounded-full object-cover border border-slate-200 dark:border-slate-800"
+                  className="w-[28px] h-[28px] rounded-full object-cover border border-white/20"
                 />
-                <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border border-white dark:border-black rounded-full" />
+                <span className="absolute bottom-0 right-0 w-2 h-2 bg-success border border-white rounded-full" />
               </div>
               <div className="text-left hidden md:block min-w-0">
-                <p className="text-[12px] font-bold text-[var(--os-text-1)] leading-none mb-0.5 truncate group-hover:text-[#2564ea] transition-colors">{displayName}</p>
-                <p className="text-[9px] text-slate-500 leading-none">{displayRole}</p>
+                <p className="text-[12px] font-medium text-white leading-none mb-0.5 truncate transition-colors">{displayName}</p>
+                <p className="text-[9px] text-white/70 leading-none">{displayRole}</p>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-[var(--os-text-3)] group-hover:text-[var(--os-text-2)] transition-colors flex-shrink-0" />
+              <ChevronDown className="w-3.5 h-3.5 text-white/50 group-hover:text-white/70 transition-colors flex-shrink-0" />
             </button>
           </DropdownTrigger>
           {userDropdown('end')}

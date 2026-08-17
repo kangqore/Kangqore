@@ -76,7 +76,7 @@ function CertItem({ label, status, date }: { label: string, status: 'ACHIEVED' |
   const isProgress = status === 'IN_PROGRESS'
   
   return (
-    <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--os-surface-hover)] border border-[var(--os-border)]">
+    <div className="flex items-center justify-between p-3 rounded-2xl bg-[var(--os-surface-hover)] border border-[var(--os-border)]">
       <div className="flex items-center gap-3">
         {isGood ? (
           <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center">
@@ -112,7 +112,7 @@ function ControlItem({ icon: Icon, label, active }: { icon: any, label: string, 
   return (
     <div className="flex items-center gap-2.5 p-2">
       <div className={cn(
-        "w-8 h-8 rounded-lg flex items-center justify-center shadow-sm",
+        "w-8 h-8 rounded-2xl flex items-center justify-center shadow-sm",
         active ? "bg-gradient-to-br from-[#e2445c] to-red-600 text-white" : "bg-[var(--os-border)] text-[var(--os-text-3)]"
       )}>
         <Icon className="w-4 h-4" />

@@ -72,7 +72,7 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
 
 function StatTile({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
   return (
-    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-1)] p-4 flex flex-col gap-1">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-1)] p-4 flex flex-col gap-1">
       <div className="text-2xl font-bold text-[var(--os-text-0)] tabular-nums">{value}</div>
       <div className="text-xs font-semibold text-[var(--os-text-1)] uppercase tracking-wide">{label}</div>
       {sub && <div className="text-[10px] text-[var(--os-text-2)]">{sub}</div>}
@@ -107,7 +107,7 @@ function ActionCard({
 
   return (
     <div
-      className="rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-1)] overflow-hidden transition-all"
+      className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-1)] overflow-hidden transition-all"
       style={{ borderLeftColor: expanded ? categoryColor : undefined, borderLeftWidth: expanded ? '3px' : undefined }}
     >
       {/* Header row */}
@@ -198,7 +198,7 @@ function ActionCard({
           {/* Execute button */}
           <button
             onClick={() => onRun(action as unknown as OntologyAction)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-colors text-white"
+            className="flex items-center gap-2 px-3 py-2 rounded-2xl text-xs font-semibold transition-colors text-white"
             style={{ background: categoryColor }}
           >
             <Play className="w-3.5 h-3.5" /> Execute
@@ -224,7 +224,7 @@ function ConnectorPanel({ data }: { data: ConnectorHealthData }) {
   const configuredCount = data.configured
 
   return (
-    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-1)] p-4">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-1)] p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <PlugsConnected className="w-4 h-4 text-[var(--os-text-2)]" />
@@ -242,7 +242,7 @@ function ConnectorPanel({ data }: { data: ConnectorHealthData }) {
           return (
             <div
               key={key}
-              className="flex flex-col items-center gap-1.5 rounded-lg border p-3 text-center"
+              className="flex flex-col items-center gap-1.5 rounded-2xl border p-3 text-center"
               style={{
                 borderColor: status.configured ? `${color}55` : 'var(--os-border)',
                 background: status.configured ? `${color}11` : undefined,
@@ -348,7 +348,7 @@ export default function ActionLibraryPage() {
         <button
           onClick={() => seedMutation.mutate()}
           disabled={seedMutation.isPending}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-[var(--os-surface-2)] border border-[var(--os-border)] text-[var(--os-text-1)] hover:text-[var(--os-text-0)] transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-semibold bg-[var(--os-surface-2)] border border-[var(--os-border)] text-[var(--os-text-1)] hover:text-[var(--os-text-0)] transition-colors disabled:opacity-50"
         >
           <ArrowCounterClockwise className={`w-3.5 h-3.5 ${seedMutation.isPending ? 'animate-spin' : ''}`} />
           {seedMutation.isPending ? 'Seeding…' : seedMutation.isSuccess ? 'Seeded' : 'Seed Library'}
@@ -368,7 +368,7 @@ export default function ActionLibraryPage() {
 
       {/* Seed prompt when empty */}
       {isEmpty && (
-        <div className="rounded-xl border border-dashed border-[var(--os-border)] p-8 text-center">
+        <div className="rounded-2xl border border-dashed border-[var(--os-border)] p-8 text-center">
           <Sparkle className="w-8 h-8 text-[var(--os-text-2)] mx-auto mb-3" />
           <p className="text-sm font-semibold text-[var(--os-text-1)] mb-1">Library not seeded yet</p>
           <p className="text-xs text-[var(--os-text-2)] mb-4">
@@ -379,7 +379,7 @@ export default function ActionLibraryPage() {
           <button
             onClick={() => seedMutation.mutate()}
             disabled={seedMutation.isPending}
-            className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-[#579bfc] hover:bg-[#4a8ae8] transition-colors disabled:opacity-50"
+            className="px-4 py-2 rounded-2xl text-sm font-semibold text-white bg-[#579bfc] hover:bg-[#4a8ae8] transition-colors disabled:opacity-50"
           >
             {seedMutation.isPending ? 'Seeding…' : 'Seed Library'}
           </button>
@@ -393,7 +393,7 @@ export default function ActionLibraryPage() {
             <div className="relative flex-shrink-0">
               <MagnifyingGlass className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--os-text-2)]" />
               <input
-                className="pl-7 pr-3 py-1.5 rounded-lg text-xs bg-[var(--os-surface-1)] border border-[var(--os-border)] text-[var(--os-text-1)] outline-none w-48 focus:border-[var(--os-text-2)]"
+                className="pl-7 pr-3 py-1.5 rounded-2xl text-xs bg-[var(--os-surface-1)] border border-[var(--os-border)] text-[var(--os-text-1)] outline-none w-48 focus:border-[var(--os-text-2)]"
                 placeholder="Search actions…"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
@@ -402,7 +402,7 @@ export default function ActionLibraryPage() {
 
             <button
               onClick={() => setActiveCategory(null)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${!activeCategory ? 'bg-[var(--os-text-0)] text-[var(--os-bg)]' : 'bg-[var(--os-surface-1)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'}`}
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold transition-colors ${!activeCategory ? 'bg-[var(--os-text-0)] text-[var(--os-bg)]' : 'bg-[var(--os-surface-1)] border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'}`}
             >
               All
             </button>
@@ -414,7 +414,7 @@ export default function ActionLibraryPage() {
                 <button
                   key={cat.name}
                   onClick={() => setActiveCategory(isActive ? null : cat.name)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-semibold transition-all border"
                   style={{
                     background: isActive ? `${cat.color}22` : undefined,
                     borderColor: isActive ? cat.color : 'var(--os-border)',

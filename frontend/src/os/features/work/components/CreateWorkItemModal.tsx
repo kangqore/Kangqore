@@ -59,7 +59,7 @@ export function CreateWorkItemModal({ onClose, projectId, portfolioId, defaultSt
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-[var(--os-bg-1)] border border-[var(--os-border)] rounded-xl shadow-2xl w-full max-w-lg mx-4 p-6"
+      <div className="bg-[var(--os-bg-1)] border border-[var(--os-border)] rounded-2xl shadow-2xl w-full max-w-lg mx-4 p-6"
            onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-base font-semibold text-[var(--os-text-1)]">New Work Item</h2>

@@ -83,7 +83,7 @@ export function BlueprintMarketplacePage() {
         <div className="relative flex-1 min-w-48">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: T2 }} />
           <input
-            className="w-full pl-8 pr-3 py-2 text-sm rounded-lg"
+            className="w-full pl-8 pr-3 py-2 text-sm rounded-2xl"
             style={{ background: CARD, border: `1px solid ${BDR}`, color: T1 }}
             placeholder="Search blueprints…"
             value={q} onChange={e => setQ(e.target.value)}
@@ -92,7 +92,7 @@ export function BlueprintMarketplacePage() {
         <div className="flex items-center gap-1.5">
           <Filter className="w-3.5 h-3.5" style={{ color: T2 }} />
           <select
-            className="text-sm px-2 py-2 rounded-lg"
+            className="text-sm px-2 py-2 rounded-2xl"
             style={{ background: CARD, border: `1px solid ${BDR}`, color: T1 }}
             value={industry} onChange={e => setIndustry(e.target.value)}
           >
@@ -108,7 +108,7 @@ export function BlueprintMarketplacePage() {
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {items.map(bp => (
-          <div key={bp.id} className="rounded-xl p-5 flex flex-col gap-3"
+          <div key={bp.id} className="rounded-2xl p-5 flex flex-col gap-3"
             style={{ background: CARD, border: `1px solid ${BDR}` }}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
@@ -154,19 +154,19 @@ export function BlueprintMarketplacePage() {
               <button
                 onClick={() => installMut.mutate(bp.id)}
                 disabled={installMut.isPending}
-                className="flex-1 text-xs font-semibold py-1.5 rounded-lg transition-colors"
+                className="flex-1 text-xs font-semibold py-1.5 rounded-2xl transition-colors"
                 style={{ background: PURP, color: '#fff' }}>
                 {installMut.isPending ? 'Installing…' : 'Install'}
               </button>
               <button
                 onClick={() => forkMut.mutate(bp.id)}
-                className="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                className="text-xs font-semibold px-3 py-1.5 rounded-2xl transition-colors"
                 style={{ background: `${GRN}18`, color: GRN }}>
                 Fork
               </button>
               <button
                 onClick={() => { setRateTarget({ id: bp.id, name: bp.name }); setRateVal(5); setRateNote('') }}
-                className="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                className="text-xs font-semibold px-3 py-1.5 rounded-2xl transition-colors"
                 style={{ background: `${AMB}18`, color: AMB }}>
                 Rate
               </button>
@@ -191,7 +191,7 @@ export function BlueprintMarketplacePage() {
             <div className="flex gap-2">
               {[1,2,3,4,5].map(s => (
                 <button key={s} onClick={() => setRateVal(s)}
-                  className="w-8 h-8 rounded-lg text-sm font-bold transition-colors"
+                  className="w-8 h-8 rounded-2xl text-sm font-bold transition-colors"
                   style={{ background: s <= rateVal ? `${AMB}30` : `${BDR}30`, color: s <= rateVal ? AMB : T2 }}>
                   {s}
                 </button>
@@ -199,20 +199,20 @@ export function BlueprintMarketplacePage() {
             </div>
             <textarea
               rows={3}
-              className="w-full text-sm px-3 py-2 rounded-lg resize-none"
+              className="w-full text-sm px-3 py-2 rounded-2xl resize-none"
               style={{ background: 'var(--os-surface)', border: `1px solid ${BDR}`, color: T1 }}
               placeholder="Optional review…"
               value={rateNote} onChange={e => setRateNote(e.target.value)}
             />
             <div className="flex gap-2">
               <button onClick={() => setRateTarget(null)}
-                className="flex-1 text-sm py-2 rounded-lg" style={{ background: `${BDR}50`, color: T2 }}>
+                className="flex-1 text-sm py-2 rounded-2xl" style={{ background: `${BDR}50`, color: T2 }}>
                 Cancel
               </button>
               <button
                 onClick={() => rateMut.mutate({ id: rateTarget.id, rating: rateVal, review: rateNote })}
                 disabled={rateMut.isPending}
-                className="flex-1 text-sm font-semibold py-2 rounded-lg"
+                className="flex-1 text-sm font-semibold py-2 rounded-2xl"
                 style={{ background: AMB, color: '#fff' }}>
                 {rateMut.isPending ? 'Submitting…' : 'Submit'}
               </button>
@@ -222,7 +222,7 @@ export function BlueprintMarketplacePage() {
       )}
 
       {/* Publish CTA */}
-      <div className="rounded-xl p-5 flex items-center gap-4"
+      <div className="rounded-2xl p-5 flex items-center gap-4"
         style={{ background: `${PURP}12`, border: `1px solid ${PURP}40` }}>
         <Plus className="w-5 h-5 flex-shrink-0" style={{ color: PURP }} />
         <div>

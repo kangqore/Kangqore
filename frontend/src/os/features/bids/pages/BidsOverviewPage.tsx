@@ -116,7 +116,7 @@ export function BidsOverviewPage() {
         </div>
         <button
           onClick={() => navigate('/kangqore-view/admin/bids/engagements')}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition-opacity flex-shrink-0"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-white text-sm font-semibold hover:opacity-90 transition-opacity flex-shrink-0"
           style={{ background: '#579bfc' }}
         >
           <Plus className="w-4 h-4" />
@@ -183,8 +183,8 @@ export function BidsOverviewPage() {
               const pct   = total > 0 ? Math.round((done / total) * 100) : 0
               const sm    = STATUS_MAP[e.status] ?? { label: e.status, color: 'var(--os-text-2)' }
               return (
-                <div key={e.id} className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-[var(--os-surface-0)] transition-colors border-b border-[var(--os-border)] last:border-0">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                <div key={e.id} className="flex items-center gap-4 px-4 py-3 rounded-2xl hover:bg-[var(--os-surface-0)] transition-colors border-b border-[var(--os-border)] last:border-0">
+                  <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0"
                     style={{ background: '#579bfc18', border: '1px solid #579bfc30' }}>
                     <Building2 className="w-4 h-4" style={{ color: '#579bfc' }} />
                   </div>
@@ -270,7 +270,7 @@ export function BidsOverviewPage() {
           </p>
           <div className="flex flex-wrap gap-2">
             {INDUSTRIES.map(ind => (
-              <span key={ind} className="px-3 py-1.5 rounded-lg text-xs font-medium"
+              <span key={ind} className="px-3 py-1.5 rounded-2xl text-xs font-medium"
                 style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
                 {ind}
               </span>

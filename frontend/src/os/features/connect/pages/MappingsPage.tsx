@@ -183,7 +183,7 @@ export function MappingsPage() {
 
               {/* Actions */}
               <div className="flex justify-end">
-                <button className="text-[10px] font-bold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors px-2 py-1 rounded-lg hover:bg-slate-800">
+                <button className="text-[10px] font-bold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] transition-colors px-2 py-1 rounded-2xl hover:bg-slate-800">
                   Edit
                 </button>
               </div>

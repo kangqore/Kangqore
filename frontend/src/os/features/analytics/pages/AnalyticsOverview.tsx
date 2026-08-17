@@ -181,7 +181,7 @@ export function AnalyticsOverview() {
       {/* Full KPI table */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {KEY_METRICS.map(m => (
-          <div key={m.label} className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-4">
+          <div key={m.label} className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-4">
             <p className="text-xs text-[var(--os-text-2)] mb-1">{m.label}</p>
             <p className="text-xl font-bold text-[var(--os-text-1)]">{m.value}</p>
             <p className={`text-xs font-medium mt-1 ${m.up ? 'text-green-600' : 'text-red-500'}`}>

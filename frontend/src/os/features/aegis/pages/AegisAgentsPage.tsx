@@ -27,7 +27,7 @@ const ENGINE_COLORS: Record<string, string> = {
 function RunRow({ run }: { run: any }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border border-[var(--os-border)] rounded-lg overflow-hidden">
+    <div className="border border-[var(--os-border)] rounded-2xl overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--os-surface-0)] transition-colors text-left"
@@ -112,7 +112,7 @@ export function AegisAgentsPage() {
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div className="bg-violet-900/20 border border-violet-500/20 rounded-xl p-4 flex items-start gap-3">
+      <div className="bg-violet-900/20 border border-violet-500/20 rounded-2xl p-4 flex items-start gap-3">
         <Bot className="w-4 h-4 text-violet-400 mt-0.5 flex-shrink-0" />
         <div className="flex-1">
           <p className="text-sm font-semibold text-violet-300 mb-0.5">AEGIS Agent Corps</p>
@@ -145,7 +145,7 @@ export function AegisAgentsPage() {
               key={eng}
               onClick={() => { setEngineFilter(e => e === eng ? '' : eng); setPage(0) }}
               className={cn(
-                'text-[10px] font-mono px-2.5 py-1 rounded-md border transition-all',
+                'text-[10px] font-mono px-2.5 py-1 rounded-2xl border transition-all',
                 engineFilter === eng
                   ? 'bg-violet-500/20 border-violet-500/40 text-violet-300'
                   : 'bg-[var(--os-surface-0)] border-[var(--os-border)] text-[var(--os-text-2)] hover:border-[var(--os-border)]'
@@ -162,7 +162,7 @@ export function AegisAgentsPage() {
         <select
           value={verdictFilter}
           onChange={e => { setVerdictFilter(e.target.value); setPage(0) }}
-          className="text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] rounded-lg px-3 py-1.5 focus:outline-none focus:border-violet-500/50"
+          className="text-xs bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[var(--os-text-1)] rounded-2xl px-3 py-1.5 focus:outline-none focus:border-violet-500/50"
         >
           <option value="">All verdicts</option>
           <option value="CRITICAL">CRITICAL</option>
@@ -175,7 +175,7 @@ export function AegisAgentsPage() {
 
         <button
           onClick={() => refetch()}
-          className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 border border-violet-500/30 hover:border-violet-500/50 rounded-lg px-3 py-1.5 transition-all"
+          className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 border border-violet-500/30 hover:border-violet-500/50 rounded-2xl px-3 py-1.5 transition-all"
         >
           <Play className="w-3 h-3" />
           Refresh
@@ -185,7 +185,7 @@ export function AegisAgentsPage() {
       {/* Run history */}
       {isLoading ? (
         <div className="space-y-2">
-          {[...Array(8)].map((_, i) => <div key={i} className="h-12 bg-[var(--os-surface-0)] rounded-lg animate-pulse" />)}
+          {[...Array(8)].map((_, i) => <div key={i} className="h-12 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />)}
         </div>
       ) : runs.length === 0 ? (
         <div className="text-center py-16 space-y-2">

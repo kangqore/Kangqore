@@ -78,7 +78,7 @@ function RunCard({ run }: { run: WorkflowRun }) {
     : null
 
   return (
-    <div className={cn('rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden', run.status === 'RUNNING' && 'border-[#579bfc]/30')}>
+    <div className={cn('rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] overflow-hidden', run.status === 'RUNNING' && 'border-[#579bfc]/30')}>
       <div className="px-4 py-3 flex items-center gap-3 cursor-pointer" onClick={() => setExpanded(e => !e)}>
         <st.icon
           className={cn('w-4 h-4 flex-shrink-0', run.status === 'RUNNING' && 'animate-spin')}
@@ -111,7 +111,7 @@ function RunCard({ run }: { run: WorkflowRun }) {
                 ['APIs', run.traceSummary.apiCalls],
                 ['Duration', `${Math.round(run.traceSummary.totalMs / 1000)}s`],
               ].map(([label, val]) => (
-                <div key={label as string} className="rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] px-2 py-1.5 text-center">
+                <div key={label as string} className="rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] px-2 py-1.5 text-center">
                   <p className="text-sm font-bold text-[var(--os-text-1)]">{val}</p>
                   <p className="text-[10px] text-[var(--os-text-2)]">{label}</p>
                 </div>
@@ -121,7 +121,7 @@ function RunCard({ run }: { run: WorkflowRun }) {
 
           {/* Errors */}
           {run.traceSummary?.errors?.length > 0 && (
-            <div className="rounded-lg bg-red-500/10 border border-red-500/20 px-3 py-2">
+            <div className="rounded-2xl bg-red-500/10 border border-red-500/20 px-3 py-2">
               {run.traceSummary.errors.map((e, i) => (
                 <p key={i} className="text-[11px] text-red-400">{e}</p>
               ))}
@@ -139,14 +139,14 @@ function RunCard({ run }: { run: WorkflowRun }) {
               <button
                 onClick={() => approve.mutate()}
                 disabled={approve.isPending}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500 text-white text-[11px] font-semibold hover:bg-green-400 disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-green-500 text-white text-[11px] font-semibold hover:bg-green-400 disabled:opacity-50"
               >
                 {approve.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <ThumbsUp className="w-3 h-3" />} Approve & Resume
               </button>
               <button
                 onClick={() => reject.mutate('Rejected by operator')}
                 disabled={reject.isPending}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 border border-red-500/30 text-[11px] font-semibold hover:bg-red-500/30 disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-red-500/20 text-red-400 border border-red-500/30 text-[11px] font-semibold hover:bg-red-500/30 disabled:opacity-50"
               >
                 <ThumbsDown className="w-3 h-3" /> Reject
               </button>
@@ -166,7 +166,7 @@ function RunCard({ run }: { run: WorkflowRun }) {
             ))}
             <div className="flex gap-2 mt-1">
               <input
-                className="flex-1 px-2 py-1.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
+                className="flex-1 px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-[11px] text-[var(--os-text-1)] outline-none"
                 placeholder="Add a comment…"
                 value={comment}
                 onChange={e => setComment(e.target.value)}
@@ -175,7 +175,7 @@ function RunCard({ run }: { run: WorkflowRun }) {
               <button
                 onClick={() => addComment.mutate()}
                 disabled={!comment.trim() || addComment.isPending}
-                className="px-2.5 py-1.5 rounded-lg bg-[#579bfc] text-white text-[11px] disabled:opacity-40"
+                className="px-2.5 py-1.5 rounded-2xl bg-[#579bfc] text-white text-[11px] disabled:opacity-40"
               >
                 {addComment.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Send'}
               </button>
@@ -241,7 +241,7 @@ export function OperationsPage() {
         <button
           onClick={() => goalCycle.mutate()}
           disabled={goalCycle.isPending}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[var(--os-border)] text-sm text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[#579bfc]"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-2xl border border-[var(--os-border)] text-sm text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:border-[#579bfc]"
         >
           {goalCycle.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Target className="w-3.5 h-3.5" />}
           Evaluate All Goals
@@ -257,7 +257,7 @@ export function OperationsPage() {
             { label: 'Total runs',       value: status.totalRuns,              color: undefined },
             { label: 'Actionable evals', value: status.recentActionableEvals,  color: status.recentActionableEvals > 0 ? '#fdab3d' : undefined },
           ].map(({ label, value, color }) => (
-            <div key={label} className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
+            <div key={label} className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-4 py-3">
               <p className="text-xl font-bold tabular-nums" style={{ color: color ?? 'var(--os-text-1)' }}>{value}</p>
               <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">{label}</p>
             </div>
@@ -266,13 +266,13 @@ export function OperationsPage() {
       )}
 
       {/* Goal composer */}
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 space-y-3">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-4 space-y-3">
         <div className="flex items-center gap-2 mb-1">
           <Brain className="w-3.5 h-3.5 text-[#579bfc]" />
           <p className="text-[12px] font-semibold text-[var(--os-text-1)]">Launch Autonomous Goal</p>
         </div>
         <textarea
-          className="w-full px-3 py-2.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] resize-none outline-none focus:border-[#579bfc] placeholder:text-[var(--os-text-2)]"
+          className="w-full px-3 py-2.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] resize-none outline-none focus:border-[#579bfc] placeholder:text-[var(--os-text-2)]"
           rows={3}
           placeholder="e.g. Increase revenue 20% this quarter · Review all at-risk clients · Identify capacity risks across projects"
           value={goal}
@@ -283,7 +283,7 @@ export function OperationsPage() {
           <button
             onClick={() => runWAOE.mutate(goal)}
             disabled={!goal.trim() || runWAOE.isPending}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50"
           >
             {runWAOE.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Planning…</> : <><Play className="w-3.5 h-3.5" />Execute</>}
           </button>
@@ -292,7 +292,7 @@ export function OperationsPage() {
 
       {/* Latest run result */}
       {runResult && (
-        <div className={cn('rounded-xl border p-4 space-y-2', runResult.ok ? 'border-green-500/30 bg-green-500/[0.03]' : 'border-red-500/30 bg-red-500/[0.03]')}>
+        <div className={cn('rounded-2xl border p-4 space-y-2', runResult.ok ? 'border-green-500/30 bg-green-500/[0.03]' : 'border-red-500/30 bg-red-500/[0.03]')}>
           <div className="flex items-center gap-2">
             {runResult.ok ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <XCircle className="w-4 h-4 text-red-400" />}
             <p className="text-[12px] font-semibold text-[var(--os-text-1)]">{runResult.summary}</p>
@@ -313,9 +313,9 @@ export function OperationsPage() {
       <div>
         <p className="text-[11px] font-semibold text-[var(--os-text-2)] uppercase tracking-widest mb-3">Execution History</p>
         {runsLoading ? (
-          <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-14 rounded-xl bg-[var(--os-surface-0)] animate-pulse" />)}</div>
+          <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-14 rounded-2xl bg-[var(--os-surface-0)] animate-pulse" />)}</div>
         ) : runs.length === 0 ? (
-          <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] py-10 text-center">
+          <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] py-10 text-center">
             <Zap className="w-7 h-7 text-[var(--os-text-2)] mx-auto mb-2" />
             <p className="text-sm text-[var(--os-text-2)]">No workflow runs yet. Launch a goal above.</p>
           </div>

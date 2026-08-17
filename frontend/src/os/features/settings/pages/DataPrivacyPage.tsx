@@ -46,7 +46,7 @@ function EventTypeBadge({ type }: { type: string }) {
 
   return (
     <span
-      className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider"
+      className="inline-flex items-center px-2 py-0.5 rounded-2xl text-[10px] font-black uppercase tracking-wider"
       style={{ background: colour.bg, color: colour.text, border: `1px solid ${colour.border}` }}
     >
       {type}
@@ -103,7 +103,7 @@ export function DataPrivacyPage() {
       {/* Export */}
       <div className="rounded-2xl p-5 border border-[var(--os-border)]" style={{ background: 'var(--os-card)' }}>
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(87,155,252,0.1)' }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(87,155,252,0.1)' }}>
             <Download className="w-5 h-5" style={{ color: '#579bfc' }} />
           </div>
           <div className="flex-1">
@@ -114,7 +114,7 @@ export function DataPrivacyPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={handleExport}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-colors"
                 style={{ background: '#579bfc', color: '#fff' }}
               >
                 <Download className="w-3.5 h-3.5" />
@@ -144,7 +144,7 @@ export function DataPrivacyPage() {
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(0) }}
               placeholder="Search events…"
-              className="pl-8 pr-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] w-44"
+              className="pl-8 pr-3 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] w-44"
             />
           </div>
         </div>
@@ -152,7 +152,7 @@ export function DataPrivacyPage() {
         {isLoading && (
           <div className="p-5 space-y-2">
             {[1,2,3,4].map(i => (
-              <div key={i} className="h-10 rounded-lg animate-pulse" style={{ background: 'var(--os-surface-0)' }} />
+              <div key={i} className="h-10 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />
             ))}
           </div>
         )}
@@ -228,7 +228,7 @@ export function DataPrivacyPage() {
               <select
                 value={retentionDays[rt.key]}
                 onChange={e => setRetentionDays(prev => ({ ...prev, [rt.key]: parseInt(e.target.value) }))}
-                className="px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none focus:border-amber-500/50"
+                className="px-3 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] outline-none focus:border-amber-500/50"
               >
                 {RETENTION_OPTIONS.map(o => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -241,7 +241,7 @@ export function DataPrivacyPage() {
           <button
             onClick={() => saveRetention.mutate()}
             disabled={saveRetention.isPending}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-colors disabled:opacity-50"
             style={{ background: '#f59e0b', color: '#000' }}
           >
             {saveRetention.isPending
@@ -279,18 +279,18 @@ export function DataPrivacyPage() {
               value={deleteReason}
               onChange={e => setReason(e.target.value)}
               placeholder="Reason for deletion (optional)"
-              className="w-full px-3 py-2 text-xs rounded-lg border border-red-500/20 bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-red-500/50 placeholder:text-[var(--os-text-2)]"
+              className="w-full px-3 py-2 text-xs rounded-2xl border border-red-500/20 bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-red-500/50 placeholder:text-[var(--os-text-2)]"
             />
             <input
               value={deleteInput}
               onChange={e => setDelete(e.target.value)}
               placeholder='Type "DELETE" to confirm'
-              className="w-full px-3 py-2 text-xs rounded-lg border border-red-500/20 bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-red-500/50 placeholder:text-[var(--os-text-2)]"
+              className="w-full px-3 py-2 text-xs rounded-2xl border border-red-500/20 bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-red-500/50 placeholder:text-[var(--os-text-2)]"
             />
             <button
               disabled={deleteInput !== 'DELETE' || deleteRequest.isPending}
               onClick={() => deleteRequest.mutate()}
-              className="px-4 py-2 rounded-xl text-xs font-bold transition-colors disabled:opacity-40"
+              className="px-4 py-2 rounded-2xl text-xs font-bold transition-colors disabled:opacity-40"
               style={{ background: '#e2445c', color: '#fff' }}
             >
               {deleteRequest.isPending ? 'Submitting…' : 'Submit Deletion Request'}

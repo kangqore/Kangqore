@@ -170,7 +170,7 @@ function ConnectorCard({ c, onConfigure }: { c: Connector; onConfigure: () => vo
     <div className={`p-5 rounded-2xl border bg-slate-900/40 backdrop-blur-xl ring-1 ring-white/10 transition-all hover:border-[var(--os-border)] ${c.status === 'active' ? 'border-white/15' : 'border-[var(--os-border)]'}`}>
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black text-white flex-shrink-0" style={{ background: `${c.logoColor}25`, border: `1px solid ${c.logoColor}40` }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-xs font-black text-white flex-shrink-0" style={{ background: `${c.logoColor}25`, border: `1px solid ${c.logoColor}40` }}>
             {c.logoText}
           </div>
           <div>
@@ -299,7 +299,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--os-border)] sticky top-0 bg-[var(--os-card)] z-10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black text-white flex-shrink-0"
+            <div className="w-8 h-8 rounded-2xl flex items-center justify-center text-xs font-black text-white flex-shrink-0"
               style={{ background: `${connector.logoColor}25`, border: `1px solid ${connector.logoColor}40` }}>
               {connector.logoText}
             </div>
@@ -308,7 +308,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
               <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>Map platform fields → Kangqore entities</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-slate-700 transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-2xl hover:bg-slate-700 transition-colors">
             <X className="w-4 h-4" style={{ color: 'var(--os-text-2)' }} />
           </button>
         </div>
@@ -322,7 +322,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
                 <button
                   key={dir}
                   onClick={() => setSyncDirection(dir)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-semibold transition-all"
                   style={{
                     background: syncDirection === dir ? 'rgba(37,100,234,0.15)' : 'var(--os-surface-0)',
                     color:      syncDirection === dir ? '#2564ea' : 'var(--os-text-2)',
@@ -360,7 +360,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
                   <select
                     value={row.sourceField}
                     onChange={e => updateRow(i, 'sourceField', e.target.value)}
-                    className="px-2 py-1.5 rounded-lg text-xs border"
+                    className="px-2 py-1.5 rounded-2xl text-xs border"
                     style={{ background: 'var(--os-surface-0)', borderColor: 'var(--os-border)', color: 'var(--os-text-1)' }}
                   >
                     <option value="">— source —</option>
@@ -369,7 +369,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
                   <select
                     value={row.targetField}
                     onChange={e => updateRow(i, 'targetField', e.target.value)}
-                    className="px-2 py-1.5 rounded-lg text-xs border"
+                    className="px-2 py-1.5 rounded-2xl text-xs border"
                     style={{ background: 'var(--os-surface-0)', borderColor: 'var(--os-border)', color: 'var(--os-text-1)' }}
                   >
                     <option value="">— target —</option>
@@ -378,7 +378,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
                   <select
                     value={row.transform}
                     onChange={e => updateRow(i, 'transform', e.target.value)}
-                    className="px-2 py-1.5 rounded-lg text-xs border"
+                    className="px-2 py-1.5 rounded-2xl text-xs border"
                     style={{ background: 'var(--os-surface-0)', borderColor: 'var(--os-border)', color: 'var(--os-text-1)' }}
                   >
                     {['PASSTHROUGH', 'UPPERCASE', 'LOWERCASE', 'TRIM', 'PARSE_DATE'].map(t => (
@@ -387,7 +387,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
                   </select>
                   <button
                     onClick={() => removeRow(i)}
-                    className="p-1.5 rounded-lg transition-colors hover:bg-red-500/10"
+                    className="p-1.5 rounded-2xl transition-colors hover:bg-red-500/10"
                     style={{ color: 'var(--os-text-2)' }}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -405,7 +405,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
                 <button
                   key={ev}
                   onClick={() => toggleEvent(ev)}
-                  className="px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all"
+                  className="px-2.5 py-1 rounded-2xl text-[11px] font-medium transition-all"
                   style={{
                     background: selectedEvents.includes(ev) ? 'rgba(37,100,234,0.15)' : 'var(--os-surface-0)',
                     color:      selectedEvents.includes(ev) ? '#2564ea' : 'var(--os-text-2)',
@@ -425,7 +425,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
 
           {/* Existing map info */}
           {existingMap && (
-            <div className="rounded-xl p-3 border" style={{ background: 'rgba(16,185,129,0.05)', borderColor: 'rgba(16,185,129,0.2)' }}>
+            <div className="rounded-2xl p-3 border" style={{ background: 'rgba(16,185,129,0.05)', borderColor: 'rgba(16,185,129,0.2)' }}>
               <p className="text-[11px] font-medium" style={{ color: '#10b981' }}>
                 Active field map — last saved {new Date(existingMap.updatedAt ?? existingMap.createdAt).toLocaleDateString()}
               </p>
@@ -438,7 +438,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
           <button
             onClick={() => saveMut.mutate()}
             disabled={saveMut.isPending}
-            className="flex-1 py-2.5 rounded-xl text-sm font-bold transition-all"
+            className="flex-1 py-2.5 rounded-2xl text-sm font-bold transition-all"
             style={{
               background: saveMut.isPending ? 'rgba(37,100,234,0.3)' : '#2564ea',
               color: '#fff',
@@ -450,7 +450,7 @@ function FieldMapperDrawer({ connector, onClose }: { connector: Connector; onClo
           <button
             onClick={triggerSync}
             disabled={syncing}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-bold transition-all"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-sm font-bold transition-all"
             style={{
               background: 'rgba(16,185,129,0.1)',
               color: '#10b981',

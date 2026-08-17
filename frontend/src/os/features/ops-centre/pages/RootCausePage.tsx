@@ -130,7 +130,7 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
     <div className="os-card overflow-hidden" style={{ borderLeft: `4px solid ${classColor}` }}>
       <div className="p-4">
         <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center"
+          <div className="flex-shrink-0 w-9 h-9 rounded-2xl flex items-center justify-center"
             style={{ background: classColor + '14', border: `1px solid ${classColor}28` }}>
             <Link2 className="w-4 h-4" style={{ color: classColor }} />
           </div>
@@ -140,7 +140,7 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
               <div>
                 <p className="text-sm font-semibold leading-tight" style={{ color: 'var(--os-text-1)' }}>{cluster.title}</p>
                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md"
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-2xl"
                     style={{ color: classColor, background: classColor + '14', border: `1px solid ${classColor}28` }}>
                     {cluster.classification}
                   </span>
@@ -151,14 +151,14 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
                   <span className="text-[10px]" style={{ color: 'var(--os-text-3)' }}>{cluster.entities.join(', ')}</span>
                 </div>
               </div>
-              <span className="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg capitalize"
+              <span className="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-2xl capitalize"
                 style={{ color: statusColor, background: statusBg, border: `1px solid ${statusBorder}` }}>
                 {cluster.status}
               </span>
             </div>
 
             {/* KIMMP root cause */}
-            <div className="mt-2.5 px-3 py-2 rounded-lg"
+            <div className="mt-2.5 px-3 py-2 rounded-2xl"
               style={{ background: '#7c3aed08', border: '1px solid #7c3aed18' }}>
               <div className="flex items-center gap-1.5 mb-1.5">
                 <Brain className="w-3 h-3 flex-shrink-0" style={{ color: '#7c3aed' }} />
@@ -172,7 +172,7 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
             {/* Linked issues */}
             <div className="mt-2.5 flex flex-wrap gap-1.5">
               {cluster.issues.map(iss => (
-                <span key={iss.id} className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg"
+                <span key={iss.id} className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-2xl"
                   style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)' }}>
                   <CircleDot className="w-2.5 h-2.5" style={{ color: 'var(--os-text-3)' }} />
                   {iss.id} · {iss.severity}
@@ -187,7 +187,7 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
                   <p className="text-xs leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{cluster.hypothesis}</p>
                 </div>
                 {cluster.pirReady && (
-                  <button className="flex items-center gap-2 text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all hover:opacity-80"
+                  <button className="flex items-center gap-2 text-[11px] font-semibold px-3 py-1.5 rounded-2xl transition-all hover:opacity-80"
                     style={{ background: '#00c87510', border: '1px solid #00c87525', color: '#00c875' }}>
                     <FileText className="w-3.5 h-3.5" />
                     Open Post-Issue Review (PIR) Template
@@ -226,7 +226,7 @@ export function RootCausePage() {
   return (
     <div className="space-y-5">
       {/* Live data context */}
-      <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
+      <div className="flex items-center gap-2 px-3 py-2 rounded-2xl"
         style={{ background: '#579bfc08', border: '1px solid #579bfc20' }}>
         <Database className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#579bfc' }} />
         <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>

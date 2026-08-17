@@ -78,7 +78,7 @@ function ABtn({ icon: Icon, label, loading, onClick, color }: {
     <button
       onClick={onClick}
       disabled={loading}
-      className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-opacity disabled:opacity-40"
+      className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-opacity disabled:opacity-40"
       style={{ color, background: `${color}12`, border: `1px solid ${color}28` }}
     >
       <Icon className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -178,7 +178,7 @@ function OverviewTab({ onRefreshAll }: { onRefreshAll: () => void }) {
             const Icon = cfg.icon
             return (
               <NavLink key={s.name} to={s.path} className="flex items-center gap-2 group">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: s.accent }}>
+                <div className="w-7 h-7 rounded-2xl flex items-center justify-center" style={{ background: s.accent }}>
                   <s.icon className="w-3.5 h-3.5 text-white" />
                 </div>
                 <div>
@@ -206,7 +206,7 @@ function OverviewTab({ onRefreshAll }: { onRefreshAll: () => void }) {
               key={a.label}
               onClick={() => a.mutation.mutate()}
               disabled={a.mutation.isPending}
-              className="flex flex-col gap-2 p-4 rounded-xl text-left transition-all disabled:opacity-40"
+              className="flex flex-col gap-2 p-4 rounded-2xl text-left transition-all disabled:opacity-40"
               style={{ background: `${a.color}08`, border: `1px solid ${a.color}20` }}
             >
               <div className="flex items-center gap-2">
@@ -301,7 +301,7 @@ function EqoreTab() {
       {/* System header */}
       <div className="flex items-center justify-between pb-4 border-b" style={{ borderColor: 'rgba(124,58,237,0.15)' }}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#7c3aed' }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: '#7c3aed' }}>
             <MessageSquare className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -329,7 +329,7 @@ function EqoreTab() {
       {/* Service health */}
       {healthRows.length > 0 && (
         <Section title="Service Health">
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
+          <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {healthRows.map((r, i) => (
               <div
                 key={r.label}
@@ -349,8 +349,8 @@ function EqoreTab() {
       <Section title={`Active Agents (${EQORE_AGENTS.length})`}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           {EQORE_AGENTS.map(a => (
-            <div key={a.name} className="flex items-start gap-3 px-4 py-3 rounded-xl" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.1)' }}>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#7c3aed' }}>
+            <div key={a.name} className="flex items-start gap-3 px-4 py-3 rounded-2xl" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.1)' }}>
+              <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: '#7c3aed' }}>
                 <Brain className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -366,7 +366,7 @@ function EqoreTab() {
       {/* Recent leads */}
       {leadList.length > 0 && (
         <Section title="Recent Leads via eQORE">
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
+          <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {leadList.map((l: any, i: number) => (
               <div
                 key={l.id ?? i}
@@ -423,7 +423,7 @@ function LeadIntelTab() {
 
       <div className="flex items-center justify-between pb-4 border-b" style={{ borderColor: 'rgba(37,100,234,0.15)' }}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#2564ea' }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: '#2564ea' }}>
             <Zap className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -453,13 +453,13 @@ function LeadIntelTab() {
             {oppList.map((o: any, i: number) => {
               const stColor = STAGE_COLOR[o.stage] ?? '#64748b'
               return (
-                <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: 'rgba(37,100,234,0.04)', border: '1px solid rgba(37,100,234,0.1)' }}>
+                <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ background: 'rgba(37,100,234,0.04)', border: '1px solid rgba(37,100,234,0.1)' }}>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold truncate" style={{ color: 'var(--os-text-1)' }}>{o.name ?? o.title ?? `Opportunity #${i + 1}`}</p>
                     {o.value && <p className="text-xs mt-0.5" style={{ color: 'var(--os-text-2)' }}>₹{Number(o.value).toLocaleString('en-IN')}</p>}
                     {o.createdAt && <p className="text-[10px] text-slate-600 mt-0.5">{timeAgo(o.createdAt)}</p>}
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-1 rounded-lg flex-shrink-0" style={{ color: stColor, background: `${stColor}15`, border: `1px solid ${stColor}25` }}>{o.stage ?? '—'}</span>
+                  <span className="text-[10px] font-bold px-2 py-1 rounded-2xl flex-shrink-0" style={{ color: stColor, background: `${stColor}15`, border: `1px solid ${stColor}25` }}>{o.stage ?? '—'}</span>
                 </div>
               )
             })}
@@ -470,7 +470,7 @@ function LeadIntelTab() {
       {/* Open tasks */}
       {openTasks.length > 0 && (
         <Section title={`Open Tasks (${openTasks.length})`}>
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
+          <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {openTasks.slice(0, 10).map((t: any, i: number) => (
               <div key={t.id ?? i} className="flex items-center gap-3 px-4 py-3" style={{ borderBottom: i < Math.min(openTasks.length, 10) - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#d97706' }} />
@@ -493,7 +493,7 @@ function LeadIntelTab() {
             { name: 'Service Matcher',       desc: 'Maps expressed intent → best-fit Kangqore service' },
             { name: 'Nurture Sequencer',     desc: 'Async follow-up trigger based on score delta' },
           ].map(e => (
-            <div key={e.name} className="flex items-start gap-3 px-4 py-3 rounded-xl" style={{ background: 'rgba(37,100,234,0.04)', border: '1px solid rgba(37,100,234,0.08)' }}>
+            <div key={e.name} className="flex items-start gap-3 px-4 py-3 rounded-2xl" style={{ background: 'rgba(37,100,234,0.04)', border: '1px solid rgba(37,100,234,0.08)' }}>
               <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#059669' }} />
               <div>
                 <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{e.name}</p>
@@ -537,7 +537,7 @@ function AlisTab() {
 
       <div className="flex items-center justify-between pb-4 border-b" style={{ borderColor: 'rgba(5,150,105,0.15)' }}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#059669' }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: '#059669' }}>
             <TrendingUp className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -566,7 +566,7 @@ function AlisTab() {
         <Section title={`Active Alerts (${alertList.length})`}>
           <div className="space-y-2">
             {alertList.map((a: any, i: number) => (
-              <div key={i} className="flex gap-3 items-start px-4 py-3 rounded-xl" style={{ background: 'rgba(217,119,6,0.06)', border: '1px solid rgba(217,119,6,0.12)' }}>
+              <div key={i} className="flex gap-3 items-start px-4 py-3 rounded-2xl" style={{ background: 'rgba(217,119,6,0.06)', border: '1px solid rgba(217,119,6,0.12)' }}>
                 <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-400" />
                 <div className="flex-1">
                   <p className="text-sm leading-snug" style={{ color: 'var(--os-text-1)' }}>{a.message ?? a.title ?? a.text ?? JSON.stringify(a).slice(0, 100)}</p>
@@ -586,7 +586,7 @@ function AlisTab() {
         <Section title={`Growth Recommendations (${recList.length})`}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {recList.map((r: any, i: number) => (
-              <div key={i} className="px-4 py-4 rounded-xl" style={{ background: 'rgba(5,150,105,0.05)', border: '1px solid rgba(5,150,105,0.12)' }}>
+              <div key={i} className="px-4 py-4 rounded-2xl" style={{ background: 'rgba(5,150,105,0.05)', border: '1px solid rgba(5,150,105,0.12)' }}>
                 <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{r.title ?? r.recommendation ?? r.action ?? `Recommendation ${i + 1}`}</p>
                 {(r.description ?? r.detail ?? r.rationale) && (
                   <p className="text-xs mt-1.5 leading-relaxed" style={{ color: 'var(--os-text-2)' }}>{r.description ?? r.detail ?? r.rationale}</p>
@@ -603,7 +603,7 @@ function AlisTab() {
         <Section title={`Content Gaps (${gapList.length})`}>
           <div className="space-y-2">
             {gapList.map((g: any, i: number) => (
-              <div key={i} className="flex gap-3 items-start px-4 py-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.12)' }}>
+              <div key={i} className="flex gap-3 items-start px-4 py-3 rounded-2xl" style={{ background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.12)' }}>
                 <XCircle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-red-400" />
                 <div className="flex-1">
                   <p className="text-sm" style={{ color: 'var(--os-text-1)' }}>{g.topic ?? g.gap ?? g.keyword ?? JSON.stringify(g).slice(0, 80)}</p>
@@ -627,7 +627,7 @@ function AlisTab() {
             { name: 'Revenue Forecaster',     desc: 'Pipeline revenue projection model' },
             { name: 'VIS Sync',               desc: 'Pushes ALIS signals into Kangqore VIS' },
           ].map(e => (
-            <div key={e.name} className="flex items-start gap-2.5 px-4 py-3 rounded-xl" style={{ background: 'rgba(5,150,105,0.04)', border: '1px solid rgba(5,150,105,0.1)' }}>
+            <div key={e.name} className="flex items-start gap-2.5 px-4 py-3 rounded-2xl" style={{ background: 'rgba(5,150,105,0.04)', border: '1px solid rgba(5,150,105,0.1)' }}>
               <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#059669' }} />
               <div>
                 <p className="text-sm font-semibold" style={{ color: 'var(--os-text-1)' }}>{e.name}</p>
@@ -668,7 +668,7 @@ function VisTab() {
 
       <div className="flex items-center justify-between pb-4 border-b" style={{ borderColor: 'rgba(14,165,233,0.15)' }}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#0ea5e9' }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: '#0ea5e9' }}>
             <Globe className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -686,7 +686,7 @@ function VisTab() {
       {/* Full KPI table */}
       {kpis.length > 0 && (
         <Section title="Live KPIs">
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
+          <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {kpis.map((k: any, i: number) => (
               <div
                 key={k.metric}
@@ -707,14 +707,14 @@ function VisTab() {
       <Section title={`Data Sources — ${connected.length} connected · ${unconnected.length} unconnected`}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           {connected.map((s: string) => (
-            <div key={s} className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl" style={{ background: 'rgba(5,150,105,0.06)', border: '1px solid rgba(5,150,105,0.12)' }}>
+            <div key={s} className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl" style={{ background: 'rgba(5,150,105,0.06)', border: '1px solid rgba(5,150,105,0.12)' }}>
               <Wifi className="w-4 h-4 flex-shrink-0" style={{ color: '#059669' }} />
               <span className="text-sm text-slate-300">{s}</span>
               <span className="text-[10px] font-bold ml-auto text-emerald-500">Connected</span>
             </div>
           ))}
           {unconnected.map((s: string) => (
-            <div key={s} className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl" style={{ background: 'rgba(100,116,139,0.04)', border: '1px solid rgba(100,116,139,0.1)' }}>
+            <div key={s} className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl" style={{ background: 'rgba(100,116,139,0.04)', border: '1px solid rgba(100,116,139,0.1)' }}>
               <WifiOff className="w-4 h-4 flex-shrink-0 text-slate-600" />
               <span className="text-sm text-slate-500">{s}</span>
               <span className="text-[10px] font-bold ml-auto text-slate-600">Not connected</span>
@@ -726,14 +726,14 @@ function VisTab() {
       {/* Governance */}
       <Section title="Governance">
         {govMode?.mode && (
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-3" style={{ background: 'rgba(14,165,233,0.06)', border: '1px solid rgba(14,165,233,0.12)' }}>
+          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl mb-3" style={{ background: 'rgba(14,165,233,0.06)', border: '1px solid rgba(14,165,233,0.12)' }}>
             <Shield className="w-4 h-4 flex-shrink-0" style={{ color: '#0ea5e9' }} />
             <span className="text-sm" style={{ color: 'var(--os-text-2)' }}>Governance Mode</span>
             <span className="text-sm font-bold uppercase ml-auto" style={{ color: 'var(--os-text-1)' }}>{govMode.mode}</span>
           </div>
         )}
         {auditEntries.length > 0 && (
-          <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
+          <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(10,15,30,0.5)' }}>
             {auditEntries.map((e: any, i: number) => (
               <div key={i} className="flex items-start gap-3 px-4 py-3" style={{ borderBottom: i < auditEntries.length - 1 ? '1px solid rgba(13,17,23,0.4)' : 'none', background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
                 <Clock className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-slate-600" />
@@ -764,7 +764,7 @@ function VisTab() {
             { name: 'Performance',      desc: 'Core Web Vitals tracking' },
             { name: 'KPI',              desc: 'Metric snapshots & aggregation' },
           ].map(m => (
-            <div key={m.name} className="px-3 py-2.5 rounded-xl" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.1)' }}>
+            <div key={m.name} className="px-3 py-2.5 rounded-2xl" style={{ background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.1)' }}>
               <p className="text-xs font-bold" style={{ color: 'var(--os-text-1)' }}>{m.name}</p>
               <p className="text-[10px] mt-0.5" style={{ color: 'var(--os-text-2)' }}>{m.desc}</p>
             </div>
@@ -873,7 +873,7 @@ function KimmpSystemsPanel() {
           <button
             onClick={runLoop}
             disabled={loopRunning}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
             style={{ background: 'rgba(37,100,234,0.15)', border: '1px solid rgba(37,100,234,0.3)', color: '#2564ea' }}
           >
             <Play className={`w-4 h-4 ${loopRunning ? 'animate-spin' : ''}`} />
@@ -884,7 +884,7 @@ function KimmpSystemsPanel() {
           value={triggerInput}
           onChange={e => setTriggerInput(e.target.value)}
           placeholder="Optional context / input for this run…"
-          className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
+          className="w-full px-4 py-2.5 rounded-2xl text-sm outline-none"
           style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}
         />
       </div>
@@ -896,7 +896,7 @@ function KimmpSystemsPanel() {
           return (
             <div key={sys.id} className="rounded-2xl p-4 space-y-3" style={{ background: `${color}07`, border: `1px solid ${color}20` }}>
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: color }}>
+                <div className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: color }}>
                   <Brain className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -921,7 +921,7 @@ function KimmpSystemsPanel() {
               <button
                 onClick={() => runSystem(sys.id)}
                 disabled={runningSystem === sys.id}
-                className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+                className="w-full flex items-center justify-center gap-1.5 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
                 style={{ color, background: `${color}12`, border: `1px solid ${color}28` }}
               >
                 <Play className={`w-3 h-3 ${runningSystem === sys.id ? 'animate-spin' : ''}`} />
@@ -932,7 +932,7 @@ function KimmpSystemsPanel() {
         })}
         <div className="rounded-2xl p-4 space-y-3" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#2564ea,#7f53f9)' }}>
+            <div className="w-9 h-9 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#2564ea,#7f53f9)' }}>
               <Brain className="w-4 h-4 text-white" />
             </div>
             <div>
@@ -993,7 +993,7 @@ function KimmpBriefingsPanel() {
         return (
           <div key={b.id} className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${color}20`, background: `${color}05` }}>
             <button className="w-full flex items-start gap-3 p-4 text-left" onClick={() => setExpanded(isOpen ? null : b.id)}>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: color }}>
+              <div className="w-8 h-8 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: color }}>
                 <Brain className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -1018,7 +1018,7 @@ function KimmpBriefingsPanel() {
                 {alerts.length > 0 && (
                   <div className="space-y-1.5 pt-3">
                     {alerts.map((a: string, i: number) => (
-                      <div key={i} className="flex items-start gap-2 px-3 py-2 rounded-xl text-xs text-red-300" style={{ background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.15)' }}>
+                      <div key={i} className="flex items-start gap-2 px-3 py-2 rounded-2xl text-xs text-red-300" style={{ background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.15)' }}>
                         <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-red-400" />{a}
                       </div>
                     ))}
@@ -1056,19 +1056,19 @@ function KimmpBriefingsPanel() {
                           onChange={e => setCorrText(e.target.value)}
                           placeholder="What should the system have done differently?"
                           rows={2}
-                          className="w-full px-3 py-2 rounded-xl text-xs outline-none resize-none"
+                          className="w-full px-3 py-2 rounded-2xl text-xs outline-none resize-none"
                           style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}
                         />
                         <div className="flex gap-2">
-                          <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'CORRECTED', correction: correctionText })} disabled={!correctionText.trim() || feedbackMutation.isPending} className="px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40" style={{ color: '#fdab3d', background: 'rgba(253,171,61,0.12)', border: '1px solid rgba(253,171,61,0.25)' }}>Submit Correction</button>
-                          <button onClick={() => { setCorrecting(null); setCorrText('') }} className="px-3 py-1.5 rounded-lg text-xs text-slate-500">Cancel</button>
+                          <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'CORRECTED', correction: correctionText })} disabled={!correctionText.trim() || feedbackMutation.isPending} className="px-3 py-1.5 rounded-2xl text-xs font-bold disabled:opacity-40" style={{ color: '#fdab3d', background: 'rgba(253,171,61,0.12)', border: '1px solid rgba(253,171,61,0.25)' }}>Submit Correction</button>
+                          <button onClick={() => { setCorrecting(null); setCorrText('') }} className="px-3 py-1.5 rounded-2xl text-xs text-slate-500">Cancel</button>
                         </div>
                       </div>
                     ) : (
                       <div className="flex gap-2 flex-wrap">
-                        <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'ACCEPTED' })} disabled={feedbackMutation.isPending} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40" style={{ color: '#059669', background: 'rgba(5,150,105,0.1)', border: '1px solid rgba(5,150,105,0.2)' }}><CheckCircle2 className="w-3.5 h-3.5" /> Accept</button>
-                        <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'DISMISSED' })} disabled={feedbackMutation.isPending} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40" style={{ color: '#e2445c', background: 'rgba(226,68,92,0.1)', border: '1px solid rgba(226,68,92,0.2)' }}><XCircle className="w-3.5 h-3.5" /> Dismiss</button>
-                        <button onClick={() => setCorrecting(b.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold" style={{ color: '#fdab3d', background: 'rgba(253,171,61,0.1)', border: '1px solid rgba(253,171,61,0.2)' }}><AlertTriangle className="w-3.5 h-3.5" /> Correct</button>
+                        <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'ACCEPTED' })} disabled={feedbackMutation.isPending} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold disabled:opacity-40" style={{ color: '#059669', background: 'rgba(5,150,105,0.1)', border: '1px solid rgba(5,150,105,0.2)' }}><CheckCircle2 className="w-3.5 h-3.5" /> Accept</button>
+                        <button onClick={() => feedbackMutation.mutate({ id: b.id, feedback: 'DISMISSED' })} disabled={feedbackMutation.isPending} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold disabled:opacity-40" style={{ color: '#e2445c', background: 'rgba(226,68,92,0.1)', border: '1px solid rgba(226,68,92,0.2)' }}><XCircle className="w-3.5 h-3.5" /> Dismiss</button>
+                        <button onClick={() => setCorrecting(b.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold" style={{ color: '#fdab3d', background: 'rgba(253,171,61,0.1)', border: '1px solid rgba(253,171,61,0.2)' }}><AlertTriangle className="w-3.5 h-3.5" /> Correct</button>
                       </div>
                     )}
                   </div>
@@ -1106,22 +1106,22 @@ function KimmpLearningPanel() {
           return (
             <div key={sys.id} className="rounded-2xl p-4 space-y-3" style={{ background: `${color}07`, border: `1px solid ${color}18` }}>
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: color }}>
+                <div className="w-7 h-7 rounded-2xl flex items-center justify-center" style={{ background: color }}>
                   <Brain className="w-3.5 h-3.5 text-white" />
                 </div>
                 <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{sys.label}</p>
                 <span className="ml-auto text-[10px] font-bold" style={{ color: 'var(--os-text-2)' }}>{s.totalRecords ?? 0} runs</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
-                <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.12)' }}>
+                <div className="rounded-2xl px-3 py-2 text-center" style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.12)' }}>
                   <p className="text-base font-bold text-emerald-400">{s.acceptanceRate ?? 0}%</p>
                   <p className="text-[9px] text-slate-600 mt-0.5">Accepted</p>
                 </div>
-                <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.12)' }}>
+                <div className="rounded-2xl px-3 py-2 text-center" style={{ background: 'rgba(226,68,92,0.08)', border: '1px solid rgba(226,68,92,0.12)' }}>
                   <p className="text-base font-bold text-red-400">{s.dismissalRate ?? 0}%</p>
                   <p className="text-[9px] text-slate-600 mt-0.5">Dismissed</p>
                 </div>
-                <div className="rounded-xl px-3 py-2 text-center" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
+                <div className="rounded-2xl px-3 py-2 text-center" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }}>
                   <p className="text-base font-bold" style={{ color: 'var(--os-text-1)' }}>{s.withFeedback ?? 0}</p>
                   <p className="text-[9px] text-slate-600 mt-0.5">Rated</p>
                 </div>
@@ -1219,7 +1219,7 @@ function KimmpKnowledgePanel() {
           const c  = SCOLOR[s] ?? '#64748b'
           const st = indexState[s] ?? {}
           return (
-            <button key={s} onClick={() => setSelectedSys(s)} className="rounded-xl px-3 py-2.5 text-center transition-all" style={{ background: s === selectedSys ? `${c}15` : 'rgba(255,255,255,0.02)', border: `1px solid ${s === selectedSys ? c : 'rgba(255,255,255,0.06)'}` }}>
+            <button key={s} onClick={() => setSelectedSys(s)} className="rounded-2xl px-3 py-2.5 text-center transition-all" style={{ background: s === selectedSys ? `${c}15` : 'rgba(255,255,255,0.02)', border: `1px solid ${s === selectedSys ? c : 'rgba(255,255,255,0.06)'}` }}>
               <p className="text-[10px] font-bold truncate" style={{ color: s === selectedSys ? c : '#64748b' }}>{s.replace('_', '_')}</p>
               <p className="text-base font-bold mt-0.5" style={{ color: 'var(--os-text-1)' }}>{st.chunks ?? 0}</p>
               <p className="text-[9px] text-slate-600">docs</p>
@@ -1231,21 +1231,21 @@ function KimmpKnowledgePanel() {
       <div className="rounded-2xl p-4 space-y-4" style={{ background: `${color}07`, border: `1px solid ${color}18` }}>
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold" style={{ color: 'var(--os-text-1)' }}>{selectedSys} Knowledge Base</p>
-          <button onClick={() => setShowIngest(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold" style={{ color, background: `${color}12`, border: `1px solid ${color}25` }}>+ Ingest Document</button>
+          <button onClick={() => setShowIngest(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold" style={{ color, background: `${color}12`, border: `1px solid ${color}25` }}>+ Ingest Document</button>
         </div>
 
         {showIngest && (
           <div className="space-y-3 pt-2 border-t" style={{ borderColor: `${color}15` }}>
             <div className="grid grid-cols-2 gap-3">
-              <select value={ingestForm.docType} onChange={e => setIngestForm(f => ({ ...f, docType: e.target.value }))} className="px-3 py-2 rounded-xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}>
+              <select value={ingestForm.docType} onChange={e => setIngestForm(f => ({ ...f, docType: e.target.value }))} className="px-3 py-2 rounded-2xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }}>
                 <option value="">Doc Type *</option>
                 {docTypes.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
-              <input value={ingestForm.source} onChange={e => setIngestForm(f => ({ ...f, source: e.target.value }))} placeholder="Source (optional)" className="px-3 py-2 rounded-xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
+              <input value={ingestForm.source} onChange={e => setIngestForm(f => ({ ...f, source: e.target.value }))} placeholder="Source (optional)" className="px-3 py-2 rounded-2xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
             </div>
-            <input value={ingestForm.title} onChange={e => setIngestForm(f => ({ ...f, title: e.target.value }))} placeholder="Title *" className="w-full px-3 py-2 rounded-xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
-            <textarea value={ingestForm.body} onChange={e => setIngestForm(f => ({ ...f, body: e.target.value }))} placeholder="Document content *" rows={4} className="w-full px-3 py-2 rounded-xl text-xs outline-none resize-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
-            <button onClick={() => ingestMutation.mutate(ingestForm)} disabled={!ingestForm.title || !ingestForm.body || !ingestForm.docType || ingestMutation.isPending} className="px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40" style={{ color, background: `${color}15`, border: `1px solid ${color}30` }}>
+            <input value={ingestForm.title} onChange={e => setIngestForm(f => ({ ...f, title: e.target.value }))} placeholder="Title *" className="w-full px-3 py-2 rounded-2xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
+            <textarea value={ingestForm.body} onChange={e => setIngestForm(f => ({ ...f, body: e.target.value }))} placeholder="Document content *" rows={4} className="w-full px-3 py-2 rounded-2xl text-xs outline-none resize-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
+            <button onClick={() => ingestMutation.mutate(ingestForm)} disabled={!ingestForm.title || !ingestForm.body || !ingestForm.docType || ingestMutation.isPending} className="px-4 py-2 rounded-2xl text-xs font-bold disabled:opacity-40" style={{ color, background: `${color}15`, border: `1px solid ${color}30` }}>
               {ingestMutation.isPending ? 'Embedding…' : 'Ingest & Embed'}
             </button>
           </div>
@@ -1254,16 +1254,16 @@ function KimmpKnowledgePanel() {
         <div className="space-y-2">
           <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">Test Retrieval</p>
           <div className="flex gap-2">
-            <input value={testQuery} onChange={e => setTestQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && testRetrieval()} placeholder="Query the knowledge base…" className="flex-1 px-3 py-2 rounded-xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
-            <button onClick={testRetrieval} disabled={testLoading || !testQuery.trim()} className="px-3 py-2 rounded-xl text-xs font-bold disabled:opacity-40" style={{ color, background: `${color}12`, border: `1px solid ${color}25` }}>
+            <input value={testQuery} onChange={e => setTestQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && testRetrieval()} placeholder="Query the knowledge base…" className="flex-1 px-3 py-2 rounded-2xl text-xs outline-none" style={{ background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-1)' }} />
+            <button onClick={testRetrieval} disabled={testLoading || !testQuery.trim()} className="px-3 py-2 rounded-2xl text-xs font-bold disabled:opacity-40" style={{ color, background: `${color}12`, border: `1px solid ${color}25` }}>
               {testLoading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : 'Search'}
             </button>
           </div>
           {testResult && (
-            <div className="rounded-xl p-3 space-y-2" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="rounded-2xl p-3 space-y-2" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
               <p className="text-[10px] font-bold text-slate-500">{testResult.chunkCount} chunk{testResult.chunkCount !== 1 ? 's' : ''} retrieved</p>
               {(testResult.chunks ?? []).map((c: any, i: number) => (
-                <div key={i} className="px-3 py-2 rounded-lg" style={{ background: `${color}08`, border: `1px solid ${color}15` }}>
+                <div key={i} className="px-3 py-2 rounded-2xl" style={{ background: `${color}08`, border: `1px solid ${color}15` }}>
                   <p className="text-[10px] font-bold text-white mb-0.5">[{c.docType}] {c.title}</p>
                   <p className="text-[10px] text-slate-500 leading-relaxed line-clamp-3">{c.body}</p>
                   <p className="text-[9px] text-slate-600 mt-1">Score: {(c.score * 100).toFixed(1)}%{c.source ? ` · ${c.source}` : ''}</p>
@@ -1279,7 +1279,7 @@ function KimmpKnowledgePanel() {
             <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mb-2">{docList.length} documents indexed</p>
             <div className="space-y-1.5">
               {docList.map((d: any) => (
-                <div key={d.id} className="flex items-center gap-3 px-3 py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div key={d.id} className="flex items-center gap-3 px-3 py-2 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <span className="text-[10px] font-mono px-1.5 py-0.5 rounded flex-shrink-0" style={{ color, background: `${color}12` }}>{d.docType}</span>
                   <p className="text-xs text-slate-300 flex-1 truncate">{d.title}</p>
                   <span className="text-[10px] text-slate-600 flex-shrink-0">{timeAgo(d.createdAt)}</span>
@@ -1311,7 +1311,7 @@ function KimmpTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3 pb-4 border-b" style={{ borderColor: 'rgba(37,100,234,0.15)' }}>
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg,#2564ea,#7f53f9)' }}>
+        <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg,#2564ea,#7f53f9)' }}>
           <Brain className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
@@ -1320,7 +1320,7 @@ function KimmpTab() {
         </div>
         <div className="flex gap-1 flex-wrap">
           {SUB_TABS.map(t => (
-            <button key={t.id} onClick={() => setSub(t.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all" style={{ color: sub === t.id ? '#2564ea' : '#64748b', background: sub === t.id ? 'rgba(37,100,234,0.12)' : 'transparent', border: `1px solid ${sub === t.id ? 'rgba(37,100,234,0.3)' : 'transparent'}` }}>
+            <button key={t.id} onClick={() => setSub(t.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-medium transition-all" style={{ color: sub === t.id ? '#2564ea' : '#64748b', background: sub === t.id ? 'rgba(37,100,234,0.12)' : 'transparent', border: `1px solid ${sub === t.id ? 'rgba(37,100,234,0.3)' : 'transparent'}` }}>
               <t.icon className="w-3.5 h-3.5" />{t.label}
             </button>
           ))}
@@ -1370,7 +1370,7 @@ function InfraServiceCard({ svc }: { svc: InfraService }) {
     : '#ef4444'
 
   return (
-    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-3">
       <div className="flex items-start justify-between gap-2">
         <div>
           <p className="text-sm font-bold text-[var(--os-text-1)]">{svc.name}</p>
@@ -1435,14 +1435,14 @@ function InfraTab() {
           </div>
         </div>
         <button onClick={() => refetch()} disabled={isFetching}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-40">
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-40">
           <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} /> Refresh
         </button>
       </div>
 
       {isLoading ? (
         <div className="grid grid-cols-2 gap-4">
-          {[1,2,3,4].map(i => <div key={i} className="h-32 rounded-xl animate-pulse bg-[var(--os-surface-0)]" />)}
+          {[1,2,3,4].map(i => <div key={i} className="h-32 rounded-2xl animate-pulse bg-[var(--os-surface-0)]" />)}
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-4">
@@ -1451,7 +1451,7 @@ function InfraTab() {
       )}
 
       {data?.connectedClients != null && (
-        <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] px-5 py-4">
+        <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] px-5 py-4">
           <div className="grid grid-cols-4 gap-4">
             {[
               { label: 'Socket Clients', value: data.connectedClients, color: '#14b8a6' },
@@ -1529,7 +1529,7 @@ export function SystemsModule() {
           <Ticker interval={60} onTick={refreshAll} />
           <button
             onClick={refreshAll}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-2xl"
             style={{ background: 'rgba(37,100,234,0.10)', border: '1px solid rgba(37,100,234,0.25)', color: '#2564ea' }}
           >
             <RefreshCw className="w-3.5 h-3.5" />

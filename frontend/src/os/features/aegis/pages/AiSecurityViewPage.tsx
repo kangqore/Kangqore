@@ -23,7 +23,7 @@ const EVENT_COLOR: Record<string, string> = { POLICY_VIOLATION: RED, ACCESS_DENI
 
 function StatCard({ label, value, color }: { label: string; value: number; color: string }) {
   return (
-    <div className="rounded-xl p-4 text-center" style={{ background: SURF, border: `1px solid ${BDR}` }}>
+    <div className="rounded-2xl p-4 text-center" style={{ background: SURF, border: `1px solid ${BDR}` }}>
       <p className="text-2xl font-black" style={{ color }}>{value}</p>
       <p className="text-[10px] uppercase tracking-wider mt-1" style={{ color: T2 }}>{label}</p>
     </div>
@@ -48,7 +48,7 @@ export function AiSecurityViewPage() {
         </p>
       </div>
 
-      <div className="rounded-xl p-3 flex items-start gap-2.5" style={{ background: `${BLUE}12`, border: `1px solid ${BLUE}30` }}>
+      <div className="rounded-2xl p-3 flex items-start gap-2.5" style={{ background: `${BLUE}12`, border: `1px solid ${BLUE}30` }}>
         <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: BLUE }} />
         <p className="text-xs leading-relaxed" style={{ color: T2 }}>{data?.disclaimer}</p>
       </div>
@@ -61,7 +61,7 @@ export function AiSecurityViewPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+        <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
           <div className="px-4 py-3 flex items-center gap-2" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
             <Radio className="w-4 h-4" style={{ color: T2 }} />
             <p className="text-sm font-semibold" style={{ color: T1 }}>Recent AI-touched events</p>
@@ -81,7 +81,7 @@ export function AiSecurityViewPage() {
           </div>
         </div>
 
-        <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
+        <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BDR}` }}>
           <div className="px-4 py-3 flex items-center gap-2" style={{ background: CARD, borderBottom: `1px solid ${BDR}` }}>
             <ClipboardCheck className="w-4 h-4" style={{ color: T2 }} />
             <p className="text-sm font-semibold" style={{ color: T1 }}>Pending action reviews</p>

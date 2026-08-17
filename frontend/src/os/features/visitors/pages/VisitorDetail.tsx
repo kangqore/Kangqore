@@ -70,7 +70,7 @@ function EqoreConversationsSection({ visitorUuid }: { visitorUuid: string }) {
               key={t.id}
               to={`/kangqore-view/admin/visitors/transcripts`}
               state={{ openId: t.id }}
-              className="flex items-start justify-between gap-3 p-3 rounded-xl bg-[var(--os-surface-0)] hover:bg-[var(--os-border)] transition-colors group"
+              className="flex items-start justify-between gap-3 p-3 rounded-2xl bg-[var(--os-surface-0)] hover:bg-[var(--os-border)] transition-colors group"
             >
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-[var(--os-text-1)] truncate">{t.firstMessage ?? '(no preview)'}</p>
@@ -266,7 +266,7 @@ export function VisitorDetail() {
                 { label: 'Connection',  value: ds.connection ?? '—', icon: <WifiHigh size={11} />      },
                 { label: 'Do Not Track', value: ds.dnt ? 'Yes' : 'No', icon: <MapPin size={11} />     },
               ].map(m => (
-                <div key={m.label} className="bg-[var(--os-surface-0)] rounded-xl p-3">
+                <div key={m.label} className="bg-[var(--os-surface-0)] rounded-2xl p-3">
                   <p className="text-[9px] uppercase tracking-widest text-[var(--os-text-2)] flex items-center gap-1 mb-1">{m.icon}{m.label}</p>
                   <p className="text-xs font-semibold text-[var(--os-text-1)] truncate">{m.value}</p>
                 </div>
@@ -280,7 +280,7 @@ export function VisitorDetail() {
       {user && (
         <Section title="Identified as" icon={<User size={13} />}>
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-[var(--os-surface-0)] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-2xl bg-[var(--os-surface-0)] flex items-center justify-center">
               <span className="text-sm font-bold text-[var(--os-text-1)]">{user.name[0]}</span>
             </div>
             <div>

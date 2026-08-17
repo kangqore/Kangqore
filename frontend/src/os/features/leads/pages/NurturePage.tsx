@@ -46,10 +46,10 @@ export function NurturePage() {
   if (isLoading && leads.length === 0) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-56 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+        <div className="h-8 w-56 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-48 bg-[var(--os-surface-0)] rounded-xl animate-pulse" />
+            <div key={i} className="h-48 bg-[var(--os-surface-0)] rounded-2xl animate-pulse" />
           ))}
         </div>
       </div>
@@ -124,7 +124,7 @@ export function NurturePage() {
                   const stepBg = STEP_COLOR[step.type] ?? '#579bfc'
                   return (
                     <div key={step.step}
-                      className="flex items-start gap-3 p-2.5 rounded-xl transition-colors"
+                      className="flex items-start gap-3 p-2.5 rounded-2xl transition-colors"
                       style={{ background: isNext ? `${stepBg}11` : 'transparent', border: isNext ? `1px solid ${stepBg}33` : '1px solid transparent' }}>
                       {/* Step number badge */}
                       <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-white text-[10px] font-bold"
@@ -133,7 +133,7 @@ export function NurturePage() {
                       </div>
 
                       {/* Step type icon */}
-                      <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 text-white"
+                      <div className="w-6 h-6 rounded-2xl flex items-center justify-center flex-shrink-0 text-white"
                         style={{ background: step.completed ? '#00c87533' : stepBg }}>
                         <Icon className="w-3 h-3" style={{ color: step.completed ? '#00c875' : 'white' }} />
                       </div>
@@ -187,7 +187,7 @@ export function NurturePage() {
             .filter(l => !['won','lost'].includes(l.stage) && !nurtureSequences.some(n => n.leadId === l.id && n.status === 'active'))
             .map(lead => (
               <div key={lead.id} className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--os-surface-0)] border-b border-[var(--os-border)] last:border-0 transition-colors">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-white text-[10px] font-bold"
+                <div className="w-7 h-7 rounded-2xl flex items-center justify-center flex-shrink-0 text-white text-[10px] font-bold"
                   style={{ background: '#579bfc' }}>
                   {lead.company.slice(0,2)}
                 </div>

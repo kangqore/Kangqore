@@ -124,7 +124,7 @@ export function KEOSBillingPage() {
             ].map(s => {
               const Icon = s.icon
               return (
-                <div key={s.label} className="rounded-xl p-3 border" style={{ borderColor: BDR, background: SURF }}>
+                <div key={s.label} className="rounded-2xl p-3 border" style={{ borderColor: BDR, background: SURF }}>
                   <div className="flex items-center gap-1.5 mb-2">
                     <Icon className="w-3 h-3" style={{ color: s.color }} />
                     <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: T2 }}>{s.label}</p>
@@ -139,9 +139,9 @@ export function KEOSBillingPage() {
 
       {/* First Revenue Event CTA (when MRR is zero + Stripe not configured) */}
       {!revenue?.stripeEnabled && (revenue?.mrr ?? 0) === 0 && !simDone && (
-        <div className="rounded-xl p-5 border" style={{ background: 'rgba(124,58,237,0.05)', borderColor: 'rgba(124,58,237,0.2)' }}>
+        <div className="rounded-2xl p-5 border" style={{ background: 'rgba(124,58,237,0.05)', borderColor: 'rgba(124,58,237,0.2)' }}>
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.2)' }}>
               <Zap className="w-5 h-5" style={{ color: PURP }} />
             </div>
@@ -154,7 +154,7 @@ export function KEOSBillingPage() {
               <button
                 onClick={() => simulateMut.mutate()}
                 disabled={simulateMut.isPending}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all hover:opacity-90"
+                className="flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold transition-all hover:opacity-90"
                 style={{ background: PURP, color: '#fff', opacity: simulateMut.isPending ? 0.7 : 1 }}
               >
                 <Zap className="w-4 h-4" />
@@ -170,7 +170,7 @@ export function KEOSBillingPage() {
 
       {/* Success callout */}
       {simDone && (
-        <div className="rounded-xl p-4 border flex items-center gap-3"
+        <div className="rounded-2xl p-4 border flex items-center gap-3"
           style={{ background: 'rgba(16,185,129,0.05)', borderColor: 'rgba(16,185,129,0.2)' }}>
           <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: TEAL }} />
           <p className="text-sm font-semibold" style={{ color: TEAL }}>
@@ -180,14 +180,14 @@ export function KEOSBillingPage() {
       )}
 
       {/* Subscriptions table */}
-      <div className="rounded-xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
+      <div className="rounded-2xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
         <div className="flex items-center justify-between px-5 py-3 border-b" style={{ borderColor: BDR }}>
           <div className="flex items-center gap-2">
             <Building2 className="w-4 h-4" style={{ color: BLUE }} />
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: T2 }}>Tenant Subscriptions</p>
           </div>
           <button onClick={() => qc.invalidateQueries({ queryKey: ['billing-subscriptions'] })}
-            className="p-1 rounded-lg transition-all hover:opacity-70" style={{ color: T2 }}>
+            className="p-1 rounded-2xl transition-all hover:opacity-70" style={{ color: T2 }}>
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -229,7 +229,7 @@ export function KEOSBillingPage() {
       </div>
 
       {/* Recent charges */}
-      <div className="rounded-xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
+      <div className="rounded-2xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
         <div className="flex items-center gap-2 px-5 py-3 border-b" style={{ borderColor: BDR }}>
           <CreditCard className="w-4 h-4" style={{ color: PURP }} />
           <p className="text-xs font-bold uppercase tracking-wider" style={{ color: T2 }}>Recent Charges</p>
@@ -265,11 +265,11 @@ export function KEOSBillingPage() {
 
       {/* Tier breakdown */}
       {Object.keys(revenue?.tierCounts ?? {}).length > 0 && (
-        <div className="rounded-xl p-5 border" style={{ background: CARD, borderColor: BDR }}>
+        <div className="rounded-2xl p-5 border" style={{ background: CARD, borderColor: BDR }}>
           <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: T2 }}>Plan Distribution</p>
           <div className="flex gap-3 flex-wrap">
             {Object.entries(revenue?.tierCounts ?? {}).map(([tier, count]) => (
-              <div key={tier} className="rounded-xl px-4 py-3 border text-center min-w-[80px]"
+              <div key={tier} className="rounded-2xl px-4 py-3 border text-center min-w-[80px]"
                 style={{ borderColor: BDR, background: SURF }}>
                 <p className="text-xs font-bold" style={{ color: T1 }}>{count}</p>
                 <p className="text-[10px] font-semibold uppercase tracking-wider mt-1" style={{ color: T2 }}>{tier}</p>
@@ -281,7 +281,7 @@ export function KEOSBillingPage() {
 
       {/* Stripe not configured notice */}
       {!revenue?.stripeEnabled && (
-        <div className="rounded-xl p-4 border flex items-center gap-3"
+        <div className="rounded-2xl p-4 border flex items-center gap-3"
           style={{ background: 'rgba(245,158,11,0.05)', borderColor: 'rgba(245,158,11,0.2)' }}>
           <AlertCircle className="w-4 h-4 flex-shrink-0" style={{ color: AMB }} />
           <p className="text-xs" style={{ color: T2 }}>

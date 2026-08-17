@@ -176,7 +176,7 @@ function IssueRow({ issue }: { issue: Issue }) {
       <div className="p-4">
         <div className="flex items-start gap-3">
           {/* Severity badge */}
-          <div className="flex-shrink-0 w-10 h-10 rounded-lg flex flex-col items-center justify-center"
+          <div className="flex-shrink-0 w-10 h-10 rounded-2xl flex flex-col items-center justify-center"
             style={{ background: sevColor + '18', border: `1px solid ${sevColor}30` }}>
             <span className="text-[10px] font-black" style={{ color: sevColor }}>{issue.severity}</span>
             <span className="text-[8px] uppercase" style={{ color: 'var(--os-text-3)' }}>{SEV_LABEL[issue.severity]}</span>
@@ -187,7 +187,7 @@ function IssueRow({ issue }: { issue: Issue }) {
               <p className="text-sm font-semibold leading-tight" style={{ color: 'var(--os-text-1)' }}>{issue.title}</p>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {/* SLA clock */}
-                <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg flex-shrink-0"
+                <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-2xl flex-shrink-0"
                   style={{
                     color: sla.urgent ? '#e2445c' : 'var(--os-text-3)',
                     background: sla.urgent ? '#e2445c12' : 'var(--os-surface-0)',
@@ -197,7 +197,7 @@ function IssueRow({ issue }: { issue: Issue }) {
                   {sla.label}
                 </span>
                 {/* Status */}
-                <span className="text-[10px] font-bold px-2 py-1 rounded-lg capitalize flex-shrink-0"
+                <span className="text-[10px] font-bold px-2 py-1 rounded-2xl capitalize flex-shrink-0"
                   style={{
                     color: issue.status === 'resolved' ? '#00c875' : issue.status === 'investigating' ? '#fdab3d' : 'var(--os-text-3)',
                     background: issue.status === 'resolved' ? '#00c87512' : issue.status === 'investigating' ? '#fdab3d12' : 'var(--os-surface-0)',
@@ -209,7 +209,7 @@ function IssueRow({ issue }: { issue: Issue }) {
             </div>
 
             <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md"
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-2xl"
                 style={{ color: domainColor, background: domainColor + '14', border: `1px solid ${domainColor}25` }}>
                 {issue.domain}
               </span>
@@ -222,7 +222,7 @@ function IssueRow({ issue }: { issue: Issue }) {
             </div>
 
             {/* KIMMP action bar */}
-            <div className="mt-2.5 flex items-start gap-2 px-3 py-2 rounded-lg"
+            <div className="mt-2.5 flex items-start gap-2 px-3 py-2 rounded-2xl"
               style={{ background: '#7c3aed08', border: '1px solid #7c3aed18' }}>
               <Brain className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: '#7c3aed' }} />
               <div className="flex-1 min-w-0">
@@ -275,7 +275,7 @@ export function IssuesFeedPage() {
   return (
     <div className="space-y-5">
       {/* Live project health */}
-      <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
+      <div className="flex items-center gap-2 px-3 py-2 rounded-2xl"
         style={{ background: '#579bfc08', border: '1px solid #579bfc20' }}>
         <Database className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#579bfc' }} />
         <p className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>
@@ -318,7 +318,7 @@ export function IssuesFeedPage() {
           const color = s === 'all' ? '#7c3aed' : SEV_COLOR[s as Severity]
           return (
             <button key={s} onClick={() => setSevFilter(s)}
-              className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
+              className="text-[11px] font-semibold px-3 py-1.5 rounded-2xl transition-all"
               style={{
                 background: isActive ? color + '14' : 'var(--os-surface-0)',
                 border: `1px solid ${isActive ? color + '35' : 'var(--os-border)'}`,
@@ -330,7 +330,7 @@ export function IssuesFeedPage() {
         })}
         <div className="w-px" style={{ background: 'var(--os-border)' }} />
         <button onClick={() => setStatusFilter(statusFilter === 'open-only' ? 'all' : 'open-only')}
-          className="text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all"
+          className="text-[11px] font-semibold px-3 py-1.5 rounded-2xl transition-all"
           style={{
             background: statusFilter === 'open-only' ? '#00c87512' : 'var(--os-surface-0)',
             border: `1px solid ${statusFilter === 'open-only' ? '#00c87530' : 'var(--os-border)'}`,

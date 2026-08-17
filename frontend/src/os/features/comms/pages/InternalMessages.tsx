@@ -189,7 +189,7 @@ export function InternalMessages() {
                   onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) send() }}
                   rows={2}
                   placeholder="Type a message… (⌘↵ to send)"
-                  className="flex-1 resize-none border border-[var(--os-border)] rounded-xl px-3 py-2.5 text-sm text-[var(--os-text-1)] placeholder-[var(--os-text-2)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+                  className="flex-1 resize-none border border-[var(--os-border)] rounded-2xl px-3 py-2.5 text-sm text-[var(--os-text-1)] placeholder-[var(--os-text-2)] bg-[var(--os-surface-0)] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
                 />
                 <Button variant="primary" size="sm" leftIcon={<Send className="w-3.5 h-3.5" />}
                   disabled={!draft.trim() || isPending} onClick={send}>

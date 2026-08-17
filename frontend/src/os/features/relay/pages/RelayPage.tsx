@@ -12,7 +12,7 @@ class RelayBoundary extends Component<{ children: ReactNode }, { crashed: boolea
           <p className="text-sm">RELAY couldn't load.</p>
           <button
             onClick={() => this.setState({ crashed: false })}
-            className="text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors"
           >
             Try again
           </button>

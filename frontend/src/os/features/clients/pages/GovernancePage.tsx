@@ -36,7 +36,7 @@ const TYPE_COLOR: Record<GovernanceType, string> = {
   escalation:      'bg-red-100 text-red-600',
 }
 const inputStyle = { background: 'var(--os-surface-0)', border: '1px solid var(--os-border)' }
-const inputClass = 'w-full rounded-lg px-3 py-2 text-[13px] text-[var(--os-text-1)] placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
+const inputClass = 'w-full rounded-2xl px-3 py-2 text-[13px] text-[var(--os-text-1)] placeholder-slate-600 outline-none focus:ring-1 focus:ring-blue-500/40'
 
 function AddGovernanceModal({ clients, onClose }: { clients: { id: string; name: string }[]; onClose: () => void }) {
   const qc = useQueryClient()
@@ -106,7 +106,7 @@ function AddGovernanceModal({ clients, onClose }: { clients: { id: string; name:
         <div className="flex justify-end gap-2 pt-1">
           <button onClick={onClose} className="px-3 py-1.5 text-[13px] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">Cancel</button>
           <button onClick={() => mutate()} disabled={isPending || !form.clientId || !form.title}
-            className="px-4 py-1.5 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50"
+            className="px-4 py-1.5 rounded-2xl text-[13px] font-semibold text-white disabled:opacity-50"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             {isPending ? 'Saving…' : 'Add Item'}
           </button>
@@ -154,13 +154,13 @@ export function GovernancePage() {
           <p className="text-sm text-[var(--os-text-2)] mt-0.5">{governance.length} items · decisions, changes, steering, escalations</p>
         </div>
         <div className="flex items-center gap-2">
-          {critical > 0 && <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-red-50 text-red-700 border border-red-200"><AlertTriangle className="w-3.5 h-3.5"/>{critical} critical open</span>}
+          {critical > 0 && <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-2xl bg-red-50 text-red-700 border border-red-200"><AlertTriangle className="w-3.5 h-3.5"/>{critical} critical open</span>}
           {governance.length > 0 && <>
-            <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">{open} open</span>
-            <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[var(--os-surface-0)] text-[var(--os-text-2)] border border-[var(--os-border)]">{pending} pending</span>
+            <span className="text-xs font-semibold px-3 py-1.5 rounded-2xl bg-amber-50 text-amber-700 border border-amber-200">{open} open</span>
+            <span className="text-xs font-semibold px-3 py-1.5 rounded-2xl bg-[var(--os-surface-0)] text-[var(--os-text-2)] border border-[var(--os-border)]">{pending} pending</span>
           </>}
           <button onClick={() => setShowAdd(true)}
-            className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-white text-[13px] font-semibold"
+            className="flex items-center gap-1.5 h-8 px-3 rounded-2xl text-white text-[13px] font-semibold"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             <Plus className="w-3.5 h-3.5" /> Add Item
           </button>
@@ -172,7 +172,7 @@ export function GovernancePage() {
           <BookOpen className="w-10 h-10 text-slate-800" />
           <p className="text-sm font-semibold text-[var(--os-text-2)]">No governance items yet</p>
           <p className="text-xs text-[var(--os-text-2)] max-w-xs">Track decisions, change requests, steering discussions, and escalations across all client engagements.</p>
-          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-white text-[13px] font-semibold mt-2"
+          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 h-8 px-4 rounded-2xl text-white text-[13px] font-semibold mt-2"
             style={{ background: 'linear-gradient(135deg, #2564ea, #0ea5e9)' }}>
             <Plus className="w-3.5 h-3.5" /> Add first item
           </button>
@@ -184,7 +184,7 @@ export function GovernancePage() {
       <div className="flex items-center gap-3 flex-wrap">
         <Input placeholder="Search…" prefix={<Search className="w-3.5 h-3.5"/>} className="w-52" value={search} onChange={e => setSearch(e.target.value)} />
         <select value={typeFilter} onChange={e => setType(e.target.value as GovernanceType | 'all')}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
           <option value="all">All Types</option>
           <option value="decision">Decisions</option>
           <option value="change-request">Change Requests</option>
@@ -192,7 +192,7 @@ export function GovernancePage() {
           <option value="escalation">Escalations</option>
         </select>
         <select value={statusFilter} onChange={e => setStatus(e.target.value as GovernanceStatus | 'all')}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
           <option value="all">All Statuses</option>
           <option value="open">Open</option>
           <option value="pending">Pending</option>
@@ -201,7 +201,7 @@ export function GovernancePage() {
           <option value="rejected">Rejected</option>
         </select>
         <select value={clientFilter} onChange={e => setClient(e.target.value)}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-sm text-[var(--os-text-1)] pl-3 pr-8 outline-none focus:border-[#579bfc] focus:ring-2 focus:ring-[#579bfc]/20">
           <option value="all">All Clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -216,7 +216,7 @@ export function GovernancePage() {
           return (
             <Card key={item.id}>
               <div className="flex items-start gap-4">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${TYPE_COLOR[item.type]}`}>
+                <div className={`w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 ${TYPE_COLOR[item.type]}`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -241,7 +241,7 @@ export function GovernancePage() {
                   </div>
                   <p className="text-sm text-[var(--os-text-2)] leading-relaxed">{item.description}</p>
                   {item.resolution && (
-                    <div className="mt-2 flex items-start gap-2 p-2.5 bg-green-50 rounded-xl">
+                    <div className="mt-2 flex items-start gap-2 p-2.5 bg-green-50 rounded-2xl">
                       <CheckCircle className="w-3.5 h-3.5 text-green-600 flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-green-700">{item.resolution}</p>
                     </div>

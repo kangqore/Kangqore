@@ -61,13 +61,13 @@ function AgentCard({ agent, liveProgress }: { agent: AgentNode; liveProgress: nu
     : '—'
 
   return (
-    <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5 flex flex-col gap-3 relative overflow-hidden">
+    <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5 flex flex-col gap-3 relative overflow-hidden">
       {/* role color stripe */}
       <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: roleColor }} />
 
       <div className="flex items-start justify-between gap-3 pl-2">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${roleColor}18` }}>
+          <div className="w-8 h-8 rounded-2xl flex items-center justify-center" style={{ backgroundColor: `${roleColor}18` }}>
             <Bot className="w-4 h-4" style={{ color: roleColor }} />
           </div>
           <div>
@@ -199,22 +199,22 @@ export function AgentPerformancePage() {
 
       {/* KPI strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Total Tasks Done</p>
           <span className="text-3xl font-extrabold text-blue-400">{totalTasks}</span>
           <p className="text-xs text-[var(--os-text-3)] mt-1">Across all agents</p>
         </div>
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Active Now</p>
           <span className={`text-3xl font-extrabold ${activeCount > 0 ? 'text-green-400' : 'text-slate-400'}`}>{activeCount}</span>
           <p className="text-xs text-[var(--os-text-3)] mt-1">of {agents.length} agents</p>
         </div>
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Avg Progress</p>
           <span className="text-3xl font-extrabold text-violet-400">{avgProgress}%</span>
           <p className="text-xs text-[var(--os-text-3)] mt-1">Active tasks</p>
         </div>
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs text-[var(--os-text-2)] mb-2">Errors</p>
           <span className={`text-3xl font-extrabold ${errorCount > 0 ? 'text-red-400' : 'text-green-400'}`}>{errorCount}</span>
           <p className="text-xs text-[var(--os-text-3)] mt-1">{errorCount === 0 ? 'All healthy' : 'Need attention'}</p>
@@ -223,7 +223,7 @@ export function AgentPerformancePage() {
 
       {/* by-role breakdown */}
       {Object.keys(byRole).length > 0 && (
-        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-xl p-5">
+        <div className="bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-5">
           <p className="text-xs font-semibold text-[var(--os-text-2)] mb-4 uppercase tracking-wider">Tasks by Role</p>
           <div className="space-y-3">
             {Object.entries(byRole).map(([role, count]) => {

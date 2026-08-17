@@ -72,8 +72,8 @@ export function CustomerTwentyMilestonePage() {
           { l: 'Industries Covered', v: industries, color: BLUE, icon: Globe2 },
           { l: 'Enterprise Plans', v: enterprises, color: AMB, icon: Star },
         ].map(s => (
-          <div key={s.l} className="rounded-xl p-5 flex items-center gap-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          <div key={s.l} className="rounded-2xl p-5 flex items-center gap-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ background: `${s.color}18` }}>
               <s.icon className="w-5 h-5" style={{ color: s.color }} />
             </div>
@@ -86,9 +86,9 @@ export function CustomerTwentyMilestonePage() {
       </div>
 
       {/* Plan distribution */}
-      <div className="rounded-xl p-5 space-y-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+      <div className="rounded-2xl p-5 space-y-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
         <p className="text-sm font-semibold" style={{ color: T1 }}>Plan Distribution</p>
-        <div className="flex h-8 rounded-xl overflow-hidden gap-0.5">
+        <div className="flex h-8 rounded-2xl overflow-hidden gap-0.5">
           <div style={{ flex: enterprises, background: PURP, opacity: 0.85 }} title={`Enterprise: ${enterprises}`} />
           <div style={{ flex: pros,        background: BLUE,  opacity: 0.85 }} title={`Pro: ${pros}`} />
           <div style={{ flex: starters,    background: GRN,   opacity: 0.85 }} title={`Starter: ${starters}`} />
@@ -116,7 +116,7 @@ export function CustomerTwentyMilestonePage() {
           {FLEET.map(c => {
             const oisColor = c.ois >= 80 ? GRN : c.ois >= 65 ? BLUE : AMB
             return (
-              <div key={c.num} className="flex items-center gap-3 px-3 py-2 rounded-lg"
+              <div key={c.num} className="flex items-center gap-3 px-3 py-2 rounded-2xl"
                 style={{ background: CARD, border: `1px solid ${BDR}` }}>
                 <span className="text-xs font-black w-6 text-center font-variant-numeric" style={{ color: T2 }}>C{c.num}</span>
                 <p className="text-xs font-medium w-36 truncate" style={{ color: T1 }}>{c.label}</p>
@@ -135,7 +135,7 @@ export function CustomerTwentyMilestonePage() {
       </div>
 
       {/* What's next */}
-      <div className="rounded-xl p-6 space-y-3" style={{ background: `${PURP}0a`, border: `1px solid ${PURP}25` }}>
+      <div className="rounded-2xl p-6 space-y-3" style={{ background: `${PURP}0a`, border: `1px solid ${PURP}25` }}>
         <p className="text-xs font-bold uppercase tracking-widest" style={{ color: PURP }}>What Comes Next</p>
         <p className="text-base font-black" style={{ color: T1 }}>Chapter 9 — Market Expansion & Ecosystem Scale</p>
         <p className="text-sm leading-relaxed" style={{ color: T2 }}>

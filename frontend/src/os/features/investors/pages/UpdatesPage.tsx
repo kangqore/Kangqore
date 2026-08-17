@@ -42,7 +42,7 @@ function UpdateCard({ update, isOpen, onToggle }: { update: InvestorUpdate; isOp
         onClick={onToggle}
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#579bfc18' }}>
+          <div className="w-9 h-9 rounded-2xl flex items-center justify-center" style={{ background: '#579bfc18' }}>
             <Send className="w-4 h-4" style={{ color: '#579bfc' }} />
           </div>
           <div>
@@ -134,7 +134,7 @@ export function UpdatesPage() {
             <div className="h-5 w-40 rounded bg-slate-700" />
             <div className="h-3.5 w-64 rounded bg-slate-800" />
           </div>
-          <div className="h-8 w-28 rounded-xl bg-slate-700 animate-pulse" />
+          <div className="h-8 w-28 rounded-2xl bg-slate-700 animate-pulse" />
         </div>
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (

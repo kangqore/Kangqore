@@ -104,10 +104,10 @@ function ETIPanel({ eti }: { eti: ETIResult }) {
   ] as [string, { score: number; trend: string }][]
 
   return (
-    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)]">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)]">
       <button className="w-full flex items-center justify-between px-5 py-4" onClick={() => setExpanded(p => !p)}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-black" style={{ background: gradeColor + '20', color: gradeColor }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-lg font-black" style={{ background: gradeColor + '20', color: gradeColor }}>
             {eti.grade}
           </div>
           <div className="text-left">
@@ -144,7 +144,7 @@ function ETIPanel({ eti }: { eti: ETIResult }) {
 
 function KnowledgeCoverageBar({ domains }: { domains: KnowledgeCoverageEntry[] }) {
   return (
-    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
       <div className="flex items-center gap-2 mb-4">
         <BarChart2 className="w-4 h-4 text-[#b89eff]" />
         <h3 className="text-sm font-semibold text-[var(--os-text-1)]">Knowledge Coverage</h3>
@@ -184,9 +184,9 @@ function TimelineItemCard({ item }: { item: TimelineItem }) {
   const content   = item.lesson ?? item.insight ?? item.statement ?? item.description ?? ''
 
   return (
-    <div className={cn('rounded-lg border bg-[var(--os-card)] transition-all', expanded ? 'border-[var(--os-border)]/80' : 'border-[var(--os-border)]')}>
+    <div className={cn('rounded-2xl border bg-[var(--os-card)] transition-all', expanded ? 'border-[var(--os-border)]/80' : 'border-[var(--os-border)]')}>
       <div className="flex items-start gap-3 p-3 cursor-pointer" onClick={() => setExpanded(p => !p)}>
-        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: tierColor + '18' }}>
+        <div className="w-7 h-7 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: tierColor + '18' }}>
           <Icon className="w-3.5 h-3.5" style={{ color: tierColor }} />
         </div>
         <div className="flex-1 min-w-0">
@@ -256,12 +256,12 @@ function MemorySearchPanel() {
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && setSubmitted(query)}
             placeholder="Search enterprise memory… (e.g. pricing, sales, delivery)"
-            className="w-full pl-9 pr-3 py-2 text-sm bg-[var(--os-card)] border border-[var(--os-border)] rounded-lg text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none focus:border-[color:var(--os-blue)]"
+            className="w-full pl-9 pr-3 py-2 text-sm bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl text-[var(--os-text-1)] placeholder:text-[var(--os-text-2)] outline-none focus:border-[color:var(--os-blue)]"
           />
         </div>
         <button
           onClick={() => setSubmitted(query)}
-          className="px-3 py-2 text-[11px] bg-[color:var(--os-blue)] text-white rounded-lg hover:opacity-90 transition-opacity"
+          className="px-3 py-2 text-[11px] bg-[color:var(--os-blue)] text-white rounded-2xl hover:opacity-90 transition-opacity"
         >
           Search
         </button>
@@ -272,7 +272,7 @@ function MemorySearchPanel() {
       {results.length > 0 && (
         <div className="space-y-2">
           {results.map(r => (
-            <div key={r.id} className="flex items-start gap-2 p-2.5 rounded-lg border border-[var(--os-border)] bg-[var(--os-card)]">
+            <div key={r.id} className="flex items-start gap-2 p-2.5 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)]">
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#b89eff]/15 text-[#b89eff] capitalize">{r.type}</span>
               <div className="flex-1">
                 <p className="text-[11px] text-[var(--os-text-1)]">{r.content}</p>
@@ -361,12 +361,12 @@ export function MemoryTimelinePage() {
         <div className="space-y-4">
           <div className="flex flex-wrap gap-3 items-center justify-between">
             {/* Window */}
-            <div className="flex items-center gap-1 bg-[var(--os-card)] border border-[var(--os-border)] rounded-lg p-0.5">
+            <div className="flex items-center gap-1 bg-[var(--os-card)] border border-[var(--os-border)] rounded-2xl p-0.5">
               {windows.map(w => (
                 <button
                   key={w.key}
                   onClick={() => setWindow(w.key)}
-                  className={cn('px-3 py-1 text-[11px] font-semibold rounded-md transition-all', window_ === w.key ? 'bg-[color:var(--os-blue)] text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]')}
+                  className={cn('px-3 py-1 text-[11px] font-semibold rounded-2xl transition-all', window_ === w.key ? 'bg-[color:var(--os-blue)] text-white' : 'text-[var(--os-text-2)] hover:text-[var(--os-text-1)]')}
                 >{w.label}</button>
               ))}
             </div>

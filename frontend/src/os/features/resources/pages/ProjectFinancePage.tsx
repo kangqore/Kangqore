@@ -97,7 +97,7 @@ export function ProjectFinancePage() {
       {/* Table */}
       {isLoading && !isDemo() && (
         <div className="space-y-2">
-          {[1,2,3].map(i => <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: SURF }} />)}
+          {[1,2,3].map(i => <div key={i} className="h-16 rounded-2xl animate-pulse" style={{ background: SURF }} />)}
         </div>
       )}
 

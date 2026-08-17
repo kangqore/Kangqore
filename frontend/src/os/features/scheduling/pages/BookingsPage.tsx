@@ -108,13 +108,13 @@ export function BookingsPage() {
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1) }}
             placeholder="Search by name, email or event type…"
-            className="w-full h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] pl-9 pr-3 focus:outline-none focus:border-[#579bfc]"
+            className="w-full h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] pl-9 pr-3 focus:outline-none focus:border-[#579bfc]"
           />
         </div>
         <select
           value={status}
           onChange={e => { setStatus(e.target.value); setPage(1) }}
-          className="h-9 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
+          className="h-9 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-sm text-[var(--os-text-1)] px-3 focus:outline-none focus:border-[#579bfc]"
         >
           <option value="">All statuses</option>
           <option value="CONFIRMED">Confirmed</option>
@@ -180,7 +180,7 @@ export function BookingsPage() {
             <button
               disabled={page === 1}
               onClick={() => setPage(p => p - 1)}
-              className="p-1.5 rounded-lg border border-[var(--os-border)] hover:bg-[var(--os-surface-0)] disabled:opacity-30"
+              className="p-1.5 rounded-2xl border border-[var(--os-border)] hover:bg-[var(--os-surface-0)] disabled:opacity-30"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -188,7 +188,7 @@ export function BookingsPage() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage(p => p + 1)}
-              className="p-1.5 rounded-lg border border-[var(--os-border)] hover:bg-[var(--os-surface-0)] disabled:opacity-30"
+              className="p-1.5 rounded-2xl border border-[var(--os-border)] hover:bg-[var(--os-surface-0)] disabled:opacity-30"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

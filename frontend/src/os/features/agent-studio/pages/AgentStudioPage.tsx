@@ -39,7 +39,7 @@ function TemplatePicker({ onPick }: { onPick: (t: AgentTemplate) => void }) {
       <div className="flex gap-2 overflow-x-auto pb-1">
         {templates.map(t => (
           <button key={t.id} onClick={() => onPick(t)} title={t.description}
-            className="flex-shrink-0 w-40 text-left p-2.5 rounded-lg border border-[var(--os-border)] hover:border-[#579bfc]/50 bg-[var(--os-surface-0)] transition-colors">
+            className="flex-shrink-0 w-40 text-left p-2.5 rounded-2xl border border-[var(--os-border)] hover:border-[#579bfc]/50 bg-[var(--os-surface-0)] transition-colors">
             <span className="text-base">{t.iconEmoji ?? '🤖'}</span>
             <p className="text-[10.5px] font-semibold text-[var(--os-text-1)] mt-1 leading-tight">{t.name}</p>
             <p className="text-[9px] text-[var(--os-text-2)] mt-0.5 line-clamp-2 leading-snug">{t.description}</p>
@@ -116,19 +116,19 @@ function AgentBuilderForm({ agent, onClose }: { agent?: KimmpAgent; onClose: () 
 
       <div className="grid grid-cols-2 gap-2">
         <input value={name} onChange={e => setName(e.target.value)} placeholder="Agent name (e.g. RENEWAL_COACH)"
-          className="px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          className="px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
         <input value={role} onChange={e => setRole(e.target.value)} placeholder="Role — what this agent does"
-          className="px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+          className="px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
       </div>
       <input value={description} onChange={e => setDescription(e.target.value)} placeholder="Description (optional)"
-        className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+        className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
 
       <div>
         <p className="text-[9px] uppercase tracking-wide text-[var(--os-text-2)] mb-1">Model</p>
         <div className="flex items-center gap-1.5">
           {MODEL_OPTIONS.map(m => (
             <button key={m.id} onClick={() => setModel(m.id)}
-              className={`px-2 py-1 rounded-md text-[10px] font-semibold border ${model === m.id ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+              className={`px-2 py-1 rounded-2xl text-[10px] font-semibold border ${model === m.id ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
               {m.label}
             </button>
           ))}
@@ -148,7 +148,7 @@ function AgentBuilderForm({ agent, onClose }: { agent?: KimmpAgent; onClose: () 
         </div>
         <textarea value={systemPrompt} onChange={e => setSystemPrompt(e.target.value)} rows={4}
           placeholder={promptName ? `Fallback text if "${promptName}" isn't found — optional` : 'System prompt content'}
-          className="w-full px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none font-mono" />
+          className="w-full px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none font-mono" />
         {promptName && <p className="text-[9px] text-[var(--os-text-2)] mt-1">Resolved from Prompt Registry at run time; the text above is only used if that lookup misses.</p>}
       </div>
 
@@ -169,7 +169,7 @@ function AgentBuilderForm({ agent, onClose }: { agent?: KimmpAgent; onClose: () 
                 <div className="flex flex-wrap gap-1.5">
                   {catTools!.map(t => (
                     <button key={t.id} onClick={() => toggleTool(t.name)} title={t.description}
-                      className={`px-2 py-1 rounded-md text-[9.5px] font-mono border ${selectedTools.has(t.name) ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+                      className={`px-2 py-1 rounded-2xl text-[9.5px] font-mono border ${selectedTools.has(t.name) ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
                       {t.name}
                     </button>
                   ))}
@@ -182,10 +182,10 @@ function AgentBuilderForm({ agent, onClose }: { agent?: KimmpAgent; onClose: () 
 
       <div className="flex items-center gap-2 pt-1">
         <button onClick={() => save.mutate()} disabled={save.isPending || !name.trim() || !role.trim()}
-          className="px-3 py-1.5 rounded-lg bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+          className="px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
           {save.isPending ? <Loader2 size={12} className="animate-spin" /> : isEdit ? 'Save changes' : 'Create agent'}
         </button>
-        <button onClick={onClose} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
+        <button onClick={onClose} className="px-3 py-1.5 rounded-2xl text-[11px] font-semibold text-[var(--os-text-2)]">Cancel</button>
       </div>
     </div>
   )
@@ -199,13 +199,13 @@ function TestRunPanel({ agentId }: { agentId: string }) {
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && input.trim() && run.mutate()}
-          placeholder="Give this agent something to do…" className="flex-1 px-2.5 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
-        <button onClick={() => run.mutate()} disabled={run.isPending || !input.trim()} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
+          placeholder="Give this agent something to do…" className="flex-1 px-2.5 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" />
+        <button onClick={() => run.mutate()} disabled={run.isPending || !input.trim()} className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold disabled:opacity-50">
           {run.isPending ? <Loader2 size={12} className="animate-spin" /> : <Play size={11} weight="fill" />} Run
         </button>
       </div>
       {run.data && (
-        <div className={`p-3 rounded-lg border text-[11px] space-y-2 ${run.data.success ? 'border-[var(--os-border)] bg-[var(--os-surface-0)]' : 'border-red-500/30 bg-red-500/5'}`}>
+        <div className={`p-3 rounded-2xl border text-[11px] space-y-2 ${run.data.success ? 'border-[var(--os-border)] bg-[var(--os-surface-0)]' : 'border-red-500/30 bg-red-500/5'}`}>
           <pre className="whitespace-pre-wrap font-mono text-[var(--os-text-1)]">{run.data.output}</pre>
           <div className="flex items-center gap-2 flex-wrap text-[9px] text-[var(--os-text-2)]">
             <span>{run.data.durationMs}ms</span>
@@ -268,20 +268,20 @@ function AgentCard({ agent }: { agent: KimmpAgent }) {
                   </button>
                 ))}
                 <div className="flex-1" />
-                <button onClick={() => setEditing(true)} className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold text-[var(--os-text-2)] border border-[var(--os-border)]">
+                <button onClick={() => setEditing(true)} className="flex items-center gap-1 px-2 py-1 rounded-2xl text-[10px] font-semibold text-[var(--os-text-2)] border border-[var(--os-border)]">
                   <Sliders size={10} /> Edit
                 </button>
                 {agent.status === 'ACTIVE' ? (
-                  <button onClick={() => suspend.mutate()} className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold text-amber-400 border border-amber-500/30">
+                  <button onClick={() => suspend.mutate()} className="flex items-center gap-1 px-2 py-1 rounded-2xl text-[10px] font-semibold text-amber-400 border border-amber-500/30">
                     <Pause size={10} weight="fill" /> Suspend
                   </button>
                 ) : agent.status === 'SUSPENDED' ? (
-                  <button onClick={() => activate.mutate()} className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold text-emerald-400 border border-emerald-500/30">
+                  <button onClick={() => activate.mutate()} className="flex items-center gap-1 px-2 py-1 rounded-2xl text-[10px] font-semibold text-emerald-400 border border-emerald-500/30">
                     <Power size={10} /> Activate
                   </button>
                 ) : null}
                 {agent.status !== 'KILLED' && (
-                  <button onClick={() => { if (confirm(`Kill ${agent.name}? This is logged.`)) kill.mutate() }} className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold text-red-400 border border-red-500/30">
+                  <button onClick={() => { if (confirm(`Kill ${agent.name}? This is logged.`)) kill.mutate() }} className="flex items-center gap-1 px-2 py-1 rounded-2xl text-[10px] font-semibold text-red-400 border border-red-500/30">
                     <Skull size={10} /> Kill
                   </button>
                 )}
@@ -335,7 +335,7 @@ export function AgentStudioPage() {
           </h1>
           <p className="text-xs text-[var(--os-text-2)]">A new KIMMP agent — real prompt, real tools, real ontology actions — is a form submission, not a pull request.</p>
         </div>
-        <button onClick={() => setShowBuilder(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[var(--os-accent)] text-white text-xs font-semibold">
+        <button onClick={() => setShowBuilder(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-[var(--os-accent)] text-white text-xs font-semibold">
           <Plus size={13} /> New agent
         </button>
       </div>

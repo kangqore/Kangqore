@@ -72,7 +72,7 @@ export function DeliverablesPage() {
           <select
             value={selectedId}
             onChange={e => setSelectedId(e.target.value)}
-            className="appearance-none rounded-xl pl-4 pr-9 py-2.5 text-sm focus:outline-none min-w-[220px]"
+            className="appearance-none rounded-2xl pl-4 pr-9 py-2.5 text-sm focus:outline-none min-w-[220px]"
             style={{
               background: 'var(--os-card)',
               border: '1px solid var(--os-border)',
@@ -115,9 +115,9 @@ export function DeliverablesPage() {
       {!selected ? (
         <div className="space-y-1">
           {Object.entries(DELIVERABLE_DESC).map(([name, desc], i) => (
-            <div key={name} className="flex items-center gap-4 px-5 py-4 rounded-lg border-b border-[var(--os-border)]"
+            <div key={name} className="flex items-center gap-4 px-5 py-4 rounded-2xl border-b border-[var(--os-border)]"
               style={{ background: 'var(--os-card)' }}>
-              <span className="w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center flex-shrink-0"
+              <span className="w-7 h-7 rounded-2xl text-xs font-bold flex items-center justify-center flex-shrink-0"
                 style={{ background: '#579bfc18', color: '#579bfc' }}>
                 {i + 1}
               </span>
@@ -143,12 +143,12 @@ export function DeliverablesPage() {
             const Icon = S.icon
             return (
               <div key={d.n} className={cn(
-                'flex items-center gap-4 px-5 py-4 rounded-lg border-b border-[var(--os-border)] last:border-0 transition-colors',
+                'flex items-center gap-4 px-5 py-4 rounded-2xl border-b border-[var(--os-border)] last:border-0 transition-colors',
                 d.status === 'COMPLETE'
                   ? 'opacity-75'
                   : 'hover:bg-[var(--os-surface-0)]'
               )} style={{ background: 'var(--os-card)' }}>
-                <span className="w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center flex-shrink-0"
+                <span className="w-7 h-7 rounded-2xl text-xs font-bold flex items-center justify-center flex-shrink-0"
                   style={{ background: '#579bfc18', color: '#579bfc' }}>
                   {d.n}
                 </span>

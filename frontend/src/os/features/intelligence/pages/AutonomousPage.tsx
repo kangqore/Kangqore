@@ -26,7 +26,7 @@ function StatusPill({ status }: { status: string }) {
 function AERow({ ae, onResume }: { ae: any; onResume: (id: string) => void }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border border-[var(--os-border)] rounded-lg overflow-hidden">
+    <div className="border border-[var(--os-border)] rounded-2xl overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center justify-between px-4 py-3 hover:bg-[var(--os-bg-hover)] transition-colors text-left"
@@ -174,7 +174,7 @@ export function AutonomousPage() {
       </div>
 
       {showTrigger && (
-        <div className="border border-[var(--os-border)] rounded-lg p-4 space-y-3">
+        <div className="border border-[var(--os-border)] rounded-2xl p-4 space-y-3">
           <div className="text-sm font-medium text-[var(--os-text-1)]">Manual Trigger</div>
           <div className="text-xs text-[var(--os-text-2)]">Provide a JSON context object. KIMMP will reason about it and propose an action.</div>
           <textarea

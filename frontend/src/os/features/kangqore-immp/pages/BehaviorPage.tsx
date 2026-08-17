@@ -85,7 +85,7 @@ function ObservationCard({ obs }: { obs: ShadowObservation }) {
             {obs.leadName && (
               <p className="text-base font-bold text-[var(--os-text-1)]">{obs.leadName}</p>
             )}
-            <span className={`text-[11px] font-bold px-2 py-1 rounded-md border ${sentColor}`}>
+            <span className={`text-[11px] font-bold px-2 py-1 rounded-2xl border ${sentColor}`}>
               {obs.sentiment}
             </span>
             <Badge variant={urgencyBadge} size="sm">Urgency: {obs.urgency}</Badge>
@@ -184,7 +184,7 @@ export function BehaviorPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+        <div className="w-8 h-8 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
           <UserCheck className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
@@ -195,7 +195,7 @@ export function BehaviorPage() {
         </div>
         <button
           onClick={refresh}
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
+          className="w-10 h-10 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
         </button>

@@ -528,12 +528,12 @@ export function ProjectsOverview() {
   if (isLoading) {
     return (
       <div className="space-y-5 animate-pulse">
-        <div className="h-8 w-48 rounded-lg" style={{ background: 'var(--os-surface-0)' }} />
+        <div className="h-8 w-48 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />
         <div className="grid grid-cols-5 gap-3">
-          {Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-20 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />)}
+          {Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-20 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />)}
         </div>
         <div className="grid grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-52 rounded-xl" style={{ background: 'var(--os-surface-0)' }} />)}
+          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-52 rounded-2xl" style={{ background: 'var(--os-surface-0)' }} />)}
         </div>
       </div>
     )

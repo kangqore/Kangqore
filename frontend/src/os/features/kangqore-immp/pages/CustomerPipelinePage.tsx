@@ -130,7 +130,7 @@ export function CustomerPipelinePage() {
             { label: 'Avg OIS (active)', value: avgOisCurrent.toFixed(1),               color: BLUE },
             { label: 'Pipeline target',  value: `C${PIPELINE.filter(c => c.status !== 'locked').length}`, color: AMB },
           ].map(s => (
-            <div key={s.label} className="rounded-xl p-3 border text-center" style={{ borderColor: BDR, background: 'var(--os-surface-0)' }}>
+            <div key={s.label} className="rounded-2xl p-3 border text-center" style={{ borderColor: BDR, background: 'var(--os-surface-0)' }}>
               <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: T2 }}>{s.label}</p>
               <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
             </div>
@@ -148,7 +148,7 @@ export function CustomerPipelinePage() {
           return (
             <div
               key={c.id}
-              className="rounded-xl border p-5"
+              className="rounded-2xl border p-5"
               style={{
                 background: CARD,
                 borderColor: BDR,
@@ -157,7 +157,7 @@ export function CustomerPipelinePage() {
             >
               <div className="flex items-start gap-4">
                 {/* Label badge */}
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0"
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center font-black text-sm flex-shrink-0"
                   style={{ background: cfg.bg, color: cfg.color }}>
                   {c.label}
                 </div>
@@ -228,7 +228,7 @@ export function CustomerPipelinePage() {
                   <div className="flex flex-col gap-2 flex-shrink-0">
                     {c.navLink !== '#' ? (
                       <Link to={c.navLink}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:opacity-80"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-2xl text-xs font-medium transition-all hover:opacity-80"
                         style={{ background: cfg.bg, color: cfg.color }}>
                         View <ChevronRight className="w-3 h-3" />
                       </Link>
@@ -236,7 +236,7 @@ export function CustomerPipelinePage() {
                       <button
                         onClick={() => cloneMut.mutate(c)}
                         disabled={cloneMut.isPending || c.status === 'locked'}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:opacity-80"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-2xl text-xs font-medium transition-all hover:opacity-80"
                         style={{ background: 'rgba(59,130,246,0.1)', color: BLUE }}
                       >
                         <Copy className="w-3 h-3" /> Clone Blueprint
@@ -251,7 +251,7 @@ export function CustomerPipelinePage() {
       </div>
 
       {/* COIG trajectory */}
-      <div className="rounded-xl p-5 border" style={{ background: CARD, borderColor: BDR }}>
+      <div className="rounded-2xl p-5 border" style={{ background: CARD, borderColor: BDR }}>
         <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: T2 }}>COIG Trajectory — Active Customers</p>
         <div className="space-y-3">
           {PIPELINE.filter(c => c.coigActual !== null || c.coigTarget).slice(0, 4).map(c => (
@@ -279,7 +279,7 @@ export function CustomerPipelinePage() {
       {/* Nav */}
       <div className="flex gap-3">
         <Link to="/kangqore-view/admin/kangqore-immp/customers/three"
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-sm font-medium"
           style={{ background: 'var(--os-surface-0)', color: T2 }}>
           ← Customer Three
         </Link>

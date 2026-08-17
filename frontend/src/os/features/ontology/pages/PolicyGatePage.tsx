@@ -17,7 +17,7 @@ const EFFECT_CFG: Record<string, { color: string; label: string }> = {
 
 const OPS = ['eq', 'ne', 'gt', 'gte', 'lt', 'lte', 'contains', 'startsWith', 'in', 'notIn', 'exists']
 const ROW = 'flex items-center gap-1.5'
-const INPUT = 'px-2 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none'
+const INPUT = 'px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none'
 
 interface Leaf { field: string; operator: string; value?: any }
 
@@ -66,7 +66,7 @@ function PolicyBuilder({ existing, onClose }: { existing: KimmpPolicy | null; on
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-xl rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4 max-h-[85vh] overflow-y-auto">
+      <div className="w-full max-w-xl rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 space-y-4 max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-[var(--os-text-1)]">{existing ? 'Edit Policy' : 'New Policy'}</p>
           <button onClick={onClose} className="text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"><X className="w-4 h-4" /></button>
@@ -75,26 +75,26 @@ function PolicyBuilder({ existing, onClose }: { existing: KimmpPolicy | null; on
         <div className="grid grid-cols-2 gap-3">
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Name</label>
-            <input className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={name} onChange={e => setName(e.target.value)} />
+            <input className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={name} onChange={e => setName(e.target.value)} />
           </div>
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Description</label>
-            <input className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={description} onChange={e => setDescription(e.target.value)} />
+            <input className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={description} onChange={e => setDescription(e.target.value)} />
           </div>
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Trigger (Action name, or *)</label>
-            <input className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none font-mono" placeholder="STRATEGIC_DECISION" value={trigger} onChange={e => setTrigger(e.target.value)} />
+            <input className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none font-mono" placeholder="STRATEGIC_DECISION" value={trigger} onChange={e => setTrigger(e.target.value)} />
           </div>
           <div>
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Priority (higher checked first)</label>
-            <input type="number" className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={priority} onChange={e => setPriority(Number(e.target.value))} />
+            <input type="number" className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none" value={priority} onChange={e => setPriority(Number(e.target.value))} />
           </div>
           <div className="col-span-2">
             <label className="text-[11px] text-[var(--os-text-2)] mb-1 block">Effect</label>
             <div className="flex gap-1.5">
               {Object.entries(EFFECT_CFG).map(([k, cfg]) => (
                 <button key={k} type="button" onClick={() => setEffect(k)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold border"
+                  className="px-3 py-1.5 rounded-2xl text-xs font-semibold border"
                   style={effect === k ? { background: `${cfg.color}18`, borderColor: `${cfg.color}50`, color: cfg.color } : { borderColor: 'var(--os-border)', color: 'var(--os-text-2)' }}
                 >{cfg.label}</button>
               ))}
@@ -123,17 +123,17 @@ function PolicyBuilder({ existing, onClose }: { existing: KimmpPolicy | null; on
           </button>
         </div>
 
-        <div className="rounded-lg border border-dashed border-[var(--os-border)] p-3 space-y-2">
+        <div className="rounded-2xl border border-dashed border-[var(--os-border)] p-3 space-y-2">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--os-text-2)] flex items-center gap-1.5"><TestTube size={12} /> Test against sample params</p>
-          <textarea className="w-full px-2 py-1.5 rounded-md bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs font-mono text-[var(--os-text-1)] outline-none" rows={2} value={testParams} onChange={e => setTestParams(e.target.value)} />
-          <button onClick={() => test.mutate()} disabled={!trigger || test.isPending} className="px-3 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50">
+          <textarea className="w-full px-2 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs font-mono text-[var(--os-text-1)] outline-none" rows={2} value={testParams} onChange={e => setTestParams(e.target.value)} />
+          <button onClick={() => test.mutate()} disabled={!trigger || test.isPending} className="px-3 py-1.5 rounded-2xl border border-[var(--os-border)] text-[11px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50">
             {test.isPending ? 'Checking…' : 'Run test'}
           </button>
           {testResult && <p className="text-[11px] text-[var(--os-text-1)]">{testResult}</p>}
         </div>
 
         <button onClick={() => save.mutate()} disabled={!name || !trigger || save.isPending}
-          className="w-full py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          className="w-full py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
           {save.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : existing ? 'Save Changes' : 'Create Policy'}
         </button>
         {save.isError && <p className="text-[11px] text-red-400">Failed to save: {(save.error as Error).message}</p>}
@@ -160,11 +160,11 @@ function PolicyRow({ policy, onEdit }: { policy: KimmpPolicy; onEdit: () => void
         <p className="text-xs font-semibold text-[var(--os-text-1)] truncate">{policy.name}</p>
         <p className="text-[10px] text-[var(--os-text-2)] mt-0.5">trigger <code className="font-mono">{policy.trigger}</code> · priority {policy.priority}</p>
       </div>
-      <button onClick={() => toggle.mutate()} className={`text-[10px] font-semibold px-2 py-1 rounded-md border ${policy.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
+      <button onClick={() => toggle.mutate()} className={`text-[10px] font-semibold px-2 py-1 rounded-2xl border ${policy.enabled ? 'border-emerald-500/30 text-emerald-400' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
         {policy.enabled ? 'Enabled' : 'Disabled'}
       </button>
-      <button onClick={onEdit} className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-card)]"><PencilSimple size={13} /></button>
-      <button onClick={() => confirm(`Delete "${policy.name}"?`) && remove.mutate()} className="p-1.5 rounded-md text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-card)]"><Trash size={13} /></button>
+      <button onClick={onEdit} className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-[var(--os-text-1)] hover:bg-[var(--os-card)]"><PencilSimple size={13} /></button>
+      <button onClick={() => confirm(`Delete "${policy.name}"?`) && remove.mutate()} className="p-1.5 rounded-2xl text-[var(--os-text-2)] hover:text-red-400 hover:bg-[var(--os-card)]"><Trash size={13} /></button>
     </div>
   )
 }
@@ -182,7 +182,7 @@ export function PolicyGatePage() {
           <h2 className="text-lg font-black text-[var(--os-text-1)] flex items-center gap-2"><ShieldCheck size={18} /> Policy Gate</h2>
           <p className="text-xs text-[var(--os-text-2)] mt-0.5">Same gate for human and AI — every Action checks these before it runs.</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowBuilder(true) }} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 transition-opacity">
+        <button onClick={() => { setEditing(null); setShowBuilder(true) }} className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-[var(--os-accent)] text-white text-xs font-semibold hover:opacity-90 transition-opacity">
           <Plus size={13} weight="bold" /> New Policy
         </button>
       </div>

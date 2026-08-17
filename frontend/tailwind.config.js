@@ -34,23 +34,33 @@ module.exports = {
         ring:   'hsl(var(--ring))',
         chart: { '1': 'hsl(var(--chart-1))', '2': 'hsl(var(--chart-2))', '3': 'hsl(var(--chart-3))', '4': 'hsl(var(--chart-4))', '5': 'hsl(var(--chart-5))' },
 
-        // ── OS design tokens — alpha-value functions enable bg-os-blue/20 etc. ──
-        'os-bg':      ({ opacityValue }) => opacityValue !== undefined ? `rgba(6,11,24,${opacityValue})`      : '#060b18',
-        'os-s0':      ({ opacityValue }) => opacityValue !== undefined ? `rgba(13,17,23,${opacityValue})`     : '#0d1117',
-        'os-s1':      ({ opacityValue }) => opacityValue !== undefined ? `rgba(21,28,47,${opacityValue})`     : '#151C2F',
-        'os-s2':      ({ opacityValue }) => opacityValue !== undefined ? `rgba(26,35,64,${opacityValue})`     : '#1a2340',
-        'os-s3':      ({ opacityValue }) => opacityValue !== undefined ? `rgba(31,42,74,${opacityValue})`     : '#1f2a4a',
-        'os-border':  ({ opacityValue }) => opacityValue !== undefined ? `rgba(46,40,84,${opacityValue})`     : '#2E2854',
-        'os-blue':    ({ opacityValue }) => opacityValue !== undefined ? `rgba(37,100,234,${opacityValue})`   : '#2564ea',
-        'os-cyan':    ({ opacityValue }) => opacityValue !== undefined ? `rgba(74,182,212,${opacityValue})`   : '#4ab6d4',
-        'os-text-1':  ({ opacityValue }) => opacityValue !== undefined ? `rgba(255,255,255,${opacityValue})`  : '#ffffff',
-        'os-text-2':  ({ opacityValue }) => opacityValue !== undefined ? `rgba(226,232,240,${opacityValue})` : '#e2e8f0',
-        'os-text-3':  ({ opacityValue }) => opacityValue !== undefined ? `rgba(148,163,184,${opacityValue})` : '#94a3b8',
-        'os-text-4':  ({ opacityValue }) => opacityValue !== undefined ? `rgba(100,116,139,${opacityValue})` : '#64748b',
-        'os-text-5':  ({ opacityValue }) => opacityValue !== undefined ? `rgba(71,85,105,${opacityValue})`   : '#475569',
-        'os-success': ({ opacityValue }) => opacityValue !== undefined ? `rgba(5,150,105,${opacityValue})`   : '#059669',
-        'os-warning': ({ opacityValue }) => opacityValue !== undefined ? `rgba(217,119,6,${opacityValue})`   : '#d97706',
-        'os-danger':  ({ opacityValue }) => opacityValue !== undefined ? `rgba(239,68,68,${opacityValue})`   : '#ef4444',
+        // ── OS Semantic Design Tokens (mapped to CSS variables in os.css) ──
+        'surface-base':     'var(--color-surface-base)',
+        'surface-primary':  'var(--color-surface-primary)',
+        'surface-secondary':'var(--color-surface-secondary)',
+        'surface-elevated': 'var(--color-surface-elevated)',
+        'surface-inverse':  'var(--color-surface-inverse)',
+        
+        'border':           'var(--color-border)',
+        'border-subtle':    'var(--color-border-subtle)',
+        'border-strong':    'var(--color-border-strong)',
+        
+        'text-primary':     'var(--color-text-primary)',
+        'text-secondary':   'var(--color-text-secondary)',
+        'text-muted':       'var(--color-text-muted)',
+        'text-inverse':     'var(--color-text-inverse)',
+        
+        'brand-primary':    'var(--color-brand-primary)',
+        'brand-secondary':  'var(--color-brand-secondary)',
+        'success':          'var(--color-success)',
+        'warning':          'var(--color-warning)',
+        'danger':           'var(--color-danger)',
+        'info':             'var(--color-info)',
+        
+        'success-bg':       'var(--color-success-bg)',
+        'warning-bg':       'var(--color-warning-bg)',
+        'danger-bg':        'var(--color-danger-bg)',
+        'info-bg':          'var(--color-info-bg)',
       },
 
       // ── OS Typography Scale ─────────────────────────────────────────────
@@ -80,34 +90,37 @@ module.exports = {
         'svc-4xl':   ['64px', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
       },
 
-      // ── OS Border Radius ────────────────────────────────────────────────
+      // ── Global Heavily Rounded Borders ──────────────────────────────────
       borderRadius: {
-        // shadcn tokens (kept)
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-        // OS tokens (new)
-        'os-xs': 'var(--os-radius-xs)',
-        'os-sm': 'var(--os-radius-sm)',
-        'os-md': 'var(--os-radius-md)',
-        'os-lg': 'var(--os-radius-lg)',
-        'os-xl': 'var(--os-radius-xl)',
+        // Enforce Apple visionOS/iOS widget deep squircles across all standard tailwind classes
+        sm: '8px',
+        md: '12px',
+        lg: '16px',
+        xl: '24px',
+        '2xl': '32px',
+        '3xl': '40px',
+        // Specific OS tokens
+        'os-xs': '4px',
+        'os-sm': '8px',
+        'os-md': '12px',
+        'os-lg': '16px',
+        'os-xl': '24px',
       },
 
       // ── OS Shadows ──────────────────────────────────────────────────────
       boxShadow: {
-        'os-sm':   'var(--os-shadow-sm)',
-        'os-md':   'var(--os-shadow-md)',
-        'os-lg':   'var(--os-shadow-lg)',
-        'os-glow': 'var(--os-shadow-glow)',
-        'os-cyan': 'var(--os-shadow-cyan)',
+        'os-sm':   '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        'os-md':   '0 4px 14px 0 rgba(0, 0, 0, 0.05)', // Apple card shadow
+        'os-lg':   '0 12px 48px 0 rgba(0, 0, 0, 0.12)', // Apple floating window shadow
+        'os-glass': '0 8px 32px 0 rgba(0, 0, 0, 0.1)',
       },
 
       // ── OS Backdrop Blur ────────────────────────────────────────────────
       backdropBlur: {
+        'os-thin': '12px',
+        'os-regular': '20px', // Apple regular material
+        'os-thick': '40px',   // Apple thick material
         'os': '20px',
-        'os-sm': '8px',
-        'os-lg': '40px',
       },
 
       // ── Background Images ───────────────────────────────────────────────
@@ -118,12 +131,16 @@ module.exports = {
         'os-gradient-hero':  'linear-gradient(135deg, #0d1117 0%, #0a0f1e 50%, #060b18 100%)',
       },
 
-      // ── Motion Durations ────────────────────────────────────────────────
+      // ── Motion Durations & Curves ───────────────────────────────────────
       transitionDuration: {
         DEFAULT: '220ms',
         fast:    '120ms',
         base:    '220ms',
         slow:    '380ms',
+      },
+      transitionTimingFunction: {
+        'spring': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        'spring-bouncy': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
 
       // ── Keyframes ───────────────────────────────────────────────────────

@@ -80,11 +80,11 @@ export function TenantAdminPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-lg border" style={{ color: T2, borderColor: BDR }}>
+            <button onClick={() => refetch()} className="flex items-center gap-1 text-xs px-3 py-2 rounded-2xl border" style={{ color: T2, borderColor: BDR }}>
               <RefreshCw className="w-3 h-3" /> Refresh
             </button>
             <button onClick={() => setShowCreate(true)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold"
               style={{ background: TEAL, color: '#fff' }}>
               <Plus className="w-3.5 h-3.5" /> New Tenant
             </button>
@@ -165,7 +165,7 @@ function CreateTenantForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClien
     <div>
       <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>{label}</p>
       <input type={type} value={form[field]} onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
-        placeholder={ph} className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+        placeholder={ph} className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
         style={{ borderColor: BDR, background: SURF, color: T1 }} />
     </div>
   )
@@ -182,7 +182,7 @@ function CreateTenantForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClien
         <div>
           <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Plan Tier</p>
           <select value={form.planTier} onChange={e => setForm(f => ({ ...f, planTier: e.target.value }))}
-            className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+            className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
             style={{ borderColor: BDR, background: SURF, color: T1 }}>
             {['FREE', 'STARTER', 'PRO', 'ENTERPRISE'].map(p => <option key={p}>{p}</option>)}
           </select>
@@ -192,7 +192,7 @@ function CreateTenantForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClien
       </div>
       <button disabled={!form.name.trim() || !form.subdomain.trim() || create.isPending}
         onClick={() => create.mutate()}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
         style={{ background: TEAL, color: '#fff' }}>
         <Building2 className="w-4 h-4" />
         {create.isPending ? 'Creating…' : 'Create Tenant'}
@@ -243,12 +243,12 @@ function TenantDetail({ tenant, onBack, onProvision, provisioning, qc }: {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => setEditing(!editing)} className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs border" style={{ color: T2, borderColor: BDR }}>
+            <button onClick={() => setEditing(!editing)} className="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs border" style={{ color: T2, borderColor: BDR }}>
               <Settings className="w-3.5 h-3.5" /> Edit
             </button>
             {!tenant.provisionedAt && (
               <button onClick={onProvision} disabled={provisioning}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
                 style={{ background: TEAL, color: '#fff' }}>
                 <Zap className="w-3.5 h-3.5" />
                 {provisioning ? 'Provisioning…' : 'Provision Now'}
@@ -264,7 +264,7 @@ function TenantDetail({ tenant, onBack, onProvision, provisioning, qc }: {
             { label: 'OIS Snapshots', value: `${tenant.oisSnapshotsPerMonth}/mo`, icon: RefreshCw, color: TEAL },
             { label: 'API Calls',    value: `${tenant.apiCallsPerDay}/day`, icon: Zap,   color: AMB  },
           ].map(s => (
-            <div key={s.label} className="rounded-xl border p-3" style={{ borderColor: BDR, background: SURF }}>
+            <div key={s.label} className="rounded-2xl border p-3" style={{ borderColor: BDR, background: SURF }}>
               <div className="flex items-center gap-1.5 mb-1">
                 <s.icon className="w-3 h-3" style={{ color: s.color }} />
                 <span className="text-[10px] font-semibold" style={{ color: T2 }}>{s.label}</span>
@@ -289,7 +289,7 @@ function TenantDetail({ tenant, onBack, onProvision, provisioning, qc }: {
             <div>
               <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Plan Tier</p>
               <select value={form.planTier} onChange={e => setForm(f => ({ ...f, planTier: e.target.value }))}
-                className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+                className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
                 style={{ borderColor: BDR, background: SURF, color: T1 }}>
                 {['FREE', 'STARTER', 'PRO', 'ENTERPRISE'].map(p => <option key={p}>{p}</option>)}
               </select>
@@ -297,23 +297,23 @@ function TenantDetail({ tenant, onBack, onProvision, provisioning, qc }: {
             <div>
               <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Max Users</p>
               <input type="number" value={form.maxUsers} onChange={e => setForm(f => ({ ...f, maxUsers: e.target.value }))}
-                className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+                className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
                 style={{ borderColor: BDR, background: SURF, color: T1 }} />
             </div>
             <div>
               <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Max Agents</p>
               <input type="number" value={form.maxAgents} onChange={e => setForm(f => ({ ...f, maxAgents: e.target.value }))}
-                className="w-full px-3 py-2 text-xs rounded-lg border focus:outline-none"
+                className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
                 style={{ borderColor: BDR, background: SURF, color: T1 }} />
             </div>
           </div>
           <div className="flex items-center gap-3">
             <button disabled={update.isPending} onClick={() => update.mutate()}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold disabled:opacity-40"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
               style={{ background: TEAL, color: '#fff' }}>
               <Check className="w-3.5 h-3.5" /> {update.isPending ? 'Saving…' : 'Save Changes'}
             </button>
-            <button onClick={() => setEditing(false)} className="text-xs px-3 py-2 rounded-lg border" style={{ color: T2, borderColor: BDR }}>
+            <button onClick={() => setEditing(false)} className="text-xs px-3 py-2 rounded-2xl border" style={{ color: T2, borderColor: BDR }}>
               <X className="w-3.5 h-3.5" />
             </button>
           </div>

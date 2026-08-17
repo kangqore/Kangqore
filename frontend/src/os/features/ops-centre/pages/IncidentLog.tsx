@@ -68,7 +68,7 @@ const SLA_COLOUR = {
 function PriorityBadge({ p }: { p: string }) {
   const c = PRIORITY[p] ?? PRIORITY['P3']
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider whitespace-nowrap"
+    <span className="inline-flex items-center px-2 py-0.5 rounded-2xl text-[10px] font-black uppercase tracking-wider whitespace-nowrap"
       style={{ background: c.bg, color: c.text, border: `1px solid ${c.border}` }}>
       {c.label}
     </span>
@@ -78,7 +78,7 @@ function PriorityBadge({ p }: { p: string }) {
 function StatusBadge({ s }: { s: string }) {
   const c = STATUS_COLOUR[s] ?? STATUS_COLOUR['NEW']
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider"
+    <span className="inline-flex items-center px-2 py-0.5 rounded-2xl text-[10px] font-bold uppercase tracking-wider"
       style={{ background: c.bg, color: c.text }}>
       {s.replace('_', ' ')}
     </span>
@@ -129,14 +129,14 @@ function CreateModal({ onClose }: { onClose: () => void }) {
             placeholder="Incident title *"
             value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+            className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
           />
           <textarea
             placeholder="Description — what is broken, impact, how to reproduce *"
             rows={3}
             value={form.description}
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-            className="w-full px-3 py-2 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] resize-none"
+            className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc] resize-none"
           />
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -144,7 +144,7 @@ function CreateModal({ onClose }: { onClose: () => void }) {
               <select
                 value={form.priority}
                 onChange={e => setForm(f => ({ ...f, priority: e.target.value }))}
-                className="w-full px-3 py-2 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+                className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
               >
                 <option value="P1">P1 · Critical</option>
                 <option value="P2">P2 · High</option>
@@ -157,7 +157,7 @@ function CreateModal({ onClose }: { onClose: () => void }) {
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                className="w-full px-3 py-2 text-sm rounded-xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+                className="w-full px-3 py-2 text-sm rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
               >
                 {['SOFTWARE','HARDWARE','NETWORK','ACCESS','APPLICATION','OTHER'].map(c => (
                   <option key={c} value={c}>{c}</option>
@@ -168,13 +168,13 @@ function CreateModal({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="flex justify-end gap-2 mt-5">
-          <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-colors">
+          <button onClick={onClose} className="px-4 py-2 rounded-2xl text-sm font-bold text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-colors">
             Cancel
           </button>
           <button
             disabled={!form.title.trim() || !form.description.trim() || create.isPending}
             onClick={() => create.mutate()}
-            className="px-5 py-2 rounded-xl text-sm font-bold text-white disabled:opacity-40 transition-colors"
+            className="px-5 py-2 rounded-2xl text-sm font-bold text-white disabled:opacity-40 transition-colors"
             style={{ background: '#579bfc' }}
           >
             {create.isPending ? 'Creating…' : 'Create Incident'}
@@ -231,7 +231,7 @@ function IncidentRow({ inc }: { inc: Incident }) {
           {inc.status !== 'RESOLVED' && inc.status !== 'CLOSED' && (
             <button
               onClick={() => update.mutate({ status: 'RESOLVED' })}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-2xl text-[10px] font-bold transition-colors"
               style={{ background: 'rgba(0,200,117,0.1)', color: '#00c875' }}
             >
               <CheckCircle className="w-3 h-3" /> Resolve
@@ -262,12 +262,12 @@ function IncidentRow({ inc }: { inc: Incident }) {
                         placeholder="Resolution notes…"
                         value={resolution}
                         onChange={e => setResolution(e.target.value)}
-                        className="flex-1 px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-card)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
+                        className="flex-1 px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] text-[var(--os-text-1)] focus:outline-none focus:border-[#579bfc]"
                       />
                       <button
                         disabled={!resolution.trim() || update.isPending}
                         onClick={() => update.mutate({ status: 'RESOLVED', resolution })}
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold text-white disabled:opacity-40"
+                        className="px-3 py-1.5 rounded-2xl text-xs font-bold text-white disabled:opacity-40"
                         style={{ background: '#00c875' }}
                       >
                         Resolve
@@ -303,7 +303,7 @@ function IncidentRow({ inc }: { inc: Incident }) {
                     <button
                       key={s}
                       onClick={() => update.mutate({ status: s })}
-                      className="px-2 py-0.5 rounded-md text-[10px] font-bold transition-colors"
+                      className="px-2 py-0.5 rounded-2xl text-[10px] font-bold transition-colors"
                       style={{ background: (STATUS_COLOUR[s] ?? STATUS_COLOUR['NEW']).bg, color: (STATUS_COLOUR[s] ?? STATUS_COLOUR['NEW']).text }}
                     >
                       {s.replace('_', ' ')}
@@ -376,7 +376,7 @@ export function IncidentLog() {
       <div className="flex items-center gap-2 mb-4 flex-wrap">
         <button
           onClick={() => setCreating(true)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-colors"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold text-white transition-colors"
           style={{ background: '#579bfc' }}
         >
           <Plus className="w-3.5 h-3.5" /> New Incident
@@ -387,7 +387,7 @@ export function IncidentLog() {
           <select
             value={filterPriority}
             onChange={e => setPriority(e.target.value)}
-            className="px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
+            className="px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
           >
             <option value="">All priorities</option>
             {['P1','P2','P3','P4'].map(p => <option key={p} value={p}>{p}</option>)}
@@ -395,14 +395,14 @@ export function IncidentLog() {
           <select
             value={filterStatus}
             onChange={e => setStatus(e.target.value)}
-            className="px-2.5 py-1.5 text-xs rounded-lg border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
+            className="px-2.5 py-1.5 text-xs rounded-2xl border border-[var(--os-border)] bg-[var(--os-surface-0)] text-[var(--os-text-1)] focus:outline-none"
           >
             <option value="">All statuses</option>
             {['NEW','TRIAGING','IN_PROGRESS','ON_HOLD','RESOLVED','CLOSED'].map(s => <option key={s} value={s}>{s}</option>)}
           </select>
           <button
             onClick={() => qc.invalidateQueries({ queryKey: ['itil-incidents'] })}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-colors"
+            className="w-7 h-7 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] hover:bg-[var(--os-surface-0)] transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
@@ -415,7 +415,7 @@ export function IncidentLog() {
       <div className="rounded-2xl border border-[var(--os-border)] overflow-hidden" style={{ background: 'var(--os-card)' }}>
         {isLoading ? (
           <div className="p-6 space-y-2">
-            {[1,2,3,4,5].map(i => <div key={i} className="h-10 rounded-lg animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
+            {[1,2,3,4,5].map(i => <div key={i} className="h-10 rounded-2xl animate-pulse" style={{ background: 'var(--os-surface-0)' }} />)}
           </div>
         ) : rows.length === 0 ? (
           <div className="py-16 text-center">

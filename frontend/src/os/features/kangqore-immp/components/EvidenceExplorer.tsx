@@ -6,14 +6,14 @@ export function EvidenceExplorer({ sessions = [] }: { sessions: any[] }) {
 
   if (sessions.length === 0) {
     return (
-      <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 text-center text-slate-500">
+      <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5 text-center text-slate-500">
         No active sessions to explore.
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
+    <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
       <h3 className="text-xs font-bold text-[var(--os-text-3)] uppercase mb-4 flex items-center gap-2">
         <Shield className="w-4 h-4" /> Evidence Explorer
       </h3>
@@ -26,7 +26,7 @@ export function EvidenceExplorer({ sessions = [] }: { sessions: any[] }) {
             <button
               key={i}
               onClick={() => setSelectedSession(s)}
-              className={`w-full text-left p-3 rounded-lg transition-colors ${selectedSession?.sessionId === s.sessionId ? 'bg-indigo-500/10 border border-indigo-500/30' : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:border-slate-600'}`}
+              className={`w-full text-left p-3 rounded-2xl transition-colors ${selectedSession?.sessionId === s.sessionId ? 'bg-indigo-500/10 border border-indigo-500/30' : 'bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:border-slate-600'}`}
             >
               <div className="text-xs font-bold text-white mb-1">Visitor {s.visitorId.substring(0, 6)}</div>
               <div className="text-[10px] text-slate-400">{s.persona} • {s.decisionState}</div>
@@ -38,14 +38,14 @@ export function EvidenceExplorer({ sessions = [] }: { sessions: any[] }) {
         {selectedSession ? (
           <div className="col-span-2 space-y-6">
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+              <div className="p-4 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)]">
                 <h5 className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-2 flex items-center gap-2">
                   <User className="w-3.5 h-3.5" /> Persona
                 </h5>
                 <div className="text-lg font-bold text-white">{selectedSession.persona}</div>
                 <div className="text-xs text-slate-400 mt-1">Confidence: {selectedSession.confidence?.persona || 0}%</div>
               </div>
-              <div className="p-4 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+              <div className="p-4 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)]">
                 <h5 className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-2 flex items-center gap-2">
                   <Target className="w-3.5 h-3.5" /> Decision State
                 </h5>
@@ -59,7 +59,7 @@ export function EvidenceExplorer({ sessions = [] }: { sessions: any[] }) {
               <h5 className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-3 flex items-center gap-2">
                 <LineChart className="w-3.5 h-3.5" /> Relationship Tree
               </h5>
-              <div className="p-4 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm font-mono text-slate-300">
+              <div className="p-4 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm font-mono text-slate-300">
                 <div className="flex flex-col gap-1">
                   <div>Visitor: {selectedSession.visitorId.substring(0, 8)}</div>
                   <div className="flex items-center gap-2 text-slate-400"><ChevronRight className="w-3 h-3" /> Persona: {selectedSession.persona}</div>
@@ -82,7 +82,7 @@ export function EvidenceExplorer({ sessions = [] }: { sessions: any[] }) {
             </div>
             
             {/* Confidence Volatility */}
-            <div className="p-4 rounded-lg bg-indigo-900/20 border border-indigo-500/20">
+            <div className="p-4 rounded-2xl bg-indigo-900/20 border border-indigo-500/20">
                <h5 className="text-[10px] text-indigo-400 uppercase tracking-widest font-bold mb-1">Confidence Stability</h5>
                <div className="text-sm font-bold text-white">{selectedSession.confidence?.stability || 'High'}</div>
                {selectedSession.confidence?.stabilityReason && (

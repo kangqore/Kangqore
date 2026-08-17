@@ -81,7 +81,7 @@ function SourceCard({ source, onRun, running }: { source: ScoutSource; onRun: (n
           <p className="text-base font-bold text-[var(--os-text-1)] leading-tight">{source.name}</p>
           <p className="text-sm font-semibold text-[var(--os-text-2)] mt-1">{source.signalType.replace(/_/g, ' ')}</p>
         </div>
-        <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${CATEGORY_COLORS[source.signalCategory]?.bg} ${CATEGORY_COLORS[source.signalCategory]?.text}`}>
+        <span className={`text-[11px] font-bold px-2 py-0.5 rounded-2xl ${CATEGORY_COLORS[source.signalCategory]?.bg} ${CATEGORY_COLORS[source.signalCategory]?.text}`}>
           {source.signalCategory}
         </span>
       </div>
@@ -97,7 +97,7 @@ function SourceCard({ source, onRun, running }: { source: ScoutSource; onRun: (n
       <button
         onClick={() => onRun(slug)}
         disabled={running}
-        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-bold bg-[var(--os-card)] shadow-[0_8px_16px_rgba(0,0,0,0.04)] text-[var(--os-text-1)] hover:text-blue-600 hover:shadow-sm transition-all disabled:opacity-50 mt-1"
+        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-2xl text-xs font-bold bg-[var(--os-card)] shadow-[0_8px_16px_rgba(0,0,0,0.04)] text-[var(--os-text-1)] hover:text-blue-600 hover:shadow-sm transition-all disabled:opacity-50 mt-1"
       >
         {running ? <Spinner size="sm" /> : <Play className="w-4 h-4" />}
         {running ? 'Scanning…' : 'Run Now'}
@@ -121,7 +121,7 @@ function JobRow({ job }: { job: ScoutJob }) {
       </div>
       <div className="flex items-center gap-4 text-xs font-semibold text-[var(--os-text-2)] flex-shrink-0">
         <span>{job.resultsFound} results</span>
-        <span className="text-purple-600 bg-purple-50 px-2 py-0.5 rounded-md">{job.signalsEmitted} signals</span>
+        <span className="text-purple-600 bg-purple-50 px-2 py-0.5 rounded-2xl">{job.signalsEmitted} signals</span>
         <span>{formatRelative(job.createdAt)}</span>
       </div>
     </div>
@@ -186,7 +186,7 @@ export function ScoutPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 pb-5 mb-1 border-b border-[var(--os-border)]">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-600 to-blue-700 flex items-center justify-center flex-shrink-0 shadow-lg">
+        <div className="w-8 h-8 rounded-2xl bg-gradient-to-br from-sky-600 to-blue-700 flex items-center justify-center flex-shrink-0 shadow-lg">
           <Satellite className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1">
@@ -294,7 +294,7 @@ export function ScoutPage() {
           {loadingJobs && <Spinner size="sm" />}
           <button
             onClick={() => refetchJobs()}
-            className="ml-auto w-8 h-8 rounded-xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
+            className="ml-auto w-8 h-8 rounded-2xl flex items-center justify-center text-[var(--os-text-2)] bg-[var(--os-surface-0)] border border-[var(--os-border)] hover:text-[var(--os-text-1)] transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
           </button>

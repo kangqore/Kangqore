@@ -86,7 +86,7 @@ function ConfigForm({ manifest, onSave, onCancel, saving }: {
             placeholder={f.placeholder}
             value={fields[f.key] ?? ''}
             onChange={e => setFields(prev => ({ ...prev, [f.key]: e.target.value }))}
-            className="w-full px-3 py-2 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
+            className="w-full px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-sm text-[var(--os-text-1)] outline-none focus:border-[#579bfc]"
           />
         </div>
       ))}
@@ -94,13 +94,13 @@ function ConfigForm({ manifest, onSave, onCancel, saving }: {
         <button
           onClick={() => onSave(fields)}
           disabled={saving || manifest.authFields.some(f => !fields[f.key]?.trim())}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-[#579bfc] text-white text-sm font-semibold hover:bg-[#4a8ef5] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving…</> : 'Save & Test'}
         </button>
         <button
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg border border-[var(--os-border)] text-sm text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
+          className="px-4 py-2 rounded-2xl border border-[var(--os-border)] text-sm text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
         >
           Cancel
         </button>
@@ -160,7 +160,7 @@ function IntegrationCard({ integration, manifest }: { integration?: Integration;
 
   return (
     <div className={cn(
-      'rounded-xl border transition-all',
+      'rounded-2xl border transition-all',
       isConnected
         ? 'border-green-500/20 bg-green-500/[0.03]'
         : configured
@@ -169,7 +169,7 @@ function IntegrationCard({ integration, manifest }: { integration?: Integration;
     )}>
       {/* Header row */}
       <div className="flex items-center gap-4 px-5 py-4">
-        <div className="text-2xl w-10 h-10 flex items-center justify-center rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] flex-shrink-0">
+        <div className="text-2xl w-10 h-10 flex items-center justify-center rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] flex-shrink-0">
           {manifest.icon}
         </div>
 
@@ -215,7 +215,7 @@ function IntegrationCard({ integration, manifest }: { integration?: Integration;
             <button
               onClick={() => testNow.mutate()}
               disabled={testNow.isPending}
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] font-medium text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-2xl border border-[var(--os-border)] text-[11px] font-medium text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50"
             >
               {testNow.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Zap className="w-3 h-3" />}
               Test
@@ -223,14 +223,14 @@ function IntegrationCard({ integration, manifest }: { integration?: Integration;
           )}
           <button
             onClick={() => setShowForm(s => !s)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--os-border)] text-[11px] font-medium text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-2xl border border-[var(--os-border)] text-[11px] font-medium text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
           >
             <Plug className="w-3 h-3" />
             {configured ? 'Reconfigure' : 'Connect'}
           </button>
           <button
             onClick={() => setExpanded(s => !s)}
-            className="p-1.5 rounded-lg border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
+            className="p-1.5 rounded-2xl border border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]"
           >
             {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </button>
@@ -240,7 +240,7 @@ function IntegrationCard({ integration, manifest }: { integration?: Integration;
       {/* Test result */}
       {testResult && (
         <div className={cn(
-          'mx-5 mb-3 px-3 py-2 rounded-lg text-[11px] flex items-center gap-2',
+          'mx-5 mb-3 px-3 py-2 rounded-2xl text-[11px] flex items-center gap-2',
           testResult.ok ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'
         )}>
           {testResult.ok ? <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" /> : <XCircle className="w-3.5 h-3.5 flex-shrink-0" />}
@@ -305,7 +305,7 @@ function IntegrationCard({ integration, manifest }: { integration?: Integration;
                   { label: 'Last Failure', value: fmt(health.lastFailure), color: 'text-red-400' },
                   { label: 'Latency',      value: health.latencyMs !== null ? `${health.latencyMs}ms` : '—', color: 'text-[var(--os-text-1)]' },
                 ].map(({ label, value, color }) => (
-                  <div key={label} className="rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)] px-3 py-2">
+                  <div key={label} className="rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] px-3 py-2">
                     <p className={cn('text-sm font-semibold tabular-nums', color)}>{value}</p>
                     <p className="text-[10px] text-[var(--os-text-2)]">{label}</p>
                   </div>
@@ -401,7 +401,7 @@ export function IntegrationsPage() {
             key={cat}
             onClick={() => setCategoryFilter(cat)}
             className={cn(
-              'text-[11px] font-medium px-3 py-1.5 rounded-lg border transition-all',
+              'text-[11px] font-medium px-3 py-1.5 rounded-2xl border transition-all',
               categoryFilter === cat
                 ? 'bg-[#579bfc] border-[#579bfc] text-white'
                 : 'border-[var(--os-border)] text-[var(--os-text-2)] hover:text-[var(--os-text-1)]'
@@ -419,7 +419,7 @@ export function IntegrationsPage() {
       {isLoading ? (
         <div className="space-y-3">
           {[1, 2, 3, 4].map(i => (
-            <div key={i} className="h-20 rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] animate-pulse" />
+            <div key={i} className="h-20 rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] animate-pulse" />
           ))}
         </div>
       ) : (
@@ -436,7 +436,7 @@ export function IntegrationsPage() {
 
       {/* Capability registry */}
       {capabilities.length > 0 && (
-        <div className="rounded-xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
+        <div className="rounded-2xl border border-[var(--os-border)] bg-[var(--os-card)] p-5">
           <div className="flex items-center gap-2 mb-4">
             <Zap className="w-4 h-4 text-[#579bfc]" />
             <p className="text-sm font-semibold text-[var(--os-text-1)]">Capability Registry</p>
@@ -444,7 +444,7 @@ export function IntegrationsPage() {
           </div>
           <div className="grid grid-cols-2 gap-1.5">
             {capabilities.map(({ capability, platforms }) => (
-              <div key={capability} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--os-surface-0)] border border-[var(--os-border)]">
+              <div key={capability} className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)]">
                 <span className="text-[11px] font-medium text-[var(--os-text-1)] flex-1">{capability}</span>
                 <div className="flex gap-1">
                   {platforms.map(p => {
