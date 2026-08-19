@@ -6,9 +6,9 @@
  */
 
 import crypto from 'crypto'
-import { prisma } from '../lib/prisma'
-import { GovernanceKernel } from '../kangqore-view/developer/GovernanceKernel'
-import { MarketplaceService } from '../kangqore-view/developer/MarketplaceService'
+import { prisma } from '../../../lib/prisma'
+import { GovernanceKernel } from '../GovernanceKernel'
+import { MarketplaceService } from '../MarketplaceService'
 
 const APP_ID = 'app-e2e-probe'
 const TENANT = 'e2e-tenant'
