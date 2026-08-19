@@ -14,6 +14,13 @@ jobs:
     name: Playwright smoke
     runs-on: ubuntu-latest
 
+    # Without this the job inherits GitHub's 6-hour default. `playwright install
+    # --with-deps` shells out to apt-get and can hang indefinitely on a slow or
+    # unavailable mirror — which it did on PR #405, sitting in-progress for over
+    # three hours and blocking the PR while nothing was wrong with the code.
+    # Fail fast instead so a stalled runner is obvious and cheap to re-run.
+    timeout-minutes: 25
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,6 +36,7 @@ jobs:
 
       - name: Install Playwright browsers
         working-directory: frontend
+        timeout-minutes: 8
         run: npx playwright install --with-deps chromium
 
       - name: Build frontend static bundle
