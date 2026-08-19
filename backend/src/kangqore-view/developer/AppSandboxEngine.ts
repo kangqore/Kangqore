@@ -1,10 +1,12 @@
-// Phase 5.4 — App Sandbox Engine & Governed Runtime Inheritor
-// Executes third-party marketplace app actions within an isolated sandbox environment.
-// Automatically inherits: Identity, Roles, AEGIS Policy Evaluation, Audit Logging, Billing Meters, Telemetry.
+// Phase 5.3 — App Sandbox Engine
+//
+// Executes a third-party app action. Authorisation is delegated wholesale to
+// GovernanceKernel, so this engine cannot execute anything the kernel refused
+// and cannot report governance it did not obtain.
 
 import { prisma } from '../../lib/prisma'
-import { checkPolicy } from '../esf/PolicyEngine'
 import { ActionEngine } from '../automation/ActionEngine'
+import { GovernanceKernel } from './GovernanceKernel'
 
 export interface SandboxExecutionInput {
   appId: string
@@ -12,136 +14,128 @@ export interface SandboxExecutionInput {
   params: Record<string, any>
   actorId: string
   tenantId?: string
+  /** Dry-run: authorise and audit, but never mutate. Used by the test framework. */
+  dryRun?: boolean
 }
 
 export interface SandboxExecutionResult {
   success: boolean
   executionId: string
-  auditId?: string
+  auditId: string
   result?: any
   error?: string
   governanceDetails: {
+    outcome: string
     policyChecked: boolean
-    policyName?: string
+    policyName?: string | null
+    policyEffect?: string
     governancePassed: boolean
     approvalRequired: boolean
     auditLogged: boolean
-    costCreditsDeducted: number
+    creditsCharged: number
+    creditsRemaining: number
+    inherited: Record<string, boolean>
   }
 }
 
 export const AppSandboxEngine = {
   async execute(input: SandboxExecutionInput): Promise<SandboxExecutionResult> {
-    const startTime = Date.now()
+    const started = Date.now()
+    const tenantId = input.tenantId || 'default'
 
-    // 1. Fetch installed app manifest / metadata
-    const installedApp = await (prisma as any).installedApp?.findFirst({
-      where: { appId: input.appId },
-    }).catch(() => null)
-
-    const isInstalled = !!installedApp || input.appId.startsWith('app-dev-') || input.appId.startsWith('app-')
-    if (!isInstalled) {
-      return {
-        success: false,
-        executionId: `exec-${Date.now()}`,
-        error: `App "${input.appId}" is not installed or enabled in this tenant.`,
-        governanceDetails: {
-          policyChecked: false,
-          governancePassed: false,
-          approvalRequired: false,
-          auditLogged: false,
-          costCreditsDeducted: 0,
-        },
-      }
-    }
-
-    // 2. Evaluate AEGIS Policy Engine
-    const policyResult = await checkPolicy({
-      trigger: `APP_ACTION:${input.appId}:${input.actionName}`,
-      params: input.params,
+    // Single authorisation chokepoint — all six layers.
+    const decision = await GovernanceKernel.authorize({
+      appId: input.appId,
+      tenantId,
       actorId: input.actorId,
+      actionName: input.actionName,
+      params: input.params,
+      creditCost: 1,
     })
 
-    if (policyResult.effect === 'DENY') {
+    const governanceDetails = {
+      outcome: decision.outcome,
+      policyChecked: decision.policy.checked,
+      policyName: decision.policy.policyName,
+      policyEffect: decision.policy.effect,
+      governancePassed: decision.allowed,
+      approvalRequired: decision.outcome === 'PENDING_APPROVAL',
+      auditLogged: true,
+      creditsCharged: decision.billing.creditsCharged,
+      creditsRemaining: decision.billing.creditsRemaining,
+      inherited: decision.inherited,
+    }
+
+    if (!decision.allowed) {
       return {
         success: false,
         executionId: `exec-${Date.now()}`,
-        error: `AEGIS Security Policy Denied Execution: ${policyResult.reason}`,
-        governanceDetails: {
-          policyChecked: true,
-          policyName: policyResult.policyName || 'DefaultDeny',
-          governancePassed: false,
-          approvalRequired: false,
-          auditLogged: true,
-          costCreditsDeducted: 0,
-        },
+        auditId: decision.auditId,
+        error: decision.reason,
+        governanceDetails,
       }
     }
 
-    const requiresApproval = policyResult.effect === 'REQUIRE_APPROVAL'
+    if (input.dryRun) {
+      const result = { dryRun: true, actionName: input.actionName, wouldExecute: true }
+      await GovernanceKernel.recordResult(decision.auditId, result)
+      return {
+        success: true,
+        executionId: `exec-dry-${Date.now()}`,
+        auditId: decision.auditId,
+        result,
+        governanceDetails,
+      }
+    }
 
-    // 3. Delegate execution via ActionEngine or sandbox lookup
-    let actionExecResult: any
+    // Authorised — delegate to the real action engine.
     try {
-      // Find matching action in database if registered, or simulate sandbox
-      const action = await prisma.ontologyAction.findFirst({
-        where: { name: input.actionName },
-      }).catch(() => null)
-
-      if (action) {
-        actionExecResult = await ActionEngine.execute({
-          actionId: action.id,
-          params: input.params,
-          actorId: input.actorId,
-          actorType: 'DEVELOPER_APP',
-        })
-      } else {
-        // Fallback for sandboxed developer actions
-        actionExecResult = {
-          success: true,
-          executionId: `exec-sandbox-${Date.now()}`,
-          result: {
-            appId: input.appId,
-            actionName: input.actionName,
-            status: 'EXECUTED_IN_SANDBOX',
-            output: { message: `Action "${input.actionName}" executed successfully in AEGIS Sandbox` },
-          },
+      const action = await prisma.ontologyAction.findFirst({ where: { name: input.actionName } })
+      if (!action) {
+        const err = `Action "${input.actionName}" is not registered in the ontology.`
+        await GovernanceKernel.recordResult(decision.auditId, null, err)
+        return {
+          success: false,
+          executionId: `exec-${Date.now()}`,
+          auditId: decision.auditId,
+          error: err,
+          governanceDetails,
         }
       }
-    } catch (err: any) {
-      actionExecResult = { success: false, error: err.message }
-    }
 
-    // 4. Record Audit Log & Telemetry
-    const auditId = `audit-${Date.now()}`
-    await (prisma as any).kimmpAuditLog?.create({
-      data: {
-        action: `APP_EXECUTE:${input.appId}:${input.actionName}`,
+      const execResult: any = await ActionEngine.execute({
+        actionId: action.id,
+        params: input.params,
         actorId: input.actorId,
         actorType: 'DEVELOPER_APP',
-        details: JSON.stringify({
-          params: input.params,
-          policyEffect: policyResult.effect,
-          policyName: policyResult.policyName,
-          executionTimeMs: Date.now() - startTime,
-        }),
-      },
-    }).catch(() => null)
+      })
 
-    return {
-      success: actionExecResult.success !== false,
-      executionId: actionExecResult.executionId || `exec-${Date.now()}`,
-      auditId,
-      result: actionExecResult.result || actionExecResult,
-      error: actionExecResult.error,
-      governanceDetails: {
-        policyChecked: true,
-        policyName: policyResult.policyName || 'DefaultAllow',
-        governancePassed: true,
-        approvalRequired: requiresApproval,
-        auditLogged: true,
-        costCreditsDeducted: 1,
-      },
+      const failed = execResult?.success === false
+      await GovernanceKernel.recordResult(
+        decision.auditId,
+        execResult?.result ?? execResult,
+        failed ? execResult?.error ?? 'Action execution failed' : undefined,
+      )
+
+      return {
+        success: !failed,
+        executionId: execResult?.executionId || `exec-${Date.now()}`,
+        auditId: decision.auditId,
+        result: execResult?.result ?? execResult,
+        error: failed ? execResult?.error : undefined,
+        governanceDetails: { ...governanceDetails, outcome: failed ? 'ERROR' : 'ALLOWED' },
+      }
+    } catch (err: any) {
+      await GovernanceKernel.recordResult(decision.auditId, null, err.message)
+      return {
+        success: false,
+        executionId: `exec-${Date.now()}`,
+        auditId: decision.auditId,
+        error: err.message,
+        governanceDetails: { ...governanceDetails, outcome: 'ERROR' },
+      }
+    } finally {
+      void (Date.now() - started)
     }
   },
 }

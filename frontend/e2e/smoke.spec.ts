@@ -31,6 +31,7 @@ const ADMIN_ROUTES = [
   '/kangqore-view/admin/systems',
   '/kangqore-view/admin/aegis',
   '/kangqore-view/admin/kimmp',
+  '/kangqore-view/admin/developer',
   '/kangqore-view/admin/settings',
 ]
 

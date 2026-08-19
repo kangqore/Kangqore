@@ -8979,3 +8979,203 @@ model BidsProofPointPublication {
   @@index([status])
   @@map("bids_proof_point_publications")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PHASE 5 — Developer Platform & App Ecosystem
+// The persistence layer behind developers.kangqoreview.com. Every app, install,
+// token, and execution is a real row so that governance inheritance is provable
+// rather than asserted.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model DeveloperApp {
+  id             String    @id @default(cuid())
+  appId          String    @unique                  // app-<slug>-<base36>
+  name           String
+  slug           String    @unique
+  version        String    @default("1.0.0")
+  category       String    @default("COMMUNITY")    // CERTIFIED | GOVERNED | AI_NATIVE | ENTERPRISE_READY | COMMUNITY | PARTNER
+  description    String    @db.Text
+  publisherName  String
+  publisherEmail String
+  publisherSite  String?
+  iconEmoji      String?   @default("🧩")
+
+  ownerUserId    String
+  clientId       String    @unique                  // OAuth client_id
+  clientSecretHash String                           // SHA-256 — raw secret shown once at creation
+  secretPrefix   String                             // display prefix e.g. "sec_a1b2"
+
+  manifest       Json                               // full KangqoreAppManifest
+  status         String    @default("DRAFT")        // DRAFT | IN_REVIEW | PUBLISHED | SUSPENDED | REJECTED
+
+  // Certification / governance posture
+  governanceScore Int      @default(0)              // 0–100, computed by CertificationEngine
+  certifiedBadge  Boolean  @default(false)
+  certifiedAt     DateTime?
+  certificationNotes String? @db.Text
+
+  redirectUris   String[]  @default([])             // OAuth redirect allowlist
+  scopes         String[]  @default([])             // requested OAuth scopes
+
+  installCount   Int       @default(0)
+  price          Float     @default(0)
+  platformFee    Float     @default(0.20)
+
+  publishedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  installations  AppInstallation[]
+  auditEvents    AppAuditEvent[]
+  oauthTokens    AppOAuthToken[]
+  deployments    AppDeployment[]
+  testRuns       AppTestRun[]
+
+  @@index([status, category])
+  @@index([ownerUserId])
+  @@index([clientId])
+  @@map("developer_apps")
+}
+
+model AppInstallation {
+  id             String    @id @default(cuid())
+  appId          String
+  tenantId       String                              // TenantOrganisation.id or "default"
+  installedBy    String                              // User.id
+
+  status         String    @default("ACTIVE")        // ACTIVE | SUSPENDED | UNINSTALLED
+
+  // ── Inherited governance envelope (written by GovernanceKernel at install) ──
+  grantedPermissions Json                            // resolved AppPermission[] the tenant approved
+  grantedScopes      String[] @default([])
+  allowedActions     String[] @default([])           // OntologyAction.name allowlist
+  allowedObjectTypes String[] @default([])           // OntologyObjectType.name allowlist
+
+  policyId       String?                             // KimmpPolicy bound at install
+  budgetCredits  Int       @default(1000)            // billing envelope
+  creditsUsed    Int       @default(0)
+  rateLimitPerMin Int      @default(60)
+
+  installedAt    DateTime  @default(now())
+  uninstalledAt  DateTime?
+  updatedAt      DateTime  @updatedAt
+
+  app            DeveloperApp @relation(fields: [appId], references: [appId], onDelete: Cascade)
+
+  @@unique([appId, tenantId])
+  @@index([tenantId, status])
+  @@map("app_installations")
+}
+
+model AppAuditEvent {
+  id             String    @id @default(cuid())
+  appId          String
+  installationId String?
+  tenantId       String
+  actorId        String
+  actorType      String    @default("DEVELOPER_APP")
+
+  eventType      String                              // INSTALL | UNINSTALL | ACTION_EXECUTE | OAUTH_GRANT | OAUTH_REVOKE | POLICY_DENY | APPROVAL_REQUIRED | PUBLISH | CERTIFY
+  actionName     String?
+  outcome        String                              // ALLOWED | DENIED | PENDING_APPROVAL | ERROR
+
+  policyId       String?
+  policyName     String?
+  policyEffect   String?                             // ALLOW | DENY | REQUIRE_APPROVAL
+
+  creditsCharged Int       @default(0)
+  durationMs     Int?
+  params         Json?
+  result         Json?
+  errorMessage   String?   @db.Text
+
+  createdAt      DateTime  @default(now())
+
+  app            DeveloperApp @relation(fields: [appId], references: [appId], onDelete: Cascade)
+
+  @@index([appId, createdAt])
+  @@index([tenantId, createdAt])
+  @@index([eventType, outcome])
+  @@map("app_audit_events")
+}
+
+model AppOAuthToken {
+  id             String    @id @default(cuid())
+  appId          String
+  tenantId       String
+  userId         String?                             // null for client_credentials grants
+
+  grantType      String                              // authorization_code | client_credentials | refresh_token
+  tokenHash      String    @unique                   // SHA-256 of access token
+  refreshHash    String?   @unique
+  scopes         String[]  @default([])
+
+  expiresAt      DateTime
+  revoked        Boolean   @default(false)
+  revokedAt      DateTime?
+  lastUsedAt     DateTime?
+  createdAt      DateTime  @default(now())
+
+  app            DeveloperApp @relation(fields: [appId], references: [appId], onDelete: Cascade)
+
+  @@index([appId, revoked])
+  @@index([tokenHash])
+  @@map("app_oauth_tokens")
+}
+
+model AppOAuthCode {
+  id             String    @id @default(cuid())
+  code           String    @unique
+  appId          String
+  userId         String
+  tenantId       String
+  redirectUri    String
+  scopes         String[]  @default([])
+  codeChallenge  String?                             // PKCE S256
+  used           Boolean   @default(false)
+  expiresAt      DateTime
+  createdAt      DateTime  @default(now())
+
+  @@index([code])
+  @@map("app_oauth_codes")
+}
+
+model AppDeployment {
+  id             String    @id @default(cuid())
+  appId          String
+  version        String
+  environment    String    @default("SANDBOX")       // SANDBOX | STAGING | PRODUCTION
+  status         String    @default("PENDING")       // PENDING | BUILDING | DEPLOYED | FAILED | ROLLED_BACK
+
+  manifestSnapshot Json
+  releaseNotes   String?   @db.Text
+  deployedBy     String
+  logs           String?   @db.Text
+
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+
+  app            DeveloperApp @relation(fields: [appId], references: [appId], onDelete: Cascade)
+
+  @@index([appId, environment])
+  @@map("app_deployments")
+}
+
+model AppTestRun {
+  id             String    @id @default(cuid())
+  appId          String
+  suiteName      String    @default("default")
+  status         String    @default("RUNNING")       // RUNNING | PASSED | FAILED
+  totalTests     Int       @default(0)
+  passedTests    Int       @default(0)
+  failedTests    Int       @default(0)
+  results        Json?
+  durationMs     Int?
+  triggeredBy    String
+  createdAt      DateTime  @default(now())
+
+  app            DeveloperApp @relation(fields: [appId], references: [appId], onDelete: Cascade)
+
+  @@index([appId, createdAt])
+  @@map("app_test_runs")
+}

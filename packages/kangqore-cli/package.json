@@ -1,0 +1,18 @@
+{
+  "name": "@kangqore/cli",
+  "version": "1.0.0",
+  "description": "Kangqore View developer CLI — scaffold, validate, test, deploy, and publish apps.",
+  "license": "Apache-2.0",
+  "author": "Kangqore",
+  "homepage": "https://developers.kangqoreview.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kangqore/Kangqore.git",
+    "directory": "packages/kangqore-cli"
+  },
+  "keywords": ["kangqore", "cli", "developer", "marketplace"],
+  "bin": { "kangqore": "./bin/kangqore.js" },
+  "files": ["bin", "README.md"],
+  "engines": { "node": ">=18" },
+  "publishConfig": { "access": "public" }
+}

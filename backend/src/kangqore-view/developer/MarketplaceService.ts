@@ -1,179 +1,316 @@
-// Phase 5.4 — App Marketplace Catalog & Certification Engine
-// Manages marketplace categories, app listings, security governance badge scoring, installation, and reviews.
+// Phase 5.4 — App Marketplace Catalog, Certification & Governed Installation
+//
+// One catalog, backed by the database. Published DeveloperApps and the existing
+// MarketplaceListing rows are projected into a single listing shape so the
+// storefront has exactly one source of truth.
+//
+// Installing derives the app's governance envelope from its manifest and writes
+// it onto the installation. That envelope is what GovernanceKernel enforces on
+// every subsequent call — the inheritance is data, not a claim in a response.
 
+import { prisma } from '../../lib/prisma'
 import { AppCategory, KangqoreAppManifest } from './AppManifest'
+import { GovernanceKernel } from './GovernanceKernel'
+
+export const MARKETPLACE_CATEGORIES: AppCategory[] = [
+  'CERTIFIED',
+  'GOVERNED',
+  'AI_NATIVE',
+  'ENTERPRISE_READY',
+  'COMMUNITY',
+  'PARTNER',
+]
 
 export interface MarketplaceAppListing {
   appId: string
   name: string
   version: string
-  category: AppCategory
+  category: string
   publisher: string
   description: string
   icon: string
   rating: number
+  reviewCount: number
   downloads: number
-  governanceScore: number // 0–100 Security & Governance audit score
+  governanceScore: number
   certifiedBadge: boolean
+  price: number
   features: string[]
   permissionsRequired: string[]
-  manifest: KangqoreAppManifest
+  source: 'DEVELOPER_APP' | 'MARKETPLACE_LISTING'
+  manifest?: KangqoreAppManifest
 }
 
-export const CANONICAL_MARKETPLACE_APPS: MarketplaceAppListing[] = [
-  {
-    appId: 'app-salesforce-sync',
-    name: 'Salesforce Enterprise Sync',
-    version: '2.4.0',
-    category: 'ENTERPRISE_READY',
-    publisher: 'Kangqore Official',
-    description: 'Bi-directional real-time account, lead, opportunity, and custom object sync with Ontology object mapping.',
-    icon: 'Cloud',
-    rating: 4.9,
-    downloads: 14200,
-    governanceScore: 100,
-    certifiedBadge: true,
-    features: ['Ontology Auto-mapping', 'AEGIS RBAC Sync', 'Real-time Webhook Triggers'],
-    permissionsRequired: ['READ:Salesforce', 'WRITE:OntologyObject', 'EXECUTE:Action'],
-    manifest: {
-      manifestVersion: '1.0',
-      appId: 'app-salesforce-sync',
-      name: 'Salesforce Enterprise Sync',
-      version: '2.4.0',
-      category: 'ENTERPRISE_READY',
-      publisher: { name: 'Kangqore Official', email: 'dev@kangqore.com' },
-      description: 'Bi-directional Salesforce sync',
-      permissions: [
-        { resource: 'SalesforceAccount', action: 'READ', reason: 'Sync accounts to Ontology' },
-        { resource: 'OntologyObject', action: 'WRITE', reason: 'Write accounts to Ontology' },
-      ],
-      ontologyBindings: [{ objectType: 'CustomerAccount', relationshipTypes: ['belongsTo', 'ownsOrder'] }],
-      actions: [
-        { name: 'syncAccount', displayName: 'Sync Account', description: 'Triggers sync for specific Account ID', parameters: [{ name: 'accountId', type: 'string', required: true }] },
-      ],
-    },
-  },
-  {
-    appId: 'app-jira-agile',
-    name: 'Jira Software & Service Desk Bridge',
-    version: '3.1.0',
-    category: 'CERTIFIED',
-    publisher: 'Atlassian Certified Partner',
-    description: 'Connect Jira projects, sprints, epics, and issues directly to Kangqore WorkItems and Dependency Graphs.',
-    icon: 'Kanban',
-    rating: 4.8,
-    downloads: 18900,
-    governanceScore: 98,
-    certifiedBadge: true,
-    features: ['Sprint to Portfolio Rollup', 'WorkItem Synchronization', 'Automated Issue Triage'],
-    permissionsRequired: ['READ:JiraIssue', 'WRITE:WorkItem', 'EXECUTE:Action'],
-    manifest: {
-      manifestVersion: '1.0',
-      appId: 'app-jira-agile',
-      name: 'Jira Software & Service Desk Bridge',
-      version: '3.1.0',
-      category: 'CERTIFIED',
-      publisher: { name: 'Atlassian Certified Partner', email: 'integrations@atlassian.com' },
-      description: 'Jira issue integration',
-      permissions: [{ resource: 'WorkItem', action: 'WRITE', reason: 'Create WorkItems from Jira' }],
-      ontologyBindings: [{ objectType: 'WorkItem', relationshipTypes: ['blocks', 'dependsOn'] }],
-      actions: [
-        { name: 'createJiraIssue', displayName: 'Create Jira Issue', description: 'Creates issue in Jira', parameters: [{ name: 'summary', type: 'string', required: true }] },
-      ],
-    },
-  },
-  {
-    appId: 'app-ai-copilot-studio',
-    name: 'Autonomous AI Agent Studio',
-    version: '1.8.0',
-    category: 'AI_NATIVE',
-    publisher: 'Kangqore AI Labs',
-    description: 'Build, benchmark, and deploy custom autonomous AI agent personas with AEGIS budget limits and tool registries.',
-    icon: 'Robot',
-    rating: 5.0,
-    downloads: 24500,
-    governanceScore: 100,
-    certifiedBadge: true,
-    features: ['Custom Persona Prompt Registry', 'AEGIS Budget Guardrails', 'Multi-Agent Debate Framework'],
-    permissionsRequired: ['EXECUTE:Agent', 'READ:KnowledgeGraph', 'WRITE:AutonomousLog'],
-    manifest: {
-      manifestVersion: '1.0',
-      appId: 'app-ai-copilot-studio',
-      name: 'Autonomous AI Agent Studio',
-      version: '1.8.0',
-      category: 'AI_NATIVE',
-      publisher: { name: 'Kangqore AI Labs', email: 'ai@kangqore.com' },
-      description: 'Autonomous AI Agent Studio',
-      permissions: [{ resource: 'Agent', action: 'EXECUTE', reason: 'Run agent reasoning cycles' }],
-      ontologyBindings: [{ objectType: 'AgentPersona' }],
-      actions: [
-        { name: 'runAgentTask', displayName: 'Run Agent Task', description: 'Executes autonomous task cycle', parameters: [{ name: 'prompt', type: 'string', required: true }] },
-      ],
-    },
-  },
-  {
-    appId: 'app-servicenow-itsm',
-    name: 'ServiceNow ITSM & Incident Governor',
-    version: '2.1.0',
-    category: 'GOVERNED',
-    publisher: 'Enterprise Solutions Inc',
-    description: 'Governed incident response, change management approvals, and ITIL v4 SLA escalation framework.',
-    icon: 'ShieldCheck',
-    rating: 4.7,
-    downloads: 9400,
-    governanceScore: 99,
-    certifiedBadge: true,
-    features: ['ITIL v4 Governance', 'PendingApproval Lock', 'Automated Root Cause Triage'],
-    permissionsRequired: ['READ:Incident', 'WRITE:ChangeRequest', 'EXECUTE:Approval'],
-    manifest: {
-      manifestVersion: '1.0',
-      appId: 'app-servicenow-itsm',
-      name: 'ServiceNow ITSM & Incident Governor',
-      version: '2.1.0',
-      category: 'GOVERNED',
-      publisher: { name: 'Enterprise Solutions Inc', email: 'support@esi.com' },
-      description: 'ServiceNow ITSM Governor',
-      permissions: [{ resource: 'Incident', action: 'WRITE', reason: 'Manage ServiceNow incidents' }],
-      ontologyBindings: [{ objectType: 'IncidentReport' }],
-      actions: [
-        { name: 'escalateIncident', displayName: 'Escalate Incident', description: 'Escalates incident to SEV1', parameters: [{ name: 'incidentId', type: 'string', required: true }] },
-      ],
-    },
-  },
-]
+/** Map a legacy MarketplaceListing.category onto a Phase 5 marketplace category. */
+function mapLegacyCategory(row: { category: string; price: number }): AppCategory {
+  const c = (row.category || '').toLowerCase()
+  if (c === 'intelligence') return 'AI_NATIVE'
+  if (c === 'finance' || c === 'hr' || c === 'crm') return 'ENTERPRISE_READY'
+  if (c === 'ops') return 'GOVERNED'
+  return row.price > 0 ? 'PARTNER' : 'COMMUNITY'
+}
 
 export const MarketplaceService = {
-  listApps(category?: AppCategory, search?: string): MarketplaceAppListing[] {
-    let result = [...CANONICAL_MARKETPLACE_APPS]
-    if (category) {
-      result = result.filter(app => app.category === category)
+  /** Unified catalog across published developer apps and existing listings. */
+  async listApps(category?: string, search?: string): Promise<MarketplaceAppListing[]> {
+    const [apps, listings] = await Promise.all([
+      prisma.developerApp.findMany({
+        where: { status: 'PUBLISHED' },
+        orderBy: [{ certifiedBadge: 'desc' }, { installCount: 'desc' }],
+      }),
+      prisma.marketplaceListing.findMany({
+        where: { status: 'PUBLISHED' },
+        orderBy: { installCount: 'desc' },
+      }),
+    ])
+
+    const listingIds = listings.map(l => l.id)
+    const reviewAgg = listingIds.length
+      ? await prisma.marketplaceReview.groupBy({
+          by: ['listingId'],
+          where: { listingId: { in: listingIds } },
+          _avg: { rating: true },
+          _count: { rating: true },
+        })
+      : []
+    const reviewByListing = new Map(reviewAgg.map(r => [r.listingId, r]))
+
+    const fromApps: MarketplaceAppListing[] = apps.map(a => {
+      const manifest = a.manifest as unknown as KangqoreAppManifest
+      return {
+        appId: a.appId,
+        name: a.name,
+        version: a.version,
+        category: a.category,
+        publisher: a.publisherName,
+        description: a.description,
+        icon: a.iconEmoji || '🧩',
+        rating: 0,
+        reviewCount: 0,
+        downloads: a.installCount,
+        governanceScore: a.governanceScore,
+        certifiedBadge: a.certifiedBadge,
+        price: a.price,
+        features: (manifest?.actions ?? []).slice(0, 5).map(x => x.displayName || x.name),
+        permissionsRequired: (manifest?.permissions ?? []).map(p => `${p.action}:${p.resource}`),
+        source: 'DEVELOPER_APP',
+        manifest,
+      }
+    })
+
+    const fromListings: MarketplaceAppListing[] = listings.map(l => {
+      const agg = reviewByListing.get(l.id)
+      const manifest = l.manifest as any
+      return {
+        appId: l.slug,
+        name: l.name,
+        version: manifest?.version ?? '1.0.0',
+        category: mapLegacyCategory(l),
+        publisher: l.author,
+        description: l.description,
+        icon: l.iconEmoji || '🔌',
+        rating: agg?._avg.rating ? Number(agg._avg.rating.toFixed(2)) : 0,
+        reviewCount: agg?._count.rating ?? 0,
+        downloads: l.installCount,
+        // Legacy listings predate certification scoring; surfaced as uncertified
+        // rather than given a fabricated score.
+        governanceScore: 0,
+        certifiedBadge: false,
+        price: l.price,
+        features: Array.isArray(manifest?.capabilities) ? manifest.capabilities.slice(0, 5) : l.tags.slice(0, 5),
+        permissionsRequired: [],
+        source: 'MARKETPLACE_LISTING',
+      }
+    })
+
+    let result = [...fromApps, ...fromListings]
+
+    if (category && category !== 'ALL') {
+      result = result.filter(a => a.category === category)
     }
     if (search) {
       const q = search.toLowerCase()
-      result = result.filter(app => app.name.toLowerCase().includes(q) || app.description.toLowerCase().includes(q))
+      result = result.filter(a => a.name.toLowerCase().includes(q) || a.description.toLowerCase().includes(q))
     }
     return result
   },
 
-  getApp(appId: string): MarketplaceAppListing | undefined {
-    return CANONICAL_MARKETPLACE_APPS.find(app => app.appId === appId)
+  async getApp(appId: string): Promise<MarketplaceAppListing | null> {
+    const all = await this.listApps()
+    return all.find(a => a.appId === appId) ?? null
   },
 
-  getCategoryStats(): Record<string, number> {
-    const stats: Record<string, number> = {
-      ALL: CANONICAL_MARKETPLACE_APPS.length,
-      CERTIFIED: 0,
-      GOVERNED: 0,
-      AI_NATIVE: 0,
-      ENTERPRISE_READY: 0,
-      COMMUNITY: 0,
-      PARTNER: 0,
-    }
-    for (const app of CANONICAL_MARKETPLACE_APPS) {
-      if (stats[app.category] !== undefined) {
-        stats[app.category]++
-      }
+  async getCategoryStats(): Promise<Record<string, number>> {
+    const all = await this.listApps()
+    const stats: Record<string, number> = { ALL: all.length }
+    for (const c of MARKETPLACE_CATEGORIES) stats[c] = 0
+    for (const a of all) {
+      if (stats[a.category] !== undefined) stats[a.category]++
     }
     return stats
+  },
+
+  /**
+   * Install a published app into a tenant, deriving and persisting its
+   * governance envelope. Idempotent per (appId, tenantId).
+   */
+  async installApp(args: {
+    appId: string
+    tenantId: string
+    installedBy: string
+    budgetCredits?: number
+  }) {
+    const app = await prisma.developerApp.findUnique({ where: { appId: args.appId } })
+    if (!app) throw new Error(`App "${args.appId}" not found in marketplace`)
+    if (app.status !== 'PUBLISHED') throw new Error(`App "${args.appId}" is ${app.status}, not PUBLISHED`)
+
+    const manifest = app.manifest as unknown as KangqoreAppManifest
+    const envelope = GovernanceKernel.deriveEnvelopeFromManifest(manifest)
+
+    const installation = await prisma.appInstallation.upsert({
+      where: { appId_tenantId: { appId: args.appId, tenantId: args.tenantId } },
+      create: {
+        appId: args.appId,
+        tenantId: args.tenantId,
+        installedBy: args.installedBy,
+        status: 'ACTIVE',
+        grantedPermissions: (manifest.permissions ?? []) as any,
+        grantedScopes: envelope.grantedScopes,
+        allowedActions: envelope.allowedActions,
+        allowedObjectTypes: envelope.allowedObjectTypes,
+        budgetCredits: args.budgetCredits ?? 1000,
+      },
+      update: {
+        status: 'ACTIVE',
+        uninstalledAt: null,
+        grantedPermissions: (manifest.permissions ?? []) as any,
+        grantedScopes: envelope.grantedScopes,
+        allowedActions: envelope.allowedActions,
+        allowedObjectTypes: envelope.allowedObjectTypes,
+      },
+    })
+
+    await prisma.developerApp.update({
+      where: { appId: args.appId },
+      data: { installCount: { increment: 1 } },
+    })
+
+    await prisma.appAuditEvent.create({
+      data: {
+        appId: args.appId,
+        installationId: installation.id,
+        tenantId: args.tenantId,
+        actorId: args.installedBy,
+        actorType: 'USER',
+        eventType: 'INSTALL',
+        outcome: 'ALLOWED',
+        result: {
+          grantedScopes: envelope.grantedScopes,
+          allowedActions: envelope.allowedActions,
+          allowedObjectTypes: envelope.allowedObjectTypes,
+          budgetCredits: installation.budgetCredits,
+        } as any,
+      },
+    })
+
+    // Billing: charge only when the app is priced.
+    let charge = null
+    if (app.price > 0) {
+      charge = await prisma.marketplaceCharge.create({
+        data: {
+          listingId: app.appId,
+          partnerId: app.ownerUserId,
+          amount: app.price,
+          platformFee: app.price * app.platformFee,
+          status: 'PENDING',
+          installId: installation.id,
+        },
+      })
+    }
+
+    return {
+      installationId: installation.id,
+      appId: app.appId,
+      status: installation.status,
+      /** What the tenant actually granted — enforced on every later call. */
+      inheritedEnvelope: {
+        identity: { clientId: app.clientId, installationId: installation.id },
+        permissions: {
+          scopes: envelope.grantedScopes,
+          allowedActions: envelope.allowedActions,
+          allowedObjectTypes: envelope.allowedObjectTypes,
+        },
+        governance: { policyEvaluatedPerCall: true, certifiedBadge: app.certifiedBadge, governanceScore: app.governanceScore },
+        billing: { budgetCredits: installation.budgetCredits, chargeId: charge?.id ?? null, price: app.price },
+        audit: { every: 'AppAuditEvent', installEventWritten: true },
+        observability: { telemetryEndpoint: `/api/developer/apps/${app.appId}/telemetry` },
+      },
+    }
+  },
+
+  async uninstallApp(appId: string, tenantId: string, actorId: string) {
+    const installation = await prisma.appInstallation.findUnique({
+      where: { appId_tenantId: { appId, tenantId } },
+    })
+    if (!installation) throw new Error('Installation not found')
+
+    await prisma.appInstallation.update({
+      where: { id: installation.id },
+      data: { status: 'UNINSTALLED', uninstalledAt: new Date() },
+    })
+
+    await prisma.appOAuthToken.updateMany({
+      where: { appId, tenantId, revoked: false },
+      data: { revoked: true, revokedAt: new Date() },
+    })
+
+    await prisma.appAuditEvent.create({
+      data: {
+        appId,
+        installationId: installation.id,
+        tenantId,
+        actorId,
+        actorType: 'USER',
+        eventType: 'UNINSTALL',
+        outcome: 'ALLOWED',
+      },
+    })
+
+    return { appId, tenantId, status: 'UNINSTALLED', tokensRevoked: true }
+  },
+
+  async listInstallations(tenantId: string) {
+    return prisma.appInstallation.findMany({
+      where: { tenantId, status: 'ACTIVE' },
+      include: {
+        app: {
+          select: {
+            appId: true, name: true, version: true, category: true,
+            iconEmoji: true, certifiedBadge: true, governanceScore: true, publisherName: true,
+          },
+        },
+      },
+      orderBy: { installedAt: 'desc' },
+    })
+  },
+
+  async submitReview(args: { appId: string; authorId: string; rating: number; comment?: string }) {
+    if (args.rating < 1 || args.rating > 5) throw new Error('rating must be between 1 and 5')
+
+    const installed = await prisma.appInstallation.findFirst({
+      where: { appId: args.appId, installedBy: args.authorId },
+    })
+
+    return prisma.marketplaceReview.upsert({
+      where: { listingId_authorId: { listingId: args.appId, authorId: args.authorId } },
+      create: {
+        listingId: args.appId,
+        authorId: args.authorId,
+        rating: args.rating,
+        comment: args.comment ?? null,
+        verifiedBadge: !!installed,
+      },
+      update: { rating: args.rating, comment: args.comment ?? null },
+    })
   },
 }

@@ -149,6 +149,7 @@ const OntologyModule     = React.lazy(() => import('./os/features/ontology').the
 const UrgiStudioModule    = React.lazy(() => import('./os/features/urgi-studio/RelationshipStudio'));
 const BidsModule         = React.lazy(() => import('./os/features/bids').then(m => ({ default: m.BidsModule })));
 const MarketplaceModule  = React.lazy(() => import('./os/features/marketplace').then(m => ({ default: m.MarketplaceModule })));
+const DeveloperModule    = React.lazy(() => import('./os/features/developer').then(m => ({ default: m.DeveloperModule })));
 const OpsCentreModule    = React.lazy(() => import('./os/features/ops-centre').then(m => ({ default: m.OpsCentreModule })));
 const ClientPortal       = React.lazy(() => import('./os/portals/client').then(m => ({ default: m.ClientPortal })));
 const PartnerPortal      = React.lazy(() => import('./os/portals/partner').then(m => ({ default: m.PartnerPortal })));
@@ -303,6 +304,7 @@ function AppContent() {
             <Route path="settings/*"       element={<SettingsModule />}      />
             <Route path="relay/*"          element={<RelayPage />}           />
             <Route path="marketplace/*"    element={<MarketplaceModule />}   />
+            <Route path="developer/*"      element={<DeveloperModule />}     />
           </Route>
 
           {/* External portals */}

@@ -116,3 +116,8 @@ get_ontology.js
 
 # Claude Code agent worktrees (internal session state, never commit)
 .claude/worktrees/
+
+# Phase 5 SDK build artifacts
+packages/*/node_modules/
+packages/*/dist/
+packages/*/*.egg-info/
