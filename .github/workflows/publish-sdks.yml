@@ -1,0 +1,113 @@
+name: Publish SDKs
+
+# Phase 5.2 — ship the SDKs through npm and PyPI.
+# Tag-driven so a publish is always traceable to a commit:
+#   sdk-ts-v1.0.0   → @kangqore/view-sdk
+#   cli-v1.0.0      → @kangqore/cli
+#   sdk-py-v1.0.0   → kangqore-view-sdk
+
+on:
+  push:
+    tags:
+      - 'sdk-ts-v*'
+      - 'sdk-py-v*'
+      - 'cli-v*'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Which package to publish
+        required: true
+        type: choice
+        options: [sdk-ts, sdk-py, cli]
+      dry_run:
+        description: Pack/build only, do not publish
+        type: boolean
+        default: true
+
+jobs:
+  typescript-sdk:
+    if: startsWith(github.ref, 'refs/tags/sdk-ts-v') || github.event.inputs.target == 'sdk-ts'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write          # npm provenance
+    defaults:
+      run:
+        working-directory: packages/kangqore-sdk-ts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: https://registry.npmjs.org
+      - run: npm install --no-audit --no-fund
+      - run: npx tsc --noEmit
+      - run: npm run build
+      - name: Verify tag matches package version
+        if: startsWith(github.ref, 'refs/tags/sdk-ts-v')
+        run: |
+          PKG=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME#sdk-ts-v}"
+          if [ "$PKG" != "$TAG" ]; then
+            echo "::error::package.json is $PKG but tag is $TAG"
+            exit 1
+          fi
+      - name: Publish
+        if: github.event.inputs.dry_run != 'true'
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Dry run
+        if: github.event.inputs.dry_run == 'true'
+        run: npm pack --dry-run
+
+  cli:
+    if: startsWith(github.ref, 'refs/tags/cli-v') || github.event.inputs.target == 'cli'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: packages/kangqore-cli
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: https://registry.npmjs.org
+      - name: Smoke test
+        run: node bin/kangqore.js --help
+      - name: Publish
+        if: github.event.inputs.dry_run != 'true'
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Dry run
+        if: github.event.inputs.dry_run == 'true'
+        run: npm pack --dry-run
+
+  python-sdk:
+    if: startsWith(github.ref, 'refs/tags/sdk-py-v') || github.event.inputs.target == 'sdk-py'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write          # PyPI trusted publishing
+    defaults:
+      run:
+        working-directory: packages/kangqore-sdk-py
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade build twine
+      - name: Import check
+        run: python -c "import sys; sys.path.insert(0,'.'); import kangqore_view; print(kangqore_view.__version__)"
+      - run: python -m build
+      - run: python -m twine check dist/*
+      - name: Publish
+        if: github.event.inputs.dry_run != 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: packages/kangqore-sdk-py/dist

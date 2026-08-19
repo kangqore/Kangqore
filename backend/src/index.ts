@@ -202,8 +202,12 @@ app.use('/api/search', searchRoutes);
 import developerRoutes from './routes/developer.routes';
 import agentUxRoutes from './routes/agentUx.routes';
 import decisionEngineRoutes from './routes/decisionEngine.routes';
+// Phase 5 — single mount. Auth is applied per-route inside the router: human
+// developers via `authenticate`, installed apps via OAuth bearer introspection,
+// and only the OAuth token endpoint is public. Previously this was mounted
+// twice (the second at /api/marketplace produced /api/marketplace/marketplace/*)
+// and with no auth at all, exposing app-credential creation.
 app.use('/api/developer', developerRoutes);
-app.use('/api/marketplace', developerRoutes);
 app.use('/api/agent-ux', agentUxRoutes);
 app.use('/api/decision-engine', decisionEngineRoutes);
 app.use('/api/admin/analytics', analyticsRoutes); // NEW
