@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const DATABRICKS_PACK: ActionPackManifest = {
   pack: 'Databricks',
   version: '1.0.0',
+  description: 'Databricks jobs, clusters, notebooks, and workflow automation',
   category: { name: 'DatabricksIntegration', displayName: 'Databricks', description: 'Databricks jobs, clusters, notebooks, and workflow automation', icon: '⚡', color: '#ff3621' },
   actions: [
     { name: 'CREATE_DATABRICKS_JOB', displayName: 'Create Databricks Job', description: 'Create a new Databricks job', parameters: [{ name: 'name', type: 'string', required: true, description: 'Job name' }, { name: 'tasks', type: 'array', required: true, description: 'Job task definitions' }, { name: 'schedule', type: 'object', required: false, description: 'Cron schedule config' }], allowedRoles: ['ADMIN'], toolCallable: true },

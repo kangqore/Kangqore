@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const DBT_PACK: ActionPackManifest = {
   pack: 'dbt',
   version: '1.0.0',
+  description: 'dbt Cloud jobs, runs, models, and environment automation',
   category: { name: 'dbtIntegration', displayName: 'dbt Cloud', description: 'dbt Cloud jobs, runs, models, and environment automation', icon: '🔄', color: '#ff694a' },
   actions: [
     { name: 'DBT_LIST_JOBS', displayName: 'List dbt Jobs', description: 'List all jobs in a dbt Cloud account', parameters: [{ name: 'accountId', type: 'number', required: true, description: 'dbt Cloud account ID' }, { name: 'projectId', type: 'number', required: false, description: 'Filter by project' }], allowedRoles: ['ADMIN'], toolCallable: true },

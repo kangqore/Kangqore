@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const CONFLUENCE_PACK: ActionPackManifest = {
   pack: 'Confluence',
   version: '1.0.0',
+  description: 'Confluence pages, spaces, and knowledge management automation',
   category: {
     name: 'ConfluenceIntegration',
     displayName: 'Confluence',

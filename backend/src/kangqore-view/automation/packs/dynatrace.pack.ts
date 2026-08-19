@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const DYNATRACE_PACK: ActionPackManifest = {
   pack: 'Dynatrace',
   version: '1.0.0',
+  description: 'Dynatrace observability, problems, and release tracking automation',
   category: { name: 'DynatraceIntegration', displayName: 'Dynatrace', description: 'Dynatrace observability, problems, and release tracking automation', icon: '📊', color: '#73be28' },
   actions: [
     { name: 'GET_DYNATRACE_PROBLEMS', displayName: 'Get Dynatrace Problems', description: 'List active or recent problems in Dynatrace', parameters: [{ name: 'status', type: 'string', required: false, description: 'OPEN or CLOSED' }, { name: 'from', type: 'string', required: false, description: 'Relative or ISO start time' }, { name: 'problemSelector', type: 'string', required: false, description: 'Problem selector' }], allowedRoles: ['ADMIN'], toolCallable: true },

@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const XERO_PACK: ActionPackManifest = {
   pack: 'Xero',
   version: '1.0.0',
+  description: 'Xero accounting: invoices, contacts, payments, and reporting automation',
   category: { name: 'XeroIntegration', displayName: 'Xero', description: 'Xero accounting: invoices, contacts, payments, and reporting automation', icon: '💙', color: '#13b5ea' },
   actions: [
     { name: 'XERO_GET_CONTACT', displayName: 'Get Xero Contact', description: 'Retrieve a contact from Xero by contact ID', parameters: [{ name: 'tenantId', type: 'string', required: true, description: 'Xero tenant/org ID' }, { name: 'contactId', type: 'string', required: true, description: 'Contact GUID' }], allowedRoles: ['ADMIN'], toolCallable: true },

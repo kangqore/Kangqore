@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const INTERCOM_PACK: ActionPackManifest = {
   pack: 'Intercom',
   version: '1.0.0',
+  description: 'Intercom conversations, contacts, and messaging automation',
   category: { name: 'IntercomIntegration', displayName: 'Intercom', description: 'Intercom conversations, contacts, and messaging automation', icon: '💬', color: '#1f8ded' },
   actions: [
     { name: 'CREATE_INTERCOM_CONTACT', displayName: 'Create Intercom Contact', description: 'Create a user or lead contact in Intercom', parameters: [{ name: 'email', type: 'string', required: true, description: 'Contact email' }, { name: 'name', type: 'string', required: false, description: 'Contact name' }, { name: 'role', type: 'string', required: false, description: 'user or lead' }, { name: 'customAttributes', type: 'object', required: false, description: 'Custom attribute key-value pairs' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

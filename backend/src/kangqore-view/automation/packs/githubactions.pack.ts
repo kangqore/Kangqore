@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const GITHUBACTIONS_PACK: ActionPackManifest = {
   pack: 'GitHubActions',
   version: '1.0.0',
+  description: 'GitHub Actions workflow, run, and artifact management automation',
   category: { name: 'GitHubActionsIntegration', displayName: 'GitHub Actions', description: 'GitHub Actions workflow, run, and artifact management automation', icon: '⚡', color: '#2088ff' },
   actions: [
     { name: 'TRIGGER_GITHUB_WORKFLOW', displayName: 'Trigger GitHub Workflow', description: 'Manually trigger a GitHub Actions workflow', parameters: [{ name: 'owner', type: 'string', required: true, description: 'Repo owner' }, { name: 'repo', type: 'string', required: true, description: 'Repository name' }, { name: 'workflowId', type: 'string', required: true, description: 'Workflow file name or ID' }, { name: 'ref', type: 'string', required: true, description: 'Branch or tag ref' }, { name: 'inputs', type: 'object', required: false, description: 'Workflow dispatch inputs' }], allowedRoles: ['ADMIN'], toolCallable: true },

@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const CLICKUP_PACK: ActionPackManifest = {
   pack: 'ClickUp',
   version: '1.0.0',
+  description: 'ClickUp tasks, spaces, and goal tracking automation',
   category: { name: 'ClickUpIntegration', displayName: 'ClickUp', description: 'ClickUp tasks, spaces, and goal tracking automation', icon: '✅', color: '#7b68ee' },
   actions: [
     { name: 'CREATE_CLICKUP_TASK', displayName: 'Create ClickUp Task', description: 'Create a task in ClickUp', parameters: [{ name: 'listId', type: 'string', required: true, description: 'List ID' }, { name: 'name', type: 'string', required: true, description: 'Task name' }, { name: 'description', type: 'string', required: false, description: 'Task description' }, { name: 'assignees', type: 'array', required: false, description: 'Assignee user IDs' }, { name: 'priority', type: 'number', required: false, description: '1=urgent 2=high 3=normal 4=low' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

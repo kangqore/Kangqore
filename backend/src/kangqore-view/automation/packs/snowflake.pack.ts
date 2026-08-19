@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const SNOWFLAKE_PACK: ActionPackManifest = {
   pack: 'Snowflake',
   version: '1.0.0',
+  description: 'Snowflake data warehouse, SQL, and resource management automation',
   category: { name: 'SnowflakeIntegration', displayName: 'Snowflake', description: 'Snowflake data warehouse, SQL, and resource management automation', icon: '❄️', color: '#29b5e8' },
   actions: [
     { name: 'EXECUTE_SNOWFLAKE_QUERY', displayName: 'Execute Snowflake Query', description: 'Run a SQL query in Snowflake', parameters: [{ name: 'query', type: 'string', required: true, description: 'SQL query to execute' }, { name: 'warehouse', type: 'string', required: false, description: 'Virtual warehouse name' }, { name: 'database', type: 'string', required: false, description: 'Database context' }, { name: 'schema', type: 'string', required: false, description: 'Schema context' }], allowedRoles: ['ADMIN'], toolCallable: true },

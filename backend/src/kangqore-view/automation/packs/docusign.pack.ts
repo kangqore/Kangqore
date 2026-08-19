@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const DOCUSIGN_PACK: ActionPackManifest = {
   pack: 'DocuSign',
   version: '1.0.0',
+  description: 'DocuSign envelope, template, and eSignature workflow automation',
   category: { name: 'DocuSignIntegration', displayName: 'DocuSign', description: 'DocuSign envelope, template, and eSignature workflow automation', icon: '✍️', color: '#ffcc00' },
   actions: [
     { name: 'CREATE_DOCUSIGN_ENVELOPE', displayName: 'Create DocuSign Envelope', description: 'Create and send a DocuSign envelope for signing', parameters: [{ name: 'emailSubject', type: 'string', required: true, description: 'Envelope email subject' }, { name: 'signers', type: 'array', required: true, description: 'Array of signer objects with name, email, recipientId' }, { name: 'documentBase64', type: 'string', required: true, description: 'Base64-encoded document' }, { name: 'documentName', type: 'string', required: true, description: 'Document file name' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

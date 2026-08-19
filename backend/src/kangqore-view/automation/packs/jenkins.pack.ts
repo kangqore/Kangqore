@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const JENKINS_PACK: ActionPackManifest = {
   pack: 'Jenkins',
   version: '1.0.0',
+  description: 'Jenkins CI/CD pipeline and job automation',
   category: { name: 'JenkinsIntegration', displayName: 'Jenkins', description: 'Jenkins CI/CD pipeline and job automation', icon: '🔧', color: '#d33833' },
   actions: [
     { name: 'TRIGGER_JENKINS_BUILD', displayName: 'Trigger Jenkins Build', description: 'Trigger a Jenkins job build', parameters: [{ name: 'jobName', type: 'string', required: true, description: 'Job name or path' }, { name: 'parameters', type: 'object', required: false, description: 'Build parameters' }], allowedRoles: ['ADMIN'], toolCallable: true },

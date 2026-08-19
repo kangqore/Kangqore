@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const CLOUDFLARE_PACK: ActionPackManifest = {
   pack: 'Cloudflare',
   version: '1.0.0',
+  description: 'Cloudflare DNS, CDN, WAF, and Workers automation',
   category: { name: 'CloudflareIntegration', displayName: 'Cloudflare', description: 'Cloudflare DNS, CDN, WAF, and Workers automation', icon: '🌥️', color: '#f38020' },
   actions: [
     { name: 'CREATE_CLOUDFLARE_DNS_RECORD', displayName: 'Create DNS Record', description: 'Create a DNS record in a Cloudflare zone', parameters: [{ name: 'zoneId', type: 'string', required: true, description: 'Zone ID' }, { name: 'type', type: 'string', required: true, description: 'A, AAAA, CNAME, MX, TXT, etc.' }, { name: 'name', type: 'string', required: true, description: 'Record name' }, { name: 'content', type: 'string', required: true, description: 'Record content' }, { name: 'proxied', type: 'boolean', required: false, description: 'Enable Cloudflare proxy' }], allowedRoles: ['ADMIN'], toolCallable: true },

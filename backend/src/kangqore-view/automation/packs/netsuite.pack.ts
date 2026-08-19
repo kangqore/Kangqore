@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const NETSUITE_PACK: ActionPackManifest = {
   pack: 'NetSuite',
   version: '1.0.0',
+  description: 'NetSuite ERP: orders, customers, inventory, finance, and HR automation',
   category: { name: 'NetSuiteIntegration', displayName: 'Oracle NetSuite', description: 'NetSuite ERP: orders, customers, inventory, finance, and HR automation', icon: '🏢', color: '#e05614' },
   actions: [
     { name: 'NS_GET_CUSTOMER', displayName: 'Get NetSuite Customer', description: 'Retrieve a customer record from NetSuite', parameters: [{ name: 'internalId', type: 'string', required: true, description: 'Customer internal ID' }], allowedRoles: ['ADMIN'], toolCallable: true },

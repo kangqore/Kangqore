@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const SPLUNK_PACK: ActionPackManifest = {
   pack: 'Splunk',
   version: '1.0.0',
+  description: 'Splunk search, alerts, dashboards, and SIEM automation',
   category: { name: 'SplunkIntegration', displayName: 'Splunk', description: 'Splunk search, alerts, dashboards, and SIEM automation', icon: '🔍', color: '#65a637' },
   actions: [
     { name: 'RUN_SPLUNK_SEARCH', displayName: 'Run Splunk Search', description: 'Execute a Splunk SPL search query', parameters: [{ name: 'search', type: 'string', required: true, description: 'SPL search string (start with search or |)' }, { name: 'earliest', type: 'string', required: false, description: 'Earliest time e.g. -24h' }, { name: 'latest', type: 'string', required: false, description: 'Latest time e.g. now' }], allowedRoles: ['ADMIN'], toolCallable: true },

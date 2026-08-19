@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const TERRAFORM_PACK: ActionPackManifest = {
   pack: 'Terraform',
   version: '1.0.0',
+  description: 'Terraform Cloud workspace, run, and variable automation',
   category: { name: 'TerraformIntegration', displayName: 'Terraform Cloud', description: 'Terraform Cloud workspace, run, and variable automation', icon: '🏗️', color: '#7b42bc' },
   actions: [
     { name: 'CREATE_TF_WORKSPACE', displayName: 'Create TF Workspace', description: 'Create a Terraform Cloud workspace', parameters: [{ name: 'organization', type: 'string', required: true, description: 'Organization name' }, { name: 'name', type: 'string', required: true, description: 'Workspace name' }, { name: 'autoApply', type: 'boolean', required: false, description: 'Enable auto-apply' }], allowedRoles: ['ADMIN'], toolCallable: true },

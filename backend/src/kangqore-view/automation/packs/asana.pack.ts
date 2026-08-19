@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const ASANA_PACK: ActionPackManifest = {
   pack: 'Asana',
   version: '1.0.0',
+  description: 'Asana tasks, projects, and team automation',
   category: { name: 'AsanaIntegration', displayName: 'Asana', description: 'Asana tasks, projects, and team automation', icon: '📋', color: '#f06a6a' },
   actions: [
     { name: 'CREATE_ASANA_TASK', displayName: 'Create Asana Task', description: 'Create a new task in Asana', parameters: [{ name: 'projectId', type: 'string', required: true, description: 'Project GID' }, { name: 'name', type: 'string', required: true, description: 'Task name' }, { name: 'notes', type: 'string', required: false, description: 'Task description' }, { name: 'dueDate', type: 'string', required: false, description: 'Due date YYYY-MM-DD' }, { name: 'assignee', type: 'string', required: false, description: 'Assignee GID or email' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

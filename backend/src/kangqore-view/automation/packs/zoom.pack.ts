@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const ZOOM_PACK: ActionPackManifest = {
   pack: 'Zoom',
   version: '1.0.0',
+  description: 'Zoom meetings, webinars, and recording automation',
   category: { name: 'ZoomIntegration', displayName: 'Zoom', description: 'Zoom meetings, webinars, and recording automation', icon: '📹', color: '#2d8cff' },
   actions: [
     { name: 'CREATE_ZOOM_MEETING', displayName: 'Create Zoom Meeting', description: 'Schedule a Zoom meeting', parameters: [{ name: 'userId', type: 'string', required: true, description: 'Host user ID or email' }, { name: 'topic', type: 'string', required: true, description: 'Meeting topic' }, { name: 'startTime', type: 'string', required: true, description: 'ISO start time' }, { name: 'duration', type: 'number', required: false, description: 'Duration in minutes' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

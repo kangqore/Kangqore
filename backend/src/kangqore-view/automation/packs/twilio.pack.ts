@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const TWILIO_PACK: ActionPackManifest = {
   pack: 'Twilio',
   version: '1.0.0',
+  description: 'Twilio SMS, voice, and communication automation',
   category: { name: 'TwilioIntegration', displayName: 'Twilio', description: 'Twilio SMS, voice, and communication automation', icon: '📱', color: '#f22f46' },
   actions: [
     { name: 'SEND_TWILIO_SMS', displayName: 'Send SMS', description: 'Send an SMS message via Twilio', parameters: [{ name: 'to', type: 'string', required: true, description: 'Destination phone number E.164' }, { name: 'from', type: 'string', required: true, description: 'Twilio phone number' }, { name: 'body', type: 'string', required: true, description: 'SMS message body' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

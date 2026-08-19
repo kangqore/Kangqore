@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const NOTION_PACK: ActionPackManifest = {
   pack: 'Notion',
   version: '1.0.0',
+  description: 'Notion pages, databases, and workspace automation',
   category: { name: 'NotionIntegration', displayName: 'Notion', description: 'Notion pages, databases, and workspace automation', icon: '📝', color: '#000000' },
   actions: [
     { name: 'CREATE_NOTION_PAGE', displayName: 'Create Notion Page', description: 'Create a new page in Notion', parameters: [{ name: 'parentId', type: 'string', required: true, description: 'Parent page or database ID' }, { name: 'title', type: 'string', required: true, description: 'Page title' }, { name: 'content', type: 'array', required: false, description: 'Notion blocks array' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

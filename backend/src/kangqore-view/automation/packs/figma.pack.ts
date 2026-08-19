@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const FIGMA_PACK: ActionPackManifest = {
   pack: 'Figma',
   version: '1.0.0',
+  description: 'Figma files, comments, components, and project management automation',
   category: { name: 'FigmaIntegration', displayName: 'Figma', description: 'Figma files, comments, components, and project management automation', icon: '🎨', color: '#f24e1e' },
   actions: [
     { name: 'FIGMA_GET_FILE', displayName: 'Get Figma File', description: 'Retrieve a Figma file with its document tree', parameters: [{ name: 'fileKey', type: 'string', required: true, description: 'Figma file key from URL' }, { name: 'ids', type: 'string', required: false, description: 'Comma-separated node IDs to fetch' }, { name: 'depth', type: 'number', required: false, description: 'Traversal depth' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

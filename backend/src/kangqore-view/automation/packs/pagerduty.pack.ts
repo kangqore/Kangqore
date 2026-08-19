@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const PAGERDUTY_PACK: ActionPackManifest = {
   pack: 'PagerDuty',
   version: '1.0.0',
+  description: 'PagerDuty incident, on-call, and escalation automation',
   category: { name: 'PagerDutyIntegration', displayName: 'PagerDuty', description: 'PagerDuty incident, on-call, and escalation automation', icon: '🚨', color: '#06ac38' },
   actions: [
     { name: 'CREATE_PAGERDUTY_INCIDENT', displayName: 'Create PagerDuty Incident', description: 'Create a new incident in PagerDuty', parameters: [{ name: 'title', type: 'string', required: true, description: 'Incident title' }, { name: 'serviceId', type: 'string', required: true, description: 'Service ID' }, { name: 'urgency', type: 'string', required: false, description: 'high or low' }, { name: 'body', type: 'string', required: false, description: 'Incident body details' }], allowedRoles: ['ADMIN'], toolCallable: true },

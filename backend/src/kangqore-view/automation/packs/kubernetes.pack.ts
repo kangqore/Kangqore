@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const KUBERNETES_PACK: ActionPackManifest = {
   pack: 'Kubernetes',
   version: '1.0.0',
+  description: 'Kubernetes cluster, deployment, and pod management automation',
   category: { name: 'KubernetesIntegration', displayName: 'Kubernetes', description: 'Kubernetes cluster, deployment, and pod management automation', icon: '⚓', color: '#326ce5' },
   actions: [
     { name: 'CREATE_K8S_DEPLOYMENT', displayName: 'Create Deployment', description: 'Create a Kubernetes deployment', parameters: [{ name: 'namespace', type: 'string', required: true, description: 'Namespace' }, { name: 'name', type: 'string', required: true, description: 'Deployment name' }, { name: 'image', type: 'string', required: true, description: 'Container image' }, { name: 'replicas', type: 'number', required: false, description: 'Replica count' }], allowedRoles: ['ADMIN'], toolCallable: true },

@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const MICROSOFT365_PACK: ActionPackManifest = {
   pack: 'Microsoft365',
   version: '1.0.0',
+  description: 'Teams, Outlook, SharePoint, and OneDrive automation',
   category: {
     name: 'Microsoft365Integration',
     displayName: 'Microsoft 365',

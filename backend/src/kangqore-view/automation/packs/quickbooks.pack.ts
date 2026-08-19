@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const QUICKBOOKS_PACK: ActionPackManifest = {
   pack: 'QuickBooks',
   version: '1.0.0',
+  description: 'QuickBooks Online invoicing, payments, and accounting automation',
   category: { name: 'QuickBooksIntegration', displayName: 'QuickBooks', description: 'QuickBooks Online invoicing, payments, and accounting automation', icon: '💰', color: '#2ca01c' },
   actions: [
     { name: 'CREATE_QB_INVOICE', displayName: 'Create QuickBooks Invoice', description: 'Create a new invoice in QuickBooks Online', parameters: [{ name: 'companyId', type: 'string', required: true, description: 'QBO company/realm ID' }, { name: 'customerId', type: 'string', required: true, description: 'Customer ref ID' }, { name: 'lines', type: 'array', required: true, description: 'Invoice line items' }, { name: 'dueDate', type: 'string', required: false, description: 'Due date YYYY-MM-DD' }], allowedRoles: ['ADMIN'], toolCallable: true },

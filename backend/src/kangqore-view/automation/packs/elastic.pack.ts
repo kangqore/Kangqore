@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const ELASTIC_PACK: ActionPackManifest = {
   pack: 'Elastic',
   version: '1.0.0',
+  description: 'Elasticsearch index, search, and cluster management automation',
   category: { name: 'ElasticIntegration', displayName: 'Elasticsearch', description: 'Elasticsearch index, search, and cluster management automation', icon: '🔶', color: '#f04e98' },
   actions: [
     { name: 'ES_SEARCH', displayName: 'Elasticsearch Search', description: 'Run a search query against an Elasticsearch index', parameters: [{ name: 'index', type: 'string', required: true, description: 'Index name or pattern' }, { name: 'query', type: 'object', required: true, description: 'Elasticsearch DSL query' }, { name: 'size', type: 'number', required: false, description: 'Max results' }], allowedRoles: ['ADMIN'], toolCallable: true },

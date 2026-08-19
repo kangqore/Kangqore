@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const SAP_PACK: ActionPackManifest = {
   pack: 'SAP',
   version: '1.0.0',
+  description: 'SAP S/4HANA and SAP BTP: HR, finance, procurement, and master data automation',
   category: { name: 'SAPIntegration', displayName: 'SAP S/4HANA', description: 'SAP S/4HANA and SAP BTP: HR, finance, procurement, and master data automation', icon: '🔷', color: '#0070f2' },
   actions: [
     { name: 'SAP_GET_EMPLOYEE', displayName: 'Get SAP Employee', description: 'Retrieve an employee record from SAP HCM via OData', parameters: [{ name: 'employeeId', type: 'string', required: true, description: 'SAP personnel number' }], allowedRoles: ['ADMIN'], toolCallable: true },

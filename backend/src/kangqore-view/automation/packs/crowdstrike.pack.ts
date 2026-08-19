@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const CROWDSTRIKE_PACK: ActionPackManifest = {
   pack: 'CrowdStrike',
   version: '1.0.0',
+  description: 'CrowdStrike Falcon endpoint detection, incident, and threat intelligence automation',
   category: { name: 'CrowdStrikeIntegration', displayName: 'CrowdStrike Falcon', description: 'CrowdStrike Falcon endpoint detection, incident, and threat intelligence automation', icon: '🦅', color: '#e8173b' },
   actions: [
     { name: 'CS_GET_DETECTIONS', displayName: 'Get Detections', description: 'List detections from CrowdStrike Falcon', parameters: [{ name: 'filter', type: 'string', required: false, description: 'FQL filter string' }, { name: 'limit', type: 'number', required: false, description: 'Max detections to return' }, { name: 'status', type: 'string', required: false, description: 'new, in_progress, resolved, etc.' }], allowedRoles: ['ADMIN'], toolCallable: true },

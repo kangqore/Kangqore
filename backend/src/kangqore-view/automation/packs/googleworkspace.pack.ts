@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const GOOGLEWORKSPACE_PACK: ActionPackManifest = {
   pack: 'GoogleWorkspace',
   version: '1.0.0',
+  description: 'Gmail, Drive, Calendar, Meet, and Docs automation',
   category: {
     name: 'GoogleWorkspaceIntegration',
     displayName: 'Google Workspace',

@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const VAULT_PACK: ActionPackManifest = {
   pack: 'HashiCorpVault',
   version: '1.0.0',
+  description: 'HashiCorp Vault secrets management, policies, and dynamic credentials automation',
   category: { name: 'HashiCorpVaultIntegration', displayName: 'HashiCorp Vault', description: 'HashiCorp Vault secrets management, policies, and dynamic credentials automation', icon: '🏛️', color: '#ffec6e' },
   actions: [
     { name: 'VAULT_READ_SECRET', displayName: 'Read Secret', description: 'Read a secret from HashiCorp Vault KV store', parameters: [{ name: 'path', type: 'string', required: true, description: 'Secret path (e.g. secret/data/myapp)' }, { name: 'version', type: 'number', required: false, description: 'KV v2: specific version to read' }], allowedRoles: ['ADMIN'], toolCallable: true },

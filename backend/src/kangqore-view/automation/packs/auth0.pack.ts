@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const AUTH0_PACK: ActionPackManifest = {
   pack: 'Auth0',
   version: '1.0.0',
+  description: 'Auth0 user management, roles, permissions, and tenant automation',
   category: { name: 'Auth0Integration', displayName: 'Auth0', description: 'Auth0 user management, roles, permissions, and tenant automation', icon: '🔑', color: '#eb5424' },
   actions: [
     { name: 'AUTH0_GET_USER', displayName: 'Get Auth0 User', description: 'Retrieve a user from Auth0 by their user ID', parameters: [{ name: 'userId', type: 'string', required: true, description: 'Auth0 user ID (auth0|...)' }], allowedRoles: ['ADMIN'], toolCallable: true },

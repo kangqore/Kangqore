@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const OKTA_PACK: ActionPackManifest = {
   pack: 'Okta',
   version: '1.0.0',
+  description: 'Okta identity, user lifecycle, and access management automation',
   category: { name: 'OktaIntegration', displayName: 'Okta', description: 'Okta identity, user lifecycle, and access management automation', icon: '🔐', color: '#007dc1' },
   actions: [
     { name: 'CREATE_OKTA_USER', displayName: 'Create Okta User', description: 'Create a new user in Okta', parameters: [{ name: 'firstName', type: 'string', required: true, description: 'First name' }, { name: 'lastName', type: 'string', required: true, description: 'Last name' }, { name: 'email', type: 'string', required: true, description: 'Email address' }, { name: 'login', type: 'string', required: true, description: 'Okta login (usually email)' }, { name: 'groupIds', type: 'array', required: false, description: 'Initial group IDs' }], allowedRoles: ['ADMIN'], toolCallable: true },

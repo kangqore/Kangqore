@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const VERCEL_PACK: ActionPackManifest = {
   pack: 'Vercel',
   version: '1.0.0',
+  description: 'Vercel deployments, domains, environment variables, and edge network automation',
   category: { name: 'VercelIntegration', displayName: 'Vercel', description: 'Vercel deployments, domains, environment variables, and edge network automation', icon: '▲', color: '#000000' },
   actions: [
     { name: 'VERCEL_LIST_DEPLOYMENTS', displayName: 'List Deployments', description: 'List deployments on a Vercel team or project', parameters: [{ name: 'projectId', type: 'string', required: false, description: 'Filter by project ID or name' }, { name: 'teamId', type: 'string', required: false, description: 'Team ID' }, { name: 'limit', type: 'number', required: false, description: 'Max results' }, { name: 'state', type: 'string', required: false, description: 'BUILDING, ERROR, INITIALIZING, QUEUED, READY, CANCELED' }], allowedRoles: ['ADMIN'], toolCallable: true },

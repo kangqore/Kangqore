@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const MONDAY_PACK: ActionPackManifest = {
   pack: 'Monday',
   version: '1.0.0',
+  description: 'Monday.com boards, items, and workflow automation',
   category: { name: 'MondayIntegration', displayName: 'Monday.com', description: 'Monday.com boards, items, and workflow automation', icon: '📅', color: '#ff3d57' },
   actions: [
     { name: 'CREATE_MONDAY_ITEM', displayName: 'Create Monday Item', description: 'Create a new item on a Monday.com board', parameters: [{ name: 'boardId', type: 'number', required: true, description: 'Board ID' }, { name: 'itemName', type: 'string', required: true, description: 'Item name' }, { name: 'groupId', type: 'string', required: false, description: 'Group ID' }, { name: 'columnValues', type: 'object', required: false, description: 'Column values JSON' }], allowedRoles: ['ADMIN', 'MANAGER'], toolCallable: true },

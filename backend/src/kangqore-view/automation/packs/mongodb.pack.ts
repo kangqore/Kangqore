@@ -3,6 +3,7 @@ import type { ActionPackManifest } from '../ActionPack'
 export const MONGODB_PACK: ActionPackManifest = {
   pack: 'MongoDB',
   version: '1.0.0',
+  description: 'MongoDB Atlas cluster, database, and Data API automation',
   category: { name: 'MongoDBIntegration', displayName: 'MongoDB Atlas', description: 'MongoDB Atlas cluster, database, and Data API automation', icon: '🍃', color: '#13aa52' },
   actions: [
     { name: 'MONGO_INSERT_DOCUMENT', displayName: 'Insert Document', description: 'Insert a document into a MongoDB collection via Atlas Data API', parameters: [{ name: 'dataSource', type: 'string', required: true, description: 'Cluster name' }, { name: 'database', type: 'string', required: true, description: 'Database name' }, { name: 'collection', type: 'string', required: true, description: 'Collection name' }, { name: 'document', type: 'object', required: true, description: 'Document to insert' }], allowedRoles: ['ADMIN'], toolCallable: true },
