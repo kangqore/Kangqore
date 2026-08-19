@@ -19,6 +19,8 @@ interface UIStore {
   setViewMode: (mode: ViewMode) => void
   registerPageViews: (views: ViewMode[]) => void
   setPinnedRailId: (id: string | null) => void
+  autoHideTopbar: boolean
+  setAutoHideTopbar: (v: boolean) => void
 }
 
 export const useUIStore = create<UIStore>()(
@@ -39,8 +41,10 @@ export const useUIStore = create<UIStore>()(
       setViewMode: (mode) => set({ viewMode: mode }),
       registerPageViews: (views) => set({ supportedViews: views }),
       setPinnedRailId: (id) => set({ pinnedRailId: id }),
+      autoHideTopbar: false,
+      setAutoHideTopbar: (v) => set({ autoHideTopbar: v }),
     }),
-    { name: 'kangqore-ui', partialize: s => ({ sidebarCollapsed: s.sidebarCollapsed, railExpanded: s.railExpanded, viewMode: s.viewMode }) }
+    { name: 'kangqore-ui', partialize: s => ({ sidebarCollapsed: s.sidebarCollapsed, railExpanded: s.railExpanded, viewMode: s.viewMode, autoHideTopbar: s.autoHideTopbar }) }
   )
 )
 

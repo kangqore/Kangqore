@@ -95,40 +95,10 @@ export function Rail() {
 
   const teamItems = [
     {
-      id: 'team-tasks',
-      label: 'My Tasks',
-      icon: CalendarCheckIcon,
-      path: `/kangqore-view/team/${currentDept}/my-work`,
-    },
-    {
-      id: 'team-relay',
-      label: 'RELAY Chat',
-      icon: ChatCircleDotsIcon,
-      path: `/kangqore-view/team/${currentDept}/relay`,
-    },
-    {
-      id: 'team-announcements',
-      label: 'Announcements',
-      icon: MegaphoneIcon,
-      path: `/kangqore-view/team/${currentDept}/announcements`,
-    },
-    {
-      id: 'team-resources',
-      label: 'Resources',
-      icon: BookOpenIcon,
-      path: `/kangqore-view/team/${currentDept}/resources`,
-    },
-    {
-      id: 'team-members',
-      label: 'Team Directory',
+      id: 'team-home',
+      label: 'Team Portal',
       icon: UsersIcon,
-      path: `/kangqore-view/team/${currentDept}/members`,
-    },
-    {
-      id: 'team-kimmp',
-      label: 'KIMMP Brief',
-      icon: BrainIcon,
-      path: `/kangqore-view/team/${currentDept}/kimmp`,
+      path: `/kangqore-view/team/${currentDept}/mission-control`,
     },
   ]
 

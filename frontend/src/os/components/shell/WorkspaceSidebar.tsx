@@ -4,7 +4,7 @@ import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { cn } from '@design-system/cn'
 import { Surface } from '@design-system/primitives/Surface'
-import { getActiveRailItem, RAIL_ITEMS } from '@lib/nav'
+import { getActiveRailItem, RAIL_ITEMS, getTeamSidebarItems } from '@lib/nav'
 import { useUIStore } from '@store/ui'
 import { useKIMMPStore } from '@store/kimmp'
 import { api, isDemo } from '@lib/api'
@@ -68,7 +68,17 @@ export function WorkspaceSidebar() {
   const activeRailItem = pinnedRailId
     ? (RAIL_ITEMS.find(i => i.id === pinnedRailId) ?? getActiveRailItem(pathname))
     : getActiveRailItem(pathname)
-  const sidebarItems = activeRailItem?.sidebarItems ?? []
+    
+  let sidebarItems = activeRailItem?.sidebarItems ?? []
+  let sidebarLabel = activeRailItem?.label
+
+  // Contextual override for Team Portal
+  if (pathname.startsWith('/kangqore-view/team/')) {
+    const match = pathname.match(/^\/kangqore-view\/team\/([^/]+)/)
+    const currentDept = match ? match[1] : 'it'
+    sidebarItems = getTeamSidebarItems(currentDept)
+    sidebarLabel = `${currentDept.toUpperCase()} Team`
+  }
 
   return (
     <div className="relative h-full flex-shrink-0" style={{ zIndex: 39 }}>
@@ -82,12 +92,12 @@ export function WorkspaceSidebar() {
         )}
       >
         <div className="w-[220px] h-full flex flex-col">
-          {activeRailItem && (
+          {sidebarLabel && (
             <div className="px-5 pt-6 lg:pt-8 pb-3 flex-shrink-0 flex items-center justify-between">
               <p
                 className="text-[11px] font-semibold text-text-secondary tracking-wide truncate"
               >
-                {activeRailItem.label}
+                {sidebarLabel}
               </p>
             </div>
           )}

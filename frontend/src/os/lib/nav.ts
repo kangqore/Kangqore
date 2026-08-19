@@ -84,6 +84,40 @@ export interface RailEntry {
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
+export function getTeamSidebarItems(dept: string): RailSidebarItem[] {
+  const TEAM_BASE = `/kangqore-view/team/${dept}`
+  return [
+    // 1. 🎯 MY SPACE
+    { id: 'team-my-work', label: 'My Work', path: `${TEAM_BASE}/my-work`, category: 'My Space' },
+    { id: 'team-my-okrs', label: 'My OKRs & Growth', path: `${TEAM_BASE}/my-okrs`, category: 'My Space' },
+    { id: 'team-approvals', label: 'Approvals & Requests', path: `${TEAM_BASE}/approvals`, category: 'My Space' },
+
+    // 2. 🚀 TEAM OPERATIONS
+    { id: 'team-mission-control', label: 'Mission Control', path: `${TEAM_BASE}/mission-control`, category: 'Team Operations' },
+    { id: 'team-okrs', label: 'Team OKRs & Strategy', path: `${TEAM_BASE}/okrs`, category: 'Team Operations' },
+    { id: 'team-projects', label: 'Projects & Sprints', path: `${TEAM_BASE}/projects`, category: 'Team Operations' },
+    { id: 'team-roster', label: 'Roster & Availability', path: `${TEAM_BASE}/roster`, category: 'Team Operations' },
+
+    // 3. 🧠 INTELLIGENCE
+    { id: 'team-kimmp', label: 'KIMMP Brief', path: `${TEAM_BASE}/kimmp`, category: 'Intelligence' },
+    { id: 'team-ois', label: 'Operational Intel (OIS)', path: `${TEAM_BASE}/ois`, category: 'Intelligence' },
+    { id: 'team-ai-coach', label: 'AI Coach', path: `${TEAM_BASE}/ai-coach`, category: 'Intelligence', badge: 'new' },
+
+    // 4. 💬 COLLABORATION
+    { id: 'team-relay', label: 'RELAY Chat', path: `${TEAM_BASE}/relay`, category: 'Collaboration' },
+    { id: 'team-announcements', label: 'Announcements', path: `${TEAM_BASE}/announcements`, category: 'Collaboration' },
+    { id: 'team-meetings', label: 'Meeting Hub', path: `${TEAM_BASE}/meetings`, category: 'Collaboration' },
+
+    // 5. 📚 KNOWLEDGE & ASSETS
+    { id: 'team-members', label: 'Team Directory', path: `${TEAM_BASE}/members`, category: 'Knowledge & Assets' },
+    { id: 'team-sops', label: 'SOPs & Playbooks', path: `${TEAM_BASE}/sops`, category: 'Knowledge & Assets' },
+    { id: 'team-onboarding', label: 'Onboarding', path: `${TEAM_BASE}/onboarding`, category: 'Knowledge & Assets' },
+    { id: 'team-assets', label: 'Asset Library', path: `${TEAM_BASE}/assets`, category: 'Knowledge & Assets' },
+  ]
+}
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+
 const BASE = '/kangqore-view/admin'
 
 // ── Rail config ───────────────────────────────────────────────────────────────

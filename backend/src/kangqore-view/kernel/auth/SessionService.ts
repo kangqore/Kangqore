@@ -20,6 +20,7 @@ export interface CreateSessionData {
   currentOrgId?: string;
   ipAddress?: string;
   userAgent?: string;
+  rbac?: { deptId?: string, departmentSlug?: string, isDepartmentLead?: boolean, isDepartmentHr?: boolean, teamCategory?: string };
 }
 
 /**
@@ -27,10 +28,10 @@ export interface CreateSessionData {
  * Returns access token, refresh token, and session ID
  */
 export const createSession = async (data: CreateSessionData): Promise<{ tokens: TokenPair; sessionId: string }> => {
-  const { userId, role, currentOrgId, ipAddress, userAgent } = data;
+  const { userId, role, currentOrgId, ipAddress, userAgent, rbac } = data;
 
   // Generate token pair
-  const tokens = generateTokenPair(userId, role, currentOrgId);
+  const tokens = generateTokenPair(userId, role, currentOrgId, rbac);
 
   // Calculate expiry (7 days from now)
   const expiresAt = new Date();
@@ -83,7 +84,18 @@ export const refreshSession = async (refreshToken: string): Promise<TokenPair | 
   }
 
   // Generate new token pair
-  const newTokens = generateTokenPair(session.userId, session.user.role);
+  const newTokens = generateTokenPair(
+    session.userId, 
+    session.user.role, 
+    undefined, 
+    { 
+      deptId: session.user.deptId || undefined,
+      departmentSlug: session.user.departmentSlug || undefined,
+      isDepartmentLead: session.user.isDepartmentLead || undefined,
+      isDepartmentHr: session.user.isDepartmentHr || undefined,
+      teamCategory: session.user.teamCategory || undefined,
+    }
+  );
 
   // Update session with new refresh token
   await prisma.session.update({

@@ -3,7 +3,12 @@ export interface User {
   email: string;
   name: string;
   company?: string;
-  role: 'ADMIN' | 'CLIENT';
+  role: 'ADMIN' | 'CLIENT' | 'TEAM';
+  deptId?: string;
+  departmentSlug?: string;
+  isDepartmentLead?: boolean;
+  isDepartmentHr?: boolean;
+  teamCategory?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,7 +25,7 @@ export interface RegisterRequest {
   name: string;
   company?: string;
   phone?: string;
-  role?: 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER';
+  role?: 'ADMIN' | 'CLIENT' | 'PARTNER' | 'INVESTOR' | 'JOB_SEEKER' | 'JOURNALIST' | 'ANALYST' | 'VISITOR' | 'TEAM' | 'EXECUTIVE';
   visitorUuid?: string;
 }
 
@@ -33,6 +38,11 @@ export interface JWTPayload {
   sub: string;
   email: string;
   role: string;
+  deptId?: string;
+  departmentSlug?: string;
+  isDepartmentLead?: boolean;
+  isDepartmentHr?: boolean;
+  teamCategory?: string;
   iat?: number;
   exp?: number;
 }
