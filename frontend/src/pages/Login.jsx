@@ -268,7 +268,7 @@ export default function Login() {
       'journalist': '/kangqore-view/journalist',
       'analyst':    '/kangqore-view/analyst',
       'admin':      '/kangqore-view/admin',
-      'team':       selectedDept ? `/kangqore-view/team/${selectedDept.id}` : '/kangqore-view/team',
+      'team':       data.user?.departmentSlug ? `/kangqore-view/team/${data.user.departmentSlug}` : (selectedDept ? `/kangqore-view/team/${selectedDept.id}` : '/kangqore-view/team'),
       'executive':  '/kangqore-view/executive',
     };
     window.location.href = buildOSRedirect(roleRoutes[data.user.role.toLowerCase()] || '/kangqore-view/admin');

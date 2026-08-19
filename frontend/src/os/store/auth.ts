@@ -8,6 +8,10 @@ export interface AuthUser {
   name: string
   email: string
   role: UserRole
+  departmentSlug?: string
+  isDepartmentLead?: boolean
+  isDepartmentHr?: boolean
+  teamCategory?: string
   company?: string
   avatarUrl?: string
   bidsActive?: boolean

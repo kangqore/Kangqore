@@ -138,6 +138,17 @@ model User {
   // AEGIS — data marking clearances granted to this user (e.g. ["CONFIDENTIAL", "RESTRICTED"])
   clearances      String[]                   @default([])
 
+  // Team / Department RBAC
+  organizationId   String?
+  organization     Organization? @relation(fields: [organizationId], references: [id])
+  isDepartmentLead Boolean @default(false)
+  isDepartmentHr   Boolean @default(false)
+  teamCategory     String?
+  departmentSlug   String? // denormalized compatibility field
+  department       Department? @relation("DepartmentMembers", fields: [deptId], references: [id])
+  departmentLead   Department[] @relation("DepartmentLead")
+  departmentHr     Department[] @relation("DepartmentHr")
+  
   @@map("users")
 }
 
@@ -2781,6 +2792,8 @@ model Organization {
   updatedAt   DateTime        @updatedAt
   invitations OrgInvitation[]
   memberships OrgMembership[]
+  departments Department[]
+  users       User[]
 
   @@map("organizations")
 }
@@ -3834,6 +3847,8 @@ model StaffAllocation {
 model Department {
   id           String        @id @default(cuid())
   name         String
+  slug         String        @unique @default(cuid())
+  code         String?
   head         String
   headTitle    String
   status       String        @default("active")
@@ -3846,6 +3861,19 @@ model Department {
   description  String
   tags         String[]
   kpis         Json          @default("[]")
+  
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  
+  leadId       String?
+  lead         User?         @relation("DepartmentLead", fields: [leadId], references: [id])
+  
+  hrId         String?
+  hr           User?         @relation("DepartmentHr", fields: [hrId], references: [id])
+  
+  members      User[]        @relation("DepartmentMembers")
+  
+  teamCategories Json        @default("[\"L1\", \"L2\", \"L3\", \"L4\", \"L5\", \"Intern\", \"Freelancer\"]")
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   budgetRows   DeptBudget[]

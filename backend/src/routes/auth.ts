@@ -59,6 +59,10 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
 
     const { email, password, name, company, role, visitorUuid } = value;
 
+    if (role === 'TEAM' || role === 'EXECUTIVE') {
+      throw createError('Internal roles cannot be self-registered. Contact your department lead.', 403);
+    }
+
     // Check if user exists
     const existingUser = await prisma.user.findUnique({
       where: { email }
@@ -172,7 +176,13 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
       userId: user.id,
       role: user.role,
       ipAddress: metadata.ipAddress,
-      userAgent: metadata.userAgent
+      userAgent: metadata.userAgent,
+      rbac: {
+        departmentSlug: user.departmentSlug || undefined,
+        isDepartmentLead: user.isDepartmentLead || undefined,
+        isDepartmentHr: user.isDepartmentHr || undefined,
+        teamCategory: user.teamCategory || undefined,
+      }
     });
 
     // Create audit log
@@ -188,6 +198,10 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
       name: user.name,
       company: user.company,
       role: user.role,
+      departmentSlug: user.departmentSlug,
+      isDepartmentLead: user.isDepartmentLead,
+      isDepartmentHr: user.isDepartmentHr,
+      teamCategory: user.teamCategory,
       avatarUrl: user.avatarUrl,
       twoFactorEnabled: user.twoFactorEnabled,
       createdAt: user.createdAt,

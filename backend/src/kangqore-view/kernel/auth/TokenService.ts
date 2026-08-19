@@ -14,6 +14,11 @@ export interface TokenPayload {
   sessionId: string;
   sub?: string;
   currentOrgId?: string;
+  deptId?: string;
+  departmentSlug?: string;
+  isDepartmentLead?: boolean;
+  isDepartmentHr?: boolean;
+  teamCategory?: string;
 }
 
 export interface TokenPair {
@@ -24,7 +29,12 @@ export interface TokenPair {
 /**
  * Generate access and refresh tokens for a user
  */
-export const generateTokenPair = (userId: string, role: string, currentOrgId?: string): TokenPair => {
+export const generateTokenPair = (
+  userId: string, 
+  role: string, 
+  currentOrgId?: string,
+  rbac?: { deptId?: string, departmentSlug?: string, isDepartmentLead?: boolean, isDepartmentHr?: boolean, teamCategory?: string }
+): TokenPair => {
   const sessionId = uuidv4();
 
   const payload: TokenPayload = {
@@ -33,6 +43,11 @@ export const generateTokenPair = (userId: string, role: string, currentOrgId?: s
     sessionId,
     sub: userId,
     ...(currentOrgId ? { currentOrgId } : {}),
+    ...(rbac?.deptId ? { deptId: rbac.deptId } : {}),
+    ...(rbac?.departmentSlug ? { departmentSlug: rbac.departmentSlug } : {}),
+    ...(rbac?.isDepartmentLead ? { isDepartmentLead: rbac.isDepartmentLead } : {}),
+    ...(rbac?.isDepartmentHr ? { isDepartmentHr: rbac.isDepartmentHr } : {}),
+    ...(rbac?.teamCategory ? { teamCategory: rbac.teamCategory } : {}),
   };
 
   const accessToken = jwt.sign(payload, JWT_SECRET, {

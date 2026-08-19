@@ -35,6 +35,7 @@ import metricsRoutes from './routes/metrics';
 import recommendationsRoutes from './routes/recommendations';
 import meetingsRoutes from './routes/meetings';
 import clientRoutes from './routes/client';
+import teamProvisioningRoutes from './routes/team-provisioning';
 import messagesRoutes from './routes/messages';
 import investorRoutes from './routes/investor'; // NEW // NEW // NEW
 import partnerRoutes from './routes/partner'; // NEW // NEW // NEW
@@ -159,6 +160,7 @@ app.get('/api/test-restart', (req, res) => {
 // API Routes
 app.use('/api/documents', documentRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/team', teamProvisioningRoutes);
 app.use('/api/auth/saml', samlRoutes);
 app.use('/api/oauth', oauthRoutes);
 app.use('/api/sessions', sessionRoutes);

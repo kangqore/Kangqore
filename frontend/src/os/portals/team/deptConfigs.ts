@@ -21,6 +21,8 @@ export interface NavItem {
   label: string
   icon:  ComponentType<any>
   path:  string
+  requiresLead?: boolean
+  requiresHr?: boolean
 }
 
 export interface NavGroup {
@@ -65,25 +67,44 @@ export const DEPT_CONFIGS: DeptConfig[] = [
     description: 'Infrastructure, incidents, service requests & change management',
     accentColor: '#2564ea', base: B('it'),
     navGroups: [
-      { label: 'MY SPACE',  color: '#2564ea', items: mySpace(B('it')) },
-      { label: 'IT OPS',    color: '#4ab6d4', items: [
-        { id: 'agent-workspace',  label: 'Agent Workspace',    icon: DesktopIcon,         path: `${B('it')}/agent-workspace` },
-        { id: 'incidents',        label: 'Incidents',          icon: BugIcon,             path: `${B('it')}/incidents` },
-        { id: 'service-requests', label: 'Service Requests',   icon: HeadsetIcon,         path: `${B('it')}/service-requests` },
-        { id: 'change-mgmt',      label: 'Change Management',  icon: WrenchIcon,          path: `${B('it')}/change-mgmt` },
-        { id: 'assets',           label: 'Assets',             icon: HardDriveIcon,       path: `${B('it')}/assets` },
-        { id: 'knowledge-base',   label: 'Knowledge Base',     icon: ArticleIcon,         path: `${B('it')}/knowledge-base` },
-        { id: 'infrastructure',   label: 'Infrastructure',     icon: NetworkIcon,         path: `${B('it')}/infrastructure` },
-        { id: 'sprint-board',     label: 'Sprint Board',       icon: KanbanIcon,          path: `${B('it')}/sprint-board` },
-        { id: 'playbooks',        label: 'Playbooks',          icon: ListChecksIcon,      path: `${B('it')}/playbooks` },
-        { id: 'automations',      label: 'Automations',        icon: LightningIcon,       path: `${B('it')}/automations` },
-        { id: 'approvals',        label: 'Approvals',          icon: ListChecksIcon,      path: `${B('it')}/approvals` },
-        { id: 'integrations',     label: 'Integrations',       icon: PlugsConnectedIcon,  path: `${B('it')}/integrations` },
-        { id: 'routing',          label: 'Routing',            icon: FunnelIcon,          path: `${B('it')}/routing` },
-        { id: 'on-call',          label: 'On-Call',            icon: BellIcon,            path: `${B('it')}/on-call` },
-        { id: 'supervisor',       label: 'Supervisor',         icon: UserFocusIcon,       path: `${B('it')}/supervisor` },
+      { label: 'MY SPACE', color: '#2564ea', items: [
+        { id: 'workspace',      label: 'Workspace',     icon: HouseSimpleIcon,    path: B('it') },
+        { id: 'my-work',        label: 'My Work',       icon: CheckSquareIcon,    path: `${B('it')}/my-work` },
+        { id: 'approvals',      label: 'Approvals',     icon: ListChecksIcon,     path: `${B('it')}/approvals` },
+        { id: 'schedule',       label: 'Schedule',      icon: CalendarBlankIcon,  path: `${B('it')}/schedule` },
       ]},
-      { label: 'TEAM', color: '#6366F1', items: teamItems(B('it')) },
+      { label: 'SERVICE DESK', color: '#4ab6d4', items: [
+        { id: 'agent-workspace',  label: 'Agent Workspace',  icon: DesktopIcon,      path: `${B('it')}/agent-workspace` },
+        { id: 'incidents',        label: 'Incidents',        icon: BugIcon,          path: `${B('it')}/incidents` },
+        { id: 'service-requests', label: 'Service Requests', icon: HeadsetIcon,      path: `${B('it')}/service-requests` },
+        { id: 'on-call',          label: 'On-Call',          icon: BellIcon,         path: `${B('it')}/on-call` },
+        { id: 'supervisor',       label: 'Supervisor',       icon: UserFocusIcon,    path: `${B('it')}/supervisor` },
+      ]},
+      { label: 'ENGINEERING & INFRA', color: '#8b5cf6', items: [
+        { id: 'change-mgmt',    label: 'Change Management', icon: WrenchIcon,         path: `${B('it')}/change-mgmt` },
+        { id: 'infrastructure', label: 'Infrastructure',    icon: NetworkIcon,        path: `${B('it')}/infrastructure` },
+        { id: 'assets',         label: 'Assets',            icon: HardDriveIcon,      path: `${B('it')}/assets` },
+        { id: 'integrations',   label: 'Integrations',      icon: PlugsConnectedIcon, path: `${B('it')}/integrations` },
+      ]},
+      { label: 'INTELLIGENCE', color: '#f59e0b', items: [
+        { id: 'kimmp',        label: 'KIMMP Brief', icon: BrainIcon,     path: `${B('it')}/kimmp` },
+        { id: 'analytics',    label: 'Analytics',   icon: ChartBarIcon,  path: `${B('it')}/analytics` },
+        { id: 'automations',  label: 'Automations', icon: LightningIcon, path: `${B('it')}/automations` },
+        { id: 'routing',      label: 'Routing',     icon: FunnelIcon,    path: `${B('it')}/routing` },
+      ]},
+      { label: 'KNOWLEDGE & COLLAB', color: '#10b981', items: [
+        { id: 'playbooks',      label: 'Playbooks',      icon: ListChecksIcon,     path: `${B('it')}/playbooks` },
+        { id: 'knowledge-base', label: 'Knowledge Base', icon: ArticleIcon,        path: `${B('it')}/knowledge-base` },
+        { id: 'sprint-board',   label: 'Sprint Board',   icon: KanbanIcon,         path: `${B('it')}/sprint-board` },
+        { id: 'relay',          label: 'RELAY Chat',     icon: ChatCircleDotsIcon, path: `${B('it')}/relay` },
+        { id: 'announcements',  label: 'Announcements',  icon: MegaphoneIcon,      path: `${B('it')}/announcements` },
+        { id: 'members',        label: 'Members',        icon: UsersThreeIcon,     path: `${B('it')}/members` },
+        { id: 'standups',       label: 'Standups',       icon: CalendarCheckIcon,  path: `${B('it')}/standups` },
+        { id: 'skills',         label: 'Skills',         icon: CertificateIcon,    path: `${B('it')}/skills` },
+      ]},
+      { label: 'ADMINISTRATION', color: '#ef4444', items: [
+        { id: 'provisioning',   label: 'Provisioning',   icon: UserPlusIcon,       path: `${B('it')}/provisioning`, requiresLead: true },
+      ]},
     ],
   },
   {

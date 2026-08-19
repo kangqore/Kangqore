@@ -6,6 +6,7 @@ import {
   Calendar, Shield, LogOut, Loader2, Camera,
 } from 'lucide-react'
 import { useAuthStore } from '@store/auth'
+import { useUIStore } from '@store/ui'
 import { api, isDemo } from '@lib/api'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -145,8 +146,8 @@ function SectionHeader({ icon: Icon, title, subtitle }: {
         <Icon className="w-4 h-4 text-purple-400" />
       </div>
       <div>
-        <h3 className="text-sm font-bold text-[var(--os-text-1)] leading-tight">{title}</h3>
-        {subtitle && <p className="text-[11px] text-[var(--os-text-2)] mt-0.5">{subtitle}</p>}
+        <h3 className="text-sm font-bold text-os-1 leading-tight">{title}</h3>
+        {subtitle && <p className="text-[11px] text-os-2 mt-0.5">{subtitle}</p>}
       </div>
     </div>
   )
@@ -405,6 +406,26 @@ export function ProfilePage() {
               disabled={!pw.current || !pw.next || !pw.confirm}
               label="Update password" />
             <StatusMsg status={pwStatus} ok="Password changed successfully" err={pwErr} />
+          </div>
+        </SectionCard>
+
+        {/* UI Preferences */}
+        <SectionCard>
+          <SectionHeader icon={Eye} title="UI Preferences"
+            subtitle="Customize the interface to suit your workflow." />
+          
+          <div className="flex items-center justify-between py-2">
+            <div>
+              <p className="text-[13px] font-semibold text-os-1 mb-0.5">Auto-hide Topbar</p>
+              <p className="text-[11px] text-os-2">Hide the top bar globally when the mouse leaves the top edge of the screen.</p>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-4">
+              <input type="checkbox" className="sr-only peer"
+                checked={useUIStore(s => s.autoHideTopbar)}
+                onChange={(e) => useUIStore.getState().setAutoHideTopbar(e.target.checked)}
+              />
+              <div className="w-9 h-5 bg-[var(--os-border)] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#2564ea]"></div>
+            </label>
           </div>
         </SectionCard>
 

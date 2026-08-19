@@ -42,7 +42,13 @@ export function LoginPage() {
       await login(data.email, data.password)
       const user = useAuthStore.getState().user
       const role = (user?.role ?? 'ADMIN') as UserRole
-      navigate(from ?? ROLE_REDIRECT[role], { replace: true })
+      
+      let redirectUrl = ROLE_REDIRECT[role]
+      if (role === 'TEAM' && user?.departmentSlug) {
+        redirectUrl = `/kangqore-view/team/${user.departmentSlug}`
+      }
+      
+      navigate(from ?? redirectUrl, { replace: true })
     } catch { /* error shown from store */ }
   }
 

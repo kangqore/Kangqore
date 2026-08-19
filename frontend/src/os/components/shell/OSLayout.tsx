@@ -12,6 +12,7 @@ import { Toaster }           from '@design-system/components/Toast'
 import { CommandPalette }    from './CommandPalette'
 import { AmbientBackground } from './AmbientBackground'
 import { Surface }           from '@design-system/primitives/Surface'
+import { useUIStore }        from '@store/ui'
 
 // Only the WAANDA root (Arc HUD) is immersive — sub-routes use the normal shell
 const WAANDA_ROOT = '/kangqore-view/admin/WAANDA'
@@ -35,6 +36,23 @@ function ContentLoader() {
 
 export function OSLayout() {
   const { pathname } = useLocation()
+  const { autoHideTopbar } = useUIStore()
+  const [isTopbarVisible, setIsTopbarVisible] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!autoHideTopbar) return
+    const handleMouseMove = (e: MouseEvent) => {
+      // Show if mouse is in top 30px, or if it's already visible and mouse is over it (top 60px)
+      if (e.clientY <= 30 || (isTopbarVisible && e.clientY <= 60)) {
+        setIsTopbarVisible(true)
+      } else {
+        setIsTopbarVisible(false)
+      }
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [autoHideTopbar, isTopbarVisible])
+
   const isWaandaGUI      = pathname === WAANDA_ROOT || pathname === `${WAANDA_ROOT}/`
   const isWaandaSubroute = !isWaandaGUI && pathname.startsWith(`${WAANDA_ROOT}/`)
   const isRelay          = pathname.includes('/relay')
@@ -45,13 +63,44 @@ export function OSLayout() {
       {!isWaandaGUI && <AmbientBackground />}
       
       {/* Global Topbar - full width */}
-      {!isWaandaGUI && <Topbar />}
+      {!isWaandaGUI && (
+        <div 
+          className={`flex-shrink-0 z-[100] w-full transition-transform duration-300 ease-in-out ${
+            autoHideTopbar ? 'absolute top-0 left-0' : 'relative'
+          }`}
+          style={{
+            transform: autoHideTopbar && !isTopbarVisible ? 'translateY(-100%)' : 'translateY(0)'
+          }}
+        >
+          <Topbar />
+        </div>
+      )}
 
       {/* Main Body Row */}
       <div className="flex flex-1 min-h-0 relative z-10 w-full overflow-hidden">
         {/* macOS Full-Height Sidebar Layer */}
-        {!isWaandaGUI && <div className="hidden md:flex h-full z-20 relative"><Rail /></div>}
-        {!isWaandaGUI && <div className="h-full z-20 relative"><WorkspaceSidebar /></div>}
+        {!isWaandaGUI && (
+          <div 
+            className="hidden md:flex z-20 relative transition-all duration-300 ease-in-out"
+            style={{ 
+              marginTop: autoHideTopbar && isTopbarVisible ? '60px' : '0px',
+              height: autoHideTopbar && isTopbarVisible ? 'calc(100% - 60px)' : '100%' 
+            }}
+          >
+            <Rail />
+          </div>
+        )}
+        {!isWaandaGUI && (
+          <div 
+            className="z-20 relative transition-all duration-300 ease-in-out"
+            style={{ 
+              marginTop: autoHideTopbar && isTopbarVisible ? '60px' : '0px',
+              height: autoHideTopbar && isTopbarVisible ? 'calc(100% - 60px)' : '100%' 
+            }}
+          >
+            <WorkspaceSidebar />
+          </div>
+        )}
 
         {/* macOS Content Column */}
         <div className="flex flex-col flex-1 min-w-0 relative z-10 h-full overflow-hidden">
