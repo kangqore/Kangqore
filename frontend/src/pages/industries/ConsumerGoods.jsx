@@ -24,7 +24,7 @@ const ConsumerGoods = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '200+', label: 'Brands', color: 'text-cyan-400' },
+          { value: '200+', label: 'Brands', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '50M+', label: 'Consumers', color: 'text-blue-400' },
           { value: '45%', label: 'Market Growth', color: 'text-emerald-400' },
           { value: 'Global', label: 'Distribution', color: 'text-purple-400' }

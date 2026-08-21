@@ -22,7 +22,7 @@ export function AnalystHome() {
       {/* Header */}
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center flex-shrink-0">
-          <LineChart className="w-6 h-6 text-cyan-600" />
+          <LineChart className="w-6 h-6 text-[#2564ea]" />
         </div>
         <div>
           <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--os-text-1)' }}>Analyst Intelligence Portal</h1>
@@ -60,7 +60,7 @@ export function AnalystHome() {
           {kpis.map(({ icon: Icon, label, value, sub }) => (
             <div key={label} className="os-card p-5 text-center">
               <div className="w-9 h-9 rounded-lg bg-cyan-50 flex items-center justify-center mx-auto mb-3">
-                <Icon className="w-5 h-5 text-cyan-600" />
+                <Icon className="w-5 h-5 text-[#2564ea]" />
               </div>
               <p className="text-2xl font-extrabold" style={{ color: 'var(--os-text-1)' }}>{value}</p>
               <p className="text-xs font-semibold text-[var(--os-text-2)] mt-0.5">{label}</p>

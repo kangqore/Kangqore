@@ -586,7 +586,7 @@ function ScorecardsTab() {
         { label: 'Insights Synthesised', value: sc.insightsSynthesised,   icon: Zap,          color: 'text-yellow-400' },
         { label: 'Patterns Confirmed',   value: sc.patternsConfirmed,     icon: TrendingUp,   color: 'text-emerald-400' },
         { label: 'Principles Raised',    value: sc.principlesRaised,      icon: Flame,        color: 'text-orange-400' },
-        { label: 'Automation Rate',      value: `${sc.automationRate}%`,  icon: Building2,    color: 'text-cyan-400' },
+        { label: 'Automation Rate',      value: `${sc.automationRate}%`,  icon: Building2,    color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       ]
     : []
 

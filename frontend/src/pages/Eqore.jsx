@@ -22,9 +22,9 @@ const Eqore = () => {
         primaryButton={{ text: 'Contact Us', link: '/contact' }}
         secondaryButton={{ text: 'Explore Our Services', link: '/services' }}
         stats={[
-          { value: 'Intelligence', label: 'Core', sublabel: 'Structured & precise', color: 'text-cyan-400' },
+          { value: 'Intelligence', label: 'Core', sublabel: 'Structured & precise', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: 'Responsibility', label: 'Values', sublabel: 'People-first approach', color: 'text-blue-400' },
-          { value: 'Unity', label: 'Mission', sublabel: 'Technology that unites', color: 'text-cyan-400' },
+          { value: 'Unity', label: 'Mission', sublabel: 'Technology that unites', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: 'Powerful', label: 'Presence', sublabel: 'Guardian of progress', color: 'text-sky-400' },
         ]}
       />
@@ -144,7 +144,7 @@ const Eqore = () => {
                 <h3 className="text-3xl font-bold text-gray-900 dark:text-white">Superhero Stance</h3>
               </div>
               <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                His superhero-inspired stance conveys <span className="font-semibold text-brand-cyan">readiness and protection</span>, not spectacle. Together, they create a figure that feels capable of carrying responsibility at scale.
+                His superhero-inspired stance conveys <span className="font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">readiness and protection</span>, not spectacle. Together, they create a figure that feels capable of carrying responsibility at scale.
               </p>
             </div>
           </div>
@@ -165,7 +165,7 @@ const Eqore = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <div className="inline-block mb-4">
-              <span className="text-sm font-bold tracking-widest text-cyan-600 uppercase border-b-2 border-cyan-600 pb-1">Form & Function</span>
+              <span className="text-sm font-bold tracking-widest bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase border-b-2 border-cyan-600 pb-1">Form & Function</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white">
               Physical <span className="bg-gradient-to-r from-cyan-600 to-brand-cyan bg-clip-text text-transparent">Presence</span>
@@ -191,7 +191,7 @@ const Eqore = () => {
                   <div className="w-16 h-1 bg-gradient-to-r from-cyan-600 to-brand-cyan"></div>
                 </div>
                 <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                  eQORE's body is <span className="font-semibold text-cyan-600">athletic and proportioned</span>, built with layered, armor-like surfaces that suggest durability and intelligence rather than brute force.
+                  eQORE's body is <span className="font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">athletic and proportioned</span>, built with layered, armor-like surfaces that suggest durability and intelligence rather than brute force.
                 </p>
                 <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                   His metallic finish is refined and premium, enhanced with subtle highlights that give depth without distraction. These details signal <span className="font-semibold text-brand-blue">craftsmanship and attention to quality</span>, mirroring the way Kangqore engineers its platforms and systems.
@@ -368,7 +368,7 @@ const Eqore = () => {
 
             <div className="bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl p-10 shadow-lg text-center">
               <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                His presence reassures visitors that what Kangqore builds is grounded not only in <span className="font-semibold text-brand-blue">technical excellence</span>, but also in <span className="font-semibold text-brand-cyan">integrity and accountability</span>.
+                His presence reassures visitors that what Kangqore builds is grounded not only in <span className="font-semibold text-brand-blue">technical excellence</span>, but also in <span className="font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">integrity and accountability</span>.
               </p>
             </div>
           </div>
@@ -406,7 +406,7 @@ const Eqore = () => {
 
             <div className="bg-white dark:bg-gray-900 dark:border-gray-800 rounded-2xl p-8 shadow-lg text-center">
               <div className="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Globe className="w-8 h-8 text-cyan-600" />
+                <Globe className="w-8 h-8 text-[#2564ea]" />
               </div>
               <p className="text-lg font-semibold text-gray-900 dark:text-white">
                 This is a company that believes progress must be inclusive
@@ -448,7 +448,7 @@ const Eqore = () => {
             {/* Right: CTA Content */}
             <div className="order-1 lg:order-2 text-center lg:text-left">
               <div className="inline-block mb-6">
-                <span className="text-sm font-bold tracking-widest text-cyan-300 uppercase border-b-2 border-cyan-300 pb-1">Join The Journey</span>
+                <span className="text-sm font-bold tracking-widest bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase border-b-2 border-cyan-300 pb-1">Join The Journey</span>
               </div>
               <h2 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
                 Build with <span className="bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">Kangqore</span>

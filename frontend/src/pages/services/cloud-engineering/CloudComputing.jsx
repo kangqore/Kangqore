@@ -20,7 +20,7 @@ const CloudComputing = () => {
     ),
     image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&q=80',
     stats: [
-      { value: 'HA', label: 'High Availability', color: 'text-cyan-400' },
+      { value: 'HA', label: 'High Availability', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Zero', label: 'Trust Security', color: 'text-blue-400' },
       { value: '30–60%', label: 'Cost Optimization', color: 'text-emerald-400' },
       { value: 'AI-Ready', label: 'Architecture', color: 'text-purple-400' },

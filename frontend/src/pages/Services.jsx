@@ -293,8 +293,8 @@ const Services = () => {
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <span className="text-[9px] uppercase tracking-wider text-slate-500 font-bold font-mono">eQORE NEURAL NODE</span>
         </div>
-        <div className="flex gap-2"><span className="text-cyan-400 font-bold font-mono">[AGENT]</span><span className="text-slate-300 font-mono">orchestrating automation streams...</span></div>
-        <div className="flex gap-2"><span className="text-cyan-400 font-bold font-mono">[THOUGHT]</span><span className="text-slate-300 font-mono">optimizing decision tree nodes...</span></div>
+        <div className="flex gap-2"><span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-bold font-mono">[AGENT]</span><span className="text-slate-300 font-mono">orchestrating automation streams...</span></div>
+        <div className="flex gap-2"><span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-bold font-mono">[THOUGHT]</span><span className="text-slate-300 font-mono">optimizing decision tree nodes...</span></div>
         <div className="flex gap-2"><span className="text-emerald-400 font-bold font-mono">[METRIC]</span><span className="text-white font-semibold font-mono">manual processing reduced by 60%</span></div>
       </div>
     ),
@@ -322,7 +322,7 @@ const Services = () => {
         </div>
         <div className="text-red-400/80 line-through text-[9px] font-mono">- Legacy core database bottleneck</div>
         <div className="text-emerald-400 text-[9px] font-mono">+ Managed SRE Serverless endpoints</div>
-        <div className="text-cyan-400 text-[9px] font-mono">+ 45% latency reduction achieved</div>
+        <div className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-[9px] font-mono">+ 45% latency reduction achieved</div>
       </div>
     ),
     shield: (
@@ -339,7 +339,7 @@ const Services = () => {
     platforms: (
       <div className="bg-[#050507] border border-white/5 rounded-xl p-4 flex items-center justify-between gap-4 shadow-inner mt-4">
         <span className="flex-1 text-center py-1.5 rounded-lg bg-white/5 border border-white/5 text-[9px] font-mono text-white">Salesforce</span>
-        <ArrowRight className="w-4 h-4 text-cyan-400 shrink-0" />
+        <ArrowRight className="w-4 h-4 text-[#2564ea] shrink-0" />
         <span className="flex-1 text-center py-1.5 rounded-lg bg-white/5 border border-white/5 text-[9px] font-mono text-white">ServiceNow</span>
       </div>
     ),
@@ -355,7 +355,7 @@ const Services = () => {
         </div>
         <div className="flex justify-between text-[9px] font-mono">
           <span>Pipeline Attribution:</span>
-          <span className="text-cyan-400 font-bold font-mono">3x Clarity</span>
+          <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-bold font-mono">3x Clarity</span>
         </div>
       </div>
     )
@@ -459,7 +459,7 @@ const Services = () => {
                     <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
                       Explore Capabilities
                     </span>
-                    <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
+                    <ArrowRight className="w-4 h-4 text-[#2564ea] transform group-hover:translate-x-1 transition-transform duration-300" />
                   </a>
                 </div>
               </div>
@@ -613,7 +613,7 @@ const Services = () => {
                       <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 transition-transform duration-300 group-hover:translate-x-1 shrink-0">
                         {dept.title}
                       </h3>
-                      <p className="text-xs lg:text-sm font-semibold text-brand-cyan mb-6 group-hover:text-white transition-colors duration-300 shrink-0">
+                      <p className="text-xs lg:text-sm font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-6 group-hover:text-white transition-colors duration-300 shrink-0">
                         {dept.subtitle}
                       </p>
 
@@ -626,10 +626,10 @@ const Services = () => {
 
                         {/* Top Services List (Hidden by default, visible on hover) */}
                         <ul className="bento-services absolute inset-0 space-y-2.5">
-                          <span className="block text-xs font-bold uppercase tracking-widest text-brand-cyan mb-2.5">Key Capabilities:</span>
+                          <span className="block text-xs font-bold uppercase tracking-widest bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-2.5">Key Capabilities:</span>
                           {dept.topServices.slice(0, 6).map((service, sIdx) => (
                             <li key={sIdx} className="flex items-start text-white/90 text-[13px] lg:text-sm font-medium">
-                              <span className="mr-2 text-brand-cyan opacity-80">✦</span>
+                              <span className="mr-2 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent opacity-80">✦</span>
                               {service}
                             </li>
                           ))}
@@ -707,7 +707,7 @@ const Services = () => {
                     <div className="pt-4 border-t border-white/5 mt-6 flex justify-between items-center pr-14">
                       <Link
                         to={dept.link}
-                        className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-cyan-400 transition-colors group/link"
+                        className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors group/link"
                       >
                         Explore Full Department
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
@@ -747,7 +747,7 @@ const Services = () => {
             <div>
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-cyan-400"></div>
-                <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono">
+                <span className="text-xs font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase tracking-widest font-mono">
                   Ecosystem Explorer
                 </span>
               </div>
@@ -777,10 +777,10 @@ const Services = () => {
                   <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">eQORE™ AI v2.5 Console</span>
                 </div>
                 
-                <div className="min-h-[100px] font-mono text-xs text-cyan-400 space-y-2 leading-relaxed bg-black/50 p-4 rounded-xl border border-white/5 relative">
+                <div className="min-h-[100px] font-mono text-xs bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent space-y-2 leading-relaxed bg-black/50 p-4 rounded-xl border border-white/5 relative">
                   <div className="flex items-start gap-2">
                     <span className="text-slate-600 select-none">&gt;</span>
-                    <p className="text-slate-200">{coPilotOutput}<span className={`${isTyping ? 'animate-pulse' : ''} text-cyan-400`}>_</span></p>
+                    <p className="text-slate-200">{coPilotOutput}<span className={`${isTyping ? 'animate-pulse' : ''} bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent`}>_</span></p>
                   </div>
                 </div>
 
@@ -975,7 +975,7 @@ const Services = () => {
                       >
                         <div>
                           <div className="flex items-center justify-between mb-2 gap-2">
-                            <h4 className="text-white font-bold text-sm group-hover/svc:text-cyan-400 transition-colors">
+                            <h4 className="text-white font-bold text-sm group-hover/svc:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors">
                               {svc.name}
                             </h4>
                             {svc.featured && (
@@ -988,7 +988,7 @@ const Services = () => {
                         </div>
 
                         <div className="flex justify-end mt-4 pt-2 border-t border-white/[0.05]">
-                          <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/svc:text-cyan-400 group-hover/svc:translate-x-1 transition-all" />
+                          <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/svc:text-[#2564ea] group-hover/svc:translate-x-1 transition-all" />
                         </div>
                       </Link>
                     ))}
@@ -1001,7 +1001,7 @@ const Services = () => {
                   {/* Personas */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-slate-400">
-                      <UserCheck className="w-4 h-4 text-cyan-400" />
+                      <UserCheck className="w-4 h-4 text-[#2564ea]" />
                       <span className="text-xs font-bold uppercase tracking-wider font-mono">Target Decision Makers</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5">

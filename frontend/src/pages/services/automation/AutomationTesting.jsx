@@ -15,7 +15,7 @@ const AutomationTesting = () => {
     fullDescription: 'Implement test automation frameworks and practices for faster, more reliable testing.',
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
     stats: [
-      { value: 'Zero', label: 'Regression Leaks', color: 'text-cyan-400' },
+      { value: 'Zero', label: 'Regression Leaks', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '5X', label: 'Test Velocity', color: 'text-blue-400' },
       { value: '99%', label: 'Code Coverage', color: 'text-emerald-400' },
       { value: 'Hardened', label: 'Build Integrity', color: 'text-purple-400' },

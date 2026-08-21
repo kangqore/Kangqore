@@ -37,7 +37,7 @@ function renderFormattedText(text) {
             const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
             if (m) {
               return (
-                <a key={`blink-${j}-${k}`} href={m[2]} target="_blank" rel="noopener noreferrer" className="text-brand-cyan hover:underline">
+                <a key={`blink-${j}-${k}`} href={m[2]} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline">
                   {m[1]}
                 </a>
               );
@@ -58,7 +58,7 @@ function renderFormattedText(text) {
             href={m[2]}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-brand-cyan hover:underline"
+            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline"
           >
             {m[1]}
           </a>
@@ -312,7 +312,7 @@ const EQoreAIConsole = () => {
         <div className="p-3">
           <button 
             onClick={reset}
-            className="w-full py-2 px-2 text-brand-cyan hover:text-white font-medium text-xs flex items-center justify-start gap-2 transition-colors cursor-pointer"
+            className="w-full py-2 px-2 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:text-white font-medium text-xs flex items-center justify-start gap-2 transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>New Chat Session</span>
@@ -335,12 +335,12 @@ const EQoreAIConsole = () => {
                   onClick={() => loadConversation(item.id)}
                   className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors text-xs ${
                     conversationId === item.id 
-                      ? 'text-brand-cyan font-bold bg-white/5' 
+                      ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-bold bg-white/5' 
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   <div className="flex items-center gap-2 truncate pr-2">
-                    <History className="w-3.5 h-3.5 flex-shrink-0 text-brand-cyan" />
+                    <History className="w-3.5 h-3.5 flex-shrink-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
                     <span className="truncate">{item.title}</span>
                   </div>
                   <button 
@@ -360,7 +360,7 @@ const EQoreAIConsole = () => {
           
           {/* User state details */}
           <div className="flex items-center gap-3 mb-3 px-1 py-1">
-            <div className="w-8 h-8 rounded-full bg-brand-blue/20 flex items-center justify-center text-brand-cyan text-sm font-semibold shrink-0">
+            <div className="w-8 h-8 rounded-full bg-brand-blue/20 flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-sm font-semibold shrink-0">
               {user ? user.name.slice(0, 2).toUpperCase() : <User className="w-4 h-4" />}
             </div>
             <div className="truncate flex-1">
@@ -383,7 +383,7 @@ const EQoreAIConsole = () => {
             {!user ? (
               <button 
                 onClick={() => window.dispatchEvent(new CustomEvent('show-auth-modal', { detail: { tab: 'signin' } }))}
-                className="py-1.5 px-2 text-brand-cyan hover:text-white text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="py-1.5 px-2 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:text-white text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>Link Account / Sign In</span>
@@ -448,7 +448,7 @@ const EQoreAIConsole = () => {
                   window.speechSynthesis.cancel();
                 }
               }}
-              className={`p-2 rounded-xl transition-colors ${isVoiceEnabled ? 'bg-cyan-400/20 text-cyan-400 border border-cyan-400/30' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'}`}
+              className={`p-2 rounded-xl transition-colors ${isVoiceEnabled ? 'bg-cyan-400/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent border border-cyan-400/30' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'}`}
               title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
             >
               {isVoiceEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -541,7 +541,7 @@ const EQoreAIConsole = () => {
 
                     {/* User Avatar Initials */}
                     {isUser && (
-                      <div className="w-8 h-8 rounded-full bg-brand-blue/20 flex-shrink-0 border border-brand-blue/30 flex items-center justify-center text-[11px] font-bold text-brand-cyan">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue/20 flex-shrink-0 border border-brand-blue/30 flex items-center justify-center text-[11px] font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
                         {user ? user.name.slice(0, 2).toUpperCase() : 'US'}
                       </div>
                     )}
@@ -553,7 +553,7 @@ const EQoreAIConsole = () => {
               {streaming && (
                 <div className="flex gap-3 items-center text-xs text-gray-400 pl-1">
                   <div className="w-7 h-7 rounded-full bg-brand-blue/20 border border-brand-cyan/30 flex items-center justify-center">
-                    <Sparkles className="w-3.5 h-3.5 text-brand-cyan" />
+                    <Sparkles className="w-3.5 h-3.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
                   </div>
                   <span className="text-gray-400 font-medium">eQORE is processing...</span>
                 </div>
@@ -664,12 +664,12 @@ const EQoreAIConsole = () => {
                       onClick={() => handleSend(null, prompt)}
                       className={`group inline-flex items-center gap-1 text-[9px] font-semibold px-2 py-1 rounded-full border transition-all duration-300 cursor-pointer transform hover:scale-105 ${
                         isSpecial
-                          ? 'bg-brand-blue/10 border-brand-cyan/40 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.1)] hover:bg-brand-blue/20 hover:border-brand-cyan/60 hover:shadow-[0_0_20px_rgba(34,211,238,0.25)]'
+                          ? 'bg-brand-blue/10 border-brand-cyan/40 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-[0_0_15px_rgba(34,211,238,0.1)] hover:bg-brand-blue/20 hover:border-brand-cyan/60 hover:shadow-[0_0_20px_rgba(34,211,238,0.25)]'
                           : 'bg-white/5 border-white/10 text-white/70 hover:text-white hover:bg-white/10 hover:border-brand-cyan/30 hover:shadow-[0_0_12px_rgba(34,211,238,0.12)]'
                       }`}
                     >
                       <span>{prompt}</span>
-                      <ChevronRight className="w-2.5 h-2.5 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-brand-cyan" />
+                      <ChevronRight className="w-2.5 h-2.5 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
                     </button>
                   );
                 })}

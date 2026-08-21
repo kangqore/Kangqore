@@ -48,8 +48,8 @@ const SlotPicker = ({ leadId, slots, onBooked }) => {
     <div className="w-full max-w-[320px] rounded-xl overflow-hidden border border-cyan-400/20 bg-[#12121a] shadow-xl">
       <div className="px-4 py-2.5 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-b border-white/5 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Zap className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="text-[11px] font-bold text-cyan-400/90 uppercase tracking-widest">
+          <Zap className="w-3.5 h-3.5 text-[#2564ea]" />
+          <span className="text-[11px] font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase tracking-widest">
             Select a Slot
           </span>
         </div>
@@ -69,13 +69,13 @@ const SlotPicker = ({ leadId, slots, onBooked }) => {
             }`}
           >
             <div className="flex flex-col">
-              <span className={`text-[12px] font-semibold ${selectedId === slot.id ? 'text-cyan-300' : 'text-slate-300'}`}>
+              <span className={`text-[12px] font-semibold ${selectedId === slot.id ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' : 'text-slate-300'}`}>
                 {slot.label}
               </span>
               <span className="text-[11px] text-slate-500">Google Meet / Online</span>
             </div>
             <ChevronRight className={`w-3.5 h-3.5 transition-all ${
-              selectedId === slot.id ? 'text-cyan-400 translate-x-0.5' : 'text-slate-600'
+              selectedId === slot.id ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent translate-x-0.5' : 'text-slate-600'
             }`} />
           </button>
         ))}

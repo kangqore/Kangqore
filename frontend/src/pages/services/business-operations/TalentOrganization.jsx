@@ -74,7 +74,7 @@ const TalentOrganization = () => {
     stats: [
       { value: '30-50%', label: 'Acceleration in Decision Speed', color: 'text-brand-blue' },
       { value: '40%↑', label: 'Retention Increase via Predictive Models', color: 'text-blue-400' },
-      { value: 'DAY 1', label: 'AI Readiness for Your Workforce', color: 'text-cyan-400' },
+      { value: 'DAY 1', label: 'AI Readiness for Your Workforce', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '10x', label: 'Faster Execution on Capability Gaps', color: 'text-brand-blue' },
     ],
 

@@ -13,7 +13,7 @@ const INTENT_COLORS: Record<string, string> = {
   scheduling: 'bg-green-500/20 text-green-300',
   contact:    'bg-green-500/20 text-green-300',
   support:    'bg-slate-500/20 text-slate-300',
-  roadmap:    'bg-cyan-500/20 text-cyan-300',
+  roadmap:    'bg-cyan-500/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent',
   lead:       'bg-pink-500/20 text-pink-300',
   careers:    'bg-indigo-500/20 text-indigo-300',
   company:    'bg-slate-500/20 text-slate-400',

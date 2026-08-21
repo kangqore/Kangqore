@@ -24,7 +24,7 @@ const Insurance = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '40%', label: 'Faster Claims', color: 'text-cyan-400' },
+          { value: '40%', label: 'Faster Claims', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '30+', label: 'Insurance Firms', color: 'text-blue-400' },
           { value: '95%', label: 'Fraud Detection', color: 'text-emerald-400' },
           { value: '24/7', label: 'Support', color: 'text-purple-400' }

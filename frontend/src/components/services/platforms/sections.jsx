@@ -114,7 +114,7 @@ const enterprisePlatformIntegration = {
   secondaryButton: { text: 'Schedule An Integration Assessment', link: '/contact' },
 
   stats: [
-    { value: '99.9%', label: 'Platform Uptime', color: 'text-cyan-400' },
+    { value: '99.9%', label: 'Platform Uptime', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '10x', label: 'Faster Integration', color: 'text-blue-400' },
     { value: 'Zero', label: 'Data Silos', color: 'text-emerald-400' },
     { value: '24/7', label: 'Integration Governance', color: 'text-purple-400' },
@@ -358,7 +358,7 @@ const pimcore = {
   secondaryButton: { text: 'Schedule A Pimcore Assessment', link: '/contact' },
 
   stats: [
-    { value: 'Unify', label: 'Product, master, and digital asset data', color: 'text-cyan-400' },
+    { value: 'Unify', label: 'Product, master, and digital asset data', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Enrich', label: 'Data quality, workflows, and AI-assisted content', color: 'text-blue-400' },
     { value: 'Accelerate', label: 'Commerce, catalog, and launch operations', color: 'text-emerald-400' },
     { value: 'Personalize', label: 'Omnichannel experiences at scale', color: 'text-purple-400' },
@@ -554,7 +554,7 @@ const salesforce = {
   secondaryButton: { text: 'Talk To Our Experts', link: '#capabilities' },
 
   stats: [
-    { value: 'Connect', label: 'Customers, teams, channels, and systems', color: 'text-cyan-400' },
+    { value: 'Connect', label: 'Customers, teams, channels, and systems', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Sell', label: 'Pipeline, forecasting, and opportunity velocity', color: 'text-blue-400' },
     { value: 'Serve', label: 'Faster support, better case handling, higher loyalty', color: 'text-emerald-400' },
     { value: 'Personalize', label: 'Journeys, campaigns, and commerce experiences', color: 'text-purple-400' },
@@ -731,7 +731,7 @@ const servicenow = {
   secondaryButton: { text: 'Talk To Our Experts', link: '#capabilities' },
 
   stats: [
-    { value: 'Standardize', label: 'Service operations, controls, and delivery models', color: 'text-cyan-400' },
+    { value: 'Standardize', label: 'Service operations, controls, and delivery models', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Automate', label: 'Enterprise workflows with less manual effort', color: 'text-blue-400' },
     { value: 'Integrate', label: 'Systems, data, and platform experiences cleanly', color: 'text-emerald-400' },
     { value: 'Scale', label: 'ServiceNow value across business functions', color: 'text-purple-400' },
@@ -903,7 +903,7 @@ const globalCapabilityCenters = {
   secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
   stats: [
-    { value: '60', label: 'Days to First Sprint', color: 'text-cyan-400' },
+    { value: '60', label: 'Days to First Sprint', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '500+', label: 'Pre-Vetted Engineers', color: 'text-blue-400' },
     { value: '21', label: 'Days Avg. Time-to-Hire', color: 'text-emerald-400' },
     { value: '100%', label: 'Your Team. Your IP.', color: 'text-purple-400' },
@@ -1136,7 +1136,7 @@ const talentOrganization = {
   stats: [
     { value: '30-50%', label: 'Acceleration in Decision Speed', color: 'text-brand-blue' },
     { value: '40%↑', label: 'Retention Increase via Predictive Models', color: 'text-blue-400' },
-    { value: 'DAY 1', label: 'AI Readiness for Your Workforce', color: 'text-cyan-400' },
+    { value: 'DAY 1', label: 'AI Readiness for Your Workforce', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '10x', label: 'Faster Execution on Capability Gaps', color: 'text-brand-blue' },
   ],
 
@@ -1358,7 +1358,7 @@ const supplyChain = {
   stats: [
     { value: '7', label: 'Core Supply Chain Pillars Engineered', color: 'text-brand-blue' },
     { value: 'E2E', label: 'End-to-End Network Visibility', color: 'text-blue-400' },
-    { value: '20+', label: 'Enterprise Platforms Integrated', color: 'text-cyan-400' },
+    { value: '20+', label: 'Enterprise Platforms Integrated', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'DAY 1', label: 'ESG Compliance Built In', color: 'text-brand-blue' },
   ],
 
@@ -1562,7 +1562,7 @@ const unifiedServicesManagement = {
   stats: [
     { value: '40%+', label: 'Faster Resolution Time', color: 'text-brand-blue' },
     { value: '360°', label: 'Cross-Function Visibility', color: 'text-blue-400' },
-    { value: '24/7', label: 'AI-Powered Service Support', color: 'text-cyan-400' },
+    { value: '24/7', label: 'AI-Powered Service Support', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Day 1', label: 'Governance Ready Operations', color: 'text-brand-blue' },
   ],
 

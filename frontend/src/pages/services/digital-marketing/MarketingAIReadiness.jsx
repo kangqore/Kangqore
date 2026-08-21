@@ -42,7 +42,7 @@ const MarketingAIReadiness = () => {
     stats: [
       { value: 'AI-Ready', label: 'Customer Data', color: 'text-brand-blue' },
       { value: 'GenAI', label: 'Content Workflows', color: 'text-blue-400' },
-      { value: 'Scale', label: 'Personalization', color: 'text-cyan-400' },
+      { value: 'Scale', label: 'Personalization', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Governed', label: 'Responsible AI', color: 'text-brand-blue' },
     ],
 

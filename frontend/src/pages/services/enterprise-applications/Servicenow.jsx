@@ -80,7 +80,7 @@ const Servicenow = () => {
     ],
     
     stats: [
-      { value: 'Standardize', label: 'Service operations, controls, and delivery models', color: 'text-cyan-400' },
+      { value: 'Standardize', label: 'Service operations, controls, and delivery models', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Automate', label: 'Enterprise workflows with less manual effort', color: 'text-blue-400' },
       { value: 'Integrate', label: 'Systems, data, and platform experiences cleanly', color: 'text-emerald-400' },
       { value: 'Scale', label: 'ServiceNow value across business functions', color: 'text-purple-400' },

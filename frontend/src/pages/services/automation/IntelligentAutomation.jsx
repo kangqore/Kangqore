@@ -128,9 +128,9 @@ const IntelligentAutomation = () => {
       ],
       capabilitiesTitle: 'Our Capabilities.',
       stats: [
-        { value: '60%', label: 'Cycle Time Reduction', color: 'text-cyan-400' },
+        { value: '60%', label: 'Cycle Time Reduction', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
         { value: '4–6 Wks', label: 'Pilot to Production', color: 'text-brand-blue' },
-        { value: '99.5%', label: 'Bot Uptime SLA', color: 'text-cyan-400' },
+        { value: '99.5%', label: 'Bot Uptime SLA', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
         { value: '3x', label: 'Faster Decision Cycles', color: 'text-brand-blue' }
       ],
       highFidelity: {

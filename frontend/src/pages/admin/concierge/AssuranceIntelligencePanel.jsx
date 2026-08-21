@@ -80,7 +80,7 @@ const AssuranceIntelligencePanel = ({ leadId }) => {
   if (events.length === 0) {
     return (
       <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-6">
-        <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-2 mb-4">
+        <h4 className="text-sm font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase tracking-wider flex items-center gap-2 mb-4">
           <ShieldCheck className="w-4 h-4" />
           Client Assurance Intelligence
         </h4>
@@ -95,7 +95,7 @@ const AssuranceIntelligencePanel = ({ leadId }) => {
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[80px] -z-10 rounded-full"></div>
       
       <div className="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
-        <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+        <h4 className="text-sm font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase tracking-wider flex items-center gap-2">
           <ShieldCheck className="w-5 h-5" />
           Client Assurance Intelligence
         </h4>
@@ -146,7 +146,7 @@ const AssuranceIntelligencePanel = ({ leadId }) => {
                 <div className="text-[9px] uppercase tracking-wider text-slate-500 mb-2 font-bold">Priority Services</div>
                 <div className="flex flex-wrap gap-1">
                   {event.metadata.recommendedServices?.map((svc, i) => (
-                    <span key={i} className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                    <span key={i} className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/10 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent border border-cyan-500/20">
                       {svc}
                     </span>
                   ))}

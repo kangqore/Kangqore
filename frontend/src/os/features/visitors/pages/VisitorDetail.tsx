@@ -19,7 +19,7 @@ const EVENT_COLORS: Record<string, string> = {
   EQORE_QUERY:  'bg-purple-500/10 text-purple-400 border-purple-500/20',
   CTA_CLICK:    'bg-green-500/10 text-green-400 border-green-500/20',
   EXIT_INTENT:  'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  SESSION_START:'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+  SESSION_START:'bg-cyan-500/10 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent border-cyan-500/20',
   TIME_ON_PAGE: 'bg-slate-500/10 text-slate-300 border-slate-500/20',
 }
 

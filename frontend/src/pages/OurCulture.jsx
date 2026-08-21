@@ -24,7 +24,7 @@ const OurCulture = () => {
         primaryButton={{ text: 'Explore Careers', link: '/careers' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '30+', label: 'Core Builders', color: 'text-cyan-400' },
+          { value: '30+', label: 'Core Builders', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '61', label: 'Active Services', color: 'text-blue-400' },
           { value: '15', label: 'Tech Departments', color: 'text-emerald-400' },
         ]}
@@ -51,7 +51,7 @@ const OurCulture = () => {
                   <Zap className="w-4 h-4" />
                   Fast Iteration
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 rounded-full text-sm font-medium">
+                <div className="flex items-center gap-2 px-4 py-2 bg-cyan-50 dark:bg-cyan-900/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent rounded-full text-sm font-medium">
                   <Shield className="w-4 h-4" />
                   Ownership Culture
                 </div>
@@ -107,7 +107,7 @@ const OurCulture = () => {
             {/* Value 2 */}
             <div className="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow">
               <div className="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/30 rounded-xl flex items-center justify-center mb-6">
-                <Target className="w-6 h-6 text-cyan-600" />
+                <Target className="w-6 h-6 text-[#2564ea]" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Pragmatic Philosophy</h3>
               <p className="text-gray-600 dark:text-gray-400">

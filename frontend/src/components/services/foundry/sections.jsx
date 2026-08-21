@@ -83,7 +83,7 @@ const apiMicroservicesEngineering = {
   hideGenericFaq: true,
 
   stats: [
-    { value: '99.9%', label: 'Uptime Reliability', color: 'text-cyan-400' },
+    { value: '99.9%', label: 'Uptime Reliability', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '65%', label: 'Faster Integration', color: 'text-blue-400' },
     { value: 'Zero', label: 'Security Breach', color: 'text-emerald-400' },
     { value: '24/7', label: 'Runtime Governance', color: 'text-purple-400' },
@@ -345,7 +345,7 @@ const internetOfThings = {
   hideGenericFaq: true,
 
   stats: [
-    { value: 'Connect', label: 'Assets, devices, and services intelligently', color: 'text-cyan-400' },
+    { value: 'Connect', label: 'Assets, devices, and services intelligently', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Analyze', label: 'Turn live telemetry into business insight', color: 'text-blue-400' },
     { value: 'Transform', label: 'Improve workflows through connected operations', color: 'text-brand-blue' },
     { value: 'Scale', label: 'Move from pilot to enterprise-grade execution', color: 'text-purple-400' },
@@ -592,7 +592,7 @@ const managedCloudServices = {
   hideGenericFaq: true,
 
   stats: [
-    { value: '24/7', label: 'Operational Monitoring', color: 'text-cyan-400' },
+    { value: '24/7', label: 'Operational Monitoring', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'SRE', label: 'Grade Reliability', color: 'text-blue-400' },
     { value: 'FinOps', label: 'Cost Governance', color: 'text-emerald-400' },
     { value: 'Zero', label: 'Trust Security', color: 'text-purple-400' },
@@ -808,7 +808,7 @@ const aws = {
   hideGenericFaq: true,
 
   stats: [
-    { value: '99.99%', label: 'Availability', color: 'text-cyan-400' },
+    { value: '99.99%', label: 'Availability', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Zero', label: 'Migration Downtime', color: 'text-blue-400' },
     { value: '40%+', label: 'Cost Reduction', color: 'text-emerald-400' },
     { value: '10x', label: 'Deployment Speed', color: 'text-purple-400' },
@@ -976,7 +976,7 @@ const microsoftServices = {
   hideGenericFaq: true,
 
   stats: [
-    { value: 'Unified', label: 'Identity & Access', color: 'text-cyan-400' },
+    { value: 'Unified', label: 'Identity & Access', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Zero', label: 'Trust Gaps', color: 'text-blue-400' },
     { value: '100%', label: 'Ecosystem Synergy', color: 'text-emerald-400' },
     { value: 'Resilient', label: 'Azure Core', color: 'text-purple-400' },
@@ -1165,7 +1165,7 @@ const googleCloudServices = {
   hideGenericFaq: true,
 
   stats: [
-    { value: 'PB', label: 'Data Processed', color: 'text-cyan-400' },
+    { value: 'PB', label: 'Data Processed', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Zero', label: 'Data Leakage', color: 'text-blue-400' },
     { value: '100%', label: 'AI/ML Synergy', color: 'text-emerald-400' },
     { value: 'Native', label: 'BigQuery Power', color: 'text-purple-400' },
@@ -1369,7 +1369,7 @@ const cloudComputing = {
   hideGenericFaq: true,
 
   stats: [
-    { value: 'HA', label: 'High Availability', color: 'text-cyan-400' },
+    { value: 'HA', label: 'High Availability', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Zero', label: 'Trust Security', color: 'text-blue-400' },
     { value: '30–60%', label: 'Cost Optimization', color: 'text-emerald-400' },
     { value: 'AI-Ready', label: 'Architecture', color: 'text-purple-400' },

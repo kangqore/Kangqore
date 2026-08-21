@@ -33,7 +33,7 @@ function renderFormattedText(text) {
             href={m[2]}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-cyan-300 hover:underline"
+            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline"
           >
             {m[1]}
           </a>

@@ -36,7 +36,7 @@ const GrowthFunnelsConversion = () => {
     stats: [
       { value: 'Full-Funnel', label: 'Revenue Architecture', color: 'text-brand-blue' },
       { value: 'AI-Augmented', label: 'Conversion Optimization', color: 'text-blue-400' },
-      { value: 'Higher LTV', label: '& Lower CAC Focus', color: 'text-cyan-400' },
+      { value: 'Higher LTV', label: '& Lower CAC Focus', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Scalable', label: 'Profitability', color: 'text-brand-blue' },
     ],
 

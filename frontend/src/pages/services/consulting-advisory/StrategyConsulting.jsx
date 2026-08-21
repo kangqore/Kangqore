@@ -516,7 +516,7 @@ const StrategyConsulting = () => {
       title: 'Platform Strategy for Agentic AI',
       desc: 'AI value will increasingly depend on platform readiness, data foundations, orchestration, and business alignment.',
       icon: <Layers className="w-6 h-6" />,
-      color: 'bg-cyan-50 text-cyan-600',
+      color: 'bg-cyan-50 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent',
       border: 'hover:border-cyan-300'
     },
     {

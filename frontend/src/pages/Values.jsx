@@ -75,10 +75,10 @@ const Values = () => {
         primaryButton={{ text: 'Our Services', link: '/services' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '7', label: 'Core Values', color: 'text-cyan-400' },
+          { value: '7', label: 'Core Values', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '100%', label: 'Accountability', color: 'text-blue-400' },
           { value: 'Every Day', label: 'Excellence', color: 'text-sky-400' },
-          { value: 'Always', label: 'Integrity', color: 'text-brand-cyan' },
+          { value: 'Always', label: 'Integrity', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
         ]}
       />
 
@@ -116,7 +116,7 @@ const Values = () => {
             <div className="md:col-span-12 lg:col-span-4 space-y-6 scroll-animate" style={{ transitionDelay: '0.2s' }}>
               <div className="p-8 rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl relative overflow-hidden group">
                 <div className="absolute inset-0 pointer-events-none overflow-hidden"></div>
-                <Zap className="w-10 h-10 text-cyan-400 mb-6" />
+                <Zap className="w-10 h-10 text-[#2564ea] mb-6" />
                 <h3 className="text-2xl font-bold mb-4">Values in Action</h3>
                 <p className="text-slate-300 leading-relaxed">
                   "At Kangqore, we believe meaningful impact is created when innovation is paired with discipline, ambition is backed by execution, and growth is guided by integrity."
@@ -148,7 +148,7 @@ const Values = () => {
                 <Lightbulb className="w-6 h-6" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">Our Purpose</h3>
-              <p className="text-lg text-cyan-400 font-medium mb-4 leading-relaxed">
+              <p className="text-lg bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-medium mb-4 leading-relaxed">
                 To turn ambitious ideas into dependable, real-world technology systems.
               </p>
               <p className="text-slate-400 leading-relaxed font-light">
@@ -172,11 +172,11 @@ const Values = () => {
 
             {/* Mission */}
             <div className="scroll-animate group pt-12 md:pt-0 md:pl-12" style={{ transitionDelay: '0.2s' }}>
-              <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 mb-6 group-hover:scale-110 transition-transform">
+              <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-cyan-500/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-6 group-hover:scale-110 transition-transform">
                 <Shield className="w-6 h-6" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">Our Mission</h3>
-              <p className="text-lg text-cyan-400 font-medium mb-4 leading-relaxed">
+              <p className="text-lg bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-medium mb-4 leading-relaxed">
                 To design, engineer, and deliver end-to-end technology solutions with complete ownership.
               </p>
               <p className="text-slate-400 leading-relaxed font-light">

@@ -11,9 +11,9 @@ const SITE_URL = 'https://kangqore.com';
 
 const STATS = [
   { value: '12+', label: 'Industries', color: 'text-brand-blue' },
-  { value: '61',  label: 'Services',   color: 'text-cyan-400'   },
+  { value: '61',  label: 'Services',   color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'   },
   { value: '5',   label: 'AI Engines', color: 'text-brand-blue' },
-  { value: '∞',   label: 'Scale',      color: 'text-cyan-400'   },
+  { value: '∞',   label: 'Scale',      color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'   },
 ];
 
 const PILLARS = [
@@ -117,14 +117,14 @@ const IndustriesIndexPage = () => {
             <nav className="flex items-center gap-1.5 text-[11px] text-white/30 font-medium tracking-wide uppercase mb-8">
               <Link to="/" className="hover:text-white/60 transition-colors">Home</Link>
               <ChevronRight className="w-3 h-3" />
-              <span className="text-brand-cyan">Industries</span>
+              <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Industries</span>
             </nav>
 
             <div className="max-w-3xl">
               {/* Animated badge */}
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
                 <div className="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" />
-                <p className="text-xs font-bold tracking-[0.2em] text-brand-cyan uppercase">
+                <p className="text-xs font-bold tracking-[0.2em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase">
                   Sector-calibrated intelligence · 2026
                 </p>
               </div>
@@ -155,7 +155,7 @@ const IndustriesIndexPage = () => {
                   className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
                 >
                   Explore All Industries
-                  <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
               </div>
             </div>
@@ -199,7 +199,7 @@ const IndustriesIndexPage = () => {
           }`}
         >
           <div className="mb-14">
-            <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">
               INDUSTRY INTELLIGENCE
             </p>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -268,7 +268,7 @@ const IndustriesIndexPage = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-brand-blue/15 blur-[100px] rounded-full pointer-events-none" />
 
             <div className="relative z-10">
-              <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-6">
+              <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-6">
                 START YOUR TRANSFORMATION
               </p>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white mb-6 max-w-3xl mx-auto">
@@ -293,7 +293,7 @@ const IndustriesIndexPage = () => {
                   className="inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
                 >
                   Explore Our Services
-                  <ArrowRight className="w-4 h-4 text-brand-cyan" />
+                  <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
                 </Link>
               </div>
             </div>

@@ -65,8 +65,8 @@ export const GCCMarketContextStrip = () => {
         {/* Header */}
         <div className="text-center mb-14 lg:mb-18">
           <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-white dark:bg-gray-900 dark:border-gray-800/[0.04] border border-white/[0.08] rounded-full mb-8 backdrop-blur-sm">
-            <BarChart3 className="w-4 h-4 text-cyan-400" />
-            <span className="text-[11px] font-bold tracking-[0.3em] text-cyan-400 uppercase">India GCC Ecosystem — 2026</span>
+            <BarChart3 className="w-4 h-4 text-[#2564ea]" />
+            <span className="text-[11px] font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase">India GCC Ecosystem — 2026</span>
           </div>
           <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6 font-display tracking-tight leading-[1.1]">
             The World's Largest{' '}
@@ -613,8 +613,8 @@ export const KangqoreCommandCenterDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-blue/10 border border-brand-blue/20 rounded-full mb-6">
-            <Cpu className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase">Named Platform</span>
+            <Cpu className="w-4 h-4 text-[#2564ea]" />
+            <span className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase">Named Platform</span>
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold text-white font-display tracking-tight mb-6">
             Kangqore <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Command Center.</span>
@@ -675,7 +675,7 @@ export const KangqoreCommandCenterDashboard = () => {
                     {[
                       { l: 'Entity Registration', s: 'Completed', c: 'text-emerald-400' },
                       { l: 'Compliance Setup', s: 'Completed', c: 'text-emerald-400' },
-                      { l: 'Workspace IT Prep', s: 'In Progress', c: 'text-cyan-400' },
+                      { l: 'Workspace IT Prep', s: 'In Progress', c: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
                       { l: 'Talent Sourcing', s: 'Active', c: 'text-blue-400' },
                       { l: 'First Sprint', s: 'Pending', c: 'text-white/50' }
                     ].map((st, i) => (

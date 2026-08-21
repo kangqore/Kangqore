@@ -117,7 +117,7 @@ export const SupplyChainControlTower = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
            {[
-             { title: 'Global Node Mapping', metric: '100%', label: 'Visibility', icon: Map, color: 'text-cyan-400' },
+             { title: 'Global Node Mapping', metric: '100%', label: 'Visibility', icon: Map, color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
              { title: 'Failure Bypass', metric: '0.0ms', label: 'Latency', icon: Workflow, color: 'text-brand-blue' },
              { title: 'Asset Telemetry', metric: 'Real-Time', label: 'Tracking', icon: Box, color: 'text-blue-400' }
            ].map((item, idx) => (

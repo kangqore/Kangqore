@@ -35,7 +35,7 @@ const SocialMediaManagement = () => {
     stats: [
       { value: '30+', label: 'Industries Covered', color: 'text-brand-blue' },
       { value: '24/7', label: 'Community Readiness', color: 'text-blue-400' },
-      { value: '5-Phase', label: 'Growth Method', color: 'text-cyan-400' },
+      { value: '5-Phase', label: 'Growth Method', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '100%', label: 'KPI-Led Execution', color: 'text-brand-blue' },
     ],
 

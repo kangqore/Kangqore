@@ -67,9 +67,9 @@ const DataScienceAI = () => {
 
     stats: [
       { value: '15+', label: 'AI Deployments', color: 'text-brand-blue' },
-      { value: '97%', label: 'Model Reliability', color: 'text-cyan-400' },
+      { value: '97%', label: 'Model Reliability', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Multi-Cloud', label: 'Infrastructure', color: 'text-brand-blue' },
-      { value: 'Enterprise', label: 'Governance', color: 'text-cyan-400' }
+      { value: 'Enterprise', label: 'Governance', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' }
     ],
 
     highFidelity: {

@@ -48,7 +48,7 @@ const WhitePaper = () => {
         primaryButton={{ text: 'Download All', link: '#papers' }}
         secondaryButton={{ text: 'View Research', link: '/insights' }}
         stats={[
-          { value: `${papers.length}`, label: 'White Papers', color: 'text-cyan-400' },
+          { value: `${papers.length}`, label: 'White Papers', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '10K+', label: 'Downloads', color: 'text-blue-400' },
           { value: '40+', label: 'Pages Avg', color: 'text-emerald-400' },
           { value: 'Free', label: 'Access', color: 'text-purple-400' },

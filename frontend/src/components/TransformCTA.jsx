@@ -160,7 +160,7 @@ const TransformCTA = () => {
             {/* Get in Touch Link */}
             <Link
               to="/contact"
-              className="group inline-flex items-center gap-3 text-xl md:text-2xl font-bold text-gray-900 dark:text-white hover:text-brand-blue dark:hover:text-cyan-400 transition-colors duration-300 self-start lg:self-auto pt-4 lg:pt-2 mt-2"
+              className="group inline-flex items-center gap-3 text-xl md:text-2xl font-bold text-gray-900 dark:text-white hover:text-brand-blue dark:hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors duration-300 self-start lg:self-auto pt-4 lg:pt-2 mt-2"
             >
               Get in touch
               <ArrowRight className="w-6 h-6 md:w-8 md:h-8 transform transition-transform duration-300 group-hover:translate-x-2" />

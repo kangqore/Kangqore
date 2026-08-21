@@ -66,9 +66,9 @@ const MLOps = () => {
     ],
 
     stats: [
-      { value: '60%', label: 'Faster Deployments', color: 'text-cyan-400' },
+      { value: '60%', label: 'Faster Deployments', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '40%', label: 'Reduced Drift', color: 'text-brand-blue' },
-      { value: 'Auto', label: 'Retraining', color: 'text-cyan-400' },
+      { value: 'Auto', label: 'Retraining', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Tier 1', label: 'Governance', color: 'text-brand-blue' }
     ],
 

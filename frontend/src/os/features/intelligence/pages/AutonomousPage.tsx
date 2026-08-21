@@ -11,7 +11,7 @@ const STATUS_COLOR: Record<string, string> = {
   PROPOSING:        'text-indigo-400 bg-indigo-400/10',
   GOVERNING:        'text-violet-400 bg-violet-400/10',
   PENDING_APPROVAL: 'text-amber-400  bg-amber-400/10',
-  EXECUTING:        'text-cyan-400   bg-cyan-400/10',
+  EXECUTING:        'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent   bg-cyan-400/10',
   OBSERVING:        'text-teal-400   bg-teal-400/10',
   LEARNING:         'text-green-400  bg-green-400/10',
   COMPLETE:         'text-emerald-500 bg-emerald-500/10',

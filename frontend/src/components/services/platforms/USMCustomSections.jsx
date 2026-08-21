@@ -183,7 +183,7 @@ export const USMWhatWeOfferAccordion = () => {
                 <div className="pb-8 pt-2 grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
                   {offer.items.map((item, itemIdx) => (
                     <div key={itemIdx} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-cyan-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#2564ea] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-600 dark:text-gray-400">{item}</span>
                     </div>
                   ))}
@@ -297,7 +297,7 @@ export const USMControlTower = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
            {[
-             { title: 'Global IT & HR Unification', metric: '100%', label: 'Visibility', icon: Link2, color: 'text-cyan-400' },
+             { title: 'Global IT & HR Unification', metric: '100%', label: 'Visibility', icon: Link2, color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
              { title: 'Cross-Department Automation', metric: '0.0ms', label: 'Latency', icon: Workflow, color: 'text-brand-blue' },
              { title: 'Enterprise Self-Service', metric: 'Real-Time', label: 'Resolution', icon: Bot, color: 'text-blue-400' }
            ].map((item, idx) => (

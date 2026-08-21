@@ -37,7 +37,7 @@ const SEOOrganicGrowthStrategy = () => {
     stats: [
       { value: 'Technical', label: '+ Content SEO', color: 'text-brand-blue' },
       { value: 'Revenue', label: 'Focused Strategy', color: 'text-blue-400' },
-      { value: 'Transparent', label: 'Reporting & Analytics', color: 'text-cyan-400' },
+      { value: 'Transparent', label: 'Reporting & Analytics', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Long-Term', label: 'Growth Equity', color: 'text-brand-blue' },
     ],
 

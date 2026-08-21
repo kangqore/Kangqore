@@ -4,7 +4,7 @@ import PageHero from '../components/PageHero';
 
 const Team = () => {
   const heroStats = [
-    { value: '200+', label: 'Team Members', color: 'text-cyan-400' },
+    { value: '200+', label: 'Team Members', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '40+', label: 'Countries', color: 'text-blue-400' },
     { value: '500+', label: 'Certifications', color: 'text-emerald-400' },
     { value: '95%', label: 'Employee Satisfaction', color: 'text-purple-400' },

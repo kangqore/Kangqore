@@ -49,7 +49,7 @@ const VisualBackground = ({ forceDark = false, hideCards = false }) => {
               </div>
               <div className="font-mono">
                 <div className="text-xl font-bold text-cyan-50 tracking-widest leading-none">16</div>
-                <div className="text-[9px] text-cyan-400/70 font-semibold uppercase tracking-[0.2em] mt-1">PILLARS</div>
+                <div className="text-[9px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-semibold uppercase tracking-[0.2em] mt-1">PILLARS</div>
               </div>
             </div>
 
@@ -97,7 +97,7 @@ const VisualBackground = ({ forceDark = false, hideCards = false }) => {
               </div>
               <div className="font-mono">
                 <div className="text-xl font-bold text-cyan-50 tracking-widest leading-none">61</div>
-                <div className="text-[9px] text-cyan-400/70 font-semibold uppercase tracking-[0.2em] mt-1">SERVICES</div>
+                <div className="text-[9px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-semibold uppercase tracking-[0.2em] mt-1">SERVICES</div>
               </div>
             </div>
 
@@ -113,7 +113,7 @@ const VisualBackground = ({ forceDark = false, hideCards = false }) => {
               </div>
               <div className="font-mono">
                 <div className="text-xl font-bold text-cyan-50 tracking-widest leading-none">10</div>
-                <div className="text-[9px] text-cyan-400/70 font-semibold uppercase tracking-[0.2em] mt-1">EDITIONS</div>
+                <div className="text-[9px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-semibold uppercase tracking-[0.2em] mt-1">EDITIONS</div>
               </div>
             </div>
 

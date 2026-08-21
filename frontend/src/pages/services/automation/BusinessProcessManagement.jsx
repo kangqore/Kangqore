@@ -65,9 +65,9 @@ const BusinessProcessManagement = () => {
     capabilitiesTitle: 'Our Capabilities.',
 
     stats: [
-      { value: '40%', label: 'Cycle Time Reduction', color: 'text-cyan-400' },
+      { value: '40%', label: 'Cycle Time Reduction', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '30%', label: 'Operational Cost Savings', color: 'text-brand-blue' },
-      { value: '2–4 Wks', label: 'Assessment & Roadmap', color: 'text-cyan-400' },
+      { value: '2–4 Wks', label: 'Assessment & Roadmap', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '360°', label: 'Operational Excellence', color: 'text-brand-blue' }
     ],
 

@@ -37,7 +37,7 @@ const InteractiveServicesMap = () => {
                   theme={isActive ? "cyan" : "dark"} 
                 />
                 <span className="font-medium text-left flex-1 text-sm">{dept.name}</span>
-                {isActive && <ChevronRight className="w-4 h-4 text-cyan-400" />}
+                {isActive && <ChevronRight className="w-4 h-4 text-[#2564ea]" />}
               </button>
             );
           })}
@@ -64,7 +64,7 @@ const InteractiveServicesMap = () => {
               />
               <div>
                 <h2 className="text-2xl sm:text-3xl font-display font-bold text-white">{currentDept.name}</h2>
-                <p className="text-cyan-400 font-medium text-sm sm:text-base">{currentDept.services.length} Specialized Services</p>
+                <p className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-medium text-sm sm:text-base">{currentDept.services.length} Specialized Services</p>
               </div>
             </div>
             
@@ -84,9 +84,9 @@ const InteractiveServicesMap = () => {
                     to={`/services/${currentDept.slug}/${service.slug}`}
                     className="group block p-5 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/5 border border-white/5 hover:border-cyan-400/30 hover:bg-white dark:bg-gray-900 dark:border-gray-800/10 transition-all duration-300 h-full flex flex-col justify-between"
                   >
-                    <h4 className="text-white font-semibold mb-2 group-hover:text-cyan-400 transition-colors text-sm">{service.name}</h4>
+                    <h4 className="text-white font-semibold mb-2 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors text-sm">{service.name}</h4>
                     <div className="flex justify-end mt-2">
-                      <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all" />
+                      <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-[#2564ea] group-hover:translate-x-1 transition-all" />
                     </div>
                   </Link>
                 </motion.div>

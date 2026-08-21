@@ -550,10 +550,10 @@ export default function Login() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0A0D14] via-[#0A0D14]/80 to-transparent flex flex-col justify-end p-6">
                       <div className="w-8 h-8 rounded-lg bg-brand-cyan/20 border border-brand-cyan/30 flex items-center justify-center mb-3 backdrop-blur-md">
-                        <CheckCircle className="w-4 h-4 text-brand-cyan" />
+                        <CheckCircle className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
                       </div>
                       <h4 className="text-white font-extrabold text-xl mb-1 drop-shadow-md">Governed Autonomy</h4>
-                      <p className="text-brand-cyan text-xs font-bold tracking-widest uppercase mb-3">System Active</p>
+                      <p className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-xs font-bold tracking-widest uppercase mb-3">System Active</p>
                       
                       <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-brand-blue to-brand-cyan w-3/4 rounded-full" />
@@ -662,7 +662,7 @@ export default function Login() {
                     {twoFactorChallenge ? (
                       <form onSubmit={handleVerify2FA} className="space-y-4">
                         <div className="text-center mb-2">
-                          <div className="w-12 h-12 rounded-full bg-brand-blue/10 text-brand-cyan flex items-center justify-center mx-auto mb-3 border border-brand-blue/20">
+                          <div className="w-12 h-12 rounded-full bg-brand-blue/10 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent flex items-center justify-center mx-auto mb-3 border border-brand-blue/20">
                             <Shield className="w-5 h-5" />
                           </div>
                           <p className="text-[13px] text-white/50">Enter the 6-digit code from your authenticator app, or a recovery code.</p>
@@ -722,7 +722,7 @@ export default function Login() {
                             onClick={() => { setSignupMode(false); setError(''); }}
                             className={`flex-1 pb-3.5 text-[15px] font-bold border-b-[3px] transition-all duration-200 ${
                               !signupMode 
-                                ? 'border-brand-cyan text-brand-cyan' 
+                                ? 'border-brand-cyan bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' 
                                 : 'border-transparent text-white/50 hover:text-white/80'
                             }`}
                           >
@@ -732,7 +732,7 @@ export default function Login() {
                             onClick={() => { setSignupMode(true); setSignupError(''); setSignupSuccess(false); }}
                             className={`flex-1 pb-3.5 text-[15px] font-bold border-b-[3px] transition-all duration-200 ${
                               signupMode 
-                                ? 'border-brand-cyan text-brand-cyan' 
+                                ? 'border-brand-cyan bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' 
                                 : 'border-transparent text-white/50 hover:text-white/80'
                             }`}
                           >

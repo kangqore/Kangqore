@@ -26,7 +26,7 @@ export function GraphHealth() {
     <Card className="os-card text-[var(--os-text-1)] shadow-sm border border-[var(--os-border)]">
       <CardHeader className="pb-2 border-b border-[var(--os-border)]">
         <CardTitle className="text-sm font-semibold text-[var(--os-text-1)] flex items-center gap-2">
-          <Share2 className="w-4 h-4 text-cyan-500" />
+          <Share2 className="w-4 h-4 text-[#2564ea]" />
           Semantic Graph Health
         </CardTitle>
       </CardHeader>
@@ -42,7 +42,7 @@ export function GraphHealth() {
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-[var(--os-text-3)] uppercase tracking-wider font-bold">Knowledge Packs</span>
-            <span className="text-2xl font-black text-cyan-500">{stats.packs}</span>
+            <span className="text-2xl font-black bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">{stats.packs}</span>
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-[var(--os-text-3)] uppercase tracking-wider font-bold">Orphans</span>

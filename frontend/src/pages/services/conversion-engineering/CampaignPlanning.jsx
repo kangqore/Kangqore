@@ -37,7 +37,7 @@ const CampaignPlanning = () => {
     stats: [
       { value: 'Outcome-Led', label: 'Strategy', color: 'text-brand-blue' },
       { value: 'Full-Funnel', label: 'Planning', color: 'text-blue-400' },
-      { value: 'Media + Budget', label: 'Logic', color: 'text-cyan-400' },
+      { value: 'Media + Budget', label: 'Logic', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Tracking-Ready', label: 'Execution', color: 'text-brand-blue' },
     ],
 

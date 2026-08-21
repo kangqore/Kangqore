@@ -28,7 +28,7 @@ export function SupportOnCall() {
     <div className="px-6 lg:px-10 py-10 max-w-4xl mx-auto space-y-8">
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-          <Phone className="w-6 h-6 text-cyan-400" />
+          <Phone className="w-6 h-6 text-[#2564ea]" />
         </div>
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Support On-Call</h1>

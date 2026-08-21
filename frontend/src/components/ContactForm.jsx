@@ -122,7 +122,7 @@ const ContactForm = () => {
                   <div>
                     <h3 className="font-bold text-gray-900 dark:text-white mb-1">Email Us</h3>
                     <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">Our team is here to help</p>
-                    <a href="mailto:business@kangqore.com" className="text-brand-blue hover:text-cyan-500 font-medium transition-colors">
+                    <a href="mailto:business@kangqore.com" className="text-brand-blue hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-medium transition-colors">
                       business@kangqore.com
                     </a>
                   </div>
@@ -137,7 +137,7 @@ const ContactForm = () => {
                   <div>
                     <h3 className="font-bold text-gray-900 dark:text-white mb-1">Call Us</h3>
                     <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">Mon-Sat from 9AM to 9PM</p>
-                    <a href="tel:+91 7782010696" className="text-brand-blue hover:text-cyan-500 font-medium transition-colors">
+                    <a href="tel:+91 7782010696" className="text-brand-blue hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-medium transition-colors">
                       +91 7782010696
                     </a>
                   </div>

@@ -135,7 +135,7 @@ export default function DepartmentPageReal() {
               {/* Dept badge */}
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
                 <div className="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" />
-                <p className="text-xs font-bold tracking-[0.2em] text-brand-cyan uppercase">
+                <p className="text-xs font-bold tracking-[0.2em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase">
                   {d.name}
                 </p>
               </div>
@@ -144,7 +144,7 @@ export default function DepartmentPageReal() {
                 {d.tagline}
               </h1>
 
-              <p className="text-lg sm:text-xl font-semibold tracking-normal mb-6 text-brand-cyan/80">
+              <p className="text-lg sm:text-xl font-semibold tracking-normal mb-6 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent/80">
                 {d.description}
               </p>
 
@@ -167,7 +167,7 @@ export default function DepartmentPageReal() {
                   className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
                 >
                   Explore Our Capabilities
-                  <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 transition-transform duration-200" />
                 </Link>
               </div>
             </div>
@@ -182,7 +182,7 @@ export default function DepartmentPageReal() {
               ].map(s => (
                 <div key={s.label} className="text-center">
                   <p className="text-2xl font-black text-white drop-shadow-lg">{s.value}</p>
-                  <p className="text-[10px] text-brand-cyan/80 font-bold tracking-widest uppercase mt-1">
+                  <p className="text-[10px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent/80 font-bold tracking-widest uppercase mt-1">
                     {s.label}
                   </p>
                 </div>
@@ -201,7 +201,7 @@ export default function DepartmentPageReal() {
           }`}
         >
           <div className="mb-14">
-            <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">
               WHAT {d.shortName.toUpperCase()} DELIVERS
             </p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
@@ -251,7 +251,7 @@ export default function DepartmentPageReal() {
                   className="p-6 border border-white/[0.07] bg-[#06090f] rounded-2xl flex gap-4"
                 >
                   <div className="w-8 h-8 rounded-lg border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <ItemIcon className="w-4 h-4 text-brand-cyan" strokeWidth={1.5} />
+                    <ItemIcon className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" strokeWidth={1.5} />
                   </div>
                   <div>
                     <p className="text-[10px] font-black tracking-[0.3em] text-white/30 uppercase mb-2">{label}</p>
@@ -300,7 +300,7 @@ export default function DepartmentPageReal() {
           }`}
         >
           <div className="mb-20">
-            <p className="text-xs font-bold tracking-[0.3em] text-brand-cyan uppercase mb-5">
+            <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">
               SERVICES IN {d.shortName.toUpperCase()}
             </p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
@@ -343,8 +343,8 @@ export default function DepartmentPageReal() {
                       {svc.shortDescription}
                     </p>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-brand-cyan/80">Explore service</span>
-                      <ArrowRight className="w-3 h-3 text-brand-cyan/80 group-hover:translate-x-0.5 transition-transform duration-200" />
+                      <span className="text-xs font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent/80">Explore service</span>
+                      <ArrowRight className="w-3 h-3 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent/80 group-hover:translate-x-0.5 transition-transform duration-200" />
                     </div>
                   </div>
                 </Link>
@@ -363,7 +363,7 @@ export default function DepartmentPageReal() {
           }`}
         >
           <div className="mb-24">
-            <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">
               AFTER {d.shortName.toUpperCase()}
             </p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
@@ -384,7 +384,7 @@ export default function DepartmentPageReal() {
                   <span className="text-[9px] font-black tracking-widest text-white/20 mt-1.5 flex-shrink-0">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <p className="text-4xl md:text-5xl font-black tracking-tight leading-none text-brand-cyan">
+                  <p className="text-4xl md:text-5xl font-black tracking-tight leading-none bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
                     {o.metric}
                   </p>
                 </div>
@@ -405,7 +405,7 @@ export default function DepartmentPageReal() {
         >
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">
+              <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">
                 THE PROCESS
               </p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
@@ -425,7 +425,7 @@ export default function DepartmentPageReal() {
                 className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-brand-cyan/50 hover:bg-white/5 transition-all duration-300 group"
               >
                 <span className="text-white font-black text-sm tracking-wide">Request a Scoping Session</span>
-                <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </div>
           </div>
@@ -433,7 +433,7 @@ export default function DepartmentPageReal() {
           <div className="grid sm:grid-cols-2 gap-x-16 lg:gap-x-24">
             {deliverySteps.map((step, i) => (
               <div key={step} className="flex gap-6 py-8 border-t border-white/[0.06]">
-                <span className="text-[9px] font-black tracking-widest mt-1 flex-shrink-0 w-6 text-brand-cyan">
+                <span className="text-[9px] font-black tracking-widest mt-1 flex-shrink-0 w-6 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <p className="text-white font-black text-base leading-tight">{step.trim()}</p>
@@ -490,7 +490,7 @@ export default function DepartmentPageReal() {
                     <div className="flex items-center gap-3 mb-5">
                       {RelIcon && (
                         <div className="w-9 h-9 rounded-xl border border-white/10 flex items-center justify-center">
-                          <RelIcon className="w-4 h-4 text-brand-cyan" strokeWidth={1.5} />
+                          <RelIcon className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" strokeWidth={1.5} />
                         </div>
                       )}
                       <div className="w-2 h-2 rounded-full bg-brand-cyan/40" />
@@ -500,10 +500,10 @@ export default function DepartmentPageReal() {
                       {rel.tagline}
                     </p>
                     <div className="flex items-center gap-2 pt-4 border-t border-white/[0.06]">
-                      <span className="text-xs font-bold text-brand-cyan/80">
+                      <span className="text-xs font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent/80">
                         Explore {rel.shortName}
                       </span>
-                      <ChevronRight className="w-3.5 h-3.5 text-brand-cyan/80 group-hover:translate-x-0.5 transition-transform duration-200" />
+                      <ChevronRight className="w-3.5 h-3.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent/80 group-hover:translate-x-0.5 transition-transform duration-200" />
                     </div>
                   </Link>
                 );

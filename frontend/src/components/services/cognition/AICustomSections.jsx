@@ -447,7 +447,7 @@ export const AIMetricsSection = ({ metrics, hideHeading = false }) => {
 
               <div className="flex justify-between items-start mb-10">
                 <div className="w-14 h-14 rounded-2xl bg-white dark:bg-gray-900 dark:border-gray-800/5 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-brand-blue/20 transition-all duration-500">
-                  <kpi.icon className="w-7 h-7 text-cyan-400" />
+                  <kpi.icon className="w-7 h-7 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
                 </div>
               </div>
 
@@ -689,7 +689,7 @@ export const AIToolsSection = ({
                         <div className="overflow-hidden">
                           <Link
                             to={item.link.href}
-                            className={`inline-flex items-center gap-1.5 py-1 mb-3 min-h-[24px] text-xs font-semibold text-cyan-400/85 hover:text-cyan-300 underline underline-offset-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                            className={`inline-flex items-center gap-1.5 py-1 mb-3 min-h-[24px] text-xs font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent underline underline-offset-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
                           >
                             {item.link.label}
                             <span aria-hidden="true">&rarr;</span>

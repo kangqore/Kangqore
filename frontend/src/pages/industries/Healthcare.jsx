@@ -24,7 +24,7 @@ const Healthcare = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '100+', label: 'Healthcare Clients', color: 'text-cyan-400' },
+          { value: '100+', label: 'Healthcare Clients', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '5M+', label: 'Patients Served', color: 'text-blue-400' },
           { value: 'HIPAA', label: 'Compliant', color: 'text-emerald-400' },
           { value: '99.9%', label: 'System Uptime', color: 'text-purple-400' }

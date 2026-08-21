@@ -24,7 +24,7 @@ const Manufacturing = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '150+', label: 'Factories', color: 'text-cyan-400' },
+          { value: '150+', label: 'Factories', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '40%', label: 'Efficiency Boost', color: 'text-blue-400' },
           { value: 'IoT', label: 'Enabled', color: 'text-emerald-400' },
           { value: '24/7', label: 'Monitoring', color: 'text-purple-400' }

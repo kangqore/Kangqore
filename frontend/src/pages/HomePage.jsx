@@ -976,7 +976,7 @@ const IndustriesWeServe = () => {
               <span className="text-sm font-bold uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">
                 {t(`industries.${item.id}`)}
               </span>
-              <ArrowRight className="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-brand-cyan group-hover:translate-x-1 group-hover:rotate-[-45deg] transition-all duration-500" />
+              <ArrowRight className="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 group-hover:rotate-[-45deg] transition-all duration-500" />
             </Link>
           ))}
           
@@ -985,10 +985,10 @@ const IndustriesWeServe = () => {
             to="/industries"
             className="group flex items-center justify-between py-5 border-b border-brand-blue/20 hover:border-brand-blue/50 transition-all duration-300"
           >
-            <span className="text-sm font-extrabold uppercase tracking-widest text-brand-cyan group-hover:text-white transition-colors">
+            <span className="text-sm font-extrabold uppercase tracking-widest bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:text-white transition-colors">
               Explore the other INDUSTRIES
             </span>
-            <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 group-hover:rotate-[-45deg] transition-all duration-500" />
+            <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 group-hover:rotate-[-45deg] transition-all duration-500" />
           </Link>
         </div>
       </div>
@@ -1275,7 +1275,7 @@ const TestimonialsSection = () => {
           </div>
           <Link viewTransition 
             to="/contact" 
-            className="group flex items-center gap-3 text-[15px] font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest"
+            className="group flex items-center gap-3 text-[15px] font-bold text-white hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors uppercase tracking-widest"
           >
             {t('home.case_studies.see_all')}
             <span className="w-10 h-10 rounded-full bg-white flex items-center justify-center group-hover:bg-brand-blue transition-all duration-300 shadow-lg">
@@ -1625,7 +1625,7 @@ const HomePage = () => {
       {/* Dynamic AI Banner if website shifted */}
       {lockedIntent && (
         <div className="w-full bg-brand-blue/10 border-b border-brand-cyan/20 py-3 text-center animate-fade-in z-50 relative">
-          <span className="text-brand-cyan font-bold text-[10px] sm:text-xs tracking-[0.2em] uppercase">
+          <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-bold text-[10px] sm:text-xs tracking-[0.2em] uppercase">
             <span className="inline-block w-2 h-2 rounded-full bg-brand-cyan animate-pulse mr-2" />
             System Realigned: {lockedIntent === 'enterpriseBuyer' ? 'Enterprise Architecture Mode' : 'Developer Docs Mode'} Active
           </span>

@@ -66,9 +66,9 @@ const GenAIBusinessServices = () => {
     ],
 
     stats: [
-      { value: '50%', label: 'Faster Automation', color: 'text-cyan-400' },
+      { value: '50%', label: 'Faster Automation', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '30-60%', label: 'Cost Optimization', color: 'text-brand-blue' },
-      { value: 'Real-time', label: 'Data Access', color: 'text-cyan-400' },
+      { value: 'Real-time', label: 'Data Access', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Built-In', label: 'Governance', color: 'text-brand-blue' }
     ],
 

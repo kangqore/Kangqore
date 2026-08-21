@@ -1053,7 +1053,7 @@ const MVPAcceleration = () => {
               </div>
               <div className="absolute bottom-10 left-0 group">
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Cpu className="w-12 h-12 text-cyan-400" /></div>
+                  <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Cpu className="w-12 h-12 text-[#2564ea]" /></div>
                   <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
                 </div>
               </div>

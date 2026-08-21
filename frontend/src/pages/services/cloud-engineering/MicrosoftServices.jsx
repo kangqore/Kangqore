@@ -20,7 +20,7 @@ const MicrosoftServices = () => {
     ),
     image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80',
     stats: [
-      { value: 'Unified', label: 'Identity & Access', color: 'text-cyan-400' },
+      { value: 'Unified', label: 'Identity & Access', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Zero', label: 'Trust Gaps', color: 'text-blue-400' },
       { value: '100%', label: 'Ecosystem Synergy', color: 'text-emerald-400' },
       { value: 'Resilient', label: 'Azure Core', color: 'text-purple-400' },

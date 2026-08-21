@@ -65,9 +65,9 @@ const RoboticProcessAutomation = () => {
     capabilitiesTitle: 'Our Capabilities.',
 
     stats: [
-      { value: '40%', label: 'Cost Reduction', color: 'text-cyan-400' },
+      { value: '40%', label: 'Cost Reduction', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '99.8%', label: 'Process Accuracy', color: 'text-brand-blue' },
-      { value: '5–7 Days', label: 'POC Delivery', color: 'text-cyan-400' },
+      { value: '5–7 Days', label: 'POC Delivery', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '10x', label: 'Bot Scalability', color: 'text-brand-blue' }
     ],
 

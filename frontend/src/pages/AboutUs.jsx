@@ -195,7 +195,7 @@ export default function AboutUs() {
 
   const capabilities = [
     { title: 'Agentic AI',           sub: 'Autonomous agents that reason, plan, and execute.',       icon: Brain,      link: '/services/agentic-ai',             color: 'text-brand-blue', bgc: 'bg-brand-blue/10'  },
-    { title: 'AI & Cognitive',        sub: 'GenAI, machine learning, MLOps at scale.',                icon: Zap,        link: '/department/ai-cognitive',         color: 'text-cyan-400',   bgc: 'bg-cyan-500/10'    },
+    { title: 'AI & Cognitive',        sub: 'GenAI, machine learning, MLOps at scale.',                icon: Zap,        link: '/department/ai-cognitive',         color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent',   bgc: 'bg-cyan-500/10'    },
     { title: 'Digital Engineering',   sub: 'Modern software, product design, cloud platforms.',       icon: Code2,      link: '/department/digital-engineering',  color: 'text-violet-400', bgc: 'bg-violet-500/10'  },
     { title: 'Cloud Infrastructure',  sub: 'Cloud-native, hybrid, multi-cloud architecture.',         icon: Layers,     link: '/department/cloud-infrastructure', color: 'text-sky-400',    bgc: 'bg-sky-500/10'     },
     { title: 'Cybersecurity',         sub: 'Zero-trust, compliance, and threat response.',            icon: Shield,     link: '/department/cybersecurity',        color: 'text-emerald-400',bgc: 'bg-emerald-500/10' },
@@ -288,7 +288,7 @@ export default function AboutUs() {
               { v: '5+',  l: 'Innovation Labs'    },
             ].map((s, i) => (
               <div key={i} className="py-7 px-4 text-center group cursor-default">
-                <div className="text-2xl sm:text-[1.75rem] font-black text-white group-hover:text-cyan-400 transition-colors duration-300 font-display mb-1">
+                <div className="text-2xl sm:text-[1.75rem] font-black text-white group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors duration-300 font-display mb-1">
                   <Counter value={s.v} duration={1400 + i * 200} />
                 </div>
                 <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/20 group-hover:text-white/50 transition-colors">{s.l}</div>
@@ -327,7 +327,7 @@ export default function AboutUs() {
                     <p className="text-sm text-white/25 font-light leading-relaxed italic">Design, engineer, and scale intelligent digital systems — secure, adaptable, built for long-term excellence.</p>
                   </div>
                   <div>
-                    <p className="font-mono text-[9px] text-cyan-400 font-bold tracking-widest uppercase mb-3">Vision</p>
+                    <p className="font-mono text-[9px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-bold tracking-widest uppercase mb-3">Vision</p>
                     <p className="text-sm text-white/25 font-light leading-relaxed italic">To be the trusted technology partner for organizations navigating an AI-driven world.</p>
                   </div>
                 </div>
@@ -378,7 +378,7 @@ export default function AboutUs() {
               </p>
             </FadeIn>
             <FadeIn delay="100ms">
-              <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-cyan-400 mb-6">The Kangqore Approach</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.28em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-6">The Kangqore Approach</p>
               <p className="text-2xl sm:text-3xl text-white/55 font-light leading-snug">
                 Kangqore aligns strategy, engineering, intelligence, and operations into one delivery model — so your teams make better decisions earlier and ship with confidence.
               </p>
@@ -411,7 +411,7 @@ export default function AboutUs() {
       <section id="numbers" className="py-28 lg:py-40 bg-[#06090f] border-t border-white/[0.04] scroll-mt-12">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
           <FadeIn>
-            <Label color="text-cyan-400">By the Numbers</Label>
+            <Label color="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">By the Numbers</Label>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-20 tracking-tight font-display leading-[0.95] max-w-xl">
               Delivered results.<br />
               <span className="text-white/20 font-light italic">Measurable impact.</span>
@@ -421,7 +421,7 @@ export default function AboutUs() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 border border-white/[0.06] rounded-[2rem] overflow-hidden">
             {[
               { v: '50+', l: 'Projects Delivered', ctx: 'Across AI, cloud, data, and digital engineering.',  icon: TrendingUp, color: 'text-brand-blue' },
-              { v: '20+', l: 'Active Partners',     ctx: 'Enterprises, startups, and institutions.',          icon: Users,      color: 'text-cyan-400'   },
+              { v: '20+', l: 'Active Partners',     ctx: 'Enterprises, startups, and institutions.',          icon: Users,      color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'   },
               { v: '15+', l: 'Capability Areas',    ctx: 'Cross-disciplinary depth in a single team.',        icon: Layers,     color: 'text-violet-400' },
               { v: '5+',  l: 'Innovation Labs',     ctx: 'R&D units driving emerging technology.',            icon: Zap,        color: 'text-amber-400'  },
             ].map((m, i) => (
@@ -475,7 +475,7 @@ export default function AboutUs() {
           <div className="grid lg:grid-cols-3 gap-5">
             {[
               { num:'01', badge:'Foundation', year:'2023', title:'Born in Bengaluru',      desc:'Kangqore was founded with a clear mandate — bridge technology potential with real-world business execution. Enterprise-ready digital systems that deliver measurable outcomes.', color:'text-brand-blue', bgc:'bg-brand-blue/10'  },
-              { num:'02', badge:'Expansion',  year:'2024', title:'Building Depth',          desc:'Capabilities expanded across AI, cloud engineering, modernization, automation, and cybersecurity — evolving into a multi-disciplinary technology partner for diverse industries.',  color:'text-cyan-400',   bgc:'bg-cyan-500/10'    },
+              { num:'02', badge:'Expansion',  year:'2024', title:'Building Depth',          desc:'Capabilities expanded across AI, cloud engineering, modernization, automation, and cybersecurity — evolving into a multi-disciplinary technology partner for diverse industries.',  color:'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent',   bgc:'bg-cyan-500/10'    },
               { num:'03', badge:'Now',         year:'2025', title:'Engineering the Future', desc:'Today, Kangqore engineers intelligent products, platforms, and services — helping organizations become adaptive, resilient, and future-ready in an AI-driven world.',              color:'text-amber-400',  bgc:'bg-amber-500/10'   },
             ].map((m, i) => (
               <FadeIn key={i} delay={`${i * 100}ms`}>
@@ -500,7 +500,7 @@ export default function AboutUs() {
       <section id="leadership" className="py-28 lg:py-40 bg-[#06090f] border-t border-white/[0.04] scroll-mt-12">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
           <FadeIn>
-            <Label color="text-cyan-400">Leadership</Label>
+            <Label color="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Leadership</Label>
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight font-display leading-[0.95]">
                 The people behind Kangqore
@@ -570,7 +570,7 @@ export default function AboutUs() {
           <div className="grid gap-px bg-white/[0.035] rounded-[2.5rem] overflow-hidden lg:grid-cols-4">
             {[
               { title: 'Strategy',     id: 'KANG_STR', Icon: Target,  desc: 'Business analysis, technology roadmapping, and architecture design aligned to your goals.',  color: 'text-brand-blue', bgc: 'bg-brand-blue/10'  },
-              { title: 'Engineering',  id: 'KANG_ENG', Icon: Code2,   desc: 'High-velocity development, cloud-native systems, and modern platform delivery.',              color: 'text-cyan-400',   bgc: 'bg-cyan-500/10'    },
+              { title: 'Engineering',  id: 'KANG_ENG', Icon: Code2,   desc: 'High-velocity development, cloud-native systems, and modern platform delivery.',              color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent',   bgc: 'bg-cyan-500/10'    },
               { title: 'Intelligence', id: 'KANG_AI',  Icon: Brain,   desc: 'AI, automation, and data engineering embedded by design — not bolted on.',                    color: 'text-violet-400', bgc: 'bg-violet-500/10'  },
               { title: 'Operations',   id: 'KANG_OPS', Icon: Shield,  desc: 'Managed services, governance, security, and continuous optimization.',                        color: 'text-amber-400',  bgc: 'bg-amber-500/10'   },
             ].map((m, i) => {
@@ -631,7 +631,7 @@ export default function AboutUs() {
       <section id="capabilities" className="py-28 lg:py-40 bg-[#06090f] border-t border-white/[0.04] scroll-mt-12">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
           <FadeIn>
-            <Label color="text-cyan-400">What We Build</Label>
+            <Label color="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">What We Build</Label>
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight font-display leading-[0.95] max-w-2xl">
                 Capabilities that span<br />the full technology stack.
@@ -737,7 +737,7 @@ export default function AboutUs() {
       <section id="esg" className="py-28 lg:py-40 bg-[#06090f] border-t border-white/[0.04] scroll-mt-12">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
           <FadeIn>
-            <Label color="text-cyan-400">ESG & Responsibility</Label>
+            <Label color="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">ESG & Responsibility</Label>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-20 tracking-tight font-display leading-[0.95]">
               Responsible innovation —<br />
               <span className="text-white/18 font-light italic">for the planet and for people.</span>
@@ -818,11 +818,11 @@ export default function AboutUs() {
               </Link>
               <div className="flex items-center gap-5">
                 <Link to="/services" className="group text-[11px] font-bold uppercase tracking-[0.18em] text-white/20 hover:text-white/50 transition-colors flex items-center gap-2">
-                  Services <ArrowRight className="w-3 h-3 text-cyan-400/40 group-hover:translate-x-1 transition-transform" />
+                  Services <ArrowRight className="w-3 h-3 text-[#2564ea] group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <div className="w-px h-4 bg-white/[0.08]" />
                 <Link to="/careers" className="group text-[11px] font-bold uppercase tracking-[0.18em] text-white/20 hover:text-white/50 transition-colors flex items-center gap-2">
-                  Careers <ArrowRight className="w-3 h-3 text-cyan-400/40 group-hover:translate-x-1 transition-transform" />
+                  Careers <ArrowRight className="w-3 h-3 text-[#2564ea] group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>

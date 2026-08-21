@@ -69,7 +69,7 @@ const Blockchain = () => {
     ],
     
     stats: [
-      { value: 'Trust', label: 'Distributed, verifiable digital records', color: 'text-cyan-400' },
+      { value: 'Trust', label: 'Distributed, verifiable digital records', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Secure', label: 'Smart contracts, identities, and transactions', color: 'text-blue-400' },
       { value: 'Scale', label: 'Platform foundations built for production', color: 'text-brand-blue' },
       { value: 'Apply', label: 'Industry-led blockchain use cases', color: 'text-purple-400' },

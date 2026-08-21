@@ -19,7 +19,7 @@ const AgenticAIInfusedApplications = () => {
     primaryButton: { text: 'Deploy Agentic AI', link: '/contact' },
     secondaryButton: { text: 'View Use Cases', link: '#capabilities' },
     stats: [
-      { value: '99%', label: 'Task Autonomy', color: 'text-cyan-400' },
+      { value: '99%', label: 'Task Autonomy', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '5x', label: 'Processing Speed', color: 'text-blue-400' },
       { value: '24/7', label: 'Autonomous Operation', color: 'text-emerald-400' },
       { value: 'Zero', label: 'Prompt Latency', color: 'text-purple-400' },

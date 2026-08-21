@@ -206,7 +206,7 @@ const ContactUs = () => {
                     <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
                       Send a Message
                     </span>
-                    <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
+                    <ArrowRight className="w-4 h-4 text-[#2564ea] transform group-hover:translate-x-1 transition-transform duration-300" />
                   </button>
                 </div>
               </div>
@@ -367,9 +367,9 @@ const ContactUs = () => {
                             Would you like to create a Kangqore account to:
                           </p>
                           <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-2 text-left mb-8">
-                            <li className="flex items-start gap-2"><span className="text-brand-cyan">•</span>Track your inquiries</li>
-                            <li className="flex items-start gap-2"><span className="text-brand-cyan">•</span>Receive updates on your feedback</li>
-                            <li className="flex items-start gap-2"><span className="text-brand-cyan">•</span>Access future community and platform features</li>
+                            <li className="flex items-start gap-2"><span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">•</span>Track your inquiries</li>
+                            <li className="flex items-start gap-2"><span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">•</span>Receive updates on your feedback</li>
+                            <li className="flex items-start gap-2"><span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">•</span>Access future community and platform features</li>
                           </ul>
                           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
                             <button

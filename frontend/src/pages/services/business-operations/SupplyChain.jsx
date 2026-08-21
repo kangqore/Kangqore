@@ -27,7 +27,7 @@ const SupplyChain = () => {
     stats: [
       { value: '7', label: 'Core Supply Chain Pillars Engineered', color: 'text-brand-blue' },
       { value: 'E2E', label: 'End-to-End Network Visibility', color: 'text-blue-400' },
-      { value: '20+', label: 'Enterprise Platforms Integrated', color: 'text-cyan-400' },
+      { value: '20+', label: 'Enterprise Platforms Integrated', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'DAY 1', label: 'ESG Compliance Built In', color: 'text-brand-blue' },
     ],
 

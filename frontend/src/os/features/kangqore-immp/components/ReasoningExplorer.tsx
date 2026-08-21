@@ -45,7 +45,7 @@ export function ReasoningExplorer({ sessionId }: { sessionId: string }) {
 
   const Step = ({ icon: Icon, title, value, detail, highlight = false }: any) => (
     <div className={`relative flex items-start gap-4 p-4 rounded-2xl border transition-all duration-300 ${highlight ? 'border-cyan-500/30 bg-cyan-500/[0.04]' : 'border-[var(--os-border)] bg-white/[0.02]'}`}>
-      <div className={`p-2 rounded-2xl ${highlight ? 'bg-cyan-500/20 text-cyan-500' : 'bg-white/[0.05] text-[var(--os-text-2)]'}`}>
+      <div className={`p-2 rounded-2xl ${highlight ? 'bg-cyan-500/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' : 'bg-white/[0.05] text-[var(--os-text-2)]'}`}>
         <Icon className="w-5 h-5" />
       </div>
       <div className="flex-1">
@@ -60,7 +60,7 @@ export function ReasoningExplorer({ sessionId }: { sessionId: string }) {
     <Card className="os-card text-[var(--os-text-1)] border border-[var(--os-border)] h-full overflow-y-auto">
       <CardHeader className="border-b border-[var(--os-border)] sticky top-0 bg-[var(--os-card)] backdrop-blur z-10">
         <CardTitle className="text-lg font-bold text-[var(--os-text-1)] flex items-center gap-2">
-          <BrainCircuit className="w-5 h-5 text-cyan-500" />
+          <BrainCircuit className="w-5 h-5 text-[#2564ea]" />
           Reasoning Explorer
         </CardTitle>
       </CardHeader>

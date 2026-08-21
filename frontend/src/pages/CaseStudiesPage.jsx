@@ -72,7 +72,7 @@ const CaseStudiesPage = () => {
         primaryButton={{ text: 'View All Cases', link: '#cases' }}
         secondaryButton={{ text: 'Request Demo', link: '/contact' }}
         stats={[
-          { value: '100+', label: 'Projects Delivered', color: 'text-cyan-400' },
+          { value: '100+', label: 'Projects Delivered', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '40%', label: 'Avg Cost Reduction', color: 'text-blue-400' },
           { value: '98%', label: 'Client Satisfaction', color: 'text-emerald-400' },
           { value: '15+', label: 'Industries Served', color: 'text-purple-400' },

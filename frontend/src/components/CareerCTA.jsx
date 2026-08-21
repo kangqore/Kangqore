@@ -52,7 +52,7 @@ const CareerCTA = () => {
                   <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-brand-cyan rounded-xl flex items-center justify-center shadow-lg">
                     <Briefcase className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-cyan-400 font-semibold tracking-wider uppercase">Careers</span>
+                  <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-semibold tracking-wider uppercase">Careers</span>
                 </div>
                 
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
@@ -74,7 +74,7 @@ const CareerCTA = () => {
                     return (
                       <div key={index} className="text-center">
                         <div className="w-10 h-10 bg-white dark:bg-black/10 rounded-lg flex items-center justify-center mx-auto mb-2">
-                          <IconComponent className="w-5 h-5 text-cyan-400" />
+                          <IconComponent className="w-5 h-5 text-[#2564ea]" />
                         </div>
                         <p className="text-white font-bold text-sm">{benefit.title}</p>
                         <p className="text-white/70 text-xs">{benefit.description}</p>
@@ -100,7 +100,7 @@ const CareerCTA = () => {
                     <p className="text-white/80">Work closely with senior engineers, architects, and founders.</p>
                   </div>
                   <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <h3 className="text-5xl font-bold text-cyan-400 mb-2">Continuous Learning</h3>
+                    <h3 className="text-5xl font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-2">Continuous Learning</h3>
                     <p className="text-white/80">Hands-on exposure to real enterprise systems and AI platforms.</p>
                   </div>
                   <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">

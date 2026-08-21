@@ -50,7 +50,7 @@ const COMPONENT_COLORS: Record<string, string> = {
   'Access Sentinel':               'bg-rose-500/10 border-rose-500/20 text-rose-300',
   'Intelligence Registry':         'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
   'Intelligence Egress Control':   'bg-amber-500/10 border-amber-500/20 text-amber-300',
-  'Policy Engine':                 'bg-cyan-500/10 border-cyan-500/20 text-cyan-300',
+  'Policy Engine':                 'bg-cyan-500/10 border-cyan-500/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent',
 }
 
 function VerdictChip({ verdict }: { verdict: string }) {
@@ -281,7 +281,7 @@ export function AegisOverviewPage() {
 
           <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2 mb-1">
-              <FileText className="w-3.5 h-3.5 text-cyan-400" />
+              <FileText className="w-3.5 h-3.5 text-[#2564ea]" />
               <h3 className="text-xs font-semibold text-[var(--os-text-1)] uppercase tracking-widest">Policy Engine</h3>
             </div>
             <div className="flex items-center justify-between text-sm">

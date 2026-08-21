@@ -69,9 +69,9 @@ const agenticAI = {
 
   stats: [
     { value: 'Autonomous', label: 'Goal Execution', color: 'text-brand-blue' },
-    { value: 'Zero', label: 'Human Overhead', color: 'text-cyan-400' },
+    { value: 'Zero', label: 'Human Overhead', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '100%', label: 'Governance Audit', color: 'text-brand-blue' },
-    { value: 'Real-time', label: 'Adaptive Reasoning', color: 'text-cyan-400' },
+    { value: 'Real-time', label: 'Adaptive Reasoning', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
   ],
 
   highFidelity: {
@@ -394,9 +394,9 @@ const dataScienceAI = {
 
   stats: [
     { value: '15+', label: 'AI Deployments', color: 'text-brand-blue' },
-    { value: '97%', label: 'Model Reliability', color: 'text-cyan-400' },
+    { value: '97%', label: 'Model Reliability', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Multi-Cloud', label: 'Infrastructure', color: 'text-brand-blue' },
-    { value: 'Enterprise', label: 'Governance', color: 'text-cyan-400' },
+    { value: 'Enterprise', label: 'Governance', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
   ],
 
   highFidelity: {
@@ -583,9 +583,9 @@ const genaiBusinessServices = {
   hideGenericFaq: true,
 
   stats: [
-    { value: '50%', label: 'Faster Automation', color: 'text-cyan-400' },
+    { value: '50%', label: 'Faster Automation', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '30-60%', label: 'Cost Optimization', color: 'text-brand-blue' },
-    { value: 'Real-time', label: 'Data Access', color: 'text-cyan-400' },
+    { value: 'Real-time', label: 'Data Access', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Built-In', label: 'Governance', color: 'text-brand-blue' },
   ],
 
@@ -852,9 +852,9 @@ const mlops = {
   hideGenericFaq: true,
 
   stats: [
-    { value: '60%', label: 'Faster Deployments', color: 'text-cyan-400' },
+    { value: '60%', label: 'Faster Deployments', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '40%', label: 'Reduced Drift', color: 'text-brand-blue' },
-    { value: 'Auto', label: 'Retraining', color: 'text-cyan-400' },
+    { value: 'Auto', label: 'Retraining', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Tier 1', label: 'Governance', color: 'text-brand-blue' },
   ],
 
@@ -1017,9 +1017,9 @@ const aiGovernance = {
 
   stats: [
     { value: '100%', label: 'Governance Coverage', color: 'text-brand-blue' },
-    { value: '10+', label: 'Governed AI Models', color: 'text-cyan-400' },
+    { value: '10+', label: 'Governed AI Models', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '10+', label: 'Compliance Frameworks', color: 'text-brand-blue' },
-    { value: '24/7', label: 'Policy Enforcement', color: 'text-cyan-400' },
+    { value: '24/7', label: 'Policy Enforcement', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
   ],
 
   highFidelity: {
@@ -1183,7 +1183,7 @@ const analytics = {
       <h2 className="text-2xl font-bold text-white">Engineering Decision Systems for the Modern Enterprise</h2>
       <p>Transform raw data into actionable intelligence through modern analytics architectures, predictive modeling, and AI-powered insights — engineered for scale, governance, and business impact.</p>
       <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
-        <p className="font-bold text-cyan-300 mb-1">We don&rsquo;t just build dashboards.</p>
+        <p className="font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-1">We don&rsquo;t just build dashboards.</p>
         <p className="font-medium text-white italic">We build decision systems.</p>
       </div>
     </div>
@@ -1193,7 +1193,7 @@ const analytics = {
   secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
   stats: [
-    { value: '5X', label: 'Faster Insights', color: 'text-cyan-400' },
+    { value: '5X', label: 'Faster Insights', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '10X', label: 'Model Performance', color: 'text-blue-400' },
     { value: '30%', label: 'Cost Savings', color: 'text-emerald-400' },
     { value: 'Governed', label: 'Decision Systems', color: 'text-purple-400' },
@@ -1349,7 +1349,7 @@ const bigData = {
   secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
   stats: [
-    { value: 'PB+', label: 'Data Managed', color: 'text-cyan-400' },
+    { value: 'PB+', label: 'Data Managed', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Real-time', label: 'Processing', color: 'text-blue-400' },
     { value: 'Zero', label: 'Migration Errors', color: 'text-emerald-400' },
     { value: '99.9%', label: 'Uptime', color: 'text-purple-400' },
@@ -1534,7 +1534,7 @@ const bigData = {
                 <div className="relative">
                   <Database className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
                 </div>
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
+                <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
                   <Lock className="w-6 h-6" />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">

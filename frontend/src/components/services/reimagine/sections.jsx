@@ -74,7 +74,7 @@ const blockchain = {
   secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
   stats: [
-    { value: 'Trust', label: 'Distributed, verifiable digital records', color: 'text-cyan-400' },
+    { value: 'Trust', label: 'Distributed, verifiable digital records', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Secure', label: 'Smart contracts, identities, and transactions', color: 'text-blue-400' },
     { value: 'Scale', label: 'Platform foundations built for production', color: 'text-brand-blue' },
     { value: 'Apply', label: 'Industry-led blockchain use cases', color: 'text-purple-400' },
@@ -463,9 +463,9 @@ const technologyConsultingExecutionEcosystemSection = (
 
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-slate-900 rounded-full shadow-[0_20px_50px_rgba(37,100,234,0.3)] flex flex-col items-center justify-center relative z-20 group border-4 border-white">
               <div className="absolute inset-0 bg-brand-gradient opacity-20 rounded-full group-hover:opacity-40 transition-opacity duration-700"></div>
-              <BrainCircuit className="w-16 h-16 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)] mb-2" />
+              <BrainCircuit className="w-16 h-16 text-[#2564ea] drop-shadow-[0_0_15px_rgba(34,211,238,0.5)] mb-2" />
               <span className="font-mono text-[11px] text-white tracking-[0.2em] uppercase font-bold">ADVISORY</span>
-              <span className="font-mono text-[11px] text-cyan-400 tracking-[0.1em] mt-1">KERNEL_V2</span>
+              <span className="font-mono text-[11px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent tracking-[0.1em] mt-1">KERNEL_V2</span>
             </div>
 
             {/* Orbiting Satellite Nodes */}
@@ -1238,7 +1238,7 @@ const discoverFrameExecutionEcosystemSection = (
             <div className="absolute bottom-10 left-0 group">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300">
-                  <Cpu className="w-12 h-12 text-cyan-400" />
+                  <Cpu className="w-12 h-12 text-[#2564ea]" />
                 </div>
                 <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">Digi_Eng</span>
               </div>
@@ -1823,7 +1823,7 @@ const technologyTransformation = {
   secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
 
   stats: [
-    { value: '200%', label: 'Systemic Volatility', color: 'text-cyan-400' },
+    { value: '200%', label: 'Systemic Volatility', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '97%', label: 'Leaders on Tech', color: 'text-blue-400' },
     { value: '21%', label: 'True Integration', color: 'text-emerald-400' },
     { value: '38%', label: 'CXO Disruption Fear', color: 'text-purple-400' },

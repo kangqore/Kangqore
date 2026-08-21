@@ -216,7 +216,7 @@ export default function BIDSPage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
               <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              <p className="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
+              <p className="text-xs font-bold tracking-[0.2em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase">
                 <TypewriterText text="Every organization has visible problems and invisible constraints." start={heroVisible} />
               </p>
             </div>
@@ -249,7 +249,7 @@ export default function BIDSPage() {
                   className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
                 >
                   Explore our Diagnostic Intelligence
-                  <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 text-[#2564ea] group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
               </div>
 
@@ -300,7 +300,7 @@ export default function BIDSPage() {
         >
           {/* Top — heading + visual */}
           <div className="mb-14">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">WHAT IS KANGQORE BIDS™</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
               The complete enterprise diagnostic{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span><br />
@@ -350,7 +350,7 @@ export default function BIDSPage() {
             <span className="text-[13px] font-medium text-white/50">10 structured steps</span>
             <span className="text-white/10 text-sm">·</span>
             <span className="text-[13px] font-medium text-white/50">2–12 weeks depending on scope</span>
-            <a href="#process" className="ml-auto inline-flex items-center gap-1.5 text-[11px] font-black text-cyan-400/70 hover:text-cyan-400 tracking-widest uppercase transition-colors duration-200">
+            <a href="#process" className="ml-auto inline-flex items-center gap-1.5 text-[11px] font-black bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent tracking-widest uppercase transition-colors duration-200">
               View Full Process <ArrowRight className="w-3 h-3" />
             </a>
           </div>
@@ -428,7 +428,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 p-8 rounded-2xl border border-white/[0.07] bg-[#06090f]">
             <div>
-              <p className="text-[9px] font-black tracking-[0.4em] text-cyan-400/70 uppercase mb-3">NOT READY FOR A FULL ASSESSMENT?</p>
+              <p className="text-[9px] font-black tracking-[0.4em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-3">NOT READY FOR A FULL ASSESSMENT?</p>
               <p className="text-white font-black text-xl leading-snug mb-2">Start with a 20-minute discovery call.</p>
               <p className="text-white/35 text-sm font-medium leading-relaxed max-w-xl">
                 Walk through the Kangqore BIDS™ framework with a senior specialist. No commitment, no pitch — a clear picture of how the diagnostic works and whether it fits your current priorities.
@@ -437,7 +437,7 @@ export default function BIDSPage() {
             <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-cyan-400/30 text-cyan-400 font-black text-sm tracking-wide hover:bg-cyan-400/10 transition-colors duration-200"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-cyan-400/30 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-black text-sm tracking-wide hover:bg-cyan-400/10 transition-colors duration-200"
               >
                 Book a Discovery Call
                 <ArrowRight className="w-4 h-4" />
@@ -458,7 +458,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           {/* Header */}
           <div className="max-w-3xl mb-16">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXECUTIVE CLARITY CHECK</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">EXECUTIVE CLARITY CHECK</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
               Questions every<br />executive should<br /><span className="bg-brand-gradient bg-clip-text text-transparent">be able to answer.</span>
             </h2>
@@ -624,7 +624,7 @@ export default function BIDSPage() {
                               </div>
                               <p className="text-white/20 text-xs text-center">
                                 Or{' '}
-                                <Link to="/contact" className="text-cyan-400/70 hover:text-cyan-400 transition-colors">
+                                <Link to="/contact" className="text-[#2564ea] hover:text-[#2564ea] transition-colors">
                                   book a scoping call
                                 </Link>
                               </p>
@@ -645,7 +645,7 @@ export default function BIDSPage() {
       <section id="prescription" className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PRESCRIPTION ENGINE™</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">THE PRESCRIPTION ENGINE™</p>
             <div className="grid lg:grid-cols-2 gap-16 items-end">
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 From score to<br />
@@ -714,7 +714,7 @@ export default function BIDSPage() {
           </div>
           <p className="text-xl sm:text-2xl font-black text-white/60 max-w-3xl leading-snug">
             This is where{' '}
-            <span className="text-cyan-400">Kangqore BIDS™</span>{' '}
+            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Kangqore BIDS™</span>{' '}
             translates scored findings into a prioritized action plan, mapping each identified constraint to the capability area best positioned to address it.
           </p>
         </div>
@@ -726,7 +726,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-20 items-start">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHO THIS IS DESIGNED FOR</p>
+              <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">WHO THIS IS DESIGNED FOR</p>
               <h2 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 Built for organizations<br /><span className="bg-brand-gradient bg-clip-text text-transparent">preparing for significant change.</span>
               </h2>
@@ -783,7 +783,7 @@ export default function BIDSPage() {
         >
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
+              <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">THE PROCESS</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 The Diagnostic<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Engagement Process</span>
@@ -798,7 +798,7 @@ export default function BIDSPage() {
                 className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group"
               >
                 <span className="text-white font-black text-sm tracking-wide">Request a Scoping Session</span>
-                <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 text-[#2564ea] group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </div>
           </div>
@@ -875,7 +875,7 @@ export default function BIDSPage() {
                   {step.sla && (
                     <div className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full border border-cyan-500/20 bg-cyan-500/[0.04]">
                       <div className="w-1 h-1 rounded-full bg-cyan-400 flex-shrink-0" />
-                      <span className="text-cyan-400/80 text-xs font-bold">{step.sla}</span>
+                      <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-xs font-bold">{step.sla}</span>
                     </div>
                   )}
                 </div>
@@ -888,7 +888,7 @@ export default function BIDSPage() {
             <p className="text-white/50 text-sm font-medium leading-relaxed mb-4 max-w-2xl">
               The scoring methodology — including pillar weightings, data point inputs, and cross-engine synthesis logic — is proprietary. A methodology overview is available upon request for qualified engagements.
             </p>
-            <Link to="/contact" className="inline-flex items-center gap-2 text-cyan-400/70 hover:text-cyan-400 transition-colors duration-200 text-sm font-bold">
+            <Link to="/contact" className="inline-flex items-center gap-2 text-[#2564ea] hover:text-[#2564ea] transition-colors duration-200 text-sm font-bold">
               Request Methodology Overview <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
@@ -902,7 +902,7 @@ export default function BIDSPage() {
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${pillarsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-16">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE FRAMEWORK</p>
+            <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">THE FRAMEWORK</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               16 Diagnostic Intelligence{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Pillars</span>
@@ -933,7 +933,7 @@ export default function BIDSPage() {
                     {/* Mobile tap-to-expand detail */}
                     {expanded && (
                       <div className="lg:hidden pb-6 pl-7 pr-2">
-                        <p className="text-[9px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">PILLAR {p.n}</p>
+                        <p className="text-[9px] font-black tracking-[0.35em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-3">PILLAR {p.n}</p>
                         <p className="text-white/70 text-base font-semibold mb-2">{pillarDetails[i].tagline}</p>
                         <p className="text-white/50 text-sm leading-relaxed mb-4">{pillarDetails[i].desc}</p>
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10">
@@ -949,14 +949,14 @@ export default function BIDSPage() {
             {/* Right — floats in place within the section */}
             <div className="hidden lg:flex items-center">
               <div className="w-full">
-                <p className="text-[10px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">PILLAR {pillars[activePillar].n}</p>
+                <p className="text-[10px] font-black tracking-[0.35em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-6">PILLAR {pillars[activePillar].n}</p>
                 <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">
                   {pillars[activePillar].name}
                 </h3>
                 <p className="text-white/70 text-lg font-semibold mb-4">{pillarDetails[activePillar].tagline}</p>
                 <p className="text-white/50 text-base leading-relaxed mb-10">{pillarDetails[activePillar].desc}</p>
                 <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-white/10">
-                  {(() => { const Icon = pillars[activePillar].icon; return <Icon className="w-4 h-4 text-cyan-400" strokeWidth={1.5} />; })()}
+                  {(() => { const Icon = pillars[activePillar].icon; return <Icon className="w-4 h-4 text-[#2564ea]" strokeWidth={1.5} />; })()}
                   <span className="text-white/50 text-sm font-semibold tracking-wide">{pillars[activePillar].score}</span>
                 </div>
               </div>
@@ -972,7 +972,7 @@ export default function BIDSPage() {
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${enginesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-20">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-500 uppercase mb-5 drop-shadow-md">UNDER THE HOOD</p>
+            <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5 drop-shadow-md">UNDER THE HOOD</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 drop-shadow-2xl">
               6 Intelligence{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Engines</span>
@@ -1022,7 +1022,7 @@ export default function BIDSPage() {
 
           {/* Header */}
           <div className="mb-20 max-w-4xl">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE DIAGNOSTIC METHODOLOGY</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">THE DIAGNOSTIC METHODOLOGY</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
               How Kangqore BIDS™<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">conducts enterprise diagnosis.</span>
@@ -1224,7 +1224,7 @@ export default function BIDSPage() {
                   ].map(out => (
                     <div key={out} className="flex items-center gap-3 px-4 py-2.5 border border-cyan-500/20 bg-cyan-500/[0.04] rounded-lg">
                       <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
-                      <span className="text-cyan-100/80 text-sm font-semibold">{out}</span>
+                      <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-sm font-semibold">{out}</span>
                     </div>
                   ))}
                 </div>
@@ -1270,7 +1270,7 @@ export default function BIDSPage() {
                   <p className="text-white/60 text-sm leading-relaxed mb-4">
                     <span className="text-white font-medium">Optional read-only access</span> to platforms (SAP, Salesforce, Azure, Workday, and others) allows the diagnostic to incorporate live operational data — producing higher-precision scores.
                   </p>
-                  <p className="text-cyan-400/70 text-xs font-bold tracking-wide uppercase mt-auto pt-4 border-t border-white/5">Enhanced Mode</p>
+                  <p className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-xs font-bold tracking-wide uppercase mt-auto pt-4 border-t border-white/5">Enhanced Mode</p>
                 </div>
               </div>
             </div>
@@ -1286,7 +1286,7 @@ export default function BIDSPage() {
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${delivVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-16">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">WHAT YOU RECEIVE</p>
+            <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">WHAT YOU RECEIVE</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               Every Engagement{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Delivers</span>
@@ -1318,7 +1318,7 @@ export default function BIDSPage() {
               <div className="w-full">
                 {(() => { const Icon = deliverables[activeDeliverable].icon; return (
                   <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8">
-                    <Icon className="w-10 h-10 text-cyan-400" strokeWidth={1.5} />
+                    <Icon className="w-10 h-10 text-[#2564ea]" strokeWidth={1.5} />
                   </div>
                 ); })()}
                 <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">
@@ -1337,7 +1337,7 @@ export default function BIDSPage() {
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-24">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">AFTER KANGQORE BIDS™</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">AFTER KANGQORE BIDS™</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               Organizations gain<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">clarity, velocity,</span><br />
@@ -1368,7 +1368,7 @@ export default function BIDSPage() {
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20 max-w-4xl">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">REPRESENTATIVE DIAGNOSTIC FINDINGS</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">REPRESENTATIVE DIAGNOSTIC FINDINGS</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
               What the diagnostic<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">typically surfaces.</span>
@@ -1444,7 +1444,7 @@ export default function BIDSPage() {
           {/* Section header */}
           <div className="grid lg:grid-cols-2 gap-16 items-end mb-16">
             <div>
-              <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">REPRESENTATIVE OUTPUT</p>
+              <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">REPRESENTATIVE OUTPUT</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
                 This is what you{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">receive.</span>
@@ -1537,7 +1537,7 @@ export default function BIDSPage() {
                       p.s === 'Critical' ? 'text-red-400' :
                       p.s === 'Moderate' ? 'text-amber-400' :
                       p.s === 'Strong'   ? 'text-emerald-400' :
-                      'text-cyan-400'
+                      'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'
                     }`}>{p.s}</span>
                   </div>
                 ))}
@@ -1586,7 +1586,7 @@ export default function BIDSPage() {
                   <p className="text-white/35 text-xs font-medium leading-relaxed mb-4">{f.impact}</p>
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
-                    <p className="text-cyan-400/70 text-xs font-bold">{f.action}</p>
+                    <p className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-xs font-bold">{f.action}</p>
                   </div>
                 </div>
               ))}
@@ -1611,7 +1611,7 @@ export default function BIDSPage() {
               download="BIDS-Sample-Engagement-Scorecard.pdf"
               className="group flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/20 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300 flex-shrink-0"
             >
-              <Download className="w-4 h-4 text-cyan-400 group-hover:translate-y-0.5 transition-transform duration-300" strokeWidth={2} />
+              <Download className="w-4 h-4 text-[#2564ea] group-hover:translate-y-0.5 transition-transform duration-300" strokeWidth={2} />
               <span className="text-white font-bold text-sm tracking-wide">Download Sample Scorecard</span>
             </a>
           </div>
@@ -1626,7 +1626,7 @@ export default function BIDSPage() {
 
             {/* Left: heading */}
             <div>
-              <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">ENGAGEMENT INTEGRITY</p>
+              <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">ENGAGEMENT INTEGRITY</p>
               <h2 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-4">
                 How we access your organization.<br />
                 <span className="text-white/30">And how we don't.</span>
@@ -1658,7 +1658,7 @@ export default function BIDSPage() {
               ].map(item => (
                 <div key={item.title} className="rounded-xl border border-white/[0.07] bg-[#06090f] p-6">
                   <div className="flex items-start gap-3 mb-3">
-                    <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                    <CheckCircle className="w-4 h-4 text-[#2564ea] flex-shrink-0 mt-0.5" strokeWidth={2} />
                     <p className="text-white font-bold text-sm">{item.title}</p>
                   </div>
                   <p className="text-white/35 text-sm leading-relaxed pl-7">{item.body}</p>
@@ -1709,17 +1709,17 @@ export default function BIDSPage() {
                   <span className="text-[10px] font-black tracking-[0.28em] text-white/50 uppercase group-hover:text-white transition-colors duration-300">
                     {e}
                   </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-white/15 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 ml-2" />
+                  <ArrowRight className="w-3.5 h-3.5 text-white/15 group-hover:text-[#2564ea] group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 ml-2" />
                 </div>
               </div>
             ))}
             {/* CTA cell */}
             <div className="border-t border-white/[0.08] py-7 pr-6">
               <Link to="/contact" className="flex items-center justify-between group">
-                <span className="text-[10px] font-black tracking-[0.28em] text-cyan-400 uppercase leading-snug">
+                <span className="text-[10px] font-black tracking-[0.28em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase leading-snug">
                   EXPLORE KANGQORE BIDS™<br />EDITIONS
                 </span>
-                <ArrowRight className="w-3.5 h-3.5 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0 ml-2" />
+                <ArrowRight className="w-3.5 h-3.5 text-[#2564ea] group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0 ml-2" />
               </Link>
             </div>
           </div>
@@ -1732,7 +1732,7 @@ export default function BIDSPage() {
 
           {/* Header */}
           <div className="mb-24">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE DIFFERENCE</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">THE DIFFERENCE</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               No platform to push.<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">No outcome pre-engineered.</span>
@@ -1777,7 +1777,7 @@ export default function BIDSPage() {
 
             {/* Right — BIDS™ differentiators */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.4em] text-cyan-400 uppercase mb-10">WHY KANGQORE BIDS™ IS STRUCTURALLY DIFFERENT</p>
+              <p className="text-[10px] font-black tracking-[0.4em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-10">WHY KANGQORE BIDS™ IS STRUCTURALLY DIFFERENT</p>
               <div className="space-y-10">
                 {[
                   {
@@ -1819,7 +1819,7 @@ export default function BIDSPage() {
       <section id="engagement" className="py-32 relative overflow-hidden border-t border-white/10" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
-            <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENGAGEMENT MODELS</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">ENGAGEMENT MODELS</p>
             <div className="grid lg:grid-cols-2 gap-16 items-end">
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 Choose the right<br />
@@ -1921,7 +1921,7 @@ export default function BIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
             <div>
-              <p className="text-[10px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">DATA HANDLING & TRUST</p>
+              <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">DATA HANDLING & TRUST</p>
               <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 What data does<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Kangqore BIDS™ collect?</span>
@@ -1986,7 +1986,7 @@ export default function BIDSPage() {
             </h2>
             <Link
               to="/bids-request"
-              className="group inline-flex items-center gap-3 text-xl md:text-2xl font-bold text-white hover:text-cyan-400 transition-colors duration-300 self-start lg:self-auto pt-4 lg:pt-6"
+              className="group inline-flex items-center gap-3 text-xl md:text-2xl font-bold text-white hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors duration-300 self-start lg:self-auto pt-4 lg:pt-6"
             >
               Request a Diagnostic Assessment
               <ArrowRight className="w-6 h-6 md:w-8 md:h-8 transform transition-transform duration-300 group-hover:translate-x-2" />

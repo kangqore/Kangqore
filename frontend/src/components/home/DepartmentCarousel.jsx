@@ -123,7 +123,7 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
           <h3 className="text-2xl lg:text-3xl font-bold mb-2 transition-transform duration-300 shrink-0 text-white">
             {dept.title}
           </h3>
-          <p className="text-xs lg:text-sm font-semibold mb-6 shrink-0 text-cyan-400">
+          <p className="text-xs lg:text-sm font-semibold mb-6 shrink-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
             {dept.items.length} Key Capabilities
           </p>
           <div className="relative flex-1">
@@ -131,10 +131,10 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
               {dept.desc}
             </p>
             <ul className="svc-cap-items absolute inset-0 space-y-2.5 text-white/90">
-              <span className="block text-xs font-bold uppercase tracking-widest mb-2.5 text-cyan-400">Key Capabilities:</span>
+              <span className="block text-xs font-bold uppercase tracking-widest mb-2.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Key Capabilities:</span>
               {dept.items.slice(0, 6).map((item, j) => (
                 <li key={j} className="flex items-start text-[13px] lg:text-sm font-medium">
-                  <span className="mr-2 opacity-80 text-cyan-400">✦</span>
+                  <span className="mr-2 opacity-80 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">✦</span>
                   {item.includes(':') ? item.split(':')[0] : item}
                 </li>
               ))}
@@ -142,7 +142,7 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
           </div>
         </div>
         <div className="flex items-center justify-between mt-4">
-          <Link to={dept.link} viewTransition className="inline-flex items-center font-bold w-fit shrink-0 transition-all duration-300 text-sm lg:text-base text-white hover:text-cyan-400">
+          <Link to={dept.link} viewTransition className="inline-flex items-center font-bold w-fit shrink-0 transition-all duration-300 text-sm lg:text-base text-white hover:text-[#2564ea]">
             Explore Capability
             <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
@@ -167,7 +167,7 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
             <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono text-slate-300 bg-white/5 border-white/10">
               {dept.serviceCount} Total Services
             </span>
-            <span className="text-[10px] font-black tracking-[0.3em] uppercase font-mono text-cyan-400">{dept.n}</span>
+            <span className="text-[10px] font-black tracking-[0.3em] uppercase font-mono bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">{dept.n}</span>
           </div>
           <h4 className="text-xl sm:text-2xl font-bold mb-2 tracking-tight text-white">
             {dept.title}
@@ -178,14 +178,14 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
           <ul className="space-y-3">
             {dept.items.map((item, j) => (
               <li key={j} className="flex items-start gap-2 text-sm leading-snug text-slate-300">
-                <span className="font-bold shrink-0 mt-0.5 text-cyan-400">✦</span>
+                <span className="font-bold shrink-0 mt-0.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">✦</span>
                 <span dangerouslySetInnerHTML={{ __html: item }} />
               </li>
             ))}
           </ul>
         </div>
         <div className="mt-8 flex items-center justify-between pt-6 border-t border-white/10">
-          <Link to={dept.link} viewTransition className="inline-flex items-center font-bold text-sm text-cyan-400 hover:text-cyan-300 transition-colors pointer-events-auto">
+          <Link to={dept.link} viewTransition className="inline-flex items-center font-bold text-sm text-[#2564ea] hover:text-[#2564ea] transition-colors pointer-events-auto">
             View All Services <ArrowRight className="ml-1.5 w-4 h-4" />
           </Link>
           <button 

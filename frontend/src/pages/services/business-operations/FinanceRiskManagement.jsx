@@ -84,7 +84,7 @@ const FinanceRiskManagement = () => {
     ],
 
     stats: [
-      { value: '75%', label: 'Faster Report Delivery', color: 'text-cyan-400' },
+      { value: '75%', label: 'Faster Report Delivery', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '57%', label: 'Less Time Gathering Data', color: 'text-blue-400' },
       { value: '42%', label: 'Finance Automation Potential', color: 'text-emerald-400' },
       { value: '25%+', label: 'Forecast Accuracy Improvement', color: 'text-purple-400' },

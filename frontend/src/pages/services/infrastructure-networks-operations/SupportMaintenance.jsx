@@ -611,7 +611,7 @@ const SupportMaintenance = () => {
             </div>
             <div className="absolute bottom-16 right-8 flex flex-col items-center gap-2">
               <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl shadow-lg flex items-center justify-center relative">
-                <Activity className="w-10 h-10 text-cyan-400" />
+                <Activity className="w-10 h-10 text-[#2564ea]" />
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></div>
               </div>
               <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">Monitoring</span>

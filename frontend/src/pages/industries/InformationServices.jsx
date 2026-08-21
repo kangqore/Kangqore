@@ -24,7 +24,7 @@ const InformationServices = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '100+', label: 'Enterprise Clients', color: 'text-cyan-400' },
+          { value: '100+', label: 'Enterprise Clients', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '1PB+', label: 'Data Processed', color: 'text-blue-400' },
           { value: '99.9%', label: 'Uptime', color: 'text-emerald-400' },
           { value: 'Real-time', label: 'Analytics', color: 'text-purple-400' }

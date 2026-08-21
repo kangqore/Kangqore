@@ -19,7 +19,7 @@ const ModernEngineeringEffectiveness = () => {
     primaryButton: { text: 'Audit Your Engineering', link: '/contact' },
     secondaryButton: { text: 'View Methodology', link: '#capabilities' },
     stats: [
-      { value: '40%', label: 'Velocity Gains', color: 'text-cyan-400' },
+      { value: '40%', label: 'Velocity Gains', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Elite', label: 'DORA Rating', color: 'text-blue-400' },
       { value: '2x', label: 'Deployment Frequency', color: 'text-emerald-400' },
       { value: 'Happy', label: 'Developer Culture', color: 'text-purple-400' },

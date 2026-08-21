@@ -42,7 +42,7 @@ const Location = () => {
         primaryButton={{ text: 'Contact Us', link: '/contact' }}
         secondaryButton={{ text: 'Explore Our Services', link: '/services' }}
         stats={[
-          { value: 'Global', label: 'Clients Served', sublabel: 'Across Americas, Europe, Middle East & APAC', color: 'text-cyan-400' },
+          { value: 'Global', label: 'Clients Served', sublabel: 'Across Americas, Europe, Middle East & APAC', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '2', label: 'India-Based Delivery Centers', sublabel: 'Bengaluru & Jamshedpur', color: 'text-blue-400' },
           { value: 'Timezone', label: 'Aligned Execution', sublabel: 'Follow-the-sun delivery model', color: 'text-emerald-400' },
           { value: '24/7', label: 'Remote Support', sublabel: 'Always-on engineering & operations', color: 'text-purple-400' },
@@ -147,7 +147,7 @@ const Location = () => {
 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Globe className="w-5 h-5 text-cyan-600" />
+                    <Globe className="w-5 h-5 text-[#2564ea]" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Cost-Efficient Global Delivery</h4>

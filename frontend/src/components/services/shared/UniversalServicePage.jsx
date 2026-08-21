@@ -216,7 +216,7 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
           <h3 id={`svc-cap-${i}-title`} className={`text-2xl lg:text-3xl font-bold mb-2 transition-transform duration-300 shrink-0 ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
             {cap.title}
           </h3>
-          <p className={`text-xs lg:text-sm font-semibold mb-6 shrink-0 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>
+          <p className={`text-xs lg:text-sm font-semibold mb-6 shrink-0 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>
             {cap.items.length} Key Capabilities
           </p>
           <div className="relative flex-1">
@@ -224,10 +224,10 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
               {cap.desc}
             </p>
             <ul className={`svc-cap-items absolute inset-0 space-y-2.5 ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
-              <span className={`block text-xs font-bold uppercase tracking-widest mb-2.5 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>Key Capabilities:</span>
+              <span className={`block text-xs font-bold uppercase tracking-widest mb-2.5 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>Key Capabilities:</span>
               {cap.items.slice(0, 6).map((item, j) => (
                 <li key={j} className="flex items-start text-[14px] lg:text-sm font-medium">
-                  <span className={`mr-2 opacity-80 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>✦</span>
+                  <span className={`mr-2 opacity-80 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>✦</span>
                   {item.includes(':') ? item.split(':')[0] : item}
                 </li>
               ))}
@@ -260,7 +260,7 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
           <ul className="space-y-3">
             {cap.items.map((item, j) => (
               <li key={j} className={`flex items-start gap-2 text-sm leading-snug ${isVibrant ? 'text-gray-800' : 'text-slate-300'}`}>
-                <span className={`font-bold shrink-0 mt-0.5 ${isVibrant ? 'text-blue-600' : 'text-cyan-400'}`}>✦</span>
+                <span className={`font-bold shrink-0 mt-0.5 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>✦</span>
                 {item}
               </li>
             ))}
@@ -269,7 +269,7 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
         <div className={`pt-4 border-t mt-6 flex justify-between items-center pr-14 ${isVibrant ? 'border-gray-200' : 'border-white/5'}`}>
           {/* py-1 + min-h take the hit box from 16px to 24px — WCAG 2.2 AA
               target size (2.5.8). The text metrics are unchanged. */}
-          <a href="/contact" className={`inline-flex items-center gap-2 py-1 min-h-[24px] text-xs sm:text-sm font-bold transition-colors group/link ${isVibrant ? 'text-gray-900 hover:text-blue-600' : 'text-white hover:text-cyan-400'}`}>
+          <a href="/contact" className={`inline-flex items-center gap-2 py-1 min-h-[24px] text-xs sm:text-sm font-bold transition-colors group/link ${isVibrant ? 'text-gray-900 hover:text-blue-600' : 'text-white hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>
             Discuss This Capability
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
           </a>
@@ -939,7 +939,7 @@ const InlineCta = ({ text, cta = 'Talk through your workflow' }) => (
       <p className="text-white/70 text-lg font-medium leading-snug max-w-2xl">{text}</p>
       <Link
         to="/contact"
-        className="flex-shrink-0 inline-flex items-center gap-2 py-2 min-h-[24px] text-sm font-black tracking-wide text-cyan-400 hover:text-cyan-300 transition-colors"
+        className="flex-shrink-0 inline-flex items-center gap-2 py-2 min-h-[24px] text-sm font-black tracking-wide bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors"
       >
         {cta}
         <ArrowRight className="w-4 h-4" />
@@ -2277,7 +2277,7 @@ const featureMicros   = service.featureMicros
                     <g transform="translate(390, 50)">
                       <circle cx="25" cy="25" r="20" fill="#0f172a" stroke="#22d3ee" strokeWidth="1.5" strokeDasharray="2 4" />
                       <foreignObject x="13" y="13" width="24" height="24">
-                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full text-cyan-400">
+                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
                           <TrendingUp size={24} />
                         </div>
                       </foreignObject>
@@ -2307,7 +2307,7 @@ const featureMicros   = service.featureMicros
                       {/* Center Node Icon */}
                       <circle cx="75" cy="75" r="28" fill="#1e293b" stroke="#00f0ff" strokeWidth="1.5"/>
                       <foreignObject x="55" y="55" width="40" height="40">
-                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full flex items-center justify-center text-cyan-400">
+                        <div xmlns="http://www.w3.org/1999/xhtml" className="w-full h-full flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
                           <Cpu size={24} />
                         </div>
                       </foreignObject>
@@ -2504,7 +2504,7 @@ const featureMicros   = service.featureMicros
             {service.businessMetrics ? service.businessMetrics.map((m, i) => (
               <div key={i}>
                 <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
-                  {m.value}<span className="text-cyan-400">{m.suffix}</span>
+                  {m.value}<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">{m.suffix}</span>
                 </p>
                 <p className="text-white font-bold text-xs uppercase tracking-widest mb-2">{m.metricLabel}</p>
                 <p className="text-white/50 text-sm leading-snug">{m.desc}</p>
@@ -2738,7 +2738,7 @@ const featureMicros   = service.featureMicros
                       </div>
                       {active && (
                         <div className="lg:hidden pb-6 pl-7 pr-2">
-                          <p className="text-[11px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">CAPABILITY {c.n}</p>
+                          <p className="text-[11px] font-black tracking-[0.35em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-3">CAPABILITY {c.n}</p>
                           <p className="text-white/70 text-sm leading-relaxed mb-4">{c.desc}</p>
                           <ul className="space-y-1.5">
                             {c.items.map(item => (
@@ -2758,7 +2758,7 @@ const featureMicros   = service.featureMicros
               {/* Desktop detail panel */}
               <div className="hidden lg:flex items-start pt-5">
                 <div className="w-full sticky top-8">
-                  <p className="text-[11px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">CAPABILITY {capabilities[safeCapIdx].n}</p>
+                  <p className="text-[11px] font-black tracking-[0.35em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-6">CAPABILITY {capabilities[safeCapIdx].n}</p>
                   <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">{capabilities[safeCapIdx].title}</h3>
                   <p className="text-white/60 text-base leading-relaxed mb-8 max-w-lg">{capabilities[safeCapIdx].desc}</p>
                   <ul className="space-y-3">
@@ -2925,8 +2925,8 @@ const featureMicros   = service.featureMicros
               {service.industryUseCases.map((item, idx) => (
                 <div key={idx} className="group bg-[#000000] p-8 flex flex-col transition-all duration-500 hover:bg-[#060a10] cursor-pointer">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:text-cyan-400 transition-colors duration-300">{item.industry}</span>
-                    <span className="text-white/50 group-hover:text-cyan-400 text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none sm:inline hidden">+</span>
+                    <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors duration-300">{item.industry}</span>
+                    <span className="text-white/50 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none sm:inline hidden">+</span>
                   </div>
 
                   {/* Expanded by default below `sm`. The collapse is driven purely
@@ -2955,7 +2955,7 @@ const featureMicros   = service.featureMicros
                       {industrySlug(item.industry) && (
                         <Link
                           to={`/industries/${industrySlug(item.industry)}`}
-                          className="mt-2 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold text-cyan-400/80 hover:text-cyan-300 transition-colors"
+                          className="mt-2 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors"
                         >
                           {service.name} for {item.industry}
                           <ArrowRight className="w-3 h-3" />
@@ -3045,7 +3045,7 @@ const featureMicros   = service.featureMicros
                           href={service.methodologyBrief}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.15em] uppercase text-white/60 hover:text-cyan-400/70 transition-colors duration-200"
+                          className="group inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.15em] uppercase text-white/60 hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors duration-200"
                         >
                           Download Methodology
                           <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" />
@@ -3222,7 +3222,7 @@ const featureMicros   = service.featureMicros
                       <ul className="space-y-1.5">
                         {pkg.deliverables.map((d, di) => (
                           <li key={di} className="flex items-start gap-2 text-[12px] leading-snug text-white/60">
-                            <span className="text-cyan-400/70 shrink-0 mt-px">✦</span>
+                            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0 mt-px">✦</span>
                             {d}
                           </li>
                         ))}
@@ -3338,7 +3338,7 @@ const featureMicros   = service.featureMicros
 
                       {/* Arrow ring */}
                       <div className="relative z-10 flex-shrink-0 w-8 h-8 rounded-full border border-white/[0.08] group-hover:border-cyan-400/40 group-hover:bg-cyan-400/[0.08] flex items-center justify-center transition-all duration-500">
-                        <ArrowRight className="w-3.5 h-3.5 text-white/15 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all duration-300" />
+                        <ArrowRight className="w-3.5 h-3.5 text-white/15 group-hover:text-[#2564ea] group-hover:translate-x-0.5 transition-all duration-300" />
                       </div>
                     </div>
                   </div>
@@ -3508,7 +3508,7 @@ const featureMicros   = service.featureMicros
                       aria-controls={`faq-answer-${i}`}
                     >
                       <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white'}`}>{faq.q}</span>
-                      <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#2564ea]' : ''}`} />
                     </button>
                   </h3>
                   {/* Every answer stays in the DOM and collapses via grid-template-rows
@@ -3543,7 +3543,7 @@ const featureMicros   = service.featureMicros
                                     href={src.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 py-1 min-h-[24px] text-sm font-semibold text-cyan-400/85 hover:text-cyan-300 underline underline-offset-4 transition-colors"
+                                    className="inline-flex items-center gap-1.5 py-1 min-h-[24px] text-sm font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent underline underline-offset-4 transition-colors"
                                   >
                                     {src.label}
                                     <ArrowRight className="w-3 h-3 shrink-0" />

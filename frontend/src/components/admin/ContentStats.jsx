@@ -111,7 +111,7 @@ const ContentStats = ({ onCreateNew }) => {
       purple: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-200' },
       amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-200' },
       pink: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'border-pink-200' },
-      cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'border-cyan-200' }
+      cyan: { bg: 'bg-cyan-50', text: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent', border: 'border-cyan-200' }
     };
     return colors[color] || colors.blue;
   };

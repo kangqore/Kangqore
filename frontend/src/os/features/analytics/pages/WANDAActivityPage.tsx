@@ -210,7 +210,7 @@ export function WANDAActivityPage() {
               {liveFeed.map(entry => (
                 <div key={entry.id} className="flex items-start gap-2 text-xs font-mono">
                   <span className="text-[var(--os-text-3)] shrink-0">{entry.ts}</span>
-                  <span className={`${entry.text.startsWith('!!') ? 'text-red-400' : entry.text.startsWith('>>') ? 'text-cyan-400' : 'text-[var(--os-text-2)]'}`}>
+                  <span className={`${entry.text.startsWith('!!') ? 'text-red-400' : entry.text.startsWith('>>') ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' : 'text-[var(--os-text-2)]'}`}>
                     {entry.text}
                   </span>
                 </div>
