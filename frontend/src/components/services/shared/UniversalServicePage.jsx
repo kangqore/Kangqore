@@ -2623,8 +2623,12 @@ const featureMicros   = service.featureMicros
                     : <>Our{' '}<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Capabilities.</span></>
                   }
                 </h2>
+                {/* Opt-in. The default is a count and a stock phrase; a service
+                    that has something to say about how its capabilities fit
+                    together should be able to say it here. */}
                 <p className="text-lg text-white/50 leading-relaxed max-w-md lg:text-right">
-                  {capabilities.length} Capability Area{capabilities.length !== 1 ? 's' : ''}. Engineered for enterprise.
+                  {service.capabilitiesLede
+                    || `${capabilities.length} Capability Area${capabilities.length !== 1 ? 's' : ''}. Engineered for enterprise.`}
                 </p>
               </div>
             </div>

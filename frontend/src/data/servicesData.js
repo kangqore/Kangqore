@@ -3573,11 +3573,143 @@ export const servicesData = {
       { illustrative: true, title: 'Bot Uptime SLA',      desc: 'Sustained automation workflow uptime across deployed intelligent automation programs under managed model.',            value: '99.5',suffix: '%',    metricLabel: 'Bot Uptime',           icon: 'Shield'   },
       { illustrative: true, title: 'Decision Velocity',   desc: 'Faster decision cycles enabled by AI-augmented automation removing manual bottlenecks from approval chains.',         value: '3',   suffix: 'x',    metricLabel: 'Faster Decisions',     icon: 'Target'   },
     ],
+    // ── Capability areas ────────────────────────────────────────────────────
+    // This service previously had none, so the whole section came from the
+    // Cognition parity default -- which is the AI Governance taxonomy. The page
+    // was headed "Establishing Ethical Governance & Control" and "Compliance &
+    // Risk Management" on a page about automating processes, and named no
+    // automation platform anywhere.
+    //
+    // Taxonomy supplied by the business. Sub-capability names are kept verbatim:
+    // they are the searchable register and they feed the OfferCatalog JSON-LD.
+    capabilitiesLabel: 'INTELLIGENT AUTOMATION SERVICES',
+    capabilitiesSectionTitle: 'Our',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Process intelligence, orchestration, digital workers, AI, document processing and automation operations — moving you from fragmented manual work to connected, continuously optimized execution.',
+    capabilityAreas: [
+      {
+        title: 'Automation Strategy & Advisory',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Define the automation agenda. Where automation creates the most value, and a path from opportunity discovery to enterprise-scale execution aligned to operating model, workforce, risk and measurable outcomes.',
+        items: [
+          'Enterprise automation strategy',
+          'Automation maturity assessment',
+          'Automation opportunity discovery',
+          'Opportunity prioritization',
+          'Business case and ROI modeling',
+          'Automation roadmap development',
+          'Operating model design',
+          'Governance and adoption strategy',
+          'Change management and workforce enablement',
+        ],
+      },
+      {
+        title: 'Process Intelligence & Optimization',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Discover what should be automated. Process mining, task mining and workflow analytics identify the bottlenecks and dependencies worth automating — so processes get redesigned before they get automated.',
+        items: [
+          'Process discovery and mapping',
+          'Process and task mining',
+          'Workflow analysis',
+          'Bottleneck identification',
+          'Root-cause analysis',
+          'Process redesign and optimization',
+          'Process performance analytics',
+          'Automation opportunity identification',
+          'Continuous process improvement',
+        ],
+      },
+      {
+        title: 'Intelligent Process Orchestration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Connect and coordinate execution. BPM, API-led integration, event-driven architecture and decision engines bring applications, data, people and digital workers into one end-to-end flow.',
+        items: [
+          'Business process orchestration',
+          'Workflow automation',
+          'API-led integration',
+          'Event-driven workflows',
+          'System-to-system integration',
+          'Rules and decision engines',
+          'Dynamic routing',
+          'Exception handling',
+          'Human-in-the-loop workflows',
+          'Legacy system integration',
+        ],
+      },
+      {
+        title: 'RPA & Digital Workforce',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Deploy digital workers at scale. Beyond individual bots: attended and unattended automation, orchestration, exception handling, lifecycle management and performance monitoring as one workforce.',
+        items: [
+          'Attended automation',
+          'Unattended automation',
+          'RPA bot development',
+          'Cross-application automation',
+          'Desktop automation',
+          'Digital worker orchestration',
+          'Exception handling',
+          'Bot lifecycle management',
+          'Bot performance monitoring',
+          'Enterprise-scale RPA governance',
+        ],
+      },
+      {
+        title: 'Intelligent Document & Content Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Turn unstructured information into action. Documents, emails, forms, contracts, invoices and claims classified, extracted, validated and routed straight into the workflow that needs them.',
+        items: [
+          'Intelligent Document Processing (IDP)',
+          'Document classification',
+          'Data extraction and validation',
+          'Invoice automation',
+          'Contract processing',
+          'KYC and onboarding automation',
+          'Claims and case-document processing',
+          'Email and correspondence automation',
+          'Document understanding',
+          'Human-in-the-loop validation',
+        ],
+      },
+      {
+        title: 'AI-Powered & Cognitive Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Embed intelligence into workflows. Rules-based automation follows a script; this reads context, interprets information and adapts. The path runs RPA to intelligent automation to AI-powered automation to autonomous execution.',
+        items: [
+          'Generative AI automation',
+          'AI copilots',
+          'NLP and conversational intelligence',
+          'Computer vision',
+          'Predictive intelligence',
+          'Decision intelligence',
+          'Recommendation engines',
+          'Anomaly detection',
+          'LLM integration',
+          'AI-assisted workflow execution',
+          'Autonomous task execution',
+        ],
+      },
+      {
+        title: 'Automation Operations, CoE & Managed Services',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Operate, govern and keep improving it. Scaling automation needs an operating model, monitoring and security, not more bots — the difference between a pilot that worked and a capability that lasts.',
+        items: [
+          'Automation Center of Excellence (CoE)',
+          'Robotic Operations Center (ROC)',
+          'Automation-as-a-Service (IAaaS)',
+          'Managed automation operations',
+          'Bot and workflow monitoring',
+          'Automation observability',
+          'Performance management',
+          'Governance and access controls',
+          'Security and compliance',
+          'Automation portfolio management',
+          'Citizen developer enablement',
+          'Continuous optimization',
+          'SLA-based managed services',
+        ],
+      },
+    ],
   },
-
-  // ═════════════════════════════════════════════════════════════════════════════
-  // KANGQORE FOUNDRY — 17 services
-  // ═════════════════════════════════════════════════════════════════════════════
 
   'managed-cloud-services': {
     slug: 'managed-cloud-services',
