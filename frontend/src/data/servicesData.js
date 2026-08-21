@@ -3635,6 +3635,16 @@ export const servicesData = {
       { illustrative: true, title: 'Bot Uptime SLA',      desc: 'Sustained automation workflow uptime across deployed intelligent automation programs under managed model.',            value: '99.5',suffix: '%',    metricLabel: 'Bot Uptime',           icon: 'Shield'   },
       { illustrative: true, title: 'Decision Velocity',   desc: 'Faster decision cycles enabled by AI-augmented automation removing manual bottlenecks from approval chains.',         value: '3',   suffix: 'x',    metricLabel: 'Faster Decisions',     icon: 'Target'   },
     ],
+    // ── What this actually is ───────────────────────────────────────────────
+    // The page carried a single hero paragraph. These three carry the delivery
+    // argument the architecture section no longer holds: the stack there is
+    // governance, so how the work is actually done has to live here.
+    whatIsPara2: 'The delivery path runs discover, design, automate, orchestrate, add intelligence, operate, optimize. Most programs stall between the third step and the fourth — bots get built, nothing coordinates them, and the automation estate becomes a set of scripts nobody owns.',
+
+    whatIsPara3: 'So the objective is not automating more tasks. It is an operation that can sense how work is actually performed, decide what should happen next, execute across systems that were never designed to talk, bring a person in when judgment is genuinely required, and keep improving after go-live.',
+
+    whatIsPara4: 'That means strategy, process intelligence, orchestration, digital workers, AI and managed operations are one capability rather than six purchases. Bought separately they produce a pilot that worked. Bought together they produce something the business can run on.',
+
     // ── Architecture ────────────────────────────────────────────────────────
     // The parity default rendered four vague governance labels -- "Policy &
     // Ethics Layer", "Control & Orchestration Engine" -- with no decomposition
@@ -3646,6 +3656,67 @@ export const servicesData = {
     architectureTitleHighlight: 'And who remains accountable.',
     architectureLede: 'Policy to ethics to governance to human accountability. Four layers deciding what an automated system may do, what it should not do even when permitted, how that is verified, and who answers when it goes wrong.',
     architectureNodes: POLICY_ETHICS_STACK,
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // Reframed from generic entry points into the delivery pipeline, because
+    // the architecture section now answers governance rather than execution.
+    // Five paths, ordered by how far along the enterprise already is.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways to start.',
+    engagementHeadingHighlight: 'One partner throughout.',
+    engagementLede: 'Defining a strategy, modernizing one critical process, deploying intelligent workflows, or scaling across the enterprise — the entry point changes, the partner does not. Assess, strategize, prove, build, deploy, scale, operate, optimize. You do not need to know where to begin; start with the business problem.',
+    servicePackages: [
+      {
+        name: 'Advisory & Strategy',
+        description: 'Define the opportunity. A focused assessment of your processes, automation maturity, technology landscape and business priorities — where automation creates the most value, and a roadmap that survives contact with your estate. Best for enterprises working out where and how to begin.',
+        deliverables: [
+          'Process and automation maturity assessment',
+          'Opportunity discovery and prioritization',
+          'Technology landscape review',
+          'Execution roadmap and operating model',
+        ],
+      },
+      {
+        name: 'Proof of Value',
+        description: 'Prove the impact. One high-value opportunity taken far enough to establish technical feasibility, business impact and expected return before anything wider is committed. Best for organizations that want evidence before a transformation budget.',
+        deliverables: [
+          'One process automated end to end',
+          'Technical feasibility findings',
+          'Measured impact against a baseline',
+          'Go or no-go, with the reasoning',
+        ],
+      },
+      {
+        name: 'Solution Implementation',
+        description: 'Build and deploy. Process redesign, system integration, RPA, AI, orchestration and intelligent document processing taken to production rather than to a demo. Best for enterprises ready to move from strategy into execution.',
+        deliverables: [
+          'Process redesign and system integration',
+          'RPA, orchestration and AI build',
+          'Intelligent document processing',
+          'Production deployment and handover',
+        ],
+      },
+      {
+        name: 'Automation CoE & Managed Operations',
+        description: 'Scale with control. An Automation Center of Excellence, Robotic Operations Center, governance framework, operating model and monitoring — the machinery that turns projects into a program. Best for organizations past their first few automations.',
+        deliverables: [
+          'Automation Center of Excellence',
+          'Robotic Operations Center and monitoring',
+          'Governance framework and operating model',
+          'Portfolio and bot lifecycle management',
+        ],
+      },
+      {
+        name: 'Automation-as-a-Service',
+        description: 'Consume automation as a capability. A managed, consumption-based model where Kangqore runs the technology, operations, monitoring and continuous optimization instead of you building all of it internally. Best for enterprises wanting a lower-risk path to scale.',
+        deliverables: [
+          'Managed automation operations',
+          'Platform and licensing managed for you',
+          'Monitoring against agreed service levels',
+          'Continuous optimization',
+        ],
+      },
+    ],
 
     // ── Capability areas ────────────────────────────────────────────────────
     // This service previously had none, so the whole section came from the
