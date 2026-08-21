@@ -14,6 +14,68 @@
 // content regression during migration.
 // ────────────────────────────────────────────────────────────────────────────────
 
+// ─── Policy & Ethics Layer — the 4-layer stack ───────────────────────────────
+// Exported rather than inlined because this is a platform pattern, not a
+// property of one service: Intelligent Automation, Agentic AI, AI Governance,
+// Decision Intelligence and Kangqore View all answer the same four questions.
+// Defining it once means the answer cannot drift between pages.
+//
+//   Policy -> Ethics -> Governance -> Human Accountability
+//   what must be followed -> what should be considered right ->
+//   what must be controlled -> who remains accountable
+//
+// Set `architectureNodes: POLICY_ETHICS_STACK` on any service that needs it.
+export const POLICY_ETHICS_STACK = [
+  {
+    title: 'Policy & Regulatory Controls',
+    icon: 'ShieldCheck',
+    description: 'The policies, regulations, standards and internal rules an automated system has to comply with before it is allowed to act at all.',
+    features: [
+      'Regulatory compliance mapping',
+      'Data and retention policies',
+      'Security policies',
+      'Industry-specific controls',
+      'Operating policies and standards',
+    ],
+  },
+  {
+    title: 'Responsible AI & Ethics',
+    icon: 'Eye',
+    description: 'What the system should not do even where policy permits it. Keeps automated decisions fair, explainable and answerable to the values you actually hold.',
+    features: [
+      'Bias measurement and management',
+      'Explainability of decisions',
+      'Ethical use boundaries',
+      'Responsible AI principles',
+      'Transparency to the affected party',
+    ],
+  },
+  {
+    title: 'Risk, Governance & Assurance',
+    icon: 'Radar',
+    description: 'Continuous evaluation rather than a launch checklist. Tests whether the controls above are present, working, and still working six months later.',
+    features: [
+      'Risk assessment and tiering',
+      'Model and workflow governance',
+      'Auditability and control testing',
+      'Approval and exception management',
+      'Assurance and evidence trails',
+    ],
+  },
+  {
+    title: 'Human Oversight & Accountability',
+    icon: 'Target',
+    description: 'Where human judgment is required, and who answers for the outcome. The layer most programs leave implicit until somebody asks who approved a decision.',
+    features: [
+      'Human-in-the-loop checkpoints',
+      'Approval and escalation workflows',
+      'Intervention and override rights',
+      'Named accountability per decision',
+      'Decision traceability',
+    ],
+  },
+];
+
 export const servicesData = {
 
   // ═════════════════════════════════════════════════════════════════════════════
@@ -3442,21 +3504,499 @@ export const servicesData = {
     name: 'Analytics',
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
-    shortDescription: 'Comprehensive analytics solutions for business intelligence',
-    fullDescription: 'Implement end-to-end analytics solutions including dashboards, reports, and advanced analytics capabilities.',
+    shortDescription: 'Kangqore builds the analytics ladder on one agreed set of definitions, so the number survives being questioned and the decision it supports actually changes.',
+    fullDescription: 'Kangqore transforms fragmented enterprise data into trusted intelligence, predictive foresight, and actionable decisions that drive measurable business outcomes.',
     keyFeatures: ['Business intelligence', 'Dashboard development', 'KPI tracking', 'Self-service analytics', 'Data storytelling'],
     relatedServiceSlugs: ['big-data', 'data-science-ai'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-    whatIsTitle: 'Analytics That Drives',
-    whatIsTitleLine2: 'Decisions, Not Just',
-    whatIsHighlight: 'Dashboards.',
+    // "Drives decisions" is what every analytics vendor says. "Measured in"
+    // states what success is and is falsifiable, which is the argument the
+    // comparison section and the closing CTA both make. Seven words to six.
+    whatIsTitle: 'Analytics that turns your',
+    whatIsTitleLine2: 'data into decisions',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'you can defend.',
     whatIsPara2: 'Kangqore builds analytics ecosystems where every stakeholder has the right data at the right time — from executive KPI dashboards to operational reports and governed self-service insight layers across the enterprise.',
     businessMetrics: [
       { illustrative: true, title: 'Reporting Speed',  desc: 'Reduction in reporting cycle time after self-service BI and automated dashboard deployment.',                        value: '75',  suffix: '%', metricLabel: 'Faster Reporting',        icon: 'Zap'       },
       { illustrative: true, title: 'User Empowerment', desc: 'Business users independently exploring data without engineering support after self-service analytics rollout.',    value: '5',   suffix: 'x', metricLabel: 'More Self-Service Users', icon: 'TrendingUp'},
       { illustrative: true, title: 'KPI Visibility',   desc: 'Real-time KPI dashboards deployed across business units with a governed, single source of truth data layer.',     value: '100', suffix: '%', metricLabel: 'KPI Coverage',            icon: 'Target'    },
       { illustrative: true, title: 'Decision Quality', desc: 'Improvement in decision quality scores after analytics platform deployment, measured via decision audit outcomes.', value: '41',  suffix: '%', metricLabel: 'Better Decisions',        icon: 'BarChart3' },
+    ],
+    hidePartnershipModel: true,
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Ten questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the questions analytics buyers open with, including the
+    // ones that suggest the answer is not more analytics.
+    customFAQs: [
+      {
+        q: 'Why do our four teams have four different revenue numbers?',
+        a: 'Because the definition lives in four places. Finance excludes intercompany, sales counts bookings, the product team counts recognized revenue and the board pack uses whichever was available on the Friday. Every one of them is internally correct, which is why the meeting never resolves it.\n\nThis is not a data quality problem and no amount of dashboard work fixes it. The fix is a semantic layer: one definition, expressed once in code, that every report and every tool reads from. Your argument moves from the meeting to a pull request, where it belongs.\n\nThe hard part is not technical. It is getting your four function heads to agree which definition is the company definition, and that is a conversation we can facilitate but cannot have on your behalf.',
+        sources: [],
+      },
+      {
+        q: 'Do we actually need a semantic layer, or is that just tooling fashion?',
+        a: 'You need one the moment more than one of your tools reads the same metric. Below that it is overhead. Above it, the absence is what produces the four-numbers problem, and the cost of retrofitting rises with every report already built on the old logic.\n\nWhat it is, concretely: metric definitions in version control, tested, with lineage, so a change is reviewed rather than discovered. dbt is the common implementation; LookML and Cube solve the same problem differently.\n\nWhere it is genuinely premature: a single team, one BI tool, under about twenty metrics. There the definition fits in somebody\'s head and formalizing it early costs more than it returns.',
+        sources: [],
+      },
+      {
+        q: 'How much of this needs to be real-time?',
+        a: 'Far less than most roadmaps assume. The test is whether one of your decisions changes if the number arrives an hour later. For fraud, network operations, inventory during a promotion and live pricing, it does. For almost all management reporting, it does not.\n\nStreaming carries a real cost: more infrastructure, harder correctness, and a class of failure that batch does not have. Buying it for reporting your team reads at nine the next morning is the most common overspend in this category.\n\nWe usually recommend batch for the estate and streaming for the specific two or three decisions where latency has a measurable cost.',
+        sources: [],
+      },
+      {
+        q: 'Our BI tool is fine. Is the tool the problem?',
+        a: 'Usually not. Power BI, Tableau and Looker are all capable of a good analytics estate, and swapping between them rarely changes the outcome. Tool migrations are popular because they are visible and fundable, and they leave your actual problem untouched.\n\nThe things that decide whether analytics works sit underneath: whether metric definitions are shared, whether the data arrives on a schedule people trust, whether anyone can trace a number back to source, and whether a decision changes at the end.\n\nIf you are mid-migration and it is already committed, we will work in whichever tool you land on. We would rather spend the budget on the semantic layer.',
+        sources: [],
+      },
+      {
+        q: 'What is the difference between this and your Big Data service?',
+        a: 'Analytics is the insight ladder: understand, anticipate, decide, respond. Big Data is the platform underneath it — ingestion, storage, distributed processing, the engineering that makes large or fast data tractable in the first place.\n\nYou almost certainly need less of the second than you think. A large share of estates running a lakehouse would be faster and cheaper on a well-indexed warehouse, and the platform work gets bought because it is concrete while the definitional work is not.\n\nThe honest sequence is usually analytics first. Building a platform before knowing which decisions matter produces an expensive foundation under an empty building.',
+        sources: [
+          { label: 'Kangqore Big Data', url: '/services/big-data' },
+        ],
+      },
+      {
+        q: 'How do you stop us building another dashboard nobody opens?',
+        a: 'By starting from the decision rather than the data. The first question is which of your recurring decisions would change if a number existed, who makes it, and on what cadence. If nobody can name the decision, the dashboard has no owner and will not be opened twice.\n\nEvery surface we build gets a named owner and a stated decision it supports. Anything that fails that test does not get built, which is a shorter backlog and an unpopular conversation early rather than a wasted quarter later.\n\nWe also recommend retiring surfaces on a schedule. Your estate accumulates dashboards the way a codebase accumulates dead code, and nobody is ever incentivized to delete one.',
+        sources: [],
+      },
+      {
+        q: 'Can business users self-serve without it turning into chaos?',
+        a: 'Yes, but only on top of governed definitions. Self-service over raw tables is how the four-numbers problem is manufactured at scale — everybody can now build a report, and every report is subtly different.\n\nThe workable model is a curated layer: certified metrics and datasets that anyone can slice freely, with the definitions locked. Your users get genuine freedom over dimensions and filters, and none to redefine revenue.\n\nThe governance that makes this safe is unglamorous — certification, ownership, deprecation — and it is the part that gets cut when timelines tighten. It is also the part that decides whether self-service helps.',
+        sources: [],
+      },
+      {
+        q: 'How long before we see anything useful?',
+        a: 'Weeks before one of your decisions changes, not quarters. The advisory pass is two weeks and identifies which decisions are worth instrumenting; a first governed metric with a working surface behind it is typically four to six.\n\nWhat takes longer is the semantic layer across a real estate, because it is as much organizational agreement as engineering. Expect that to run in parallel over months rather than blocking the first delivery.\n\nIf a proposal promises a full enterprise analytics platform in a quarter, the platform is being confused with the agreement, and the agreement is the slow part.',
+        sources: [],
+      },
+      {
+        q: 'Who owns a metric definition after you leave?',
+        a: 'You do, and it should be a named person per metric rather than a team. Definitions your whole team owns will drift, because nobody has standing to refuse a change.\n\nEverything ships in your repository: the transformation code, the tests, the lineage and the documentation of what each metric deliberately excludes. That exclusion list is the part your team will skip and the part that matters when somebody asks why two of your numbers differ.\n\nWhere we stay involved it is because you asked us to run the pipeline, not because the definitions are ours.',
+        sources: [],
+      },
+      {
+        q: 'What happens when somebody disputes a number?',
+        a: 'You trace it rather than defend it. Lineage from the surface back to source means the question is answerable in minutes: this figure came from these rows, transformed by this logic, which excludes these cases by design.\n\nWithout lineage the dispute becomes a reconciliation exercise that costs more than the original analysis and usually ends with the more senior person\'s number winning. That outcome is how analytics loses credibility inside your organization.\n\nSo lineage is not a governance nicety. It is what makes an analytical output survive contact with a disagreement.',
+        sources: [],
+      },
+    ],
+
+
+
+    heroTitle: 'Enterprise Analytics\nServices for Better Decisions',
+    fullDescriptionMaxWidth: 'max-w-[700px] xl:max-w-[780px]',
+    heroBadge: 'Understand. Anticipate. Decide.',
+    heroStripItems: [
+      'KPI & Performance Analytics', 'Forecasting', 'Decision Intelligence', 'Streaming Analytics',
+      'Semantic Modeling', 'Self-Service BI', 'Data Lineage', 'Embedded Analytics',
+    ],
+
+    // ── What this actually is ───────────────────────────────────────────────
+    whatIsPara2: 'The ladder is well understood: descriptive tells you what happened, diagnostic why, predictive what is likely, prescriptive what to do about it. What separates programs is not which rung you reach but whether anything downstream of the number actually changes.',
+
+    whatIsPara3: 'Most analytics estates fail in the same place, and yours will tell you which one within a week. The modeling is fine and the dashboards are competent, but four teams hold four definitions of revenue, the alert arrives after the shift it was about, and a new question takes two weeks and a ticket. None of that is an analytics problem in the technical sense, which is exactly why more dashboards never fix it.',
+
+    whatIsPara4: 'So the work runs in both directions. Upward through the ladder toward prediction and decision support, and downward into the semantic layer, the lineage and the governance that make an answer defensible when somebody disputes it. Analytics that cannot be checked gets overruled by whoever is most senior in the room.',
+
+    // ── Comparison ──────────────────────────────────────────────────────────
+    // The parity default compares TRADITIONAL AI with AGENTIC AI, which is an
+    // argument for a different service entirely.
+    comparisonTable: {
+      eyebrow: 'WHERE ANALYTICS PROGRAMS STALL',
+      heading: 'Enterprise Reference Architecture\nmodels for Analytics',
+      lede: 'Both columns describe competent analytical work. They differ in whether a decision changes at the end of it.',
+      beforeLabel: 'REPORTING',
+      afterLabel: 'DECISION INTELLIGENCE',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'REPORTING',
+      afterShort: 'DECISIONS',
+      rows: [
+        {
+          dimension: 'What gets delivered',
+          before: 'A dashboard, and a training session nobody attends twice.',
+          after: 'A decision that changes, with the metric definition agreed and somebody owning it.',
+        },
+        {
+          dimension: 'Where the number comes from',
+          before: 'Four teams hold four definitions of revenue, reconciled live in the meeting.',
+          after: 'One semantic layer. The definition lives in code and every surface reads the same one.',
+        },
+        {
+          dimension: 'When it arrives',
+          before: 'Overnight batch, so the alert lands after the shift it was about.',
+          after: 'Matched to the decision cycle — streaming where that matters, batch where it does not.',
+        },
+        {
+          dimension: 'Who can answer a new question',
+          before: 'The analytics team, in two weeks, through a ticket queue.',
+          after: 'The person who has the question, in the tool they already have open.',
+        },
+        {
+          dimension: 'When somebody disputes the number',
+          before: 'A reconciliation exercise that takes longer than the original analysis.',
+          after: 'Lineage back to source, so the answer is checkable rather than defended.',
+          link: { label: 'Big Data', to: '/services/big-data' },
+        },
+      ],
+    },
+
+    // ── Architecture: the enterprise analytics lifecycle ────────────────────
+    // The parity default rendered "Policy & Ethics Layer" and "Control &
+    // Orchestration Engine" -- the governance stack, on an analytics page.
+    // These five stages are the lifecycle: the seven capability areas above
+    // describe what we do, these describe the order it happens in.
+    architectureEyebrow: 'THE ENTERPRISE ANALYTICS LIFECYCLE',
+    architectureTitle: 'Data becomes a decision',
+    architectureTitleHighlight: 'in five stages, not one.',
+    architectureLede: 'Insight, prediction, decision, action, outcome — then the outcome feeds back and the model learns. The loop is the point; a dashboard is one frame of it.',
+    architectureNodes: [
+      {
+        title: 'Understand',
+        icon: 'Search',
+        description: 'Descriptive and diagnostic. What happened, and the drivers behind it — the stage most estates never get past.',
+        features: [
+          'KPI and metric frameworks agreed across functions',
+          'Trend, variance and exception analysis',
+          'Root-cause and driver analysis',
+          'One definition per metric, not one per team',
+        ],
+      },
+      {
+        title: 'Anticipate',
+        icon: 'TrendingUp',
+        description: 'Predictive and forecasting. What is likely to happen, delivered early enough that somebody can still act on it.',
+        features: [
+          'Time-series and demand forecasting',
+          'Churn, risk and propensity models',
+          'Scenario and what-if analysis',
+          'Early-warning thresholds owned by a named team',
+        ],
+      },
+      {
+        title: 'Decide',
+        icon: 'Target',
+        description: 'Prescriptive and decision intelligence. Which action, given the budget, capacity and regulation you actually have.',
+        features: [
+          'Optimization against real constraints',
+          'Scenario simulation before committing',
+          'Recommendations with the reason attached',
+          'Decisions wired into the operating workflow',
+        ],
+      },
+      {
+        title: 'Respond',
+        icon: 'Zap',
+        description: 'Real-time and cognitive. Events read as they arrive, including the unstructured material a batch report never touches.',
+        features: [
+          'Event-stream processing and live monitoring',
+          'Anomaly detection with a workable alert rate',
+          'Text, speech, image and graph analytics',
+          'Triggers that reach the system that can act',
+        ],
+      },
+      {
+        title: 'Govern & scale',
+        icon: 'ShieldCheck',
+        description: 'The foundation underneath all four. Lineage, quality and controls, without which every number above is arguable.',
+        features: [
+          'Semantic modeling and analytics data products',
+          'Lineage from surface back to source',
+          'Data quality and observability',
+          'Access, privacy and audit controls',
+        ],
+      },
+    ],
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    industryHeading: 'Analytics built for',
+    industryHeadingHighlight: 'the decisions your sector makes.',
+    industryLede: 'The ladder is the same everywhere. What differs is which decision is worth instrumenting first, and how fast the answer has to arrive to still be useful.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Numbers that an auditor, a regulator and a trading desk all have to accept as the same number.',
+        items: ['Risk and exposure reporting', 'Customer profitability analysis', 'Regulatory and management reporting'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Loss ratios, reserving and pricing where the analysis has to be explainable to an actuary.',
+        items: ['Loss ratio and combined ratio analytics', 'Claims cost driver analysis', 'Pricing and portfolio steering'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Operational visibility across sites where the data was collected for care, not for analysis.',
+        items: ['Capacity and flow analytics', 'Clinical outcome and quality reporting', 'Cost-per-case analysis'],
+      },
+      {
+        industry: 'Manufacturing & Supply Chain',
+        headline: 'Demand, yield and inventory decisions taken weekly against data that moves hourly.',
+        items: ['Demand forecasting by SKU and site', 'OEE and yield analytics', 'Inventory and service-level optimization'],
+      },
+      {
+        industry: 'Retail & E-Commerce',
+        headline: 'Margin rather than traffic — the metric most retail dashboards are furthest from.',
+        items: ['Category and margin analytics', 'Price elasticity and promotion effect', 'Customer lifetime value'],
+      },
+      {
+        industry: 'Media & Telecommunications',
+        headline: 'Churn and network economics where the useful answer is per-cohort, not per-quarter.',
+        items: ['Churn and retention analytics', 'Network and capacity analytics', 'Subscriber cohort performance'],
+      },
+    ],
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // The parity default described a stack "powering cognitive computing,
+    // machine learning, and AI governance" and listed PyTorch, TensorFlow and
+    // Hugging Face -- an ML research stack on a business intelligence page,
+    // naming not one BI or semantic-layer tool.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'What we build on,',
+      titleHighlight: 'and when we would not.',
+      subtitle: 'Most of this is decided by the warehouse you already run and how many people need to self-serve. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Eye',
+          title: 'BI and visualization',
+          managed: 'Power BI, Tableau, Looker',
+          selfHosted: 'Metabase, Superset',
+          desc: 'Power BI where the estate is Microsoft and the licensing is already paid. Looker where the semantic layer matters more than the chart library.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Semantic and transformation layer',
+          managed: 'dbt, LookML, Cube',
+          selfHosted: 'The single highest-value component',
+          desc: 'Where one definition of revenue actually lives. Skip it and you get four dashboards disagreeing, which is the problem people mistake for a tooling problem.',
+        },
+        {
+          icon: 'Database',
+          title: 'Warehouse and lakehouse',
+          managed: 'Snowflake, BigQuery, Databricks',
+          selfHosted: 'Postgres where the volume is honest',
+          desc: 'Sized to the query pattern rather than the pitch deck. A large share of estates running a lakehouse would be faster and cheaper on a well-indexed database.',
+          link: { label: 'Big Data', to: '/services/big-data' },
+        },
+        {
+          icon: 'Zap',
+          title: 'Streaming and events',
+          managed: 'Kafka, Flink, Materialize',
+          selfHosted: 'Only where the decision cannot wait',
+          desc: 'Real-time is expensive and most reporting does not need it. Reached for when the alert is worthless an hour later, not because the roadmap says real-time.',
+        },
+        {
+          icon: 'Network',
+          title: 'Orchestration',
+          managed: 'Airflow, Dagster, Prefect',
+          selfHosted: 'Once pipelines have dependencies',
+          desc: 'The point at which "a scheduled job" becomes a dependency graph somebody has to reason about. Before that it is infrastructure for two cron entries.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Quality and observability',
+          managed: 'Great Expectations, Monte Carlo, Soda',
+          selfHosted: 'Tests on the data, not just the code',
+          desc: 'Catches the silent upstream schema change, which is the most common cause of a number being wrong and the slowest to notice without it.',
+        },
+      ],
+    },
+
+    // ── CTAs ────────────────────────────────────────────────────────────────
+    midCta: 'You have more dashboards than decisions.',
+    midCtaLabel: 'Show us your reporting stack',
+
+    closingCta: {
+      title: 'One metric.',
+      highlight: 'One decision that changes because of it.',
+      body: 'Bring the number your leadership argues about, or the report that gets built every month and read by nobody. In 30 minutes we will tell you whether the problem is the data, the definition, or the decision nobody owns.',
+      primaryLabel: 'Bring us a metric',
+      secondaryLabel: 'See the five stages',
+      proofLabel: 'From first call to one number everybody agrees on',
+    },
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // This service had no capabilityAreas, so the whole section rendered the
+    // Cognition parity default -- the AI Governance taxonomy. The page was
+    // headed "Establishing Ethical Governance & Control" and "Compliance & Risk
+    // Management", and its toolchain named PyTorch and TensorFlow on a business
+    // intelligence page.
+    //
+    // Replaced with the analytics maturity ladder supplied by the business.
+    // It does two jobs: it is the taxonomy every analytics buyer recognizes,
+    // and it draws the line against /services/big-data -- analytics owns the
+    // insight ladder, big data owns the platform underneath it. Those two pages
+    // measured 81.6 per cent identical before this.
+    //
+    // Sub-capability names are verbatim: they are the searchable register and
+    // they feed the OfferCatalog JSON-LD.
+    capabilitiesLabel: 'ANALYTICS SERVICES',
+    capabilitiesSectionTitle: 'Our',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'The ladder runs understand, anticipate, decide, respond — with the engineering and governance foundation that makes any of it repeatable underneath.',
+    capabilityAreas: [
+      {
+        title: 'Descriptive & Diagnostic Analytics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What happened, and why it happened. Historical and operational data turned into trusted views of performance, then the drivers, deviations and root causes behind them.',
+        items: [
+          'KPI and performance analytics',
+          'Exploratory data analysis',
+          'Historical and trend analysis',
+          'Event and activity analysis',
+          'Data mining',
+          'Multidimensional analysis',
+          'Operational reporting',
+          'Executive reporting',
+          'Business performance monitoring',
+          'Root-cause analysis',
+          'Variance analysis',
+          'Correlation analysis',
+          'Cluster analysis',
+          'Customer and operational segmentation',
+          'Driver analysis',
+          'Anomaly investigation',
+          'Performance attribution',
+          'Exception analysis',
+        ],
+      },
+      {
+        title: 'Predictive Analytics & Forecasting',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What is likely to happen, early enough to do something about it. Statistical modeling and machine learning that quantify risk and opportunity, and refine as conditions move.',
+        items: [
+          'Predictive modeling',
+          'Time-series forecasting',
+          'Demand forecasting',
+          'Revenue forecasting',
+          'Customer churn prediction',
+          'Risk prediction',
+          'Fraud prediction',
+          'Predictive maintenance',
+          'Propensity modeling',
+          'Probability and scoring models',
+          'Scenario forecasting',
+          'What-if analysis',
+          'Early-warning systems',
+        ],
+      },
+      {
+        title: 'Prescriptive Analytics & Decision Intelligence',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What action to take, given the constraints you actually have. Optimization and simulation wired into the workflow where the decision gets made, rather than left as a read-only layer.',
+        items: [
+          'Decision optimization',
+          'Scenario simulation',
+          'What-if modeling',
+          'Recommendation engines',
+          'Optimization models',
+          'Resource allocation',
+          'Pricing optimization',
+          'Supply-chain optimization',
+          'Workforce optimization',
+          'Complex event processing',
+          'Constraint-based decisioning',
+          'Decision rules and policies',
+          'Decision strategy modeling',
+        ],
+      },
+      {
+        title: 'Cognitive & AI-Augmented Analytics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Context, meaning and relationships conventional analytics cannot reach. AI, semantics and graph applied to unstructured material as readily as to tables.',
+        items: [
+          'Machine learning analytics',
+          'Natural language processing',
+          'Text analytics',
+          'Document analytics',
+          'Speech analytics',
+          'Image analytics',
+          'Video analytics',
+          'Graph analytics',
+          'Knowledge graph analytics',
+          'Semantic analytics',
+          'Ontology-driven analytics',
+          'Pattern recognition',
+          'Sentiment analysis',
+          'Entity and relationship analysis',
+          'AI-generated insights',
+          'Natural-language analytics',
+        ],
+      },
+      {
+        title: 'Real-Time & Streaming Analytics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Intelligence while the event is still unfolding. For the decisions that cannot wait for an overnight batch, and the alerts that are worthless an hour late.',
+        items: [
+          'Real-time data analytics',
+          'Event-stream processing',
+          'Streaming analytics',
+          'Real-time KPI monitoring',
+          'Real-time anomaly detection',
+          'Event correlation',
+          'Operational alerts',
+          'Threshold monitoring',
+          'Live dashboards',
+          'Real-time risk intelligence',
+          'Real-time decision triggers',
+          'IoT and sensor analytics',
+          'Edge analytics',
+        ],
+      },
+      {
+        title: 'Business Intelligence & Enterprise Performance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'One consistent view of performance, from the board pack down to the operational dashboard. A common intelligence layer rather than four teams arriving with four numbers.',
+        items: [
+          'Executive dashboards',
+          'KPI command centers',
+          'Operational dashboards',
+          'Financial analytics',
+          'Sales analytics',
+          'Marketing analytics',
+          'Customer analytics',
+          'Workforce analytics',
+          'Supply-chain analytics',
+          'Self-service analytics',
+          'Interactive visualization',
+          'Embedded analytics',
+          'Drill-down intelligence',
+          'Performance scorecards',
+          'Management reporting',
+        ],
+      },
+      {
+        title: 'Analytics Engineering, Governance & Intelligence Platforms',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The foundation that makes everything above repeatable. Pipelines, semantic models and lineage, plus the controls that keep an analytical output defensible when somebody disputes it.',
+        items: [
+          'Data ingestion',
+          'ETL and ELT',
+          'Data transformation and integration',
+          'Data lakehouse architectures',
+          'Semantic modeling',
+          'Analytics data products',
+          'Analytical data pipelines',
+          'Metadata management',
+          'Data quality engineering',
+          'Data lineage',
+          'Analytics platform engineering',
+          'Cloud analytics architectures',
+          'Data observability',
+          'Access and privacy controls',
+          'Auditability',
+          'Model governance',
+          'Policy enforcement',
+          'Analytical lifecycle management',
+        ],
+      },
     ],
   },
 
@@ -3573,11 +4113,466 @@ export const servicesData = {
       { illustrative: true, title: 'Bot Uptime SLA',      desc: 'Sustained automation workflow uptime across deployed intelligent automation programs under managed model.',            value: '99.5',suffix: '%',    metricLabel: 'Bot Uptime',           icon: 'Shield'   },
       { illustrative: true, title: 'Decision Velocity',   desc: 'Faster decision cycles enabled by AI-augmented automation removing manual bottlenecks from approval chains.',         value: '3',   suffix: 'x',    metricLabel: 'Faster Decisions',     icon: 'Target'   },
     ],
-  },
+    // The Cognition defaults put "Reasoning. Learning. Autonomous." under the h1
+    // and "Autonomous Agents" in the hero strip -- the last agentic strings
+    // above the fold on a page about automating processes.
+    heroBadge: 'Discovered. Orchestrated. Operated.',
+    heroStripItems: [
+      'Process Mining', 'Workflow Orchestration', 'RPA & Digital Workers', 'Document Processing',
+      'Exception Handling', 'Straight-Through Processing', 'Automation CoE', 'Managed Operations',
+    ],
+    hidePartnershipModel: true,
 
-  // ═════════════════════════════════════════════════════════════════════════════
-  // KANGQORE FOUNDRY — 17 services
-  // ═════════════════════════════════════════════════════════════════════════════
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Ten questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the questions automation buyers actually open with, and
+    // several of them are ones a vendor would rather not answer.
+    customFAQs: [
+      {
+        q: 'How do we know which processes are actually worth automating?',
+        a: 'Volume, exception rate and the cost of handling a case wrong. A process run ten thousand times a month with a low exception rate is the obvious candidate; one run twice a week with constant judgment calls almost never is, however painful it feels to the team doing it.\n\nThe number that decides it is not headcount saved, it is straight-through rate — the share of cases that complete without a person touching them. A process that automates to sixty per cent straight-through and dumps the rest into a queue has moved the work rather than removed it.\n\nProcess mining answers this properly because it shows how the process actually runs rather than how the process document says it runs. That gap is where most failed automations live, and two weeks of mining is a cheaper way to find it than six months of building.',
+        sources: [
+          { label: 'Kangqore Business Process Management', url: '/services/business-process-management' },
+        ],
+      },
+      {
+        q: 'Our last RPA program stalled. Why would this one be different?',
+        a: 'Most stall in the same place: bots got built, nothing coordinated them, and within a year the estate was a set of scripts with no owner. The build was never the hard part. What was missing was the orchestration layer and somebody accountable for the process rather than the robot.\n\nThe second common cause is starting with the tool. A platform gets bought, a Center of Excellence gets stood up around it, and the CoE becomes a request queue instead of a capability. The fifth automation then costs the same as the first, which is the clearest sign that nothing is being reused.\n\nWe would want to see what you already have before promising anything. Often the answer is that the existing estate is salvageable and needs orchestration and ownership rather than replacement.',
+        sources: [],
+      },
+      {
+        q: 'What happens when the underlying application changes?',
+        a: 'Something breaks — that is the honest answer, and any vendor who says otherwise is selling. What differs is whether you find out from monitoring or from a customer complaint three weeks later.\n\nWe reduce the surface where possible: an API is used in preference to screen automation every time the target system allows it, because an API contract changes on a release note and a user interface changes whenever somebody moves a button. Where screen automation is unavoidable, selectors are built to be as resilient as the platform allows and the failure path is monitored explicitly.\n\nThen it is an ownership question. Every automation has a named owner and a runbook, so when a change lands there is a person whose job it is to fix it rather than a ticket nobody recognizes.',
+        sources: [],
+      },
+      {
+        q: 'Do you build on our platform licenses, or bring your own?',
+        a: 'Yours, wherever you already have them. If you own UiPath or Automation Anywhere seats, or Power Automate is included in your Microsoft agreement, that usually decides the platform regardless of what we might otherwise prefer.\n\nWhere there is no incumbent, the choice is driven by your estate rather than by benchmarks. Microsoft-heavy organizations get a different recommendation from ones running mainframe green screens, and the presence of unstructured documents pulls the decision toward whichever intelligent document processing engine handles your formats best.\n\nUnder Automation-as-a-Service we hold the licensing and you consume the capability, which is the one case where the platform is genuinely ours rather than yours.',
+        sources: [],
+      },
+      {
+        q: 'How many processes do we need before this pays for itself?',
+        a: 'Fewer than most business cases assume, but the first one rarely does it alone. The economics turn on reuse: the first automation carries the cost of standing up the pipeline, the standards and the monitoring, and everything after it should be materially cheaper.\n\nIf your fifth automation costs what your first one did, the program is not compounding and something is wrong with how components are being built rather than with the business case.\n\nThis is why the proof-of-value engagement is scoped as one process taken far enough to measure. It gives you a real number from your own estate rather than an industry average that was never about your processes.',
+        sources: [],
+      },
+      {
+        q: 'Who runs the bots after go-live?',
+        a: 'Whoever you decide, and it should be decided before the build rather than after. The three workable models are your team with our support, a joint operation during a handover period, or fully managed by us under an agreed service level.\n\nWhat does not work is leaving it implicit. Automations that go live without a named operational owner are the ones that fail quietly, because nobody is watching the dashboard and nobody has been told they should be.\n\nIf you take it in-house we hand over the repository, the runbooks, the monitoring configuration and the documented failure modes. Nothing needs us present to keep running.',
+        sources: [],
+      },
+      {
+        q: 'How is this different from your BPM and RPA services?',
+        a: 'RPA is the digital worker doing the clicking. BPM is the process design and the workflow layer. Intelligent Automation is the combination, with AI added where the work needs judgment or reads unstructured content.\n\nIn practice the boundary matters less than the sequence. Almost nobody should buy RPA first: without process work you automate a bad process faster, and without orchestration you get bots that cannot be sequenced.\n\nIf you are certain the requirement is narrow — one rule-based process, well documented, no unstructured input — the RPA service is a cheaper entry point and we will say so.',
+        sources: [
+          { label: 'Robotic Process Automation', url: '/services/robotic-process-automation' },
+          { label: 'Business Process Management', url: '/services/business-process-management' },
+        ],
+      },
+      {
+        q: 'Can you automate processes that need human judgment?',
+        a: 'Partly, and the useful framing is which part rather than whether. Most judgment-heavy processes are eighty per cent mechanical work wrapped around a decision that genuinely needs a person. Automating the mechanical part and routing the decision is usually worth more than attempting the whole thing.\n\nWhere a model supports the decision, a confidence threshold decides what it handles and what escalates. Set deliberately, that threshold is the control that keeps automation safe; left at a vendor default, it is the reason a system quietly makes decisions nobody sanctioned.\n\nFor decisions affecting individuals — credit, claims, eligibility — the oversight requirement is not optional. Under the EU AI Act several of these are classified high-risk, which brings documentation and human oversight duties that are cheaper to design in than to retrofit.',
+        sources: [
+          { label: 'EU AI Act', url: 'https://artificialintelligenceact.eu/the-act/' },
+          { label: 'Kangqore AI Governance', url: '/services/ai-governance' },
+        ],
+      },
+      {
+        q: 'How do you handle documents that are not standard forms?',
+        a: 'Intelligent document processing handles far more variation than templated extraction did, but it is not magic and the honest ceiling depends on your documents rather than on the engine.\n\nClean, structured documents are close to a solved problem and should be bought rather than built. Handwritten annotations, poor scans, documents where the meaning depends on a clause elsewhere, and formats that vary by supplier are where accuracy falls and where a validation step earns its place.\n\nWe would want to run a sample of your worst documents rather than your best ones before quoting anything. The best ones tell you nothing you did not already assume.',
+        sources: [
+          { label: 'Kangqore AI & Cognitive Computing', url: '/services/ai-cognitive-computing' },
+        ],
+      },
+      {
+        q: 'What happens to the people whose work gets automated?',
+        a: 'That is your decision rather than ours, but it determines whether the program succeeds, so it is worth settling early. Automation programs that are positioned as headcount reduction meet exactly the resistance you would expect from the people whose process knowledge the build depends on.\n\nThe programs that land well move people onto the exception work and the judgment calls, which is the part of the job that was always the skilled part and was being crowded out by volume.\n\nPractically, the people who run a process today are the best source of truth about how it actually works, including the workarounds that never made it into the documentation. Involving them early is both the decent thing and the thing that makes the automation correct.',
+        sources: [],
+      },
+    ],
+
+
+
+    // ── Comparison ──────────────────────────────────────────────────────────
+    // The parity default compared RULES-BASED AUTOMATION with AGENTIC AI and
+    // explained that "an agentic system evaluates the current state against a
+    // goal" — an argument for a different service. The real automation argument
+    // is not rules versus agents; it is a pilot that worked versus an estate
+    // that holds.
+    comparisonTable: {
+      eyebrow: 'WHERE AUTOMATION PROGRAMS STALL',
+      heading: 'The pilot always works. The estate is the hard part.',
+      lede: 'Both columns describe automation that was built competently. They differ in what happens in month seven.',
+      beforeLabel: 'AUTOMATION AS PROJECTS',
+      afterLabel: 'AUTOMATION AS A CAPABILITY',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'PROJECTS',
+      afterShort: 'CAPABILITY',
+      rows: [
+        {
+          dimension: 'When the screen changes',
+          before: 'The bot fails quietly, and somebody notices later because the numbers look wrong.',
+          after: 'Resilient selectors where possible, monitoring where not, and a failure alerts the team that owns it the same day.',
+        },
+        {
+          dimension: 'When the person who built it leaves',
+          before: 'Nobody owns it. It runs until it does not, and then it gets rebuilt from scratch.',
+          after: 'A registry entry with a named owner, version history and a runbook somebody else can follow.',
+        },
+        {
+          dimension: 'What happens to exceptions',
+          before: 'They queue until a person clears them by hand — which is the work you set out to automate.',
+          after: 'Routed by type, with a human step only where judgment is genuinely needed, and the straight-through rate measured.',
+          link: { label: 'AI Governance', to: '/services/ai-governance' },
+        },
+        {
+          dimension: 'What the CoE actually does',
+          before: 'Owns the licenses and approves requests, which makes it a queue rather than a capability.',
+          after: 'Owns the pipeline, the standards and the reuse, so the fifth automation costs less than the first.',
+        },
+        {
+          dimension: 'How success is measured',
+          before: 'Bots deployed. A number that rises whether or not anything got better.',
+          after: 'Straight-through-processing rate, exception volume and cycle time on the process itself.',
+          link: { label: 'Process Mining', to: '/services/business-process-management' },
+        },
+      ],
+    },
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    // The parity default described six sectors through "Risk Auditor Agent" and
+    // "HIPAA Privacy Shield Agent" — governance agents, on an automation page.
+    // `items` is the neutral key; `agents` was the agentic one.
+    industryHeading: 'Automation built for',
+    industryHeadingHighlight: 'the processes your sector runs.',
+    industryLede: 'The platform travels between industries. What does not travel is which process is worth automating first, and that is decided by volume, exception rate and what it costs when a case is handled wrong.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'High-volume, evidence-heavy processes where an auditor will ask how each case was handled.',
+        items: ['KYC and client onboarding', 'Payment exception handling', 'Regulatory reporting preparation'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Claims and policy work where the exception rate, not the happy path, decides the business case.',
+        items: ['First notice of loss and claims triage', 'Policy administration changes', 'Document-heavy underwriting support'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Administrative load around clinical work, where a person stays in the loop by design.',
+        items: ['Prior authorization processing', 'Clinical coding support', 'Patient registration and onboarding'],
+      },
+      {
+        industry: 'Manufacturing & Supply Chain',
+        headline: 'Processes spanning systems that were never built to talk to each other.',
+        items: ['Order-to-cash processing', 'Supplier onboarding and master data', 'Three-way invoice matching'],
+      },
+      {
+        industry: 'Retail & E-Commerce',
+        headline: 'Seasonal volume that makes headcount the wrong answer and automation the obvious one.',
+        items: ['Returns and refunds processing', 'Price and promotion updates', 'Supplier invoice processing'],
+      },
+      {
+        industry: 'Media & Telecommunications',
+        headline: 'Provisioning and billing flows where a delay becomes a support call within hours.',
+        items: ['Service provisioning and activation', 'Billing dispute resolution', 'Network ticket triage and routing'],
+      },
+    ],
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // The parity default described a stack "powering cognitive computing,
+    // machine learning, and AI governance" and listed PyTorch, GPT-4o and
+    // Claude. An automation page that names no automation platform tells an
+    // automation buyer it does not do automation.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'What we build on,',
+      titleHighlight: 'and when we would not.',
+      subtitle: 'Platform choice is mostly decided by the estate you already have and how much of the process is unstructured. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Zap',
+          title: 'RPA platforms',
+          managed: 'UiPath, Automation Anywhere, Blue Prism',
+          selfHosted: 'Power Automate on Microsoft estates',
+          desc: 'Where the work is rule-based and spans applications with no usable API. If an API exists, integration beats a bot on every measure that matters.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Process and task mining',
+          managed: 'Celonis, Signavio, UiPath Process Mining',
+          selfHosted: 'Before the first bot, not after',
+          desc: 'Tells you how the process actually runs rather than how the process document says it runs. The gap between those two is where most failed automations live.',
+          link: { label: 'Business Process Management', to: '/services/business-process-management' },
+        },
+        {
+          icon: 'Network',
+          title: 'Orchestration and BPM',
+          managed: 'Camunda, Appian, Temporal',
+          selfHosted: 'Once more than one bot is involved',
+          desc: 'The layer that coordinates people, systems and digital workers. Skipping it is how an estate becomes scripts nobody can sequence.',
+        },
+        {
+          icon: 'Eye',
+          title: 'Intelligent document processing',
+          managed: 'ABBYY, Azure AI Document Intelligence',
+          selfHosted: 'Google Document AI, custom extraction',
+          desc: 'Buy it for clean, standard documents. Build only where the forms are yours and non-standard, which is rarer than vendors suggest.',
+          link: { label: 'AI & Cognitive Computing', to: '/services/ai-cognitive-computing' },
+        },
+        {
+          icon: 'Layers',
+          title: 'Integration',
+          managed: 'MuleSoft, Boomi, Azure Integration',
+          selfHosted: 'Kafka, REST and GraphQL services',
+          desc: 'The unglamorous option that outlives every bot built to avoid it. Reached for first wherever the target system will let us.',
+        },
+        {
+          icon: 'Activity',
+          title: 'Monitoring and observability',
+          managed: 'Platform consoles plus your own stack',
+          selfHosted: 'Alerting somebody actually owns',
+          desc: 'Bot dashboards report whether a bot ran. What matters is whether the process completed, which is a different question and rarely on the same screen.',
+        },
+      ],
+    },
+
+    // ── CTAs ────────────────────────────────────────────────────────────────
+    midCta: 'The bot works. Then the screen changes.',
+    midCtaLabel: 'Show us a broken process',
+
+    closingCta: {
+      title: 'One process.',
+      highlight: 'One automation that survives production.',
+      body: 'Bring the process that eats the most hours, or the automation that keeps breaking. In 30 minutes we will tell you whether it is a candidate, what would have to change before it is, and what it is worth once it works.',
+      primaryLabel: 'Bring us a process',
+      secondaryLabel: 'See the five ways to start',
+      proofLabel: 'From first call to first process running in production',
+    },
+
+    // ── What this actually is ───────────────────────────────────────────────
+    // The page carried a single hero paragraph. These three carry the delivery
+    // argument the architecture section no longer holds: the stack there is
+    // governance, so how the work is actually done has to live here.
+    whatIsPara2: 'The delivery path runs discover, design, automate, orchestrate, add intelligence, operate, optimize. Most programs stall between the third step and the fourth — bots get built, nothing coordinates them, and the automation estate becomes a set of scripts nobody owns.',
+
+    whatIsPara3: 'So the objective is not automating more tasks. It is an operation that can sense how work is actually performed, decide what should happen next, execute across systems that were never designed to talk, bring a person in when judgment is genuinely required, and keep improving after go-live.',
+
+    whatIsPara4: 'That means strategy, process intelligence, orchestration, digital workers, AI and managed operations are one capability rather than six purchases. Bought separately they produce a pilot that worked. Bought together they produce something the business can run on.',
+
+    // ── Architecture ────────────────────────────────────────────────────────
+    // The parity default rendered four vague governance labels -- "Policy &
+    // Ethics Layer", "Control & Orchestration Engine" -- with no decomposition
+    // behind them. Replaced with the four-layer stack, which answers what must
+    // be followed, what should be considered right, what must be controlled,
+    // and who remains accountable.
+    architectureEyebrow: 'POLICY & ETHICS LAYER',
+    architectureTitle: 'What must be followed.',
+    architectureTitleHighlight: 'And who remains accountable.',
+    architectureLede: 'Policy to ethics to governance to human accountability. Four layers deciding what an automated system may do, what it should not do even when permitted, how that is verified, and who answers when it goes wrong.',
+    architectureNodes: POLICY_ETHICS_STACK,
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // Reframed from generic entry points into the delivery pipeline, because
+    // the architecture section now answers governance rather than execution.
+    // Five paths, ordered by how far along the enterprise already is.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways to start.',
+    engagementHeadingHighlight: 'One partner throughout.',
+    engagementLede: 'Defining a strategy, modernizing one critical process, deploying intelligent workflows, or scaling across the enterprise — the entry point changes, the partner does not. Assess, strategize, prove, build, deploy, scale, operate, optimize. You do not need to know where to begin; start with the business problem.',
+    servicePackages: [
+      {
+        name: 'Advisory & Strategy',
+        description: 'Define the opportunity. A focused assessment of your processes, automation maturity, technology landscape and business priorities — where automation creates the most value, and a roadmap that survives contact with your estate. Best for enterprises working out where and how to begin.',
+        deliverables: [
+          'Process and automation maturity assessment',
+          'Opportunity discovery and prioritization',
+          'Technology landscape review',
+          'Execution roadmap and operating model',
+        ],
+      },
+      {
+        name: 'Proof of Value',
+        description: 'Prove the impact. One high-value opportunity taken far enough to establish technical feasibility, business impact and expected return before anything wider is committed. Best for organizations that want evidence before a transformation budget.',
+        deliverables: [
+          'One process automated end to end',
+          'Technical feasibility findings',
+          'Measured impact against a baseline',
+          'Go or no-go, with the reasoning',
+        ],
+      },
+      {
+        name: 'Solution Implementation',
+        description: 'Build and deploy. Process redesign, system integration, RPA, AI, orchestration and intelligent document processing taken to production rather than to a demo. Best for enterprises ready to move from strategy into execution.',
+        deliverables: [
+          'Process redesign and system integration',
+          'RPA, orchestration and AI build',
+          'Intelligent document processing',
+          'Production deployment and handover',
+        ],
+      },
+      {
+        name: 'Automation CoE & Managed Operations',
+        description: 'Scale with control. An Automation Center of Excellence, Robotic Operations Center, governance framework, operating model and monitoring — the machinery that turns projects into a program. Best for organizations past their first few automations.',
+        deliverables: [
+          'Automation Center of Excellence',
+          'Robotic Operations Center and monitoring',
+          'Governance framework and operating model',
+          'Portfolio and bot lifecycle management',
+        ],
+      },
+      {
+        name: 'Automation-as-a-Service',
+        description: 'Consume automation as a capability. A managed, consumption-based model where Kangqore runs the technology, operations, monitoring and continuous optimization instead of you building all of it internally. Best for enterprises wanting a lower-risk path to scale.',
+        deliverables: [
+          'Managed automation operations',
+          'Platform and licensing managed for you',
+          'Monitoring against agreed service levels',
+          'Continuous optimization',
+        ],
+      },
+    ],
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // This service previously had none, so the whole section came from the
+    // Cognition parity default -- which is the AI Governance taxonomy. The page
+    // was headed "Establishing Ethical Governance & Control" and "Compliance &
+    // Risk Management" on a page about automating processes, and named no
+    // automation platform anywhere.
+    //
+    // Taxonomy supplied by the business. Sub-capability names are kept verbatim:
+    // they are the searchable register and they feed the OfferCatalog JSON-LD.
+    capabilitiesLabel: 'INTELLIGENT AUTOMATION SERVICES',
+    capabilitiesSectionTitle: 'Our',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Process intelligence, orchestration, digital workers, AI, document processing and automation operations — moving you from fragmented manual work to connected, continuously optimized execution.',
+    capabilityAreas: [
+      {
+        title: 'Automation Strategy & Advisory',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Define the automation agenda. Where automation creates the most value, and a path from opportunity discovery to enterprise-scale execution aligned to operating model, workforce, risk and measurable outcomes.',
+        items: [
+          'Enterprise automation strategy',
+          'Automation maturity assessment',
+          'Automation opportunity discovery',
+          'Opportunity prioritization',
+          'Business case and ROI modeling',
+          'Automation roadmap development',
+          'Operating model design',
+          'Governance and adoption strategy',
+          'Change management and workforce enablement',
+        ],
+      },
+      {
+        title: 'Process Intelligence & Optimization',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Discover what should be automated. Process mining, task mining and workflow analytics identify the bottlenecks and dependencies worth automating — so processes get redesigned before they get automated.',
+        items: [
+          'Process discovery and mapping',
+          'Process and task mining',
+          'Workflow analysis',
+          'Bottleneck identification',
+          'Root-cause analysis',
+          'Process redesign and optimization',
+          'Process performance analytics',
+          'Automation opportunity identification',
+          'Continuous process improvement',
+        ],
+      },
+      {
+        title: 'Intelligent Process Orchestration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Connect and coordinate execution. BPM, API-led integration, event-driven architecture and decision engines bring applications, data, people and digital workers into one end-to-end flow.',
+        items: [
+          'Business process orchestration',
+          'Workflow automation',
+          'API-led integration',
+          'Event-driven workflows',
+          'System-to-system integration',
+          'Rules and decision engines',
+          'Dynamic routing',
+          'Exception handling',
+          'Human-in-the-loop workflows',
+          'Legacy system integration',
+        ],
+      },
+      {
+        title: 'RPA & Digital Workforce',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Deploy digital workers at scale. Beyond individual bots: attended and unattended automation, orchestration, exception handling, lifecycle management and performance monitoring as one workforce.',
+        items: [
+          'Attended automation',
+          'Unattended automation',
+          'RPA bot development',
+          'Cross-application automation',
+          'Desktop automation',
+          'Digital worker orchestration',
+          'Exception handling',
+          'Bot lifecycle management',
+          'Bot performance monitoring',
+          'Enterprise-scale RPA governance',
+        ],
+      },
+      {
+        title: 'Intelligent Document & Content Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Turn unstructured information into action. Documents, emails, forms, contracts, invoices and claims classified, extracted, validated and routed straight into the workflow that needs them.',
+        items: [
+          'Intelligent Document Processing (IDP)',
+          'Document classification',
+          'Data extraction and validation',
+          'Invoice automation',
+          'Contract processing',
+          'KYC and onboarding automation',
+          'Claims and case-document processing',
+          'Email and correspondence automation',
+          'Document understanding',
+          'Human-in-the-loop validation',
+        ],
+      },
+      {
+        title: 'AI-Powered & Cognitive Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Embed intelligence into workflows. Rules-based automation follows a script; this reads context, interprets information and adapts. The path runs RPA to intelligent automation to AI-powered automation to autonomous execution.',
+        items: [
+          'Generative AI automation',
+          'AI copilots',
+          'NLP and conversational intelligence',
+          'Computer vision',
+          'Predictive intelligence',
+          'Decision intelligence',
+          'Recommendation engines',
+          'Anomaly detection',
+          'LLM integration',
+          'AI-assisted workflow execution',
+          'Autonomous task execution',
+        ],
+      },
+      {
+        title: 'Automation Operations, CoE & Managed Services',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Operate, govern and keep improving it. Scaling automation needs an operating model, monitoring and security, not more bots — the difference between a pilot that worked and a capability that lasts.',
+        items: [
+          'Automation Center of Excellence (CoE)',
+          'Robotic Operations Center (ROC)',
+          'Automation-as-a-Service (IAaaS)',
+          'Managed automation operations',
+          'Bot and workflow monitoring',
+          'Automation observability',
+          'Performance management',
+          'Governance and access controls',
+          'Security and compliance',
+          'Automation portfolio management',
+          'Citizen developer enablement',
+          'Continuous optimization',
+          'SLA-based managed services',
+        ],
+      },
+    ],
+  },
 
   'managed-cloud-services': {
     slug: 'managed-cloud-services',

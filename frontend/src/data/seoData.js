@@ -406,8 +406,8 @@ export const serviceSEO = {
     url: '/services/mlops',
   },
   'analytics': {
-    title: 'Analytics — Cognition | Kangqore',
-    description: 'End-to-end analytics — business intelligence, dashboards, KPI tracking, self-service analytics, and data storytelling for measurable decision-making.',
+    title: 'Analytics — Forecasting & Decision Intelligence | Kangqore',
+    description: 'Analytics that changes a decision: one agreed definition, lineage back to source, and forecasting, prescriptive and decision intelligence on top of it.',
     keywords: 'business analytics, business intelligence, dashboards, KPI tracking, self-service analytics, data storytelling',
     url: '/services/analytics',
   },
@@ -436,7 +436,7 @@ export const serviceSEO = {
     url: '/services/business-process-management',
   },
   'intelligent-automation': {
-    title: 'Intelligent Automation — Cognition | Kangqore',
+    title: 'Intelligent Automation — RPA, IDP & Orchestration | Kangqore',
     description: 'AI-powered automation — AI decision automation, NLP integration, document intelligence, cognitive automation, and process orchestration combined.',
     keywords: 'intelligent automation, AI automation, cognitive automation, document intelligence, NLP automation',
     url: '/services/intelligent-automation',

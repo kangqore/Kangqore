@@ -1,13 +1,13 @@
 ---
 name: service-page-audit
-description: Audit, rate and fix a marketing service page under /services/*. Use when asked to review, rate, compare against a competitor, or fix leaked/generic copy on any of the 62 service pages. Encodes the conventions established across PRs #343-#368 so shipped decisions are not undone.
+description: Audit, rate and fix a marketing service page under /services/*. Use when asked to review, rate, compare against a competitor, or fix leaked/generic copy on any of the 62 service pages. Encodes the conventions established across PRs #343-#411 so shipped decisions are not undone.
 ---
 
 # Service Page Audit & Fix
 
 62 service pages render from one template. This skill is the repeatable version of
-a review that was rebuilt by hand four times and got two measurements wrong in the
-process. Run the tool first, then work the checklist.
+a review that was rebuilt by hand four times and got several measurements wrong in
+the process. Run the tool first, then work the checklist.
 
 ---
 
@@ -16,44 +16,99 @@ process. Run the tool first, then work the checklist.
 **Do not undo what already shipped.** Every item below was a deliberate decision.
 If a fix seems to require reversing one, stop and ask.
 
-| Decision | PR | Do not |
+### Platform patterns — reuse, do not rebuild
+
+| Pattern | Where | Do not |
 |---|---|---|
-| 8 capability areas, 51 sub-capabilities, **no numbering** on cards (ai-cognitive-computing) | #350 | Re-add numbering or collapse the taxonomy |
-| `hidePartnershipModel` on pages where it was removed | #353 | Re-enable the Partnership Model there |
-| Titles trimmed to 45-60 chars, department word dropped where it cost length | #354 | Re-add "Cognition" style prefixes |
-| Bespoke hero SVG: `PERCEIVE > REPRESENT > REASON > EVIDENCE` | #354 | Replace with the shared agentic diagram |
-| All `businessMetrics` carry `illustrative: true` + visible disclaimer | #355 | Present a number as a client result without a source |
-| Opt-in hooks: `architectureEyebrow` / `architectureTitle` / `architectureTitleHighlight` / `midCtaLabel` / `closingCta.primaryLabel` / `closingCta.secondaryLabel` / `practiceLede` | #356 | Hardcode these back into the template |
-| Two-line hero statement | #357 | Expand it back to a paragraph |
-| eQORE `conciergeChips` / `conciergeHeading` / `conciergeIntro`; `ConciergeSection` takes `heading` + `intro` props; generator emits chips | #365 | Remove the eQORE section (see constraints) |
-| `DEPT_SECTION_COPY` in `getParityService`; agentic services pinned in data | #368 | Move these back to per-service data, or change a department default without checking all pages in it |
-| Real `<table>` semantics + explicit ARIA on the comparison section | #343 | Return it to a `<div>` grid |
-| Contextual internal links in toolchain and comparison | #346 | Strip `row.link` / `item.link` |
-| `whatIsPara3/4` stay in the DOM when collapsed (`grid-template-rows` + `inert`) | #348 | Re-gate them behind a mount condition |
+| `POLICY_ETHICS_STACK` — exported from `servicesData.js`. Four layers: Policy & Regulatory Controls, Responsible AI & Ethics, Risk Governance & Assurance, Human Oversight & Accountability | Adopt with `architectureNodes: POLICY_ETHICS_STACK` | Re-write these four layers inline on another service. It is deliberately shared across Intelligent Automation, Agentic AI, AI Governance, Decision Intelligence and Kangqore View so the answer cannot drift between pages |
+| `DEPT_SECTION_COPY` in `getParityService` — per-department `industryHeading`, `midCta`, `closingCta`, `architectureEyebrow` | Template | Move back to per-service data, or change a department default without checking every page in that department |
 
-**Standing constraints from the user:**
+### Template hooks — all opt-in, all with defaults that preserve the other 61 pages
 
-- **Do not touch images.** Not the mapping, not dimensions, not the generator manifest. Report image findings, change nothing.
-- The oversized logo (4500px rendered at ~104px) and the 152KB PNG are **knowingly ignored**.
-- "Shield" appearing in breadcrumb schema is **knowingly ignored**.
-- **eQORE cannot be cut.** It is integral. Make it page-specific instead.
+| Hooks | Section |
+|---|---|
+| `architectureEyebrow` / `architectureTitle` / `architectureTitleHighlight` / `architectureLede` | Architecture |
+| `capabilitiesLabel` / `capabilitiesSectionTitle` / `capabilitiesSectionHighlight` / `capabilitiesLede` | Capabilities |
+| `comparisonTable.eyebrow` | Comparison |
+| `outcomesEyebrow` / `outcomesHeading` / `outcomesHeadingHighlight` | Engagement outcomes (the h2 is opt-in; without it the block has no heading at all) |
+| `engagementEyebrow` / `engagementHeading` / `engagementHeadingHighlight` / `engagementLede` | Five ways to start |
+| `faqEyebrow` / `faqHeading` / `faqHeadingHighlight` | FAQ |
+| `midCta` / `midCtaLabel` | Mid-page CTA |
+| `closingCta.primaryLabel` / `.secondaryLabel` / `.proofLabel` | Closing CTA |
+| `conciergeChips` / `conciergeHeading` / `conciergeIntro` | eQORE |
+| `practiceLabel` / `practiceHeading` / `practiceHeadingHighlight` / `practiceLede` | Practice cluster |
+| `hidePartnershipModel` / `hideBadgeStrip` | Section removal |
+| `heroTitle` / `heroBadge` / `heroStripItems` | Hero |
+
+**Never hardcode any of these back into the template.**
+
+### Content decisions
+
+| Decision | Do not |
+|---|---|
+| 8 capability areas, 51 sub-capabilities, no numbering (ai-cognitive-computing) | Re-add numbering or collapse the taxonomy |
+| Titles 45-60 chars, department word dropped ("Cognition", "Foundry") | Re-add department prefixes |
+| Bespoke hero SVGs on 7 slugs: `agentic-ai-led-application-modernization`, `genai-business-services`, `ai-governance`, `ai-cognitive-computing`, `mlops`, `data-science-ai`, `intelligent-automation` | Replace any with the shared agentic default |
+| `whatIsPara3/4` stay in the DOM when collapsed (`grid-template-rows` + `inert`) | Re-gate behind a mount condition |
+| Real `<table>` semantics + explicit ARIA on the comparison section | Return it to a `<div>` grid |
+| Contextual internal links in toolchain and comparison (`row.link`, `item.link`) | Strip them |
+| Accessibility landmarks on `EQoreChatbot`, `CookieConsent`, **both** `FloatingButtons` stacks, and `ServiceGlassCards` scroll region | Remove any — every page is currently axe 0 and the right-hand floating stack is easy to miss |
+
+### Gates and tooling
+
+| Decision | Do not |
+|---|---|
+| Copy gate **Rule 2b** — catches percentages split across literals (`value: '94'` + `suffix: '%'`), which Rule 2's regex cannot see | Remove or "simplify" it. Twelve services were publishing unsourced percentages this way while the gate reported clean |
+| 48 metric objects across 12 services carry `illustrative: true` | Unflag any without a real source |
+| Generator emits comparison, architecture, industries, outcomes, packages, closing CTA, eQORE chips + heading + intro, `heroBadge`, `midCta` | Remove emitters — coverage was 6-30 per cent before them |
+| Rubric excludes bands under 250px from the thin-section check (a CTA band is sparse by design) | Confuse this with lowering the 10 w/100px threshold |
+| Rubric finds the FAQ by counting question-form `h3`s, not by matching heading text | Go back to text matching — rewriting a page's FAQ heading broke its own detection |
+
+### Standing constraints from the user
+
+- **Do not touch images.** Not the mapping, not dimensions, not the generator manifest. Report findings, change nothing.
+- The oversized logo (4500px at ~104px) and the 152KB PNG are **knowingly ignored**.
+- "Shield" in breadcrumb schema is **knowingly ignored**.
+- **eQORE cannot be cut.** Make it page-specific instead.
 - `/services/ai-governance` is parked.
-- `/services/intelligent-automation` is blocked on a taxonomy decision (it is ~95 per cent duplicate of business-process-management).
+- **Illustrative metrics stay.** The user was told that disclaimed numbers read to a sophisticated buyer as "no clients", chose to keep them and fix the worst offenders, and that decision stands. Absolute claims ("100% operational reliability", "maximum operational yield") are the part to remove.
+- **"Robotic Operations Center"** on intelligent-automation is Tech Mahindra's named offering. Flagged, kept as supplied, rename parked.
+- E-E-A-T is blocked on a real name, title and LinkedIn. **Never invent a person.**
 
 ---
 
 ## 1 · Set up
 
-Work in the dedicated worktree, never the main tree — another session edits the
-main tree and uncommitted work there has been silently overwritten.
+Work in the dedicated worktree, never the main tree.
 
 ```bash
-cd /Users/maheshkumar/kq-acc          # detached worktree, node_modules symlinked
+cd /Users/maheshkumar/kq-acc          # worktree, node_modules symlinked
 git fetch origin && git checkout -B <branch> origin/main
-# dev server on :3010 (main tree runs :3000 and is often a commit behind)
 ```
 
-Confirm the server reflects the branch before trusting any measurement:
+**Two servers, two different trees:**
+
+| | Tree | Notes |
+|---|---|---|
+| `:3010` | `/Users/maheshkumar/kq-acc` | the worktree — your branch |
+| `:3000` | `/Users/maheshkumar/Kangqore` | another session's tree |
+
+**When the user says "nothing changed", check which branch that tree is on before
+explaining anything.** This cost three rounds in one session: `:3000` had been sitting
+on `refactor/wave-6-kimmp-waanda-migration` the whole time, and the answer was assumed
+to be "the PR isn't merged" when it was "that tree has never been on main".
+
+```bash
+git -C /Users/maheshkumar/Kangqore rev-parse --abbrev-ref HEAD
+git -C /Users/maheshkumar/Kangqore log --oneline -1
+```
+
+If the user wants it visible on `:3000` and that tree is clean, a `git merge --ff-only`
+onto the pushed branch is safe and reversible. **Never rebase or reset a tree carrying
+another session's unpushed commits.** And note `cd` does not persist between Bash
+calls — use `git -C <path>` or the merge lands in the wrong tree.
+
+Confirm the server reflects your branch before trusting any measurement:
 
 ```bash
 curl -s localhost:3010/src/data/servicesData.js | grep -c "<a string you just added>"
@@ -64,101 +119,136 @@ curl -s localhost:3010/src/data/servicesData.js | grep -c "<a string you just ad
 ```bash
 node scripts/audit-page-quality.mjs <slug>
 node scripts/audit-page-quality.mjs <slug> --compare=<competitor-url>
-node scripts/audit-page-quality.mjs --all            # fleet ranking, worst first
-node scripts/audit-page-quality.mjs --all --json     # machine-readable
+node scripts/audit-page-quality.mjs --all --json     # takes over 10 min, run backgrounded
 ```
 
-Everything it reports comes from the rendered page, never from the data file.
-It exits non-zero on render errors or inherited copy, so it can gate a build.
+Everything reported comes from the rendered page, never the data file. Exits non-zero
+on render errors or inherited copy, so it can gate a build.
 
-**Scoring is rubric-anchored** (thresholds live in `RUBRIC` in the script). Two runs
-on the same page always agree. Do not hand out a score that is not from the tool —
-an unanchored number cannot be defended when challenged, and cannot be compared
-across pages or over time.
+**Scoring is rubric-anchored** (thresholds in `RUBRIC`). Two runs agree. Do not hand
+out a score that is not from the tool — an unanchored number cannot be defended when
+challenged, and cannot be compared across pages or over time. A second "commercial
+readiness" score was invented once and had to be withdrawn for exactly this reason.
 
-**Calibration caveat:** boilerplate percentage is measured against rendered
-`innerText`, so it includes UI chrome and is *not* comparable to per-data-block
-figures quoted in older sessions. It is comparable across pages, because every page
-is measured the same way.
+**Known limits — do not quote these numbers without the caveat:**
+
+- **Cross-tree audits are safe now, but know why.** The snapshot is fetched from
+  `${BASE}/prerender/services/<slug>.html` — the same server as the page — so the two
+  cannot come from different trees. Before that fix it read snapshots off the local
+  filesystem and once reported 93.5 per cent coverage that was really 29. If the
+  server does not serve that path the tool falls back to the local file, prints a
+  `WARNING` naming the base, and marks the report line `[LOCAL FILE — not verified
+  against --base]`. **Treat any run showing that marker as unverified.**
+- **Coverage reads about 3 points low and is noisy.** The denominator counts FAQ text
+  twice — once in the FAQ section, once in the animated glass card that types it out —
+  while the snapshot emits it once. Page word count swings roughly 77 words run to run
+  for the same reason.
+- **Boilerplate is measured against rendered `innerText`**, so it includes UI chrome.
+  Comparable across pages, not to per-data-block figures from older sessions.
 
 ## 3 · Work the checklist
 
-The tool flags what is wrong. This is the order to fix it, cheapest lever first.
+Cheapest lever first.
 
-1. **Inherited copy** — any hit is a hard fail. Check whether the page needs its own
-   value or whether the department default in `DEPT_SECTION_COPY` should change.
-2. **Render errors** — hard fail. Usually a wrong data key (see §5).
-3. **Snapshot coverage** — anything under 85 per cent means a crawler is missing
-   content. Fix in `scripts/generate-prerender.mjs`, not the React page.
-4. **Content fit** — does the copy belong to *this* service? Check off-topic word
-   count, and read the capability names against the service name.
-5. **Boilerplate and second person** — rewrite the offending block in the page's
-   voice. Concrete nouns and "you", not "enterprise-grade frameworks".
-6. **Thin sections** — under 10 words per 100px. Either give the section content or
-   cut it.
-7. **FAQ depth** — 8+ questions, 3 paragraphs each, with real `sources`.
-8. **E-E-A-T** — blocked on a real name, title and LinkedIn from the user. Ask; do
-   not invent one.
+1. **Inherited copy** — any hit is a hard fail.
+2. **Render errors** — hard fail. Usually a wrong data key or prop name (§5).
+3. **Content fit** — does the copy belong to *this* service? Read the capability
+   names, the comparison argument and the toolchain against the service name. A
+   toolchain naming none of the service's own platforms is the loudest signal.
+4. **FAQ depth** — 8+ questions, 3 paragraphs, real `sources`. Usually the single
+   biggest scoring lever (worth up to 4 points across two groups) and the best content.
+5. **Snapshot coverage** — fix in `scripts/generate-prerender.mjs`, not the React page.
+6. **Boilerplate and second person** — rewrite in the page's voice. Concrete nouns
+   and "you", not "enterprise-grade frameworks".
+7. **Thin sections** — under 10 w/100px and over 250px tall.
+8. **E-E-A-T** — blocked on the user. Ask; never invent.
 
 ## 4 · Gate, in this order
 
 ```bash
 node scripts/generate-prerender.mjs
-npm run audit:all          # six gates — check the exit code, do not grep for "pass"
+npm run audit:all          # check the exit code, do not grep for "pass"
 npm run check:prerender
 npm run check:sitemap
 cd frontend && npm run build
 ```
 
-Then **open the page in a browser.** `audit:all`, `check:prerender` and `npm run build`
-have all passed on a page that fell to the error boundary and rendered nothing.
+Then **open the page in a browser.** All four have passed on a page that fell to the
+error boundary rendering twelve words.
 
-Finally re-run `audit-page-quality.mjs <slug>` and confirm the score moved for the
-reason you expected.
+Re-run `audit-page-quality.mjs <slug>` and confirm each point moved for the reason you
+expected. Spot-check three unrelated services whenever you touched the template.
 
-Revert `shared/serviceIndex.json` if only its `generatedAt` changed — it churns on
-every regeneration and conflicts across PRs.
+Revert `shared/serviceIndex.json` if only its `generatedAt` changed.
 
 ## 5 · Traps that have actually bitten
 
 **The template resolves content through `getParityService()`.** Most services carry a
-few hundred bytes of data and the parity layer synthesizes the rest, keyed by
-`deptSlug`. **Never conclude anything about what renders by reading `servicesData.js`.**
-Counting raw keys produced two wrong answers in one session: "industryHeading leaks on
-zero pages" (it leaked on 56) and "EXECUTION LOOP is on 3 pages" (it was on 56).
+few hundred bytes and the parity layer synthesizes the rest, keyed by `deptSlug`.
+**Never conclude anything about what renders by reading `servicesData.js`.** Counting
+raw keys produced two wrong answers in one session: "industryHeading leaks on zero
+pages" (56) and "EXECUTION LOOP is on 3 pages" (56).
 
 **Dual emission.** Content added to the React page must also be added to
-`scripts/generate-prerender.mjs` or crawlers never see it. Grep the regenerated
-snapshot for the new string.
+`generate-prerender.mjs` or crawlers never see it. Grep the regenerated snapshot.
 
-**Verify what renders, not what you wrote.** Check the collapsed default state, not
-the expanded one. `whatIsPara4` shipped in a PR and was never in the DOM.
+**Verify what renders, not what you wrote.** Check the collapsed default state.
 
-**Vite misses whole-file writes.** After a scripted rewrite of `servicesData.js`,
-`touch` the file and re-`curl` it before measuring.
+**Vite misses whole-file writes.** After a scripted rewrite, `touch` and re-`curl`.
 
-**The copy gate scans code comments.** US English only; every percentage needs
-`illustrative: true` or an entry in `SOURCED_CLAIMS`. Simplest fix is to spell the
-number out in prose. `unauthorised` / `authorisation` are absent from its UK list and
-slip through — do not rely on it for those.
+**The copy gate scans code comments.** US English only. `unauthorised` /
+`authorisation` are absent from its UK list; `modelling` and `cataloguing` are caught.
+
+**Prop names, not just data keys.** `GeminiComparisonSection` takes `comparisonTable`,
+not `data`. Writing `data.eyebrow` threw and took the whole page to the error boundary
+while all four gates passed.
 
 **Data key contracts:**
 
 | Key | Contract |
 |---|---|
-| `architectureNodes[].features` | Not `keyCapabilities`. Wrong name throws and the whole page falls to the error boundary. |
-| `capabilityAreas[].items` | Must be `'Name: prose'` — the card front splits on the colon. |
-| `industryUseCases[]` | Uses `items` **or** `agents`; the industry section only renders if this key exists. |
-| `closingCta` | Whole-object override. Set `title` explicitly or the template default fills it in. |
-| `businessMetrics[]` | Needs `illustrative: true` per metric to render the disclaimer. |
+| `architectureNodes[].features` | Not `keyCapabilities`. Wrong name throws. |
+| `architectureNodes[].icon` | Must exist in `JOURNEY_ICON_MAP` or it silently falls back to `Target`. |
+| `capabilityAreas[].items` | `'Name: prose'` splits on the colon for the card front; a bare name renders fine on both front and overlay. Card front shows the first 6 only. |
+| `industryUseCases[]` | `items` **or** `agents`; prefer `items`. Section renders only if the key exists. |
+| `closingCta` | Whole-object override. Set `title` explicitly or the default fills it. |
+| `businessMetrics[]` | Needs `illustrative: true` per metric for the disclaimer. |
+| `heroTitle` | **Must not end with a period.** The template renders the last word as `{titleHighlight}.` with the period baked in — a trailing period gives "Defend..". |
+| `servicePackages[]` | `tier` renders only inside the `duration` block, so `tier` without `duration` is invisible. |
+
+**Editing a service block with a script.** `capabilityAreas` is often the *last* key,
+and blocks are followed by section banner comments — so "replace from key to end of
+block" drops the object's closing brace, and `rstrip()` does not land on `},`. Locate
+`blk.rfind('\n  },')` explicitly and assert the result still closes the object.
 
 **Contrast measurement.** Walk up the DOM for the first non-transparent background and
-composite the alpha. Measuring against `document.body` reports white-on-white and
-invents failures — that produced a bogus "9 failing footer nodes" (the real count was 1).
+composite the alpha. Measuring against `document.body` invents failures — that produced
+a bogus "9 failing footer nodes" when the real count was 1.
 
 ## 6 · Ship
 
 One branch, one commit, pushed from the worktree. `gh` is not installed — hand the user
-the compare URL. State plainly in the commit message which changes are template-wide
-and which are page-scoped, so a reviewer is not misled into thinking a shared-component
-change is local to one service.
+the compare URL, and **lead with the URL where the change is actually visible**, not the
+branch name. Saying "applied" about work on an unmerged branch the user cannot see has
+caused repeated confusion.
+
+State plainly in the commit message which changes are template-wide and which are
+page-scoped.
+
+## 7 · Open items, not yet fixed
+
+- **The parity-layer snapshot gap.** `generate-prerender.mjs` reads raw service data
+  while the page renders through `getParityService()`, so ~55 thin services emit almost
+  nothing — `salesforce` at 2 per cent, `it-security-services` at 6, median fleet
+  coverage 2.9. Largest technical defect on the site. Fix by extracting
+  `getParityService` into a module both the component and the generator import.
+- **110 fabricated case cards.** The parity `outcomeCard` / `outcomeCard2` defaults at
+  `UniversalServicePage.jsx:700-715` invent a client descriptor ("Global Enterprise
+  Organization") and assert "100% operational reliability" / "maximum operational
+  yield" on all 55 services lacking their own. The user has no real clients yet.
+- **57 duplicate h1s** — every service but a handful renders
+  "&lt;Name&gt; Solutions at Enterprise Scale."
+- **RPA, BPM and DPA** still share ~78 per cent of their content with each other.
+  Intelligent Automation was differentiated out of that cluster; the other three
+  were not. Consolidate-or-differentiate is still an open commercial decision.
+- **No analytics installed.** Nothing shipped is measurable.

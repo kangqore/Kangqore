@@ -145,17 +145,51 @@ const normTokens = (t) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').split(/\s
  * not execute it, so this measures exactly what they receive.
  */
 async function readSnapshot(browser, slug) {
-  const file = path.join(SNAP_DIR, `${slug}.html`);
-  if (!fs.existsSync(file)) return { text: '', words: 0, citations: 0 };
   const snapCtx = await browser.newContext({ javaScriptEnabled: false });
   const page = await snapCtx.newPage();
+
+  const scrape = () => page.evaluate(() => ({
+    text: document.body.innerText,
+    citations: document.querySelectorAll('a[href^="http"]').length,
+  }));
+  const pack = (out, source) => ({
+    text: out.text,
+    words: out.text.trim().split(/\s+/).filter(Boolean).length,
+    citations: out.citations,
+    source,
+  });
+
+  try {
+    // Served by the dev server out of frontend/public, so this comes from the
+    // same tree as the page itself. That is the whole point: the previous
+    // version read the snapshot off the local filesystem while fetching the
+    // page from --base, so auditing :3000 from this worktree compared one
+    // tree's page against another tree's snapshot and reported 93.5 per cent
+    // coverage that was really 29.
+    const res = await page.goto(`${BASE}/prerender/services/${slug}.html`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 30000,
+    });
+    if (res && res.ok()) {
+      const out = await scrape();
+      // Vite answers unknown paths with the SPA shell rather than a 404, which
+      // would silently score the app's empty root as the snapshot.
+      if (/<div id="root">/.test(await page.content()) === false) return pack(out, 'base');
+    }
+  } catch {
+    /* fall through to the local file */
+  }
+
+  // Fallback. Only trustworthy when --base serves this very working tree, so it
+  // is labelled and the coverage metric is withheld rather than guessed.
+  const file = path.join(SNAP_DIR, `${slug}.html`);
+  if (!fs.existsSync(file)) {
+    await snapCtx.close();
+    return { text: '', words: 0, citations: 0, source: 'missing' };
+  }
   try {
     await page.goto(pathToFileURL(file).href, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    const out = await page.evaluate(() => ({
-      text: document.body.innerText,
-      citations: document.querySelectorAll('a[href^="http"]').length,
-    }));
-    return { text: out.text, words: out.text.trim().split(/\s+/).filter(Boolean).length, citations: out.citations };
+    return pack(await scrape(), 'local');
   } finally {
     await snapCtx.close();
   }
@@ -261,6 +295,12 @@ async function measure(browserRef, ctx, slug) {
   const snapWords = snap.words;
   const snapCitations = snap.citations;
   const snapText = snap.text;
+  // 'base' means the snapshot came from the same server as the page, which is
+  // the only reading that can be trusted when --base is not this working tree.
+  if (snap.source === 'local') {
+    console.error(`  WARNING ${slug}: snapshot read from the local filesystem, not from ${BASE}. `
+      + 'If that base serves a different tree, coverage is measuring two versions against each other.');
+  }
 
   const pageWords = words(dom.text).length;
   const boilerHits = (dom.text.match(BOILERPLATE) || []).length;
@@ -333,6 +373,7 @@ async function measure(browserRef, ctx, slug) {
     questionStrings,
     snapWords,
     snapCitations,
+    snapSource: snap.source,
     snapCoverage: pageWords ? +(snapWords / pageWords * 100).toFixed(1) : 0,
     snapText,
     axe: axeRun.violations.length,
@@ -386,7 +427,10 @@ function report(m, sc, deriv) {
   L.push(`  inherited copy   ${m.leaks.length ? m.leaks.join(' | ') : 'none'}`);
 
   L.push(`\n  ── Crawler ──`);
-  L.push(`  snapshot         ${m.snapWords} of ${m.pageWords} words (${m.snapCoverage}%)`);
+  const snapNote = m.snapSource === 'base' ? ''
+    : m.snapSource === 'missing' ? '   [no snapshot file]'
+    : '   [LOCAL FILE — not verified against --base]';
+  L.push(`  snapshot         ${m.snapWords} of ${m.pageWords} words (${m.snapCoverage}%)${snapNote}`);
   L.push(`  citations        ${m.snapCitations}`);
   L.push(`  schema           ${m.schema.join(', ') || '(none)'}`);
   L.push(`  E-E-A-T          Person:${m.hasPerson ? 'yes' : 'no'}  dates:${m.hasDates ? 'yes' : 'no'}`);
