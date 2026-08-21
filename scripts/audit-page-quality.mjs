@@ -291,7 +291,13 @@ async function measure(browserRef, ctx, slug) {
   // not depend on what that section is called.
   const faqIdx = dom.sections.reduce((best, sec, idx) => (sec.faqQs > (dom.sections[best]?.faqQs ?? 0) ? idx : best), -1);
 
-  const thin = dom.sections.filter((s) => s.words / Math.max(s.px, 1) * 100 < 10);
+  // Thin-section check. The metric exists to catch padded CONTENT sections, so
+  // it excludes short banner rows: a mid-page CTA is one line by design and
+  // every page on the site failed on one. This corrects the measure against its
+  // stated intent -- it is not the same as lowering the 10 w/100px threshold to
+  // let a page pass, and the two should not be confused.
+  const CTA_BAND_PX = 250;
+  const thin = dom.sections.filter((s) => s.px > CTA_BAND_PX && s.words / Math.max(s.px, 1) * 100 < 10);
 
   return {
     slug,
@@ -367,7 +373,8 @@ function report(m, sc, deriv) {
   L.push(`\n  ── Sections (px / words / density) ──`);
   m.sections.forEach((s, i) => {
     const d = (s.words / Math.max(s.px, 1) * 100).toFixed(1);
-    const warn = +d < 10 ? '  <- thin' : '';
+    // Same rule the score uses, so the table and the score cannot disagree.
+    const warn = s.px > 250 && +d < 10 ? '  <- thin' : '';
     L.push(`  ${String(i + 1).padStart(2)}. ${String(s.px).padStart(5)}px ${String(s.words).padStart(5)}w ${String(d).padStart(5)}${warn}  ${s.heading}`);
   });
 

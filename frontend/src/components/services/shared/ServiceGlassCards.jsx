@@ -73,8 +73,14 @@ const FAQTeleprompter = ({ faqs }) => {
             <span className="shrink-0">[Q]</span> 
             <span className="line-clamp-2">{faqs[faqIdx]?.q}</span>
           </div>
+          {/* Scrolls, so it needs to be reachable and scrollable from the
+              keyboard. Without tabIndex nobody navigating without a mouse can
+              read past the visible portion of the answer. */}
           <div 
             ref={containerRef}
+            tabIndex={0}
+            role="region"
+            aria-label={`Answer: ${faqs[faqIdx]?.q || 'FAQ'}`}
             className="text-white/80 leading-relaxed overflow-y-auto pr-1 whitespace-pre-wrap scrollbar-hide" 
             style={{ maxHeight: '100%' }}
           >

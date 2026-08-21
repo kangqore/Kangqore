@@ -198,6 +198,33 @@ if (fs.existsSync(dataFile)) {
   }
 }
 
+// ─── Rule 2b: percentages assembled from separate literals ───────────────────
+// `businessMetrics` stores a claim as `value: '94'` plus `suffix: '%'`, so the
+// digits and the percent sign never appear next to each other in the source and
+// the regex in Rule 2 cannot see them. The page still renders "94%". Twelve
+// services were showing unsourced percentages this way -- several of them
+// already audited -- while this gate reported clean.
+if (fs.existsSync(dataFile)) {
+  const src = fs.readFileSync(dataFile, 'utf8');
+  for (const block of src.matchAll(/businessMetrics: \[([\s\S]*?)\n    \],/g)) {
+    const seg = block[1];
+    if (!/suffix: '\s*%'/.test(seg)) continue;
+    // One `illustrative: true` per metric object is the contract; the template
+    // renders its disclaimer off the same flag.
+    for (const obj of seg.matchAll(/\{[^}]*\}/g)) {
+      if (!/suffix: '\s*%'/.test(obj[0])) continue;
+      if (obj[0].includes('illustrative: true')) continue;
+      const value = (obj[0].match(/value: '([^']*)'/) || [, '?'])[1];
+      const title = (obj[0].match(/title: '([^']*)'/) || [, '(untitled)'])[1];
+      claimHits.push({
+        line: lineOf(src, block.index + obj.index),
+        value: `${value}%`,
+        context: `businessMetrics — ${title}`,
+      });
+    }
+  }
+}
+
 // ─── Report ───────────────────────────────────────────────────────────────────
 let failed = false;
 
