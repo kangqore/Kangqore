@@ -3515,6 +3515,7 @@ export const servicesData = {
     // comparison section and the closing CTA both make. Seven words to six.
     whatIsTitle: 'Analytics that turns your',
     whatIsTitleLine2: 'data into decisions',
+    whatIsHighlightNewLine: true,
     whatIsHighlight: 'you can defend.',
     whatIsPara2: 'Kangqore builds analytics ecosystems where every stakeholder has the right data at the right time — from executive KPI dashboards to operational reports and governed self-service insight layers across the enterprise.',
     businessMetrics: [
