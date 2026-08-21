@@ -56,7 +56,11 @@ const CookieConsent = () => {
   if (!showBanner) return null;
 
   return (
-    <div 
+    // Landmark: the banner's heading and body sat outside every landmark on
+    // every page, which is two of the eight "region" violations.
+    <div
+      role="region"
+      aria-label="Cookie consent"
       className="fixed bottom-2 left-2 right-2 z-[99999] max-w-screen-2xl mx-auto bg-black border border-neutral-800 rounded-2xl lg:rounded-3xl animate-slide-up text-left pt-4 pb-4 px-4 lg:pt-6 lg:pb-8 lg:px-8 max-h-[90vh] overflow-y-auto no-scrollbar"
       style={{ backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
     >

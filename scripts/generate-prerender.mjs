@@ -254,8 +254,15 @@ ${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
   // service without prompts emits nothing at all: interpolating an empty string
   // into the body below left two blank lines in all 58 snapshots that have no
   // chips, which is 58 files of diff noise for no content.
+  // The heading and intro carry the section's argument; emitting only the
+  // prompts left the crawler with a list and no context.
+  const chipsIntro = [
+    svc.conciergeHeading ? `    <p>${esc(svc.conciergeHeading)}</p>\n` : '',
+    svc.conciergeIntro ? `    <p>${esc(svc.conciergeIntro)}</p>\n` : '',
+  ].join('');
+
   const chips = Array.isArray(svc.conciergeChips) && svc.conciergeChips.length
-    ? `    <h2>Ask eQORE AI about ${esc(svc.name)}</h2>\n      <ul>\n${svc.conciergeChips
+    ? `    <h2>Ask eQORE AI about ${esc(svc.name)}</h2>\n${chipsIntro}      <ul>\n${svc.conciergeChips
         .map((c) => `        <li>${esc(c)}</li>`)
         .join('\n')}\n      </ul>\n\n`
     : '';
@@ -331,6 +338,7 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
 <body>
 <main>
   <article>
+    ${svc.heroBadge ? `<p>${esc(svc.heroBadge)}</p>` : ''}
     <h1>${esc(heroH1)}</h1>
     <p>${esc(svc.fullDescription || svc.shortDescription || '')}</p>
     ${svc.shortDescription && svc.fullDescription ? `<p>${esc(svc.shortDescription)}</p>` : ''}
@@ -342,6 +350,8 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
     ${metrics ? `<h2>Business Outcomes</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${capabilities}` : ''}
+
+    ${svc.midCta ? `<p>${esc(svc.midCta)}</p>` : ''}
 
     ${comparison}
 

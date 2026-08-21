@@ -449,7 +449,11 @@ const EQoreChatbot = () => {
   };
 
   return (
-    <div 
+    // A landmark, so the assistant's chat area, input and tooltip are not
+    // orphaned content. axe reported six "region" nodes from inside here.
+    <div
+      role="complementary"
+      aria-label="eQORE AI assistant"
       className={`fixed ${isInHero ? 'bottom-[calc(152px-0.5cm)]' : 'bottom-[calc(172px-0.5cm)]'} right-8 z-[10001] transition-opacity duration-1000 ${isSlideIn ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
       style={{
         transform: `translate(calc(${isSlideIn ? '0%' : '120%'} + ${position.x}px), ${position.y}px)`,

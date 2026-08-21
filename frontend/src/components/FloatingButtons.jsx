@@ -205,7 +205,11 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
       <EQoreChatbot />
 
       {/* New Vertical Floating Stack (eQORE AI & Menu) - Moved to LEFT */}
-      <div 
+      {/* Landmark: the stack's hover tooltips were the last orphaned content
+          axe reported, on every page. */}
+      <div
+        role="complementary"
+        aria-label="Quick actions"
         className={`fixed left-8 bottom-[calc(2rem+2cm)] sm:bottom-[calc(2.5rem+2cm)] z-[50] flex flex-col items-center gap-4 transition-all duration-700 ease-in-out ${
           !isVisible || isYielding || showFullMenu ? 'opacity-0 translate-y-10 pointer-events-none' : 'opacity-100 translate-y-0'
         }`}
@@ -228,7 +232,11 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
       </div>
 
       {/* Unified Omni-Action Trigger - Moved to RIGHT */}
-      <div 
+      {/* Second landmark: this stack's hover tooltips were the last orphaned
+          content axe reported after the left stack was covered. */}
+      <div
+        role="complementary"
+        aria-label="Page actions"
         className={`fixed bottom-[calc(2.25rem-0.4cm)] sm:bottom-[calc(2.75rem-0.4cm)] right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu || isErootActive ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
       >
         {/* Standalone Scroll to Top - Rendered first to be at the very bottom in flex-col-reverse */}
