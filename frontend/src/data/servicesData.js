@@ -3513,8 +3513,9 @@ export const servicesData = {
     // "Drives decisions" is what every analytics vendor says. "Measured in"
     // states what success is and is falsifiable, which is the argument the
     // comparison section and the closing CTA both make. Seven words to six.
-    whatIsTitle: 'Analytics that turns your data',
-    whatIsHighlight: 'into decisions you can defend.',
+    whatIsTitle: 'Analytics that turns your',
+    whatIsTitleLine2: 'data into decisions',
+    whatIsHighlight: 'you can defend.',
     whatIsPara2: 'Kangqore builds analytics ecosystems where every stakeholder has the right data at the right time — from executive KPI dashboards to operational reports and governed self-service insight layers across the enterprise.',
     businessMetrics: [
       { illustrative: true, title: 'Reporting Speed',  desc: 'Reduction in reporting cycle time after self-service BI and automated dashboard deployment.',                        value: '75',  suffix: '%', metricLabel: 'Faster Reporting',        icon: 'Zap'       },
