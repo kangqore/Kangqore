@@ -4011,9 +4011,9 @@ export const servicesData = {
     relatedServiceSlugs: ['analytics', 'data-science-ai'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
-    whatIsTitle: 'Big Data Infrastructure',
-    whatIsTitleLine2: 'Built to Process What',
-    whatIsHighlight: 'Others Cannot.',
+    whatIsTitle: 'Volume was never',
+    whatIsTitleLine2: 'the hard part.',
+    whatIsHighlight: 'Change is.',
     whatIsPara2: 'Kangqore architects scalable data lakehouses, streaming pipelines, and distributed processing platforms on AWS, Azure, and GCP — enabling enterprises to store, query, and act on petabyte-scale data with sub-second freshness.',
     businessMetrics: [
       { illustrative: true, title: 'Query Performance',    desc: 'Average improvement in analytical query response time after data warehouse modernization and lake house migration.', value: '10',  suffix: 'x',    metricLabel: 'Faster Queries',   icon: 'Zap'     },
@@ -4097,7 +4097,7 @@ export const servicesData = {
     fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
 
     // ── What this actually is ───────────────────────────────────────────────
-    whatIsPara2: 'Big data stopped being about volume some time ago. Storage is cheap and the engines are commodity; what is hard is a platform that stays correct when one of your sources changes shape, stays fast when a table doubles, and stays affordable when three of your teams start querying it at once.',
+    whatIsPara2: 'Big data stopped being about volume some time ago. Storage is cheap and the engines are commodity; what is hard is a platform that stays correct when one of your sources changes shape, stays fast when a table doubles, and stays predictable on cost when three of your teams start querying it at once.',
 
     whatIsPara3: 'The failure mode is rarely dramatic. A pipeline succeeds while writing the wrong thing, an upstream schema changes silently, a partition strategy that was fine at two terabytes becomes the reason a query costs forty pounds to run. None of that surfaces as an outage. It surfaces as a number somebody downstream of you stops trusting.',
 
