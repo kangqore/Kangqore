@@ -1,0 +1,21 @@
+# Virtualenv — 283 MB and unusable in the image.
+# It is a macOS build (Mach-O binaries, incl. a 19 MB libopenblas.0.dylib)
+# for Python 3.9, while this image is python:3.11-slim (linux). The Dockerfile
+# builds its own dependencies via `pip install -r requirements.txt`, so this
+# tree is never read. Local dev still uses it via start_python.sh — that runs
+# on the host filesystem and is unaffected by .dockerignore.
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Runtime logs — not source
+*.log
+
+# OS noise
+.DS_Store
+
+# VCS
+.git
+.gitignore
