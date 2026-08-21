@@ -2060,6 +2060,102 @@ const featureMicros   = service.featureMicros
                     <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">accuracy and drift measured per segment, not in aggregate</text>
                   </svg>
                 </div>
+              ) : service.slug === 'intelligent-automation' ? (
+                /* ── Manual work to straight-through ──
+                   Replaces the shared agentic default, which labeled an
+                   automation page AI COMMANDER, AGENTIC ORCHESTRATOR,
+                   AUTONOMOUS AGENTS and AUTONOMOUS COMMIT.
+
+                   The four stages match the delivery path stated in the
+                   what-is block, and the branch is the number this service is
+                   actually measured on: straight-through rate, not bots built.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is smaller than 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="Automation pipeline — manual work is discovered, orchestrated, executed by digital workers and operated, then either completes straight through or routes to a person where judgment is required" tabIndex={0}>
+                  <svg viewBox="0 0 540 430" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>How manual work becomes straight-through processing</title>
+                    <desc>Invoices, claims, onboarding and exceptions are discovered through process mining, orchestrated into a workflow, executed by digital workers and document processing, and operated by a Center of Excellence. Cases above the confidence threshold complete without a person; the rest route to one.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="ia-spine" gradientUnits="userSpaceOnUse" x1="26" y1="186" x2="514" y2="186">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="ia-stage" gradientUnits="userSpaceOnUse" x1="0" y1="160" x2="0" y2="212">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="ia-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="ia-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="ia-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── Inputs ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">WHAT YOUR PEOPLE DO BY HAND</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">invoices · claims · onboarding · reconciliations · exceptions</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#ia-tick)">
+                      <line x1="81" y1="94" x2="81" y2="156" />
+                    </g>
+                    <text x="92" y="130" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">including the workarounds nobody documented</text>
+
+                    {/* ── The four stages ── */}
+                    <line x1="26" y1="186" x2="514" y2="186" stroke="url(#ia-spine)" strokeWidth="2" strokeOpacity="0.45" />
+
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26" y="160" width="110" height="52" rx="9" fill="url(#ia-stage)" stroke="#2564ea" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="81" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">DISCOVER</text>
+                      <text x="81" y="200" fontSize="12" fill="white" fillOpacity="0.55">process mining</text>
+
+                      <rect x="152" y="160" width="110" height="52" rx="9" fill="url(#ia-stage)" stroke="#3080e6" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="207" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">ORCHESTRATE</text>
+                      <text x="207" y="200" fontSize="12" fill="white" fillOpacity="0.55">workflow layer</text>
+
+                      <rect x="278" y="160" width="110" height="52" rx="9" fill="url(#ia-stage)" stroke="#3b9ce0" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="333" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">EXECUTE</text>
+                      <text x="333" y="200" fontSize="12" fill="white" fillOpacity="0.55">bots · IDP · AI</text>
+
+                      <rect x="404" y="160" width="110" height="52" rx="9" fill="url(#ia-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="459" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">OPERATE</text>
+                      <text x="459" y="200" fontSize="12" fill="white" fillOpacity="0.55">CoE · monitoring</text>
+                    </g>
+
+                    <g stroke="#4ab6d4" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#ia-arrow)">
+                      <line x1="138" y1="186" x2="149" y2="186" />
+                      <line x1="264" y1="186" x2="275" y2="186" />
+                      <line x1="390" y1="186" x2="401" y2="186" />
+                    </g>
+
+                    {/* ── The threshold decides who touches the case ── */}
+                    <text x="270" y="240" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">confidence threshold you set</text>
+
+                    <path d="M 459 214 C 459 254, 300 254, 160 254 C 150 254, 145 260, 145 272" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#ia-arrow)" />
+                    <path d="M 459 214 L 459 272" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#ia-arrow-amber)" />
+
+                    <rect x="26" y="276" width="238" height="62" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="145" y="300" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">STRAIGHT THROUGH</text>
+                    <text x="145" y="320" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">no person touches it</text>
+
+                    <rect x="340" y="276" width="174" height="62" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="427" y="300" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">TO A PERSON</text>
+                    <text x="427" y="320" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">judgment required</text>
+
+                    {/* ── The number that actually matters ── */}
+                    <rect x="26" y="364" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">measured on straight-through rate per process, not on bots deployed</text>
+                  </svg>
+                </div>
               ) : service.slug === 'analytics' ? (
                 /* ── Data to a decision that changes ──
                    Replaces the shared agentic default, which put AI COMMANDER,
