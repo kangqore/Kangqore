@@ -3442,7 +3442,7 @@ export const servicesData = {
     name: 'Analytics',
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
-    shortDescription: 'Comprehensive analytics solutions for business intelligence',
+    shortDescription: 'Kangqore builds the analytics ladder on one agreed set of definitions, so the number survives being questioned and the decision it supports actually changes.',
     fullDescription: 'Implement end-to-end analytics solutions including dashboards, reports, and advanced analytics capabilities.',
     keyFeatures: ['Business intelligence', 'Dashboard development', 'KPI tracking', 'Self-service analytics', 'Data storytelling'],
     relatedServiceSlugs: ['big-data', 'data-science-ai'],
