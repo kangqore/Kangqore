@@ -68,12 +68,19 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
             <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{comparisonTable?.eyebrow || 'WHY IT MATTERS'}</span>
           </div>
           <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3.2rem] font-extrabold leading-[1.15] tracking-tight text-white">
-            {comparisonTable?.heading || (
-              <>
-                The shift from automation<br />
-                to autonomy.
-              </>
-            )}
+            {/* Newlines in the data become line breaks, the same convention
+                heroTitle already uses, so a service can control where its
+                comparison heading wraps. */}
+            {comparisonTable?.heading
+              ? comparisonTable.heading.split('\n').map((line, li) => (
+                  <React.Fragment key={li}>{li > 0 && <br />}{line}</React.Fragment>
+                ))
+              : (
+                <>
+                  The shift from automation<br />
+                  to autonomy.
+                </>
+              )}
           </h2>
           {/* Answer-first lead-in: the section previously went straight from the
               heading into the comparison table, leaving nothing for featured
