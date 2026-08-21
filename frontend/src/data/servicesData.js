@@ -3611,7 +3611,7 @@ export const servicesData = {
     // argument for a different service entirely.
     comparisonTable: {
       eyebrow: 'WHERE ANALYTICS PROGRAMS STALL',
-      heading: 'More dashboards is not more intelligence.',
+      heading: 'Enterprise Reference Architecture models for Analytics',
       lede: 'Both columns describe competent analytical work. They differ in whether a decision changes at the end of it.',
       beforeLabel: 'REPORTING',
       afterLabel: 'DECISION INTELLIGENCE',
