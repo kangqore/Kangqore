@@ -132,10 +132,13 @@ readiness" score was invented once and had to be withdrawn for exactly this reas
 
 **Known limits — do not quote these numbers without the caveat:**
 
-- **`--base` pointing at a different tree silently mismatches the snapshot.** The tool
-  fetches the page from `--base` but reads snapshot files from the local filesystem.
-  Auditing `:3000` from the worktree once reported 93.5 per cent coverage that was
-  really 29. There is no guard yet. **Fix this before trusting a cross-tree audit.**
+- **Cross-tree audits are safe now, but know why.** The snapshot is fetched from
+  `${BASE}/prerender/services/<slug>.html` — the same server as the page — so the two
+  cannot come from different trees. Before that fix it read snapshots off the local
+  filesystem and once reported 93.5 per cent coverage that was really 29. If the
+  server does not serve that path the tool falls back to the local file, prints a
+  `WARNING` naming the base, and marks the report line `[LOCAL FILE — not verified
+  against --base]`. **Treat any run showing that marker as unverified.**
 - **Coverage reads about 3 points low and is noisy.** The denominator counts FAQ text
   twice — once in the FAQ section, once in the animated glass card that types it out —
   while the snapshot emits it once. Page word count swings roughly 77 words run to run
