@@ -3448,8 +3448,11 @@ export const servicesData = {
     relatedServiceSlugs: ['big-data', 'data-science-ai'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-    whatIsTitle: 'Analytics That Drives',
-    whatIsTitleLine2: 'Decisions, Not Just',
+    // "Drives decisions" is what every analytics vendor says. "Measured in"
+    // states what success is and is falsifiable, which is the argument the
+    // comparison section and the closing CTA both make. Seven words to six.
+    whatIsTitle: 'Analytics Measured',
+    whatIsTitleLine2: 'in Decisions, Not',
     whatIsHighlight: 'Dashboards.',
     whatIsPara2: 'Kangqore builds analytics ecosystems where every stakeholder has the right data at the right time — from executive KPI dashboards to operational reports and governed self-service insight layers across the enterprise.',
     businessMetrics: [
