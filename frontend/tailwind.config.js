@@ -1,3 +1,5 @@
+const { BRAND_BLUE, BRAND_CYAN, BRAND_GRADIENT } = require('./src/brand/tokens');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -17,9 +19,9 @@ module.exports = {
 
       // ── OS Color Tokens ─────────────────────────────────────────────────
       colors: {
-        // Existing brand/shadcn tokens (kept for backwards compat)
-        'brand-blue': '#2564ea',
-        'brand-cyan': '#4ab6d4',
+        // Brand tokens — single source: src/brand/tokens.js. Do not inline hex here.
+        'brand-blue': BRAND_BLUE,
+        'brand-cyan': BRAND_CYAN,
         background:  'hsl(var(--background))',
         foreground:  'hsl(var(--foreground))',
         card:        { DEFAULT: 'hsl(var(--card))',        foreground: 'hsl(var(--card-foreground))'        },
@@ -125,7 +127,7 @@ module.exports = {
 
       // ── Background Images ───────────────────────────────────────────────
       backgroundImage: {
-        'brand-gradient':    'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)',
+        'brand-gradient':    BRAND_GRADIENT,
         'os-gradient':       'linear-gradient(135deg, var(--os-surface-1) 0%, var(--os-surface-0) 100%)',
         'os-gradient-blue':  'linear-gradient(135deg, rgba(37,100,234,0.15) 0%, rgba(37,100,234,0.04) 100%)',
         'os-gradient-hero':  'linear-gradient(135deg, #0d1117 0%, #0a0f1e 50%, #060b18 100%)',

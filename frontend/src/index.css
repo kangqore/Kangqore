@@ -20,7 +20,9 @@ html.dark body {
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
+    /* Brand blue #2564ea. MANUAL MIRROR of BRAND_BLUE in src/brand/tokens.js —
+       CSS custom properties cannot import from JS. Update both together. */
+    --primary: 220.8 82.4% 53.1%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -32,7 +34,8 @@ html.dark body {
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    /* Brand blue #2564ea — mirrors BRAND_BLUE in src/brand/tokens.js */
+    --ring: 220.8 82.4% 53.1%;
     --radius: 0.5rem;
   }
 
@@ -44,6 +47,9 @@ html.dark body {
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
+    /* #3b82f6 — BLUE_ON_DARK, NOT the brand blue. Deliberate accessibility
+       variant: brand #2564ea scores 3.83 on the dark surface (fails WCAG AA
+       4.5); this scores 5.34. Do not "correct" this to the brand blue. */
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;

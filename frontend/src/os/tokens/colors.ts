@@ -1,3 +1,5 @@
+import { BRAND_BLUE, BRAND_CYAN } from '../../brand/tokens'
+
 export const surface = {
   bg:    '#060b18',
   0:     '#0d1117',
@@ -13,14 +15,18 @@ export const border = {
   strong:  '#3d3870',
 } as const
 
+// Brand tokens — single source: src/brand/tokens.js. Do not inline brand hex here.
+// The 135deg gradient below is a deliberate product-surface variant: diagonal
+// reads better on cards and panels. The 90deg BRAND_GRADIENT in tokens.js is the
+// brand-standard reference. Both are intentional — this is not drift.
 export const brand = {
-  blue:     '#2564ea',
-  cyan:     '#4ab6d4',
+  blue:     BRAND_BLUE,
+  cyan:     BRAND_CYAN,
   blueDim:  'rgba(37, 100, 234, 0.14)',
   cyanDim:  'rgba(74, 182, 212, 0.12)',
   blueGlow: 'rgba(37, 100, 234, 0.35)',
   cyanGlow: 'rgba(74, 182, 212, 0.25)',
-  gradient: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)',
+  gradient: `linear-gradient(135deg, ${BRAND_BLUE} 0%, ${BRAND_CYAN} 100%)`,
 } as const
 
 export const text = {
@@ -35,7 +41,7 @@ export const status = {
   success:    '#059669',
   warning:    '#d97706',
   danger:     '#ef4444',
-  info:       '#2564ea',
+  info:       BRAND_BLUE, // intentionally the brand blue — see src/brand/tokens.js
   successDim: 'rgba(5,   150, 105, 0.12)',
   warningDim: 'rgba(217, 119,   6, 0.12)',
   dangerDim:  'rgba(239,  68,  68, 0.12)',
