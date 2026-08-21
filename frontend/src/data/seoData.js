@@ -407,7 +407,7 @@ export const serviceSEO = {
   },
   'analytics': {
     title: 'Analytics — Forecasting & Decision Intelligence | Kangqore',
-    description: 'End-to-end analytics — business intelligence, dashboards, KPI tracking, self-service analytics, and data storytelling for measurable decision-making.',
+    description: 'Analytics that changes a decision: one agreed definition, lineage back to source, forecasting and decision intelligence on top of it.',
     keywords: 'business analytics, business intelligence, dashboards, KPI tracking, self-service analytics, data storytelling',
     url: '/services/analytics',
   },

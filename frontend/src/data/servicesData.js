@@ -3505,7 +3505,7 @@ export const servicesData = {
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Kangqore builds the analytics ladder on one agreed set of definitions, so the number survives being questioned and the decision it supports actually changes.',
-    fullDescription: 'Implement end-to-end analytics solutions including dashboards, reports, and advanced analytics capabilities.',
+    fullDescription: 'One agreed definition, lineage back to the source, and a decision that changes at the end of it. Everything short of that is reporting.',
     keyFeatures: ['Business intelligence', 'Dashboard development', 'KPI tracking', 'Self-service analytics', 'Data storytelling'],
     relatedServiceSlugs: ['big-data', 'data-science-ai'],
     featured: false,
@@ -3591,6 +3591,7 @@ export const servicesData = {
 
 
 
+    heroTitle: 'Analytics Built to\nChange a Decision',
     heroBadge: 'Understand. Anticipate. Decide.',
     heroStripItems: [
       'KPI & Performance Analytics', 'Forecasting', 'Decision Intelligence', 'Streaming Analytics',
