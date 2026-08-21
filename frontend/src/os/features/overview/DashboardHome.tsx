@@ -1121,7 +1121,7 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
         </p>
         <div className="grid grid-cols-2 gap-2">
           {[
-            { label: 'New Lead', icon: <Users className="w-4 h-4" />, color: '#2564eb' },
+            { label: 'New Lead', icon: <Users className="w-4 h-4" />, color: '#2564ea' },
             { label: 'Log Call', icon: <Clock className="w-4 h-4" />, color: '#10b981' },
             { label: 'Create Goal', icon: <Target className="w-4 h-4" />, color: '#8b5cf6' },
             { label: 'Generate', icon: <Briefcase className="w-4 h-4" />, color: '#f59e0b' }

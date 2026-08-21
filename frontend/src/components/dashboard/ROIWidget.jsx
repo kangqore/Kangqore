@@ -31,7 +31,7 @@ const ROIWidget = () => {
 
   const chartData = [
     { name: 'Investment', value: roi?.investment || 0, color: '#94a3b8' }, // Slate-400
-    { name: 'Value', value: roi?.valueRealized || 0, color: '#2563eb' }   // Brand Blue
+    { name: 'Value', value: roi?.valueRealized || 0, color: '#2564ea' }   // Brand blue — see src/brand/tokens.js
   ];
 
   // Helper for color mapping
