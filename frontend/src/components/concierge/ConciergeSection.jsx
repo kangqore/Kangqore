@@ -67,7 +67,7 @@ function renderFormattedText(text) {
           const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
           if (m) {
             return (
-              <a key={`blink-${j}-${k}`} href={m[2]} target="_blank" rel="noopener noreferrer" className="text-brand-cyan hover:underline">
+              <a key={`blink-${j}-${k}`} href={m[2]} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline">
                 {m[1]}
               </a>
             );
@@ -88,7 +88,7 @@ function renderFormattedText(text) {
             href={m[2]}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-brand-cyan hover:underline"
+            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline"
           >
             {m[1]}
           </a>
@@ -282,7 +282,7 @@ const ConciergeSection = ({
                 <p className="text-[16px] font-semibold tracking-tight text-white">
                   eQORE
                 </p>
-                <p className="text-[11px] uppercase tracking-widest font-bold text-brand-cyan mt-0.5">
+                <p className="text-[11px] uppercase tracking-widest font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mt-0.5">
                   {streaming ? 'Syncing...' : 'System Active'}
                 </p>
               </div>
@@ -293,7 +293,7 @@ const ConciergeSection = ({
                 className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-white/25 text-white hover:bg-white/40 border-white/40' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
                 title="Launch Immersive Full-Screen AI Experience"
               >
-                <ExternalLink className="w-3.5 h-3.5 text-cyan-400" /> Immersive AI Experience
+                <ExternalLink className="w-3.5 h-3.5 text-[#2564ea]" /> Immersive AI Experience
               </Link>
               <button
                 type="button"
@@ -306,7 +306,7 @@ const ConciergeSection = ({
                 }}
                 className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${
                   isVoiceEnabled
-                    ? 'bg-cyan-400/20 text-cyan-400 border-cyan-400/30'
+                    ? 'bg-cyan-400/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent border-cyan-400/30'
                     : inverted
                     ? 'bg-white/20 text-white hover:bg-white/30 border-white/20'
                     : 'bg-white/10 text-white/60 hover:text-white border-white/10'
@@ -404,7 +404,7 @@ const ConciergeSection = ({
                             href="https://kangqore.com" 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="text-brand-cyan hover:underline lowercase tracking-normal"
+                            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline lowercase tracking-normal"
                           >
                             kangqore.com
                           </a>
@@ -425,7 +425,7 @@ const ConciergeSection = ({
                         >
                           {copiedId === msg.id ? (
                             <>
-                              <Check className="w-3 h-3 text-brand-cyan" /> Copied
+                              <Check className="w-3 h-3 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" /> Copied
                             </>
                           ) : (
                             <>
@@ -448,7 +448,7 @@ const ConciergeSection = ({
                           disabled={!conversationId || msg.feedback === 'up'}
                           className={`inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded transition-colors ${
                             msg.feedback === 'up'
-                              ? 'text-brand-cyan'
+                              ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'
                               : inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'
                           } disabled:opacity-50`}
                           title="Helpful"

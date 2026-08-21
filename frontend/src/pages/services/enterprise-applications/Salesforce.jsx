@@ -66,7 +66,7 @@ const Salesforce = () => {
     ],
     
     stats: [
-      { value: 'Connect', label: 'Customers, teams, channels, and systems', color: 'text-cyan-400' },
+      { value: 'Connect', label: 'Customers, teams, channels, and systems', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Sell', label: 'Pipeline, forecasting, and opportunity velocity', color: 'text-blue-400' },
       { value: 'Serve', label: 'Faster support, better case handling, higher loyalty', color: 'text-emerald-400' },
       { value: 'Personalize', label: 'Journeys, campaigns, and commerce experiences', color: 'text-purple-400' },

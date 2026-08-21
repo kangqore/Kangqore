@@ -604,7 +604,7 @@ const SoftwareDevelopment = () => {
               </div>
               <div className="absolute bottom-10 left-0 group">
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Network className="w-12 h-12 text-cyan-400" /></div>
+                  <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Network className="w-12 h-12 text-[#2564ea]" /></div>
                   <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">API_Eng</span>
                 </div>
               </div>
@@ -657,7 +657,7 @@ const SoftwareDevelopment = () => {
       ),
       image: 'https://images.pexels.com/photos/3184583/pexels-photo-3184583.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
       stats: [
-        { value: 'Validate', label: 'Ideas, requirements & technical direction', color: 'text-cyan-400' },
+        { value: 'Validate', label: 'Ideas, requirements & technical direction', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
         { value: 'Build', label: 'Reliable digital products & platforms', color: 'text-blue-400' },
         { value: 'Accelerate', label: 'Delivery speed, quality & release confidence', color: 'text-emerald-400' },
         { value: 'Scale', label: 'Systems, teams & software foundations', color: 'text-purple-400' }

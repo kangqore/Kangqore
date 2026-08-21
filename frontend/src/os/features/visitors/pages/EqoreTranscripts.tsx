@@ -27,7 +27,7 @@ const INTENT_COLORS: Record<string, string> = {
   scheduling: 'bg-green-500/10 text-green-400 border-green-500/20',
   contact:    'bg-green-500/10 text-green-400 border-green-500/20',
   support:    'bg-slate-500/10 text-slate-400 border-slate-500/20',
-  roadmap:    'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+  roadmap:    'bg-cyan-500/10 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent border-cyan-500/20',
 }
 
 function TranscriptDetail({ id, onBack }: { id: string; onBack: () => void }) {
@@ -110,7 +110,7 @@ function TranscriptDetail({ id, onBack }: { id: string; onBack: () => void }) {
             <div key={i} className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               {m.role === 'assistant' && (
                 <div className="w-6 h-6 rounded-2xl bg-[var(--os-surface-0)] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <ChatCircle size={12} className="text-cyan-400" />
+                  <ChatCircle size={12} className="text-[#2564ea]" />
                 </div>
               )}
               <div className={`max-w-[75%] rounded-2xl px-3.5 py-2.5 text-[12px] leading-relaxed ${

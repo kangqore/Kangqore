@@ -80,7 +80,7 @@ const Pimcore = () => {
     ],
 
     stats: [
-      { value: 'Unify', label: 'Product, master, and digital asset data', color: 'text-cyan-400' },
+      { value: 'Unify', label: 'Product, master, and digital asset data', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Enrich', label: 'Data quality, workflows, and AI-assisted content', color: 'text-blue-400' },
       { value: 'Accelerate', label: 'Commerce, catalog, and launch operations', color: 'text-emerald-400' },
       { value: 'Personalize', label: 'Omnichannel experiences at scale', color: 'text-purple-400' },

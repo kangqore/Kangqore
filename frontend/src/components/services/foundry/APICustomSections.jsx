@@ -788,7 +788,7 @@ export const APIExecutionEcosystem = () => {
                     <span className="text-[11px] font-mono font-bold text-gray-400">MVP_ACCEL</span>
                  </div>
                  <div className="absolute bottom-10 left-0 text-center group">
-                    <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center mb-2 translate-x-4 hover:translate-x-0 transition-all"><Code2 className="w-12 h-12 text-cyan-400"/></div>
+                    <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center mb-2 translate-x-4 hover:translate-x-0 transition-all"><Code2 className="w-12 h-12 text-[#2564ea]"/></div>
                     <span className="text-[11px] font-mono font-bold text-gray-400 translate-x-4 block">SW_DEV</span>
                  </div>
                  <div className="absolute bottom-10 right-0 text-center group">

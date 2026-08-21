@@ -120,7 +120,7 @@ const BusinessOutcomesRibbon = () => (
             className="text-7xl lg:text-[5rem] font-bold font-display tracking-tighter mb-4"
             style={{ textShadow: '1px 1px 0px rgba(0,0,0,0.1), 2px 2px 0px rgba(0,0,0,0.1), 3px 3px 0px rgba(0,0,0,0.15), 4px 4px 0px rgba(0,0,0,0.15), 5px 5px 0px rgba(0,0,0,0.2)' }}
           >
-            40<span className="text-cyan-400 opacity-90">%</span>
+            40<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent opacity-90">%</span>
           </div>
           <div className="text-lg lg:text-xl font-bold tracking-wide uppercase opacity-95 mb-3">Faster Time-to-Market</div>
           <p className="text-sm lg:text-base opacity-80 font-light px-4 leading-relaxed">Accelerate product launches with GenAI model-driven scaffolding and automated architectures.</p>
@@ -130,7 +130,7 @@ const BusinessOutcomesRibbon = () => (
             className="text-7xl lg:text-[5rem] font-bold font-display tracking-tighter mb-4"
             style={{ textShadow: '1px 1px 0px rgba(0,0,0,0.1), 2px 2px 0px rgba(0,0,0,0.1), 3px 3px 0px rgba(0,0,0,0.15), 4px 4px 0px rgba(0,0,0,0.15), 5px 5px 0px rgba(0,0,0,0.2)' }}
           >
-            60<span className="text-cyan-400 opacity-90">%</span>
+            60<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent opacity-90">%</span>
           </div>
           <div className="text-lg lg:text-xl font-bold tracking-wide uppercase opacity-95 mb-3">Decrease in QA Cycles</div>
           <p className="text-sm lg:text-base opacity-80 font-light px-4 leading-relaxed">Automated robust test suite generation executing directly from API definitions and swagger files.</p>
@@ -140,7 +140,7 @@ const BusinessOutcomesRibbon = () => (
             className="text-7xl lg:text-[5rem] font-bold font-display tracking-tighter mb-4"
             style={{ textShadow: '1px 1px 0px rgba(0,0,0,0.1), 2px 2px 0px rgba(0,0,0,0.1), 3px 3px 0px rgba(0,0,0,0.15), 4px 4px 0px rgba(0,0,0,0.15), 5px 5px 0px rgba(0,0,0,0.2)' }}
           >
-            Zero<span className="text-cyan-400 opacity-90">-Day</span>
+            Zero<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent opacity-90">-Day</span>
           </div>
           <div className="text-lg lg:text-xl font-bold tracking-wide uppercase opacity-95 mb-3">Defect Deployments</div>
           <p className="text-sm lg:text-base opacity-80 font-light px-4 leading-relaxed">Human-in-the-loop observability combined with highly secure, zero-touch CI/CD pipelines.</p>

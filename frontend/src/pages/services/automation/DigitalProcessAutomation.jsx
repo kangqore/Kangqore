@@ -120,9 +120,9 @@ const DigitalProcessAutomation = () => {
       ],
       capabilitiesTitle: 'Our Capabilities.',
       stats: [
-        { value: '60%', label: 'Cycle Time Reduction', color: 'text-cyan-400' },
+        { value: '60%', label: 'Cycle Time Reduction', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
         { value: '80%', label: 'Fewer Manual Touches', color: 'text-brand-blue' },
-        { value: '100%', label: 'Audit Trail Coverage', color: 'text-cyan-400' },
+        { value: '100%', label: 'Audit Trail Coverage', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
         { value: '4–6 Wks', label: 'Pilot Deployment', color: 'text-brand-blue' }
       ],
       highFidelity: {

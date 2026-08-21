@@ -213,7 +213,7 @@ export const ExecutionPodSection = () => {
           {team.map((member, idx) => (
             <div key={idx} className="smm-pod-card bg-white dark:bg-gray-900 dark:border-gray-800/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:bg-white dark:bg-gray-900 dark:border-gray-800/10 transition-all duration-300 group">
               <div className="w-12 h-12 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/5 flex items-center justify-center mb-6 border border-white/10 group-hover:border-cyan-400/30 transition-all duration-300">
-                <member.icon className="w-6 h-6 text-cyan-400" />
+                <member.icon className="w-6 h-6 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
               </div>
               <h3 className="text-xl font-bold text-white mb-3">{member.role}</h3>
               <p className="text-gray-400 font-light text-sm leading-relaxed">{member.focus}</p>

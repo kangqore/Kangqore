@@ -112,7 +112,7 @@ const DepartmentsIndexPage = () => {
               {/* Animated badge */}
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
                 <div className="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" />
-                <p className="text-xs font-bold tracking-[0.2em] text-brand-cyan uppercase">
+                <p className="text-xs font-bold tracking-[0.2em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase">
                   One intelligence-led execution ecosystem
                 </p>
               </div>
@@ -141,7 +141,7 @@ const DepartmentsIndexPage = () => {
                   className="group inline-flex items-center gap-2 px-6 py-4 text-white/60 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
                 >
                   Explore All Departments
-                  <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
               </div>
             </div>
@@ -157,7 +157,7 @@ const DepartmentsIndexPage = () => {
               ].map(s => (
                 <div key={s.label} className="text-center">
                   <p className="text-2xl font-black text-white drop-shadow-lg">{s.value}</p>
-                  <p className="text-[10px] text-brand-cyan/80 font-bold tracking-widest uppercase mt-1">{s.label}</p>
+                  <p className="text-[10px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent/80 font-bold tracking-widest uppercase mt-1">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -172,7 +172,7 @@ const DepartmentsIndexPage = () => {
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${introVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-14">
-            <p className="text-[10px] font-black tracking-[0.45em] text-brand-cyan uppercase mb-8">WHAT WE DO</p>
+            <p className="text-[10px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">WHAT WE DO</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
               One ecosystem.{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Six specializations.</span>
@@ -219,7 +219,7 @@ const DepartmentsIndexPage = () => {
                         className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: 'rgba(74,182,212,0.10)' }}
                       >
-                        <Icon className="w-4 h-4 text-brand-cyan" />
+                        <Icon className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
                       </div>
                     )}
                     <div>
@@ -274,7 +274,7 @@ const DepartmentsIndexPage = () => {
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${cardsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-20">
-            <p className="text-xs font-bold tracking-[0.3em] text-brand-cyan uppercase mb-5">OUR DEPARTMENTS</p>
+            <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">OUR DEPARTMENTS</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6">
               Six capability{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">domains</span>
@@ -323,7 +323,7 @@ const DepartmentsIndexPage = () => {
                   {/* Dark overlap card */}
                   <div className="relative w-[92%] mx-auto -mt-12 bg-[#06090f] border border-white/10 rounded-xl p-6 sm:p-8 shadow-2xl transition-all duration-500 group-hover:border-white/20">
                     {/* Tagline */}
-                    <p className="text-[10px] font-black tracking-[0.3em] text-brand-cyan uppercase mb-3">
+                    <p className="text-[10px] font-black tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-3">
                       {d.tagline}
                     </p>
 
@@ -347,9 +347,9 @@ const DepartmentsIndexPage = () => {
                     {/* Footer row */}
                     <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
                       <p className="text-white/25 text-[10px] font-semibold">
-                        {d.serviceCount} services · <span className="text-brand-cyan/70">{d.bannerBrand}</span>
+                        {d.serviceCount} services · <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent/70">{d.bannerBrand}</span>
                       </p>
-                      <span className="inline-flex items-center gap-1 text-xs font-black text-brand-cyan group-hover:gap-2 transition-all duration-200">
+                      <span className="inline-flex items-center gap-1 text-xs font-black bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:gap-2 transition-all duration-200">
                         Explore
                         <ArrowRight className="w-3.5 h-3.5" />
                       </span>
@@ -371,7 +371,7 @@ const DepartmentsIndexPage = () => {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 hover:border-brand-cyan/50 hover:bg-white/5 transition-all duration-300 group flex-shrink-0"
             >
               <span className="text-white font-black text-sm tracking-wide">Explore all 61 services</span>
-              <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-1 transition-transform duration-300" />
+              <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </div>
         </div>
@@ -402,7 +402,7 @@ const DepartmentsIndexPage = () => {
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-white/15 text-white font-black text-sm tracking-wide hover:border-brand-cyan/50 hover:bg-white/5 transition-all duration-300"
               >
                 Explore BIDS™ Diagnostic
-                <ArrowRight className="w-4 h-4 text-brand-cyan group-hover:translate-x-0.5 transition-transform duration-200" />
+                <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-0.5 transition-transform duration-200" />
               </Link>
             </div>
           </div>

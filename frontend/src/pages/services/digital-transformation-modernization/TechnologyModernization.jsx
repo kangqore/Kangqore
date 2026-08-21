@@ -53,7 +53,7 @@ const TechnologyModernization = () => {
     primaryButton: { text: 'Schedule a Strategy Call', link: '/contact' },
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
     stats: [
-      { value: '60%', label: 'Release Velocity', color: 'text-cyan-400' },
+      { value: '60%', label: 'Release Velocity', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '45%', label: 'Cost Optimization', color: 'text-blue-400' },
       { value: '50%', label: 'Defect Reduction', color: 'text-emerald-400' },
       { value: '3x', label: 'Scaling Speed', color: 'text-purple-400' },

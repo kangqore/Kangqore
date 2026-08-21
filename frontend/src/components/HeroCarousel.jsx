@@ -85,7 +85,7 @@ const HeroCarousel = () => {
           {/* Content */}
           <div className="text-white space-y-6">
             <div className="inline-block">
-              <span className="text-cyan-400 text-sm font-semibold tracking-wide uppercase">
+              <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-sm font-semibold tracking-wide uppercase">
                 {heroSlides[currentSlide].tag}
               </span>
             </div>

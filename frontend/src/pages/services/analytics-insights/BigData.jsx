@@ -66,9 +66,9 @@ const BigData = () => {
 
     stats: [
       { value: '40%', label: 'Storage Cost Reduction', color: 'text-brand-blue' },
-      { value: '10x', label: 'Query Performance', color: 'text-cyan-400' },
+      { value: '10x', label: 'Query Performance', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Real-time', label: 'Data Ingestion', color: 'text-brand-blue' },
-      { value: '99.9%', label: 'Platform Uptime', color: 'text-cyan-400' },
+      { value: '99.9%', label: 'Platform Uptime', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     ],
 
     highFidelity: {

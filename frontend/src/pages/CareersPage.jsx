@@ -289,7 +289,7 @@ const CareersPage = () => {
         primaryButton={{ text: 'Explore Careers', link: '#openings' }}
         secondaryButton={{ text: 'Life at Kangqore', link: '#life-at-kangqore' }}
         stats={[
-          { value: '15+', label: 'Departments', color: 'text-cyan-400' },
+          { value: '15+', label: 'Departments', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '77+', label: 'Services', color: 'text-blue-400' },
           { value: 'India', label: 'First', color: 'text-emerald-400' },
           { value: 'Global', label: 'Ready', color: 'text-purple-400' },
@@ -466,7 +466,7 @@ const CareersPage = () => {
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
             {/* Left Column */}
             <div className="lg:col-span-4">
-              <p className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-4">Open Positions</p>
+              <p className="text-sm font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase tracking-wider mb-4">Open Positions</p>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Newest Postings
               </h2>

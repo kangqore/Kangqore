@@ -250,7 +250,7 @@ export default function ProductStrategyBIDSPage() {
                 {/* Typewriter badge */}
                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-10">
                   <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
-                  <p className="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
+                  <p className="text-xs font-bold tracking-[0.2em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase">
                     <TypewriterText text="Design what matters. Build what wins." start={true} />
                   </p>
                 </div>
@@ -281,7 +281,7 @@ export default function ProductStrategyBIDSPage() {
                     className="group inline-flex items-center gap-2 px-6 py-4 text-white/55 hover:text-white text-sm font-bold tracking-wide transition-colors duration-200"
                   >
                     Explore Capabilities
-                    <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-200" />
+                    <ArrowRight className="w-4 h-4 text-[#2564ea] group-hover:translate-x-1 transition-transform duration-200" />
                   </a>
                 </div>
 
@@ -331,7 +331,7 @@ export default function ProductStrategyBIDSPage() {
           className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-14">
-            <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHAT IS PRODUCT STRATEGY & DESIGN</p>
+            <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">WHAT IS PRODUCT STRATEGY & DESIGN</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
               The complete design{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">intelligence</span>{' '}
@@ -371,7 +371,7 @@ export default function ProductStrategyBIDSPage() {
               <div className="group p-8 border border-white/[0.08] bg-[#06090f] rounded-2xl relative overflow-hidden hover:border-transparent transition-all duration-500">
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
                 <div className="relative z-10">
-                  <p className="text-[11px] font-black tracking-[0.4em] text-cyan-400/70 group-hover:text-white/70 uppercase mb-4 transition-colors duration-500">THE SOLUTION</p>
+                  <p className="text-[11px] font-black tracking-[0.4em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:text-white/70 uppercase mb-4 transition-colors duration-500">THE SOLUTION</p>
                   <p className="text-white font-semibold text-lg leading-snug">
                     Kangqore helps businesses connect business intent, user needs, and execution realities — so product teams make better choices earlier and build with greater confidence.
                   </p>
@@ -436,7 +436,7 @@ export default function ProductStrategyBIDSPage() {
       <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-20">
-            <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PHILOSOPHY</p>
+            <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">THE PHILOSOPHY</p>
             <div className="grid lg:grid-cols-2 gap-16 items-end">
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 Design What Matters.<br />
@@ -461,14 +461,14 @@ export default function ProductStrategyBIDSPage() {
                   >
                     <div className="flex items-center justify-between gap-4 mb-2">
                       <div className="flex items-center gap-4">
-                        <FeatureIcon className={`w-4 h-4 flex-shrink-0 transition-colors ${isOpen ? 'text-cyan-400' : 'text-white/50'}`} />
+                        <FeatureIcon className={`w-4 h-4 flex-shrink-0 transition-colors ${isOpen ? 'text-[#2564ea]' : 'text-white/50'}`} />
                         <p className={`font-black text-base leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55'}`}>{featureTitles[i]}</p>
                       </div>
                       <ChevronDown className={`w-4 h-4 text-white/20 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
                     </div>
                     {isOpen && (
                       <div className="pl-8 pt-1">
-                        <p className="text-[11px] font-black tracking-[0.3em] text-cyan-400/70 uppercase mb-2">{label}</p>
+                        <p className="text-[11px] font-black tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-2">{label}</p>
                         <p className="text-white/55 text-sm font-medium leading-relaxed">{featureContents[i]}</p>
                       </div>
                     )}
@@ -482,11 +482,11 @@ export default function ProductStrategyBIDSPage() {
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
                 <div className="relative z-10">
                   <p className="text-[11px] font-black tracking-[0.4em] text-white/60 group-hover:text-white/60 uppercase mb-6 transition-colors duration-500">DESIGN INTELLIGENCE PROFILE</p>
-                  <p className="text-[11px] font-black tracking-widest uppercase mb-2 text-cyan-400 group-hover:text-white transition-colors duration-500">{featureLabels[activeFeature] || 'Select a Feature'}</p>
+                  <p className="text-[11px] font-black tracking-widest uppercase mb-2 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:text-white transition-colors duration-500">{featureLabels[activeFeature] || 'Select a Feature'}</p>
                   <p className="text-white font-black text-2xl leading-tight mb-5">{featureTitles[activeFeature] || '—'}</p>
                   <p className="text-white/50 group-hover:text-white text-sm font-medium leading-relaxed mb-6 transition-colors duration-500">{featureContents[activeFeature] || 'Select a feature to explore its role in the product design framework.'}</p>
                   <div className="p-4 rounded-xl border border-cyan-400/20 group-hover:border-white/25 bg-cyan-400/[0.04] group-hover:bg-white/10 transition-colors duration-500">
-                    <p className="text-sm font-semibold leading-snug text-cyan-400 group-hover:text-white transition-colors duration-500">{featureMicros[activeFeature] || 'Strategy, Design, Prototyping, and Systems — four layers of the same vision.'}</p>
+                    <p className="text-sm font-semibold leading-snug bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:text-white transition-colors duration-500">{featureMicros[activeFeature] || 'Strategy, Design, Prototyping, and Systems — four layers of the same vision.'}</p>
                   </div>
                   <div className="mt-8">
                     <Link to="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-gray-900 font-bold text-sm tracking-wide hover:bg-white/90 transition-colors duration-200">
@@ -507,7 +507,7 @@ export default function ProductStrategyBIDSPage() {
           <div className="group flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 p-8 rounded-2xl border border-white/[0.07] bg-[#06090f] relative overflow-hidden hover:border-transparent transition-all duration-500">
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
             <div className="relative z-10">
-              <p className="text-[11px] font-black tracking-[0.4em] text-cyan-400/70 group-hover:text-white/70 uppercase mb-3 transition-colors duration-500">READY TO EXPLORE A DESIGN ENGAGEMENT?</p>
+              <p className="text-[11px] font-black tracking-[0.4em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:text-white/70 uppercase mb-3 transition-colors duration-500">READY TO EXPLORE A DESIGN ENGAGEMENT?</p>
               <p className="text-white font-black text-xl leading-snug mb-2">Start with a 30-minute discovery call.</p>
               <p className="text-white/50 group-hover:text-white text-sm font-medium leading-relaxed max-w-xl transition-colors duration-500">
                 Walk through the Kangqore Product Strategy & Design approach with a senior specialist. No commitment — a clear picture of how the engagement works and whether it fits your current priorities.
@@ -552,7 +552,7 @@ export default function ProductStrategyBIDSPage() {
         >
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
-              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE PROCESS</p>
+              <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">THE PROCESS</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 From Ambition to<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Market Ready.</span>
@@ -564,7 +564,7 @@ export default function ProductStrategyBIDSPage() {
               </p>
               <Link to="/contact" className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group">
                 <span className="text-white font-black text-sm tracking-wide">Request a Scoping Session</span>
-                <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 text-[#2564ea] group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </div>
           </div>
@@ -610,7 +610,7 @@ export default function ProductStrategyBIDSPage() {
 
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
-              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">THE STRATEGIC IMPERATIVE</p>
+              <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">THE STRATEGIC IMPERATIVE</p>
               <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 A fragmented user experience directly erodes{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">brand equity.</span>
@@ -653,7 +653,7 @@ export default function ProductStrategyBIDSPage() {
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${capVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-16">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">THE FRAMEWORK</p>
+            <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">THE FRAMEWORK</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               8 Design Capability{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Areas</span>
@@ -679,7 +679,7 @@ export default function ProductStrategyBIDSPage() {
                     </div>
                     {active && (
                       <div className="lg:hidden pb-6 pl-7 pr-2">
-                        <p className="text-[11px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-3">CAPABILITY {c.n}</p>
+                        <p className="text-[11px] font-black tracking-[0.35em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-3">CAPABILITY {c.n}</p>
                         <p className="text-white/70 text-sm leading-relaxed mb-4">{c.desc}</p>
                         <ul className="space-y-1.5">
                           {c.items.map(item => (
@@ -698,7 +698,7 @@ export default function ProductStrategyBIDSPage() {
 
             <div className="hidden lg:flex items-start pt-5">
               <div className="w-full sticky top-8">
-                <p className="text-[11px] font-black tracking-[0.35em] text-cyan-400 uppercase mb-6">CAPABILITY {capabilities[safeCapIdx].n}</p>
+                <p className="text-[11px] font-black tracking-[0.35em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-6">CAPABILITY {capabilities[safeCapIdx].n}</p>
                 <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">{capabilities[safeCapIdx].title}</h3>
                 <p className="text-white/60 text-base leading-relaxed mb-8 max-w-lg">{capabilities[safeCapIdx].desc}</p>
                 <ul className="space-y-3">
@@ -720,7 +720,7 @@ export default function ProductStrategyBIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 xl:gap-12 mb-20 lg:mb-32">
             <div className="w-full lg:w-[40%] xl:w-[35%]">
-              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">ENTERPRISE DESIGN COE</p>
+              <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">ENTERPRISE DESIGN COE</p>
               <p className="text-white/60 text-lg leading-relaxed font-light mb-5">
                 Our <strong className="text-white">Enterprise Design CoE</strong> provides a high-velocity strategic blueprint, surrounding your product idea with four critical layers of UX validation.
               </p>
@@ -797,7 +797,7 @@ export default function ProductStrategyBIDSPage() {
           {/* Differentiators — editorial ledger */}
           <div ref={differentiatorRef}>
             <div className="flex items-center justify-between mb-12">
-              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase">WHY THIS APPROACH</p>
+              <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase">WHY THIS APPROACH</p>
               <div className="hidden lg:grid grid-cols-[1fr_1fr] gap-10 text-[11px] font-black tracking-[0.3em] text-white/60 uppercase pr-1">
                 <span>Reason</span>
                 <span>Detail</span>
@@ -953,7 +953,7 @@ export default function ProductStrategyBIDSPage() {
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${pillarsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-16">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">HOW WE WORK</p>
+            <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">HOW WE WORK</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               6 Design{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">Intelligence Pillars</span>
@@ -998,7 +998,7 @@ export default function ProductStrategyBIDSPage() {
           className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${whyVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="mb-16">
-            <p className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase mb-5">WHY KANGQORE</p>
+            <p className="text-xs font-bold tracking-[0.3em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-5">WHY KANGQORE</p>
             <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
               Built for organizations<br />
               <span className="bg-brand-gradient bg-clip-text text-transparent">preparing for significant change.</span>
@@ -1030,7 +1030,7 @@ export default function ProductStrategyBIDSPage() {
 
           <div className="grid lg:grid-cols-2 gap-20 items-start pt-16 border-t border-white/[0.05]">
             <div>
-              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">WHERE EXPERIENCE STRATEGY ADDS MOST VALUE</p>
+              <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">WHERE EXPERIENCE STRATEGY ADDS MOST VALUE</p>
               <h3 className="text-3xl sm:text-4xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 Relevant across new products,<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">redesigns, and large portfolios.</span>
@@ -1063,7 +1063,7 @@ export default function ProductStrategyBIDSPage() {
         >
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-end mb-20">
             <div>
-              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">FREQUENTLY ASKED QUESTIONS</p>
+              <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">FREQUENTLY ASKED QUESTIONS</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 Common questions<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">answered.</span>
@@ -1075,7 +1075,7 @@ export default function ProductStrategyBIDSPage() {
               </p>
               <Link to="/contact" className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/15 hover:border-cyan-400/50 hover:bg-white/5 transition-all duration-300 group">
                 <span className="text-white font-black text-sm tracking-wide">Book a Discovery Call</span>
-                <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 text-[#2564ea] group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </div>
           </div>
@@ -1087,7 +1087,7 @@ export default function ProductStrategyBIDSPage() {
                 <div key={i} className="border-t border-white/[0.06]">
                   <button onClick={() => setOpenFaq(isOpen ? null : i)} className="w-full flex items-start justify-between gap-8 py-7 text-left group">
                     <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white/80'}`}>{faq.q}</span>
-                    <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
+                    <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#2564ea]' : ''}`} />
                   </button>
                   {isOpen && (
                     <div className="pb-7 pr-12">
@@ -1107,7 +1107,7 @@ export default function ProductStrategyBIDSPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
-              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">EXTEND YOUR STRATEGY</p>
+              <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">EXTEND YOUR STRATEGY</p>
               <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.2] tracking-tight text-white mb-8">
                 Related Engineering{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">Expertise.</span>
@@ -1158,10 +1158,10 @@ export default function ProductStrategyBIDSPage() {
             <div className="absolute inset-0 bg-black/70 z-10" />
             <div className="absolute inset-0 bg-[#2564ea]/40 z-10" />
             <div className="relative z-20">
-              <p className="text-[11px] font-black tracking-[0.45em] text-cyan-400 uppercase mb-8">READY TO GET STARTED?</p>
+              <p className="text-[11px] font-black tracking-[0.45em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-8">READY TO GET STARTED?</p>
               <h2 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-3xl mx-auto">
                 Ready to define a sharper product and a{' '}
-                <span className="text-cyan-300">stronger experience?</span>
+                <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">stronger experience?</span>
               </h2>
               <p className="text-white/70 text-lg font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
                 Let's shape the right product strategy, design the right experience, and create the execution-ready foundation needed to move faster with confidence.

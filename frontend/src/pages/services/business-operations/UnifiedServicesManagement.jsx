@@ -35,7 +35,7 @@ const UnifiedServicesManagement = () => {
     stats: [
       { value: '40%+', label: 'Faster Resolution Time', color: 'text-brand-blue' },
       { value: '360°', label: 'Cross-Function Visibility', color: 'text-blue-400' },
-      { value: '24/7', label: 'AI-Powered Service Support', color: 'text-cyan-400' },
+      { value: '24/7', label: 'AI-Powered Service Support', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Day 1', label: 'Governance Ready Operations', color: 'text-brand-blue' },
     ],
 

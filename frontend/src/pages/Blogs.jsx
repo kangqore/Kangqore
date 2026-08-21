@@ -70,7 +70,7 @@ const Blogs = () => {
         primaryButton={{ text: 'Subscribe', link: '#subscribe' }}
         secondaryButton={{ text: 'Browse Topics', link: '#topics' }}
         stats={[
-          { value: '100+', label: 'Articles', color: 'text-cyan-400' },
+          { value: '100+', label: 'Articles', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '20+', label: 'Expert Authors', color: 'text-blue-400' },
           { value: '50K+', label: 'Monthly Readers', color: 'text-emerald-400' },
           { value: '8', label: 'Categories', color: 'text-purple-400' },

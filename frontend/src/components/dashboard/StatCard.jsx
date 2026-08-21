@@ -20,7 +20,7 @@ const StatCard = ({
     amber: "bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400",
     red: "bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400",
     rose: "bg-rose-50 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400",
-    cyan: "bg-cyan-50 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400",
+    cyan: "bg-cyan-50 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent dark:bg-cyan-900/30 dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent",
     orange: "bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400",
   };
 

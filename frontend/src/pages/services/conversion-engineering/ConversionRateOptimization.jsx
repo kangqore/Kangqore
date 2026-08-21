@@ -36,7 +36,7 @@ const ConversionRateOptimization = () => {
     stats: [
       { value: 'Data-Driven', label: 'CRO Strategy', color: 'text-brand-blue' },
       { value: 'UX + Psychology', label: 'Engineering', color: 'text-blue-400' },
-      { value: 'A/B & Multivariate', label: 'Testing', color: 'text-cyan-400' },
+      { value: 'A/B & Multivariate', label: 'Testing', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Built for', label: 'Revenue Growth', color: 'text-brand-blue' },
     ],
 

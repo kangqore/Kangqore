@@ -23,7 +23,7 @@ const Banking = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '50+', label: 'Banking Clients', color: 'text-cyan-400' },
+          { value: '50+', label: 'Banking Clients', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '99.9%', label: 'Uptime SLA', color: 'text-blue-400' },
           { value: '$2B+', label: 'Transactions Daily', color: 'text-emerald-400' },
           { value: 'SOC 2', label: 'Certified', color: 'text-purple-400' },

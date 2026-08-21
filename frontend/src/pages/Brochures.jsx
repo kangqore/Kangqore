@@ -96,7 +96,7 @@ const Brochures = () => {
         primaryButton={{ text: 'Request Custom Brochure', link: '/contact' }}
         secondaryButton={{ text: 'View All Downloads', link: '#downloads' }}
         stats={[
-          { value: '20+', label: 'Brochures', color: 'text-cyan-400' },
+          { value: '20+', label: 'Brochures', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '15+', label: 'Service Guides', color: 'text-blue-400' },
           { value: '10+', label: 'Case Studies', color: 'text-emerald-400' },
           { value: 'Free', label: 'All Resources', color: 'text-purple-400' },

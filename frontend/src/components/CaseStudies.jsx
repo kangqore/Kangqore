@@ -38,7 +38,7 @@ const CaseStudyCard = ({ study, index }) => {
         </p>
         <a
           href={study.link}
-          className="inline-flex items-center text-brand-blue font-semibold text-sm hover:text-cyan-500 transition-colors group"
+          className="inline-flex items-center text-brand-blue font-semibold text-sm hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors group"
         >
           Read more
           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />

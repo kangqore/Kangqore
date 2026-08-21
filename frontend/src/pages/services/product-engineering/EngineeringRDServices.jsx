@@ -568,7 +568,7 @@ const EngineeringRDServices = () => {
                 <div className="relative">
                    <Cpu className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
                 </div>
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
+                <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
                   <BarChart3 className="w-6 h-6" />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">

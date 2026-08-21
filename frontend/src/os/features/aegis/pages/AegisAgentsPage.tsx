@@ -19,7 +19,7 @@ const ENGINE_COLORS: Record<string, string> = {
   ACCESS_SENTINEL:      'text-rose-300',
   INTELLIGENCE_REGISTRY:'text-emerald-300',
   EGRESS_CONTROL:       'text-amber-300',
-  POLICY:               'text-cyan-300',
+  POLICY:               'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent',
   TRUST_COMPLIANCE:     'text-teal-300',
   RISK_INTELLIGENCE:    'text-orange-300',
 }

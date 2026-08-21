@@ -181,7 +181,7 @@ const GlobalAuthPrompt = () => {
                 onClick={() => { setAuthTab('signin'); setAuthError(null); }}
                 className={`flex-1 pb-3 text-sm font-bold border-b-2 transition ${
                   authTab === 'signin' 
-                    ? 'border-brand-cyan text-brand-cyan' 
+                    ? 'border-brand-cyan bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' 
                     : 'border-transparent text-gray-400 hover:text-white'
                 }`}
               >
@@ -191,7 +191,7 @@ const GlobalAuthPrompt = () => {
                 onClick={() => { setAuthTab('signup'); setAuthError(null); }}
                 className={`flex-1 pb-3 text-sm font-bold border-b-2 transition ${
                   authTab === 'signup' 
-                    ? 'border-brand-cyan text-brand-cyan' 
+                    ? 'border-brand-cyan bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' 
                     : 'border-transparent text-gray-400 hover:text-white'
                 }`}
               >

@@ -47,7 +47,7 @@ const ApplicationModernization = () => {
     primaryButton: { text: 'Request Modernization Assessment', link: '/contact' },
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
     stats: [
-      { value: 'Zero', label: 'Disruption Risk', color: 'text-cyan-400' },
+      { value: 'Zero', label: 'Disruption Risk', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Accelerated', label: 'Release Velocity', color: 'text-blue-400' },
       { value: 'Reduced', label: 'Total Cost of Ownership', color: 'text-purple-400' },
       { value: 'Cloud-Native', label: 'Architecture Ready', color: 'text-orange-400' },
@@ -406,7 +406,7 @@ const ApplicationModernization = () => {
                    <RefreshCw className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:rotate-180 transition-transform duration-1000" />
                 </div>
                 
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:scale-110 transition-transform">
+                <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-2xl border border-white/10 group-hover:scale-110 transition-transform">
                   <Cpu className="w-6 h-6" />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:rotate-45 transition-transform">

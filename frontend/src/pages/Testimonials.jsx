@@ -22,7 +22,7 @@ const Testimonials = () => {
         primaryButton={{ text: 'View Case Studies', link: '/case-studies' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '98%', label: 'Satisfaction Rate', color: 'text-cyan-400' },
+          { value: '98%', label: 'Satisfaction Rate', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '500+', label: 'Projects Delivered', color: 'text-blue-400' },
           { value: '15+', label: 'Industries', color: 'text-emerald-400' },
           { value: '4.9/5', label: 'Average Rating', color: 'text-purple-400' },

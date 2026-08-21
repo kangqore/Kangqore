@@ -356,7 +356,7 @@ const AgentRuntime = ({ activeStep, setActiveStep }) => {
                 }}
               >
                 <div 
-                  className="text-center font-bold tracking-widest text-[11px] text-cyan-400 mb-0.5 select-none"
+                  className="text-center font-bold tracking-widest text-[11px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-0.5 select-none"
                 >
                   {step.stage}
                 </div>

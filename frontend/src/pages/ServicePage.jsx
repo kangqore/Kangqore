@@ -27,7 +27,7 @@ const ServicePage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Service Not Found</h1>
-          <Link to="/" className="text-brand-blue hover:text-cyan-500">Return to Home</Link>
+          <Link to="/" className="text-brand-blue hover:text-[#2564ea]">Return to Home</Link>
         </div>
       </div>
     );
@@ -139,7 +139,7 @@ const ServicePage = () => {
         primaryButton={{ text: 'Get Started', link: '/contact' }}
         secondaryButton={{ text: `Back to ${department.name}`, link: `/department/${departmentSlug}` }}
         stats={[
-          { value: '100+', label: 'Projects', color: 'text-cyan-400' },
+          { value: '100+', label: 'Projects', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '98%', label: 'Satisfaction', color: 'text-blue-400' },
           { value: '24/7', label: 'Support', color: 'text-emerald-400' },
           { value: 'Global', label: 'Delivery', color: 'text-purple-400' },
@@ -221,7 +221,7 @@ const ServicePage = () => {
                 {/* Read More/Less Toggle */}
                 <button
                   onClick={() => toggleCard(cardIndex)}
-                  className="mt-4 text-brand-blue hover:text-cyan-500 font-medium text-sm flex items-center gap-1 transition-colors"
+                  className="mt-4 text-brand-blue hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-medium text-sm flex items-center gap-1 transition-colors"
                 >
                   {expandedCards[cardIndex] ? (
                     <>Read Less <ChevronUp className="w-4 h-4" /></>
@@ -313,7 +313,7 @@ const ServicePage = () => {
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2">Insights</h2>
               <p className="text-lg text-gray-600 dark:text-gray-400">Latest thinking on {service.name.toLowerCase()}</p>
             </div>
-            <Link to="/" className="text-brand-blue hover:text-cyan-500 font-semibold flex items-center gap-2">
+            <Link to="/" className="text-brand-blue hover:text-[#2564ea] font-semibold flex items-center gap-2">
               View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -396,19 +396,19 @@ const ServicePage = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 rounded-xl p-6 text-center">
-                  <div className="text-4xl font-bold text-cyan-400 mb-2">50+</div>
+                  <div className="text-4xl font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-2">50+</div>
                   <div className="text-white/70 text-sm">Open Positions</div>
                 </div>
                 <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 rounded-xl p-6 text-center">
-                  <div className="text-4xl font-bold text-cyan-400 mb-2">40+</div>
+                  <div className="text-4xl font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-2">40+</div>
                   <div className="text-white/70 text-sm">Countries</div>
                 </div>
                 <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 rounded-xl p-6 text-center">
-                  <div className="text-4xl font-bold text-cyan-400 mb-2">4.5</div>
+                  <div className="text-4xl font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-2">4.5</div>
                   <div className="text-white/70 text-sm flex items-center justify-center gap-1"><Star className="w-4 h-4 fill-cyan-400" /> Rating</div>
                 </div>
                 <div className="bg-white dark:bg-gray-900 dark:border-gray-800/10 rounded-xl p-6 text-center">
-                  <div className="text-4xl font-bold text-cyan-400 mb-2">95%</div>
+                  <div className="text-4xl font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-2">95%</div>
                   <div className="text-white/70 text-sm">Employee Satisfaction</div>
                 </div>
               </div>

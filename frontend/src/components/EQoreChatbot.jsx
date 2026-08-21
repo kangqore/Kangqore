@@ -481,7 +481,7 @@ const EQoreChatbot = () => {
             </div>
             <div>
               <h3 className="font-display font-bold text-sm tracking-wide">eQORE</h3>
-              <p className="text-[11px] text-cyan-400/80 uppercase tracking-widest font-semibold">
+              <p className="text-[11px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase tracking-widest font-semibold">
                 {streaming ? 'Thinking…' : 'AI Assistant'}
               </p>
             </div>
@@ -495,7 +495,7 @@ const EQoreChatbot = () => {
                   window.speechSynthesis.cancel();
                 }
               }}
-              className={`p-2 rounded-lg transition-colors ${isVoiceEnabled ? 'bg-cyan-400/20 text-cyan-400' : 'hover:bg-white/10 text-slate-400 hover:text-white'}`}
+              className={`p-2 rounded-lg transition-colors ${isVoiceEnabled ? 'bg-cyan-400/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' : 'hover:bg-white/10 text-slate-400 hover:text-white'}`}
               title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
             >
               {isVoiceEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -564,7 +564,7 @@ const EQoreChatbot = () => {
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={{
-                              a: ({node, ...props}) => <a className="text-brand-cyan hover:underline" target="_blank" rel="noopener noreferrer" {...props} />,
+                              a: ({node, ...props}) => <a className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline" target="_blank" rel="noopener noreferrer" {...props} />,
                               strong: ({node, ...props}) => <strong className="text-white font-bold" {...props} />,
                               p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
                               ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-2 space-y-1" {...props} />,
@@ -576,7 +576,7 @@ const EQoreChatbot = () => {
                                     <code className={className} {...props}>{children}</code>
                                   </pre>
                                 ) : (
-                                  <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono text-cyan-200" {...props}>{children}</code>
+                                  <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" {...props}>{children}</code>
                                 )
                               }
                             }}
@@ -612,7 +612,7 @@ const EQoreChatbot = () => {
                         href="https://kangqore.com" 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="text-brand-cyan hover:underline lowercase tracking-normal"
+                        className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline lowercase tracking-normal"
                       >
                         kangqore.com
                       </a>
@@ -705,7 +705,7 @@ const EQoreChatbot = () => {
                     className="text-left text-xs bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white py-2 px-3 rounded-lg flex items-center justify-between group transition-all"
                   >
                     {prompt}
-                    <ChevronRight className="w-3 h-3 text-cyan-400 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    <ChevronRight className="w-3 h-3 text-[#2564ea] opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </button>
                 ))}
               </div>
@@ -748,7 +748,7 @@ const EQoreChatbot = () => {
                   className={`p-2 rounded-lg transition-all flex items-center justify-center ${
                     isListening
                       ? 'bg-red-500/20 text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.3)]'
-                      : 'hover:bg-white/10 text-slate-400 hover:text-cyan-400'
+                      : 'hover:bg-white/10 text-slate-400 hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'
                   } disabled:opacity-30`}
                   title={isListening ? 'Stop listening' : 'Voice input'}
                 >

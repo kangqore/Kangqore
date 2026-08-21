@@ -443,7 +443,7 @@ export const AIMetricsSection = ({ metrics }) => {
 
               <div className="flex justify-between items-start mb-10">
                 <div className="w-14 h-14 rounded-2xl bg-white dark:bg-gray-900 dark:border-gray-800/5 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-brand-blue/20 transition-all duration-500">
-                  <kpi.icon className="w-7 h-7 text-cyan-400" />
+                  <kpi.icon className="w-7 h-7 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" />
                 </div>
               </div>
 

@@ -18,7 +18,7 @@ const DepartmentPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Department Not Found</h1>
-          <Link to="/" className="text-brand-blue hover:text-cyan-500">Return to Home</Link>
+          <Link to="/" className="text-brand-blue hover:text-[#2564ea]">Return to Home</Link>
         </div>
       </div>
     );
@@ -109,7 +109,7 @@ const DepartmentPage = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-4">
               {[
-                { value: `${department.services.length}`, label: 'Specialized Services', color: 'text-cyan-400' },
+                { value: `${department.services.length}`, label: 'Specialized Services', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
                 { value: '100+', label: 'Projects Delivered', color: 'text-blue-400' },
                 { value: '98%', label: 'Client Satisfaction', color: 'text-emerald-400' },
                 { value: '24/7', label: 'Expert Support', color: 'text-purple-400' },

@@ -375,7 +375,7 @@ const itSecurityRelatedSchematic = (
               <div className="relative">
                 <Shield className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
               </div>
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
+              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
                 <Lock className="w-6 h-6" />
               </div>
               <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">
@@ -458,7 +458,7 @@ const itSecurityServices = {
   hideGenericFaq: true,
 
   stats: [
-    { value: '24/7', label: 'Monitoring Coverage', color: 'text-cyan-400' },
+    { value: '24/7', label: 'Monitoring Coverage', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Multi-layered', label: 'Defense Architecture', color: 'text-blue-400' },
     { value: 'Zero-Trust', label: 'Ready Frameworks', color: 'text-purple-400' },
     { value: 'Expertise', label: 'Compliance Alignment', color: 'text-orange-400' },
@@ -695,7 +695,7 @@ const otExecutionEcosystemSection = (
           </div>
           <div className="absolute bottom-16 right-8 flex flex-col items-center gap-2">
             <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl shadow-lg flex items-center justify-center relative">
-              <Activity className="w-10 h-10 text-cyan-400" />
+              <Activity className="w-10 h-10 text-[#2564ea]" />
               <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></div>
             </div>
             <span className="text-[11px] font-bold text-gray-400 tracking-[0.2em] font-mono uppercase">Telemetry</span>

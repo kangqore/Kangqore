@@ -58,7 +58,7 @@ const TechnologyTransformation = () => {
     primaryButton: { text: 'Start Transformation Assessment', link: '/contact' },
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
     stats: [
-      { value: '200%', label: 'Systemic Volatility', color: 'text-cyan-400' },
+      { value: '200%', label: 'Systemic Volatility', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '97%', label: 'Leaders on Tech', color: 'text-blue-400' },
       { value: '21%', label: 'True Integration', color: 'text-emerald-400' },
       { value: '38%', label: 'CXO Disruption Fear', color: 'text-purple-400' },

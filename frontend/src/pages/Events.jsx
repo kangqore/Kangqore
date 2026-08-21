@@ -60,7 +60,7 @@ const Events = () => {
         primaryButton={{ text: 'Register Now', link: '#upcoming' }}
         secondaryButton={{ text: 'View Past Events', link: '#past' }}
         stats={[
-          { value: '50+', label: 'Annual Events', color: 'text-cyan-400' },
+          { value: '50+', label: 'Annual Events', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '10K+', label: 'Attendees', color: 'text-blue-400' },
           { value: '100+', label: 'Expert Speakers', color: 'text-emerald-400' },
           { value: 'Global', label: 'Reach', color: 'text-purple-400' },

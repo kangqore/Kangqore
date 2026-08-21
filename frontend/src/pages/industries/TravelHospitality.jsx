@@ -24,7 +24,7 @@ const TravelHospitality = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '100+', label: 'Travel Partners', color: 'text-cyan-400' },
+          { value: '100+', label: 'Travel Partners', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '10M+', label: 'Bookings', color: 'text-blue-400' },
           { value: '40%', label: 'Efficiency Gain', color: 'text-emerald-400' },
           { value: 'Global', label: 'Reach', color: 'text-purple-400' }

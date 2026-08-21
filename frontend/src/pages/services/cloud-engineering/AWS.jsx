@@ -52,7 +52,7 @@ const AWS = () => {
     primaryButton: { text: 'Request a Consultation', link: '/contact' },
     secondaryButton: { text: 'Explore Capabilities', link: '#capabilities' },
     stats: [
-      { value: '99.99%', label: 'Availability', color: 'text-cyan-400' },
+      { value: '99.99%', label: 'Availability', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Zero', label: 'Migration Downtime', color: 'text-blue-400' },
       { value: '40%+', label: 'Cost Reduction', color: 'text-emerald-400' },
       { value: '10x', label: 'Deployment Speed', color: 'text-purple-400' },

@@ -127,7 +127,7 @@ const PageHero = ({
                     <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
                       {secondaryButton.text}
                     </span>
-                    <ArrowRight className="w-4 h-4 text-cyan-400 transform group-hover:translate-x-1 transition-transform duration-300" />
+                    <ArrowRight className="w-4 h-4 text-[#2564ea] transform group-hover:translate-x-1 transition-transform duration-300" />
                   </Link>
                 )}
               </div>

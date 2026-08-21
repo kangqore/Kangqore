@@ -33,7 +33,7 @@ const InternetOfThings = () => {
       { label: 'Internet of Things' }
     ],
     stats: [
-      { value: 'Connect', label: 'Assets, devices, and services intelligently', color: 'text-cyan-400' },
+      { value: 'Connect', label: 'Assets, devices, and services intelligently', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Analyze', label: 'Turn live telemetry into business insight', color: 'text-blue-400' },
       { value: 'Transform', label: 'Improve workflows through connected operations', color: 'text-brand-blue' },
       { value: 'Scale', label: 'Move from pilot to enterprise-grade execution', color: 'text-purple-400' }

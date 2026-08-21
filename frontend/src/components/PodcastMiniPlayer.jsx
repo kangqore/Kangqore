@@ -67,7 +67,7 @@ const PodcastMiniPlayer = () => {
               {/* Middle: Text & Tiny Progress Line */}
               <div className="flex-1 min-w-0 flex flex-col justify-center translate-y-[-1px]">
                 <div className="flex items-center gap-1.5 truncate mb-0.5">
-                  <span className="text-[8px] uppercase tracking-wider font-bold text-cyan-400 shrink-0">Playing:</span>
+                  <span className="text-[8px] uppercase tracking-wider font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0">Playing:</span>
                   <span className="text-[10px] font-semibold text-white truncate">The eQORE Show</span>
                 </div>
                 {/* Micro Progress Bar */}
@@ -87,7 +87,7 @@ const PodcastMiniPlayer = () => {
               <div className="flex items-center gap-1 shrink-0 pl-1.5">
                 <button
                   onClick={togglePlay}
-                  className="w-7 h-7 flex items-center justify-center rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 transition-colors"
+                  className="w-7 h-7 flex items-center justify-center rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors"
                   aria-label={isPlaying ? "Pause" : "Play"}
                 >
                   {isPlaying ? (

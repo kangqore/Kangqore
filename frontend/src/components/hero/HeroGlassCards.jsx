@@ -30,9 +30,9 @@ const EqoreIntelligenceFeed = ({ allServices }) => {
   }, [allServices]);
 
   const getTagColor = (deptName) => {
-    if (!deptName) return 'text-cyan-400';
+    if (!deptName) return 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent';
     const sum = deptName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const types = ['text-emerald-400', 'text-amber-400', 'text-blue-400', 'text-cyan-400', 'text-purple-400'];
+    const types = ['text-emerald-400', 'text-amber-400', 'text-blue-400', 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent', 'text-purple-400'];
     return types[sum % types.length];
   };
 
@@ -166,7 +166,7 @@ const HeroGlassCards = () => {
             
             <p
               key={`cat-${deptIdx}`}
-              className="text-[10px] font-bold uppercase tracking-[0.15em] text-cyan-200 mb-1 animate-fade-in line-clamp-1"
+              className="text-[10px] font-bold uppercase tracking-[0.15em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-1 animate-fade-in line-clamp-1"
             >
               {currentDept.tagline}
             </p>

@@ -47,7 +47,7 @@ const GlobalCapabilityCenters = () => {
     
     // Stats — scannable, specific, no adjectives
     stats: [
-      { value: '60', label: 'Days to First Sprint', color: 'text-cyan-400' },
+      { value: '60', label: 'Days to First Sprint', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '500+', label: 'Pre-Vetted Engineers', color: 'text-blue-400' },
       { value: '21', label: 'Days Avg. Time-to-Hire', color: 'text-emerald-400' },
       { value: '100%', label: 'Your Team. Your IP.', color: 'text-purple-400' },

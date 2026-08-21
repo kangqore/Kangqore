@@ -37,7 +37,7 @@ const PerformanceMarketing = () => {
     stats: [
       { value: '3x ROAS', label: 'Revenue-Led Campaign Architecture', color: 'text-brand-blue' },
       { value: 'Multi-Channel', label: 'Google, Meta, LinkedIn, YouTube', color: 'text-blue-400' },
-      { value: 'Full-Funnel', label: 'Click-to-Customer Optimization', color: 'text-cyan-400' },
+      { value: 'Full-Funnel', label: 'Click-to-Customer Optimization', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Real-Time', label: 'Dashboards, Attribution & Scaling', color: 'text-brand-blue' },
     ],
 

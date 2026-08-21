@@ -196,7 +196,7 @@ export default function ProblemTrilogy() {
           Every constraint that goes undiagnosed has a compounding business cost. The question is
           not whether these costs exist — but whether your organization has measured them.
         </p>
-        <p className="text-lg sm:text-xl font-black text-cyan-400 leading-snug">
+        <p className="text-lg sm:text-xl font-black bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent leading-snug">
           The diagnostic quantifies these costs before they become business failures.
         </p>
       </div>

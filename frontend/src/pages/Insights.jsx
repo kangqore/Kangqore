@@ -114,7 +114,7 @@ const Insights = () => {
         primaryButton={{ text: 'View All Blogs', link: '/blogs' }}
         secondaryButton={{ text: 'Browse Resources', link: '#categories' }}
         stats={[
-          { value: '100+', label: 'Articles', color: 'text-cyan-400' },
+          { value: '100+', label: 'Articles', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '50+', label: 'Case Studies', color: 'text-blue-400' },
           { value: '20+', label: 'White Papers', color: 'text-emerald-400' },
           { value: '10+', label: 'Events', color: 'text-purple-400' },
@@ -132,7 +132,7 @@ const Insights = () => {
                 green: { bg: 'bg-green-100', text: 'text-green-600' },
                 purple: { bg: 'bg-purple-100', text: 'text-purple-600' },
                 orange: { bg: 'bg-orange-100', text: 'text-orange-600' },
-                cyan: { bg: 'bg-cyan-100', text: 'text-cyan-600' },
+                cyan: { bg: 'bg-cyan-100', text: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
                 rose: { bg: 'bg-rose-100', text: 'text-rose-600' }
               };
               const colors = colorStyles[category.color] || colorStyles.blue;

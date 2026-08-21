@@ -146,7 +146,7 @@ const ConciergeKnowledge = () => {
               <ArrowLeft className="w-3 h-3" /> Back to Admin
             </Link>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white mt-1 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-brand-cyan" /> eQORE Knowledge Base
+              <BookOpen className="w-5 h-5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" /> eQORE Knowledge Base
             </h1>
             {data && (
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -313,7 +313,7 @@ const ConciergeKnowledge = () => {
                         type="button"
                         disabled={c.internal}
                         onClick={() => openEditor(c)}
-                        className="text-xs font-semibold text-brand-blue dark:text-brand-cyan hover:underline disabled:opacity-30 disabled:no-underline"
+                        className="text-xs font-semibold text-brand-blue dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline disabled:opacity-30 disabled:no-underline"
                       >
                         Edit
                       </button>

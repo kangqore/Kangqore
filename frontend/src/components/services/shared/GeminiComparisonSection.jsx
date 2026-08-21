@@ -201,7 +201,7 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                       {row.link?.href && (
                         <a
                           href={row.link.href}
-                          className="mt-3 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold text-cyan-400/85 hover:text-cyan-300 underline underline-offset-4 transition-colors"
+                          className="mt-3 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent underline underline-offset-4 transition-colors"
                         >
                           {row.link.label}
                           <span aria-hidden="true">&rarr;</span>

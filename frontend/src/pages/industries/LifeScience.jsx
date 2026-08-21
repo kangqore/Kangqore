@@ -24,7 +24,7 @@ const LifeScience = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '50+', label: 'Research Labs', color: 'text-cyan-400' },
+          { value: '50+', label: 'Research Labs', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: 'FDA', label: 'Compliant', color: 'text-blue-400' },
           { value: '10+', label: 'Drug Discovery Projects', color: 'text-emerald-400' },
           { value: '99.9%', label: 'Data Accuracy', color: 'text-purple-400' }

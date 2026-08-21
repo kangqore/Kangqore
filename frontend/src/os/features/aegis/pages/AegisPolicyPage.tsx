@@ -78,9 +78,9 @@ export function AegisPolicyPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Description banner */}
       <div className="bg-cyan-900/20 border border-cyan-500/20 rounded-2xl p-4 flex items-start gap-3">
-        <Shield className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+        <Shield className="w-4 h-4 text-[#2564ea] mt-0.5 flex-shrink-0" />
         <div>
-          <p className="text-sm font-semibold text-cyan-300 mb-0.5">Policy Engine</p>
+          <p className="text-sm font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-0.5">Policy Engine</p>
           <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
             Governance rules evaluated <strong className="text-[var(--os-text-1)]">at runtime</strong> before any sensitive action proceeds.
             DENY policies block immediately and log a violation. WARN policies pass but raise a flag to the AEGIS audit ledger.

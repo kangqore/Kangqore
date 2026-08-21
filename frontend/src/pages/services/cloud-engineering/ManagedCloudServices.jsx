@@ -20,7 +20,7 @@ const ManagedCloudServices = () => {
     ),
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
     stats: [
-      { value: '24/7', label: 'Operational Monitoring', color: 'text-cyan-400' },
+      { value: '24/7', label: 'Operational Monitoring', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'SRE', label: 'Grade Reliability', color: 'text-blue-400' },
       { value: 'FinOps', label: 'Cost Governance', color: 'text-emerald-400' },
       { value: 'Zero', label: 'Trust Security', color: 'text-purple-400' },

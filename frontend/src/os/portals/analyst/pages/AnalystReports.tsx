@@ -65,7 +65,7 @@ export function AnalystReports() {
             {available.map(r => (
               <div key={r.id} className="os-card flex items-start gap-4 p-4 hover:shadow-md transition-all group">
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <FileBarChart className="w-5 h-5 text-cyan-400" />
+                  <FileBarChart className="w-5 h-5 text-[#2564ea]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3">
@@ -120,7 +120,7 @@ export function AnalystReports() {
 
       <p className="text-xs text-[var(--os-text-2)]">
         Need a report not listed here?{' '}
-        <a href="mailto:analyst@kangqore.com" className="text-cyan-400 hover:underline">Contact analyst relations</a>
+        <a href="mailto:analyst@kangqore.com" className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline">Contact analyst relations</a>
       </p>
     </div>
   )

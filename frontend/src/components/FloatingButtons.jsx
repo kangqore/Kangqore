@@ -405,14 +405,14 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
                       className="w-full flex items-center justify-between group"
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-xl transition-all duration-300 ${expandedMenu === 'whoWeAre' ? 'bg-cyan-400/20 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'bg-white/5 text-white/50 group-hover:text-white'}`}>
+                        <div className={`p-2 rounded-xl transition-all duration-300 ${expandedMenu === 'whoWeAre' ? 'bg-cyan-400/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'bg-white/5 text-white/50 group-hover:text-white'}`}>
                           <Users className="w-5 h-5" />
                         </div>
                         <span className={`text-lg font-bold transition-all duration-300 ${expandedMenu === 'whoWeAre' ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>
                           Who We Are
                         </span>
                       </div>
-                      <ChevronDown className={`w-4 h-4 text-white/30 transition-transform duration-500 ${expandedMenu === 'whoWeAre' ? 'rotate-180 text-cyan-400' : ''}`} />
+                      <ChevronDown className={`w-4 h-4 text-white/30 transition-transform duration-500 ${expandedMenu === 'whoWeAre' ? 'rotate-180 text-[#2564ea]' : ''}`} />
                     </button>
                     
                     <AnimatePresence>
@@ -430,7 +430,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
                                 key={item.path} 
                                 to={item.path} 
                                 onClick={() => setShowFullMenu(false)} 
-                                className="group/link py-1.5 text-[14px] text-white/50 hover:text-cyan-400 flex items-center justify-between transition-colors"
+                                className="group/link py-1.5 text-[14px] text-white/50 hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent flex items-center justify-between transition-colors"
                               >
                                 <span>{item.name}</span>
                                 <ChevronRight className="w-3 h-3 opacity-0 group-hover/link:opacity-100 -translate-x-2 group-hover/link:translate-x-0 transition-all" />

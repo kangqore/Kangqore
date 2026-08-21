@@ -931,10 +931,10 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
           primaryButton={primaryButton}
           secondaryButton={secondaryButton}
           stats={service.stats || [
-            { value: '10+', label: 'Projects Delivered', color: 'text-cyan-400' },
+            { value: '10+', label: 'Projects Delivered', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
             { value: '98%', label: 'Client Satisfaction', color: 'text-blue-400' },
             { value: '24/7', label: 'Support', color: 'text-sky-400' },
-            { value: 'Global', label: 'Delivery', color: 'text-brand-cyan' },
+            { value: 'Global', label: 'Delivery', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           ]}
           videoBackground={videoBg}
           showBeams={service.showBeams}
@@ -984,7 +984,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
                          <p className="stat-counter-text text-sm text-gray-400 leading-relaxed font-light italic">{service.highFidelity.narrative?.bottleneckText || 'Fragmented systems and escalating architectural debt.'}</p>
                       </div>
                       <div className="space-y-2">
-                         <div className="font-mono text-[10px] text-cyan-400 font-bold tracking-widest uppercase">{service.highFidelity.narrative?.requirementLabel || 'The Requirement'}</div>
+                         <div className="font-mono text-[10px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-bold tracking-widest uppercase">{service.highFidelity.narrative?.requirementLabel || 'The Requirement'}</div>
                          <p className="stat-counter-text text-sm text-gray-400 leading-relaxed font-light italic">{service.highFidelity.narrative?.requirementText || 'Observable, secure, and optimized ecosystems.'}</p>
                       </div>
                    </div>

@@ -456,7 +456,7 @@ const CommunitySpotlight = ({ joinedCommunities, onToggleJoin }) => {
 
       <div className="space-y-3 relative z-10">
         <div>
-          <span className="text-xs font-black text-blue-500 dark:text-cyan-400">{current.name}</span>
+          <span className="text-xs font-black text-blue-500 dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">{current.name}</span>
           <p className="text-[11px] font-semibold text-gray-650 dark:text-gray-300 mt-1 leading-snug">{current.description}</p>
         </div>
         
@@ -582,7 +582,7 @@ const TweetComposer = ({ onPost }) => {
           {/* Bottom controls row */}
           <div className="flex items-center justify-between pt-2 border-t border-gray-100/50 dark:border-white/[0.03] mt-2">
             {/* Inline Action Icons */}
-            <div className="flex items-center gap-1 text-blue-500 dark:text-cyan-400">
+            <div className="flex items-center gap-1 text-blue-500 dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
               <button type="button" className="p-1.5 rounded-full hover:bg-blue-500/10 transition-colors" title="Media">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><g><path d="M19.75 2H4.25C3.01 2 2 3.01 2 4.25v15.5C2 20.99 3.01 22 4.25 22h15.5c1.24 0 2.25-1.01 2.25-2.25V4.25C22 3.01 20.99 2 19.75 2zM4.25 3.5h15.5c.413 0 .75.337.75.75v9.676l-3.858-3.858c-.14-.14-.33-.22-.53-.22s-.39.08-.53.22l-4.75 4.75-2.95-2.95c-.14-.14-.33-.22-.53-.22s-.39.08-.53.22L3.5 16.251V4.25c0-.413.337-.75.75-.75zm0 17c-.413 0-.75-.337-.75-.75v-2.09l4.57-4.57 2.95 2.95c.14.14.33.22.53.22s.39-.08.53-.22l4.75-4.75 3.42 3.42V19.25c0 .413-.337.75-.75.75H4.25zM15 9c-.828 0-1.5-.672-1.5-1.5S14.172 6 15 6s1.5.672 1.5 1.5S15.828 9 15 9z"></path></g></svg>
               </button>
@@ -748,7 +748,7 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
                 <div className="flex items-center gap-1.5">
                   <button 
                     onClick={() => onCommunityClick?.(topic.community)}
-                    className="text-[11px] font-extrabold text-blue-600 dark:text-cyan-400 hover:underline transition-all"
+                    className="text-[11px] font-extrabold text-blue-600 dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline transition-all"
                   >
                     {topic.community}
                   </button>
@@ -777,7 +777,7 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
             {/* Title */}
             <h3 
               onClick={() => onCardClick?.(topic)}
-              className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-snug mb-2 group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors cursor-pointer pr-8"
+              className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-snug mb-2 group-hover:text-blue-500 dark:group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors cursor-pointer pr-8"
             >
               {topic.title}
             </h3>
@@ -902,10 +902,10 @@ const TopicCard = ({ topic, joinedCommunities, userVotes, userLikes = [], userRe
 
                 {/* 4. Views Impression */}
                 <div
-                  className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:text-cyan-500 hover:bg-cyan-500/10 transition-all duration-200 cursor-default"
+                  className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-cyan-500/10 transition-all duration-200 cursor-default"
                   title="Views"
                 >
-                  <BarChart2 className="w-3.5 h-3.5 text-cyan-500/60" />
+                  <BarChart2 className="w-3.5 h-3.5 text-[#2564ea]" />
                   <span className="text-[10px]">{formatCount(topic.views)}</span>
                 </div>
 
@@ -1395,7 +1395,7 @@ const CommunitiesPage = () => {
                       : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-300'
                   }`}
                 >
-                  <tab.icon className={`w-3.5 h-3.5 ${activeTab === tab.id ? 'text-blue-500 dark:text-cyan-400' : ''}`} />
+                  <tab.icon className={`w-3.5 h-3.5 ${activeTab === tab.id ? 'text-blue-500 dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' : ''}`} />
                   {tab.label}
                 </button>
               ))}
@@ -1404,7 +1404,7 @@ const CommunitiesPage = () => {
             {/* Search + Sort + Create Button */}
             <div className="flex items-center gap-3">
               <div className="relative group">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 dark:group-focus-within:text-cyan-400 transition-colors" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 dark:group-focus-within:text-[#2564ea] transition-colors" />
                 <input
                   type="text"
                   placeholder="Search topics..."
@@ -1538,7 +1538,7 @@ const CommunitiesPage = () => {
             {/* Header */}
             <div className="p-5 border-b border-gray-150 dark:border-white/[0.05] flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-black text-blue-500 dark:text-cyan-400 uppercase tracking-widest">{selectedTopic.community}</span>
+                <span className="text-[10px] font-black text-blue-500 dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase tracking-widest">{selectedTopic.community}</span>
                 <h4 className="text-sm font-bold text-gray-900 dark:text-white mt-1">Discussion Panel</h4>
               </div>
               <button 
@@ -1682,7 +1682,7 @@ const CommunitiesPage = () => {
                   </p>
                   <button
                     onClick={() => { setActiveCategory('all'); setSearchQuery(''); setActiveTab('latest'); }}
-                    className="mt-4 text-xs font-bold text-blue-500 dark:text-cyan-400 hover:underline"
+                    className="mt-4 text-xs font-bold text-blue-500 dark:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline"
                   >
                     Clear all filters
                   </button>
@@ -1717,7 +1717,7 @@ const CommunitiesPage = () => {
                         <div className="flex-1 min-w-0">
                           <p 
                             onClick={() => setSelectedTopic(topic)}
-                            className="text-xs font-bold text-gray-700 dark:text-gray-300 leading-snug group-hover:text-blue-500 dark:group-hover:text-cyan-400 transition-colors line-clamp-2"
+                            className="text-xs font-bold text-gray-700 dark:text-gray-300 leading-snug group-hover:text-blue-500 dark:group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors line-clamp-2"
                           >
                             {topic.title}
                           </p>
@@ -1752,7 +1752,7 @@ const CommunitiesPage = () => {
                         <Avatar initials={user.initials} color={user.color} size="sm" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold text-gray-900 dark:text-white group-hover:text-blue-550 dark:group-hover:text-cyan-400 transition-colors truncate">
+                        <p className="text-xs font-bold text-gray-900 dark:text-white group-hover:text-blue-550 dark:group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors truncate">
                           {user.name}
                         </p>
                         <p className="text-[10px] font-bold tracking-wide uppercase text-gray-400 dark:text-gray-550 mt-0.5">{user.role}</p>
@@ -1777,7 +1777,7 @@ const CommunitiesPage = () => {
                     <button
                       key={i}
                       onClick={() => setSearchQuery(`#${tag.name}`)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/40 dark:bg-white/5 border border-gray-200/50 dark:border-white/[0.05] text-gray-500 dark:text-gray-400 hover:border-blue-300 dark:hover:border-cyan-500/30 hover:bg-blue-500/5 dark:hover:bg-cyan-500/5 hover:text-blue-500 dark:hover:text-cyan-450 transition-all cursor-pointer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/40 dark:bg-white/5 border border-gray-200/50 dark:border-white/[0.05] text-gray-500 dark:text-gray-400 hover:border-blue-300 dark:hover:border-cyan-500/30 hover:bg-blue-500/5 dark:hover:bg-cyan-500/5 hover:text-blue-500 dark:hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-all cursor-pointer"
                     >
                       <span>#</span>
                       {tag.name}
@@ -1805,7 +1805,7 @@ const CommunitiesPage = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
             <div className="inline-flex items-center gap-1.5 bg-white/5 backdrop-blur-xl px-4 py-2 rounded-full text-xs font-bold tracking-wide text-white/80 mb-8 border border-white/10 shadow-sm">
-              <Users className="w-3.5 h-3.5 text-cyan-400" />
+              <Users className="w-3.5 h-3.5 text-[#2564ea]" />
               Join 4,280+ enterprise leaders
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 tracking-tight leading-[1.1]">
@@ -1830,7 +1830,7 @@ const CommunitiesPage = () => {
                 className="group w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-full text-xs font-bold text-white/80 tracking-wide uppercase hover:bg-white/5 border border-transparent hover:border-white/10 transition-all"
               >
                 <span>Explore Insights</span>
-                <ArrowRight className="w-3.5 h-3.5 text-cyan-450 transform group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="w-3.5 h-3.5 text-[#2564ea] transform group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
           </div>

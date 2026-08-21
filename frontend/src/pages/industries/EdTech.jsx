@@ -24,7 +24,7 @@ const EdTech = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '10M+', label: 'Students Reached', color: 'text-cyan-400' },
+          { value: '10M+', label: 'Students Reached', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '500+', label: 'Institutions', color: 'text-blue-400' },
           { value: '95%', label: 'Engagement Rate', color: 'text-emerald-400' },
           { value: '50+', label: 'Countries', color: 'text-purple-400' }

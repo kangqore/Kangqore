@@ -37,7 +37,7 @@ const CDPStrategy = () => {
     stats: [
       { value: 'Unified', label: 'Profiles', color: 'text-brand-blue' },
       { value: 'AI-Ready', label: 'Intelligence', color: 'text-blue-400' },
-      { value: 'First-Party', label: 'Data Focus', color: 'text-cyan-400' },
+      { value: 'First-Party', label: 'Data Focus', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'GDPR-Ready', label: 'Governance', color: 'text-brand-blue' },
     ],
 

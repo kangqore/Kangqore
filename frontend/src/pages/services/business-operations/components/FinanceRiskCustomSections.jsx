@@ -89,7 +89,7 @@ export const FinanceRelatedExpertise = () => {
                 <TrendingUp className="w-20 h-20 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
               </div>
               {[
-                { Icon: Shield, label: 'RISK_CTRL', pos: 'top-0 left-1/2 -translate-x-1/2', bg: 'bg-slate-900', color: 'text-cyan-400' },
+                { Icon: Shield, label: 'RISK_CTRL', pos: 'top-0 left-1/2 -translate-x-1/2', bg: 'bg-slate-900', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
                 { Icon: BarChart3, label: 'EPM_SVC', pos: 'bottom-10 left-0', bg: 'bg-brand-gradient', color: 'text-white' },
                 { Icon: Leaf, label: 'ESG_DATA', pos: 'bottom-10 right-0', bg: 'bg-emerald-600', color: 'text-white' }
               ].map((node, idx) => (

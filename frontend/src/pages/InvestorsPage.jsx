@@ -76,7 +76,7 @@ const InvestorsPage = () => {
         primaryButton={{ text: 'Request Access', link: '/contact' }}
         secondaryButton={{ text: 'Learn More', link: '#philosophy' }}
         stats={[
-          { value: 'Bootstrapped', label: 'Founder-Funded', color: 'text-cyan-400' },
+          { value: 'Bootstrapped', label: 'Founder-Funded', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '5+', label: 'Focus Areas', color: 'text-blue-400' },
           { value: 'Enterprise', label: 'Grade Systems', color: 'text-emerald-400' },
           { value: 'Long-term', label: 'Value Creation', color: 'text-purple-400' },
@@ -131,7 +131,7 @@ const InvestorsPage = () => {
       <section className="py-20 lg:py-28 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-16">
-            <span className="text-cyan-400 font-semibold text-sm uppercase tracking-wider mb-4 block">Ownership Structure</span>
+            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-semibold text-sm uppercase tracking-wider mb-4 block">Ownership Structure</span>
             <h2 className="text-3xl lg:text-4xl font-bold mb-8">
               Capital Structure & Ownership
             </h2>
@@ -386,7 +386,7 @@ const InvestorsPage = () => {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-2xl">
-            <span className="text-cyan-300 font-semibold text-sm uppercase tracking-wider mb-4 block">Get in Touch</span>
+            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-semibold text-sm uppercase tracking-wider mb-4 block">Get in Touch</span>
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
               Investor Access
             </h2>

@@ -66,9 +66,9 @@ const Analytics = () => {
 
     stats: [
       { value: 'Faster', label: 'Decision Velocity', color: 'text-brand-blue' },
-      { value: '3x', label: 'Dashboard Adoption', color: 'text-cyan-400' },
+      { value: '3x', label: 'Dashboard Adoption', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Real-time', label: 'Streaming Analytics', color: 'text-brand-blue' },
-      { value: 'Governed', label: 'Decision Systems', color: 'text-cyan-400' },
+      { value: 'Governed', label: 'Decision Systems', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     ],
 
     highFidelity: {

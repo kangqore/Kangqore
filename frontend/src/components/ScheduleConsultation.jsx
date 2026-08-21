@@ -606,7 +606,7 @@ export default function ScheduleConsultation() {
             {[
               { icon: Check, label: 'Free Consultation', desc: 'No cost, no obligation', color: 'bg-blue-100 text-brand-blue' },
               { icon: Video, label: 'Video Meeting Link', desc: 'Auto-generated, sent by email', color: 'bg-emerald-100 text-emerald-600' },
-              { icon: RefreshCw, label: 'Easy Reschedule', desc: 'Reschedule or cancel anytime', color: 'bg-cyan-100 text-cyan-600' },
+              { icon: RefreshCw, label: 'Easy Reschedule', desc: 'Reschedule or cancel anytime', color: 'bg-cyan-100 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
               { icon: Globe, label: 'Any Timezone', desc: 'Auto-detects your local time', color: 'bg-violet-100 text-violet-600' }
             ].map(({ icon: Icon, label, desc, color }) => (
               <div key={label} className="text-center p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md border border-gray-100 dark:border-gray-800">

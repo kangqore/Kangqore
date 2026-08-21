@@ -65,7 +65,7 @@ const NewsPage = () => {
         primaryButton={{ text: 'Subscribe', link: '#newsletter' }}
         secondaryButton={{ text: 'View All', link: '#all-news' }}
         stats={[
-          { value: '100+', label: 'Press Releases', color: 'text-cyan-400' },
+          { value: '100+', label: 'Press Releases', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '50+', label: 'Partnerships', color: 'text-blue-400' },
           { value: '25+', label: 'Awards', color: 'text-emerald-400' },
           { value: 'Global', label: 'Coverage', color: 'text-purple-400' },

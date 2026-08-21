@@ -272,7 +272,7 @@ const StageNode = ({ index, total, label, isActive, color, dualLabels, setNodePo
           </div>
           {isActive && dualLabels && (
             <div className="flex gap-2 text-[6px] font-bold tracking-widest bg-black/40 px-1.5 py-0.5 rounded-sm border border-white/5 backdrop-blur-sm">
-              <span className="text-cyan-400 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]">MANAGED</span>
+              <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]">MANAGED</span>
               <span className="text-white/30">|</span>
               <span className="text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.8)]">SELF-HOSTED</span>
             </div>

@@ -24,7 +24,7 @@ const EnergyUtilities = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '50+', label: 'Utility Clients', color: 'text-cyan-400' },
+          { value: '50+', label: 'Utility Clients', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '100M+', label: 'Meters Managed', color: 'text-blue-400' },
           { value: '30%', label: 'Cost Reduction', color: 'text-emerald-400' },
           { value: 'Smart', label: 'Grid Ready', color: 'text-purple-400' }

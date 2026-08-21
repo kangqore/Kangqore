@@ -138,7 +138,7 @@ const cdpStrategy = {
   stats: [
     { value: 'Unified', label: 'Profiles', color: 'text-brand-blue' },
     { value: 'AI-Ready', label: 'Intelligence', color: 'text-blue-400' },
-    { value: 'First-Party', label: 'Data Focus', color: 'text-cyan-400' },
+    { value: 'First-Party', label: 'Data Focus', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'GDPR-Ready', label: 'Governance', color: 'text-brand-blue' },
   ],
 
@@ -349,7 +349,7 @@ const marketingAiReadiness = {
   stats: [
     { value: 'AI-Ready', label: 'Customer Data', color: 'text-brand-blue' },
     { value: 'GenAI', label: 'Content Workflows', color: 'text-blue-400' },
-    { value: 'Scale', label: 'Personalization', color: 'text-cyan-400' },
+    { value: 'Scale', label: 'Personalization', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Governed', label: 'Responsible AI', color: 'text-brand-blue' },
   ],
 
@@ -565,7 +565,7 @@ const socialMediaManagement = {
   stats: [
     { value: '30+', label: 'Industries Covered', color: 'text-brand-blue' },
     { value: '24/7', label: 'Community Readiness', color: 'text-blue-400' },
-    { value: '5-Phase', label: 'Growth Method', color: 'text-cyan-400' },
+    { value: '5-Phase', label: 'Growth Method', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: '100%', label: 'KPI-Led Execution', color: 'text-brand-blue' },
   ],
 
@@ -759,7 +759,7 @@ const performanceMarketing = {
   stats: [
     { value: '3x ROAS', label: 'Revenue-Led Campaign Architecture', color: 'text-brand-blue' },
     { value: 'Multi-Channel', label: 'Google, Meta, LinkedIn, YouTube', color: 'text-blue-400' },
-    { value: 'Full-Funnel', label: 'Click-to-Customer Optimization', color: 'text-cyan-400' },
+    { value: 'Full-Funnel', label: 'Click-to-Customer Optimization', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Real-Time', label: 'Dashboards, Attribution & Scaling', color: 'text-brand-blue' },
   ],
 
@@ -952,7 +952,7 @@ const seoOrganicGrowthStrategy = {
   stats: [
     { value: 'Technical', label: '+ Content SEO', color: 'text-brand-blue' },
     { value: 'Revenue', label: 'Focused Strategy', color: 'text-blue-400' },
-    { value: 'Transparent', label: 'Reporting & Analytics', color: 'text-cyan-400' },
+    { value: 'Transparent', label: 'Reporting & Analytics', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Long-Term', label: 'Growth Equity', color: 'text-brand-blue' },
   ],
 
@@ -1164,7 +1164,7 @@ const growthFunnelsConversionEngineering = {
   stats: [
     { value: 'Full-Funnel', label: 'Revenue Architecture', color: 'text-brand-blue' },
     { value: 'AI-Augmented', label: 'Conversion Optimization', color: 'text-blue-400' },
-    { value: 'Higher LTV', label: '& Lower CAC Focus', color: 'text-cyan-400' },
+    { value: 'Higher LTV', label: '& Lower CAC Focus', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Scalable', label: 'Profitability', color: 'text-brand-blue' },
   ],
 
@@ -1372,7 +1372,7 @@ const conversionRateOptimization = {
   stats: [
     { value: 'Data-Driven', label: 'CRO Strategy', color: 'text-brand-blue' },
     { value: 'UX + Psychology', label: 'Engineering', color: 'text-blue-400' },
-    { value: 'A/B & Multivariate', label: 'Testing', color: 'text-cyan-400' },
+    { value: 'A/B & Multivariate', label: 'Testing', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Built for', label: 'Revenue Growth', color: 'text-brand-blue' },
   ],
 
@@ -1580,7 +1580,7 @@ const campaignPlanning = {
   stats: [
     { value: 'Outcome-Led', label: 'Strategy', color: 'text-brand-blue' },
     { value: 'Full-Funnel', label: 'Planning', color: 'text-blue-400' },
-    { value: 'Media + Budget', label: 'Logic', color: 'text-cyan-400' },
+    { value: 'Media + Budget', label: 'Logic', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Tracking-Ready', label: 'Execution', color: 'text-brand-blue' },
   ],
 

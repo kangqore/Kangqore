@@ -75,7 +75,7 @@ const BrandIdentity = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div>
-              <span className="inline-block px-4 py-2 bg-white dark:bg-black/10 backdrop-blur-sm rounded-full text-sm font-medium text-cyan-300 mb-6">
+              <span className="inline-block px-4 py-2 bg-white dark:bg-black/10 backdrop-blur-sm rounded-full text-sm font-medium bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-6">
                 Brand Guidelines
               </span>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6">

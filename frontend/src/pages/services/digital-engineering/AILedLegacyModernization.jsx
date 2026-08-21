@@ -19,7 +19,7 @@ const AILedLegacyModernization = () => {
     primaryButton: { text: 'Modernize Now', link: '/contact' },
     secondaryButton: { text: 'How it Works', link: '#capabilities' },
     stats: [
-      { value: '70%', label: 'Time Reduction', color: 'text-cyan-400' },
+      { value: '70%', label: 'Time Reduction', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Zero', label: 'Regression Defects', color: 'text-blue-400' },
       { value: '60%', label: 'Cost Savings', color: 'text-emerald-400' },
       { value: 'AI', label: 'Powered Discovery', color: 'text-purple-400' },

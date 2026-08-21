@@ -866,7 +866,7 @@ const embeddedDesignSystemsMetricsStrip = (
           { label: 'CE/FCC/UL', sub: 'Regulatory certification' }
         ].map((metric, idx) => (
           <div key={idx} className="text-center group">
-            <div className="text-lg lg:text-xl font-bold text-white tracking-tight mb-1 group-hover:text-cyan-400 transition-colors">
+            <div className="text-lg lg:text-xl font-bold text-white tracking-tight mb-1 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors">
               {metric.label}
             </div>
             <div className="text-xs text-white/50 font-medium tracking-wide uppercase">
@@ -1559,7 +1559,7 @@ const engineeringRDServicesRelatedOfferings = (
               <div className="relative">
                  <Cpu className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
               </div>
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
+              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
                 <BarChart3 className="w-6 h-6" />
               </div>
               <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">
@@ -2138,7 +2138,7 @@ const productDigitalEngineeringRelatedSection = (
               <div className="relative">
                 <Target className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
               </div>
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
+              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">
@@ -2852,21 +2852,21 @@ const EngineeringFoundryBusinessOutcomesRibbon = () => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-x divide-white/10">
         <div className="text-center px-4 hover:scale-105 transition-transform duration-500">
           <div className="text-7xl lg:text-[5rem] font-bold font-display tracking-tighter mb-4" style={{ textShadow: '1px 1px 0px rgba(0,0,0,0.1), 2px 2px 0px rgba(0,0,0,0.1), 3px 3px 0px rgba(0,0,0,0.15), 4px 4px 0px rgba(0,0,0,0.15), 5px 5px 0px rgba(0,0,0,0.2)' }}>
-            40<span className="text-cyan-400 opacity-90">%</span>
+            40<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent opacity-90">%</span>
           </div>
           <div className="text-lg lg:text-xl font-bold tracking-wide uppercase opacity-95 mb-3">Faster Time-to-Market</div>
           <p className="text-sm lg:text-base opacity-80 font-light px-4 leading-relaxed">Accelerate product launches with GenAI model-driven scaffolding and automated architectures.</p>
         </div>
         <div className="text-center px-4 hover:scale-105 transition-transform duration-500">
           <div className="text-7xl lg:text-[5rem] font-bold font-display tracking-tighter mb-4" style={{ textShadow: '1px 1px 0px rgba(0,0,0,0.1), 2px 2px 0px rgba(0,0,0,0.1), 3px 3px 0px rgba(0,0,0,0.15), 4px 4px 0px rgba(0,0,0,0.15), 5px 5px 0px rgba(0,0,0,0.2)' }}>
-            60<span className="text-cyan-400 opacity-90">%</span>
+            60<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent opacity-90">%</span>
           </div>
           <div className="text-lg lg:text-xl font-bold tracking-wide uppercase opacity-95 mb-3">Decrease in QA Cycles</div>
           <p className="text-sm lg:text-base opacity-80 font-light px-4 leading-relaxed">Automated robust test suite generation executing directly from API definitions and swagger files.</p>
         </div>
         <div className="text-center px-4 hover:scale-105 transition-transform duration-500">
           <div className="text-7xl lg:text-[5rem] font-bold font-display tracking-tighter mb-4" style={{ textShadow: '1px 1px 0px rgba(0,0,0,0.1), 2px 2px 0px rgba(0,0,0,0.1), 3px 3px 0px rgba(0,0,0,0.15), 4px 4px 0px rgba(0,0,0,0.15), 5px 5px 0px rgba(0,0,0,0.2)' }}>
-            Zero<span className="text-cyan-400 opacity-90">-Day</span>
+            Zero<span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent opacity-90">-Day</span>
           </div>
           <div className="text-lg lg:text-xl font-bold tracking-wide uppercase opacity-95 mb-3">Defect Deployments</div>
           <p className="text-sm lg:text-base opacity-80 font-light px-4 leading-relaxed">Human-in-the-loop observability combined with highly secure, zero-touch CI/CD pipelines.</p>
@@ -3391,7 +3391,7 @@ const modernizationInfrastructurePostCapSection = (
               <div className="relative">
                 <Cloud className="w-24 h-24 text-brand-blue drop-shadow-sm group-hover:scale-110 transition-transform duration-700" />
               </div>
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-cyan-400 shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
+              <div className="absolute -top-4 -left-4 w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shadow-2xl border border-white/10 group-hover:rotate-12 transition-transform">
                 <Database className="w-6 h-6" />
               </div>
               <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-gradient rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:-rotate-6 transition-transform">
@@ -3725,7 +3725,7 @@ const softwareDevelopmentRelatedSection = (
             </div>
             <div className="absolute bottom-10 left-0 group">
               <div className="flex flex-col items-center gap-3">
-                <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Network className="w-12 h-12 text-cyan-400" /></div>
+                <div className="w-24 h-24 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center relative translate-x-4 hover:translate-x-0 transition-transform duration-300"><Network className="w-12 h-12 text-[#2564ea]" /></div>
                 <span className="text-[11px] font-bold text-gray-400 tracking-widest font-mono uppercase translate-x-4 bg-white dark:bg-black/80 px-2 py-1 rounded backdrop-blur-sm">API_Eng</span>
               </div>
             </div>
@@ -3769,7 +3769,7 @@ const softwareDevelopment = {
   hideGenericFaq: true,
 
   stats: [
-    { value: 'Validate', label: 'Ideas, requirements & technical direction', color: 'text-cyan-400' },
+    { value: 'Validate', label: 'Ideas, requirements & technical direction', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
     { value: 'Build', label: 'Reliable digital products & platforms', color: 'text-blue-400' },
     { value: 'Accelerate', label: 'Delivery speed, quality & release confidence', color: 'text-emerald-400' },
     { value: 'Scale', label: 'Systems, teams & software foundations', color: 'text-purple-400' }

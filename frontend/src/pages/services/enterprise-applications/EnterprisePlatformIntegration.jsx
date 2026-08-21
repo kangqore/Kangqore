@@ -79,7 +79,7 @@ const EnterprisePlatformIntegration = () => {
     ],
 
     stats: [
-      { value: '99.9%', label: 'Platform Uptime', color: 'text-cyan-400' },
+      { value: '99.9%', label: 'Platform Uptime', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: '10x', label: 'Faster Integration', color: 'text-blue-400' },
       { value: 'Zero', label: 'Data Silos', color: 'text-emerald-400' },
       { value: '24/7', label: 'Integration Governance', color: 'text-purple-400' },

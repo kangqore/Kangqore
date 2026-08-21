@@ -51,26 +51,26 @@ const NotFound = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
             <Link to="/department/ai-cognitive" className="group flex items-center justify-between p-4 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/5 border border-white/5 hover:border-cyan-400/30 hover:bg-white dark:bg-gray-900 dark:border-gray-800/10 transition-all">
               <div className="flex items-center gap-3">
-                <Cpu className="h-5 w-5 text-cyan-400" />
+                <Cpu className="h-5 w-5 text-[#2564ea]" />
                 <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">AI & Cognitive</span>
               </div>
-              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all" />
+              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#2564ea] group-hover:translate-x-1 transition-all" />
             </Link>
             
             <Link to="/department/cloud-engineering" className="group flex items-center justify-between p-4 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/5 border border-white/5 hover:border-cyan-400/30 hover:bg-white dark:bg-gray-900 dark:border-gray-800/10 transition-all">
               <div className="flex items-center gap-3">
-                <Cloud className="h-5 w-5 text-cyan-400" />
+                <Cloud className="h-5 w-5 text-[#2564ea]" />
                 <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">Cloud Systems</span>
               </div>
-              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all" />
+              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#2564ea] group-hover:translate-x-1 transition-all" />
             </Link>
             
             <Link to="/department/cybersecurity" className="group flex items-center justify-between p-4 rounded-xl bg-white dark:bg-gray-900 dark:border-gray-800/5 border border-white/5 hover:border-cyan-400/30 hover:bg-white dark:bg-gray-900 dark:border-gray-800/10 transition-all">
               <div className="flex items-center gap-3">
-                <ShieldCheck className="h-5 w-5 text-cyan-400" />
+                <ShieldCheck className="h-5 w-5 text-[#2564ea]" />
                 <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">Cybersecurity</span>
               </div>
-              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all" />
+              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#2564ea] group-hover:translate-x-1 transition-all" />
             </Link>
           </div>
         </div>

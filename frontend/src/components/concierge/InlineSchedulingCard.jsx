@@ -57,8 +57,8 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
     <div className="w-full max-w-[320px] rounded-xl overflow-hidden border border-cyan-400/15 bg-[#12121a] shadow-[0_0_20px_rgba(34,211,238,0.06)]">
       {/* Header Strip */}
       <div className="px-4 py-2.5 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-b border-white/5 flex items-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-        <span className="text-[11px] font-bold text-cyan-400/90 uppercase tracking-widest">
+        <Sparkles className="w-3.5 h-3.5 text-[#2564ea]" />
+        <span className="text-[11px] font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase tracking-widest">
           Scheduling Intelligence
         </span>
       </div>
@@ -68,7 +68,7 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
         {understood && summary ? (
           <div className="flex items-start gap-2.5">
             <div className="w-6 h-6 rounded-lg bg-cyan-400/10 flex items-center justify-center shrink-0 mt-0.5">
-              <Calendar className="w-3.5 h-3.5 text-cyan-400" />
+              <Calendar className="w-3.5 h-3.5 text-[#2564ea]" />
             </div>
             <div>
               <p className="text-[11px] font-bold text-white/50 uppercase tracking-wider mb-0.5">
@@ -90,7 +90,7 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
               <Calendar className="w-3.5 h-3.5 text-amber-400" />
             </div>
             <p className="text-[12px] text-white/60 leading-snug">
-              Tell me a date and time, like <span className="text-cyan-400 font-medium">"Thursday at 2pm"</span> or <span className="text-cyan-400 font-medium">"next week morning"</span>
+              Tell me a date and time, like <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-medium">"Thursday at 2pm"</span> or <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-medium">"next week morning"</span>
             </p>
           </div>
         )}
@@ -135,7 +135,7 @@ const InlineSchedulingCard = ({ parsedIntent, eventTypeSlug = 'discovery-cmkfi' 
 
         {loadingPulse && (
           <div className="flex items-center gap-2 py-2">
-            <RefreshCw className="w-3 h-3 text-cyan-400/50 animate-spin" />
+            <RefreshCw className="w-3 h-3 text-[#2564ea] animate-spin" />
             <span className="text-[11px] text-white/50">Checking live availability...</span>
           </div>
         )}

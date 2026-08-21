@@ -364,7 +364,7 @@ const EmbeddedDesignSystems = () => {
             { label: 'CE/FCC/UL', sub: 'Regulatory certification' }
           ].map((metric, idx) => (
             <div key={idx} className="text-center group">
-              <div className="text-lg lg:text-xl font-bold text-white tracking-tight mb-1 group-hover:text-cyan-400 transition-colors">
+              <div className="text-lg lg:text-xl font-bold text-white tracking-tight mb-1 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors">
                 {metric.label}
               </div>
               <div className="text-xs text-white/50 font-medium tracking-wide uppercase">

@@ -24,7 +24,7 @@ const Retail = () => {
         primaryButton={{ text: 'View Solutions', link: '#solutions' }}
         secondaryButton={{ text: 'Contact Us', link: '/contact' }}
         stats={[
-          { value: '200+', label: 'Retail Clients', color: 'text-cyan-400' },
+          { value: '200+', label: 'Retail Clients', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '50M+', label: 'Transactions', color: 'text-blue-400' },
           { value: '35%', label: 'Sales Increase', color: 'text-emerald-400' },
           { value: '24/7', label: 'Operations', color: 'text-purple-400' }

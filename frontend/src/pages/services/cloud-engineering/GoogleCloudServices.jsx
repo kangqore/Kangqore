@@ -20,7 +20,7 @@ const GoogleCloudServices = () => {
     ),
     image: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80',
     stats: [
-      { value: 'PB', label: 'Data Processed', color: 'text-cyan-400' },
+      { value: 'PB', label: 'Data Processed', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
       { value: 'Zero', label: 'Data Leakage', color: 'text-blue-400' },
       { value: '100%', label: 'AI/ML Synergy', color: 'text-emerald-400' },
       { value: 'Native', label: 'BigQuery Power', color: 'text-purple-400' },

@@ -69,7 +69,7 @@ const Leadership = () => {
         primaryButton={{ text: 'Get in Touch', link: '/contact' }}
         secondaryButton={{ text: 'About Kangqore', link: '/about-us' }}
         stats={[
-          { value: 'Founder', label: 'Led', color: 'text-cyan-400' },
+          { value: 'Founder', label: 'Led', color: 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent' },
           { value: '50+', label: 'Projects', color: 'text-blue-400' },
           { value: 'Engineering', label: 'First', color: 'text-emerald-400' },
           { value: 'Global', label: 'Impact', color: 'text-purple-400' },
@@ -226,7 +226,7 @@ const Leadership = () => {
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
       </div>
         <div className="relative max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
-          <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wider mb-4">The Future</p>
+          <p className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-semibold text-sm uppercase tracking-wider mb-4">The Future</p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
             Looking Ahead
           </h2>

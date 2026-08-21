@@ -89,7 +89,7 @@ const ConciergeAnalytics = () => {
               <ArrowLeft className="w-3 h-3" /> Back to Admin
             </Link>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white mt-1 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-brand-cyan" /> eQORE Concierge Analytics
+              <Sparkles className="w-5 h-5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" /> eQORE Concierge Analytics
             </h1>
             {data && (
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">

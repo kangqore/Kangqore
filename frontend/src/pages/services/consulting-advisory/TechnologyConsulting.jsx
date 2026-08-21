@@ -835,9 +835,9 @@ const TechnologyConsulting = () => {
                 {/* Core Pulse */}
                 <div className="absolute inset-0 bg-brand-blue/20 rounded-full animate-ping-slow"></div>
                 
-                <BrainCircuit className="w-16 h-16 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)] mb-2" />
+                <BrainCircuit className="w-16 h-16 text-[#2564ea] drop-shadow-[0_0_15px_rgba(34,211,238,0.5)] mb-2" />
                 <span className="font-mono text-[11px] text-white tracking-[0.2em] uppercase font-bold">ADVISORY</span>
-                <span className="font-mono text-[11px] text-cyan-400 tracking-[0.1em] mt-1">KERNEL_V2</span>
+                <span className="font-mono text-[11px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent tracking-[0.1em] mt-1">KERNEL_V2</span>
               </div>
 
               {/* Orbiting Satellite Nodes */}
@@ -848,7 +848,7 @@ const TechnologyConsulting = () => {
                     <Search className="w-7 h-7 text-blue-500" />
                   </div>
                   <div className="bg-slate-900/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none absolute top-full mt-2">
-                    <div className="font-mono text-[11px] text-cyan-400 tracking-widest mb-0.5">PHASE 01</div>
+                    <div className="font-mono text-[11px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent tracking-widest mb-0.5">PHASE 01</div>
                     <div className="text-white text-xs font-bold">Discovery & Audit</div>
                   </div>
                 </div>
@@ -900,7 +900,7 @@ const TechnologyConsulting = () => {
               </div>
 
               <div className="absolute bottom-10 right-10 p-3 border border-slate-700 rounded-xl bg-slate-900/90 backdrop-blur-md z-30 font-mono text-[11px] text-gray-400 shadow-xl">
-                <div className="text-cyan-400 mb-1.5 font-bold tracking-widest uppercase text-[11px]">Advisory Engine</div>
+                <div className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-1.5 font-bold tracking-widest uppercase text-[11px]">Advisory Engine</div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
                   <span>MAPPING_DEPENDENCIES...</span>

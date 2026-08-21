@@ -110,7 +110,7 @@ export function SupportKnowledgeBase() {
                     {a.category}
                   </span>
                   {a.isNew && (
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-cyan-500/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
                       New
                     </span>
                   )}
