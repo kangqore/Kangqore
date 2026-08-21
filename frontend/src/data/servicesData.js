@@ -4088,7 +4088,7 @@ export const servicesData = {
 
 
 
-    heroTitle: 'Big Data Platforms\nEngineered for Performance and Trust',
+    heroTitle: 'Big Data Platforms Engineered\nfor Performance and Trust',
     heroBadge: 'Ingest. Store. Process. Serve.',
     heroStripItems: [
       'Lakehouse Architecture', 'Change Data Capture', 'Spark & Distributed Compute', 'Event Streaming',
