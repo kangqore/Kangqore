@@ -4021,6 +4021,414 @@ export const servicesData = {
       { illustrative: true, title: 'Data Freshness',       desc: 'Real-time streaming pipelines delivering sub-second data freshness for operational analytics workloads.',         value: '<1',  suffix: ' Sec', metricLabel: 'Data Latency',     icon: 'Activity'},
       { illustrative: true, title: 'Data Under Management',desc: 'Total data volume managed across client lake house architectures on AWS, Azure, and GCP.',                        value: '5',   suffix: 'PB+',  metricLabel: 'Petabyte Scale',   icon: 'Layers'  },
     ],
+    hidePartnershipModel: true,
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Ten questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. Several of these argue against buying, which is the point: this
+    // category sells platforms to organizations that mostly need less platform.
+    customFAQs: [
+      {
+        q: 'Do we actually have big data?',
+        a: 'Probably not, and that is the most useful thing we can tell you early. The threshold that matters is not a volume number, it is whether a single machine can still answer your questions in acceptable time. Modern hardware and DuckDB will handle a few hundred gigabytes comfortably.\n\nIf you are running a Spark cluster, there is a real chance you would be faster and dramatically cheaper on a well-indexed database, because distributed processing was bought as an architecture decision rather than measured as a need.\n\nWhere it is genuinely warranted: sustained multi-terabyte tables, ingestion rates a single writer cannot keep up with, or query patterns that must scan far more than fits in memory. We would rather establish that in two weeks than sell you a platform you do not need.',
+        sources: [],
+      },
+      {
+        q: 'What is the difference between this and your Analytics service?',
+        a: 'Analytics is the insight ladder — descriptive, diagnostic, predictive, prescriptive. Big data is the platform underneath it: ingestion, storage, distributed processing, streaming, and the operations that keep those running.\n\nThe practical distinction is which of the two is making you unhappy. If the numbers disagree between teams or a dashboard changes nothing, that is analytics. If pipelines break, queries are slow or the cloud bill is unexplainable, that is here.\n\nBuying the platform first is the common sequencing error. It produces an expensive foundation under a building nobody has designed, and the decisions that would have shaped it get made after the concrete sets.',
+        sources: [
+          { label: 'Kangqore Analytics', url: '/services/analytics' },
+        ],
+      },
+      {
+        q: 'Should we build a lakehouse or a warehouse?',
+        a: 'For most of the estates we see, the honest answer is a warehouse, and the lakehouse conversation is happening a layer above where the actual problem sits. Warehouses handle structured analytical workloads extremely well and require far less engineering to keep correct.\n\nA lakehouse earns its complexity when you have genuinely unstructured or semi-structured data at volume, need multiple engines reading the same tables, or want to avoid vendor lock-in on storage. Those are real reasons, and they apply to fewer estates than the marketing suggests — possibly including yours.\n\nWhat matters more than the label is the table format. Iceberg, Delta or Hudi determines schema evolution, time travel and atomic writes, and changing it later means rewriting data rather than swapping a tool.',
+        sources: [],
+      },
+      {
+        q: 'Why is our cloud data bill growing faster than our data?',
+        a: 'Almost always file layout and partitioning. A query that scans a thousand small files costs many times one that scans a few well-sized ones, and the difference does not show up until volume grows. Partitioning chosen for how data arrives rather than how it is queried produces exactly this.\n\nThe second common cause is that nobody in your organization owns the bill. Where cost is not attributed per team or per workload, there is no feedback loop, and the cheapest query is the one nobody was ever told was expensive.\n\nBoth are fixable without a migration. We usually find meaningful reduction in your compaction, your partition strategy, and killing scheduled jobs whose output nobody reads any more.',
+        sources: [],
+      },
+      {
+        q: 'How much of this needs to be real-time?',
+        a: 'Less than the architecture diagram suggests. The test is whether a decision changes if the data arrives an hour later. For fraud, network operations, live pricing and inventory during a peak, it does. For most reporting and most machine learning features, it does not.\n\nStreaming is a correctness problem before it is a throughput one, and you inherit all of it. Exactly-once semantics, late and out-of-order events, replay after a bad deploy — each is solvable and each is engineering you do not need if batch would have done.\n\nWe usually recommend batch across the estate and streaming for the two or three flows where latency has a measurable cost.',
+        sources: [],
+      },
+      {
+        q: 'Our pipelines say green but the data is wrong. Why?',
+        a: 'Because the orchestrator is telling you the job ran, which is a different claim from the data being correct. A pipeline that reads a changed source and writes nulls into a column completes successfully by every measure the scheduler has.\n\nThe fix is testing your data rather than your job: freshness, row volume against expectation, null rates, referential checks, and contracts agreed with whoever owns the upstream system. Failures then stop the pipeline instead of propagating quietly.\n\nThis is the single highest-return work in most estates, and the least likely to be funded, because it prevents incidents rather than resolving visible ones.',
+        sources: [],
+      },
+      {
+        q: 'Can you migrate us off Hadoop without stopping everything?',
+        a: 'Yes, and it should be a parallel run rather than a cutover. Both platforms produce the same outputs for a period, results are compared automatically, and workloads move once they match. Slower than a big-bang migration and considerably less likely to end badly.\n\nThe part that takes longest is rarely the data. It is the accumulated logic in jobs nobody at your company has read in years, some of which encodes business rules that exist nowhere else. Discovery on that is most of the estimate.\n\nWe would also expect to retire rather than migrate a meaningful share of it. Your estate almost certainly carries jobs whose output no longer feeds anything, and migrating those is paying twice for something worth nothing.',
+        sources: [],
+      },
+      {
+        q: 'Who owns the platform after you leave?',
+        a: 'Your team, and the handover should be designed from the start rather than assembled at the end. Everything ships in your repositories: infrastructure as code, pipeline definitions, tests, runbooks and the documented failure modes.\n\nWhat matters more than documentation is whether your engineers built alongside us. A platform handed to you cold gets frozen — your team will not change what it does not understand, and within a year it is legacy again.\n\nWhere we stay involved it is because you asked us to run operations under an agreed service level, not because the artifacts are ours.',
+        sources: [],
+      },
+      {
+        q: 'Do we need a data mesh?',
+        a: 'Probably not yet. Data mesh solves an organizational bottleneck — a central platform team that cannot keep up with demand from many domains. If you do not have that bottleneck, adopting it distributes your complexity without removing any of it.\n\nThe prerequisites are real and frequently skipped: a genuine self-service platform, working data contracts, and domain teams with the engineering capacity to own products. Without those it becomes each of your teams building its own pipelines, which is where you probably started.\n\nThe useful part to borrow early is treating datasets as products with named owners and stated guarantees. That works at any size and requires no reorganization.',
+        sources: [],
+      },
+      {
+        q: 'How long before this is useful?',
+        a: 'A first production pipeline in four to six weeks, and a two-week assessment before it that establishes whether the platform you have is the problem. That assessment frequently changes what we end up building for you.\n\nA full migration runs in months, and should be sequenced so value lands throughout rather than at the end. Programs that deliver nothing until cutover are the ones your board cancels at month seven with nothing to show.\n\nIf a proposal promises a complete enterprise data platform in a quarter, what is being estimated is the infrastructure. The pipelines, the contracts and the organizational agreement are the slow parts, and they are also the parts that determine whether anyone uses it.',
+        sources: [],
+      },
+    ],
+
+
+
+    heroTitle: 'Big Data Platforms\nBuilt to Stay Affordable',
+    heroBadge: 'Ingest. Store. Process. Serve.',
+    heroStripItems: [
+      'Lakehouse Architecture', 'Change Data Capture', 'Spark & Distributed Compute', 'Event Streaming',
+      'Table Formats', 'Pipeline Orchestration', 'Data Observability', 'Cost per Terabyte',
+    ],
+    fullDescriptionMaxWidth: 'max-w-[700px] xl:max-w-[780px]',
+
+    // ── What this actually is ───────────────────────────────────────────────
+    whatIsPara2: 'Big data stopped being about volume some time ago. Storage is cheap and the engines are commodity; what is hard is a platform that stays correct when one of your sources changes shape, stays fast when a table doubles, and stays affordable when three of your teams start querying it at once.',
+
+    whatIsPara3: 'The failure mode is rarely dramatic. A pipeline succeeds while writing the wrong thing, an upstream schema changes silently, a partition strategy that was fine at two terabytes becomes the reason a query costs forty pounds to run. None of that surfaces as an outage. It surfaces as a number somebody downstream of you stops trusting.',
+
+    whatIsPara4: 'So the work is partitioning and file layout before engine choice, contracts and tests before dashboards, and cost attributed to the team of yours that caused it. That is unglamorous next to a lakehouse migration deck, and it is what decides whether the platform is still worth running in year three.',
+
+    // ── Comparison ──────────────────────────────────────────────────────────
+    // The parity default compares TRADITIONAL AI with AGENTIC AI, which is an
+    // argument for a different service entirely.
+    comparisonTable: {
+      eyebrow: 'WHERE DATA PLATFORMS GO WRONG',
+      heading: 'The platform is easy to build\nand hard to keep.',
+      lede: 'Both columns describe a working data platform. They differ in what happens on the day something upstream changes.',
+      beforeLabel: 'A PLATFORM THAT RUNS',
+      afterLabel: 'A PLATFORM YOU CAN RELY ON',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'RUNS',
+      afterShort: 'RELIABLE',
+      rows: [
+        {
+          dimension: 'When a source changes shape',
+          before: 'The job succeeds and writes the wrong thing. Somebody notices weeks later.',
+          after: 'A contract test fails at ingest, the pipeline stops, and the team that owns the source is told.',
+        },
+        {
+          dimension: 'When a table doubles',
+          before: 'Queries get slower until someone adds a bigger cluster.',
+          after: 'Partitioning and file layout designed for the access pattern, so cost per query stays flat.',
+        },
+        {
+          dimension: 'What the platform costs',
+          before: 'One cloud bill nobody can attribute, growing faster than usage.',
+          after: 'Cost per workload and per team, visible before the invoice rather than after it.',
+        },
+        {
+          dimension: 'How anyone knows it worked',
+          before: 'The orchestrator says green. Whether the data is right is a separate question nobody asks.',
+          after: 'Freshness, volume and quality checked as part of the run, with an alert somebody owns.',
+          link: { label: 'Analytics', to: '/services/analytics' },
+        },
+        {
+          dimension: 'Whether teams can self-serve',
+          before: 'Every new dataset is a ticket to the platform team, who are the bottleneck by design.',
+          after: 'Platform as a product: paved paths, standards and templates, so teams ship without asking.',
+        },
+      ],
+    },
+
+    // ── Architecture ────────────────────────────────────────────────────────
+    // The parity default rendered "Policy & Ethics Layer" and "Control &
+    // Orchestration Engine" -- the governance stack, on an infrastructure page.
+    architectureEyebrow: 'HOW THE PLATFORM IS LAYERED',
+    architectureTitle: 'Four layers,',
+    architectureTitleHighlight: 'and the one that decides your bill.',
+    architectureLede: 'Ingest, store, process, serve. Most cost and most pain concentrate in the second layer, which is also the one hardest to change once data is written into it.',
+    architectureNodes: [
+      {
+        title: 'Ingest',
+        icon: 'Database',
+        description: 'Getting data in without breaking the source system, and getting the same data again tomorrow.',
+        features: [
+          'Batch, CDC and streaming paths',
+          'Schema evolution handled at the boundary',
+          'Replayable and idempotent loads',
+          'Contracts with the upstream owner',
+        ],
+      },
+      {
+        title: 'Store',
+        icon: 'Layers',
+        description: 'The layer that quietly sets your cost. Partitioning and file size decide query economics more than engine choice ever will.',
+        features: [
+          'Open table formats: Iceberg, Delta, Hudi',
+          'Partitioning designed around the access pattern',
+          'File sizing and compaction policy',
+          'Tiering, retention and time travel',
+        ],
+      },
+      {
+        title: 'Process',
+        icon: 'Cpu',
+        description: 'Making jobs finish predictably. Most tuning goes into skew and shuffle rather than into the logic itself.',
+        features: [
+          'Spark batch and structured streaming',
+          'Query engine selection and tuning',
+          'Workload isolation between teams',
+          'Cost per query measured, not estimated',
+        ],
+      },
+      {
+        title: 'Serve',
+        icon: 'Network',
+        description: 'Where the platform meets the people using it, and where self-service either works or becomes a ticket queue.',
+        features: [
+          'Serving layers for BI and applications',
+          'Semantic and catalog integration',
+          'Paved paths and templates for teams',
+          'Freshness and quality visible to consumers',
+        ],
+      },
+    ],
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    industryHeading: 'Platforms built for',
+    industryHeadingHighlight: 'the data your sector generates.',
+    industryLede: 'Volume is rarely the interesting constraint. What differs by sector is retention obligations, how late data is allowed to arrive, and what it costs when a pipeline is wrong.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Regulated data with retention obligations measured in years and audit trails that have to hold.',
+        items: ['Trade and transaction data platforms', 'Regulatory reporting pipelines', 'Retention, lineage and audit evidence'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Decades of policy and claims history that has to stay queryable and stay cheap.',
+        items: ['Policy and claims data consolidation', 'Historical data migration off legacy', 'Actuarial data marts'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Clinical and operational data where residency and access control are design constraints, not settings.',
+        items: ['Clinical data platform engineering', 'De-identification and access control', 'Multi-site data consolidation'],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Sensor and telemetry volume where the useful signal is a fraction of what is collected.',
+        items: ['IoT and telemetry ingestion at scale', 'Time-series storage and downsampling', 'Edge to cloud data pipelines'],
+      },
+      {
+        industry: 'Retail & E-Commerce',
+        headline: 'Clickstream and transaction data with peaks that make average-case sizing the wrong answer.',
+        items: ['Clickstream and event pipelines', 'Peak-season capacity design', 'Customer data unification'],
+      },
+      {
+        industry: 'Media & Telecommunications',
+        headline: 'Network and usage data at volumes where cost per terabyte is the whole business case.',
+        items: ['Network telemetry platforms', 'Usage and billing data pipelines', 'Cost optimization at petabyte scale'],
+      },
+    ],
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // The parity default described a stack "powering cognitive computing,
+    // machine learning, and AI governance" and listed PyTorch, TensorFlow and
+    // Hugging Face -- an ML research stack on an infrastructure page.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'What we build on,',
+      titleHighlight: 'and when we would not.',
+      subtitle: 'Most of this is decided by the cloud you are already in and how much data you genuinely have. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Layers',
+          title: 'Table formats',
+          managed: 'Apache Iceberg, Delta Lake, Hudi',
+          selfHosted: 'The decision that outlives the engine',
+          desc: 'Picks up schema evolution, time travel and atomic writes. Chosen before the query engine, because migrating between formats later is the expensive move.',
+        },
+        {
+          icon: 'Cpu',
+          title: 'Distributed processing',
+          managed: 'Spark, Databricks, EMR',
+          selfHosted: 'DuckDB or Postgres under a terabyte',
+          desc: 'Spark earns its complexity past a few terabytes. Below that a single machine is usually faster and always cheaper, and a surprising number of estates are below that.',
+        },
+        {
+          icon: 'Database',
+          title: 'Warehouse and query engines',
+          managed: 'Snowflake, BigQuery, Redshift',
+          selfHosted: 'Trino or DuckDB over object storage',
+          desc: 'Sized to the query pattern rather than the roadmap. Separating storage from compute matters more than which vendor supplies either.',
+          link: { label: 'Analytics', to: '/services/analytics' },
+        },
+        {
+          icon: 'Zap',
+          title: 'Streaming',
+          managed: 'Kafka, Kinesis, Pub/Sub, Flink',
+          selfHosted: 'Only where latency has a cost',
+          desc: 'Streaming is a correctness problem before it is a throughput problem. Reached for when the decision cannot wait, not because the architecture diagram has arrows on it.',
+        },
+        {
+          icon: 'Network',
+          title: 'Orchestration',
+          managed: 'Airflow, Dagster, Prefect',
+          selfHosted: 'Once pipelines have dependencies',
+          desc: 'The point where scheduled jobs become a dependency graph somebody has to reason about, backfill and recover.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Quality and observability',
+          managed: 'Great Expectations, Monte Carlo, Soda',
+          selfHosted: 'Contracts at the ingest boundary',
+          desc: 'Data platforms fail silently. A green orchestrator says the job ran, not that what it wrote is correct, and those are different claims.',
+        },
+      ],
+    },
+
+    // ── CTAs ────────────────────────────────────────────────────────────────
+    midCta: 'The job ran green. The data is still wrong.',
+    midCtaLabel: 'Show us a pipeline',
+
+    closingCta: {
+      title: 'One pipeline.',
+      highlight: 'One number you stop rechecking.',
+      body: 'Bring the pipeline that breaks quietly, or the cloud bill nobody can attribute to a team. In 30 minutes we will tell you whether it is a layout problem, a contract problem, or a platform that is simply bigger than the data going through it.',
+      primaryLabel: 'Bring us a pipeline',
+      secondaryLabel: 'See the four layers',
+      proofLabel: 'From first call to a platform cost you can predict',
+    },
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // This service had none, so the whole section rendered the Cognition parity
+    // default -- the AI Governance taxonomy. The page was headed "Establishing
+    // Ethical Governance & Control" and "Compliance & Risk Management", and its
+    // toolchain named PyTorch and TensorFlow on an infrastructure page.
+    //
+    // The split against /services/analytics is the one that service's own FAQ
+    // already states: analytics owns the insight ladder, big data owns the
+    // platform underneath it. Nothing here reaches up into descriptive,
+    // predictive or prescriptive work; that is the analytics page.
+    capabilitiesLabel: 'BIG DATA SERVICES',
+    capabilitiesSectionTitle: 'Our',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Seven layers of platform: getting data in, holding it, processing it, moving it in real time, keeping it running, keeping it governed, and getting off whatever you are on now.',
+    capabilityAreas: [
+      {
+        title: 'Data Ingestion & Integration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Getting data in, reliably and repeatedly. The stage that decides whether everything downstream can be trusted, and the one most often treated as plumbing.',
+        items: [
+          'Batch ingestion pipelines',
+          'Change data capture (CDC)',
+          'Streaming ingestion',
+          'API and SaaS connectors',
+          'Database replication',
+          'File and object ingestion',
+          'Schema evolution handling',
+          'Late and out-of-order data',
+          'Idempotent and replayable loads',
+          'Source system impact management',
+        ],
+      },
+      {
+        title: 'Storage & Lakehouse Architecture',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where the data sits and how it is laid out. Partitioning and file layout decide query cost more than engine choice does, and they are far harder to change later.',
+        items: [
+          'Data lake and lakehouse design',
+          'Open table formats: Iceberg, Delta, Hudi',
+          'Partitioning and clustering strategy',
+          'File sizing and compaction',
+          'Storage tiering and lifecycle policy',
+          'Schema and catalog management',
+          'Time travel and snapshot retention',
+          'Multi-region and replication design',
+          'Warehouse and lakehouse convergence',
+        ],
+      },
+      {
+        title: 'Distributed Processing & Compute',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Making large jobs finish, predictably and at a cost you agreed in advance. Most tuning work is spent on skew and shuffle rather than on the algorithm.',
+        items: [
+          'Spark batch and structured streaming',
+          'SQL query engine selection and tuning',
+          'Partition skew and shuffle optimization',
+          'Job scheduling and resource isolation',
+          'Cluster sizing and autoscaling policy',
+          'Cost per query and per terabyte',
+          'Incremental and idempotent processing',
+          'Workload isolation across teams',
+        ],
+      },
+      {
+        title: 'Streaming & Real-Time Data',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The event backbone, for the cases where a decision cannot wait for the overnight run. Expensive, harder to get correct, and worth it for a narrow set of use cases.',
+        items: [
+          'Event streaming platforms: Kafka, Kinesis, Pub/Sub',
+          'Stream processing: Flink, Spark Streaming',
+          'Exactly-once and delivery guarantees',
+          'Windowing and watermarking',
+          'Stream-table joins and enrichment',
+          'Backpressure and replay handling',
+          'Event schema registry and contracts',
+          'Real-time serving layers',
+        ],
+      },
+      {
+        title: 'DataOps & Platform Reliability',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Whether the pipeline runs at 3am without waking anyone. Data platforms fail silently more often than loudly, which is why the failure is usually found downstream.',
+        items: [
+          'Orchestration: Airflow, Dagster, Prefect',
+          'Data quality testing and contracts',
+          'Freshness and volume monitoring',
+          'Data observability and lineage',
+          'Pipeline SLAs and alerting ownership',
+          'Incident response and backfill runbooks',
+          'CI/CD for data pipelines',
+          'Environment and release management',
+        ],
+      },
+      {
+        title: 'Governance, Security & Cost',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The three things that get a platform shut down. Access, personal data, and a cloud bill nobody can attribute to a team.',
+        items: [
+          'Access control and row or column security',
+          'PII discovery, masking and tokenization',
+          'Retention and deletion policy',
+          'Catalog, lineage and metadata management',
+          'Audit logging and evidence',
+          'Cost attribution and chargeback',
+          'FinOps and workload cost governance',
+          'Residency and cross-border controls',
+        ],
+      },
+      {
+        title: 'Platform Engineering & Migration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Getting off what you are on now. Usually a Hadoop estate, an appliance out of support, or a warehouse whose bill has outgrown its usefulness.',
+        items: [
+          'Hadoop and legacy platform migration',
+          'Cloud data platform build',
+          'Warehouse and lakehouse migration',
+          'Workload assessment and sequencing',
+          'Parallel run and cutover planning',
+          'Platform as a product and self-service',
+          'Reference architecture and standards',
+          'Multi-cloud and hybrid design',
+        ],
+      },
+    ],
   },
 
   'digital-process-automation': {
