@@ -3592,6 +3592,7 @@ export const servicesData = {
 
 
     heroTitle: 'Enterprise Analytics\nBuilt for Better Decisions',
+    fullDescriptionMaxWidth: 'max-w-[680px]',
     heroBadge: 'Understand. Anticipate. Decide.',
     heroStripItems: [
       'KPI & Performance Analytics', 'Forecasting', 'Decision Intelligence', 'Streaming Analytics',
