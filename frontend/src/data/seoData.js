@@ -406,7 +406,7 @@ export const serviceSEO = {
     url: '/services/mlops',
   },
   'analytics': {
-    title: 'Analytics — Cognition | Kangqore',
+    title: 'Analytics — Forecasting & Decision Intelligence | Kangqore',
     description: 'End-to-end analytics — business intelligence, dashboards, KPI tracking, self-service analytics, and data storytelling for measurable decision-making.',
     keywords: 'business analytics, business intelligence, dashboards, KPI tracking, self-service analytics, data storytelling',
     url: '/services/analytics',

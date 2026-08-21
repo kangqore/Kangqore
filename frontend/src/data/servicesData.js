@@ -3458,6 +3458,478 @@ export const servicesData = {
       { illustrative: true, title: 'KPI Visibility',   desc: 'Real-time KPI dashboards deployed across business units with a governed, single source of truth data layer.',     value: '100', suffix: '%', metricLabel: 'KPI Coverage',            icon: 'Target'    },
       { illustrative: true, title: 'Decision Quality', desc: 'Improvement in decision quality scores after analytics platform deployment, measured via decision audit outcomes.', value: '41',  suffix: '%', metricLabel: 'Better Decisions',        icon: 'BarChart3' },
     ],
+    hidePartnershipModel: true,
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Ten questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the questions analytics buyers open with, including the
+    // ones that suggest the answer is not more analytics.
+    customFAQs: [
+      {
+        q: 'Why do our four teams have four different revenue numbers?',
+        a: 'Because the definition lives in four places. Finance excludes intercompany, sales counts bookings, the product team counts recognized revenue and the board pack uses whichever was available on the Friday. Every one of them is internally correct, which is why the meeting never resolves it.\n\nThis is not a data quality problem and no amount of dashboard work fixes it. The fix is a semantic layer: one definition, expressed once in code, that every report and every tool reads from. Your argument moves from the meeting to a pull request, where it belongs.\n\nThe hard part is not technical. It is getting your four function heads to agree which definition is the company definition, and that is a conversation we can facilitate but cannot have on your behalf.',
+        sources: [],
+      },
+      {
+        q: 'Do we actually need a semantic layer, or is that just tooling fashion?',
+        a: 'You need one the moment more than one of your tools reads the same metric. Below that it is overhead. Above it, the absence is what produces the four-numbers problem, and the cost of retrofitting rises with every report already built on the old logic.\n\nWhat it is, concretely: metric definitions in version control, tested, with lineage, so a change is reviewed rather than discovered. dbt is the common implementation; LookML and Cube solve the same problem differently.\n\nWhere it is genuinely premature: a single team, one BI tool, under about twenty metrics. There the definition fits in somebody\'s head and formalizing it early costs more than it returns.',
+        sources: [],
+      },
+      {
+        q: 'How much of this needs to be real-time?',
+        a: 'Far less than most roadmaps assume. The test is whether one of your decisions changes if the number arrives an hour later. For fraud, network operations, inventory during a promotion and live pricing, it does. For almost all management reporting, it does not.\n\nStreaming carries a real cost: more infrastructure, harder correctness, and a class of failure that batch does not have. Buying it for reporting your team reads at nine the next morning is the most common overspend in this category.\n\nWe usually recommend batch for the estate and streaming for the specific two or three decisions where latency has a measurable cost.',
+        sources: [],
+      },
+      {
+        q: 'Our BI tool is fine. Is the tool the problem?',
+        a: 'Usually not. Power BI, Tableau and Looker are all capable of a good analytics estate, and swapping between them rarely changes the outcome. Tool migrations are popular because they are visible and fundable, and they leave your actual problem untouched.\n\nThe things that decide whether analytics works sit underneath: whether metric definitions are shared, whether the data arrives on a schedule people trust, whether anyone can trace a number back to source, and whether a decision changes at the end.\n\nIf you are mid-migration and it is already committed, we will work in whichever tool you land on. We would rather spend the budget on the semantic layer.',
+        sources: [],
+      },
+      {
+        q: 'What is the difference between this and your Big Data service?',
+        a: 'Analytics is the insight ladder: understand, anticipate, decide, respond. Big Data is the platform underneath it — ingestion, storage, distributed processing, the engineering that makes large or fast data tractable in the first place.\n\nYou almost certainly need less of the second than you think. A large share of estates running a lakehouse would be faster and cheaper on a well-indexed warehouse, and the platform work gets bought because it is concrete while the definitional work is not.\n\nThe honest sequence is usually analytics first. Building a platform before knowing which decisions matter produces an expensive foundation under an empty building.',
+        sources: [
+          { label: 'Kangqore Big Data', url: '/services/big-data' },
+        ],
+      },
+      {
+        q: 'How do you stop us building another dashboard nobody opens?',
+        a: 'By starting from the decision rather than the data. The first question is which of your recurring decisions would change if a number existed, who makes it, and on what cadence. If nobody can name the decision, the dashboard has no owner and will not be opened twice.\n\nEvery surface we build gets a named owner and a stated decision it supports. Anything that fails that test does not get built, which is a shorter backlog and an unpopular conversation early rather than a wasted quarter later.\n\nWe also recommend retiring surfaces on a schedule. Your estate accumulates dashboards the way a codebase accumulates dead code, and nobody is ever incentivized to delete one.',
+        sources: [],
+      },
+      {
+        q: 'Can business users self-serve without it turning into chaos?',
+        a: 'Yes, but only on top of governed definitions. Self-service over raw tables is how the four-numbers problem is manufactured at scale — everybody can now build a report, and every report is subtly different.\n\nThe workable model is a curated layer: certified metrics and datasets that anyone can slice freely, with the definitions locked. Your users get genuine freedom over dimensions and filters, and none to redefine revenue.\n\nThe governance that makes this safe is unglamorous — certification, ownership, deprecation — and it is the part that gets cut when timelines tighten. It is also the part that decides whether self-service helps.',
+        sources: [],
+      },
+      {
+        q: 'How long before we see anything useful?',
+        a: 'Weeks before one of your decisions changes, not quarters. The advisory pass is two weeks and identifies which decisions are worth instrumenting; a first governed metric with a working surface behind it is typically four to six.\n\nWhat takes longer is the semantic layer across a real estate, because it is as much organizational agreement as engineering. Expect that to run in parallel over months rather than blocking the first delivery.\n\nIf a proposal promises a full enterprise analytics platform in a quarter, the platform is being confused with the agreement, and the agreement is the slow part.',
+        sources: [],
+      },
+      {
+        q: 'Who owns a metric definition after you leave?',
+        a: 'You do, and it should be a named person per metric rather than a team. Definitions your whole team owns will drift, because nobody has standing to refuse a change.\n\nEverything ships in your repository: the transformation code, the tests, the lineage and the documentation of what each metric deliberately excludes. That exclusion list is the part your team will skip and the part that matters when somebody asks why two of your numbers differ.\n\nWhere we stay involved it is because you asked us to run the pipeline, not because the definitions are ours.',
+        sources: [],
+      },
+      {
+        q: 'What happens when somebody disputes a number?',
+        a: 'You trace it rather than defend it. Lineage from the surface back to source means the question is answerable in minutes: this figure came from these rows, transformed by this logic, which excludes these cases by design.\n\nWithout lineage the dispute becomes a reconciliation exercise that costs more than the original analysis and usually ends with the more senior person\'s number winning. That outcome is how analytics loses credibility inside your organization.\n\nSo lineage is not a governance nicety. It is what makes an analytical output survive contact with a disagreement.',
+        sources: [],
+      },
+    ],
+
+
+
+    heroBadge: 'Understand. Anticipate. Decide.',
+    heroStripItems: [
+      'KPI & Performance Analytics', 'Forecasting', 'Decision Intelligence', 'Streaming Analytics',
+      'Semantic Modeling', 'Self-Service BI', 'Data Lineage', 'Embedded Analytics',
+    ],
+
+    // ── What this actually is ───────────────────────────────────────────────
+    whatIsPara2: 'The ladder is well understood: descriptive tells you what happened, diagnostic why, predictive what is likely, prescriptive what to do about it. What separates programs is not which rung you reach but whether anything downstream of the number actually changes.',
+
+    whatIsPara3: 'Most analytics estates fail in the same place, and yours will tell you which one within a week. The modeling is fine and the dashboards are competent, but four teams hold four definitions of revenue, the alert arrives after the shift it was about, and a new question takes two weeks and a ticket. None of that is an analytics problem in the technical sense, which is exactly why more dashboards never fix it.',
+
+    whatIsPara4: 'So the work runs in both directions. Upward through the ladder toward prediction and decision support, and downward into the semantic layer, the lineage and the governance that make an answer defensible when somebody disputes it. Analytics that cannot be checked gets overruled by whoever is most senior in the room.',
+
+    // ── Comparison ──────────────────────────────────────────────────────────
+    // The parity default compares TRADITIONAL AI with AGENTIC AI, which is an
+    // argument for a different service entirely.
+    comparisonTable: {
+      eyebrow: 'WHERE ANALYTICS PROGRAMS STALL',
+      heading: 'More dashboards is not more intelligence.',
+      lede: 'Both columns describe competent analytical work. They differ in whether a decision changes at the end of it.',
+      beforeLabel: 'REPORTING',
+      afterLabel: 'DECISION INTELLIGENCE',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'REPORTING',
+      afterShort: 'DECISIONS',
+      rows: [
+        {
+          dimension: 'What gets delivered',
+          before: 'A dashboard, and a training session nobody attends twice.',
+          after: 'A decision that changes, with the metric definition agreed and somebody owning it.',
+        },
+        {
+          dimension: 'Where the number comes from',
+          before: 'Four teams hold four definitions of revenue, reconciled live in the meeting.',
+          after: 'One semantic layer. The definition lives in code and every surface reads the same one.',
+        },
+        {
+          dimension: 'When it arrives',
+          before: 'Overnight batch, so the alert lands after the shift it was about.',
+          after: 'Matched to the decision cycle — streaming where that matters, batch where it does not.',
+        },
+        {
+          dimension: 'Who can answer a new question',
+          before: 'The analytics team, in two weeks, through a ticket queue.',
+          after: 'The person who has the question, in the tool they already have open.',
+        },
+        {
+          dimension: 'When somebody disputes the number',
+          before: 'A reconciliation exercise that takes longer than the original analysis.',
+          after: 'Lineage back to source, so the answer is checkable rather than defended.',
+          link: { label: 'Big Data', to: '/services/big-data' },
+        },
+      ],
+    },
+
+    // ── Architecture: the enterprise analytics lifecycle ────────────────────
+    // The parity default rendered "Policy & Ethics Layer" and "Control &
+    // Orchestration Engine" -- the governance stack, on an analytics page.
+    // These five stages are the lifecycle: the seven capability areas above
+    // describe what we do, these describe the order it happens in.
+    architectureEyebrow: 'THE ENTERPRISE ANALYTICS LIFECYCLE',
+    architectureTitle: 'Data becomes a decision',
+    architectureTitleHighlight: 'in five stages, not one.',
+    architectureLede: 'Insight, prediction, decision, action, outcome — then the outcome feeds back and the model learns. The loop is the point; a dashboard is one frame of it.',
+    architectureNodes: [
+      {
+        title: 'Understand',
+        icon: 'Search',
+        description: 'Descriptive and diagnostic. What happened, and the drivers behind it — the stage most estates never get past.',
+        features: [
+          'KPI and metric frameworks agreed across functions',
+          'Trend, variance and exception analysis',
+          'Root-cause and driver analysis',
+          'One definition per metric, not one per team',
+        ],
+      },
+      {
+        title: 'Anticipate',
+        icon: 'TrendingUp',
+        description: 'Predictive and forecasting. What is likely to happen, delivered early enough that somebody can still act on it.',
+        features: [
+          'Time-series and demand forecasting',
+          'Churn, risk and propensity models',
+          'Scenario and what-if analysis',
+          'Early-warning thresholds owned by a named team',
+        ],
+      },
+      {
+        title: 'Decide',
+        icon: 'Target',
+        description: 'Prescriptive and decision intelligence. Which action, given the budget, capacity and regulation you actually have.',
+        features: [
+          'Optimization against real constraints',
+          'Scenario simulation before committing',
+          'Recommendations with the reason attached',
+          'Decisions wired into the operating workflow',
+        ],
+      },
+      {
+        title: 'Respond',
+        icon: 'Zap',
+        description: 'Real-time and cognitive. Events read as they arrive, including the unstructured material a batch report never touches.',
+        features: [
+          'Event-stream processing and live monitoring',
+          'Anomaly detection with a workable alert rate',
+          'Text, speech, image and graph analytics',
+          'Triggers that reach the system that can act',
+        ],
+      },
+      {
+        title: 'Govern & scale',
+        icon: 'ShieldCheck',
+        description: 'The foundation underneath all four. Lineage, quality and controls, without which every number above is arguable.',
+        features: [
+          'Semantic modeling and analytics data products',
+          'Lineage from surface back to source',
+          'Data quality and observability',
+          'Access, privacy and audit controls',
+        ],
+      },
+    ],
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    industryHeading: 'Analytics built for',
+    industryHeadingHighlight: 'the decisions your sector makes.',
+    industryLede: 'The ladder is the same everywhere. What differs is which decision is worth instrumenting first, and how fast the answer has to arrive to still be useful.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Numbers that an auditor, a regulator and a trading desk all have to accept as the same number.',
+        items: ['Risk and exposure reporting', 'Customer profitability analysis', 'Regulatory and management reporting'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Loss ratios, reserving and pricing where the analysis has to be explainable to an actuary.',
+        items: ['Loss ratio and combined ratio analytics', 'Claims cost driver analysis', 'Pricing and portfolio steering'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Operational visibility across sites where the data was collected for care, not for analysis.',
+        items: ['Capacity and flow analytics', 'Clinical outcome and quality reporting', 'Cost-per-case analysis'],
+      },
+      {
+        industry: 'Manufacturing & Supply Chain',
+        headline: 'Demand, yield and inventory decisions taken weekly against data that moves hourly.',
+        items: ['Demand forecasting by SKU and site', 'OEE and yield analytics', 'Inventory and service-level optimization'],
+      },
+      {
+        industry: 'Retail & E-Commerce',
+        headline: 'Margin rather than traffic — the metric most retail dashboards are furthest from.',
+        items: ['Category and margin analytics', 'Price elasticity and promotion effect', 'Customer lifetime value'],
+      },
+      {
+        industry: 'Media & Telecommunications',
+        headline: 'Churn and network economics where the useful answer is per-cohort, not per-quarter.',
+        items: ['Churn and retention analytics', 'Network and capacity analytics', 'Subscriber cohort performance'],
+      },
+    ],
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // The parity default described a stack "powering cognitive computing,
+    // machine learning, and AI governance" and listed PyTorch, TensorFlow and
+    // Hugging Face -- an ML research stack on a business intelligence page,
+    // naming not one BI or semantic-layer tool.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'What we build on,',
+      titleHighlight: 'and when we would not.',
+      subtitle: 'Most of this is decided by the warehouse you already run and how many people need to self-serve. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Eye',
+          title: 'BI and visualization',
+          managed: 'Power BI, Tableau, Looker',
+          selfHosted: 'Metabase, Superset',
+          desc: 'Power BI where the estate is Microsoft and the licensing is already paid. Looker where the semantic layer matters more than the chart library.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Semantic and transformation layer',
+          managed: 'dbt, LookML, Cube',
+          selfHosted: 'The single highest-value component',
+          desc: 'Where one definition of revenue actually lives. Skip it and you get four dashboards disagreeing, which is the problem people mistake for a tooling problem.',
+        },
+        {
+          icon: 'Database',
+          title: 'Warehouse and lakehouse',
+          managed: 'Snowflake, BigQuery, Databricks',
+          selfHosted: 'Postgres where the volume is honest',
+          desc: 'Sized to the query pattern rather than the pitch deck. A large share of estates running a lakehouse would be faster and cheaper on a well-indexed database.',
+          link: { label: 'Big Data', to: '/services/big-data' },
+        },
+        {
+          icon: 'Zap',
+          title: 'Streaming and events',
+          managed: 'Kafka, Flink, Materialize',
+          selfHosted: 'Only where the decision cannot wait',
+          desc: 'Real-time is expensive and most reporting does not need it. Reached for when the alert is worthless an hour later, not because the roadmap says real-time.',
+        },
+        {
+          icon: 'Network',
+          title: 'Orchestration',
+          managed: 'Airflow, Dagster, Prefect',
+          selfHosted: 'Once pipelines have dependencies',
+          desc: 'The point at which "a scheduled job" becomes a dependency graph somebody has to reason about. Before that it is infrastructure for two cron entries.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Quality and observability',
+          managed: 'Great Expectations, Monte Carlo, Soda',
+          selfHosted: 'Tests on the data, not just the code',
+          desc: 'Catches the silent upstream schema change, which is the most common cause of a number being wrong and the slowest to notice without it.',
+        },
+      ],
+    },
+
+    // ── CTAs ────────────────────────────────────────────────────────────────
+    midCta: 'You have more dashboards than decisions.',
+    midCtaLabel: 'Show us your reporting stack',
+
+    closingCta: {
+      title: 'One metric.',
+      highlight: 'One decision that changes because of it.',
+      body: 'Bring the number your leadership argues about, or the report that gets built every month and read by nobody. In 30 minutes we will tell you whether the problem is the data, the definition, or the decision nobody owns.',
+      primaryLabel: 'Bring us a metric',
+      secondaryLabel: 'See the five stages',
+      proofLabel: 'From first call to one number everybody agrees on',
+    },
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // This service had no capabilityAreas, so the whole section rendered the
+    // Cognition parity default -- the AI Governance taxonomy. The page was
+    // headed "Establishing Ethical Governance & Control" and "Compliance & Risk
+    // Management", and its toolchain named PyTorch and TensorFlow on a business
+    // intelligence page.
+    //
+    // Replaced with the analytics maturity ladder supplied by the business.
+    // It does two jobs: it is the taxonomy every analytics buyer recognizes,
+    // and it draws the line against /services/big-data -- analytics owns the
+    // insight ladder, big data owns the platform underneath it. Those two pages
+    // measured 81.6 per cent identical before this.
+    //
+    // Sub-capability names are verbatim: they are the searchable register and
+    // they feed the OfferCatalog JSON-LD.
+    capabilitiesLabel: 'ANALYTICS SERVICES',
+    capabilitiesSectionTitle: 'Our',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'The ladder runs understand, anticipate, decide, respond — with the engineering and governance foundation that makes any of it repeatable underneath.',
+    capabilityAreas: [
+      {
+        title: 'Descriptive & Diagnostic Analytics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What happened, and why it happened. Historical and operational data turned into trusted views of performance, then the drivers, deviations and root causes behind them.',
+        items: [
+          'KPI and performance analytics',
+          'Exploratory data analysis',
+          'Historical and trend analysis',
+          'Event and activity analysis',
+          'Data mining',
+          'Multidimensional analysis',
+          'Operational reporting',
+          'Executive reporting',
+          'Business performance monitoring',
+          'Root-cause analysis',
+          'Variance analysis',
+          'Correlation analysis',
+          'Cluster analysis',
+          'Customer and operational segmentation',
+          'Driver analysis',
+          'Anomaly investigation',
+          'Performance attribution',
+          'Exception analysis',
+        ],
+      },
+      {
+        title: 'Predictive Analytics & Forecasting',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What is likely to happen, early enough to do something about it. Statistical modeling and machine learning that quantify risk and opportunity, and refine as conditions move.',
+        items: [
+          'Predictive modeling',
+          'Time-series forecasting',
+          'Demand forecasting',
+          'Revenue forecasting',
+          'Customer churn prediction',
+          'Risk prediction',
+          'Fraud prediction',
+          'Predictive maintenance',
+          'Propensity modeling',
+          'Probability and scoring models',
+          'Scenario forecasting',
+          'What-if analysis',
+          'Early-warning systems',
+        ],
+      },
+      {
+        title: 'Prescriptive Analytics & Decision Intelligence',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What action to take, given the constraints you actually have. Optimization and simulation wired into the workflow where the decision gets made, rather than left as a read-only layer.',
+        items: [
+          'Decision optimization',
+          'Scenario simulation',
+          'What-if modeling',
+          'Recommendation engines',
+          'Optimization models',
+          'Resource allocation',
+          'Pricing optimization',
+          'Supply-chain optimization',
+          'Workforce optimization',
+          'Complex event processing',
+          'Constraint-based decisioning',
+          'Decision rules and policies',
+          'Decision strategy modeling',
+        ],
+      },
+      {
+        title: 'Cognitive & AI-Augmented Analytics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Context, meaning and relationships conventional analytics cannot reach. AI, semantics and graph applied to unstructured material as readily as to tables.',
+        items: [
+          'Machine learning analytics',
+          'Natural language processing',
+          'Text analytics',
+          'Document analytics',
+          'Speech analytics',
+          'Image analytics',
+          'Video analytics',
+          'Graph analytics',
+          'Knowledge graph analytics',
+          'Semantic analytics',
+          'Ontology-driven analytics',
+          'Pattern recognition',
+          'Sentiment analysis',
+          'Entity and relationship analysis',
+          'AI-generated insights',
+          'Natural-language analytics',
+        ],
+      },
+      {
+        title: 'Real-Time & Streaming Analytics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Intelligence while the event is still unfolding. For the decisions that cannot wait for an overnight batch, and the alerts that are worthless an hour late.',
+        items: [
+          'Real-time data analytics',
+          'Event-stream processing',
+          'Streaming analytics',
+          'Real-time KPI monitoring',
+          'Real-time anomaly detection',
+          'Event correlation',
+          'Operational alerts',
+          'Threshold monitoring',
+          'Live dashboards',
+          'Real-time risk intelligence',
+          'Real-time decision triggers',
+          'IoT and sensor analytics',
+          'Edge analytics',
+        ],
+      },
+      {
+        title: 'Business Intelligence & Enterprise Performance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'One consistent view of performance, from the board pack down to the operational dashboard. A common intelligence layer rather than four teams arriving with four numbers.',
+        items: [
+          'Executive dashboards',
+          'KPI command centers',
+          'Operational dashboards',
+          'Financial analytics',
+          'Sales analytics',
+          'Marketing analytics',
+          'Customer analytics',
+          'Workforce analytics',
+          'Supply-chain analytics',
+          'Self-service analytics',
+          'Interactive visualization',
+          'Embedded analytics',
+          'Drill-down intelligence',
+          'Performance scorecards',
+          'Management reporting',
+        ],
+      },
+      {
+        title: 'Analytics Engineering, Governance & Intelligence Platforms',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The foundation that makes everything above repeatable. Pipelines, semantic models and lineage, plus the controls that keep an analytical output defensible when somebody disputes it.',
+        items: [
+          'Data ingestion',
+          'ETL and ELT',
+          'Data transformation and integration',
+          'Data lakehouse architectures',
+          'Semantic modeling',
+          'Analytics data products',
+          'Analytical data pipelines',
+          'Metadata management',
+          'Data quality engineering',
+          'Data lineage',
+          'Analytics platform engineering',
+          'Cloud analytics architectures',
+          'Data observability',
+          'Access and privacy controls',
+          'Auditability',
+          'Model governance',
+          'Policy enforcement',
+          'Analytical lifecycle management',
+        ],
+      },
+    ],
   },
 
   'big-data': {
