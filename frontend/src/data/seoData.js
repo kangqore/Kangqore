@@ -436,7 +436,7 @@ export const serviceSEO = {
     url: '/services/business-process-management',
   },
   'intelligent-automation': {
-    title: 'Intelligent Automation — Cognition | Kangqore',
+    title: 'Intelligent Automation — RPA, IDP & Orchestration | Kangqore',
     description: 'AI-powered automation — AI decision automation, NLP integration, document intelligence, cognitive automation, and process orchestration combined.',
     keywords: 'intelligent automation, AI automation, cognitive automation, document intelligence, NLP automation',
     url: '/services/intelligent-automation',

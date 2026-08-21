@@ -3635,6 +3635,246 @@ export const servicesData = {
       { illustrative: true, title: 'Bot Uptime SLA',      desc: 'Sustained automation workflow uptime across deployed intelligent automation programs under managed model.',            value: '99.5',suffix: '%',    metricLabel: 'Bot Uptime',           icon: 'Shield'   },
       { illustrative: true, title: 'Decision Velocity',   desc: 'Faster decision cycles enabled by AI-augmented automation removing manual bottlenecks from approval chains.',         value: '3',   suffix: 'x',    metricLabel: 'Faster Decisions',     icon: 'Target'   },
     ],
+    // The Cognition defaults put "Reasoning. Learning. Autonomous." under the h1
+    // and "Autonomous Agents" in the hero strip -- the last agentic strings
+    // above the fold on a page about automating processes.
+    heroBadge: 'Discovered. Orchestrated. Operated.',
+    heroStripItems: [
+      'Process Mining', 'Workflow Orchestration', 'RPA & Digital Workers', 'Document Processing',
+      'Exception Handling', 'Straight-Through Processing', 'Automation CoE', 'Managed Operations',
+    ],
+    hidePartnershipModel: true,
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Ten questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the questions automation buyers actually open with, and
+    // several of them are ones a vendor would rather not answer.
+    customFAQs: [
+      {
+        q: 'How do we know which processes are actually worth automating?',
+        a: 'Volume, exception rate and the cost of handling a case wrong. A process run ten thousand times a month with a low exception rate is the obvious candidate; one run twice a week with constant judgment calls almost never is, however painful it feels to the team doing it.\n\nThe number that decides it is not headcount saved, it is straight-through rate — the share of cases that complete without a person touching them. A process that automates to sixty per cent straight-through and dumps the rest into a queue has moved the work rather than removed it.\n\nProcess mining answers this properly because it shows how the process actually runs rather than how the process document says it runs. That gap is where most failed automations live, and two weeks of mining is a cheaper way to find it than six months of building.',
+        sources: [
+          { label: 'Kangqore Business Process Management', url: '/services/business-process-management' },
+        ],
+      },
+      {
+        q: 'Our last RPA program stalled. Why would this one be different?',
+        a: 'Most stall in the same place: bots got built, nothing coordinated them, and within a year the estate was a set of scripts with no owner. The build was never the hard part. What was missing was the orchestration layer and somebody accountable for the process rather than the robot.\n\nThe second common cause is starting with the tool. A platform gets bought, a Center of Excellence gets stood up around it, and the CoE becomes a request queue instead of a capability. The fifth automation then costs the same as the first, which is the clearest sign that nothing is being reused.\n\nWe would want to see what you already have before promising anything. Often the answer is that the existing estate is salvageable and needs orchestration and ownership rather than replacement.',
+        sources: [],
+      },
+      {
+        q: 'What happens when the underlying application changes?',
+        a: 'Something breaks — that is the honest answer, and any vendor who says otherwise is selling. What differs is whether you find out from monitoring or from a customer complaint three weeks later.\n\nWe reduce the surface where possible: an API is used in preference to screen automation every time the target system allows it, because an API contract changes on a release note and a user interface changes whenever somebody moves a button. Where screen automation is unavoidable, selectors are built to be as resilient as the platform allows and the failure path is monitored explicitly.\n\nThen it is an ownership question. Every automation has a named owner and a runbook, so when a change lands there is a person whose job it is to fix it rather than a ticket nobody recognizes.',
+        sources: [],
+      },
+      {
+        q: 'Do you build on our platform licenses, or bring your own?',
+        a: 'Yours, wherever you already have them. If you own UiPath or Automation Anywhere seats, or Power Automate is included in your Microsoft agreement, that usually decides the platform regardless of what we might otherwise prefer.\n\nWhere there is no incumbent, the choice is driven by your estate rather than by benchmarks. Microsoft-heavy organizations get a different recommendation from ones running mainframe green screens, and the presence of unstructured documents pulls the decision toward whichever intelligent document processing engine handles your formats best.\n\nUnder Automation-as-a-Service we hold the licensing and you consume the capability, which is the one case where the platform is genuinely ours rather than yours.',
+        sources: [],
+      },
+      {
+        q: 'How many processes do we need before this pays for itself?',
+        a: 'Fewer than most business cases assume, but the first one rarely does it alone. The economics turn on reuse: the first automation carries the cost of standing up the pipeline, the standards and the monitoring, and everything after it should be materially cheaper.\n\nIf your fifth automation costs what your first one did, the program is not compounding and something is wrong with how components are being built rather than with the business case.\n\nThis is why the proof-of-value engagement is scoped as one process taken far enough to measure. It gives you a real number from your own estate rather than an industry average that was never about your processes.',
+        sources: [],
+      },
+      {
+        q: 'Who runs the bots after go-live?',
+        a: 'Whoever you decide, and it should be decided before the build rather than after. The three workable models are your team with our support, a joint operation during a handover period, or fully managed by us under an agreed service level.\n\nWhat does not work is leaving it implicit. Automations that go live without a named operational owner are the ones that fail quietly, because nobody is watching the dashboard and nobody has been told they should be.\n\nIf you take it in-house we hand over the repository, the runbooks, the monitoring configuration and the documented failure modes. Nothing needs us present to keep running.',
+        sources: [],
+      },
+      {
+        q: 'How is this different from your BPM and RPA services?',
+        a: 'RPA is the digital worker doing the clicking. BPM is the process design and the workflow layer. Intelligent Automation is the combination, with AI added where the work needs judgment or reads unstructured content.\n\nIn practice the boundary matters less than the sequence. Almost nobody should buy RPA first: without process work you automate a bad process faster, and without orchestration you get bots that cannot be sequenced.\n\nIf you are certain the requirement is narrow — one rule-based process, well documented, no unstructured input — the RPA service is a cheaper entry point and we will say so.',
+        sources: [
+          { label: 'Robotic Process Automation', url: '/services/robotic-process-automation' },
+          { label: 'Business Process Management', url: '/services/business-process-management' },
+        ],
+      },
+      {
+        q: 'Can you automate processes that need human judgment?',
+        a: 'Partly, and the useful framing is which part rather than whether. Most judgment-heavy processes are eighty per cent mechanical work wrapped around a decision that genuinely needs a person. Automating the mechanical part and routing the decision is usually worth more than attempting the whole thing.\n\nWhere a model supports the decision, a confidence threshold decides what it handles and what escalates. Set deliberately, that threshold is the control that keeps automation safe; left at a vendor default, it is the reason a system quietly makes decisions nobody sanctioned.\n\nFor decisions affecting individuals — credit, claims, eligibility — the oversight requirement is not optional. Under the EU AI Act several of these are classified high-risk, which brings documentation and human oversight duties that are cheaper to design in than to retrofit.',
+        sources: [
+          { label: 'EU AI Act', url: 'https://artificialintelligenceact.eu/the-act/' },
+          { label: 'Kangqore AI Governance', url: '/services/ai-governance' },
+        ],
+      },
+      {
+        q: 'How do you handle documents that are not standard forms?',
+        a: 'Intelligent document processing handles far more variation than templated extraction did, but it is not magic and the honest ceiling depends on your documents rather than on the engine.\n\nClean, structured documents are close to a solved problem and should be bought rather than built. Handwritten annotations, poor scans, documents where the meaning depends on a clause elsewhere, and formats that vary by supplier are where accuracy falls and where a validation step earns its place.\n\nWe would want to run a sample of your worst documents rather than your best ones before quoting anything. The best ones tell you nothing you did not already assume.',
+        sources: [
+          { label: 'Kangqore AI & Cognitive Computing', url: '/services/ai-cognitive-computing' },
+        ],
+      },
+      {
+        q: 'What happens to the people whose work gets automated?',
+        a: 'That is your decision rather than ours, but it determines whether the program succeeds, so it is worth settling early. Automation programs that are positioned as headcount reduction meet exactly the resistance you would expect from the people whose process knowledge the build depends on.\n\nThe programs that land well move people onto the exception work and the judgment calls, which is the part of the job that was always the skilled part and was being crowded out by volume.\n\nPractically, the people who run a process today are the best source of truth about how it actually works, including the workarounds that never made it into the documentation. Involving them early is both the decent thing and the thing that makes the automation correct.',
+        sources: [],
+      },
+    ],
+
+
+
+    // ── Comparison ──────────────────────────────────────────────────────────
+    // The parity default compared RULES-BASED AUTOMATION with AGENTIC AI and
+    // explained that "an agentic system evaluates the current state against a
+    // goal" — an argument for a different service. The real automation argument
+    // is not rules versus agents; it is a pilot that worked versus an estate
+    // that holds.
+    comparisonTable: {
+      eyebrow: 'WHERE AUTOMATION PROGRAMS STALL',
+      heading: 'The pilot always works. The estate is the hard part.',
+      lede: 'Both columns describe automation that was built competently. They differ in what happens in month seven.',
+      beforeLabel: 'AUTOMATION AS PROJECTS',
+      afterLabel: 'AUTOMATION AS A CAPABILITY',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'PROJECTS',
+      afterShort: 'CAPABILITY',
+      rows: [
+        {
+          dimension: 'When the screen changes',
+          before: 'The bot fails quietly, and somebody notices later because the numbers look wrong.',
+          after: 'Resilient selectors where possible, monitoring where not, and a failure alerts the team that owns it the same day.',
+        },
+        {
+          dimension: 'When the person who built it leaves',
+          before: 'Nobody owns it. It runs until it does not, and then it gets rebuilt from scratch.',
+          after: 'A registry entry with a named owner, version history and a runbook somebody else can follow.',
+        },
+        {
+          dimension: 'What happens to exceptions',
+          before: 'They queue until a person clears them by hand — which is the work you set out to automate.',
+          after: 'Routed by type, with a human step only where judgment is genuinely needed, and the straight-through rate measured.',
+          link: { label: 'AI Governance', to: '/services/ai-governance' },
+        },
+        {
+          dimension: 'What the CoE actually does',
+          before: 'Owns the licenses and approves requests, which makes it a queue rather than a capability.',
+          after: 'Owns the pipeline, the standards and the reuse, so the fifth automation costs less than the first.',
+        },
+        {
+          dimension: 'How success is measured',
+          before: 'Bots deployed. A number that rises whether or not anything got better.',
+          after: 'Straight-through-processing rate, exception volume and cycle time on the process itself.',
+          link: { label: 'Process Mining', to: '/services/business-process-management' },
+        },
+      ],
+    },
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    // The parity default described six sectors through "Risk Auditor Agent" and
+    // "HIPAA Privacy Shield Agent" — governance agents, on an automation page.
+    // `items` is the neutral key; `agents` was the agentic one.
+    industryHeading: 'Automation built for',
+    industryHeadingHighlight: 'the processes your sector runs.',
+    industryLede: 'The platform travels between industries. What does not travel is which process is worth automating first, and that is decided by volume, exception rate and what it costs when a case is handled wrong.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'High-volume, evidence-heavy processes where an auditor will ask how each case was handled.',
+        items: ['KYC and client onboarding', 'Payment exception handling', 'Regulatory reporting preparation'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Claims and policy work where the exception rate, not the happy path, decides the business case.',
+        items: ['First notice of loss and claims triage', 'Policy administration changes', 'Document-heavy underwriting support'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Administrative load around clinical work, where a person stays in the loop by design.',
+        items: ['Prior authorization processing', 'Clinical coding support', 'Patient registration and onboarding'],
+      },
+      {
+        industry: 'Manufacturing & Supply Chain',
+        headline: 'Processes spanning systems that were never built to talk to each other.',
+        items: ['Order-to-cash processing', 'Supplier onboarding and master data', 'Three-way invoice matching'],
+      },
+      {
+        industry: 'Retail & E-Commerce',
+        headline: 'Seasonal volume that makes headcount the wrong answer and automation the obvious one.',
+        items: ['Returns and refunds processing', 'Price and promotion updates', 'Supplier invoice processing'],
+      },
+      {
+        industry: 'Media & Telecommunications',
+        headline: 'Provisioning and billing flows where a delay becomes a support call within hours.',
+        items: ['Service provisioning and activation', 'Billing dispute resolution', 'Network ticket triage and routing'],
+      },
+    ],
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // The parity default described a stack "powering cognitive computing,
+    // machine learning, and AI governance" and listed PyTorch, GPT-4o and
+    // Claude. An automation page that names no automation platform tells an
+    // automation buyer it does not do automation.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'What we build on,',
+      titleHighlight: 'and when we would not.',
+      subtitle: 'Platform choice is mostly decided by the estate you already have and how much of the process is unstructured. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Zap',
+          title: 'RPA platforms',
+          managed: 'UiPath, Automation Anywhere, Blue Prism',
+          selfHosted: 'Power Automate on Microsoft estates',
+          desc: 'Where the work is rule-based and spans applications with no usable API. If an API exists, integration beats a bot on every measure that matters.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Process and task mining',
+          managed: 'Celonis, Signavio, UiPath Process Mining',
+          selfHosted: 'Before the first bot, not after',
+          desc: 'Tells you how the process actually runs rather than how the process document says it runs. The gap between those two is where most failed automations live.',
+          link: { label: 'Business Process Management', to: '/services/business-process-management' },
+        },
+        {
+          icon: 'Network',
+          title: 'Orchestration and BPM',
+          managed: 'Camunda, Appian, Temporal',
+          selfHosted: 'Once more than one bot is involved',
+          desc: 'The layer that coordinates people, systems and digital workers. Skipping it is how an estate becomes scripts nobody can sequence.',
+        },
+        {
+          icon: 'Eye',
+          title: 'Intelligent document processing',
+          managed: 'ABBYY, Azure AI Document Intelligence',
+          selfHosted: 'Google Document AI, custom extraction',
+          desc: 'Buy it for clean, standard documents. Build only where the forms are yours and non-standard, which is rarer than vendors suggest.',
+          link: { label: 'AI & Cognitive Computing', to: '/services/ai-cognitive-computing' },
+        },
+        {
+          icon: 'Layers',
+          title: 'Integration',
+          managed: 'MuleSoft, Boomi, Azure Integration',
+          selfHosted: 'Kafka, REST and GraphQL services',
+          desc: 'The unglamorous option that outlives every bot built to avoid it. Reached for first wherever the target system will let us.',
+        },
+        {
+          icon: 'Activity',
+          title: 'Monitoring and observability',
+          managed: 'Platform consoles plus your own stack',
+          selfHosted: 'Alerting somebody actually owns',
+          desc: 'Bot dashboards report whether a bot ran. What matters is whether the process completed, which is a different question and rarely on the same screen.',
+        },
+      ],
+    },
+
+    // ── CTAs ────────────────────────────────────────────────────────────────
+    midCta: 'The bot works. Then the screen changes.',
+    midCtaLabel: 'Show us a broken process',
+
+    closingCta: {
+      title: 'One process.',
+      highlight: 'One automation that survives production.',
+      body: 'Bring the process that eats the most hours, or the automation that keeps breaking. In 30 minutes we will tell you whether it is a candidate, what would have to change before it is, and what it is worth once it works.',
+      primaryLabel: 'Bring us a process',
+      secondaryLabel: 'See the five ways to start',
+      proofLabel: 'From first call to first process running in production',
+    },
+
     // ── What this actually is ───────────────────────────────────────────────
     // The page carried a single hero paragraph. These three carry the delivery
     // argument the architecture section no longer holds: the stack there is
