@@ -14,6 +14,68 @@
 // content regression during migration.
 // ────────────────────────────────────────────────────────────────────────────────
 
+// ─── Policy & Ethics Layer — the 4-layer stack ───────────────────────────────
+// Exported rather than inlined because this is a platform pattern, not a
+// property of one service: Intelligent Automation, Agentic AI, AI Governance,
+// Decision Intelligence and Kangqore View all answer the same four questions.
+// Defining it once means the answer cannot drift between pages.
+//
+//   Policy -> Ethics -> Governance -> Human Accountability
+//   what must be followed -> what should be considered right ->
+//   what must be controlled -> who remains accountable
+//
+// Set `architectureNodes: POLICY_ETHICS_STACK` on any service that needs it.
+export const POLICY_ETHICS_STACK = [
+  {
+    title: 'Policy & Regulatory Controls',
+    icon: 'ShieldCheck',
+    description: 'The policies, regulations, standards and internal rules an automated system has to comply with before it is allowed to act at all.',
+    features: [
+      'Regulatory compliance mapping',
+      'Data and retention policies',
+      'Security policies',
+      'Industry-specific controls',
+      'Operating policies and standards',
+    ],
+  },
+  {
+    title: 'Responsible AI & Ethics',
+    icon: 'Eye',
+    description: 'What the system should not do even where policy permits it. Keeps automated decisions fair, explainable and answerable to the values you actually hold.',
+    features: [
+      'Bias measurement and management',
+      'Explainability of decisions',
+      'Ethical use boundaries',
+      'Responsible AI principles',
+      'Transparency to the affected party',
+    ],
+  },
+  {
+    title: 'Risk, Governance & Assurance',
+    icon: 'Radar',
+    description: 'Continuous evaluation rather than a launch checklist. Tests whether the controls above are present, working, and still working six months later.',
+    features: [
+      'Risk assessment and tiering',
+      'Model and workflow governance',
+      'Auditability and control testing',
+      'Approval and exception management',
+      'Assurance and evidence trails',
+    ],
+  },
+  {
+    title: 'Human Oversight & Accountability',
+    icon: 'Target',
+    description: 'Where human judgment is required, and who answers for the outcome. The layer most programs leave implicit until somebody asks who approved a decision.',
+    features: [
+      'Human-in-the-loop checkpoints',
+      'Approval and escalation workflows',
+      'Intervention and override rights',
+      'Named accountability per decision',
+      'Decision traceability',
+    ],
+  },
+];
+
 export const servicesData = {
 
   // ═════════════════════════════════════════════════════════════════════════════
@@ -3573,6 +3635,18 @@ export const servicesData = {
       { illustrative: true, title: 'Bot Uptime SLA',      desc: 'Sustained automation workflow uptime across deployed intelligent automation programs under managed model.',            value: '99.5',suffix: '%',    metricLabel: 'Bot Uptime',           icon: 'Shield'   },
       { illustrative: true, title: 'Decision Velocity',   desc: 'Faster decision cycles enabled by AI-augmented automation removing manual bottlenecks from approval chains.',         value: '3',   suffix: 'x',    metricLabel: 'Faster Decisions',     icon: 'Target'   },
     ],
+    // ── Architecture ────────────────────────────────────────────────────────
+    // The parity default rendered four vague governance labels -- "Policy &
+    // Ethics Layer", "Control & Orchestration Engine" -- with no decomposition
+    // behind them. Replaced with the four-layer stack, which answers what must
+    // be followed, what should be considered right, what must be controlled,
+    // and who remains accountable.
+    architectureEyebrow: 'POLICY & ETHICS LAYER',
+    architectureTitle: 'What must be followed.',
+    architectureTitleHighlight: 'And who remains accountable.',
+    architectureLede: 'Policy to ethics to governance to human accountability. Four layers deciding what an automated system may do, what it should not do even when permitted, how that is verified, and who answers when it goes wrong.',
+    architectureNodes: POLICY_ETHICS_STACK,
+
     // ── Capability areas ────────────────────────────────────────────────────
     // This service previously had none, so the whole section came from the
     // Cognition parity default -- which is the AI Governance taxonomy. The page
