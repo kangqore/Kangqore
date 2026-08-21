@@ -4005,8 +4005,8 @@ export const servicesData = {
     name: 'Big Data',
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
-    shortDescription: 'Handle massive datasets with scalable big data infrastructure',
-    fullDescription: 'Build and manage big data platforms that process, store, and analyze large volumes of data efficiently.',
+    shortDescription: 'Kangqore engineers the data platform underneath your analytics: ingestion, lakehouse storage, distributed processing and streaming, built to stay correct under change.',
+    fullDescription: 'Ingestion, lakehouse storage, distributed processing and streaming — engineered so the platform stays correct when a source changes shape, stays fast as tables grow, and stays predictable on cost.',
     keyFeatures: ['Data lakes', 'Distributed processing', 'Real-time streaming', 'Data warehousing', 'ETL pipelines'],
     relatedServiceSlugs: ['analytics', 'data-science-ai'],
     featured: false,
@@ -4088,13 +4088,13 @@ export const servicesData = {
 
 
 
-    heroTitle: 'Big Data Platforms\nBuilt to Stay Affordable',
+    heroTitle: 'Big Data Platforms\nEngineered for Performance and Trust',
     heroBadge: 'Ingest. Store. Process. Serve.',
     heroStripItems: [
       'Lakehouse Architecture', 'Change Data Capture', 'Spark & Distributed Compute', 'Event Streaming',
       'Table Formats', 'Pipeline Orchestration', 'Data Observability', 'Cost per Terabyte',
     ],
-    fullDescriptionMaxWidth: 'max-w-[700px] xl:max-w-[780px]',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
 
     // ── What this actually is ───────────────────────────────────────────────
     whatIsPara2: 'Big data stopped being about volume some time ago. Storage is cheap and the engines are commodity; what is hard is a platform that stays correct when one of your sources changes shape, stays fast when a table doubles, and stays affordable when three of your teams start querying it at once.',
