@@ -292,6 +292,17 @@ ${blockList(svc.dataBoundary.blocks || [], 'label', 'body')}
       </ul>`
     : '';
 
+  // Key terms: emitted as a real <dl> so the snapshot carries the same markup
+  // the page does. A term-and-definition pair is the shape an extractor lifts
+  // for "what is <term>" queries, and it is worthless if only the JS build has
+  // it.
+  const keyTerms = svc.keyTerms
+    ? `    <h2>${esc([svc.keyTerms.title, svc.keyTerms.titleHighlight].filter(Boolean).join(' '))}</h2>
+${svc.keyTerms.lede ? `      <p>${esc(svc.keyTerms.lede)}</p>\n` : ''}      <dl>
+${(svc.keyTerms.terms || []).map((t) => `        <dt>${esc(t.term)}</dt>\n        <dd>${esc(t.definition)}</dd>`).join('\n')}
+      </dl>`
+    : '';
+
   const metrics = (svc.businessMetrics || [])
     .map((m) => `        <li><strong>${esc(m.value)}${esc(m.suffix || '')}</strong> ${esc(m.metricLabel || m.title)} — ${esc(m.desc)}</li>`)
     .join('\n');
@@ -350,6 +361,7 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
     ${metrics ? `<h2>${esc([svc.outcomesHeading, svc.outcomesHeadingHighlight].filter(Boolean).join(' ') || 'Business Outcomes')}</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${svc.capabilitiesLede ? `      <p>${esc(svc.capabilitiesLede)}</p>\n` : ''}${capabilities}` : ''}
+    ${keyTerms}
 
     ${svc.midCta ? `<p>${esc(svc.midCta)}</p>` : ''}
 

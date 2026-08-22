@@ -3056,6 +3056,58 @@ const featureMicros   = service.featureMicros
 
 
 
+      {/* ══════════════════════ KEY TERMS ══════════════════════ */}
+      {/* Experimental. Opt-in via a `keyTerms` key -- renders on no service
+          that does not define one, so deleting the key removes the section.
+
+          A real <dl>/<dt>/<dd>, not styled divs: a definition list is what this
+          content is, it reads correctly to a screen reader, and it is the
+          markup an extractor recognizes as term-and-definition. Two columns on
+          desktop, one on mobile, no interaction state to get wrong. */}
+      {service.keyTerms && (
+        <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.keyTerms.eyebrow}
+              </span>
+            </div>
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-3xl">
+              {service.keyTerms.title}{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {service.keyTerms.titleHighlight}
+              </span>
+            </h2>
+            {service.keyTerms.lede && (
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-14">
+                {service.keyTerms.lede}
+              </p>
+            )}
+            <dl className="grid md:grid-cols-2 gap-x-16 gap-y-10">
+              {service.keyTerms.terms.map((t) => (
+                <div key={t.term}>
+                  {/* The accent bar lives inside the <dt>. A <dl> group may
+                      contain only <dt> and <dd>; a bare <span> between them
+                      fails axe's definition-list rule, which is how this was
+                      caught. */}
+                  <dt className="font-bold text-lg leading-snug tracking-tight text-white mb-2">
+                    <span
+                      className="block h-[2px] w-16 rounded-full mb-4 opacity-60"
+                      style={{ background: 'linear-gradient(90deg, #2564ea, #4ab6d4)' }}
+                    />
+                    {t.term}
+                  </dt>
+                  <dd className="text-white/60 text-base leading-relaxed">
+                    {t.definition}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════ eQORE AI CONCIERGE ══════════════════════ */}
       <div id="svc-concierge">
         <ConciergeSection inverted heading={service.conciergeHeading} intro={service.conciergeIntro} suggestedPrompts={service.conciergeChips || [
