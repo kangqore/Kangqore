@@ -5289,9 +5289,14 @@ export const servicesData = {
     // is scoped and funded inside a multinational; sector cards are not.
     heroTitle: 'Business Process Management\nfor the Global Enterprise',
     whatIsEyebrow: 'What business process management actually is',
-    whatIsTitle: 'Business Process Management',
+    // The full service name alone measures 724px in an 896px box, so it is
+    // the floor on how narrow this heading can be -- no line-2 wording
+    // shortens the block. The abbreviation drops the widest line to 521px.
+    // The entity is not lost: the eyebrow directly above carries the full
+    // name, and BPM is itself a query term people type.
+    whatIsTitle: 'BPM for Multi-Market',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'for Multi-Market Operations.',
+    whatIsHighlight: 'Enterprise Operations.',
     whatIsPara2: 'Business process management is the discipline of designing, standardizing, governing and continuously improving the cross-functional processes an enterprise runs on. It is an operating model question before it is a technology one \u2014 which is why buying a platform first so rarely resolves it.',
     whatIsPara3: 'The complexity is structural rather than accidental. A single order-to-cash cycle in your group can cross four functions, three ERP instances, two shared service centers and a dozen handoffs that exist because of an acquisition nobody has unwound. Every step has an owner who can demonstrate that their step is fast. The elapsed time your customer actually experiences belongs to nobody.',
     whatIsPara4: 'Kangqore closes that gap. We combine process engineering, operating model design, workflow and case platforms, automation and controls into one connected design, then put a named owner, a measured baseline and a per-case audit trail behind it \u2014 from discovery and reengineering through implementation on Appian, Pega, ServiceNow or Camunda, to a Center of Excellence that keeps improving your processes after we leave.',
