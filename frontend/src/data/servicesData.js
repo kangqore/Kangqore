@@ -4023,6 +4023,72 @@ export const servicesData = {
     ],
     hidePartnershipModel: true,
 
+    // ── How we engage ───────────────────────────────────────────────────────
+    // This service had no servicePackages, so the section rendered the generic
+    // parity default -- five entry points written for no service in particular.
+    //
+    // Structured around what buyers actually procure rather than how the
+    // platform is engineered. A procurement lead scans for "consulting",
+    // "migration", "implementation" and "support"; the capability taxonomy
+    // above is organized by layer, so those words appear nowhere. Both views
+    // are now present, which is the point.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways to start.',
+    engagementHeadingHighlight: 'One partner throughout.',
+    engagementLede: 'Advise, integrate, build, implement, operate. Most estates need two of these rather than all five, and the assessment exists to work out which two.',
+    servicePackages: [
+      {
+        name: 'Advisory & Architecture',
+        description: 'Before anything gets built. What you have, what it costs, what it should be, and whether the platform you are being sold is bigger than the data going through it. Frequently ends in a smaller recommendation than expected.',
+        deliverables: [
+          'Current-state assessment of platform and pipelines',
+          'Target architecture and technology selection',
+          'Business case with cost per workload modeled',
+          'Sequenced roadmap, with what to retire rather than migrate',
+        ],
+      },
+      {
+        name: 'Integration & Migration',
+        description: 'Getting data out of where it is and into where it should be. Usually a Hadoop estate, an appliance out of support, or a warehouse whose bill has outgrown its usefulness.',
+        deliverables: [
+          'Source extraction, mapping and validation',
+          'Legacy platform and workload migration',
+          'Parallel run with automated output comparison',
+          'Cutover plan and rollback path',
+        ],
+      },
+      {
+        name: 'Platform Build',
+        description: 'The engineering itself. Data models, pipelines and the serving layer, built so somebody other than the author can run them.',
+        deliverables: [
+          'Data models and schema design for query patterns',
+          'Custom ETL and ELT pipeline development',
+          'Distributed processing applications on Spark and SQL engines',
+          'Data APIs and products exposing processed data to applications',
+        ],
+      },
+      {
+        name: 'Implementation & Cutover',
+        description: 'Standing the platform up in your environment, on-premise or cloud, and proving it holds before anything depends on it.',
+        deliverables: [
+          'Platform installation and configuration, on-premise or cloud',
+          'Monitoring, alerting and operational dashboards',
+          'Performance, security and cost tuning',
+          'Handover with runbooks and documented failure modes',
+        ],
+      },
+      {
+        name: 'Managed Operations',
+        description: 'Running it after go-live, under an agreed service level. For teams who want the platform without hiring the platform team, or who need cover while they build one.',
+        deliverables: [
+          'Pipeline and infrastructure monitored against agreed service levels',
+          'Diagnosis of slow queries, stalled jobs and silent data failures',
+          'Cover for the engineers who own it, including while they are on leave',
+          'Quarterly review of what the platform costs and why',
+        ],
+      },
+    ],
+
     faqEyebrow: 'ASKED ON THE FIRST CALL',
     faqHeading: 'Ten questions,',
     faqHeadingHighlight: 'answered without hedging.',
@@ -4335,6 +4401,8 @@ export const servicesData = {
           'Late and out-of-order data',
           'Idempotent and replayable loads',
           'Source system impact management',
+          'Custom ETL and ELT development',
+          'Data models and schema design',
         ],
       },
       {
@@ -4351,6 +4419,7 @@ export const servicesData = {
           'Time travel and snapshot retention',
           'Multi-region and replication design',
           'Warehouse and lakehouse convergence',
+          'Single source of truth across duplicated datasets',
         ],
       },
       {
@@ -4366,6 +4435,7 @@ export const servicesData = {
           'Cost per query and per terabyte',
           'Incremental and idempotent processing',
           'Workload isolation across teams',
+          'Data APIs and data products for downstream applications',
         ],
       },
       {
@@ -4426,6 +4496,8 @@ export const servicesData = {
           'Platform as a product and self-service',
           'Reference architecture and standards',
           'Multi-cloud and hybrid design',
+          'On-premise and air-gapped deployment',
+          'Platform installation and configuration',
         ],
       },
     ],
