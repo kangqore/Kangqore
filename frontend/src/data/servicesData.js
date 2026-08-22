@@ -4006,7 +4006,7 @@ export const servicesData = {
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE™',
     shortDescription: 'Kangqore engineers the data platform underneath your analytics: ingestion, lakehouse storage, distributed processing and streaming, built to stay correct under change.',
-    fullDescription: 'Ingestion, lakehouse storage, distributed processing and streaming — engineered so the platform stays correct when a source changes shape, stays fast as tables grow, and stays predictable on cost.',
+    fullDescription: 'Kangqore helps enterprises turn scattered data estates into one platform: ingestion, storage, processing and streaming, engineered to stay correct as sources change and predictable as they grow.',
     keyFeatures: ['Data lakes', 'Distributed processing', 'Real-time streaming', 'Data warehousing', 'ETL pipelines'],
     relatedServiceSlugs: ['analytics', 'data-science-ai'],
     featured: false,
