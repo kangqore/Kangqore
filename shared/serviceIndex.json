@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T18:10:06.553Z",
+  "generatedAt": "2026-08-22T18:56:01.990Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -625,6 +625,14 @@
         {
           "rule": "Microsoft-estate automation",
           "detail": "Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl."
+        },
+        {
+          "rule": "Process intelligence",
+          "detail": "How you find out which processes are worth a bot, from event logs rather than from a workshop. Most estates skip this and automate whatever the loudest team asked for, which is why the backlog and the benefit case diverge."
+        },
+        {
+          "rule": "Workflow and orchestration",
+          "detail": "A bot should be invoked by a governed workflow rather than be the workflow. Where the process itself needs designing, that work sits on our business process management and digital process automation services."
         },
         {
           "rule": "Credentials and bot identity",

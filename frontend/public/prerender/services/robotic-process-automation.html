@@ -240,14 +240,19 @@
       </section>
 
         <h2>Robotic Process Automation by function.</h2>
-    <p>Eight back-office functions, and in each one the system that has no usable interface — which is the condition that makes a bot the correct answer rather than a workaround.</p>
+    <p>Nine back-office functions, the processes most often automated in each, and the system that has no usable interface — which is the condition that makes a bot the correct answer rather than a workaround.</p>
       <section>
         <h3>Finance &amp; Accounting</h3>
         <p>The ERP has an API. The bank portal, the tax authority site and the supplier who only sends PDFs do not.</p>
         <ul>
-          <li>Invoice entry from portals and mailboxes</li>
+          <li>Accounts payable and invoice processing</li>
+          <li>Payment execution and confirmation</li>
           <li>Bank statement retrieval and reconciliation</li>
+          <li>Purchase-order and goods-receipt matching</li>
           <li>Period-close checklist execution</li>
+          <li>General ledger journal posting</li>
+          <li>Credit and collections chasing</li>
+          <li>Audit evidence and regulatory reporting packs</li>
         </ul>
       </section>
       <section>
@@ -255,8 +260,12 @@
         <p>Policy administration systems bought in the nineties, still load-bearing, still terminal-based.</p>
         <ul>
           <li>Policy data entry across legacy admin systems</li>
-          <li>Claims intake from broker portals</li>
+          <li>First-notice-of-loss intake from broker portals</li>
+          <li>Claims status retrieval and updates</li>
+          <li>Underwriting support and document collation</li>
           <li>Renewal and endorsement processing</li>
+          <li>Premium reconciliation</li>
+          <li>Regulatory return preparation</li>
         </ul>
       </section>
       <section>
@@ -264,17 +273,25 @@
         <p>Core banking that will not be replaced this decade, plus a dozen regulator portals with no machine interface.</p>
         <ul>
           <li>Account opening and maintenance in core systems</li>
-          <li>Regulatory portal submissions</li>
+          <li>Payment and transaction processing</li>
+          <li>KYC and periodic review data gathering</li>
           <li>Sanctions and watchlist screening steps</li>
+          <li>Reconciliation across ledgers</li>
+          <li>Regulator portal submissions</li>
+          <li>Audit and evidence requests</li>
         </ul>
       </section>
       <section>
         <h3>Human Resources</h3>
         <p>A cloud HR platform that integrates, surrounded by payroll bureaux and benefits providers that do not.</p>
         <ul>
-          <li>Employee data entry across disconnected systems</li>
+          <li>Employee onboarding and offboarding</li>
+          <li>HR data synchronization across systems</li>
+          <li>Access provisioning and revocation</li>
           <li>Payroll input preparation and validation</li>
           <li>Benefits and third-party provider updates</li>
+          <li>Candidate communication and scheduling</li>
+          <li>Workforce administration and record maintenance</li>
         </ul>
       </section>
       <section>
@@ -282,17 +299,25 @@
         <p>Supplier portals, each with its own login, none of them yours, all of them changing without notice.</p>
         <ul>
           <li>Supplier portal order and status retrieval</li>
-          <li>Goods receipt and three-way match steps</li>
-          <li>Catalog and price file maintenance</li>
+          <li>Purchase order creation and confirmation</li>
+          <li>Goods receipt and three-way match</li>
+          <li>Supplier onboarding and data maintenance</li>
+          <li>Catalog and price file updates</li>
+          <li>Shipment tracking and exception chasing</li>
+          <li>Inventory data synchronization</li>
         </ul>
       </section>
       <section>
-        <h3>Customer Service</h3>
-        <p>An agent holding four applications open, retyping the same reference number into each one.</p>
+        <h3>Customer Operations</h3>
+        <p>An advisor holding four applications open, retyping the same reference number into each one.</p>
         <ul>
-          <li>Attended desktop assistants for agents</li>
+          <li>Attended desktop assistants for advisors</li>
           <li>Cross-system customer record lookup</li>
           <li>Case creation and status synchronization</li>
+          <li>Customer data updates across applications</li>
+          <li>Document verification steps</li>
+          <li>Service request routing and enrichment</li>
+          <li>Outbound communication triggers</li>
         </ul>
       </section>
       <section>
@@ -300,17 +325,38 @@
         <p>Provisioning steps spread across tools that were each bought to solve one problem and integrated with none.</p>
         <ul>
           <li>User provisioning and access requests</li>
+          <li>Password reset and account unlock workflows</li>
+          <li>Ticket triage, enrichment and routing</li>
           <li>Routine health checks and evidence capture</li>
-          <li>Ticket triage and enrichment steps</li>
+          <li>Application monitoring follow-up actions</li>
+          <li>Change and release administration</li>
+          <li>License and asset reconciliation</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Security Operations</h3>
+        <p>Analysts moving the same indicator between four consoles, none of which was bought to talk to the others.</p>
+        <ul>
+          <li>Alert enrichment across security consoles</li>
+          <li>Security ticket creation and assignment</li>
+          <li>Threat intelligence lookup and correlation</li>
+          <li>Compliance evidence collection</li>
+          <li>Identity and access review steps</li>
+          <li>Vulnerability scan output processing</li>
+          <li>Reporting pack assembly</li>
         </ul>
       </section>
       <section>
         <h3>Healthcare Administration</h3>
         <p>Clinical systems that will not be touched, and payer portals that change their layout without telling anyone.</p>
         <ul>
-          <li>Eligibility and authorization portal checks</li>
+          <li>Eligibility and prior-authorization portal checks</li>
           <li>Claims status retrieval across payers</li>
-          <li>Administrative data entry around clinical systems</li>
+          <li>Patient registration and demographic entry</li>
+          <li>Coding and billing support steps</li>
+          <li>Referral processing and routing</li>
+          <li>Provider data maintenance</li>
+          <li>Administrative and compliance reporting</li>
         </ul>
       </section>
 
@@ -380,6 +426,8 @@
           <li><strong>Enterprise RPA platforms</strong>: The default for an estate of any size: mature orchestration, credential handling and a component ecosystem. Heavy and licensed per runtime, which stops making sense below roughly a dozen bots.</li>
           <li><strong>Regulated and legacy-heavy estates</strong>: Unattended-first by design, with a control model that regulated operations teams tend to find easier to evidence. Weaker where the work is attended or desktop-side.</li>
           <li><strong>Microsoft-estate automation</strong>: Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl.</li>
+          <li><strong>Process intelligence</strong>: How you find out which processes are worth a bot, from event logs rather than from a workshop. Most estates skip this and automate whatever the loudest team asked for, which is why the backlog and the benefit case diverge.</li>
+          <li><strong>Workflow and orchestration</strong>: A bot should be invoked by a governed workflow rather than be the workflow. Where the process itself needs designing, that work sits on our business process management and digital process automation services.</li>
           <li><strong>Credentials and bot identity</strong>: Non-negotiable past the first bot. A password in a config file is the finding that ends an RPA program in a regulated group, and retrofitting a vault across a live estate is far worse than starting with one.</li>
           <li><strong>Monitoring and alerting</strong>: Platform monitoring reports whether the run finished. It cannot tell you the bot wrote the wrong value into the right field, so the checks that matter are written against the output.</li>
           <li><strong>The alternative to all of the above</strong>: If a usable API exists, integration wins on cost, speed and durability, and we will say so before quoting a build. RPA is the answer when that door is closed — not the first thing to try.</li>

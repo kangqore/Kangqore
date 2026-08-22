@@ -5339,6 +5339,20 @@ export const servicesData = {
           desc: 'Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl.',
         },
         {
+          icon: 'Radar',
+          title: 'Process intelligence',
+          managed: 'Celonis, SAP Signavio, UiPath Process Mining',
+          selfHosted: 'Before the backlog, not after it',
+          desc: 'How you find out which processes are worth a bot, from event logs rather than from a workshop. Most estates skip this and automate whatever the loudest team asked for, which is why the backlog and the benefit case diverge.',
+        },
+        {
+          icon: 'Network',
+          title: 'Workflow and orchestration',
+          managed: 'ServiceNow, Camunda, Appian, Pega',
+          selfHosted: 'Where the bot is a step, not the process',
+          desc: 'A bot should be invoked by a governed workflow rather than be the workflow. Where the process itself needs designing, that work sits on our business process management and digital process automation services.',
+        },
+        {
           icon: 'Lock',
           title: 'Credentials and bot identity',
           managed: 'CyberArk, HashiCorp Vault, platform-native vaults',
@@ -5494,55 +5508,143 @@ export const servicesData = {
     // ── By function ─────────────────────────────────────────────────────────
     // This slot renders the industry grid elsewhere. DPA uses it for industries
     // at the application-gap layer, BPM for enterprise value streams. Here it
-    // carries back-office functions, because that is how RPA is actually
-    // scoped: an estate belongs to a finance shared service or an insurance
-    // operations team, not to a sector.
+    // carries back-office functions, because that is how an RPA estate is
+    // actually owned -- by a finance shared service or an insurance operations
+    // team, never by a sector.
     //
-    // Each card names the system that has no usable API, since that is the
-    // condition that makes a bot the right answer rather than a workaround.
+    // Expanded from three named processes per function to seven or eight,
+    // taken from the supplied use-case list. That is roughly sixty specific
+    // process names -- accounts payable, first notice of loss, three-way match,
+    // alert enrichment -- each a long-tail query in its own right, and none of
+    // them published anywhere else on the site. Security Operations was added
+    // from the same list; it is a genuine RPA use case and appeared on no
+    // Kangqore page.
+    //
+    // The headlines stay as written: each names the system that has no usable
+    // API, because that is the condition that makes a bot correct here rather
+    // than a workaround. The supplied list gives the what; the headline gives
+    // the why.
     industryHeading: 'Robotic Process Automation',
     industryHeadingHighlight: 'by function.',
-    industryLede: 'Eight back-office functions, and in each one the system that has no usable interface \u2014 which is the condition that makes a bot the correct answer rather than a workaround.',
+    industryLede: 'Nine back-office functions, the processes most often automated in each, and the system that has no usable interface \u2014 which is the condition that makes a bot the correct answer rather than a workaround.',
     industryUseCases: [
       {
         industry: 'Finance & Accounting',
         headline: 'The ERP has an API. The bank portal, the tax authority site and the supplier who only sends PDFs do not.',
-        items: ['Invoice entry from portals and mailboxes', 'Bank statement retrieval and reconciliation', 'Period-close checklist execution'],
+        items: [
+          'Accounts payable and invoice processing',
+          'Payment execution and confirmation',
+          'Bank statement retrieval and reconciliation',
+          'Purchase-order and goods-receipt matching',
+          'Period-close checklist execution',
+          'General ledger journal posting',
+          'Credit and collections chasing',
+          'Audit evidence and regulatory reporting packs',
+        ],
       },
       {
         industry: 'Insurance Operations',
         headline: 'Policy administration systems bought in the nineties, still load-bearing, still terminal-based.',
-        items: ['Policy data entry across legacy admin systems', 'Claims intake from broker portals', 'Renewal and endorsement processing'],
+        items: [
+          'Policy data entry across legacy admin systems',
+          'First-notice-of-loss intake from broker portals',
+          'Claims status retrieval and updates',
+          'Underwriting support and document collation',
+          'Renewal and endorsement processing',
+          'Premium reconciliation',
+          'Regulatory return preparation',
+        ],
       },
       {
         industry: 'Banking Operations',
         headline: 'Core banking that will not be replaced this decade, plus a dozen regulator portals with no machine interface.',
-        items: ['Account opening and maintenance in core systems', 'Regulatory portal submissions', 'Sanctions and watchlist screening steps'],
+        items: [
+          'Account opening and maintenance in core systems',
+          'Payment and transaction processing',
+          'KYC and periodic review data gathering',
+          'Sanctions and watchlist screening steps',
+          'Reconciliation across ledgers',
+          'Regulator portal submissions',
+          'Audit and evidence requests',
+        ],
       },
       {
         industry: 'Human Resources',
         headline: 'A cloud HR platform that integrates, surrounded by payroll bureaux and benefits providers that do not.',
-        items: ['Employee data entry across disconnected systems', 'Payroll input preparation and validation', 'Benefits and third-party provider updates'],
+        items: [
+          'Employee onboarding and offboarding',
+          'HR data synchronization across systems',
+          'Access provisioning and revocation',
+          'Payroll input preparation and validation',
+          'Benefits and third-party provider updates',
+          'Candidate communication and scheduling',
+          'Workforce administration and record maintenance',
+        ],
       },
       {
         industry: 'Supply Chain & Procurement',
         headline: 'Supplier portals, each with its own login, none of them yours, all of them changing without notice.',
-        items: ['Supplier portal order and status retrieval', 'Goods receipt and three-way match steps', 'Catalog and price file maintenance'],
+        items: [
+          'Supplier portal order and status retrieval',
+          'Purchase order creation and confirmation',
+          'Goods receipt and three-way match',
+          'Supplier onboarding and data maintenance',
+          'Catalog and price file updates',
+          'Shipment tracking and exception chasing',
+          'Inventory data synchronization',
+        ],
       },
       {
-        industry: 'Customer Service',
-        headline: 'An agent holding four applications open, retyping the same reference number into each one.',
-        items: ['Attended desktop assistants for agents', 'Cross-system customer record lookup', 'Case creation and status synchronization'],
+        industry: 'Customer Operations',
+        headline: 'An advisor holding four applications open, retyping the same reference number into each one.',
+        items: [
+          'Attended desktop assistants for advisors',
+          'Cross-system customer record lookup',
+          'Case creation and status synchronization',
+          'Customer data updates across applications',
+          'Document verification steps',
+          'Service request routing and enrichment',
+          'Outbound communication triggers',
+        ],
       },
       {
         industry: 'IT Operations',
         headline: 'Provisioning steps spread across tools that were each bought to solve one problem and integrated with none.',
-        items: ['User provisioning and access requests', 'Routine health checks and evidence capture', 'Ticket triage and enrichment steps'],
+        items: [
+          'User provisioning and access requests',
+          'Password reset and account unlock workflows',
+          'Ticket triage, enrichment and routing',
+          'Routine health checks and evidence capture',
+          'Application monitoring follow-up actions',
+          'Change and release administration',
+          'License and asset reconciliation',
+        ],
+      },
+      {
+        industry: 'Security Operations',
+        headline: 'Analysts moving the same indicator between four consoles, none of which was bought to talk to the others.',
+        items: [
+          'Alert enrichment across security consoles',
+          'Security ticket creation and assignment',
+          'Threat intelligence lookup and correlation',
+          'Compliance evidence collection',
+          'Identity and access review steps',
+          'Vulnerability scan output processing',
+          'Reporting pack assembly',
+        ],
       },
       {
         industry: 'Healthcare Administration',
         headline: 'Clinical systems that will not be touched, and payer portals that change their layout without telling anyone.',
-        items: ['Eligibility and authorization portal checks', 'Claims status retrieval across payers', 'Administrative data entry around clinical systems'],
+        items: [
+          'Eligibility and prior-authorization portal checks',
+          'Claims status retrieval across payers',
+          'Patient registration and demographic entry',
+          'Coding and billing support steps',
+          'Referral processing and routing',
+          'Provider data maintenance',
+          'Administrative and compliance reporting',
+        ],
       },
     ],
 
