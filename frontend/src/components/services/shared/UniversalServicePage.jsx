@@ -934,6 +934,11 @@ const INDUSTRY_ROUTES = {
   'education & research': 'edtech',
   'tourism & hospitality': 'travel-hospitality',
   'energy & resources': 'energy-utilities',
+  // Digital process automation industry grid. Automotive, Logistics & Supply
+  // Chain, Government & Public Sector and Professional Services are left
+  // unmapped on purpose — no /industries page covers them, and an unlinked card
+  // is better than one that lands somewhere unrelated.
+  'technology & telecommunications': 'media-technology',
 };
 
 function industrySlug(label) {
@@ -2263,6 +2268,102 @@ const featureMicros   = service.featureMicros
                     {/* ── The number that decides whether it survives ── */}
                     <rect x="26" y="364" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
                     <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">cost per terabyte measured at every layer, attributed to a team</text>
+                  </svg>
+                </div>
+              ) : service.slug === 'digital-process-automation' ? (
+                /* ── Where work arrives, to where it finishes ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AGENTIC ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on
+                   a process-digitization page and accounted for most of the
+                   off-topic word count.
+
+                   The five stages match architectureNodes below it exactly. The
+                   case record is drawn as the center of the diagram because it
+                   is the argument this page makes: without one, work has no
+                   state, no owner and no trail, and automating it just moves an
+                   unmanaged process faster.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is smaller than 12, and
+                   the widest label (ORCHESTRATE, 11 characters at 12 units in a
+                   96-unit box) clears by 7 units each side. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="How a digital process runs: work arrives through email, portals, phone, documents and APIs; the lifecycle runs discover, design, digitize, orchestrate and optimize; a single case record holds state, owner, SLA and audit trail, from which cases either complete untouched or route to human review with context assembled" tabIndex={0}>
+                  <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>How work with no system of its own becomes a governed digital process</title>
+                    <desc>Work arrives through email, portals, phone, documents and APIs with no case record behind it. The lifecycle runs discover, design, digitize, orchestrate and optimize. A single case record then holds state, owner, SLA and audit trail; from there cases either complete untouched or route to human review with context already assembled. Straight-through rate is measured against the baseline.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="dpa-spine" gradientUnits="userSpaceOnUse" x1="26" y1="222" x2="514" y2="222">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="dpa-stage" gradientUnits="userSpaceOnUse" x1="0" y1="164" x2="0" y2="216">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="dpa-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="dpa-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="dpa-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── Where the work turns up ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">WHERE WORK ARRIVES TODAY</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">email · portal · phone · PDF · shared mailbox · API</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#dpa-tick)">
+                      <line x1="81" y1="94" x2="81" y2="158" />
+                    </g>
+                    <text x="92" y="132" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">and none of it has a case record</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="164" width="96" height="52" rx="9" fill="url(#dpa-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="195" fontSize="12" fontWeight="bold" fill="white">DISCOVER</text>
+
+                      <rect x="124" y="164" width="96" height="52" rx="9" fill="url(#dpa-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="195" fontSize="12" fontWeight="bold" fill="white">DESIGN</text>
+
+                      <rect x="222" y="164" width="96" height="52" rx="9" fill="url(#dpa-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="195" fontSize="12" fontWeight="bold" fill="white">DIGITIZE</text>
+
+                      <rect x="320" y="164" width="96" height="52" rx="9" fill="url(#dpa-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="195" fontSize="12" fontWeight="bold" fill="white">ORCHESTRATE</text>
+
+                      <rect x="418" y="164" width="96" height="52" rx="9" fill="url(#dpa-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="195" fontSize="12" fontWeight="bold" fill="white">OPTIMIZE</text>
+                    </g>
+
+                    <line x1="26" y1="222" x2="506" y2="222" stroke="url(#dpa-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#dpa-arrow)" />
+
+                    {/* ── The thing that holds it together ── */}
+                    <rect x="26" y="248" width="488" height="58" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="270" y="272" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#4ab6d4">ONE CASE RECORD</text>
+                    <text x="270" y="292" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">state · owner · SLA · audit trail</text>
+
+                    {/* ── Which way a case goes ── */}
+                    <path d="M 270 308 C 270 336, 210 336, 145 336 C 138 336, 133 342, 133 350" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#dpa-arrow)" />
+                    <path d="M 270 308 C 270 336, 350 336, 420 336 C 427 336, 432 342, 432 350" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#dpa-arrow-amber)" />
+
+                    <rect x="26" y="354" width="214" height="60" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="133" y="378" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">COMPLETES UNTOUCHED</text>
+                    <text x="133" y="398" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">straight through</text>
+
+                    <rect x="340" y="354" width="174" height="60" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="427" y="378" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">HUMAN REVIEW</text>
+                    <text x="427" y="398" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">context assembled</text>
+
+                    {/* ── The number the program is held to ── */}
+                    <text x="270" y="438" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">straight-through rate, measured against the baseline</text>
                   </svg>
                 </div>
               ) : service.slug === 'analytics' ? (

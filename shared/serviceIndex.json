@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T23:36:35.251Z",
+  "generatedAt": "2026-08-22T02:40:30.221Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -197,8 +197,46 @@
         "MLOps & AI Lifecycle Engineering",
         "AI Governance & Responsible AI"
       ],
-      "faqs": [],
-      "method": [],
+      "faqs": [
+        {
+          "q": "How much data do we need before a model is worth building?",
+          "a": "It depends far more on how often the thing you are predicting happens than on how many rows you hold. Ten million transactions containing forty instances of the fraud pattern you care about is a small dataset for that problem, and a hundred thousand rows with a well-balanced outcome is often plenty. The practical floor for most classification work is a few hundred examples of the rarer class, and enough history to cover at least one full cycle of whatever seasonality your business has. Predicting retail demand from nine months of data means the model has never seen a Christmas. If you are below that, the useful move is usually not a model. It is instrumenting the process so the data exists in a year, which is a cheaper project and a prerequisite either way."
+        },
+        {
+          "q": "Do we need a data warehouse in place before you can start?",
+          "a": "No, and waiting for one is a common way to lose a year. A first model can be built against extracts, and the work of building it tells you which tables actually matter, which is better warehouse requirements than a workshop produces. What you do need is the ability to get the same data again on a schedule. A model trained on a one-off export that nobody can reproduce is a demonstration, not a system, and the gap between those two is where most of the cost sits. Where a warehouse genuinely blocks us is when the same entity is identified differently in each source and there is no agreed key. That is a data problem no model solves, and it surfaces in week one rather than month six."
+        },
+        {
+          "q": "How would we know the model is still right in six months?",
+          "a": "Because it is monitored per segment, and because somebody owns the alert. Both halves matter: monitoring nobody reads is the same as no monitoring, and an aggregate accuracy number is the last place a problem becomes visible. What we watch is the input distribution as well as the output. Input drift arrives first and is the earlier warning, since a model whose incoming data has shifted is already wrong before the accuracy metric catches up. Retraining is then triggered by measured degradation rather than by the calendar. Quarterly retraining is a habit, not a control; it retrains models that were fine and leaves the one that broke in week two running."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Gradient-boosted trees",
+          "detail": "Where most business problems actually live. Wins on cost, latency and explainability against a neural network on the same table, and it is the baseline anything else has to beat."
+        },
+        {
+          "rule": "Deep learning",
+          "detail": "Reached for when the input is genuinely images, audio, text or long sequences. Applied to a spreadsheet it costs more, explains less and rarely wins."
+        },
+        {
+          "rule": "Experiment tracking",
+          "detail": "Added late, nobody can reconstruct which run produced the model now in production. Added early, it costs an afternoon."
+        },
+        {
+          "rule": "Explainability",
+          "detail": "If a regulator or a customer will ask why, that constraint selects the model. Retrofitting an explanation onto an opaque one is where projects stall."
+        },
+        {
+          "rule": "Drift and quality monitoring",
+          "detail": "Catches the input distribution moving before the accuracy does. An aggregate score is the last place a problem shows up."
+        },
+        {
+          "rule": "Orchestration",
+          "detail": "Worth it once retraining is real. Before that it is infrastructure for a pipeline that runs by hand twice a month."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -380,10 +418,56 @@
       "url": "/services/analytics",
       "name": "Analytics",
       "department": "Cognition",
-      "description": "End-to-end analytics — business intelligence, dashboards, KPI tracking, self-service analytics, and data storytelling for measurable decision-making.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "description": "Analytics that changes a decision: one agreed definition, lineage back to source, and forecasting, prescriptive and decision intelligence on top of it.",
+      "capabilities": [
+        "Descriptive & Diagnostic Analytics",
+        "Predictive Analytics & Forecasting",
+        "Prescriptive Analytics & Decision Intelligence",
+        "Cognitive & AI-Augmented Analytics",
+        "Real-Time & Streaming Analytics",
+        "Business Intelligence & Enterprise Performance",
+        "Analytics Engineering, Governance & Intelligence Platforms"
+      ],
+      "faqs": [
+        {
+          "q": "Why do our four teams have four different revenue numbers?",
+          "a": "Because the definition lives in four places. Finance excludes intercompany, sales counts bookings, the product team counts recognized revenue and the board pack uses whichever was available on the Friday. Every one of them is internally correct, which is why the meeting never resolves it. This is not a data quality problem and no amount of dashboard work fixes it. The fix is a semantic layer: one definition, expressed once in code, that every report and every tool reads from. Your argument moves from the meeting to a pull request, where it belongs. The hard part is not technical. It is getting your four function heads to agree which definition is the company definition, and that is a conversation we can facilitate but cannot have on your behalf."
+        },
+        {
+          "q": "Do we actually need a semantic layer, or is that just tooling fashion?",
+          "a": "You need one the moment more than one of your tools reads the same metric. Below that it is overhead. Above it, the absence is what produces the four-numbers problem, and the cost of retrofitting rises with every report already built on the old logic. What it is, concretely: metric definitions in version control, tested, with lineage, so a change is reviewed rather than discovered. dbt is the common implementation; LookML and Cube solve the same problem differently. Where it is genuinely premature: a single team, one BI tool, under about twenty metrics. There the definition fits in somebody's head and formalizing it early costs more than it returns."
+        },
+        {
+          "q": "How much of this needs to be real-time?",
+          "a": "Far less than most roadmaps assume. The test is whether one of your decisions changes if the number arrives an hour later. For fraud, network operations, inventory during a promotion and live pricing, it does. For almost all management reporting, it does not. Streaming carries a real cost: more infrastructure, harder correctness, and a class of failure that batch does not have. Buying it for reporting your team reads at nine the next morning is the most common overspend in this category. We usually recommend batch for the estate and streaming for the specific two or three decisions where latency has a measurable cost."
+        }
+      ],
+      "method": [
+        {
+          "rule": "BI and visualization",
+          "detail": "Power BI where the estate is Microsoft and the licensing is already paid. Looker where the semantic layer matters more than the chart library."
+        },
+        {
+          "rule": "Semantic and transformation layer",
+          "detail": "Where one definition of revenue actually lives. Skip it and you get four dashboards disagreeing, which is the problem people mistake for a tooling problem."
+        },
+        {
+          "rule": "Warehouse and lakehouse",
+          "detail": "Sized to the query pattern rather than the pitch deck. A large share of estates running a lakehouse would be faster and cheaper on a well-indexed database."
+        },
+        {
+          "rule": "Streaming and events",
+          "detail": "Real-time is expensive and most reporting does not need it. Reached for when the alert is worthless an hour later, not because the roadmap says real-time."
+        },
+        {
+          "rule": "Orchestration",
+          "detail": "The point at which \"a scheduled job\" becomes a dependency graph somebody has to reason about. Before that it is infrastructure for two cron entries."
+        },
+        {
+          "rule": "Quality and observability",
+          "detail": "Catches the silent upstream schema change, which is the most common cause of a number being wrong and the slowest to notice without it."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -391,10 +475,56 @@
       "url": "/services/big-data",
       "name": "Big Data",
       "department": "Cognition",
-      "description": "Big data platforms at scale — data lakes, distributed processing, real-time streaming, data warehousing, and ETL pipelines for enterprise workloads.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "description": "Big data platform engineering: ingestion, lakehouse storage, distributed processing and streaming, built to a cost per terabyte you can predict.",
+      "capabilities": [
+        "Big Data Strategy & Advisory",
+        "Data Integration & Ingestion",
+        "Big Data Platform Engineering",
+        "Real-Time & Streaming Data",
+        "Data Governance, Quality & Trust",
+        "DataOps & Platform Reliability",
+        "Modernization, Migration & Managed Services"
+      ],
+      "faqs": [
+        {
+          "q": "Do we actually have big data?",
+          "a": "Probably not, and that is the most useful thing we can tell you early. The threshold that matters is not a volume number, it is whether a single machine can still answer your questions in acceptable time. Modern hardware and DuckDB will handle a few hundred gigabytes comfortably. If you are running a Spark cluster, there is a real chance you would be faster and dramatically cheaper on a well-indexed database, because distributed processing was bought as an architecture decision rather than measured as a need. Where it is genuinely warranted: sustained multi-terabyte tables, ingestion rates a single writer cannot keep up with, or query patterns that must scan far more than fits in memory. We would rather establish that in two weeks than sell you a platform you do not need."
+        },
+        {
+          "q": "What is the difference between this and your Analytics service?",
+          "a": "Analytics is the insight ladder — descriptive, diagnostic, predictive, prescriptive. Big data is the platform underneath it: ingestion, storage, distributed processing, streaming, and the operations that keep those running. The practical distinction is which of the two is making you unhappy. If the numbers disagree between teams or a dashboard changes nothing, that is analytics. If pipelines break, queries are slow or the cloud bill is unexplainable, that is here. Buying the platform first is the common sequencing error. It produces an expensive foundation under a building nobody has designed, and the decisions that would have shaped it get made after the concrete sets."
+        },
+        {
+          "q": "Should we build a lakehouse or a warehouse?",
+          "a": "For most of the estates we see, the honest answer is a warehouse, and the lakehouse conversation is happening a layer above where the actual problem sits. Warehouses handle structured analytical workloads extremely well and require far less engineering to keep correct. A lakehouse earns its complexity when you have genuinely unstructured or semi-structured data at volume, need multiple engines reading the same tables, or want to avoid vendor lock-in on storage. Those are real reasons, and they apply to fewer estates than the marketing suggests — possibly including yours. What matters more than the label is the table format. Iceberg, Delta or Hudi determines schema evolution, time travel and atomic writes, and changing it later means rewriting data rather than swapping a tool."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Table formats",
+          "detail": "Picks up schema evolution, time travel and atomic writes. Chosen before the query engine, because migrating between formats later is the expensive move."
+        },
+        {
+          "rule": "Distributed processing",
+          "detail": "Spark earns its complexity past a few terabytes. Below that a single machine is usually faster and always cheaper, and a surprising number of estates are below that."
+        },
+        {
+          "rule": "Warehouse and query engines",
+          "detail": "Sized to the query pattern rather than the roadmap. Separating storage from compute matters more than which vendor supplies either."
+        },
+        {
+          "rule": "Streaming",
+          "detail": "Streaming is a correctness problem before it is a throughput problem. Reached for when the decision cannot wait, not because the architecture diagram has arrows on it."
+        },
+        {
+          "rule": "Orchestration",
+          "detail": "The point where scheduled jobs become a dependency graph somebody has to reason about, backfill and recover."
+        },
+        {
+          "rule": "Quality and observability",
+          "detail": "Data platforms fail silently. A green orchestrator says the job ran, not that what it wrote is correct, and those are different claims."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -403,9 +533,55 @@
       "name": "Digital Process Automation (DPA)",
       "department": "Cognition",
       "description": "Digital process automation — process discovery, workflow automation, integration, monitoring, and continuous optimization for operational efficiency.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "capabilities": [
+        "Process Digitization & Digital Experience",
+        "Low-Code Platforms & Citizen Development",
+        "Workflow, Case & Decision Orchestration",
+        "Application Modernization & System Extension",
+        "Process Intelligence & Conformance",
+        "Intelligent Process Automation",
+        "Agentic & Autonomous Process Execution"
+      ],
+      "faqs": [
+        {
+          "q": "What is the difference between DPA, BPM and RPA?",
+          "a": "They answer different questions, and the confusion is expensive because it leads organizations to buy the wrong one. RPA automates the keystrokes a person performs inside existing applications. It is the right answer when the work is rule-based, the systems have no usable interface, and the process is otherwise fine. BPM is the discipline of modeling, governing and improving processes — largely a methodology question, and increasingly the name of the engine that runs long-lived workflows. Digital process automation is what you need when the process has no application at all. The work moves through email, attachments and a spreadsheet because nobody ever built the system it should run in. Automating keystrokes there makes an unmanaged process faster; it does not make it a managed one. In practice most enterprises need all three, layered. We publish separate pages for intelligent automation and robotic process automation because they are genuinely separate purchases, not because the taxonomy looks tidier that way."
+        },
+        {
+          "q": "Do we need a low-code platform, or could this just be built normally?",
+          "a": "Sometimes normally is right, and we will say so. Low-code earns its license cost when the process will keep changing, when business teams need to make some of those changes themselves, and when you need several applications rather than one. The value is in the release cadence and the shared component library, not in the drag-and-drop. It is the wrong choice when the application has an unusual interface, needs performance characteristics the platform will not give you, or is a single build that will be touched once a year. Paying platform licensing forever for one static application is a bad trade, and it is a trade a lot of organizations make because the platform was already on the estate. The honest test is how many changes you expect in the first two years. Few changes and one application: build it conventionally. Many changes across several processes: the platform pays for itself, mostly through the change queue you no longer have."
+        },
+        {
+          "q": "How do we stop low-code becoming the next shadow IT problem?",
+          "a": "By deciding, before the first application, who is allowed to build what — and by giving them somewhere sanctioned to do it. The estates that go wrong are the ones where licences were distributed and governance was not. Two years later there are several hundred applications, no inventory, no owner for most of them, and a handful holding data they were never assessed to hold. What works is a tiered model. Personal productivity applications are unrestricted. Team applications require registration and a named owner. Anything touching customer data, a system of record or a regulated process goes through a review gate and is built from approved components in managed environments. Platform teams own the boundary; business teams own the applications inside it. None of this is technically hard. It is unpopular to introduce afterwards, which is why it belongs in the first engagement rather than the third."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Low-code application platforms",
+          "detail": "Where the process needs an application it never had. The licensing you already hold usually decides this before any technical evaluation does, and arguing with that is rarely worth the delay."
+        },
+        {
+          "rule": "Workflow and case engines",
+          "detail": "Where work is a long-running case rather than a form submission. If cases stay open for weeks, branch and get reassigned, a form-first platform will fight you by month four."
+        },
+        {
+          "rule": "Decision and rules engines",
+          "detail": "Rules belong outside the workflow when the business changes them and the process does not. Embedded rules are faster to build and become the reason every change needs a developer."
+        },
+        {
+          "rule": "Process and task mining",
+          "detail": "Used here for conformance rather than discovery: proving the digitized process still runs the way it was designed. Most programs mine once, at the start, and never find out whether it held."
+        },
+        {
+          "rule": "Integration and APIs",
+          "detail": "How the new front end reaches systems that are not being replaced. A platform connector that already exists beats an integration layer you have to operate, until it genuinely does not."
+        },
+        {
+          "rule": "Documents and signature",
+          "detail": "Generation, signature and evidence retention. Usually the least interesting part of the architecture and the one that stops the process going live if it is left to the end."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -436,9 +612,55 @@
       "name": "Intelligent Automation",
       "department": "Cognition",
       "description": "AI-powered automation — AI decision automation, NLP integration, document intelligence, cognitive automation, and process orchestration combined.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "capabilities": [
+        "Automation Strategy & Advisory",
+        "Process Intelligence & Optimization",
+        "Intelligent Process Orchestration",
+        "RPA & Digital Workforce",
+        "Intelligent Document & Content Automation",
+        "AI-Powered & Cognitive Automation",
+        "Automation Operations, CoE & Managed Services"
+      ],
+      "faqs": [
+        {
+          "q": "How do we know which processes are actually worth automating?",
+          "a": "Volume, exception rate and the cost of handling a case wrong. A process run ten thousand times a month with a low exception rate is the obvious candidate; one run twice a week with constant judgment calls almost never is, however painful it feels to the team doing it. The number that decides it is not headcount saved, it is straight-through rate — the share of cases that complete without a person touching them. A process that automates to sixty per cent straight-through and dumps the rest into a queue has moved the work rather than removed it. Process mining answers this properly because it shows how the process actually runs rather than how the process document says it runs. That gap is where most failed automations live, and two weeks of mining is a cheaper way to find it than six months of building."
+        },
+        {
+          "q": "Our last RPA program stalled. Why would this one be different?",
+          "a": "Most stall in the same place: bots got built, nothing coordinated them, and within a year the estate was a set of scripts with no owner. The build was never the hard part. What was missing was the orchestration layer and somebody accountable for the process rather than the robot. The second common cause is starting with the tool. A platform gets bought, a Center of Excellence gets stood up around it, and the CoE becomes a request queue instead of a capability. The fifth automation then costs the same as the first, which is the clearest sign that nothing is being reused. We would want to see what you already have before promising anything. Often the answer is that the existing estate is salvageable and needs orchestration and ownership rather than replacement."
+        },
+        {
+          "q": "What happens when the underlying application changes?",
+          "a": "Something breaks — that is the honest answer, and any vendor who says otherwise is selling. What differs is whether you find out from monitoring or from a customer complaint three weeks later. We reduce the surface where possible: an API is used in preference to screen automation every time the target system allows it, because an API contract changes on a release note and a user interface changes whenever somebody moves a button. Where screen automation is unavoidable, selectors are built to be as resilient as the platform allows and the failure path is monitored explicitly. Then it is an ownership question. Every automation has a named owner and a runbook, so when a change lands there is a person whose job it is to fix it rather than a ticket nobody recognizes."
+        }
+      ],
+      "method": [
+        {
+          "rule": "RPA platforms",
+          "detail": "Where the work is rule-based and spans applications with no usable API. If an API exists, integration beats a bot on every measure that matters."
+        },
+        {
+          "rule": "Process and task mining",
+          "detail": "Tells you how the process actually runs rather than how the process document says it runs. The gap between those two is where most failed automations live."
+        },
+        {
+          "rule": "Orchestration and BPM",
+          "detail": "The layer that coordinates people, systems and digital workers. Skipping it is how an estate becomes scripts nobody can sequence."
+        },
+        {
+          "rule": "Intelligent document processing",
+          "detail": "Buy it for clean, standard documents. Build only where the forms are yours and non-standard, which is rarer than vendors suggest."
+        },
+        {
+          "rule": "Integration",
+          "detail": "The unglamorous option that outlives every bot built to avoid it. Reached for first wherever the target system will let us."
+        },
+        {
+          "rule": "Monitoring and observability",
+          "detail": "Bot dashboards report whether a bot ran. What matters is whether the process completed, which is a different question and rarely on the same screen."
+        }
+      ],
       "dataHandling": []
     },
     {

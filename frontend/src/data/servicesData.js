@@ -4596,23 +4596,621 @@ export const servicesData = {
     slug: 'digital-process-automation',
     name: 'Digital Process Automation (DPA)',
     departmentSlug: 'cognition',
-    bannerBrand: 'eQORE™',
-    shortDescription: 'Automate and optimize digital business processes',
-    fullDescription: 'Implement comprehensive digital process automation to streamline workflows and improve efficiency.',
-    keyFeatures: ['Process discovery', 'Workflow automation', 'Integration', 'Monitoring', 'Optimization'],
-    relatedServiceSlugs: ['robotic-process-automation', 'business-process-management', 'intelligent-automation'],
+    bannerBrand: 'eQORE\u2122',
+    shortDescription: 'Digitize, orchestrate and govern end-to-end business processes',
+    fullDescription: 'Close the gap between how a process is supposed to run and the application it never had \u2014 through low-code applications, case and workflow orchestration, and system extension.',
+    keyFeatures: ['Low-code applications', 'Case management', 'Journey orchestration', 'System extension', 'Process conformance'],
+    relatedServiceSlugs: ['intelligent-automation', 'robotic-process-automation', 'business-process-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=800&q=80',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // This page previously rendered the Cognition parity default, which is the
+    // AI Governance taxonomy with the service name substituted in: capability
+    // headings read "Establishing Ethical Governance & Control", the stack read
+    // "Policy & Ethics Layer / Data & Privacy Core", and the hero carried the
+    // shared agentic diagram (AI COMMANDER / AUTONOMOUS COMMIT) above the fold.
+    //
+    // The wedge against the three sibling automation pages is deliberate and
+    // load-bearing. /services/intelligent-automation owns the bots and the
+    // intelligence: RPA, digital workforce, IDP, cognitive. /services/rpa owns
+    // task-level automation. This page owns the layer neither of them covers --
+    // the process has no application at all, so work moves through email,
+    // attachments and a spreadsheet somebody maintains privately.
+    //
+    // Happiest Minds arrived at the same split independently: their DPA page is
+    // built on "Digital Automation (LCAP)" and keeps RPA as a separate, linked
+    // offering. Their stated differentiator is bridging *application* gaps
+    // rather than process gaps. That is the correct read of the category.
+    //
+    // The supplied source taxonomy had seven areas, of which 36 of 79
+    // sub-capabilities were already published on intelligent-automation
+    // (Strategy & CoE 8/10, Process Intelligence & Mining 9/11). Those two are
+    // not capability areas here: Strategy & CoE moved into servicePackages,
+    // where procurement looks for it anyway, and mining is narrowed to
+    // conformance -- the half intelligent-automation does not claim. Robotic &
+    // Digital Workforce is a cross-link, not a section.
+    heroTitle: 'Digital Process Automation\nfor Processes That Cross Every System',
     whatIsTitle: 'Digital Process Automation',
-    whatIsTitleLine2: 'That Removes Work, Not',
-    whatIsHighlight: 'Just Speeds It Up.',
-    whatIsPara2: 'Kangqore digitizes and automates end-to-end business processes — from consulting and discovery through low-code deployment and cognitive augmentation — so each workflow step contributes measurable value with zero wasted motion.',
+    whatIsTitleLine2: 'That Digitizes the Process,',
+    whatIsHighlight: 'Not Just the Task.',
+    whatIsPara2: 'Most enterprise processes that hurt were never given an application. They run across a core system, a CRM and a spreadsheet, held together by an inbox and by one person who knows what happens next. Automating the keystrokes inside that arrangement makes it faster without making it a system.',
+    whatIsPara3: 'Kangqore closes the application gap instead. We digitize the process itself \u2014 the forms people fill in, the case record that holds state, the rules that decide, the queue that routes, the portal that shows a customer where their request has got to \u2014 then orchestrate people, systems, bots and AI through it as one governed flow.',
+    whatIsPara4: 'The result is a process with a record per case, an owner, an audit trail and a measurable straight-through rate, built on low-code where that fits and on your existing ERP and core systems where those are not going anywhere. Bots and cognitive automation plug into it; they are not the foundation. That distinction is the whole discipline.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Deliberately not cycle time and bot uptime -- those are the
+    // intelligent-automation metrics and repeating them here would say the two
+    // services do the same thing. These four measure whether the process now
+    // has somewhere to live: does a case finish without a person, how fast can
+    // a working application reach users, how many times does work change hands,
+    // and how often does it come back because the first touch was incomplete.
+    outcomesEyebrow: 'WHAT MOVES WHEN THE PROCESS HAS A SYSTEM',
+    outcomesHeading: 'Four numbers worth',
+    outcomesHeadingHighlight: 'a baseline before you start.',
     businessMetrics: [
-      { illustrative: true, title: 'Cycle Time',      desc: 'Average reduction in process cycle time across digitized workflows after DPA implementation.',                     value: '60',  suffix: '%',    metricLabel: 'Cycle Time Reduction',  icon: 'Zap'      },
-      { illustrative: true, title: 'Manual Touches',  desc: 'Fewer manual interventions per transaction after end-to-end workflow automation deployment.',                       value: '80',  suffix: '%',    metricLabel: 'Fewer Manual Steps',    icon: 'Target'   },
-      { illustrative: true, title: 'Audit Coverage',  desc: 'Process transactions captured with full digital audit trail for compliance and regulatory reporting.',              value: '100', suffix: '%',    metricLabel: 'Audit Trail Coverage',  icon: 'Shield'   },
-      { illustrative: true, title: 'Pilot Speed',     desc: 'Typical time from process discovery and consulting engagement to first production pilot deployment.',               value: '4–6', suffix: ' Wks', metricLabel: 'Pilot to Production',   icon: 'TrendingUp'},
+      { illustrative: true, title: 'Straight-Through Rate', desc: 'Cases reaching completion end to end with no human step in the middle, once the journey is redesigned and orchestrated.', value: '70',  suffix: '%',    metricLabel: 'Cases Completed Untouched', icon: 'Zap'      },
+      { illustrative: true, title: 'Application Delivery', desc: 'Typical time from an agreed process design to a working digital application in production with real users on it.',           value: '4\u20138', suffix: ' Wks', metricLabel: 'Design to Production',      icon: 'Rocket'   },
+      { illustrative: true, title: 'Process Handoffs',     desc: 'Fewer times a single case changes hands between teams, systems and mailboxes once the journey is orchestrated as one flow.',  value: '65',  suffix: '%',    metricLabel: 'Fewer Handoffs',            icon: 'Network'  },
+      { illustrative: true, title: 'Rework',               desc: 'Reduction in cases reopened because information was missing or wrong at the first point of capture.',                          value: '50',  suffix: '%',    metricLabel: 'Less Rework',               icon: 'Target'   },
     ],
+
+    heroBadge: 'Digitized. Connected. Governed.',
+    heroStripItems: [
+      'Low-Code Applications', 'Digital Forms & Portals', 'Case Management', 'Decision & Rules Engines',
+      'ERP & Legacy Extension', 'Journey Orchestration', 'Straight-Through Processing', 'Citizen Development',
+    ],
+    // The partnership model band renders 93 words across 1,190px on this
+    // template -- the thinnest section on the page and identical on 60 others.
+    hidePartnershipModel: true,
+
+    // ── Calls to action ─────────────────────────────────────────────────────
+    // closingCta is an object on this template, not a string. Passing a string
+    // silently falls through to the agentic default -- "One agent in
+    // production" -- which is wrong on a page whose whole argument is that you
+    // build the process before you put an agent inside it.
+    midCta: 'The process is fast now. It still has nowhere to live.',
+    midCtaLabel: 'Map One Process',
+    // ── Capability areas ────────────────────────────────────────────────────
+    // Seven areas, reweighted around the layer this service actually owns.
+    // Three of them (01, 02, 04) are the low-code and application-gap spine and
+    // appear nowhere else on the site. 03 is the deep version of orchestration:
+    // intelligent-automation carries five shallow workflow items, this carries
+    // long-running case state, DMN, compensation and escalation. 05 is mining
+    // narrowed to conformance and simulation -- the discovery half belongs to
+    // intelligent-automation and is linked rather than repeated. 06 and 07 are
+    // written as intelligence *inside* the digital process, with the depth
+    // cross-linked rather than duplicated.
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Deliberately not the intelligent-automation toolchain. That page leads
+    // with RPA platforms; this one leads with low-code and case engines,
+    // because that is the buying decision on a DPA engagement. Where the two
+    // overlap -- mining, integration -- the framing differs: there it is "find
+    // the automation candidate", here it is "prove the redesign held".
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The platforms,',
+      titleHighlight: 'and what decides between them.',
+      subtitle: 'Platform choice is mostly settled by what you already license and by how much of the process is a long-running case rather than a form. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Layers',
+          title: 'Low-code application platforms',
+          managed: 'Microsoft Power Platform, OutSystems, Mendix',
+          selfHosted: 'Power Platform by default on Microsoft estates',
+          desc: 'Where the process needs an application it never had. The licensing you already hold usually decides this before any technical evaluation does, and arguing with that is rarely worth the delay.',
+        },
+        {
+          icon: 'Network',
+          title: 'Workflow and case engines',
+          managed: 'Appian, Pega, Camunda',
+          selfHosted: 'Camunda where the process is the product',
+          desc: 'Where work is a long-running case rather than a form submission. If cases stay open for weeks, branch and get reassigned, a form-first platform will fight you by month four.',
+        },
+        {
+          icon: 'Settings',
+          title: 'Decision and rules engines',
+          managed: 'Camunda DMN, in-platform rules engines',
+          selfHosted: 'Drools where rules outlive the application',
+          desc: 'Rules belong outside the workflow when the business changes them and the process does not. Embedded rules are faster to build and become the reason every change needs a developer.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Process and task mining',
+          managed: 'Celonis, Signavio, Microsoft Process Mining',
+          selfHosted: 'Before the redesign, and again after it',
+          desc: 'Used here for conformance rather than discovery: proving the digitized process still runs the way it was designed. Most programs mine once, at the start, and never find out whether it held.',
+        },
+        {
+          icon: 'Globe',
+          title: 'Integration and APIs',
+          managed: 'MuleSoft, Azure Integration Services, Kafka',
+          selfHosted: 'Native connectors before middleware',
+          desc: 'How the new front end reaches systems that are not being replaced. A platform connector that already exists beats an integration layer you have to operate, until it genuinely does not.',
+        },
+        {
+          icon: 'Shield',
+          title: 'Documents and signature',
+          managed: 'DocuSign, Adobe Acrobat Sign',
+          selfHosted: 'In-platform generation where volume is low',
+          desc: 'Generation, signature and evidence retention. Usually the least interesting part of the architecture and the one that stops the process going live if it is left to the end.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the questions a process owner and a platform lead
+    // actually open with, and three of them are ones a vendor would rather not
+    // be asked -- what it costs, who owns it afterwards, and whether the low-
+    // code estate becomes the next problem.
+    customFAQs: [
+      {
+        q: 'What is the difference between DPA, BPM and RPA?',
+        a: 'They answer different questions, and the confusion is expensive because it leads organizations to buy the wrong one.\n\nRPA automates the keystrokes a person performs inside existing applications. It is the right answer when the work is rule-based, the systems have no usable interface, and the process is otherwise fine. BPM is the discipline of modeling, governing and improving processes \u2014 largely a methodology question, and increasingly the name of the engine that runs long-lived workflows.\n\nDigital process automation is what you need when the process has no application at all. The work moves through email, attachments and a spreadsheet because nobody ever built the system it should run in. Automating keystrokes there makes an unmanaged process faster; it does not make it a managed one.\n\nIn practice most enterprises need all three, layered. We publish separate pages for intelligent automation and robotic process automation because they are genuinely separate purchases, not because the taxonomy looks tidier that way.',
+      },
+      {
+        q: 'Do we need a low-code platform, or could this just be built normally?',
+        a: 'Sometimes normally is right, and we will say so.\n\nLow-code earns its license cost when the process will keep changing, when business teams need to make some of those changes themselves, and when you need several applications rather than one. The value is in the release cadence and the shared component library, not in the drag-and-drop.\n\nIt is the wrong choice when the application has an unusual interface, needs performance characteristics the platform will not give you, or is a single build that will be touched once a year. Paying platform licensing forever for one static application is a bad trade, and it is a trade a lot of organizations make because the platform was already on the estate.\n\nThe honest test is how many changes you expect in the first two years. Few changes and one application: build it conventionally. Many changes across several processes: the platform pays for itself, mostly through the change queue you no longer have.',
+      },
+      {
+        q: 'How do we stop low-code becoming the next shadow IT problem?',
+        a: 'By deciding, before the first application, who is allowed to build what \u2014 and by giving them somewhere sanctioned to do it.\n\nThe estates that go wrong are the ones where licences were distributed and governance was not. Two years later there are several hundred applications, no inventory, no owner for most of them, and a handful holding data they were never assessed to hold.\n\nWhat works is a tiered model. Personal productivity applications are unrestricted. Team applications require registration and a named owner. Anything touching customer data, a system of record or a regulated process goes through a review gate and is built from approved components in managed environments. Platform teams own the boundary; business teams own the applications inside it.\n\nNone of this is technically hard. It is unpopular to introduce afterwards, which is why it belongs in the first engagement rather than the third.',
+      },
+      {
+        q: 'Can you automate a process without replacing our ERP?',
+        a: 'Yes, and in most engagements that is the entire point.\n\nCore systems are not the problem. The problem is nearly always the space between them \u2014 the handoff where a case leaves one system, spends four days in a mailbox, and re-enters another. Nobody owns that space, so no system reports on it, and it does not appear in any process document.\n\nWe extend rather than replace: an application layer over the core system for the parts of the journey it does not cover, integration by API or event where those exist, and a case record that holds state across all of it. The ERP keeps doing what it does well, which is being the system of record.\n\nThis is also the cheaper answer by a wide margin. Core replacement is a multi-year program with its own risk profile. Closing the gap around it is usually measured in months.',
+      },
+      {
+        q: 'How long before the first process is actually live?',
+        a: 'For a single process of moderate complexity, four to eight weeks from an agreed design to real users on a production application. Discovery and redesign add two to four weeks in front of that.\n\nWhat moves the number is rarely the build. It is integration access to core systems, security review, and how many exception paths the process really has \u2014 which is almost always more than the process owner believes at the start, and is precisely what discovery exists to establish.\n\nWe would rather agree a narrower first release that goes live than a complete one that slips. A process handling the common path in production, with exceptions still routed to a queue, teaches you more in a fortnight than another month of design workshops will.',
+      },
+      {
+        q: 'What actually happens to the exceptions?',
+        a: 'This is the question that separates a working digital process from a demonstration, and it is worth being blunt about.\n\nIn a badly designed process the exceptions leave the automated path and re-enter as email. Everything measurable happens on the happy path, so the reporting looks excellent while the cycle time and the audit gap both sit in the exception flow that nobody instrumented.\n\nWe design exception paths at the same time as the main path, not after go-live. An exception stays inside the case: it keeps its record, its owner and its clock, it appears in the same reporting, and escalation is a designed transition rather than somebody remembering to chase it.\n\nThe number to hold us to is the share of cases completing without human touch, measured against the baseline taken before anything was built. A process that reaches a high straight-through rate by pushing the difficult cases into a mailbox has moved the work rather than removed it.',
+      },
+      {
+        q: 'How do you handle steps that genuinely need a human decision?',
+        a: 'You design them as first-class steps rather than as the place automation gave up.\n\nA human decision point needs four things: the context assembled so the person is not opening five systems to decide, a clear boundary on what they are deciding, a record of what they chose and why, and a timer so the case does not sit indefinitely waiting for someone on leave.\n\nWhere AI is involved we add a confidence threshold. Above it the system proceeds; below it the case routes to review with the model output shown as a suggestion rather than a decision. Thresholds get tuned against real outcomes rather than set once at launch.\n\nThe failure mode is a review queue that becomes a dumping ground. If most cases end up in it, the automation is not working and the answer is to fix the design, not to hire more reviewers.',
+      },
+      {
+        q: 'Who owns the applications after you leave?',
+        a: 'You do, and we build on that assumption from the first sprint rather than negotiating it at handover.\n\nThat means applications built from a documented component library rather than one-off patterns, environments and releases set up as your platform team would run them, decision logic held in rules that a business analyst can read, and runbooks covering the failure modes we actually hit during the build.\n\nIt also means training your people during delivery rather than in a week at the end. Citizen developers and process owners who watched the application being built support it considerably better than ones handed a document.\n\nIf you would rather not own it, our managed operations package exists and is priced separately. What we will not do is leave you in a position where continuing to pay us is the only way the process keeps running.',
+      },
+      {
+        q: 'What does this cost, and how is it priced?',
+        a: 'We are pre-launch and we do not publish rate cards, so treat anything below as shape rather than a quote.\n\nA discovery and redesign engagement on a single process is a fixed-price piece of work measured in weeks. An application build is priced against the design that discovery produced, which is the main reason we prefer not to quote a build before discovery has run \u2014 the estimate would be a guess and both sides would find out in month three.\n\nPlatform licensing is a separate line and goes to the vendor, not to us. We will tell you when you already hold entitlements that cover the work, which is more often than vendors volunteer.\n\nManaged operations is a monthly service level. The one commitment we will make on price is that discovery is scoped so you can stop after it, with a design you own, and take the build elsewhere or nowhere.',
+      },
+      {
+        q: 'Our process is not documented anywhere. Where do we start?',
+        a: 'That is the normal starting condition, and in some ways it is a better one than a thick process document that turns out to be aspirational.\n\nWe start from evidence rather than description: system logs, ticket and mailbox metadata, and observed task work. That produces how the process actually runs, including the variants nobody mentions in a workshop because they are considered obvious or slightly embarrassing.\n\nWorkshops still happen, but afterwards, to explain what the data showed. The conversation is far more productive when it starts from a map both sides can see rather than from competing recollections.\n\nTwo weeks of this is usually enough to size the opportunity, and it is a considerably cheaper way to discover that a process is not worth automating than finding out during the build.',
+      },
+      {
+        q: 'How is a digitized process evidenced for auditors and regulators?',
+        a: 'Per case, and it is one of the strongest arguments for doing this at all.\n\nA case record carries who did what and when, which rule version fired, what the system decided, every point a person overrode it and on what basis, and the documents attached at each step. Retention and access controls sit on the record rather than on whichever mailbox happens to hold the thread.\n\nCompare that with the alternative, which is reconstructing a case from mailboxes and memory on the assumption that the people involved still work here. Most organizations only discover how weak that is during an actual investigation.\n\nWhere AI or agents participate, the same standard applies: what was proposed, what confidence it carried, whether a human accepted it, and whether the decision can be replayed. An automated decision you cannot explain is a finding waiting to be written.',
+      },
+      {
+        q: 'Where do AI agents realistically fit in this?',
+        a: 'Inside a process that already has structure. Not as a way of avoiding building one.\n\nAgents are genuinely useful for the work between the steps: reading unstructured input, assembling context, drafting a response, deciding which of several defensible paths a case should take. That is real, and it removes work no rules engine was ever going to remove.\n\nWhat they do not do is substitute for the case record, the audit trail and the escalation path. An agent operating over a process that lives in a mailbox produces fast decisions nobody can evidence, which in a regulated process is worse than the slow version.\n\nSo the sequence matters: digitize, orchestrate, then introduce agents inside defined boundaries with permissioned actions, autonomy thresholds, traceable decisions and a rollback path. Our agentic capability area sets out what that governance actually consists of. Enterprises that run it in the other order tend to arrive back at this page about a year later.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // Automation Strategy & Center of Excellence is the first package rather
+    // than the first capability area. Eight of its ten sub-capabilities are
+    // already published on /services/intelligent-automation, and procurement
+    // looks for strategy and CoE under "how do we buy this" in any case. Same
+    // content, correct section, no duplication.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Where this usually starts,',
+    engagementHeadingHighlight: 'and where it ends up.',
+    engagementLede: 'Almost nobody starts with a program. They start with one process that has become impossible to defend, and the program follows if the first one works.',
+    servicePackages: [
+      {
+        name: 'Automation Strategy & CoE',
+        description: 'The operating model, not the software. Which of your processes are worth the money, who is allowed to build, what governance applies, and how this scales past the first three without producing an estate nobody owns.',
+        deliverables: [
+          'Automation maturity and readiness assessment',
+          'Opportunity portfolio, prioritized on volume, exception rate and cost of error',
+          'Business case and funding model per candidate process',
+          'Center of Excellence design: roles, standards, intake and review gates',
+          'Change and workforce enablement plan',
+        ],
+      },
+      {
+        name: 'Process Discovery & Redesign',
+        description: 'Two to four weeks establishing how the process actually runs, then redesigning it before anyone digitizes anything. Frequently ends by recommending a smaller build than the one you asked us to price.',
+        deliverables: [
+          'Discovery from system logs and task observation, not workshops alone',
+          'Conformance analysis against the documented process',
+          'Target journey design with exception paths defined up front',
+          'Application gap assessment: what needs building, what needs extending',
+          'Baseline metrics and an agreed target straight-through rate',
+        ],
+      },
+      {
+        name: 'Digital Application Build',
+        description: 'Closing the gap. Forms, portals, case interfaces and the applications the process needed and never got, built on your low-code platform where one exists and on a selected one where it does not.',
+        deliverables: [
+          'Platform selection, or build on the platform you already license',
+          'Digital forms, portals and case-management interfaces',
+          'Reusable component library and design standards',
+          'Environment, release and lifecycle management setup',
+          'Accessibility conformance and cross-device testing',
+        ],
+      },
+      {
+        name: 'Orchestration & Integration',
+        description: 'Connecting the new front end to the systems you are keeping. Your ERP, CRM, core platforms, rules engines, document services, existing bots and AI services, joined into one flow with a single record of state.',
+        deliverables: [
+          'End-to-end workflow and case orchestration',
+          'Integration to ERP, CRM and core systems by API or event',
+          'Decision and rules implementation with versioned logic',
+          'Routing, SLA, escalation and human review points',
+          'Per-case audit trail and process observability',
+        ],
+      },
+      {
+        name: 'Managed Process Operations',
+        description: 'Running it afterwards under an agreed service level, including the platform, the integrations and the change queue. For teams who want the process without standing up a product team behind it.',
+        deliverables: [
+          'Application and integration monitoring with proactive maintenance',
+          'Change requests handled inside a governed release cycle',
+          'Conformance and straight-through rate reporting against baseline',
+          'Platform version upgrades and license optimization',
+          'Support for your citizen developers and process owners',
+        ],
+      },
+    ],
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    // Twelve sectors from the source list, written at the application-gap layer
+    // rather than the task layer. The obvious framing -- KYC automation, claims
+    // triage, prior authorization -- is what /services/intelligent-automation
+    // already publishes, and reusing it would rebuild the cannibalization
+    // between the two pages that this whole rewrite exists to prevent.
+    //
+    // So every card answers one question instead: which high-volume process in
+    // this sector is still running without a system of its own?
+    industryHeading: 'The process that has',
+    industryHeadingHighlight: 'no system, by industry.',
+    industryLede: 'Every sector has one \u2014 high volume, business-critical, and running out of a shared mailbox because it was never quite worth a project. These are the ones we get called about.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Onboarding, credit and complaint processes spanning a core banking platform, a CRM and three spreadsheets nobody will admit to.',
+        items: ['Client onboarding and periodic review journeys', 'Credit application and approval workflows', 'Complaint handling against regulatory clocks'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Claims and underwriting cases that stay open for weeks and change hands four times before anyone decides anything.',
+        items: ['Claims case management from notification to settlement', 'Underwriting referral and approval journeys', 'Broker and agent self-service portals'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Administrative work around care, where the clinical systems will not be replaced and should not be.',
+        items: ['Referral and authorization case handling', 'Patient intake and consent digitization', 'Regulated document workflows with signature'],
+      },
+      {
+        industry: 'Manufacturing',
+        headline: 'Shop-floor and supplier processes still moving on paper forms, scanned attachments and email approvals.',
+        items: ['Non-conformance and corrective action cases', 'Engineering change request and approval flows', 'Supplier onboarding and qualification portals'],
+      },
+      {
+        industry: 'Automotive',
+        headline: 'Warranty, recall and dealer processes crossing OEM systems and a dealer network that uses none of them.',
+        items: ['Warranty claim submission and adjudication', 'Recall campaign tracking and dealer workflows', 'Dealer and supplier self-service portals'],
+      },
+      {
+        industry: 'Retail & Consumer Goods',
+        headline: 'Returns, disputes and supplier processes where the exception volume is not an edge case, it is the process.',
+        items: ['Returns, claims and dispute case handling', 'Supplier onboarding and product data workflows', 'Store task management and compliance checks'],
+      },
+      {
+        industry: 'Technology & Telecommunications',
+        headline: 'Order-to-activate journeys crossing provisioning, billing and field systems that were each bought separately.',
+        items: ['Order capture and service activation orchestration', 'Fault and service request case management', 'Partner and channel onboarding portals'],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'Connection, field and compliance processes with statutory timers attached to each of them.',
+        items: ['New connection and metering journeys', 'Outage and incident case workflows', 'Permit, inspection and compliance evidence'],
+      },
+      {
+        industry: 'Logistics & Supply Chain',
+        headline: 'Exception handling across carriers, customs and customers, currently living in a shared mailbox with no state.',
+        items: ['Shipment exception and claim workflows', 'Customs documentation and clearance processes', 'Carrier and vendor onboarding'],
+      },
+      {
+        industry: 'Government & Public Sector',
+        headline: 'Citizen services where a digital front end exists and the back office behind it does not.',
+        items: ['Application, licensing and permit journeys', 'Casework against statutory response times', 'Accessible digital forms and status transparency'],
+      },
+      {
+        industry: 'Travel & Hospitality',
+        headline: 'Disruption and service recovery processes measured in minutes, currently coordinated by phone.',
+        items: ['Disruption and rebooking case handling', 'Guest service request workflows', 'Supplier and property onboarding'],
+      },
+      {
+        industry: 'Professional Services',
+        headline: 'Engagement, risk and billing processes that partners run out of their own inboxes because no system was built for them.',
+        items: ['Client and matter onboarding journeys', 'Conflict checks and risk approval workflows', 'Time, expense and billing exception handling'],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Not "before Kangqore vs after Kangqore". Both columns describe a process
+    // that genuinely got faster; they differ on whether the work now has a
+    // system to live in. That is the only honest way to run this comparison,
+    // because automating around a gap is a legitimate choice when the gap is
+    // small -- and this page should say so rather than pretend otherwise.
+    comparisonTable: {
+      eyebrow: 'WHERE PROCESS AUTOMATION GOES WRONG',
+      heading: 'You can automate around a gap, or you can close it.',
+      lede: 'Both columns describe a process that got measurably faster. Only one of them gave your work somewhere to live.',
+      beforeLabel: 'AUTOMATING AROUND THE GAP',
+      afterLabel: 'CLOSING THE APPLICATION GAP',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'AROUND IT',
+      afterShort: 'THROUGH IT',
+      rows: [
+        {
+          dimension: 'Where the work actually lives',
+          before: 'In a shared mailbox, a network drive and a spreadsheet one person maintains and nobody else fully understands.',
+          after: 'In an application, with a record per case that has a state, an owner, a history and somewhere for the next person to pick it up.',
+        },
+        {
+          dimension: 'When a field or a rule needs to change',
+          before: 'A change request, a queue and a quarter. Teams route around the delay with another spreadsheet, and that spreadsheet becomes permanent.',
+          after: 'A change in the platform, tested and released inside a governed release process, in days rather than in the next planning cycle.',
+        },
+        {
+          dimension: 'What happens to the exceptions',
+          before: 'They leave the automated path and re-enter as email. That is where the cycle time goes, and where the audit trail stops.',
+          after: 'They stay inside the case with an SLA, an owner and an escalation path, because the exception was designed rather than discovered in production.',
+        },
+        {
+          dimension: 'When an auditor asks how one case was handled',
+          before: 'Reconstructed from mailboxes and memory, assuming the people involved still work here and the mailbox was never archived.',
+          after: 'A per-case trail: who did what and when, which rule fired, what the system decided, and every point a person overrode it.',
+        },
+        {
+          dimension: 'Who is allowed to build',
+          before: 'Anyone with a license, which is how an organization ends up with four hundred small applications and an owner for none of them.',
+          after: 'Business teams build inside guardrails \u2014 approved components, managed environments, a review gate \u2014 with a platform team owning the boundary rather than the backlog.',
+        },
+        {
+          dimension: 'What the program is measured on',
+          before: 'Number of processes automated and hours notionally saved, which counts activity rather than result.',
+          after: 'Straight-through rate and time to resolution per case, against a baseline captured before anything was built.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Compressed from the seven-stage source lifecycle to five, because the
+    // template renders architectureNodes as a four-column grid unless the array
+    // is exactly five, and seven nodes leave three orphans on the last row.
+    // Automate and Intelligently Execute both sit inside Orchestrate: they are
+    // things you connect into the flow, not stages the program passes
+    // through. Discover, Design, Digitize and Optimize survive unchanged.
+    architectureEyebrow: 'THE AUTOMATION LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Discover to Optimize.',
+    architectureLede: 'Five stages, run as a loop rather than as a project plan. Most engagements start at Discover and stop being sequential shortly after Digitize.',
+    architectureNodes: [
+      {
+        title: 'Discover',
+        icon: 'Radar',
+        description: 'Establish how work moves through your organization today, from system logs rather than from the process document. The two rarely agree, and the gap between them is usually where your business case is.',
+        features: [
+          'Process and task discovery',
+          'Conformance against the documented process',
+          'Handoff, waiting and rework analysis',
+          'Application gap identification',
+          'Baseline metrics for later comparison',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Redesign the journey before digitizing it. Digitizing a process nobody rethought gives you a faster version of the same bad path, which is the most common way this work disappoints.',
+        features: [
+          'Target journey and service design',
+          'Decision and rule modeling',
+          'Exception paths designed up front',
+          'Role, ownership and approval design',
+          'Target straight-through rate agreed',
+        ],
+      },
+      {
+        title: 'Digitize',
+        icon: 'Zap',
+        description: 'Close the application gap. Build the forms, portals and case interfaces your process needs \u2014 on a low-code platform where that fits, in pro-code where it does not.',
+        features: [
+          'Digital forms and capture interfaces',
+          'Case and work-management applications',
+          'Customer and partner portals',
+          'Document generation and signature',
+          'Accessibility and device coverage',
+        ],
+      },
+      {
+        title: 'Orchestrate',
+        icon: 'Network',
+        description: 'Connect your people, core systems, rules, bots and AI into one flow with a single record of state. This is the stage where the process stops being a relay between inboxes.',
+        features: [
+          'End-to-end workflow and case orchestration',
+          'ERP, CRM and core system integration',
+          'Rules, routing and escalation',
+          'Bots and AI called as steps in the flow',
+          'Human-in-the-loop review points',
+        ],
+      },
+      {
+        title: 'Optimize',
+        icon: 'TrendingUp',
+        description: 'Measure against the baseline taken at Discover, and keep measuring. Your digitized process drifts exactly as the manual one did \u2014 only faster, and far more quietly.',
+        features: [
+          'Conformance monitoring against the design',
+          'Straight-through rate and SLA tracking',
+          'Variant and deviation analysis',
+          'Benefit realization against the baseline',
+          'Next-process prioritization',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'DIGITAL PROCESS AUTOMATION SERVICES',
+    capabilitiesSectionTitle: 'Our',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Give your process an application, hold its state, connect it to the systems you are never going to replace, and prove it still runs the way you designed it six months later.',
+    capabilityAreas: [
+      {
+        title: 'Process Digitization & Digital Experience',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The process as the people in it actually meet it \u2014 a form, a portal, an approval on a phone, a status page that stops them calling you to ask. Where this layer is missing, your process is an inbox.',
+        items: [
+          'Digital Forms & Data Capture',
+          'Self-Service Portals',
+          'Customer Onboarding Journeys',
+          'Employee Experience Applications',
+          'Omnichannel Process Entry',
+          'Mobile & Field Process Interfaces',
+          'Guided Task & Wizard Interfaces',
+          'Document Generation & E-Signature',
+          'Status Transparency & Notifications',
+          'Straight-Through Processing Design',
+          'Accessibility & Usability Standards',
+          'Multilingual Process Interfaces',
+        ],
+      },
+      {
+        title: 'Low-Code Platforms & Citizen Development',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The platform those applications are built on, and the guardrails deciding who in your organization is allowed to build. Low-code estates fail as a governance problem far more often than as a technical one.',
+        items: [
+          'Low-Code & No-Code Platform Selection',
+          'LCAP Implementation & Configuration',
+          'Custom Business Application Development',
+          'Reusable Component & Template Libraries',
+          'Environment, Release & ALM Setup',
+          'Citizen Development Enablement',
+          'Fusion Team Operating Models',
+          'Application Governance & Guardrails',
+          'Shadow IT Discovery & Consolidation',
+          'Licensing & Consumption Management',
+          'Platform Security & Access Design',
+          'Pro-Code Extension Patterns',
+        ],
+      },
+      {
+        title: 'Workflow, Case & Decision Orchestration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Work that does not finish in one transaction \u2014 a claim, an application, an investigation, an onboarding. Cases wait, branch, escalate and get reassigned, and something in your estate has to hold state through all of it.',
+        items: [
+          'End-to-End Process Orchestration',
+          'Adaptive & Dynamic Case Management',
+          'Business Rules & Decision Engines',
+          'DMN Decision Modeling',
+          'Approval & Delegation Hierarchies',
+          'SLA, Timer & Escalation Management',
+          'Long-Running Process State',
+          'Compensation & Rollback Handling',
+          'Parallel & Conditional Branching',
+          'Queue, Routing & Work Allocation',
+          'Human-in-the-Loop Task Design',
+          'Per-Case Audit Trail & Observability',
+        ],
+      },
+      {
+        title: 'Application Modernization & System Extension',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Closing the application gap rather than automating around it. The process is usually broken where two of your systems meet and nobody owns the join, which is exactly where a bot papers over the problem.',
+        items: [
+          'ERP Process Extension',
+          'Mission-Critical System Extension',
+          'Legacy Application Modernization',
+          'Core System Wrappers & Facades',
+          'API Enablement for Process Access',
+          'Event-Driven System Integration',
+          'Cross-System Data Synchronization',
+          'Master Data Alignment for Processes',
+          'Integration Platform Setup',
+          'Application Rationalization',
+          'Spreadsheet & Mailbox Process Migration',
+          'Phased Replacement of Manual Interfaces',
+        ],
+      },
+      {
+        title: 'Process Intelligence & Conformance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Whether the digitized process runs the way it was designed. Discovery is the easy half and is covered on our intelligent automation service; conformance is the half that tells you the redesign did not hold.',
+        items: [
+          'Process Conformance Checking',
+          'Variant Analysis',
+          'Process Simulation & What-If Modeling',
+          'Digital Twin of the Process',
+          'Handoff & Waiting-Time Analysis',
+          'Rework & Loop Detection',
+          'Straight-Through Rate Measurement',
+          'Deviation & Exception Analytics',
+          'SLA Breach Root-Cause Analysis',
+          'Process Baseline & Target Modeling',
+          'Post-Deployment Benefit Tracking',
+          'Benefit Realization Reporting',
+        ],
+      },
+      {
+        title: 'Intelligent Process Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Intelligence inside the digital process rather than beside it: reading what arrives unstructured, deciding what can be decided, and handing the rest to one of your people with the context already assembled.',
+        items: [
+          'Document Understanding in Workflow',
+          'Unstructured Input Classification',
+          'Data Extraction & Validation at Intake',
+          'Conversational Process Entry',
+          'AI-Assisted Form Completion',
+          'Next-Best-Action Recommendations',
+          'Intelligent Work Routing',
+          'Anomaly & Risk Flagging in Process',
+          'Generative Summarization for Case Workers',
+          'Drafting & Correspondence Assistance',
+          'Confidence Thresholds & Fallback Paths',
+          'Human Review Queue Design',
+        ],
+      },
+      {
+        title: 'Agentic & Autonomous Process Execution',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Goal-driven execution inside a governed process rather than along a fixed path. The interesting engineering is not the agent; it is the boundary you allow it to act within, and the record it leaves behind.',
+        items: [
+          'Goal-Driven Process Execution',
+          'Multi-Agent Process Coordination',
+          'Dynamic Path Planning',
+          'Agent Access to Process Systems',
+          'Tool & Action Permissioning',
+          'Autonomy Levels & Escalation Thresholds',
+          'Agent-to-Human Handback',
+          'Policy Enforcement at Execution Time',
+          'Decision Traceability & Replay',
+          'Simulation Before Live Execution',
+          'Kill Switches & Rollback Paths',
+          'Continuous Evaluation of Agent Behavior',
+        ],
+      },
+    ],
+
+    closingCta: {
+      title: 'One process,',
+      highlight: 'mapped end to end.',
+      body: 'Bring the one that runs on a shared mailbox. In 30 minutes we will tell you where the work actually waits, whether it needs an application or just a tidier spreadsheet, and what closing the gap is worth \u2014 before anyone writes any code.',
+      proofLabel: 'From first call to a costed process design',
+    },
   },
 
   'robotic-process-automation': {

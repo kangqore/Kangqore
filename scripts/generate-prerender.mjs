@@ -347,9 +347,9 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
     ${svc.whatIsPara4 ? `<p>${esc(svc.whatIsPara4)}</p>` : ''}
     ${svc.whatIsPara5 ? `<p>${esc(svc.whatIsPara5)}</p>` : ''}
 
-    ${metrics ? `<h2>Business Outcomes</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
+    ${metrics ? `<h2>${esc([svc.outcomesHeading, svc.outcomesHeadingHighlight].filter(Boolean).join(' ') || 'Business Outcomes')}</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
 
-    ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${capabilities}` : ''}
+    ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${svc.capabilitiesLede ? `      <p>${esc(svc.capabilitiesLede)}</p>\n` : ''}${capabilities}` : ''}
 
     ${svc.midCta ? `<p>${esc(svc.midCta)}</p>` : ''}
 
