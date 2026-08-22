@@ -921,6 +921,19 @@ const INDUSTRY_ROUTES = {
   'energy & utilities': 'energy-utilities',
   'travel & hospitality': 'travel-hospitality',
   'information services': 'information-services',
+  // Aliases for labels used on the big-data industry grid. Only added where an
+  // /industries page actually exists — an unmapped label renders without a
+  // link, which is correct, rather than linking somewhere that does not answer
+  // the question the card raised.
+  'manufacturing & industrial': 'manufacturing',
+  'retail & e-commerce': 'retail',
+  ecommerce: 'retail',
+  'media & entertainment ': 'media-technology',
+  'media & telecommunications': 'media-technology',
+  education: 'edtech',
+  'education & research': 'edtech',
+  'tourism & hospitality': 'travel-hospitality',
+  'energy & resources': 'energy-utilities',
 };
 
 function industrySlug(label) {

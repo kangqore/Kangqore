@@ -235,56 +235,128 @@ and hard to keep.</h2>
     <p>Volume is rarely the interesting constraint. What differs by sector is retention obligations, how late data is allowed to arrive, and what it costs when a pipeline is wrong.</p>
       <section>
         <h3>Banking &amp; Financial Services</h3>
-        <p>Regulated data with retention obligations measured in years and audit trails that have to hold.</p>
+        <p>Retention measured in years, immutable audit trails, and transaction volume that peaks without warning.</p>
         <ul>
-          <li>Trade and transaction data platforms</li>
-          <li>Regulatory reporting pipelines</li>
+          <li>Transaction and trade data at sustained volume</li>
           <li>Retention, lineage and audit evidence</li>
+          <li>Regulatory reporting pipelines</li>
         </ul>
       </section>
       <section>
         <h3>Insurance</h3>
-        <p>Decades of policy and claims history that has to stay queryable and stay cheap.</p>
+        <p>Decades of policy and claims history that has to stay queryable long after the business stopped looking at it.</p>
         <ul>
-          <li>Policy and claims data consolidation</li>
-          <li>Historical data migration off legacy</li>
-          <li>Actuarial data marts</li>
+          <li>Historical policy and claims consolidation</li>
+          <li>Cold storage that stays cheap and reachable</li>
+          <li>Actuarial re-runs against archived data</li>
         </ul>
       </section>
       <section>
         <h3>Healthcare &amp; Life Sciences</h3>
-        <p>Clinical and operational data where residency and access control are design constraints, not settings.</p>
+        <p>Residency and access control as design constraints rather than settings, across sites that never shared a schema.</p>
         <ul>
-          <li>Clinical data platform engineering</li>
-          <li>De-identification and access control</li>
-          <li>Multi-site data consolidation</li>
+          <li>Multi-site clinical data consolidation</li>
+          <li>De-identification and access control at ingest</li>
+          <li>Imaging and genomic data at volume</li>
         </ul>
       </section>
       <section>
         <h3>Manufacturing &amp; Industrial</h3>
-        <p>Sensor and telemetry volume where the useful signal is a fraction of what is collected.</p>
+        <p>Sensor volume where the useful signal is a fraction of what is collected, and the network is not always there.</p>
         <ul>
-          <li>IoT and telemetry ingestion at scale</li>
+          <li>Telemetry ingestion at plant scale</li>
           <li>Time-series storage and downsampling</li>
-          <li>Edge to cloud data pipelines</li>
+          <li>Edge-to-cloud pipelines with intermittent links</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Automotive</h3>
+        <p>Connected-vehicle telemetry, where the fleet generates more data per day than the warehouse was sized for per quarter.</p>
+        <ul>
+          <li>Connected-vehicle event ingestion</li>
+          <li>Edge filtering before anything is stored</li>
+          <li>Supply chain and production data integration</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Transportation &amp; Logistics</h3>
+        <p>Fleet and geospatial data arriving late, out of order, and from devices that were offline for six hours.</p>
+        <ul>
+          <li>Geospatial and fleet telemetry pipelines</li>
+          <li>Late and out-of-order event handling</li>
+          <li>Cross-system consignment data integration</li>
         </ul>
       </section>
       <section>
         <h3>Retail &amp; E-Commerce</h3>
-        <p>Clickstream and transaction data with peaks that make average-case sizing the wrong answer.</p>
+        <p>Peak seasons that make average-case sizing the wrong answer, and clickstream volume that dwarfs the transaction data.</p>
         <ul>
-          <li>Clickstream and event pipelines</li>
-          <li>Peak-season capacity design</li>
-          <li>Customer data unification</li>
+          <li>Clickstream and event stream ingestion</li>
+          <li>Peak-capacity design and cost control</li>
+          <li>Catalog, inventory and customer data unification</li>
         </ul>
       </section>
       <section>
-        <h3>Media &amp; Telecommunications</h3>
-        <p>Network and usage data at volumes where cost per terabyte is the whole business case.</p>
+        <h3>Media &amp; Entertainment</h3>
+        <p>Viewing telemetry, content metadata and rights data that live in three systems and disagree about all of it.</p>
         <ul>
-          <li>Network telemetry platforms</li>
+          <li>Viewing and engagement telemetry at scale</li>
+          <li>Content, metadata and rights consolidation</li>
+          <li>Real-time delivery and quality monitoring</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Telecom</h3>
+        <p>Network and usage data where cost per terabyte is not a line item, it is the business case.</p>
+        <ul>
+          <li>Network telemetry and call record processing</li>
           <li>Usage and billing data pipelines</li>
           <li>Cost optimization at petabyte scale</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Energy &amp; Resources</h3>
+        <p>Grid, well and asset telemetry where the platform has to keep working when connectivity does not.</p>
+        <ul>
+          <li>Sensor and SCADA data ingestion</li>
+          <li>Historian modernization and migration</li>
+          <li>Edge processing where bandwidth is limited</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Agriculture</h3>
+        <p>Sensor, satellite and weather data combined across holdings, gathered where connectivity is intermittent by default.</p>
+        <ul>
+          <li>Field sensor and satellite data ingestion</li>
+          <li>Weather and soil data integration</li>
+          <li>Edge collection with deferred upload</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Tourism &amp; Hospitality</h3>
+        <p>Booking and property data across systems that were acquired rather than designed, with sharp seasonal peaks.</p>
+        <ul>
+          <li>Booking and reservation data consolidation</li>
+          <li>Seasonal capacity and cost planning</li>
+          <li>Guest data unification across properties</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Education &amp; Research</h3>
+        <p>Student and research data with long retention duties, term-cycle load spikes, and privacy rules that vary by jurisdiction.</p>
+        <ul>
+          <li>Student record consolidation and retention</li>
+          <li>Research data platforms and archival</li>
+          <li>Term-cycle capacity management</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Professional Services</h3>
+        <p>Project, time and client data spread across systems that must stay isolated from one another by contract.</p>
+        <ul>
+          <li>Project and utilization data integration</li>
+          <li>Client data isolation and access control</li>
+          <li>Multi-entity consolidation and reporting</li>
         </ul>
       </section>
 

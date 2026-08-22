@@ -4269,36 +4269,86 @@ export const servicesData = {
     industryHeading: 'Platforms built for',
     industryHeadingHighlight: 'the data your sector generates.',
     industryLede: 'Volume is rarely the interesting constraint. What differs by sector is retention obligations, how late data is allowed to arrive, and what it costs when a pipeline is wrong.',
+    // ── Industry ────────────────────────────────────────────────────────────
+    // Fourteen sectors, platform-layer rather than analytics-outcome. The
+    // obvious framing — predictive patient care, fraud detection, churn
+    // prediction — is what competitors put here, and all of it is analytics
+    // work that belongs on /services/analytics. Using it would rebuild the
+    // cannibalization between these two pages that was just removed.
+    //
+    // So each card answers a platform question instead: what the data looks
+    // like, what has to be retained, how late it arrives, and what it costs to
+    // hold. That is the thing this service is actually sold to solve.
     industryUseCases: [
       {
         industry: 'Banking & Financial Services',
-        headline: 'Regulated data with retention obligations measured in years and audit trails that have to hold.',
-        items: ['Trade and transaction data platforms', 'Regulatory reporting pipelines', 'Retention, lineage and audit evidence'],
+        headline: 'Retention measured in years, immutable audit trails, and transaction volume that peaks without warning.',
+        items: ['Transaction and trade data at sustained volume', 'Retention, lineage and audit evidence', 'Regulatory reporting pipelines'],
       },
       {
         industry: 'Insurance',
-        headline: 'Decades of policy and claims history that has to stay queryable and stay cheap.',
-        items: ['Policy and claims data consolidation', 'Historical data migration off legacy', 'Actuarial data marts'],
+        headline: 'Decades of policy and claims history that has to stay queryable long after the business stopped looking at it.',
+        items: ['Historical policy and claims consolidation', 'Cold storage that stays cheap and reachable', 'Actuarial re-runs against archived data'],
       },
       {
         industry: 'Healthcare & Life Sciences',
-        headline: 'Clinical and operational data where residency and access control are design constraints, not settings.',
-        items: ['Clinical data platform engineering', 'De-identification and access control', 'Multi-site data consolidation'],
+        headline: 'Residency and access control as design constraints rather than settings, across sites that never shared a schema.',
+        items: ['Multi-site clinical data consolidation', 'De-identification and access control at ingest', 'Imaging and genomic data at volume'],
       },
       {
         industry: 'Manufacturing & Industrial',
-        headline: 'Sensor and telemetry volume where the useful signal is a fraction of what is collected.',
-        items: ['IoT and telemetry ingestion at scale', 'Time-series storage and downsampling', 'Edge to cloud data pipelines'],
+        headline: 'Sensor volume where the useful signal is a fraction of what is collected, and the network is not always there.',
+        items: ['Telemetry ingestion at plant scale', 'Time-series storage and downsampling', 'Edge-to-cloud pipelines with intermittent links'],
+      },
+      {
+        industry: 'Automotive',
+        headline: 'Connected-vehicle telemetry, where the fleet generates more data per day than the warehouse was sized for per quarter.',
+        items: ['Connected-vehicle event ingestion', 'Edge filtering before anything is stored', 'Supply chain and production data integration'],
+      },
+      {
+        industry: 'Transportation & Logistics',
+        headline: 'Fleet and geospatial data arriving late, out of order, and from devices that were offline for six hours.',
+        items: ['Geospatial and fleet telemetry pipelines', 'Late and out-of-order event handling', 'Cross-system consignment data integration'],
       },
       {
         industry: 'Retail & E-Commerce',
-        headline: 'Clickstream and transaction data with peaks that make average-case sizing the wrong answer.',
-        items: ['Clickstream and event pipelines', 'Peak-season capacity design', 'Customer data unification'],
+        headline: 'Peak seasons that make average-case sizing the wrong answer, and clickstream volume that dwarfs the transaction data.',
+        items: ['Clickstream and event stream ingestion', 'Peak-capacity design and cost control', 'Catalog, inventory and customer data unification'],
       },
       {
-        industry: 'Media & Telecommunications',
-        headline: 'Network and usage data at volumes where cost per terabyte is the whole business case.',
-        items: ['Network telemetry platforms', 'Usage and billing data pipelines', 'Cost optimization at petabyte scale'],
+        industry: 'Media & Entertainment',
+        headline: 'Viewing telemetry, content metadata and rights data that live in three systems and disagree about all of it.',
+        items: ['Viewing and engagement telemetry at scale', 'Content, metadata and rights consolidation', 'Real-time delivery and quality monitoring'],
+      },
+      {
+        industry: 'Telecom',
+        headline: 'Network and usage data where cost per terabyte is not a line item, it is the business case.',
+        items: ['Network telemetry and call record processing', 'Usage and billing data pipelines', 'Cost optimization at petabyte scale'],
+      },
+      {
+        industry: 'Energy & Resources',
+        headline: 'Grid, well and asset telemetry where the platform has to keep working when connectivity does not.',
+        items: ['Sensor and SCADA data ingestion', 'Historian modernization and migration', 'Edge processing where bandwidth is limited'],
+      },
+      {
+        industry: 'Agriculture',
+        headline: 'Sensor, satellite and weather data combined across holdings, gathered where connectivity is intermittent by default.',
+        items: ['Field sensor and satellite data ingestion', 'Weather and soil data integration', 'Edge collection with deferred upload'],
+      },
+      {
+        industry: 'Tourism & Hospitality',
+        headline: 'Booking and property data across systems that were acquired rather than designed, with sharp seasonal peaks.',
+        items: ['Booking and reservation data consolidation', 'Seasonal capacity and cost planning', 'Guest data unification across properties'],
+      },
+      {
+        industry: 'Education & Research',
+        headline: 'Student and research data with long retention duties, term-cycle load spikes, and privacy rules that vary by jurisdiction.',
+        items: ['Student record consolidation and retention', 'Research data platforms and archival', 'Term-cycle capacity management'],
+      },
+      {
+        industry: 'Professional Services',
+        headline: 'Project, time and client data spread across systems that must stay isolated from one another by contract.',
+        items: ['Project and utilization data integration', 'Client data isolation and access control', 'Multi-entity consolidation and reporting'],
       },
     ],
 
