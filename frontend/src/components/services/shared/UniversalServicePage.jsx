@@ -61,6 +61,13 @@ const TypewriterText = ({ text, start = true, delay = 28 }) => {
 const CAP_COLORS = ['#22D3EE', '#60A5FA', '#A78BFA', '#FB923C', '#34D399', '#F472B6', '#FDE047', '#E8614A'];
 const ICON_POOL  = [Target, Zap, Layers, Search, Cpu, Radar, BrainCircuit, TrendingUp, Shield, Activity, Globe, BarChart3, Network, Settings, Rocket, Users];
 const PHASE_GRADIENTS = ['from-slate-600 to-slate-800', 'from-blue-500 to-blue-700', 'from-brand-blue to-indigo-600', 'from-emerald-500 to-emerald-700', 'from-cyan-500 to-cyan-700'];
+// Experimental type stack for the key-terms heading. Every name before
+// "Helvetica Neue" is a licensed Monotype release of Neue Haas Grotesk; the
+// aliases differ by vendor and by how the user installed it, so all four are
+// listed rather than guessing one. Nothing after it is a guess: Helvetica is
+// the same design renamed in 1960, which makes it the correct fallback.
+const NHG_DISPLAY = '"Neue Haas Grotesk Display Pro", "NeueHaasDisplay", "Neue Haas Grotesk Display", "Neue Haas Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif';
+
 const JOURNEY_ICON_MAP = { Search, Target, Cpu, Rocket, Shield, TrendingUp, BrainCircuit, Network, Radar, Zap, Layers, Activity, Globe, Settings, ShieldCheck, Eye, Database, Lock };
 const TECH_STACK_ICON_COLORS = [
   { bg: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)', glow: '0 8px 24px rgba(59,130,246,0.45), 0 2px 8px rgba(59,130,246,0.3)' },
@@ -3073,23 +3080,29 @@ const featureMicros   = service.featureMicros
                 {service.keyTerms.eyebrow}
               </span>
             </div>
-            {/* Experiment: this one heading runs Helvetica Neue Light instead of
-                the site face. Scoped by construction -- the style is inline on
-                this element, and the whole section only renders for a service
-                that defines keyTerms, which today is business-process-management
-                alone. Nothing else on this page or any other is touched.
+            {/* Experiment: this one heading runs Neue Haas Grotesk Display,
+                300 for the first clause and 400 for the gradient one. Scoped by
+                construction -- the styles are inline on these elements, and the
+                whole section only renders for a service that defines keyTerms,
+                which today is business-process-management alone.
 
-                No web font is loaded. Helvetica Neue is a system face on macOS
-                and iOS; elsewhere this falls through Helvetica to Arial, which
-                is the correct trade rather than shipping a font file for one
-                heading. Weight 300 is the Light cut, and it overrides the
-                extrabold class that the other section headings keep. */}
+                Important: Neue Haas Grotesk is a licensed Monotype face. It is
+                not a system font on any platform, it is not on Google Fonts,
+                and it is not bundled here -- so on a machine without it this
+                resolves down the chain to Helvetica Neue, then Helvetica, then
+                Arial. That fallback is deliberate: Helvetica is the direct
+                descendant of Neue Haas Grotesk, so the substitution stays in
+                the same genre rather than jumping to a different one.
+
+                To make this render for visitors rather than only for designers
+                who already own the font, it has to be served -- an Adobe Fonts
+                kit or a self-hosted licensed webfont. Neither is in place. */}
             <h2
               className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] leading-[1.2] tracking-tight text-white mb-6 max-w-3xl"
-              style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300 }}
+              style={{ fontFamily: NHG_DISPLAY, fontWeight: 300 }}
             >
               {service.keyTerms.title}{' '}
-              <span className="bg-brand-gradient bg-clip-text text-transparent">
+              <span className="bg-brand-gradient bg-clip-text text-transparent" style={{ fontWeight: 400 }}>
                 {service.keyTerms.titleHighlight}
               </span>
             </h2>
