@@ -63,24 +63,27 @@ const ICON_POOL  = [Target, Zap, Layers, Search, Cpu, Radar, BrainCircuit, Trend
 const PHASE_GRADIENTS = ['from-slate-600 to-slate-800', 'from-blue-500 to-blue-700', 'from-brand-blue to-indigo-600', 'from-emerald-500 to-emerald-700', 'from-cyan-500 to-cyan-700'];
 // Experimental type stack for the key-terms heading.
 //
-// The reference specimen is a light, slightly wide neo-grotesque with geometric
-// leanings: single-story g with an open curved tail, straight-tailed y, short
-// flat r arm, angled cut on the t ascender, near-circular O. That set of
-// details fits Soehne, ABC Diatype, Aeonik or Neue Montreal. All four are
-// licensed foundry faces, so all four are listed first and none of them will
-// resolve on a machine that has not bought one.
+// The reference is Palantir's heading face, read off palantir.com rather than
+// guessed from the specimen: they set headings in Alliance No.2 at weight 400
+// (their Foundry h1 is Alliance No.2 400 at 100px), body and UI in Alliance
+// No.1, mono in Apercu Mono Pro, serif accents in Rosart. Alliance is by
+// Degarism Studio and is a paid license, not a system or Google face -- so it
+// will not resolve here until it is bought and served.
 //
-// The face that actually renders is DM Sans at 300. It is already loaded by
-// index.html as a variable font carrying weights 300 to 900 and an optical size
-// axis, so this costs no additional request, and it shares the specimen's
-// genre -- geometric sans, single-story g, straight-tailed y. opsz is pushed
-// to 40, the display end of the axis, because this is 48px type and the text
-// optical size is drawn for body copy.
+// Two things follow from that. Alliance No.2 leads the stack, so the heading
+// picks it up the moment a license and an @font-face are in place, with no code
+// change. And the face that actually renders today is DM Sans at 400 -- moved
+// up from 300 to match Palantir's weight, since the weight is as much of the
+// look as the drawing is. DM Sans is already loaded by index.html as a variable
+// font with an optical size axis, so this costs no additional request.
 //
-// The point of ordering it this way: if one of the licensed faces is later
-// installed or served, the heading picks it up with no code change. Until then
-// the experiment is visible rather than silently falling back to Arial.
-const NHG_DISPLAY = '"Soehne", "ABC Diatype", "Aeonik", "Neue Montreal", "DM Sans", "Helvetica Neue", Arial, sans-serif';
+// opsz is pushed to 40, the display end of the axis, because this is 48px type
+// and the default optical size is drawn for body copy.
+//
+// Do not resolve this by pointing at the font files on palantir.com. They are
+// licensed to Palantir; hotlinking or copying them is infringement, and it is
+// the reason this stack ends in a free face rather than in a borrowed one.
+const NHG_DISPLAY = '"Alliance No.2", "Alliance No.1", "DM Sans", "Helvetica Neue", Arial, sans-serif';
 
 const JOURNEY_ICON_MAP = { Search, Target, Cpu, Rocket, Shield, TrendingUp, BrainCircuit, Network, Radar, Zap, Layers, Activity, Globe, Settings, ShieldCheck, Eye, Database, Lock };
 const TECH_STACK_ICON_COLORS = [
@@ -3095,14 +3098,14 @@ const featureMicros   = service.featureMicros
               </span>
             </div>
             {/* Experiment: this one heading runs the stack declared at
-                NHG_DISPLAY, 300 for the first clause and 400 for the gradient
-                one. Scoped by construction -- the styles are inline on these
+                NHG_DISPLAY at weight 400, matching how Palantir set theirs.
+                Scoped by construction -- the styles are inline on these
                 elements, and the whole section only renders for a service that
                 defines keyTerms, which today is business-process-management
                 alone. */}
             <h2
               className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] leading-[1.2] tracking-tight text-white mb-6 max-w-3xl"
-              style={{ fontFamily: NHG_DISPLAY, fontWeight: 300, fontVariationSettings: '"opsz" 40' }}
+              style={{ fontFamily: NHG_DISPLAY, fontWeight: 400, fontVariationSettings: '"opsz" 40' }}
             >
               {service.keyTerms.title}{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent" style={{ fontWeight: 400 }}>
