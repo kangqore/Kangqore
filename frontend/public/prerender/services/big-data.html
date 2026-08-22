@@ -423,12 +423,12 @@ and hard to keep.</h2>
         <h2>What we build on, and when we would not.</h2>
     <p>Most of this is decided by the cloud you are already in and how much data you genuinely have. These are the defaults and what overrides them.</p>
       <ul>
-          <li><strong>Table formats</strong>: Picks up schema evolution, time travel and atomic writes. Chosen before the query engine, because migrating between formats later is the expensive move.</li>
-          <li><strong>Distributed processing</strong>: Spark earns its complexity past a few terabytes. Below that a single machine is usually faster and always cheaper, and a surprising number of estates are below that.</li>
-          <li><strong>Warehouse and query engines</strong>: Sized to the query pattern rather than the roadmap. Separating storage from compute matters more than which vendor supplies either.</li>
-          <li><strong>Streaming</strong>: Streaming is a correctness problem before it is a throughput problem. Reached for when the decision cannot wait, not because the architecture diagram has arrows on it.</li>
-          <li><strong>Orchestration</strong>: The point where scheduled jobs become a dependency graph somebody has to reason about, backfill and recover.</li>
-          <li><strong>Quality and observability</strong>: Data platforms fail silently. A green orchestrator says the job ran, not that what it wrote is correct, and those are different claims.</li>
+          <li><strong>Table formats</strong>: Picks up schema evolution, time travel and atomic writes. Chosen before the query engine, because migrating between formats later is the expensive move. Managed: Apache Iceberg, Delta Lake, Hudi. Self-hosted: The decision that outlives the engine.</li>
+          <li><strong>Distributed processing</strong>: Spark earns its complexity past a few terabytes. Below that a single machine is usually faster and always cheaper, and a surprising number of estates are below that. Managed: Spark, Databricks, EMR. Self-hosted: DuckDB or Postgres under a terabyte.</li>
+          <li><strong>Warehouse and query engines</strong>: Sized to the query pattern rather than the roadmap. Separating storage from compute matters more than which vendor supplies either. Managed: Snowflake, BigQuery, Redshift. Self-hosted: Trino or DuckDB over object storage. <a href="https://kangqore.com/services/analytics">Analytics</a></li>
+          <li><strong>Streaming</strong>: Streaming is a correctness problem before it is a throughput problem. Reached for when the decision cannot wait, not because the architecture diagram has arrows on it. Managed: Kafka, Kinesis, Pub/Sub, Flink. Self-hosted: Only where latency has a cost.</li>
+          <li><strong>Orchestration</strong>: The point where scheduled jobs become a dependency graph somebody has to reason about, backfill and recover. Managed: Airflow, Dagster, Prefect. Self-hosted: Once pipelines have dependencies.</li>
+          <li><strong>Quality and observability</strong>: Data platforms fail silently. A green orchestrator says the job ran, not that what it wrote is correct, and those are different claims. Managed: Great Expectations, Monte Carlo, Soda. Self-hosted: Contracts at the ingest boundary.</li>
       </ul>
 
     

@@ -33,6 +33,11 @@ export function buildServiceGraph({ svc, dept, pageUrl, pageTitle, pageDescripti
     about: { '@id': `${pageUrl}#service` },
     primaryImageOfPage: ogImage,
     inLanguage: 'en',
+    // Freshness, and only where it is a fact. `lastReviewed` is set by hand on
+    // a service when its copy is actually rewritten, so a page that has not
+    // been touched publishes no date rather than a date generated at build
+    // time — which would claim a review nobody performed on 62 pages at once.
+    ...(svc.lastReviewed ? { dateModified: svc.lastReviewed } : {}),
     // Marks the passages a voice assistant should read aloud. Pointing at the
     // H1 and the summary paragraph keeps spoken answers to the definition of
     // the service rather than whatever text happens to rank first.

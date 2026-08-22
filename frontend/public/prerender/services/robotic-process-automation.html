@@ -27,7 +27,7 @@
 <main>
   <article>
     <p>Built. Governed. Maintained.</p>
-    <h1>Robotic Process Automation for Systems Without an API</h1>
+    <h1>Robotic Process Automation Services for the Enterprise</h1>
     <p>Build, govern and maintain software robots that drive enterprise applications through the interface, and keep working when that interface changes.</p>
     <p>Automating the applications that were never given an API</p>
     <p>Robotic process automation drives enterprise applications the way a person does — through the interface, keystroke by keystroke. That is its entire reason to exist. Where a system exposes an API, integration is faster, cheaper and more durable, and we will tell you so. Where it does not, and will not, a bot is the only thing that reaches the work.</p>
@@ -35,7 +35,7 @@
     <p>Kangqore engineers for that reality rather than around it. Resilient selectors where the application allows them, monitoring that tests the output rather than the exit code, credentials held in a vault under a bot identity your auditor can trace, and an estate small enough to maintain. Bots you can still run in year three, not a pilot that impressed everyone in month two.</p>
     
 
-    <h2>Four numbers nobody puts in the business case.</h2>
+    <h2>RPA Program Metrics Worth Baselining.</h2>
       <ul>
         <li><strong>60%</strong> Less Break-Fix — Reduction in developer time spent repairing bots after application changes, once resilience patterns and output-level monitoring are in place.</li>
         <li><strong>3–5 Wks</strong> Selection to Production — From process selection to one bot running unattended in production, including the security review nobody schedules for.</li>
@@ -166,7 +166,7 @@
 
     <p>The pilot ran beautifully. Year two is the one to plan for.</p>
 
-        <h2>Why RPA Projects Fail in Year Two.</h2>
+        <h2>RPA Implementation vs. RPA Estate Operations.</h2>
     <p>Neither column describes bad engineering. They differ in what happens the first time somebody else ships a release you were not told about.</p>
       <table>
         <caption>BOTS AS DELIVERABLES compared with BOTS AS OPERATED SOFTWARE</caption>
@@ -423,14 +423,14 @@
         <h2>The RPA platforms, and when not to use one.</h2>
     <p>Platform choice is mostly settled by what the group already licenses and by how much of the target estate is legacy surface rather than modern web. These are the defaults and what overrides them.</p>
       <ul>
-          <li><strong>Enterprise RPA platforms</strong>: The default for an estate of any size: mature orchestration, credential handling and a component ecosystem. Heavy and licensed per runtime, which stops making sense below roughly a dozen bots.</li>
-          <li><strong>Regulated and legacy-heavy estates</strong>: Unattended-first by design, with a control model that regulated operations teams tend to find easier to evidence. Weaker where the work is attended or desktop-side.</li>
-          <li><strong>Microsoft-estate automation</strong>: Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl.</li>
-          <li><strong>Process intelligence</strong>: How you find out which processes are worth a bot, from event logs rather than from a workshop. Most estates skip this and automate whatever the loudest team asked for, which is why the backlog and the benefit case diverge.</li>
-          <li><strong>Workflow and orchestration</strong>: A bot should be invoked by a governed workflow rather than be the workflow. Where the process itself needs designing, that work sits on our business process management and digital process automation services.</li>
-          <li><strong>Credentials and bot identity</strong>: Non-negotiable past the first bot. A password in a config file is the finding that ends an RPA program in a regulated group, and retrofitting a vault across a live estate is far worse than starting with one.</li>
-          <li><strong>Monitoring and alerting</strong>: Platform monitoring reports whether the run finished. It cannot tell you the bot wrote the wrong value into the right field, so the checks that matter are written against the output.</li>
-          <li><strong>The alternative to all of the above</strong>: If a usable API exists, integration wins on cost, speed and durability, and we will say so before quoting a build. RPA is the answer when that door is closed — not the first thing to try.</li>
+          <li><strong>Enterprise RPA platforms</strong>: The default for an estate of any size: mature orchestration, credential handling and a component ecosystem. Heavy and licensed per runtime, which stops making sense below roughly a dozen bots. Managed: UiPath, Automation Anywhere. Self-hosted: On-premise orchestrator where data cannot leave.</li>
+          <li><strong>Regulated and legacy-heavy estates</strong>: Unattended-first by design, with a control model that regulated operations teams tend to find easier to evidence. Weaker where the work is attended or desktop-side. Managed: Blue Prism. Self-hosted: Strong where audit posture drives the choice.</li>
+          <li><strong>Microsoft-estate automation</strong>: Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl. Managed: Power Automate Desktop. Self-hosted: Often already licensed and unused.</li>
+          <li><strong>Process intelligence</strong>: How you find out which processes are worth a bot, from event logs rather than from a workshop. Most estates skip this and automate whatever the loudest team asked for, which is why the backlog and the benefit case diverge. Managed: Celonis, SAP Signavio, UiPath Process Mining. Self-hosted: Before the backlog, not after it.</li>
+          <li><strong>Workflow and orchestration</strong>: A bot should be invoked by a governed workflow rather than be the workflow. Where the process itself needs designing, that work sits on our business process management and digital process automation services. Managed: ServiceNow, Camunda, Appian, Pega. Self-hosted: Where the bot is a step, not the process.</li>
+          <li><strong>Credentials and bot identity</strong>: Non-negotiable past the first bot. A password in a config file is the finding that ends an RPA program in a regulated group, and retrofitting a vault across a live estate is far worse than starting with one. Managed: CyberArk, HashiCorp Vault, platform-native vaults. Self-hosted: Whatever your PAM team already runs.</li>
+          <li><strong>Monitoring and alerting</strong>: Platform monitoring reports whether the run finished. It cannot tell you the bot wrote the wrong value into the right field, so the checks that matter are written against the output. Managed: Platform dashboards plus your own observability stack. Self-hosted: Output checks, not exit codes.</li>
+          <li><strong>The alternative to all of the above</strong>: If a usable API exists, integration wins on cost, speed and durability, and we will say so before quoting a build. RPA is the answer when that door is closed — not the first thing to try. Managed: REST, SOAP, database, file transfer, iPaaS. Self-hosted: Always evaluated before a bot is proposed.</li>
       </ul>
 
     

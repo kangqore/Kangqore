@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T19:27:53.491Z",
+  "generatedAt": "2026-08-22T20:24:28.216Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1109,10 +1109,74 @@
       "url": "/services/quality-engineering-assurance",
       "name": "Quality Engineering & Assurance",
       "department": "Shield",
-      "description": "Quality engineering — test strategy, test automation, performance testing, security testing, and quality metrics for production-grade releases.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "description": "Enterprise quality engineering: test strategy, automation, flake reduction, performance engineering, test data, environments and release gates you can defend.",
+      "capabilities": [
+        "Test Strategy, Risk Scoping & Quality Architecture",
+        "The Test Suite as an Engineered Asset",
+        "Test Automation Across the Pyramid",
+        "Continuous Testing, Release Gates & Quality Intelligence",
+        "Performance, Load & Resilience Engineering",
+        "Test Data & Environment Engineering",
+        "Testing Systems That Do Not Answer the Same Way Twice",
+        "Accessibility, Experience & Cross-Platform Validation",
+        "Packaged Applications, Migration & Parity Assurance"
+      ],
+      "faqs": [
+        {
+          "q": "Our regression takes fourteen hours. What do we cut?",
+          "a": "Start by finding out what it is actually testing, because in most fourteen-hour suites the answer is the same six things over and over at the most expensive layer available. The first pass is mechanical and usually recovers more than half the wall-clock: run in parallel, shard across machines, and stop rebuilding the world between tests. None of that removes a single assertion, so nobody has to argue about risk to get it. The second pass is the real work. Most long suites are inverted — hundreds of browser tests standing in for checks that belong at API or unit level, each one paying the cost of a browser to verify a calculation. Pushing those down keeps the assertion and drops the cost by an order of magnitude. A browser test should exist for a journey that genuinely needs a browser, and there are fewer of those than any suite suggests. The third pass is deletion, and it needs a decision-maker in the room. Tests that have never failed in two years, tests asserting on things that were never contracts, tests duplicating a case already covered three layers down. We propose the list, you approve it, and what stays uncovered goes on the record rather than disappearing quietly."
+        },
+        {
+          "q": "What do we actually do about flaky tests?",
+          "a": "Measure the rate first, because the argument about what to do is unwinnable while nobody knows the number. Flake is not one problem, it is four with different fixes. Shared state, where one test leaves behind a row or a cache entry the next one trips over. Timing, where the test waits a fixed number of milliseconds for something that usually takes less. Order dependence, where the suite only passes in the sequence it happened to run in last time. And genuine concurrency, where the code under test really does have a race and the test is right to be unhappy. That last category is the reason blanket auto-retry is dangerous: it hides real defects inside noise the team has been trained to ignore. So: classify every failure in the run, not afterwards. Quarantine the worst offenders so they stop poisoning the signal — but with an expiry date attached, because a quarantine folder without expiry dates is just deletion with extra steps. Fix by class rather than one test at a time, since the same shared-state bug is usually behind thirty of them. The target that matters is not zero. It is a rate low enough that a red build changes what somebody does next."
+        },
+        {
+          "q": "Should we be chasing eighty per cent code coverage?",
+          "a": "As a diagnostic, coverage is useful. As a target, it reliably produces tests that execute code without checking anything about it, and we would rather tell you that before you set it. Coverage measures which lines ran while the tests ran. It cannot tell you whether anything was asserted, whether the assertion was meaningful, or whether the untested twenty per cent happens to be your payment path. A codebase at eighty per cent with no assertions in the critical path is in worse shape than one at fifty per cent that covers the paths a failure would actually hurt. What we use instead: coverage read as a map rather than a score, so a low-coverage area triggers a conversation about risk rather than an instruction to write tests. Mutation testing on the parts that matter, which deliberately introduces defects and reports whether any test noticed — the only automated measure that grades the assertions rather than the execution. And an explicit, written record of what is deliberately not covered. Where a coverage floor is a regulatory or contractual requirement, we will help you meet it and be honest that meeting it is a compliance activity rather than a quality one."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Browser and end-to-end",
+          "detail": "Playwright is the current default: faster, less flaky by construction, and one API across browsers. Selenium stays where an established grid and a decade of page objects make replacement more expensive than maintenance. Neither choice fixes an inverted pyramid."
+        },
+        {
+          "rule": "API and contract",
+          "detail": "The layer most estates under-invest in and the cheapest place to catch an integration break. Contract tests are what let two teams deploy independently without a shared end-to-end suite that neither of them owns."
+        },
+        {
+          "rule": "Unit and property-based",
+          "detail": "Property-based testing earns its place where the input space is larger than anyone can enumerate — parsers, pricing rules, date arithmetic, currency rounding. It finds the case nobody thought to write, which is generally the case that reaches production."
+        },
+        {
+          "rule": "Performance and load",
+          "detail": "The tool is the easy part. A load test against a scaled-down environment with uniform synthetic traffic produces a number that is precise and wrong. The work is the workload model, the data volume and the think time."
+        },
+        {
+          "rule": "Test data",
+          "detail": "Masked production data is realistic and brings a legal argument with it. Synthetic data brings none, but has to be engineered to reproduce the shapes that break things: the null, the duplicate, the emoji in a name field, the record created in 1997."
+        },
+        {
+          "rule": "Environments and virtualization",
+          "detail": "Service virtualization is how you test against the payment provider that charges per call and the partner system available two mornings a week. The alternative is a suite whose green depends on somebody else’s uptime."
+        },
+        {
+          "rule": "Accessibility",
+          "detail": "Automated scanning reliably catches a minority of WCAG failures and cannot judge whether a label is meaningful or a focus order makes sense. Anyone selling full conformance from a scanner is selling the report rather than the conformance."
+        },
+        {
+          "rule": "Evaluation for AI features",
+          "detail": "The harness is a commodity. The evaluation set built from your real traffic is not, and it is the only thing that makes a model regression visible before a customer finds it. Production monitoring and model governance are separate services."
+        },
+        {
+          "rule": "Security checks inside the build",
+          "detail": "These belong in the pipeline because they are fast and deterministic, and gating on the existing backlog rather than on newly introduced findings is how teams learn to skip the stage. Penetration testing and the security program are a different discipline."
+        },
+        {
+          "rule": "The tests not worth writing",
+          "detail": "Some defects are cheaper to make impossible than to test for, and some are cheaper to detect in production and roll back. A test is one control among several. Treating it as the only one is how a suite reaches forty minutes and stops being run."
+        }
+      ],
       "dataHandling": []
     },
     {
