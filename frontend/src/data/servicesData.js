@@ -5249,6 +5249,10 @@ export const servicesData = {
     bannerBrand: 'eQORE\u2122',
     shortDescription: 'Redesign, standardize and govern the processes that run the enterprise',
     fullDescription: 'Reengineer end-to-end processes, standardize them across markets, implement the platforms that run them, and govern performance from a Center of Excellence.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard; big-data
+    // and digital-process-automation both widen it to the same 760/880.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
     keyFeatures: ['Process reengineering', 'Global process ownership', 'BPM platforms', 'Process governance', 'Center of Excellence'],
     relatedServiceSlugs: ['digital-process-automation', 'intelligent-automation', 'robotic-process-automation'],
     featured: false,
