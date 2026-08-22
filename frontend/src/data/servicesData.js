@@ -5246,23 +5246,601 @@ export const servicesData = {
     slug: 'business-process-management',
     name: 'Business Process Management',
     departmentSlug: 'cognition',
-    bannerBrand: 'eQORE™',
-    shortDescription: 'Design, execute, and optimize business processes',
-    fullDescription: 'Implement BPM solutions to model, automate, and improve business processes.',
-    keyFeatures: ['Process modeling', 'Workflow automation', 'Process orchestration', 'Business rules', 'Process analytics'],
-    relatedServiceSlugs: ['digital-process-automation', 'intelligent-automation'],
+    bannerBrand: 'eQORE\u2122',
+    shortDescription: 'Redesign, standardize and govern the processes that run the enterprise',
+    fullDescription: 'Reengineer end-to-end processes, standardize them across markets, implement the platforms that run them, and govern performance from a Center of Excellence.',
+    keyFeatures: ['Process reengineering', 'Global process ownership', 'BPM platforms', 'Process governance', 'Center of Excellence'],
+    relatedServiceSlugs: ['digital-process-automation', 'intelligent-automation', 'robotic-process-automation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
-    whatIsTitle: 'Business Process Management',
-    whatIsTitleLine2: 'Designed to Scale Across',
-    whatIsHighlight: 'Every Function.',
-    whatIsPara2: 'Kangqore designs, implements, and manages end-to-end BPM programs covering sales operations, finance, supply chain, HR, and customer experience — delivering measurable cycle time reduction and operational savings at enterprise scale.',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // This page rendered the Cognition parity default -- the AI Governance
+    // taxonomy with the service name substituted in, six generic FAQs, and a
+    // crawler seeing 6.8 per cent of the page.
+    //
+    // Fourth of the four automation services, so the wedge matters more here
+    // than anywhere. The supplied taxonomy measured 38 per cent overlap against
+    // intelligent-automation and digital-process-automation, concentrated in
+    // "Intelligent Automation & AI" (7 of 13 items) and "Process Advisory"
+    // (6 of 12). Building it as given would have made this the fourth page
+    // saying the same thing.
+    //
+    // The split now reads:
+    //   BPM  -- the discipline. Reengineering, operating model, global process
+    //           ownership, BPM platforms, governance, CoE, process performance.
+    //   DPA  -- low-code applications, digital forms and portals, case
+    //           management, closing the application gap.
+    //   IA   -- bots and intelligence: RPA at scale, IDP, cognitive.
+    //   RPA  -- task-level automation.
+    //
+    // Global process ownership and multi-country harmonization are the
+    // MNC-specific territory nothing else on the site covers, and they are
+    // where a group process officer at a multinational actually spends the
+    // budget. HCLTech's page has four pillars -- advisory, modernization,
+    // platform implementation, CoE -- and no equivalent.
+    //
+    // Value streams replace the usual industry grid. Procure-to-Pay,
+    // Order-to-Cash, Record-to-Report and Hire-to-Retire are how process work
+    // is scoped and funded inside a multinational; sector cards are not.
+    heroTitle: 'Business Process Management\nfor the Global Enterprise',
+    whatIsEyebrow: 'What business process management delivers at enterprise scale',
+    whatIsTitle: 'Engineering Intelligent,',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'Agile Enterprise Operations.',
+    whatIsPara2: 'Enterprise operations have become structurally complex. A single order-to-cash cycle can cross four functions, three ERP instances, two shared service centers and a dozen handoffs that exist because of an acquisition nobody has unwound. Each step is owned. The end-to-end outcome is not.',
+    whatIsPara3: 'Kangqore designs, transforms and continuously governs the processes that run your business. We combine process engineering, operating model design, workflow and case platforms, automation, analytics and governance into one connected operating model \u2014 then put a named owner, a measured baseline and a control framework behind it.',
+    whatIsPara4: 'From process discovery and reengineering through platform implementation on Appian, Pega, ServiceNow or Camunda, to a Center of Excellence that keeps improving after we leave. Design better processes. Standardize them across markets. Automate intelligently. Operate with measurable control.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Not cycle time and bot uptime -- those belong to intelligent-automation,
+    // and repeating them would say the two services do the same work. These
+    // four are what a group process owner is actually held to: how much of the
+    // estate runs one way, how long a cycle takes, how much is caught by
+    // control rather than by audit, and how fast a change reaches every market.
+    outcomesEyebrow: 'WHAT A GROUP PROCESS OWNER IS MEASURED ON',
+    outcomesHeading: 'Four numbers that decide',
+    outcomesHeadingHighlight: 'whether the program continues.',
     businessMetrics: [
-      { illustrative: true, title: 'Cycle Time',       desc: 'Average reduction in process cycle time after BPM implementation across back-office and operations functions.',   value: '40',  suffix: '%',    metricLabel: 'Cycle Time Reduction', icon: 'Zap'      },
-      { illustrative: true, title: 'Opex Savings',     desc: 'Cost reduction from process optimization, efficiency gains, and automation across managed BPM programs.',         value: '30',  suffix: '%',    metricLabel: 'Cost Savings',         icon: 'Target'   },
-      { illustrative: true, title: 'Assessment Speed', desc: 'Time from engagement kickoff to completed process assessment and optimization roadmap delivered.',                value: '2–4', suffix: ' Wks', metricLabel: 'Time to Roadmap',      icon: 'TrendingUp'},
-      { illustrative: true, title: 'Function Coverage',desc: 'Operational coverage across sales, finance, supply chain, HR, marketing, and customer experience management.',   value: '360', suffix: '°',    metricLabel: 'Business Coverage',    icon: 'Layers'   },
+      { illustrative: true, title: 'Process Standardization', desc: 'Share of a value stream running one standard global design after harmonization, against the number of local variants found at discovery.', value: '75',  suffix: '%',    metricLabel: 'Variants Retired',        icon: 'Layers'   },
+      { illustrative: true, title: 'End-to-End Cycle',        desc: 'Reduction in elapsed time across a full value stream, measured door to door rather than step by step.',                                    value: '45',  suffix: '%',    metricLabel: 'Faster End to End',      icon: 'Zap'      },
+      { illustrative: true, title: 'Control Effectiveness',   desc: 'Process controls evidenced automatically from the workflow rather than assembled by hand ahead of an audit.',                              value: '90',  suffix: '%',    metricLabel: 'Controls Evidenced',     icon: 'ShieldCheck'},
+      { illustrative: true, title: 'Change Lead Time',        desc: 'Typical time to take an approved process change live across every market on a governed platform, rather than market by market.',            value: '2\u20134', suffix: ' Wks', metricLabel: 'Change to Every Market', icon: 'Globe'    },
     ],
+
+    heroBadge: 'Reengineered. Standardized. Governed.',
+    heroStripItems: [
+      'Process Reengineering', 'Operating Model Design', 'Global Process Ownership', 'BPM Platforms',
+      'Value Stream Transformation', 'Process Controls', 'Performance Management', 'Center of Excellence',
+    ],
+    hidePartnershipModel: true,
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // Seven areas, written as an enterprise capability catalog: each one is
+    // something a group process officer can put on a procurement schedule.
+    //
+    // The supplied taxonomy had five, of which "Intelligent Automation & AI"
+    // was 7 of 13 items already published on /services/intelligent-automation.
+    // That area is now "Automation Inside the Managed Process" -- scoped to
+    // what BPM owns, orchestration and straight-through design, with the bots,
+    // IDP and cognitive depth cross-linked rather than restated. Advisory is
+    // narrowed to the BPM-specific half: value-stream analysis, maturity,
+    // platform evaluation, business case. Process mining is named once and
+    // linked, not rebuilt.
+    //
+    // Areas 03 and 06 are the multinational-specific territory: global process
+    // ownership, multi-country harmonization, statutory local variants, and
+    // controls evidenced from the workflow. Neither appears anywhere else on
+    // the site, and neither appears on HCLTech's BPM page.
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // The platform question is the one a BPM buyer arrives with, and HCLTech
+    // answer it with two named accelerators (Advantage Pega, Advantage
+    // Appian). We do not have accelerators, so the honest differentiator is
+    // telling them what each platform is actually good at and when we would
+    // argue against it.
+    toolsStack: {
+      eyebrow: 'THE PLATFORM LANDSCAPE',
+      title: 'The platforms,',
+      titleHighlight: 'and what each is actually for.',
+      subtitle: 'Platform choice is mostly settled by what the group already licenses and by whether the work is a long-running case or a routed transaction. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Network',
+          title: 'Enterprise case and BPM suites',
+          managed: 'Pega, Appian',
+          selfHosted: 'Appian where case management is the core',
+          desc: 'Where work is a long-running case that branches, waits and gets reassigned across weeks. Heavy, expensive and correct for exactly that. Wrong for a routed form, where the licensing alone will end the business case.',
+        },
+        {
+          icon: 'Settings',
+          title: 'Enterprise service management',
+          managed: 'ServiceNow',
+          selfHosted: 'Strongest where IT already runs on it',
+          desc: 'Where service management already exists and the ambition is to extend the same workflow discipline beyond IT into HR, finance and facilities. Existing entitlements usually decide this before any evaluation begins.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Developer-first workflow engines',
+          managed: 'Camunda',
+          selfHosted: 'Camunda self-hosted where process is the product',
+          desc: 'Where the process is the product and engineering owns it. BPMN and DMN as executable artifacts under version control. Requires an engineering team; it will not be maintained by a business analyst.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Process and task mining',
+          managed: 'Celonis, Signavio, UiPath Process Mining',
+          selfHosted: 'Before the redesign, and again after it',
+          desc: 'Used for conformance as much as discovery: proving the standard design survived contact with a market. Most programs mine once, at the start, and never learn whether the redesign held.',
+        },
+        {
+          icon: 'Zap',
+          title: 'Automation called from the process',
+          managed: 'UiPath, Automation Anywhere, Power Automate',
+          selfHosted: 'Engineered on our automation services',
+          desc: 'Bots invoked as steps inside a governed process rather than as a parallel estate. The depth sits on our intelligent automation and RPA services; what belongs here is where they are called and who governs them.',
+        },
+        {
+          icon: 'Globe',
+          title: 'Integration and core systems',
+          managed: 'MuleSoft, Azure Integration Services, Kafka',
+          selfHosted: 'Native connectors before middleware',
+          desc: 'How the process reaches SAP, Oracle, Workday and Salesforce. Integration access is the critical path on most BPM programs and almost never appears in the plan until it slips.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve BPM questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the questions a group process officer and a CIO open
+    // with, and four of them are ones a systems integrator would rather not be
+    // asked: what it costs, whether BPM is obsolete, whether the platform is
+    // oversized, and whether standardization is even the right answer.
+    customFAQs: [
+      {
+        q: 'What is the difference between BPM, DPA, RPA and intelligent automation?',
+        a: 'They are four different purchases and confusing them is expensive.\n\nBusiness process management is the discipline: understanding how work is organized, redesigning it, standardizing it across markets, governing it and measuring it. It is mostly an operating model question and only partly a technology one.\n\nDigital process automation is what you need when a process has no application at all \u2014 the work moves through email and a spreadsheet because nobody ever built the system it should run in. Robotic process automation automates the keystrokes a person performs inside existing applications. Intelligent automation adds AI and document understanding on top of that.\n\nMost multinationals need all four, layered, and in that order. Automating a process nobody has redesigned makes an unmanaged process faster \u2014 which is why programs that start with bots so often arrive back at this page about eighteen months later.',
+      },
+      {
+        q: 'Is BPM not an obsolete category by now?',
+        a: 'The tooling generation from the 2000s is largely obsolete. The discipline is not, and the naming has moved on rather than the need.\n\nWhat has genuinely changed: heavyweight suites that took two years to implement have been displaced by lighter workflow engines and low-code platforms; process mining replaced the six-week interview-based discovery exercise; and AI now handles work that previously forced a person into the middle of the flow.\n\nWhat has not changed: a multinational still runs on cross-functional processes that no single function owns, still cannot evidence its controls without effort, and still discovers at audit that one market has been doing it differently for four years. That is the problem this service exists for, whatever the category is called next.',
+      },
+      {
+        q: 'We have forty-three variants of one process across our markets. Where do we start?',
+        a: 'By finding out which of the forty-three are statutory and which are habit. In our experience the split is rarely what the local teams state \u2014 in either direction.\n\nProcess mining across entities gives you the actual variant count rather than the reported one, and it is usually higher. Each variant then gets assessed against one question: which regulation, contract or genuine market condition requires this deviation? Variants with an answer go into a maintained register with a named owner and a review date. Variants without one are candidates for retirement.\n\nWhat does not work is a global design imposed without that assessment. It produces visible compliance and invisible workarounds, and you find out at the next audit. The register is the deliverable that matters more than the target design.',
+      },
+      {
+        q: 'How long before the first value stream is live?',
+        a: 'Discovery and target design on a single value stream is six to ten weeks. Platform implementation for the first market is a further twelve to twenty, depending on how many core systems it has to integrate with and how long your security review takes.\n\nSubsequent markets are much faster \u2014 typically four to eight weeks each \u2014 provided the variant assessment was done properly the first time. If it was not, market two takes as long as market one and the program quietly becomes a series of local projects.\n\nWhat moves these numbers is almost never the build. It is integration access to core systems, and the availability of the people who understand the current process well enough to say whether a design is workable.',
+      },
+      {
+        q: 'Do we need a BPM platform, or can this run on what we already have?',
+        a: 'Frequently you already have one and are not using it. ServiceNow estates often carry workflow entitlements well beyond IT; Microsoft estates carry Power Platform; SAP and Oracle both ship workflow capability that goes unused because nobody configured it.\n\nWe would rather build on entitlements you already hold than sell you a platform decision. Where a dedicated BPM suite genuinely earns its cost is long-running case work \u2014 cases that stay open for weeks, branch, get reassigned and carry a regulatory clock. For a routed approval, a suite is oversized and the licensing will end the business case within two years.\n\nWe are platform-agnostic in the literal sense: we hold no reseller margin on any of these, so a recommendation to use what you have costs us nothing.',
+      },
+      {
+        q: 'How do you handle processes that must differ by country for legal reasons?',
+        a: 'By treating the variant as a first-class part of the design rather than as a failure of standardization.\n\nThe global model defines the standard path. Each jurisdiction that needs to deviate gets a registered variant carrying four things: the specific regulation or statutory instrument requiring it, the process steps that differ, a named owner in that market, and a review date. The variant lives in the same platform, under the same controls, and appears in the same reporting.\n\nThis matters more than it sounds. Undocumented local deviation is the single most common reason a global process program is judged a failure two years later \u2014 not because the deviation was wrong, but because nobody could tell which deviations were legitimate.',
+      },
+      {
+        q: 'What does a BPM engagement actually cost?',
+        a: 'We are pre-launch and do not publish rate cards, so treat this as shape rather than a quote.\n\nAdvisory and assessment on one value stream is a fixed-price engagement measured in weeks. Reengineering and target operating model design is priced against the scope discovery produced. Platform implementation is priced against the design, which is why we prefer not to quote a build before design exists \u2014 the estimate would be a guess and both sides would discover that in month four.\n\nPlatform licensing is a separate line and goes to the vendor. Where a platform you have already paid for can carry the work, we will say so \u2014 unused workflow entitlements inside a ServiceNow or SAP estate are common and rarely surfaced by anyone with a license quota. The one commitment we make on price is that the assessment is scoped so you can stop after it, own the output, and take the build elsewhere or nowhere.',
+      },
+      {
+        q: 'Who owns the process after you leave?',
+        a: 'A named person inside your organization, and if that person does not exist the engagement has failed regardless of what was delivered.\n\nGlobal process ownership is a role with a mandate, not a title added to someone\u2019s existing job. The owner needs the authority to change how another function works, a measured baseline to argue from, and a governance forum that will hear the argument. We design that structure during the operating model work, not at handover.\n\nOn the technology side: platform configuration documented and version-controlled, decision logic held in rules a business analyst can read, runbooks covering the failure modes we actually hit, and your practitioners trained during delivery rather than in a week at the end. Our managed operations option exists and is priced separately \u2014 what we will not do is leave you where continuing to pay us is the only way the process keeps running.',
+      },
+      {
+        q: 'How is this evidenced for auditors and regulators?',
+        a: 'Per case, automatically, from the workflow itself.\n\nA governed process produces a per-case record that survives questioning: the sequence of steps taken, the version of the rule set in force at the time, the approvals granted and by whom under which delegation, and the supporting documents as they stood at that moment rather than as amended since. Segregation of duties is enforced by the platform rather than by policy. Control testing samples from live data rather than from a reconstruction.\n\nCompare that with assembling evidence by hand in the fortnight before an audit, from screenshots and people\u2019s recollection of what normally happens. Most groups only discover how weak that is during an actual investigation, and by then the finding is written.',
+      },
+      {
+        q: 'Is standardization always the right answer?',
+        a: 'No, and a consultancy that says otherwise is selling you something.\n\nStandardization pays where volume is high, the work is genuinely comparable across markets, and the cost of variance is real \u2014 finance and procurement almost always qualify. It pays much less where local market conditions genuinely differ, where volumes are low, or where the process is a competitive differentiator rather than a cost of doing business. Forcing a global standard onto a sales process that works differently in Japan because the market works differently in Japan destroys value.\n\nThe assessment should tell you which of your value streams are which. If it comes back recommending standardization everywhere, it was not an assessment.',
+      },
+      {
+        q: 'How does AI change this, realistically?',
+        a: 'It removes work that previously forced a person into the middle of the flow, and it does not remove the need for the process to be designed.\n\nThe genuine gains sit in the judgment-shaped work rules could never encode: interpreting a supplier\u2019s non-standard invoice, weighing whether a deviation is material, summarizing four systems into the paragraph an approver needs. That is where straight-through rates actually move.\n\nWhat AI does not replace is the case record, the control framework, the escalation path or the owner. Introduced into a process that has those, it works. Introduced into a process that lives across four mailboxes, it produces fast decisions nobody can evidence \u2014 which in a regulated value stream is worse than the slow version.',
+      },
+      {
+        q: 'We tried BPM five years ago and it did not stick. Why would this be different?',
+        a: 'Usually it did not stick for one of three reasons, and it is worth establishing which before starting again.\n\nNo owner: three processes were improved, the program closed, and no role existed to carry the next thirty. No baseline: benefits were asserted rather than measured, so when the next budget round came there was nothing to defend. Or the platform was oversized: a two-year suite implementation consumed the appetite before any process reached production.\n\nAll three are avoidable and none of them is a technology problem. That is why our first engagement is an assessment you can stop after, why baselines are captured while the process is still manual, and why we will recommend the platform you already license when it will do the job.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // Named the way a procurement schedule names them. HCLTech's four pillars
+    // are advisory, modernization, platform implementation and CoE; a buyer
+    // comparing the two pages should find the same four words here, plus the
+    // two they do not offer -- global standardization and managed operations.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five engagement models,',
+    engagementHeadingHighlight: 'one accountable owner.',
+    engagementLede: 'Almost nobody starts with an enterprise program. They start with one value stream the board keeps asking about, and the program follows if the first one holds across two markets.',
+    servicePackages: [
+      {
+        name: 'BPM Advisory & Assessment',
+        description: 'Fact-finding before commitment. What your value stream actually costs, how many variants of it exist, where your elapsed time goes, and whether the platform under discussion is larger than your problem.',
+        deliverables: [
+          'Value stream map with measured cycle time and cost baseline',
+          'Process mining output and variant register across markets',
+          'Process maturity assessment against sector practice',
+          'BPM platform evaluation with a scored recommendation',
+          'Business case, investment model and sequenced transformation waves',
+        ],
+      },
+      {
+        name: 'Process Reengineering & Operating Model',
+        description: 'The redesign itself. Target operating model, global standard design, the variant register that says which local deviations are statutory and which are habit, and the transition plan to get there.',
+        deliverables: [
+          'Target operating model with roles, ownership and RACI',
+          'Global standard process design in BPMN, with DMN decision models',
+          'Statutory variant register, each entry carrying its regulation and owner',
+          'Exception paths and segregation of duties designed up front',
+          'Transition, cutover and change management plan by market',
+        ],
+      },
+      {
+        name: 'BPM Platform Implementation',
+        description: 'Building it on Appian, Pega, ServiceNow, Camunda or the platform you already license. Includes the integration work to the core systems that are not being replaced, which is usually the critical path.',
+        deliverables: [
+          'Platform architecture, environments and release management',
+          'Workflow, case and business rules implementation',
+          'ERP, CRM and core system integration by API or event',
+          'Test strategy, UAT management and performance validation',
+          'Production transition, hypercare and documented runbooks',
+        ],
+      },
+      {
+        name: 'Global Standardization Rollout',
+        description: 'Taking a proven design to every market you operate in. This is the phase that decides whether a transformation program produced one process or a new set of local ones, and it is where most of them quietly fail.',
+        deliverables: [
+          'Regional rollout sequencing with entity-level readiness',
+          'Local statutory variant assessment per jurisdiction',
+          'Master data and cross-entity alignment',
+          'Adoption and conformance measurement by market',
+          'Post-merger process integration where entities were acquired',
+        ],
+      },
+      {
+        name: 'CoE & Managed BPM Operations',
+        description: 'The capability that carries the next thirty processes, and the option to have us run it. For groups that want an operating capability rather than a sequence of consulting engagements you have to keep buying.',
+        deliverables: [
+          'Center of Excellence design, charter and operating model',
+          'Intake, prioritization and process portfolio management',
+          'Reusable asset library, standards and design patterns',
+          'Practitioner training, certification and CoE maturity roadmap',
+          'Managed process operations and platform support under SLA',
+        ],
+      },
+    ],
+
+    // ── Enterprise value streams ────────────────────────────────────────────
+    // This slot renders the industry grid on every other service. Here it
+    // carries value streams instead, which is a deliberate departure.
+    //
+    // A multinational does not fund "BPM for retail". It funds Order-to-Cash,
+    // or Record-to-Report, or Hire-to-Retire, because that is how the work is
+    // scoped, owned and reported. Procure-to-Pay is the unit of procurement on
+    // this service in a way that a sector card never is, and none of these
+    // terms appears anywhere else on the site.
+    //
+    // Each card states the structural reason that value stream resists
+    // standardization in a group with many entities, which is the question a
+    // group process officer is actually trying to answer.
+    industryHeading: 'Business Process Management',
+    industryHeadingHighlight: 'by value stream.',
+    industryLede: 'Six enterprise value streams, and the structural reason each one resists standardization once your group runs more than one entity, ledger or jurisdiction.',
+    industryUseCases: [
+      {
+        industry: 'Finance & Accounting',
+        headline: 'Statutory reporting differs by jurisdiction, so a single global design has to carry legitimate local variants without becoming forty-three separate processes.',
+        items: ['Procure-to-Pay and invoice exception handling', 'Record-to-Report and the financial close', 'Intercompany reconciliation and statutory reporting'],
+      },
+      {
+        industry: 'Customer Operations',
+        headline: 'The customer experiences elapsed time end to end, while every internal measure stops at a functional boundary where cases wait longest.',
+        items: ['Customer onboarding and KYC journeys', 'Service request and complaint case management', 'Claims intake, assessment and settlement'],
+      },
+      {
+        industry: 'Supply Chain & Procurement',
+        headline: 'Source-to-Pay crosses more third parties than internal functions, and the process has to hold when a supplier follows none of your conventions.',
+        items: ['Source-to-Pay and supplier onboarding', 'Purchase requisition and approval hierarchies', 'Order management and fulfillment exceptions'],
+      },
+      {
+        industry: 'Human Resources',
+        headline: 'Hire-to-Retire touches employment law in every country you operate in, which makes it the value stream where local variance is most often justified.',
+        items: ['Hire-to-Retire and onboarding across entities', 'Workforce administration and payroll inputs', 'Employee case management and service delivery'],
+      },
+      {
+        industry: 'Sales & Revenue Operations',
+        headline: 'Lead-to-Cash spans CRM, CPQ, contracting and billing, each bought separately, each convinced it owns the customer record.',
+        items: ['Lead-to-Cash and Quote-to-Order orchestration', 'Contract lifecycle and approval workflows', 'Revenue recognition and billing exceptions'],
+      },
+      {
+        industry: 'IT & Enterprise Services',
+        headline: 'Service management processes are already governed, which makes them the least painful place to prove a standard design holds across markets.',
+        items: ['Incident, request and change management', 'Enterprise service management beyond IT', 'Cross-functional workflow orchestration'],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Not "before us versus after us". Both columns describe programs run by
+    // competent people; they differ on whether anybody owns the end-to-end
+    // outcome. That is the actual failure mode in a multinational, and it is a
+    // governance failure rather than a technology one.
+    comparisonTable: {
+      eyebrow: 'WHERE ENTERPRISE BPM PROGRAMS STALL',
+      heading: 'Every step is owned. The outcome is not.',
+      lede: 'Both columns describe a process improvement program staffed by capable people. They differ on what you are left with twelve months after the consultants leave.',
+      beforeLabel: 'BPM AS A PROJECT PORTFOLIO',
+      afterLabel: 'BPM AS AN OPERATING CAPABILITY',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'PROJECTS',
+      afterShort: 'CAPABILITY',
+      rows: [
+        {
+          dimension: 'Who owns the end-to-end outcome',
+          before: 'Each function owns its step and can show that its step is fast. Nobody is accountable for the elapsed time a customer or a regulator actually experiences.',
+          after: 'A named global process owner for the whole value stream, with the mandate to change how another function works and a measured baseline to argue from.',
+        },
+        {
+          dimension: 'What happens across markets',
+          before: 'One design, then local exceptions granted one at a time until forty-three variants exist and nobody can say which are statutory and which are habit.',
+          after: 'A global standard with a documented variant register: each local deviation carries the regulation that requires it, an owner and a review date.',
+        },
+        {
+          dimension: 'How improvement is measured',
+          before: 'Benefits stated in a business case, signed off, and never measured again because no baseline was captured while the process was still manual.',
+          after: 'Cycle time, cost per transaction, straight-through rate and control effectiveness, baselined at discovery and reported against continuously.',
+        },
+        {
+          dimension: 'When a control is tested',
+          before: 'Evidence assembled by hand in the fortnight before the audit, from screenshots, spreadsheets and people\u2019s recollection of what normally happens.',
+          after: 'Controls evidenced automatically from the workflow, per case, with the rule version that fired and every point a person overrode it.',
+        },
+        {
+          dimension: 'When the process needs to change',
+          before: 'A change request per market, each with its own release cycle, so the same policy change lands over three quarters and never fully lands at all.',
+          after: 'Changed once against the global design and released through one governed pipeline, with adoption measured by market rather than assumed.',
+        },
+        {
+          dimension: 'What exists after go-live',
+          before: 'A closed program, a slide deck, and three improved processes with no route for the next thirty.',
+          after: 'A Center of Excellence with an intake process, a reusable asset library, trained practitioners and a funded portfolio.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Compressed from the seven-stage source lifecycle to five, because the
+    // template renders architectureNodes as a four-column grid unless the array
+    // is exactly five, and seven leaves three orphans on the last row. Analyze
+    // folds into Discover, Orchestrate into Transform. Discover, Design,
+    // Transform, Govern and Optimize survive as named stages.
+    architectureEyebrow: 'THE BPM LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Discover to Optimize.',
+    architectureLede: 'Five stages, run as a continuous capability rather than a program with an end date. Most engagements start at Discover and stop being sequential once the first value stream is live.',
+    architectureNodes: [
+      {
+        title: 'Discover',
+        icon: 'Radar',
+        description: 'Establish how your enterprise actually operates, from your event logs rather than from your process manual. In a multinational the first useful output is usually the count of variants nobody knew existed.',
+        features: [
+          'Value stream mapping end to end',
+          'Process mining across systems and markets',
+          'Variant and complexity analysis',
+          'Cost, effort and cycle-time baselining',
+          'Control and compliance gap assessment',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Redesign around the outcome rather than around your org chart, then decide what is global standard and what is a defensible local variant. That distinction is the whole program in a multinational.',
+        features: [
+          'Target operating model and role design',
+          'Global standard process design',
+          'Statutory variant register with owners',
+          'Decision and rules modeling',
+          'Target metrics agreed before build',
+        ],
+      },
+      {
+        title: 'Transform',
+        icon: 'Zap',
+        description: 'Build it on a platform that can be governed \u2014 Appian, Pega, ServiceNow, Camunda or whatever you already license \u2014 and integrate it to the core systems you are keeping.',
+        features: [
+          'BPM platform implementation',
+          'Workflow, case and decision build',
+          'ERP, CRM and core system integration',
+          'Automation and straight-through paths',
+          'Market-by-market rollout and cutover',
+        ],
+      },
+      {
+        title: 'Govern',
+        icon: 'ShieldCheck',
+        description: 'Put ownership, controls and evidence around it. A process you cannot evidence per case is a finding waiting to be written, however well it performs.',
+        features: [
+          'Global process owner accountability',
+          'Control design, testing and evidence',
+          'Segregation of duties and audit trail',
+          'KPI framework and operational reporting',
+          'Conformance monitoring against the design',
+        ],
+      },
+      {
+        title: 'Optimize',
+        icon: 'TrendingUp',
+        description: 'Run it as a capability. Your standardized process drifts back toward local variance the moment nobody is measuring, and it does so faster than the original divergence took.',
+        features: [
+          'Continuous improvement backlog and intake',
+          'Benefit realization against the baseline',
+          'Adoption and conformance by market',
+          'Reusable asset library and standards',
+          'CoE maturity advancement',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'BUSINESS PROCESS MANAGEMENT SERVICES',
+    capabilitiesSectionTitle: 'Business Process Management',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Understand how your enterprise actually runs, redesign it around the outcome rather than your org chart, standardize it across your markets, run it on a platform you can govern, and keep improving it after we leave.',
+    capabilityAreas: [
+      {
+        title: 'Process Advisory & Process Intelligence',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Establishing what is true before anything is redesigned. Your process document states an intent; your event log states what happened. Transformation budgets should be set against the second one.',
+        items: [
+          'BPM Strategy & Transformation Roadmap',
+          'Value Stream Analysis',
+          'End-to-End Process Discovery',
+          'Process Mining & Conformance',
+          'Current-State & Target-State Assessment',
+          'Process Maturity Assessment',
+          'BPMN & DMN Process Modeling',
+          'Process Cost & Effort Baselining',
+          'Variant & Complexity Analysis',
+          'Benchmarking Against Sector Practice',
+          'BPM Platform Evaluation & Selection',
+          'Business Case & Investment Modeling',
+          'Transformation Sequencing & Waves',
+        ],
+      },
+      {
+        title: 'Process Reengineering & Operating Model Design',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The core discipline. Redesigning how your work is organized rather than making the existing arrangement faster \u2014 which is the difference between transformation and automation of waste.',
+        items: [
+          'End-to-End Process Redesign',
+          'Business Process Reengineering',
+          'Target Operating Model Design',
+          'Organizational & Role Design',
+          'Shared Services & GBS Design',
+          'Onshore, Offshore & Nearshore Split',
+          'Handoff Elimination & Consolidation',
+          'Zero-Touch & Low-Touch Process Design',
+          'Straight-Through Processing Design',
+          'Customer & Employee Journey Redesign',
+          'Exception Path Design',
+          'Segregation of Duties by Design',
+          'Transition & Cutover Planning',
+        ],
+      },
+      {
+        title: 'Global Process Standardization & Ownership',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'One design, many markets, and a named person accountable for it. The hardest work in a multinational is not building the process, it is retiring the forty-three local variants of it without breaking a statutory obligation you did not know you had.',
+        items: [
+          'Global Process Model & Taxonomy',
+          'Global Process Owner Operating Model',
+          'Multi-Country Process Harmonization',
+          'Local Statutory & Regulatory Variants',
+          'Variant Rationalization & Retirement',
+          'Enterprise Process Standards & Conventions',
+          'Process Hierarchy & Decomposition',
+          'Cross-Entity Data & Master Data Alignment',
+          'Language & Locale Handling',
+          'Regional Rollout Sequencing',
+          'Post-Merger Process Integration',
+          'Divestiture & Carve-Out Process Separation',
+          'Adoption Measurement by Market',
+        ],
+      },
+      {
+        title: 'BPM Platform Implementation & Modernization',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Turning a target design into something that runs. Platform-agnostic by intent: the estate you already license usually decides this before any technical evaluation does, and arguing with that rarely earns back the delay.',
+        items: [
+          'BPM Platform Strategy & Architecture',
+          'Platform Selection & Vendor Evaluation',
+          'Enterprise BPM Implementation',
+          'Workflow & Case Platform Build',
+          'Business Rules & Decision Implementation',
+          'Legacy BPM Modernization',
+          'Platform Migration & Version Upgrade',
+          'ERP, CRM & Core System Integration',
+          'API, Event & Microservices Integration',
+          'Cloud & Hybrid BPM Deployment',
+          'Performance & Scalability Engineering',
+          'Test Strategy & UAT Management',
+          'Production Transition & Hypercare',
+        ],
+      },
+      {
+        title: 'Automation Inside the Managed Process',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Automation scoped to what your governed process needs: orchestration, decisions, and the straight-through path. The bots, document intelligence and cognitive depth are engineered on our intelligent automation and RPA services and called from here.',
+        items: [
+          'End-to-End Process Orchestration',
+          'Automated Decisioning & Rules Execution',
+          'Straight-Through Processing Enablement',
+          'Automation Opportunity Assessment',
+          'Bot & Digital Worker Invocation',
+          'Document Intelligence in Workflow',
+          'Intelligent Routing & Work Allocation',
+          'Human-in-the-Loop Review Design',
+          'Exception & Escalation Automation',
+          'Automation Governance & Guardrails',
+          'GenAI Assistance for Process Workers',
+          'Automation Benefit Attribution',
+        ],
+      },
+      {
+        title: 'Process Performance, Governance & Controls',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What makes your process defensible to a regulator, an internal auditor and your board \u2014 measured continuously rather than assembled the fortnight before an audit.',
+        items: [
+          'Process KPI & Metric Framework',
+          'End-to-End Cycle Time Measurement',
+          'Operational Dashboards & Reporting',
+          'SLA & OLA Management',
+          'Process Control Design & Testing',
+          'Automated Control Evidence Capture',
+          'SOX & Financial Process Controls',
+          'Segregation of Duties Monitoring',
+          'Audit Trail & Traceability',
+          'Regulatory & Compliance Alignment',
+          'Operational Risk Assessment',
+          'Process Quality Management',
+          'Conformance Monitoring Against Design',
+        ],
+      },
+      {
+        title: 'Center of Excellence & Continuous Improvement',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The capability that outlives the program. Most BPM investment fails here rather than in delivery: your first three processes succeed, and nothing exists to carry the next thirty.',
+        items: [
+          'BPM Center of Excellence Design & Setup',
+          'CoE Operating Model & Charter',
+          'Process Ownership & RACI Models',
+          'Intake, Prioritization & Demand Management',
+          'Reusable Process Asset Library',
+          'Standards, Templates & Design Patterns',
+          'Lean & Six Sigma Integration',
+          'Continuous Improvement Programs',
+          'Practitioner Training & Certification',
+          'Change Management & Adoption',
+          'Process Portfolio Management',
+          'CoE Maturity Assessment & Advancement',
+          'Managed BPM Operations',
+        ],
+      },
+    ],
+
+    midCta: 'Every step has an owner. The end-to-end outcome does not.',
+    midCtaLabel: 'Map One Value Stream',
+    closingCta: {
+      title: 'One value stream,',
+      highlight: 'measured end to end.',
+      body: 'Pick the one your board asks about. In 30 minutes we will tell you how many variants of it exist across your markets, where the elapsed time actually goes, and what one standard design would be worth \u2014 before any platform decision is made.',
+      proofLabel: 'From first call to a costed target operating model',
+    },
   },
 
   'intelligent-automation': {

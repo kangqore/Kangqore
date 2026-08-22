@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T05:56:46.318Z",
+  "generatedAt": "2026-08-22T07:16:16.379Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -601,9 +601,55 @@
       "name": "Business Process Management",
       "department": "Cognition",
       "description": "Enterprise BPM — process modeling, workflow automation, process orchestration, business rules, and analytics for end-to-end process excellence.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "capabilities": [
+        "Process Advisory & Process Intelligence",
+        "Process Reengineering & Operating Model Design",
+        "Global Process Standardization & Ownership",
+        "BPM Platform Implementation & Modernization",
+        "Automation Inside the Managed Process",
+        "Process Performance, Governance & Controls",
+        "Center of Excellence & Continuous Improvement"
+      ],
+      "faqs": [
+        {
+          "q": "What is the difference between BPM, DPA, RPA and intelligent automation?",
+          "a": "They are four different purchases and confusing them is expensive. Business process management is the discipline: understanding how work is organized, redesigning it, standardizing it across markets, governing it and measuring it. It is mostly an operating model question and only partly a technology one. Digital process automation is what you need when a process has no application at all — the work moves through email and a spreadsheet because nobody ever built the system it should run in. Robotic process automation automates the keystrokes a person performs inside existing applications. Intelligent automation adds AI and document understanding on top of that. Most multinationals need all four, layered, and in that order. Automating a process nobody has redesigned makes an unmanaged process faster — which is why programs that start with bots so often arrive back at this page about eighteen months later."
+        },
+        {
+          "q": "Is BPM not an obsolete category by now?",
+          "a": "The tooling generation from the 2000s is largely obsolete. The discipline is not, and the naming has moved on rather than the need. What has genuinely changed: heavyweight suites that took two years to implement have been displaced by lighter workflow engines and low-code platforms; process mining replaced the six-week interview-based discovery exercise; and AI now handles work that previously forced a person into the middle of the flow. What has not changed: a multinational still runs on cross-functional processes that no single function owns, still cannot evidence its controls without effort, and still discovers at audit that one market has been doing it differently for four years. That is the problem this service exists for, whatever the category is called next."
+        },
+        {
+          "q": "We have forty-three variants of one process across our markets. Where do we start?",
+          "a": "By finding out which of the forty-three are statutory and which are habit. In our experience the split is rarely what the local teams state — in either direction. Process mining across entities gives you the actual variant count rather than the reported one, and it is usually higher. Each variant then gets assessed against one question: which regulation, contract or genuine market condition requires this deviation? Variants with an answer go into a maintained register with a named owner and a review date. Variants without one are candidates for retirement. What does not work is a global design imposed without that assessment. It produces visible compliance and invisible workarounds, and you find out at the next audit. The register is the deliverable that matters more than the target design."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Enterprise case and BPM suites",
+          "detail": "Where work is a long-running case that branches, waits and gets reassigned across weeks. Heavy, expensive and correct for exactly that. Wrong for a routed form, where the licensing alone will end the business case."
+        },
+        {
+          "rule": "Enterprise service management",
+          "detail": "Where service management already exists and the ambition is to extend the same workflow discipline beyond IT into HR, finance and facilities. Existing entitlements usually decide this before any evaluation begins."
+        },
+        {
+          "rule": "Developer-first workflow engines",
+          "detail": "Where the process is the product and engineering owns it. BPMN and DMN as executable artifacts under version control. Requires an engineering team; it will not be maintained by a business analyst."
+        },
+        {
+          "rule": "Process and task mining",
+          "detail": "Used for conformance as much as discovery: proving the standard design survived contact with a market. Most programs mine once, at the start, and never learn whether the redesign held."
+        },
+        {
+          "rule": "Automation called from the process",
+          "detail": "Bots invoked as steps inside a governed process rather than as a parallel estate. The depth sits on our intelligent automation and RPA services; what belongs here is where they are called and who governs them."
+        },
+        {
+          "rule": "Integration and core systems",
+          "detail": "How the process reaches SAP, Oracle, Workday and Salesforce. Integration access is the critical path on most BPM programs and almost never appears in the plan until it slips."
+        }
+      ],
       "dataHandling": []
     },
     {
