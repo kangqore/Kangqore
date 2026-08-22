@@ -5223,23 +5223,590 @@ export const servicesData = {
     slug: 'robotic-process-automation',
     name: 'Robotic Process Automation (RPA)',
     departmentSlug: 'cognition',
-    bannerBrand: 'eQORE™',
-    shortDescription: 'Deploy software robots for repetitive tasks',
-    fullDescription: 'Implement RPA solutions to automate rule-based, repetitive business processes.',
-    keyFeatures: ['Process assessment', 'Bot development', 'Attended/unattended automation', 'Bot monitoring', 'CoE setup'],
-    relatedServiceSlugs: ['digital-process-automation', 'intelligent-automation'],
+    bannerBrand: 'eQORE\u2122',
+    shortDescription: 'Automating the applications that were never given an API',
+    fullDescription: 'Build, govern and maintain software robots that drive enterprise applications through the interface, and keep working when that interface changes.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Bot engineering', 'Attended & unattended', 'Bot resilience', 'Orchestrator operations', 'Estate rationalization'],
+    relatedServiceSlugs: ['intelligent-automation', 'digital-process-automation', 'business-process-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1563207153-f403bf289096?w=800&q=80',
-    whatIsTitle: 'RPA That Deploys Bots',
-    whatIsTitleLine2: 'That Operate Without',
-    whatIsHighlight: 'Supervision.',
-    whatIsPara2: 'Kangqore builds enterprise RPA programs from process assessment through Center of Excellence establishment — deploying screen automation and cognitive bots that execute high-volume, rules-based workflows with accuracy targets agreed per process.',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // Last of the four automation services still on the Cognition parity
+    // default: 2,134 bytes of data, six generic FAQs, a crawler seeing 6.5 per
+    // cent of the page, and the shared agentic SVG above the fold.
+    //
+    // The other three have taken most of the ground. /services/bpm owns the
+    // discipline -- reengineering, operating model, global process ownership,
+    // BPM platforms, CoE. /services/dpa owns low-code applications, digital
+    // forms and case management. /services/intelligent-automation owns the AI
+    // layer and carries "RPA & Digital Workforce" as one area of seven.
+    //
+    // So this page is that one area taken to depth, and the wedge is a single
+    // fact stated plainly: RPA is what you use when there is no API. Everything
+    // difficult about it follows from that. A bot drives the interface, so it
+    // breaks when the interface changes; it signs in as somebody, so it needs
+    // an identity and a credential; it holds a licensed runtime, so idle
+    // capacity is money. None of those problems exist for the other three
+    // services, and none of them appears anywhere else on the site.
+    //
+    // Saying that honestly means saying the unhelpful half too: where an API
+    // exists, integration beats a bot on every measure that matters. A page
+    // that will not say so is selling licenses rather than engineering.
+    heroTitle: 'Robotic Process Automation\nfor Systems Without an API',
+    whatIsEyebrow: 'What robotic process automation is actually for',
+    whatIsTitle: 'RPA Is What You Use',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'When There Is No API.',
+    whatIsPara2: 'Robotic process automation drives enterprise applications the way a person does \u2014 through the interface, keystroke by keystroke. That is its entire reason to exist. Where a system exposes an API, integration is faster, cheaper and more durable, and we will tell you so. Where it does not, and will not, a bot is the only thing that reaches the work.',
+    whatIsPara3: 'Which means every hard problem in RPA descends from one fact: your bot depends on a surface somebody else controls. A vendor ships an update and a selector stops matching. A field moves and a run fails silently at three in the morning. That is not bad engineering, it is the deal you accept in exchange for automating a system that was never opened up.',
+    whatIsPara4: 'Kangqore engineers for that reality rather than around it. Resilient selectors where the application allows them, monitoring that tests the output rather than the exit code, credentials held in a vault under a bot identity your auditor can trace, and an estate small enough to maintain. Bots you can still run in year three, not a pilot that impressed everyone in month two.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Not cost reduction and bot accuracy. Those are the numbers every RPA
+    // vendor publishes, they are unfalsifiable, and cycle time and bot uptime
+    // already belong to /services/intelligent-automation.
+    //
+    // These four are what an automation lead is actually judged on once the
+    // estate is past its first dozen bots: how much of the team is repairing
+    // rather than building, how fast a new one reaches production, whether the
+    // licensed runtime is doing any work, and whether the estate is still
+    // growing after the useful automations were built.
+    outcomesEyebrow: 'WHAT DECIDES WHETHER AN RPA ESTATE SURVIVES',
+    outcomesHeading: 'Four numbers nobody',
+    outcomesHeadingHighlight: 'puts in the business case.',
     businessMetrics: [
-      { illustrative: true, title: 'Operational Cost', desc: 'Average cost reduction achieved across IT and business process automation programs delivered by Kangqore.', value: '40',   suffix: '%',    metricLabel: 'Cost Reduction',   icon: 'Target'    },
-      { illustrative: true, title: 'Bot Accuracy',     desc: 'Execution accuracy across finance, HR, and insurance workflows — virtually eliminating manual processing errors.',  value: '99.8', suffix: '%',    metricLabel: 'Bot Accuracy',     icon: 'Shield'    },
-      { illustrative: true, title: 'POC Delivery',     desc: 'Time from engagement kickoff to a working automation POC — output before you commit to full-scale deployment.',     value: '5–7',  suffix: ' Day', metricLabel: 'POC Speed',        icon: 'Zap'       },
-      { illustrative: true, title: 'Scalability',      desc: 'Enterprise scale multiplier — bots replicated across functions without proportional cost increase.',                value: '10',   suffix: 'x',    metricLabel: 'Bot Scalability',  icon: 'TrendingUp'},
+      { illustrative: true, title: 'Break-Fix Load',      desc: 'Reduction in developer time spent repairing bots after application changes, once resilience patterns and output-level monitoring are in place.', value: '60',  suffix: '%',    metricLabel: 'Less Break-Fix',        icon: 'Shield'    },
+      { illustrative: true, title: 'Time to First Bot',   desc: 'From process selection to one bot running unattended in production, including the security review nobody schedules for.',                    value: '3\u20135', suffix: ' Wks', metricLabel: 'Selection to Production', icon: 'Zap'     },
+      { illustrative: true, title: 'Runtime Utilization', desc: 'Share of licensed unattended runtime actually executing work after queue and schedule redesign, rather than sitting idle overnight.',        value: '75',  suffix: '%',    metricLabel: 'Licensed Runtime Used', icon: 'Activity'  },
+      { illustrative: true, title: 'Estate Reduction',    desc: 'Bots retired or consolidated during rationalization without losing automated coverage \u2014 usually duplicates built by different teams.',      value: '35',  suffix: '%',    metricLabel: 'Bots Retired',          icon: 'Layers'    },
     ],
+
+    heroBadge: 'Built. Governed. Maintained.',
+    heroStripItems: [
+      'Bot Engineering', 'Attended & Unattended', 'Selector Resilience', 'Orchestrator Operations',
+      'Bot Identity & Credentials', 'Mainframe & Citrix', 'Estate Rationalization', 'Platform Migration',
+    ],
+    hidePartnershipModel: true,
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // /services/intelligent-automation carries "RPA & Digital Workforce" as one
+    // area of seven, ten items deep. This page is that area taken to depth, so
+    // the test for every entry below was: does it belong to driving an
+    // interface you do not control? If it belongs to the AI layer it stays on
+    // intelligent automation; if it belongs to redesigning the process it stays
+    // on BPM; if it belongs to giving the process an application it stays on
+    // DPA.
+    //
+    // Areas 02, 03 and 06 exist nowhere else on the site and are the real
+    // discipline: surface automation for systems with no API, keeping bots
+    // alive through somebody else's release cycle, and running an estate whose
+    // licensed runtime costs money whether it works or not. Area 07 is the one
+    // most vendors omit -- retiring bots, including the ones we would have to
+    // admit should never have been built.
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Framed by what each platform is genuinely better at, including where we
+    // would argue against buying one at all. We hold no reseller margin on any
+    // of these, which is the only reason that framing is available to us.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The RPA platforms,',
+      titleHighlight: 'and when not to use one.',
+      subtitle: 'Platform choice is mostly settled by what the group already licenses and by how much of the target estate is legacy surface rather than modern web. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Enterprise RPA platforms',
+          managed: 'UiPath, Automation Anywhere',
+          selfHosted: 'On-premise orchestrator where data cannot leave',
+          desc: 'The default for an estate of any size: mature orchestration, credential handling and a component ecosystem. Heavy and licensed per runtime, which stops making sense below roughly a dozen bots.',
+        },
+        {
+          icon: 'Shield',
+          title: 'Regulated and legacy-heavy estates',
+          managed: 'Blue Prism',
+          selfHosted: 'Strong where audit posture drives the choice',
+          desc: 'Unattended-first by design, with a control model that regulated operations teams tend to find easier to evidence. Weaker where the work is attended or desktop-side.',
+        },
+        {
+          icon: 'Zap',
+          title: 'Microsoft-estate automation',
+          managed: 'Power Automate Desktop',
+          selfHosted: 'Often already licensed and unused',
+          desc: 'Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl.',
+        },
+        {
+          icon: 'Lock',
+          title: 'Credentials and bot identity',
+          managed: 'CyberArk, HashiCorp Vault, platform-native vaults',
+          selfHosted: 'Whatever your PAM team already runs',
+          desc: 'Non-negotiable past the first bot. A password in a config file is the finding that ends an RPA program in a regulated group, and retrofitting a vault across a live estate is far worse than starting with one.',
+        },
+        {
+          icon: 'Eye',
+          title: 'Monitoring and alerting',
+          managed: 'Platform dashboards plus your own observability stack',
+          selfHosted: 'Output checks, not exit codes',
+          desc: 'Platform monitoring reports whether the run finished. It cannot tell you the bot wrote the wrong value into the right field, so the checks that matter are written against the output.',
+        },
+        {
+          icon: 'Network',
+          title: 'The alternative to all of the above',
+          managed: 'REST, SOAP, database, file transfer, iPaaS',
+          selfHosted: 'Always evaluated before a bot is proposed',
+          desc: 'If a usable API exists, integration wins on cost, speed and durability, and we will say so before quoting a build. RPA is the answer when that door is closed \u2014 not the first thing to try.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve RPA questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the ones an automation lead and a CIO actually open
+    // with, and five of them are questions an RPA vendor would rather not be
+    // asked: is RPA dead, why do our bots keep breaking, what does maintenance
+    // really cost, should this be an integration, and what happens when the
+    // savings were never real.
+    customFAQs: [
+      {
+        q: 'Is RPA dead now that we have AI agents?',
+        a: 'No, and the people saying so are usually selling the replacement.\n\nWhat has genuinely changed is the scope. Work that needed a bot because it involved reading a document or making a judgment call is now better served by document intelligence or a model. That is a real reduction in RPA\u2019s territory and we would not pretend otherwise.\n\nWhat has not changed is the underlying condition. A mainframe with no API is exactly as closed to an AI agent as it is to a bot \u2014 an agent that needs to use that system still has to drive the interface, and at that point it is doing RPA with a language model attached. The fragility does not disappear, it just gets a better narrator.\n\nSo the honest position: RPA\u2019s share of new automation is shrinking, the estates already built are not going anywhere, and the interesting work has moved from building more bots to running the ones you have properly.',
+      },
+      {
+        q: 'Why do our bots keep breaking?',
+        a: 'Because they depend on a surface somebody else controls, and that is the deal RPA makes rather than a defect in your build.\n\nThe usual causes, in order: an application update moved or renamed an element; the automation used a brittle locator such as a screen coordinate or a generated identifier; the environment drifted so the bot met a different screen resolution, browser version or session state; or a data case appeared that the original rules never covered.\n\nWhat reduces it is unglamorous. Locators anchored to something stable rather than to position. Tests that run against a new application build before the bot does. Awareness of your vendors\u2019 release calendars, which almost nobody tracks. And monitoring that checks what was written rather than whether the script reached its final line.\n\nWe measure break-fix load as a share of development capacity, because it is the number that tells you whether an estate is sustainable, and almost no business case includes it.',
+      },
+      {
+        q: 'Should this be a bot, or should it be an integration?',
+        a: 'An integration, if a usable API exists. We will say so before quoting a build, and it costs us the larger engagement.\n\nAn API-based integration is faster to run, cheaper to operate, and does not break when a screen layout changes. A bot is the right answer in one situation: the system has no usable interface and will not get one on any timeline that helps you. Mainframes, thick clients, vendor packages, third-party portals you do not control.\n\nThe gray area is the system that has an API in theory \u2014 documented but not exposed, or exposed but requiring a vendor change request with a nine-month queue. There, a bot is often the correct interim answer, with the explicit expectation that it is retired when the integration lands. We write that retirement into the design rather than leaving it to good intentions.',
+      },
+      {
+        q: 'What does an RPA program actually cost to run, not to build?',
+        a: 'Build is the smaller number and the one everybody plans for. Three things make up the rest.\n\nLicensing: unattended runtimes are charged whether or not they execute anything, so an estate with poor scheduling pays for idle capacity every month. We routinely find utilization well under half, which is a cost reduction available without touching a single bot.\n\nMaintenance: the developer time spent repairing automations after application changes. On an unmanaged estate this consumes the majority of a team\u2019s capacity within about two years, which is why the build backlog stops moving and nobody can quite explain why.\n\nOperations: monitoring, incident response, credential rotation, access recertification. Small per bot, and not small across forty.\n\nWe are pre-launch and do not publish rate cards. What we will commit to is that the assessment is scoped so you can stop after it and own the findings.',
+      },
+      {
+        q: 'How many bots should we expect to end up with?',
+        a: 'Fewer than you are being told, and that is the healthier answer.\n\nBot count is a vanity measure. It counts activity, not result, and it rewards building automations that should have been a configuration change. Estates optimized for bot count reliably contain duplicates built by two teams who never spoke, automations for processes since retired, and bots running monthly against systems that now expose APIs.\n\nThe measures worth holding a program to are hours removed per bot maintained, break-fix load as a share of capacity, and license utilization. On a mature estate, retiring a third of the bots without losing coverage is common and frees more delivery capacity than the next ten builds would consume.',
+      },
+      {
+        q: 'What is the difference between attended and unattended automation?',
+        a: 'Where the bot runs and who is beside it, and the two are different engineering problems rather than a setting.\n\nUnattended runs on a server against a queue, on a schedule, with no human present. It needs its own identity, credentials, exception handling and monitoring, because when it fails at three in the morning nobody is watching.\n\nAttended runs on a person\u2019s desktop and is triggered by them, typically to remove retyping across applications during a call. Technically simpler, socially harder \u2014 attended automation is abandoned far more often than it fails, because it was deployed without the people who were supposed to use it being involved in designing it.\n\nHybrid work starts attended, hands to an unattended queue, and returns for a decision. That is usually the right shape for anything customer-facing, and it needs the handback designed rather than improvised.',
+      },
+      {
+        q: 'Can you automate our mainframe, or Citrix sessions?',
+        a: 'Yes, and this is where RPA earns its keep rather than where it struggles.\n\nTerminal emulation is in many ways the most stable surface available: a green screen does not get a redesign. Field positions are fixed and behavior is predictable, so mainframe bots are often the longest-lived automations in an estate.\n\nCitrix and virtual desktops are the opposite. Where the session is published as an application the platform can usually see the elements. Where you get a video stream, the bot works from image recognition and coordinates, which is genuinely fragile \u2014 resolution changes, latency and a moved window all break it. We build it when there is no alternative and we tell you the maintenance profile before you commit rather than after.',
+      },
+      {
+        q: 'How do you handle security and audit for bots?',
+        a: 'By treating a bot as a named actor rather than as a script that borrows somebody\u2019s account.\n\nEach bot gets its own identity with least-privilege access scoped to the systems it actually touches. Credentials live in a vault your PAM team already runs, never in configuration. Every action is attributable to that identity in the audit trail, so a reviewer can answer who did this without the answer being a developer who left last year.\n\nSegregation of duties matters more than it first appears: a bot that can both raise and approve a payment is a control failure regardless of how carefully it was built. That gets designed at the start, because retrofitting identity across a live estate is materially harder than starting with it.',
+      },
+      {
+        q: 'We inherited an estate nobody understands. Where do we start?',
+        a: 'With an inventory, and it is usually the most valuable fortnight of the engagement.\n\nWhat exists, what each bot touches, who owns it, when it last ran successfully, what it costs in runtime, and whether the process it serves still exists. Estates past about thirty bots very rarely have this, and the gaps are where the risk sits \u2014 a bot running weekly against a system nobody knew was still in scope.\n\nThe inventory usually produces three piles: automations worth keeping and bringing to standard, duplicates and dead bots to retire, and a handful that should be replaced by integrations that now exist. Acting on the second and third piles typically frees more capacity than the first year of a new build program.',
+      },
+      {
+        q: 'Who maintains the bots after you leave?',
+        a: 'Your team, and we build on that assumption from the first sprint rather than negotiating it at handover.\n\nThat means bots built to a documented standard from a shared component library, source-controlled and peer-reviewed, with a runbook per automation covering the failure modes we actually hit during delivery rather than the ones we imagined. It means your developers pairing on the build instead of receiving a document at the end.\n\nIt also means being straight about the ongoing load: an estate needs a maintenance budget, and a program resourced for build only will stall in year two. If carrying it is not realistic, we run estates under a service level and price that separately. The line we hold is that your bots must remain operable by your own people \u2014 an estate only we can maintain is a commercial arrangement, not an engineering outcome.',
+      },
+      {
+        q: 'The savings in our original business case never appeared. What went wrong?',
+        a: 'Almost always one of three things, and none is a technology failure.\n\nThe baseline was never measured. Handling time was estimated from what people believed the process took, savings were asserted against that estimate, and nothing was measured afterwards because there was nothing credible to measure against.\n\nThe hours were removed but the cost was not. A bot saving twenty minutes across forty people does not remove a headcount, and if the business case was written as headcount it was wrong on the day it was signed. Capacity released is a real benefit; it is not the same benefit.\n\nOr the maintenance load ate it. Savings were booked once and the repair cost recurs, so by year two the team is fully occupied keeping the estate alive and the net is negative.\n\nWe baseline during qualification, before anything is built, and report against that baseline afterwards. It makes our numbers smaller and defensible.',
+      },
+      {
+        q: 'How does RPA relate to your other automation services?',
+        a: 'Four layers of the same problem, and mixing them up is what makes programs fail.\n\nThis service is the narrowest and most specific: driving applications through the interface where no API exists. Intelligent automation adds the AI layer on top \u2014 document understanding, classification, decisions that rules cannot express. Digital process automation is for work that has no application at all, where the answer is to build one rather than to automate around its absence. Business process management is the discipline above all three: how the process is designed, owned, standardized across markets and governed.\n\nThe order matters. Bots deployed onto a process nobody redesigned make an unmanaged process faster, which is why so many estates plateau and then quietly shrink. If you are not sure which of the four you need, the estate assessment answers it, and it is the cheapest way to find out.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // The first package is an assessment of an estate that already exists,
+    // deliberately ahead of any build offer. Most inbound RPA conversations are
+    // not "we want bots", they are "we have forty and they keep breaking", and
+    // a page that only sells new builds is answering a question nobody asked.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'including the way out.',
+    engagementLede: 'Most groups arrive with an estate rather than an idea. The useful first engagement is usually an assessment of what is already running, not a proposal to build more.',
+    servicePackages: [
+      {
+        name: 'Bot Estate Assessment',
+        description: 'For estates that already exist and are getting harder to run. What you have, who owns it, what it costs in runtime and repair, and which of it should be retired rather than fixed.',
+        deliverables: [
+          'Full inventory with ownership and business criticality per bot',
+          'Break-fix load measured against development capacity',
+          'License utilization and runtime cost attributed per process',
+          'Duplicate and overlap identification across teams',
+          'Retire, rebuild, replace-with-integration recommendation per bot',
+        ],
+      },
+      {
+        name: 'Feasibility & Pilot',
+        description: 'For a first automation, or a first one after a failed attempt. One process, qualified honestly, built to standard and put in production \u2014 with the answer possibly being that it should not be a bot.',
+        deliverables: [
+          'Process suitability assessment with an explicit go or no-go',
+          'API and integration alternatives evaluated before any build',
+          'One production bot, not a demo on a developer machine',
+          'Measured before-and-after handling time against a baseline',
+          'Costed proposal for what a wider program would actually take',
+        ],
+      },
+      {
+        name: 'Bot Development',
+        description: 'Delivery at volume against your platform and your standards. Where no standards exist yet, establishing them is part of the first engagement rather than an afterthought.',
+        deliverables: [
+          'Automation design document per process before build',
+          'Bots built to naming, logging and error-handling standards',
+          'Shared component library so the fifth bot is faster than the first',
+          'Regression test pack covering the interfaces each bot depends on',
+          'Runbook per bot with the failure modes found during delivery',
+        ],
+      },
+      {
+        name: 'Platform Migration & Modernization',
+        description: 'Moving an estate between RPA platforms, off a version out of support, or off bots entirely where an integration has since become available. Rarely a straight port.',
+        deliverables: [
+          'Migration assessment with per-bot complexity scoring',
+          'Rebuild-versus-port decision per automation',
+          'Bots replaced by integrations where an API now exists',
+          'Parallel run with output comparison before cutover',
+          'Decommissioning of the old estate with retained evidence',
+        ],
+      },
+      {
+        name: 'Managed Bot Operations',
+        description: 'Running the estate under a service level, including the break-fix work when applications change. For teams who want the automation without carrying a maintenance team for it.',
+        deliverables: [
+          'Round-the-clock monitoring at the output, not just the run status',
+          'Break-fix within agreed response times when interfaces change',
+          'Robotic Operations Center with queue and schedule management',
+          'Monthly reporting on utilization, failures and cost per process',
+          'Continuous rationalization rather than unbounded estate growth',
+        ],
+      },
+    ],
+
+    // ── By function ─────────────────────────────────────────────────────────
+    // This slot renders the industry grid elsewhere. DPA uses it for industries
+    // at the application-gap layer, BPM for enterprise value streams. Here it
+    // carries back-office functions, because that is how RPA is actually
+    // scoped: an estate belongs to a finance shared service or an insurance
+    // operations team, not to a sector.
+    //
+    // Each card names the system that has no usable API, since that is the
+    // condition that makes a bot the right answer rather than a workaround.
+    industryHeading: 'Robotic Process Automation',
+    industryHeadingHighlight: 'by function.',
+    industryLede: 'Eight back-office functions, and in each one the system that has no usable interface \u2014 which is the condition that makes a bot the correct answer rather than a workaround.',
+    industryUseCases: [
+      {
+        industry: 'Finance & Accounting',
+        headline: 'The ERP has an API. The bank portal, the tax authority site and the supplier who only sends PDFs do not.',
+        items: ['Invoice entry from portals and mailboxes', 'Bank statement retrieval and reconciliation', 'Period-close checklist execution'],
+      },
+      {
+        industry: 'Insurance Operations',
+        headline: 'Policy administration systems bought in the nineties, still load-bearing, still terminal-based.',
+        items: ['Policy data entry across legacy admin systems', 'Claims intake from broker portals', 'Renewal and endorsement processing'],
+      },
+      {
+        industry: 'Banking Operations',
+        headline: 'Core banking that will not be replaced this decade, plus a dozen regulator portals with no machine interface.',
+        items: ['Account opening and maintenance in core systems', 'Regulatory portal submissions', 'Sanctions and watchlist screening steps'],
+      },
+      {
+        industry: 'Human Resources',
+        headline: 'A cloud HR platform that integrates, surrounded by payroll bureaux and benefits providers that do not.',
+        items: ['Employee data entry across disconnected systems', 'Payroll input preparation and validation', 'Benefits and third-party provider updates'],
+      },
+      {
+        industry: 'Supply Chain & Procurement',
+        headline: 'Supplier portals, each with its own login, none of them yours, all of them changing without notice.',
+        items: ['Supplier portal order and status retrieval', 'Goods receipt and three-way match steps', 'Catalog and price file maintenance'],
+      },
+      {
+        industry: 'Customer Service',
+        headline: 'An agent holding four applications open, retyping the same reference number into each one.',
+        items: ['Attended desktop assistants for agents', 'Cross-system customer record lookup', 'Case creation and status synchronization'],
+      },
+      {
+        industry: 'IT Operations',
+        headline: 'Provisioning steps spread across tools that were each bought to solve one problem and integrated with none.',
+        items: ['User provisioning and access requests', 'Routine health checks and evidence capture', 'Ticket triage and enrichment steps'],
+      },
+      {
+        industry: 'Healthcare Administration',
+        headline: 'Clinical systems that will not be touched, and payer portals that change their layout without telling anyone.',
+        items: ['Eligibility and authorization portal checks', 'Claims status retrieval across payers', 'Administrative data entry around clinical systems'],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Both columns are bots that worked on the day they were demonstrated. The
+    // difference is entirely in what happens the first time somebody else's
+    // application changes -- which is the only thing that actually separates an
+    // RPA estate that survives from one that gets quietly switched off.
+    comparisonTable: {
+      eyebrow: 'WHERE RPA ESTATES QUIETLY DIE',
+      heading: 'Both bots worked on demo day.',
+      lede: 'Neither column describes bad engineering. They differ in what happens the first time somebody else ships a release you were not told about.',
+      beforeLabel: 'BOTS AS DELIVERABLES',
+      afterLabel: 'BOTS AS OPERATED SOFTWARE',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'DELIVERED',
+      afterShort: 'OPERATED',
+      rows: [
+        {
+          dimension: 'When the vendor ships an update',
+          before: 'A selector stops matching. The run fails, or worse completes against the wrong field, and somebody notices from the numbers a week later.',
+          after: 'Resilient locators where the application permits them, a tracked vendor release calendar, and regression tests that run against the new build before the bot does.',
+        },
+        {
+          dimension: 'How you know a run went wrong',
+          before: 'The orchestrator reports success because the script reached the end. Nothing checked what was actually written.',
+          after: 'Verification at the output: the record exists, the total reconciles, the file has the expected row count. A green run that wrote nothing raises an alert.',
+        },
+        {
+          dimension: 'Who the bot signs in as',
+          before: 'A developer\u2019s account, or a shared service account with a password in a config file and permissions nobody has reviewed since it was built.',
+          after: 'A named bot identity with least-privilege access, credentials in a vault, and every action attributable to that identity in your audit trail.',
+        },
+        {
+          dimension: 'What the licensed runtime costs',
+          before: 'Unattended licenses bought per bot, most of them idle overnight and at weekends, with no attribution of runtime cost to the process it serves.',
+          after: 'Queues and schedules packed so the runtime you pay for is executing, with cost per process reported and license count matched to real concurrency.',
+        },
+        {
+          dimension: 'When the person who built it leaves',
+          before: 'No design document, no naming convention, no reusable components. The bot runs until it does not, and then it is rebuilt from scratch.',
+          after: 'Built to a documented standard from a shared component library, with a runbook covering the failure modes we actually hit during delivery.',
+        },
+        {
+          dimension: 'What happens when an API finally ships',
+          before: 'The bot stays, because retiring it is nobody\u2019s objective and it still technically works.',
+          after: 'The bot is retired and replaced with the integration. We would rather remove our own work than bill you to maintain something the platform now does properly.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages, chosen so the array length is exactly five -- the template
+    // renders architectureNodes as a four-column grid otherwise, and five nodes
+    // get their own column each. Deliberately ends at Maintain rather than at
+    // Deploy: on this service the interesting half of the lifecycle starts
+    // after go-live, which is the whole argument of the page.
+    architectureEyebrow: 'THE BOT LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Qualify to Maintain.',
+    architectureLede: 'Five stages, and the one that decides the outcome is the last. Most RPA programs are resourced through Deploy and then surprised by what Maintain costs.',
+    architectureNodes: [
+      {
+        title: 'Qualify',
+        icon: 'Search',
+        description: 'Establish whether this should be a bot at all. High volume, stable rules, no usable API, and an exception rate that will not swamp the queue. Failing any of those, we say so before quoting a build.',
+        features: [
+          'Volume, variance and exception profiling',
+          'API and integration alternatives checked first',
+          'Application change frequency assessed',
+          'Effort, payback and runtime cost modeled',
+          'Explicit go or no-go recommendation',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Decide how the bot behaves before writing it: which locator strategy, which exceptions are handled and which are handed back, and what it means for a run to have succeeded.',
+        features: [
+          'Automation design document per process',
+          'Selector and locator strategy chosen',
+          'Exception paths and handback defined',
+          'Success criteria defined at the output',
+          'Reusable components identified up front',
+        ],
+      },
+      {
+        title: 'Build',
+        icon: 'Cpu',
+        description: 'Engineering to a standard rather than to a demo. Naming conventions, shared components, source control and peer review \u2014 unremarkable practice, routinely absent from RPA estates.',
+        features: [
+          'Development to documented standards',
+          'Shared component and template library',
+          'Source control, versioning and peer review',
+          'Credential vault integration from the start',
+          'Regression test pack built alongside the bot',
+        ],
+      },
+      {
+        title: 'Deploy',
+        icon: 'Rocket',
+        description: 'Into your environments, under your security review, with the bot identity and permissions agreed rather than assumed. This is the stage that slips, and it slips on access rather than on code.',
+        features: [
+          'Environment promotion and release process',
+          'Bot identity, permissions and vault setup',
+          'Orchestrator queues, triggers and schedules',
+          'Security review and access recertification',
+          'Hypercare with the build team still attached',
+        ],
+      },
+      {
+        title: 'Maintain',
+        icon: 'Activity',
+        description: 'The stage the business case forgets. Applications change on somebody else\u2019s calendar, and the measure of an estate is how much of your team is repairing rather than building.',
+        features: [
+          'Output-level monitoring and silent-failure alerts',
+          'Vendor release tracking and impact analysis',
+          'Break-fix load measured and reported',
+          'Runtime utilization and license rightsizing',
+          'Retirement when an integration supersedes the bot',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'ROBOTIC PROCESS AUTOMATION SERVICES',
+    capabilitiesSectionTitle: 'Robotic Process Automation',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Pick the processes worth a bot, build them so somebody else can maintain them, reach the systems that have no other way in, keep them running through everyone else\u2019s release cycles, and retire the ones that stopped earning their runtime.',
+    capabilityAreas: [
+      {
+        title: 'Automation Feasibility & Bot Design',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Deciding what deserves a bot before building one. Roughly half of what arrives on an RPA backlog should be an integration, a configuration change, or nothing at all, and finding that out early is the cheapest thing we do.',
+        items: [
+          'Process Suitability Assessment',
+          'API-vs-Bot Decision Analysis',
+          'Volume, Variance & Exception Profiling',
+          'Rule Extraction & Documentation',
+          'Automation Design Documents',
+          'Reusable Component Identification',
+          'Effort, Cost & Payback Modeling',
+          'Backlog Prioritization & Sequencing',
+          'Target Handling-Time Baselining',
+          'Build-Buy-Integrate Recommendation',
+        ],
+      },
+      {
+        title: 'Surface Automation for Systems With No API',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The reason this service exists. Mainframes, thick clients, Citrix sessions, vendor packages that will never expose an endpoint \u2014 automated through the only door available, with the fragility that implies managed rather than denied.',
+        items: [
+          'Mainframe & Terminal Emulation',
+          'Thick-Client & Legacy Desktop Automation',
+          'Citrix & Virtual Desktop Automation',
+          'Image, OCR & Coordinate-Based Automation',
+          'Web & Browser Automation',
+          'PDF & Document Surface Extraction',
+          'Cross-Application Data Transfer',
+          'Screen-Scraping Fallback Design',
+          'Vendor Package Automation',
+          'Air-Gapped & Restricted Environment Bots',
+        ],
+      },
+      {
+        title: 'Bot Resilience & Maintainability',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where RPA programs are actually won or lost. A bot fails silently, so the useful question is never whether the run finished \u2014 it is whether what the bot wrote is correct, and who found out first.',
+        items: [
+          'Resilient Selector Strategy',
+          'Anchor & Relative-Locator Patterns',
+          'Application Change Impact Analysis',
+          'Output Verification, Not Exit-Code Checks',
+          'Silent-Failure Detection',
+          'Retry, Backoff & Idempotency Design',
+          'Environment Drift Detection',
+          'Regression Testing Against UI Changes',
+          'Vendor Release Calendar Tracking',
+          'Self-Healing Where the Platform Supports It',
+          'Runbooks Per Bot',
+          'Break-Fix Load Measurement',
+        ],
+      },
+      {
+        title: 'Attended, Unattended & Hybrid Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where the bot runs and who is sitting next to it. Attended automation is a different engineering problem from unattended \u2014 different failure modes, different security posture, different reasons it gets abandoned.',
+        items: [
+          'Unattended Bot Development',
+          'Attended & Desktop Assistant Automation',
+          'Hybrid Attended-Unattended Workflows',
+          'Front-Office Agent Assist',
+          'Trigger, Queue & Schedule Design',
+          'Work Allocation & Load Balancing',
+          'Human Handback & Exception Queues',
+          'Long-Running & Multi-Session Bots',
+          'End-User Adoption & Training',
+          'Desktop Deployment & Update Management',
+        ],
+      },
+      {
+        title: 'Bot Identity, Credentials & Controls',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A bot signs in as somebody. Whose account, holding which permissions, storing which password, and traceable how \u2014 questions that are trivial for one bot and a finding waiting to be written across forty.',
+        items: [
+          'Bot Identity & Service Account Design',
+          'Credential Vault Integration',
+          'Least-Privilege Access Modeling',
+          'Segregation of Duties for Bots',
+          'Privileged Access Management',
+          'Per-Bot Audit Trail & Attribution',
+          'Data Handling & Masking in Transit',
+          'Regulated-Process Controls',
+          'Bot Onboarding & Offboarding Procedure',
+          'Access Recertification',
+          'Security Review Preparation',
+        ],
+      },
+      {
+        title: 'Orchestrator Operations & Runtime Economics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Running the estate day to day, and the part of RPA nobody costs properly: unattended runtime is licensed whether it executes anything or not, so idle capacity is a line item you are already paying.',
+        items: [
+          'Orchestrator & Control Room Setup',
+          'Queue Architecture & Transaction Design',
+          'Schedule Optimization & Runtime Packing',
+          'Capacity Planning & Concurrency Modeling',
+          'License Utilization Analysis',
+          'Runtime Cost Attribution by Process',
+          'Environment & Release Management',
+          'Bot Performance Monitoring',
+          'Incident Response & On-Call Runbooks',
+          'Robotic Operations Center Setup',
+          'SLA Definition & Reporting',
+          'Managed Bot Operations',
+        ],
+      },
+      {
+        title: 'Estate Rationalization, Migration & Retirement',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Most mature estates carry bots nobody owns, duplicates built by two teams, and automations that should have been retired when the API shipped. Cleaning that up frees more capacity than the next ten builds.',
+        items: [
+          'Bot Estate Inventory & Ownership Mapping',
+          'Duplicate & Overlap Identification',
+          'Bot Debt Assessment',
+          'Retire, Rebuild or Replace Decisions',
+          'Replacing Bots With Integrations',
+          'RPA Platform Migration',
+          'Version Upgrade & Compatibility Testing',
+          'Legacy Bot Refactoring to Standards',
+          'Citizen-Developer Bot Consolidation',
+          'License Rightsizing',
+          'Decommissioning With Evidence',
+        ],
+      },
+    ],
+
+    midCta: 'The pilot ran beautifully. Year two is the one to plan for.',
+    midCtaLabel: 'Review One Bot Estate',
+    closingCta: {
+      title: 'One estate,',
+      highlight: 'honestly assessed.',
+      body: 'Show us what you have running. In 30 minutes we will tell you which bots are worth keeping, which should have been an integration, and what the break-fix load is really costing you \u2014 before anyone proposes building more.',
+      proofLabel: 'From first call to a costed estate assessment',
+    },
   },
 
   'business-process-management': {

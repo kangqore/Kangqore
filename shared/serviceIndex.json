@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T09:55:24.184Z",
+  "generatedAt": "2026-08-22T18:10:06.553Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -589,10 +589,56 @@
       "url": "/services/robotic-process-automation",
       "name": "Robotic Process Automation (RPA)",
       "department": "Cognition",
-      "description": "Enterprise RPA — bot development, attended and unattended automation, bot monitoring, and CoE setup for rule-based business processes.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "description": "Enterprise RPA for systems with no API — bot engineering, attended and unattended automation, selector resilience, and estate rationalization.",
+      "capabilities": [
+        "Automation Feasibility & Bot Design",
+        "Surface Automation for Systems With No API",
+        "Bot Resilience & Maintainability",
+        "Attended, Unattended & Hybrid Automation",
+        "Bot Identity, Credentials & Controls",
+        "Orchestrator Operations & Runtime Economics",
+        "Estate Rationalization, Migration & Retirement"
+      ],
+      "faqs": [
+        {
+          "q": "Is RPA dead now that we have AI agents?",
+          "a": "No, and the people saying so are usually selling the replacement. What has genuinely changed is the scope. Work that needed a bot because it involved reading a document or making a judgment call is now better served by document intelligence or a model. That is a real reduction in RPA’s territory and we would not pretend otherwise. What has not changed is the underlying condition. A mainframe with no API is exactly as closed to an AI agent as it is to a bot — an agent that needs to use that system still has to drive the interface, and at that point it is doing RPA with a language model attached. The fragility does not disappear, it just gets a better narrator. So the honest position: RPA’s share of new automation is shrinking, the estates already built are not going anywhere, and the interesting work has moved from building more bots to running the ones you have properly."
+        },
+        {
+          "q": "Why do our bots keep breaking?",
+          "a": "Because they depend on a surface somebody else controls, and that is the deal RPA makes rather than a defect in your build. The usual causes, in order: an application update moved or renamed an element; the automation used a brittle locator such as a screen coordinate or a generated identifier; the environment drifted so the bot met a different screen resolution, browser version or session state; or a data case appeared that the original rules never covered. What reduces it is unglamorous. Locators anchored to something stable rather than to position. Tests that run against a new application build before the bot does. Awareness of your vendors’ release calendars, which almost nobody tracks. And monitoring that checks what was written rather than whether the script reached its final line. We measure break-fix load as a share of development capacity, because it is the number that tells you whether an estate is sustainable, and almost no business case includes it."
+        },
+        {
+          "q": "Should this be a bot, or should it be an integration?",
+          "a": "An integration, if a usable API exists. We will say so before quoting a build, and it costs us the larger engagement. An API-based integration is faster to run, cheaper to operate, and does not break when a screen layout changes. A bot is the right answer in one situation: the system has no usable interface and will not get one on any timeline that helps you. Mainframes, thick clients, vendor packages, third-party portals you do not control. The gray area is the system that has an API in theory — documented but not exposed, or exposed but requiring a vendor change request with a nine-month queue. There, a bot is often the correct interim answer, with the explicit expectation that it is retired when the integration lands. We write that retirement into the design rather than leaving it to good intentions."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Enterprise RPA platforms",
+          "detail": "The default for an estate of any size: mature orchestration, credential handling and a component ecosystem. Heavy and licensed per runtime, which stops making sense below roughly a dozen bots."
+        },
+        {
+          "rule": "Regulated and legacy-heavy estates",
+          "detail": "Unattended-first by design, with a control model that regulated operations teams tend to find easier to evidence. Weaker where the work is attended or desktop-side."
+        },
+        {
+          "rule": "Microsoft-estate automation",
+          "detail": "Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl."
+        },
+        {
+          "rule": "Credentials and bot identity",
+          "detail": "Non-negotiable past the first bot. A password in a config file is the finding that ends an RPA program in a regulated group, and retrofitting a vault across a live estate is far worse than starting with one."
+        },
+        {
+          "rule": "Monitoring and alerting",
+          "detail": "Platform monitoring reports whether the run finished. It cannot tell you the bot wrote the wrong value into the right field, so the checks that matter are written against the output."
+        },
+        {
+          "rule": "The alternative to all of the above",
+          "detail": "If a usable API exists, integration wins on cost, speed and durability, and we will say so before quoting a build. RPA is the answer when that door is closed — not the first thing to try."
+        }
+      ],
       "dataHandling": []
     },
     {

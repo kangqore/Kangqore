@@ -2270,6 +2270,100 @@ const featureMicros   = service.featureMicros
                     <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">cost per terabyte measured at every layer, attributed to a team</text>
                   </svg>
                 </div>
+              ) : service.slug === 'robotic-process-automation' ? (
+                /* ── The bot depends on a surface it does not own ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AGENTIC ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on
+                   a page about driving legacy interfaces.
+
+                   The five stages match architectureNodes exactly. The argument
+                   is the top band and the branch: the bot reaches systems with
+                   no API through the interface, and the interface belongs to
+                   somebody else's release calendar. A green run is not the same
+                   as a correct one, which is why the branch tests the output
+                   rather than the exit code.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12, and the
+                   widest stage label (MAINTAIN, 8 characters at 12 units in a
+                   96-unit box) clears by 18 units each side. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="How a bot estate stays alive: the bot drives systems with no API through their interface, and that interface changes on someone else's release calendar; the lifecycle runs qualify, design, build, deploy and maintain; each run is checked at the output, so work either completes correctly or the run is stopped rather than writing the wrong value" tabIndex={0}>
+                  <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why a bot estate needs engineering rather than a demo</title>
+                    <desc>Bots reach mainframes, thick clients, Citrix sessions and vendor portals through the only door available, the interface, which changes on somebody else's release calendar. The lifecycle runs qualify, design, build, deploy and maintain. Every run is verified at the output rather than by exit code, so work either completes correctly or the run stops instead of writing the wrong value silently. Break-fix load is measured as a share of team capacity.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="rpa-spine" gradientUnits="userSpaceOnUse" x1="26" y1="222" x2="514" y2="222">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="rpa-stage" gradientUnits="userSpaceOnUse" x1="0" y1="164" x2="0" y2="216">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="rpa-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="rpa-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="rpa-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The systems only a bot can reach ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">SYSTEMS WITH NO USABLE API</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">mainframe · thick client · Citrix · vendor portal</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#rpa-tick)">
+                      <line x1="81" y1="94" x2="81" y2="158" />
+                    </g>
+                    <text x="92" y="132" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">reached through the interface, not an endpoint</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="195" fontSize="12" fontWeight="bold" fill="white">QUALIFY</text>
+
+                      <rect x="124" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="195" fontSize="12" fontWeight="bold" fill="white">DESIGN</text>
+
+                      <rect x="222" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="195" fontSize="12" fontWeight="bold" fill="white">BUILD</text>
+
+                      <rect x="320" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="195" fontSize="12" fontWeight="bold" fill="white">DEPLOY</text>
+
+                      <rect x="418" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="195" fontSize="12" fontWeight="bold" fill="white">MAINTAIN</text>
+                    </g>
+
+                    <line x1="26" y1="222" x2="506" y2="222" stroke="url(#rpa-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#rpa-arrow)" />
+
+                    {/* ── What decides whether a run counts ── */}
+                    <text x="270" y="248" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">verified at the output, not by the exit code</text>
+
+                    <path d="M 270 256 C 270 288, 210 288, 145 288 C 138 288, 133 294, 133 302" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#rpa-arrow)" />
+                    <path d="M 270 256 C 270 288, 350 288, 420 288 C 427 288, 432 294, 432 302" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#rpa-arrow-amber)" />
+
+                    <rect x="26" y="306" width="214" height="66" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="133" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">WORK COMPLETES</text>
+                    <text x="133" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">and reconciles</text>
+
+                    <rect x="300" y="306" width="214" height="66" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="407" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">THE RUN STOPS</text>
+                    <text x="407" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">instead of writing quietly</text>
+
+                    {/* ── The number the estate is held to ── */}
+                    <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">break-fix load, measured against team capacity</text>
+                  </svg>
+                </div>
               ) : service.slug === 'business-process-management' ? (
                 /* ── Many local variants to one governed standard ──
                    Replaces the shared agentic default, which put AI COMMANDER,

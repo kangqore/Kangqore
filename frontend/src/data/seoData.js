@@ -425,7 +425,7 @@ export const serviceSEO = {
   },
   'robotic-process-automation': {
     title: 'Robotic Process Automation (RPA) — Cognition | Kangqore',
-    description: 'Enterprise RPA — bot development, attended and unattended automation, bot monitoring, and CoE setup for rule-based business processes.',
+    description: 'Enterprise RPA for systems with no API — bot engineering, attended and unattended automation, selector resilience, and estate rationalization.',
     keywords: 'robotic process automation, RPA services, software bots, attended automation, unattended automation, RPA CoE',
     url: '/services/robotic-process-automation',
   },
