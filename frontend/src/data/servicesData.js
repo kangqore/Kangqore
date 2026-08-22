@@ -4090,7 +4090,7 @@ export const servicesData = {
     ],
 
     faqEyebrow: 'ASKED ON THE FIRST CALL',
-    faqHeading: 'Ten questions,',
+    faqHeading: 'Twelve questions,',
     faqHeadingHighlight: 'answered without hedging.',
 
     // ── FAQ ─────────────────────────────────────────────────────────────────
@@ -4133,6 +4133,16 @@ export const servicesData = {
       {
         q: 'Can you migrate us off Hadoop without stopping everything?',
         a: 'Yes, and it should be a parallel run rather than a cutover. Both platforms produce the same outputs for a period, results are compared automatically, and workloads move once they match. Slower than a big-bang migration and considerably less likely to end badly.\n\nThe part that takes longest is rarely the data. It is the accumulated logic in jobs nobody at your company has read in years, some of which encodes business rules that exist nowhere else. Discovery on that is most of the estimate.\n\nWe would also expect to retire rather than migrate a meaningful share of it. Your estate almost certainly carries jobs whose output no longer feeds anything, and migrating those is paying twice for something worth nothing.',
+        sources: [],
+      },
+      {
+        q: 'Will this still hold if our data volume grows ten times?',
+        a: 'Compute will. Horizontal scaling is genuinely solved, and adding nodes is the easy part. What does not scale on its own is the layout underneath — partition strategy, file sizes and queries somebody wrote while the table was small.\n\nThe things that break first are predictable. Partitions chosen for how data arrives rather than how it is queried. Small files accumulating until a scan costs more than the query is worth. Joins that were fine when one side fit in memory. None of these throw an error; they get slower and more expensive while the dashboard still says green.\n\nSo the honest answer is that the platform holds if it was laid out for the volume you are heading toward, and gets expensive if it was laid out for the volume you had. We design against your two-year number rather than your current one, because layout is the hardest thing to change after data is written into it.',
+        sources: [],
+      },
+      {
+        q: 'What does this cost, and what drives the number?',
+        a: 'The five engagement paths above are the shape. What moves the number inside them is rarely the engineering. It is how many source systems have to be touched, and whether anyone left can tell you what the data in them means.\n\nThe cheap end is a platform built on sources that are documented and owned. The expensive end is the same build where one customer is identified six different ways across six systems and the person who knew why left in 2019. That is archaeology rather than engineering, and it is far better to discover it in week one of an assessment than in month four of a build.\n\nThe part more often underestimated is what the platform costs to run afterwards. We model cost per workload during the assessment, so that number exists before you commit rather than arriving with the first invoice.',
         sources: [],
       },
       {
