@@ -5247,7 +5247,7 @@ export const servicesData = {
     name: 'Business Process Management',
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE\u2122',
-    shortDescription: 'Redesign, standardize and govern the processes that run the enterprise',
+    shortDescription: 'Redesigning, standardizing and governing the processes an enterprise runs on',
     fullDescription: 'Reengineer end-to-end processes, standardize them across markets, implement the platforms that run them, and govern performance from a Center of Excellence.',
     // Without this the hero description inherits the template default
     // max-w-[520px] and wraps to three lines. Two is the standard; big-data
@@ -5288,13 +5288,13 @@ export const servicesData = {
     // Order-to-Cash, Record-to-Report and Hire-to-Retire are how process work
     // is scoped and funded inside a multinational; sector cards are not.
     heroTitle: 'Business Process Management\nfor the Global Enterprise',
-    whatIsEyebrow: 'What business process management delivers at enterprise scale',
-    whatIsTitle: 'Engineering Intelligent,',
+    whatIsEyebrow: 'What business process management actually is',
+    whatIsTitle: 'Business Process Management',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'Agile Enterprise Operations.',
-    whatIsPara2: 'Enterprise operations have become structurally complex. A single order-to-cash cycle can cross four functions, three ERP instances, two shared service centers and a dozen handoffs that exist because of an acquisition nobody has unwound. Each step is owned. The end-to-end outcome is not.',
-    whatIsPara3: 'Kangqore designs, transforms and continuously governs the processes that run your business. We combine process engineering, operating model design, workflow and case platforms, automation, analytics and governance into one connected operating model \u2014 then put a named owner, a measured baseline and a control framework behind it.',
-    whatIsPara4: 'From process discovery and reengineering through platform implementation on Appian, Pega, ServiceNow or Camunda, to a Center of Excellence that keeps improving after we leave. Design better processes. Standardize them across markets. Automate intelligently. Operate with measurable control.',
+    whatIsHighlight: 'Is an Operating Model, Not a Tool.',
+    whatIsPara2: 'Business process management is the discipline of designing, standardizing, governing and continuously improving the cross-functional processes an enterprise runs on. It is an operating model question before it is a technology one \u2014 which is why buying a platform first so rarely resolves it.',
+    whatIsPara3: 'The complexity is structural rather than accidental. A single order-to-cash cycle in your group can cross four functions, three ERP instances, two shared service centers and a dozen handoffs that exist because of an acquisition nobody has unwound. Every step has an owner who can demonstrate that their step is fast. The elapsed time your customer actually experiences belongs to nobody.',
+    whatIsPara4: 'Kangqore closes that gap. We combine process engineering, operating model design, workflow and case platforms, automation and controls into one connected design, then put a named owner, a measured baseline and a per-case audit trail behind it \u2014 from discovery and reengineering through implementation on Appian, Pega, ServiceNow or Camunda, to a Center of Excellence that keeps improving your processes after we leave.',
 
     // ── Outcomes ────────────────────────────────────────────────────────────
     // Not cycle time and bot uptime -- those belong to intelligent-automation,
