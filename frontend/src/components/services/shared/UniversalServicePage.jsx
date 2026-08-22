@@ -921,6 +921,19 @@ const INDUSTRY_ROUTES = {
   'energy & utilities': 'energy-utilities',
   'travel & hospitality': 'travel-hospitality',
   'information services': 'information-services',
+  // Aliases for labels used on the big-data industry grid. Only added where an
+  // /industries page actually exists — an unmapped label renders without a
+  // link, which is correct, rather than linking somewhere that does not answer
+  // the question the card raised.
+  'manufacturing & industrial': 'manufacturing',
+  'retail & e-commerce': 'retail',
+  ecommerce: 'retail',
+  'media & entertainment ': 'media-technology',
+  'media & telecommunications': 'media-technology',
+  education: 'edtech',
+  'education & research': 'edtech',
+  'tourism & hospitality': 'travel-hospitality',
+  'energy & resources': 'energy-utilities',
 };
 
 function industrySlug(label) {
@@ -2154,6 +2167,102 @@ const featureMicros   = service.featureMicros
                     {/* ── The number that actually matters ── */}
                     <rect x="26" y="364" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
                     <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">measured on straight-through rate per process, not on bots deployed</text>
+                  </svg>
+                </div>
+              ) : service.slug === 'big-data' ? (
+                /* ── Ingest to serve ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AGENTIC ORCHESTRATOR and AUTONOMOUS COMMIT on an
+                   infrastructure page.
+
+                   The four layers match architectureNodes below it, and the
+                   branch is the argument this page makes: a green orchestrator
+                   says the job ran, not that what it wrote is correct.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is smaller than 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="Data platform layers — sources are ingested, stored, processed and served; contract and quality tests decide whether data reaches consumers or the pipeline stops. Cost per terabyte is measured across every layer" tabIndex={0}>
+                  <svg viewBox="0 0 540 430" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>How raw sources become data somebody downstream can trust</title>
+                    <desc>Transactional systems, event streams, files and third-party feeds are ingested, stored in an open table format, processed and served. Where contract and quality tests pass, data reaches consumers; where they fail the pipeline stops rather than writing quietly. Cost per terabyte is measured across every layer.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="bd-spine" gradientUnits="userSpaceOnUse" x1="26" y1="186" x2="514" y2="186">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="bd-stage" gradientUnits="userSpaceOnUse" x1="0" y1="160" x2="0" y2="212">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="bd-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="bd-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="bd-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── Sources ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">WHAT YOU ALREADY GENERATE</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">transactions · events · sensors · files · third-party feeds</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#bd-tick)">
+                      <line x1="81" y1="94" x2="81" y2="156" />
+                    </g>
+                    <text x="92" y="130" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">schemas that change without telling you</text>
+
+                    {/* ── The four layers, matching architectureNodes ── */}
+                    <line x1="26" y1="186" x2="514" y2="186" stroke="url(#bd-spine)" strokeWidth="2" strokeOpacity="0.45" />
+
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26" y="160" width="110" height="52" rx="9" fill="url(#bd-stage)" stroke="#2564ea" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="81" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">INGEST</text>
+                      <text x="81" y="200" fontSize="12" fill="white" fillOpacity="0.55">batch · CDC · stream</text>
+
+                      <rect x="152" y="160" width="110" height="52" rx="9" fill="url(#bd-stage)" stroke="#3080e6" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="207" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">STORE</text>
+                      <text x="207" y="200" fontSize="12" fill="white" fillOpacity="0.55">table format</text>
+
+                      <rect x="278" y="160" width="110" height="52" rx="9" fill="url(#bd-stage)" stroke="#3b9ce0" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="333" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">PROCESS</text>
+                      <text x="333" y="200" fontSize="12" fill="white" fillOpacity="0.55">spark · SQL</text>
+
+                      <rect x="404" y="160" width="110" height="52" rx="9" fill="url(#bd-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="459" y="182" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="white">SERVE</text>
+                      <text x="459" y="200" fontSize="12" fill="white" fillOpacity="0.55">BI · apps · models</text>
+                    </g>
+
+                    <g stroke="#4ab6d4" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#bd-arrow)">
+                      <line x1="138" y1="186" x2="149" y2="186" />
+                      <line x1="264" y1="186" x2="275" y2="186" />
+                      <line x1="390" y1="186" x2="401" y2="186" />
+                    </g>
+
+                    {/* ── The tests decide which way this goes ── */}
+                    <text x="270" y="240" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">contract and quality tests, at the boundary</text>
+
+                    <path d="M 459 214 C 459 254, 300 254, 160 254 C 150 254, 145 260, 145 272" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#bd-arrow)" />
+                    <path d="M 459 214 L 459 272" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#bd-arrow-amber)" />
+
+                    <rect x="26" y="276" width="238" height="62" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="145" y="300" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">DATA REACHES CONSUMERS</text>
+                    <text x="145" y="320" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">and can be traced back</text>
+
+                    <rect x="340" y="276" width="174" height="62" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="427" y="300" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">PIPELINE STOPS</text>
+                    <text x="427" y="320" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">instead of writing quietly</text>
+
+                    {/* ── The number that decides whether it survives ── */}
+                    <rect x="26" y="364" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">cost per terabyte measured at every layer, attributed to a team</text>
                   </svg>
                 </div>
               ) : service.slug === 'analytics' ? (

@@ -412,8 +412,8 @@ export const serviceSEO = {
     url: '/services/analytics',
   },
   'big-data': {
-    title: 'Big Data — Cognition | Kangqore',
-    description: 'Big data platforms at scale — data lakes, distributed processing, real-time streaming, data warehousing, and ETL pipelines for enterprise workloads.',
+    title: 'Big Data — Lakehouse, Streaming & Data Platforms | Kangqore',
+    description: 'Big data platform engineering: ingestion, lakehouse storage, distributed processing and streaming, built to a cost per terabyte you can predict.',
     keywords: 'big data, data lakes, distributed processing, real-time streaming, data warehousing, ETL pipelines',
     url: '/services/big-data',
   },
