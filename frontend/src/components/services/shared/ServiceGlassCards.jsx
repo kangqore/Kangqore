@@ -156,7 +156,16 @@ const CapabilityCycler = ({ capabilities }) => {
           
           <div
             key={`title-${capIdx}`}
-            className="text-lg xl:text-xl font-black text-white tracking-tight leading-[1.2] animate-fade-in-up h-full flex items-center overflow-hidden line-clamp-4 mt-2"
+            /* `line-clamp` needs display:-webkit-box, and the `flex` that used
+               to sit here won the display cascade — so the clamp never applied
+               and any capability title over roughly forty characters ran down
+               over the progress bar and the arrow button. Measured at 18px of
+               overflow on /services/robotic-process-automation before this.
+               `h-full flex items-center` was also inert: the wrapper is
+               position:absolute with auto height, so there was nothing to
+               center against. Three lines, not four — at the lg card width
+               (184px) four lines still reach past the bar. */
+            className="text-lg xl:text-xl font-black text-white tracking-tight leading-[1.2] animate-fade-in-up overflow-hidden line-clamp-3 mt-2"
           >
             {currentCap.title}
           </div>

@@ -251,21 +251,32 @@ body.high-contrast * {
 }
 
 /* Mic Drawing Animation */
-@keyframes draw-mic {
+@keyframes draw-mic-stroke {
     0% {
-        stroke-dashoffset: 150;
+        stroke-dashoffset: 1;
+        opacity: 0;
+    }
+    1% {
+        opacity: 1;
     }
     100% {
         stroke-dashoffset: 0;
+        opacity: 1;
     }
 }
 
 .animate-draw-mic path,
+.animate-draw-mic rect,
 .animate-draw-mic circle,
-.animate-draw-mic line,
-.animate-draw-mic polyline,
-.animate-draw-mic rect {
-    stroke-dasharray: 150;
-    stroke-dashoffset: 150;
-    animation: draw-mic 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+.animate-draw-mic line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+    animation: draw-mic-stroke 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+
+.animate-draw-mic .draw-part-1 { animation-delay: 0.1s; }
+.animate-draw-mic .draw-part-2 { animation-delay: 0.5s; }
+.animate-draw-mic .draw-part-3 { animation-delay: 0.9s; }
+.animate-draw-mic .draw-part-4 { animation-delay: 1.1s; }
+

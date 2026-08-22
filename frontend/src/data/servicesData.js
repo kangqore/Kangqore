@@ -5223,23 +5223,691 @@ export const servicesData = {
     slug: 'robotic-process-automation',
     name: 'Robotic Process Automation (RPA)',
     departmentSlug: 'cognition',
-    bannerBrand: 'eQORE™',
-    shortDescription: 'Deploy software robots for repetitive tasks',
-    fullDescription: 'Implement RPA solutions to automate rule-based, repetitive business processes.',
-    keyFeatures: ['Process assessment', 'Bot development', 'Attended/unattended automation', 'Bot monitoring', 'CoE setup'],
-    relatedServiceSlugs: ['digital-process-automation', 'intelligent-automation'],
+    bannerBrand: 'eQORE\u2122',
+    shortDescription: 'Automating the applications that were never given an API',
+    fullDescription: 'Build, govern and maintain software robots that drive enterprise applications through the interface, and keep working when that interface changes.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Bot engineering', 'Attended & unattended', 'Bot resilience', 'Orchestrator operations', 'Estate rationalization'],
+    relatedServiceSlugs: ['intelligent-automation', 'digital-process-automation', 'business-process-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1563207153-f403bf289096?w=800&q=80',
-    whatIsTitle: 'RPA That Deploys Bots',
-    whatIsTitleLine2: 'That Operate Without',
-    whatIsHighlight: 'Supervision.',
-    whatIsPara2: 'Kangqore builds enterprise RPA programs from process assessment through Center of Excellence establishment — deploying screen automation and cognitive bots that execute high-volume, rules-based workflows with accuracy targets agreed per process.',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // Last of the four automation services still on the Cognition parity
+    // default: 2,134 bytes of data, six generic FAQs, a crawler seeing 6.5 per
+    // cent of the page, and the shared agentic SVG above the fold.
+    //
+    // The other three have taken most of the ground. /services/bpm owns the
+    // discipline -- reengineering, operating model, global process ownership,
+    // BPM platforms, CoE. /services/dpa owns low-code applications, digital
+    // forms and case management. /services/intelligent-automation owns the AI
+    // layer and carries "RPA & Digital Workforce" as one area of seven.
+    //
+    // So this page is that one area taken to depth, and the wedge is a single
+    // fact stated plainly: RPA is what you use when there is no API. Everything
+    // difficult about it follows from that. A bot drives the interface, so it
+    // breaks when the interface changes; it signs in as somebody, so it needs
+    // an identity and a credential; it holds a licensed runtime, so idle
+    // capacity is money. None of those problems exist for the other three
+    // services, and none of them appears anywhere else on the site.
+    //
+    // Saying that honestly means saying the unhelpful half too: where an API
+    // exists, integration beats a bot on every measure that matters. A page
+    // that will not say so is selling licenses rather than engineering.
+    heroTitle: 'Robotic Process Automation\nServices for the Enterprise',
+    whatIsEyebrow: 'What robotic process automation is actually for',
+    whatIsTitle: 'What RPA',
+    whatIsHighlight: 'Actually Automates.',
+    whatIsPara2: 'Robotic process automation drives enterprise applications the way a person does \u2014 through the interface, keystroke by keystroke. That is its entire reason to exist. Where a system exposes an API, integration is faster, cheaper and more durable, and we will tell you so. Where it does not, and will not, a bot is the only thing that reaches the work.',
+    whatIsPara3: 'Which means every hard problem in RPA descends from one fact: your bot depends on a surface somebody else controls. A vendor ships an update and a selector stops matching. A field moves and a run fails silently at three in the morning. That is not bad engineering, it is the deal you accept in exchange for automating a system that was never opened up.',
+    whatIsPara4: 'Kangqore engineers for that reality rather than around it. Resilient selectors where the application allows them, monitoring that tests the output rather than the exit code, credentials held in a vault under a bot identity your auditor can trace, and an estate small enough to maintain. Bots you can still run in year three, not a pilot that impressed everyone in month two.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Not cost reduction and bot accuracy. Those are the numbers every RPA
+    // vendor publishes, they are unfalsifiable, and cycle time and bot uptime
+    // already belong to /services/intelligent-automation.
+    //
+    // These four are what an automation lead is actually judged on once the
+    // estate is past its first dozen bots: how much of the team is repairing
+    // rather than building, how fast a new one reaches production, whether the
+    // licensed runtime is doing any work, and whether the estate is still
+    // growing after the useful automations were built.
+    outcomesEyebrow: 'WHAT DECIDES WHETHER AN RPA ESTATE SURVIVES',
+    outcomesHeading: 'RPA Program Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
     businessMetrics: [
-      { illustrative: true, title: 'Operational Cost', desc: 'Average cost reduction achieved across IT and business process automation programs delivered by Kangqore.', value: '40',   suffix: '%',    metricLabel: 'Cost Reduction',   icon: 'Target'    },
-      { illustrative: true, title: 'Bot Accuracy',     desc: 'Execution accuracy across finance, HR, and insurance workflows — virtually eliminating manual processing errors.',  value: '99.8', suffix: '%',    metricLabel: 'Bot Accuracy',     icon: 'Shield'    },
-      { illustrative: true, title: 'POC Delivery',     desc: 'Time from engagement kickoff to a working automation POC — output before you commit to full-scale deployment.',     value: '5–7',  suffix: ' Day', metricLabel: 'POC Speed',        icon: 'Zap'       },
-      { illustrative: true, title: 'Scalability',      desc: 'Enterprise scale multiplier — bots replicated across functions without proportional cost increase.',                value: '10',   suffix: 'x',    metricLabel: 'Bot Scalability',  icon: 'TrendingUp'},
+      { illustrative: true, title: 'Break-Fix Load',      desc: 'Reduction in developer time spent repairing bots after application changes, once resilience patterns and output-level monitoring are in place.', value: '60',  suffix: '%',    metricLabel: 'Less Break-Fix',        icon: 'Shield'    },
+      { illustrative: true, title: 'Time to First Bot',   desc: 'From process selection to one bot running unattended in production, including the security review nobody schedules for.',                    value: '3\u20135', suffix: ' Wks', metricLabel: 'Selection to Production', icon: 'Zap'     },
+      { illustrative: true, title: 'Runtime Utilization', desc: 'Share of licensed unattended runtime actually executing work after queue and schedule redesign, rather than sitting idle overnight.',        value: '75',  suffix: '%',    metricLabel: 'Licensed Runtime Used', icon: 'Activity'  },
+      { illustrative: true, title: 'Estate Reduction',    desc: 'Bots retired or consolidated during rationalization without losing automated coverage \u2014 usually duplicates built by different teams.',      value: '35',  suffix: '%',    metricLabel: 'Bots Retired',          icon: 'Layers'    },
     ],
+
+    heroBadge: 'Built. Governed. Maintained.',
+    heroStripItems: [
+      'Bot Engineering', 'Attended & Unattended', 'Selector Resilience', 'Orchestrator Operations',
+      'Bot Identity & Credentials', 'Mainframe & Citrix', 'Estate Rationalization', 'Platform Migration',
+    ],
+    hidePartnershipModel: true,
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // /services/intelligent-automation carries "RPA & Digital Workforce" as one
+    // area of seven, ten items deep. This page is that area taken to depth, so
+    // the test for every entry below was: does it belong to driving an
+    // interface you do not control? If it belongs to the AI layer it stays on
+    // intelligent automation; if it belongs to redesigning the process it stays
+    // on BPM; if it belongs to giving the process an application it stays on
+    // DPA.
+    //
+    // Areas 02, 03 and 06 exist nowhere else on the site and are the real
+    // discipline: surface automation for systems with no API, keeping bots
+    // alive through somebody else's release cycle, and running an estate whose
+    // licensed runtime costs money whether it works or not. Area 07 is the one
+    // most vendors omit -- retiring bots, including the ones we would have to
+    // admit should never have been built.
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Framed by what each platform is genuinely better at, including where we
+    // would argue against buying one at all. We hold no reseller margin on any
+    // of these, which is the only reason that framing is available to us.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The RPA platforms,',
+      titleHighlight: 'and when not to use one.',
+      subtitle: 'Platform choice is mostly settled by what the group already licenses and by how much of the target estate is legacy surface rather than modern web. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Enterprise RPA platforms',
+          managed: 'UiPath, Automation Anywhere',
+          selfHosted: 'On-premise orchestrator where data cannot leave',
+          desc: 'The default for an estate of any size: mature orchestration, credential handling and a component ecosystem. Heavy and licensed per runtime, which stops making sense below roughly a dozen bots.',
+        },
+        {
+          icon: 'Shield',
+          title: 'Regulated and legacy-heavy estates',
+          managed: 'Blue Prism',
+          selfHosted: 'Strong where audit posture drives the choice',
+          desc: 'Unattended-first by design, with a control model that regulated operations teams tend to find easier to evidence. Weaker where the work is attended or desktop-side.',
+        },
+        {
+          icon: 'Zap',
+          title: 'Microsoft-estate automation',
+          managed: 'Power Automate Desktop',
+          selfHosted: 'Often already licensed and unused',
+          desc: 'Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Process intelligence',
+          managed: 'Celonis, SAP Signavio, UiPath Process Mining',
+          selfHosted: 'Before the backlog, not after it',
+          desc: 'How you find out which processes are worth a bot, from event logs rather than from a workshop. Most estates skip this and automate whatever the loudest team asked for, which is why the backlog and the benefit case diverge.',
+        },
+        {
+          icon: 'Network',
+          title: 'Workflow and orchestration',
+          managed: 'ServiceNow, Camunda, Appian, Pega',
+          selfHosted: 'Where the bot is a step, not the process',
+          desc: 'A bot should be invoked by a governed workflow rather than be the workflow. Where the process itself needs designing, that work sits on our business process management and digital process automation services.',
+        },
+        {
+          icon: 'Lock',
+          title: 'Credentials and bot identity',
+          managed: 'CyberArk, HashiCorp Vault, platform-native vaults',
+          selfHosted: 'Whatever your PAM team already runs',
+          desc: 'Non-negotiable past the first bot. A password in a config file is the finding that ends an RPA program in a regulated group, and retrofitting a vault across a live estate is far worse than starting with one.',
+        },
+        {
+          icon: 'Eye',
+          title: 'Monitoring and alerting',
+          managed: 'Platform dashboards plus your own observability stack',
+          selfHosted: 'Output checks, not exit codes',
+          desc: 'Platform monitoring reports whether the run finished. It cannot tell you the bot wrote the wrong value into the right field, so the checks that matter are written against the output.',
+        },
+        {
+          icon: 'Network',
+          title: 'The alternative to all of the above',
+          managed: 'REST, SOAP, database, file transfer, iPaaS',
+          selfHosted: 'Always evaluated before a bot is proposed',
+          desc: 'If a usable API exists, integration wins on cost, speed and durability, and we will say so before quoting a build. RPA is the answer when that door is closed \u2014 not the first thing to try.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve RPA questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the ones an automation lead and a CIO actually open
+    // with, and five of them are questions an RPA vendor would rather not be
+    // asked: is RPA dead, why do our bots keep breaking, what does maintenance
+    // really cost, should this be an integration, and what happens when the
+    // savings were never real.
+    customFAQs: [
+      {
+        q: 'Is RPA dead now that we have AI agents?',
+        a: 'No, and the people saying so are usually selling the replacement.\n\nWhat has genuinely changed is the scope. Work that needed a bot because it involved reading a document or making a judgment call is now better served by document intelligence or a model. That is a real reduction in RPA\u2019s territory and we would not pretend otherwise.\n\nWhat has not changed is the underlying condition. A mainframe with no API is exactly as closed to an AI agent as it is to a bot \u2014 an agent that needs to use that system still has to drive the interface, and at that point it is doing RPA with a language model attached. The fragility does not disappear, it just gets a better narrator.\n\nSo the honest position: RPA\u2019s share of new automation is shrinking, the estates already built are not going anywhere, and the interesting work has moved from building more bots to running the ones you have properly.',
+      },
+      {
+        q: 'Why do our bots keep breaking?',
+        a: 'Because they depend on a surface somebody else controls, and that is the deal RPA makes rather than a defect in your build.\n\nThe usual causes, in order: an application update moved or renamed an element; the automation used a brittle locator such as a screen coordinate or a generated identifier; the environment drifted so the bot met a different screen resolution, browser version or session state; or a data case appeared that the original rules never covered.\n\nWhat reduces it is unglamorous. Locators anchored to something stable rather than to position. Tests that run against a new application build before the bot does. Awareness of your vendors\u2019 release calendars, which almost nobody tracks. And monitoring that checks what was written rather than whether the script reached its final line.\n\nWe measure break-fix load as a share of development capacity, because it is the number that tells you whether an estate is sustainable, and almost no business case includes it.',
+      },
+      {
+        q: 'Should this be a bot, or should it be an integration?',
+        a: 'An integration, if a usable API exists. We will say so before quoting a build, and it costs us the larger engagement.\n\nAn API-based integration is faster to run, cheaper to operate, and does not break when a screen layout changes. A bot is the right answer in one situation: the system has no usable interface and will not get one on any timeline that helps you. Mainframes, thick clients, vendor packages, third-party portals you do not control.\n\nThe gray area is the system that has an API in theory \u2014 documented but not exposed, or exposed but requiring a vendor change request with a nine-month queue. There, a bot is often the correct interim answer, with the explicit expectation that it is retired when the integration lands. We write that retirement into the design rather than leaving it to good intentions.',
+      },
+      {
+        q: 'What does an RPA program actually cost to run, not to build?',
+        a: 'Build is the smaller number and the one everybody plans for. Three things make up the rest.\n\nLicensing: unattended runtimes are charged whether or not they execute anything, so an estate with poor scheduling pays for idle capacity every month. We routinely find utilization well under half, which is a cost reduction available without touching a single bot.\n\nMaintenance: the developer time spent repairing automations after application changes. On an unmanaged estate this consumes the majority of a team\u2019s capacity within about two years, which is why the build backlog stops moving and nobody can quite explain why.\n\nOperations: monitoring, incident response, credential rotation, access recertification. Small per bot, and not small across forty.\n\nWe are pre-launch and do not publish rate cards. What we will commit to is that the assessment is scoped so you can stop after it and own the findings.',
+      },
+      {
+        q: 'How many bots should we expect to end up with?',
+        a: 'Fewer than you are being told, and that is the healthier answer.\n\nBot count is a vanity measure. It counts activity, not result, and it rewards building automations that should have been a configuration change. Estates optimized for bot count reliably contain duplicates built by two teams who never spoke, automations for processes since retired, and bots running monthly against systems that now expose APIs.\n\nThe measures worth holding a program to are hours removed per bot maintained, break-fix load as a share of capacity, and license utilization. On a mature estate, retiring a third of the bots without losing coverage is common and frees more delivery capacity than the next ten builds would consume.',
+      },
+      {
+        q: 'What is the difference between attended and unattended automation?',
+        a: 'Where the bot runs and who is beside it, and the two are different engineering problems rather than a setting.\n\nUnattended runs on a server against a queue, on a schedule, with no human present. It needs its own identity, credentials, exception handling and monitoring, because when it fails at three in the morning nobody is watching.\n\nAttended runs on a person\u2019s desktop and is triggered by them, typically to remove retyping across applications during a call. Technically simpler, socially harder \u2014 attended automation is abandoned far more often than it fails, because it was deployed without the people who were supposed to use it being involved in designing it.\n\nHybrid work starts attended, hands to an unattended queue, and returns for a decision. That is usually the right shape for anything customer-facing, and it needs the handback designed rather than improvised.',
+      },
+      {
+        q: 'Can you automate our mainframe, or Citrix sessions?',
+        a: 'Yes, and this is where RPA earns its keep rather than where it struggles.\n\nTerminal emulation is in many ways the most stable surface available: a green screen does not get a redesign. Field positions are fixed and behavior is predictable, so mainframe bots are often the longest-lived automations in an estate.\n\nCitrix and virtual desktops are the opposite. Where the session is published as an application the platform can usually see the elements. Where you get a video stream, the bot works from image recognition and coordinates, which is genuinely fragile \u2014 resolution changes, latency and a moved window all break it. We build it when there is no alternative and we tell you the maintenance profile before you commit rather than after.',
+      },
+      {
+        q: 'How do you handle security and audit for bots?',
+        a: 'By treating a bot as a named actor rather than as a script that borrows somebody\u2019s account.\n\nEach bot gets its own identity with least-privilege access scoped to the systems it actually touches. Credentials live in a vault your PAM team already runs, never in configuration. Every action is attributable to that identity in the audit trail, so a reviewer can answer who did this without the answer being a developer who left last year.\n\nSegregation of duties matters more than it first appears: a bot that can both raise and approve a payment is a control failure regardless of how carefully it was built. That gets designed at the start, because retrofitting identity across a live estate is materially harder than starting with it.',
+      },
+      {
+        q: 'We inherited an estate nobody understands. Where do we start?',
+        a: 'With an inventory, and it is usually the most valuable fortnight of the engagement.\n\nWhat exists, what each bot touches, who owns it, when it last ran successfully, what it costs in runtime, and whether the process it serves still exists. Estates past about thirty bots very rarely have this, and the gaps are where the risk sits \u2014 a bot running weekly against a system nobody knew was still in scope.\n\nThe inventory usually produces three piles: automations worth keeping and bringing to standard, duplicates and dead bots to retire, and a handful that should be replaced by integrations that now exist. Acting on the second and third piles typically frees more capacity than the first year of a new build program.',
+      },
+      {
+        q: 'Who maintains the bots after you leave?',
+        a: 'Your team, and we build on that assumption from the first sprint rather than negotiating it at handover.\n\nThat means bots built to a documented standard from a shared component library, source-controlled and peer-reviewed, with a runbook per automation covering the failure modes we actually hit during delivery rather than the ones we imagined. It means your developers pairing on the build instead of receiving a document at the end.\n\nIt also means being straight about the ongoing load: an estate needs a maintenance budget, and a program resourced for build only will stall in year two. If carrying it is not realistic, we run estates under a service level and price that separately. The line we hold is that your bots must remain operable by your own people \u2014 an estate only we can maintain is a commercial arrangement, not an engineering outcome.',
+      },
+      {
+        q: 'The savings in our original business case never appeared. What went wrong?',
+        a: 'Almost always one of three things, and none is a technology failure.\n\nThe baseline was never measured. Handling time was estimated from what people believed the process took, savings were asserted against that estimate, and nothing was measured afterwards because there was nothing credible to measure against.\n\nThe hours were removed but the cost was not. A bot saving twenty minutes across forty people does not remove a headcount, and if the business case was written as headcount it was wrong on the day it was signed. Capacity released is a real benefit; it is not the same benefit.\n\nOr the maintenance load ate it. Savings were booked once and the repair cost recurs, so by year two the team is fully occupied keeping the estate alive and the net is negative.\n\nWe baseline during qualification, before anything is built, and report against that baseline afterwards. It makes our numbers smaller and defensible.',
+      },
+      {
+        q: 'How does RPA relate to your other automation services?',
+        a: 'Four layers of the same problem, and mixing them up is what makes programs fail.\n\nThis service is the narrowest and most specific: driving applications through the interface where no API exists. Intelligent automation adds the AI layer on top \u2014 document understanding, classification, decisions that rules cannot express. Digital process automation is for work that has no application at all, where the answer is to build one rather than to automate around its absence. Business process management is the discipline above all three: how the process is designed, owned, standardized across markets and governed.\n\nThe order matters. Bots deployed onto a process nobody redesigned make an unmanaged process faster, which is why so many estates plateau and then quietly shrink. If you are not sure which of the four you need, the estate assessment answers it, and it is the cheapest way to find out.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // The first package is an assessment of an estate that already exists,
+    // deliberately ahead of any build offer. Most inbound RPA conversations are
+    // not "we want bots", they are "we have forty and they keep breaking", and
+    // a page that only sells new builds is answering a question nobody asked.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'including the way out.',
+    engagementLede: 'Most groups arrive with an estate rather than an idea. The useful first engagement is usually an assessment of what is already running, not a proposal to build more.',
+    servicePackages: [
+      {
+        name: 'Bot Estate Assessment',
+        description: 'For estates that already exist and are getting harder to run. What you have, who owns it, what it costs in runtime and repair, and which of it should be retired rather than fixed.',
+        deliverables: [
+          'Full inventory with ownership and business criticality per bot',
+          'Break-fix load measured against development capacity',
+          'License utilization and runtime cost attributed per process',
+          'Duplicate and overlap identification across teams',
+          'Retire, rebuild, replace-with-integration recommendation per bot',
+        ],
+      },
+      {
+        name: 'Feasibility & Pilot',
+        description: 'For a first automation, or a first one after a failed attempt. One process, qualified honestly, built to standard and put in production \u2014 with the answer possibly being that it should not be a bot.',
+        deliverables: [
+          'Process suitability assessment with an explicit go or no-go',
+          'API and integration alternatives evaluated before any build',
+          'One production bot, not a demo on a developer machine',
+          'Measured before-and-after handling time against a baseline',
+          'Costed proposal for what a wider program would actually take',
+        ],
+      },
+      {
+        name: 'Bot Development',
+        description: 'Delivery at volume against your platform and your standards. Where no standards exist yet, establishing them is part of the first engagement rather than an afterthought.',
+        deliverables: [
+          'Automation design document per process before build',
+          'Bots built to naming, logging and error-handling standards',
+          'Shared component library so the fifth bot is faster than the first',
+          'Regression test pack covering the interfaces each bot depends on',
+          'Runbook per bot with the failure modes found during delivery',
+        ],
+      },
+      {
+        name: 'Platform Migration & Modernization',
+        description: 'Moving an estate between RPA platforms, off a version out of support, or off bots entirely where an integration has since become available. Rarely a straight port.',
+        deliverables: [
+          'Migration assessment with per-bot complexity scoring',
+          'Rebuild-versus-port decision per automation',
+          'Bots replaced by integrations where an API now exists',
+          'Parallel run with output comparison before cutover',
+          'Decommissioning of the old estate with retained evidence',
+        ],
+      },
+      {
+        name: 'Managed Bot Operations',
+        description: 'Running the estate under a service level, including the break-fix work when applications change. For teams who want the automation without carrying a maintenance team for it.',
+        deliverables: [
+          'Round-the-clock monitoring at the output, not just the run status',
+          'Break-fix within agreed response times when interfaces change',
+          'Robotic Operations Center with queue and schedule management',
+          'Monthly reporting on utilization, failures and cost per process',
+          'Continuous rationalization rather than unbounded estate growth',
+        ],
+      },
+    ],
+
+    // ── By function ─────────────────────────────────────────────────────────
+    // This slot renders the industry grid elsewhere. DPA uses it for industries
+    // at the application-gap layer, BPM for enterprise value streams. Here it
+    // carries back-office functions, because that is how an RPA estate is
+    // actually owned -- by a finance shared service or an insurance operations
+    // team, never by a sector.
+    //
+    // Expanded from three named processes per function to seven or eight,
+    // taken from the supplied use-case list. That is roughly sixty specific
+    // process names -- accounts payable, first notice of loss, three-way match,
+    // alert enrichment -- each a long-tail query in its own right, and none of
+    // them published anywhere else on the site. Security Operations was added
+    // from the same list; it is a genuine RPA use case and appeared on no
+    // Kangqore page.
+    //
+    // The headlines stay as written: each names the system that has no usable
+    // API, because that is the condition that makes a bot correct here rather
+    // than a workaround. The supplied list gives the what; the headline gives
+    // the why.
+    industryHeading: 'Robotic Process Automation',
+    industryHeadingHighlight: 'by function.',
+    industryLede: 'Nine back-office functions, the processes most often automated in each, and the system that has no usable interface \u2014 which is the condition that makes a bot the correct answer rather than a workaround.',
+    industryUseCases: [
+      {
+        industry: 'Finance & Accounting',
+        headline: 'The ERP has an API. The bank portal, the tax authority site and the supplier who only sends PDFs do not.',
+        items: [
+          'Accounts payable and invoice processing',
+          'Payment execution and confirmation',
+          'Bank statement retrieval and reconciliation',
+          'Purchase-order and goods-receipt matching',
+          'Period-close checklist execution',
+          'General ledger journal posting',
+          'Credit and collections chasing',
+          'Audit evidence and regulatory reporting packs',
+        ],
+      },
+      {
+        industry: 'Insurance Operations',
+        headline: 'Policy administration systems bought in the nineties, still load-bearing, still terminal-based.',
+        items: [
+          'Policy data entry across legacy admin systems',
+          'First-notice-of-loss intake from broker portals',
+          'Claims status retrieval and updates',
+          'Underwriting support and document collation',
+          'Renewal and endorsement processing',
+          'Premium reconciliation',
+          'Regulatory return preparation',
+        ],
+      },
+      {
+        industry: 'Banking Operations',
+        headline: 'Core banking that will not be replaced this decade, plus a dozen regulator portals with no machine interface.',
+        items: [
+          'Account opening and maintenance in core systems',
+          'Payment and transaction processing',
+          'KYC and periodic review data gathering',
+          'Sanctions and watchlist screening steps',
+          'Reconciliation across ledgers',
+          'Regulator portal submissions',
+          'Audit and evidence requests',
+        ],
+      },
+      {
+        industry: 'Human Resources',
+        headline: 'A cloud HR platform that integrates, surrounded by payroll bureaux and benefits providers that do not.',
+        items: [
+          'Employee onboarding and offboarding',
+          'HR data synchronization across systems',
+          'Access provisioning and revocation',
+          'Payroll input preparation and validation',
+          'Benefits and third-party provider updates',
+          'Candidate communication and scheduling',
+          'Workforce administration and record maintenance',
+        ],
+      },
+      {
+        industry: 'Supply Chain & Procurement',
+        headline: 'Supplier portals, each with its own login, none of them yours, all of them changing without notice.',
+        items: [
+          'Supplier portal order and status retrieval',
+          'Purchase order creation and confirmation',
+          'Goods receipt and three-way match',
+          'Supplier onboarding and data maintenance',
+          'Catalog and price file updates',
+          'Shipment tracking and exception chasing',
+          'Inventory data synchronization',
+        ],
+      },
+      {
+        industry: 'Customer Operations',
+        headline: 'An advisor holding four applications open, retyping the same reference number into each one.',
+        items: [
+          'Attended desktop assistants for advisors',
+          'Cross-system customer record lookup',
+          'Case creation and status synchronization',
+          'Customer data updates across applications',
+          'Document verification steps',
+          'Service request routing and enrichment',
+          'Outbound communication triggers',
+        ],
+      },
+      {
+        industry: 'IT Operations',
+        headline: 'Provisioning steps spread across tools that were each bought to solve one problem and integrated with none.',
+        items: [
+          'User provisioning and access requests',
+          'Password reset and account unlock workflows',
+          'Ticket triage, enrichment and routing',
+          'Routine health checks and evidence capture',
+          'Application monitoring follow-up actions',
+          'Change and release administration',
+          'License and asset reconciliation',
+        ],
+      },
+      {
+        industry: 'Security Operations',
+        headline: 'Analysts moving the same indicator between four consoles, none of which was bought to talk to the others.',
+        items: [
+          'Alert enrichment across security consoles',
+          'Security ticket creation and assignment',
+          'Threat intelligence lookup and correlation',
+          'Compliance evidence collection',
+          'Identity and access review steps',
+          'Vulnerability scan output processing',
+          'Reporting pack assembly',
+        ],
+      },
+      {
+        industry: 'Healthcare Administration',
+        headline: 'Clinical systems that will not be touched, and payer portals that change their layout without telling anyone.',
+        items: [
+          'Eligibility and prior-authorization portal checks',
+          'Claims status retrieval across payers',
+          'Patient registration and demographic entry',
+          'Coding and billing support steps',
+          'Referral processing and routing',
+          'Provider data maintenance',
+          'Administrative and compliance reporting',
+        ],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Both columns are bots that worked on the day they were demonstrated. The
+    // difference is entirely in what happens the first time somebody else's
+    // application changes -- which is the only thing that actually separates an
+    // RPA estate that survives from one that gets quietly switched off.
+    comparisonTable: {
+      eyebrow: 'DELIVERED VERSUS OPERATED',
+      heading: 'RPA Implementation vs. RPA Estate Operations.',
+      lede: 'Neither column describes bad engineering. They differ in what happens the first time somebody else ships a release you were not told about.',
+      beforeLabel: 'BOTS AS DELIVERABLES',
+      afterLabel: 'BOTS AS OPERATED SOFTWARE',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'DELIVERED',
+      afterShort: 'OPERATED',
+      rows: [
+        {
+          dimension: 'When the vendor ships an update',
+          before: 'A selector stops matching. The run fails, or worse completes against the wrong field, and somebody notices from the numbers a week later.',
+          after: 'Resilient locators where the application permits them, a tracked vendor release calendar, and regression tests that run against the new build before the bot does.',
+        },
+        {
+          dimension: 'How you know a run went wrong',
+          before: 'The orchestrator reports success because the script reached the end. Nothing checked what was actually written.',
+          after: 'Verification at the output: the record exists, the total reconciles, the file has the expected row count. A green run that wrote nothing raises an alert.',
+        },
+        {
+          dimension: 'Who the bot signs in as',
+          before: 'A developer\u2019s account, or a shared service account with a password in a config file and permissions nobody has reviewed since it was built.',
+          after: 'A named bot identity with least-privilege access, credentials in a vault, and every action attributable to that identity in your audit trail.',
+        },
+        {
+          dimension: 'What the licensed runtime costs',
+          before: 'Unattended licenses bought per bot, most of them idle overnight and at weekends, with no attribution of runtime cost to the process it serves.',
+          after: 'Queues and schedules packed so the runtime you pay for is executing, with cost per process reported and license count matched to real concurrency.',
+        },
+        {
+          dimension: 'When the person who built it leaves',
+          before: 'No design document, no naming convention, no reusable components. The bot runs until it does not, and then it is rebuilt from scratch.',
+          after: 'Built to a documented standard from a shared component library, with a runbook covering the failure modes we actually hit during delivery.',
+        },
+        {
+          dimension: 'What happens when an API finally ships',
+          before: 'The bot stays, because retiring it is nobody\u2019s objective and it still technically works.',
+          after: 'The bot is retired and replaced with the integration. We would rather remove our own work than bill you to maintain something the platform now does properly.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages, chosen so the array length is exactly five -- the template
+    // renders architectureNodes as a four-column grid otherwise, and five nodes
+    // get their own column each. Deliberately ends at Maintain rather than at
+    // Deploy: on this service the interesting half of the lifecycle starts
+    // after go-live, which is the whole argument of the page.
+    architectureEyebrow: 'THE BOT LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Qualify to Maintain.',
+    architectureLede: 'Five stages, and the one that decides the outcome is the last. Most RPA programs are resourced through Deploy and then surprised by what Maintain costs.',
+    architectureNodes: [
+      {
+        title: 'Qualify',
+        icon: 'Search',
+        description: 'Establish whether this should be a bot at all. High volume, stable rules, no usable API, and an exception rate that will not swamp the queue. Failing any of those, we say so before quoting a build.',
+        features: [
+          'Volume, variance and exception profiling',
+          'API and integration alternatives checked first',
+          'Application change frequency assessed',
+          'Effort, payback and runtime cost modeled',
+          'Explicit go or no-go recommendation',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Decide how the bot behaves before writing it: which locator strategy, which exceptions are handled and which are handed back, and what it means for a run to have succeeded.',
+        features: [
+          'Automation design document per process',
+          'Selector and locator strategy chosen',
+          'Exception paths and handback defined',
+          'Success criteria defined at the output',
+          'Reusable components identified up front',
+        ],
+      },
+      {
+        title: 'Build',
+        icon: 'Cpu',
+        description: 'Engineering to a standard rather than to a demo. Naming conventions, shared components, source control and peer review \u2014 unremarkable practice, routinely absent from RPA estates.',
+        features: [
+          'Development to documented standards',
+          'Shared component and template library',
+          'Source control, versioning and peer review',
+          'Credential vault integration from the start',
+          'Regression test pack built alongside the bot',
+        ],
+      },
+      {
+        title: 'Deploy',
+        icon: 'Rocket',
+        description: 'Into your environments, under your security review, with the bot identity and permissions agreed rather than assumed. This is the stage that slips, and it slips on access rather than on code.',
+        features: [
+          'Environment promotion and release process',
+          'Bot identity, permissions and vault setup',
+          'Orchestrator queues, triggers and schedules',
+          'Security review and access recertification',
+          'Hypercare with the build team still attached',
+        ],
+      },
+      {
+        title: 'Maintain',
+        icon: 'Activity',
+        description: 'The stage the business case forgets. Applications change on somebody else\u2019s calendar, and the measure of an estate is how much of your team is repairing rather than building.',
+        features: [
+          'Output-level monitoring and silent-failure alerts',
+          'Vendor release tracking and impact analysis',
+          'Break-fix load measured and reported',
+          'Runtime utilization and license rightsizing',
+          'Retirement when an integration supersedes the bot',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'ROBOTIC PROCESS AUTOMATION SERVICES',
+    capabilitiesSectionTitle: 'Robotic Process Automation',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Pick the processes worth a bot, build them so somebody else can maintain them, reach the systems that have no other way in, keep them running through everyone else\u2019s release cycles, and retire the ones that stopped earning their runtime.',
+    capabilityAreas: [
+      {
+        title: 'Automation Feasibility & Bot Design',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Deciding what deserves a bot before building one. Roughly half of what arrives on an RPA backlog should be an integration, a configuration change, or nothing at all, and finding that out early is the cheapest thing we do.',
+        items: [
+          'Process Suitability Assessment',
+          'API-vs-Bot Decision Analysis',
+          'Volume, Variance & Exception Profiling',
+          'Rule Extraction & Documentation',
+          'Automation Design Documents',
+          'Reusable Component Identification',
+          'Effort, Cost & Payback Modeling',
+          'Backlog Prioritization & Sequencing',
+          'Target Handling-Time Baselining',
+          'Build-Buy-Integrate Recommendation',
+        ],
+      },
+      {
+        title: 'Surface Automation for Systems With No API',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The reason this service exists. Mainframes, thick clients, Citrix sessions, vendor packages that will never expose an endpoint \u2014 automated through the only door available, with the fragility that implies managed rather than denied.',
+        items: [
+          'Mainframe & Terminal Emulation',
+          'Thick-Client & Legacy Desktop Automation',
+          'Citrix & Virtual Desktop Automation',
+          'Image, OCR & Coordinate-Based Automation',
+          'Web & Browser Automation',
+          'PDF & Document Surface Extraction',
+          'Cross-Application Data Transfer',
+          'Screen-Scraping Fallback Design',
+          'Vendor Package Automation',
+          'Air-Gapped & Restricted Environment Bots',
+        ],
+      },
+      {
+        title: 'Bot Resilience & Maintainability',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where RPA programs are actually won or lost. A bot fails silently, so the useful question is never whether the run finished \u2014 it is whether what the bot wrote is correct, and who found out first.',
+        items: [
+          'Resilient Selector Strategy',
+          'Anchor & Relative-Locator Patterns',
+          'Application Change Impact Analysis',
+          'Output Verification, Not Exit-Code Checks',
+          'Silent-Failure Detection',
+          'Retry, Backoff & Idempotency Design',
+          'Environment Drift Detection',
+          'Regression Testing Against UI Changes',
+          'Vendor Release Calendar Tracking',
+          'Self-Healing Where the Platform Supports It',
+          'Runbooks Per Bot',
+          'Break-Fix Load Measurement',
+        ],
+      },
+      {
+        title: 'Attended, Unattended & Hybrid Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where the bot runs and who is sitting next to it. Attended automation is a different engineering problem from unattended \u2014 different failure modes, different security posture, different reasons it gets abandoned.',
+        items: [
+          'Unattended Bot Development',
+          'Attended & Desktop Assistant Automation',
+          'Hybrid Attended-Unattended Workflows',
+          'Front-Office Agent Assist',
+          'Trigger, Queue & Schedule Design',
+          'Work Allocation & Load Balancing',
+          'Human Handback & Exception Queues',
+          'Long-Running & Multi-Session Bots',
+          'End-User Adoption & Training',
+          'Desktop Deployment & Update Management',
+        ],
+      },
+      {
+        title: 'Bot Identity, Credentials & Controls',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A bot signs in as somebody. Whose account, holding which permissions, storing which password, and traceable how \u2014 questions that are trivial for one bot and a finding waiting to be written across forty.',
+        items: [
+          'Bot Identity & Service Account Design',
+          'Credential Vault Integration',
+          'Least-Privilege Access Modeling',
+          'Segregation of Duties for Bots',
+          'Privileged Access Management',
+          'Per-Bot Audit Trail & Attribution',
+          'Data Handling & Masking in Transit',
+          'Regulated-Process Controls',
+          'Bot Onboarding & Offboarding Procedure',
+          'Access Recertification',
+          'Security Review Preparation',
+        ],
+      },
+      {
+        title: 'Orchestrator Operations & Runtime Economics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Running the estate day to day, and the part of RPA nobody costs properly: unattended runtime is licensed whether it executes anything or not, so idle capacity is a line item you are already paying.',
+        items: [
+          'Orchestrator & Control Room Setup',
+          'Queue Architecture & Transaction Design',
+          'Schedule Optimization & Runtime Packing',
+          'Capacity Planning & Concurrency Modeling',
+          'License Utilization Analysis',
+          'Runtime Cost Attribution by Process',
+          'Environment & Release Management',
+          'Bot Performance Monitoring',
+          'Incident Response & On-Call Runbooks',
+          'Robotic Operations Center Setup',
+          'SLA Definition & Reporting',
+          'Managed Bot Operations',
+        ],
+      },
+      {
+        title: 'Estate Rationalization, Migration & Retirement',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Most mature estates carry bots nobody owns, duplicates built by two teams, and automations that should have been retired when the API shipped. Cleaning that up frees more capacity than the next ten builds.',
+        items: [
+          'Bot Estate Inventory & Ownership Mapping',
+          'Duplicate & Overlap Identification',
+          'Bot Debt Assessment',
+          'Retire, Rebuild or Replace Decisions',
+          'Replacing Bots With Integrations',
+          'RPA Platform Migration',
+          'Version Upgrade & Compatibility Testing',
+          'Legacy Bot Refactoring to Standards',
+          'Citizen-Developer Bot Consolidation',
+          'License Rightsizing',
+          'Decommissioning With Evidence',
+        ],
+      },
+    ],
+
+    midCta: 'The pilot ran beautifully. Year two is the one to plan for.',
+    midCtaLabel: 'Review One Bot Estate',
+    closingCta: {
+      title: 'One estate,',
+      highlight: 'honestly assessed.',
+      body: 'Show us what you have running. In 30 minutes we will tell you which bots are worth keeping, which should have been an integration, and what the break-fix load is really costing you \u2014 before anyone proposes building more.',
+      proofLabel: 'From first call to a costed estate assessment',
+    },
   },
 
   'business-process-management': {
@@ -6760,12 +7428,828 @@ export const servicesData = {
     name: 'Quality Engineering & Assurance',
     departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Comprehensive quality engineering services',
-    fullDescription: 'Ensure product quality through comprehensive testing and quality assurance practices.',
-    keyFeatures: ['Test strategy', 'Test automation', 'Performance testing', 'Security testing', 'Quality metrics'],
-    relatedServiceSlugs: ['devops-as-a-service', 'software-development', 'it-security-services'],
+    shortDescription: 'Engineering the test suite as a product, so a green build means something',
+    fullDescription: 'Design, build and operate the tests, environments and release gates that decide whether a change is safe to ship — and keep that signal trustworthy as the system grows.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Test strategy', 'Automation engineering', 'Flake reduction', 'Performance engineering', 'Test data & environments', 'Release gates'],
+    relatedServiceSlugs: ['devops-as-a-service', 'api-microservices-engineering', 'it-security-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
+    // Real date, set when this page was written. Emitted as dateModified in the
+    // WebPage node by seo/serviceSchema.js. Only pages carrying this key get a
+    // date, so no service publishes a freshness claim nobody made.
+    lastReviewed: '2026-08-23',
+
+    // ── Positioning ──────────────────────────────────────────────────
+    // 718 bytes on the Shield parity default, which put "Reactive Security vs.
+    // Governed Zero-Trust Security" and a SIEM/IAM toolchain on a page about
+    // testing software. 27/40.
+    //
+    // The whole category says the same four things: shift-left, continuous
+    // testing, AI-generated tests, measurable outcomes. HCLTech, Capgemini,
+    // Cognizant and Infosys are interchangeable on it. Nothing in that pitch is
+    // wrong, and none of it is an argument.
+    //
+    // The wedge is the half nobody sells: a test suite is software too, and in
+    // most enterprises it is the largest codebase with no owner. It accumulates
+    // flake, its runtime creeps until engineers stop running it locally, and at
+    // some point a team crosses a line it cannot see -- the build goes red and
+    // the first reaction is to press retry. After that every additional test is
+    // money spent on a signal nobody reads, and generating more of them with a
+    // model just gets there faster.
+    //
+    // So the page is organized around trust in the signal rather than around
+    // coverage. Capability area 02 exists nowhere else in the market at this
+    // depth, area 07 is the frontier problem (systems that do not answer the
+    // same way twice), and the outcomes are flake rate, time to verdict, suite
+    // maintenance load and change failure rate -- not defect escape rate and
+    // automation coverage, which every competitor publishes and which cannot be
+    // falsified without the client's baseline.
+    //
+    // Scope discipline matters more here than on any other page, because
+    // testing touches everything and the draft that arrived claimed twenty
+    // capability areas including cloud IaC, data warehouse testing, model
+    // fairness, penetration testing and business continuity. Those belong to
+    // devops-as-a-service, big-data, ai-governance, it-security-services and
+    // managed-infrastructure-services respectively. What survived is what a
+    // quality engineering team is actually accountable for, and the boundary is
+    // stated out loud in the practice cluster, the toolchain and FAQ 12.
+    heroTitle: 'Quality Engineering for a Build\nYou Can Actually Believe',
+    heroBadge: 'Engineered. Measured. Owned.',
+    heroStripItems: [
+      'Test Strategy', 'Automation Engineering', 'Flake Reduction', 'Contract Testing',
+      'Performance Engineering', 'Test Data & Environments', 'AI Evaluation Harnesses', 'Release Gates',
+    ],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'What quality engineering is actually for',
+    whatIsTitle: 'A Green Build Is a Claim.',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'It Is Not Evidence.',
+    whatIsPara2: 'Quality engineering is the work of turning the question the business keeps asking — is this change safe to ship — into an answer somebody is willing to sign. Testing gathers the evidence. The engineering is everything around it: deciding what is worth testing and what deliberately is not, building a suite fast enough to be part of the work rather than a queue in front of it, and keeping the result trustworthy for longer than one quarter.',
+    whatIsPara3: 'The part almost nobody resources is that the suite is software too, and in most enterprises it is the largest codebase without an owner. It accumulates. A test fails for a reason unrelated to the change, so it gets retried, then muted, then forgotten. Runtime creeps from four minutes to forty, so engineers batch their changes and stop running it locally. Then a team crosses a line it cannot see: the build goes red and the first reaction is to press retry rather than to read the failure.',
+    whatIsPara4: 'After that point, every extra test you write is money spent on a signal nobody reads — and generating them with a model only gets you there faster. So Kangqore engineers the suite as a product with an owner, a budget and a service level. Flake measured and driven down before coverage is widened. Runtime treated as a delivery constraint. Test data that is legal to hold and realistic enough to be worth running against. Environments that exist when somebody needs one. And a release gate that blocks on evidence a release manager can read, not on a percentage nobody can defend.',
+
+    // ── Outcomes ────────────────────────────────────────────────────
+    // Not defect escape rate and automation coverage. Both are on every
+    // competitor page, both move for reasons unrelated to the work, and neither
+    // is checkable without the client's own baseline.
+    //
+    // These four are what a head of engineering is judged on once a suite is
+    // past its first thousand tests: whether a red build means anything, how
+    // long a verdict takes, how much of the week goes to repairing tests rather
+    // than writing product, and whether deploys are getting safer. The fourth
+    // is a published DORA metric, so it is comparable outside this page.
+    outcomesEyebrow: 'WHAT DECIDES WHETHER A TEST SUITE SURVIVES',
+    outcomesHeading: 'Four numbers that decide',
+    outcomesHeadingHighlight: 'whether anyone reads the build.',
+    businessMetrics: [
+      { illustrative: true, title: 'Signal Trust',          desc: 'Share of red builds caused by a real defect rather than a flaky test, after the worst offenders are root-caused, rewritten or deleted rather than muted.',            value: '95', suffix: '%',   metricLabel: 'Failures That Are Real',      icon: 'ShieldCheck' },
+      { illustrative: true, title: 'Time to Verdict',       desc: 'Wall-clock from a push to a result an engineer can act on, after parallelization, change-impact selection and removing tests that were never load-bearing.',        value: '15', suffix: ' Min', metricLabel: 'Commit to a Usable Answer',   icon: 'Zap' },
+      { illustrative: true, title: 'Suite Maintenance Load', desc: 'Reduction in engineering time spent repairing the suite rather than building product, once tests are owned, layered correctly and stop asserting on non-contracts.', value: '50', suffix: '%',   metricLabel: 'Less Time Repairing Tests',   icon: 'Activity' },
+      { illustrative: true, title: 'Change Failure Rate',   desc: 'Reduction in deployments that cause a production incident or need a rollback, measured against your own baseline rather than an industry benchmark.',                value: '40', suffix: '%',   metricLabel: 'Fewer Deploys That Bite Back', icon: 'TrendingUp' },
+    ],
+
+    // ── Engagement outcomes ────────────────────────────────────────
+    // Overridden rather than left on the parity default, which invents a client
+    // called "Global Enterprise Organization" and asserts "100% operational
+    // reliability". On a quality assurance page, an unfalsifiable reliability
+    // claim about a client that does not exist is the most damaging sentence
+    // that could be published. These say what they are in the descriptor.
+    outcomeCard: {
+      illustrative: true,
+      metric: '14h → 26m',
+      metricLabel: 'regression wall-clock',
+      industry: 'Modeled scenario — commerce platform, ~40 engineers',
+      problem: 'An overnight regression suite of 4,000 browser tests that nobody could run before merging, with roughly one run in three failing for reasons unrelated to the change.',
+      outcome: 'Assertions pushed down to API and contract level, the browser suite cut to the journeys that genuinely need a browser, the remainder sharded and change-selected. The figures are modeled from typical suite profiles, not measured on a named client.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '31% → 4%',
+      metricLabel: 'of failures that were flaky',
+      industry: 'Modeled scenario — regulated financial services release train',
+      problem: 'A quarantine folder with 180 tests in it, no expiry dates, and a release board that had stopped treating a red build as a reason to hold.',
+      outcome: 'Flake root-caused by class — shared state, timing, test-order dependence — with an expiry date on every quarantined test. Modeled figures, offered to show the shape of the work rather than to represent a specific engagement.',
+    },
+
+    // ── Capability areas ───────────────────────────────────────────
+    // Nine areas, and the test applied to every entry was whether a quality
+    // engineering team would be held accountable for it at a steering meeting.
+    //
+    // What that test excluded, and where it went instead: Terraform and
+    // Kubernetes validation -> devops-as-a-service. Data warehouse, lake and BI
+    // testing -> big-data and analytics. Model fairness, explainability and
+    // responsible AI -> ai-governance. Production model monitoring and drift ->
+    // mlops. Penetration testing, identity and the security program ->
+    // it-security-services. Disaster recovery and business continuity ->
+    // managed-infrastructure-services. Process redesign ->
+    // business-process-management.
+    //
+    // Areas 02 and 07 are the two that are not on a competitor page. 02 treats
+    // the suite as an owned asset with a flake rate, a runtime budget and a
+    // retirement policy. 07 is testing systems that do not return the same
+    // answer twice, which breaks the assumption every framework listed in 03 is
+    // built on.
+    capabilitiesLabel: 'QUALITY ENGINEERING & ASSURANCE SERVICES',
+    capabilitiesSectionTitle: 'Quality Engineering',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Decide what is worth testing and write down what is not. Build a suite somebody owns. Keep it fast enough to run on every change. Prove the things that only break under load. Then give the release decision evidence instead of a percentage.',
+    capabilityAreas: [
+      {
+        title: 'Test Strategy, Risk Scoping & Quality Architecture',
+        image: '/images/capabilities/quality-testing.png',
+        desc: 'Deciding what gets tested and, more usefully, what does not. Every suite has a budget in runtime and maintenance, and strategy is how that budget gets spent on the failures that would actually hurt.',
+        items: [
+          'Quality Risk Assessment',
+          'Critical Path & Blast-Radius Mapping',
+          'Test Layer Design Across Unit, API, Contract and UI',
+          'Coverage Argued by Risk, Not by Percentage',
+          'Definition of Done & Entry-Exit Criteria',
+          'Existing Suite Architecture Review',
+          'Toolchain Rationalization',
+          'QE Operating Model & Team Design',
+          'Quality Metrics That Can Be Falsified',
+          'Deliberate Non-Coverage Register',
+        ],
+      },
+      {
+        title: 'The Test Suite as an Engineered Asset',
+        image: '/images/capabilities/quality_mod_dark.png',
+        desc: 'The second product you ship, and usually the only codebase without an owner. Flake, runtime and maintenance load are engineering problems with engineering fixes, and between them they decide whether anybody still changes their behavior when the build turns red.',
+        items: [
+          'Flake Rate Measurement & Baselining',
+          'Flaky Test Root-Cause Classification',
+          'Quarantine Policy With an Expiry Date',
+          'Test Isolation & Shared-State Repair',
+          'Time, Timezone & Ordering Determinism',
+          'Suite Runtime Profiling',
+          'Parallelization & Sharding',
+          'Change-Impact Test Selection',
+          'Over-Specified Assertion Review',
+          'Test Code Standards & Review Practice',
+          'Dead and Duplicate Test Retirement',
+          'Suite Ownership & Maintenance Budget',
+        ],
+      },
+      {
+        title: 'Test Automation Across the Pyramid',
+        image: '/images/capabilities/software-engineering.png',
+        desc: 'Automation placed where it is cheapest to run and least likely to lie. Most estates are inverted — a slow, expensive browser suite standing in for tests that should have been written three layers further down.',
+        items: [
+          'Unit & Component Test Engineering',
+          'Property-Based & Fuzz Testing',
+          'API and Service-Level Automation',
+          'Consumer-Driven Contract Testing',
+          'Integration Test Design',
+          'End-to-End Journey Automation',
+          'Cross-Browser & Cross-Device Execution',
+          'Native and Hybrid Mobile Automation',
+          'Visual Regression Testing',
+          'Mutation Testing to Grade the Suite',
+          'Framework Build & Page-Object Design',
+          'Test Pyramid Rebalancing',
+        ],
+      },
+      {
+        title: 'Continuous Testing, Release Gates & Quality Intelligence',
+        image: '/images/capabilities/devops-modernization-illustration.png',
+        desc: 'What blocks a deploy, and on what evidence. A gate everyone learns to override is worse than no gate, so the real question is which failures are worth stopping a release for and who is allowed to decide.',
+        items: [
+          'Pipeline Test Orchestration',
+          'Pre-Merge and Post-Merge Test Split',
+          'Release Gate Design & Override Policy',
+          'Build Health and Red-Build Response',
+          'Canary and Blue-Green Verification',
+          'Feature Flag Test Strategy',
+          'Production Smoke and Synthetic Checks',
+          'Escaped Defect Analysis',
+          'Test Result Aggregation & Reporting',
+          'Release Readiness Evidence Pack',
+          'DORA Metric Instrumentation',
+          'Quality Reporting for Non-Engineers',
+        ],
+      },
+      {
+        title: 'Performance, Load & Resilience Engineering',
+        image: '/images/capabilities/cloud-infrastructure.png',
+        desc: 'The failures that only appear under conditions no functional test creates. Performance is a design property, and a load test at the end of a program mostly tells you what you can no longer afford to change.',
+        items: [
+          'Performance Requirements & SLO Definition',
+          'Load, Soak and Spike Testing',
+          'Stress and Breakpoint Analysis',
+          'Scalability & Concurrency Modeling',
+          'Latency Profiling and Bottleneck Analysis',
+          'Database and Query Performance Testing',
+          'API Throughput Validation',
+          'Front-End Performance & Core Web Vitals',
+          'Capacity Planning Evidence',
+          'Fault Injection and Chaos Experiments',
+          'Failover and Recovery Validation',
+          'Peak Event Readiness Rehearsal',
+        ],
+      },
+      {
+        title: 'Test Data & Environment Engineering',
+        image: '/images/capabilities/data-analytics.png',
+        desc: 'The two things that stop testing more often than any missing framework. A suite nobody can run because the environment is taken, against data nobody is allowed to copy, is a suite that quietly stops being run.',
+        items: [
+          'Synthetic Test Data Generation',
+          'Production Data Masking & Anonymization',
+          'Referentially Intact Subsetting',
+          'Edge-Case and Boundary Data Design',
+          'Data Refresh and Reset Automation',
+          'Ephemeral Environment Provisioning',
+          'Containerized Dependencies for Tests',
+          'Service Virtualization & Stubbing',
+          'Third-Party Sandbox Management',
+          'Environment Parity and Drift Detection',
+          'Environment Contention Removal',
+          'Regulatory Controls on Test Data',
+        ],
+      },
+      {
+        title: 'Testing Systems That Do Not Answer the Same Way Twice',
+        image: '/images/capabilities/cognitive-generative-ai.png',
+        desc: 'AI features break the assumption every test framework is built on: that one input gives one output. Assertions become thresholds, pass becomes a distribution, and a regression is a shift you can only see if you were already measuring.',
+        items: [
+          'Evaluation Sets Built From Real Traffic',
+          'Golden Dataset Curation & Versioning',
+          'Threshold and Tolerance Design',
+          'Retrieval Quality Evaluation for RAG',
+          'Grounding and Hallucination Checks',
+          'Prompt and Model Version Regression',
+          'LLM-as-Judge Harnesses, With Limits Stated',
+          'Adversarial and Jailbreak Test Suites',
+          'Latency and Cost Regression on Model Calls',
+          'Human Review Sampling Design',
+          'Non-Determinism Containment in CI',
+          'Evaluation Results as a Release Gate',
+        ],
+      },
+      {
+        title: 'Accessibility, Experience & Cross-Platform Validation',
+        image: '/images/capabilities/ux-design.png',
+        desc: 'Accessibility is a legal requirement in most markets you sell into, and automated tooling finds only part of it. The rest is a keyboard, a screen reader and somebody who knows what a real failure looks like.',
+        items: [
+          'WCAG 2.2 AA Conformance Testing',
+          'Automated Accessibility Scanning in CI',
+          'Manual Keyboard and Focus-Order Testing',
+          'Screen Reader Testing on NVDA, JAWS and VoiceOver',
+          'EN 301 549 and Section 508 Evidence',
+          'Accessibility Statement Substantiation',
+          'Cross-Browser Compatibility Matrix',
+          'Device and Viewport Coverage Strategy',
+          'Core Web Vitals Lab and Field Validation',
+          'Localization and Internationalization Testing',
+          'Layout and Visual Regression',
+          'Assistive Technology Regression Suites',
+        ],
+      },
+      {
+        title: 'Packaged Applications, Migration & Parity Assurance',
+        image: '/images/capabilities/application-modernization-illustration.png',
+        desc: 'Testing systems you did not write and cannot change, through upgrades you do not control. SAP, Oracle, Salesforce and Dynamics move on the vendor’s calendar, and a migration moves the data, the process and the code at the same time.',
+        items: [
+          'SAP Business Process Test Automation',
+          'Oracle and Microsoft Dynamics Regression',
+          'Salesforce and ServiceNow Release Testing',
+          'Vendor Upgrade Impact Assessment',
+          'Configuration and Role Permission Testing',
+          'Cross-Module Business Process Validation',
+          'Data Migration Reconciliation',
+          'Functional Parity Testing, Old Against New',
+          'Parallel Run and Output Comparison',
+          'Cutover Rehearsal and Rollback Testing',
+          'Interface and Integration Regression',
+          'Post-Migration Stabilization',
+        ],
+      },
+    ],
+
+    // ── Lifecycle ───────────────────────────────────────────────────
+    // Five nodes, because the template lays architectureNodes out four to a row
+    // otherwise and five each get their own column. A loop rather than a
+    // waterfall, and it deliberately ends on Learn: closing the gap between
+    // what escaped and which test should have caught it is the stage every
+    // program funds last and the only one that compounds.
+    architectureEyebrow: 'THE QUALITY LOOP',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Scope to Learn.',
+    architectureLede: 'Five stages, and the one that decides the outcome is the last. Most programs are resourced through Run and never close the loop between what reached production and which test should have caught it.',
+    architectureNodes: [
+      {
+        title: 'Scope',
+        icon: 'Search',
+        description: 'Establish what a failure would actually cost, path by path, and set the testing budget against that rather than against a coverage target. The output includes what will deliberately not be covered, written down where a reviewer can see it.',
+        features: [
+          'Critical path and blast-radius mapping',
+          'Failure cost weighted by business impact',
+          'Test layer chosen per risk, not per habit',
+          'Runtime and maintenance budget agreed',
+          'Deliberate non-coverage recorded',
+        ],
+      },
+      {
+        title: 'Engineer',
+        icon: 'Layers',
+        description: 'Build the suite the way you would build a product: an owner, standards, code review, and assertions written against contracts rather than against whatever the implementation happened to do that week.',
+        features: [
+          'Framework and fixture architecture',
+          'Assertions on contracts, not internals',
+          'Deterministic setup and teardown',
+          'Test data and environment dependencies designed in',
+          'Test code reviewed like production code',
+        ],
+      },
+      {
+        title: 'Run',
+        icon: 'Zap',
+        description: 'Execute at a speed the pipeline can absorb. A suite an engineer will not wait for is a suite that stops being run before merge, which turns every safety property it had into a nightly report nobody opens.',
+        features: [
+          'Parallelization and sharding',
+          'Change-impact selection per commit',
+          'Flake detected and classified in the run',
+          'Full suite scheduled, fast suite on every push',
+          'Runtime tracked as a budget with a ceiling',
+        ],
+      },
+      {
+        title: 'Decide',
+        icon: 'ShieldCheck',
+        description: 'The gate. A short, agreed list of failures worth stopping a release for, a named approver for the exceptions, and a record of every override — because an override nobody counts becomes the process within two quarters.',
+        features: [
+          'Blocking criteria agreed in advance',
+          'Named approver and logged overrides',
+          'Evidence pack a release manager can read',
+          'Risk accepted explicitly, not by silence',
+          'Progressive rollout where the gate cannot be certain',
+        ],
+      },
+      {
+        title: 'Learn',
+        icon: 'Activity',
+        description: 'What escaped, why it escaped, and which test should have caught it. This is the stage that compounds, and the stage that is cut first when a date moves.',
+        features: [
+          'Escaped defect analysis by root cause',
+          'Missing-test gaps fed back into scope',
+          'Flake rate and time-to-verdict trended',
+          'Tests that never fail reviewed for deletion',
+          'Change failure rate reported to delivery',
+        ],
+      },
+    ],
+
+    // ── The argument ──────────────────────────────────────────────
+    // Both columns describe teams that test, and both suites are green on the
+    // day you look. The difference is entirely in whether anybody changes their
+    // behavior when one of them turns red.
+    comparisonTable: {
+      eyebrow: 'WHERE TEST SUITES QUIETLY STOP WORKING',
+      heading: 'Both suites are green.',
+      lede: 'Neither column describes a team that does not test. They differ in whether anybody still changes their behavior when the build turns red.',
+      beforeLabel: 'TESTS AS A DELIVERABLE',
+      afterLabel: 'THE SUITE AS A PRODUCT',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'DELIVERED',
+      afterShort: 'OWNED',
+      rows: [
+        {
+          dimension: 'When the build goes red',
+          before: 'Someone presses retry. It passes second time, the change merges, and nothing anywhere records that it happened.',
+          after: 'Every failure is classified as real or flaky inside the run. Flake rate is a tracked number with an owner and a target, so a retry becomes data rather than a reflex.',
+        },
+        {
+          dimension: 'What the coverage number measures',
+          before: 'A line-coverage percentage on a dashboard, reached by tests that execute the code without asserting anything meaningful about it.',
+          after: 'Coverage argued path by path against risk, with mutation testing used to check whether the tests would notice a defect at all. What is left uncovered is written down.',
+        },
+        {
+          dimension: 'How long from commit to a verdict',
+          before: 'A suite that grew to forty minutes one test at a time, so engineers batch their changes and stop running it before merging.',
+          after: 'Runtime treated as a delivery constraint with a ceiling: parallelized, sharded, change-selected, and pruned of tests that were never load-bearing.',
+        },
+        {
+          dimension: 'Who owns the test code',
+          before: 'A separate team, or nobody. It is outside code review, it has no standards, and it is the first thing dropped when a date moves.',
+          after: 'Owned by the team that owns the service, reviewed like production code, with a maintenance budget defended in planning rather than borrowed from it.',
+        },
+        {
+          dimension: 'What the release gate blocks on',
+          before: 'Everything, so it gets overridden most weeks, and within two quarters the override is the process.',
+          after: 'A short list of failures worth stopping a release for, agreed in advance, with a named approver for exceptions and every override recorded.',
+          link: { href: '/services/devops-as-a-service', label: 'Pipeline engineering' },
+        },
+        {
+          dimension: 'A test that has been failing for three weeks',
+          before: 'Muted, with a ticket nobody will pick up. The coverage number does not move, so nothing signals what was lost.',
+          after: 'Quarantined with an expiry date. Fixed, rewritten or deleted before that date, and the gap it leaves stays visible on the risk register until then.',
+        },
+        {
+          dimension: 'A feature whose output changes every run',
+          before: 'Checked by hand before release, then not at all, because no equality assertion could be written for it.',
+          after: 'An evaluation set built from real traffic, thresholds in place of equality, and a scored regression run on every prompt, model or retrieval change.',
+          link: { href: '/services/mlops', label: 'Model operations' },
+        },
+      ],
+    },
+
+    // ── Toolchain ─────────────────────────────────────────────────
+    // Framed by what each tool is genuinely better at, including two rows a
+    // testing vendor has no incentive to write: what automated accessibility
+    // scanning cannot see, and the classes of defect that are cheaper to make
+    // impossible than to test for. We hold no reseller margin on any of these.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The testing tools,',
+      titleHighlight: 'and the tests not worth writing.',
+      subtitle: 'Tool choice is mostly settled by the language your team already writes and by what your pipeline can finish in the time it has. These are the defaults, what overrides them, and where a test is the wrong control entirely.',
+      items: [
+        {
+          icon: 'Globe',
+          title: 'Browser and end-to-end',
+          managed: 'Playwright, Cypress',
+          selfHosted: 'Selenium where the grid and the page objects already exist',
+          desc: 'Playwright is the current default: faster, less flaky by construction, and one API across browsers. Selenium stays where an established grid and a decade of page objects make replacement more expensive than maintenance. Neither choice fixes an inverted pyramid.',
+        },
+        {
+          icon: 'Network',
+          title: 'API and contract',
+          managed: 'REST Assured, Postman and Newman, Schemathesis',
+          selfHosted: 'Pact for consumer-driven contracts',
+          desc: 'The layer most estates under-invest in and the cheapest place to catch an integration break. Contract tests are what let two teams deploy independently without a shared end-to-end suite that neither of them owns.',
+          link: { href: '/services/api-microservices-engineering', label: 'API and microservices engineering' },
+        },
+        {
+          icon: 'Cpu',
+          title: 'Unit and property-based',
+          managed: 'JUnit, pytest, Jest, Vitest, xUnit',
+          selfHosted: 'Hypothesis, fast-check, jqwik',
+          desc: 'Property-based testing earns its place where the input space is larger than anyone can enumerate — parsers, pricing rules, date arithmetic, currency rounding. It finds the case nobody thought to write, which is generally the case that reaches production.',
+        },
+        {
+          icon: 'Activity',
+          title: 'Performance and load',
+          managed: 'k6, Gatling, JMeter, Locust',
+          selfHosted: 'An environment shaped like production, or do not run it',
+          desc: 'The tool is the easy part. A load test against a scaled-down environment with uniform synthetic traffic produces a number that is precise and wrong. The work is the workload model, the data volume and the think time.',
+        },
+        {
+          icon: 'Database',
+          title: 'Test data',
+          managed: 'Delphix, Tonic, Gretel, platform-native masking',
+          selfHosted: 'Domain-specific generators you own',
+          desc: 'Masked production data is realistic and brings a legal argument with it. Synthetic data brings none, but has to be engineered to reproduce the shapes that break things: the null, the duplicate, the emoji in a name field, the record created in 1997.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Environments and virtualization',
+          managed: 'Testcontainers, WireMock, Mountebank, ephemeral preview environments',
+          selfHosted: 'Whatever your platform team already runs',
+          desc: 'Service virtualization is how you test against the payment provider that charges per call and the partner system available two mornings a week. The alternative is a suite whose green depends on somebody else’s uptime.',
+          link: { href: '/services/devops-as-a-service', label: 'Pipeline and environment engineering' },
+        },
+        {
+          icon: 'Eye',
+          title: 'Accessibility',
+          managed: 'axe-core, Pa11y, Lighthouse CI',
+          selfHosted: 'NVDA, JAWS, VoiceOver and a keyboard',
+          desc: 'Automated scanning reliably catches a minority of WCAG failures and cannot judge whether a label is meaningful or a focus order makes sense. Anyone selling full conformance from a scanner is selling the report rather than the conformance.',
+        },
+        {
+          icon: 'BrainCircuit',
+          title: 'Evaluation for AI features',
+          managed: 'Ragas, DeepEval, Promptfoo, Braintrust, LangSmith',
+          selfHosted: 'Your own evaluation set, which is the part that matters',
+          desc: 'The harness is a commodity. The evaluation set built from your real traffic is not, and it is the only thing that makes a model regression visible before a customer finds it. Production monitoring and model governance are separate services.',
+          link: { href: '/services/mlops', label: 'MLOps and model monitoring' },
+        },
+        {
+          icon: 'Shield',
+          title: 'Security checks inside the build',
+          managed: 'Semgrep, Snyk, Trivy, OWASP ZAP, Dependency-Track',
+          selfHosted: 'Gate on new findings, never on the backlog',
+          desc: 'These belong in the pipeline because they are fast and deterministic, and gating on the existing backlog rather than on newly introduced findings is how teams learn to skip the stage. Penetration testing and the security program are a different discipline.',
+          link: { href: '/services/it-security-services', label: 'Security testing and assurance' },
+        },
+        {
+          icon: 'Zap',
+          title: 'The tests not worth writing',
+          managed: 'Type systems, schema validation, feature flags, canary releases',
+          selfHosted: 'A change you can undo in ninety seconds',
+          desc: 'Some defects are cheaper to make impossible than to test for, and some are cheaper to detect in production and roll back. A test is one control among several. Treating it as the only one is how a suite reaches forty minutes and stops being run.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve questions about testing,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ──────────────────────────────────────────────────────
+    // The parity default ran six promotional answers under fifty words each,
+    // and the competitor set runs the same seven questions everywhere: what
+    // makes you different, do you support legacy, do you use AI, can you reduce
+    // cost. None of them is a question a head of engineering opens with.
+    //
+    // These are. Six of them are questions a testing vendor would rather not be
+    // asked: what to cut from a suite, whether coverage targets are worth
+    // having, whether QA teams should exist, what the gate should block on,
+    // what the work costs to run rather than to build, and who owns the tests
+    // afterwards. Sources are attached where a claim would otherwise rest on
+    // our own assertion.
+    customFAQs: [
+      {
+        q: 'Our regression takes fourteen hours. What do we cut?',
+        sources: [
+          { label: 'The Practical Test Pyramid (Ham Vocke, martinfowler.com)', url: 'https://martinfowler.com/articles/practical-test-pyramid.html' },
+        ],
+        a: 'Start by finding out what it is actually testing, because in most fourteen-hour suites the answer is the same six things over and over at the most expensive layer available.\n\nThe first pass is mechanical and usually recovers more than half the wall-clock: run in parallel, shard across machines, and stop rebuilding the world between tests. None of that removes a single assertion, so nobody has to argue about risk to get it.\n\nThe second pass is the real work. Most long suites are inverted — hundreds of browser tests standing in for checks that belong at API or unit level, each one paying the cost of a browser to verify a calculation. Pushing those down keeps the assertion and drops the cost by an order of magnitude. A browser test should exist for a journey that genuinely needs a browser, and there are fewer of those than any suite suggests.\n\nThe third pass is deletion, and it needs a decision-maker in the room. Tests that have never failed in two years, tests asserting on things that were never contracts, tests duplicating a case already covered three layers down. We propose the list, you approve it, and what stays uncovered goes on the record rather than disappearing quietly.',
+      },
+      {
+        q: 'What do we actually do about flaky tests?',
+        sources: [
+          { label: 'Flaky Tests at Google and How We Mitigate Them (Google Testing Blog)', url: 'https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html' },
+          { label: 'An Empirical Analysis of Flaky Tests (Luo et al., FSE 2014)', url: 'https://mir.cs.illinois.edu/marinov/publications/LuoETAL14FlakyTestsAnalysis.pdf' },
+        ],
+        a: 'Measure the rate first, because the argument about what to do is unwinnable while nobody knows the number.\n\nFlake is not one problem, it is four with different fixes. Shared state, where one test leaves behind a row or a cache entry the next one trips over. Timing, where the test waits a fixed number of milliseconds for something that usually takes less. Order dependence, where the suite only passes in the sequence it happened to run in last time. And genuine concurrency, where the code under test really does have a race and the test is right to be unhappy. That last category is the reason blanket auto-retry is dangerous: it hides real defects inside noise the team has been trained to ignore.\n\nSo: classify every failure in the run, not afterwards. Quarantine the worst offenders so they stop poisoning the signal — but with an expiry date attached, because a quarantine folder without expiry dates is just deletion with extra steps. Fix by class rather than one test at a time, since the same shared-state bug is usually behind thirty of them.\n\nThe target that matters is not zero. It is a rate low enough that a red build changes what somebody does next.',
+      },
+      {
+        q: 'Should we be chasing eighty per cent code coverage?',
+        sources: [
+          { label: 'Code Coverage Best Practices (Google Testing Blog)', url: 'https://testing.googleblog.com/2020/08/code-coverage-best-practices.html' },
+        ],
+        a: 'As a diagnostic, coverage is useful. As a target, it reliably produces tests that execute code without checking anything about it, and we would rather tell you that before you set it.\n\nCoverage measures which lines ran while the tests ran. It cannot tell you whether anything was asserted, whether the assertion was meaningful, or whether the untested twenty per cent happens to be your payment path. A codebase at eighty per cent with no assertions in the critical path is in worse shape than one at fifty per cent that covers the paths a failure would actually hurt.\n\nWhat we use instead: coverage read as a map rather than a score, so a low-coverage area triggers a conversation about risk rather than an instruction to write tests. Mutation testing on the parts that matter, which deliberately introduces defects and reports whether any test noticed — the only automated measure that grades the assertions rather than the execution. And an explicit, written record of what is deliberately not covered.\n\nWhere a coverage floor is a regulatory or contractual requirement, we will help you meet it and be honest that meeting it is a compliance activity rather than a quality one.',
+      },
+      {
+        q: 'Is AI going to write our tests now?',
+        a: 'It writes some of them well, and it makes the underlying problem worse if the suite has no owner.\n\nWhere it genuinely helps: generating the boring half of a test once a human has decided what the case should be, filling out boundary and edge cases around a specification, converting a manual script into an automated one, suggesting selectors, and explaining why an unfamiliar test is failing. That is real time saved, and we use it.\n\nWhere it does not help: deciding what is worth testing. A model will happily produce four hundred plausible tests for a module that needed nine, and every one of them is now something your team has to maintain, run and eventually debug at two in the morning. Generated tests also tend to assert on current behavior rather than on intended behavior, which quietly converts a defect into a specification the next person is afraid to change.\n\nThe honest framing is that AI reduces the cost of writing a test, and the cost of writing was never the constraint. The constraint is the cost of owning it. A tool that lowers the first while ignoring the second gets a team to an unmaintainable suite faster than they could have managed by hand.',
+      },
+      {
+        q: 'How do you test a feature whose output is different every time?',
+        sources: [
+          { label: 'Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena (Zheng et al., arXiv)', url: 'https://arxiv.org/abs/2306.05685' },
+          { label: 'Holistic Evaluation of Language Models (Liang et al., arXiv)', url: 'https://arxiv.org/abs/2211.09110' },
+        ],
+        a: 'By giving up on equality and moving to distributions, which is a bigger change to how a team works than it first sounds.\n\nThe unit of work is an evaluation set: a few hundred real inputs taken from your own traffic, each with an agreed judgment of what a good response looks like. Built from real traffic, not invented examples — invented examples test the cases you already thought of, which are the cases that already work. Then you score against it: is the answer grounded in the retrieved source, does it contain the facts it should, does it avoid the ones it must not, is it in the right format, did it cost and take what it should.\n\nA release gate on that is a threshold and a delta, not a pass. Scores move between runs even with no change, so what you actually gate on is a drop beyond normal variance on a set held stable across versions.\n\nA model can be used as a judge, and it is often the only affordable option at volume, but it has known biases — toward longer answers, toward its own style — so it needs calibrating against human judgments on a sample rather than trusting outright. Model monitoring in production and the governance record an assessor reads are separate services; this is the pre-release evidence.',
+      },
+      {
+        q: 'Our QA team is being disbanded and the developers are taking over testing. Is that right?',
+        a: 'Half right, and the half that is usually wrong is the half that costs the most.\n\nMoving test ownership to the teams that own the services is correct. Tests written by the people who wrote the code are faster to write, faster to fix, and get maintained because their authors feel the pain when they break. A separate team writing tests against somebody else’s code produces a suite nobody trusts and everybody works around.\n\nWhat gets lost is the part that was never about writing tests. Somebody has to hold the risk picture across teams, own the test data and environment estate, run performance and accessibility work that no single squad has the depth or the cadence for, and be the person who says the release should not go tonight. Dissolve the function without rehousing those, and the symptoms show up about six months later as a rising escape rate that nobody can attribute.\n\nSo: distribute the test writing, keep a small central capability for the estate, the specialist disciplines and the release decision. Where a group has already dissolved the function, that is often what the first engagement quietly rebuilds.',
+      },
+      {
+        q: 'What should the release gate actually block on?',
+        sources: [
+          { label: 'DORA — DevOps Research and Assessment metrics', url: 'https://dora.dev/guides/dora-metrics-four-keys/' },
+        ],
+        a: 'Less than you think, and it should be written down before the first argument rather than during it.\n\nA gate that blocks on everything gets overridden weekly, and once overriding is routine the gate has stopped functioning while still costing everyone time. The list worth stopping a release for is short: a failure on a critical business path, a new high-severity security finding introduced by this change, a performance regression past an agreed threshold, an accessibility regression on a legally required flow, and a failed data migration check. Everything else is reported, not blocking.\n\nThree things make it hold. Agreement in advance, when nobody is under pressure. A named person who can approve an exception, so overriding is a decision with an owner rather than a shrug. And a count of overrides reviewed monthly — a gate overridden four times in a month is telling you something about itself, not about the teams.\n\nWhat the gate should never block on is a flaky test, which is why the flake work comes before the gate work. Gating on a signal the team already distrusts teaches them to route around it.',
+      },
+      {
+        q: 'We are not allowed to use production data. How do we test anything realistic?',
+        sources: [
+          { label: 'GDPR Article 5 — principles relating to processing of personal data', url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679#d1e1807-1-1' },
+        ],
+        a: 'Two routes, and most estates need both because they fail in different places.\n\nMasking takes a production copy and replaces the identifying fields while preserving structure, distribution and referential integrity across systems. It gives you real shapes — the account with nine hundred transactions, the name with an apostrophe in it, the address that breaks the form. It requires the masking to be genuine rather than cosmetic, because a reversible transformation is still personal data in the eyes of a regulator, and it requires the copy itself to be governed.\n\nSynthetic generation builds records that never described a person. It carries no privacy exposure and can be committed to a repository, but it only contains the cases somebody designed into it — which means it tests what you expected and rarely what you did not.\n\nThe practical answer is a masked, subsetted, referentially intact dataset for integration and end-to-end work, plus synthetic data for the deliberate edge cases nobody wants to go hunting for in production: the null, the duplicate, the leap-second, the record created before your current schema existed. Then the part everybody forgets — refresh and reset automation, because a test dataset that drifts for six months is not less risky than production data, it is just less useful.',
+      },
+      {
+        q: 'How do we test against systems we do not control?',
+        sources: [
+          { label: 'Pact — consumer-driven contract testing', url: 'https://docs.pact.io/' },
+        ],
+        a: 'By deciding, per dependency, whether you are testing your handling of it or testing it — they need opposite approaches and conflating them is why these suites are unreliable.\n\nMost of the time you are testing your own handling: what your code does with a timeout, a malformed payload, a 500, a rate limit, a schema change. That should never touch the real system. Virtualize it, and now you can produce the failure modes the sandbox will not give you on demand, which are the ones that take production down.\n\nWhere the dependency has a contract, contract testing is the higher-value answer. Both sides verify against a shared expectation, and you find out that a provider changed a field when they change it rather than when your end-to-end suite goes red for reasons nobody can localize.\n\nA thin layer of real integration tests still earns its place, run on a schedule rather than on every commit and treated as monitoring: they tell you the sandbox drifted, credentials expired, or the partner shipped something. What they must not do is sit in the merge path, because then your ability to deploy depends on somebody else’s uptime.',
+      },
+      {
+        q: 'What does this cost to run, not to build?',
+        a: 'Build is the number that gets budgeted and the smaller one. Three things make up the rest, and only the first is usually visible.\n\nExecution: compute for the suite, which on a large parallelized estate is a real monthly line, plus licensing for device farms, load generators and commercial tooling. Straightforward, and the one everyone can see.\n\nMaintenance: the engineering time spent repairing tests after legitimate product changes. On an unowned suite this grows until it consumes the majority of the capacity that was supposed to go into new coverage, which is why the automation backlog stops moving and nobody can quite say when it stopped.\n\nEnvironments and data: provisioning, refresh, masking, contention, and the hours engineers spend waiting for a slot. Rarely attributed to quality engineering and frequently larger than the tooling budget.\n\nWe are pre-launch and do not publish rate cards, so the honest commitment is about shape rather than price: the assessment is scoped so you can stop after it and keep the findings, and the numbers we report afterwards are measured against the baseline we took before starting rather than against an industry benchmark.',
+      },
+      {
+        q: 'Who owns the tests after you leave?',
+        a: 'Your teams, and we build on that assumption from the first sprint rather than negotiating it at handover.\n\nIn practice that means tests written in the language your engineers already work in, not a framework that requires us. It means the suite living in your repositories under your review process from day one. It means fixtures, helpers and data builders documented well enough that somebody who was not there can add the twentieth test as easily as we added the fifth. And it means your engineers pairing on the build rather than receiving a repository and a slide deck at the end.\n\nIt also means being straight about the load. A suite has an ongoing cost, and a program resourced for build with nothing for maintenance stalls in its second year with total predictability. If carrying that is not realistic for your team, we will run it under a service level and price it separately — but that is a commercial arrangement, not an engineering outcome. The line we hold is that the suite must remain operable by your own people. A test estate only we can maintain is a dependency we sold you.',
+      },
+      {
+        q: 'Where does quality engineering stop and your other services start?',
+        sources: [
+          { label: 'NIST SP 800-218, Secure Software Development Framework', url: 'https://csrc.nist.gov/pubs/sp/800/218/final' },
+        ],
+        a: 'Testing touches almost everything, which is exactly why the boundary needs stating rather than blurring.\n\nWe own the suite, the test data and environment estate, performance and resilience evidence, accessibility conformance testing, and the release gate. That is the work on this page and it goes as deep as we can take it.\n\nWe do not own the pipeline platform itself, the infrastructure it deploys to, or the environments as a permanent capability — that is pipeline and platform engineering. We do not own the security program: the scanners belong in the build and we put them there, but threat modeling, penetration testing, identity and the response function are a separate discipline. We do not own production model monitoring, drift or retraining, and we do not own model governance — risk tiering, bias and fairness assessment, explainability and the file an assessor reads. We do not own data platform quality, and we do not own process redesign.\n\nThe division that matters in practice: this service decides whether a change is safe to ship and produces the evidence for that decision. What happens to the system afterwards, and who is accountable for it, belongs to the services linked throughout this page.',
+      },
+    ],
+
+    // ── How we engage ─────────────────────────────────────────────
+    // The first package measures a suite that already exists, deliberately
+    // ahead of any build offer. Almost no inbound quality conversation is "we
+    // have no tests" -- it is "we have thirty thousand and the build is red
+    // again", and a page that only sells new automation is answering a question
+    // nobody asked.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'starting with the suite you have.',
+    engagementLede: 'Most groups arrive with a suite rather than a blank page. The useful first engagement is usually a measurement of what the existing tests are telling you, not a proposal to write more of them.',
+    servicePackages: [
+      {
+        name: 'Test Estate Assessment',
+        description: 'For suites that already exist and are getting harder to trust. What you have, what it is really testing, how much of your red is noise, and what the whole thing costs to keep running.',
+        deliverables: [
+          'Flake rate measured across recent build history, by test and by class',
+          'Suite runtime profiled and the critical path to a verdict identified',
+          'Coverage read against business risk rather than as a percentage',
+          'Maintenance load estimated as a share of engineering capacity',
+          'Keep, rewrite, push-down or delete recommendation per test group',
+        ],
+      },
+      {
+        name: 'Suite Remediation & Flake Reduction',
+        description: 'For teams who have stopped believing their own build. Fixing the signal before adding to it, because coverage added to a distrusted suite buys nothing.',
+        deliverables: [
+          'Flake root-caused by class, not test by test',
+          'Test isolation, shared state and ordering defects repaired',
+          'Quarantine policy with expiry dates and a route back',
+          'Suite parallelized, sharded and change-selected',
+          'Flake rate and time to verdict reported weekly against baseline',
+        ],
+      },
+      {
+        name: 'Automation Engineering',
+        description: 'Building the suite, in your language and your repositories. Where standards do not exist yet, establishing them is part of the first engagement rather than something promised later.',
+        deliverables: [
+          'Test strategy with layers assigned by risk',
+          'Framework, fixtures and data builders your team can extend',
+          'Contract tests where services deploy independently',
+          'Pipeline integration with a pre-merge and post-merge split',
+          'Pairing with your engineers, not a handover deck',
+        ],
+      },
+      {
+        name: 'Performance & Resilience Engagement',
+        description: 'For a launch, a peak event, a migration or a system that has started degrading and nobody can say why. Bounded, evidence-producing, and scoped to a decision.',
+        deliverables: [
+          'Workload model built from real traffic, not assumed uniform load',
+          'Load, soak and breakpoint results against agreed SLOs',
+          'Bottlenecks traced to component, query or configuration',
+          'Fault injection on the dependencies most likely to fail',
+          'Capacity evidence a technology leader can take to a board',
+        ],
+      },
+      {
+        name: 'Managed Quality Engineering',
+        description: 'Running the suite, the environments and the release evidence under a service level. For teams who want the assurance without carrying a permanent specialist function for it.',
+        deliverables: [
+          'Suite operated and maintained against agreed availability',
+          'Test data and environment estate managed, refreshed and governed',
+          'Release readiness evidence produced each cycle',
+          'Escaped defect analysis fed back into scope',
+          'Monthly reporting on flake, runtime, coverage-by-risk and change failure rate',
+        ],
+      },
+    ],
+
+    // ── By industry ───────────────────────────────────────────────
+    // Each headline names the constraint that actually decides the test
+    // strategy in that sector, in the same way the RPA grid names the system
+    // with no API. The constraint is almost never the framework -- it is the
+    // data you cannot copy, the window you cannot move, or the evidence
+    // somebody will later ask you to produce.
+    industryHeading: 'Quality engineering by',
+    industryHeadingHighlight: 'what makes testing hard.',
+    industryLede: 'Eight sectors, the constraint that decides the test strategy in each, and the checks that carry the most weight. The framework is rarely the hard part.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Capital Markets',
+        headline: 'Every release needs an evidence trail, and the test environment is not allowed to hold real customer data.',
+        items: [
+          'Payment and settlement path regression',
+          'Masked, referentially intact test data across ledgers',
+          'Interest, fee and rounding calculation verification',
+          'Regulatory reporting output reconciliation',
+          'Batch and end-of-day window performance',
+          'Release evidence packs for audit',
+          'Third-party and market data feed virtualization',
+        ],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'The policy administration system is a package on the vendor’s upgrade calendar, and a migration can only be proved by running both.',
+        items: [
+          'Packaged policy admin regression across upgrades',
+          'Quote, rate and premium calculation verification',
+          'Claims workflow and state machine coverage',
+          'Parallel run with old-versus-new output comparison',
+          'Document generation and template validation',
+          'Broker and portal integration contract tests',
+          'Renewal and endorsement cycle testing',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Patient data cannot leave production, and validation evidence is an audited artifact rather than an internal report.',
+        items: [
+          'Synthetic patient cohorts for clinical workflows',
+          'HL7 and FHIR interface conformance testing',
+          'Clinical decision path and safety-critical coverage',
+          'Access control and role permission verification',
+          'Validation evidence aligned to computerized system expectations',
+          'Interoperability testing across care systems',
+          'Accessibility conformance for patient-facing services',
+        ],
+      },
+      {
+        industry: 'Retail & Commerce',
+        headline: 'The test that matters happens once a year, at four times normal traffic, on a date nobody can move.',
+        items: [
+          'Peak event load rehearsal at realistic traffic mix',
+          'Checkout and payment path resilience',
+          'Inventory and pricing consistency under concurrency',
+          'Search, recommendation and personalization regression',
+          'Promotion and discount rule verification',
+          'Mobile and cross-device journey coverage',
+          'Third-party tag and integration failure handling',
+        ],
+      },
+      {
+        industry: 'Telecom & Media',
+        headline: 'The device, network and version matrix is larger than any suite can cover, so coverage becomes a sampling decision.',
+        items: [
+          'Device and OS coverage strategy by installed base',
+          'Network condition and degradation testing',
+          'Streaming quality and playback regression',
+          'Provisioning and activation flow coverage',
+          'Billing and rating verification',
+          'Set-top, mobile and web parity testing',
+          'Concurrency and peak-hour load validation',
+        ],
+      },
+      {
+        industry: 'Public Sector',
+        headline: 'Accessibility conformance is statutory, and an assessor will read the evidence rather than the intent.',
+        items: [
+          'WCAG 2.2 AA conformance evidence',
+          'Assistive technology testing with real screen readers',
+          'Keyboard-only journey verification',
+          'Plain-language and comprehension validation',
+          'Legacy interface and mainframe regression',
+          'High-demand service load rehearsal',
+          'Accessibility statement substantiation',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Connected Products',
+        headline: 'Software ships to hardware you cannot patch weekly, so an escaped defect can become a field recall.',
+        items: [
+          'Hardware-in-the-loop test harnesses',
+          'Firmware and over-the-air update validation',
+          'Device-to-cloud interface contract testing',
+          'Long-duration soak and memory leak detection',
+          'Edge and intermittent connectivity behavior',
+          'Backward compatibility across shipped versions',
+          'Safety-critical path verification',
+        ],
+      },
+      {
+        industry: 'SaaS & Technology Platforms',
+        headline: 'Multiple deploys a day on shared multi-tenant infrastructure, where one tenant’s data must never surface in another’s test.',
+        items: [
+          'Tenant isolation verification',
+          'Backward-compatible API contract testing',
+          'Zero-downtime migration and rollback validation',
+          'Feature flag combination coverage',
+          'Canary and progressive rollout verification',
+          'Usage metering and billing accuracy checks',
+          'Onboarding and trial path regression',
+        ],
+      },
+    ],
+
+    // ── Practice cluster ──────────────────────────────────────────
+    // The default heading names the internal department ("The complete Shield
+    // practice") and the default lede is one sentence, which left the band at
+    // 33 words over 368px -- under the density floor. Overridden to state the
+    // service boundary instead, which is the most useful thing a link index on
+    // this particular page could say.
+    practiceLabel: 'TRUST, RISK & ASSURANCE',
+    practiceHeading: 'Where quality engineering stops,',
+    practiceHeadingHighlight: 'and another service starts.',
+    practiceLede: 'Testing touches almost everything, which is why the boundary is worth stating. We own the suite, the environments, the performance evidence and the release gate. The pipeline platform, the security program behind the scanners, production model monitoring and the governance file an assessor reads are separate services — and each of the pages below goes into its own subject at the depth this one gives testing.',
+
+    conciergeHeading: 'Ask about your own suite',
+    conciergeIntro: 'Bring a real number — how long your regression takes, how often the build is red, how many tests are muted. eQORE will tell you what it would look at first and what it would need from you.',
+    conciergeChips: [
+      'What share of our failed builds are actually flaky?',
+      'How do we cut a fourteen-hour regression without losing coverage?',
+      'How would you test a feature that calls an LLM?',
+      'Can you run our regression suite under a service level?',
+      'Book a test estate review',
+    ],
+
+    midCta: 'The suite is green. The question is whether anybody believes it.',
+    midCtaLabel: 'Review One Test Suite',
+    closingCta: {
+      title: 'One suite,',
+      highlight: 'honestly measured.',
+      body: 'Show us two weeks of build history and the suite that produced it. In 30 minutes we will tell you how much of your red is real, how much of your team’s week the suite is taking, and which handful of tests is doing most of the damage — before anyone proposes writing more.',
+      proofLabel: 'From first call to a measured test estate assessment',
+    },
   },
 
   'operation-technology': {

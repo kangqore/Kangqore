@@ -2270,6 +2270,194 @@ const featureMicros   = service.featureMicros
                     <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">cost per terabyte measured at every layer, attributed to a team</text>
                   </svg>
                 </div>
+              ) : service.slug === 'quality-engineering-assurance' ? (
+                /* ── A green run is a claim, not evidence ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AGENTIC ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on
+                   a page about whether a test suite can be believed.
+
+                   The five stages match architectureNodes exactly. The argument
+                   is the annotation under the spine and the loop at the foot: a
+                   suite only does work while a red build still changes what
+                   somebody does next, and the stage that compounds is the one
+                   connecting what escaped back to what was scoped.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. The widest
+                   stage label (ENGINEER, 8 characters at 12 units in a 96-unit
+                   box) clears by 19 units each side. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="How a release decision is made: the question is whether a change is safe to ship, answered by evidence rather than by a count of passing tests; the loop runs scope, engineer, run, decide and learn; the decision either ships with evidence or holds with a recorded override; what escaped in production feeds back into what gets scoped next" tabIndex={0}>
+                  <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why a green build is a claim rather than evidence</title>
+                    <desc>A release asks one question: is this change safe to ship. The quality loop answers it in five stages — scope what is worth testing, engineer the suite as an owned product, run it fast enough to be used before merge, decide at a gate with an agreed blocking list, and learn from what reached production anyway. A red build only does work while the team still believes it, which is why flake rate is measured before coverage is widened. The decision either ships with evidence a release manager can read, or holds with the override recorded rather than silent. What escaped, and which test should have caught it, feeds back into scope.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="qea-spine" gradientUnits="userSpaceOnUse" x1="26" y1="222" x2="514" y2="222">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="qea-stage" gradientUnits="userSpaceOnUse" x1="0" y1="164" x2="0" y2="216">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="qea-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="qea-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="qea-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The question a release actually asks ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">THE QUESTION A RELEASE ASKS</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">is this change safe to ship?</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#qea-tick)">
+                      <line x1="74" y1="94" x2="74" y2="158" />
+                    </g>
+                    <text x="86" y="132" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">answered with evidence, not with a count of passing tests</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="195" fontSize="12" fontWeight="bold" fill="white">SCOPE</text>
+
+                      <rect x="124" y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="195" fontSize="12" fontWeight="bold" fill="white">ENGINEER</text>
+
+                      <rect x="222" y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="195" fontSize="12" fontWeight="bold" fill="white">RUN</text>
+
+                      <rect x="320" y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="195" fontSize="12" fontWeight="bold" fill="white">DECIDE</text>
+
+                      <rect x="418" y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="195" fontSize="12" fontWeight="bold" fill="white">LEARN</text>
+                    </g>
+
+                    <line x1="26" y1="222" x2="506" y2="222" stroke="url(#qea-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#qea-arrow)" />
+
+                    {/* ── What the whole thing rests on ── */}
+                    <text x="270" y="248" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">a red build only works while the team still believes it</text>
+
+                    <path d="M 270 256 C 270 288, 210 288, 145 288 C 138 288, 133 294, 133 302" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#qea-arrow)" />
+                    <path d="M 270 256 C 270 288, 350 288, 420 288 C 427 288, 432 294, 432 302" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#qea-arrow-amber)" />
+
+                    <rect x="26" y="306" width="214" height="66" rx="9" fill="#08160f" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="133" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">SHIP WITH EVIDENCE</text>
+                    <text x="133" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">the gate can say why</text>
+
+                    <rect x="300" y="306" width="214" height="66" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="407" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">HOLD, OR OVERRIDE</text>
+                    <text x="407" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">recorded, never silent</text>
+
+                    {/* ── The stage that compounds ── */}
+                    <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <path d="M 62 407 a 9 9 0 1 0 5 -3" fill="none" stroke="#4ab6d4" strokeOpacity="0.7" strokeWidth="1.5" markerEnd="url(#qea-arrow)" />
+                    <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
+                  </svg>
+                </div>
+              ) : service.slug === 'robotic-process-automation' ? (
+                /* ── The bot depends on a surface it does not own ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AGENTIC ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on
+                   a page about driving legacy interfaces.
+
+                   The five stages match architectureNodes exactly. The argument
+                   is the top band and the branch: the bot reaches systems with
+                   no API through the interface, and the interface belongs to
+                   somebody else's release calendar. A green run is not the same
+                   as a correct one, which is why the branch tests the output
+                   rather than the exit code.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12, and the
+                   widest stage label (MAINTAIN, 8 characters at 12 units in a
+                   96-unit box) clears by 18 units each side. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="How a bot estate stays alive: the bot drives systems with no API through their interface, and that interface changes on someone else's release calendar; the lifecycle runs qualify, design, build, deploy and maintain; each run is checked at the output, so work either completes correctly or the run is stopped rather than writing the wrong value" tabIndex={0}>
+                  <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why a bot estate needs engineering rather than a demo</title>
+                    <desc>Bots reach mainframes, thick clients, Citrix sessions and vendor portals through the only door available, the interface, which changes on somebody else's release calendar. The lifecycle runs qualify, design, build, deploy and maintain. Every run is verified at the output rather than by exit code, so work either completes correctly or the run stops instead of writing the wrong value silently. Break-fix load is measured as a share of team capacity.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="rpa-spine" gradientUnits="userSpaceOnUse" x1="26" y1="222" x2="514" y2="222">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="rpa-stage" gradientUnits="userSpaceOnUse" x1="0" y1="164" x2="0" y2="216">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="rpa-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="rpa-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="rpa-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The systems only a bot can reach ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">SYSTEMS WITH NO USABLE API</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">mainframe · thick client · Citrix · vendor portal</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#rpa-tick)">
+                      <line x1="81" y1="94" x2="81" y2="158" />
+                    </g>
+                    <text x="92" y="132" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">reached through the interface, not an endpoint</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="195" fontSize="12" fontWeight="bold" fill="white">QUALIFY</text>
+
+                      <rect x="124" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="195" fontSize="12" fontWeight="bold" fill="white">DESIGN</text>
+
+                      <rect x="222" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="195" fontSize="12" fontWeight="bold" fill="white">BUILD</text>
+
+                      <rect x="320" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="195" fontSize="12" fontWeight="bold" fill="white">DEPLOY</text>
+
+                      <rect x="418" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="195" fontSize="12" fontWeight="bold" fill="white">MAINTAIN</text>
+                    </g>
+
+                    <line x1="26" y1="222" x2="506" y2="222" stroke="url(#rpa-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#rpa-arrow)" />
+
+                    {/* ── What decides whether a run counts ── */}
+                    <text x="270" y="248" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">verified at the output, not by the exit code</text>
+
+                    <path d="M 270 256 C 270 288, 210 288, 145 288 C 138 288, 133 294, 133 302" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#rpa-arrow)" />
+                    <path d="M 270 256 C 270 288, 350 288, 420 288 C 427 288, 432 294, 432 302" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#rpa-arrow-amber)" />
+
+                    <rect x="26" y="306" width="214" height="66" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="133" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">WORK COMPLETES</text>
+                    <text x="133" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">and reconciles</text>
+
+                    <rect x="300" y="306" width="214" height="66" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="407" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">THE RUN STOPS</text>
+                    <text x="407" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">instead of writing quietly</text>
+
+                    {/* ── The number the estate is held to ── */}
+                    <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">break-fix load, measured against team capacity</text>
+                  </svg>
+                </div>
               ) : service.slug === 'business-process-management' ? (
                 /* ── Many local variants to one governed standard ──
                    Replaces the shared agentic default, which put AI COMMANDER,

@@ -218,7 +218,12 @@ const CookieConsent = () => {
                   buried both hero CTAs. */}
               <p className="lg:hidden text-[14px] text-slate-300 leading-snug font-normal">
                 We use cookies to run this site and understand how it is used.{' '}
-                <Link to="/cookies" className="text-white underline font-semibold">
+                {/* py-1.5 on an inline element grows the hit box without
+                    growing the line box, so the target clears 24px without
+                    moving any text. WCAG 2.2 SC 2.5.8 exempts links inside a
+                    sentence, but the exemption is a reason not to redesign the
+                    layout — not a reason to leave a 14px target. */}
+                <Link to="/cookies" className="text-white underline font-semibold py-1.5">
                   Cookie policy
                 </Link>
               </p>
@@ -230,7 +235,7 @@ const CookieConsent = () => {
                 Because we respect your right to privacy, you can choose not to allow some types of cookies.
                 However, blocking some types of cookies may impact your experience of the site and the services we are able to offer.
                 To find out more, read our updated{' '}
-                <Link to="/cookies" className="text-white hover:text-slate-300 underline font-semibold transition-colors">
+                <Link to="/cookies" className="text-white hover:text-slate-300 underline font-semibold transition-colors py-1.5">
                   Cookie policy
                 </Link>
                 .

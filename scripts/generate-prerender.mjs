@@ -66,6 +66,9 @@ function buildGraph({ svc, deptName, deptSlug, url, title, description }) {
       isPartOf: { '@id': `${BASE_URL}/#website` },
       about: { '@id': `${url}#service` },
       inLanguage: 'en',
+      // Mirrors seo/serviceSchema.js. Emitted only where the service carries a
+      // hand-set `lastReviewed`, so no page claims a review that did not happen.
+      ...(svc.lastReviewed ? { dateModified: svc.lastReviewed } : {}),
     },
     {
       '@type': 'Service',
@@ -176,7 +179,17 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
   // Internal links inside them are emitted as real anchors, because a crawler
   // that cannot see a link cannot follow it.
 
-  const linkTo = (l) => (l && l.to ? ` <a href="${BASE_URL}${esc(l.to)}">${esc(l.label || l.to)}</a>` : '');
+  // `href` first: that is the key both renderers actually read
+  // (GeminiComparisonSection uses `row.link.href`, AIToolsSection uses
+  // `item.link.href`), and every contextual link in servicesData is written
+  // that way. This helper only checked `to`, so none of them reached the
+  // snapshot — the crawler received the comparison table and the toolchain
+  // with their internal links silently stripped. `to` is kept for any future
+  // caller written against the router prop name.
+  const linkTo = (l) => {
+    const href = l && (l.href || l.to);
+    return href ? ` <a href="${BASE_URL}${esc(href)}">${esc(l.label || href)}</a>` : '';
+  };
 
   const comparison = svc.comparisonTable
     ? `    <h2>${esc(svc.comparisonTable.heading || 'How this differs')}</h2>
@@ -276,11 +289,23 @@ ${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
 
   const heading = (o) => esc([o.title, o.titleHighlight].filter(Boolean).join(' '));
 
+  // The named tools themselves live in `managed` and `selfHosted`, and the
+  // page renders them unhidden because they are the substance of the section.
+  // blockList only carried title and desc, so the snapshot listed ten headings
+  // and ten paragraphs while every product name on the page — the part a
+  // retrieval engine matches a "does Kangqore use Playwright" question against
+  // — was invisible to it.
+  const toolRow = (i) => {
+    const named = [i.managed && `Managed: ${esc(i.managed)}`, i.selfHosted && `Self-hosted: ${esc(i.selfHosted)}`]
+      .filter(Boolean).join('. ');
+    return `          <li><strong>${esc(i.title)}</strong>: ${esc(i.desc)}${named ? ` ${named}.` : ''}${linkTo(i.link)}</li>`;
+  };
+
   const method = svc.toolsStack
     ? `    <h2>${heading(svc.toolsStack)}</h2>
     ${svc.toolsStack.subtitle ? `<p>${esc(svc.toolsStack.subtitle)}</p>` : ''}
       <ul>
-${blockList(svc.toolsStack.items || [], 'title', 'desc')}
+${(svc.toolsStack.items || []).map(toolRow).join('\n')}
       </ul>`
     : '';
 
