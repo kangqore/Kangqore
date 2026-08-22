@@ -79,40 +79,37 @@ If a fix seems to require reversing one, stop and ask.
 
 ## 1 · Set up
 
-Work in the dedicated worktree, never the main tree.
+**One tree. `/Users/maheshkumar/Kangqore`, served on `:3000`.**
+
+The user instructed this on 2026-08-22: *"ignore kq-acc [the second copy of this
+repo]"*. A git worktree at `/Users/maheshkumar/kq-acc` (`:3010`) still exists on
+disk and must not be used — do not build there, do not measure there, do not
+`cd` there.
 
 ```bash
-cd /Users/maheshkumar/kq-acc          # worktree, node_modules symlinked
-git fetch origin && git checkout -B <branch> origin/main
+cd /Users/maheshkumar/Kangqore
+git status --porcelain            # must be clean before you start
+git checkout -b <branch>          # branch in place; do not create a worktree
 ```
 
-**Two servers, two different trees:**
+**Why this rule exists.** The worktree was meant to keep `:3000` stable while a
+page was being rebuilt on a branch. What it actually produced was the user
+refreshing `:3000`, seeing the old page, and asking *"where is the change??"* —
+three separate times, across the analytics, big-data and DPA pages. The
+isolation was worth less than the confusion cost. Build where the user is
+looking.
 
-| | Tree | Notes |
-|---|---|---|
-| `:3010` | `/Users/maheshkumar/kq-acc` | the worktree — your branch |
-| `:3000` | `/Users/maheshkumar/Kangqore` | another session's tree |
+`--base` is always `http://localhost:3000`. If a measurement is ever taken
+against `:3010`, the number is about a tree nobody is looking at.
 
-**When the user says "nothing changed", check which branch that tree is on before
-explaining anything.** This cost three rounds in one session: `:3000` had been sitting
-on `refactor/wave-6-kimmp-waanda-migration` the whole time, and the answer was assumed
-to be "the PR isn't merged" when it was "that tree has never been on main".
+**Before trusting any measurement, confirm the server is serving your edit:**
 
 ```bash
-git -C /Users/maheshkumar/Kangqore rev-parse --abbrev-ref HEAD
-git -C /Users/maheshkumar/Kangqore log --oneline -1
+curl -s localhost:3000/src/data/servicesData.js | grep -c "<a string you just added>"
 ```
 
-If the user wants it visible on `:3000` and that tree is clean, a `git merge --ff-only`
-onto the pushed branch is safe and reversible. **Never rebase or reset a tree carrying
-another session's unpushed commits.** And note `cd` does not persist between Bash
-calls — use `git -C <path>` or the merge lands in the wrong tree.
-
-Confirm the server reflects your branch before trusting any measurement:
-
-```bash
-curl -s localhost:3010/src/data/servicesData.js | grep -c "<a string you just added>"
-```
+`cd` does not persist between Bash calls — use `git -C <path>` for any git
+command that must land in a specific tree.
 
 ## 2 · Measure
 
@@ -227,7 +224,7 @@ a bogus "9 failing footer nodes" when the real count was 1.
 
 ## 6 · Ship
 
-One branch, one commit, pushed from the worktree. `gh` is not installed — hand the user
+One branch, one commit, pushed from the main tree. `gh` is not installed — hand the user
 the compare URL, and **lead with the URL where the change is actually visible**, not the
 branch name. Saying "applied" about work on an unmerged branch the user cannot see has
 caused repeated confusion.

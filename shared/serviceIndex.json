@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T02:40:30.221Z",
+  "generatedAt": "2026-08-22T05:56:46.318Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -553,7 +553,7 @@
         },
         {
           "q": "How do we stop low-code becoming the next shadow IT problem?",
-          "a": "By deciding, before the first application, who is allowed to build what — and by giving them somewhere sanctioned to do it. The estates that go wrong are the ones where licences were distributed and governance was not. Two years later there are several hundred applications, no inventory, no owner for most of them, and a handful holding data they were never assessed to hold. What works is a tiered model. Personal productivity applications are unrestricted. Team applications require registration and a named owner. Anything touching customer data, a system of record or a regulated process goes through a review gate and is built from approved components in managed environments. Platform teams own the boundary; business teams own the applications inside it. None of this is technically hard. It is unpopular to introduce afterwards, which is why it belongs in the first engagement rather than the third."
+          "a": "By deciding, before the first application, who is allowed to build what — and by giving them somewhere sanctioned to do it. The estates that go wrong are the ones where licenses were distributed and governance was not. Two years later there are several hundred applications, no inventory, no owner for most of them, and a handful holding data they were never assessed to hold. What works is a tiered model. Personal productivity applications are unrestricted. Team applications require registration and a named owner. Anything touching customer data, a system of record or a regulated process goes through a review gate and is built from approved components in managed environments. Platform teams own the boundary; business teams own the applications inside it. None of this is technically hard. It is unpopular to introduce afterwards, which is why it belongs in the first engagement rather than the third."
         }
       ],
       "method": [

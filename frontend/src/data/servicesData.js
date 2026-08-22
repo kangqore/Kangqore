@@ -4598,7 +4598,8 @@ export const servicesData = {
     departmentSlug: 'cognition',
     bannerBrand: 'eQORE\u2122',
     shortDescription: 'Digitize, orchestrate and govern end-to-end business processes',
-    fullDescription: 'Close the gap between how a process is supposed to run and the application it never had \u2014 through low-code applications, case and workflow orchestration, and system extension.',
+    fullDescription: 'Close the gap between how a process should run and the application it never had, through low-code applications, case and workflow orchestration, and system extension.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
     keyFeatures: ['Low-code applications', 'Case management', 'Journey orchestration', 'System extension', 'Process conformance'],
     relatedServiceSlugs: ['intelligent-automation', 'robotic-process-automation', 'business-process-management'],
     featured: false,
@@ -4630,10 +4631,15 @@ export const servicesData = {
     // where procurement looks for it anyway, and mining is narrowed to
     // conformance -- the half intelligent-automation does not claim. Robotic &
     // Digital Workforce is a cross-link, not a section.
-    heroTitle: 'Digital Process Automation\nfor Processes That Cross Every System',
-    whatIsTitle: 'Digital Process Automation',
-    whatIsTitleLine2: 'That Digitizes the Process,',
-    whatIsHighlight: 'Not Just the Task.',
+    heroTitle: 'Digital Process Automation\nfor Enterprise Workflows',
+    // The eyebrow defaults to 'What <name> services does Kangqore offer?',
+    // which contradicts the heading below it now that the heading asks about
+    // challenges. whatIsHighlightNewLine forces the break, so the gradient
+    // clause gets its own line without an empty whatIsTitleLine2 carrying it.
+    whatIsEyebrow: 'What goes wrong, and what fixes it',
+    whatIsTitle: 'Digital process automation',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'challenges and solutions.',
     whatIsPara2: 'Most enterprise processes that hurt were never given an application. They run across a core system, a CRM and a spreadsheet, held together by an inbox and by one person who knows what happens next. Automating the keystrokes inside that arrangement makes it faster without making it a system.',
     whatIsPara3: 'Kangqore closes the application gap instead. We digitize the process itself \u2014 the forms people fill in, the case record that holds state, the rules that decide, the queue that routes, the portal that shows a customer where their request has got to \u2014 then orchestrate people, systems, bots and AI through it as one governed flow.',
     whatIsPara4: 'The result is a process with a record per case, an owner, an audit trail and a measurable straight-through rate, built on low-code where that fits and on your existing ERP and core systems where those are not going anywhere. Bots and cognitive automation plug into it; they are not the foundation. That distinction is the whole discipline.',
@@ -4646,8 +4652,8 @@ export const servicesData = {
     // a working application reach users, how many times does work change hands,
     // and how often does it come back because the first touch was incomplete.
     outcomesEyebrow: 'WHAT MOVES WHEN THE PROCESS HAS A SYSTEM',
-    outcomesHeading: 'Four numbers worth',
-    outcomesHeadingHighlight: 'a baseline before you start.',
+    outcomesHeading: 'Process Automation Outcomes',
+    outcomesHeadingHighlight: 'Worth Baselining.',
     businessMetrics: [
       { illustrative: true, title: 'Straight-Through Rate', desc: 'Cases reaching completion end to end with no human step in the middle, once the journey is redesigned and orchestrated.', value: '70',  suffix: '%',    metricLabel: 'Cases Completed Untouched', icon: 'Zap'      },
       { illustrative: true, title: 'Application Delivery', desc: 'Typical time from an agreed process design to a working digital application in production with real users on it.',           value: '4\u20138', suffix: ' Wks', metricLabel: 'Design to Production',      icon: 'Rocket'   },
@@ -4689,8 +4695,8 @@ export const servicesData = {
     // the automation candidate", here it is "prove the redesign held".
     toolsStack: {
       eyebrow: 'THE TOOLCHAIN',
-      title: 'The platforms,',
-      titleHighlight: 'and what decides between them.',
+      title: 'Low-Code and Workflow',
+      titleHighlight: 'Platforms We Build On.',
       subtitle: 'Platform choice is mostly settled by what you already license and by how much of the process is a long-running case rather than a form. These are the defaults and what overrides them.',
       items: [
         {
@@ -4739,8 +4745,8 @@ export const servicesData = {
     },
 
     faqEyebrow: 'ASKED ON THE FIRST CALL',
-    faqHeading: 'Twelve questions,',
-    faqHeadingHighlight: 'answered without hedging.',
+    faqHeading: 'Twelve DPA Questions,',
+    faqHeadingHighlight: 'Answered Without Hedging.',
 
     // ── FAQ ─────────────────────────────────────────────────────────────────
     // The parity default ran six promotional answers averaging under fifty
@@ -4759,7 +4765,7 @@ export const servicesData = {
       },
       {
         q: 'How do we stop low-code becoming the next shadow IT problem?',
-        a: 'By deciding, before the first application, who is allowed to build what \u2014 and by giving them somewhere sanctioned to do it.\n\nThe estates that go wrong are the ones where licences were distributed and governance was not. Two years later there are several hundred applications, no inventory, no owner for most of them, and a handful holding data they were never assessed to hold.\n\nWhat works is a tiered model. Personal productivity applications are unrestricted. Team applications require registration and a named owner. Anything touching customer data, a system of record or a regulated process goes through a review gate and is built from approved components in managed environments. Platform teams own the boundary; business teams own the applications inside it.\n\nNone of this is technically hard. It is unpopular to introduce afterwards, which is why it belongs in the first engagement rather than the third.',
+        a: 'By deciding, before the first application, who is allowed to build what \u2014 and by giving them somewhere sanctioned to do it.\n\nThe estates that go wrong are the ones where licenses were distributed and governance was not. Two years later there are several hundred applications, no inventory, no owner for most of them, and a handful holding data they were never assessed to hold.\n\nWhat works is a tiered model. Personal productivity applications are unrestricted. Team applications require registration and a named owner. Anything touching customer data, a system of record or a regulated process goes through a review gate and is built from approved components in managed environments. Platform teams own the boundary; business teams own the applications inside it.\n\nNone of this is technically hard. It is unpopular to introduce afterwards, which is why it belongs in the first engagement rather than the third.',
       },
       {
         q: 'Can you automate a process without replacing our ERP?',
@@ -4876,8 +4882,8 @@ export const servicesData = {
     //
     // So every card answers one question instead: which high-volume process in
     // this sector is still running without a system of its own?
-    industryHeading: 'The process that has',
-    industryHeadingHighlight: 'no system, by industry.',
+    industryHeading: 'Digital Process Automation',
+    industryHeadingHighlight: 'by Industry.',
     industryLede: 'Every sector has one \u2014 high volume, business-critical, and running out of a shared mailbox because it was never quite worth a project. These are the ones we get called about.',
     industryUseCases: [
       {
@@ -4888,7 +4894,7 @@ export const servicesData = {
       {
         industry: 'Insurance',
         headline: 'Claims and underwriting cases that stay open for weeks and change hands four times before anyone decides anything.',
-        items: ['Claims case management from notification to settlement', 'Underwriting referral and approval journeys', 'Broker and agent self-service portals'],
+        items: ['Claims case management from notification to settlement', 'Underwriting referral and approval journeys', 'Broker and intermediary self-service portals'],
       },
       {
         industry: 'Healthcare & Life Sciences',
@@ -4950,7 +4956,7 @@ export const servicesData = {
     // small -- and this page should say so rather than pretend otherwise.
     comparisonTable: {
       eyebrow: 'WHERE PROCESS AUTOMATION GOES WRONG',
-      heading: 'You can automate around a gap, or you can close it.',
+      heading: 'Automating the Task, or Digitizing the Process.',
       lede: 'Both columns describe a process that got measurably faster. Only one of them gave your work somewhere to live.',
       beforeLabel: 'AUTOMATING AROUND THE GAP',
       afterLabel: 'CLOSING THE APPLICATION GAP',
@@ -5066,7 +5072,7 @@ export const servicesData = {
     ],
 
     capabilitiesLabel: 'DIGITAL PROCESS AUTOMATION SERVICES',
-    capabilitiesSectionTitle: 'Our',
+    capabilitiesSectionTitle: 'Digital Process Automation',
     capabilitiesSectionHighlight: 'Capabilities.',
     capabilitiesLede: 'Give your process an application, hold its state, connect it to the systems you are never going to replace, and prove it still runs the way you designed it six months later.',
     capabilityAreas: [
