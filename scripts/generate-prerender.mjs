@@ -26,6 +26,20 @@ const DATA_DIR = path.join(repoRoot, 'frontend', 'src', 'data');
 const OUT_DIR = path.join(repoRoot, 'frontend', 'public', 'prerender', 'services');
 const BASE_URL = 'https://kangqore.com';
 
+// Kept in step with REVIEWER in frontend/src/seo/serviceSchema.js. Every field
+// is already published on the site — the home page byline carries the name,
+// title and both profiles, and /leadership carries the role.
+const REVIEWER = {
+  '@type': 'Person',
+  '@id': `${BASE_URL}/#mahesh-kumar`,
+  name: 'Mahesh Kumar',
+  jobTitle: 'Founder & CEO',
+  url: `${BASE_URL}/leadership`,
+  image: `${BASE_URL}/images/leadership/ceo-mahesh-kumar.png`,
+  worksFor: { '@id': `${BASE_URL}/#organization` },
+  sameAs: ['https://in.linkedin.com/in/maheshkumario', 'https://x.com/maheshkumarx'],
+};
+
 /** Import a source file as ESM, optionally rewriting it first. */
 async function importAsEsm(file, transform = (s) => s) {
   const src = transform(fs.readFileSync(file, 'utf8'));
@@ -66,9 +80,17 @@ function buildGraph({ svc, deptName, deptSlug, url, title, description }) {
       isPartOf: { '@id': `${BASE_URL}/#website` },
       about: { '@id': `${url}#service` },
       inLanguage: 'en',
-      // Mirrors seo/serviceSchema.js. Emitted only where the service carries a
-      // hand-set `lastReviewed`, so no page claims a review that did not happen.
-      ...(svc.lastReviewed ? { dateModified: svc.lastReviewed } : {}),
+      // Mirrors seo/serviceSchema.js — the crawler that never runs our JS is
+      // the one this signal exists for. Emitted only where the service carries
+      // a hand-set `lastReviewed`, so no page claims a review that did not
+      // happen. Every REVIEWER field is already published on the site.
+      ...(svc.lastReviewed
+        ? {
+            dateModified: svc.lastReviewed,
+            author: { '@id': `${BASE_URL}/#organization` },
+            reviewedBy: REVIEWER,
+          }
+        : {}),
     },
     {
       '@type': 'Service',
