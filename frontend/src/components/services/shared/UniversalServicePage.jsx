@@ -61,12 +61,26 @@ const TypewriterText = ({ text, start = true, delay = 28 }) => {
 const CAP_COLORS = ['#22D3EE', '#60A5FA', '#A78BFA', '#FB923C', '#34D399', '#F472B6', '#FDE047', '#E8614A'];
 const ICON_POOL  = [Target, Zap, Layers, Search, Cpu, Radar, BrainCircuit, TrendingUp, Shield, Activity, Globe, BarChart3, Network, Settings, Rocket, Users];
 const PHASE_GRADIENTS = ['from-slate-600 to-slate-800', 'from-blue-500 to-blue-700', 'from-brand-blue to-indigo-600', 'from-emerald-500 to-emerald-700', 'from-cyan-500 to-cyan-700'];
-// Experimental type stack for the key-terms heading. Every name before
-// "Helvetica Neue" is a licensed Monotype release of Neue Haas Grotesk; the
-// aliases differ by vendor and by how the user installed it, so all four are
-// listed rather than guessing one. Nothing after it is a guess: Helvetica is
-// the same design renamed in 1960, which makes it the correct fallback.
-const NHG_DISPLAY = '"Neue Haas Grotesk Display Pro", "NeueHaasDisplay", "Neue Haas Grotesk Display", "Neue Haas Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif';
+// Experimental type stack for the key-terms heading.
+//
+// The reference specimen is a light, slightly wide neo-grotesque with geometric
+// leanings: single-story g with an open curved tail, straight-tailed y, short
+// flat r arm, angled cut on the t ascender, near-circular O. That set of
+// details fits Soehne, ABC Diatype, Aeonik or Neue Montreal. All four are
+// licensed foundry faces, so all four are listed first and none of them will
+// resolve on a machine that has not bought one.
+//
+// The face that actually renders is DM Sans at 300. It is already loaded by
+// index.html as a variable font carrying weights 300 to 900 and an optical size
+// axis, so this costs no additional request, and it shares the specimen's
+// genre -- geometric sans, single-story g, straight-tailed y. opsz is pushed
+// to 40, the display end of the axis, because this is 48px type and the text
+// optical size is drawn for body copy.
+//
+// The point of ordering it this way: if one of the licensed faces is later
+// installed or served, the heading picks it up with no code change. Until then
+// the experiment is visible rather than silently falling back to Arial.
+const NHG_DISPLAY = '"Soehne", "ABC Diatype", "Aeonik", "Neue Montreal", "DM Sans", "Helvetica Neue", Arial, sans-serif';
 
 const JOURNEY_ICON_MAP = { Search, Target, Cpu, Rocket, Shield, TrendingUp, BrainCircuit, Network, Radar, Zap, Layers, Activity, Globe, Settings, ShieldCheck, Eye, Database, Lock };
 const TECH_STACK_ICON_COLORS = [
@@ -3080,26 +3094,15 @@ const featureMicros   = service.featureMicros
                 {service.keyTerms.eyebrow}
               </span>
             </div>
-            {/* Experiment: this one heading runs Neue Haas Grotesk Display,
-                300 for the first clause and 400 for the gradient one. Scoped by
-                construction -- the styles are inline on these elements, and the
-                whole section only renders for a service that defines keyTerms,
-                which today is business-process-management alone.
-
-                Important: Neue Haas Grotesk is a licensed Monotype face. It is
-                not a system font on any platform, it is not on Google Fonts,
-                and it is not bundled here -- so on a machine without it this
-                resolves down the chain to Helvetica Neue, then Helvetica, then
-                Arial. That fallback is deliberate: Helvetica is the direct
-                descendant of Neue Haas Grotesk, so the substitution stays in
-                the same genre rather than jumping to a different one.
-
-                To make this render for visitors rather than only for designers
-                who already own the font, it has to be served -- an Adobe Fonts
-                kit or a self-hosted licensed webfont. Neither is in place. */}
+            {/* Experiment: this one heading runs the stack declared at
+                NHG_DISPLAY, 300 for the first clause and 400 for the gradient
+                one. Scoped by construction -- the styles are inline on these
+                elements, and the whole section only renders for a service that
+                defines keyTerms, which today is business-process-management
+                alone. */}
             <h2
               className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] leading-[1.2] tracking-tight text-white mb-6 max-w-3xl"
-              style={{ fontFamily: NHG_DISPLAY, fontWeight: 300 }}
+              style={{ fontFamily: NHG_DISPLAY, fontWeight: 300, fontVariationSettings: '"opsz" 40' }}
             >
               {service.keyTerms.title}{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent" style={{ fontWeight: 400 }}>
