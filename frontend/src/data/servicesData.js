@@ -5291,7 +5291,7 @@ export const servicesData = {
     whatIsEyebrow: 'What business process management actually is',
     whatIsTitle: 'Business Process Management',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'Is an Operating Model, Not a Tool.',
+    whatIsHighlight: 'for Multi-Market Operations.',
     whatIsPara2: 'Business process management is the discipline of designing, standardizing, governing and continuously improving the cross-functional processes an enterprise runs on. It is an operating model question before it is a technology one \u2014 which is why buying a platform first so rarely resolves it.',
     whatIsPara3: 'The complexity is structural rather than accidental. A single order-to-cash cycle in your group can cross four functions, three ERP instances, two shared service centers and a dozen handoffs that exist because of an acquisition nobody has unwound. Every step has an owner who can demonstrate that their step is fast. The elapsed time your customer actually experiences belongs to nobody.',
     whatIsPara4: 'Kangqore closes that gap. We combine process engineering, operating model design, workflow and case platforms, automation and controls into one connected design, then put a named owner, a measured baseline and a per-case audit trail behind it \u2014 from discovery and reengineering through implementation on Appian, Pega, ServiceNow or Camunda, to a Center of Excellence that keeps improving your processes after we leave.',
