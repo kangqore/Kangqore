@@ -3073,7 +3073,21 @@ const featureMicros   = service.featureMicros
                 {service.keyTerms.eyebrow}
               </span>
             </div>
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-3xl">
+            {/* Experiment: this one heading runs Helvetica Neue Light instead of
+                the site face. Scoped by construction -- the style is inline on
+                this element, and the whole section only renders for a service
+                that defines keyTerms, which today is business-process-management
+                alone. Nothing else on this page or any other is touched.
+
+                No web font is loaded. Helvetica Neue is a system face on macOS
+                and iOS; elsewhere this falls through Helvetica to Arial, which
+                is the correct trade rather than shipping a font file for one
+                heading. Weight 300 is the Light cut, and it overrides the
+                extrabold class that the other section headings keep. */}
+            <h2
+              className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] leading-[1.2] tracking-tight text-white mb-6 max-w-3xl"
+              style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontWeight: 300 }}
+            >
               {service.keyTerms.title}{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">
                 {service.keyTerms.titleHighlight}
