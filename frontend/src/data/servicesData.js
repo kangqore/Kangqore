@@ -5258,9 +5258,8 @@ export const servicesData = {
     // that will not say so is selling licenses rather than engineering.
     heroTitle: 'Robotic Process Automation\nfor Systems Without an API',
     whatIsEyebrow: 'What robotic process automation is actually for',
-    whatIsTitle: 'What Robotic Process',
-    whatIsHighlightNewLine: true,
-    whatIsHighlight: 'Automation Actually Automates.',
+    whatIsTitle: 'What RPA',
+    whatIsHighlight: 'Actually Automates.',
     whatIsPara2: 'Robotic process automation drives enterprise applications the way a person does \u2014 through the interface, keystroke by keystroke. That is its entire reason to exist. Where a system exposes an API, integration is faster, cheaper and more durable, and we will tell you so. Where it does not, and will not, a bot is the only thing that reaches the work.',
     whatIsPara3: 'Which means every hard problem in RPA descends from one fact: your bot depends on a surface somebody else controls. A vendor ships an update and a selector stops matching. A field moves and a run fails silently at three in the morning. That is not bad engineering, it is the deal you accept in exchange for automating a system that was never opened up.',
     whatIsPara4: 'Kangqore engineers for that reality rather than around it. Resilient selectors where the application allows them, monitoring that tests the output rather than the exit code, credentials held in a vault under a bot identity your auditor can trace, and an estate small enough to maintain. Bots you can still run in year three, not a pilot that impressed everyone in month two.',
@@ -5654,8 +5653,8 @@ export const servicesData = {
     // application changes -- which is the only thing that actually separates an
     // RPA estate that survives from one that gets quietly switched off.
     comparisonTable: {
-      eyebrow: 'WHERE RPA ESTATES QUIETLY DIE',
-      heading: 'Building Bots, or Operating an RPA Estate.',
+      eyebrow: 'DELIVERED VERSUS OPERATED',
+      heading: 'Why RPA Projects Fail in Year Two.',
       lede: 'Neither column describes bad engineering. They differ in what happens the first time somebody else ships a release you were not told about.',
       beforeLabel: 'BOTS AS DELIVERABLES',
       afterLabel: 'BOTS AS OPERATED SOFTWARE',
