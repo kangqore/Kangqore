@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T20:46:37.321Z",
+  "generatedAt": "2026-08-22T22:15:22.656Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1099,9 +1099,64 @@
       "name": "Finance & Risk Management",
       "department": "Shield",
       "description": "Finance transformation and risk — risk assessment, compliance, financial planning, and audit support. Under Shield™ Trust & Governance Framework.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "capabilities": [
+        "Finance Strategy & Operating Model",
+        "Digital Finance Core & ERP Transformation",
+        "Planning, Forecasting & Performance Management",
+        "Intelligent Finance Operations & Controllership",
+        "Financial Risk Management",
+        "Treasury, Liquidity & Capital Management",
+        "Controls, Regulatory Reporting & Financial Crime",
+        "Finance & Risk Data, Analytics and AI"
+      ],
+      "faqs": [
+        {
+          "q": "What does Kangqore Finance & Risk Management actually cover?",
+          "a": "Two agendas that share one ledger, delivered as one program. The CFO side: finance strategy and operating model, ERP and planning platform transformation, financial planning and enterprise performance management, procure-to-pay through record-to-report, the close and controllership. The CRO side: quantitative financial risk across credit, market, liquidity, interest rate, foreign exchange, commodity and counterparty exposure, plus treasury and capital, actuarial and capital adequacy where the sector requires it. And the layer that makes both defensible: internal controls, regulatory reporting, financial crime analytics, and the shared finance and risk data model underneath. Most firms sell these as separate practices with separate sponsors. That separation is precisely what produces a forecast and a risk report that describe the same quarter and disagree."
+        },
+        {
+          "q": "We are a bank. Do you actually do quantitative credit and market risk?",
+          "a": "Yes, and it is worth being specific rather than gesturing at the category. Credit: probability of default, loss given default and exposure at default modeling, expected credit loss under IFRS 9, portfolio and concentration analytics, early warning systems, risk-based pricing and credit stress testing. Market: value at risk, expected shortfall, sensitivity analysis, stress and scenario testing, risk aggregation and regulatory market risk reporting. Alongside those: liquidity risk and contingency funding, interest rate risk and asset-liability management, counterparty exposure including wrong-way risk and collateral analytics, capital adequacy, and risk data aggregation aligned to BCBS 239. Model validation is part of the work rather than an afterthought. A model a regulator cannot follow is a finding regardless of how well it performs."
+        },
+        {
+          "q": "Our close takes eleven days. How much of that is actually removable?",
+          "a": "Usually more than the finance team expects, and rarely from where the program proposes to remove it. Most close programs shorten the consolidation run, which was almost never the bottleneck. The days sit in reconciliation, intercompany, chasing accruals from the business, and waiting for one subsidiary. We measure the close task by task before proposing anything, because the estimate finance holds and what the timestamps show are usually different by several days. What reliably comes out: automated reconciliation with tolerance rules, intercompany matching and elimination, close orchestration so tasks release when their dependency completes rather than when someone emails, and anomaly detection on journals so review is targeted instead of exhaustive. A fast close on unreliable numbers is worse than a slow one, so the sequence matters: fix the reconciliation, then compress the calendar."
+        }
+      ],
+      "method": [
+        {
+          "rule": "ERP and the financial core",
+          "detail": "The system of record, and the decision that outlives every other one on this page. Chart of accounts and master data matter more than the vendor: migrate them as found and you inherit the reporting limits you were trying to escape."
+        },
+        {
+          "rule": "Planning and performance management",
+          "detail": "Where driver-based planning and consolidation live. The constraint is almost never the tool — it is whether the business ever agreed what the drivers are, which is design work no platform performs for you."
+        },
+        {
+          "rule": "Financial risk and quantitative modeling",
+          "detail": "Credit, market and liquidity modeling. Vendor engines carry regulatory templates and validation evidence; a built stack gives control over methodology. Regulated institutions usually need both, and the split is a deliberate decision rather than a drift."
+        },
+        {
+          "rule": "Governance, risk and controls",
+          "detail": "Control libraries, testing workflow and continuous monitoring. Existing entitlements decide this more often than any evaluation does, and a GRC tool nobody feeds is worse than a spreadsheet somebody maintains."
+        },
+        {
+          "rule": "Treasury and cash management",
+          "detail": "Cash visibility, forecasting and hedge management. Bank connectivity is the work; the system is the easy part, and connectivity is what slips a treasury program rather than configuration."
+        },
+        {
+          "rule": "Finance and risk data",
+          "detail": "The layer that decides whether the forecast and the risk pack can be reconciled at all. Building this once for both functions is the single highest-leverage decision in a finance and risk program."
+        },
+        {
+          "rule": "Automation and AI in the flow",
+          "detail": "Invoice capture, reconciliation, close orchestration, variance commentary and regulatory drafting. AI belongs inside a controlled process with lineage; over a spreadsheet estate it produces fast answers nobody can evidence."
+        },
+        {
+          "rule": "ESG and sustainability reporting",
+          "detail": "Increasingly a controllership problem rather than a communications one. Once sustainability disclosures are assured, they need the same lineage, controls and close discipline as the financial statements."
+        }
+      ],
       "dataHandling": []
     },
     {
