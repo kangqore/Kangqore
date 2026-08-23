@@ -10703,13 +10703,670 @@ export const servicesData = {
     slug: 'enterprise-platform-integration',
     name: 'Enterprise Platform Integration',
     departmentSlug: 'platforms',
-    bannerBrand: 'ALIS™',
-    shortDescription: 'Integrate enterprise platforms and applications',
-    fullDescription: 'Connect your enterprise applications for seamless data flow and process automation.',
-    keyFeatures: ['Integration strategy', 'API development', 'ESB implementation', 'Data integration', 'iPaaS solutions'],
-    relatedServiceSlugs: ['api-microservices-engineering', 'salesforce', 'servicenow'],
+    bannerBrand: 'ALIS\u2122',
+    shortDescription: 'Architecting and engineering the integration fabric across applications, APIs, data, events and partners',
+    fullDescription: 'Integration strategy and architecture, API, event and messaging engineering, B2B and partner connectivity, hybrid cloud integration, modernization and governed operations.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Integration architecture', 'API, event & messaging', 'B2B & EDI', 'Hybrid & iPaaS', 'Governance & operations'],
+    relatedServiceSlugs: ['api-microservices-engineering', 'application-modernization', 'digital-process-automation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // 689 bytes of data and a crawler seeing 2.3 per cent of the page. The
+    // parity default rendered generic platform copy with none of the vocabulary
+    // this category is searched on -- no iPaaS, no EDI, no event streaming, no
+    // API gateway.
+    //
+    // The competitive field splits three ways and none of the three occupies
+    // the middle. Oracle owns the definitional queries with a 3,339-word page
+    // structured entirely as questions -- what is EiPaaS, how does it work, why
+    // it matters -- which is an answer-engine play rather than a services page.
+    // Cognizant leads with agentic integration at 820 words, positioning ahead
+    // of substance. Persistent sells strategy, implementation and managed
+    // services without an architecture argument.
+    //
+    // The gap is the architecture case, stated plainly: integration is a
+    // discipline rather than an inventory of connectors, and the thing that
+    // decides whether an estate survives a decade is what was decided before
+    // anything was connected. That is also the honest position for a firm with
+    // no proprietary iPaaS to sell -- vendor neutrality is only credible when
+    // you hold no license margin, which we do not.
+    //
+    // Boundary with /services/api-microservices-engineering, which is still on
+    // the parity default and will eventually own the API-as-product and
+    // microservices-architecture story. This page owns APIs, events and
+    // messaging *as integration mechanisms* -- how systems reach each other.
+    // That page will own how an API is designed, versioned and productized.
+    // Area 03 is written to that boundary so the two do not collide later.
+    heroTitle: 'Enterprise Platform Integration\nServices for Connected Operations',
+    whatIsEyebrow: 'What enterprise platform integration actually is',
+    whatIsTitle: 'Integration Is an Architecture,',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'Not an Inventory of Connectors.',
+    whatIsPara2: 'No enterprise runs on one platform. Yours runs across ERP, CRM, HCM, supply chain, finance, a data estate, applications nobody wants to touch, a SaaS portfolio that grew by department, partner networks, several clouds and now AI systems that expect to reach all of it.',
+    whatIsPara3: 'The difficulty stopped being how to connect one application to another a long time ago. It is that every point-to-point interface you add is a dependency somebody has to remember, and estates reach a threshold where changing one system quietly breaks three others \u2014 at which point the integration layer is no longer enabling change, it is the reason change is slow.',
+    whatIsPara4: 'Kangqore designs, engineers, modernizes and operates that layer as an architected capability: applications, APIs, data, events, processes, partners and AI, across on-premises, private cloud, public cloud and hybrid, with security, identity, policy, observability and lifecycle governance designed in rather than added afterwards. Discover, architect, engineer, modernize, govern, operate.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // The previous metrics were 99.9%, 10x, "Zero Data Silos" and "Absolute
+    // Governance" -- three unfalsifiable absolutes and a multiplier with no
+    // denominator. At enterprise-consulting positioning those reduce
+    // credibility rather than build it, which was the user's own read and is
+    // correct.
+    //
+    // Replaced with four dimensions from an integration value framework, each
+    // countable and each with an owner: how fast a new integration ships, how
+    // much of it was reused, how much of the legacy estate went away, and how
+    // long a partner takes to go live.
+    outcomesEyebrow: 'HOW AN INTEGRATION ESTATE IS ACTUALLY JUDGED',
+    outcomesHeading: 'Integration Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
+    businessMetrics: [
+      { illustrative: true, title: 'Integration Velocity',   desc: 'Time to design, build and deploy a new integration once a reusable API and connector layer exists, against the same work built point to point.', value: '3\u20135', suffix: ' Days', metricLabel: 'Design to Deploy',        icon: 'Zap'      },
+      { illustrative: true, title: 'Reuse Rate',             desc: 'Share of new integrations assembled from existing APIs, events and connectors rather than built from scratch, after the shared layer is established.', value: '60',  suffix: '%',    metricLabel: 'Built From Reuse',     icon: 'Layers'   },
+      { illustrative: true, title: 'Interface Rationalization', desc: 'Point-to-point interfaces retired or consolidated during modernization without losing a business flow \u2014 usually duplicates built by different teams.', value: '40',  suffix: '%',    metricLabel: 'Interfaces Retired',   icon: 'Network'  },
+      { illustrative: true, title: 'Partner Onboarding',     desc: 'From signed agreement to a trading partner exchanging live transactions, once onboarding is templated rather than engineered each time.',              value: '5\u201310', suffix: ' Days', metricLabel: 'Contract to Live',    icon: 'Globe'    },
+    ],
+
+    heroBadge: 'Architected. Engineered. Governed.',
+    heroStripItems: [
+      'Integration Architecture', 'API & Event Integration', 'Enterprise Messaging', 'Data & Process Orchestration',
+      'B2B, EDI & Partner', 'Hybrid Cloud & iPaaS', 'Integration Modernization', 'Agentic Integration',
+    ],
+    hidePartnershipModel: true,
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // Nine, as specified, and the sequence is the argument: strategy ->
+    // architecture -> engineering -> modernization -> operations ->
+    // intelligence. A reader who scans only the nine titles should be able to
+    // reconstruct how an integration program actually runs.
+    //
+    // Area 03 is deliberately scoped to APIs, events and messaging *as
+    // integration mechanisms*. /services/api-microservices-engineering will own
+    // API-as-product and microservices architecture; this owns how systems
+    // reach each other. Writing that boundary now prevents the collision the
+    // four automation pages had to be untangled from later.
+    //
+    // Area 09 is last on purpose. Cognizant leads their page with agentic
+    // integration; putting it ninth says the same capability exists and that it
+    // sits on top of an architecture rather than instead of one.
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Technology-neutral by construction. We hold no reseller margin on any of
+    // these, which is the only reason a recommendation to use what you already
+    // license is credible coming from us rather than from a vendor.
+    toolsStack: {
+      eyebrow: 'THE INTEGRATION ECOSYSTEM',
+      title: 'The platforms,',
+      titleHighlight: 'and what each is actually for.',
+      subtitle: 'Platform choice is mostly settled by what the group already licenses and by whether the hard problem is transformation, throughput or partner exchange. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Network',
+          title: 'Integration platforms and iPaaS',
+          managed: 'MuleSoft, Boomi, Informatica, Workato, SnapLogic',
+          selfHosted: 'Azure Logic Apps on Microsoft estates',
+          desc: 'The default for an estate of any size: connectors, transformation and lifecycle in one place. Licensed per connection or per flow, which stops making sense below roughly twenty interfaces \u2014 and above a few hundred, unless reuse is enforced.',
+        },
+        {
+          icon: 'Globe',
+          title: 'API management',
+          managed: 'Kong, Apigee, Azure API Management, AWS API Gateway',
+          selfHosted: 'Kong or NGINX where the runtime must stay yours',
+          desc: 'Policy, security, throttling and analytics at the edge of the estate. The gateway is the easy decision; the governance model behind it \u2014 who may publish, who owns a contract, how a version retires \u2014 is the one that matters.',
+        },
+        {
+          icon: 'Zap',
+          title: 'Event streaming and messaging',
+          managed: 'Apache Kafka, Confluent, cloud-native event services',
+          selfHosted: 'RabbitMQ, ActiveMQ, IBM MQ where ordering is critical',
+          desc: 'Streaming and queueing are not interchangeable. Kafka is a durable log you replay; a message broker is a delivery guarantee you acknowledge. Choosing the wrong one is the single most common cause of an estate that cannot be reasoned about.',
+        },
+        {
+          icon: 'Layers',
+          title: 'B2B and EDI',
+          managed: 'Vendor B2B gateways and managed EDI networks',
+          selfHosted: 'AS2 and SFTP endpoints inside your perimeter',
+          desc: 'X12, EDIFACT and the transport underneath. The engineering is unremarkable; partner onboarding at volume is the actual product, and the difference between an eight-week and a five-day onboarding is templating rather than tooling.',
+        },
+        {
+          icon: 'Cpu',
+          title: 'Runtime and deployment',
+          managed: 'Kubernetes, containers, serverless functions',
+          selfHosted: 'Whatever your platform team already operates',
+          desc: 'Where integration workloads actually run. Integration is stateful more often than teams expect, so serverless suits event handlers and fits long-running orchestration badly.',
+        },
+        {
+          icon: 'Eye',
+          title: 'Observability',
+          managed: 'Prometheus, Grafana, OpenSearch, vendor API analytics',
+          selfHosted: 'Distributed tracing across every hop',
+          desc: 'Platform dashboards tell you a flow ran. They cannot tell you a transaction entered at one end and never arrived at the other, which is the question operations actually needs answered \u2014 and it requires tracing, not monitoring.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve integration questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // Oracle owns the definitional queries in this category with a 3,339-word
+    // page built entirely from questions -- what is EiPaaS, how does it work,
+    // why it matters. Competing with that on volume is pointless; competing on
+    // usefulness is not. These answer the same definitional queries and then
+    // say the thing a platform vendor cannot: when not to buy the platform.
+    customFAQs: [
+      {
+        q: 'What is enterprise platform integration?',
+        a: 'The architecture and engineering discipline of connecting applications, APIs, data, events, workflows and external partner systems so an enterprise operates as one coordinated estate rather than a set of technology islands.\n\nIt spans more than connectors. Application and legacy integration, API and event architecture, enterprise messaging, B2B and EDI, data transformation, process orchestration across systems, hybrid and multi-cloud connectivity, and the governance covering identity, policy, lifecycle and observability over all of it.\n\nThe distinction that matters commercially: buying an integration platform is a procurement decision, and having an integration architecture is an engineering one. Organizations that do the first without the second end up with the same point-to-point sprawl, built on a more expensive substrate.',
+      },
+      {
+        q: 'Is API integration the same as enterprise integration?',
+        a: 'No, and conflating them is the most common architectural mistake in this category.\n\nAPIs are one mechanism. They are synchronous, request-response, and excellent when a caller needs an answer now. They are a poor fit when the producer should not know or care who consumes the data, when the consumer may be offline, when ordering matters, or when a message must survive a restart.\n\nThose cases need events, streams or queues. Enterprise integration also covers B2B and EDI for partners who will never call your API, file and batch interfaces that still move most of the world\u2019s enterprise data, and orchestration for processes crossing several systems.\n\nAn estate built entirely on synchronous APIs becomes a distributed system where every caller is coupled to every callee\u2019s uptime. That is usually discovered during an incident rather than during design.',
+      },
+      {
+        q: 'What is iPaaS, and do we need one?',
+        a: 'Integration Platform as a Service: a hosted environment for building, running and governing integrations, with prebuilt connectors, transformation tooling and lifecycle management.\n\nIt earns its cost when you have a meaningful number of interfaces, several teams building them, and a genuine need for shared governance. Below roughly twenty integrations the licensing rarely pays back against building on your existing runtime and API gateway.\n\nThe failure mode at the other end is worth naming too. Above a few hundred flows, an iPaaS without enforced reuse becomes point-to-point sprawl on a more expensive substrate \u2014 the same problem, now with a subscription. The platform does not create reuse; the governance model does.\n\nWe hold no reseller margin on any integration platform, so a recommendation to stay on what you have costs us nothing.',
+      },
+      {
+        q: 'Can you integrate our legacy systems, including mainframe?',
+        a: 'Yes, and this is usually where an integration layer earns its keep rather than where it struggles.\n\nLegacy platforms are frequently more stable integration targets than modern SaaS, because they change rarely and their interfaces have been fixed for years. The work is in the transport and the semantics: adapters, message formats, character encodings, batch windows and the business logic embedded in the system that nobody documented.\n\nThe usual pattern is an API facade over the legacy capability, so consumers depend on a contract you control rather than on the system itself. That decouples modernization from replacement: the mainframe can be retired later, or never, without the consumers being rewritten.\n\nWhat we would not do is drive a legacy screen with a bot when a real interface can be built. That belongs on our robotic process automation service and is a last resort.',
+      },
+      {
+        q: 'Our estate has hundreds of interfaces and nobody knows what they do. Where do we start?',
+        a: 'With discovery, and it is usually the most valuable fortnight of the engagement.\n\nWhat exists, what it connects, who owns it, when it last ran, what business process depends on it, and whether that process still exists. Estates past about a hundred interfaces almost never have this, and the gaps are where the risk sits \u2014 an interface running nightly against a system nobody knew was still in scope.\n\nThe inventory typically produces three piles: interfaces worth keeping and bringing to standard, duplicates and dead flows to retire, and a set that should become one reusable API or event consumed by several teams.\n\nActing on the second and third piles usually frees more delivery capacity than the first year of new build would consume, and it is the only reliable way to make the estate smaller rather than larger.',
+      },
+      {
+        q: 'How do you decide between an API, an event and a file?',
+        a: 'By what the consumer needs and what the failure mode should be, not by what is fashionable.\n\nAn API when the caller needs an answer to proceed and can tolerate the dependency on the provider being up. An event when the producer should not know who consumes it, when several consumers want the same fact, or when the consumer may be offline and must catch up. A queue when a message must be processed exactly once and ordering matters. A file when the volume is large, the window is scheduled, and the partner has been sending files for fifteen years.\n\nFile and batch are not legacy failings. They remain the correct answer for high-volume periodic exchange, and replacing a working nightly file with a real-time stream because real-time sounds modern is one of the more expensive mistakes in this category.',
+      },
+      {
+        q: 'Do you support hybrid and multi-cloud environments?',
+        a: 'Yes, and we design for hybrid as a permanent condition rather than a transition state.\n\nMost enterprises have workloads that will not move \u2014 for latency, data residency, licensing, regulatory or plain economic reasons \u2014 and an architecture that assumes everything eventually lands in one cloud will be wrong for its entire life.\n\nThe practical work is secure connectivity between environments, identity and token exchange across trust boundaries, data residency handling where regulation dictates where a payload may travel, and a deployment model where the same integration can run in more than one place without being rewritten.\n\nMulti-cloud integration is genuinely harder than the marketing suggests, mainly because identity and networking differ more between providers than compute does.',
+      },
+      {
+        q: 'How long does partner onboarding take, and why is it always slow?',
+        a: 'It is slow because most organizations treat each partner as an engineering project rather than as a repeatable operation.\n\nTypical is six to eight weeks. Templated properly it is five to ten days: standard document maps per transaction type, a partner profile capturing their variations, a validation harness that tests their sample files before anyone writes code, and an onboarding runbook operations can execute without engineering.\n\nThe variation is real \u2014 partners deviate from X12 and EDIFACT constantly \u2014 but the deviations repeat. Once you have onboarded thirty partners, the thirty-first is almost never novel, and if it still takes six weeks the problem is process rather than protocol.',
+      },
+      {
+        q: 'How does integration support AI agents?',
+        a: 'By giving them the same governed interfaces every other client uses, and nothing more.\n\nAn agent that reaches enterprise systems through permissioned APIs and events inherits the existing controls: authentication, scoped authorization, rate limits, audit logging and tracing. Every action it takes is attributable and replayable, and the security model does not need a separate conversation.\n\nAn agent that reaches them by driving a screen because nobody built the interface produces fast actions nobody can evidence \u2014 which in a regulated process is worse than the slow version, and is a finding waiting to be written.\n\nSo the sequencing matters more than the model choice. Expose the capability properly, permission it, then let agents consume it. Enterprises that run it in the other order arrive at an audit with an access model nobody can explain.',
+      },
+      {
+        q: 'What does an integration engagement cost?',
+        a: 'We are pre-launch and do not publish rate cards, so treat this as shape rather than a quote.\n\nThe estate assessment is fixed-price and measured in weeks, scoped so you can stop after it and own the output. Architecture and roadmap is priced against the assessment. Engineering is priced against the architecture, which is why we prefer not to quote a build before the design exists \u2014 the estimate would be a guess and both sides would discover that in month three.\n\nPlatform licensing is a separate line and goes to the vendor. Where existing entitlements cover the work we will say so, and that is more often than vendors volunteer \u2014 unused API management and integration capability inside Microsoft, Oracle and ServiceNow estates is extremely common.',
+      },
+      {
+        q: 'How is this different from your API and microservices service?',
+        a: 'Different question, deliberately kept apart so neither page pretends to be both.\n\nThis service is about how systems reach each other: the estate, the fabric, the orchestration between platforms, partner connectivity and the governance over all of it. The unit of work is an interface between two things you already run.\n\nAPI and microservices engineering is about how an individual API or service is designed, versioned, documented and productized \u2014 the contract, the developer experience, the decomposition of an application into services. The unit of work is the service itself.\n\nIn practice they meet: integration architecture decides which capabilities should become APIs, and API engineering decides what those APIs look like. If you are not sure which you need, the estate assessment answers it and is the cheapest way to find out.',
+      },
+      {
+        q: 'How do you measure whether the integration program worked?',
+        a: 'Against four numbers captured before anything is built, and reported afterwards whether or not they flatter us.\n\nIntegration velocity: how long a new integration takes from design to production. Reuse rate: what share of new work is assembled from existing APIs, events and connectors rather than built fresh. Interface rationalization: how many point-to-point interfaces were retired without losing a business flow. Partner onboarding: days from agreement to live transactions.\n\nEach is countable and each has an owner. What we will not put on this page is a reliability percentage or a speed multiple, because neither is falsifiable without naming the estate it came from \u2014 and at this level of buyer, an unfalsifiable number reduces credibility rather than building it.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // The first package is an assessment of an estate that already exists,
+    // ahead of any build offer. Almost nobody arrives saying "we want
+    // integrations" -- they arrive saying a change took six months, or a
+    // partner took eight weeks to onboard, or nobody can say what breaks.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five engagement models,',
+    engagementHeadingHighlight: 'one architecture underneath.',
+    engagementLede: 'Most groups arrive with an estate rather than a project. The useful first engagement is usually a map of what is already connected, not a proposal to connect more.',
+    servicePackages: [
+      {
+        name: 'Integration Estate Assessment',
+        description: 'What is connected to what, who owns it, what it costs, and which of it should be retired rather than migrated. Frequently ends recommending less integration than you came for, because a meaningful share of most estates is duplicate flows built by teams who could not find the existing one.',
+        deliverables: [
+          'Full interface inventory with ownership and criticality',
+          'Dependency and blast-radius map across applications',
+          'Point-to-point duplication and reuse-opportunity analysis',
+          'Platform and iPaaS evaluation with a scored recommendation',
+          'Retain, reuse, refactor, replatform, replace or retire call per interface',
+        ],
+      },
+      {
+        name: 'Integration Architecture & Roadmap',
+        description: 'The design work your estate inherits for a decade: target architecture, canonical models, interface standards, and the sequencing that decides what gets built first. The sequencing matters more than it sounds \u2014 the first three interfaces establish the patterns everything after them copies, whether or not anyone intended that.',
+        deliverables: [
+          'Target-state integration architecture and reference patterns',
+          'Canonical data model and interface contract standards',
+          'Integration operating model with named ownership',
+          'Governance framework covering security, lifecycle and observability',
+          'Sequenced roadmap with a business case per wave',
+        ],
+      },
+      {
+        name: 'Integration Engineering',
+        description: 'Delivery against your platform and your standards \u2014 APIs, events, messaging, transformations, orchestration and partner connections. Where standards do not exist yet, establishing them is part of the first engagement rather than an afterthought, because a reusable layer built without them is just point-to-point with better tooling.',
+        deliverables: [
+          'API, event and messaging implementation to documented standards',
+          'Data transformation, mapping and synchronization',
+          'Process orchestration with designed exception and replay paths',
+          'Reusable connector and component library',
+          'Test harness and contract tests per interface',
+        ],
+      },
+      {
+        name: 'Modernization & Migration',
+        description: 'Moving off an ESB out of support, consolidating platforms after an acquisition, or retiring point-to-point sprawl. Rarely a straight port, and usually smaller than the estate suggests once dead flows and duplicates are removed from the migration scope rather than carried into it.',
+        deliverables: [
+          'Migration assessment with per-interface complexity scoring',
+          'Rebuild-versus-port decision per integration',
+          'Interfaces replaced by reusable APIs and events',
+          'Parallel run with transaction-level output comparison',
+          'Decommissioning of the old estate with retained evidence',
+        ],
+      },
+      {
+        name: 'Managed Integration Operations',
+        description: 'Running the estate under a service level: monitoring, incident response, partner onboarding and the change queue. For teams who want the fabric without carrying a platform team for it, or who need cover while they build one. Your interfaces must remain operable by your own people either way.',
+        deliverables: [
+          'Round-the-clock flow monitoring with transaction tracing',
+          'Incident response and replay within agreed response times',
+          'Trading partner onboarding as a managed service',
+          'Change requests through a governed release cycle',
+          'Monthly reporting on volumes, failures, reuse and cost per flow',
+        ],
+      },
+    ],
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    // Six sectors. Each headline names the specific interoperability constraint
+    // in that sector -- clinical standards in healthcare, settlement windows in
+    // banking, carrier networks in logistics -- rather than restating the
+    // capability list with a sector word attached.
+    industryHeading: 'Enterprise Platform Integration',
+    industryHeadingHighlight: 'by industry.',
+    industryLede: 'Six sectors, and the interoperability constraint that decides what an integration architecture there actually has to solve.',
+    industryUseCases: [
+      {
+        industry: 'Financial Services',
+        headline: 'Payment and settlement windows are fixed by the network, not by your release calendar, so an integration failure has a deadline attached and a regulator on the other side of it. Nothing else on this list has that property.',
+        items: [
+          'Core banking and ledger integration',
+          'Payment rails, clearing and settlement flows',
+          'Card, wallet and merchant acquiring interfaces',
+          'Regulatory reporting and risk data aggregation',
+          'Open banking and PSD2 API compliance',
+          'KYC, screening and onboarding system integration',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Interoperability is a published standard rather than a design choice, and the clinical systems will not be modified to suit you. HL7 and FHIR conformance is the entry ticket; the real work is the local variation every provider has layered on top of them.',
+        items: [
+          'HL7 v2 and FHIR clinical interoperability',
+          'EHR and patient administration integration',
+          'Laboratory, pathology and imaging interfaces',
+          'Pharmacy, e-prescribing and formulary flows',
+          'Payer eligibility, claims and remittance exchange',
+          'Consent, identity and records-access controls',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Plant systems run on their own clock and their own protocols, and the network between them is not always there. Integration has to buffer, tolerate disconnection and never assume the shop floor will wait for a cloud service to answer.',
+        items: [
+          'ERP to MES and shop-floor integration',
+          'OT-to-IT data flows across the plant boundary',
+          'IoT telemetry ingestion and edge buffering',
+          'Historian, SCADA and asset system interfaces',
+          'Supplier onboarding and purchase order exchange',
+          'Quality, traceability and batch record flows',
+        ],
+      },
+      {
+        industry: 'Retail & Consumer',
+        headline: 'Order, inventory and fulfillment must agree in near real time across channels that were each bought separately.',
+        items: [
+          'Commerce platform and order management integration',
+          'Real-time inventory and availability synchronization',
+          'Payment, refund and settlement flows',
+          'Fulfillment, shipping and returns orchestration',
+          'Marketplace and third-party seller connectivity',
+          'Product, pricing and promotion data distribution',
+        ],
+      },
+      {
+        industry: 'Logistics & Supply Chain',
+        headline: 'Most of the estate belongs to carriers and customs authorities who follow their own formats and change them without notice. You have no influence over either, so resilience and rapid partner re-onboarding matter more than elegance.',
+        items: [
+          'TMS, WMS and ERP integration',
+          'Carrier rate, booking and tender exchange',
+          'Customs, port and border authority filings',
+          'Track-and-trace event streaming',
+          'Proof of delivery and exception handling',
+          'Freight invoice and settlement reconciliation',
+        ],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'Asset and field systems were engineered for decades of service life, long before anything expected them to expose an interface.',
+        items: [
+          'Asset management and work order integration',
+          'Field operations and mobile workforce flows',
+          'Metering and head-end system interfaces',
+          'SCADA and historian data integration',
+          'Outage, network and GIS system exchange',
+          'Market participant and regulatory submissions',
+        ],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Not "before us / after us". Both columns describe interfaces built by
+    // competent engineers to a real requirement. They differ on whether anyone
+    // designed the estate, which is a governance and architecture question
+    // rather than a technology one -- and it is the whole thesis of the page.
+    comparisonTable: {
+      eyebrow: 'HOW INTEGRATION ESTATES GO WRONG',
+      heading: 'Connecting Systems, or Architecting an Estate.',
+      lede: 'Both columns describe interfaces built competently against a real requirement. They differ on what happens the fifth time somebody needs the same data.',
+      beforeLabel: 'INTEGRATION AS INTERFACES',
+      afterLabel: 'INTEGRATION AS ARCHITECTURE',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'INTERFACES',
+      afterShort: 'ARCHITECTURE',
+      rows: [
+        {
+          dimension: 'The fifth time somebody needs the same data',
+          before: 'A fifth interface, because finding and trusting the existing four costs more than writing a new one. The estate grows faster than the business does.',
+          after: 'A published API or event somebody already owns, with a contract and a consumer list, so the fifth team consumes rather than builds.',
+        },
+        {
+          dimension: 'When one system changes',
+          before: 'Nobody can say with confidence what else breaks. The change is deferred, or it ships and something unrelated fails in production a week later.',
+          after: 'Dependency mapping and versioned contracts make the blast radius knowable before the change, and consumers are notified rather than surprised.',
+        },
+        {
+          dimension: 'Who owns an interface',
+          before: 'The person who built it, until they move team. After that it runs unowned until it fails, and then it is nobody\u2019s to fix.',
+          after: 'Every interface has a named owner, a lifecycle stage and a retirement date, recorded where an operations team can see it.',
+        },
+        {
+          dimension: 'When a transaction goes missing',
+          before: 'Each team checks its own logs and concludes the problem is upstream. Resolution takes days and usually ends in a manual re-entry.',
+          after: 'Distributed tracing follows the transaction across every hop, so the failing step is identified in minutes and replayed rather than retyped.',
+        },
+        {
+          dimension: 'Onboarding a new trading partner',
+          before: 'An engineering project each time, quoted in weeks, because every partner is treated as a new problem.',
+          after: 'A templated onboarding with partner profiles, standard document maps and a validation harness \u2014 measured in days, run by operations.',
+        },
+        {
+          dimension: 'What happens when AI wants access',
+          before: 'Agents are pointed at whatever interface exists, or at the screen when none does, outside the controls the rest of the estate is held to.',
+          after: 'Agents consume the same governed APIs and events as any other client, with scoped permissions and a traceable record of what they did.',
+        },
+      ],
+    },
+
+    // ── Architecture ────────────────────────────────────────────────────────
+    // Five layers because the template renders architectureNodes as a
+    // four-column grid unless the array is exactly five. The supplied six-layer
+    // model compresses cleanly: Enterprise Outcomes is what the other five
+    // produce rather than a layer, so it belongs in the outcomes section, where
+    // it is measured rather than asserted.
+    //
+    // Governance is drawn as the last layer rather than a sidebar because that
+    // is the argument -- it spans the others and is designed in, not added.
+    architectureEyebrow: 'THE INTEGRATION ARCHITECTURE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Systems to Governance.',
+    architectureLede: 'Five layers. The first is what you already run, the last is what makes the middle three safe to depend on, and every enterprise that skipped the last one is now paying for it.',
+    architectureNodes: [
+      {
+        title: 'Enterprise Systems',
+        icon: 'Database',
+        description: 'What you already run and mostly are not replacing: ERP, CRM, HCM, supply chain, finance, the data estate, the SaaS portfolio that grew by department, and the applications nobody wants to touch. This layer is a given rather than a design choice, and an architecture that assumes it will be rationalized first will never ship.',
+        features: [
+          'ERP, CRM, HCM and supply chain platforms',
+          'Finance and treasury systems',
+          'Legacy and mainframe applications',
+          'SaaS portfolio and departmental tools',
+          'Data platforms and operational stores',
+        ],
+      },
+      {
+        title: 'Integration Fabric',
+        icon: 'Network',
+        description: 'How those systems reach each other. Synchronous APIs, asynchronous events and guaranteed messaging solve different problems, and most brittle estates are brittle because one mechanism was used for all three. Getting this layer right is what turns a dependency for every pair of systems into a contract each system publishes once.',
+        features: [
+          'APIs and gateway policy enforcement',
+          'Event streaming and topic design',
+          'Enterprise messaging and queues',
+          'Connectors, adapters and iPaaS',
+          'B2B, EDI and partner transport',
+        ],
+      },
+      {
+        title: 'Orchestration',
+        icon: 'Settings',
+        description: 'Where a business process that crosses six systems is made to complete correctly \u2014 including deciding what happens when step four fails after step three already committed. Distributed work does not roll back the way a single database does, so compensation, replay and idempotency are design decisions rather than error handling.',
+        features: [
+          'Process and workflow orchestration',
+          'Business rules and decision logic',
+          'Multi-system transaction coordination',
+          'Compensation and replay on failure',
+          'Human-in-the-loop steps and approvals',
+        ],
+      },
+      {
+        title: 'Intelligence',
+        icon: 'BrainCircuit',
+        description: 'Anomaly detection, predictive operations, assisted mapping, and agents consuming the estate through the same governed interfaces as any other client rather than around them. This layer is genuinely useful and genuinely optional \u2014 it improves an architecture that exists and cannot substitute for one that does not.',
+        features: [
+          'Anomaly detection across flows',
+          'Predictive and self-healing operations',
+          'AI-assisted mapping and documentation',
+          'Agent access through permissioned APIs',
+          'Decision traceability and replay',
+        ],
+      },
+      {
+        title: 'Governance',
+        icon: 'ShieldCheck',
+        description: 'Identity, policy, lifecycle, observability and compliance across every layer above. Designed in from the first interface, because retrofitting it across a live estate is materially harder than starting with it, and because the questions it answers \u2014 who owns this, what breaks if it changes, where did that transaction go \u2014 are asked during incidents rather than during design.',
+        features: [
+          'Identity, access and token management',
+          'Policy enforcement and rate limiting',
+          'Interface lifecycle and ownership',
+          'Distributed tracing and audit evidence',
+          'SLA reporting and cost attribution',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'ENTERPRISE PLATFORM INTEGRATION SERVICES',
+    capabilitiesSectionTitle: 'Enterprise Platform Integration',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Decide the architecture, connect what exists, expose it as reusable interfaces, orchestrate the processes that depend on it, reach your partners, retire what should not have been built, and govern all of it as one estate.',
+    capabilityAreas: [
+      {
+        title: 'Integration Strategy & Enterprise Architecture',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Deciding what to connect and how, before anything is connected. The architecture you set here is what a decade of interfaces inherits, which is why it is the one stage worth over-investing in. It is also the only stage where changing your mind is free \u2014 after the third interface ships against a pattern, that pattern is effectively permanent.',
+        items: [
+          'Enterprise Integration Strategy',
+          'Current-State Integration Assessment',
+          'Target-State Integration Architecture',
+          'Integration Reference Architectures',
+          'iPaaS & Platform Evaluation',
+          'Integration Maturity Assessment',
+          'Application Dependency Mapping',
+          'Architecture Standards & Design Principles',
+          'Interoperability & Canonical Data Models',
+          'Integration Roadmap & Sequencing',
+          'Business Case & Value Prioritization',
+          'Integration Operating Model & Ownership',
+        ],
+      },
+      {
+        title: 'Application & Legacy Integration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Connecting the systems that are staying. Your business-critical platforms usually cannot be replaced on any timeline that helps you, so the integration layer is what lets modernization happen around them rather than instead of them. Done properly it also decouples your consumers from those systems, which is what makes eventual replacement possible at all.',
+        items: [
+          'ERP Integration',
+          'CRM & Customer Platform Integration',
+          'HCM & Workforce System Integration',
+          'Supply Chain & Manufacturing Integration',
+          'Finance & Treasury System Integration',
+          'Legacy & Mainframe Connectivity',
+          'Custom Application Integration',
+          'Packaged Software Adapters & Connectors',
+          'Database & Data Service Integration',
+          'SaaS Platform Integration',
+          'Middleware & Service-Based Integration',
+          'File & Batch Interface Modernization',
+        ],
+      },
+      {
+        title: 'API, Event & Messaging Integration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Your reusable connectivity layer. APIs are one mechanism, not the strategy \u2014 synchronous calls, asynchronous events and guaranteed messaging each solve a different problem, and choosing wrongly is what makes an estate brittle. An estate built entirely on synchronous calls becomes a distributed system where every caller depends on every callee staying up.',
+        items: [
+          'API-Led Connectivity Architecture',
+          'API Gateway Design & Implementation',
+          'API Lifecycle & Version Management',
+          'API Security, Throttling & Quotas',
+          'Event-Driven Architecture',
+          'Event Streaming & Topic Design',
+          'Message-Oriented Middleware',
+          'Publish-Subscribe & Fan-Out Patterns',
+          'Guaranteed Delivery & Idempotency',
+          'Schema Registry & Contract Management',
+          'API Analytics & Observability',
+          'Reuse Standards & Developer Enablement',
+        ],
+      },
+      {
+        title: 'Data Integration & Process Orchestration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Moving your data is the easy half. The hard half is making a business process that crosses six systems complete correctly, and knowing what happens when step four fails after step three already committed. Distributed transactions do not roll back the way a database does, so the compensation logic has to be designed rather than discovered in production.',
+        items: [
+          'Data Transformation & Mapping',
+          'Batch & Real-Time Data Integration',
+          'Change Data Capture',
+          'Data Synchronization & Reconciliation',
+          'Master & Reference Data Alignment',
+          'Business Process Orchestration',
+          'Multi-System Transaction Coordination',
+          'Saga & Compensation Patterns',
+          'Human-in-the-Loop Steps',
+          'Exception Handling & Replay',
+          'Long-Running Process State',
+          'Process & Flow Observability',
+        ],
+      },
+      {
+        title: 'B2B, EDI & Partner Integration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The half of your estate you do not control. Partners follow their own conventions, deviate from the standard constantly, change without telling you, and are measured on how fast they can start trading \u2014 which makes onboarding a product rather than a project. The deviations repeat, so the thirty-first partner should never cost what the first one did.',
+        items: [
+          'B2B Integration Architecture',
+          'EDI Implementation & Migration',
+          'X12 & EDIFACT Standards',
+          'AS2, SFTP & Secure Transport',
+          'Trading Partner Onboarding at Scale',
+          'Partner Profile & Agreement Management',
+          'Document Transformation & Enrichment',
+          'Transaction Validation & Acknowledgment',
+          'Partner API Enablement',
+          'Marketplace & Network Connectivity',
+          'Non-Repudiation & Audit Trail',
+          'Partner Transaction Monitoring',
+        ],
+      },
+      {
+        title: 'Hybrid Cloud & iPaaS Integration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Modernization never happens all at once. Some of your workloads stay on-premises for reasons that are not going away \u2014 latency, residency, licensing, or economics that never justify the move \u2014 so the architecture has to assume a hybrid estate permanently rather than as a transition state that eventually resolves.',
+        items: [
+          'iPaaS Architecture & Implementation',
+          'Cloud-to-Cloud Integration',
+          'Cloud-to-On-Premises Connectivity',
+          'Multi-Cloud Integration Patterns',
+          'Secure Gateway & Private Connectivity',
+          'Hybrid Identity & Token Exchange',
+          'Container-Aware Integration',
+          'Serverless Integration Patterns',
+          'Connector Strategy & Custom Connectors',
+          'Data Residency & Sovereignty Handling',
+          'Integration Platform Selection',
+          'Cloud Integration Governance',
+        ],
+      },
+      {
+        title: 'Integration Modernization & Rationalization',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Most estates carry a decade of interfaces, scripts and adapters nobody owns. Deciding what to retain, reuse, refactor, replatform, replace or retire frees more of your delivery capacity than the next twenty builds would consume, and it is the only reliable way to make an estate smaller rather than larger.',
+        items: [
+          'Integration Estate Discovery & Inventory',
+          'Dependency & Blast-Radius Mapping',
+          'Point-to-Point Rationalization',
+          'Interface Ownership Assignment',
+          'Middleware & ESB Modernization',
+          'iPaaS Migration',
+          'API Enablement of Legacy Interfaces',
+          'Event-Driven Re-Architecture',
+          'Integration Platform Consolidation',
+          'Technical Debt Reduction Planning',
+          'Parallel Run & Cutover Validation',
+          'Decommissioning With Evidence',
+        ],
+      },
+      {
+        title: 'Integration Governance, Security & Operations',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Once your business processes depend on it, the integration layer is production infrastructure. It fails at three in the morning, it carries regulated data, and somebody has to be able to answer where a transaction went. Platform dashboards report that a flow ran; only tracing tells you a payload entered at one end and never arrived at the other.',
+        items: [
+          'Integration & API Governance',
+          'Identity, Access & Token Management',
+          'Encryption In Transit and At Rest',
+          'Policy Enforcement & Rate Limiting',
+          'Lifecycle & Environment Management',
+          'Runtime Monitoring & Alerting',
+          'Distributed Transaction Tracing',
+          'Failure Detection & Replay',
+          'Performance & Throughput Engineering',
+          'Audit Logging & Compliance Evidence',
+          'SLA Definition & Reporting',
+          'Integration FinOps & Cost Attribution',
+        ],
+      },
+      {
+        title: 'Intelligent & Agentic Integration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'AI inside a governed integration architecture, not instead of one. Agents reaching your enterprise systems through permissioned APIs and events inherit the controls everything else is held to; agents driving screens because nobody built the interface inherit none of them, and that difference is what an auditor will ask about.',
+        items: [
+          'AI-Assisted Integration Design',
+          'Intelligent Schema & Field Mapping',
+          'Automated Transformation Generation',
+          'Integration Documentation Generation',
+          'Anomaly Detection Across Flows',
+          'Intelligent Exception Classification',
+          'Predictive Integration Operations',
+          'Self-Healing Retry & Routing',
+          'Agent Access Through Governed APIs',
+          'Tool & Action Permissioning for Agents',
+          'Agentic Workflow Orchestration',
+          'Decision Traceability & Replay',
+        ],
+      },
+    ],
+
+    midCta: 'Every interface you add is a dependency somebody has to remember.',
+    midCtaLabel: 'Map One Integration Estate',
+    closingCta: {
+      title: 'One estate,',
+      highlight: 'mapped and costed.',
+      body: 'Show us what is connected to what. In 30 minutes we will tell you where the point-to-point sprawl is, which interfaces nobody owns, what a reusable layer would remove, and whether the platform you are being sold is larger than the problem \u2014 before anything is built.',
+      proofLabel: 'From first call to a mapped integration estate',
+    },
   },
 
   'pimcore': {
@@ -10769,12 +11426,733 @@ export const servicesData = {
     name: 'Talent & Organization',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
-    shortDescription: 'Talent management and organizational effectiveness',
-    fullDescription: 'Transform talent management and organizational capabilities.',
-    keyFeatures: ['Talent strategy', 'Org design', 'Change management', 'Learning & development', 'HR technology'],
-    relatedServiceSlugs: ['global-capability-centers', 'unified-services-management'],
+    shortDescription: 'Redesigning how an enterprise decides, staffs and builds capability',
+    fullDescription: 'Design the operating model, decision rights, skills system and people function an enterprise needs to execute — and prove it moved.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Workforce strategy', 'Operating model design', 'Decision rights', 'Skills architecture', 'People intelligence', 'HR transformation'],
+    relatedServiceSlugs: ['global-capability-centers', 'business-process-management', 'unified-services-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
+    lastReviewed: '2026-08-23',
+
+    // ── Positioning ──────────────────────────────────────────────────
+    // 631 bytes on the Platforms parity default, which is the worst fit on the
+    // fleet: the department copy told a talent audience that "the license is
+    // bought, the value is in what you configure" and offered a MuleSoft and
+    // SAP toolchain. 26/40.
+    //
+    // The category is unusually uniform. Accenture, Deloitte, McKinsey and IBM
+    // all lead with the same sentence — AI plus human potential, reinvent the
+    // workforce, skills-based organization, data-driven people decisions — and
+    // Accenture's live page organizes it into six capabilities almost
+    // identical to the six here. Saying it louder is not a position.
+    //
+    // The wedge is the part the category will not print: a reorganization is
+    // not the intervention. Structures get redrawn, titles change, and
+    // eighteen months later the same escalations reach the same three people,
+    // because nobody moved a decision right. So this page is organized around
+    // decisions rather than around charts, and the outcomes are four things a
+    // board can check a year after the announcement -- time to decision,
+    // internal fill on critical roles, regretted attrition where it hurts, and
+    // layers between a customer and the person who can say yes. None of those
+    // is engagement score, which every competitor quotes and which moves for
+    // reasons no program controls.
+    //
+    // Scope note: Accenture files Global Capability Centers under Talent &
+    // Organization. Kangqore has GCC as its own service in this same practice
+    // cluster, so area 02 routes it rather than claiming it. Shared services
+    // and Center of Excellence design belong to business process management
+    // for the same reason.
+    heroTitle: 'Talent and Organization Design\nThat Moves Decisions, Not Boxes',
+    heroBadge: 'Diagnose. Design. Deploy. Scale.',
+    heroStripItems: [
+      'Workforce Planning', 'Operating Model Design', 'Decision Rights', 'Leadership & Culture',
+      'Skills Architecture', 'People Intelligence', 'HR Transformation', 'Talent Acquisition',
+    ],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'What talent and organization consulting is actually for',
+    whatIsTitle: 'Most Reorganizations Move Boxes.',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'The Ones That Work Move Decisions.',
+    whatIsPara2: 'Talent and organization consulting is the work of changing how an enterprise decides, staffs and builds capability. The chart is an output. The intervention is everything underneath it — who holds a decision, what a manager is genuinely accountable for, which capabilities the business is actually short of, and how fast a critical role gets filled when the person in it resigns.',
+    whatIsPara3: 'The failure mode is well documented and close to universal. A structure is redrawn, titles change, the announcement lands well, and eighteen months later the same escalations arrive on the same three desks — because the boxes moved and the authority did not. Meanwhile the skills taxonomy built during the program has gone stale, since it was scoped as a deliverable rather than as a dataset with an owner and a refresh cadence.',
+    whatIsPara4: 'Kangqore works it the other way round. We measure how long a defined class of decision actually takes today and where it stalls, then design the structure that follows from the answer rather than the one that looks tidy on a slide. Skills work is scoped as an operating commitment, not a mapping exercise. And every design is tested against numbers a board can check a year later, which is a harder promise than an engagement score and a more useful one.',
+
+    // ── Outcomes ────────────────────────────────────────────────────
+    // Deliberately not engagement, eNPS or total attrition. All three are on
+    // every competitor page, all three move for reasons no program controls,
+    // and none of them can be attributed to a redesign a year afterwards.
+    //
+    // These four can. Each is measurable before the work starts, each has a
+    // named denominator, and each fails visibly if the redesign was cosmetic.
+    outcomesEyebrow: 'WHAT DECIDES WHETHER A REDESIGN SURVIVED',
+    outcomesHeading: 'Four numbers a board can check',
+    outcomesHeadingHighlight: 'a year after the announcement.',
+    businessMetrics: [
+      { illustrative: true, title: 'Time to Decision',        desc: 'Reduction in elapsed days from a defined decision being raised to it being made, once decision rights sit with named roles instead of standing committees.',        value: '45', suffix: '%',      metricLabel: 'Faster on Defined Decisions', icon: 'Zap' },
+      { illustrative: true, title: 'Critical-Role Fill',      desc: 'Share of business-critical roles filled internally, once succession is mapped against a maintained skills inventory rather than against manager recall.',            value: '60', suffix: '%',      metricLabel: 'Filled From Inside',          icon: 'Target' },
+      { illustrative: true, title: 'Regretted Attrition',     desc: 'Reduction in regretted departures from the roles the business itself named critical. Not total attrition, which moves with the labor market rather than with design.', value: '30', suffix: '%',      metricLabel: 'Lower Where It Hurts',        icon: 'Shield' },
+      { illustrative: true, title: 'Layers to the Work',      desc: 'Management layers removed between a customer-facing signal and the person authorized to act on it, after span, accountability and delegation are redesigned together.', value: '2', suffix: ' Fewer', metricLabel: 'Between Customer and Yes',    icon: 'Layers' },
+    ],
+
+    // ── Engagement outcomes ────────────────────────────────────────
+    // Overridden rather than left on the parity default, which invents a
+    // client called "Global Enterprise Organization" and asserts "100%
+    // operational reliability". Both scenarios below say what they are in the
+    // descriptor and repeat it in the body.
+    outcomeCard: {
+      illustrative: true,
+      metric: '31 → 9 days',
+      metricLabel: 'to a pricing decision',
+      industry: 'Modeled scenario — industrial group, 4 business units',
+      problem: 'Pricing exceptions routed through three committees that met fortnightly, so a customer question took a month and the answer was usually yes anyway.',
+      outcome: 'The decision was delegated to named commercial roles with a defined threshold, escalation reserved for genuine exceptions, and the committee retired. Figures are modeled from typical delegation patterns, not measured on a named client.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '22% → 61%',
+      metricLabel: 'critical roles filled internally',
+      industry: 'Modeled scenario — regulated services firm, ~6,000 staff',
+      problem: 'A skills framework built two years earlier that nobody owned, so succession planning ran on the memory of whoever was in the room.',
+      outcome: 'Skills inventory rebuilt against real project and certification data, with a named owner and a quarterly refresh written into the HR operating model. Modeled figures, shown to convey the shape of the work rather than a specific engagement.',
+    },
+
+    // ── Capability areas ───────────────────────────────────────────
+    // Six, matching the brief and matching how the category is organized, so a
+    // buyer comparing pages side by side can map them one to one. The depth is
+    // where the difference sits: roughly eighty named capabilities, and two
+    // seams stated on the cards rather than quietly claimed.
+    //
+    // Area 02 routes Global Capability Centers and Global Business Services to
+    // /services/global-capability-centers, and shared services and Center of
+    // Excellence design to /services/business-process-management. Accenture
+    // files GCC inside this practice; Kangqore has it as its own service in
+    // this same cluster, and claiming it twice would be the kind of overlap a
+    // procurement team notices.
+    //
+    // Bento slots: 01 opens tall, 04 takes width because skills is the area
+    // the AI economy actually moved, and 06 closes wide because it is where
+    // strategy turns into an operational commitment.
+    capabilitiesLabel: 'TALENT & ORGANIZATION SERVICES',
+    capabilitiesSectionTitle: 'Talent & Organization',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Six capabilities spanning workforce strategy through HR operations — roughly eighty named services, and the two seams where another Kangqore practice takes the work on.',
+    capabilityAreas: [
+      {
+        title: 'Talent Strategy & Strategic Workforce Planning',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Translating a business strategy into the roles, capabilities and headcount it actually requires — and being specific about which roles are critical, because a plan that treats every role as critical has not prioritized anything. Most workforce plans are headcount budgets with a narrative attached; the useful version starts from where value is created and works backward to the twenty roles that carry your strategy.',
+        items: [
+          'Strategic Workforce Planning',
+          'Workforce Demand and Supply Modeling',
+          'Critical-Role Identification',
+          'Capability Gap Analysis',
+          'Build, Buy, Borrow and Redeploy Decisions',
+          'Workforce Scenario Planning',
+          'Succession and Talent Pipeline Strategy',
+          'Location and Sourcing Strategy',
+          'Workforce Cost and Productivity Modeling',
+          'Skills-Based Workforce Architecture',
+          'Contingent and Blended Workforce Design',
+          'Future-of-Work Strategy',
+          'Workforce Risk and Concentration Analysis',
+        ],
+      },
+      {
+        title: 'Organization & Operating Model Design',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Structure, decision rights and accountability designed together, because changing one without the other two is what leaves your reorganization cosmetic. Global Capability Centers and Global Business Services are a separate Kangqore service; shared services and CoE design sit with business process management.',
+        items: [
+          'Target Operating Model Design',
+          'Organization Structure and Architecture',
+          'Decision Rights and Delegation Frameworks',
+          'Accountability and Role Charters',
+          'Governance and Forum Design',
+          'Span of Control and Layer Analysis',
+          'Product and Platform Operating Models',
+          'Agile and Cross-Functional Team Design',
+          'Interface and Handoff Design',
+          'Organizational Restructuring',
+          'Post-Merger Organization Integration',
+          'Operating Model Cost Modeling',
+          'Design Testing Against Real Decisions',
+        ],
+      },
+      {
+        title: 'Leadership, Culture & Change',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Leaders who can carry a decision they did not personally make, and a change approach measured by adoption rather than by attendance. Communications are the easy half; the hard half is what your managers do differently on a Tuesday.',
+        items: [
+          'Leadership Strategy and Development',
+          'Executive and Emerging-Leader Programs',
+          'Leadership Pipeline and Succession',
+          'High-Potential Identification and Calibration',
+          'Culture Assessment and Transformation',
+          'Organizational Health Diagnostics',
+          'Organizational Network Analysis',
+          'Change Readiness and Impact Assessment',
+          'Adoption Measurement, Not Attendance',
+          'Transformation Communications',
+          'Manager Enablement and Capability',
+          'Employee Experience and Listening',
+          'Performance and Reward Design',
+        ],
+      },
+      {
+        title: 'Skills, Learning & Workforce Transformation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A skills inventory is a dataset, not a deliverable — it decays from the day it is signed off unless somebody owns it and something refreshes it. So we build the taxonomy against evidence your business already generates (projects staffed, certifications held, work actually delivered) rather than against self-assessment surveys, and we write the refresh cadence and the owner into the operating model before the program closes. Learning is then pointed at the gaps the inventory exposes, in the flow of work, instead of at a catalog nobody browses.',
+        items: [
+          'Enterprise Skills Strategy',
+          'Skills Taxonomy and Architecture',
+          'Evidence-Based Skills Inventory',
+          'Skills Data Ownership and Refresh Cadence',
+          'Role Redesign Around Human and Machine Work',
+          'Reskilling and Redeployment Programs',
+          'AI and Data Literacy Programs',
+          'Capability Academies',
+          'Personalized Learning Pathways',
+          'Learning Ecosystem and Technology Strategy',
+          'Internal Talent Marketplace Design',
+          'Knowledge Capture and Transfer',
+          'Capability Measurement and Assurance',
+        ],
+      },
+      {
+        title: 'AI-Powered HR Transformation & People Intelligence',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Your workforce data turned into decisions leaders actually take, and AI in the employment lifecycle governed like the regulated activity it now is. Hiring and promotion models sit in the high-risk tier of the EU AI Act and face bias-audit duties in New York.',
+        items: [
+          'HR Strategy and Operating Model',
+          'HR Technology Strategy and Selection',
+          'HCM Implementation and Integration',
+          'People Analytics and Reporting',
+          'Skills and Talent Intelligence',
+          'Predictive Attrition and Retention Modeling',
+          'Workforce Productivity Analytics',
+          'HR Data Architecture and Quality',
+          'Generative AI for HR Service Delivery',
+          'Agentic Workflows for HR Operations',
+          'Bias Auditing for Employment Decision Tools',
+          'AI Governance for the Employment Lifecycle',
+          'Employee Data Privacy and Consent Design',
+        ],
+      },
+      {
+        title: 'Talent Acquisition, Deployment & HR Managed Services',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where strategy becomes an operational commitment. Hiring, onboarding, deployment and the HR service line run to defined service levels, with the flexibility to scale as demand moves — and with the same rule we hold everywhere else: the capability has to remain operable by your own team. An HR function only we can run is a dependency we sold you, not an outcome we delivered.',
+        items: [
+          'Talent Acquisition Strategy and Operating Model',
+          'Strategic Sourcing and Talent Pooling',
+          'Recruitment Process Design and Operations',
+          'Executive and Specialist Hiring',
+          'Talent Market Intelligence',
+          'Candidate Experience Design',
+          'Onboarding and Time-to-Productivity',
+          'Internal Mobility and Deployment',
+          'HR Operations Transformation',
+          'HR Managed Services to Service Levels',
+          'HR Process Optimization and Automation',
+          'Workforce Reporting and Compliance Enablement',
+          'Transition, Knowledge Transfer and Exit Planning',
+        ],
+      },
+    ],
+
+    // ── The chain ─────────────────────────────────────────────────
+    // The brief's "from talent management to workforce intelligence" model,
+    // rendered as stacked bands from data rather than as an image, so every
+    // node name is real text a crawler receives and it reflows on a phone.
+    // Read downward as a dependency chain: each layer is only as good as the
+    // one beneath it, which is the argument for doing them together.
+    enterpriseArchitecture: {
+      eyebrow: 'FROM TALENT MANAGEMENT TO WORKFORCE INTELLIGENCE',
+      title: 'Eight layers,',
+      titleHighlight: 'and most programs touch two.',
+      lede: 'Talent work fails at the seams rather than inside the disciplines. A skills program with no link to your operating model produces a catalog; an operating model with no link to decision rights produces a chart. These are the layers, and the value is in connecting them.',
+      layers: [
+        { label: 'Business Strategy',        role: 'Where value is created next',                nodes: ['Growth Priorities', 'Market Moves', 'Cost Position', 'Regulatory Exposure'] },
+        { label: 'Work & Operating Model',   role: 'How the work is actually organized',         nodes: ['Value Streams', 'Process Ownership', 'Human and Machine Split', 'Service Levels'] },
+        { label: 'Organization Design',      role: 'Who is accountable, and who decides',        nodes: ['Structure', 'Decision Rights', 'Spans and Layers', 'Governance Forums'] },
+        { label: 'Roles & Skills',           role: 'What the work requires of people',           nodes: ['Role Architecture', 'Skills Taxonomy', 'Critical Roles', 'Capability Gaps'] },
+        { label: 'Talent & Leadership',      role: 'Who is in the seats, and who is next',       nodes: ['Succession', 'Pipeline', 'Mobility', 'Leadership Capability', 'Culture'] },
+        { label: 'AI & Technology',          role: 'The systems the people function runs on',    nodes: ['HCM Platform', 'Skills Intelligence', 'Learning Ecosystem', 'HR Service Delivery'] },
+        { label: 'Workforce Intelligence',   role: 'Signals turned into something decidable',    nodes: ['People Analytics', 'Predictive Models', 'Talent Risk', 'Productivity Signals'] },
+        { label: 'Business Performance',     role: 'What the whole chain is answerable for',     nodes: ['Time to Decision', 'Critical-Role Fill', 'Regretted Attrition', 'Cost to Serve'] },
+      ],
+      principle: 'Talent decisions are only as good as the layer beneath them. A skills taxonomy built without an operating model describes a company that does not exist.',
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────
+    // The brief's Diagnose, Design, Deploy, Scale. Kept at four because it is
+    // the client's own model and it is a genuine loop -- Scale returns to
+    // Diagnose rather than ending the engagement.
+    architectureEyebrow: 'THE WORKFORCE INTELLIGENCE MODEL',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Diagnose to Scale.',
+    architectureLede: 'Four stages, and the loop closes rather than ending. Most engagements are funded through Deploy and stop there, which is precisely when the design starts drifting back toward the shape it had before.',
+    architectureNodes: [
+      {
+        title: 'Diagnose',
+        icon: 'Search',
+        description: 'Build a fact base instead of a hypothesis. How long a defined decision actually takes, where escalations land, which roles are genuinely critical, what the skills data really says once you stop trusting self-assessment.',
+        features: [
+          'Decision latency measured on real cases',
+          'Escalation and bottleneck mapping',
+          'Critical-role and single-point-of-failure analysis',
+          'Skills evidence gathered from work, not surveys',
+          'Organizational network and collaboration analysis',
+          'Baseline set for every metric the work will be judged on',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Structure, decision rights, role charters, skills architecture and the people technology that supports them — designed as one object, because changing any of them alone produces a reorganization your people will route around.',
+        features: [
+          'Target operating model and structure',
+          'Decision rights assigned to named roles',
+          'Role charters with real accountability',
+          'Skills taxonomy with an owner and a cadence',
+          'Leadership and succession model',
+          'HR technology and data architecture',
+        ],
+      },
+      {
+        title: 'Deploy',
+        icon: 'Rocket',
+        description: 'Into your live organization, with people in post and work in flight. The stage that slips, and it slips on manager capability rather than on design quality — a delegation nobody feels safe using has not been delegated.',
+        features: [
+          'Phased transition and role matching',
+          'Manager enablement on the new authority',
+          'Consultation and works council process',
+          'Communications tied to what changes on Tuesday',
+          'Technology and data migration',
+          'Adoption measured, not assumed',
+        ],
+      },
+      {
+        title: 'Scale',
+        icon: 'TrendingUp',
+        description: 'Measure against the baseline taken in Diagnose, find where your design is drifting back, and fix it. This is the stage that compounds and the first one cut when a budget tightens.',
+        features: [
+          'Metrics reported against the original baseline',
+          'Decision-rights drift detected and corrected',
+          'Skills inventory refreshed on its cadence',
+          'Capability gaps fed back into workforce planning',
+          'Structure reviewed as the strategy moves',
+          'Handover to your own team, with the model documented',
+        ],
+      },
+    ],
+
+    // ── The argument ──────────────────────────────────────────────
+    // Both columns ran a real program with a real budget and a real
+    // announcement. The difference is entirely in what is true eighteen months
+    // later, which is the only horizon on which this work can be judged.
+    comparisonTable: {
+      eyebrow: 'WHERE ORGANIZATION PROGRAMS QUIETLY REVERT',
+      heading: 'Both announcements landed well.',
+      lede: 'Neither column describes a badly run program. They differ in what is still true eighteen months after your town hall.',
+      beforeLabel: 'A REORGANIZATION',
+      afterLabel: 'A REDESIGN',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'ANNOUNCED',
+      afterShort: 'OPERATING',
+      rows: [
+        {
+          dimension: 'What actually changed',
+          before: 'Reporting lines, titles and a new chart. Authority stayed exactly where it was, so the same escalations reach the same three desks.',
+          after: 'Decision rights moved to named roles with defined thresholds, and the forums that used to hold them were retired rather than renamed.',
+        },
+        {
+          dimension: 'How success was defined',
+          before: 'Engagement score, announcement sentiment and a completed org chart. All three peak in month three and tell you nothing in month eighteen.',
+          after: 'Time to decision, internal fill on critical roles, regretted attrition where it hurts, and layers between a customer and a yes — baselined before the work started.',
+        },
+        {
+          dimension: 'What happened to the skills framework',
+          before: 'Built during the program, signed off, and stale within eighteen months because it belonged to the program rather than to anybody afterwards.',
+          after: 'Built from evidence the business already generates, with a named owner and a refresh cadence written into the HR operating model before close.',
+        },
+        {
+          dimension: 'Where the AI work sits',
+          before: 'A generative assistant bolted onto HR service delivery, and screening models nobody has audited running against live candidates.',
+          after: 'AI in the employment lifecycle treated as regulated activity — bias auditing, documented logic and human review on decisions that affect someone’s job.',
+          link: { href: '/services/ai-governance', label: 'AI governance' },
+        },
+        {
+          dimension: 'What managers were given',
+          before: 'A deck, a town hall and a new title. The delegation exists on paper and nobody feels safe being the first to use it.',
+          after: 'Explicit thresholds, worked examples, and an escalation path that is genuinely narrower — so using the authority is the low-risk choice.',
+        },
+        {
+          dimension: 'Who owns it afterwards',
+          before: 'The program closes, the consultants leave, and the model degrades quietly because maintaining it was nobody’s objective.',
+          after: 'Named internal owners for the structure, the skills data and the decision framework, with the review cadence in the operating model rather than in a plan.',
+        },
+        {
+          dimension: 'Where the operating work goes',
+          before: 'Shared services, capability centers and process ownership all folded into one talent program that cannot resource any of them properly.',
+          after: 'Routed to the practices that own them — capability centers and business process management — so each is scoped, staffed and measured on its own terms.',
+          link: { href: '/services/global-capability-centers', label: 'Global Capability Centers' },
+        },
+      ],
+    },
+
+    // ── Toolchain ─────────────────────────────────────────────────
+    // Framed by what each platform is genuinely good at, including the row no
+    // HR technology vendor will write: the interventions that are not a
+    // platform at all. We hold no reseller margin on any of these.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The people platforms,',
+      titleHighlight: 'and what no platform fixes.',
+      subtitle: 'Platform choice is mostly settled by what you already own and by which module holds your payroll and core HR data. These are the defaults, what overrides them, and where a tool is the wrong answer entirely.',
+      items: [
+        {
+          icon: 'Database',
+          title: 'Core HCM',
+          managed: 'Workday, SAP SuccessFactors, Oracle Fusion HCM, Dayforce',
+          selfHosted: 'Whichever already holds payroll and the org hierarchy',
+          desc: 'The system of record for people, positions and pay. Replacing it is a multi-year program in its own right, so the useful first question is almost never which one to buy — it is which parts of the one you own are unconfigured or unused.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Skills and talent intelligence',
+          managed: 'Eightfold, Gloat, Beamery, Workday Skills Cloud',
+          selfHosted: 'Only once you can feed it real evidence',
+          desc: 'These infer skills from work history and market data, which is genuinely better than self-assessment. They also inherit whatever your source data is worth, so buying one before the evidence exists produces confident nonsense at scale.',
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'People analytics',
+          managed: 'Visier, One Model, ChartHop, Tableau on HCM data',
+          selfHosted: 'Your own warehouse where HR is already modeled',
+          desc: 'Worth it once more than one system holds workforce data and someone is asking questions a standard report cannot answer. Below that threshold it is a dashboard nobody opens, and the money is better spent fixing the data underneath.',
+        },
+        {
+          icon: 'Network',
+          title: 'Organizational network analysis',
+          managed: 'Microsoft Viva Insights, Worklytics, TrustSphere',
+          selfHosted: 'With works council agreement, or not at all',
+          desc: 'Collaboration data shows where work actually flows versus where the chart says it should. It is also the most privacy-sensitive tool on this list, and deploying it without consultation is how a program loses its license to operate.',
+        },
+        {
+          icon: 'BrainCircuit',
+          title: 'Learning and capability',
+          managed: 'Degreed, Cornerstone, LinkedIn Learning, Docebo',
+          selfHosted: 'Pointed at the gaps, not at a catalog',
+          desc: 'Content is a commodity and completion rates measure almost nothing. What makes a learning ecosystem work is that it targets gaps the skills inventory actually exposes and delivers them close to the work that needs them.',
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Employment AI, governed',
+          managed: 'Screening, matching and internal mobility models',
+          selfHosted: 'Bias audit, documented logic, human review',
+          desc: 'Hiring and promotion tools sit in the high-risk tier of the EU AI Act, face annual bias-audit duties under New York Local Law 144, and engage GDPR rights on automated decisions. Model governance itself is a separate Kangqore service.',
+          link: { href: '/services/ai-governance', label: 'AI governance' },
+        },
+        {
+          icon: 'Zap',
+          title: 'What no platform fixes',
+          managed: 'Decision rights, role charters, manager capability',
+          selfHosted: 'A calendar with fewer forums on it',
+          desc: 'No system decides who may approve an exception, and no module makes a manager confident enough to use an authority they were granted. These are the interventions that move the numbers, and none of them appears on a license schedule.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve questions about org design,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ──────────────────────────────────────────────────────
+    // The parity default ran six promotional answers under fifty words. The
+    // competitor set runs the same handful everywhere: what is talent
+    // transformation, how do you use AI, can you support change management.
+    // None is a question a CHRO or a COO opens with.
+    //
+    // These are. Seven of them are questions a consultancy would rather not be
+    // asked: do reorgs work, are we just cutting headcount, is engagement
+    // worth measuring, will the skills taxonomy survive, is the AI legal, what
+    // does it cost to run, and who owns it after we leave.
+    customFAQs: [
+      {
+        q: 'Do reorganizations actually work?',
+        sources: [
+          { label: 'Getting Reorgs Right (Harvard Business Review)', url: 'https://hbr.org/2016/11/getting-reorgs-right' },
+        ],
+        a: 'About as often as they are done properly, which is not often — and the published research is unkind on this point.\n\nThe pattern behind the failures is consistent. A structure is redesigned without touching decision rights, so authority stays exactly where it was and the new chart describes a company that does not behave differently. Or the design is sound and the deployment stops at the announcement, so managers are handed authority they have never seen anyone use and quietly keep escalating.\n\nWhat separates the ones that hold: the design changes who can decide what, without asking; the change is measured on adoption rather than attendance; and somebody internal owns the model afterwards with a review in the calendar.\n\nSo the honest answer is that we will not run a structural program for you unless the decision-rights work goes with it. A reorganization without it is expensive theater, and eighteen months later everyone can tell.',
+      },
+      {
+        q: 'Is this a headcount reduction exercise with a nicer name?',
+        a: 'Sometimes that is genuinely what a client needs, and when it is, we would rather say so plainly than dress it as capability building.\n\nThe two are different pieces of work with different methods. A cost program starts from a target and works backward through spans, layers and duplication. A capability program starts from where value is created and works forward to the roles that carry it, and it frequently concludes that you are under-invested somewhere while over-invested somewhere else.\n\nThey get conflated because a capability program usually surfaces cost, and because announcing the second is easier than announcing the first. That conflation is corrosive: people work out very quickly which one they are in, and a workforce that believes it was misled about a restructuring will not engage with the next one.\n\nWe will run either. What we will not do is run a cost program described internally as a transformation, because the credibility cost lands on you and lasts longer than the saving.',
+      },
+      {
+        q: 'Our engagement score is high and nothing is moving. Why?',
+        a: 'Because engagement measures how people feel about working somewhere, and almost nothing about whether the organization can decide, staff and execute.\n\nThe two come apart in a specific and common way: a stable, well-liked, slow organization scores well. People are treated decently, tenure is long, managers are pleasant — and a pricing exception still takes a month because it crosses three committees nobody wants to be the one to bypass. Engagement is measuring the culture, which is fine, and the survey is telling the truth.\n\nWhat it cannot see is structural. How long a defined decision takes end to end. How many people can say yes without asking. How often a critical role is filled from outside because nobody was ready inside. Those are countable and they are what actually constrain execution.\n\nWe would keep the engagement survey — it catches things nothing else does — and stop treating it as a performance measure for the operating model.',
+      },
+      {
+        q: 'How do we decide what stays with people and what goes to AI?',
+        sources: [
+          { label: 'The Future of Jobs Report (World Economic Forum)', url: 'https://www.weforum.org/publications/the-future-of-jobs-report-2025/' },
+        ],
+        a: 'By decomposing roles into tasks first, because almost no job is automated and almost every job changes.\n\nThe test we apply per task is three questions. Is the input structured enough for a machine to be reliable on it. What does a wrong answer cost, and can it be reversed. And does anyone need to be accountable for the judgment in a way a model cannot carry — a regulator, a customer, a court.\n\nHigh-volume, structured, low-cost-of-error, reversible tasks are where automation pays. Judgment under ambiguity, relationship work, and anything where a person must own the outcome stay human, sometimes with a model doing the preparation.\n\nThe part most redesigns skip is the residue. Automating the routine sixty per cent of a role leaves a job that is harder, denser and more exception-heavy than the one it replaced, and if nothing is done about workload, banding or support, you have quietly made the role worse while reporting a productivity gain.',
+      },
+      {
+        q: 'Will our skills taxonomy still be useful in two years?',
+        a: 'Only if somebody owns it and something refreshes it. Otherwise it will be a well-designed artifact describing the company you were.\n\nThe decay is structural rather than careless. People acquire skills continuously, roles change, the taxonomy was built during a program with a budget and an end date, and once the program closes nobody has maintaining it in their objectives. Eighteen months later leaders stop trusting it, which is worse than not having it — the effort was spent and the decisions are still being made from memory.\n\nTwo things prevent it. Build the inventory from evidence the business already generates — projects staffed, certifications held, systems used, work delivered — rather than from a self-assessment survey nobody wants to repeat. And write the owner, the refresh cadence and the data sources into the HR operating model before the program closes, so maintenance is a job rather than an intention.\n\nWe scope skills work as an operating commitment. If a client wants only the mapping, we will say up front what its half-life is.',
+      },
+      {
+        q: 'Is using AI in hiring and promotion actually legal?',
+        sources: [
+          { label: 'EU AI Act (Regulation 2024/1689) — employment is a high-risk category', url: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj' },
+          { label: 'NYC Local Law 144 — automated employment decision tools', url: 'https://www.nyc.gov/site/dca/about/automated-employment-decision-tools.page' },
+        ],
+        a: 'Legal in most places, conditional almost everywhere, and increasingly something you have to be able to evidence rather than assert.\n\nThree regimes matter in practice. The EU AI Act places employment and worker-management systems in its high-risk tier, which brings obligations on risk management, data governance, logging, transparency and human oversight. New York City Local Law 144 requires an independent annual bias audit of automated employment decision tools, published, with notice to candidates. And GDPR gives individuals rights around decisions made solely by automated means, including meaningful information about the logic involved.\n\nThe practical consequence is not that you cannot use these tools. It is that you need to know which vendor models are in your stack — including the ones embedded in your ATS that nobody procured deliberately — what they score on, who audited them, and where a human genuinely intervenes rather than rubber-stamping.\n\nWe cover that scoping here. The model governance framework behind it is our AI governance service.',
+      },
+      {
+        q: 'How long before any of this shows up in the numbers?',
+        a: 'Different metrics move on genuinely different clocks, and a program that promises them all in two quarters is telling you what you want to hear.\n\nDecision latency moves fastest. Delegation thresholds and retiring a forum can change elapsed time within a quarter, because the constraint was procedural and you removed it.\n\nInternal fill rate takes three to four quarters. It depends on a skills inventory that has to be built, then trusted, then actually used when a vacancy appears — and the first few vacancies are the test.\n\nRegretted attrition is a lagging measure and needs a year of data on both sides to say anything honest, because quarterly movement in it is mostly noise.\n\nCulture and leadership behavior are the slowest. Two to three years before the change is self-sustaining rather than sponsor-dependent, and it reverses quickly if the sponsor leaves in year one.\n\nWe baseline all four before starting, so the conversation in month nine is about evidence rather than impressions.',
+      },
+      {
+        q: 'We have Workday. Why would we need any of this?',
+        a: 'Because a core HCM answers where people sit and what they are paid. It does not answer whether the structure works.\n\nWhat the platform genuinely gives you: a system of record, a hierarchy, workflow, and reporting on things that are already fields. That is real and it is a precondition for most of the work below.\n\nWhat it does not give you: whether the reporting line is the right one, who is permitted to decide without asking, which twenty roles carry your strategy, whether a skills field populated by self-assessment means anything, or why a decision takes thirty days. None of those is a configuration problem.\n\nThe most common finding on an HCM-mature client is the opposite of a buying recommendation — the platform is capable and half-configured, position management was never switched on, the skills module is empty, and three shadow spreadsheets are doing the real work. Fixing that is cheaper than any new license and it is usually where we start.',
+      },
+      {
+        q: 'What does this cost to run, not to build?',
+        a: 'The design work is a project with an end. Three things after it are ongoing, and only the first is usually budgeted.\n\nSkills data maintenance: someone owning the taxonomy, the refresh cycle and the integrations that feed it. Modest as a role, and the single most common reason the whole investment stops paying.\n\nManager capability: the delegation only holds if new managers are onboarded into it. Every intake dilutes it, and organizations that treat enablement as a launch event watch authority creep back upward within two years.\n\nThe measurement itself: keeping the four baseline metrics instrumented and reported. Small, and it is what makes the annual conversation evidence-based rather than anecdotal.\n\nWe are pre-launch and do not publish rate cards. The commitment we will make is about shape: the diagnostic is scoped so you can stop after it and keep the findings, and every number we report afterwards is measured against the baseline we took before starting.',
+      },
+      {
+        q: 'Can you work with our works councils and employee representatives?',
+        a: 'Yes, and in most European jurisdictions the sequencing is a legal requirement rather than a courtesy, so it shapes the plan from day one.\n\nWhat that means practically: consultation happens before decisions are final rather than after, which changes what can be in a deck and when. Information rights attach to specific documents at specific stages. Timelines are set by statute, differ by country, and cannot be compressed by wanting them to be. And anything touching monitoring or collaboration analytics is a separate and more sensitive conversation than structural change.\n\nThe mistake we see most often is a global program designed on a US timeline and then discovered to be undeliverable in Germany, France or the Netherlands at the point of announcement — which costs months and a great deal of trust.\n\nWe plan the consultation path alongside the design, and where the answer is that a design is not deliverable in a market on that timeline, we would rather say it in week three than in month seven.',
+      },
+      {
+        q: 'Who owns this after you leave?',
+        a: 'Your team, and we scope it that way from the first workshop rather than negotiating it at handover.\n\nIn practice: named internal owners for the structure, the decision framework and the skills data, each with the review cadence written into the operating model rather than into a closure plan. The model documented well enough that someone who was not in the room can apply it to next year’s question. Your HR and business leaders in the design work rather than receiving its output. And the measurement instrumented in your systems, so the year-one review does not require us to come back and run it.\n\nWe will run HR operations under a service level where carrying it is genuinely not realistic, and we price that separately and honestly. The line we hold is the same one we hold everywhere: the capability has to remain operable by your own people. An organization only we can maintain is a commercial arrangement, not an outcome.',
+      },
+      {
+        q: 'Where does this stop and your other services start?',
+        a: 'Talent work touches everything, which is exactly why the boundary is worth stating rather than blurring.\n\nWe own workforce strategy, organization and operating model design, decision rights, leadership and culture, skills architecture, people intelligence, HR transformation, and talent acquisition and HR operations. That is this page, and it goes as deep as we can take it.\n\nWe do not own capability centers — building, locating and running a Global Capability Center is its own Kangqore service, and Accenture folding it into talent is a taxonomy choice we deliberately did not copy. We do not own shared services or Center of Excellence design, which sit with business process management alongside process ownership and standardization. We do not own the model governance framework behind employment AI, which is AI governance. And we do not own the HCM implementation as a platform program, which sits with enterprise platform integration.\n\nThe division that matters: this service decides how the enterprise is organized and staffed to execute. Running the resulting operations belongs to the services linked throughout this page.',
+      },
+    ],
+
+    // ── How we engage ─────────────────────────────────────────────
+    // The first package is a diagnostic priced to be stoppable, deliberately
+    // ahead of any design offer. Most inbound conversations are "we
+    // reorganized last year and it did not take", not "we need a new chart",
+    // and a page that only sells design work is answering a question nobody
+    // asked.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'starting with the one you can stop after.',
+    engagementLede: 'Most groups arrive having already reorganized at least once. The useful first engagement is usually a measurement of why that did not hold, not a proposal to do it again.',
+    servicePackages: [
+      {
+        name: 'Organization Diagnostic',
+        description: 'For enterprises that have already restructured and did not get the change they paid for. What is actually slowing your execution, measured rather than surveyed.',
+        deliverables: [
+          'Decision latency measured on real cases across defined decision classes',
+          'Escalation and bottleneck map against the current structure',
+          'Span, layer and duplication analysis',
+          'Critical roles and single points of failure identified',
+          'Baseline set for every metric the work would be judged on',
+        ],
+      },
+      {
+        name: 'Workforce Strategy & Planning',
+        description: 'For leadership teams who need to know which capabilities the strategy requires and where the gaps are, before you commit to a hiring or reskilling budget.',
+        deliverables: [
+          'Business strategy translated into role and capability demand',
+          'Critical-role definition with succession risk rated',
+          'Skills supply and gap analysis against real evidence',
+          'Build, buy, borrow and redeploy recommendation per gap',
+          'Workforce cost and scenario model leadership can run themselves',
+        ],
+      },
+      {
+        name: 'Operating Model & Organization Design',
+        description: 'Structure, decision rights and accountability designed as one object, with your consultation path planned alongside rather than discovered at announcement.',
+        deliverables: [
+          'Target operating model and structure options, costed',
+          'Decision rights assigned to named roles with thresholds',
+          'Role charters and accountability definitions',
+          'Governance and forum design, including what gets retired',
+          'Consultation and works council sequencing by jurisdiction',
+        ],
+      },
+      {
+        name: 'Skills & Capability Program',
+        description: 'A skills system built from evidence your business already generates, scoped as an operating commitment with an owner and a cadence rather than as a mapping deliverable.',
+        deliverables: [
+          'Skills taxonomy and role architecture',
+          'Inventory built from project, certification and system evidence',
+          'Named data owner and refresh cadence in the operating model',
+          'Reskilling and redeployment pathways for the priority gaps',
+          'Learning ecosystem pointed at gaps rather than at a catalog',
+        ],
+      },
+      {
+        name: 'HR Transformation & Managed Services',
+        description: 'Modernizing the people function and, where carrying it is not realistic, running defined HR operations to service levels — with your team retaining the ability to take it back.',
+        deliverables: [
+          'HR operating model and service delivery design',
+          'HCM configuration assessment before any license conversation',
+          'People analytics and reporting layer',
+          'Employment AI inventory with bias-audit and oversight posture',
+          'Defined HR operations to service levels, with exit planning written in',
+        ],
+      },
+    ],
+
+    // ── By industry ───────────────────────────────────────────────
+    // Each headline names the constraint that actually decides talent strategy
+    // in that sector. The constraint is rarely the HR platform -- it is a
+    // regulator, a labor market, a union agreement or a demographic curve.
+    industryHeading: 'Talent and organization work,',
+    industryHeadingHighlight: 'shaped by the real constraint.',
+    industryLede: 'Eight sectors and the constraint that decides your answer in each. The platform is almost never the hard part.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Regulators hold named individuals accountable, so decision rights are a compliance artifact rather than a design preference.',
+        items: [
+          'Senior manager accountability mapping',
+          'Control function independence in the structure',
+          'Decision rights evidenced for supervisory review',
+          'Risk and compliance capability planning',
+          'Remuneration governance alignment',
+          'Succession for regulator-approved roles',
+          'Conduct and culture measurement',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Clinical staffing is governed by ratios and licensure, so workforce planning is a safety question before it is an economic one.',
+        items: [
+          'Clinical and non-clinical workforce modeling',
+          'Licensure, credentialing and scope-of-practice constraints',
+          'Rostering and safe-staffing analysis',
+          'Retention strategy for scarce clinical roles',
+          'Career pathways for allied health',
+          'Research and regulatory capability planning',
+          'Burnout and workload measurement',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'A retiring generation holds process knowledge that was never written down, and the plant runs on it.',
+        items: [
+          'Institutional knowledge capture before retirement',
+          'Skilled trades pipeline and apprenticeship design',
+          'Shift and site operating model design',
+          'Union and works council consultation planning',
+          'Multi-site standardization versus local autonomy',
+          'Frontline supervisor capability',
+          'Automation impact on role design',
+        ],
+      },
+      {
+        industry: 'Retail & Consumer',
+        headline: 'Frontline turnover is structural, so the design question is how fast someone becomes productive rather than how long they stay.',
+        items: [
+          'Time-to-productivity redesign for frontline roles',
+          'Store and district operating model',
+          'Seasonal and flexible workforce planning',
+          'Frontline manager span and capability',
+          'Internal progression from frontline to management',
+          'Scheduling fairness and predictability',
+          'High-volume hiring operations',
+        ],
+      },
+      {
+        industry: 'Technology & Software',
+        headline: 'Engineering capacity is the constraint on strategy, and the org chart is usually three reorganizations behind the architecture.',
+        items: [
+          'Product and platform team topology',
+          'Engineering capability and level framework',
+          'Team boundaries aligned to system boundaries',
+          'Technical career track design',
+          'Build-versus-partner capability decisions',
+          'Retention for scarce engineering skills',
+          'Span and layer design for fast-growing teams',
+        ],
+      },
+      {
+        industry: 'Public Sector',
+        headline: 'Structure, grading and pay are constrained by statute, so the room to maneuver is in decision rights and capability rather than in design.',
+        items: [
+          'Delegation within statutory constraints',
+          'Grading and job evaluation alignment',
+          'Capability frameworks for public service roles',
+          'Cross-department shared capability',
+          'Digital and data skills programs',
+          'Accountability mapping for public scrutiny',
+          'Workforce planning under fixed budget envelopes',
+        ],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'The energy transition needs capabilities the sector has never hired for, competing against every other sector for the same people.',
+        items: [
+          'Transition capability gap analysis',
+          'Redeployment from declining to growing assets',
+          'Safety-critical role and competence assurance',
+          'Field workforce operating model',
+          'Long-horizon workforce scenario modeling',
+          'Technical apprenticeship and pipeline design',
+          'Contractor and partner workforce governance',
+        ],
+      },
+      {
+        industry: 'Professional & Business Services',
+        headline: 'The workforce is the product, so utilization, progression and partner economics are the operating model rather than inputs to it.',
+        items: [
+          'Pyramid and utilization modeling',
+          'Progression and up-or-out design',
+          'Practice and account operating models',
+          'Capability-based staffing and resourcing',
+          'Lateral hiring and integration',
+          'Knowledge reuse and codification',
+          'Partner and leadership succession',
+        ],
+      },
+    ],
+
+    // ── Practice cluster ──────────────────────────────────────────
+    // The default heading names the internal department ("The complete
+    // Platforms practice") and the default lede is one sentence, which left the
+    // band at 36 words over 417px -- under the density floor. Overridden to
+    // state the service boundary, which is the most useful thing this
+    // particular link index can say on this page.
+    practiceLabel: 'WORKFORCE INNOVATION',
+    practiceHeading: 'Where talent and organization stops,',
+    practiceHeadingHighlight: 'and another practice starts.',
+    practiceLede: 'Talent work touches almost every part of an enterprise, which is why the boundary is worth stating. We own workforce strategy, organization design, decision rights, skills, leadership and the people function. Capability centers, shared services and process ownership, employment-AI model governance and the HCM platform program are each their own service — and the pages below go into those subjects at the depth this one gives organization design.',
+
+    conciergeHeading: 'Ask about your own organization',
+    conciergeIntro: 'Bring a real symptom — how long a decision takes, how many layers sit between a customer and a yes, how many critical roles have no successor. eQORE will tell you what it would measure first and what it would need from you.',
+    conciergeChips: [
+      'Why did our reorganization not change anything?',
+      'How do we find out how long a decision actually takes?',
+      'Is our skills framework worth maintaining?',
+      'Is our AI screening tool legally defensible?',
+      'Book an organization diagnostic',
+    ],
+
+    midCta: 'The chart changed. Check whether anything else did.',
+    midCtaLabel: 'Book an Organization Diagnostic',
+    closingCta: {
+      title: 'One decision,',
+      highlight: 'honestly timed.',
+      body: 'Pick a decision your organization makes often and name the day it was last raised. In 30 minutes we will trace where it went, who could have decided it sooner, and what the structure would have to change for that to be true — before anyone proposes a new chart.',
+      proofLabel: 'From first call to a measured organization diagnostic',
+    },
   },
 
   'supply-chain': {

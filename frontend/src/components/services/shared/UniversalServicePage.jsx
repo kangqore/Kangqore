@@ -2411,6 +2411,108 @@ const featureMicros   = service.featureMicros
                     <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
                   </svg>
                 </div>
+              ) : service.slug === 'enterprise-platform-integration' ? (
+                /* ── Point to point, or a fabric ──
+                   Replaces the shared Platforms default. The argument is the
+                   contrast at the top: the same six systems either wired to
+                   each other directly, which is what an unarchitected estate
+                   becomes, or reaching each other through one governed fabric.
+
+                   The five layers match architectureNodes below exactly.
+                   Governance is drawn as a band spanning the full width rather
+                   than as another box, because that is the claim -- it applies
+                   across every layer rather than sitting beside them.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="Point-to-point integration versus an integration fabric: the same enterprise systems wired directly to each other produce a dependency for every pair, or reach each other through one fabric of APIs, events and messaging, with orchestration and intelligence above it and a governance plane spanning identity, policy, lifecycle and observability across all layers" tabIndex={0}>
+                  <svg viewBox="0 0 540 470" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why an integration estate needs an architecture rather than more connectors</title>
+                    <desc>The same enterprise systems either wire directly to each other, creating a dependency for every pair and an estate that grows faster than the business, or reach each other through one integration fabric of APIs, events and messaging. Orchestration coordinates processes across systems, an intelligence layer adds anomaly detection and governed agent access, and a governance plane spanning identity, policy, lifecycle and observability applies across every layer.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="epi-fabric" gradientUnits="userSpaceOnUse" x1="26" y1="0" x2="514" y2="0">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="epi-layer" gradientUnits="userSpaceOnUse" x1="0" y1="220" x2="0" y2="272">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="epi-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The contrast ── */}
+                    <text x="26" y="30" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#f59e0b">POINT TO POINT</text>
+                    <text x="300" y="30" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#4ab6d4">ONE FABRIC</text>
+
+                    <rect x="26" y="40" width="230" height="112" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.32" />
+                    <g fill="#f59e0b" fillOpacity="0.85">
+                      <circle cx="62"  cy="68"  r="5" /><circle cx="141" cy="60"  r="5" /><circle cx="220" cy="70"  r="5" />
+                      <circle cx="58"  cy="126" r="5" /><circle cx="141" cy="134" r="5" /><circle cx="222" cy="122" r="5" />
+                    </g>
+                    <g stroke="#f59e0b" strokeOpacity="0.35" strokeWidth="1">
+                      <line x1="62" y1="68" x2="141" y2="60" /><line x1="141" y1="60" x2="220" y2="70" />
+                      <line x1="62" y1="68" x2="220" y2="70" /><line x1="62" y1="68" x2="58" y2="126" />
+                      <line x1="62" y1="68" x2="141" y2="134" /><line x1="62" y1="68" x2="222" y2="122" />
+                      <line x1="141" y1="60" x2="58" y2="126" /><line x1="141" y1="60" x2="141" y2="134" />
+                      <line x1="141" y1="60" x2="222" y2="122" /><line x1="220" y1="70" x2="58" y2="126" />
+                      <line x1="220" y1="70" x2="141" y2="134" /><line x1="220" y1="70" x2="222" y2="122" />
+                      <line x1="58" y1="126" x2="141" y2="134" /><line x1="141" y1="134" x2="222" y2="122" />
+                      <line x1="58" y1="126" x2="222" y2="122" />
+                    </g>
+
+                    <rect x="284" y="40" width="230" height="112" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.32" />
+                    <g fill="#4ab6d4" fillOpacity="0.85">
+                      <circle cx="320" cy="68"  r="5" /><circle cx="399" cy="60"  r="5" /><circle cx="478" cy="70"  r="5" />
+                      <circle cx="316" cy="126" r="5" /><circle cx="399" cy="134" r="5" /><circle cx="480" cy="122" r="5" />
+                    </g>
+                    <circle cx="399" cy="97" r="13" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.8" strokeWidth="1.5" />
+                    <g stroke="#4ab6d4" strokeOpacity="0.4" strokeWidth="1">
+                      <line x1="320" y1="68" x2="399" y2="97" /><line x1="399" y1="60" x2="399" y2="97" />
+                      <line x1="478" y1="70" x2="399" y2="97" /><line x1="316" y1="126" x2="399" y2="97" />
+                      <line x1="399" y1="134" x2="399" y2="97" /><line x1="480" y1="122" x2="399" y2="97" />
+                    </g>
+
+                    <text x="141" y="172" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">15 dependencies</text>
+                    <text x="399" y="172" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">6 contracts</text>
+
+                    {/* ── The five layers, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="200" width="488" height="42" rx="9" fill="url(#epi-layer)" stroke="#2564ea" strokeOpacity="0.55" strokeWidth="1.5" />
+                      <text x="270" y="220" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="white">ENTERPRISE SYSTEMS</text>
+                      <text x="270" y="236" fontSize="12" fill="white" fillOpacity="0.55">ERP · CRM · HCM · SCM · legacy · SaaS</text>
+
+                      <rect x="26"  y="250" width="488" height="42" rx="9" fill="url(#epi-layer)" stroke="#2c74e8" strokeOpacity="0.55" strokeWidth="1.5" />
+                      <text x="270" y="270" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="white">INTEGRATION FABRIC</text>
+                      <text x="270" y="286" fontSize="12" fill="white" fillOpacity="0.55">APIs · events · messaging · iPaaS · EDI</text>
+
+                      <rect x="26"  y="300" width="488" height="42" rx="9" fill="url(#epi-layer)" stroke="#3486e4" strokeOpacity="0.55" strokeWidth="1.5" />
+                      <text x="270" y="320" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="white">ORCHESTRATION</text>
+                      <text x="270" y="336" fontSize="12" fill="white" fillOpacity="0.55">process · rules · compensation · human steps</text>
+
+                      <rect x="26"  y="350" width="488" height="42" rx="9" fill="url(#epi-layer)" stroke="#3f9ede" strokeOpacity="0.55" strokeWidth="1.5" />
+                      <text x="270" y="370" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="white">INTELLIGENCE</text>
+                      <text x="270" y="386" fontSize="12" fill="white" fillOpacity="0.55">anomaly detection · governed agent access</text>
+                    </g>
+
+                    <g stroke="#4ab6d4" strokeOpacity="0.5" strokeWidth="1.5" markerEnd="url(#epi-arrow)">
+                      <line x1="270" y1="242" x2="270" y2="248" />
+                      <line x1="270" y1="292" x2="270" y2="298" />
+                      <line x1="270" y1="342" x2="270" y2="348" />
+                    </g>
+
+                    {/* ── Governance spans all of it ── */}
+                    <rect x="26" y="404" width="488" height="52" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="270" y="424" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="#00c875">GOVERNANCE PLANE</text>
+                    <text x="270" y="442" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">identity · policy · lifecycle · observability</text>
+                  </svg>
+                </div>
               ) : service.slug === 'finance-risk-management' ? (
                 /* ── One ledger, two functions ──
                    Replaces the shared Shield default, which put Zero-Trust
@@ -3679,13 +3781,52 @@ const featureMicros   = service.featureMicros
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 6) {
+                  /* The previous six-card shape left a hole. A tall opener plus
+                     a single two-wide closer tiles as [00][01][02] / [00][03][04]
+                     / [05 wide-2] — which leaves the third column of the last
+                     row empty, and an empty cell at the foot of a bento reads
+                     as a missing card rather than as composition.
+
+                     Two two-wide cards instead, one per remaining row:
+                       r1  [00 tall][01][02]
+                       r2  [00     ][03 wide-2]
+                       r3  [04][05 wide-2]
+                     No gaps, and the width lands on 03 and 05 rather than on
+                     03 alone. No page shipped with exactly six areas before
+                     this, so nothing else changes shape. */
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
-                  else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 3 || i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 8) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else if (i === 7) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 9) {
+                  /* ── Nine ──
+                     There was no case for nine, so every card fell through to
+                     the 1x1 default and the section rendered as a flat 3x3 grid
+                     of squares. Every other supported count gets a bento; nine
+                     did not, purely because no page had shipped with nine areas
+                     before.
+
+                     A tall opener plus two two-wide cards, offset to different
+                     columns so the widths do not stack into a stripe:
+
+                       lg, three columns          sm, two columns
+                       r1  [00 tall][01][02]      r1  [00 tall][01]
+                       r2  [00     ][03][04]      r2  [00     ][02]
+                       r3  [05 wide-2   ][06]     r3  [03][04]
+                       r4  [07][08 wide-2   ]     r4  [05 wide-2]
+                                                  r5  [06][07]
+                                                  r6  [08 wide-2]
+
+                     No gaps at either breakpoint. The widths land on 05 and 08
+                     starting in different columns, which is the same reasoning
+                     as the six-card case: an offset reads as composition, a
+                     stack reads as a template. */
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 5 || i === 8) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 10) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';

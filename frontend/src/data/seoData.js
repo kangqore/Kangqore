@@ -658,7 +658,7 @@ export const serviceSEO = {
   // ─── Platforms (8) ──
   'enterprise-platform-integration': {
     title: 'Enterprise Platform Integration — Platforms | Kangqore',
-    description: 'Connect enterprise applications — integration strategy, API development, ESB implementation, data integration, and iPaaS solutions.',
+    description: 'Enterprise integration architecture and engineering — APIs, events, messaging, B2B and EDI, hybrid cloud and iPaaS, modernization and governed operations.',
     keywords: 'enterprise integration, API integration, ESB, iPaaS, data integration, platform integration',
     url: '/services/enterprise-platform-integration',
   },
