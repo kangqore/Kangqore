@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T20:24:28.216Z",
+  "generatedAt": "2026-08-23T05:24:39.825Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1111,15 +1111,26 @@
       "department": "Shield",
       "description": "Enterprise quality engineering: test strategy, automation, flake reduction, performance engineering, test data, environments and release gates you can defend.",
       "capabilities": [
-        "Test Strategy, Risk Scoping & Quality Architecture",
-        "The Test Suite as an Engineered Asset",
-        "Test Automation Across the Pyramid",
-        "Continuous Testing, Release Gates & Quality Intelligence",
-        "Performance, Load & Resilience Engineering",
-        "Test Data & Environment Engineering",
-        "Testing Systems That Do Not Answer the Same Way Twice",
-        "Accessibility, Experience & Cross-Platform Validation",
-        "Packaged Applications, Migration & Parity Assurance"
+        "Quality Engineering Strategy & Transformation",
+        "Continuous Testing & DevOps Quality Engineering",
+        "Intelligent Test Automation",
+        "Functional & End-to-End Quality Engineering",
+        "API, Microservices & Distributed Systems Assurance",
+        "Cloud & Infrastructure Assurance",
+        "Data Quality & Data Reliability Engineering",
+        "AI & Model Assurance",
+        "Performance Engineering",
+        "Reliability & Resilience Engineering",
+        "Security Testing & Digital Assurance",
+        "UX, Accessibility & Experience Assurance",
+        "Mobile, Omnichannel & Connected Product Assurance",
+        "ERP & Enterprise Platform Assurance",
+        "Test Data Engineering",
+        "Test Environment Engineering",
+        "Quality Observability & Release Intelligence",
+        "Business & Regulatory Assurance",
+        "Quality Engineering for Modernization & Migration",
+        "Managed Quality Engineering"
       ],
       "faqs": [
         {
