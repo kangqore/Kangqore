@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-23T08:47:44.947Z",
+  "generatedAt": "2026-08-23T20:14:42.333Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1463,11 +1463,83 @@
       "url": "/services/servicenow",
       "name": "ServiceNow",
       "department": "Platforms",
-      "description": "ServiceNow implementation — ITSM, ITOM, HR Service Delivery, custom apps, and integration for unified enterprise service management.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
-      "dataHandling": []
+      "description": "ServiceNow consulting and implementation: ITSM, ITOM and CMDB, asset management, SecOps, HR and customer workflows, App Engine, upgrades and operations.",
+      "capabilities": [
+        "ServiceNow Advisory & Platform Strategy",
+        "ITSM & Service Operations",
+        "ITOM, Discovery & the CMDB",
+        "IT Asset Management & Software Spend",
+        "Security Operations & Integrated Risk",
+        "HR, Workplace & Customer Workflows",
+        "App Engine, Integrations & Custom Build",
+        "Platform Health, Upgrades & Managed Operations"
+      ],
+      "faqs": [
+        {
+          "q": "Are you a ServiceNow Elite partner?",
+          "a": "No, and you can verify that in the ServiceNow partner finder in under a minute, so there is no version of this answer worth dressing up. What the tier genuinely buys: access to certain programs and co-sell motions, a volume of certifications, and a signal that the firm has delivered enough scale to be measured. On the largest transformations — multi-region, multi-module, thousands of fulfillers, where you want the vendor in the room and escalation paths that already exist — that is a real advantage and we would tell you to take it. What it does not buy: any guarantee that the build will still upgrade cleanly in year three. Tier is measured on delivered volume, and volume is exactly the incentive that produces over-customized instances. Some of the worst estates we have read were built by very senior partners. Where we are the better call: reading an instance somebody else built, getting an estate back inside the support window, license and SKU work where an hourly partner has no incentive to find savings, and mid-sized builds where you want the standard held rather than the scope grown."
+        },
+        {
+          "q": "Why is our instance three releases behind?",
+          "a": "Because each individual upgrade looked more expensive than deferring it, and that arithmetic was correct every single time until it was catastrophic. The mechanism is always the same. Customizations outside the platform model have to be retested and often reworked each family release. The first deferral is rational. The second is easier. By the fourth, the regression surface is large enough that nobody can scope the work confidently, the people who built it have gone, and the instance has left the supported window — which means new problems get a support answer of \"upgrade first\". Getting current is then a project rather than maintenance, and it is worth being honest that it will cost more than any single upgrade would have. The way out is usually two upgrades run back to back after a triage pass, not one heroic jump. What prevents the recurrence is not discipline in the abstract. It is a written exception register with a carrying cost against each entry, reviewed every release, so deferral becomes a visible decision rather than a default."
+        },
+        {
+          "q": "Should we customize the platform or change the process?",
+          "a": "Change the process, in most cases, and we will make that argument before quoting a build — which costs us the larger engagement and is the right advice anyway. The test we apply has three parts. Does the difference create genuine commercial or regulatory advantage, or is it just how this organization happens to work. Would a new joiner from another company find the baseline behavior reasonable. And what does carrying it cost, twice a year, for the next decade. Most requirements that arrive as \"the platform must do X\" fail the first two. They are habits inherited from a tool that was replaced, and the honest recommendation is to adopt the baseline and retrain rather than to rebuild the baseline in someone else’s image. Where a customization does earn itself — and some genuinely do — we build it inside the platform model so it upgrades, put it in the exception register with its reason, and review it each release. The register existing at all is what stops the count climbing."
+        }
+      ],
+      "method": [
+        {
+          "rule": "IT Service Management",
+          "detail": "The foundation most instances start from and the easiest to over-configure. Pro tiers pay for themselves where volume is high enough for deflection and routing to matter, and not otherwise — which is a calculation worth doing before the renewal, not after."
+        },
+        {
+          "rule": "IT Operations Management",
+          "detail": "ITOM is where ServiceNow stops being a ticket system. It is also the module most often bought before the CMDB can support it, which produces expensive dashboards over unreliable data. Model first, license second."
+        },
+        {
+          "rule": "IT Asset Management",
+          "detail": "The one module with a defensible payback on its own, because software entitlement reconciliation usually finds more than it costs. It depends entirely on asset data quality, which depends on discovery, which depends on the CMDB."
+        },
+        {
+          "rule": "Security Operations & Risk",
+          "detail": "Strong when the security function adopts it as their working surface and hollow when it becomes a reporting layer they update after the fact. The platform work is ours; the security program behind it is a separate discipline."
+        },
+        {
+          "rule": "Employee and customer workflows",
+          "detail": "Extending the platform past IT is where most of the license growth happens. It works when a function owns the process and fails when IT builds it on their behalf — the HR operating model question sits with our talent and organization practice."
+        },
+        {
+          "rule": "App Engine and integration",
+          "detail": "Genuinely productive for departmental applications close to service data. The failure mode is volume: easy building produces two hundred scoped apps in three years, and governance has to exist before that rather than after."
+        },
+        {
+          "rule": "AI on the platform",
+          "detail": "Summarization and search work well against knowledge that is already good and add little against knowledge that is not. Treat vendor benchmarks as a starting hypothesis and evaluate on your own corpus before committing to the tier."
+        },
+        {
+          "rule": "What does not belong here",
+          "detail": "ServiceNow is a workflow platform, not a database of record or a transaction engine. Building those on it produces table growth, performance work and a license conversation you did not plan for — and \"we already have it\" is the most expensive architecture argument in the enterprise."
+        }
+      ],
+      "dataHandling": [
+        {
+          "topic": "Sub-production cloning",
+          "detail": "A clone copies production into an instance with a wider access list — developers, contractors and sometimes a partner. Unless clone data preservers and masking rules are configured deliberately, that is a disclosure of live incident, HR and asset data into a weaker control environment. It is the most common finding we raise and the cheapest to fix."
+        },
+        {
+          "topic": "Instance topology and residency",
+          "detail": "Which datacenter pair your instances sit in, whether that satisfies the residency commitments you have made to customers and regulators, and what your contractual position is on data location. Worth confirming rather than assuming, particularly where HR or health-adjacent data has been added to the platform since the original agreement."
+        },
+        {
+          "topic": "Who can read what",
+          "detail": "Admin rights handed out during a project and never withdrawn are the norm rather than the exception. Access control lists, domain separation where genuinely required, and a periodic recertification of elevated roles — because the platform accumulates administrators the way it accumulates scoped applications."
+        },
+        {
+          "topic": "What leaves the platform",
+          "detail": "Integrations, exports, reporting extracts and any AI feature that sends content to a model endpoint. Each is a path out, each needs to be inventoried, and the ones nobody documented are usually reporting extracts built by a well-meaning analyst three years ago."
+        }
+      ]
     },
     {
       "slug": "global-capability-centers",
