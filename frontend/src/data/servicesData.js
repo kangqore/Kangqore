@@ -11564,7 +11564,7 @@ export const servicesData = {
       {
         title: 'Organization & Operating Model Design',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Structure, decision rights and accountability designed together, because changing one without the other two is what leaves your reorganization cosmetic. Global Capability Centers and Global Business Services are a separate Kangqore service; shared services and CoE design sit with business process management.',
+        desc: 'Structure, decision rights and accountability as one design. Change one alone and your reorganization is cosmetic.',
         items: [
           'Target Operating Model Design',
           'Organization Structure and Architecture',
@@ -11584,7 +11584,7 @@ export const servicesData = {
       {
         title: 'Leadership, Culture & Change',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Leaders who can carry a decision they did not personally make, and a change approach measured by adoption rather than by attendance. Communications are the easy half; the hard half is what your managers do differently on a Tuesday.',
+        desc: 'Leaders who can carry a decision they did not make, and change measured by what your managers do differently on a Tuesday.',
         items: [
           'Leadership Strategy and Development',
           'Executive and Emerging-Leader Programs',
@@ -11604,7 +11604,7 @@ export const servicesData = {
       {
         title: 'Skills, Learning & Workforce Transformation',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'A skills inventory is a dataset, not a deliverable — it decays from the day it is signed off unless somebody owns it and something refreshes it. So we build the taxonomy against evidence your business already generates (projects staffed, certifications held, work actually delivered) rather than against self-assessment surveys, and we write the refresh cadence and the owner into the operating model before the program closes. Learning is then pointed at the gaps the inventory exposes, in the flow of work, instead of at a catalog nobody browses.',
+        desc: 'A skills inventory is a dataset, not a deliverable — it decays from the day it is signed off unless somebody owns it and something refreshes it. So we build the taxonomy against evidence your business already generates (projects staffed, certifications held, work delivered) rather than against self-assessment surveys, and we write the refresh cadence and the owner into the operating model before the program closes. Learning is then pointed at the gaps the inventory exposes, in the flow of work, instead of at a catalog nobody opens.',
         items: [
           'Enterprise Skills Strategy',
           'Skills Taxonomy and Architecture',
@@ -11624,7 +11624,7 @@ export const servicesData = {
       {
         title: 'AI-Powered HR Transformation & People Intelligence',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'Your workforce data turned into decisions leaders actually take, and AI in the employment lifecycle governed like the regulated activity it now is. Hiring and promotion models sit in the high-risk tier of the EU AI Act and face bias-audit duties in New York.',
+        desc: 'Your workforce data turned into decisions leaders take, and employment AI governed as regulated activity.',
         items: [
           'HR Strategy and Operating Model',
           'HR Technology Strategy and Selection',
