@@ -11627,9 +11627,11 @@ export const servicesData = {
       {
         title: 'Enterprise Service Management & Workflows',
         image: '/images/capabilities/agentic-governed-autonomy.png',
-        desc: 'The workflows beyond IT — employee service, onboarding and offboarding, workplace requests, customer service and field operations. This is the platform build. The HR operating model behind it, and the service design behind customer workflows, sit with our talent and organization and business process practices respectively.',
+        desc: 'ServiceNow organizes work into four workflow families — IT, employee, customer and platform. This area is the three beyond IT. The HR operating model behind HRSD, and the service design behind customer workflows, sit with our talent and organization and business process practices.',
         items: [
           'Enterprise Service Management Beyond IT',
+          'Employee, Customer and Platform Workflows',
+          'Shared Services Portal Consolidation',
           'HR Service Delivery and Case Management',
           'Onboarding and Transitions',
           'Employee Center and Journey Design',
@@ -11657,6 +11659,8 @@ export const servicesData = {
           'Custom Table and Data Model Design',
           'IntegrationHub Spokes and Flow Designer',
           'REST, SOAP and MID Server Integration',
+          'Third-Party Application Integration',
+          'Data Synchronization Across Systems',
           'Import Set and Transform Map Design',
           'Update Set and Application Repository Strategy',
           'Automated Test Framework Suites',
@@ -11685,6 +11689,9 @@ export const servicesData = {
           'Center of Excellence Enablement',
           'Reusable Templates and Starter Kits',
           'Agile and SAFe Delivery Pods',
+          'Shared and Dedicated Delivery Models',
+          'KPI and Outcome-Based Delivery',
+          'Use-Case Repository and Reusable Assets',
           'Managed Platform Operations to Service Levels',
           'Release Governance and Change Control',
           'Exit Planning and Knowledge Transfer',
@@ -12033,7 +12040,7 @@ export const servicesData = {
     // renewal is in four months" -- and a page that only sells implementation
     // is answering a question nobody asked.
     engagementEyebrow: 'HOW WE ENGAGE',
-    engagementHeading: 'Five ways in,',
+    engagementHeading: 'Six ways in,',
     engagementHeadingHighlight: 'starting with the instance you have.',
     engagementLede: 'Most groups arrive with a live instance and a problem, not with a blank slate. The useful first engagement is usually a reading of what is already there, including the license position.',
     servicePackages: [
@@ -12079,6 +12086,17 @@ export const servicesData = {
           'Sub-production strategy and clone plan',
           'Two family releases adopted, with the second run by your team',
           'Cadence and governance so the lag does not return',
+        ],
+      },
+      {
+        name: 'Center of Excellence Enablement',
+        description: 'For enterprises standing up their own platform capability rather than outsourcing it. Standards, templates and starter kits so your team builds the way we would, and stops needing us.',
+        deliverables: [
+          'Configuration and development standards your team owns',
+          'Reusable templates, starter kits and a use-case repository',
+          'Demand intake, release governance and role model',
+          'Platform team roles, skills and onboarding path',
+          'Shared or dedicated delivery model, with the handover point named',
         ],
       },
       {
