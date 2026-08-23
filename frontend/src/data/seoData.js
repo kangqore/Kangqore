@@ -687,9 +687,9 @@ export const serviceSEO = {
     url: '/services/global-capability-centers',
   },
   'talent-organization': {
-    title: 'Talent & Organization — Platforms | Kangqore',
-    description: 'Talent and org design — talent strategy, org design, change management, learning and development, and HR technology for workforce transformation.',
-    keywords: 'talent management, org design, change management, learning development, HR technology',
+    title: 'Talent & Organization Design Consulting | Kangqore',
+    description: 'Talent and organization consulting: workforce strategy, operating model and decision rights, skills architecture, people intelligence and HR transformation.',
+    keywords: 'talent and organization consulting, organization design, operating model design, decision rights, strategic workforce planning, skills architecture, people analytics, HR transformation',
     url: '/services/talent-organization',
   },
   'supply-chain': {
