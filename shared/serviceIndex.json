@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T22:15:22.656Z",
+  "generatedAt": "2026-08-23T04:15:07.132Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1239,10 +1239,68 @@
       "url": "/services/operation-technology",
       "name": "Operation Technology (OT)",
       "department": "Shield",
-      "description": "OT security and management — OT assessment, OT security, IT/OT convergence, SCADA systems, and industrial IoT for critical environments.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "description": "OT asset visibility, ICS and SCADA engineering, IT/OT convergence, industrial data and predictive maintenance for industrial and utility operations.",
+      "capabilities": [
+        "OT Asset Visibility, Discovery & Digital Foundation",
+        "Industrial Control Systems & OT Engineering",
+        "IT/OT Convergence, Industrial Connectivity & Edge",
+        "OT Service Management, Governance & Lifecycle",
+        "Industrial Data, Observability & Operational Intelligence",
+        "Predictive Operations, Maintenance & Industrial AI",
+        "OT Continuity, Safety & Change Governance"
+      ],
+      "faqs": [
+        {
+          "q": "Our OT network cannot be actively scanned or patched the way IT can. How do you actually build an asset inventory?",
+          "a": "By reading, not probing. Passive discovery listens to protocol traffic off a network tap or SPAN port — OPC UA, Modbus, Profinet, whatever the segment actually speaks — and builds the inventory from what devices say to each other, without sending a single packet an active IT-style scanner would send. A vulnerability scanner built for IT can crash fragile OT equipment outright, and we do not run one against your live plant floor. That passive layer gets cross-referenced against what should exist: engineering drawings, P&IDs, vendor commissioning records and the historian tag list, because those four sources rarely agree with each other on a plant that has been running for fifteen years. The gap between them is usually where the real risk sits — a device on the network that is not on any drawing, or a drawing that describes equipment replaced two turnarounds ago. The last step is still a person walking the floor once. Passive discovery finds what is talking on the network; it does not find the isolated engineering laptop in a cabinet that only gets plugged in during a shutdown, and pretending otherwise produces an inventory that looks complete and is not."
+        },
+        {
+          "q": "What is the actual difference between OT and IT, beyond \"OT controls machines\"?",
+          "a": "Determinism and consequence. An IT system responding a few hundred milliseconds slower is a performance complaint. A control loop responding a few hundred milliseconds late can be a safety event, which is why OT systems are engineered for predictable, real-time behavior first and everything else second. That changes what \"maintenance\" means. An IT patch ships on a monthly cadence and reboots a server nobody notices. An OT patch has to wait for a scheduled maintenance window, pass vendor certification because an uncertified change can void a warranty or a safety case, and sometimes simply cannot be applied to a controller that will run unmodified for its entire twenty-year service life. NIST’s own guidance to industrial control system security treats this as the starting assumption, not a footnote: availability and safety outrank confidentiality on the priority list that governs every other decision. A security or IT team that brings IT-first instincts to an OT environment — patch fast, reboot to fix, scan to discover — is usually the team that causes the incident it was trying to prevent."
+        },
+        {
+          "q": "We already have a cybersecurity program. Why do we need a separate OT engagement?",
+          "a": "Because IT security services cover the OT security controls — segmentation, monitoring, vulnerability management, incident response — and those controls need something to be applied to: an accurate asset inventory, a control-system architecture that can actually accept segmentation without breaking a process in your estate, and a connectivity design a security tool can sit on. That engineering work is what this page owns. Run the two out of order and the usual result is a security team proposing a segmentation change the plant cannot accept on the timeline offered, because nobody engineered the architecture to make the change safe. Run them together and the sequence is: discover and architect first, then apply the security controls to what is now a known, governed environment. In practice it is typically the same team, sequenced across two connected engagements rather than two competing quotes — the industrial engineering here, the controls, monitoring and evidence layered on top of it through Kangqore IT security services."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Industrial control systems",
+          "detail": "Vendor choice is usually inherited, not chosen — the plant already runs what it runs. The work is engineering around it, not replacing it on a modernization timeline nobody asked for."
+        },
+        {
+          "rule": "Industrial connectivity & protocols",
+          "detail": "The plant floor still speaks protocols from decades before OPC UA existed. Integration works with what a device actually supports, not what an architecture diagram assumes."
+        },
+        {
+          "rule": "OT asset visibility & passive monitoring",
+          "detail": "Passive by design. An active IT-style scan can crash fragile plant-floor equipment outright, so discovery reads protocol traffic rather than sending it."
+        },
+        {
+          "rule": "Industrial edge & gateways",
+          "detail": "Where translation between an industrial protocol and an enterprise one actually happens, and where a control loop stays local no matter what the upstream connection is doing."
+        },
+        {
+          "rule": "Historians & operational data",
+          "detail": "The system of record for what actually happened on the floor. Most plants already own one and use a fraction of what it captures."
+        },
+        {
+          "rule": "Industrial IoT & sensor platforms",
+          "detail": "Where retrofit sensors and connected equipment publish telemetry that never had a path to the enterprise before."
+        },
+        {
+          "rule": "Digital twin & simulation",
+          "detail": "Worth building once the underlying data is trustworthy, and a wasted quarter before it is. Sequenced after the data foundation, not before it."
+        },
+        {
+          "rule": "Predictive maintenance & industrial AI",
+          "detail": "Only as good as the sensor coverage feeding it. No data in is the honest reason more predictive-maintenance programs fail than any modeling choice."
+        },
+        {
+          "rule": "The alternative to another platform",
+          "detail": "Most industrial estates already own more monitoring and historian licenses than they have ownership assigned to. We will say so before selling you another one."
+        }
+      ],
       "dataHandling": []
     },
     {
