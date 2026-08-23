@@ -7414,13 +7414,654 @@ export const servicesData = {
     slug: 'finance-risk-management',
     name: 'Finance & Risk Management',
     departmentSlug: 'shield',
-    bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Finance transformation and risk management solutions',
-    fullDescription: 'Transform finance operations and implement comprehensive risk management.',
-    keyFeatures: ['Finance transformation', 'Risk assessment', 'Compliance', 'Financial planning', 'Audit support'],
-    relatedServiceSlugs: ['it-security-services', 'ai-governance', 'quality-engineering-assurance'],
+    bannerBrand: 'Shield\u2122 Trust & Governance Framework',
+    shortDescription: 'Transforming the finance function and quantifying the exposure it carries',
+    fullDescription: 'Finance strategy, ERP and planning transformation, quantitative financial risk across credit, market, liquidity and treasury, and the controls that make both defensible.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Finance operating model', 'ERP & EPM transformation', 'Credit & market risk', 'Treasury & liquidity', 'Controls & regulatory reporting'],
+    relatedServiceSlugs: ['ai-governance', 'business-process-management', 'analytics'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // The worst page measured on this site. 697 bytes of data, a crawler seeing
+    // 2.2 per cent of it, and -- because the service sits in the Shield
+    // department -- the parity default rendered the *cybersecurity* taxonomy
+    // under a Finance name. Zero-Trust Security Architecture, SOC Operations,
+    // OT and SCADA Security, and a four-layer stack ending in "Incident Mesh".
+    // Measured on the live page: 103 security terms, zero finance terms. Not
+    // one instance of credit risk, treasury, close, IFRS or forecast.
+    //
+    // The service is genuinely two practices that competitors sell together and
+    // that most firms transform separately: the CFO agenda (operating model,
+    // ERP, planning, close, controllership) and the CRO agenda (credit, market,
+    // liquidity, treasury, regulatory capital). KPMG's page leads with credit,
+    // market, actuarial, capital adequacy and financial instruments; EY's leads
+    // with treasury and actuarial. Both are risk-first and neither carries the
+    // finance-transformation half.
+    //
+    // The wedge is the join. Finance and Risk run on the same ledger, the same
+    // exposures and the same close, and are almost always transformed by
+    // different teams under different sponsors -- which is why a forecast and a
+    // risk report can describe the same quarter and disagree. This page sells
+    // one transformation across both, and says so in the comparison.
+    //
+    // Department left as shield. Finance & Risk sitting in Security & Trust is
+    // a taxonomy question worth raising, not one to change silently inside a
+    // content PR.
+    heroTitle: 'Finance & Risk Management\nServices for the Enterprise',
+    whatIsEyebrow: 'What finance and risk transformation covers',
+    whatIsTitle: 'Finance That Predicts,',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'and Risk That Is Quantified.',
+    whatIsPara2: 'Finance is no longer judged on reporting what happened. A CFO organization is expected to anticipate what comes next, allocate capital against it, and put a number on the exposure the enterprise is carrying \u2014 while a Chief Risk Officer is asked the same questions from the other direction, about the same balance sheet.',
+    whatIsPara3: 'Those two agendas run on one ledger, one set of exposures and one close, and they are almost always transformed by different teams under different sponsors. That is why your forecast and your risk report can describe the same quarter and disagree, and why the reconciliation between them is done by hand in the week before a board meeting.',
+    whatIsPara4: 'Kangqore transforms both as one program. Finance strategy and operating model, ERP and planning platforms, intelligent close and controllership, quantitative risk across credit, market, liquidity, interest rate, FX, commodity and counterparty exposure, treasury and capital, and the control framework that makes all of it defensible to an auditor. Sense, predict, decide, execute, control \u2014 measured, not asserted.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Chosen because a CFO and a CRO are each held to two of them, and because
+    // all four are countable rather than rhetorical. Close days and forecast
+    // accuracy are the CFO's; exposure refresh and control evidence are the
+    // CRO's. Deliberately not "cost reduction", which every competitor claims
+    // and none of them defines.
+    outcomesEyebrow: 'WHAT THE CFO AND THE CRO ARE EACH MEASURED ON',
+    outcomesHeading: 'Finance & Risk Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
+    businessMetrics: [
+      { illustrative: true, title: 'Close Cycle',        desc: 'Reduction in working days from period end to signed-off consolidated numbers, after close orchestration and automated reconciliation.',        value: '45',  suffix: '%',    metricLabel: 'Faster Close',            icon: 'Zap'        },
+      { illustrative: true, title: 'Forecast Accuracy',  desc: 'Improvement in variance between forecast and actual at the driver level, once planning moves from annual budget to rolling and driver-based.', value: '30',  suffix: '%',    metricLabel: 'Tighter Forecast',        icon: 'TrendingUp' },
+      { illustrative: true, title: 'Exposure Refresh',   desc: 'From a monthly or quarterly exposure pack to a position refreshed daily, across credit, market, liquidity and counterparty risk.',              value: 'Daily', suffix: '',   metricLabel: 'Exposure Position',       icon: 'Radar'      },
+      { illustrative: true, title: 'Control Evidence',   desc: 'Share of key financial controls evidenced automatically from the system of record rather than assembled by hand ahead of an audit.',            value: '85',  suffix: '%',    metricLabel: 'Controls Evidenced',      icon: 'ShieldCheck'},
+    ],
+
+    heroBadge: 'Predicted. Quantified. Controlled.',
+    heroStripItems: [
+      'Finance Operating Model', 'ERP & EPM Transformation', 'Planning & Forecasting', 'Intelligent Close',
+      'Credit & Market Risk', 'Treasury & Liquidity', 'Controls & Regulatory Reporting', 'Finance Data & AI',
+    ],
+    hidePartnershipModel: true,
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // Eight areas, consolidated from the fifteen supplied. The template renders
+    // a capability carousel; fifteen entries turn a catalog into a list
+    // nobody finishes, and several of the fifteen were the same buyer with a
+    // different label -- controllership and intelligent finance operations both
+    // describe the close, financial crime and enterprise risk are one control
+    // conversation, managed services and transformation assurance are how the
+    // work is bought rather than what it is.
+    //
+    // Nothing was dropped. Managed services and transformation assurance became
+    // engagement models, ESG folded into area 07 where its reporting obligation
+    // actually sits, and actuarial and capital folded into area 05 beside the
+    // other quantitative disciplines.
+    //
+    // Area 05 is deliberately the deepest at nineteen items. It is the page's
+    // namesake, it is where KPMG and EY both lead, and a bank comparing pages
+    // will look for probability of default, expected credit loss, value at
+    // risk, expected shortfall and wrong-way risk by name.
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // The platform question a CFO arrives with. Framed by what each ecosystem
+    // is genuinely better at, including where we would argue against a
+    // purchase. We hold no reseller margin on any of these, which is the only
+    // reason that framing is honestly available.
+    toolsStack: {
+      eyebrow: 'THE ENTERPRISE ECOSYSTEM',
+      title: 'The platforms,',
+      titleHighlight: 'and what each is actually for.',
+      subtitle: 'Platform choice is mostly settled by the ERP you already run and by whether the hard problem is planning, risk or the close. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Database',
+          title: 'ERP and the financial core',
+          managed: 'SAP S/4HANA, Oracle Cloud ERP, Workday, Dynamics 365',
+          selfHosted: 'NetSuite where the entity count is low',
+          desc: 'The system of record, and the decision that outlives every other one on this page. Chart of accounts and master data matter more than the vendor: migrate them as found and you inherit the reporting limits you were trying to escape.',
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Planning and performance management',
+          managed: 'Anaplan, OneStream, Oracle EPM, SAP Analytics Cloud',
+          selfHosted: 'Adaptive Planning on Workday estates',
+          desc: 'Where driver-based planning and consolidation live. The constraint is almost never the tool \u2014 it is whether the business ever agreed what the drivers are, which is design work no platform performs for you.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Financial risk and quantitative modeling',
+          managed: 'Vendor risk engines, market data platforms',
+          selfHosted: 'Python, R and open quantitative libraries',
+          desc: 'Credit, market and liquidity modeling. Vendor engines carry regulatory templates and validation evidence; a built stack gives control over methodology. Regulated institutions usually need both, and the split is a deliberate decision rather than a drift.',
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Governance, risk and controls',
+          managed: 'ServiceNow GRC, SAP GRC, Archer, MetricStream, Diligent',
+          selfHosted: 'ServiceNow where IT already runs on it',
+          desc: 'Control libraries, testing workflow and continuous monitoring. Existing entitlements decide this more often than any evaluation does, and a GRC tool nobody feeds is worse than a spreadsheet somebody maintains.',
+        },
+        {
+          icon: 'Globe',
+          title: 'Treasury and cash management',
+          managed: 'Treasury management systems, bank connectivity platforms',
+          selfHosted: 'ERP-native treasury on single-instance estates',
+          desc: 'Cash visibility, forecasting and hedge management. Bank connectivity is the work; the system is the easy part, and connectivity is what slips a treasury program rather than configuration.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Finance and risk data',
+          managed: 'Snowflake, Databricks, Microsoft Fabric, Azure Synapse',
+          selfHosted: 'Whatever your data platform team already runs',
+          desc: 'The layer that decides whether the forecast and the risk pack can be reconciled at all. Building this once for both functions is the single highest-leverage decision in a finance and risk program.',
+        },
+        {
+          icon: 'Zap',
+          title: 'Automation and AI in the flow',
+          managed: 'UiPath, Automation Anywhere, Power Automate, GenAI services',
+          selfHosted: 'Engineered on our automation services',
+          desc: 'Invoice capture, reconciliation, close orchestration, variance commentary and regulatory drafting. AI belongs inside a controlled process with lineage; over a spreadsheet estate it produces fast answers nobody can evidence.',
+        },
+        {
+          icon: 'Eye',
+          title: 'ESG and sustainability reporting',
+          managed: 'Workiva, Sphera, Enablon, Persefoni, SAP Sustainability',
+          selfHosted: 'Inside the finance close where it is assured',
+          desc: 'Increasingly a controllership problem rather than a communications one. Once sustainability disclosures are assured, they need the same lineage, controls and close discipline as the financial statements.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve finance and risk questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words -- and they were the *security* defaults, since this service sits
+    // in the Shield department. These are the questions a CFO, a group
+    // financial controller and a CRO actually open with, and five are ones a
+    // Big Four competitor would rather not be asked.
+    customFAQs: [
+      {
+        q: 'What does Kangqore Finance & Risk Management actually cover?',
+        a: 'Two agendas that share one ledger, delivered as one program.\n\nThe CFO side: finance strategy and operating model, ERP and planning platform transformation, financial planning and enterprise performance management, procure-to-pay through record-to-report, the close and controllership.\n\nThe CRO side: quantitative financial risk across credit, market, liquidity, interest rate, foreign exchange, commodity and counterparty exposure, plus treasury and capital, actuarial and capital adequacy where the sector requires it.\n\nAnd the layer that makes both defensible: internal controls, regulatory reporting, financial crime analytics, and the shared finance and risk data model underneath. Most firms sell these as separate practices with separate sponsors. That separation is precisely what produces a forecast and a risk report that describe the same quarter and disagree.',
+      },
+      {
+        q: 'We are a bank. Do you actually do quantitative credit and market risk?',
+        a: 'Yes, and it is worth being specific rather than gesturing at the category.\n\nCredit: probability of default, loss given default and exposure at default modeling, expected credit loss under IFRS 9, portfolio and concentration analytics, early warning systems, risk-based pricing and credit stress testing.\n\nMarket: value at risk, expected shortfall, sensitivity analysis, stress and scenario testing, risk aggregation and regulatory market risk reporting.\n\nAlongside those: liquidity risk and contingency funding, interest rate risk and asset-liability management, counterparty exposure including wrong-way risk and collateral analytics, capital adequacy, and risk data aggregation aligned to BCBS 239.\n\nModel validation is part of the work rather than an afterthought. A model a regulator cannot follow is a finding regardless of how well it performs.',
+      },
+      {
+        q: 'Our close takes eleven days. How much of that is actually removable?',
+        a: 'Usually more than the finance team expects, and rarely from where the program proposes to remove it.\n\nMost close programs shorten the consolidation run, which was almost never the bottleneck. The days sit in reconciliation, intercompany, chasing accruals from the business, and waiting for one subsidiary. We measure the close task by task before proposing anything, because the estimate finance holds and what the timestamps show are usually different by several days.\n\nWhat reliably comes out: automated reconciliation with tolerance rules, intercompany matching and elimination, close orchestration so tasks release when their dependency completes rather than when someone emails, and anomaly detection on journals so review is targeted instead of exhaustive.\n\nA fast close on unreliable numbers is worse than a slow one, so the sequence matters: fix the reconciliation, then compress the calendar.',
+      },
+      {
+        q: 'Can you modernize our SAP or Oracle finance environment?',
+        a: 'Yes, across strategy, architecture, migration, process transformation and post-go-live optimization \u2014 S/4HANA, Oracle Cloud ERP, Dynamics 365, Workday and NetSuite.\n\nThe part worth arguing about before you start is the chart of accounts and master data. A migration that lifts them as found delivers a modern platform reporting on an old structure, and you inherit exactly the limits you were trying to escape. Redesigning them is unpopular, slower, and the difference between a technical upgrade and a finance transformation.\n\nWe are platform-agnostic in the literal sense: we hold no reseller margin on any of these, so a recommendation to stay where you are and fix the data costs us nothing.',
+      },
+      {
+        q: 'Why should Finance and Risk be transformed together rather than separately?',
+        a: 'Because they run on the same ledger and the same exposures, and separating them creates the reconciliation problem you then pay somebody to solve.\n\nWhen finance builds a forecast from one extract and risk builds an exposure pack from another, both are defensible and they disagree. Somebody reconciles them by hand in the week before the board meets, every quarter, forever. That work is invisible in both business cases because it belongs to neither program.\n\nBuilding one finance and risk data model with declared lineage removes it. It is also the harder sell internally, because it requires two sponsors to agree on a design neither fully controls \u2014 which is why it is usually deferred until a regulator asks a question that takes three weeks to answer.\n\nIf your organization genuinely cannot align the two sponsors, we would rather do one properly than both badly, and we will say so.',
+      },
+      {
+        q: 'How is AI used here, realistically?',
+        a: 'For the work between the steps, inside a process that already has lineage and controls.\n\nWhat genuinely works today: extracting and coding invoices, matching reconciliations and explaining the breaks, detecting anomalous journals, drafting variance commentary a controller then edits, summarizing regulatory text against your obligation register, and answering questions about financial data in natural language.\n\nWhat it does not do is substitute for the data model, the control framework or the audit trail. AI over a spreadsheet estate produces fast answers nobody can evidence, which in a regulated financial process is worse than the slow version.\n\nOne specific caution: models used in credit or market risk are subject to model risk management. A generative component in a regulatory calculation needs the same validation, documentation and version control as any other model, and most organizations have not yet extended their framework to cover it.',
+      },
+      {
+        q: 'What does an engagement cost, and how is it priced?',
+        a: 'We are pre-launch and do not publish rate cards, so treat this as shape rather than a quote.\n\nThe assessment is a fixed-price engagement measured in weeks and deliberately scoped so you can stop after it, own the output, and take the build elsewhere or nowhere. Operating model and architecture is priced against the assessment. Platform implementation is priced against the architecture, which is why we prefer not to quote a build before the design exists \u2014 the estimate would be a guess and both sides would discover that in month four.\n\nSoftware licensing is a separate line and goes to the vendor. Where you already hold entitlements that cover the work, we will say so. Managed operations is a monthly service level with the volumes and response times written down.',
+      },
+      {
+        q: 'How do you handle regulatory reporting and audit evidence?',
+        a: 'By making the evidence a by-product of the process rather than a project that happens before an audit.\n\nRegulatory submissions get a traced path from the reported figure back to the source transaction, with the model version, the transformation logic and the approver attached. Reconciliation between regulatory and financial reporting is automated rather than performed by a team in the week before submission.\n\nControls are evidenced continuously from the system of record. Segregation of duties is enforced by the platform rather than by policy. Control testing samples from live data, so effectiveness is a live measure rather than an annual opinion formed about events months old.\n\nThe practical test is whether you can answer how a number was derived without convening the people who built the model. Most organizations discover the answer during an actual investigation.',
+      },
+      {
+        q: 'We have tried a finance transformation before and it did not deliver. Why would this?',
+        a: 'Usually one of three reasons, and it is worth establishing which before spending again.\n\nNo baseline: benefits were asserted rather than measured, so when the next budget round came there was nothing to defend. Close days, forecast variance and control coverage have to be captured before the work starts, because they cannot be reconstructed afterwards.\n\nThe data was deferred: platforms were implemented on the existing data model because fixing it was out of scope, and the reporting limits survived the transformation intact.\n\nOr the operating model never changed: new systems, same organization, same accountability gaps, same manual reconciliation. Technology cannot resolve a question about who owns a number.\n\nNone of the three is a technology failure, which is why our first engagement measures rather than builds.',
+      },
+      {
+        q: 'Can you run finance operations for us afterwards?',
+        a: 'Yes, and it is priced and governed separately from the transformation so the two are not entangled.\n\nManaged operations can cover procure-to-pay, order-to-cash and record-to-report processing, close support and reconciliation, regulatory reporting operations, treasury operations, and continuous controls monitoring with exception escalation.\n\nThe reporting is the part worth insisting on: close days, forecast variance, exception volumes and control coverage, monthly, against the baseline captured at assessment. A managed service that reports only on volumes processed tells you nothing about whether the function is improving.\n\nWhat we will not do is build a capability only we can operate. Documentation, runbooks and your people trained during delivery are conditions of the engagement, not extras.',
+      },
+      {
+        q: 'Where does ESG and climate risk fit in Finance?',
+        a: 'Increasingly in controllership, which is a change most organizations have not yet absorbed.\n\nWhile sustainability disclosure was voluntary it sat in communications or strategy. Once it is assured, it needs what financial statements need: a defined data model, lineage from disclosure back to source, controls over the calculation, and a close process with a sign-off. Auditors are already asking those questions.\n\nClimate risk is a second and separate problem \u2014 scenario analysis over physical and transition exposure, feeding capital planning and, for financial institutions, regulatory stress testing. That is quantitative risk work rather than reporting work, and it belongs beside credit and market risk rather than beside the annual report.\n\nWe treat both as finance and risk problems, which is why they sit inside the controls capability on this page rather than in a separate sustainability practice.',
+      },
+      {
+        q: 'How do you measure whether the transformation worked?',
+        a: 'Against four numbers captured before anything is built, and reported afterwards whether or not they flatter us.\n\nClose days from period end to signed-off consolidated numbers. Forecast variance at driver level against actuals. Exposure refresh frequency across credit, market, liquidity and counterparty risk. And the share of key controls evidenced automatically rather than assembled by hand.\n\nEach is countable, each has an owner, and each is meaningless without a before \u2014 which is why the assessment captures them while the process is still manual. Benefits stated in a business case and never measured again are the normal outcome of a finance transformation, and the reason the next one is harder to fund.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // Managed services and transformation assurance were supplied as capability
+    // areas fourteen and fifteen. They are not capabilities, they are how the
+    // work is bought, and a CFO scanning a procurement schedule looks for them
+    // here. Same content, correct section.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five engagement models,',
+    engagementHeadingHighlight: 'one accountable baseline.',
+    engagementLede: 'Almost nobody starts with a finance transformation program. They start with a close that takes too long, a forecast nobody trusts, or a regulator asking a question that took three weeks to answer.',
+    servicePackages: [
+      {
+        name: 'Finance & Risk Assessment',
+        description: 'Fact-finding before commitment. What your close actually costs in days and hands, how accurate the forecast has been, what the exposure is, and which controls are evidenced rather than asserted.',
+        deliverables: [
+          'Close cycle measured task by task, not estimated',
+          'Forecast accuracy history analyzed at driver level',
+          'Exposure and control coverage baseline across risk types',
+          'Finance and risk data lineage and quality gap analysis',
+          'Sequenced roadmap with a business case per wave',
+        ],
+      },
+      {
+        name: 'Operating Model & Architecture',
+        description: 'The design work that decides your next decade. Target operating model, platform architecture, and the shared finance and risk data model most programs defer until it is expensive to retrofit.',
+        deliverables: [
+          'Target operating model with roles, ownership and RACI',
+          'ERP, EPM, treasury and risk platform architecture',
+          'Unified finance and risk data model and chart of accounts',
+          'Control framework designed into the process, not audited onto it',
+          'Platform selection with a scored, vendor-neutral recommendation',
+        ],
+      },
+      {
+        name: 'Platform & Risk Model Build',
+        description: 'Implementation across ERP, planning, treasury and risk platforms, including the quantitative model development and validation that a regulator will later examine.',
+        deliverables: [
+          'ERP and EPM implementation, migration or consolidation',
+          'Risk model development, documentation and independent validation',
+          'Treasury and liquidity platform implementation',
+          'Data pipelines with lineage and automated quality controls',
+          'Parallel run with output reconciliation before cutover',
+        ],
+      },
+      {
+        name: 'Transformation Assurance',
+        description: 'Independent assurance over a program somebody else is delivering. Commissioned by boards and audit committees when a finance transformation is large enough that finding out late is unacceptable.',
+        deliverables: [
+          'Program health assessment against scope, schedule and value',
+          'Architecture, data and controls assurance reviews',
+          'Cutover and go-live readiness assessment',
+          'Benefits realization tracking against the original case',
+          'Board and audit committee reporting',
+        ],
+      },
+      {
+        name: 'Managed Finance & Risk Operations',
+        description: 'Running the transformed capability under a service level: transactional operations, close support, regulatory reporting and continuous controls monitoring.',
+        deliverables: [
+          'Procure-to-pay, order-to-cash and record-to-report operations',
+          'Financial close support and reconciliation operations',
+          'Regulatory reporting and compliance operations',
+          'Continuous controls monitoring with exception escalation',
+          'Monthly reporting on close days, accuracy and control coverage',
+        ],
+      },
+    ],
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    // Ten sectors from the supplied list. Each headline names the structural
+    // reason finance and risk are hard to join in that sector specifically --
+    // regulatory capital in banking, reserving in insurance, commodity
+    // exposure in energy - rather than restating the capability list with a
+    // sector word in front of it, which is what makes most industry grids
+    // worthless.
+    industryHeading: 'Finance & Risk Management',
+    industryHeadingHighlight: 'by industry.',
+    industryLede: 'Ten sectors, and the structural reason finance and risk resist being joined in yours \u2014 the constraint that decides what a transformation there actually has to solve.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Regulatory capital is calculated from the same positions the P&L is built on, by a different team, on a different cycle.',
+        items: ['Credit risk modeling, ECL and IFRS 9', 'Capital adequacy and Basel reporting', 'Risk data aggregation under BCBS 239'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Reserving is an actuarial judgment that lands in the financial statements, so the model and the ledger have to agree.',
+        items: ['Actuarial modeling and data modernization', 'Solvency, capital and reserving analytics', 'Regulatory and financial reporting convergence'],
+      },
+      {
+        industry: 'Wealth & Asset Management',
+        headline: 'Client portfolio risk and firm financial performance are separate reporting worlds that regulators increasingly want reconciled.',
+        items: ['Portfolio risk and investment analytics', 'Fee, margin and profitability management', 'Regulatory reporting and fund liquidity risk'],
+      },
+      {
+        industry: 'Private Equity & Portfolio Companies',
+        headline: 'Consolidating portfolio companies that share no chart of accounts, on a reporting deadline set by the fund.',
+        items: ['Multi-entity consolidation and reporting', 'Portfolio finance standardization', 'Value creation and performance intelligence'],
+      },
+      {
+        industry: 'Manufacturing',
+        headline: 'Cost sits in operational systems and margin sits in the ledger, and the two are reconciled once a month at best.',
+        items: ['Product and customer profitability', 'Working capital and inventory finance', 'Supply chain counterparty exposure'],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'Commodity exposure moves daily while capital allocation and regulatory reporting move quarterly.',
+        items: ['Commodity price risk and hedge analytics', 'Capital allocation and asset finance', 'ESG, climate risk and regulatory reporting'],
+      },
+      {
+        industry: 'Retail & Consumer',
+        headline: 'Margin is decided at promotion level and reported at entity level, with the connection lost somewhere in between.',
+        items: ['Margin, promotion and revenue intelligence', 'Working capital and payment operations', 'Payment fraud and revenue leakage detection'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Revenue recognition depends on contracts and reimbursement rules that finance does not own and cannot see.',
+        items: ['Revenue recognition and contract accounting', 'Regulatory compliance and audit readiness', 'Working capital and receivables analytics'],
+      },
+      {
+        industry: 'Technology & Telecommunications',
+        headline: 'Recurring revenue makes the forecast a model rather than a projection, and the model lives outside the ledger.',
+        items: ['Subscription revenue recognition and planning', 'Driver-based forecasting for recurring revenue', 'Treasury, FX and multi-entity consolidation'],
+      },
+      {
+        industry: 'Government & Public Sector',
+        headline: 'Budgetary control and statutory accounting answer to different rulebooks over the same transactions.',
+        items: ['Budgetary control and public financial management', 'Statutory and regulatory reporting', 'Controls, assurance and audit readiness'],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // The page's thesis in six rows: finance and risk are transformed by
+    // different teams under different sponsors against the same ledger, and
+    // every symptom below descends from that. Both columns describe competent
+    // work -- the difference is whether the two functions share a data model.
+    comparisonTable: {
+      eyebrow: 'TWO FUNCTIONS, ONE LEDGER',
+      heading: 'Finance and Risk Transformed Separately, or Together.',
+      lede: 'Both columns describe capable teams delivering what they were asked to deliver. They differ on whether the CFO and the CRO can be shown the same number.',
+      beforeLabel: 'TWO PROGRAMS, TWO SPONSORS',
+      afterLabel: 'ONE TRANSFORMATION',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'SEPARATE',
+      afterShort: 'JOINED',
+      rows: [
+        {
+          dimension: 'When the forecast and the risk pack disagree',
+          before: 'Both are defensible, both were built from a different extract of the same ledger, and the reconciliation is done by hand in the week before the board meets.',
+          after: 'One finance and risk data model with declared lineage, so a variance is a real difference in view rather than a difference in extract date.',
+        },
+        {
+          dimension: 'How often exposure is known',
+          before: 'A pack assembled monthly or quarterly. Between packs, the honest answer to what the exposure is now is an estimate.',
+          after: 'Positions refreshed daily across credit, market, liquidity and counterparty risk, with the same numbers feeding the forecast.',
+        },
+        {
+          dimension: 'Where the close days actually go',
+          before: 'Programs shorten the consolidation run, which was never the bottleneck. The days are lost to reconciliation, intercompany and chasing.',
+          after: 'Measured task by task first, then automated where the time actually sits \u2014 usually reconciliation and intercompany, rarely consolidation.',
+        },
+        {
+          dimension: 'When a regulator asks how a number was derived',
+          before: 'Reconstructed from spreadsheets and the memory of whoever built the model, assuming they still work here.',
+          after: 'Traced through lineage from the submitted figure to the source transaction, with the model version and approver attached.',
+        },
+        {
+          dimension: 'How controls are evidenced',
+          before: 'Screenshots and sign-off sheets assembled in the fortnight before the audit, testing a sample of what happened months ago.',
+          after: 'Evidenced continuously from the system of record, so control effectiveness is a live measure rather than an annual opinion.',
+        },
+        {
+          dimension: 'What happens after go-live',
+          before: 'The program closes, the benefits case is filed, and nobody measures whether the forecast actually got more accurate.',
+          after: 'Close days, forecast variance, exposure refresh and control coverage baselined before the work and reported against afterwards.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages because the template renders architectureNodes as a
+    // four-column grid unless the array is exactly five. The supplied
+    // eight-layer architecture and seven-step intelligence loop both compress
+    // here; the loop's language survives in the definition section, where it
+    // reads as an argument rather than as a diagram.
+    architectureEyebrow: 'THE TRANSFORMATION LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Assess to Operate.',
+    architectureLede: 'Five stages, run as a continuous capability rather than a program with a closing date. Most engagements start at Assess and stop being sequential once the first value stream is live.',
+    architectureNodes: [
+      {
+        title: 'Assess',
+        icon: 'Search',
+        description: 'Establish what is true before designing anything: how long your close really takes task by task, how accurate the forecast has been, what the exposure is, and which controls are evidenced rather than asserted.',
+        features: [
+          'Finance maturity and benchmark assessment',
+          'Close cycle measured task by task',
+          'Forecast accuracy history at driver level',
+          'Exposure and control coverage baseline',
+          'Data quality and lineage gap analysis',
+        ],
+      },
+      {
+        title: 'Architect',
+        icon: 'Layers',
+        description: 'Your target operating model, platform architecture and the one thing most programs defer until it is expensive: a shared finance and risk data model with an agreed chart of accounts.',
+        features: [
+          'Target operating model and accountability',
+          'ERP, EPM and risk platform architecture',
+          'Unified finance and risk data model',
+          'Chart of accounts and master data design',
+          'Control framework designed into the flow',
+        ],
+      },
+      {
+        title: 'Modernize',
+        icon: 'Cpu',
+        description: 'Build it. Your ERP and planning platforms, risk models, treasury systems and the integration between them \u2014 sequenced by value stream rather than by module, so something reaches production early.',
+        features: [
+          'ERP and EPM implementation or migration',
+          'Risk model development and validation',
+          'Treasury and liquidity platform build',
+          'Data pipelines, lineage and quality controls',
+          'Parallel run before any cutover',
+        ],
+      },
+      {
+        title: 'Automate',
+        icon: 'Zap',
+        description: 'Take the hands out of your transactional layer and your close, and put continuous monitoring on the controls. This is where the close days and the audit preparation actually come down.',
+        features: [
+          'Transactional and close automation',
+          'Reconciliation and anomaly detection',
+          'Continuous controls monitoring',
+          'Regulatory reporting automation',
+          'AI-assisted analysis and commentary',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'Run it, measure it against the baseline taken at Assess, and keep improving. Your finance processes drift back toward manual the moment nobody is reporting on them.',
+        features: [
+          'Managed finance and risk operations',
+          'Close, forecast and exposure reporting',
+          'Model monitoring and revalidation',
+          'Benefits realization against baseline',
+          'Continuous improvement backlog',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'FINANCE & RISK MANAGEMENT SERVICES',
+    capabilitiesSectionTitle: 'Finance & Risk Management',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Design the finance function, modernize the core it runs on, make planning continuous, close faster with fewer hands, quantify the exposure the balance sheet carries, and evidence the controls over all of it.',
+    capabilityAreas: [
+      {
+        title: 'Finance Strategy & Operating Model',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where your finance work should sit, who is accountable for it, and what the function is for. Decided before any platform, because the platform encodes the answer for the next decade.',
+        items: [
+          'Finance Function & Transformation Strategy',
+          'Target Operating Model Design',
+          'Finance Organization & Role Design',
+          'Global Business Services & Shared Services',
+          'Onshore, Offshore & Nearshore Split',
+          'Finance Maturity Assessment & Benchmarking',
+          'Process Harmonization Across Entities',
+          'Finance Center of Excellence Design',
+          'Finance Cost & Service Model Optimization',
+          'Finance Workforce & Capability Planning',
+          'Transformation Portfolio Governance',
+          'Benefits Realization Framework',
+        ],
+      },
+      {
+        title: 'Digital Finance Core & ERP Transformation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The system of record and everything downstream that inherits its assumptions. Your chart of accounts and master data decide what you can report on later, which is why they are settled first rather than migrated as found.',
+        items: [
+          'ERP Strategy & Finance Architecture',
+          'SAP S/4HANA Finance Transformation',
+          'Oracle Cloud ERP Transformation',
+          'Microsoft Dynamics 365 Finance',
+          'Workday & NetSuite Finance',
+          'ERP Migration & Multi-Instance Consolidation',
+          'Chart of Accounts Redesign',
+          'Finance Master Data Management',
+          'Sub-Ledger & Integration Architecture',
+          'Finance API & Event Integration',
+          'Legacy Finance Application Modernization',
+          'Application Rationalization',
+          'Cutover, Hypercare & Post-Go-Live Optimization',
+        ],
+      },
+      {
+        title: 'Planning, Forecasting & Performance Management',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Moving your annual budget, which is wrong by March to a rolling, driver-based model that answers what-if in an afternoon. The constraint is rarely the tool; it is whether anyone agreed the drivers.',
+        items: [
+          'FP&A Transformation',
+          'Driver-Based Planning Models',
+          'Rolling Forecasts & Continuous Planning',
+          'Scenario & Sensitivity Modeling',
+          'Financial Consolidation',
+          'Profitability & Cost Management',
+          'Revenue & Margin Planning',
+          'Workforce & Capacity Planning',
+          'Capital Expenditure Planning',
+          'Management Reporting & Board Packs',
+          'Predictive & AI-Assisted Forecasting',
+          'Enterprise Performance Analytics',
+        ],
+      },
+      {
+        title: 'Intelligent Finance Operations & Controllership',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Your transactional engine and the close that depends on it. Most close programs shorten the wrong end \u2014 the days are lost to reconciliation and intercompany, not to the final consolidation run.',
+        items: [
+          'Procure-to-Pay & Invoice Automation',
+          'Intelligent Invoice Capture & Matching',
+          'Order-to-Cash, Collections & Cash Application',
+          'Credit, Dispute & Deduction Management',
+          'Record-to-Report Transformation',
+          'Account Reconciliation Automation',
+          'Intercompany Accounting & Elimination',
+          'Close Orchestration & Task Management',
+          'Anomaly Detection in Journals',
+          'Automated Variance Analysis & Commentary',
+          'Continuous Accounting',
+          'Technical Accounting & Audit Readiness',
+          'Close Performance Analytics',
+        ],
+      },
+      {
+        title: 'Financial Risk Management',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The quantitative core, and the reason this page exists. Your credit, market, liquidity, rate, currency, commodity and counterparty exposure, measured continuously rather than assembled into a pack once a quarter.',
+        items: [
+          'Credit Risk Strategy & Rating Frameworks',
+          'Probability of Default Modeling',
+          'Loss Given Default & Exposure at Default',
+          'Expected Credit Loss & IFRS 9',
+          'Credit Portfolio & Concentration Analytics',
+          'Early Warning Systems & Risk-Based Pricing',
+          'Value at Risk & Expected Shortfall',
+          'Market Risk Sensitivity & Greeks',
+          'Stress Testing & Scenario Analysis',
+          'Liquidity Risk & Cash-Flow Modeling',
+          'Contingency Funding & Intraday Liquidity',
+          'Interest Rate Risk & Asset-Liability Management',
+          'Foreign Exchange Exposure & Hedge Analytics',
+          'Commodity Price Risk Modeling',
+          'Counterparty Exposure & Wrong-Way Risk',
+          'Collateral & Credit Limit Frameworks',
+          'Actuarial Modeling & Capital Adequacy',
+          'Solvency & Risk-Adjusted Performance',
+          'Risk Data Aggregation & BCBS 239 Alignment',
+        ],
+      },
+      {
+        title: 'Treasury, Liquidity & Capital Management',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Cash you can see, funding you can rely on, and capital deployed against a return you can defend to your board. Usually the fastest measurable win in a finance program, because the visibility gap is larger than anyone expects.',
+        items: [
+          'Treasury Transformation & Operating Model',
+          'Global Cash Visibility & Bank Connectivity',
+          'Cash-Flow Forecasting',
+          'Liquidity Management & Pooling',
+          'Working Capital Optimization',
+          'Receivables & Payables Optimization',
+          'Funding Strategy & Debt Analytics',
+          'Investment & Yield Analytics',
+          'Hedging Program Design & Effectiveness',
+          'Capital Allocation Frameworks',
+          'Treasury Management System Implementation',
+          'Treasury Analytics & Reporting',
+        ],
+      },
+      {
+        title: 'Controls, Regulatory Reporting & Financial Crime',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What makes your numbers defensible: the control framework, the regulatory submission, and the detection layer that finds what the controls did not stop. One conversation, not three.',
+        items: [
+          'Enterprise & Operational Risk Frameworks',
+          'Risk Appetite, Taxonomy & Key Risk Indicators',
+          'Internal Controls Modernization & Rationalization',
+          'SOX & Financial Control Testing',
+          'Continuous Controls Monitoring',
+          'Segregation of Duties Design & Monitoring',
+          'Regulatory Reporting Transformation',
+          'Regulatory Data Architecture & Reconciliation',
+          'Capital Adequacy & Basel Reporting',
+          'Regulatory Change Management',
+          'Fraud Analytics & Transaction Monitoring',
+          'Duplicate Payment & Revenue Leakage Detection',
+          'AML, KYC & Trade Surveillance Analytics',
+          'Investigation Case Management',
+          'ESG, Climate Risk & Sustainability Reporting',
+          'Audit Readiness & Remediation',
+        ],
+      },
+      {
+        title: 'Finance & Risk Data, Analytics and AI',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The layer that decides whether any of the above can be believed. Your forecast and your risk report disagree because they were built on different extracts of the same ledger, and no amount of AI fixes that.',
+        items: [
+          'Finance & Risk Data Strategy',
+          'Unified Finance and Risk Data Model',
+          'Data Architecture & Engineering',
+          'Master & Reference Data Management',
+          'Data Quality, Lineage & Governance',
+          'Risk Data Aggregation & Reporting',
+          'Real-Time Finance Analytics',
+          'Predictive Forecasting Models',
+          'Scenario & Simulation Intelligence',
+          'Generative AI for Financial Analysis',
+          'AI-Assisted Regulatory Interpretation',
+          'Natural-Language Financial Intelligence',
+          'Model Risk Management & Validation',
+        ],
+      },
+    ],
+
+    midCta: 'The forecast and the risk report describe the same quarter. They disagree.',
+    midCtaLabel: 'Review One Close Cycle',
+    closingCta: {
+      title: 'One close cycle,',
+      highlight: 'measured end to end.',
+      body: 'Bring your last period close and your latest exposure pack. In 30 minutes we will show you where the two disagree, which of the days between period end and sign-off are avoidable, and what a single finance and risk data model would be worth \u2014 before any platform decision.',
+      proofLabel: 'From first call to a costed finance and risk baseline',
+    },
   },
 
   'quality-engineering-assurance': {
@@ -8688,12 +9329,695 @@ export const servicesData = {
     name: 'Operation Technology (OT)',
     departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Operational technology management and security',
-    fullDescription: 'Manage and secure operational technology environments for industrial operations.',
-    keyFeatures: ['OT assessment', 'OT security', 'IT/OT convergence', 'SCADA systems', 'Industrial IoT'],
-    relatedServiceSlugs: ['internet-of-things', 'embedded-design-systems', 'it-security-services'],
+    shortDescription: 'Industrial systems that are visible, connected and kept running — not just inventoried',
+    fullDescription: 'Discover, architect, connect and operate the systems that reach every part of your enterprise, without asking your production line to accept the downtime an IT-style rollout assumes is free.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['OT asset visibility & discovery', 'ICS & SCADA engineering', 'IT/OT convergence & edge', 'Industrial data & observability', 'Predictive maintenance & industrial AI'],
+    relatedServiceSlugs: ['it-security-services', 'internet-of-things', 'embedded-design-systems'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80',
+    // Real date, set when this page was rewritten. Emitted as dateModified in
+    // the WebPage node by seo/serviceSchema.js.
+    lastReviewed: '2026-08-23',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // Was the Shield-department parity default: 361 bytes, no custom FAQs, and
+    // a crawler seeing 2 per cent of the page — the thinnest of the four Shield
+    // pages rewritten together.
+    //
+    // The wedge, same shape as the it-security-services rewrite but on the
+    // engineering side rather than the control side: most OT programs do not
+    // fail for lack of connectivity. They fail for lack of visibility — a
+    // control system nobody has fully inventoried, a vendor remote-access
+    // connection nobody remembers opening, a historian nobody trusts enough to
+    // build a report from.
+    //
+    // The explicit boundary this page draws: OT and industrial security
+    // controls — segmentation, monitoring, vulnerability management, OT
+    // incident response — sit on it-security-services, which already has a
+    // full "OT, IoT & Industrial Security" capability area and an OT-specific
+    // FAQ. This page owns the industrial engineering those controls get
+    // applied to: asset visibility, control-system architecture, IT/OT
+    // connectivity, service management and predictive operations. Stated
+    // explicitly in practiceLede below, and again inline in capability area 7,
+    // so the two pages read as sequenced scope rather than overlapping ones.
+    heroTitle: 'Operational Technology (OT)\nEngineered for the Enterprise',
+    heroBadge: 'Visible. Connected. Resilient.',
+    heroStripItems: [
+      'OT Asset Visibility', 'ICS & SCADA Engineering', 'IT/OT Convergence & Edge', 'Industrial Data & Observability',
+      'Predictive Maintenance', 'OT Service Management', 'Industrial AI', 'Safety-Constrained Change',
+    ],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'What an OT program actually has to prove',
+    // Fold lands right after para2 instead of after para3 — see the opt-in
+    // branch this sets in UniversalServicePage.jsx (whatIsCollapseAfterPara2).
+    whatIsCollapseAfterPara2: true,
+    whatIsTitle: 'Operational Technology That',
+    whatIsTitleLine2: 'Stays Visible and',
+    whatIsHighlight: 'Runs Safely.',
+    whatIsPara2: 'Most industrial estates do not have a connectivity problem. They have a visibility problem — a control system nobody has fully inventoried, a vendor remote-access connection nobody remembers opening, a historian nobody trusts enough to build a report from. Kangqore discovers, architects, connects and operates the systems that sit between your physical plant and your enterprise — control systems, industrial networks, edge platforms and operational data — without asking your production line to accept the downtime an IT-style rollout assumes is free.',
+    whatIsPara3: 'Which means the hard problem in your OT work is rarely the technology itself. A PLC is not difficult to configure. What is difficult is the engineering workstation with three unofficial local accounts, the SCADA historian tag nobody has mapped to the process it describes, the vendor connection opened for a commissioning project that finished two years ago and was never closed. OT debt accumulates the same way security debt does — quietly, through individually reasonable decisions made under production pressure — and an assessment of your estate that only counts devices will miss all of it.',
+    whatIsPara4: 'Kangqore engineers for operational context, not just connectivity. Your assets discovered and mapped to the process they support, connectivity built through a governed edge architecture rather than a flat network nobody controls, maintenance triggered by condition rather than a calendar, and a change process that respects a maintenance window instead of assuming a reboot is always available. The team that builds it can explain it to your plant manager, and your operations team can still run it after we leave.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Not "100% operational reliability" or "maximum operational yield" — the
+    // parity default's instinct on other pages, and both unfalsifiable. These
+    // are the ones a plant manager or a COO is actually judged on: how much of
+    // the estate is actually mapped, how much unplanned downtime a condition-
+    // based program removes, how fast an anomaly gets noticed, and how much
+    // maintenance is planned rather than reactive.
+    outcomesEyebrow: 'WHAT AN OT PROGRAM SHOULD BE MEASURED ON',
+    outcomesHeading: 'Operational Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
+    businessMetrics: [
+      { illustrative: true, title: 'OT Asset Visibility',        desc: 'Increase in OT assets discovered, classified and mapped to the process they support, after continuous discovery replaces a spreadsheet last updated at commissioning.', value: '70', suffix: '%+', metricLabel: 'More of the Estate Mapped',        icon: 'Search'   },
+      { illustrative: true, title: 'Unplanned Downtime',         desc: 'Reduction in unplanned downtime once condition-based maintenance and anomaly detection replace calendar-based servicing and run-to-failure.',                            value: '35', suffix: '%',  metricLabel: 'Less Unplanned Downtime',           icon: 'Activity' },
+      { illustrative: true, title: 'Mean Time to Detect',        desc: 'Reduction in time to detect an operational or process anomaly once passive OT monitoring and telemetry correlation replace manual walk-rounds and operator instinct.',        value: '50', suffix: '%',  metricLabel: 'Faster Anomaly Detection',          icon: 'Radar'    },
+      { illustrative: true, title: 'Preventive Maintenance Share', desc: 'Share of maintenance that is planned and condition-triggered rather than reactive, after equipment health scoring replaces fixed maintenance intervals.',                    value: '60', suffix: '%+', metricLabel: 'Maintenance Planned, Not Reactive', icon: 'Settings' },
+    ],
+
+    // ── Narrative outcomes ──────────────────────────────────────────────────
+    // Without these the page falls through to UniversalServicePage's generic
+    // outcomeCard/outcomeCard2 default (UniversalServicePage.jsx:700-715) — a
+    // fabricated "Global Enterprise Organization" client descriptor asserting
+    // "100% operational reliability" and "maximum operational yield". Both are
+    // exactly the kind of unfalsifiable absolute claim the rest of this page
+    // deliberately avoids, so real, illustrative-flagged narratives replace it
+    // here rather than leaving the fallback to leak through.
+    outcomeCard: {
+      illustrative: true,
+      metric: '40%',
+      metricLabel: 'Reduction in unplanned downtime after asset visibility and condition-based maintenance',
+      industry: 'Manufacturing & Industrial Automation',
+      problem: 'A multi-plant manufacturer had no reliable inventory of what was actually running on the floor — the last full survey was three years old, and maintenance was almost entirely reactive: equipment ran until it failed, then got fixed. Nobody could say with confidence which failures were actually preventable.',
+      outcome: 'Kangqore ran passive OT asset discovery across all three plants, mapped criticality against the production process each asset supported, and instrumented the handful of failure points that accounted for most of the downtime cost. Maintenance now runs against a condition-triggered backlog ranked by actual risk, not a fixed calendar — and the plants that adopted it first are the ones the downtime figure above is measured against.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '5 months',
+      metricLabel: 'From asset discovery to a governed IT/OT connectivity architecture',
+      industry: 'Energy & Utilities',
+      problem: 'A utility’s SCADA network had accumulated vendor remote-access connections over more than a decade, with no current inventory of which were still needed and no segmentation between the control network and the corporate one — the kind of gap that shows up in an audit finding, not a daily incident, until it does.',
+      outcome: 'Kangqore inventoried every remote connection across the estate, closed the ones nobody could justify keeping, and built a governed industrial DMZ with edge gateways terminating each vendor path. The security team now has an actual segmentation boundary to apply controls to, instead of a flat network with a firewall rule sitting somewhere between the plant and the corporate side.',
+    },
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Framed by what each platform is genuinely for, closing on the same
+    // honest note IT security and quality engineering close on: most estates
+    // already own more monitoring and historian licenses than they have
+    // ownership assigned to.
+    toolsStack: {
+      eyebrow: 'THE OT TECHNOLOGY STACK',
+      title: 'The industrial stack,',
+      titleHighlight: 'and where the plant floor sets the limits.',
+      subtitle: 'Tool choice is mostly settled by what is already installed on your floor and by how much of your estate is legacy versus modern. These are the defaults, what overrides them, and where the gap is ownership rather than another platform.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Industrial control systems',
+          managed: 'Rockwell Automation, Siemens, Schneider Electric',
+          selfHosted: 'Honeywell, ABB, GE Vernova and Emerson, where already installed',
+          desc: 'Vendor choice is usually inherited, not chosen — the plant already runs what it runs. The work is engineering around it, not replacing it on a modernization timeline nobody asked for.',
+        },
+        {
+          icon: 'Network',
+          title: 'Industrial connectivity & protocols',
+          managed: 'OPC UA, MQTT Sparkplug B',
+          selfHosted: 'Modbus, DNP3 and Profinet for legacy plant-floor devices',
+          desc: 'The plant floor still speaks protocols from decades before OPC UA existed. Integration works with what a device actually supports, not what an architecture diagram assumes.',
+        },
+        {
+          icon: 'Radar',
+          title: 'OT asset visibility & passive monitoring',
+          managed: 'Claroty, Nozomi Networks, Dragos',
+          selfHosted: 'Tenable.ot and on-prem sensors for air-gapped and segmented networks',
+          desc: 'Passive by design. An active IT-style scan can crash fragile plant-floor equipment outright, so discovery reads protocol traffic rather than sending it.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Industrial edge & gateways',
+          managed: 'HMS Ewon, Moxa, Advantech edge gateways',
+          selfHosted: 'On-prem edge compute where latency or an air gap rules out the cloud',
+          desc: 'Where translation between an industrial protocol and an enterprise one actually happens, and where a control loop stays local no matter what the upstream connection is doing.',
+        },
+        {
+          icon: 'Database',
+          title: 'Historians & operational data',
+          managed: 'AVEVA (OSIsoft) PI System, GE Proficy Historian',
+          selfHosted: 'Honeywell Uniformance, on-prem where the plant cannot depend on a cloud link',
+          desc: 'The system of record for what actually happened on the floor. Most plants already own one and use a fraction of what it captures.',
+        },
+        {
+          icon: 'Globe',
+          title: 'Industrial IoT & sensor platforms',
+          managed: 'AWS IoT SiteWise, Azure IoT Operations',
+          selfHosted: 'On-prem MQTT brokers for latency-sensitive lines',
+          desc: 'Where retrofit sensors and connected equipment publish telemetry that never had a path to the enterprise before.',
+        },
+        {
+          icon: 'BrainCircuit',
+          title: 'Digital twin & simulation',
+          managed: 'AVEVA, Siemens Xcelerator',
+          selfHosted: 'Rarely — the value is almost entirely in the cloud-side model',
+          desc: 'Worth building once the underlying data is trustworthy, and a wasted quarter before it is. Sequenced after the data foundation, not before it.',
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Predictive maintenance & industrial AI',
+          managed: 'AWS, Azure and GCP ML platforms tuned to equipment telemetry',
+          selfHosted: 'Edge inference where round-trip latency rules out the cloud',
+          desc: 'Only as good as the sensor coverage feeding it. No data in is the honest reason more predictive-maintenance programs fail than any modeling choice.',
+        },
+        {
+          icon: 'Network',
+          title: 'The alternative to another platform',
+          managed: 'A named asset owner, a discovery baseline, a maintenance calendar someone actually follows',
+          selfHosted: 'Always evaluated before a new platform is proposed',
+          desc: 'Most industrial estates already own more monitoring and historian licenses than they have ownership assigned to. We will say so before selling you another one.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED BEFORE THE FIRST SITE VISIT',
+    faqHeading: 'Ten OT questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran no custom FAQs at all. These are the ones a plant
+    // manager, an OT engineering lead or a CISO scoping the OT half of a
+    // security program actually opens with — including the boundary question
+    // between this page and it-security-services, answered directly rather
+    // than left for a sales call.
+    customFAQs: [
+      {
+        q: 'Our OT network cannot be actively scanned or patched the way IT can. How do you actually build an asset inventory?',
+        a: 'By reading, not probing. Passive discovery listens to protocol traffic off a network tap or SPAN port — OPC UA, Modbus, Profinet, whatever the segment actually speaks — and builds the inventory from what devices say to each other, without sending a single packet an active IT-style scanner would send. A vulnerability scanner built for IT can crash fragile OT equipment outright, and we do not run one against your live plant floor.\n\n'
+          + 'That passive layer gets cross-referenced against what should exist: engineering drawings, P&IDs, vendor commissioning records and the historian tag list, because those four sources rarely agree with each other on a plant that has been running for fifteen years. The gap between them is usually where the real risk sits — a device on the network that is not on any drawing, or a drawing that describes equipment replaced two turnarounds ago.\n\n'
+          + 'The last step is still a person walking the floor once. Passive discovery finds what is talking on the network; it does not find the isolated engineering laptop in a cabinet that only gets plugged in during a shutdown, and pretending otherwise produces an inventory that looks complete and is not.',
+      },
+      {
+        q: 'What is the actual difference between OT and IT, beyond "OT controls machines"?',
+        a: 'Determinism and consequence. An IT system responding a few hundred milliseconds slower is a performance complaint. A control loop responding a few hundred milliseconds late can be a safety event, which is why OT systems are engineered for predictable, real-time behavior first and everything else second.\n\n'
+          + 'That changes what "maintenance" means. An IT patch ships on a monthly cadence and reboots a server nobody notices. An OT patch has to wait for a scheduled maintenance window, pass vendor certification because an uncertified change can void a warranty or a safety case, and sometimes simply cannot be applied to a controller that will run unmodified for its entire twenty-year service life.\n\n'
+          + 'NIST’s own guidance to industrial control system security treats this as the starting assumption, not a footnote: availability and safety outrank confidentiality on the priority list that governs every other decision. A security or IT team that brings IT-first instincts to an OT environment — patch fast, reboot to fix, scan to discover — is usually the team that causes the incident it was trying to prevent.',
+        sources: [{ url: 'https://csrc.nist.gov/pubs/sp/800/82/r3/final', label: 'NIST SP 800-82 Rev. 3 — Guide to OT Security' }],
+      },
+      {
+        q: 'We already have a cybersecurity program. Why do we need a separate OT engagement?',
+        a: 'Because IT security services cover the OT security controls — segmentation, monitoring, vulnerability management, incident response — and those controls need something to be applied to: an accurate asset inventory, a control-system architecture that can actually accept segmentation without breaking a process in your estate, and a connectivity design a security tool can sit on. That engineering work is what this page owns.\n\n'
+          + 'Run the two out of order and the usual result is a security team proposing a segmentation change the plant cannot accept on the timeline offered, because nobody engineered the architecture to make the change safe. Run them together and the sequence is: discover and architect first, then apply the security controls to what is now a known, governed environment.\n\n'
+          + 'In practice it is typically the same team, sequenced across two connected engagements rather than two competing quotes — the industrial engineering here, the controls, monitoring and evidence layered on top of it through Kangqore IT security services.',
+      },
+      {
+        q: 'How do you connect a fifteen-year-old PLC to a modern analytics platform without touching the control loop?',
+        a: 'One-way, and outward only. An edge gateway reads your PLC over its native protocol, republishes the same data as OPC UA or MQTT to whatever platform is on the other side, and the control loop itself never sees a packet from that connection. Your PLC keeps doing exactly what it was doing before anyone connected anything to it.\n\n'
+          + 'The gateway is also where the boundary actually lives, not a firewall rule three network hops away. It terminates the industrial protocol on one side and the IT protocol on the other, so a fault, a flood or a misconfiguration on the analytics side has no path back into the deterministic control layer — the architecture enforces the separation rather than relying on a policy that says not to cross it.\n\n'
+          + 'What this does not do is turn the PLC into something it is not. You get read access to what it already exposes — tags, status, counters — not remote configuration, not a write path, and not a shortcut past the change-control process that governs the controller itself.',
+      },
+      {
+        q: 'Can predictive maintenance actually work on equipment with almost no sensors?',
+        a: 'Not the way the vendor deck implies, and being honest about that upfront saves a wasted quarter. Predictive maintenance is a data problem before it is a modeling problem — no data in, no prediction out — and your equipment instrumented only with a run/stop signal gives a model almost nothing to learn a failure pattern from.\n\n'
+          + 'What usually works is a minimum viable retrofit rather than a full instrumentation overhaul: a vibration sensor and a current clamp on a motor, a temperature probe on a bearing, added to the handful of assets where unplanned failure actually costs the most. That gets a model something to work with in months, on the equipment where the business case is real, instead of years across an entire fleet.\n\n'
+          + 'Where instrumentation genuinely is not there and cannot be justified, the honest recommendation is condition-based maintenance built on manual inspection data and a defined threshold, not a machine-learning model dressed up to look predictive. A model trained on ten data points is not predictive maintenance; it is a coin flip with a dashboard.',
+      },
+      {
+        q: 'What happens to the plant if the connection to enterprise IT or the cloud goes down?',
+        a: 'Nothing, if the architecture was designed for it — and that is the design requirement, not an assumption. Time-critical control logic and safety interlocks run entirely on local edge compute and never depend on a round trip to the enterprise network or the cloud to make a decision.\n\n'
+          + 'What does depend on that connection is everything downstream of control: the dashboard, the analytics platform, the enterprise report. When the link drops, telemetry buffers locally at the edge and your plant keeps running exactly as it was; when the link returns, the buffered data syncs rather than being lost, so a connectivity outage becomes a reporting gap, not a production incident.\n\n'
+          + 'This is also why we do not recommend routing a safety function or a real-time control decision through a cloud platform, regardless of how reliable the vendor’s uptime claim is. Local resilience is not a fallback mode here; it is the primary design, with connectivity as the thing that can fail without your plant failing alongside it.',
+      },
+      {
+        q: 'How long does an IT/OT convergence project actually take?',
+        a: 'Longer than the vendor slide implies, and it depends far more on your current network’s starting state than on which platform you choose. A single plant with a network that is already partially segmented and one primary control vendor can have a governed DMZ and edge connectivity live in a few months.\n\n'
+          + 'A multi-site estate with a flat network, several control vendors from different acquisitions, and no prior segmentation history is a materially longer program — often into a second year once every site is covered — and a fixed timeline quoted before an asset and network assessment is a guess dressed up as a plan.\n\n'
+          + 'What we sequence for is risk reduction that shows up early rather than a big-bang cutover: the industrial DMZ and zones-and-conduits architecture first, since that is what makes everything after it safer to build; edge and historian integration second; analytics and predictive use cases third. Each phase stands on its own value even if a later one slips.',
+      },
+      {
+        q: 'Who is actually accountable when a change to the control environment causes downtime?',
+        a: 'Whoever owns the change, and that ownership is named before the change happens rather than argued about after — the same discipline a mature IT change-control process has, applied to your environment where the cost of getting it wrong is measured in a shift, not a rollback deploy.\n\n'
+          + 'We design the change-management process — a defined window, a tested rollback path, a sign-off that includes the plant operations owner, not just an engineering lead — but production-affecting authority stays with your operations team. We do not push a change to a live control environment on our own judgment call.\n\n'
+          + 'What we will not do is leave that ownership implied, because an unowned change process is exactly how a well-intentioned modernization effort turns into the incident that makes the next stage of the program harder to fund.',
+      },
+      {
+        q: 'Can Kangqore support ongoing OT operations, or is this a one-time assessment?',
+        a: 'Ongoing, where the engagement calls for it. Depending on scope, that includes OT service management, maintenance-window governance, vendor and OEM coordination, lifecycle tracking as equipment ages toward end of support, and continuous refinement of predictive models as more operating data accumulates.\n\n'
+          + 'We are pre-launch and do not have an existing OT operations desk with years of a specific plant’s history to point to, which is worth saying plainly rather than implying otherwise. What we do bring is the architecture and the handover discipline: documentation your engineering team can act on without us, and a design built so it can be run in-house, handed to a managed partner, or kept with us — without a rebuild in any of those three cases.\n\n'
+          + 'Most engagements start narrower than "ongoing operations" anyway — an assessment or a single convergence project — and the operating relationship, if there is one, gets scoped once both sides know what the estate actually needs.',
+      },
+      {
+        q: 'Does getting started on OT asset visibility require a plant shutdown?',
+        a: 'No — passive discovery is designed specifically to avoid needing one, and asking for a shutdown just to start an assessment is usually the wrong pitch. Reading protocol traffic off a tap or SPAN port happens with your plant running exactly as it always does; nothing about it requires downtime, and a vendor who suggests otherwise is proposing an active scan far sooner than an OT environment should tolerate one.\n\n'
+          + 'Where a shutdown genuinely helps is later, and only for specific, narrow work — physically installing a tap on a segment that has none, or walking a section of floor that is safer to inspect without live equipment nearby. Even then it is scheduled inside a maintenance window your operations team already has planned, not a special outage requested for the assessment.\n\n'
+          + 'The honest sequencing is discovery first, with your plant running, followed by a short list of items that do need a maintenance window — and that list is usually much shorter than people expect going in.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // The first package is a discovery pass across what already exists,
+    // deliberately ahead of any transformation-program pitch — most inbound OT
+    // conversations are "we are not sure what we actually have," not "we have
+    // nothing."
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'starting with what already exists.',
+    engagementLede: 'Most OT conversations do not start from zero either. The useful first engagement is usually a discovery pass across what is already running, not a pitch for a full transformation program.',
+    servicePackages: [
+      {
+        name: 'OT Asset Visibility & Maturity Assessment',
+        description: 'For understanding what is actually running before committing to anything. Passive discovery, criticality classification, and an architecture baseline against a real framework.',
+        deliverables: [
+          'OT asset discovery and inventory',
+          'Asset criticality and classification model',
+          'OT topology and dependency mapping',
+          'Architecture baseline against IEC 62443 zones',
+          'Prioritized OT risk and modernization register',
+        ],
+      },
+      {
+        name: 'Industrial Control & Engineering Architecture',
+        description: 'Designing the control and data layer everything else depends on. SCADA, PLC, HMI and DCS environments assessed and architected for your actual estate, not a vendor reference deployment.',
+        deliverables: [
+          'SCADA, DCS and PLC environment assessment',
+          'Control-system architecture design',
+          'Historian and operational data architecture',
+          'Legacy OT modernization roadmap',
+          'Production-safe change planning framework',
+        ],
+      },
+      {
+        name: 'IT/OT Convergence & Edge Connectivity',
+        description: 'Building the governed connectivity between the plant floor and the enterprise. Sequenced so the environment stays safe to operate throughout, not just at the end.',
+        deliverables: [
+          'IT/OT convergence and industrial DMZ architecture',
+          'Edge gateway and protocol integration (OPC UA, MQTT)',
+          'Plant-to-enterprise and OT-to-cloud connectivity design',
+          'Secure remote access architecture',
+          'Distributed-site connectivity model',
+        ],
+      },
+      {
+        name: 'OT Service Management & Governance',
+        description: 'Bringing engineering, operations, IT and OEMs together around one operating model, so a change is evaluated in its operational context instead of discovered after the fact.',
+        deliverables: [
+          'OT operating-model and service catalog design',
+          'Change, incident and request management processes',
+          'Vendor and OEM coordination workflows',
+          'Asset lifecycle and configuration management',
+          'OT governance dashboards and reporting',
+        ],
+      },
+      {
+        name: 'Industrial Data, Observability & Predictive Operations',
+        description: 'Turning the telemetry the previous stages generate into predictive intelligence. For teams ready to move past reactive maintenance and manual walk-rounds.',
+        deliverables: [
+          'Industrial data architecture and OT-to-IT integration',
+          'Real-time telemetry and observability pipelines',
+          'Condition-based and predictive maintenance enablement',
+          'Anomaly detection and equipment health scoring',
+          'Industrial AI and digital-twin foundations',
+        ],
+      },
+    ],
+
+    // ── Sectors ─────────────────────────────────────────────────────────────
+    // Renders the industry grid. Six sectors where OT is not a side
+    // conversation to IT — it is the plant, the grid, the well, the line and
+    // the network of sites that keep them running — and the industrial
+    // engineering work each one actually needs, deliberately distinct from
+    // the eight compliance-framework-led sectors on it-security-services.
+    //
+    // industryHeading/Highlight set explicitly because the prerender generator
+    // only reads svc.industryHeading directly — it does not know about the
+    // department-level fallback the React page resolves through — so leaving
+    // it unset means the crawler snapshot sees a generic "By industry" heading
+    // a visitor never does.
+    industryHeading: 'Engineered for',
+    industryHeadingHighlight: 'your operating environment.',
+    industryLede: 'Six sectors where OT is not a side conversation to IT — it is the plant, the grid, the well, the line and the network of sites that keep them running, and the industrial engineering work each one actually needs.',
+    industryUseCases: [
+      {
+        industry: 'Manufacturing & Industrial Automation',
+        headline: 'A production line that cannot be patched mid-shift, and increasingly connected to an IT network that assumes it can be.',
+        items: [
+          'Discrete and process manufacturing OT asset visibility',
+          'PLC, HMI and DCS environment support',
+          'Production-line IT/OT segmentation architecture',
+          'Predictive maintenance for critical production assets',
+          'Manufacturing execution system (MES) data integration',
+          'Legacy control system modernization planning',
+          'Multi-site plant connectivity architecture',
+          'Production continuity risk assessment',
+        ],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'SCADA systems older than the engineers running them, distributed assets across a grid, and downtime that is a public event, not an inconvenience.',
+        items: [
+          'SCADA and distributed asset visibility',
+          'Substation and field-device connectivity architecture',
+          'Grid monitoring and telemetry integration',
+          'Legacy industrial protocol support',
+          'Remote and unmanned-site connectivity',
+          'Historian and operational data architecture for the grid',
+          'Predictive maintenance for critical grid assets',
+          'OT service management across distributed operations',
+        ],
+      },
+      {
+        industry: 'Oil, Gas & Chemicals',
+        headline: 'Process-control environments where a wrong change is a safety incident, and remote operations across sites nobody can visit weekly.',
+        items: [
+          'Process-control system architecture and support',
+          'Remote and unmanned facility connectivity',
+          'Process historian and telemetry integration',
+          'Asset criticality and integrity monitoring data',
+          'Turnaround and maintenance-window planning',
+          'Safety-constrained change management for process control',
+          'Legacy DCS modernization planning',
+          'Multi-site OT governance and reporting',
+        ],
+      },
+      {
+        industry: 'Mining & Metals',
+        headline: 'Heavy equipment, distributed sites with limited connectivity, and a maintenance cost structure where unplanned downtime is the largest line item.',
+        items: [
+          'Distributed and remote-site OT asset visibility',
+          'Heavy-equipment condition monitoring integration',
+          'Site connectivity architecture for limited-bandwidth environments',
+          'Predictive maintenance for fleet and fixed equipment',
+          'Edge computing for offline and intermittently connected sites',
+          'Historian integration across distributed operations',
+          'OT lifecycle management for aging fleet assets',
+          'Production and equipment-health dashboards',
+        ],
+      },
+      {
+        industry: 'Water & Wastewater',
+        headline: 'SCADA-controlled treatment processes, public-health consequences if control fails, and often the smallest OT budget of any critical-infrastructure sector.',
+        items: [
+          'Treatment-process SCADA and PLC support',
+          'Remote pump station and field-site connectivity',
+          'OT asset visibility for distributed public infrastructure',
+          'Historian integration for regulatory and compliance reporting',
+          'Legacy control system modernization planning',
+          'Predictive maintenance for critical treatment equipment',
+          'Safety-constrained change management for public infrastructure',
+          'OT governance for resource-constrained operations teams',
+        ],
+      },
+      {
+        industry: 'Transportation & Critical Infrastructure',
+        headline: 'Operational systems distributed across facilities and moving assets, where telemetry has to travel further than a plant network was ever designed for.',
+        items: [
+          'Facility and asset OT visibility across distributed sites',
+          'Operational telemetry and control-system integration',
+          'Edge connectivity for moving and remote assets',
+          'Legacy control environment modernization planning',
+          'Predictive maintenance for critical operational assets',
+          'Multi-site OT service management',
+          'Resilient connectivity for safety-relevant systems',
+          'Historian and operational data architecture',
+        ],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Both columns own connectivity. The difference is whether an asset, a
+    // connection or a change is owned, mapped and provable, or just running
+    // and left alone — the same governed-versus-deployed argument
+    // it-security-services makes, applied to the engineering layer instead of
+    // the control layer.
+    comparisonTable: {
+      eyebrow: 'CONNECTED VERSUS GOVERNED',
+      heading: 'OT Connected vs. Governed OT Operations.',
+      lede: 'Neither column is short on connectivity. They differ in whether an asset, a connection or a change in your estate is owned, mapped and provable — or just running and left alone.',
+      beforeLabel: 'OT CONNECTED',
+      afterLabel: 'OT GOVERNED',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'CONNECTED',
+      afterShort: 'GOVERNED',
+      rows: [
+        {
+          dimension: 'What’s actually on the plant floor',
+          before: 'A spreadsheet last updated during commissioning, and nobody confident it still matches what is running.',
+          after: 'A continuously discovered OT asset inventory, mapped to the process each device actually supports.',
+        },
+        {
+          dimension: 'When a PLC or HMI nears end of life',
+          before: 'Nobody notices until it fails mid-shift, and the vendor stopped supporting it three years ago.',
+          after: 'Lifecycle tracked against vendor support windows, with replacement planned around a maintenance window, not a failure.',
+        },
+        {
+          dimension: 'How IT and OT actually connect',
+          before: 'An unmanaged connection opened for a vendor’s remote support years ago, and never closed.',
+          after: 'Governed connectivity through a defined edge and DMZ architecture, with a security control able to sit on top of it.',
+          link: { href: '/services/it-security-services', label: 'OT segmentation and security controls' },
+        },
+        {
+          dimension: 'What triggers a maintenance visit',
+          before: 'A calendar date, or a breakdown, whichever comes first.',
+          after: 'Condition and anomaly signals from the equipment itself, escalated before failure — not after it.',
+        },
+        {
+          dimension: 'Who owns a change to the control environment',
+          before: 'Whoever has admin access to the engineering workstation that day.',
+          after: 'A named owner, a documented change window, and a rollback path tested before go-live.',
+        },
+        {
+          dimension: 'Where operational data actually ends up',
+          before: 'Trapped in the historian, or on a clipboard on the plant floor.',
+          after: 'Connected to enterprise systems and analytics — and the plant keeps running if that link goes down.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages, matching the array length it-security-services uses for
+    // the same layout reason. Ends at Optimize rather than Secure, because
+    // security ownership sits on it-security-services — the fifth stage here
+    // is what the other page's rewrite does not cover: turning the operational
+    // data the first four stages generate into predictive intelligence.
+    architectureEyebrow: 'THE OT TRANSFORMATION LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Assess to Optimize.',
+    architectureLede: 'Five stages, and most OT programs stall between Architect and Connect — the point where a proposed change meets a plant floor that cannot accept it on the timeline offered. A connection that is not owned, monitored and reversible decays back into risk within a year, the same as an unowned security control.',
+    architectureNodes: [
+      {
+        title: 'Assess',
+        icon: 'Search',
+        description: 'Establish the real estate before proposing anything: what exists, what it controls, who owns it, and where the gap between what the P&ID says and what is actually running sits.',
+        features: [
+          'OT asset discovery and inventory',
+          'Asset classification and criticality assessment',
+          'OT topology and dependency mapping',
+          'Configuration and lifecycle visibility',
+          'OT maturity and transformation assessment',
+        ],
+      },
+      {
+        title: 'Architect',
+        icon: 'Layers',
+        description: 'Design the target-state control and connectivity architecture before integrating anything — zones and conduits, edge gateway placement, and the historian and data model the rest of the program depends on.',
+        features: [
+          'Target OT architecture and zones-and-conduits design',
+          'SCADA, DCS and PLC environment architecture',
+          'Historian and operational data architecture',
+          'Edge and gateway architecture',
+          'Engineering workstation governance model',
+        ],
+      },
+      {
+        title: 'Connect',
+        icon: 'Network',
+        description: 'Integrate industrial systems, edge environments and enterprise platforms through governed connectivity — designed so local operations keep running if the upstream link does not.',
+        features: [
+          'IT/OT convergence and industrial DMZ architecture',
+          'OPC UA and MQTT-based industrial connectivity',
+          'Plant-to-enterprise and OT-to-cloud integration',
+          'Secure remote access architecture',
+          'Distributed-site connectivity design',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'Run the service-management model that keeps engineering, operations, IT and OEMs working from the same change and incident process, instead of five teams discovering a change after the fact.',
+        features: [
+          'OT change, incident and request management',
+          'Maintenance-window and configuration governance',
+          'Vendor and OEM coordination workflows',
+          'Asset lifecycle management',
+          'OT governance dashboards and reporting',
+        ],
+      },
+      {
+        title: 'Optimize',
+        icon: 'TrendingUp',
+        description: 'Turn the operational data the previous four stages now generate into predictive intelligence — the stage most programs never reach, because it depends on everything before it actually working.',
+        features: [
+          'Real-time telemetry and industrial observability',
+          'Condition-based and predictive maintenance',
+          'Anomaly detection and equipment health scoring',
+          'Industrial AI and digital-twin foundations',
+          'Continuous improvement against a measured baseline',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'OPERATIONAL TECHNOLOGY & INDUSTRIAL ENGINEERING',
+    capabilitiesSectionTitle: 'Operational Technology',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Discover your estate, architect your control and connectivity layer, integrate IT and OT without losing control of either, and turn your operational data into intelligence — across asset visibility, industrial engineering, edge connectivity, service management and predictive operations.',
+    capabilityAreas: [
+      {
+        title: 'OT Asset Visibility, Discovery & Digital Foundation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Effective OT transformation begins with an accurate understanding of the industrial estate — not a spreadsheet last updated during commissioning.',
+        items: [
+          'OT Asset Discovery & Inventory',
+          'Asset Classification & Criticality Assessment',
+          'OT Topology & Dependency Mapping',
+          'Plant, Line, Cell & Equipment Relationship Mapping',
+          'Configuration & Lifecycle Visibility',
+          'OT Architecture Baseline',
+          'Asset Ownership & Accountability Models',
+          'OT Maturity & Transformation Assessments',
+          'Operational Technology Data Foundations',
+        ],
+      },
+      {
+        title: 'Industrial Control Systems & OT Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The technology layers that directly interact with physical processes — supported without pretending OT can be managed like conventional IT.',
+        items: [
+          'SCADA Environment Assessment & Support',
+          'PLC & HMI Ecosystem Support',
+          'DCS Environment Assessment',
+          'Industrial Server & Workstation Architecture',
+          'Control-System Configuration Review',
+          'OT Infrastructure Lifecycle Support',
+          'Historian & Operational Data Architecture',
+          'Industrial System Integration',
+          'Legacy OT Modernization Planning',
+          'Production-Safe Technology Change Planning',
+        ],
+      },
+      {
+        title: 'IT/OT Convergence, Industrial Connectivity & Edge',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Controlled connectivity between the plant floor and the enterprise — connected without becoming uncontrolled.',
+        items: [
+          'IT/OT Convergence Architecture',
+          'Industrial Network Architecture',
+          'Edge Computing Enablement',
+          'Industrial Gateway Architecture',
+          'Plant-to-Enterprise Connectivity',
+          'OT-to-Cloud Connectivity',
+          'Protocol-Aware Integration (OPC UA, MQTT)',
+          'Industrial IoT Enablement',
+          'Remote Operational Visibility',
+          'Secure Data Exchange Architecture',
+        ],
+      },
+      {
+        title: 'OT Service Management, Governance & Lifecycle',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Operational discipline across engineering, operations, IT, cybersecurity, OEMs and integrators — so a change is evaluated in its operational context instead of five teams discovering it after the fact.',
+        items: [
+          'OT Operating-Model Design',
+          'OT Service Catalog Development',
+          'OT Change Management',
+          'OT Incident & Request Management',
+          'Asset Lifecycle Management',
+          'Maintenance-Window Governance',
+          'Configuration Management',
+          'Vendor & OEM Coordination',
+          'OT Governance Dashboards & Reporting',
+        ],
+      },
+      {
+        title: 'Industrial Data, Observability & Operational Intelligence',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Turning machine data into operational context — what it means, what it affects and what action should follow, not just another chart.',
+        items: [
+          'Industrial Data Architecture',
+          'OT-to-IT Data Integration',
+          'Historian Integration',
+          'Real-Time Telemetry Pipelines',
+          'Industrial Observability',
+          'Asset Health Monitoring',
+          'Event & Alert Correlation',
+          'Production KPI Visibility',
+          'Operational Data Quality',
+          'Enterprise Analytics Integration',
+        ],
+      },
+      {
+        title: 'Predictive Operations, Maintenance & Industrial AI',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Moving from reactive operations to intelligence-driven operations — using operational context to anticipate what happens next, with a human still in the loop.',
+        items: [
+          'Predictive Maintenance Enablement',
+          'Condition-Based Maintenance',
+          'Equipment Health Scoring',
+          'Failure Prediction Frameworks',
+          'Anomaly Detection',
+          'Process-Performance Analytics',
+          'Predictive Quality Analytics',
+          'Industrial Digital-Twin Foundations',
+          'AI-Assisted Operational Decision Support',
+          'Human-in-the-Loop Industrial AI Workflows',
+        ],
+      },
+      {
+        title: 'OT Continuity, Safety & Change Governance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What keeps a plant running through a modernization program rather than gambling with it. Deliberately narrower than a security capability: the segmentation, monitoring and vulnerability management that protect the estate sit on Kangqore IT security services, built on the visibility and architecture this page establishes.',
+        items: [
+          'Safety-Constrained Change Planning',
+          'Maintenance-Window Governance',
+          'Recovery & Rollback Procedure Design',
+          'Vendor & OEM Patch Coordination',
+          'Production Continuity Risk Assessment',
+          'OT Business Continuity Planning',
+          'Engineering Workstation Governance',
+          'Legacy Dependency & Constraint Mapping',
+        ],
+      },
+    ],
+
+    // ── Practice boundary ───────────────────────────────────────────────────
+    // The default band lists Shield-department siblings with a generic
+    // one-line lede, which renders thin. Stating the boundary explicitly —
+    // same pattern it-security-services and quality-engineering-assurance
+    // use — says where OT engineering ends and OT security picks up, rather
+    // than leaving it implied by a service-card grid.
+    practiceLabel: 'TRUST, RISK & ASSURANCE',
+    practiceHeading: 'Where OT engineering stops,',
+    practiceHeadingHighlight: 'and OT security starts.',
+    practiceLede: 'This page owns the industrial engineering: what exists on your plant floor, how your control systems and edge platforms are architected, how your IT and OT connect, and how your operational data becomes predictive intelligence. OT and industrial security controls — segmentation, monitoring, vulnerability management, OT incident response — sit on IT security services, built on the asset visibility and architecture this page establishes. Financial and operational risk sits on finance & risk management. Each page goes into its own subject at the depth this one gives OT.',
+
+    conciergeHeading: 'Ask about your own plant floor',
+    conciergeIntro: 'Bring a real asset — the PLC nobody has documented, the historian tag nobody trusts, the vendor connection nobody remembers opening. eQORE will tell you what it would check first and what it would need from you.',
+    conciergeChips: [
+      'How much of our OT estate is actually unaccounted for?',
+      'Can we connect a 15-year-old PLC to our analytics platform safely?',
+      'What would a real IT/OT convergence architecture look like for us?',
+      'How do we know if a maintenance alert is worth a shutdown?',
+      'Book an OT asset review',
+    ],
+
+    midCta: 'A connected plant and a governed one are not the same claim.',
+    midCtaLabel: 'Review One OT Environment',
+    closingCta: {
+      title: 'One asset review.',
+      highlight: 'One estate you can actually see.',
+      body: 'Bring the control system you suspect nobody has fully mapped, or the connection you are not sure is still needed. In 30 minutes we will tell you what is a genuine gap, what is a documentation problem, and which of the two would cost you a shift if it failed tomorrow.',
+      proofLabel: 'From first call to a costed OT assessment',
+    },
   },
 
   // ═════════════════════════════════════════════════════════════════════════════

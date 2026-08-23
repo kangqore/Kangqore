@@ -2411,6 +2411,105 @@ const featureMicros   = service.featureMicros
                     <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
                   </svg>
                 </div>
+              ) : service.slug === 'finance-risk-management' ? (
+                /* ── One ledger, two functions ──
+                   Replaces the shared Shield default, which put Zero-Trust
+                   Security Architecture, SOC Operations and Incident Mesh above
+                   the fold on a Finance & Risk page. Measured before the
+                   rewrite: 103 security terms and zero finance terms.
+
+                   The five stages match architectureNodes exactly. The argument
+                   is the split and the rejoin: the CFO view and the CRO view are
+                   built from the same ledger by different teams, and the whole
+                   page exists to say they should share a data model. So the
+                   diagram forks at the top and converges at the bottom, and the
+                   band underneath names the number that proves it worked.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12, and the
+                   widest stage label (MODERNIZE, 9 characters at 12 units in a
+                   96-unit box) clears by 15 units each side. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="How finance and risk are joined: one general ledger feeds a CFO view of forecast, close and performance and a CRO view of credit, market and liquidity exposure; the lifecycle runs assess, architect, modernize, automate and operate; both views converge on one governed finance and risk data model, measured on close days, forecast variance, exposure refresh and control coverage" tabIndex={0}>
+                  <svg viewBox="0 0 540 470" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why the forecast and the risk report disagree about the same quarter</title>
+                    <desc>One general ledger feeds two views built by different teams: a CFO view of forecast, close and performance, and a CRO view of credit, market, liquidity and counterparty exposure. The lifecycle runs assess, architect, modernize, automate and operate. Both views converge on a single governed finance and risk data model with declared lineage, measured on close days, forecast variance, exposure refresh frequency and control coverage.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="frm-spine" gradientUnits="userSpaceOnUse" x1="26" y1="286" x2="514" y2="286">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="frm-stage" gradientUnits="userSpaceOnUse" x1="0" y1="228" x2="0" y2="280">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="frm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="frm-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The one thing both views are built from ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">ONE GENERAL LEDGER</text>
+                    <rect x="26" y="46" width="488" height="44" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="74" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">transactions · positions · exposures · entities</text>
+
+                    {/* ── Two functions read it separately ── */}
+                    <g stroke="#ffffff" strokeOpacity="0.22" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#frm-tick)">
+                      <path d="M 200 92 C 200 112, 145 112, 145 128" fill="none" />
+                      <path d="M 340 92 C 340 112, 395 112, 395 128" fill="none" />
+                    </g>
+
+                    <rect x="26" y="132" width="214" height="62" rx="9" fill="#0a1220" stroke="#2564ea" strokeOpacity="0.5" strokeWidth="1.5" />
+                    <text x="133" y="156" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="#7aa5f5">THE CFO VIEW</text>
+                    <text x="133" y="176" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.75">forecast · close · margin</text>
+
+                    <rect x="300" y="132" width="214" height="62" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.5" strokeWidth="1.5" />
+                    <text x="407" y="156" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="#4ab6d4">THE CRO VIEW</text>
+                    <text x="407" y="176" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.75">credit · market · liquidity</text>
+
+                    <text x="270" y="214" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">same quarter, different extract, different answer</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="259" fontSize="12" fontWeight="bold" fill="white">ASSESS</text>
+
+                      <rect x="124" y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="259" fontSize="12" fontWeight="bold" fill="white">ARCHITECT</text>
+
+                      <rect x="222" y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="259" fontSize="12" fontWeight="bold" fill="white">MODERNIZE</text>
+
+                      <rect x="320" y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="259" fontSize="12" fontWeight="bold" fill="white">AUTOMATE</text>
+
+                      <rect x="418" y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="259" fontSize="12" fontWeight="bold" fill="white">OPERATE</text>
+                    </g>
+
+                    <line x1="26" y1="286" x2="506" y2="286" stroke="url(#frm-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#frm-arrow)" />
+
+                    {/* ── Where the two views rejoin ── */}
+                    <g stroke="#00c875" strokeOpacity="0.5" strokeWidth="1.5" markerEnd="url(#frm-arrow)">
+                      <path d="M 145 292 C 145 316, 240 316, 262 320" fill="none" />
+                      <path d="M 395 292 C 395 316, 300 316, 278 320" fill="none" />
+                    </g>
+
+                    <rect x="26" y="326" width="488" height="66" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="270" y="350" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">ONE FINANCE AND RISK DATA MODEL</text>
+                    <text x="270" y="370" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">declared lineage · one number, two views</text>
+
+                    {/* ── What the program is held to ── */}
+                    <rect x="26" y="412" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="439" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">close days · forecast variance · exposure refresh · controls</text>
+                  </svg>
+                </div>
               ) : service.slug === 'robotic-process-automation' ? (
                 /* ── The bot depends on a surface it does not own ──
                    Replaces the shared agentic default, which put AI COMMANDER,
@@ -3049,6 +3148,111 @@ const featureMicros   = service.featureMicros
                     <text x="270" y="325" textAnchor="middle" fill="#22d3ee" fontSize="12" fontWeight="bold" fontFamily="monospace" letterSpacing="2">MLOPS SERVICES</text>
                     <text x="270" y="340" textAnchor="middle" fill="#60a5fa" fontSize="9" fontFamily="monospace">KEEPS MODELS RIGHT IN PRODUCTION</text>
 
+                  </svg>
+                </div>
+              ) : service.slug === 'operation-technology' ? (
+                /* ── Plant floor to enterprise, five stages ──
+                   Replaces the shared agentic default, which labeled an OT
+                   engineering page AI COMMANDER, AGENTIC ORCHESTRATOR and
+                   AUTONOMOUS COMMIT — an AI agent execution loop above copy
+                   about SCADA, PLCs and industrial connectivity.
+
+                   The five stages match architectureNodes below it exactly
+                   (Assess, Architect, Connect, Operate, Optimize), so the
+                   summary and the detail cannot drift apart. The closing
+                   split visualizes the FAQ answer on connectivity loss:
+                   control stays local no matter what the upstream link is
+                   doing, and the enterprise side sees it once reconnected —
+                   not a success/exception branch like the automation pages,
+                   since both outcomes here are the point, not a fallback.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is smaller than 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="OT transformation pipeline — plant-floor assets are assessed, architected, connected, operated and optimized, with control staying local and enterprise systems seeing it once reconnected" tabIndex={0}>
+                  <svg viewBox="0 0 540 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>How plant-floor assets become enterprise operational intelligence</title>
+                    <desc>PLCs, SCADA, HMIs and sensors are assessed, architected, connected and operated, then optimized into predictive intelligence. Control stays local if the upstream link drops; the enterprise side syncs once it returns.</desc>
+
+                    <defs>
+                      <linearGradient id="ot-spine" gradientUnits="userSpaceOnUse" x1="26" y1="186" x2="507" y2="186">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="ot-stage" gradientUnits="userSpaceOnUse" x1="0" y1="160" x2="0" y2="212">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="ot-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="ot-arrow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#2564ea" />
+                      </marker>
+                      <marker id="ot-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── What's on the floor today ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">WHAT SITS ON YOUR PLANT FLOOR</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">PLC · HMI · SCADA · DCS · sensors · edge gateways</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#ot-tick)">
+                      <line x1="81" y1="94" x2="81" y2="156" />
+                    </g>
+                    <text x="92" y="130" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">including what nobody has fully inventoried yet</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <line x1="26" y1="186" x2="507" y2="186" stroke="url(#ot-spine)" strokeWidth="2" strokeOpacity="0.45" />
+
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#2564ea" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="68.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">ASSESS</text>
+                      <text x="68.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">discover</text>
+
+                      <rect x="125" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#2b78e0" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="167.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">ARCHITECT</text>
+                      <text x="167.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">zones · edge</text>
+
+                      <rect x="224" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#3080e6" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="266.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">CONNECT</text>
+                      <text x="266.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">OPC UA/MQTT</text>
+
+                      <rect x="323" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#3b9ce0" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="365.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">OPERATE</text>
+                      <text x="365.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">change · OEMs</text>
+
+                      <rect x="422" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="464.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">OPTIMIZE</text>
+                      <text x="464.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">predict · AI</text>
+                    </g>
+
+                    <g stroke="#4ab6d4" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#ot-arrow)">
+                      <line x1="113" y1="186" x2="123" y2="186" />
+                      <line x1="212" y1="186" x2="222" y2="186" />
+                      <line x1="311" y1="186" x2="321" y2="186" />
+                      <line x1="410" y1="186" x2="420" y2="186" />
+                    </g>
+
+                    {/* ── If the upstream link drops, control does not ── */}
+                    <text x="270" y="240" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">if the upstream link drops</text>
+
+                    <path d="M 464 214 C 464 240, 260 240, 145 240 L 145 254" fill="none" stroke="#4ab6d4" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#ot-arrow)" />
+                    <path d="M 464 214 C 464 236, 430 236, 408 254" fill="none" stroke="#2564ea" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#ot-arrow-2)" />
+
+                    <rect x="26" y="258" width="238" height="58" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="145" y="282" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#4ab6d4">PLANT KEEPS RUNNING</text>
+                    <text x="145" y="302" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">control stays local either way</text>
+
+                    <rect x="302" y="258" width="212" height="58" rx="9" fill="#0a1220" stroke="#2564ea" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="408" y="282" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#93c5fd">ENTERPRISE SEES IT</text>
+                    <text x="408" y="302" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">telemetry syncs on reconnect</text>
+
+                    {/* ── Measurement runs across the whole path ── */}
+                    <rect x="26" y="336" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="363" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">asset visibility and downtime measured against your own baseline</text>
                   </svg>
                 </div>
               ) : (
