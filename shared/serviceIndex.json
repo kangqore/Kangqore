@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-23T06:22:13.169Z",
+  "generatedAt": "2026-08-23T07:34:23.868Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1382,10 +1382,58 @@
       "url": "/services/enterprise-platform-integration",
       "name": "Enterprise Platform Integration",
       "department": "Platforms",
-      "description": "Connect enterprise applications — integration strategy, API development, ESB implementation, data integration, and iPaaS solutions.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "description": "Enterprise integration architecture and engineering — APIs, events, messaging, B2B and EDI, hybrid cloud and iPaaS, modernization and governed operations.",
+      "capabilities": [
+        "Integration Strategy & Enterprise Architecture",
+        "Application & Legacy Integration",
+        "API, Event & Messaging Integration",
+        "Data Integration & Process Orchestration",
+        "B2B, EDI & Partner Integration",
+        "Hybrid Cloud & iPaaS Integration",
+        "Integration Modernization & Rationalization",
+        "Integration Governance, Security & Operations",
+        "Intelligent & Agentic Integration"
+      ],
+      "faqs": [
+        {
+          "q": "What is enterprise platform integration?",
+          "a": "The architecture and engineering discipline of connecting applications, APIs, data, events, workflows and external partner systems so an enterprise operates as one coordinated estate rather than a set of technology islands. It spans more than connectors. Application and legacy integration, API and event architecture, enterprise messaging, B2B and EDI, data transformation, process orchestration across systems, hybrid and multi-cloud connectivity, and the governance covering identity, policy, lifecycle and observability over all of it. The distinction that matters commercially: buying an integration platform is a procurement decision, and having an integration architecture is an engineering one. Organizations that do the first without the second end up with the same point-to-point sprawl, built on a more expensive substrate."
+        },
+        {
+          "q": "Is API integration the same as enterprise integration?",
+          "a": "No, and conflating them is the most common architectural mistake in this category. APIs are one mechanism. They are synchronous, request-response, and excellent when a caller needs an answer now. They are a poor fit when the producer should not know or care who consumes the data, when the consumer may be offline, when ordering matters, or when a message must survive a restart. Those cases need events, streams or queues. Enterprise integration also covers B2B and EDI for partners who will never call your API, file and batch interfaces that still move most of the world’s enterprise data, and orchestration for processes crossing several systems. An estate built entirely on synchronous APIs becomes a distributed system where every caller is coupled to every callee’s uptime. That is usually discovered during an incident rather than during design."
+        },
+        {
+          "q": "What is iPaaS, and do we need one?",
+          "a": "Integration Platform as a Service: a hosted environment for building, running and governing integrations, with prebuilt connectors, transformation tooling and lifecycle management. It earns its cost when you have a meaningful number of interfaces, several teams building them, and a genuine need for shared governance. Below roughly twenty integrations the licensing rarely pays back against building on your existing runtime and API gateway. The failure mode at the other end is worth naming too. Above a few hundred flows, an iPaaS without enforced reuse becomes point-to-point sprawl on a more expensive substrate — the same problem, now with a subscription. The platform does not create reuse; the governance model does. We hold no reseller margin on any integration platform, so a recommendation to stay on what you have costs us nothing."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Integration platforms and iPaaS",
+          "detail": "The default for an estate of any size: connectors, transformation and lifecycle in one place. Licensed per connection or per flow, which stops making sense below roughly twenty interfaces — and above a few hundred, unless reuse is enforced."
+        },
+        {
+          "rule": "API management",
+          "detail": "Policy, security, throttling and analytics at the edge of the estate. The gateway is the easy decision; the governance model behind it — who may publish, who owns a contract, how a version retires — is the one that matters."
+        },
+        {
+          "rule": "Event streaming and messaging",
+          "detail": "Streaming and queueing are not interchangeable. Kafka is a durable log you replay; a message broker is a delivery guarantee you acknowledge. Choosing the wrong one is the single most common cause of an estate that cannot be reasoned about."
+        },
+        {
+          "rule": "B2B and EDI",
+          "detail": "X12, EDIFACT and the transport underneath. The engineering is unremarkable; partner onboarding at volume is the actual product, and the difference between an eight-week and a five-day onboarding is templating rather than tooling."
+        },
+        {
+          "rule": "Runtime and deployment",
+          "detail": "Where integration workloads actually run. Integration is stateful more often than teams expect, so serverless suits event handlers and fits long-running orchestration badly."
+        },
+        {
+          "rule": "Observability",
+          "detail": "Platform dashboards tell you a flow ran. They cannot tell you a transaction entered at one end and never arrived at the other, which is the question operations actually needs answered — and it requires tracing, not monitoring."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1437,10 +1485,59 @@
       "url": "/services/talent-organization",
       "name": "Talent & Organization",
       "department": "Platforms",
-      "description": "Talent and org design — talent strategy, org design, change management, learning and development, and HR technology for workforce transformation.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "description": "Talent and organization consulting: workforce strategy, operating model and decision rights, skills architecture, people intelligence and HR transformation.",
+      "capabilities": [
+        "Talent Strategy & Strategic Workforce Planning",
+        "Organization & Operating Model Design",
+        "Leadership, Culture & Change",
+        "Skills, Learning & Workforce Transformation",
+        "AI-Powered HR Transformation & People Intelligence",
+        "Talent Acquisition, Deployment & HR Managed Services"
+      ],
+      "faqs": [
+        {
+          "q": "Do reorganizations actually work?",
+          "a": "About as often as they are done properly, which is not often — and the published research is unkind on this point. The pattern behind the failures is consistent. A structure is redesigned without touching decision rights, so authority stays exactly where it was and the new chart describes a company that does not behave differently. Or the design is sound and the deployment stops at the announcement, so managers are handed authority they have never seen anyone use and quietly keep escalating. What separates the ones that hold: the design changes who can decide what, without asking; the change is measured on adoption rather than attendance; and somebody internal owns the model afterwards with a review in the calendar. So the honest answer is that we will not run a structural program for you unless the decision-rights work goes with it. A reorganization without it is expensive theater, and eighteen months later everyone can tell."
+        },
+        {
+          "q": "Is this a headcount reduction exercise with a nicer name?",
+          "a": "Sometimes that is genuinely what a client needs, and when it is, we would rather say so plainly than dress it as capability building. The two are different pieces of work with different methods. A cost program starts from a target and works backward through spans, layers and duplication. A capability program starts from where value is created and works forward to the roles that carry it, and it frequently concludes that you are under-invested somewhere while over-invested somewhere else. They get conflated because a capability program usually surfaces cost, and because announcing the second is easier than announcing the first. That conflation is corrosive: people work out very quickly which one they are in, and a workforce that believes it was misled about a restructuring will not engage with the next one. We will run either. What we will not do is run a cost program described internally as a transformation, because the credibility cost lands on you and lasts longer than the saving."
+        },
+        {
+          "q": "Our engagement score is high and nothing is moving. Why?",
+          "a": "Because engagement measures how people feel about working somewhere, and almost nothing about whether the organization can decide, staff and execute. The two come apart in a specific and common way: a stable, well-liked, slow organization scores well. People are treated decently, tenure is long, managers are pleasant — and a pricing exception still takes a month because it crosses three committees nobody wants to be the one to bypass. Engagement is measuring the culture, which is fine, and the survey is telling the truth. What it cannot see is structural. How long a defined decision takes end to end. How many people can say yes without asking. How often a critical role is filled from outside because nobody was ready inside. Those are countable and they are what actually constrain execution. We would keep the engagement survey — it catches things nothing else does — and stop treating it as a performance measure for the operating model."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Core HCM",
+          "detail": "The system of record for people, positions and pay. Replacing it is a multi-year program in its own right, so the useful first question is almost never which one to buy — it is which parts of the one you own are unconfigured or unused."
+        },
+        {
+          "rule": "Skills and talent intelligence",
+          "detail": "These infer skills from work history and market data, which is genuinely better than self-assessment. They also inherit whatever your source data is worth, so buying one before the evidence exists produces confident nonsense at scale."
+        },
+        {
+          "rule": "People analytics",
+          "detail": "Worth it once more than one system holds workforce data and someone is asking questions a standard report cannot answer. Below that threshold it is a dashboard nobody opens, and the money is better spent fixing the data underneath."
+        },
+        {
+          "rule": "Organizational network analysis",
+          "detail": "Collaboration data shows where work actually flows versus where the chart says it should. It is also the most privacy-sensitive tool on this list, and deploying it without consultation is how a program loses its license to operate."
+        },
+        {
+          "rule": "Learning and capability",
+          "detail": "Content is a commodity and completion rates measure almost nothing. What makes a learning ecosystem work is that it targets gaps the skills inventory actually exposes and delivers them close to the work that needs them."
+        },
+        {
+          "rule": "Employment AI, governed",
+          "detail": "Hiring and promotion tools sit in the high-risk tier of the EU AI Act, face annual bias-audit duties under New York Local Law 144, and engage GDPR rights on automated decisions. Model governance itself is a separate Kangqore service."
+        },
+        {
+          "rule": "What no platform fixes",
+          "detail": "No system decides who may approve an exception, and no module makes a manager confident enough to use an authority they were granted. These are the interventions that move the numbers, and none of them appears on a license schedule."
+        }
+      ],
       "dataHandling": []
     },
     {
