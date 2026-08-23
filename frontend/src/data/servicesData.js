@@ -8898,12 +8898,695 @@ export const servicesData = {
     name: 'Operation Technology (OT)',
     departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Operational technology management and security',
-    fullDescription: 'Manage and secure operational technology environments for industrial operations.',
-    keyFeatures: ['OT assessment', 'OT security', 'IT/OT convergence', 'SCADA systems', 'Industrial IoT'],
-    relatedServiceSlugs: ['internet-of-things', 'embedded-design-systems', 'it-security-services'],
+    shortDescription: 'Industrial systems that are visible, connected and kept running — not just inventoried',
+    fullDescription: 'Discover, architect, connect and operate the systems that reach every part of your enterprise, without asking your production line to accept the downtime an IT-style rollout assumes is free.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['OT asset visibility & discovery', 'ICS & SCADA engineering', 'IT/OT convergence & edge', 'Industrial data & observability', 'Predictive maintenance & industrial AI'],
+    relatedServiceSlugs: ['it-security-services', 'internet-of-things', 'embedded-design-systems'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80',
+    // Real date, set when this page was rewritten. Emitted as dateModified in
+    // the WebPage node by seo/serviceSchema.js.
+    lastReviewed: '2026-08-23',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // Was the Shield-department parity default: 361 bytes, no custom FAQs, and
+    // a crawler seeing 2 per cent of the page — the thinnest of the four Shield
+    // pages rewritten together.
+    //
+    // The wedge, same shape as the it-security-services rewrite but on the
+    // engineering side rather than the control side: most OT programs do not
+    // fail for lack of connectivity. They fail for lack of visibility — a
+    // control system nobody has fully inventoried, a vendor remote-access
+    // connection nobody remembers opening, a historian nobody trusts enough to
+    // build a report from.
+    //
+    // The explicit boundary this page draws: OT and industrial security
+    // controls — segmentation, monitoring, vulnerability management, OT
+    // incident response — sit on it-security-services, which already has a
+    // full "OT, IoT & Industrial Security" capability area and an OT-specific
+    // FAQ. This page owns the industrial engineering those controls get
+    // applied to: asset visibility, control-system architecture, IT/OT
+    // connectivity, service management and predictive operations. Stated
+    // explicitly in practiceLede below, and again inline in capability area 7,
+    // so the two pages read as sequenced scope rather than overlapping ones.
+    heroTitle: 'Operational Technology (OT)\nEngineered for the Enterprise',
+    heroBadge: 'Visible. Connected. Resilient.',
+    heroStripItems: [
+      'OT Asset Visibility', 'ICS & SCADA Engineering', 'IT/OT Convergence & Edge', 'Industrial Data & Observability',
+      'Predictive Maintenance', 'OT Service Management', 'Industrial AI', 'Safety-Constrained Change',
+    ],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'What an OT program actually has to prove',
+    // Fold lands right after para2 instead of after para3 — see the opt-in
+    // branch this sets in UniversalServicePage.jsx (whatIsCollapseAfterPara2).
+    whatIsCollapseAfterPara2: true,
+    whatIsTitle: 'Operational Technology That',
+    whatIsTitleLine2: 'Stays Visible and',
+    whatIsHighlight: 'Runs Safely.',
+    whatIsPara2: 'Most industrial estates do not have a connectivity problem. They have a visibility problem — a control system nobody has fully inventoried, a vendor remote-access connection nobody remembers opening, a historian nobody trusts enough to build a report from. Kangqore discovers, architects, connects and operates the systems that sit between your physical plant and your enterprise — control systems, industrial networks, edge platforms and operational data — without asking your production line to accept the downtime an IT-style rollout assumes is free.',
+    whatIsPara3: 'Which means the hard problem in your OT work is rarely the technology itself. A PLC is not difficult to configure. What is difficult is the engineering workstation with three unofficial local accounts, the SCADA historian tag nobody has mapped to the process it describes, the vendor connection opened for a commissioning project that finished two years ago and was never closed. OT debt accumulates the same way security debt does — quietly, through individually reasonable decisions made under production pressure — and an assessment of your estate that only counts devices will miss all of it.',
+    whatIsPara4: 'Kangqore engineers for operational context, not just connectivity. Your assets discovered and mapped to the process they support, connectivity built through a governed edge architecture rather than a flat network nobody controls, maintenance triggered by condition rather than a calendar, and a change process that respects a maintenance window instead of assuming a reboot is always available. The team that builds it can explain it to your plant manager, and your operations team can still run it after we leave.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Not "100% operational reliability" or "maximum operational yield" — the
+    // parity default's instinct on other pages, and both unfalsifiable. These
+    // are the ones a plant manager or a COO is actually judged on: how much of
+    // the estate is actually mapped, how much unplanned downtime a condition-
+    // based program removes, how fast an anomaly gets noticed, and how much
+    // maintenance is planned rather than reactive.
+    outcomesEyebrow: 'WHAT AN OT PROGRAM SHOULD BE MEASURED ON',
+    outcomesHeading: 'Operational Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
+    businessMetrics: [
+      { illustrative: true, title: 'OT Asset Visibility',        desc: 'Increase in OT assets discovered, classified and mapped to the process they support, after continuous discovery replaces a spreadsheet last updated at commissioning.', value: '70', suffix: '%+', metricLabel: 'More of the Estate Mapped',        icon: 'Search'   },
+      { illustrative: true, title: 'Unplanned Downtime',         desc: 'Reduction in unplanned downtime once condition-based maintenance and anomaly detection replace calendar-based servicing and run-to-failure.',                            value: '35', suffix: '%',  metricLabel: 'Less Unplanned Downtime',           icon: 'Activity' },
+      { illustrative: true, title: 'Mean Time to Detect',        desc: 'Reduction in time to detect an operational or process anomaly once passive OT monitoring and telemetry correlation replace manual walk-rounds and operator instinct.',        value: '50', suffix: '%',  metricLabel: 'Faster Anomaly Detection',          icon: 'Radar'    },
+      { illustrative: true, title: 'Preventive Maintenance Share', desc: 'Share of maintenance that is planned and condition-triggered rather than reactive, after equipment health scoring replaces fixed maintenance intervals.',                    value: '60', suffix: '%+', metricLabel: 'Maintenance Planned, Not Reactive', icon: 'Settings' },
+    ],
+
+    // ── Narrative outcomes ──────────────────────────────────────────────────
+    // Without these the page falls through to UniversalServicePage's generic
+    // outcomeCard/outcomeCard2 default (UniversalServicePage.jsx:700-715) — a
+    // fabricated "Global Enterprise Organization" client descriptor asserting
+    // "100% operational reliability" and "maximum operational yield". Both are
+    // exactly the kind of unfalsifiable absolute claim the rest of this page
+    // deliberately avoids, so real, illustrative-flagged narratives replace it
+    // here rather than leaving the fallback to leak through.
+    outcomeCard: {
+      illustrative: true,
+      metric: '40%',
+      metricLabel: 'Reduction in unplanned downtime after asset visibility and condition-based maintenance',
+      industry: 'Manufacturing & Industrial Automation',
+      problem: 'A multi-plant manufacturer had no reliable inventory of what was actually running on the floor — the last full survey was three years old, and maintenance was almost entirely reactive: equipment ran until it failed, then got fixed. Nobody could say with confidence which failures were actually preventable.',
+      outcome: 'Kangqore ran passive OT asset discovery across all three plants, mapped criticality against the production process each asset supported, and instrumented the handful of failure points that accounted for most of the downtime cost. Maintenance now runs against a condition-triggered backlog ranked by actual risk, not a fixed calendar — and the plants that adopted it first are the ones the downtime figure above is measured against.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '5 months',
+      metricLabel: 'From asset discovery to a governed IT/OT connectivity architecture',
+      industry: 'Energy & Utilities',
+      problem: 'A utility’s SCADA network had accumulated vendor remote-access connections over more than a decade, with no current inventory of which were still needed and no segmentation between the control network and the corporate one — the kind of gap that shows up in an audit finding, not a daily incident, until it does.',
+      outcome: 'Kangqore inventoried every remote connection across the estate, closed the ones nobody could justify keeping, and built a governed industrial DMZ with edge gateways terminating each vendor path. The security team now has an actual segmentation boundary to apply controls to, instead of a flat network with a firewall rule sitting somewhere between the plant and the corporate side.',
+    },
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Framed by what each platform is genuinely for, closing on the same
+    // honest note IT security and quality engineering close on: most estates
+    // already own more monitoring and historian licenses than they have
+    // ownership assigned to.
+    toolsStack: {
+      eyebrow: 'THE OT TECHNOLOGY STACK',
+      title: 'The industrial stack,',
+      titleHighlight: 'and where the plant floor sets the limits.',
+      subtitle: 'Tool choice is mostly settled by what is already installed on your floor and by how much of your estate is legacy versus modern. These are the defaults, what overrides them, and where the gap is ownership rather than another platform.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Industrial control systems',
+          managed: 'Rockwell Automation, Siemens, Schneider Electric',
+          selfHosted: 'Honeywell, ABB, GE Vernova and Emerson, where already installed',
+          desc: 'Vendor choice is usually inherited, not chosen — the plant already runs what it runs. The work is engineering around it, not replacing it on a modernization timeline nobody asked for.',
+        },
+        {
+          icon: 'Network',
+          title: 'Industrial connectivity & protocols',
+          managed: 'OPC UA, MQTT Sparkplug B',
+          selfHosted: 'Modbus, DNP3 and Profinet for legacy plant-floor devices',
+          desc: 'The plant floor still speaks protocols from decades before OPC UA existed. Integration works with what a device actually supports, not what an architecture diagram assumes.',
+        },
+        {
+          icon: 'Radar',
+          title: 'OT asset visibility & passive monitoring',
+          managed: 'Claroty, Nozomi Networks, Dragos',
+          selfHosted: 'Tenable.ot and on-prem sensors for air-gapped and segmented networks',
+          desc: 'Passive by design. An active IT-style scan can crash fragile plant-floor equipment outright, so discovery reads protocol traffic rather than sending it.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Industrial edge & gateways',
+          managed: 'HMS Ewon, Moxa, Advantech edge gateways',
+          selfHosted: 'On-prem edge compute where latency or an air gap rules out the cloud',
+          desc: 'Where translation between an industrial protocol and an enterprise one actually happens, and where a control loop stays local no matter what the upstream connection is doing.',
+        },
+        {
+          icon: 'Database',
+          title: 'Historians & operational data',
+          managed: 'AVEVA (OSIsoft) PI System, GE Proficy Historian',
+          selfHosted: 'Honeywell Uniformance, on-prem where the plant cannot depend on a cloud link',
+          desc: 'The system of record for what actually happened on the floor. Most plants already own one and use a fraction of what it captures.',
+        },
+        {
+          icon: 'Globe',
+          title: 'Industrial IoT & sensor platforms',
+          managed: 'AWS IoT SiteWise, Azure IoT Operations',
+          selfHosted: 'On-prem MQTT brokers for latency-sensitive lines',
+          desc: 'Where retrofit sensors and connected equipment publish telemetry that never had a path to the enterprise before.',
+        },
+        {
+          icon: 'BrainCircuit',
+          title: 'Digital twin & simulation',
+          managed: 'AVEVA, Siemens Xcelerator',
+          selfHosted: 'Rarely — the value is almost entirely in the cloud-side model',
+          desc: 'Worth building once the underlying data is trustworthy, and a wasted quarter before it is. Sequenced after the data foundation, not before it.',
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Predictive maintenance & industrial AI',
+          managed: 'AWS, Azure and GCP ML platforms tuned to equipment telemetry',
+          selfHosted: 'Edge inference where round-trip latency rules out the cloud',
+          desc: 'Only as good as the sensor coverage feeding it. No data in is the honest reason more predictive-maintenance programs fail than any modeling choice.',
+        },
+        {
+          icon: 'Network',
+          title: 'The alternative to another platform',
+          managed: 'A named asset owner, a discovery baseline, a maintenance calendar someone actually follows',
+          selfHosted: 'Always evaluated before a new platform is proposed',
+          desc: 'Most industrial estates already own more monitoring and historian licenses than they have ownership assigned to. We will say so before selling you another one.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED BEFORE THE FIRST SITE VISIT',
+    faqHeading: 'Ten OT questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran no custom FAQs at all. These are the ones a plant
+    // manager, an OT engineering lead or a CISO scoping the OT half of a
+    // security program actually opens with — including the boundary question
+    // between this page and it-security-services, answered directly rather
+    // than left for a sales call.
+    customFAQs: [
+      {
+        q: 'Our OT network cannot be actively scanned or patched the way IT can. How do you actually build an asset inventory?',
+        a: 'By reading, not probing. Passive discovery listens to protocol traffic off a network tap or SPAN port — OPC UA, Modbus, Profinet, whatever the segment actually speaks — and builds the inventory from what devices say to each other, without sending a single packet an active IT-style scanner would send. A vulnerability scanner built for IT can crash fragile OT equipment outright, and we do not run one against your live plant floor.\n\n'
+          + 'That passive layer gets cross-referenced against what should exist: engineering drawings, P&IDs, vendor commissioning records and the historian tag list, because those four sources rarely agree with each other on a plant that has been running for fifteen years. The gap between them is usually where the real risk sits — a device on the network that is not on any drawing, or a drawing that describes equipment replaced two turnarounds ago.\n\n'
+          + 'The last step is still a person walking the floor once. Passive discovery finds what is talking on the network; it does not find the isolated engineering laptop in a cabinet that only gets plugged in during a shutdown, and pretending otherwise produces an inventory that looks complete and is not.',
+      },
+      {
+        q: 'What is the actual difference between OT and IT, beyond "OT controls machines"?',
+        a: 'Determinism and consequence. An IT system responding a few hundred milliseconds slower is a performance complaint. A control loop responding a few hundred milliseconds late can be a safety event, which is why OT systems are engineered for predictable, real-time behavior first and everything else second.\n\n'
+          + 'That changes what "maintenance" means. An IT patch ships on a monthly cadence and reboots a server nobody notices. An OT patch has to wait for a scheduled maintenance window, pass vendor certification because an uncertified change can void a warranty or a safety case, and sometimes simply cannot be applied to a controller that will run unmodified for its entire twenty-year service life.\n\n'
+          + 'NIST’s own guidance to industrial control system security treats this as the starting assumption, not a footnote: availability and safety outrank confidentiality on the priority list that governs every other decision. A security or IT team that brings IT-first instincts to an OT environment — patch fast, reboot to fix, scan to discover — is usually the team that causes the incident it was trying to prevent.',
+        sources: [{ url: 'https://csrc.nist.gov/pubs/sp/800/82/r3/final', label: 'NIST SP 800-82 Rev. 3 — Guide to OT Security' }],
+      },
+      {
+        q: 'We already have a cybersecurity program. Why do we need a separate OT engagement?',
+        a: 'Because IT security services cover the OT security controls — segmentation, monitoring, vulnerability management, incident response — and those controls need something to be applied to: an accurate asset inventory, a control-system architecture that can actually accept segmentation without breaking a process in your estate, and a connectivity design a security tool can sit on. That engineering work is what this page owns.\n\n'
+          + 'Run the two out of order and the usual result is a security team proposing a segmentation change the plant cannot accept on the timeline offered, because nobody engineered the architecture to make the change safe. Run them together and the sequence is: discover and architect first, then apply the security controls to what is now a known, governed environment.\n\n'
+          + 'In practice it is typically the same team, sequenced across two connected engagements rather than two competing quotes — the industrial engineering here, the controls, monitoring and evidence layered on top of it through Kangqore IT security services.',
+      },
+      {
+        q: 'How do you connect a fifteen-year-old PLC to a modern analytics platform without touching the control loop?',
+        a: 'One-way, and outward only. An edge gateway reads your PLC over its native protocol, republishes the same data as OPC UA or MQTT to whatever platform is on the other side, and the control loop itself never sees a packet from that connection. Your PLC keeps doing exactly what it was doing before anyone connected anything to it.\n\n'
+          + 'The gateway is also where the boundary actually lives, not a firewall rule three network hops away. It terminates the industrial protocol on one side and the IT protocol on the other, so a fault, a flood or a misconfiguration on the analytics side has no path back into the deterministic control layer — the architecture enforces the separation rather than relying on a policy that says not to cross it.\n\n'
+          + 'What this does not do is turn the PLC into something it is not. You get read access to what it already exposes — tags, status, counters — not remote configuration, not a write path, and not a shortcut past the change-control process that governs the controller itself.',
+      },
+      {
+        q: 'Can predictive maintenance actually work on equipment with almost no sensors?',
+        a: 'Not the way the vendor deck implies, and being honest about that upfront saves a wasted quarter. Predictive maintenance is a data problem before it is a modeling problem — no data in, no prediction out — and your equipment instrumented only with a run/stop signal gives a model almost nothing to learn a failure pattern from.\n\n'
+          + 'What usually works is a minimum viable retrofit rather than a full instrumentation overhaul: a vibration sensor and a current clamp on a motor, a temperature probe on a bearing, added to the handful of assets where unplanned failure actually costs the most. That gets a model something to work with in months, on the equipment where the business case is real, instead of years across an entire fleet.\n\n'
+          + 'Where instrumentation genuinely is not there and cannot be justified, the honest recommendation is condition-based maintenance built on manual inspection data and a defined threshold, not a machine-learning model dressed up to look predictive. A model trained on ten data points is not predictive maintenance; it is a coin flip with a dashboard.',
+      },
+      {
+        q: 'What happens to the plant if the connection to enterprise IT or the cloud goes down?',
+        a: 'Nothing, if the architecture was designed for it — and that is the design requirement, not an assumption. Time-critical control logic and safety interlocks run entirely on local edge compute and never depend on a round trip to the enterprise network or the cloud to make a decision.\n\n'
+          + 'What does depend on that connection is everything downstream of control: the dashboard, the analytics platform, the enterprise report. When the link drops, telemetry buffers locally at the edge and your plant keeps running exactly as it was; when the link returns, the buffered data syncs rather than being lost, so a connectivity outage becomes a reporting gap, not a production incident.\n\n'
+          + 'This is also why we do not recommend routing a safety function or a real-time control decision through a cloud platform, regardless of how reliable the vendor’s uptime claim is. Local resilience is not a fallback mode here; it is the primary design, with connectivity as the thing that can fail without your plant failing alongside it.',
+      },
+      {
+        q: 'How long does an IT/OT convergence project actually take?',
+        a: 'Longer than the vendor slide implies, and it depends far more on your current network’s starting state than on which platform you choose. A single plant with a network that is already partially segmented and one primary control vendor can have a governed DMZ and edge connectivity live in a few months.\n\n'
+          + 'A multi-site estate with a flat network, several control vendors from different acquisitions, and no prior segmentation history is a materially longer program — often into a second year once every site is covered — and a fixed timeline quoted before an asset and network assessment is a guess dressed up as a plan.\n\n'
+          + 'What we sequence for is risk reduction that shows up early rather than a big-bang cutover: the industrial DMZ and zones-and-conduits architecture first, since that is what makes everything after it safer to build; edge and historian integration second; analytics and predictive use cases third. Each phase stands on its own value even if a later one slips.',
+      },
+      {
+        q: 'Who is actually accountable when a change to the control environment causes downtime?',
+        a: 'Whoever owns the change, and that ownership is named before the change happens rather than argued about after — the same discipline a mature IT change-control process has, applied to your environment where the cost of getting it wrong is measured in a shift, not a rollback deploy.\n\n'
+          + 'We design the change-management process — a defined window, a tested rollback path, a sign-off that includes the plant operations owner, not just an engineering lead — but production-affecting authority stays with your operations team. We do not push a change to a live control environment on our own judgment call.\n\n'
+          + 'What we will not do is leave that ownership implied, because an unowned change process is exactly how a well-intentioned modernization effort turns into the incident that makes the next stage of the program harder to fund.',
+      },
+      {
+        q: 'Can Kangqore support ongoing OT operations, or is this a one-time assessment?',
+        a: 'Ongoing, where the engagement calls for it. Depending on scope, that includes OT service management, maintenance-window governance, vendor and OEM coordination, lifecycle tracking as equipment ages toward end of support, and continuous refinement of predictive models as more operating data accumulates.\n\n'
+          + 'We are pre-launch and do not have an existing OT operations desk with years of a specific plant’s history to point to, which is worth saying plainly rather than implying otherwise. What we do bring is the architecture and the handover discipline: documentation your engineering team can act on without us, and a design built so it can be run in-house, handed to a managed partner, or kept with us — without a rebuild in any of those three cases.\n\n'
+          + 'Most engagements start narrower than "ongoing operations" anyway — an assessment or a single convergence project — and the operating relationship, if there is one, gets scoped once both sides know what the estate actually needs.',
+      },
+      {
+        q: 'Does getting started on OT asset visibility require a plant shutdown?',
+        a: 'No — passive discovery is designed specifically to avoid needing one, and asking for a shutdown just to start an assessment is usually the wrong pitch. Reading protocol traffic off a tap or SPAN port happens with your plant running exactly as it always does; nothing about it requires downtime, and a vendor who suggests otherwise is proposing an active scan far sooner than an OT environment should tolerate one.\n\n'
+          + 'Where a shutdown genuinely helps is later, and only for specific, narrow work — physically installing a tap on a segment that has none, or walking a section of floor that is safer to inspect without live equipment nearby. Even then it is scheduled inside a maintenance window your operations team already has planned, not a special outage requested for the assessment.\n\n'
+          + 'The honest sequencing is discovery first, with your plant running, followed by a short list of items that do need a maintenance window — and that list is usually much shorter than people expect going in.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // The first package is a discovery pass across what already exists,
+    // deliberately ahead of any transformation-program pitch — most inbound OT
+    // conversations are "we are not sure what we actually have," not "we have
+    // nothing."
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'starting with what already exists.',
+    engagementLede: 'Most OT conversations do not start from zero either. The useful first engagement is usually a discovery pass across what is already running, not a pitch for a full transformation program.',
+    servicePackages: [
+      {
+        name: 'OT Asset Visibility & Maturity Assessment',
+        description: 'For understanding what is actually running before committing to anything. Passive discovery, criticality classification, and an architecture baseline against a real framework.',
+        deliverables: [
+          'OT asset discovery and inventory',
+          'Asset criticality and classification model',
+          'OT topology and dependency mapping',
+          'Architecture baseline against IEC 62443 zones',
+          'Prioritized OT risk and modernization register',
+        ],
+      },
+      {
+        name: 'Industrial Control & Engineering Architecture',
+        description: 'Designing the control and data layer everything else depends on. SCADA, PLC, HMI and DCS environments assessed and architected for your actual estate, not a vendor reference deployment.',
+        deliverables: [
+          'SCADA, DCS and PLC environment assessment',
+          'Control-system architecture design',
+          'Historian and operational data architecture',
+          'Legacy OT modernization roadmap',
+          'Production-safe change planning framework',
+        ],
+      },
+      {
+        name: 'IT/OT Convergence & Edge Connectivity',
+        description: 'Building the governed connectivity between the plant floor and the enterprise. Sequenced so the environment stays safe to operate throughout, not just at the end.',
+        deliverables: [
+          'IT/OT convergence and industrial DMZ architecture',
+          'Edge gateway and protocol integration (OPC UA, MQTT)',
+          'Plant-to-enterprise and OT-to-cloud connectivity design',
+          'Secure remote access architecture',
+          'Distributed-site connectivity model',
+        ],
+      },
+      {
+        name: 'OT Service Management & Governance',
+        description: 'Bringing engineering, operations, IT and OEMs together around one operating model, so a change is evaluated in its operational context instead of discovered after the fact.',
+        deliverables: [
+          'OT operating-model and service catalog design',
+          'Change, incident and request management processes',
+          'Vendor and OEM coordination workflows',
+          'Asset lifecycle and configuration management',
+          'OT governance dashboards and reporting',
+        ],
+      },
+      {
+        name: 'Industrial Data, Observability & Predictive Operations',
+        description: 'Turning the telemetry the previous stages generate into predictive intelligence. For teams ready to move past reactive maintenance and manual walk-rounds.',
+        deliverables: [
+          'Industrial data architecture and OT-to-IT integration',
+          'Real-time telemetry and observability pipelines',
+          'Condition-based and predictive maintenance enablement',
+          'Anomaly detection and equipment health scoring',
+          'Industrial AI and digital-twin foundations',
+        ],
+      },
+    ],
+
+    // ── Sectors ─────────────────────────────────────────────────────────────
+    // Renders the industry grid. Six sectors where OT is not a side
+    // conversation to IT — it is the plant, the grid, the well, the line and
+    // the network of sites that keep them running — and the industrial
+    // engineering work each one actually needs, deliberately distinct from
+    // the eight compliance-framework-led sectors on it-security-services.
+    //
+    // industryHeading/Highlight set explicitly because the prerender generator
+    // only reads svc.industryHeading directly — it does not know about the
+    // department-level fallback the React page resolves through — so leaving
+    // it unset means the crawler snapshot sees a generic "By industry" heading
+    // a visitor never does.
+    industryHeading: 'Engineered for',
+    industryHeadingHighlight: 'your operating environment.',
+    industryLede: 'Six sectors where OT is not a side conversation to IT — it is the plant, the grid, the well, the line and the network of sites that keep them running, and the industrial engineering work each one actually needs.',
+    industryUseCases: [
+      {
+        industry: 'Manufacturing & Industrial Automation',
+        headline: 'A production line that cannot be patched mid-shift, and increasingly connected to an IT network that assumes it can be.',
+        items: [
+          'Discrete and process manufacturing OT asset visibility',
+          'PLC, HMI and DCS environment support',
+          'Production-line IT/OT segmentation architecture',
+          'Predictive maintenance for critical production assets',
+          'Manufacturing execution system (MES) data integration',
+          'Legacy control system modernization planning',
+          'Multi-site plant connectivity architecture',
+          'Production continuity risk assessment',
+        ],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'SCADA systems older than the engineers running them, distributed assets across a grid, and downtime that is a public event, not an inconvenience.',
+        items: [
+          'SCADA and distributed asset visibility',
+          'Substation and field-device connectivity architecture',
+          'Grid monitoring and telemetry integration',
+          'Legacy industrial protocol support',
+          'Remote and unmanned-site connectivity',
+          'Historian and operational data architecture for the grid',
+          'Predictive maintenance for critical grid assets',
+          'OT service management across distributed operations',
+        ],
+      },
+      {
+        industry: 'Oil, Gas & Chemicals',
+        headline: 'Process-control environments where a wrong change is a safety incident, and remote operations across sites nobody can visit weekly.',
+        items: [
+          'Process-control system architecture and support',
+          'Remote and unmanned facility connectivity',
+          'Process historian and telemetry integration',
+          'Asset criticality and integrity monitoring data',
+          'Turnaround and maintenance-window planning',
+          'Safety-constrained change management for process control',
+          'Legacy DCS modernization planning',
+          'Multi-site OT governance and reporting',
+        ],
+      },
+      {
+        industry: 'Mining & Metals',
+        headline: 'Heavy equipment, distributed sites with limited connectivity, and a maintenance cost structure where unplanned downtime is the largest line item.',
+        items: [
+          'Distributed and remote-site OT asset visibility',
+          'Heavy-equipment condition monitoring integration',
+          'Site connectivity architecture for limited-bandwidth environments',
+          'Predictive maintenance for fleet and fixed equipment',
+          'Edge computing for offline and intermittently connected sites',
+          'Historian integration across distributed operations',
+          'OT lifecycle management for aging fleet assets',
+          'Production and equipment-health dashboards',
+        ],
+      },
+      {
+        industry: 'Water & Wastewater',
+        headline: 'SCADA-controlled treatment processes, public-health consequences if control fails, and often the smallest OT budget of any critical-infrastructure sector.',
+        items: [
+          'Treatment-process SCADA and PLC support',
+          'Remote pump station and field-site connectivity',
+          'OT asset visibility for distributed public infrastructure',
+          'Historian integration for regulatory and compliance reporting',
+          'Legacy control system modernization planning',
+          'Predictive maintenance for critical treatment equipment',
+          'Safety-constrained change management for public infrastructure',
+          'OT governance for resource-constrained operations teams',
+        ],
+      },
+      {
+        industry: 'Transportation & Critical Infrastructure',
+        headline: 'Operational systems distributed across facilities and moving assets, where telemetry has to travel further than a plant network was ever designed for.',
+        items: [
+          'Facility and asset OT visibility across distributed sites',
+          'Operational telemetry and control-system integration',
+          'Edge connectivity for moving and remote assets',
+          'Legacy control environment modernization planning',
+          'Predictive maintenance for critical operational assets',
+          'Multi-site OT service management',
+          'Resilient connectivity for safety-relevant systems',
+          'Historian and operational data architecture',
+        ],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Both columns own connectivity. The difference is whether an asset, a
+    // connection or a change is owned, mapped and provable, or just running
+    // and left alone — the same governed-versus-deployed argument
+    // it-security-services makes, applied to the engineering layer instead of
+    // the control layer.
+    comparisonTable: {
+      eyebrow: 'CONNECTED VERSUS GOVERNED',
+      heading: 'OT Connected vs. Governed OT Operations.',
+      lede: 'Neither column is short on connectivity. They differ in whether an asset, a connection or a change in your estate is owned, mapped and provable — or just running and left alone.',
+      beforeLabel: 'OT CONNECTED',
+      afterLabel: 'OT GOVERNED',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'CONNECTED',
+      afterShort: 'GOVERNED',
+      rows: [
+        {
+          dimension: 'What’s actually on the plant floor',
+          before: 'A spreadsheet last updated during commissioning, and nobody confident it still matches what is running.',
+          after: 'A continuously discovered OT asset inventory, mapped to the process each device actually supports.',
+        },
+        {
+          dimension: 'When a PLC or HMI nears end of life',
+          before: 'Nobody notices until it fails mid-shift, and the vendor stopped supporting it three years ago.',
+          after: 'Lifecycle tracked against vendor support windows, with replacement planned around a maintenance window, not a failure.',
+        },
+        {
+          dimension: 'How IT and OT actually connect',
+          before: 'An unmanaged connection opened for a vendor’s remote support years ago, and never closed.',
+          after: 'Governed connectivity through a defined edge and DMZ architecture, with a security control able to sit on top of it.',
+          link: { href: '/services/it-security-services', label: 'OT segmentation and security controls' },
+        },
+        {
+          dimension: 'What triggers a maintenance visit',
+          before: 'A calendar date, or a breakdown, whichever comes first.',
+          after: 'Condition and anomaly signals from the equipment itself, escalated before failure — not after it.',
+        },
+        {
+          dimension: 'Who owns a change to the control environment',
+          before: 'Whoever has admin access to the engineering workstation that day.',
+          after: 'A named owner, a documented change window, and a rollback path tested before go-live.',
+        },
+        {
+          dimension: 'Where operational data actually ends up',
+          before: 'Trapped in the historian, or on a clipboard on the plant floor.',
+          after: 'Connected to enterprise systems and analytics — and the plant keeps running if that link goes down.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages, matching the array length it-security-services uses for
+    // the same layout reason. Ends at Optimize rather than Secure, because
+    // security ownership sits on it-security-services — the fifth stage here
+    // is what the other page's rewrite does not cover: turning the operational
+    // data the first four stages generate into predictive intelligence.
+    architectureEyebrow: 'THE OT TRANSFORMATION LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Assess to Optimize.',
+    architectureLede: 'Five stages, and most OT programs stall between Architect and Connect — the point where a proposed change meets a plant floor that cannot accept it on the timeline offered. A connection that is not owned, monitored and reversible decays back into risk within a year, the same as an unowned security control.',
+    architectureNodes: [
+      {
+        title: 'Assess',
+        icon: 'Search',
+        description: 'Establish the real estate before proposing anything: what exists, what it controls, who owns it, and where the gap between what the P&ID says and what is actually running sits.',
+        features: [
+          'OT asset discovery and inventory',
+          'Asset classification and criticality assessment',
+          'OT topology and dependency mapping',
+          'Configuration and lifecycle visibility',
+          'OT maturity and transformation assessment',
+        ],
+      },
+      {
+        title: 'Architect',
+        icon: 'Layers',
+        description: 'Design the target-state control and connectivity architecture before integrating anything — zones and conduits, edge gateway placement, and the historian and data model the rest of the program depends on.',
+        features: [
+          'Target OT architecture and zones-and-conduits design',
+          'SCADA, DCS and PLC environment architecture',
+          'Historian and operational data architecture',
+          'Edge and gateway architecture',
+          'Engineering workstation governance model',
+        ],
+      },
+      {
+        title: 'Connect',
+        icon: 'Network',
+        description: 'Integrate industrial systems, edge environments and enterprise platforms through governed connectivity — designed so local operations keep running if the upstream link does not.',
+        features: [
+          'IT/OT convergence and industrial DMZ architecture',
+          'OPC UA and MQTT-based industrial connectivity',
+          'Plant-to-enterprise and OT-to-cloud integration',
+          'Secure remote access architecture',
+          'Distributed-site connectivity design',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'Run the service-management model that keeps engineering, operations, IT and OEMs working from the same change and incident process, instead of five teams discovering a change after the fact.',
+        features: [
+          'OT change, incident and request management',
+          'Maintenance-window and configuration governance',
+          'Vendor and OEM coordination workflows',
+          'Asset lifecycle management',
+          'OT governance dashboards and reporting',
+        ],
+      },
+      {
+        title: 'Optimize',
+        icon: 'TrendingUp',
+        description: 'Turn the operational data the previous four stages now generate into predictive intelligence — the stage most programs never reach, because it depends on everything before it actually working.',
+        features: [
+          'Real-time telemetry and industrial observability',
+          'Condition-based and predictive maintenance',
+          'Anomaly detection and equipment health scoring',
+          'Industrial AI and digital-twin foundations',
+          'Continuous improvement against a measured baseline',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'OPERATIONAL TECHNOLOGY & INDUSTRIAL ENGINEERING',
+    capabilitiesSectionTitle: 'Operational Technology',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Discover your estate, architect your control and connectivity layer, integrate IT and OT without losing control of either, and turn your operational data into intelligence — across asset visibility, industrial engineering, edge connectivity, service management and predictive operations.',
+    capabilityAreas: [
+      {
+        title: 'OT Asset Visibility, Discovery & Digital Foundation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Effective OT transformation begins with an accurate understanding of the industrial estate — not a spreadsheet last updated during commissioning.',
+        items: [
+          'OT Asset Discovery & Inventory',
+          'Asset Classification & Criticality Assessment',
+          'OT Topology & Dependency Mapping',
+          'Plant, Line, Cell & Equipment Relationship Mapping',
+          'Configuration & Lifecycle Visibility',
+          'OT Architecture Baseline',
+          'Asset Ownership & Accountability Models',
+          'OT Maturity & Transformation Assessments',
+          'Operational Technology Data Foundations',
+        ],
+      },
+      {
+        title: 'Industrial Control Systems & OT Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The technology layers that directly interact with physical processes — supported without pretending OT can be managed like conventional IT.',
+        items: [
+          'SCADA Environment Assessment & Support',
+          'PLC & HMI Ecosystem Support',
+          'DCS Environment Assessment',
+          'Industrial Server & Workstation Architecture',
+          'Control-System Configuration Review',
+          'OT Infrastructure Lifecycle Support',
+          'Historian & Operational Data Architecture',
+          'Industrial System Integration',
+          'Legacy OT Modernization Planning',
+          'Production-Safe Technology Change Planning',
+        ],
+      },
+      {
+        title: 'IT/OT Convergence, Industrial Connectivity & Edge',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Controlled connectivity between the plant floor and the enterprise — connected without becoming uncontrolled.',
+        items: [
+          'IT/OT Convergence Architecture',
+          'Industrial Network Architecture',
+          'Edge Computing Enablement',
+          'Industrial Gateway Architecture',
+          'Plant-to-Enterprise Connectivity',
+          'OT-to-Cloud Connectivity',
+          'Protocol-Aware Integration (OPC UA, MQTT)',
+          'Industrial IoT Enablement',
+          'Remote Operational Visibility',
+          'Secure Data Exchange Architecture',
+        ],
+      },
+      {
+        title: 'OT Service Management, Governance & Lifecycle',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Operational discipline across engineering, operations, IT, cybersecurity, OEMs and integrators — so a change is evaluated in its operational context instead of five teams discovering it after the fact.',
+        items: [
+          'OT Operating-Model Design',
+          'OT Service Catalog Development',
+          'OT Change Management',
+          'OT Incident & Request Management',
+          'Asset Lifecycle Management',
+          'Maintenance-Window Governance',
+          'Configuration Management',
+          'Vendor & OEM Coordination',
+          'OT Governance Dashboards & Reporting',
+        ],
+      },
+      {
+        title: 'Industrial Data, Observability & Operational Intelligence',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Turning machine data into operational context — what it means, what it affects and what action should follow, not just another chart.',
+        items: [
+          'Industrial Data Architecture',
+          'OT-to-IT Data Integration',
+          'Historian Integration',
+          'Real-Time Telemetry Pipelines',
+          'Industrial Observability',
+          'Asset Health Monitoring',
+          'Event & Alert Correlation',
+          'Production KPI Visibility',
+          'Operational Data Quality',
+          'Enterprise Analytics Integration',
+        ],
+      },
+      {
+        title: 'Predictive Operations, Maintenance & Industrial AI',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Moving from reactive operations to intelligence-driven operations — using operational context to anticipate what happens next, with a human still in the loop.',
+        items: [
+          'Predictive Maintenance Enablement',
+          'Condition-Based Maintenance',
+          'Equipment Health Scoring',
+          'Failure Prediction Frameworks',
+          'Anomaly Detection',
+          'Process-Performance Analytics',
+          'Predictive Quality Analytics',
+          'Industrial Digital-Twin Foundations',
+          'AI-Assisted Operational Decision Support',
+          'Human-in-the-Loop Industrial AI Workflows',
+        ],
+      },
+      {
+        title: 'OT Continuity, Safety & Change Governance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What keeps a plant running through a modernization program rather than gambling with it. Deliberately narrower than a security capability: the segmentation, monitoring and vulnerability management that protect the estate sit on Kangqore IT security services, built on the visibility and architecture this page establishes.',
+        items: [
+          'Safety-Constrained Change Planning',
+          'Maintenance-Window Governance',
+          'Recovery & Rollback Procedure Design',
+          'Vendor & OEM Patch Coordination',
+          'Production Continuity Risk Assessment',
+          'OT Business Continuity Planning',
+          'Engineering Workstation Governance',
+          'Legacy Dependency & Constraint Mapping',
+        ],
+      },
+    ],
+
+    // ── Practice boundary ───────────────────────────────────────────────────
+    // The default band lists Shield-department siblings with a generic
+    // one-line lede, which renders thin. Stating the boundary explicitly —
+    // same pattern it-security-services and quality-engineering-assurance
+    // use — says where OT engineering ends and OT security picks up, rather
+    // than leaving it implied by a service-card grid.
+    practiceLabel: 'TRUST, RISK & ASSURANCE',
+    practiceHeading: 'Where OT engineering stops,',
+    practiceHeadingHighlight: 'and OT security starts.',
+    practiceLede: 'This page owns the industrial engineering: what exists on your plant floor, how your control systems and edge platforms are architected, how your IT and OT connect, and how your operational data becomes predictive intelligence. OT and industrial security controls — segmentation, monitoring, vulnerability management, OT incident response — sit on IT security services, built on the asset visibility and architecture this page establishes. Financial and operational risk sits on finance & risk management. Each page goes into its own subject at the depth this one gives OT.',
+
+    conciergeHeading: 'Ask about your own plant floor',
+    conciergeIntro: 'Bring a real asset — the PLC nobody has documented, the historian tag nobody trusts, the vendor connection nobody remembers opening. eQORE will tell you what it would check first and what it would need from you.',
+    conciergeChips: [
+      'How much of our OT estate is actually unaccounted for?',
+      'Can we connect a 15-year-old PLC to our analytics platform safely?',
+      'What would a real IT/OT convergence architecture look like for us?',
+      'How do we know if a maintenance alert is worth a shutdown?',
+      'Book an OT asset review',
+    ],
+
+    midCta: 'A connected plant and a governed one are not the same claim.',
+    midCtaLabel: 'Review One OT Environment',
+    closingCta: {
+      title: 'One asset review.',
+      highlight: 'One estate you can actually see.',
+      body: 'Bring the control system you suspect nobody has fully mapped, or the connection you are not sure is still needed. In 30 minutes we will tell you what is a genuine gap, what is a documentation problem, and which of the two would cost you a shift if it failed tomorrow.',
+      proofLabel: 'From first call to a costed OT assessment',
+    },
   },
 
   // ═════════════════════════════════════════════════════════════════════════════

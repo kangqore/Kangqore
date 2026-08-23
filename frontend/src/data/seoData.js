@@ -649,9 +649,9 @@ export const serviceSEO = {
     url: '/services/quality-engineering-assurance',
   },
   'operation-technology': {
-    title: 'Operation Technology (OT) — Shield | Kangqore',
-    description: 'OT security and management — OT assessment, OT security, IT/OT convergence, SCADA systems, and industrial IoT for critical environments.',
-    keywords: 'operation technology, OT security, IT/OT convergence, SCADA, industrial IoT',
+    title: 'Operational Technology (OT) Services — Shield | Kangqore',
+    description: 'OT asset visibility, ICS and SCADA engineering, IT/OT convergence, industrial data and predictive maintenance for industrial and utility operations.',
+    keywords: 'operational technology, OT engineering, SCADA, ICS engineering, IT/OT convergence, industrial IoT, predictive maintenance, industrial data',
     url: '/services/operation-technology',
   },
 
