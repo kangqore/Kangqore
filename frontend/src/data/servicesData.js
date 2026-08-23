@@ -7392,22 +7392,702 @@ export const servicesData = {
     name: 'IT Security Services',
     departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Comprehensive IT security assessment and implementation',
-    fullDescription: 'End-to-end IT security services including assessment, implementation, monitoring, and incident response.',
-    keyFeatures: ['Security assessment', 'Threat detection', 'Incident response', 'Security operations', 'Compliance management'],
-    relatedServiceSlugs: ['ai-governance', 'operation-technology', 'finance-risk-management'],
+    shortDescription: 'Security controls that are enforced, monitored and provable — not just documented',
+    fullDescription: 'Design, implement and operate the identity, cloud, application, data and detection controls that make up an enterprise security program — and build the evidence that proves each one is actually enforced.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Zero Trust & identity architecture', 'Managed detection & response', 'Cloud & application security', 'Threat & exposure management', 'Incident response & resilience'],
+    relatedServiceSlugs: ['operation-technology', 'internet-of-things', 'quality-engineering-assurance'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80',
+    // Real date, set when this page was rewritten. Emitted as dateModified in
+    // the WebPage node by seo/serviceSchema.js.
+    lastReviewed: '2026-08-23',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // Was the Shield-department parity default: 947 bytes, six generic FAQs,
+    // a crawler seeing 6 per cent of the page, and metrics that included a
+    // flat "100% Compliance Coverage" — an absolute claim no security program
+    // can actually stand behind.
+    //
+    // The wedge is one honest fact: most enterprise security programs do not
+    // fail for lack of tools. They fail because a control exists on a policy
+    // document that nobody enforces day to day — an access review that never
+    // happened, an alert routed to an inbox nobody reads, a firewall rule
+    // opened in 2019 for a project that shipped and was never closed. That is
+    // a governance and evidence problem, not a shopping list problem, and it
+    // is exactly what "Shield™ Trust & Governance Framework" is supposed to
+    // mean rather than just brand a hero band.
+    //
+    // Said honestly, that also means naming what tooling alone cannot fix,
+    // and being specific about where Kangqore's own limits are: pre-launch,
+    // no existing SOC headcount to point to, no invented client names.
+    heroTitle: 'Cybersecurity & IT Security Services\nfor the Enterprise',
+    heroBadge: 'Governed. Enforced. Evidenced.',
+    heroStripItems: [
+      'Zero Trust & Identity', 'Cloud & Application Security', 'Managed Detection & Response', 'Threat & Exposure Management',
+      'Offensive Security', 'OT & Industrial Security', 'Incident Response', 'Compliance & Evidence Automation',
+    ],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'What enterprise security actually has to prove',
     whatIsTitle: 'IT Security That Detects',
     whatIsTitleLine2: 'Threats Before They',
     whatIsHighlight: 'Become Breaches.',
-    whatIsPara2: 'Kangqore delivers end-to-end IT security from initial assessment and threat detection through incident response and ongoing compliance management — building a security posture that is proactive, measurable, and audit-ready.',
+    whatIsPara2: 'Most enterprise security programs do not fail for lack of tools. They fail because a control exists on a policy document and nobody enforces it day to day — an access review that never happened, an alert routed to an inbox nobody reads, a vulnerability scan nobody prioritized. Kangqore designs, implements and operates the identity, cloud, application, data and detection controls that make up a security program, and builds the evidence trail that proves each one is actually working.',
+    whatIsPara3: 'Which means the hard problem in security work is rarely the control itself. Multi-factor authentication is not difficult to deploy. What is difficult is the service account nobody remembers creating, the access grant from three reorganizations ago, the firewall rule opened for a project that shipped in 2019 and was never closed. Security debt accumulates the same way technical debt does — quietly, through years of individually reasonable decisions — and an assessment that only checks whether a tool is installed will miss all of it.',
+    whatIsPara4: 'Kangqore engineers for enforcement, not deployment. Controls mapped to a framework you can be audited against, access reviewed on a schedule rather than never, detections tuned against your own environment rather than shipped with defaults nobody adjusted, and an architecture chosen because it fits your estate rather than because it is the platform we resell. The team that builds it can explain it to your auditor, and your team can still run it in year two.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Not "99.8% threat detection" or a flat "100% compliance coverage" — the
+    // parity default's numbers, and both unfalsifiable. These are the ones a
+    // CISO is actually judged on: how much of what fires is worth a human's
+    // attention, how fast containment happens once something is confirmed,
+    // whether access is reviewed on a cadence or never, and whether the
+    // exposure list is ranked by what an attacker could reach.
+    outcomesEyebrow: 'WHAT A SECURITY PROGRAM SHOULD BE MEASURED ON',
+    outcomesHeading: 'Security Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
     businessMetrics: [
-      { illustrative: true, title: 'Threat Detection',  desc: 'Improvement in threat detection rate through integrated SOC operations and AI-assisted monitoring systems.', value: '94',  suffix: '%', metricLabel: 'Detection Rate',      icon: 'Shield'   },
-      { illustrative: true, title: 'Incident Response', desc: 'Reduction in mean time to respond to security incidents after SOC implementation and playbook automation.',  value: '67',  suffix: '%', metricLabel: 'Faster Response',     icon: 'Zap'      },
-      { illustrative: true, title: 'Control Coverage',  desc: 'Security controls mapped and validated against ISO 27001, NIST CSF, SOC 2, and sector compliance frameworks.', value: '100', suffix: '%', metricLabel: 'Compliance Coverage', icon: 'Target'   },
-      { illustrative: true, title: 'Repeat Incidents',  desc: 'Reduction in recurring incidents after root cause remediation and proactive security hardening programs.',   value: '58',  suffix: '%', metricLabel: 'Incident Reduction',  icon: 'Activity' },
+      { illustrative: true, title: 'Alert-to-Signal Ratio',    desc: 'Reduction in low-value alerts reaching an analyst after detection tuning and use-case redesign, so the queue reflects real risk rather than default vendor thresholds.', value: '65', suffix: '%',  metricLabel: 'Fewer Low-Value Alerts',       icon: 'Eye'        },
+      { illustrative: true, title: 'Mean Time to Contain',     desc: 'Reduction in time from confirmed detection to containment once runbooks, automated response and a named on-call owner replace ad hoc triage.',                         value: '55', suffix: '%',  metricLabel: 'Faster Containment',            icon: 'Zap'        },
+      { illustrative: true, title: 'Access Under Review',      desc: 'Share of privileged and application access reviewed on a recurring schedule rather than never, after an access governance program replaces standing grants nobody revisits.', value: '90', suffix: '%+', metricLabel: 'Access Actively Recertified',   icon: 'Lock'       },
+      { illustrative: true, title: 'Critical Exposure',        desc: 'Reduction in internet-facing critical and high-severity findings once vulnerabilities are prioritized by exploitability and business impact rather than CVSS score alone.',  value: '50', suffix: '%',  metricLabel: 'Fewer Critical Exposures',      icon: 'ShieldCheck' },
     ],
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Framed by what each platform is genuinely for, closing on the same
+    // honest note RPA and QE close on: most estates already own more tooling
+    // than they have ownership for, and a new license is not always the fix.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The security stack,',
+      titleHighlight: 'and where a tool is not the fix.',
+      subtitle: 'Tool choice is mostly settled by what you already license and by how much of the estate is cloud-native versus legacy. These are the defaults, what overrides them, and where the gap is process rather than product.',
+      items: [
+        {
+          icon: 'Eye',
+          title: 'Security analytics & SIEM',
+          managed: 'Microsoft Sentinel, Splunk',
+          selfHosted: 'Elastic Security where data residency requires it',
+          desc: 'The system of record for detection. Value comes entirely from the use cases and tuning built on top — an untuned SIEM is an expensive log archive that happens to page someone at 3am.',
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Endpoint detection & response',
+          managed: 'CrowdStrike, Microsoft Defender, SentinelOne',
+          selfHosted: 'Rarely self-hosted — the detection content is the product',
+          desc: 'Near-mandatory on any estate past a few hundred endpoints. What actually separates vendors is response speed and false-positive rate, not the marketing page.',
+        },
+        {
+          icon: 'Lock',
+          title: 'Identity & access management',
+          managed: 'Microsoft Entra ID, Okta, Ping Identity',
+          selfHosted: 'On-premise AD where migration is not yet approved',
+          desc: 'The control plane every other control depends on. Get identity wrong and the rest of the stack is defending the wrong perimeter.',
+        },
+        {
+          icon: 'Lock',
+          title: 'Privileged access management',
+          managed: 'CyberArk, HashiCorp Vault, BeyondTrust',
+          selfHosted: 'Vault where secrets must stay inside your infrastructure',
+          desc: 'Non-negotiable past a handful of admin accounts. A shared root password in a spreadsheet is the finding that ends a security program’s credibility with the board.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Cloud security posture',
+          managed: 'Wiz, Prisma Cloud, Microsoft Defender for Cloud',
+          selfHosted: 'Rarely — posture tools need the provider’s own API surface',
+          desc: 'Finds the misconfigured storage bucket and the over-permissioned role before an attacker does. Coverage across every account matters more than depth on any one.',
+        },
+        {
+          icon: 'Search',
+          title: 'Vulnerability & exposure management',
+          managed: 'Tenable, Qualys, Rapid7',
+          selfHosted: 'On-premise scanners for segmented OT networks',
+          desc: 'A scan report with four thousand findings is not a program. The work is prioritizing the handful that are actually exploitable and actually reachable.',
+        },
+        {
+          icon: 'Network',
+          title: 'Network & perimeter security',
+          managed: 'Palo Alto Networks, Fortinet, Zscaler',
+          selfHosted: 'On-premise firewalls where latency rules out SASE',
+          desc: 'Increasingly the real perimeter is identity, not network — but segmentation and inspection still stop lateral movement once something gets past the first control.',
+        },
+        {
+          icon: 'Cpu',
+          title: 'Application security testing',
+          managed: 'Checkmarx, Snyk, Burp Suite, Veracode',
+          selfHosted: 'Open-source scanners in the pipeline where budget is tight',
+          desc: 'Runs earliest and cheapest inside the pipeline, not as a report delivered after the release already shipped.',
+        },
+        {
+          icon: 'Target',
+          title: 'Compliance & evidence automation',
+          managed: 'Vanta, Drata, ServiceNow GRC, OneTrust',
+          selfHosted: 'Spreadsheets, if the estate is genuinely small enough',
+          desc: 'Turns “we believe this control works” into continuous, exportable evidence — the difference between a good answer to an auditor and a defensible one.',
+        },
+        {
+          icon: 'Network',
+          title: 'The alternative to another tool',
+          managed: 'A named control owner, a runbook, a review cadence',
+          selfHosted: 'Always evaluated before a new platform is proposed',
+          desc: 'Most security programs already have enough tools and not enough ownership of what they bought. We will say so before selling you another license.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve security questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers. These are the ones a
+    // CISO, a security lead or a founder facing a cyber-insurance renewal
+    // actually opens with — several of them questions a vendor selling more
+    // licenses would rather not be asked.
+    customFAQs: [
+      {
+        q: 'Do we actually need a SOC, or can we get by on the alerts our existing tools already send?',
+        a: 'Depends entirely on whether anyone is triaging those alerts, and for most mid-size estates the honest answer is no.\n\nA modern EDR or SIEM will generate more alerts than any single analyst can review in a day, most low severity, several worth acting on immediately, with no obvious way to tell which is which without tuning. Without a team — internal or managed — whose job is to triage that queue every day, the alerts exist but the detection does not.\n\nThe useful question is not build-versus-buy on a SOC. It is whether what you are protecting justifies round-the-clock coverage, or whether business-hours monitoring with a documented after-hours escalation path is enough. We size that from your actual telemetry rather than a rule of thumb, because a SOC sized for the wrong workload is expensive either way — too small and it misses things, too large and it is triaging noise nobody needed watched.',
+      },
+      {
+        q: 'Is Zero Trust a product we buy, or an architecture we build?',
+        a: 'An architecture, and any vendor telling you otherwise is selling you one component of it.\n\nZero Trust is a principle: verify identity and device posture continuously, grant the minimum access required, and assume the network itself is not trustworthy. No single product delivers that. It requires identity infrastructure, device management, network segmentation, application-level access controls and a policy engine that ties them together — usually assembled from tools you already own plus a handful you do not.\n\nMost organizations already have half of a Zero Trust architecture and do not realize it. Conditional access in the identity provider, endpoint management not yet used for posture checks, segmentation started and never finished. The work is usually completing and connecting what exists rather than starting from nothing, and a maturity assessment against your current state tells you which half you already have before anyone proposes a purchase.',
+      },
+      {
+        q: 'What is the real difference between hiring an MSSP and what Kangqore does?',
+        a: 'An MSSP typically operates a shared SOC across many clients on a standard playbook and reports what happened. We design the architecture, implement the controls to fit your specific estate, and can operate detection and response — but the design work and the operations are not decoupled the way they often are under a pure managed-security contract.\n\nThe practical difference shows up when something does not fit the standard playbook: a legacy system the MSSP’s tooling was not built for, an OT network their standard onboarding does not cover, a compliance framework specific to your sector. We would rather architect around your actual environment than fit your environment into a template built for the median customer.\n\nWe are also not trying to make a managed contract the only viable outcome of the conversation. An assessment or an architecture engagement stands on its own, and managed operations is one option among several — not the default we steer every call toward.',
+      },
+      {
+        q: 'We passed our last audit. Why would we need a security assessment now?',
+        a: 'Because passing an audit and having a working security program are not the same claim, and the gap between them is usually where the next incident comes from.\n\nAn audit tests a defined scope against a defined framework, on a schedule, using evidence assembled for that purpose. It does not test whether access granted for a project that ended two years ago was ever revoked, whether a firewall rule opened for a vendor integration that failed was ever closed, or whether a detection rule that fired correctly during the audit demo still fires against a real attack technique six months later.\n\nA clean audit tells you the control existed and functioned on the day it was tested. A maturity assessment tells you whether it is still functioning today, whether it covers what actually changed since, and where the scope of the audit itself left a gap the auditor was never asked to check.',
+      },
+      {
+        q: 'How do you secure AI systems that call tools and take action on their own, and is that even a real category yet?',
+        a: 'It is real, and it is not the same threat model as securing a web application, even though most of the underlying controls are familiar.\n\nA model that calls tools, reads documents or takes action on a user’s behalf introduces a new class of failure: a prompt embedded in a document the model reads can attempt to redirect what it does next, a broad tool grant can be manipulated into misuse, and a model augmented on your data can leak more of it than intended. None of that is theoretical — it is the same category of problem as an injection attack, aimed at a system that reasons in natural language instead of SQL.\n\nWhat we actually do: scope what a model is authorized to touch the same way you would scope a service account, test for prompt injection and data exfiltration the way you would test an application for injection flaws, and log what it did and why so an incident is investigable rather than a black box. It is application security and identity governance applied to a newer kind of application, not a separate discipline invented to sound current.',
+      },
+      {
+        q: 'What does an incident response retainer actually get us before an incident happens?',
+        a: 'A response that starts in minutes instead of the hours it takes to find a firm, agree a statement of work, and get an engineer who has never seen your environment up to speed — which is the retainer’s entire value, realized before the incident, not during it.\n\nDuring onboarding we learn your environment: what the critical systems are, who can authorize containment actions, what your logging actually captures, and where the gaps are that would slow an investigation. That groundwork is what collapses response time when it matters, not a document that says we will show up.\n\nA retainer without that onboarding is a phone number. We treat the setup work as the deliverable, not the paperwork around it, and we will tell you plainly where your current logging or access model would make an investigation slower than it needs to be — before that becomes the reason an incident takes longer to contain.',
+      },
+      {
+        q: 'Our OT and industrial systems cannot be patched the way our IT systems can. How do you actually secure them?',
+        a: 'Mostly by not applying IT security practices to a network that was never designed for them, which is the mistake that causes the most damage.\n\nA programmable logic controller cannot run endpoint detection software. Rebooting a system on a production line is a safety and continuity decision, not a maintenance window. And a vulnerability scanner built for IT can crash fragile OT equipment outright — we do not run standard scans against a live plant floor without passive, OT-aware discovery first.\n\nThe controls that actually work: network segmentation between IT and OT so a compromise on one side cannot reach the other, passive monitoring that watches industrial protocols without touching the equipment, and a patch strategy built around scheduled maintenance windows rather than a 30-day SLA that assumes IT-style downtime is acceptable. Compensating controls usually matter more than patching on OT, because patching on OT is often genuinely not fast — and pretending otherwise is how a security program loses credibility with plant operations.',
+      },
+      {
+        q: 'How long does a Zero Trust rollout actually take?',
+        a: 'Longer than the vendor deck implies, and it depends far more on your identity estate’s current state than on which products you choose.\n\nAn organization with a single, well-governed identity provider and modern device management can stand up conditional access and meaningful segmentation in a matter of months. An organization with multiple identity systems from acquisitions, unmanaged legacy devices and flat networks with no segmentation history is closer to a multi-year program — and anyone quoting a fixed timeline before assessing that starting point is guessing.\n\nWhat we commit to is sequencing that reduces risk early rather than a big-bang rollout that shows nothing until year two: identity and MFA first, since that closes the most common attack path fastest, then segmentation, then application-level access controls. Each phase is independently valuable, so the program keeps reducing risk even if a later phase is deprioritized or takes longer than planned.',
+      },
+      {
+        q: 'What happens when a penetration test finds something critical while the engagement is still running?',
+        a: 'We stop and tell you immediately, in plain language, before the formal report is even drafted — not as a courtesy, but because sitting on a live critical finding until a scheduled readout is indefensible.\n\nCritical severity means an attacker with similar access could plausibly cause serious damage today: unauthenticated remote code execution, a path to domain admin, exposed customer data. We flag it out of band, describe exactly what we did and what we found, and stay engaged on remediation guidance rather than treating the finding as closed once it is logged.\n\nWe also test under agreed rules of engagement with a kill switch, precisely so a critical finding gets discovered under controlled conditions with us on the call — rather than discovered later by someone with worse intentions and no obligation to tell you.',
+      },
+      {
+        q: 'Our cyber insurer is asking for controls we do not have. Where do we actually start?',
+        a: 'With the specific questionnaire, because insurers have converged on a fairly narrow set of controls they now treat as non-negotiable, and most of the gap is closable faster than people expect.\n\nMulti-factor authentication on remote access and privileged accounts, endpoint detection and response rather than legacy antivirus, offline or immutable backups, and a documented incident response plan are asked for on nearly every renewal now, and a missing answer on any of them can mean a declined policy or a materially higher premium regardless of the rest of your posture.\n\nWe map your current state against the actual questionnaire language rather than a generic framework, close the gaps that affect underwriting first, and leave you with evidence you can hand to the broker directly. It is a narrower and faster engagement than a full program build-out, and usually the right place to start if a renewal deadline is the reason you are calling.',
+      },
+      {
+        q: 'How do you avoid becoming just another security tool we have to manage?',
+        a: 'By treating ownership transfer as part of the deliverable, not an afterthought negotiated at the end of the contract.\n\nEvery control we implement comes with documentation your team can act on without us: what the control does, why it is configured that way, and a runbook for the failure modes we actually expect. Detection content is built and explained, not handed over as an opaque rule set. Where we operate something on your behalf, the architecture is still yours — built so it can be handed back or brought in-house without a rebuild.\n\nWe are pre-launch and do not have a large existing client base to point to, which means we do not have the luxury of assuming you will renew simply because switching is expensive. The program has to stand on its own value, which is the incentive we would want regardless.',
+      },
+      {
+        q: 'Who is actually accountable when a control fails — you, or us?',
+        a: 'Whoever owns the control, and that ownership is assigned explicitly rather than left ambiguous — itself one of the more common gaps we find in an existing program.\n\nWhere we design and hand off a control, your team owns its operation and its failure, with a runbook and documentation that make that ownership realistic rather than nominal. Where we operate a control under a managed arrangement, we own its performance against an agreed service level, and that is written into the engagement rather than implied.\n\nWhat we will not do is design a program where accountability is unclear by default, because that ambiguity is exactly what turns a control failure into a longer, more expensive incident — not because the control itself was wrong, but because nobody was clearly responsible for noticing it had stopped working.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // The first package is an assessment of what already exists, deliberately
+    // ahead of any managed-services pitch — most inbound security
+    // conversations are "we have controls and no idea which ones actually
+    // hold," not "we have nothing."
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'starting with what you already have.',
+    engagementLede: 'Most security conversations do not start from zero. The useful first engagement is usually an assessment of the controls already in place, not a pitch for a full program.',
+    servicePackages: [
+      {
+        name: 'Security Maturity & Risk Assessment',
+        description: 'For understanding where the program actually stands before committing to anything. What controls exist, what is enforced versus merely documented, and a prioritized gap list against a real framework.',
+        deliverables: [
+          'Maturity assessment against NIST CSF or CIS Controls',
+          'Control-to-framework gap mapping with evidence review',
+          'Asset, identity and third-party risk inventory',
+          'Prioritized risk register with named owners',
+          'Board-ready executive risk summary',
+        ],
+      },
+      {
+        name: 'Zero Trust & Identity Architecture',
+        description: 'Building the control plane everything else depends on. Identity, access governance and segmentation designed for your actual estate, sequenced so risk drops early rather than only at the end.',
+        deliverables: [
+          'Identity and access architecture design',
+          'MFA, PAM and conditional access rollout plan',
+          'Network and application segmentation model',
+          'Access recertification program design',
+          'Phased rollout sequenced for early risk reduction',
+        ],
+      },
+      {
+        name: 'Cloud, Application & Data Security',
+        description: 'Embedding controls into what you build and store, from pipeline to production. For teams shipping faster than their security review process can keep up.',
+        deliverables: [
+          'Cloud security posture assessment and remediation',
+          'Secure SDLC and DevSecOps pipeline integration',
+          'Application penetration testing',
+          'Data classification and DLP implementation',
+          'Encryption and secrets management rollout',
+        ],
+      },
+      {
+        name: 'Managed Detection & Security Operations',
+        description: 'Running detection and response under a service level, including the tuning most estates never get to. For teams who want coverage without carrying a 24/7 SOC themselves.',
+        deliverables: [
+          'SIEM and detection use-case build or tuning',
+          'Round-the-clock or business-hours monitoring',
+          'Alert triage and incident escalation',
+          'Threat hunting against your own telemetry',
+          'Monthly reporting on coverage, findings and trend',
+        ],
+      },
+      {
+        name: 'Incident Response & Resilience',
+        description: 'Preparing for the incident that has not happened yet, and responding to the one that has. Retainer-based readiness or active response, with the same team either way.',
+        deliverables: [
+          'Incident response plan and playbook development',
+          'Tabletop and ransomware readiness exercises',
+          'Digital forensics and active incident response',
+          'Business continuity and disaster recovery planning',
+          'Post-incident root cause and remediation report',
+        ],
+      },
+    ],
+
+    // ── Sectors ─────────────────────────────────────────────────────────────
+    // Renders the industry grid. Eight sectors, the framework each is
+    // actually held to, and the specific controls most often mapped to
+    // satisfying it — each item a long-tail query in its own right and none
+    // of them published anywhere else on the site.
+    //
+    // industryHeading/Highlight set explicitly (matching the Shield default
+    // text exactly, so nothing changes visually) because the prerender
+    // generator only reads svc.industryHeading directly — it does not know
+    // about the department-level fallback the React page resolves through —
+    // so leaving it unset means the crawler snapshot sees a generic "By
+    // industry" heading a visitor never does.
+    industryHeading: 'Controls mapped to',
+    industryHeadingHighlight: 'your industry.',
+    industryLede: 'Eight sectors, the framework a regulator, an auditor or an insurer in each will actually ask about, and the security work most often mapped to satisfying it.',
+    industryUseCases: [
+      {
+        industry: 'Financial Services & Banking',
+        headline: 'PCI DSS for the card data, SOX ITGC for the financial systems, and a regulator who wants evidence, not intentions.',
+        items: [
+          'PCI DSS scoping and control validation',
+          'SOX ITGC control design and testing',
+          'Real-time fraud and transaction monitoring',
+          'Core banking and payment system security',
+          'Third-party and fintech vendor risk assessment',
+          'Regulatory reporting and examination readiness',
+          'Wire and payment fraud controls',
+          'Customer data protection and encryption',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'HIPAA covers the record. Ransomware does not care, and a hospital cannot simply take the network offline.',
+        items: [
+          'HIPAA Security Rule risk assessment',
+          'Protected health information (PHI) discovery and DLP',
+          'Ransomware readiness for clinical environments',
+          'Medical device and connected equipment security',
+          'Business associate and third-party risk management',
+          'Identity and access for clinical systems',
+          'Incident response tailored to patient-safety constraints',
+          'Breach notification readiness',
+        ],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Policy administration systems bought decades ago, broker portals you do not control, and claims data that is a target either way.',
+        items: [
+          'Policy and claims system access governance',
+          'Broker and third-party portal security review',
+          'Claims fraud detection support',
+          'Regulatory compliance mapping across jurisdictions',
+          'Customer PII protection and encryption',
+          'Legacy policy administration system hardening',
+          'Vendor and reinsurer risk assessment',
+          'Incident response and regulatory notification readiness',
+        ],
+      },
+      {
+        industry: 'Retail & E-Commerce',
+        headline: 'PCI DSS at the point of sale, card-not-present fraud online, and a traffic spike every November that looks a lot like an attack.',
+        items: [
+          'PCI DSS compliance for POS and e-commerce',
+          'Card-not-present fraud detection',
+          'DDoS protection for seasonal traffic',
+          'Customer data protection and encryption',
+          'Supply chain and vendor security',
+          'Application security for checkout and payment flows',
+          'Loyalty program and account takeover protection',
+          'Third-party payment processor risk review',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Intellectual property worth stealing, a plant floor that cannot be patched mid-shift, and an IT network increasingly bridged to an OT one.',
+        items: [
+          'IT/OT network segmentation',
+          'Industrial control system (ICS) security assessment',
+          'Intellectual property and trade secret protection',
+          'Supply chain and third-party vendor risk',
+          'Plant floor asset discovery and inventory',
+          'Safety-constrained patch and vulnerability management',
+          'Connected equipment and IoT device security',
+          'OT-specific incident response planning',
+        ],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'NERC CIP for the grid, SCADA systems that predate the internet, and downtime that is not an inconvenience but a public-safety event.',
+        items: [
+          'NERC CIP compliance and control mapping',
+          'SCADA and industrial control system security',
+          'Critical infrastructure asset inventory',
+          'Air-gapped and segmented network architecture',
+          'Legacy industrial protocol security',
+          'Physical-cyber convergence risk assessment',
+          'Incident response for critical infrastructure',
+          'Third-party and contractor access governance',
+        ],
+      },
+      {
+        industry: 'Government & Public Sector',
+        headline: 'FedRAMP or StateRAMP for the cloud, citizen data at scale, and threat actors with more patience and more budget than most.',
+        items: [
+          'FedRAMP and StateRAMP compliance readiness',
+          'Citizen data protection and privacy controls',
+          'Advanced and persistent threat detection',
+          'Legacy system modernization security',
+          'Identity and access for public-sector workforces',
+          'Third-party and contractor risk management',
+          'Incident response and public disclosure readiness',
+          'Continuous monitoring for authorization to operate',
+        ],
+      },
+      {
+        industry: 'Technology & SaaS',
+        headline: 'SOC 2 Type II because every enterprise customer will ask for it, and multi-tenant isolation because one tenant’s breach cannot become everyone’s.',
+        items: [
+          'SOC 2 Type II readiness and evidence automation',
+          'Multi-tenant data isolation architecture',
+          'API security and abuse prevention',
+          'Secure SDLC and DevSecOps enablement',
+          'Customer security questionnaire response',
+          'Cloud infrastructure security posture',
+          'Secrets and credential management',
+          'Vulnerability disclosure and bug bounty program design',
+        ],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Both columns own the same tools. The difference is whether a control is
+    // enforced, owned and provable, or switched on and left running — which
+    // is the only thing that actually separates a program that survives an
+    // audit from one that survives a demo.
+    comparisonTable: {
+      eyebrow: 'DEPLOYED VERSUS GOVERNED',
+      heading: 'Security Tooling vs. Governed Security Operations.',
+      lede: 'Neither column is short on tools. They differ in whether a control is enforced, owned and provable, or just switched on and left running.',
+      beforeLabel: 'CONTROLS DEPLOYED',
+      afterLabel: 'CONTROLS GOVERNED',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'DEPLOYED',
+      afterShort: 'GOVERNED',
+      rows: [
+        {
+          dimension: 'When an alert fires at 2am',
+          before: 'It sits in a queue with several thousand others, ranked by default severity, until someone opens the console the next morning.',
+          after: 'It is triaged against a runbook within an agreed window, by a named owner, with escalation defined before the alert ever fires.',
+        },
+        {
+          dimension: 'What an auditor asks for',
+          before: 'Screenshots and a spreadsheet assembled the week the audit is scheduled, reconstructed from memory of what the control was supposed to do.',
+          after: 'Continuous evidence tied to the control itself, exportable on request, current because it was never allowed to go stale.',
+        },
+        {
+          dimension: 'Who has access to what',
+          before: 'Access accumulated by request over several years. Nobody has reviewed the list, and nobody is confident removing anything from it.',
+          after: 'Access mapped to role and least privilege, recertified on a schedule, with owners who can explain why each grant still exists.',
+        },
+        {
+          dimension: 'When a new SaaS application appears',
+          before: 'Discovered during the next audit, or after an incident, whichever comes first — procured by a team that never involved security.',
+          after: 'Discovered and risk-scored close to when it was provisioned, with a lightweight review that does not block the business.',
+        },
+        {
+          dimension: 'What the vulnerability scan produces',
+          before: 'A report with several thousand findings ranked by CVSS score, most of them unreachable, none of them prioritized by what actually matters.',
+          after: 'A short list ranked by exploitability and business impact — what an attacker could actually reach and what it would actually cost.',
+        },
+        {
+          dimension: 'What happens when the person who built it leaves',
+          before: 'No architecture document, no runbook, no successor who understands why a rule exists. The control erodes quietly until something breaks.',
+          after: 'Built to a documented standard with an owner and a runbook, so the control outlives the person who configured it.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages, chosen so the array length is exactly five — the template
+    // renders architectureNodes as a four-column grid otherwise. Ends at
+    // Govern rather than Operate, because a control nobody can prove is
+    // running is, for audit purposes, a control that does not exist.
+    architectureEyebrow: 'THE SECURITY LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Assess to Govern.',
+    architectureLede: 'Five stages, and most security programs are resourced through Implement and then surprised by what Govern costs. A control that is not owned, reviewed and evidenced decays back into risk within a year.',
+    architectureNodes: [
+      {
+        title: 'Assess',
+        icon: 'Search',
+        description: 'Establish the real posture before proposing controls: what exists, what it protects, who owns it, and where the gap between documented and enforced actually sits.',
+        features: [
+          'Security maturity assessment against NIST CSF or CIS',
+          'Asset and identity inventory',
+          'Control-to-framework gap mapping',
+          'Third-party and vendor risk review',
+          'Prioritized risk register with named owners',
+        ],
+      },
+      {
+        title: 'Architect',
+        icon: 'Layers',
+        description: 'Design the target-state controls before buying anything — identity model, network segmentation, data classification and the framework the program will be evidenced against.',
+        features: [
+          'Zero Trust and identity architecture',
+          'Network and cloud segmentation model',
+          'Data classification and protection design',
+          'Control framework selection',
+          'Tooling rationalized against existing licenses',
+        ],
+      },
+      {
+        title: 'Implement',
+        icon: 'Cpu',
+        description: 'Deploy and configure to the design, not to vendor defaults. This is the stage most programs get right, and the one most audits still fail on the configuration rather than the purchase.',
+        features: [
+          'Identity, MFA and PAM rollout',
+          'Detection content and SIEM use-case build',
+          'Application and data control deployment',
+          'Segmentation and firewall policy build-out',
+          'Baseline hardening against CIS benchmarks',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'The stage the business case forgets. Detection, response and access review have to run every day, whether or not anything is happening — and most incidents happen on the day nobody was watching.',
+        features: [
+          '24/7 or business-hours monitoring and triage',
+          'Incident response and containment',
+          'Access recertification on a schedule',
+          'Detection tuning against real telemetry',
+          'Patch and vulnerability remediation tracking',
+        ],
+      },
+      {
+        title: 'Govern',
+        icon: 'ShieldCheck',
+        description: 'Evidence that the program works, for the board and for the auditor. A control nobody can prove is running is, for audit purposes, a control that does not exist.',
+        features: [
+          'Continuous control evidence and audit readiness',
+          'Executive and board risk reporting',
+          'Framework mapping to ISO 27001, SOC 2 and NIST CSF',
+          'Policy and control ownership tracking',
+          'Program maturity re-baselined annually',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'IT SECURITY & CYBERSECURITY SERVICES',
+    capabilitiesSectionTitle: 'Cybersecurity & IT Security',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Design the architecture, enforce the controls, detect what gets past them, and prove to an auditor that all three are actually happening — across identity, cloud, applications, data, operational technology and the frameworks a regulator or a customer will ask you to evidence.',
+    capabilityAreas: [
+      {
+        title: 'Cyber Risk, Strategy & Security Architecture',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where a security program should start and rarely does: a real inventory of what exists, an honest maturity baseline, and an architecture chosen for your estate rather than for a vendor’s reference deployment.',
+        items: [
+          'Cybersecurity Strategy & Roadmap',
+          'Security Maturity Assessment (NIST CSF, CIS Controls)',
+          'Enterprise Security Architecture Design',
+          'Virtual CISO Advisory',
+          'Cyber Risk Register & Quantification',
+          'Security Operating Model Design',
+          'Board & Executive Risk Reporting',
+          'Third-Party & Vendor Risk Assessment',
+          'Security Investment Prioritization',
+          'M&A Security Due Diligence',
+        ],
+      },
+      {
+        title: 'Identity, Access & Zero Trust Security',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The control plane every other control depends on. Most breaches trace back to an identity problem — standing access, a shared credential, a service account nobody remembers creating — not a zero-day.',
+        items: [
+          'Identity & Access Management (IAM)',
+          'Privileged Access Management (PAM)',
+          'Multi-Factor & Adaptive Authentication',
+          'Identity Governance & Access Recertification',
+          'Zero Trust Architecture Design',
+          'Microsegmentation',
+          'Machine & Workload Identity',
+          'Single Sign-On & Federation',
+          'Conditional & Risk-Based Access Policies',
+          'Non-Human & Service Account Governance',
+        ],
+      },
+      {
+        title: 'Cloud, Network & Infrastructure Security',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Securing the estate as it actually exists — hybrid, multi-cloud, and rarely as clean as the architecture diagram. Configuration drift, not novel attack techniques, is what usually opens the door.',
+        items: [
+          'Cloud Security Posture Management',
+          'Cloud Workload Protection',
+          'Multi-Cloud & Hybrid Security Architecture',
+          'Network Segmentation & Firewall Architecture',
+          'Secure Remote Access & SASE',
+          'Container & Kubernetes Security',
+          'Infrastructure-as-Code Security Scanning',
+          'Endpoint Security & Hardening',
+          'DDoS & Perimeter Protection',
+          'Cloud Configuration & Drift Monitoring',
+        ],
+      },
+      {
+        title: 'Application & Data Security',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Security built into what you ship and what you store, rather than bolted on after release. A finding caught in production costs materially more than the same finding caught in the pipeline.',
+        items: [
+          'Secure SDLC & DevSecOps Enablement',
+          'Application Penetration Testing',
+          'API Security Testing',
+          'Static & Dynamic Code Analysis (SAST/DAST)',
+          'Software Composition Analysis',
+          'Data Discovery & Classification',
+          'Data Loss Prevention (DLP)',
+          'Encryption & Key Management',
+          'Secrets Management',
+          'Database & Data Platform Security',
+        ],
+      },
+      {
+        title: 'Security Operations, Detection & Managed Response',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Turning telemetry into action. A SIEM ingesting every log source is not a SOC — detection has to be tuned, triaged and owned, or the signal drowns in the noise within a month.',
+        items: [
+          'SOC Design & Operation',
+          'SIEM Engineering & Use-Case Tuning',
+          'Managed Detection & Response (MDR)',
+          'Endpoint Detection & Response (EDR/XDR)',
+          'SOAR & Response Automation',
+          'Threat Hunting',
+          'Detection Engineering (MITRE ATT&CK)',
+          'Alert Triage & Investigation',
+          'Continuous Security Monitoring',
+          'Security Incident Escalation & On-Call',
+        ],
+      },
+      {
+        title: 'Threat Intelligence, Exposure & Offensive Security',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Understanding where the estate is actually exposed, and testing it the way an adversary would rather than the way a checklist would.',
+        items: [
+          'Cyber Threat Intelligence',
+          'External Attack Surface Management',
+          'Continuous Threat Exposure Management',
+          'Risk-Based Vulnerability Prioritization',
+          'Penetration Testing (Network, Web, Mobile)',
+          'Red Team & Adversary Simulation',
+          'Purple Team Exercises',
+          'Breach & Attack Simulation',
+          'Attack Path & Blast-Radius Analysis',
+          'Dark Web & Brand Exposure Monitoring',
+        ],
+      },
+      {
+        title: 'OT, IoT & Industrial Security',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A different discipline from IT security, and one most security programs quietly skip. A programmable logic controller cannot run an agent, cannot be patched on a Tuesday, and cannot go down for a reboot.',
+        items: [
+          'OT/ICS Security Assessment',
+          'IT/OT Network Segmentation',
+          'Industrial Asset Discovery & Inventory',
+          'SCADA & PLC Protocol Monitoring',
+          'IoT & Connected Device Security',
+          'OT-Aware Vulnerability Management',
+          'Air-Gapped & Restricted Environment Controls',
+          'OT Incident Response Planning',
+          'Safety-Constrained Patch Management',
+          'Legacy Industrial Protocol Inspection',
+        ],
+      },
+      {
+        title: 'Incident Response, Resilience & Compliance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What happens when a control fails anyway, and what proves to a regulator, an auditor or a cyber insurer that the program is real rather than a policy binder nobody has opened.',
+        items: [
+          'Incident Response Planning & Retainers',
+          'Digital Forensics & Malware Analysis',
+          'Ransomware Readiness & Tabletop Exercises',
+          'Business Continuity & Disaster Recovery',
+          'Crisis Communication Planning',
+          'ISO 27001, SOC 2 & NIST CSF Readiness',
+          'PCI DSS, HIPAA & GDPR Compliance Mapping',
+          'Continuous Control Evidence Automation',
+          'Post-Incident Root Cause & Remediation',
+          'Cyber Insurance Readiness Assessment',
+        ],
+      },
+    ],
+
+    // ── Practice boundary ───────────────────────────────────────────────────
+    // The default band lists Shield-department siblings with a generic
+    // one-line lede, which renders thin. Stating the boundary explicitly —
+    // same pattern quality-engineering-assurance uses — says where security
+    // ends and the next Shield service picks up, rather than leaving it
+    // implied by a service-card grid.
+    practiceLabel: 'TRUST, RISK & ASSURANCE',
+    practiceHeading: 'Where IT security stops,',
+    practiceHeadingHighlight: 'and another Shield service starts.',
+    practiceLede: 'Security is the control layer, not the whole of governance. We own identity, cloud, application, data, detection and incident response — and the evidence that each control is actually enforced. Financial and operational risk, SOX controls and audit process sit on finance & risk management. The test suite, environments and release gates that decide whether a change is safe to ship sit on quality engineering. Each page goes into its own subject at the depth this one gives security.',
+
+    conciergeHeading: 'Ask about your own environment',
+    conciergeIntro: 'Bring a real control — the one you suspect would not survive an audit, or the alert queue nobody actually reads. eQORE will tell you what it would check first and what it would need from you.',
+    conciergeChips: [
+      'How many of our firewall rules are actually still needed?',
+      'What would a real access recertification catch that our current process misses?',
+      'Can you tell if an alert is worth waking someone up for?',
+      'How do we prove a control is enforced, not just documented?',
+      'Book a control review',
+    ],
+
+    midCta: 'Passing the audit and being secure are not the same claim.',
+    midCtaLabel: 'Review One Control Gap',
+    closingCta: {
+      title: 'One control review.',
+      highlight: 'One posture you can evidence.',
+      body: 'Bring your last audit finding, or the control you already suspect would not survive one. In 30 minutes we will tell you what is a genuine gap, what is a documentation problem, and which of the two a regulator, an insurer or an attacker will actually find first.',
+      proofLabel: 'From first call to a costed security assessment',
+    },
   },
 
   'finance-risk-management': {

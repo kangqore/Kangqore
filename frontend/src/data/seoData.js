@@ -622,9 +622,9 @@ export const serviceSEO = {
 
   // ─── Shield (5) ──
   'it-security-services': {
-    title: 'IT Security Services — Shield | Kangqore',
-    description: 'Enterprise cybersecurity — security assessment, threat detection, incident response, security operations, and compliance management.',
-    keywords: 'IT security, cybersecurity, threat detection, incident response, security operations, compliance',
+    title: 'Cybersecurity & IT Security Services — Shield | Kangqore',
+    description: 'Enterprise cybersecurity — Zero Trust architecture, cloud and application security, managed detection and response, and compliance evidence you can prove.',
+    keywords: 'cybersecurity services, IT security, Zero Trust architecture, managed detection and response, cloud security, application security, incident response, compliance evidence',
     url: '/services/it-security-services',
   },
   'finance-risk-management': {
