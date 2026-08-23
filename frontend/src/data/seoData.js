@@ -425,7 +425,7 @@ export const serviceSEO = {
   },
   'robotic-process-automation': {
     title: 'Robotic Process Automation (RPA) — Cognition | Kangqore',
-    description: 'Enterprise RPA — bot development, attended and unattended automation, bot monitoring, and CoE setup for rule-based business processes.',
+    description: 'Enterprise RPA for systems with no API — bot engineering, attended and unattended automation, selector resilience, and estate rationalization.',
     keywords: 'robotic process automation, RPA services, software bots, attended automation, unattended automation, RPA CoE',
     url: '/services/robotic-process-automation',
   },
@@ -643,15 +643,15 @@ export const serviceSEO = {
     url: '/services/ai-governance',
   },
   'quality-engineering-assurance': {
-    title: 'Quality Engineering & Assurance — Shield | Kangqore',
-    description: 'Quality engineering — test strategy, test automation, performance testing, security testing, and quality metrics for production-grade releases.',
-    keywords: 'quality engineering, test automation, performance testing, security testing, QA services',
+    title: 'Quality Engineering & Test Automation Services | Kangqore',
+    description: 'Enterprise quality engineering: test strategy, automation, flake reduction, performance engineering, test data, environments and release gates you can defend.',
+    keywords: 'quality engineering, test automation, continuous testing, flaky tests, performance engineering, test data management, release gates, QA services',
     url: '/services/quality-engineering-assurance',
   },
   'operation-technology': {
-    title: 'Operation Technology (OT) — Shield | Kangqore',
-    description: 'OT security and management — OT assessment, OT security, IT/OT convergence, SCADA systems, and industrial IoT for critical environments.',
-    keywords: 'operation technology, OT security, IT/OT convergence, SCADA, industrial IoT',
+    title: 'Operational Technology (OT) Services — Shield | Kangqore',
+    description: 'OT asset visibility, ICS and SCADA engineering, IT/OT convergence, industrial data and predictive maintenance for industrial and utility operations.',
+    keywords: 'operational technology, OT engineering, SCADA, ICS engineering, IT/OT convergence, industrial IoT, predictive maintenance, industrial data',
     url: '/services/operation-technology',
   },
 

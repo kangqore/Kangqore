@@ -26,6 +26,20 @@ const DATA_DIR = path.join(repoRoot, 'frontend', 'src', 'data');
 const OUT_DIR = path.join(repoRoot, 'frontend', 'public', 'prerender', 'services');
 const BASE_URL = 'https://kangqore.com';
 
+// Kept in step with REVIEWER in frontend/src/seo/serviceSchema.js. Every field
+// is already published on the site — the home page byline carries the name,
+// title and both profiles, and /leadership carries the role.
+const REVIEWER = {
+  '@type': 'Person',
+  '@id': `${BASE_URL}/#mahesh-kumar`,
+  name: 'Mahesh Kumar',
+  jobTitle: 'Founder & CEO',
+  url: `${BASE_URL}/leadership`,
+  image: `${BASE_URL}/images/leadership/ceo-mahesh-kumar.png`,
+  worksFor: { '@id': `${BASE_URL}/#organization` },
+  sameAs: ['https://in.linkedin.com/in/maheshkumario', 'https://x.com/maheshkumarx'],
+};
+
 /** Import a source file as ESM, optionally rewriting it first. */
 async function importAsEsm(file, transform = (s) => s) {
   const src = transform(fs.readFileSync(file, 'utf8'));
@@ -66,6 +80,17 @@ function buildGraph({ svc, deptName, deptSlug, url, title, description }) {
       isPartOf: { '@id': `${BASE_URL}/#website` },
       about: { '@id': `${url}#service` },
       inLanguage: 'en',
+      // Mirrors seo/serviceSchema.js — the crawler that never runs our JS is
+      // the one this signal exists for. Emitted only where the service carries
+      // a hand-set `lastReviewed`, so no page claims a review that did not
+      // happen. Every REVIEWER field is already published on the site.
+      ...(svc.lastReviewed
+        ? {
+            dateModified: svc.lastReviewed,
+            author: { '@id': `${BASE_URL}/#organization` },
+            reviewedBy: REVIEWER,
+          }
+        : {}),
     },
     {
       '@type': 'Service',
@@ -176,7 +201,17 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
   // Internal links inside them are emitted as real anchors, because a crawler
   // that cannot see a link cannot follow it.
 
-  const linkTo = (l) => (l && l.to ? ` <a href="${BASE_URL}${esc(l.to)}">${esc(l.label || l.to)}</a>` : '');
+  // `href` first: that is the key both renderers actually read
+  // (GeminiComparisonSection uses `row.link.href`, AIToolsSection uses
+  // `item.link.href`), and every contextual link in servicesData is written
+  // that way. This helper only checked `to`, so none of them reached the
+  // snapshot — the crawler received the comparison table and the toolchain
+  // with their internal links silently stripped. `to` is kept for any future
+  // caller written against the router prop name.
+  const linkTo = (l) => {
+    const href = l && (l.href || l.to);
+    return href ? ` <a href="${BASE_URL}${esc(href)}">${esc(l.label || href)}</a>` : '';
+  };
 
   const comparison = svc.comparisonTable
     ? `    <h2>${esc(svc.comparisonTable.heading || 'How this differs')}</h2>
@@ -276,11 +311,23 @@ ${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
 
   const heading = (o) => esc([o.title, o.titleHighlight].filter(Boolean).join(' '));
 
+  // The named tools themselves live in `managed` and `selfHosted`, and the
+  // page renders them unhidden because they are the substance of the section.
+  // blockList only carried title and desc, so the snapshot listed ten headings
+  // and ten paragraphs while every product name on the page — the part a
+  // retrieval engine matches a "does Kangqore use Playwright" question against
+  // — was invisible to it.
+  const toolRow = (i) => {
+    const named = [i.managed && `Managed: ${esc(i.managed)}`, i.selfHosted && `Self-hosted: ${esc(i.selfHosted)}`]
+      .filter(Boolean).join('. ');
+    return `          <li><strong>${esc(i.title)}</strong>: ${esc(i.desc)}${named ? ` ${named}.` : ''}${linkTo(i.link)}</li>`;
+  };
+
   const method = svc.toolsStack
     ? `    <h2>${heading(svc.toolsStack)}</h2>
     ${svc.toolsStack.subtitle ? `<p>${esc(svc.toolsStack.subtitle)}</p>` : ''}
       <ul>
-${blockList(svc.toolsStack.items || [], 'title', 'desc')}
+${(svc.toolsStack.items || []).map(toolRow).join('\n')}
       </ul>`
     : '';
 
@@ -295,6 +342,67 @@ ${blockList(svc.dataBoundary.blocks || [], 'label', 'body')}
   const metrics = (svc.businessMetrics || [])
     .map((m) => `        <li><strong>${esc(m.value)}${esc(m.suffix || '')}</strong> ${esc(m.metricLabel || m.title)} — ${esc(m.desc)}</li>`)
     .join('\n');
+
+  // ── Blocks added with the twenty-area rebuild ──────────────────────────────
+  // Each renders a real section on the page, so each has to reach the crawler
+  // that never runs our JS. The architecture stack in particular is drawn from
+  // data precisely so its node names survive as text here rather than being
+  // locked inside an SVG.
+
+  const entArch = svc.enterpriseArchitecture
+    ? `    <h2>${heading(svc.enterpriseArchitecture)}</h2>
+    ${svc.enterpriseArchitecture.lede ? `<p>${esc(svc.enterpriseArchitecture.lede)}</p>` : ''}
+${(svc.enterpriseArchitecture.layers || []).map((l) => `      <section>
+        <h3>${esc(l.label)}</h3>
+        ${l.role ? `<p>${esc(l.role)}</p>` : ''}
+        <ul>
+${(l.nodes || []).map((n) => `          <li>${esc(n)}</li>`).join('\n')}
+        </ul>
+      </section>`).join('\n')}
+    ${svc.enterpriseArchitecture.principle ? `<p>${esc(svc.enterpriseArchitecture.principle)}</p>` : ''}`
+    : '';
+
+  // The journey section renders on every service page, but the snapshot never
+  // carried it — so the delivery model, which is exactly what an answer engine
+  // quotes for "how does an engagement run", was invisible on all 62.
+  const journey = (svc.customJourney || []).length
+    ? `    <h2>How a ${esc(svc.name)} engagement runs</h2>
+      <ol>
+${svc.customJourney.map((p) => `        <li><strong>${esc(p.phase)} — ${esc(p.title)}</strong>: ${esc(p.desc)}</li>`).join('\n')}
+      </ol>`
+    : '';
+
+  const accel = svc.accelerators
+    ? `    <h2>${heading(svc.accelerators)}</h2>
+    ${svc.accelerators.lede ? `<p>${esc(svc.accelerators.lede)}</p>` : ''}
+${(svc.accelerators.items || []).map((a) => `      <section>
+        <h3>${esc(a.name)}</h3>
+        <p>${esc(a.desc)}</p>
+        <ul>
+${(a.functions || []).map((f) => `          <li>${esc(f)}</li>`).join('\n')}
+        </ul>
+      </section>`).join('\n')}
+    ${svc.accelerators.footnote ? `<p>${esc(svc.accelerators.footnote)}</p>` : ''}`
+    : '';
+
+  // The disclaimer is emitted with the figures rather than after them: a
+  // crawler may lift any single element out of this block, and every number
+  // here is a worked example rather than a measurement.
+  const cc = svc.commandCenter;
+  const commandCenter = cc
+    ? `    <h2>${heading(cc)}</h2>
+    ${cc.lede ? `<p>${esc(cc.lede)}</p>` : ''}
+    <p>Illustrative console — every figure below is a worked example of the shape this reporting takes, not a measured client result.</p>
+    <p><strong>${esc(cc.headline.label)}: ${esc(cc.headline.value)} / ${esc(cc.headline.outOf)}</strong> — ${esc(cc.headline.note)}</p>
+      <ul>
+${(cc.domains || []).map((d) => `        <li>${esc(d.label)}: ${esc(d.value)} / 100</li>`).join('\n')}
+${(cc.signals || []).map((s) => `        <li>${esc(s.label)}: ${esc(s.value)}</li>`).join('\n')}
+      </ul>
+    <h3>${esc(cc.risksLabel || 'Open risks')}</h3>
+      <ul>
+${(cc.risks || []).map((r) => `        <li>${esc(r.item)} — ${esc(r.level)}</li>`).join('\n')}
+      </ul>`
+    : '';
 
   const related = (svc.relatedServiceSlugs || [])
     .map((s) => `        <li><a href="${BASE_URL}/services/${s}">${esc(servicesData[s]?.name || s)}</a></li>`)
@@ -351,6 +459,8 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${svc.capabilitiesLede ? `      <p>${esc(svc.capabilitiesLede)}</p>\n` : ''}${capabilities}` : ''}
 
+    ${entArch}
+
     ${svc.midCta ? `<p>${esc(svc.midCta)}</p>` : ''}
 
     ${comparison}
@@ -361,9 +471,15 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
 
     ${outcomeBlock}
 
+    ${commandCenter}
+
+    ${journey}
+
     ${packages}
 
     ${method}
+
+    ${accel}
 
     ${boundary}
 

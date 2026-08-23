@@ -11,6 +11,24 @@ import { resolveServiceFaqs, faqPlainText } from '../data/serviceFaqs';
 
 const SITE_URL = 'https://kangqore.com';
 const ORG_ID = `${SITE_URL}/#organization`;
+const REVIEWER_ID = `${SITE_URL}/#mahesh-kumar`;
+
+// The named human behind a reviewed page. Every field here is already published
+// on the site — name and title on the home page byline and /leadership, the two
+// sameAs profiles from the same block, the portrait from /images/leadership.
+// Nothing is asserted that a reader cannot already check, which is the whole
+// point of the signal: an identity a search engine can resolve to a real person
+// with a history, rather than a name typed into a schema block.
+const REVIEWER = {
+  '@type': 'Person',
+  '@id': REVIEWER_ID,
+  name: 'Mahesh Kumar',
+  jobTitle: 'Founder & CEO',
+  url: `${SITE_URL}/leadership`,
+  image: `${SITE_URL}/images/leadership/ceo-mahesh-kumar.png`,
+  worksFor: { '@id': ORG_ID },
+  sameAs: ['https://in.linkedin.com/in/maheshkumario', 'https://x.com/maheshkumarx'],
+};
 
 /** Split "Title: description" capability items into structured offers. */
 function toOffer(item) {
@@ -33,6 +51,18 @@ export function buildServiceGraph({ svc, dept, pageUrl, pageTitle, pageDescripti
     about: { '@id': `${pageUrl}#service` },
     primaryImageOfPage: ogImage,
     inLanguage: 'en',
+    // Freshness and accountability, and only where both are facts.
+    // `lastReviewed` is set by hand on a service when its copy is actually
+    // rewritten and signed off, so a page nobody has touched publishes neither
+    // a date nor a reviewer — rather than a build-time date and a name
+    // asserting a review that never happened on 62 pages at once.
+    //
+    // `author` is the organization because Kangqore wrote the copy;
+    // `reviewedBy` is the person because a named human checked it on that date.
+    // Inverting those would be the more flattering claim and the less true one.
+    ...(svc.lastReviewed
+      ? { dateModified: svc.lastReviewed, author: { '@id': ORG_ID }, reviewedBy: REVIEWER }
+      : {}),
     // Marks the passages a voice assistant should read aloud. Pointing at the
     // H1 and the summary paragraph keeps spoken answers to the definition of
     // the service rather than whatever text happens to rank first.

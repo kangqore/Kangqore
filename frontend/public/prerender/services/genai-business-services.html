@@ -215,6 +215,8 @@
         </ul>
       </section>
 
+    
+
     <p>Your next answer comes with its source.</p>
 
         <h2>Why Kangqore for GenAI?</h2>
@@ -224,9 +226,9 @@
         <thead><tr><th scope="col">Dimension</th><th scope="col">DEMO-GRADE GENAI</th><th scope="col">WITH KANGQORE</th></tr></thead>
         <tbody>
           <tr><th scope="row">Grounding</th><td>The model answers from whatever it learned in pre-training. It is fluent about your business and occasionally wrong about it, and nothing distinguishes the two on screen.</td><td>Every answer is retrieved from your own corpus before it is generated, with the source passages returned alongside it, so a reader can check the claim, and an auditor can see what the model was looking at.</td></tr>
-          <tr><th scope="row">Permissions</th><td>One index for everyone. A retrieval system that has read the whole intranet will happily quote the salary review to whoever asks.</td><td>Retrieval runs under the asking user's permissions, so the index cannot return a passage they could not already open. Access control lives in the retrieval layer, not in the prompt.</td></tr>
-          <tr><th scope="row">Evaluation</th><td>Quality is whatever the person demoing it thought looked good. There is no holdout set, because there is no single correct answer to hold out against.</td><td>Graded rubrics over a fixed question set, adversarial suites for the failure modes that matter, and human review on the sample that decides promotion. A prompt change that lowers the score does not ship.</td></tr>
-          <tr><th scope="row">Guardrails</th><td>The system will attempt any question asked of it, including the ones it should decline, and there is no record of what it was asked.</td><td>Refusal is designed, not hoped for: input classification, output filters, and an escalation path for anything outside remit. The prompt, the retrieved context and the response are retained for audit.</td></tr>
+          <tr><th scope="row">Permissions</th><td>One index for everyone. A retrieval system that has read the whole intranet will happily quote the salary review to whoever asks.</td><td>Retrieval runs under the asking user's permissions, so the index cannot return a passage they could not already open. Access control lives in the retrieval layer, not in the prompt. <a href="https://kangqore.com/services/it-security-services">AI security and access control</a></td></tr>
+          <tr><th scope="row">Evaluation</th><td>Quality is whatever the person demoing it thought looked good. There is no holdout set, because there is no single correct answer to hold out against.</td><td>Graded rubrics over a fixed question set, adversarial suites for the failure modes that matter, and human review on the sample that decides promotion. A prompt change that lowers the score does not ship. <a href="https://kangqore.com/services/mlops">Evaluation and MLOps</a></td></tr>
+          <tr><th scope="row">Guardrails</th><td>The system will attempt any question asked of it, including the ones it should decline, and there is no record of what it was asked.</td><td>Refusal is designed, not hoped for: input classification, output filters, and an escalation path for anything outside remit. The prompt, the retrieved context and the response are retained for audit. <a href="https://kangqore.com/services/ai-governance">AI governance and audit</a></td></tr>
           <tr><th scope="row">Unit economics</th><td>Cost is a surprise at the end of the first full month, because inference is metered per token and nobody measured the tokens.</td><td>Token budgets per workflow, caching on the repeated questions that dominate real traffic, and routing that sends the easy majority to a smaller model. Cost per resolved query is a number you can quote.</td></tr>
         </tbody>
       </table>
@@ -345,6 +347,10 @@
         <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
       </section>
 
+    
+
+    
+
         <h2>How we engage</h2>
     
       <section>
@@ -386,13 +392,15 @@
         <h2>Every layer. Deployed on your terms.</h2>
     <p>Model vendors change every few months and the stack around them does not. These are the six layers we standardize once and reuse across every team that follows. Both options at each layer are viable in production — which one you get depends on where your data is allowed to go, the volume it runs at, and who you want operating it at three in the morning.</p>
       <ul>
-          <li><strong>Foundation models</strong>: Routing between them matters more than picking one. Self-hosted open weights are the answer when data residency forbids a third-party API, and the cost case only works above sustained volume — below that, managed inference is cheaper than the GPUs sitting idle.</li>
-          <li><strong>Retrieval &amp; vector search</strong>: pgvector is usually the right first answer: it puts the embeddings next to the data that generated them, in a database you already operate. A dedicated vector database earns its place once semantic search volume, hybrid ranking or re-ranking becomes the constraint — or once several teams index into the same store and need isolation between them.</li>
-          <li><strong>Orchestration &amp; context</strong>: The framework is the least durable choice on this page, so we keep prompts, context assembly and routing as versioned artifacts that outlive it. A system that cannot be rebuilt on a different framework is a dependency. Managed orchestration is the faster start and ties you to one cloud's agent runtime; you move to self-hosted when several teams need the same prompt and routing layer on their own release cycle.</li>
-          <li><strong>Guardrails &amp; safety</strong>: Applied on both sides — PII detection and moderation before retrieval, hallucination and jailbreak filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen. Red-teaming the deployment is part of acceptance, not a later exercise. Managed classifiers cover the common categories from day one; you self-host once the policy is specific to your sector and has to be versioned and audited alongside the prompts it governs.</li>
-          <li><strong>Evaluation &amp; observability</strong>: Graded rubrics over a fixed question set, run on every prompt and index change rather than before launch only. Traces retained per request, because a bad answer is not reproducible without the context that produced it. Managed evaluation is enough while one team owns one system; a self-hosted harness earns its place once the evaluation set becomes an asset you version, share between teams and keep when we leave.</li>
-          <li><strong>Fine-tuning &amp; serving</strong>: Reached for after retrieval, not instead of it. Fine-tuning teaches form — tone, structure, a house style — and rarely fixes a factual gap; a model that does not know something still does not know it after training on how to phrase answers.</li>
+          <li><strong>Foundation models</strong>: Routing between them matters more than picking one. Self-hosted open weights are the answer when data residency forbids a third-party API, and the cost case only works above sustained volume — below that, managed inference is cheaper than the GPUs sitting idle. Managed: GPT-4o · Claude · Gemini · Amazon Bedrock. Self-hosted: Llama · Mistral · Qwen on your own GPUs.</li>
+          <li><strong>Retrieval &amp; vector search</strong>: pgvector is usually the right first answer: it puts the embeddings next to the data that generated them, in a database you already operate. A dedicated vector database earns its place once semantic search volume, hybrid ranking or re-ranking becomes the constraint — or once several teams index into the same store and need isolation between them. Managed: Azure AI Search · Vertex AI Search · Pinecone. Self-hosted: pgvector · Qdrant · Weaviate · OpenSearch.</li>
+          <li><strong>Orchestration &amp; context</strong>: The framework is the least durable choice on this page, so we keep prompts, context assembly and routing as versioned artifacts that outlive it. A system that cannot be rebuilt on a different framework is a dependency. Managed orchestration is the faster start and ties you to one cloud's agent runtime; you move to self-hosted when several teams need the same prompt and routing layer on their own release cycle. Managed: Azure AI Foundry · Vertex AI Agent Builder. Self-hosted: LangGraph · LlamaIndex · Semantic Kernel.</li>
+          <li><strong>Guardrails &amp; safety</strong>: Applied on both sides — PII detection and moderation before retrieval, hallucination and jailbreak filtering before display — because the failure that matters is not an offensive answer but a confident one drawn from a document the asker should never have seen. Red-teaming the deployment is part of acceptance, not a later exercise. Managed classifiers cover the common categories from day one; you self-host once the policy is specific to your sector and has to be versioned and audited alongside the prompts it governs. Managed: Azure Content Safety · Bedrock Guardrails. Self-hosted: Llama Guard · NeMo Guardrails · custom classifiers.</li>
+          <li><strong>Evaluation &amp; observability</strong>: Graded rubrics over a fixed question set, run on every prompt and index change rather than before launch only. Traces retained per request, because a bad answer is not reproducible without the context that produced it. Managed evaluation is enough while one team owns one system; a self-hosted harness earns its place once the evaluation set becomes an asset you version, share between teams and keep when we leave. Managed: Azure AI Evaluation · Vertex AI Evaluation. Self-hosted: Ragas · DeepEval · LangSmith · Langfuse · Phoenix.</li>
+          <li><strong>Fine-tuning &amp; serving</strong>: Reached for after retrieval, not instead of it. Fine-tuning teaches form — tone, structure, a house style — and rarely fixes a factual gap; a model that does not know something still does not know it after training on how to phrase answers. Managed: Bedrock customization · Vertex AI tuning · OpenAI fine-tuning. Self-hosted: LoRA &amp; QLoRA · vLLM · Text Generation Inference.</li>
       </ul>
+
+    
 
     
 

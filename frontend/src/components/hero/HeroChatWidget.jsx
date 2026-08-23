@@ -152,8 +152,24 @@ const HeroChatWidget = ({ isActive }) => {
           {voice.listening ? (
             <MicOff className="w-7 h-7 animate-draw-mic" />
           ) : (
-            <svg key={isActive ? 'active' : 'inactive'} className="w-7 h-7 animate-draw-mic" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 0 3-3V4.5a3 3 0 0 0-6 0v8.25a3 3 0 0 0 3 3Z" />
+            <svg
+              key={isActive ? 'active' : 'inactive'}
+              className="w-7 h-7 animate-draw-mic text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth="2.3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {/* Mic Capsule */}
+              <rect x="9" y="3" width="6" height="11" rx="3" pathLength="1" className="draw-part-1" />
+              {/* Mic U-Bracket */}
+              <path d="M19 10v1a7 7 0 0 1-14 0v-1" pathLength="1" className="draw-part-2" />
+              {/* Stem */}
+              <path d="M12 18v3" pathLength="1" className="draw-part-3" />
+              {/* Base Line */}
+              <path d="M9 21h6" pathLength="1" className="draw-part-4" />
             </svg>
           )}
         </button>

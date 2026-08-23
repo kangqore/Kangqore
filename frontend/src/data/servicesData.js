@@ -5223,23 +5223,691 @@ export const servicesData = {
     slug: 'robotic-process-automation',
     name: 'Robotic Process Automation (RPA)',
     departmentSlug: 'cognition',
-    bannerBrand: 'eQORE™',
-    shortDescription: 'Deploy software robots for repetitive tasks',
-    fullDescription: 'Implement RPA solutions to automate rule-based, repetitive business processes.',
-    keyFeatures: ['Process assessment', 'Bot development', 'Attended/unattended automation', 'Bot monitoring', 'CoE setup'],
-    relatedServiceSlugs: ['digital-process-automation', 'intelligent-automation'],
+    bannerBrand: 'eQORE\u2122',
+    shortDescription: 'Automating the applications that were never given an API',
+    fullDescription: 'Build, govern and maintain software robots that drive enterprise applications through the interface, and keep working when that interface changes.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Bot engineering', 'Attended & unattended', 'Bot resilience', 'Orchestrator operations', 'Estate rationalization'],
+    relatedServiceSlugs: ['intelligent-automation', 'digital-process-automation', 'business-process-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1563207153-f403bf289096?w=800&q=80',
-    whatIsTitle: 'RPA That Deploys Bots',
-    whatIsTitleLine2: 'That Operate Without',
-    whatIsHighlight: 'Supervision.',
-    whatIsPara2: 'Kangqore builds enterprise RPA programs from process assessment through Center of Excellence establishment — deploying screen automation and cognitive bots that execute high-volume, rules-based workflows with accuracy targets agreed per process.',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // Last of the four automation services still on the Cognition parity
+    // default: 2,134 bytes of data, six generic FAQs, a crawler seeing 6.5 per
+    // cent of the page, and the shared agentic SVG above the fold.
+    //
+    // The other three have taken most of the ground. /services/bpm owns the
+    // discipline -- reengineering, operating model, global process ownership,
+    // BPM platforms, CoE. /services/dpa owns low-code applications, digital
+    // forms and case management. /services/intelligent-automation owns the AI
+    // layer and carries "RPA & Digital Workforce" as one area of seven.
+    //
+    // So this page is that one area taken to depth, and the wedge is a single
+    // fact stated plainly: RPA is what you use when there is no API. Everything
+    // difficult about it follows from that. A bot drives the interface, so it
+    // breaks when the interface changes; it signs in as somebody, so it needs
+    // an identity and a credential; it holds a licensed runtime, so idle
+    // capacity is money. None of those problems exist for the other three
+    // services, and none of them appears anywhere else on the site.
+    //
+    // Saying that honestly means saying the unhelpful half too: where an API
+    // exists, integration beats a bot on every measure that matters. A page
+    // that will not say so is selling licenses rather than engineering.
+    heroTitle: 'Robotic Process Automation\nServices for the Enterprise',
+    whatIsEyebrow: 'What robotic process automation is actually for',
+    whatIsTitle: 'What RPA',
+    whatIsHighlight: 'Actually Automates.',
+    whatIsPara2: 'Robotic process automation drives enterprise applications the way a person does \u2014 through the interface, keystroke by keystroke. That is its entire reason to exist. Where a system exposes an API, integration is faster, cheaper and more durable, and we will tell you so. Where it does not, and will not, a bot is the only thing that reaches the work.',
+    whatIsPara3: 'Which means every hard problem in RPA descends from one fact: your bot depends on a surface somebody else controls. A vendor ships an update and a selector stops matching. A field moves and a run fails silently at three in the morning. That is not bad engineering, it is the deal you accept in exchange for automating a system that was never opened up.',
+    whatIsPara4: 'Kangqore engineers for that reality rather than around it. Resilient selectors where the application allows them, monitoring that tests the output rather than the exit code, credentials held in a vault under a bot identity your auditor can trace, and an estate small enough to maintain. Bots you can still run in year three, not a pilot that impressed everyone in month two.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Not cost reduction and bot accuracy. Those are the numbers every RPA
+    // vendor publishes, they are unfalsifiable, and cycle time and bot uptime
+    // already belong to /services/intelligent-automation.
+    //
+    // These four are what an automation lead is actually judged on once the
+    // estate is past its first dozen bots: how much of the team is repairing
+    // rather than building, how fast a new one reaches production, whether the
+    // licensed runtime is doing any work, and whether the estate is still
+    // growing after the useful automations were built.
+    outcomesEyebrow: 'WHAT DECIDES WHETHER AN RPA ESTATE SURVIVES',
+    outcomesHeading: 'RPA Program Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
     businessMetrics: [
-      { illustrative: true, title: 'Operational Cost', desc: 'Average cost reduction achieved across IT and business process automation programs delivered by Kangqore.', value: '40',   suffix: '%',    metricLabel: 'Cost Reduction',   icon: 'Target'    },
-      { illustrative: true, title: 'Bot Accuracy',     desc: 'Execution accuracy across finance, HR, and insurance workflows — virtually eliminating manual processing errors.',  value: '99.8', suffix: '%',    metricLabel: 'Bot Accuracy',     icon: 'Shield'    },
-      { illustrative: true, title: 'POC Delivery',     desc: 'Time from engagement kickoff to a working automation POC — output before you commit to full-scale deployment.',     value: '5–7',  suffix: ' Day', metricLabel: 'POC Speed',        icon: 'Zap'       },
-      { illustrative: true, title: 'Scalability',      desc: 'Enterprise scale multiplier — bots replicated across functions without proportional cost increase.',                value: '10',   suffix: 'x',    metricLabel: 'Bot Scalability',  icon: 'TrendingUp'},
+      { illustrative: true, title: 'Break-Fix Load',      desc: 'Reduction in developer time spent repairing bots after application changes, once resilience patterns and output-level monitoring are in place.', value: '60',  suffix: '%',    metricLabel: 'Less Break-Fix',        icon: 'Shield'    },
+      { illustrative: true, title: 'Time to First Bot',   desc: 'From process selection to one bot running unattended in production, including the security review nobody schedules for.',                    value: '3\u20135', suffix: ' Wks', metricLabel: 'Selection to Production', icon: 'Zap'     },
+      { illustrative: true, title: 'Runtime Utilization', desc: 'Share of licensed unattended runtime actually executing work after queue and schedule redesign, rather than sitting idle overnight.',        value: '75',  suffix: '%',    metricLabel: 'Licensed Runtime Used', icon: 'Activity'  },
+      { illustrative: true, title: 'Estate Reduction',    desc: 'Bots retired or consolidated during rationalization without losing automated coverage \u2014 usually duplicates built by different teams.',      value: '35',  suffix: '%',    metricLabel: 'Bots Retired',          icon: 'Layers'    },
     ],
+
+    heroBadge: 'Built. Governed. Maintained.',
+    heroStripItems: [
+      'Bot Engineering', 'Attended & Unattended', 'Selector Resilience', 'Orchestrator Operations',
+      'Bot Identity & Credentials', 'Mainframe & Citrix', 'Estate Rationalization', 'Platform Migration',
+    ],
+    hidePartnershipModel: true,
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // /services/intelligent-automation carries "RPA & Digital Workforce" as one
+    // area of seven, ten items deep. This page is that area taken to depth, so
+    // the test for every entry below was: does it belong to driving an
+    // interface you do not control? If it belongs to the AI layer it stays on
+    // intelligent automation; if it belongs to redesigning the process it stays
+    // on BPM; if it belongs to giving the process an application it stays on
+    // DPA.
+    //
+    // Areas 02, 03 and 06 exist nowhere else on the site and are the real
+    // discipline: surface automation for systems with no API, keeping bots
+    // alive through somebody else's release cycle, and running an estate whose
+    // licensed runtime costs money whether it works or not. Area 07 is the one
+    // most vendors omit -- retiring bots, including the ones we would have to
+    // admit should never have been built.
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Framed by what each platform is genuinely better at, including where we
+    // would argue against buying one at all. We hold no reseller margin on any
+    // of these, which is the only reason that framing is available to us.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The RPA platforms,',
+      titleHighlight: 'and when not to use one.',
+      subtitle: 'Platform choice is mostly settled by what the group already licenses and by how much of the target estate is legacy surface rather than modern web. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Enterprise RPA platforms',
+          managed: 'UiPath, Automation Anywhere',
+          selfHosted: 'On-premise orchestrator where data cannot leave',
+          desc: 'The default for an estate of any size: mature orchestration, credential handling and a component ecosystem. Heavy and licensed per runtime, which stops making sense below roughly a dozen bots.',
+        },
+        {
+          icon: 'Shield',
+          title: 'Regulated and legacy-heavy estates',
+          managed: 'Blue Prism',
+          selfHosted: 'Strong where audit posture drives the choice',
+          desc: 'Unattended-first by design, with a control model that regulated operations teams tend to find easier to evidence. Weaker where the work is attended or desktop-side.',
+        },
+        {
+          icon: 'Zap',
+          title: 'Microsoft-estate automation',
+          managed: 'Power Automate Desktop',
+          selfHosted: 'Often already licensed and unused',
+          desc: 'Frequently included in entitlements you already hold. Genuinely capable for departmental and attended work; governance is the constraint rather than the engine, which is why estates on it sprawl.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Process intelligence',
+          managed: 'Celonis, SAP Signavio, UiPath Process Mining',
+          selfHosted: 'Before the backlog, not after it',
+          desc: 'How you find out which processes are worth a bot, from event logs rather than from a workshop. Most estates skip this and automate whatever the loudest team asked for, which is why the backlog and the benefit case diverge.',
+        },
+        {
+          icon: 'Network',
+          title: 'Workflow and orchestration',
+          managed: 'ServiceNow, Camunda, Appian, Pega',
+          selfHosted: 'Where the bot is a step, not the process',
+          desc: 'A bot should be invoked by a governed workflow rather than be the workflow. Where the process itself needs designing, that work sits on our business process management and digital process automation services.',
+        },
+        {
+          icon: 'Lock',
+          title: 'Credentials and bot identity',
+          managed: 'CyberArk, HashiCorp Vault, platform-native vaults',
+          selfHosted: 'Whatever your PAM team already runs',
+          desc: 'Non-negotiable past the first bot. A password in a config file is the finding that ends an RPA program in a regulated group, and retrofitting a vault across a live estate is far worse than starting with one.',
+        },
+        {
+          icon: 'Eye',
+          title: 'Monitoring and alerting',
+          managed: 'Platform dashboards plus your own observability stack',
+          selfHosted: 'Output checks, not exit codes',
+          desc: 'Platform monitoring reports whether the run finished. It cannot tell you the bot wrote the wrong value into the right field, so the checks that matter are written against the output.',
+        },
+        {
+          icon: 'Network',
+          title: 'The alternative to all of the above',
+          managed: 'REST, SOAP, database, file transfer, iPaaS',
+          selfHosted: 'Always evaluated before a bot is proposed',
+          desc: 'If a usable API exists, integration wins on cost, speed and durability, and we will say so before quoting a build. RPA is the answer when that door is closed \u2014 not the first thing to try.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve RPA questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words. These are the ones an automation lead and a CIO actually open
+    // with, and five of them are questions an RPA vendor would rather not be
+    // asked: is RPA dead, why do our bots keep breaking, what does maintenance
+    // really cost, should this be an integration, and what happens when the
+    // savings were never real.
+    customFAQs: [
+      {
+        q: 'Is RPA dead now that we have AI agents?',
+        a: 'No, and the people saying so are usually selling the replacement.\n\nWhat has genuinely changed is the scope. Work that needed a bot because it involved reading a document or making a judgment call is now better served by document intelligence or a model. That is a real reduction in RPA\u2019s territory and we would not pretend otherwise.\n\nWhat has not changed is the underlying condition. A mainframe with no API is exactly as closed to an AI agent as it is to a bot \u2014 an agent that needs to use that system still has to drive the interface, and at that point it is doing RPA with a language model attached. The fragility does not disappear, it just gets a better narrator.\n\nSo the honest position: RPA\u2019s share of new automation is shrinking, the estates already built are not going anywhere, and the interesting work has moved from building more bots to running the ones you have properly.',
+      },
+      {
+        q: 'Why do our bots keep breaking?',
+        a: 'Because they depend on a surface somebody else controls, and that is the deal RPA makes rather than a defect in your build.\n\nThe usual causes, in order: an application update moved or renamed an element; the automation used a brittle locator such as a screen coordinate or a generated identifier; the environment drifted so the bot met a different screen resolution, browser version or session state; or a data case appeared that the original rules never covered.\n\nWhat reduces it is unglamorous. Locators anchored to something stable rather than to position. Tests that run against a new application build before the bot does. Awareness of your vendors\u2019 release calendars, which almost nobody tracks. And monitoring that checks what was written rather than whether the script reached its final line.\n\nWe measure break-fix load as a share of development capacity, because it is the number that tells you whether an estate is sustainable, and almost no business case includes it.',
+      },
+      {
+        q: 'Should this be a bot, or should it be an integration?',
+        a: 'An integration, if a usable API exists. We will say so before quoting a build, and it costs us the larger engagement.\n\nAn API-based integration is faster to run, cheaper to operate, and does not break when a screen layout changes. A bot is the right answer in one situation: the system has no usable interface and will not get one on any timeline that helps you. Mainframes, thick clients, vendor packages, third-party portals you do not control.\n\nThe gray area is the system that has an API in theory \u2014 documented but not exposed, or exposed but requiring a vendor change request with a nine-month queue. There, a bot is often the correct interim answer, with the explicit expectation that it is retired when the integration lands. We write that retirement into the design rather than leaving it to good intentions.',
+      },
+      {
+        q: 'What does an RPA program actually cost to run, not to build?',
+        a: 'Build is the smaller number and the one everybody plans for. Three things make up the rest.\n\nLicensing: unattended runtimes are charged whether or not they execute anything, so an estate with poor scheduling pays for idle capacity every month. We routinely find utilization well under half, which is a cost reduction available without touching a single bot.\n\nMaintenance: the developer time spent repairing automations after application changes. On an unmanaged estate this consumes the majority of a team\u2019s capacity within about two years, which is why the build backlog stops moving and nobody can quite explain why.\n\nOperations: monitoring, incident response, credential rotation, access recertification. Small per bot, and not small across forty.\n\nWe are pre-launch and do not publish rate cards. What we will commit to is that the assessment is scoped so you can stop after it and own the findings.',
+      },
+      {
+        q: 'How many bots should we expect to end up with?',
+        a: 'Fewer than you are being told, and that is the healthier answer.\n\nBot count is a vanity measure. It counts activity, not result, and it rewards building automations that should have been a configuration change. Estates optimized for bot count reliably contain duplicates built by two teams who never spoke, automations for processes since retired, and bots running monthly against systems that now expose APIs.\n\nThe measures worth holding a program to are hours removed per bot maintained, break-fix load as a share of capacity, and license utilization. On a mature estate, retiring a third of the bots without losing coverage is common and frees more delivery capacity than the next ten builds would consume.',
+      },
+      {
+        q: 'What is the difference between attended and unattended automation?',
+        a: 'Where the bot runs and who is beside it, and the two are different engineering problems rather than a setting.\n\nUnattended runs on a server against a queue, on a schedule, with no human present. It needs its own identity, credentials, exception handling and monitoring, because when it fails at three in the morning nobody is watching.\n\nAttended runs on a person\u2019s desktop and is triggered by them, typically to remove retyping across applications during a call. Technically simpler, socially harder \u2014 attended automation is abandoned far more often than it fails, because it was deployed without the people who were supposed to use it being involved in designing it.\n\nHybrid work starts attended, hands to an unattended queue, and returns for a decision. That is usually the right shape for anything customer-facing, and it needs the handback designed rather than improvised.',
+      },
+      {
+        q: 'Can you automate our mainframe, or Citrix sessions?',
+        a: 'Yes, and this is where RPA earns its keep rather than where it struggles.\n\nTerminal emulation is in many ways the most stable surface available: a green screen does not get a redesign. Field positions are fixed and behavior is predictable, so mainframe bots are often the longest-lived automations in an estate.\n\nCitrix and virtual desktops are the opposite. Where the session is published as an application the platform can usually see the elements. Where you get a video stream, the bot works from image recognition and coordinates, which is genuinely fragile \u2014 resolution changes, latency and a moved window all break it. We build it when there is no alternative and we tell you the maintenance profile before you commit rather than after.',
+      },
+      {
+        q: 'How do you handle security and audit for bots?',
+        a: 'By treating a bot as a named actor rather than as a script that borrows somebody\u2019s account.\n\nEach bot gets its own identity with least-privilege access scoped to the systems it actually touches. Credentials live in a vault your PAM team already runs, never in configuration. Every action is attributable to that identity in the audit trail, so a reviewer can answer who did this without the answer being a developer who left last year.\n\nSegregation of duties matters more than it first appears: a bot that can both raise and approve a payment is a control failure regardless of how carefully it was built. That gets designed at the start, because retrofitting identity across a live estate is materially harder than starting with it.',
+      },
+      {
+        q: 'We inherited an estate nobody understands. Where do we start?',
+        a: 'With an inventory, and it is usually the most valuable fortnight of the engagement.\n\nWhat exists, what each bot touches, who owns it, when it last ran successfully, what it costs in runtime, and whether the process it serves still exists. Estates past about thirty bots very rarely have this, and the gaps are where the risk sits \u2014 a bot running weekly against a system nobody knew was still in scope.\n\nThe inventory usually produces three piles: automations worth keeping and bringing to standard, duplicates and dead bots to retire, and a handful that should be replaced by integrations that now exist. Acting on the second and third piles typically frees more capacity than the first year of a new build program.',
+      },
+      {
+        q: 'Who maintains the bots after you leave?',
+        a: 'Your team, and we build on that assumption from the first sprint rather than negotiating it at handover.\n\nThat means bots built to a documented standard from a shared component library, source-controlled and peer-reviewed, with a runbook per automation covering the failure modes we actually hit during delivery rather than the ones we imagined. It means your developers pairing on the build instead of receiving a document at the end.\n\nIt also means being straight about the ongoing load: an estate needs a maintenance budget, and a program resourced for build only will stall in year two. If carrying it is not realistic, we run estates under a service level and price that separately. The line we hold is that your bots must remain operable by your own people \u2014 an estate only we can maintain is a commercial arrangement, not an engineering outcome.',
+      },
+      {
+        q: 'The savings in our original business case never appeared. What went wrong?',
+        a: 'Almost always one of three things, and none is a technology failure.\n\nThe baseline was never measured. Handling time was estimated from what people believed the process took, savings were asserted against that estimate, and nothing was measured afterwards because there was nothing credible to measure against.\n\nThe hours were removed but the cost was not. A bot saving twenty minutes across forty people does not remove a headcount, and if the business case was written as headcount it was wrong on the day it was signed. Capacity released is a real benefit; it is not the same benefit.\n\nOr the maintenance load ate it. Savings were booked once and the repair cost recurs, so by year two the team is fully occupied keeping the estate alive and the net is negative.\n\nWe baseline during qualification, before anything is built, and report against that baseline afterwards. It makes our numbers smaller and defensible.',
+      },
+      {
+        q: 'How does RPA relate to your other automation services?',
+        a: 'Four layers of the same problem, and mixing them up is what makes programs fail.\n\nThis service is the narrowest and most specific: driving applications through the interface where no API exists. Intelligent automation adds the AI layer on top \u2014 document understanding, classification, decisions that rules cannot express. Digital process automation is for work that has no application at all, where the answer is to build one rather than to automate around its absence. Business process management is the discipline above all three: how the process is designed, owned, standardized across markets and governed.\n\nThe order matters. Bots deployed onto a process nobody redesigned make an unmanaged process faster, which is why so many estates plateau and then quietly shrink. If you are not sure which of the four you need, the estate assessment answers it, and it is the cheapest way to find out.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // The first package is an assessment of an estate that already exists,
+    // deliberately ahead of any build offer. Most inbound RPA conversations are
+    // not "we want bots", they are "we have forty and they keep breaking", and
+    // a page that only sells new builds is answering a question nobody asked.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'including the way out.',
+    engagementLede: 'Most groups arrive with an estate rather than an idea. The useful first engagement is usually an assessment of what is already running, not a proposal to build more.',
+    servicePackages: [
+      {
+        name: 'Bot Estate Assessment',
+        description: 'For estates that already exist and are getting harder to run. What you have, who owns it, what it costs in runtime and repair, and which of it should be retired rather than fixed.',
+        deliverables: [
+          'Full inventory with ownership and business criticality per bot',
+          'Break-fix load measured against development capacity',
+          'License utilization and runtime cost attributed per process',
+          'Duplicate and overlap identification across teams',
+          'Retire, rebuild, replace-with-integration recommendation per bot',
+        ],
+      },
+      {
+        name: 'Feasibility & Pilot',
+        description: 'For a first automation, or a first one after a failed attempt. One process, qualified honestly, built to standard and put in production \u2014 with the answer possibly being that it should not be a bot.',
+        deliverables: [
+          'Process suitability assessment with an explicit go or no-go',
+          'API and integration alternatives evaluated before any build',
+          'One production bot, not a demo on a developer machine',
+          'Measured before-and-after handling time against a baseline',
+          'Costed proposal for what a wider program would actually take',
+        ],
+      },
+      {
+        name: 'Bot Development',
+        description: 'Delivery at volume against your platform and your standards. Where no standards exist yet, establishing them is part of the first engagement rather than an afterthought.',
+        deliverables: [
+          'Automation design document per process before build',
+          'Bots built to naming, logging and error-handling standards',
+          'Shared component library so the fifth bot is faster than the first',
+          'Regression test pack covering the interfaces each bot depends on',
+          'Runbook per bot with the failure modes found during delivery',
+        ],
+      },
+      {
+        name: 'Platform Migration & Modernization',
+        description: 'Moving an estate between RPA platforms, off a version out of support, or off bots entirely where an integration has since become available. Rarely a straight port.',
+        deliverables: [
+          'Migration assessment with per-bot complexity scoring',
+          'Rebuild-versus-port decision per automation',
+          'Bots replaced by integrations where an API now exists',
+          'Parallel run with output comparison before cutover',
+          'Decommissioning of the old estate with retained evidence',
+        ],
+      },
+      {
+        name: 'Managed Bot Operations',
+        description: 'Running the estate under a service level, including the break-fix work when applications change. For teams who want the automation without carrying a maintenance team for it.',
+        deliverables: [
+          'Round-the-clock monitoring at the output, not just the run status',
+          'Break-fix within agreed response times when interfaces change',
+          'Robotic Operations Center with queue and schedule management',
+          'Monthly reporting on utilization, failures and cost per process',
+          'Continuous rationalization rather than unbounded estate growth',
+        ],
+      },
+    ],
+
+    // ── By function ─────────────────────────────────────────────────────────
+    // This slot renders the industry grid elsewhere. DPA uses it for industries
+    // at the application-gap layer, BPM for enterprise value streams. Here it
+    // carries back-office functions, because that is how an RPA estate is
+    // actually owned -- by a finance shared service or an insurance operations
+    // team, never by a sector.
+    //
+    // Expanded from three named processes per function to seven or eight,
+    // taken from the supplied use-case list. That is roughly sixty specific
+    // process names -- accounts payable, first notice of loss, three-way match,
+    // alert enrichment -- each a long-tail query in its own right, and none of
+    // them published anywhere else on the site. Security Operations was added
+    // from the same list; it is a genuine RPA use case and appeared on no
+    // Kangqore page.
+    //
+    // The headlines stay as written: each names the system that has no usable
+    // API, because that is the condition that makes a bot correct here rather
+    // than a workaround. The supplied list gives the what; the headline gives
+    // the why.
+    industryHeading: 'Robotic Process Automation',
+    industryHeadingHighlight: 'by function.',
+    industryLede: 'Nine back-office functions, the processes most often automated in each, and the system that has no usable interface \u2014 which is the condition that makes a bot the correct answer rather than a workaround.',
+    industryUseCases: [
+      {
+        industry: 'Finance & Accounting',
+        headline: 'The ERP has an API. The bank portal, the tax authority site and the supplier who only sends PDFs do not.',
+        items: [
+          'Accounts payable and invoice processing',
+          'Payment execution and confirmation',
+          'Bank statement retrieval and reconciliation',
+          'Purchase-order and goods-receipt matching',
+          'Period-close checklist execution',
+          'General ledger journal posting',
+          'Credit and collections chasing',
+          'Audit evidence and regulatory reporting packs',
+        ],
+      },
+      {
+        industry: 'Insurance Operations',
+        headline: 'Policy administration systems bought in the nineties, still load-bearing, still terminal-based.',
+        items: [
+          'Policy data entry across legacy admin systems',
+          'First-notice-of-loss intake from broker portals',
+          'Claims status retrieval and updates',
+          'Underwriting support and document collation',
+          'Renewal and endorsement processing',
+          'Premium reconciliation',
+          'Regulatory return preparation',
+        ],
+      },
+      {
+        industry: 'Banking Operations',
+        headline: 'Core banking that will not be replaced this decade, plus a dozen regulator portals with no machine interface.',
+        items: [
+          'Account opening and maintenance in core systems',
+          'Payment and transaction processing',
+          'KYC and periodic review data gathering',
+          'Sanctions and watchlist screening steps',
+          'Reconciliation across ledgers',
+          'Regulator portal submissions',
+          'Audit and evidence requests',
+        ],
+      },
+      {
+        industry: 'Human Resources',
+        headline: 'A cloud HR platform that integrates, surrounded by payroll bureaux and benefits providers that do not.',
+        items: [
+          'Employee onboarding and offboarding',
+          'HR data synchronization across systems',
+          'Access provisioning and revocation',
+          'Payroll input preparation and validation',
+          'Benefits and third-party provider updates',
+          'Candidate communication and scheduling',
+          'Workforce administration and record maintenance',
+        ],
+      },
+      {
+        industry: 'Supply Chain & Procurement',
+        headline: 'Supplier portals, each with its own login, none of them yours, all of them changing without notice.',
+        items: [
+          'Supplier portal order and status retrieval',
+          'Purchase order creation and confirmation',
+          'Goods receipt and three-way match',
+          'Supplier onboarding and data maintenance',
+          'Catalog and price file updates',
+          'Shipment tracking and exception chasing',
+          'Inventory data synchronization',
+        ],
+      },
+      {
+        industry: 'Customer Operations',
+        headline: 'An advisor holding four applications open, retyping the same reference number into each one.',
+        items: [
+          'Attended desktop assistants for advisors',
+          'Cross-system customer record lookup',
+          'Case creation and status synchronization',
+          'Customer data updates across applications',
+          'Document verification steps',
+          'Service request routing and enrichment',
+          'Outbound communication triggers',
+        ],
+      },
+      {
+        industry: 'IT Operations',
+        headline: 'Provisioning steps spread across tools that were each bought to solve one problem and integrated with none.',
+        items: [
+          'User provisioning and access requests',
+          'Password reset and account unlock workflows',
+          'Ticket triage, enrichment and routing',
+          'Routine health checks and evidence capture',
+          'Application monitoring follow-up actions',
+          'Change and release administration',
+          'License and asset reconciliation',
+        ],
+      },
+      {
+        industry: 'Security Operations',
+        headline: 'Analysts moving the same indicator between four consoles, none of which was bought to talk to the others.',
+        items: [
+          'Alert enrichment across security consoles',
+          'Security ticket creation and assignment',
+          'Threat intelligence lookup and correlation',
+          'Compliance evidence collection',
+          'Identity and access review steps',
+          'Vulnerability scan output processing',
+          'Reporting pack assembly',
+        ],
+      },
+      {
+        industry: 'Healthcare Administration',
+        headline: 'Clinical systems that will not be touched, and payer portals that change their layout without telling anyone.',
+        items: [
+          'Eligibility and prior-authorization portal checks',
+          'Claims status retrieval across payers',
+          'Patient registration and demographic entry',
+          'Coding and billing support steps',
+          'Referral processing and routing',
+          'Provider data maintenance',
+          'Administrative and compliance reporting',
+        ],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Both columns are bots that worked on the day they were demonstrated. The
+    // difference is entirely in what happens the first time somebody else's
+    // application changes -- which is the only thing that actually separates an
+    // RPA estate that survives from one that gets quietly switched off.
+    comparisonTable: {
+      eyebrow: 'DELIVERED VERSUS OPERATED',
+      heading: 'RPA Implementation vs. RPA Estate Operations.',
+      lede: 'Neither column describes bad engineering. They differ in what happens the first time somebody else ships a release you were not told about.',
+      beforeLabel: 'BOTS AS DELIVERABLES',
+      afterLabel: 'BOTS AS OPERATED SOFTWARE',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'DELIVERED',
+      afterShort: 'OPERATED',
+      rows: [
+        {
+          dimension: 'When the vendor ships an update',
+          before: 'A selector stops matching. The run fails, or worse completes against the wrong field, and somebody notices from the numbers a week later.',
+          after: 'Resilient locators where the application permits them, a tracked vendor release calendar, and regression tests that run against the new build before the bot does.',
+        },
+        {
+          dimension: 'How you know a run went wrong',
+          before: 'The orchestrator reports success because the script reached the end. Nothing checked what was actually written.',
+          after: 'Verification at the output: the record exists, the total reconciles, the file has the expected row count. A green run that wrote nothing raises an alert.',
+        },
+        {
+          dimension: 'Who the bot signs in as',
+          before: 'A developer\u2019s account, or a shared service account with a password in a config file and permissions nobody has reviewed since it was built.',
+          after: 'A named bot identity with least-privilege access, credentials in a vault, and every action attributable to that identity in your audit trail.',
+        },
+        {
+          dimension: 'What the licensed runtime costs',
+          before: 'Unattended licenses bought per bot, most of them idle overnight and at weekends, with no attribution of runtime cost to the process it serves.',
+          after: 'Queues and schedules packed so the runtime you pay for is executing, with cost per process reported and license count matched to real concurrency.',
+        },
+        {
+          dimension: 'When the person who built it leaves',
+          before: 'No design document, no naming convention, no reusable components. The bot runs until it does not, and then it is rebuilt from scratch.',
+          after: 'Built to a documented standard from a shared component library, with a runbook covering the failure modes we actually hit during delivery.',
+        },
+        {
+          dimension: 'What happens when an API finally ships',
+          before: 'The bot stays, because retiring it is nobody\u2019s objective and it still technically works.',
+          after: 'The bot is retired and replaced with the integration. We would rather remove our own work than bill you to maintain something the platform now does properly.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages, chosen so the array length is exactly five -- the template
+    // renders architectureNodes as a four-column grid otherwise, and five nodes
+    // get their own column each. Deliberately ends at Maintain rather than at
+    // Deploy: on this service the interesting half of the lifecycle starts
+    // after go-live, which is the whole argument of the page.
+    architectureEyebrow: 'THE BOT LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Qualify to Maintain.',
+    architectureLede: 'Five stages, and the one that decides the outcome is the last. Most RPA programs are resourced through Deploy and then surprised by what Maintain costs.',
+    architectureNodes: [
+      {
+        title: 'Qualify',
+        icon: 'Search',
+        description: 'Establish whether this should be a bot at all. High volume, stable rules, no usable API, and an exception rate that will not swamp the queue. Failing any of those, we say so before quoting a build.',
+        features: [
+          'Volume, variance and exception profiling',
+          'API and integration alternatives checked first',
+          'Application change frequency assessed',
+          'Effort, payback and runtime cost modeled',
+          'Explicit go or no-go recommendation',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Decide how the bot behaves before writing it: which locator strategy, which exceptions are handled and which are handed back, and what it means for a run to have succeeded.',
+        features: [
+          'Automation design document per process',
+          'Selector and locator strategy chosen',
+          'Exception paths and handback defined',
+          'Success criteria defined at the output',
+          'Reusable components identified up front',
+        ],
+      },
+      {
+        title: 'Build',
+        icon: 'Cpu',
+        description: 'Engineering to a standard rather than to a demo. Naming conventions, shared components, source control and peer review \u2014 unremarkable practice, routinely absent from RPA estates.',
+        features: [
+          'Development to documented standards',
+          'Shared component and template library',
+          'Source control, versioning and peer review',
+          'Credential vault integration from the start',
+          'Regression test pack built alongside the bot',
+        ],
+      },
+      {
+        title: 'Deploy',
+        icon: 'Rocket',
+        description: 'Into your environments, under your security review, with the bot identity and permissions agreed rather than assumed. This is the stage that slips, and it slips on access rather than on code.',
+        features: [
+          'Environment promotion and release process',
+          'Bot identity, permissions and vault setup',
+          'Orchestrator queues, triggers and schedules',
+          'Security review and access recertification',
+          'Hypercare with the build team still attached',
+        ],
+      },
+      {
+        title: 'Maintain',
+        icon: 'Activity',
+        description: 'The stage the business case forgets. Applications change on somebody else\u2019s calendar, and the measure of an estate is how much of your team is repairing rather than building.',
+        features: [
+          'Output-level monitoring and silent-failure alerts',
+          'Vendor release tracking and impact analysis',
+          'Break-fix load measured and reported',
+          'Runtime utilization and license rightsizing',
+          'Retirement when an integration supersedes the bot',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'ROBOTIC PROCESS AUTOMATION SERVICES',
+    capabilitiesSectionTitle: 'Robotic Process Automation',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Pick the processes worth a bot, build them so somebody else can maintain them, reach the systems that have no other way in, keep them running through everyone else\u2019s release cycles, and retire the ones that stopped earning their runtime.',
+    capabilityAreas: [
+      {
+        title: 'Automation Feasibility & Bot Design',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Deciding what deserves a bot before building one. Roughly half of what arrives on an RPA backlog should be an integration, a configuration change, or nothing at all, and finding that out early is the cheapest thing we do.',
+        items: [
+          'Process Suitability Assessment',
+          'API-vs-Bot Decision Analysis',
+          'Volume, Variance & Exception Profiling',
+          'Rule Extraction & Documentation',
+          'Automation Design Documents',
+          'Reusable Component Identification',
+          'Effort, Cost & Payback Modeling',
+          'Backlog Prioritization & Sequencing',
+          'Target Handling-Time Baselining',
+          'Build-Buy-Integrate Recommendation',
+        ],
+      },
+      {
+        title: 'Surface Automation for Systems With No API',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The reason this service exists. Mainframes, thick clients, Citrix sessions, vendor packages that will never expose an endpoint \u2014 automated through the only door available, with the fragility that implies managed rather than denied.',
+        items: [
+          'Mainframe & Terminal Emulation',
+          'Thick-Client & Legacy Desktop Automation',
+          'Citrix & Virtual Desktop Automation',
+          'Image, OCR & Coordinate-Based Automation',
+          'Web & Browser Automation',
+          'PDF & Document Surface Extraction',
+          'Cross-Application Data Transfer',
+          'Screen-Scraping Fallback Design',
+          'Vendor Package Automation',
+          'Air-Gapped & Restricted Environment Bots',
+        ],
+      },
+      {
+        title: 'Bot Resilience & Maintainability',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where RPA programs are actually won or lost. A bot fails silently, so the useful question is never whether the run finished \u2014 it is whether what the bot wrote is correct, and who found out first.',
+        items: [
+          'Resilient Selector Strategy',
+          'Anchor & Relative-Locator Patterns',
+          'Application Change Impact Analysis',
+          'Output Verification, Not Exit-Code Checks',
+          'Silent-Failure Detection',
+          'Retry, Backoff & Idempotency Design',
+          'Environment Drift Detection',
+          'Regression Testing Against UI Changes',
+          'Vendor Release Calendar Tracking',
+          'Self-Healing Where the Platform Supports It',
+          'Runbooks Per Bot',
+          'Break-Fix Load Measurement',
+        ],
+      },
+      {
+        title: 'Attended, Unattended & Hybrid Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where the bot runs and who is sitting next to it. Attended automation is a different engineering problem from unattended \u2014 different failure modes, different security posture, different reasons it gets abandoned.',
+        items: [
+          'Unattended Bot Development',
+          'Attended & Desktop Assistant Automation',
+          'Hybrid Attended-Unattended Workflows',
+          'Front-Office Agent Assist',
+          'Trigger, Queue & Schedule Design',
+          'Work Allocation & Load Balancing',
+          'Human Handback & Exception Queues',
+          'Long-Running & Multi-Session Bots',
+          'End-User Adoption & Training',
+          'Desktop Deployment & Update Management',
+        ],
+      },
+      {
+        title: 'Bot Identity, Credentials & Controls',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A bot signs in as somebody. Whose account, holding which permissions, storing which password, and traceable how \u2014 questions that are trivial for one bot and a finding waiting to be written across forty.',
+        items: [
+          'Bot Identity & Service Account Design',
+          'Credential Vault Integration',
+          'Least-Privilege Access Modeling',
+          'Segregation of Duties for Bots',
+          'Privileged Access Management',
+          'Per-Bot Audit Trail & Attribution',
+          'Data Handling & Masking in Transit',
+          'Regulated-Process Controls',
+          'Bot Onboarding & Offboarding Procedure',
+          'Access Recertification',
+          'Security Review Preparation',
+        ],
+      },
+      {
+        title: 'Orchestrator Operations & Runtime Economics',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Running the estate day to day, and the part of RPA nobody costs properly: unattended runtime is licensed whether it executes anything or not, so idle capacity is a line item you are already paying.',
+        items: [
+          'Orchestrator & Control Room Setup',
+          'Queue Architecture & Transaction Design',
+          'Schedule Optimization & Runtime Packing',
+          'Capacity Planning & Concurrency Modeling',
+          'License Utilization Analysis',
+          'Runtime Cost Attribution by Process',
+          'Environment & Release Management',
+          'Bot Performance Monitoring',
+          'Incident Response & On-Call Runbooks',
+          'Robotic Operations Center Setup',
+          'SLA Definition & Reporting',
+          'Managed Bot Operations',
+        ],
+      },
+      {
+        title: 'Estate Rationalization, Migration & Retirement',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Most mature estates carry bots nobody owns, duplicates built by two teams, and automations that should have been retired when the API shipped. Cleaning that up frees more capacity than the next ten builds.',
+        items: [
+          'Bot Estate Inventory & Ownership Mapping',
+          'Duplicate & Overlap Identification',
+          'Bot Debt Assessment',
+          'Retire, Rebuild or Replace Decisions',
+          'Replacing Bots With Integrations',
+          'RPA Platform Migration',
+          'Version Upgrade & Compatibility Testing',
+          'Legacy Bot Refactoring to Standards',
+          'Citizen-Developer Bot Consolidation',
+          'License Rightsizing',
+          'Decommissioning With Evidence',
+        ],
+      },
+    ],
+
+    midCta: 'The pilot ran beautifully. Year two is the one to plan for.',
+    midCtaLabel: 'Review One Bot Estate',
+    closingCta: {
+      title: 'One estate,',
+      highlight: 'honestly assessed.',
+      body: 'Show us what you have running. In 30 minutes we will tell you which bots are worth keeping, which should have been an integration, and what the break-fix load is really costing you \u2014 before anyone proposes building more.',
+      proofLabel: 'From first call to a costed estate assessment',
+    },
   },
 
   'business-process-management': {
@@ -7426,13 +8094,654 @@ export const servicesData = {
     slug: 'finance-risk-management',
     name: 'Finance & Risk Management',
     departmentSlug: 'shield',
-    bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Finance transformation and risk management solutions',
-    fullDescription: 'Transform finance operations and implement comprehensive risk management.',
-    keyFeatures: ['Finance transformation', 'Risk assessment', 'Compliance', 'Financial planning', 'Audit support'],
-    relatedServiceSlugs: ['it-security-services', 'ai-governance', 'quality-engineering-assurance'],
+    bannerBrand: 'Shield\u2122 Trust & Governance Framework',
+    shortDescription: 'Transforming the finance function and quantifying the exposure it carries',
+    fullDescription: 'Finance strategy, ERP and planning transformation, quantitative financial risk across credit, market, liquidity and treasury, and the controls that make both defensible.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Finance operating model', 'ERP & EPM transformation', 'Credit & market risk', 'Treasury & liquidity', 'Controls & regulatory reporting'],
+    relatedServiceSlugs: ['ai-governance', 'business-process-management', 'analytics'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // The worst page measured on this site. 697 bytes of data, a crawler seeing
+    // 2.2 per cent of it, and -- because the service sits in the Shield
+    // department -- the parity default rendered the *cybersecurity* taxonomy
+    // under a Finance name. Zero-Trust Security Architecture, SOC Operations,
+    // OT and SCADA Security, and a four-layer stack ending in "Incident Mesh".
+    // Measured on the live page: 103 security terms, zero finance terms. Not
+    // one instance of credit risk, treasury, close, IFRS or forecast.
+    //
+    // The service is genuinely two practices that competitors sell together and
+    // that most firms transform separately: the CFO agenda (operating model,
+    // ERP, planning, close, controllership) and the CRO agenda (credit, market,
+    // liquidity, treasury, regulatory capital). KPMG's page leads with credit,
+    // market, actuarial, capital adequacy and financial instruments; EY's leads
+    // with treasury and actuarial. Both are risk-first and neither carries the
+    // finance-transformation half.
+    //
+    // The wedge is the join. Finance and Risk run on the same ledger, the same
+    // exposures and the same close, and are almost always transformed by
+    // different teams under different sponsors -- which is why a forecast and a
+    // risk report can describe the same quarter and disagree. This page sells
+    // one transformation across both, and says so in the comparison.
+    //
+    // Department left as shield. Finance & Risk sitting in Security & Trust is
+    // a taxonomy question worth raising, not one to change silently inside a
+    // content PR.
+    heroTitle: 'Finance & Risk Management\nServices for the Enterprise',
+    whatIsEyebrow: 'What finance and risk transformation covers',
+    whatIsTitle: 'Finance That Predicts,',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'and Risk That Is Quantified.',
+    whatIsPara2: 'Finance is no longer judged on reporting what happened. A CFO organization is expected to anticipate what comes next, allocate capital against it, and put a number on the exposure the enterprise is carrying \u2014 while a Chief Risk Officer is asked the same questions from the other direction, about the same balance sheet.',
+    whatIsPara3: 'Those two agendas run on one ledger, one set of exposures and one close, and they are almost always transformed by different teams under different sponsors. That is why your forecast and your risk report can describe the same quarter and disagree, and why the reconciliation between them is done by hand in the week before a board meeting.',
+    whatIsPara4: 'Kangqore transforms both as one program. Finance strategy and operating model, ERP and planning platforms, intelligent close and controllership, quantitative risk across credit, market, liquidity, interest rate, FX, commodity and counterparty exposure, treasury and capital, and the control framework that makes all of it defensible to an auditor. Sense, predict, decide, execute, control \u2014 measured, not asserted.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Chosen because a CFO and a CRO are each held to two of them, and because
+    // all four are countable rather than rhetorical. Close days and forecast
+    // accuracy are the CFO's; exposure refresh and control evidence are the
+    // CRO's. Deliberately not "cost reduction", which every competitor claims
+    // and none of them defines.
+    outcomesEyebrow: 'WHAT THE CFO AND THE CRO ARE EACH MEASURED ON',
+    outcomesHeading: 'Finance & Risk Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
+    businessMetrics: [
+      { illustrative: true, title: 'Close Cycle',        desc: 'Reduction in working days from period end to signed-off consolidated numbers, after close orchestration and automated reconciliation.',        value: '45',  suffix: '%',    metricLabel: 'Faster Close',            icon: 'Zap'        },
+      { illustrative: true, title: 'Forecast Accuracy',  desc: 'Improvement in variance between forecast and actual at the driver level, once planning moves from annual budget to rolling and driver-based.', value: '30',  suffix: '%',    metricLabel: 'Tighter Forecast',        icon: 'TrendingUp' },
+      { illustrative: true, title: 'Exposure Refresh',   desc: 'From a monthly or quarterly exposure pack to a position refreshed daily, across credit, market, liquidity and counterparty risk.',              value: 'Daily', suffix: '',   metricLabel: 'Exposure Position',       icon: 'Radar'      },
+      { illustrative: true, title: 'Control Evidence',   desc: 'Share of key financial controls evidenced automatically from the system of record rather than assembled by hand ahead of an audit.',            value: '85',  suffix: '%',    metricLabel: 'Controls Evidenced',      icon: 'ShieldCheck'},
+    ],
+
+    heroBadge: 'Predicted. Quantified. Controlled.',
+    heroStripItems: [
+      'Finance Operating Model', 'ERP & EPM Transformation', 'Planning & Forecasting', 'Intelligent Close',
+      'Credit & Market Risk', 'Treasury & Liquidity', 'Controls & Regulatory Reporting', 'Finance Data & AI',
+    ],
+    hidePartnershipModel: true,
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // Eight areas, consolidated from the fifteen supplied. The template renders
+    // a capability carousel; fifteen entries turn a catalog into a list
+    // nobody finishes, and several of the fifteen were the same buyer with a
+    // different label -- controllership and intelligent finance operations both
+    // describe the close, financial crime and enterprise risk are one control
+    // conversation, managed services and transformation assurance are how the
+    // work is bought rather than what it is.
+    //
+    // Nothing was dropped. Managed services and transformation assurance became
+    // engagement models, ESG folded into area 07 where its reporting obligation
+    // actually sits, and actuarial and capital folded into area 05 beside the
+    // other quantitative disciplines.
+    //
+    // Area 05 is deliberately the deepest at nineteen items. It is the page's
+    // namesake, it is where KPMG and EY both lead, and a bank comparing pages
+    // will look for probability of default, expected credit loss, value at
+    // risk, expected shortfall and wrong-way risk by name.
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // The platform question a CFO arrives with. Framed by what each ecosystem
+    // is genuinely better at, including where we would argue against a
+    // purchase. We hold no reseller margin on any of these, which is the only
+    // reason that framing is honestly available.
+    toolsStack: {
+      eyebrow: 'THE ENTERPRISE ECOSYSTEM',
+      title: 'The platforms,',
+      titleHighlight: 'and what each is actually for.',
+      subtitle: 'Platform choice is mostly settled by the ERP you already run and by whether the hard problem is planning, risk or the close. These are the defaults and what overrides them.',
+      items: [
+        {
+          icon: 'Database',
+          title: 'ERP and the financial core',
+          managed: 'SAP S/4HANA, Oracle Cloud ERP, Workday, Dynamics 365',
+          selfHosted: 'NetSuite where the entity count is low',
+          desc: 'The system of record, and the decision that outlives every other one on this page. Chart of accounts and master data matter more than the vendor: migrate them as found and you inherit the reporting limits you were trying to escape.',
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Planning and performance management',
+          managed: 'Anaplan, OneStream, Oracle EPM, SAP Analytics Cloud',
+          selfHosted: 'Adaptive Planning on Workday estates',
+          desc: 'Where driver-based planning and consolidation live. The constraint is almost never the tool \u2014 it is whether the business ever agreed what the drivers are, which is design work no platform performs for you.',
+        },
+        {
+          icon: 'Radar',
+          title: 'Financial risk and quantitative modeling',
+          managed: 'Vendor risk engines, market data platforms',
+          selfHosted: 'Python, R and open quantitative libraries',
+          desc: 'Credit, market and liquidity modeling. Vendor engines carry regulatory templates and validation evidence; a built stack gives control over methodology. Regulated institutions usually need both, and the split is a deliberate decision rather than a drift.',
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Governance, risk and controls',
+          managed: 'ServiceNow GRC, SAP GRC, Archer, MetricStream, Diligent',
+          selfHosted: 'ServiceNow where IT already runs on it',
+          desc: 'Control libraries, testing workflow and continuous monitoring. Existing entitlements decide this more often than any evaluation does, and a GRC tool nobody feeds is worse than a spreadsheet somebody maintains.',
+        },
+        {
+          icon: 'Globe',
+          title: 'Treasury and cash management',
+          managed: 'Treasury management systems, bank connectivity platforms',
+          selfHosted: 'ERP-native treasury on single-instance estates',
+          desc: 'Cash visibility, forecasting and hedge management. Bank connectivity is the work; the system is the easy part, and connectivity is what slips a treasury program rather than configuration.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Finance and risk data',
+          managed: 'Snowflake, Databricks, Microsoft Fabric, Azure Synapse',
+          selfHosted: 'Whatever your data platform team already runs',
+          desc: 'The layer that decides whether the forecast and the risk pack can be reconciled at all. Building this once for both functions is the single highest-leverage decision in a finance and risk program.',
+        },
+        {
+          icon: 'Zap',
+          title: 'Automation and AI in the flow',
+          managed: 'UiPath, Automation Anywhere, Power Automate, GenAI services',
+          selfHosted: 'Engineered on our automation services',
+          desc: 'Invoice capture, reconciliation, close orchestration, variance commentary and regulatory drafting. AI belongs inside a controlled process with lineage; over a spreadsheet estate it produces fast answers nobody can evidence.',
+        },
+        {
+          icon: 'Eye',
+          title: 'ESG and sustainability reporting',
+          managed: 'Workiva, Sphera, Enablon, Persefoni, SAP Sustainability',
+          selfHosted: 'Inside the finance close where it is assured',
+          desc: 'Increasingly a controllership problem rather than a communications one. Once sustainability disclosures are assured, they need the same lineage, controls and close discipline as the financial statements.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve finance and risk questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran six promotional answers averaging under fifty
+    // words -- and they were the *security* defaults, since this service sits
+    // in the Shield department. These are the questions a CFO, a group
+    // financial controller and a CRO actually open with, and five are ones a
+    // Big Four competitor would rather not be asked.
+    customFAQs: [
+      {
+        q: 'What does Kangqore Finance & Risk Management actually cover?',
+        a: 'Two agendas that share one ledger, delivered as one program.\n\nThe CFO side: finance strategy and operating model, ERP and planning platform transformation, financial planning and enterprise performance management, procure-to-pay through record-to-report, the close and controllership.\n\nThe CRO side: quantitative financial risk across credit, market, liquidity, interest rate, foreign exchange, commodity and counterparty exposure, plus treasury and capital, actuarial and capital adequacy where the sector requires it.\n\nAnd the layer that makes both defensible: internal controls, regulatory reporting, financial crime analytics, and the shared finance and risk data model underneath. Most firms sell these as separate practices with separate sponsors. That separation is precisely what produces a forecast and a risk report that describe the same quarter and disagree.',
+      },
+      {
+        q: 'We are a bank. Do you actually do quantitative credit and market risk?',
+        a: 'Yes, and it is worth being specific rather than gesturing at the category.\n\nCredit: probability of default, loss given default and exposure at default modeling, expected credit loss under IFRS 9, portfolio and concentration analytics, early warning systems, risk-based pricing and credit stress testing.\n\nMarket: value at risk, expected shortfall, sensitivity analysis, stress and scenario testing, risk aggregation and regulatory market risk reporting.\n\nAlongside those: liquidity risk and contingency funding, interest rate risk and asset-liability management, counterparty exposure including wrong-way risk and collateral analytics, capital adequacy, and risk data aggregation aligned to BCBS 239.\n\nModel validation is part of the work rather than an afterthought. A model a regulator cannot follow is a finding regardless of how well it performs.',
+      },
+      {
+        q: 'Our close takes eleven days. How much of that is actually removable?',
+        a: 'Usually more than the finance team expects, and rarely from where the program proposes to remove it.\n\nMost close programs shorten the consolidation run, which was almost never the bottleneck. The days sit in reconciliation, intercompany, chasing accruals from the business, and waiting for one subsidiary. We measure the close task by task before proposing anything, because the estimate finance holds and what the timestamps show are usually different by several days.\n\nWhat reliably comes out: automated reconciliation with tolerance rules, intercompany matching and elimination, close orchestration so tasks release when their dependency completes rather than when someone emails, and anomaly detection on journals so review is targeted instead of exhaustive.\n\nA fast close on unreliable numbers is worse than a slow one, so the sequence matters: fix the reconciliation, then compress the calendar.',
+      },
+      {
+        q: 'Can you modernize our SAP or Oracle finance environment?',
+        a: 'Yes, across strategy, architecture, migration, process transformation and post-go-live optimization \u2014 S/4HANA, Oracle Cloud ERP, Dynamics 365, Workday and NetSuite.\n\nThe part worth arguing about before you start is the chart of accounts and master data. A migration that lifts them as found delivers a modern platform reporting on an old structure, and you inherit exactly the limits you were trying to escape. Redesigning them is unpopular, slower, and the difference between a technical upgrade and a finance transformation.\n\nWe are platform-agnostic in the literal sense: we hold no reseller margin on any of these, so a recommendation to stay where you are and fix the data costs us nothing.',
+      },
+      {
+        q: 'Why should Finance and Risk be transformed together rather than separately?',
+        a: 'Because they run on the same ledger and the same exposures, and separating them creates the reconciliation problem you then pay somebody to solve.\n\nWhen finance builds a forecast from one extract and risk builds an exposure pack from another, both are defensible and they disagree. Somebody reconciles them by hand in the week before the board meets, every quarter, forever. That work is invisible in both business cases because it belongs to neither program.\n\nBuilding one finance and risk data model with declared lineage removes it. It is also the harder sell internally, because it requires two sponsors to agree on a design neither fully controls \u2014 which is why it is usually deferred until a regulator asks a question that takes three weeks to answer.\n\nIf your organization genuinely cannot align the two sponsors, we would rather do one properly than both badly, and we will say so.',
+      },
+      {
+        q: 'How is AI used here, realistically?',
+        a: 'For the work between the steps, inside a process that already has lineage and controls.\n\nWhat genuinely works today: extracting and coding invoices, matching reconciliations and explaining the breaks, detecting anomalous journals, drafting variance commentary a controller then edits, summarizing regulatory text against your obligation register, and answering questions about financial data in natural language.\n\nWhat it does not do is substitute for the data model, the control framework or the audit trail. AI over a spreadsheet estate produces fast answers nobody can evidence, which in a regulated financial process is worse than the slow version.\n\nOne specific caution: models used in credit or market risk are subject to model risk management. A generative component in a regulatory calculation needs the same validation, documentation and version control as any other model, and most organizations have not yet extended their framework to cover it.',
+      },
+      {
+        q: 'What does an engagement cost, and how is it priced?',
+        a: 'We are pre-launch and do not publish rate cards, so treat this as shape rather than a quote.\n\nThe assessment is a fixed-price engagement measured in weeks and deliberately scoped so you can stop after it, own the output, and take the build elsewhere or nowhere. Operating model and architecture is priced against the assessment. Platform implementation is priced against the architecture, which is why we prefer not to quote a build before the design exists \u2014 the estimate would be a guess and both sides would discover that in month four.\n\nSoftware licensing is a separate line and goes to the vendor. Where you already hold entitlements that cover the work, we will say so. Managed operations is a monthly service level with the volumes and response times written down.',
+      },
+      {
+        q: 'How do you handle regulatory reporting and audit evidence?',
+        a: 'By making the evidence a by-product of the process rather than a project that happens before an audit.\n\nRegulatory submissions get a traced path from the reported figure back to the source transaction, with the model version, the transformation logic and the approver attached. Reconciliation between regulatory and financial reporting is automated rather than performed by a team in the week before submission.\n\nControls are evidenced continuously from the system of record. Segregation of duties is enforced by the platform rather than by policy. Control testing samples from live data, so effectiveness is a live measure rather than an annual opinion formed about events months old.\n\nThe practical test is whether you can answer how a number was derived without convening the people who built the model. Most organizations discover the answer during an actual investigation.',
+      },
+      {
+        q: 'We have tried a finance transformation before and it did not deliver. Why would this?',
+        a: 'Usually one of three reasons, and it is worth establishing which before spending again.\n\nNo baseline: benefits were asserted rather than measured, so when the next budget round came there was nothing to defend. Close days, forecast variance and control coverage have to be captured before the work starts, because they cannot be reconstructed afterwards.\n\nThe data was deferred: platforms were implemented on the existing data model because fixing it was out of scope, and the reporting limits survived the transformation intact.\n\nOr the operating model never changed: new systems, same organization, same accountability gaps, same manual reconciliation. Technology cannot resolve a question about who owns a number.\n\nNone of the three is a technology failure, which is why our first engagement measures rather than builds.',
+      },
+      {
+        q: 'Can you run finance operations for us afterwards?',
+        a: 'Yes, and it is priced and governed separately from the transformation so the two are not entangled.\n\nManaged operations can cover procure-to-pay, order-to-cash and record-to-report processing, close support and reconciliation, regulatory reporting operations, treasury operations, and continuous controls monitoring with exception escalation.\n\nThe reporting is the part worth insisting on: close days, forecast variance, exception volumes and control coverage, monthly, against the baseline captured at assessment. A managed service that reports only on volumes processed tells you nothing about whether the function is improving.\n\nWhat we will not do is build a capability only we can operate. Documentation, runbooks and your people trained during delivery are conditions of the engagement, not extras.',
+      },
+      {
+        q: 'Where does ESG and climate risk fit in Finance?',
+        a: 'Increasingly in controllership, which is a change most organizations have not yet absorbed.\n\nWhile sustainability disclosure was voluntary it sat in communications or strategy. Once it is assured, it needs what financial statements need: a defined data model, lineage from disclosure back to source, controls over the calculation, and a close process with a sign-off. Auditors are already asking those questions.\n\nClimate risk is a second and separate problem \u2014 scenario analysis over physical and transition exposure, feeding capital planning and, for financial institutions, regulatory stress testing. That is quantitative risk work rather than reporting work, and it belongs beside credit and market risk rather than beside the annual report.\n\nWe treat both as finance and risk problems, which is why they sit inside the controls capability on this page rather than in a separate sustainability practice.',
+      },
+      {
+        q: 'How do you measure whether the transformation worked?',
+        a: 'Against four numbers captured before anything is built, and reported afterwards whether or not they flatter us.\n\nClose days from period end to signed-off consolidated numbers. Forecast variance at driver level against actuals. Exposure refresh frequency across credit, market, liquidity and counterparty risk. And the share of key controls evidenced automatically rather than assembled by hand.\n\nEach is countable, each has an owner, and each is meaningless without a before \u2014 which is why the assessment captures them while the process is still manual. Benefits stated in a business case and never measured again are the normal outcome of a finance transformation, and the reason the next one is harder to fund.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // Managed services and transformation assurance were supplied as capability
+    // areas fourteen and fifteen. They are not capabilities, they are how the
+    // work is bought, and a CFO scanning a procurement schedule looks for them
+    // here. Same content, correct section.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five engagement models,',
+    engagementHeadingHighlight: 'one accountable baseline.',
+    engagementLede: 'Almost nobody starts with a finance transformation program. They start with a close that takes too long, a forecast nobody trusts, or a regulator asking a question that took three weeks to answer.',
+    servicePackages: [
+      {
+        name: 'Finance & Risk Assessment',
+        description: 'Fact-finding before commitment. What your close actually costs in days and hands, how accurate the forecast has been, what the exposure is, and which controls are evidenced rather than asserted.',
+        deliverables: [
+          'Close cycle measured task by task, not estimated',
+          'Forecast accuracy history analyzed at driver level',
+          'Exposure and control coverage baseline across risk types',
+          'Finance and risk data lineage and quality gap analysis',
+          'Sequenced roadmap with a business case per wave',
+        ],
+      },
+      {
+        name: 'Operating Model & Architecture',
+        description: 'The design work that decides your next decade. Target operating model, platform architecture, and the shared finance and risk data model most programs defer until it is expensive to retrofit.',
+        deliverables: [
+          'Target operating model with roles, ownership and RACI',
+          'ERP, EPM, treasury and risk platform architecture',
+          'Unified finance and risk data model and chart of accounts',
+          'Control framework designed into the process, not audited onto it',
+          'Platform selection with a scored, vendor-neutral recommendation',
+        ],
+      },
+      {
+        name: 'Platform & Risk Model Build',
+        description: 'Implementation across ERP, planning, treasury and risk platforms, including the quantitative model development and validation that a regulator will later examine.',
+        deliverables: [
+          'ERP and EPM implementation, migration or consolidation',
+          'Risk model development, documentation and independent validation',
+          'Treasury and liquidity platform implementation',
+          'Data pipelines with lineage and automated quality controls',
+          'Parallel run with output reconciliation before cutover',
+        ],
+      },
+      {
+        name: 'Transformation Assurance',
+        description: 'Independent assurance over a program somebody else is delivering. Commissioned by boards and audit committees when a finance transformation is large enough that finding out late is unacceptable.',
+        deliverables: [
+          'Program health assessment against scope, schedule and value',
+          'Architecture, data and controls assurance reviews',
+          'Cutover and go-live readiness assessment',
+          'Benefits realization tracking against the original case',
+          'Board and audit committee reporting',
+        ],
+      },
+      {
+        name: 'Managed Finance & Risk Operations',
+        description: 'Running the transformed capability under a service level: transactional operations, close support, regulatory reporting and continuous controls monitoring.',
+        deliverables: [
+          'Procure-to-pay, order-to-cash and record-to-report operations',
+          'Financial close support and reconciliation operations',
+          'Regulatory reporting and compliance operations',
+          'Continuous controls monitoring with exception escalation',
+          'Monthly reporting on close days, accuracy and control coverage',
+        ],
+      },
+    ],
+
+    // ── Industry ────────────────────────────────────────────────────────────
+    // Ten sectors from the supplied list. Each headline names the structural
+    // reason finance and risk are hard to join in that sector specifically --
+    // regulatory capital in banking, reserving in insurance, commodity
+    // exposure in energy - rather than restating the capability list with a
+    // sector word in front of it, which is what makes most industry grids
+    // worthless.
+    industryHeading: 'Finance & Risk Management',
+    industryHeadingHighlight: 'by industry.',
+    industryLede: 'Ten sectors, and the structural reason finance and risk resist being joined in yours \u2014 the constraint that decides what a transformation there actually has to solve.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Regulatory capital is calculated from the same positions the P&L is built on, by a different team, on a different cycle.',
+        items: ['Credit risk modeling, ECL and IFRS 9', 'Capital adequacy and Basel reporting', 'Risk data aggregation under BCBS 239'],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'Reserving is an actuarial judgment that lands in the financial statements, so the model and the ledger have to agree.',
+        items: ['Actuarial modeling and data modernization', 'Solvency, capital and reserving analytics', 'Regulatory and financial reporting convergence'],
+      },
+      {
+        industry: 'Wealth & Asset Management',
+        headline: 'Client portfolio risk and firm financial performance are separate reporting worlds that regulators increasingly want reconciled.',
+        items: ['Portfolio risk and investment analytics', 'Fee, margin and profitability management', 'Regulatory reporting and fund liquidity risk'],
+      },
+      {
+        industry: 'Private Equity & Portfolio Companies',
+        headline: 'Consolidating portfolio companies that share no chart of accounts, on a reporting deadline set by the fund.',
+        items: ['Multi-entity consolidation and reporting', 'Portfolio finance standardization', 'Value creation and performance intelligence'],
+      },
+      {
+        industry: 'Manufacturing',
+        headline: 'Cost sits in operational systems and margin sits in the ledger, and the two are reconciled once a month at best.',
+        items: ['Product and customer profitability', 'Working capital and inventory finance', 'Supply chain counterparty exposure'],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'Commodity exposure moves daily while capital allocation and regulatory reporting move quarterly.',
+        items: ['Commodity price risk and hedge analytics', 'Capital allocation and asset finance', 'ESG, climate risk and regulatory reporting'],
+      },
+      {
+        industry: 'Retail & Consumer',
+        headline: 'Margin is decided at promotion level and reported at entity level, with the connection lost somewhere in between.',
+        items: ['Margin, promotion and revenue intelligence', 'Working capital and payment operations', 'Payment fraud and revenue leakage detection'],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Revenue recognition depends on contracts and reimbursement rules that finance does not own and cannot see.',
+        items: ['Revenue recognition and contract accounting', 'Regulatory compliance and audit readiness', 'Working capital and receivables analytics'],
+      },
+      {
+        industry: 'Technology & Telecommunications',
+        headline: 'Recurring revenue makes the forecast a model rather than a projection, and the model lives outside the ledger.',
+        items: ['Subscription revenue recognition and planning', 'Driver-based forecasting for recurring revenue', 'Treasury, FX and multi-entity consolidation'],
+      },
+      {
+        industry: 'Government & Public Sector',
+        headline: 'Budgetary control and statutory accounting answer to different rulebooks over the same transactions.',
+        items: ['Budgetary control and public financial management', 'Statutory and regulatory reporting', 'Controls, assurance and audit readiness'],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // The page's thesis in six rows: finance and risk are transformed by
+    // different teams under different sponsors against the same ledger, and
+    // every symptom below descends from that. Both columns describe competent
+    // work -- the difference is whether the two functions share a data model.
+    comparisonTable: {
+      eyebrow: 'TWO FUNCTIONS, ONE LEDGER',
+      heading: 'Finance and Risk Transformed Separately, or Together.',
+      lede: 'Both columns describe capable teams delivering what they were asked to deliver. They differ on whether the CFO and the CRO can be shown the same number.',
+      beforeLabel: 'TWO PROGRAMS, TWO SPONSORS',
+      afterLabel: 'ONE TRANSFORMATION',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'SEPARATE',
+      afterShort: 'JOINED',
+      rows: [
+        {
+          dimension: 'When the forecast and the risk pack disagree',
+          before: 'Both are defensible, both were built from a different extract of the same ledger, and the reconciliation is done by hand in the week before the board meets.',
+          after: 'One finance and risk data model with declared lineage, so a variance is a real difference in view rather than a difference in extract date.',
+        },
+        {
+          dimension: 'How often exposure is known',
+          before: 'A pack assembled monthly or quarterly. Between packs, the honest answer to what the exposure is now is an estimate.',
+          after: 'Positions refreshed daily across credit, market, liquidity and counterparty risk, with the same numbers feeding the forecast.',
+        },
+        {
+          dimension: 'Where the close days actually go',
+          before: 'Programs shorten the consolidation run, which was never the bottleneck. The days are lost to reconciliation, intercompany and chasing.',
+          after: 'Measured task by task first, then automated where the time actually sits \u2014 usually reconciliation and intercompany, rarely consolidation.',
+        },
+        {
+          dimension: 'When a regulator asks how a number was derived',
+          before: 'Reconstructed from spreadsheets and the memory of whoever built the model, assuming they still work here.',
+          after: 'Traced through lineage from the submitted figure to the source transaction, with the model version and approver attached.',
+        },
+        {
+          dimension: 'How controls are evidenced',
+          before: 'Screenshots and sign-off sheets assembled in the fortnight before the audit, testing a sample of what happened months ago.',
+          after: 'Evidenced continuously from the system of record, so control effectiveness is a live measure rather than an annual opinion.',
+        },
+        {
+          dimension: 'What happens after go-live',
+          before: 'The program closes, the benefits case is filed, and nobody measures whether the forecast actually got more accurate.',
+          after: 'Close days, forecast variance, exposure refresh and control coverage baselined before the work and reported against afterwards.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages because the template renders architectureNodes as a
+    // four-column grid unless the array is exactly five. The supplied
+    // eight-layer architecture and seven-step intelligence loop both compress
+    // here; the loop's language survives in the definition section, where it
+    // reads as an argument rather than as a diagram.
+    architectureEyebrow: 'THE TRANSFORMATION LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Assess to Operate.',
+    architectureLede: 'Five stages, run as a continuous capability rather than a program with a closing date. Most engagements start at Assess and stop being sequential once the first value stream is live.',
+    architectureNodes: [
+      {
+        title: 'Assess',
+        icon: 'Search',
+        description: 'Establish what is true before designing anything: how long your close really takes task by task, how accurate the forecast has been, what the exposure is, and which controls are evidenced rather than asserted.',
+        features: [
+          'Finance maturity and benchmark assessment',
+          'Close cycle measured task by task',
+          'Forecast accuracy history at driver level',
+          'Exposure and control coverage baseline',
+          'Data quality and lineage gap analysis',
+        ],
+      },
+      {
+        title: 'Architect',
+        icon: 'Layers',
+        description: 'Your target operating model, platform architecture and the one thing most programs defer until it is expensive: a shared finance and risk data model with an agreed chart of accounts.',
+        features: [
+          'Target operating model and accountability',
+          'ERP, EPM and risk platform architecture',
+          'Unified finance and risk data model',
+          'Chart of accounts and master data design',
+          'Control framework designed into the flow',
+        ],
+      },
+      {
+        title: 'Modernize',
+        icon: 'Cpu',
+        description: 'Build it. Your ERP and planning platforms, risk models, treasury systems and the integration between them \u2014 sequenced by value stream rather than by module, so something reaches production early.',
+        features: [
+          'ERP and EPM implementation or migration',
+          'Risk model development and validation',
+          'Treasury and liquidity platform build',
+          'Data pipelines, lineage and quality controls',
+          'Parallel run before any cutover',
+        ],
+      },
+      {
+        title: 'Automate',
+        icon: 'Zap',
+        description: 'Take the hands out of your transactional layer and your close, and put continuous monitoring on the controls. This is where the close days and the audit preparation actually come down.',
+        features: [
+          'Transactional and close automation',
+          'Reconciliation and anomaly detection',
+          'Continuous controls monitoring',
+          'Regulatory reporting automation',
+          'AI-assisted analysis and commentary',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'Run it, measure it against the baseline taken at Assess, and keep improving. Your finance processes drift back toward manual the moment nobody is reporting on them.',
+        features: [
+          'Managed finance and risk operations',
+          'Close, forecast and exposure reporting',
+          'Model monitoring and revalidation',
+          'Benefits realization against baseline',
+          'Continuous improvement backlog',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'FINANCE & RISK MANAGEMENT SERVICES',
+    capabilitiesSectionTitle: 'Finance & Risk Management',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Design the finance function, modernize the core it runs on, make planning continuous, close faster with fewer hands, quantify the exposure the balance sheet carries, and evidence the controls over all of it.',
+    capabilityAreas: [
+      {
+        title: 'Finance Strategy & Operating Model',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where your finance work should sit, who is accountable for it, and what the function is for. Decided before any platform, because the platform encodes the answer for the next decade.',
+        items: [
+          'Finance Function & Transformation Strategy',
+          'Target Operating Model Design',
+          'Finance Organization & Role Design',
+          'Global Business Services & Shared Services',
+          'Onshore, Offshore & Nearshore Split',
+          'Finance Maturity Assessment & Benchmarking',
+          'Process Harmonization Across Entities',
+          'Finance Center of Excellence Design',
+          'Finance Cost & Service Model Optimization',
+          'Finance Workforce & Capability Planning',
+          'Transformation Portfolio Governance',
+          'Benefits Realization Framework',
+        ],
+      },
+      {
+        title: 'Digital Finance Core & ERP Transformation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The system of record and everything downstream that inherits its assumptions. Your chart of accounts and master data decide what you can report on later, which is why they are settled first rather than migrated as found.',
+        items: [
+          'ERP Strategy & Finance Architecture',
+          'SAP S/4HANA Finance Transformation',
+          'Oracle Cloud ERP Transformation',
+          'Microsoft Dynamics 365 Finance',
+          'Workday & NetSuite Finance',
+          'ERP Migration & Multi-Instance Consolidation',
+          'Chart of Accounts Redesign',
+          'Finance Master Data Management',
+          'Sub-Ledger & Integration Architecture',
+          'Finance API & Event Integration',
+          'Legacy Finance Application Modernization',
+          'Application Rationalization',
+          'Cutover, Hypercare & Post-Go-Live Optimization',
+        ],
+      },
+      {
+        title: 'Planning, Forecasting & Performance Management',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Moving your annual budget, which is wrong by March to a rolling, driver-based model that answers what-if in an afternoon. The constraint is rarely the tool; it is whether anyone agreed the drivers.',
+        items: [
+          'FP&A Transformation',
+          'Driver-Based Planning Models',
+          'Rolling Forecasts & Continuous Planning',
+          'Scenario & Sensitivity Modeling',
+          'Financial Consolidation',
+          'Profitability & Cost Management',
+          'Revenue & Margin Planning',
+          'Workforce & Capacity Planning',
+          'Capital Expenditure Planning',
+          'Management Reporting & Board Packs',
+          'Predictive & AI-Assisted Forecasting',
+          'Enterprise Performance Analytics',
+        ],
+      },
+      {
+        title: 'Intelligent Finance Operations & Controllership',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Your transactional engine and the close that depends on it. Most close programs shorten the wrong end \u2014 the days are lost to reconciliation and intercompany, not to the final consolidation run.',
+        items: [
+          'Procure-to-Pay & Invoice Automation',
+          'Intelligent Invoice Capture & Matching',
+          'Order-to-Cash, Collections & Cash Application',
+          'Credit, Dispute & Deduction Management',
+          'Record-to-Report Transformation',
+          'Account Reconciliation Automation',
+          'Intercompany Accounting & Elimination',
+          'Close Orchestration & Task Management',
+          'Anomaly Detection in Journals',
+          'Automated Variance Analysis & Commentary',
+          'Continuous Accounting',
+          'Technical Accounting & Audit Readiness',
+          'Close Performance Analytics',
+        ],
+      },
+      {
+        title: 'Financial Risk Management',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The quantitative core, and the reason this page exists. Your credit, market, liquidity, rate, currency, commodity and counterparty exposure, measured continuously rather than assembled into a pack once a quarter.',
+        items: [
+          'Credit Risk Strategy & Rating Frameworks',
+          'Probability of Default Modeling',
+          'Loss Given Default & Exposure at Default',
+          'Expected Credit Loss & IFRS 9',
+          'Credit Portfolio & Concentration Analytics',
+          'Early Warning Systems & Risk-Based Pricing',
+          'Value at Risk & Expected Shortfall',
+          'Market Risk Sensitivity & Greeks',
+          'Stress Testing & Scenario Analysis',
+          'Liquidity Risk & Cash-Flow Modeling',
+          'Contingency Funding & Intraday Liquidity',
+          'Interest Rate Risk & Asset-Liability Management',
+          'Foreign Exchange Exposure & Hedge Analytics',
+          'Commodity Price Risk Modeling',
+          'Counterparty Exposure & Wrong-Way Risk',
+          'Collateral & Credit Limit Frameworks',
+          'Actuarial Modeling & Capital Adequacy',
+          'Solvency & Risk-Adjusted Performance',
+          'Risk Data Aggregation & BCBS 239 Alignment',
+        ],
+      },
+      {
+        title: 'Treasury, Liquidity & Capital Management',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Cash you can see, funding you can rely on, and capital deployed against a return you can defend to your board. Usually the fastest measurable win in a finance program, because the visibility gap is larger than anyone expects.',
+        items: [
+          'Treasury Transformation & Operating Model',
+          'Global Cash Visibility & Bank Connectivity',
+          'Cash-Flow Forecasting',
+          'Liquidity Management & Pooling',
+          'Working Capital Optimization',
+          'Receivables & Payables Optimization',
+          'Funding Strategy & Debt Analytics',
+          'Investment & Yield Analytics',
+          'Hedging Program Design & Effectiveness',
+          'Capital Allocation Frameworks',
+          'Treasury Management System Implementation',
+          'Treasury Analytics & Reporting',
+        ],
+      },
+      {
+        title: 'Controls, Regulatory Reporting & Financial Crime',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What makes your numbers defensible: the control framework, the regulatory submission, and the detection layer that finds what the controls did not stop. One conversation, not three.',
+        items: [
+          'Enterprise & Operational Risk Frameworks',
+          'Risk Appetite, Taxonomy & Key Risk Indicators',
+          'Internal Controls Modernization & Rationalization',
+          'SOX & Financial Control Testing',
+          'Continuous Controls Monitoring',
+          'Segregation of Duties Design & Monitoring',
+          'Regulatory Reporting Transformation',
+          'Regulatory Data Architecture & Reconciliation',
+          'Capital Adequacy & Basel Reporting',
+          'Regulatory Change Management',
+          'Fraud Analytics & Transaction Monitoring',
+          'Duplicate Payment & Revenue Leakage Detection',
+          'AML, KYC & Trade Surveillance Analytics',
+          'Investigation Case Management',
+          'ESG, Climate Risk & Sustainability Reporting',
+          'Audit Readiness & Remediation',
+        ],
+      },
+      {
+        title: 'Finance & Risk Data, Analytics and AI',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The layer that decides whether any of the above can be believed. Your forecast and your risk report disagree because they were built on different extracts of the same ledger, and no amount of AI fixes that.',
+        items: [
+          'Finance & Risk Data Strategy',
+          'Unified Finance and Risk Data Model',
+          'Data Architecture & Engineering',
+          'Master & Reference Data Management',
+          'Data Quality, Lineage & Governance',
+          'Risk Data Aggregation & Reporting',
+          'Real-Time Finance Analytics',
+          'Predictive Forecasting Models',
+          'Scenario & Simulation Intelligence',
+          'Generative AI for Financial Analysis',
+          'AI-Assisted Regulatory Interpretation',
+          'Natural-Language Financial Intelligence',
+          'Model Risk Management & Validation',
+        ],
+      },
+    ],
+
+    midCta: 'The forecast and the risk report describe the same quarter. They disagree.',
+    midCtaLabel: 'Review One Close Cycle',
+    closingCta: {
+      title: 'One close cycle,',
+      highlight: 'measured end to end.',
+      body: 'Bring your last period close and your latest exposure pack. In 30 minutes we will show you where the two disagree, which of the days between period end and sign-off are avoidable, and what a single finance and risk data model would be worth \u2014 before any platform decision.',
+      proofLabel: 'From first call to a costed finance and risk baseline',
+    },
   },
 
   'quality-engineering-assurance': {
@@ -7440,12 +8749,1259 @@ export const servicesData = {
     name: 'Quality Engineering & Assurance',
     departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Comprehensive quality engineering services',
-    fullDescription: 'Ensure product quality through comprehensive testing and quality assurance practices.',
-    keyFeatures: ['Test strategy', 'Test automation', 'Performance testing', 'Security testing', 'Quality metrics'],
-    relatedServiceSlugs: ['devops-as-a-service', 'software-development', 'it-security-services'],
+    shortDescription: 'Engineering the test suite as a product, so a green build means something',
+    // The four non-breaking spaces bind "change is safe to ship" so the phrase
+    // can never be split across the hero's two lines. Without them the break
+    // landed mid-phrase at 1280, 1512 and 1920 ("...whether a change is safe /
+    // to ship — ..."), which reads as a stumble in the one sentence every
+    // visitor actually reads. With them, line two opens on "change".
+    //
+    // The tail was also shortened: at 168 characters this wrapped to three
+    // lines at 1024. Measured two lines at 1024, 1280, 1512 and 1920.
+    fullDescription: 'Design, build and operate the tests, environments and release gates that decide whether a change\u00A0is\u00A0safe\u00A0to\u00A0ship — and keep the signal trustworthy.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Test strategy', 'Automation engineering', 'Flake reduction', 'Performance engineering', 'Test data & environments', 'Release gates'],
+    relatedServiceSlugs: ['devops-as-a-service', 'api-microservices-engineering', 'it-security-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
+    // Real date, set when this page was written. Emitted as dateModified in the
+    // WebPage node by seo/serviceSchema.js. Only pages carrying this key get a
+    // date, so no service publishes a freshness claim nobody made.
+    lastReviewed: '2026-08-23',
+
+    // ── Positioning ──────────────────────────────────────────────────
+    // 718 bytes on the Shield parity default, which put "Reactive Security vs.
+    // Governed Zero-Trust Security" and a SIEM/IAM toolchain on a page about
+    // testing software. 27/40.
+    //
+    // The whole category says the same four things: shift-left, continuous
+    // testing, AI-generated tests, measurable outcomes. HCLTech, Capgemini,
+    // Cognizant and Infosys are interchangeable on it. Nothing in that pitch is
+    // wrong, and none of it is an argument.
+    //
+    // The wedge is the half nobody sells: a test suite is software too, and in
+    // most enterprises it is the largest codebase with no owner. It accumulates
+    // flake, its runtime creeps until engineers stop running it locally, and at
+    // some point a team crosses a line it cannot see -- the build goes red and
+    // the first reaction is to press retry. After that every additional test is
+    // money spent on a signal nobody reads, and generating more of them with a
+    // model just gets there faster.
+    //
+    // So the page is organized around trust in the signal rather than around
+    // coverage. Capability area 02 exists nowhere else in the market at this
+    // depth, area 07 is the frontier problem (systems that do not answer the
+    // same way twice), and the outcomes are flake rate, time to verdict, suite
+    // maintenance load and change failure rate -- not defect escape rate and
+    // automation coverage, which every competitor publishes and which cannot be
+    // falsified without the client's baseline.
+    //
+    // Scope discipline matters more here than on any other page, because
+    // testing touches everything and the draft that arrived claimed twenty
+    // capability areas including cloud IaC, data warehouse testing, model
+    // fairness, penetration testing and business continuity. Those belong to
+    // devops-as-a-service, big-data, ai-governance, it-security-services and
+    // managed-infrastructure-services respectively. What survived is what a
+    // quality engineering team is actually accountable for, and the boundary is
+    // stated out loud in the practice cluster, the toolchain and FAQ 12.
+    heroTitle: 'Quality Engineering for a Build\nYou Can Actually Believe',
+    heroBadge: 'Engineered. Measured. Owned.',
+    heroStripItems: [
+      'Test Strategy', 'Automation Engineering', 'Flake Reduction', 'Contract Testing',
+      'Performance Engineering', 'Test Data & Environments', 'AI Evaluation Harnesses', 'Release Gates',
+    ],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'What quality engineering is actually for',
+    whatIsTitle: 'A Green Build Is a Claim.',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'It Is Not Evidence.',
+    whatIsPara2: 'Quality engineering is the work of turning the question the business keeps asking — is this change safe to ship — into an answer somebody is willing to sign. Testing gathers the evidence. The engineering is everything around it: deciding what is worth testing and what deliberately is not, building a suite fast enough to be part of the work rather than a queue in front of it, and keeping the result trustworthy for longer than one quarter.',
+    whatIsPara3: 'The part almost nobody resources is that the suite is software too, and in most enterprises it is the largest codebase without an owner. It accumulates. A test fails for a reason unrelated to the change, so it gets retried, then muted, then forgotten. Runtime creeps from four minutes to forty, so engineers batch their changes and stop running it locally. Then a team crosses a line it cannot see: the build goes red and the first reaction is to press retry rather than to read the failure.',
+    whatIsPara4: 'After that point, every extra test you write is money spent on a signal nobody reads — and generating them with a model only gets you there faster. So Kangqore engineers the suite as a product with an owner, a budget and a service level. Flake measured and driven down before coverage is widened. Runtime treated as a delivery constraint. Test data that is legal to hold and realistic enough to be worth running against. Environments that exist when somebody needs one. And a release gate that blocks on evidence a release manager can read, not on a percentage nobody can defend.',
+
+    // ── Outcomes ────────────────────────────────────────────────────
+    // Not defect escape rate and automation coverage. Both are on every
+    // competitor page, both move for reasons unrelated to the work, and neither
+    // is checkable without the client's own baseline.
+    //
+    // These four are what a head of engineering is judged on once a suite is
+    // past its first thousand tests: whether a red build means anything, how
+    // long a verdict takes, how much of the week goes to repairing tests rather
+    // than writing product, and whether deploys are getting safer. The fourth
+    // is a published DORA metric, so it is comparable outside this page.
+    outcomesEyebrow: 'WHAT DECIDES WHETHER A TEST SUITE SURVIVES',
+    outcomesHeading: 'Four numbers that decide',
+    outcomesHeadingHighlight: 'whether anyone reads the build.',
+    businessMetrics: [
+      { illustrative: true, title: 'Signal Trust',          desc: 'Share of red builds caused by a real defect rather than a flaky test, after the worst offenders are root-caused, rewritten or deleted rather than muted.',            value: '95', suffix: '%',   metricLabel: 'Failures That Are Real',      icon: 'ShieldCheck' },
+      { illustrative: true, title: 'Time to Verdict',       desc: 'Wall-clock from a push to a result an engineer can act on, after parallelization, change-impact selection and removing tests that were never load-bearing.',        value: '15', suffix: ' Min', metricLabel: 'Commit to a Usable Answer',   icon: 'Zap' },
+      { illustrative: true, title: 'Suite Maintenance Load', desc: 'Reduction in engineering time spent repairing the suite rather than building product, once tests are owned, layered correctly and stop asserting on non-contracts.', value: '50', suffix: '%',   metricLabel: 'Less Time Repairing Tests',   icon: 'Activity' },
+      { illustrative: true, title: 'Change Failure Rate',   desc: 'Reduction in deployments that cause a production incident or need a rollback, measured against your own baseline rather than an industry benchmark.',                value: '40', suffix: '%',   metricLabel: 'Fewer Deploys That Bite Back', icon: 'TrendingUp' },
+    ],
+
+    // ── Engagement outcomes ────────────────────────────────────────
+    // Overridden rather than left on the parity default, which invents a client
+    // called "Global Enterprise Organization" and asserts "100% operational
+    // reliability". On a quality assurance page, an unfalsifiable reliability
+    // claim about a client that does not exist is the most damaging sentence
+    // that could be published. These say what they are in the descriptor.
+    outcomeCard: {
+      illustrative: true,
+      metric: '14h → 26m',
+      metricLabel: 'regression wall-clock',
+      industry: 'Modeled scenario — commerce platform, ~40 engineers',
+      problem: 'An overnight regression suite of 4,000 browser tests that nobody could run before merging, with roughly one run in three failing for reasons unrelated to the change.',
+      outcome: 'Assertions pushed down to API and contract level, the browser suite cut to the journeys that genuinely need a browser, the remainder sharded and change-selected. The figures are modeled from typical suite profiles, not measured on a named client.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '31% → 4%',
+      metricLabel: 'of failures that were flaky',
+      industry: 'Modeled scenario — regulated financial services release train',
+      problem: 'A quarantine folder with 180 tests in it, no expiry dates, and a release board that had stopped treating a red build as a reason to hold.',
+      outcome: 'Flake root-caused by class — shared state, timing, test-order dependence — with an expiry date on every quarantined test. Modeled figures, offered to show the shape of the work rather than to represent a specific engagement.',
+    },
+
+    // ── Capability areas ───────────────────────────────────────────
+    // All twenty, in the order they were specified, laid out 8 + 8 + 4 across
+    // one continuous bento. The emphasized slots fall where the argument wants
+    // them: 01 opens tall, 08 (AI & Model Assurance) takes the full width at
+    // the end of the first movement, 09 opens the second tall, 16 (Test
+    // Environment Engineering) takes the full width, and 20 closes wide.
+    //
+    // Four areas border another Kangqore service, and each says so in its own
+    // description rather than being dropped: 06 hands the platform itself to
+    // DevOps and managed infrastructure, 07 hands the data platform to data
+    // engineering, 08 hands production drift to MLOps and the regulatory file
+    // to AI governance, and 11 hands penetration testing and the security
+    // program to IT security. Stating the seam is more useful to a buyer than
+    // either claiming it or silently omitting it.
+    capabilitiesLabel: 'QUALITY ENGINEERING & ASSURANCE SERVICES',
+    capabilitiesSectionTitle: 'Quality Engineering & Assurance',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Twenty areas spanning strategy through managed operation — applications, APIs, data, AI, cloud, packaged platforms and connected products — including the four seams where another Kangqore practice takes over, named on the card rather than left implied.',
+    capabilityAreas: [
+      {
+        title: 'Quality Engineering Strategy & Transformation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where the testing budget goes, who owns it, and what it is allowed to block. Most QE transformations fail on the operating model rather than the tooling — a Center of Excellence with no authority over the release gate is a reporting function with a better name.',
+        items: [
+          'Enterprise Quality Engineering Strategy',
+          'QE Maturity Assessment',
+          'Quality Operating Model Design',
+          'Testing Center of Excellence Transformation',
+          'Federated Versus Centralized QE Models',
+          'Quality Governance & Decision Rights',
+          'Automation Strategy & Investment Case',
+          'Toolchain Rationalization',
+          'Quality Metrics That Can Be Falsified',
+          'Test Estate Cost Modeling',
+          'Skills Assessment & Capability Building',
+          'Engineering Process Optimization',
+          'QE Transformation Roadmap',
+          'Benefit Baselining Before Any Build',
+        ],
+      },
+      {
+        title: 'Continuous Testing & DevOps Quality Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Feedback while the change is still in an engineer’s head. The constraint is rarely coverage — it is suite runtime.',
+        items: [
+          'Shift-Left Test Integration',
+          'Pre-Merge and Post-Merge Test Split',
+          'Continuous Integration Test Orchestration',
+          'Continuous Regression Engineering',
+          'Automated Release Gate Design',
+          'Change-Impact Test Selection',
+          'Pipeline Runtime Budgeting',
+          'Static Analysis & Code Quality Gates',
+          'Build Health and Red-Build Response',
+          'Deployment and Post-Release Verification',
+          'Environment-Aware Test Routing',
+          'Progressive Delivery Verification',
+          'Shift-Right and Production Testing',
+          'DORA Metric Instrumentation',
+        ],
+      },
+      {
+        title: 'Intelligent Test Automation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'AI where it lowers the cost of owning a test, not just writing one. Four hundred generated tests for a module that needed nine is maintenance, not coverage.',
+        items: [
+          'AI-Assisted Test Generation',
+          'Specification-to-Test Derivation',
+          'Risk-Based Test Selection',
+          'Prioritization by Failure Probability',
+          'Regression Suite Optimization',
+          'Duplicate and Redundant Test Detection',
+          'Automated Defect Triage & Clustering',
+          'Failure Root-Cause Analysis',
+          'Flaky Test Detection & Classification',
+          'Self-Healing Locator Strategies',
+          'Visual and Layout Validation',
+          'Automation Maintenance Reduction',
+          'Coverage Gap Inference',
+          'Review Standards for Generated Tests',
+        ],
+      },
+      {
+        title: 'Functional & End-to-End Quality Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Proving the business process works, not that each component returned a 200 — and pushing the rest down a layer.',
+        items: [
+          'Functional Test Design',
+          'Business Process Validation',
+          'End-to-End Journey Automation',
+          'System Integration Testing',
+          'Critical Path Identification',
+          'Rules Engine and Calculation Testing',
+          'Workflow and State Machine Coverage',
+          'User Acceptance Test Support',
+          'Exploratory and Charter-Based Testing',
+          'Regression Suite Architecture',
+          'Cross-Application Scenario Testing',
+          'Negative and Boundary Case Design',
+          'Formal Test Design Techniques',
+          'Suite Pruning and Layer Rebalancing',
+        ],
+      },
+      {
+        title: 'API, Microservices & Distributed Systems Assurance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Contract testing is what lets two teams deploy independently without a shared suite neither of them owns.',
+        items: [
+          'REST and GraphQL API Testing',
+          'Consumer-Driven Contract Testing',
+          'OpenAPI and Schema Conformance',
+          'Backward Compatibility Verification',
+          'Microservice Integration Testing',
+          'Event-Driven and Message Queue Testing',
+          'Idempotency and Retry Behavior',
+          'Distributed Tracing Inside Tests',
+          'Service Virtualization for Dependencies',
+          'Timeout, Circuit Breaker and Fallback Paths',
+          'Payload and Serialization Validation',
+          'API Versioning and Deprecation Checks',
+          'Rate Limit and Throttling Behavior',
+          'API Security Validation in the Pipeline',
+        ],
+      },
+      {
+        title: 'Cloud & Infrastructure Assurance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Testing the configuration and deployment topology an application depends on, because the outage is at least as likely to come from a security group as from a null pointer. We validate infrastructure as part of the release evidence; building and running the platform itself is our DevOps and managed infrastructure work.',
+        items: [
+          'Infrastructure-as-Code Validation',
+          'Terraform and Pulumi Plan Testing',
+          'Kubernetes Manifest and Policy Testing',
+          'Container Image Verification',
+          'Configuration Drift Detection',
+          'Multi-Cloud and Hybrid Assurance',
+          'Serverless Function Testing',
+          'Autoscaling Behavior Verification',
+          'Network and Connectivity Validation',
+          'Secrets and Configuration Handling',
+          'Cost Guardrail Testing',
+          'Deployment Topology Verification',
+          'Blue-Green and Canary Infrastructure Checks',
+          'Cloud Migration Assurance',
+        ],
+      },
+      {
+        title: 'Data Quality & Data Reliability Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A silent data defect costs more than a crash, because nobody finds it for a quarter. Platform build sits with data engineering.',
+        items: [
+          'ETL and ELT Pipeline Testing',
+          'Source-to-Target Reconciliation',
+          'Schema Evolution and Data Contracts',
+          'Referential Integrity Verification',
+          'Row Count and Checksum Validation',
+          'Data Freshness and Latency Checks',
+          'Streaming and Event Data Validation',
+          'Null, Duplicate and Outlier Detection',
+          'Slowly Changing Dimension Testing',
+          'Transformation Logic Verification',
+          'BI and Report Output Validation',
+          'Data Migration Reconciliation',
+          'Data Quality Rule Engineering',
+          'Pipeline Failure and Replay Testing',
+        ],
+      },
+      {
+        title: 'AI & Model Assurance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'AI features break the assumption every test framework is built on: that one input gives one output. Assertions become thresholds, a pass becomes a distribution, and a regression is a shift you can only detect if you were already measuring — which is why the evaluation set built from your real traffic is the asset and the harness is a commodity. Pre-release evaluation is this service. Production drift monitoring belongs to our MLOps practice, and the fairness, explainability and regulatory file an assessor reads belongs to AI governance.',
+        items: [
+          'Evaluation Sets Built From Real Traffic',
+          'Golden Dataset Curation & Versioning',
+          'Threshold and Tolerance Design',
+          'Retrieval Quality Evaluation for RAG',
+          'Grounding and Citation Verification',
+          'Hallucination and Fabrication Testing',
+          'Prompt and Model Version Regression',
+          'Calibrated LLM-as-Judge Harnesses',
+          'AI Agent and Tool-Use Testing',
+          'Adversarial and Prompt Injection Suites',
+          'Model Accuracy and Performance Validation',
+          'Latency and Token Cost Regression',
+          'Human Review Sampling Design',
+          'Evaluation Results as a Release Gate',
+        ],
+      },
+      {
+        title: 'Performance Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Performance is a design property, and a load test at the end of a program mostly tells you what you can no longer afford to change. The tool is the easy part — a test against a scaled-down environment with uniform synthetic traffic produces a number that is precise and wrong, so the work is the workload model, the data volume and the think time.',
+        items: [
+          'Performance Requirements & SLO Definition',
+          'Workload Modeling From Real Traffic',
+          'Load and Volume Testing',
+          'Soak and Endurance Testing',
+          'Spike and Burst Testing',
+          'Stress and Breakpoint Analysis',
+          'Scalability and Concurrency Modeling',
+          'Latency Profiling and Percentile Analysis',
+          'Bottleneck Isolation',
+          'Database and Query Performance',
+          'API Throughput Validation',
+          'Front-End Performance and Core Web Vitals',
+          'Capacity Planning Evidence',
+          'Performance Regression Inside CI',
+        ],
+      },
+      {
+        title: 'Reliability & Resilience Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Not whether a dependency fails, but what your system does in the ninety seconds after it does.',
+        items: [
+          'Failure Mode and Effects Analysis',
+          'Fault Injection Experiments',
+          'Chaos Engineering Game Days',
+          'Dependency Failure Simulation',
+          'Graceful Degradation Verification',
+          'Failover and Recovery Validation',
+          'High Availability Testing',
+          'Recovery Time and Recovery Point Verification',
+          'Blast Radius Analysis',
+          'Retry, Backoff and Idempotency Testing',
+          'Data Consistency Under Partition',
+          'Rollback and Roll-Forward Rehearsal',
+          'SLO and Error Budget Validation',
+          'Incident Response Rehearsal',
+        ],
+      },
+      {
+        title: 'Security Testing & Digital Assurance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Fast, deterministic checks inside the build, gated on new findings rather than the backlog. Penetration testing is a separate service.',
+        items: [
+          'Static Application Security Testing',
+          'Dynamic Application Security Testing',
+          'Software Composition Analysis',
+          'Container and Image Scanning',
+          'Secrets Detection in Code and Config',
+          'Infrastructure Security Policy Checks',
+          'Authentication and Session Testing',
+          'Authorization and Privilege Escalation Checks',
+          'Input Validation and Injection Testing',
+          'API Security Verification',
+          'Security Regression Suites',
+          'Privacy and Data Handling Validation',
+          'Secure Configuration Baselines',
+          'Vulnerability Triage and Gate Policy',
+        ],
+      },
+      {
+        title: 'UX, Accessibility & Experience Assurance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Scanners find a minority of WCAG failures. The rest needs a keyboard, a screen reader and someone who knows.',
+        items: [
+          'WCAG 2.2 AA Conformance Testing',
+          'Automated Accessibility Scanning in CI',
+          'Manual Keyboard and Focus-Order Testing',
+          'Screen Reader Testing on NVDA, JAWS and VoiceOver',
+          'EN 301 549 and Section 508 Evidence',
+          'Cognitive Load and Plain Language Review',
+          'Accessibility Statement Substantiation',
+          'Cross-Browser Compatibility Matrix',
+          'Responsive and Viewport Coverage',
+          'Visual and Layout Regression',
+          'Core Web Vitals Lab and Field Validation',
+          'Localization and Internationalization Testing',
+          'Usability and Journey Validation',
+          'Assistive Technology Regression Suites',
+        ],
+      },
+      {
+        title: 'Mobile, Omnichannel & Connected Product Assurance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The device matrix is larger than any suite can cover, so coverage becomes a sampling decision. You cannot patch a shipped device weekly.',
+        items: [
+          'Native iOS and Android Automation',
+          'Hybrid and Cross-Platform App Testing',
+          'Real Device and Device Farm Execution',
+          'Device and OS Coverage Strategy',
+          'Network Condition and Offline Testing',
+          'Battery, Memory and Resource Profiling',
+          'App Store Release Verification',
+          'Omnichannel Journey Continuity',
+          'Wearable and Companion App Testing',
+          'IoT Device and Telemetry Validation',
+          'Firmware and Over-the-Air Update Testing',
+          'Hardware-in-the-Loop Harnesses',
+          'Edge and Intermittent Connectivity Behavior',
+          'Backward Compatibility Across Shipped Versions',
+        ],
+      },
+      {
+        title: 'ERP & Enterprise Platform Assurance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Testing systems you did not write, cannot change, and do not control the release calendar for. A vendor upgrade lands whether or not your regression pack is ready, which is why the investment that pays is a business-process pack that survives the upgrade rather than scripts pinned to a screen layout somebody in Walldorf is about to move.',
+        items: [
+          'SAP S/4HANA Business Process Automation',
+          'Oracle Cloud and E-Business Suite Regression',
+          'Salesforce Release and Sandbox Testing',
+          'Microsoft Dynamics 365 Validation',
+          'ServiceNow Release Verification',
+          'Vendor Upgrade Impact Assessment',
+          'Cross-Module Process Testing',
+          'Configuration and Customization Validation',
+          'Role, Permission and Segregation-of-Duties Testing',
+          'Interface and Middleware Regression',
+          'Master Data Validation',
+          'Localization and Statutory Variant Testing',
+          'ERP Migration and Cutover Assurance',
+          'Packaged Application Test Data Handling',
+        ],
+      },
+      {
+        title: 'Test Data Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'You cannot copy production, and synthetic data only holds the cases somebody thought of. You need both, plus the refresh nobody budgets for.',
+        items: [
+          'Synthetic Test Data Generation',
+          'Production Data Masking & Anonymization',
+          'Referentially Intact Subsetting',
+          'Edge-Case and Boundary Data Design',
+          'Data Refresh and Reset Automation',
+          'Self-Service Test Data Provisioning',
+          'PII Discovery and Classification',
+          'Reversibility and Re-Identification Review',
+          'Regulatory Controls on Test Data',
+          'Dataset Versioning and Snapshotting',
+          'High-Volume Data Generation for Load',
+          'Cross-System Data Consistency',
+          'Test Data Ownership and Lifecycle',
+          'Data Handling Evidence for Audit',
+        ],
+      },
+      {
+        title: 'Test Environment Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Testing does not scale when environments are shared, manually provisioned and booked a fortnight in advance. The hours engineers spend waiting for a slot rarely appear in any quality budget and are frequently larger than the entire tooling spend — which is why ephemeral environments and virtualized dependencies are a quality investment rather than a platform luxury.',
+        items: [
+          'Ephemeral Environment Provisioning',
+          'Environment-as-Code Definitions',
+          'Containerized Dependencies for Tests',
+          'Service Virtualization and Stubbing',
+          'Third-Party Sandbox Management',
+          'Environment Parity and Drift Detection',
+          'Configuration Management Across Environments',
+          'Environment Health Monitoring',
+          'Booking, Scheduling and Contention Removal',
+          'Environment Reset and Teardown Automation',
+          'Dependency Availability Mapping',
+          'Cost Attribution for Test Environments',
+          'On-Demand Preview Environments',
+          'Environment Readiness Gates',
+        ],
+      },
+      {
+        title: 'Quality Observability & Release Intelligence',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Bringing engineering, test and production signals into one view, so the question changes from did the tests pass to can we confidently release. A dashboard nobody acts on is reporting — the measure of this work is whether a release decision has ever actually changed because of it.',
+        items: [
+          'Quality Signal Aggregation',
+          'Release Readiness Scoring',
+          'Release Risk Modeling',
+          'Defect Analytics and Pattern Detection',
+          'Escaped Defect Analysis',
+          'Test Effectiveness Measurement',
+          'Flake and Suite Health Telemetry',
+          'Production Quality Monitoring',
+          'Change Failure Rate Tracking',
+          'Quality Trend Analysis',
+          'Executive Quality Reporting',
+          'Engineering KPI Instrumentation',
+          'Release Evidence Pack Generation',
+          'Post-Incident Test Gap Attribution',
+        ],
+      },
+      {
+        title: 'Business & Regulatory Assurance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'In a regulated group the evidence is the deliverable. A by-product of running, not a scramble before an audit.',
+        items: [
+          'Business Process Assurance',
+          'Regulatory Control Validation',
+          'Compliance Test Design',
+          'Audit Evidence Generation',
+          'Financial Calculation and Reporting Verification',
+          'Segregation-of-Duties Verification',
+          'Traceability From Requirement to Test',
+          'Validation Documentation for Regulated Systems',
+          'User Acceptance Test Governance',
+          'Operational Risk Scenario Testing',
+          'Customer Outcome Verification',
+          'Records Retention and Integrity Checks',
+          'Change Control Evidence',
+          'Business Continuity Scenario Validation',
+        ],
+      },
+      {
+        title: 'Quality Engineering for Modernization & Migration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Everything moves at once, so there is no stable reference. The answer is parity: run both and compare the outputs.',
+        items: [
+          'Legacy Application Assessment',
+          'Existing Test Asset Discovery',
+          'Functional Parity Test Design',
+          'Parallel Run and Output Comparison',
+          'Data Migration Reconciliation',
+          'Monolith-to-Microservices Validation',
+          'API Modernization Contract Testing',
+          'Performance Benchmarking Against Legacy',
+          'Cutover Rehearsal and Dry Runs',
+          'Rollback and Contingency Testing',
+          'Phased Migration Wave Validation',
+          'Post-Migration Stabilization',
+          'Decommissioning Evidence',
+          'Knowledge Capture From Legacy Behavior',
+        ],
+      },
+      {
+        title: 'Managed Quality Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Running the suite, the environments and the release evidence under a service level, for teams who want the assurance without carrying a permanent specialist function. The line we hold is that everything stays operable by your own people — an estate only we can run is a commercial arrangement, not an engineering outcome.',
+        items: [
+          'Managed QE Service Delivery',
+          'Testing-as-a-Service Models',
+          'Managed Automation Operations',
+          'Managed Regression Cycles',
+          'Release Certification Service',
+          'Dedicated and Blended QE Pods',
+          'Test Environment Management',
+          'Test Data Operations',
+          'Round-the-Clock Suite and Pipeline Monitoring',
+          'Break-Fix Within Agreed Response Times',
+          'Quality Governance and Reporting',
+          'SLA Definition and Measurement',
+          'Continuous Suite Rationalization',
+          'Transition and Exit Planning',
+        ],
+      },
+    ],
+
+    // ── Enterprise assurance architecture ──────────────────────────
+    // Rendered from this data as stacked bands rather than as an SVG, so every
+    // node name is real selectable text the crawler receives and a screen
+    // reader announces in order — and so it reflows on a phone instead of
+    // becoming a horizontal scroll. Read downward as a decomposition: the
+    // outcome at the top is supported by the layer beneath it, all the way to
+    // the systems a release can actually break.
+    enterpriseArchitecture: {
+      eyebrow: 'THE ENTERPRISE ASSURANCE ARCHITECTURE',
+      title: 'Quality is not a stage.',
+      titleHighlight: 'It is a layered system.',
+      lede: 'Testing activities produce signals. Signals only become useful once something turns them into a release decision, and a decision only matters if it is attached to an outcome somebody is accountable for. Six layers, each one supported by the layer beneath it.',
+      layers: [
+        {
+          label: 'Enterprise Outcome',
+          role: 'What the business is actually protecting',
+          nodes: ['Change Failure Rate', 'Time to Market', 'Customer Impact', 'Regulatory Exposure', 'Cost of Quality', 'Revenue-Affecting Incidents'],
+        },
+        {
+          label: 'Release Decision Intelligence',
+          role: 'The decision the entire system exists to support',
+          nodes: ['Release Risk', 'Readiness Scoring', 'Blocking Criteria', 'Named Approver', 'Override Record', 'Business Risk Assessment'],
+        },
+        {
+          label: 'Quality Intelligence',
+          role: 'Signals turned into something a person can act on',
+          nodes: ['Test Intelligence', 'Suite Health & Flake Rate', 'Coverage by Risk', 'Defect Analytics', 'Escaped Defect Attribution', 'Production Signals'],
+        },
+        {
+          label: 'Continuous Assurance',
+          role: 'Five assurance domains running against every change',
+          nodes: ['Application & Integration', 'Data & AI', 'Experience & Accessibility', 'Performance & Resilience', 'Security & Compliance'],
+        },
+        {
+          label: 'Engineering & Automation',
+          role: 'The machinery that produces the evidence',
+          nodes: ['CI/CD Pipelines', 'Test Automation', 'Test Data', 'Environments & Virtualization', 'Security Scanning', 'Evaluation Harnesses'],
+        },
+        {
+          label: 'Systems Under Test',
+          role: 'Everything a release is capable of breaking',
+          nodes: ['Applications', 'APIs & Services', 'Data Pipelines', 'AI Models', 'Cloud Infrastructure', 'Packaged Platforms', 'Connected Devices'],
+        },
+      ],
+      principle: 'Quality is engineered at the source, validated continuously across the lifecycle, observed in production, and converted into a release decision somebody is willing to put their name against.',
+    },
+
+    // ── Delivery methodology ───────────────────────────────────────
+    // Renders in the journey section, which draws a numbered spine and is
+    // length-agnostic, and feeds the HowTo node in seo/serviceSchema.js — the
+    // shape an answer engine quotes when asked how an engagement runs. Eight
+    // phases, ending on Optimize rather than on Assure: a quality system that
+    // does not get cheaper to run every quarter is being maintained, not
+    // improved.
+    //
+    // The journey band is suppressed by default on any service that defines
+    // servicePackages, because the generic four-phase default duplicated them.
+    // This one does not: the methodology is how delivery runs, the packages
+    // are how it is bought.
+    showJourney: true,
+    journeyEyebrow: 'THE DELIVERY METHODOLOGY',
+    journeyHeading: 'Eight phases,',
+    journeyHeadingHighlight: 'and the last one is the point.',
+    journeyLede: 'Assessment through continuous optimization. Programs are routinely funded to Assure and then stop, which is why the same class of defect keeps reaching customers — Observe and Optimize are the two phases that compound, and the two that get cut when a date moves.',
+    journeyStats: [['Phases', '08'], ['Typical', '6\u201316 wks'], ['Exit', 'Your team runs it']],
+    customJourney: [
+      { phase: 'ASSESS',     color: '#94A3B8', icon: 'Search',      title: 'Understand the Current Estate',     desc: 'Applications, architecture, existing suites, automation, pipelines, data, environments and the organization around them. The output most clients have never had: what the test estate costs and what share of its red is real.' },
+      { phase: 'ARCHITECT',  color: '#7B94D8', icon: 'Layers',      title: 'Design the Target Quality Model',   desc: 'Test architecture, automation architecture, pipeline integration, data and environment strategy, AI evaluation approach and the governance that decides who can override a gate.', kangqore: true },
+      { phase: 'PRIORITIZE', color: '#60A5FA', icon: 'Target',      title: 'Spend the Budget Where Risk Is',    desc: 'Not every system deserves the same assurance. Systems are classified on business criticality, change frequency, technical complexity, customer impact and regulatory exposure, and each gets a proportionate strategy rather than one standard applied everywhere.', kangqore: true },
+      { phase: 'ENGINEER',   color: '#3B82F6', icon: 'Cpu',         title: 'Build Quality Into Delivery',       desc: 'Frameworks, pipeline gates, API and contract validation, data validation, performance harnesses, security scanning, environments, evaluation sets and observability — built into engineering rather than bolted onto the end of it.', kangqore: true },
+      { phase: 'AUTOMATE',   color: '#2564EA', icon: 'Zap',         title: 'Replace Repetition With Leverage',  desc: 'Progressively across unit, API, contract, integration, UI, end-to-end, performance, security and AI evaluation. The objective is never maximum automation — it is maximum engineering leverage per hour of maintenance.', kangqore: true },
+      { phase: 'ASSURE',     color: '#2AA8D8', icon: 'ShieldCheck', title: 'Run Continuous Assurance',          desc: 'Validation runs across development, integration, pre-production, deployment and production, and the release decision is supported by evidence rather than by intuition and a green check mark.', kangqore: true },
+      { phase: 'OBSERVE',    color: '#22B8B0', icon: 'Eye',         title: 'Compare Against Production',        desc: 'What escaped, why it escaped, which systems are most exposed, which tests should have caught it and where automation should expand next. Almost no program funds this stage, which is why the same class of defect keeps reaching customers.', kangqore: true },
+      { phase: 'OPTIMIZE',   color: '#10B981', icon: 'TrendingUp',  title: 'Improve the System Itself',         desc: 'Suites, environments, gates, metrics and evaluation sets tuned with real telemetry. A quality system that is not getting cheaper to run each quarter is being maintained rather than improved.', kangqore: true },
+    ],
+
+    // ── Accelerators ───────────────────────────────────────────────
+    // Deliberately named as methods and reusable assets rather than as
+    // products, and with no trademark symbols: Kangqore licenses no software,
+    // and eight registered marks on one page would be a representation to a
+    // buyer that the page cannot support. The footnote says so plainly, because
+    // a prospect who discovers the gap themselves discounts everything else on
+    // the page along with it.
+    accelerators: {
+      eyebrow: 'HOW WE ARRIVE FASTER',
+      title: 'Eight things we bring',
+      titleHighlight: 'on day one.',
+      lede: 'Methods, reference implementations and reusable assets carried from one engagement to the next — so the first sprint starts from a position rather than from a blank repository.',
+      items: [
+        {
+          name: 'Quality Intelligence Fabric',
+          desc: 'The aggregation layer that pulls build, test, defect, environment, security and production signals into one model, so release risk is computed rather than argued.',
+          functions: ['Signal aggregation across tools', 'Release risk analysis', 'Defect and failure clustering', 'Executive quality reporting'],
+        },
+        {
+          name: 'Test Intelligence Engine',
+          desc: 'Decides what to run on this change rather than running everything on every change. The difference between a suite used before merge and a suite read the next morning.',
+          functions: ['Change-impact test selection', 'Prioritization by failure probability', 'Regression suite optimization', 'Redundant test detection'],
+        },
+        {
+          name: 'Autonomous Assurance Framework',
+          desc: 'Our reference automation architecture — fixtures, data builders, page objects, retry semantics and reporting — so the fifth test is faster to write than the first and the fiftieth is still maintainable.',
+          functions: ['Framework and fixture reference build', 'Resilient locator patterns', 'Deterministic setup and teardown', 'Environment-aware execution'],
+        },
+        {
+          name: 'AI Assurance Framework',
+          desc: 'The evaluation scaffolding for features whose output changes between runs: how the set is built, how thresholds are set, and how a scored regression becomes a gate.',
+          functions: ['Evaluation set construction', 'Retrieval and grounding scoring', 'Calibrated judge harnesses', 'Adversarial and injection suites'],
+        },
+        {
+          name: 'Release Confidence Index',
+          desc: 'A composite of code risk, coverage by risk, open defects, security findings, performance, reliability and business criticality — weighted against your baseline, not a published benchmark.',
+          functions: ['Weighted composite scoring', 'Per-domain readiness breakdown', 'Blocking criteria mapping', 'Trend against your own baseline'],
+        },
+        {
+          name: 'Quality Graph',
+          desc: 'A relationship model linking applications, services, APIs, data, infrastructure, tests, defects, releases, incidents and business processes — so the blast radius of a change is a query rather than a meeting.',
+          functions: ['Change impact traversal', 'Test-to-business-process traceability', 'Incident to missing-test attribution', 'Coverage gap discovery'],
+        },
+        {
+          name: 'Test Environment Fabric',
+          desc: 'Environment definitions, virtualized dependencies and reset automation, aimed squarely at the hours engineers currently spend waiting for a slot somebody else booked.',
+          functions: ['On-demand ephemeral environments', 'Dependency virtualization catalog', 'Parity and drift checks', 'Reset, reseed and teardown'],
+        },
+        {
+          name: 'Quality Migration Accelerator',
+          desc: 'For modernization programs, where the reference system is moving at the same time as the code. Discovery of what the legacy actually does, then parity proved by running both.',
+          functions: ['Legacy behavior discovery', 'Business process mapping', 'Parallel run and output comparison', 'Cutover and rollback rehearsal'],
+        },
+      ],
+      footnote: 'These are Kangqore methods and reusable engineering assets, not licensed products. Nothing here requires you to buy software from us, and everything built on top of them stays in your repositories, operable by your own engineers.',
+    },
+
+    // ── Command center ─────────────────────────────────────────────
+    // Every figure is a worked example, and the component carries the
+    // disclaimer itself rather than trusting a caption to survive a future
+    // edit. A dashboard is the most quotable object on a page and the easiest
+    // to mistake for measurement, so the numbers are shaped to be plausible and
+    // labeled to be unmistakable.
+    commandCenter: {
+      eyebrow: 'WHAT THE REPORTING LOOKS LIKE',
+      title: 'One console.',
+      titleHighlight: 'One question it answers.',
+      lede: 'Not a wall of test results. A single view built to answer whether this release should go tonight — with the domains that make up the answer, the signals moving underneath it, and the risks somebody has to accept by name if it ships anyway.',
+      headline: {
+        label: 'Release Confidence',
+        value: '92',
+        outOf: '100',
+        note: 'Composite of code risk, coverage by risk, open defects, security findings, performance, reliability and business criticality — weighted against your baseline.',
+      },
+      domains: [
+        { label: 'Application & Integration', value: 95 },
+        { label: 'Data & AI', value: 97 },
+        { label: 'Security & Compliance', value: 91 },
+        { label: 'Performance & Reliability', value: 94 },
+      ],
+      signals: [
+        { illustrative: true, label: 'Critical defects open', value: '2', good: false },
+        { illustrative: true, label: 'Failures that were real', value: '96.9%' },
+        { illustrative: true, label: 'Commit to verdict', value: '13 min' },
+        { illustrative: true, label: 'Defect escape rate', value: 'down 34%' },
+        { illustrative: true, label: 'Regression wall-clock', value: 'down 61%' },
+        { illustrative: true, label: 'Suite maintenance load', value: 'down 48%' },
+        { illustrative: true, label: 'Coverage on critical paths', value: 'up 47%' },
+        { illustrative: true, label: 'Release frequency', value: 'up 28%' },
+        { illustrative: true, label: 'Quarantined tests past expiry', value: '4', good: false },
+      ],
+      risksLabel: 'Accepted if this release ships tonight',
+      risks: [
+        { item: 'Payment provider sandbox unavailable since 14:20 — integration path unverified', level: 'HIGH' },
+        { item: 'Mobile authentication journey covered on iOS only; Android device farm queue exceeded window', level: 'MEDIUM' },
+        { item: 'Reconciliation pipeline latency 2.4x baseline under peak workload model', level: 'MEDIUM' },
+        { item: 'Two accessibility findings on the account settings flow, neither on a statutory path', level: 'LOW' },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────
+    // Five nodes, because the template lays architectureNodes out four to a row
+    // otherwise and five each get their own column. A loop rather than a
+    // waterfall, and it deliberately ends on Learn: closing the gap between
+    // what escaped and which test should have caught it is the stage every
+    // program funds last and the only one that compounds.
+    architectureEyebrow: 'THE QUALITY LOOP',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Scope to Learn.',
+    architectureLede: 'Five stages, and the one that decides the outcome is the last. Most programs are resourced through Run and never close the loop between what reached production and which test should have caught it.',
+    architectureNodes: [
+      {
+        title: 'Scope',
+        icon: 'Search',
+        description: 'Establish what a failure would actually cost, path by path, and set the testing budget against that rather than against a coverage target. The output includes what will deliberately not be covered, written down where a reviewer can see it.',
+        features: [
+          'Critical path and blast-radius mapping',
+          'Failure cost weighted by business impact',
+          'Test layer chosen per risk, not per habit',
+          'Runtime and maintenance budget agreed',
+          'Deliberate non-coverage recorded',
+        ],
+      },
+      {
+        title: 'Engineer',
+        icon: 'Layers',
+        description: 'Build the suite the way you would build a product: an owner, standards, code review, and assertions written against contracts rather than against whatever the implementation happened to do that week.',
+        features: [
+          'Framework and fixture architecture',
+          'Assertions on contracts, not internals',
+          'Deterministic setup and teardown',
+          'Test data and environment dependencies designed in',
+          'Test code reviewed like production code',
+        ],
+      },
+      {
+        title: 'Run',
+        icon: 'Zap',
+        description: 'Execute at a speed the pipeline can absorb. A suite an engineer will not wait for is a suite that stops being run before merge, which turns every safety property it had into a nightly report nobody opens.',
+        features: [
+          'Parallelization and sharding',
+          'Change-impact selection per commit',
+          'Flake detected and classified in the run',
+          'Full suite scheduled, fast suite on every push',
+          'Runtime tracked as a budget with a ceiling',
+        ],
+      },
+      {
+        title: 'Decide',
+        icon: 'ShieldCheck',
+        description: 'The gate. A short, agreed list of failures worth stopping a release for, a named approver for the exceptions, and a record of every override — because an override nobody counts becomes the process within two quarters.',
+        features: [
+          'Blocking criteria agreed in advance',
+          'Named approver and logged overrides',
+          'Evidence pack a release manager can read',
+          'Risk accepted explicitly, not by silence',
+          'Progressive rollout where the gate cannot be certain',
+        ],
+      },
+      {
+        title: 'Learn',
+        icon: 'Activity',
+        description: 'What escaped, why it escaped, and which test should have caught it. This is the stage that compounds, and the stage that is cut first when a date moves.',
+        features: [
+          'Escaped defect analysis by root cause',
+          'Missing-test gaps fed back into scope',
+          'Flake rate and time-to-verdict trended',
+          'Tests that never fail reviewed for deletion',
+          'Change failure rate reported to delivery',
+        ],
+      },
+    ],
+
+    // ── The argument ──────────────────────────────────────────────
+    // Both columns describe teams that test, and both suites are green on the
+    // day you look. The difference is entirely in whether anybody changes their
+    // behavior when one of them turns red.
+    comparisonTable: {
+      eyebrow: 'WHERE TEST SUITES QUIETLY STOP WORKING',
+      heading: 'Both suites are green.',
+      lede: 'Neither column describes a team that does not test. They differ in whether anybody still changes their behavior when the build turns red.',
+      beforeLabel: 'TESTS AS A DELIVERABLE',
+      afterLabel: 'THE SUITE AS A PRODUCT',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'DELIVERED',
+      afterShort: 'OWNED',
+      rows: [
+        {
+          dimension: 'When the build goes red',
+          before: 'Someone presses retry. It passes second time, the change merges, and nothing anywhere records that it happened.',
+          after: 'Every failure is classified as real or flaky inside the run. Flake rate is a tracked number with an owner and a target, so a retry becomes data rather than a reflex.',
+        },
+        {
+          dimension: 'What the coverage number measures',
+          before: 'A line-coverage percentage on a dashboard, reached by tests that execute the code without asserting anything meaningful about it.',
+          after: 'Coverage argued path by path against risk, with mutation testing used to check whether the tests would notice a defect at all. What is left uncovered is written down.',
+        },
+        {
+          dimension: 'How long from commit to a verdict',
+          before: 'A suite that grew to forty minutes one test at a time, so engineers batch their changes and stop running it before merging.',
+          after: 'Runtime treated as a delivery constraint with a ceiling: parallelized, sharded, change-selected, and pruned of tests that were never load-bearing.',
+        },
+        {
+          dimension: 'Who owns the test code',
+          before: 'A separate team, or nobody. It is outside code review, it has no standards, and it is the first thing dropped when a date moves.',
+          after: 'Owned by the team that owns the service, reviewed like production code, with a maintenance budget defended in planning rather than borrowed from it.',
+        },
+        {
+          dimension: 'What the release gate blocks on',
+          before: 'Everything, so it gets overridden most weeks, and within two quarters the override is the process.',
+          after: 'A short list of failures worth stopping a release for, agreed in advance, with a named approver for exceptions and every override recorded.',
+          link: { href: '/services/devops-as-a-service', label: 'Pipeline engineering' },
+        },
+        {
+          dimension: 'A test that has been failing for three weeks',
+          before: 'Muted, with a ticket nobody will pick up. The coverage number does not move, so nothing signals what was lost.',
+          after: 'Quarantined with an expiry date. Fixed, rewritten or deleted before that date, and the gap it leaves stays visible on the risk register until then.',
+        },
+        {
+          dimension: 'A feature whose output changes every run',
+          before: 'Checked by hand before release, then not at all, because no equality assertion could be written for it.',
+          after: 'An evaluation set built from real traffic, thresholds in place of equality, and a scored regression run on every prompt, model or retrieval change.',
+          link: { href: '/services/mlops', label: 'Model operations' },
+        },
+      ],
+    },
+
+    // ── Toolchain ─────────────────────────────────────────────────
+    // Framed by what each tool is genuinely better at, including two rows a
+    // testing vendor has no incentive to write: what automated accessibility
+    // scanning cannot see, and the classes of defect that are cheaper to make
+    // impossible than to test for. We hold no reseller margin on any of these.
+    toolsStack: {
+      eyebrow: 'THE TOOLCHAIN',
+      title: 'The testing tools,',
+      titleHighlight: 'and the tests not worth writing.',
+      subtitle: 'Tool choice is mostly settled by the language your team already writes and by what your pipeline can finish in the time it has. These are the defaults, what overrides them, and where a test is the wrong control entirely.',
+      items: [
+        {
+          icon: 'Globe',
+          title: 'Browser and end-to-end',
+          managed: 'Playwright, Cypress',
+          selfHosted: 'Selenium where the grid and the page objects already exist',
+          desc: 'Playwright is the current default: faster, less flaky by construction, and one API across browsers. Selenium stays where an established grid and a decade of page objects make replacement more expensive than maintenance. Neither choice fixes an inverted pyramid.',
+        },
+        {
+          icon: 'Network',
+          title: 'API and contract',
+          managed: 'REST Assured, Postman and Newman, Schemathesis',
+          selfHosted: 'Pact for consumer-driven contracts',
+          desc: 'The layer most estates under-invest in and the cheapest place to catch an integration break. Contract tests are what let two teams deploy independently without a shared end-to-end suite that neither of them owns.',
+          link: { href: '/services/api-microservices-engineering', label: 'API and microservices engineering' },
+        },
+        {
+          icon: 'Cpu',
+          title: 'Unit and property-based',
+          managed: 'JUnit, pytest, Jest, Vitest, xUnit',
+          selfHosted: 'Hypothesis, fast-check, jqwik',
+          desc: 'Property-based testing earns its place where the input space is larger than anyone can enumerate — parsers, pricing rules, date arithmetic, currency rounding. It finds the case nobody thought to write, which is generally the case that reaches production.',
+        },
+        {
+          icon: 'Activity',
+          title: 'Performance and load',
+          managed: 'k6, Gatling, JMeter, Locust',
+          selfHosted: 'An environment shaped like production, or do not run it',
+          desc: 'The tool is the easy part. A load test against a scaled-down environment with uniform synthetic traffic produces a number that is precise and wrong. The work is the workload model, the data volume and the think time.',
+        },
+        {
+          icon: 'Database',
+          title: 'Test data',
+          managed: 'Delphix, Tonic, Gretel, platform-native masking',
+          selfHosted: 'Domain-specific generators you own',
+          desc: 'Masked production data is realistic and brings a legal argument with it. Synthetic data brings none, but has to be engineered to reproduce the shapes that break things: the null, the duplicate, the emoji in a name field, the record created in 1997.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Environments and virtualization',
+          managed: 'Testcontainers, WireMock, Mountebank, ephemeral preview environments',
+          selfHosted: 'Whatever your platform team already runs',
+          desc: 'Service virtualization is how you test against the payment provider that charges per call and the partner system available two mornings a week. The alternative is a suite whose green depends on somebody else’s uptime.',
+          link: { href: '/services/devops-as-a-service', label: 'Pipeline and environment engineering' },
+        },
+        {
+          icon: 'Eye',
+          title: 'Accessibility',
+          managed: 'axe-core, Pa11y, Lighthouse CI',
+          selfHosted: 'NVDA, JAWS, VoiceOver and a keyboard',
+          desc: 'Automated scanning reliably catches a minority of WCAG failures and cannot judge whether a label is meaningful or a focus order makes sense. Anyone selling full conformance from a scanner is selling the report rather than the conformance.',
+        },
+        {
+          icon: 'BrainCircuit',
+          title: 'Evaluation for AI features',
+          managed: 'Ragas, DeepEval, Promptfoo, Braintrust, LangSmith',
+          selfHosted: 'Your own evaluation set, which is the part that matters',
+          desc: 'The harness is a commodity. The evaluation set built from your real traffic is not, and it is the only thing that makes a model regression visible before a customer finds it. Production monitoring and model governance are separate services.',
+          link: { href: '/services/mlops', label: 'MLOps and model monitoring' },
+        },
+        {
+          icon: 'Shield',
+          title: 'Security checks inside the build',
+          managed: 'Semgrep, Snyk, Trivy, OWASP ZAP, Dependency-Track',
+          selfHosted: 'Gate on new findings, never on the backlog',
+          desc: 'These belong in the pipeline because they are fast and deterministic, and gating on the existing backlog rather than on newly introduced findings is how teams learn to skip the stage. Penetration testing and the security program are a different discipline.',
+          link: { href: '/services/it-security-services', label: 'Security testing and assurance' },
+        },
+        {
+          icon: 'Zap',
+          title: 'The tests not worth writing',
+          managed: 'Type systems, schema validation, feature flags, canary releases',
+          selfHosted: 'A change you can undo in ninety seconds',
+          desc: 'Some defects are cheaper to make impossible than to test for, and some are cheaper to detect in production and roll back. A test is one control among several. Treating it as the only one is how a suite reaches forty minutes and stops being run.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve questions about testing,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ──────────────────────────────────────────────────────
+    // The parity default ran six promotional answers under fifty words each,
+    // and the competitor set runs the same seven questions everywhere: what
+    // makes you different, do you support legacy, do you use AI, can you reduce
+    // cost. None of them is a question a head of engineering opens with.
+    //
+    // These are. Six of them are questions a testing vendor would rather not be
+    // asked: what to cut from a suite, whether coverage targets are worth
+    // having, whether QA teams should exist, what the gate should block on,
+    // what the work costs to run rather than to build, and who owns the tests
+    // afterwards. Sources are attached where a claim would otherwise rest on
+    // our own assertion.
+    customFAQs: [
+      {
+        q: 'Our regression takes fourteen hours. What do we cut?',
+        sources: [
+          { label: 'The Practical Test Pyramid (Ham Vocke, martinfowler.com)', url: 'https://martinfowler.com/articles/practical-test-pyramid.html' },
+        ],
+        a: 'Start by finding out what it is actually testing, because in most fourteen-hour suites the answer is the same six things over and over at the most expensive layer available.\n\nThe first pass is mechanical and usually recovers more than half the wall-clock: run in parallel, shard across machines, and stop rebuilding the world between tests. None of that removes a single assertion, so nobody has to argue about risk to get it.\n\nThe second pass is the real work. Most long suites are inverted — hundreds of browser tests standing in for checks that belong at API or unit level, each one paying the cost of a browser to verify a calculation. Pushing those down keeps the assertion and drops the cost by an order of magnitude. A browser test should exist for a journey that genuinely needs a browser, and there are fewer of those than any suite suggests.\n\nThe third pass is deletion, and it needs a decision-maker in the room. Tests that have never failed in two years, tests asserting on things that were never contracts, tests duplicating a case already covered three layers down. We propose the list, you approve it, and what stays uncovered goes on the record rather than disappearing quietly.',
+      },
+      {
+        q: 'What do we actually do about flaky tests?',
+        sources: [
+          { label: 'Flaky Tests at Google and How We Mitigate Them (Google Testing Blog)', url: 'https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html' },
+          { label: 'An Empirical Analysis of Flaky Tests (Luo et al., FSE 2014)', url: 'https://mir.cs.illinois.edu/marinov/publications/LuoETAL14FlakyTestsAnalysis.pdf' },
+        ],
+        a: 'Measure the rate first, because the argument about what to do is unwinnable while nobody knows the number.\n\nFlake is not one problem, it is four with different fixes. Shared state, where one test leaves behind a row or a cache entry the next one trips over. Timing, where the test waits a fixed number of milliseconds for something that usually takes less. Order dependence, where the suite only passes in the sequence it happened to run in last time. And genuine concurrency, where the code under test really does have a race and the test is right to be unhappy. That last category is the reason blanket auto-retry is dangerous: it hides real defects inside noise the team has been trained to ignore.\n\nSo: classify every failure in the run, not afterwards. Quarantine the worst offenders so they stop poisoning the signal — but with an expiry date attached, because a quarantine folder without expiry dates is just deletion with extra steps. Fix by class rather than one test at a time, since the same shared-state bug is usually behind thirty of them.\n\nThe target that matters is not zero. It is a rate low enough that a red build changes what somebody does next.',
+      },
+      {
+        q: 'Should we be chasing eighty per cent code coverage?',
+        sources: [
+          { label: 'Code Coverage Best Practices (Google Testing Blog)', url: 'https://testing.googleblog.com/2020/08/code-coverage-best-practices.html' },
+        ],
+        a: 'As a diagnostic, coverage is useful. As a target, it reliably produces tests that execute code without checking anything about it, and we would rather tell you that before you set it.\n\nCoverage measures which lines ran while the tests ran. It cannot tell you whether anything was asserted, whether the assertion was meaningful, or whether the untested twenty per cent happens to be your payment path. A codebase at eighty per cent with no assertions in the critical path is in worse shape than one at fifty per cent that covers the paths a failure would actually hurt.\n\nWhat we use instead: coverage read as a map rather than a score, so a low-coverage area triggers a conversation about risk rather than an instruction to write tests. Mutation testing on the parts that matter, which deliberately introduces defects and reports whether any test noticed — the only automated measure that grades the assertions rather than the execution. And an explicit, written record of what is deliberately not covered.\n\nWhere a coverage floor is a regulatory or contractual requirement, we will help you meet it and be honest that meeting it is a compliance activity rather than a quality one.',
+      },
+      {
+        q: 'Is AI going to write our tests now?',
+        a: 'It writes some of them well, and it makes the underlying problem worse if the suite has no owner.\n\nWhere it genuinely helps: generating the boring half of a test once a human has decided what the case should be, filling out boundary and edge cases around a specification, converting a manual script into an automated one, suggesting selectors, and explaining why an unfamiliar test is failing. That is real time saved, and we use it.\n\nWhere it does not help: deciding what is worth testing. A model will happily produce four hundred plausible tests for a module that needed nine, and every one of them is now something your team has to maintain, run and eventually debug at two in the morning. Generated tests also tend to assert on current behavior rather than on intended behavior, which quietly converts a defect into a specification the next person is afraid to change.\n\nThe honest framing is that AI reduces the cost of writing a test, and the cost of writing was never the constraint. The constraint is the cost of owning it. A tool that lowers the first while ignoring the second gets a team to an unmaintainable suite faster than they could have managed by hand.',
+      },
+      {
+        q: 'How do you test a feature whose output is different every time?',
+        sources: [
+          { label: 'Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena (Zheng et al., arXiv)', url: 'https://arxiv.org/abs/2306.05685' },
+          { label: 'Holistic Evaluation of Language Models (Liang et al., arXiv)', url: 'https://arxiv.org/abs/2211.09110' },
+        ],
+        a: 'By giving up on equality and moving to distributions, which is a bigger change to how a team works than it first sounds.\n\nThe unit of work is an evaluation set: a few hundred real inputs taken from your own traffic, each with an agreed judgment of what a good response looks like. Built from real traffic, not invented examples — invented examples test the cases you already thought of, which are the cases that already work. Then you score against it: is the answer grounded in the retrieved source, does it contain the facts it should, does it avoid the ones it must not, is it in the right format, did it cost and take what it should.\n\nA release gate on that is a threshold and a delta, not a pass. Scores move between runs even with no change, so what you actually gate on is a drop beyond normal variance on a set held stable across versions.\n\nA model can be used as a judge, and it is often the only affordable option at volume, but it has known biases — toward longer answers, toward its own style — so it needs calibrating against human judgments on a sample rather than trusting outright. Model monitoring in production and the governance record an assessor reads are separate services; this is the pre-release evidence.',
+      },
+      {
+        q: 'Our QA team is being disbanded and the developers are taking over testing. Is that right?',
+        a: 'Half right, and the half that is usually wrong is the half that costs the most.\n\nMoving test ownership to the teams that own the services is correct. Tests written by the people who wrote the code are faster to write, faster to fix, and get maintained because their authors feel the pain when they break. A separate team writing tests against somebody else’s code produces a suite nobody trusts and everybody works around.\n\nWhat gets lost is the part that was never about writing tests. Somebody has to hold the risk picture across teams, own the test data and environment estate, run performance and accessibility work that no single squad has the depth or the cadence for, and be the person who says the release should not go tonight. Dissolve the function without rehousing those, and the symptoms show up about six months later as a rising escape rate that nobody can attribute.\n\nSo: distribute the test writing, keep a small central capability for the estate, the specialist disciplines and the release decision. Where a group has already dissolved the function, that is often what the first engagement quietly rebuilds.',
+      },
+      {
+        q: 'What should the release gate actually block on?',
+        sources: [
+          { label: 'DORA — DevOps Research and Assessment metrics', url: 'https://dora.dev/guides/dora-metrics-four-keys/' },
+        ],
+        a: 'Less than you think, and it should be written down before the first argument rather than during it.\n\nA gate that blocks on everything gets overridden weekly, and once overriding is routine the gate has stopped functioning while still costing everyone time. The list worth stopping a release for is short: a failure on a critical business path, a new high-severity security finding introduced by this change, a performance regression past an agreed threshold, an accessibility regression on a legally required flow, and a failed data migration check. Everything else is reported, not blocking.\n\nThree things make it hold. Agreement in advance, when nobody is under pressure. A named person who can approve an exception, so overriding is a decision with an owner rather than a shrug. And a count of overrides reviewed monthly — a gate overridden four times in a month is telling you something about itself, not about the teams.\n\nWhat the gate should never block on is a flaky test, which is why the flake work comes before the gate work. Gating on a signal the team already distrusts teaches them to route around it.',
+      },
+      {
+        q: 'We are not allowed to use production data. How do we test anything realistic?',
+        sources: [
+          { label: 'GDPR Article 5 — principles relating to processing of personal data', url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679#d1e1807-1-1' },
+        ],
+        a: 'Two routes, and most estates need both because they fail in different places.\n\nMasking takes a production copy and replaces the identifying fields while preserving structure, distribution and referential integrity across systems. It gives you real shapes — the account with nine hundred transactions, the name with an apostrophe in it, the address that breaks the form. It requires the masking to be genuine rather than cosmetic, because a reversible transformation is still personal data in the eyes of a regulator, and it requires the copy itself to be governed.\n\nSynthetic generation builds records that never described a person. It carries no privacy exposure and can be committed to a repository, but it only contains the cases somebody designed into it — which means it tests what you expected and rarely what you did not.\n\nThe practical answer is a masked, subsetted, referentially intact dataset for integration and end-to-end work, plus synthetic data for the deliberate edge cases nobody wants to go hunting for in production: the null, the duplicate, the leap-second, the record created before your current schema existed. Then the part everybody forgets — refresh and reset automation, because a test dataset that drifts for six months is not less risky than production data, it is just less useful.',
+      },
+      {
+        q: 'How do we test against systems we do not control?',
+        sources: [
+          { label: 'Pact — consumer-driven contract testing', url: 'https://docs.pact.io/' },
+        ],
+        a: 'By deciding, per dependency, whether you are testing your handling of it or testing it — they need opposite approaches and conflating them is why these suites are unreliable.\n\nMost of the time you are testing your own handling: what your code does with a timeout, a malformed payload, a 500, a rate limit, a schema change. That should never touch the real system. Virtualize it, and now you can produce the failure modes the sandbox will not give you on demand, which are the ones that take production down.\n\nWhere the dependency has a contract, contract testing is the higher-value answer. Both sides verify against a shared expectation, and you find out that a provider changed a field when they change it rather than when your end-to-end suite goes red for reasons nobody can localize.\n\nA thin layer of real integration tests still earns its place, run on a schedule rather than on every commit and treated as monitoring: they tell you the sandbox drifted, credentials expired, or the partner shipped something. What they must not do is sit in the merge path, because then your ability to deploy depends on somebody else’s uptime.',
+      },
+      {
+        q: 'What does this cost to run, not to build?',
+        a: 'Build is the number that gets budgeted and the smaller one. Three things make up the rest, and only the first is usually visible.\n\nExecution: compute for the suite, which on a large parallelized estate is a real monthly line, plus licensing for device farms, load generators and commercial tooling. Straightforward, and the one everyone can see.\n\nMaintenance: the engineering time spent repairing tests after legitimate product changes. On an unowned suite this grows until it consumes the majority of the capacity that was supposed to go into new coverage, which is why the automation backlog stops moving and nobody can quite say when it stopped.\n\nEnvironments and data: provisioning, refresh, masking, contention, and the hours engineers spend waiting for a slot. Rarely attributed to quality engineering and frequently larger than the tooling budget.\n\nWe are pre-launch and do not publish rate cards, so the honest commitment is about shape rather than price: the assessment is scoped so you can stop after it and keep the findings, and the numbers we report afterwards are measured against the baseline we took before starting rather than against an industry benchmark.',
+      },
+      {
+        q: 'Who owns the tests after you leave?',
+        a: 'Your teams, and we build on that assumption from the first sprint rather than negotiating it at handover.\n\nIn practice that means tests written in the language your engineers already work in, not a framework that requires us. It means the suite living in your repositories under your review process from day one. It means fixtures, helpers and data builders documented well enough that somebody who was not there can add the twentieth test as easily as we added the fifth. And it means your engineers pairing on the build rather than receiving a repository and a slide deck at the end.\n\nIt also means being straight about the load. A suite has an ongoing cost, and a program resourced for build with nothing for maintenance stalls in its second year with total predictability. If carrying that is not realistic for your team, we will run it under a service level and price it separately — but that is a commercial arrangement, not an engineering outcome. The line we hold is that the suite must remain operable by your own people. A test estate only we can maintain is a dependency we sold you.',
+      },
+      {
+        q: 'Where does quality engineering stop and your other services start?',
+        sources: [
+          { label: 'NIST SP 800-218, Secure Software Development Framework', url: 'https://csrc.nist.gov/pubs/sp/800/218/final' },
+        ],
+        a: 'Testing touches almost everything, which is exactly why the boundary needs stating rather than blurring.\n\nWe own the suite, the test data and environment estate, performance and resilience evidence, accessibility conformance testing, and the release gate. That is the work on this page and it goes as deep as we can take it.\n\nWe do not own the pipeline platform itself, the infrastructure it deploys to, or the environments as a permanent capability — that is pipeline and platform engineering. We do not own the security program: the scanners belong in the build and we put them there, but threat modeling, penetration testing, identity and the response function are a separate discipline. We do not own production model monitoring, drift or retraining, and we do not own model governance — risk tiering, bias and fairness assessment, explainability and the file an assessor reads. We do not own data platform quality, and we do not own process redesign.\n\nThe division that matters in practice: this service decides whether a change is safe to ship and produces the evidence for that decision. What happens to the system afterwards, and who is accountable for it, belongs to the services linked throughout this page.',
+      },
+    ],
+
+    // ── How we engage ─────────────────────────────────────────────
+    // The first package measures a suite that already exists, deliberately
+    // ahead of any build offer. Almost no inbound quality conversation is "we
+    // have no tests" -- it is "we have thirty thousand and the build is red
+    // again", and a page that only sells new automation is answering a question
+    // nobody asked.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'starting with the suite you have.',
+    engagementLede: 'Most groups arrive with a suite rather than a blank page. The useful first engagement is usually a measurement of what the existing tests are telling you, not a proposal to write more of them.',
+    servicePackages: [
+      {
+        name: 'Test Estate Assessment',
+        description: 'For suites that already exist and are getting harder to trust. What you have, what it is really testing, how much of your red is noise, and what the whole thing costs to keep running.',
+        deliverables: [
+          'Flake rate measured across recent build history, by test and by class',
+          'Suite runtime profiled and the critical path to a verdict identified',
+          'Coverage read against business risk rather than as a percentage',
+          'Maintenance load estimated as a share of engineering capacity',
+          'Keep, rewrite, push-down or delete recommendation per test group',
+        ],
+      },
+      {
+        name: 'Suite Remediation & Flake Reduction',
+        description: 'For teams who have stopped believing their own build. Fixing the signal before adding to it, because coverage added to a distrusted suite buys nothing.',
+        deliverables: [
+          'Flake root-caused by class, not test by test',
+          'Test isolation, shared state and ordering defects repaired',
+          'Quarantine policy with expiry dates and a route back',
+          'Suite parallelized, sharded and change-selected',
+          'Flake rate and time to verdict reported weekly against baseline',
+        ],
+      },
+      {
+        name: 'Automation Engineering',
+        description: 'Building the suite, in your language and your repositories. Where standards do not exist yet, establishing them is part of the first engagement rather than something promised later.',
+        deliverables: [
+          'Test strategy with layers assigned by risk',
+          'Framework, fixtures and data builders your team can extend',
+          'Contract tests where services deploy independently',
+          'Pipeline integration with a pre-merge and post-merge split',
+          'Pairing with your engineers, not a handover deck',
+        ],
+      },
+      {
+        name: 'Performance & Resilience Engagement',
+        description: 'For a launch, a peak event, a migration or a system that has started degrading and nobody can say why. Bounded, evidence-producing, and scoped to a decision.',
+        deliverables: [
+          'Workload model built from real traffic, not assumed uniform load',
+          'Load, soak and breakpoint results against agreed SLOs',
+          'Bottlenecks traced to component, query or configuration',
+          'Fault injection on the dependencies most likely to fail',
+          'Capacity evidence a technology leader can take to a board',
+        ],
+      },
+      {
+        name: 'Managed Quality Engineering',
+        description: 'Running the suite, the environments and the release evidence under a service level. For teams who want the assurance without carrying a permanent specialist function for it.',
+        deliverables: [
+          'Suite operated and maintained against agreed availability',
+          'Test data and environment estate managed, refreshed and governed',
+          'Release readiness evidence produced each cycle',
+          'Escaped defect analysis fed back into scope',
+          'Monthly reporting on flake, runtime, coverage-by-risk and change failure rate',
+        ],
+      },
+    ],
+
+    // ── By industry ───────────────────────────────────────────────
+    // Each headline names the constraint that actually decides the test
+    // strategy in that sector, in the same way the RPA grid names the system
+    // with no API. The constraint is almost never the framework -- it is the
+    // data you cannot copy, the window you cannot move, or the evidence
+    // somebody will later ask you to produce.
+    industryHeading: 'Quality engineering by',
+    industryHeadingHighlight: 'what makes testing hard.',
+    industryLede: 'Eight sectors, the constraint that decides the test strategy in each, and the checks that carry the most weight. The framework is rarely the hard part.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Capital Markets',
+        headline: 'Every release needs an evidence trail, and the test environment is not allowed to hold real customer data.',
+        items: [
+          'Payment and settlement path regression',
+          'Masked, referentially intact test data across ledgers',
+          'Interest, fee and rounding calculation verification',
+          'Regulatory reporting output reconciliation',
+          'Batch and end-of-day window performance',
+          'Release evidence packs for audit',
+          'Third-party and market data feed virtualization',
+        ],
+      },
+      {
+        industry: 'Insurance',
+        headline: 'The policy administration system is a package on the vendor’s upgrade calendar, and a migration can only be proved by running both.',
+        items: [
+          'Packaged policy admin regression across upgrades',
+          'Quote, rate and premium calculation verification',
+          'Claims workflow and state machine coverage',
+          'Parallel run with old-versus-new output comparison',
+          'Document generation and template validation',
+          'Broker and portal integration contract tests',
+          'Renewal and endorsement cycle testing',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Patient data cannot leave production, and validation evidence is an audited artifact rather than an internal report.',
+        items: [
+          'Synthetic patient cohorts for clinical workflows',
+          'HL7 and FHIR interface conformance testing',
+          'Clinical decision path and safety-critical coverage',
+          'Access control and role permission verification',
+          'Validation evidence aligned to computerized system expectations',
+          'Interoperability testing across care systems',
+          'Accessibility conformance for patient-facing services',
+        ],
+      },
+      {
+        industry: 'Retail & Commerce',
+        headline: 'The test that matters happens once a year, at four times normal traffic, on a date nobody can move.',
+        items: [
+          'Peak event load rehearsal at realistic traffic mix',
+          'Checkout and payment path resilience',
+          'Inventory and pricing consistency under concurrency',
+          'Search, recommendation and personalization regression',
+          'Promotion and discount rule verification',
+          'Mobile and cross-device journey coverage',
+          'Third-party tag and integration failure handling',
+        ],
+      },
+      {
+        industry: 'Telecom & Media',
+        headline: 'The device, network and version matrix is larger than any suite can cover, so coverage becomes a sampling decision.',
+        items: [
+          'Device and OS coverage strategy by installed base',
+          'Network condition and degradation testing',
+          'Streaming quality and playback regression',
+          'Provisioning and activation flow coverage',
+          'Billing and rating verification',
+          'Set-top, mobile and web parity testing',
+          'Concurrency and peak-hour load validation',
+        ],
+      },
+      {
+        industry: 'Public Sector',
+        headline: 'Accessibility conformance is statutory, and an assessor will read the evidence rather than the intent.',
+        items: [
+          'WCAG 2.2 AA conformance evidence',
+          'Assistive technology testing with real screen readers',
+          'Keyboard-only journey verification',
+          'Plain-language and comprehension validation',
+          'Legacy interface and mainframe regression',
+          'High-demand service load rehearsal',
+          'Accessibility statement substantiation',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Connected Products',
+        headline: 'Software ships to hardware you cannot patch weekly, so an escaped defect can become a field recall.',
+        items: [
+          'Hardware-in-the-loop test harnesses',
+          'Firmware and over-the-air update validation',
+          'Device-to-cloud interface contract testing',
+          'Long-duration soak and memory leak detection',
+          'Edge and intermittent connectivity behavior',
+          'Backward compatibility across shipped versions',
+          'Safety-critical path verification',
+        ],
+      },
+      {
+        industry: 'SaaS & Technology Platforms',
+        headline: 'Multiple deploys a day on shared multi-tenant infrastructure, where one tenant’s data must never surface in another’s test.',
+        items: [
+          'Tenant isolation verification',
+          'Backward-compatible API contract testing',
+          'Zero-downtime migration and rollback validation',
+          'Feature flag combination coverage',
+          'Canary and progressive rollout verification',
+          'Usage metering and billing accuracy checks',
+          'Onboarding and trial path regression',
+        ],
+      },
+    ],
+
+    // ── Practice cluster ──────────────────────────────────────────
+    // The default heading names the internal department ("The complete Shield
+    // practice") and the default lede is one sentence, which left the band at
+    // 33 words over 368px -- under the density floor. Overridden to state the
+    // service boundary instead, which is the most useful thing a link index on
+    // this particular page could say.
+    practiceLabel: 'TRUST, RISK & ASSURANCE',
+    practiceHeading: 'Where quality engineering stops,',
+    practiceHeadingHighlight: 'and another service starts.',
+    practiceLede: 'Testing touches almost everything, which is why the boundary is worth stating. We own the suite, the environments, the performance evidence and the release gate. The pipeline platform, the security program behind the scanners, production model monitoring and the governance file an assessor reads are separate services — and each of the pages below goes into its own subject at the depth this one gives testing.',
+
+    conciergeHeading: 'Ask about your own suite',
+    conciergeIntro: 'Bring a real number — how long your regression takes, how often the build is red, how many tests are muted. eQORE will tell you what it would look at first and what it would need from you.',
+    conciergeChips: [
+      'What share of our failed builds are actually flaky?',
+      'How do we cut a fourteen-hour regression without losing coverage?',
+      'How would you test a feature that calls an LLM?',
+      'Can you run our regression suite under a service level?',
+      'Book a test estate review',
+    ],
+
+    midCta: 'The suite is green. The question is whether anybody believes it.',
+    midCtaLabel: 'Review One Test Suite',
+    closingCta: {
+      title: 'One suite,',
+      highlight: 'honestly measured.',
+      body: 'Show us two weeks of build history and the suite that produced it. In 30 minutes we will tell you how much of your red is real, how much of your team’s week the suite is taking, and which handful of tests is doing most of the damage — before anyone proposes writing more.',
+      proofLabel: 'From first call to a measured test estate assessment',
+    },
   },
 
   'operation-technology': {
@@ -7453,12 +10009,695 @@ export const servicesData = {
     name: 'Operation Technology (OT)',
     departmentSlug: 'shield',
     bannerBrand: 'Shield™ Trust & Governance Framework',
-    shortDescription: 'Operational technology management and security',
-    fullDescription: 'Manage and secure operational technology environments for industrial operations.',
-    keyFeatures: ['OT assessment', 'OT security', 'IT/OT convergence', 'SCADA systems', 'Industrial IoT'],
-    relatedServiceSlugs: ['internet-of-things', 'embedded-design-systems', 'it-security-services'],
+    shortDescription: 'Industrial systems that are visible, connected and kept running — not just inventoried',
+    fullDescription: 'Discover, architect, connect and operate the systems that reach every part of your enterprise, without asking your production line to accept the downtime an IT-style rollout assumes is free.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['OT asset visibility & discovery', 'ICS & SCADA engineering', 'IT/OT convergence & edge', 'Industrial data & observability', 'Predictive maintenance & industrial AI'],
+    relatedServiceSlugs: ['it-security-services', 'internet-of-things', 'embedded-design-systems'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80',
+    // Real date, set when this page was rewritten. Emitted as dateModified in
+    // the WebPage node by seo/serviceSchema.js.
+    lastReviewed: '2026-08-23',
+
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // Was the Shield-department parity default: 361 bytes, no custom FAQs, and
+    // a crawler seeing 2 per cent of the page — the thinnest of the four Shield
+    // pages rewritten together.
+    //
+    // The wedge, same shape as the it-security-services rewrite but on the
+    // engineering side rather than the control side: most OT programs do not
+    // fail for lack of connectivity. They fail for lack of visibility — a
+    // control system nobody has fully inventoried, a vendor remote-access
+    // connection nobody remembers opening, a historian nobody trusts enough to
+    // build a report from.
+    //
+    // The explicit boundary this page draws: OT and industrial security
+    // controls — segmentation, monitoring, vulnerability management, OT
+    // incident response — sit on it-security-services, which already has a
+    // full "OT, IoT & Industrial Security" capability area and an OT-specific
+    // FAQ. This page owns the industrial engineering those controls get
+    // applied to: asset visibility, control-system architecture, IT/OT
+    // connectivity, service management and predictive operations. Stated
+    // explicitly in practiceLede below, and again inline in capability area 7,
+    // so the two pages read as sequenced scope rather than overlapping ones.
+    heroTitle: 'Operational Technology (OT)\nEngineered for the Enterprise',
+    heroBadge: 'Visible. Connected. Resilient.',
+    heroStripItems: [
+      'OT Asset Visibility', 'ICS & SCADA Engineering', 'IT/OT Convergence & Edge', 'Industrial Data & Observability',
+      'Predictive Maintenance', 'OT Service Management', 'Industrial AI', 'Safety-Constrained Change',
+    ],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'What an OT program actually has to prove',
+    // Fold lands right after para2 instead of after para3 — see the opt-in
+    // branch this sets in UniversalServicePage.jsx (whatIsCollapseAfterPara2).
+    whatIsCollapseAfterPara2: true,
+    whatIsTitle: 'Operational Technology That',
+    whatIsTitleLine2: 'Stays Visible and',
+    whatIsHighlight: 'Runs Safely.',
+    whatIsPara2: 'Most industrial estates do not have a connectivity problem. They have a visibility problem — a control system nobody has fully inventoried, a vendor remote-access connection nobody remembers opening, a historian nobody trusts enough to build a report from. Kangqore discovers, architects, connects and operates the systems that sit between your physical plant and your enterprise — control systems, industrial networks, edge platforms and operational data — without asking your production line to accept the downtime an IT-style rollout assumes is free.',
+    whatIsPara3: 'Which means the hard problem in your OT work is rarely the technology itself. A PLC is not difficult to configure. What is difficult is the engineering workstation with three unofficial local accounts, the SCADA historian tag nobody has mapped to the process it describes, the vendor connection opened for a commissioning project that finished two years ago and was never closed. OT debt accumulates the same way security debt does — quietly, through individually reasonable decisions made under production pressure — and an assessment of your estate that only counts devices will miss all of it.',
+    whatIsPara4: 'Kangqore engineers for operational context, not just connectivity. Your assets discovered and mapped to the process they support, connectivity built through a governed edge architecture rather than a flat network nobody controls, maintenance triggered by condition rather than a calendar, and a change process that respects a maintenance window instead of assuming a reboot is always available. The team that builds it can explain it to your plant manager, and your operations team can still run it after we leave.',
+
+    // ── Outcomes ────────────────────────────────────────────────────────────
+    // Not "100% operational reliability" or "maximum operational yield" — the
+    // parity default's instinct on other pages, and both unfalsifiable. These
+    // are the ones a plant manager or a COO is actually judged on: how much of
+    // the estate is actually mapped, how much unplanned downtime a condition-
+    // based program removes, how fast an anomaly gets noticed, and how much
+    // maintenance is planned rather than reactive.
+    outcomesEyebrow: 'WHAT AN OT PROGRAM SHOULD BE MEASURED ON',
+    outcomesHeading: 'Operational Metrics',
+    outcomesHeadingHighlight: 'Worth Baselining.',
+    businessMetrics: [
+      { illustrative: true, title: 'OT Asset Visibility',        desc: 'Increase in OT assets discovered, classified and mapped to the process they support, after continuous discovery replaces a spreadsheet last updated at commissioning.', value: '70', suffix: '%+', metricLabel: 'More of the Estate Mapped',        icon: 'Search'   },
+      { illustrative: true, title: 'Unplanned Downtime',         desc: 'Reduction in unplanned downtime once condition-based maintenance and anomaly detection replace calendar-based servicing and run-to-failure.',                            value: '35', suffix: '%',  metricLabel: 'Less Unplanned Downtime',           icon: 'Activity' },
+      { illustrative: true, title: 'Mean Time to Detect',        desc: 'Reduction in time to detect an operational or process anomaly once passive OT monitoring and telemetry correlation replace manual walk-rounds and operator instinct.',        value: '50', suffix: '%',  metricLabel: 'Faster Anomaly Detection',          icon: 'Radar'    },
+      { illustrative: true, title: 'Preventive Maintenance Share', desc: 'Share of maintenance that is planned and condition-triggered rather than reactive, after equipment health scoring replaces fixed maintenance intervals.',                    value: '60', suffix: '%+', metricLabel: 'Maintenance Planned, Not Reactive', icon: 'Settings' },
+    ],
+
+    // ── Narrative outcomes ──────────────────────────────────────────────────
+    // Without these the page falls through to UniversalServicePage's generic
+    // outcomeCard/outcomeCard2 default (UniversalServicePage.jsx:700-715) — a
+    // fabricated "Global Enterprise Organization" client descriptor asserting
+    // "100% operational reliability" and "maximum operational yield". Both are
+    // exactly the kind of unfalsifiable absolute claim the rest of this page
+    // deliberately avoids, so real, illustrative-flagged narratives replace it
+    // here rather than leaving the fallback to leak through.
+    outcomeCard: {
+      illustrative: true,
+      metric: '40%',
+      metricLabel: 'Reduction in unplanned downtime after asset visibility and condition-based maintenance',
+      industry: 'Manufacturing & Industrial Automation',
+      problem: 'A multi-plant manufacturer had no reliable inventory of what was actually running on the floor — the last full survey was three years old, and maintenance was almost entirely reactive: equipment ran until it failed, then got fixed. Nobody could say with confidence which failures were actually preventable.',
+      outcome: 'Kangqore ran passive OT asset discovery across all three plants, mapped criticality against the production process each asset supported, and instrumented the handful of failure points that accounted for most of the downtime cost. Maintenance now runs against a condition-triggered backlog ranked by actual risk, not a fixed calendar — and the plants that adopted it first are the ones the downtime figure above is measured against.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '5 months',
+      metricLabel: 'From asset discovery to a governed IT/OT connectivity architecture',
+      industry: 'Energy & Utilities',
+      problem: 'A utility’s SCADA network had accumulated vendor remote-access connections over more than a decade, with no current inventory of which were still needed and no segmentation between the control network and the corporate one — the kind of gap that shows up in an audit finding, not a daily incident, until it does.',
+      outcome: 'Kangqore inventoried every remote connection across the estate, closed the ones nobody could justify keeping, and built a governed industrial DMZ with edge gateways terminating each vendor path. The security team now has an actual segmentation boundary to apply controls to, instead of a flat network with a firewall rule sitting somewhere between the plant and the corporate side.',
+    },
+
+    // ── Toolchain ───────────────────────────────────────────────────────────
+    // Framed by what each platform is genuinely for, closing on the same
+    // honest note IT security and quality engineering close on: most estates
+    // already own more monitoring and historian licenses than they have
+    // ownership assigned to.
+    toolsStack: {
+      eyebrow: 'THE OT TECHNOLOGY STACK',
+      title: 'The industrial stack,',
+      titleHighlight: 'and where the plant floor sets the limits.',
+      subtitle: 'Tool choice is mostly settled by what is already installed on your floor and by how much of your estate is legacy versus modern. These are the defaults, what overrides them, and where the gap is ownership rather than another platform.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Industrial control systems',
+          managed: 'Rockwell Automation, Siemens, Schneider Electric',
+          selfHosted: 'Honeywell, ABB, GE Vernova and Emerson, where already installed',
+          desc: 'Vendor choice is usually inherited, not chosen — the plant already runs what it runs. The work is engineering around it, not replacing it on a modernization timeline nobody asked for.',
+        },
+        {
+          icon: 'Network',
+          title: 'Industrial connectivity & protocols',
+          managed: 'OPC UA, MQTT Sparkplug B',
+          selfHosted: 'Modbus, DNP3 and Profinet for legacy plant-floor devices',
+          desc: 'The plant floor still speaks protocols from decades before OPC UA existed. Integration works with what a device actually supports, not what an architecture diagram assumes.',
+        },
+        {
+          icon: 'Radar',
+          title: 'OT asset visibility & passive monitoring',
+          managed: 'Claroty, Nozomi Networks, Dragos',
+          selfHosted: 'Tenable.ot and on-prem sensors for air-gapped and segmented networks',
+          desc: 'Passive by design. An active IT-style scan can crash fragile plant-floor equipment outright, so discovery reads protocol traffic rather than sending it.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Industrial edge & gateways',
+          managed: 'HMS Ewon, Moxa, Advantech edge gateways',
+          selfHosted: 'On-prem edge compute where latency or an air gap rules out the cloud',
+          desc: 'Where translation between an industrial protocol and an enterprise one actually happens, and where a control loop stays local no matter what the upstream connection is doing.',
+        },
+        {
+          icon: 'Database',
+          title: 'Historians & operational data',
+          managed: 'AVEVA (OSIsoft) PI System, GE Proficy Historian',
+          selfHosted: 'Honeywell Uniformance, on-prem where the plant cannot depend on a cloud link',
+          desc: 'The system of record for what actually happened on the floor. Most plants already own one and use a fraction of what it captures.',
+        },
+        {
+          icon: 'Globe',
+          title: 'Industrial IoT & sensor platforms',
+          managed: 'AWS IoT SiteWise, Azure IoT Operations',
+          selfHosted: 'On-prem MQTT brokers for latency-sensitive lines',
+          desc: 'Where retrofit sensors and connected equipment publish telemetry that never had a path to the enterprise before.',
+        },
+        {
+          icon: 'BrainCircuit',
+          title: 'Digital twin & simulation',
+          managed: 'AVEVA, Siemens Xcelerator',
+          selfHosted: 'Rarely — the value is almost entirely in the cloud-side model',
+          desc: 'Worth building once the underlying data is trustworthy, and a wasted quarter before it is. Sequenced after the data foundation, not before it.',
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Predictive maintenance & industrial AI',
+          managed: 'AWS, Azure and GCP ML platforms tuned to equipment telemetry',
+          selfHosted: 'Edge inference where round-trip latency rules out the cloud',
+          desc: 'Only as good as the sensor coverage feeding it. No data in is the honest reason more predictive-maintenance programs fail than any modeling choice.',
+        },
+        {
+          icon: 'Network',
+          title: 'The alternative to another platform',
+          managed: 'A named asset owner, a discovery baseline, a maintenance calendar someone actually follows',
+          selfHosted: 'Always evaluated before a new platform is proposed',
+          desc: 'Most industrial estates already own more monitoring and historian licenses than they have ownership assigned to. We will say so before selling you another one.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED BEFORE THE FIRST SITE VISIT',
+    faqHeading: 'Ten OT questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    // The parity default ran no custom FAQs at all. These are the ones a plant
+    // manager, an OT engineering lead or a CISO scoping the OT half of a
+    // security program actually opens with — including the boundary question
+    // between this page and it-security-services, answered directly rather
+    // than left for a sales call.
+    customFAQs: [
+      {
+        q: 'Our OT network cannot be actively scanned or patched the way IT can. How do you actually build an asset inventory?',
+        a: 'By reading, not probing. Passive discovery listens to protocol traffic off a network tap or SPAN port — OPC UA, Modbus, Profinet, whatever the segment actually speaks — and builds the inventory from what devices say to each other, without sending a single packet an active IT-style scanner would send. A vulnerability scanner built for IT can crash fragile OT equipment outright, and we do not run one against your live plant floor.\n\n'
+          + 'That passive layer gets cross-referenced against what should exist: engineering drawings, P&IDs, vendor commissioning records and the historian tag list, because those four sources rarely agree with each other on a plant that has been running for fifteen years. The gap between them is usually where the real risk sits — a device on the network that is not on any drawing, or a drawing that describes equipment replaced two turnarounds ago.\n\n'
+          + 'The last step is still a person walking the floor once. Passive discovery finds what is talking on the network; it does not find the isolated engineering laptop in a cabinet that only gets plugged in during a shutdown, and pretending otherwise produces an inventory that looks complete and is not.',
+      },
+      {
+        q: 'What is the actual difference between OT and IT, beyond "OT controls machines"?',
+        a: 'Determinism and consequence. An IT system responding a few hundred milliseconds slower is a performance complaint. A control loop responding a few hundred milliseconds late can be a safety event, which is why OT systems are engineered for predictable, real-time behavior first and everything else second.\n\n'
+          + 'That changes what "maintenance" means. An IT patch ships on a monthly cadence and reboots a server nobody notices. An OT patch has to wait for a scheduled maintenance window, pass vendor certification because an uncertified change can void a warranty or a safety case, and sometimes simply cannot be applied to a controller that will run unmodified for its entire twenty-year service life.\n\n'
+          + 'NIST’s own guidance to industrial control system security treats this as the starting assumption, not a footnote: availability and safety outrank confidentiality on the priority list that governs every other decision. A security or IT team that brings IT-first instincts to an OT environment — patch fast, reboot to fix, scan to discover — is usually the team that causes the incident it was trying to prevent.',
+        sources: [{ url: 'https://csrc.nist.gov/pubs/sp/800/82/r3/final', label: 'NIST SP 800-82 Rev. 3 — Guide to OT Security' }],
+      },
+      {
+        q: 'We already have a cybersecurity program. Why do we need a separate OT engagement?',
+        a: 'Because IT security services cover the OT security controls — segmentation, monitoring, vulnerability management, incident response — and those controls need something to be applied to: an accurate asset inventory, a control-system architecture that can actually accept segmentation without breaking a process in your estate, and a connectivity design a security tool can sit on. That engineering work is what this page owns.\n\n'
+          + 'Run the two out of order and the usual result is a security team proposing a segmentation change the plant cannot accept on the timeline offered, because nobody engineered the architecture to make the change safe. Run them together and the sequence is: discover and architect first, then apply the security controls to what is now a known, governed environment.\n\n'
+          + 'In practice it is typically the same team, sequenced across two connected engagements rather than two competing quotes — the industrial engineering here, the controls, monitoring and evidence layered on top of it through Kangqore IT security services.',
+      },
+      {
+        q: 'How do you connect a fifteen-year-old PLC to a modern analytics platform without touching the control loop?',
+        a: 'One-way, and outward only. An edge gateway reads your PLC over its native protocol, republishes the same data as OPC UA or MQTT to whatever platform is on the other side, and the control loop itself never sees a packet from that connection. Your PLC keeps doing exactly what it was doing before anyone connected anything to it.\n\n'
+          + 'The gateway is also where the boundary actually lives, not a firewall rule three network hops away. It terminates the industrial protocol on one side and the IT protocol on the other, so a fault, a flood or a misconfiguration on the analytics side has no path back into the deterministic control layer — the architecture enforces the separation rather than relying on a policy that says not to cross it.\n\n'
+          + 'What this does not do is turn the PLC into something it is not. You get read access to what it already exposes — tags, status, counters — not remote configuration, not a write path, and not a shortcut past the change-control process that governs the controller itself.',
+      },
+      {
+        q: 'Can predictive maintenance actually work on equipment with almost no sensors?',
+        a: 'Not the way the vendor deck implies, and being honest about that upfront saves a wasted quarter. Predictive maintenance is a data problem before it is a modeling problem — no data in, no prediction out — and your equipment instrumented only with a run/stop signal gives a model almost nothing to learn a failure pattern from.\n\n'
+          + 'What usually works is a minimum viable retrofit rather than a full instrumentation overhaul: a vibration sensor and a current clamp on a motor, a temperature probe on a bearing, added to the handful of assets where unplanned failure actually costs the most. That gets a model something to work with in months, on the equipment where the business case is real, instead of years across an entire fleet.\n\n'
+          + 'Where instrumentation genuinely is not there and cannot be justified, the honest recommendation is condition-based maintenance built on manual inspection data and a defined threshold, not a machine-learning model dressed up to look predictive. A model trained on ten data points is not predictive maintenance; it is a coin flip with a dashboard.',
+      },
+      {
+        q: 'What happens to the plant if the connection to enterprise IT or the cloud goes down?',
+        a: 'Nothing, if the architecture was designed for it — and that is the design requirement, not an assumption. Time-critical control logic and safety interlocks run entirely on local edge compute and never depend on a round trip to the enterprise network or the cloud to make a decision.\n\n'
+          + 'What does depend on that connection is everything downstream of control: the dashboard, the analytics platform, the enterprise report. When the link drops, telemetry buffers locally at the edge and your plant keeps running exactly as it was; when the link returns, the buffered data syncs rather than being lost, so a connectivity outage becomes a reporting gap, not a production incident.\n\n'
+          + 'This is also why we do not recommend routing a safety function or a real-time control decision through a cloud platform, regardless of how reliable the vendor’s uptime claim is. Local resilience is not a fallback mode here; it is the primary design, with connectivity as the thing that can fail without your plant failing alongside it.',
+      },
+      {
+        q: 'How long does an IT/OT convergence project actually take?',
+        a: 'Longer than the vendor slide implies, and it depends far more on your current network’s starting state than on which platform you choose. A single plant with a network that is already partially segmented and one primary control vendor can have a governed DMZ and edge connectivity live in a few months.\n\n'
+          + 'A multi-site estate with a flat network, several control vendors from different acquisitions, and no prior segmentation history is a materially longer program — often into a second year once every site is covered — and a fixed timeline quoted before an asset and network assessment is a guess dressed up as a plan.\n\n'
+          + 'What we sequence for is risk reduction that shows up early rather than a big-bang cutover: the industrial DMZ and zones-and-conduits architecture first, since that is what makes everything after it safer to build; edge and historian integration second; analytics and predictive use cases third. Each phase stands on its own value even if a later one slips.',
+      },
+      {
+        q: 'Who is actually accountable when a change to the control environment causes downtime?',
+        a: 'Whoever owns the change, and that ownership is named before the change happens rather than argued about after — the same discipline a mature IT change-control process has, applied to your environment where the cost of getting it wrong is measured in a shift, not a rollback deploy.\n\n'
+          + 'We design the change-management process — a defined window, a tested rollback path, a sign-off that includes the plant operations owner, not just an engineering lead — but production-affecting authority stays with your operations team. We do not push a change to a live control environment on our own judgment call.\n\n'
+          + 'What we will not do is leave that ownership implied, because an unowned change process is exactly how a well-intentioned modernization effort turns into the incident that makes the next stage of the program harder to fund.',
+      },
+      {
+        q: 'Can Kangqore support ongoing OT operations, or is this a one-time assessment?',
+        a: 'Ongoing, where the engagement calls for it. Depending on scope, that includes OT service management, maintenance-window governance, vendor and OEM coordination, lifecycle tracking as equipment ages toward end of support, and continuous refinement of predictive models as more operating data accumulates.\n\n'
+          + 'We are pre-launch and do not have an existing OT operations desk with years of a specific plant’s history to point to, which is worth saying plainly rather than implying otherwise. What we do bring is the architecture and the handover discipline: documentation your engineering team can act on without us, and a design built so it can be run in-house, handed to a managed partner, or kept with us — without a rebuild in any of those three cases.\n\n'
+          + 'Most engagements start narrower than "ongoing operations" anyway — an assessment or a single convergence project — and the operating relationship, if there is one, gets scoped once both sides know what the estate actually needs.',
+      },
+      {
+        q: 'Does getting started on OT asset visibility require a plant shutdown?',
+        a: 'No — passive discovery is designed specifically to avoid needing one, and asking for a shutdown just to start an assessment is usually the wrong pitch. Reading protocol traffic off a tap or SPAN port happens with your plant running exactly as it always does; nothing about it requires downtime, and a vendor who suggests otherwise is proposing an active scan far sooner than an OT environment should tolerate one.\n\n'
+          + 'Where a shutdown genuinely helps is later, and only for specific, narrow work — physically installing a tap on a segment that has none, or walking a section of floor that is safer to inspect without live equipment nearby. Even then it is scheduled inside a maintenance window your operations team already has planned, not a special outage requested for the assessment.\n\n'
+          + 'The honest sequencing is discovery first, with your plant running, followed by a short list of items that do need a maintenance window — and that list is usually much shorter than people expect going in.',
+      },
+    ],
+
+    // ── How we engage ───────────────────────────────────────────────────────
+    // The first package is a discovery pass across what already exists,
+    // deliberately ahead of any transformation-program pitch — most inbound OT
+    // conversations are "we are not sure what we actually have," not "we have
+    // nothing."
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Five ways in,',
+    engagementHeadingHighlight: 'starting with what already exists.',
+    engagementLede: 'Most OT conversations do not start from zero either. The useful first engagement is usually a discovery pass across what is already running, not a pitch for a full transformation program.',
+    servicePackages: [
+      {
+        name: 'OT Asset Visibility & Maturity Assessment',
+        description: 'For understanding what is actually running before committing to anything. Passive discovery, criticality classification, and an architecture baseline against a real framework.',
+        deliverables: [
+          'OT asset discovery and inventory',
+          'Asset criticality and classification model',
+          'OT topology and dependency mapping',
+          'Architecture baseline against IEC 62443 zones',
+          'Prioritized OT risk and modernization register',
+        ],
+      },
+      {
+        name: 'Industrial Control & Engineering Architecture',
+        description: 'Designing the control and data layer everything else depends on. SCADA, PLC, HMI and DCS environments assessed and architected for your actual estate, not a vendor reference deployment.',
+        deliverables: [
+          'SCADA, DCS and PLC environment assessment',
+          'Control-system architecture design',
+          'Historian and operational data architecture',
+          'Legacy OT modernization roadmap',
+          'Production-safe change planning framework',
+        ],
+      },
+      {
+        name: 'IT/OT Convergence & Edge Connectivity',
+        description: 'Building the governed connectivity between the plant floor and the enterprise. Sequenced so the environment stays safe to operate throughout, not just at the end.',
+        deliverables: [
+          'IT/OT convergence and industrial DMZ architecture',
+          'Edge gateway and protocol integration (OPC UA, MQTT)',
+          'Plant-to-enterprise and OT-to-cloud connectivity design',
+          'Secure remote access architecture',
+          'Distributed-site connectivity model',
+        ],
+      },
+      {
+        name: 'OT Service Management & Governance',
+        description: 'Bringing engineering, operations, IT and OEMs together around one operating model, so a change is evaluated in its operational context instead of discovered after the fact.',
+        deliverables: [
+          'OT operating-model and service catalog design',
+          'Change, incident and request management processes',
+          'Vendor and OEM coordination workflows',
+          'Asset lifecycle and configuration management',
+          'OT governance dashboards and reporting',
+        ],
+      },
+      {
+        name: 'Industrial Data, Observability & Predictive Operations',
+        description: 'Turning the telemetry the previous stages generate into predictive intelligence. For teams ready to move past reactive maintenance and manual walk-rounds.',
+        deliverables: [
+          'Industrial data architecture and OT-to-IT integration',
+          'Real-time telemetry and observability pipelines',
+          'Condition-based and predictive maintenance enablement',
+          'Anomaly detection and equipment health scoring',
+          'Industrial AI and digital-twin foundations',
+        ],
+      },
+    ],
+
+    // ── Sectors ─────────────────────────────────────────────────────────────
+    // Renders the industry grid. Six sectors where OT is not a side
+    // conversation to IT — it is the plant, the grid, the well, the line and
+    // the network of sites that keep them running — and the industrial
+    // engineering work each one actually needs, deliberately distinct from
+    // the eight compliance-framework-led sectors on it-security-services.
+    //
+    // industryHeading/Highlight set explicitly because the prerender generator
+    // only reads svc.industryHeading directly — it does not know about the
+    // department-level fallback the React page resolves through — so leaving
+    // it unset means the crawler snapshot sees a generic "By industry" heading
+    // a visitor never does.
+    industryHeading: 'Engineered for',
+    industryHeadingHighlight: 'your operating environment.',
+    industryLede: 'Six sectors where OT is not a side conversation to IT — it is the plant, the grid, the well, the line and the network of sites that keep them running, and the industrial engineering work each one actually needs.',
+    industryUseCases: [
+      {
+        industry: 'Manufacturing & Industrial Automation',
+        headline: 'A production line that cannot be patched mid-shift, and increasingly connected to an IT network that assumes it can be.',
+        items: [
+          'Discrete and process manufacturing OT asset visibility',
+          'PLC, HMI and DCS environment support',
+          'Production-line IT/OT segmentation architecture',
+          'Predictive maintenance for critical production assets',
+          'Manufacturing execution system (MES) data integration',
+          'Legacy control system modernization planning',
+          'Multi-site plant connectivity architecture',
+          'Production continuity risk assessment',
+        ],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'SCADA systems older than the engineers running them, distributed assets across a grid, and downtime that is a public event, not an inconvenience.',
+        items: [
+          'SCADA and distributed asset visibility',
+          'Substation and field-device connectivity architecture',
+          'Grid monitoring and telemetry integration',
+          'Legacy industrial protocol support',
+          'Remote and unmanned-site connectivity',
+          'Historian and operational data architecture for the grid',
+          'Predictive maintenance for critical grid assets',
+          'OT service management across distributed operations',
+        ],
+      },
+      {
+        industry: 'Oil, Gas & Chemicals',
+        headline: 'Process-control environments where a wrong change is a safety incident, and remote operations across sites nobody can visit weekly.',
+        items: [
+          'Process-control system architecture and support',
+          'Remote and unmanned facility connectivity',
+          'Process historian and telemetry integration',
+          'Asset criticality and integrity monitoring data',
+          'Turnaround and maintenance-window planning',
+          'Safety-constrained change management for process control',
+          'Legacy DCS modernization planning',
+          'Multi-site OT governance and reporting',
+        ],
+      },
+      {
+        industry: 'Mining & Metals',
+        headline: 'Heavy equipment, distributed sites with limited connectivity, and a maintenance cost structure where unplanned downtime is the largest line item.',
+        items: [
+          'Distributed and remote-site OT asset visibility',
+          'Heavy-equipment condition monitoring integration',
+          'Site connectivity architecture for limited-bandwidth environments',
+          'Predictive maintenance for fleet and fixed equipment',
+          'Edge computing for offline and intermittently connected sites',
+          'Historian integration across distributed operations',
+          'OT lifecycle management for aging fleet assets',
+          'Production and equipment-health dashboards',
+        ],
+      },
+      {
+        industry: 'Water & Wastewater',
+        headline: 'SCADA-controlled treatment processes, public-health consequences if control fails, and often the smallest OT budget of any critical-infrastructure sector.',
+        items: [
+          'Treatment-process SCADA and PLC support',
+          'Remote pump station and field-site connectivity',
+          'OT asset visibility for distributed public infrastructure',
+          'Historian integration for regulatory and compliance reporting',
+          'Legacy control system modernization planning',
+          'Predictive maintenance for critical treatment equipment',
+          'Safety-constrained change management for public infrastructure',
+          'OT governance for resource-constrained operations teams',
+        ],
+      },
+      {
+        industry: 'Transportation & Critical Infrastructure',
+        headline: 'Operational systems distributed across facilities and moving assets, where telemetry has to travel further than a plant network was ever designed for.',
+        items: [
+          'Facility and asset OT visibility across distributed sites',
+          'Operational telemetry and control-system integration',
+          'Edge connectivity for moving and remote assets',
+          'Legacy control environment modernization planning',
+          'Predictive maintenance for critical operational assets',
+          'Multi-site OT service management',
+          'Resilient connectivity for safety-relevant systems',
+          'Historian and operational data architecture',
+        ],
+      },
+    ],
+
+    // ── The argument ────────────────────────────────────────────────────────
+    // Both columns own connectivity. The difference is whether an asset, a
+    // connection or a change is owned, mapped and provable, or just running
+    // and left alone — the same governed-versus-deployed argument
+    // it-security-services makes, applied to the engineering layer instead of
+    // the control layer.
+    comparisonTable: {
+      eyebrow: 'CONNECTED VERSUS GOVERNED',
+      heading: 'OT Connected vs. Governed OT Operations.',
+      lede: 'Neither column is short on connectivity. They differ in whether an asset, a connection or a change in your estate is owned, mapped and provable — or just running and left alone.',
+      beforeLabel: 'OT CONNECTED',
+      afterLabel: 'OT GOVERNED',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'CONNECTED',
+      afterShort: 'GOVERNED',
+      rows: [
+        {
+          dimension: 'What’s actually on the plant floor',
+          before: 'A spreadsheet last updated during commissioning, and nobody confident it still matches what is running.',
+          after: 'A continuously discovered OT asset inventory, mapped to the process each device actually supports.',
+        },
+        {
+          dimension: 'When a PLC or HMI nears end of life',
+          before: 'Nobody notices until it fails mid-shift, and the vendor stopped supporting it three years ago.',
+          after: 'Lifecycle tracked against vendor support windows, with replacement planned around a maintenance window, not a failure.',
+        },
+        {
+          dimension: 'How IT and OT actually connect',
+          before: 'An unmanaged connection opened for a vendor’s remote support years ago, and never closed.',
+          after: 'Governed connectivity through a defined edge and DMZ architecture, with a security control able to sit on top of it.',
+          link: { href: '/services/it-security-services', label: 'OT segmentation and security controls' },
+        },
+        {
+          dimension: 'What triggers a maintenance visit',
+          before: 'A calendar date, or a breakdown, whichever comes first.',
+          after: 'Condition and anomaly signals from the equipment itself, escalated before failure — not after it.',
+        },
+        {
+          dimension: 'Who owns a change to the control environment',
+          before: 'Whoever has admin access to the engineering workstation that day.',
+          after: 'A named owner, a documented change window, and a rollback path tested before go-live.',
+        },
+        {
+          dimension: 'Where operational data actually ends up',
+          before: 'Trapped in the historian, or on a clipboard on the plant floor.',
+          after: 'Connected to enterprise systems and analytics — and the plant keeps running if that link goes down.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────────────
+    // Five stages, matching the array length it-security-services uses for
+    // the same layout reason. Ends at Optimize rather than Secure, because
+    // security ownership sits on it-security-services — the fifth stage here
+    // is what the other page's rewrite does not cover: turning the operational
+    // data the first four stages generate into predictive intelligence.
+    architectureEyebrow: 'THE OT TRANSFORMATION LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Assess to Optimize.',
+    architectureLede: 'Five stages, and most OT programs stall between Architect and Connect — the point where a proposed change meets a plant floor that cannot accept it on the timeline offered. A connection that is not owned, monitored and reversible decays back into risk within a year, the same as an unowned security control.',
+    architectureNodes: [
+      {
+        title: 'Assess',
+        icon: 'Search',
+        description: 'Establish the real estate before proposing anything: what exists, what it controls, who owns it, and where the gap between what the P&ID says and what is actually running sits.',
+        features: [
+          'OT asset discovery and inventory',
+          'Asset classification and criticality assessment',
+          'OT topology and dependency mapping',
+          'Configuration and lifecycle visibility',
+          'OT maturity and transformation assessment',
+        ],
+      },
+      {
+        title: 'Architect',
+        icon: 'Layers',
+        description: 'Design the target-state control and connectivity architecture before integrating anything — zones and conduits, edge gateway placement, and the historian and data model the rest of the program depends on.',
+        features: [
+          'Target OT architecture and zones-and-conduits design',
+          'SCADA, DCS and PLC environment architecture',
+          'Historian and operational data architecture',
+          'Edge and gateway architecture',
+          'Engineering workstation governance model',
+        ],
+      },
+      {
+        title: 'Connect',
+        icon: 'Network',
+        description: 'Integrate industrial systems, edge environments and enterprise platforms through governed connectivity — designed so local operations keep running if the upstream link does not.',
+        features: [
+          'IT/OT convergence and industrial DMZ architecture',
+          'OPC UA and MQTT-based industrial connectivity',
+          'Plant-to-enterprise and OT-to-cloud integration',
+          'Secure remote access architecture',
+          'Distributed-site connectivity design',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'Run the service-management model that keeps engineering, operations, IT and OEMs working from the same change and incident process, instead of five teams discovering a change after the fact.',
+        features: [
+          'OT change, incident and request management',
+          'Maintenance-window and configuration governance',
+          'Vendor and OEM coordination workflows',
+          'Asset lifecycle management',
+          'OT governance dashboards and reporting',
+        ],
+      },
+      {
+        title: 'Optimize',
+        icon: 'TrendingUp',
+        description: 'Turn the operational data the previous four stages now generate into predictive intelligence — the stage most programs never reach, because it depends on everything before it actually working.',
+        features: [
+          'Real-time telemetry and industrial observability',
+          'Condition-based and predictive maintenance',
+          'Anomaly detection and equipment health scoring',
+          'Industrial AI and digital-twin foundations',
+          'Continuous improvement against a measured baseline',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'OPERATIONAL TECHNOLOGY & INDUSTRIAL ENGINEERING',
+    capabilitiesSectionTitle: 'Operational Technology',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Discover your estate, architect your control and connectivity layer, integrate IT and OT without losing control of either, and turn your operational data into intelligence — across asset visibility, industrial engineering, edge connectivity, service management and predictive operations.',
+    capabilityAreas: [
+      {
+        title: 'OT Asset Visibility, Discovery & Digital Foundation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Effective OT transformation begins with an accurate understanding of the industrial estate — not a spreadsheet last updated during commissioning.',
+        items: [
+          'OT Asset Discovery & Inventory',
+          'Asset Classification & Criticality Assessment',
+          'OT Topology & Dependency Mapping',
+          'Plant, Line, Cell & Equipment Relationship Mapping',
+          'Configuration & Lifecycle Visibility',
+          'OT Architecture Baseline',
+          'Asset Ownership & Accountability Models',
+          'OT Maturity & Transformation Assessments',
+          'Operational Technology Data Foundations',
+        ],
+      },
+      {
+        title: 'Industrial Control Systems & OT Engineering',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The technology layers that directly interact with physical processes — supported without pretending OT can be managed like conventional IT.',
+        items: [
+          'SCADA Environment Assessment & Support',
+          'PLC & HMI Ecosystem Support',
+          'DCS Environment Assessment',
+          'Industrial Server & Workstation Architecture',
+          'Control-System Configuration Review',
+          'OT Infrastructure Lifecycle Support',
+          'Historian & Operational Data Architecture',
+          'Industrial System Integration',
+          'Legacy OT Modernization Planning',
+          'Production-Safe Technology Change Planning',
+        ],
+      },
+      {
+        title: 'IT/OT Convergence, Industrial Connectivity & Edge',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Controlled connectivity between the plant floor and the enterprise — connected without becoming uncontrolled.',
+        items: [
+          'IT/OT Convergence Architecture',
+          'Industrial Network Architecture',
+          'Edge Computing Enablement',
+          'Industrial Gateway Architecture',
+          'Plant-to-Enterprise Connectivity',
+          'OT-to-Cloud Connectivity',
+          'Protocol-Aware Integration (OPC UA, MQTT)',
+          'Industrial IoT Enablement',
+          'Remote Operational Visibility',
+          'Secure Data Exchange Architecture',
+        ],
+      },
+      {
+        title: 'OT Service Management, Governance & Lifecycle',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Operational discipline across engineering, operations, IT, cybersecurity, OEMs and integrators — so a change is evaluated in its operational context instead of five teams discovering it after the fact.',
+        items: [
+          'OT Operating-Model Design',
+          'OT Service Catalog Development',
+          'OT Change Management',
+          'OT Incident & Request Management',
+          'Asset Lifecycle Management',
+          'Maintenance-Window Governance',
+          'Configuration Management',
+          'Vendor & OEM Coordination',
+          'OT Governance Dashboards & Reporting',
+        ],
+      },
+      {
+        title: 'Industrial Data, Observability & Operational Intelligence',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Turning machine data into operational context — what it means, what it affects and what action should follow, not just another chart.',
+        items: [
+          'Industrial Data Architecture',
+          'OT-to-IT Data Integration',
+          'Historian Integration',
+          'Real-Time Telemetry Pipelines',
+          'Industrial Observability',
+          'Asset Health Monitoring',
+          'Event & Alert Correlation',
+          'Production KPI Visibility',
+          'Operational Data Quality',
+          'Enterprise Analytics Integration',
+        ],
+      },
+      {
+        title: 'Predictive Operations, Maintenance & Industrial AI',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Moving from reactive operations to intelligence-driven operations — using operational context to anticipate what happens next, with a human still in the loop.',
+        items: [
+          'Predictive Maintenance Enablement',
+          'Condition-Based Maintenance',
+          'Equipment Health Scoring',
+          'Failure Prediction Frameworks',
+          'Anomaly Detection',
+          'Process-Performance Analytics',
+          'Predictive Quality Analytics',
+          'Industrial Digital-Twin Foundations',
+          'AI-Assisted Operational Decision Support',
+          'Human-in-the-Loop Industrial AI Workflows',
+        ],
+      },
+      {
+        title: 'OT Continuity, Safety & Change Governance',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What keeps a plant running through a modernization program rather than gambling with it. Deliberately narrower than a security capability: the segmentation, monitoring and vulnerability management that protect the estate sit on Kangqore IT security services, built on the visibility and architecture this page establishes.',
+        items: [
+          'Safety-Constrained Change Planning',
+          'Maintenance-Window Governance',
+          'Recovery & Rollback Procedure Design',
+          'Vendor & OEM Patch Coordination',
+          'Production Continuity Risk Assessment',
+          'OT Business Continuity Planning',
+          'Engineering Workstation Governance',
+          'Legacy Dependency & Constraint Mapping',
+        ],
+      },
+    ],
+
+    // ── Practice boundary ───────────────────────────────────────────────────
+    // The default band lists Shield-department siblings with a generic
+    // one-line lede, which renders thin. Stating the boundary explicitly —
+    // same pattern it-security-services and quality-engineering-assurance
+    // use — says where OT engineering ends and OT security picks up, rather
+    // than leaving it implied by a service-card grid.
+    practiceLabel: 'TRUST, RISK & ASSURANCE',
+    practiceHeading: 'Where OT engineering stops,',
+    practiceHeadingHighlight: 'and OT security starts.',
+    practiceLede: 'This page owns the industrial engineering: what exists on your plant floor, how your control systems and edge platforms are architected, how your IT and OT connect, and how your operational data becomes predictive intelligence. OT and industrial security controls — segmentation, monitoring, vulnerability management, OT incident response — sit on IT security services, built on the asset visibility and architecture this page establishes. Financial and operational risk sits on finance & risk management. Each page goes into its own subject at the depth this one gives OT.',
+
+    conciergeHeading: 'Ask about your own plant floor',
+    conciergeIntro: 'Bring a real asset — the PLC nobody has documented, the historian tag nobody trusts, the vendor connection nobody remembers opening. eQORE will tell you what it would check first and what it would need from you.',
+    conciergeChips: [
+      'How much of our OT estate is actually unaccounted for?',
+      'Can we connect a 15-year-old PLC to our analytics platform safely?',
+      'What would a real IT/OT convergence architecture look like for us?',
+      'How do we know if a maintenance alert is worth a shutdown?',
+      'Book an OT asset review',
+    ],
+
+    midCta: 'A connected plant and a governed one are not the same claim.',
+    midCtaLabel: 'Review One OT Environment',
+    closingCta: {
+      title: 'One asset review.',
+      highlight: 'One estate you can actually see.',
+      body: 'Bring the control system you suspect nobody has fully mapped, or the connection you are not sure is still needed. In 30 minutes we will tell you what is a genuine gap, what is a documentation problem, and which of the two would cost you a shift if it failed tomorrow.',
+      proofLabel: 'From first call to a costed OT assessment',
+    },
   },
 
   // ═════════════════════════════════════════════════════════════════════════════

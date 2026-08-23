@@ -144,6 +144,8 @@
         </ul>
       </section>
 
+    
+
     <p>The answer is already in your documents. Nobody has time to read them.</p>
 
         <h2>Conventional systems read fields. Cognitive systems read evidence.</h2>
@@ -152,11 +154,11 @@
         <caption>CONVENTIONAL SYSTEMS compared with COGNITIVE SYSTEMS</caption>
         <thead><tr><th scope="col">Dimension</th><th scope="col">CONVENTIONAL SYSTEMS</th><th scope="col">COGNITIVE SYSTEMS</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Input</th><td>Structured fields only. Anything that arrives as a document, an image or a recording is queued for a person to read first.</td><td>Text, images, video, speech, documents and sensor streams read directly, including the scanned and handwritten material nobody has indexed.</td></tr>
+          <tr><th scope="row">Input</th><td>Structured fields only. Anything that arrives as a document, an image or a recording is queued for a person to read first.</td><td>Text, images, video, speech, documents and sensor streams read directly, including the scanned and handwritten material nobody has indexed. <a href="https://kangqore.com/services/big-data">Data foundations</a></td></tr>
           <tr><th scope="row">Reasoning</th><td>Fixed rules written in advance. A case the author did not foresee falls through to an exception queue.</td><td>Inference over learned patterns, so a case that resembles a thousand previous ones is handled without anyone having written the rule for it.</td></tr>
           <tr><th scope="row">Uncertainty</th><td>A binary answer regardless of evidence. Nothing distinguishes a confident match from a marginal one.</td><td>A calibrated confidence score with every output, and a defined threshold below which the case routes to a person rather than a guess.</td></tr>
-          <tr><th scope="row">Adaptation</th><td>Static until someone reprograms it. Drift shows up as a rising exception rate that nobody attributes to the model.</td><td>Retrained on a schedule against a held-out set, with drift and accuracy tracked per segment rather than as one aggregate number.</td></tr>
-          <tr><th scope="row">Explainability</th><td>The output is the whole answer. Asked why, the system has nothing further to offer.</td><td>Feature attributions for structured inputs and the source passage or region for unstructured ones, retained with the decision and reproducible later.</td></tr>
+          <tr><th scope="row">Adaptation</th><td>Static until someone reprograms it. Drift shows up as a rising exception rate that nobody attributes to the model.</td><td>Retrained on a schedule against a held-out set, with drift and accuracy tracked per segment rather than as one aggregate number. <a href="https://kangqore.com/services/mlops">Model lifecycle</a></td></tr>
+          <tr><th scope="row">Explainability</th><td>The output is the whole answer. Asked why, the system has nothing further to offer.</td><td>Feature attributions for structured inputs and the source passage or region for unstructured ones, retained with the decision and reproducible later. <a href="https://kangqore.com/services/ai-governance">Governance and audit</a></td></tr>
         </tbody>
       </table>
 
@@ -274,6 +276,17 @@
         <p>Illustrative figures — modeled on typical engagement patterns, not a specific client result.</p>
       </section>
 
+    
+
+        <h2>How a AI &amp; Cognitive Computing engagement runs</h2>
+      <ol>
+        <li><strong>DISCOVER — Cognitive Discovery</strong>: Map enterprise knowledge flows, identify high-value cognitive automation targets, and baseline current decision-making quality across business processes.</li>
+        <li><strong>ARCHITECT — System Architecture</strong>: Design cognitive system architecture — NLP pipelines, knowledge graphs, decision engines, vision models, and integration layers — with governance embedded from day one.</li>
+        <li><strong>BUILD — Build &amp; Train</strong>: Develop, train, and validate cognitive models against enterprise data — achieving production-grade accuracy, explainability, and performance benchmarks.</li>
+        <li><strong>DEPLOY — Governed Deployment</strong>: Deploy with human-in-the-loop oversight, real-time monitoring dashboards, drift detection alerts, and immutable audit trails for every cognitive decision.</li>
+        <li><strong>SCALE — Scale &amp; Compound</strong>: Expand cognitive capabilities across departments, connect knowledge graphs enterprise-wide, and continuously optimize model accuracy and operational efficiency.</li>
+      </ol>
+
         <h2>How we engage</h2>
     <p>Five entry points, from a three-week audit to continuous optimization. Most programs start by finding out whether the material is legible enough to model, because that is the question that decides everything after it and it is cheaper to answer in a fortnight than in a pilot.</p>
       <section>
@@ -325,12 +338,14 @@
         <h2>Every modality. Built or bought, deliberately.</h2>
     <p>For each layer there is a managed API that works out of the box and an open-source path you train yourself. What decides it is whether your material looks like the internet. Generic speech, generic OCR and generic object detection are commodities and you should buy them. A defect class specific to your line, a document format specific to your sector, a vocabulary specific to your business — those are where a trained model earns its cost.</p>
       <ul>
-          <li><strong>Vision &amp; document</strong>: Buy for clean printed documents and common object classes; the managed services are years ahead of anything you would train for that. Build when the defect class is yours, the forms are non-standard, or the material cannot leave your network.</li>
-          <li><strong>Language &amp; speech</strong>: Whisper is usually the right first answer for transcription and costs nothing to try. Managed speech earns its price on real-time streaming, diarization at scale, and languages where the open models are thin. Domain vocabulary is the usual reason to fine-tune.</li>
-          <li><strong>Representation &amp; retrieval</strong>: pgvector is usually where to start: embeddings sit next to the data that produced them, in a database you already operate. A dedicated store earns its place once hybrid ranking, re-ranking or cross-team isolation becomes the constraint.</li>
-          <li><strong>Modeling &amp; training</strong>: Most cognitive problems are still tabular or narrow classification, where a gradient-boosted model beats a neural one on cost and latency and is far easier to explain. Reach for deep learning when the input is genuinely high-dimensional.</li>
-          <li><strong>Evaluation &amp; serving</strong>: The evaluation set is the asset, not the model. Managed endpoints are the faster start; you move to self-hosted when inference volume makes the per-call price the dominant cost, or when latency has to be measured where the user waits.</li>
+          <li><strong>Vision &amp; document</strong>: Buy for clean printed documents and common object classes; the managed services are years ahead of anything you would train for that. Build when the defect class is yours, the forms are non-standard, or the material cannot leave your network. Managed: Azure AI Document Intelligence · Google Document AI · Amazon Textract. Self-hosted: PaddleOCR · Tesseract · YOLO · Detectron2 · Segment Anything. <a href="https://kangqore.com/services/big-data">Data pipelines behind it</a></li>
+          <li><strong>Language &amp; speech</strong>: Whisper is usually the right first answer for transcription and costs nothing to try. Managed speech earns its price on real-time streaming, diarization at scale, and languages where the open models are thin. Domain vocabulary is the usual reason to fine-tune. Managed: Azure AI Speech · Google Speech-to-Text · Deepgram · AssemblyAI. Self-hosted: Whisper · spaCy · Hugging Face Transformers · sentence-transformers.</li>
+          <li><strong>Representation &amp; retrieval</strong>: pgvector is usually where to start: embeddings sit next to the data that produced them, in a database you already operate. A dedicated store earns its place once hybrid ranking, re-ranking or cross-team isolation becomes the constraint. Managed: Azure AI Search · Vertex AI Search · Pinecone. Self-hosted: pgvector · Qdrant · Weaviate · Neo4j · OpenSearch.</li>
+          <li><strong>Modeling &amp; training</strong>: Most cognitive problems are still tabular or narrow classification, where a gradient-boosted model beats a neural one on cost and latency and is far easier to explain. Reach for deep learning when the input is genuinely high-dimensional. Managed: Vertex AI Training · Azure ML · Bedrock customization. Self-hosted: PyTorch · scikit-learn · LightGBM · LoRA &amp; QLoRA. <a href="https://kangqore.com/services/data-science-ai">Model development</a></li>
+          <li><strong>Evaluation &amp; serving</strong>: The evaluation set is the asset, not the model. Managed endpoints are the faster start; you move to self-hosted when inference volume makes the per-call price the dominant cost, or when latency has to be measured where the user waits. Managed: Vertex AI Prediction · SageMaker endpoints · Azure ML endpoints. Self-hosted: MLflow · Evidently · SHAP · Ray Serve · Triton. <a href="https://kangqore.com/services/mlops">Running it in production</a></li>
       </ul>
+
+    
 
     
 

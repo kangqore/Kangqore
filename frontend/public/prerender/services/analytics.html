@@ -194,6 +194,8 @@
         </ul>
       </section>
 
+    
+
     <p>You have more dashboards than decisions.</p>
 
         <h2>Enterprise Reference Architecture
@@ -325,16 +327,22 @@ models for Analytics</h2>
 
     
 
+    
+
+    
+
         <h2>What we build on, and when we would not.</h2>
     <p>Most of this is decided by the warehouse you already run and how many people need to self-serve. These are the defaults and what overrides them.</p>
       <ul>
-          <li><strong>BI and visualization</strong>: Power BI where the estate is Microsoft and the licensing is already paid. Looker where the semantic layer matters more than the chart library.</li>
-          <li><strong>Semantic and transformation layer</strong>: Where one definition of revenue actually lives. Skip it and you get four dashboards disagreeing, which is the problem people mistake for a tooling problem.</li>
-          <li><strong>Warehouse and lakehouse</strong>: Sized to the query pattern rather than the pitch deck. A large share of estates running a lakehouse would be faster and cheaper on a well-indexed database.</li>
-          <li><strong>Streaming and events</strong>: Real-time is expensive and most reporting does not need it. Reached for when the alert is worthless an hour later, not because the roadmap says real-time.</li>
-          <li><strong>Orchestration</strong>: The point at which &quot;a scheduled job&quot; becomes a dependency graph somebody has to reason about. Before that it is infrastructure for two cron entries.</li>
-          <li><strong>Quality and observability</strong>: Catches the silent upstream schema change, which is the most common cause of a number being wrong and the slowest to notice without it.</li>
+          <li><strong>BI and visualization</strong>: Power BI where the estate is Microsoft and the licensing is already paid. Looker where the semantic layer matters more than the chart library. Managed: Power BI, Tableau, Looker. Self-hosted: Metabase, Superset.</li>
+          <li><strong>Semantic and transformation layer</strong>: Where one definition of revenue actually lives. Skip it and you get four dashboards disagreeing, which is the problem people mistake for a tooling problem. Managed: dbt, LookML, Cube. Self-hosted: The single highest-value component.</li>
+          <li><strong>Warehouse and lakehouse</strong>: Sized to the query pattern rather than the pitch deck. A large share of estates running a lakehouse would be faster and cheaper on a well-indexed database. Managed: Snowflake, BigQuery, Databricks. Self-hosted: Postgres where the volume is honest. <a href="https://kangqore.com/services/big-data">Big Data</a></li>
+          <li><strong>Streaming and events</strong>: Real-time is expensive and most reporting does not need it. Reached for when the alert is worthless an hour later, not because the roadmap says real-time. Managed: Kafka, Flink, Materialize. Self-hosted: Only where the decision cannot wait.</li>
+          <li><strong>Orchestration</strong>: The point at which &quot;a scheduled job&quot; becomes a dependency graph somebody has to reason about. Before that it is infrastructure for two cron entries. Managed: Airflow, Dagster, Prefect. Self-hosted: Once pipelines have dependencies.</li>
+          <li><strong>Quality and observability</strong>: Catches the silent upstream schema change, which is the most common cause of a number being wrong and the slowest to notice without it. Managed: Great Expectations, Monte Carlo, Soda. Self-hosted: Tests on the data, not just the code.</li>
       </ul>
+
+    
 
     
 

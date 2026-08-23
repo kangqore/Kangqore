@@ -1,4 +1,4 @@
-// Universal PSED-style service page for all 61 capability pages.
+// Universal PSED-style service page for all 62 capability pages.
 // Takes { service, department } props derived from servicesData / departmentsData.
 // Visual design mirrors /services/product-strategy-experience-design exactly —
 // black bg, cyan accents, full-screen hero, GSAP journey timeline, capabilities
@@ -1321,7 +1321,54 @@ const featureMicros   = service.featureMicros
                   once expanded, so no crawler ever saw it. `inert` keeps the
                   collapsed paragraph out of the tab order while leaving it in
                   the markup. */}
-              {service.whatIsPara3 && (
+              {/* whatIsCollapseAfterPara2: opt-in only, unset on the other 61
+                  services so their para2 -> para3 (always visible) -> Read
+                  More(para4) behavior above is untouched. Where set, para3
+                  moves inside the collapsible panel alongside para4/para5, so
+                  the fold lands right after para2 instead of after para3 —
+                  /services/operation-technology asked for the fold earlier
+                  because para2 alone already states the service in full and
+                  para3 is elaboration, not a second load-bearing claim. */}
+              {service.whatIsCollapseAfterPara2 ? (
+                (service.whatIsPara3 || service.whatIsPara4) && (
+                  <div className="mt-8">
+                    <div
+                      id="svc-whatis-more"
+                      className="grid transition-all duration-500 ease-out motion-reduce:transition-none"
+                      style={{ gridTemplateRows: isReadMoreExpanded ? '1fr' : '0fr' }}
+                      inert={!isReadMoreExpanded}
+                    >
+                      <div className="overflow-hidden">
+                        {service.whatIsPara3 && (
+                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0">
+                            {service.whatIsPara3}
+                          </p>
+                        )}
+                        {service.whatIsPara4 && (
+                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
+                            {service.whatIsPara4}
+                          </p>
+                        )}
+                        {service.whatIsPara5 && (
+                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
+                            {service.whatIsPara5}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setIsReadMoreExpanded(!isReadMoreExpanded)}
+                      aria-expanded={isReadMoreExpanded}
+                      aria-controls="svc-whatis-more"
+                      className="text-[#60a5fa] hover:text-white mt-4 py-1 min-h-[24px] font-semibold text-sm tracking-wide uppercase transition-colors flex items-center gap-2"
+                    >
+                      {isReadMoreExpanded ? 'Read Less' : 'Read More'}
+                      <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isReadMoreExpanded ? 'rotate-180' : ''}`} />
+                    </button>
+                  </div>
+                )
+              ) : service.whatIsPara3 && (
                 <div className="mt-8">
                   <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0">
                     {service.whatIsPara3}
@@ -2270,6 +2317,293 @@ const featureMicros   = service.featureMicros
                     <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">cost per terabyte measured at every layer, attributed to a team</text>
                   </svg>
                 </div>
+              ) : service.slug === 'quality-engineering-assurance' ? (
+                /* ── A green run is a claim, not evidence ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AGENTIC ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on
+                   a page about whether a test suite can be believed.
+
+                   The five stages match architectureNodes exactly. The argument
+                   is the annotation under the spine and the loop at the foot: a
+                   suite only does work while a red build still changes what
+                   somebody does next, and the stage that compounds is the one
+                   connecting what escaped back to what was scoped.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. The widest
+                   stage label (ENGINEER, 8 characters at 12 units in a 96-unit
+                   box) clears by 19 units each side. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="How a release decision is made: the question is whether a change is safe to ship, answered by evidence rather than by a count of passing tests; the loop runs scope, engineer, run, decide and learn; the decision either ships with evidence or holds with a recorded override; what escaped in production feeds back into what gets scoped next" tabIndex={0}>
+                  <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why a green build is a claim rather than evidence</title>
+                    <desc>A release asks one question: is this change safe to ship. The quality loop answers it in five stages — scope what is worth testing, engineer the suite as an owned product, run it fast enough to be used before merge, decide at a gate with an agreed blocking list, and learn from what reached production anyway. A red build only does work while the team still believes it, which is why flake rate is measured before coverage is widened. The decision either ships with evidence a release manager can read, or holds with the override recorded rather than silent. What escaped, and which test should have caught it, feeds back into scope.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="qea-spine" gradientUnits="userSpaceOnUse" x1="26" y1="222" x2="514" y2="222">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="qea-stage" gradientUnits="userSpaceOnUse" x1="0" y1="164" x2="0" y2="216">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="qea-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="qea-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="qea-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The question a release actually asks ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">THE QUESTION A RELEASE ASKS</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">is this change safe to ship?</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#qea-tick)">
+                      <line x1="74" y1="94" x2="74" y2="158" />
+                    </g>
+                    <text x="86" y="132" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">answered with evidence, not with a count of passing tests</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="195" fontSize="12" fontWeight="bold" fill="white">SCOPE</text>
+
+                      <rect x="124" y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="195" fontSize="12" fontWeight="bold" fill="white">ENGINEER</text>
+
+                      <rect x="222" y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="195" fontSize="12" fontWeight="bold" fill="white">RUN</text>
+
+                      <rect x="320" y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="195" fontSize="12" fontWeight="bold" fill="white">DECIDE</text>
+
+                      <rect x="418" y="164" width="96" height="52" rx="9" fill="url(#qea-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="195" fontSize="12" fontWeight="bold" fill="white">LEARN</text>
+                    </g>
+
+                    <line x1="26" y1="222" x2="506" y2="222" stroke="url(#qea-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#qea-arrow)" />
+
+                    {/* ── What the whole thing rests on ── */}
+                    <text x="270" y="248" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">a red build only works while the team still believes it</text>
+
+                    <path d="M 270 256 C 270 288, 210 288, 145 288 C 138 288, 133 294, 133 302" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#qea-arrow)" />
+                    <path d="M 270 256 C 270 288, 350 288, 420 288 C 427 288, 432 294, 432 302" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#qea-arrow-amber)" />
+
+                    <rect x="26" y="306" width="214" height="66" rx="9" fill="#08160f" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="133" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">SHIP WITH EVIDENCE</text>
+                    <text x="133" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">the gate can say why</text>
+
+                    <rect x="300" y="306" width="214" height="66" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="407" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">HOLD, OR OVERRIDE</text>
+                    <text x="407" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">recorded, never silent</text>
+
+                    {/* ── The stage that compounds ── */}
+                    <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <path d="M 62 407 a 9 9 0 1 0 5 -3" fill="none" stroke="#4ab6d4" strokeOpacity="0.7" strokeWidth="1.5" markerEnd="url(#qea-arrow)" />
+                    <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
+                  </svg>
+                </div>
+              ) : service.slug === 'finance-risk-management' ? (
+                /* ── One ledger, two functions ──
+                   Replaces the shared Shield default, which put Zero-Trust
+                   Security Architecture, SOC Operations and Incident Mesh above
+                   the fold on a Finance & Risk page. Measured before the
+                   rewrite: 103 security terms and zero finance terms.
+
+                   The five stages match architectureNodes exactly. The argument
+                   is the split and the rejoin: the CFO view and the CRO view are
+                   built from the same ledger by different teams, and the whole
+                   page exists to say they should share a data model. So the
+                   diagram forks at the top and converges at the bottom, and the
+                   band underneath names the number that proves it worked.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12, and the
+                   widest stage label (MODERNIZE, 9 characters at 12 units in a
+                   96-unit box) clears by 15 units each side. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="How finance and risk are joined: one general ledger feeds a CFO view of forecast, close and performance and a CRO view of credit, market and liquidity exposure; the lifecycle runs assess, architect, modernize, automate and operate; both views converge on one governed finance and risk data model, measured on close days, forecast variance, exposure refresh and control coverage" tabIndex={0}>
+                  <svg viewBox="0 0 540 470" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why the forecast and the risk report disagree about the same quarter</title>
+                    <desc>One general ledger feeds two views built by different teams: a CFO view of forecast, close and performance, and a CRO view of credit, market, liquidity and counterparty exposure. The lifecycle runs assess, architect, modernize, automate and operate. Both views converge on a single governed finance and risk data model with declared lineage, measured on close days, forecast variance, exposure refresh frequency and control coverage.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="frm-spine" gradientUnits="userSpaceOnUse" x1="26" y1="286" x2="514" y2="286">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="frm-stage" gradientUnits="userSpaceOnUse" x1="0" y1="228" x2="0" y2="280">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="frm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="frm-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The one thing both views are built from ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">ONE GENERAL LEDGER</text>
+                    <rect x="26" y="46" width="488" height="44" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="74" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">transactions · positions · exposures · entities</text>
+
+                    {/* ── Two functions read it separately ── */}
+                    <g stroke="#ffffff" strokeOpacity="0.22" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#frm-tick)">
+                      <path d="M 200 92 C 200 112, 145 112, 145 128" fill="none" />
+                      <path d="M 340 92 C 340 112, 395 112, 395 128" fill="none" />
+                    </g>
+
+                    <rect x="26" y="132" width="214" height="62" rx="9" fill="#0a1220" stroke="#2564ea" strokeOpacity="0.5" strokeWidth="1.5" />
+                    <text x="133" y="156" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="#7aa5f5">THE CFO VIEW</text>
+                    <text x="133" y="176" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.75">forecast · close · margin</text>
+
+                    <rect x="300" y="132" width="214" height="62" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.5" strokeWidth="1.5" />
+                    <text x="407" y="156" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="#4ab6d4">THE CRO VIEW</text>
+                    <text x="407" y="176" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.75">credit · market · liquidity</text>
+
+                    <text x="270" y="214" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">same quarter, different extract, different answer</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="259" fontSize="12" fontWeight="bold" fill="white">ASSESS</text>
+
+                      <rect x="124" y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="259" fontSize="12" fontWeight="bold" fill="white">ARCHITECT</text>
+
+                      <rect x="222" y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="259" fontSize="12" fontWeight="bold" fill="white">MODERNIZE</text>
+
+                      <rect x="320" y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="259" fontSize="12" fontWeight="bold" fill="white">AUTOMATE</text>
+
+                      <rect x="418" y="228" width="96" height="52" rx="9" fill="url(#frm-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="259" fontSize="12" fontWeight="bold" fill="white">OPERATE</text>
+                    </g>
+
+                    <line x1="26" y1="286" x2="506" y2="286" stroke="url(#frm-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#frm-arrow)" />
+
+                    {/* ── Where the two views rejoin ── */}
+                    <g stroke="#00c875" strokeOpacity="0.5" strokeWidth="1.5" markerEnd="url(#frm-arrow)">
+                      <path d="M 145 292 C 145 316, 240 316, 262 320" fill="none" />
+                      <path d="M 395 292 C 395 316, 300 316, 278 320" fill="none" />
+                    </g>
+
+                    <rect x="26" y="326" width="488" height="66" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="270" y="350" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">ONE FINANCE AND RISK DATA MODEL</text>
+                    <text x="270" y="370" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">declared lineage · one number, two views</text>
+
+                    {/* ── What the program is held to ── */}
+                    <rect x="26" y="412" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="439" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">close days · forecast variance · exposure refresh · controls</text>
+                  </svg>
+                </div>
+              ) : service.slug === 'robotic-process-automation' ? (
+                /* ── The bot depends on a surface it does not own ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AGENTIC ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on
+                   a page about driving legacy interfaces.
+
+                   The five stages match architectureNodes exactly. The argument
+                   is the top band and the branch: the bot reaches systems with
+                   no API through the interface, and the interface belongs to
+                   somebody else's release calendar. A green run is not the same
+                   as a correct one, which is why the branch tests the output
+                   rather than the exit code.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12, and the
+                   widest stage label (MAINTAIN, 8 characters at 12 units in a
+                   96-unit box) clears by 18 units each side. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="How a bot estate stays alive: the bot drives systems with no API through their interface, and that interface changes on someone else's release calendar; the lifecycle runs qualify, design, build, deploy and maintain; each run is checked at the output, so work either completes correctly or the run is stopped rather than writing the wrong value" tabIndex={0}>
+                  <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why a bot estate needs engineering rather than a demo</title>
+                    <desc>Bots reach mainframes, thick clients, Citrix sessions and vendor portals through the only door available, the interface, which changes on somebody else's release calendar. The lifecycle runs qualify, design, build, deploy and maintain. Every run is verified at the output rather than by exit code, so work either completes correctly or the run stops instead of writing the wrong value silently. Break-fix load is measured as a share of team capacity.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="rpa-spine" gradientUnits="userSpaceOnUse" x1="26" y1="222" x2="514" y2="222">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="rpa-stage" gradientUnits="userSpaceOnUse" x1="0" y1="164" x2="0" y2="216">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="rpa-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="rpa-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="rpa-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The systems only a bot can reach ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">SYSTEMS WITH NO USABLE API</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">mainframe · thick client · Citrix · vendor portal</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#rpa-tick)">
+                      <line x1="81" y1="94" x2="81" y2="158" />
+                    </g>
+                    <text x="92" y="132" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">reached through the interface, not an endpoint</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="195" fontSize="12" fontWeight="bold" fill="white">QUALIFY</text>
+
+                      <rect x="124" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="195" fontSize="12" fontWeight="bold" fill="white">DESIGN</text>
+
+                      <rect x="222" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="195" fontSize="12" fontWeight="bold" fill="white">BUILD</text>
+
+                      <rect x="320" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="195" fontSize="12" fontWeight="bold" fill="white">DEPLOY</text>
+
+                      <rect x="418" y="164" width="96" height="52" rx="9" fill="url(#rpa-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="195" fontSize="12" fontWeight="bold" fill="white">MAINTAIN</text>
+                    </g>
+
+                    <line x1="26" y1="222" x2="506" y2="222" stroke="url(#rpa-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#rpa-arrow)" />
+
+                    {/* ── What decides whether a run counts ── */}
+                    <text x="270" y="248" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">verified at the output, not by the exit code</text>
+
+                    <path d="M 270 256 C 270 288, 210 288, 145 288 C 138 288, 133 294, 133 302" fill="none" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#rpa-arrow)" />
+                    <path d="M 270 256 C 270 288, 350 288, 420 288 C 427 288, 432 294, 432 302" fill="none" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#rpa-arrow-amber)" />
+
+                    <rect x="26" y="306" width="214" height="66" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="133" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">WORK COMPLETES</text>
+                    <text x="133" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">and reconciles</text>
+
+                    <rect x="300" y="306" width="214" height="66" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="407" y="330" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">THE RUN STOPS</text>
+                    <text x="407" y="350" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">instead of writing quietly</text>
+
+                    {/* ── The number the estate is held to ── */}
+                    <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">break-fix load, measured against team capacity</text>
+                  </svg>
+                </div>
               ) : service.slug === 'business-process-management' ? (
                 /* ── Many local variants to one governed standard ──
                    Replaces the shared agentic default, which put AI COMMANDER,
@@ -2816,6 +3150,111 @@ const featureMicros   = service.featureMicros
 
                   </svg>
                 </div>
+              ) : service.slug === 'operation-technology' ? (
+                /* ── Plant floor to enterprise, five stages ──
+                   Replaces the shared agentic default, which labeled an OT
+                   engineering page AI COMMANDER, AGENTIC ORCHESTRATOR and
+                   AUTONOMOUS COMMIT — an AI agent execution loop above copy
+                   about SCADA, PLCs and industrial connectivity.
+
+                   The five stages match architectureNodes below it exactly
+                   (Assess, Architect, Connect, Operate, Optimize), so the
+                   summary and the detail cannot drift apart. The closing
+                   split visualizes the FAQ answer on connectivity loss:
+                   control stays local no matter what the upstream link is
+                   doing, and the enterprise side sees it once reconnected —
+                   not a success/exception branch like the automation pages,
+                   since both outcomes here are the point, not a fallback.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is smaller than 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="OT transformation pipeline — plant-floor assets are assessed, architected, connected, operated and optimized, with control staying local and enterprise systems seeing it once reconnected" tabIndex={0}>
+                  <svg viewBox="0 0 540 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>How plant-floor assets become enterprise operational intelligence</title>
+                    <desc>PLCs, SCADA, HMIs and sensors are assessed, architected, connected and operated, then optimized into predictive intelligence. Control stays local if the upstream link drops; the enterprise side syncs once it returns.</desc>
+
+                    <defs>
+                      <linearGradient id="ot-spine" gradientUnits="userSpaceOnUse" x1="26" y1="186" x2="507" y2="186">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="ot-stage" gradientUnits="userSpaceOnUse" x1="0" y1="160" x2="0" y2="212">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="ot-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="ot-arrow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#2564ea" />
+                      </marker>
+                      <marker id="ot-tick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+
+                    {/* ── What's on the floor today ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">WHAT SITS ON YOUR PLANT FLOOR</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">PLC · HMI · SCADA · DCS · sensors · edge gateways</text>
+
+                    <g stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#ot-tick)">
+                      <line x1="81" y1="94" x2="81" y2="156" />
+                    </g>
+                    <text x="92" y="130" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">including what nobody has fully inventoried yet</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <line x1="26" y1="186" x2="507" y2="186" stroke="url(#ot-spine)" strokeWidth="2" strokeOpacity="0.45" />
+
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#2564ea" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="68.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">ASSESS</text>
+                      <text x="68.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">discover</text>
+
+                      <rect x="125" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#2b78e0" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="167.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">ARCHITECT</text>
+                      <text x="167.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">zones · edge</text>
+
+                      <rect x="224" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#3080e6" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="266.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">CONNECT</text>
+                      <text x="266.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">OPC UA/MQTT</text>
+
+                      <rect x="323" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#3b9ce0" strokeOpacity="0.6" strokeWidth="1.5" />
+                      <text x="365.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">OPERATE</text>
+                      <text x="365.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">change · OEMs</text>
+
+                      <rect x="422" y="160" width="85" height="52" rx="9" fill="url(#ot-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="464.5" y="182" fontSize="12" fontWeight="bold" letterSpacing="0.4" fill="white">OPTIMIZE</text>
+                      <text x="464.5" y="200" fontSize="11" fill="white" fillOpacity="0.55">predict · AI</text>
+                    </g>
+
+                    <g stroke="#4ab6d4" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#ot-arrow)">
+                      <line x1="113" y1="186" x2="123" y2="186" />
+                      <line x1="212" y1="186" x2="222" y2="186" />
+                      <line x1="311" y1="186" x2="321" y2="186" />
+                      <line x1="410" y1="186" x2="420" y2="186" />
+                    </g>
+
+                    {/* ── If the upstream link drops, control does not ── */}
+                    <text x="270" y="240" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">if the upstream link drops</text>
+
+                    <path d="M 464 214 C 464 240, 260 240, 145 240 L 145 254" fill="none" stroke="#4ab6d4" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#ot-arrow)" />
+                    <path d="M 464 214 C 464 236, 430 236, 408 254" fill="none" stroke="#2564ea" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#ot-arrow-2)" />
+
+                    <rect x="26" y="258" width="238" height="58" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="145" y="282" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#4ab6d4">PLANT KEEPS RUNNING</text>
+                    <text x="145" y="302" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">control stays local either way</text>
+
+                    <rect x="302" y="258" width="212" height="58" rx="9" fill="#0a1220" stroke="#2564ea" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="408" y="282" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#93c5fd">ENTERPRISE SEES IT</text>
+                    <text x="408" y="302" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">telemetry syncs on reconnect</text>
+
+                    {/* ── Measurement runs across the whole path ── */}
+                    <rect x="26" y="336" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="363" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">asset visibility and downtime measured against your own baseline</text>
+                  </svg>
+                </div>
               ) : (
                 /* ── Agentic AI Flow Diagram (Upgraded) ── */
                 <div className="flex items-center justify-start sm:justify-center w-full lg:-mt-16 overflow-x-auto sm:overflow-visible" role="group" aria-label="Agentic AI Pipeline diagram" tabIndex={0}>
@@ -3078,6 +3517,80 @@ const featureMicros   = service.featureMicros
           carries durations and tiers the three-step version lacked.
           Together they cost 1,267px of height for duplicated argument. */}
 
+      {/* ══════════════════ ENTERPRISE ARCHITECTURE STACK ══════════════════ */}
+      {/* Opt-in, page-scoped. A layered architecture drawn from data rather
+          than as a bespoke SVG, for three reasons: it is reusable by any
+          service that has a genuine layer model, every label is real text so
+          the crawler that never runs our JS receives the whole diagram, and it
+          reflows on a phone instead of becoming a 460px horizontal scroll.
+          Signal flows bottom-up — systems emit, the top layer decides. */}
+      {service.enterpriseArchitecture && (
+        <section className="py-16 md:py-24 border-t border-white/[0.05] overflow-hidden" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.enterpriseArchitecture.eyebrow}
+              </span>
+            </div>
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-4xl">
+              {service.enterpriseArchitecture.title}{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {service.enterpriseArchitecture.titleHighlight}
+              </span>
+            </h2>
+            {service.enterpriseArchitecture.lede && (
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-14">
+                {service.enterpriseArchitecture.lede}
+              </p>
+            )}
+
+            <ol className="relative flex flex-col gap-3" aria-label="Assurance architecture, decomposed from the business outcome at the top down to the systems under test at the foot">
+              {service.enterpriseArchitecture.layers.map((layer, li) => (
+                <li key={layer.label} className="relative">
+                  {/* Read downward as a decomposition: the outcome at the top
+                      is supported by the layer beneath it, and so on down to
+                      the systems a release can actually break. */}
+                  {li > 0 && (
+                    <span aria-hidden="true" className="absolute -top-3 left-1/2 -translate-x-1/2 text-[#4ab6d4]/45 text-xs leading-none">&#9660;</span>
+                  )}
+                  <div
+                    className="rounded-2xl border px-5 py-5 sm:px-7 sm:py-6 transition-colors duration-500"
+                    style={{
+                      borderColor: `rgba(74,182,212,${0.14 + li * 0.06})`,
+                      background: `linear-gradient(135deg, rgba(37,100,234,${0.05 + li * 0.025}) 0%, rgba(74,182,212,${0.03 + li * 0.02}) 100%)`,
+                    }}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
+                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-white">{layer.label}</h3>
+                      {layer.role && (
+                        <p className="text-xs sm:text-sm text-white/55 font-medium sm:text-right sm:max-w-md leading-snug">{layer.role}</p>
+                      )}
+                    </div>
+                    <ul className="flex flex-wrap gap-2">
+                      {layer.nodes.map((n) => (
+                        <li
+                          key={n}
+                          className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm leading-snug text-white/75"
+                        >
+                          {n}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            {service.enterpriseArchitecture.principle && (
+              <p className="mt-10 border-l-2 border-[#4ab6d4]/50 pl-5 text-white/70 text-base sm:text-lg leading-relaxed max-w-3xl">
+                {service.enterpriseArchitecture.principle}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════ CAPABILITIES ══════════════════════ */}
       {service.capabilityAreas ? (
         /* ── BENTO GRID (when capabilityAreas override is set) ── */
@@ -3087,6 +3600,15 @@ const featureMicros   = service.featureMicros
               opacity: 1; transform: translateY(0);
               transition: opacity 0.4s cubic-bezier(0.25,1,0.5,1), transform 0.4s cubic-bezier(0.25,1,0.5,1);
               visibility: visible;
+              /* Safety net, not a layout mechanism. The description box is
+                 sized by the flex row above it, so a long description used to
+                 spill straight out of its box and render across the "Explore
+                 Capability" link at the foot of the card. Measured on
+                 /services/robotic-process-automation before this: 4 of 7 cards
+                 overflowing, the worst by 74px. Copy should still be written to
+                 fit the card; this only guarantees that when it is not, the
+                 text clips instead of colliding with a control. */
+              overflow: hidden;
             }
             .svc-cap-group:hover .svc-cap-desc {
               opacity: 0; transform: translateY(12px); visibility: hidden; pointer-events: none;
@@ -3177,6 +3699,28 @@ const featureMicros   = service.featureMicros
                   else if (i === 7) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else if (i === 8) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else if (i === 11) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 20) {
+                  /* ── 8 + 8 + 4 ──
+                     Three bento movements in one continuous grid. Blocks A and
+                     B repeat the same shape (a tall opener, a two-wide, then a
+                     full-width closer) so the eye learns the rhythm and reads
+                     the repeat as structure rather than as a longer list. Block
+                     C breaks it with a two-card pinwheel, which is what stops
+                     the last four reading as an afterthought.
+
+                     Tiling in three columns, no gaps:
+                       A  r1-2 [00 tall][01][02] / [03][04]
+                          r3   [05 wide-2      ][06]
+                          r4   [07 wide-3           ]
+                       B  r5-6 [08 tall][09][10] / [11][12]
+                          r7   [13 wide-2      ][14]
+                          r8   [15 wide-3           ]
+                       C  r9   [16 wide-2      ][17]
+                          r10  [18][19 wide-2      ] */
+                  if (i === 0 || i === 8) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 5 || i === 13 || i === 16 || i === 19) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 7 || i === 15) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 14) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
@@ -3564,6 +4108,112 @@ const featureMicros   = service.featureMicros
         );
       })()}
 
+      {/* ══════════════════════ COMMAND CENTER ══════════════════════ */}
+      {/* Opt-in, page-scoped. An executive console rendered in HTML rather than
+          as an image or an SVG, so every figure is selectable text a crawler
+          receives and a screen reader can announce in reading order. Nothing
+          here is a client result: the disclaimer is part of the component and
+          not a caption a future edit can drop, because a dashboard is the most
+          quotable thing on a page and the easiest to mistake for measurement. */}
+      {service.commandCenter && (
+        <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.commandCenter.eyebrow}
+              </span>
+            </div>
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-4xl">
+              {service.commandCenter.title}{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {service.commandCenter.titleHighlight}
+              </span>
+            </h2>
+            {service.commandCenter.lede && (
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-12">
+                {service.commandCenter.lede}
+              </p>
+            )}
+
+            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#2564ea]/[0.07] to-[#4ab6d4]/[0.05] p-5 sm:p-8">
+              {/* Headline index */}
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-7 border-b border-white/10">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/50 mb-2">
+                    {service.commandCenter.headline.label}
+                  </p>
+                  <p className="text-white/60 text-sm leading-snug max-w-md">
+                    {service.commandCenter.headline.note}
+                  </p>
+                </div>
+                <p className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-none bg-brand-gradient bg-clip-text text-transparent">
+                  {service.commandCenter.headline.value}
+                  <span className="text-xl sm:text-2xl text-white/50 font-bold"> / {service.commandCenter.headline.outOf}</span>
+                </p>
+              </div>
+
+              {/* Domain scores */}
+              <ul className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.07] rounded-2xl overflow-hidden my-7">
+                {service.commandCenter.domains.map((d) => (
+                  <li key={d.label} className="bg-[#050a14] px-4 py-5">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/55 mb-2 leading-snug">{d.label}</p>
+                    <p className="text-3xl font-extrabold text-white tracking-tight leading-none mb-3">{d.value}</p>
+                    <div className="h-1 rounded-full bg-white/10 overflow-hidden" role="img" aria-label={`${d.label}: ${d.value} out of 100`}>
+                      <div className="h-full rounded-full bg-brand-gradient" style={{ width: `${d.value}%` }} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Signals */}
+              <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3 pb-7 border-b border-white/10">
+                {service.commandCenter.signals.map((s) => (
+                  <li key={s.label} className="flex items-baseline justify-between gap-4 border-b border-white/[0.06] pb-2.5">
+                    <span className="text-sm text-white/60 leading-snug">{s.label}</span>
+                    <span className={`text-sm font-bold tracking-tight shrink-0 ${s.good === false ? 'text-amber-400' : 'text-emerald-400'}`}>
+                      {s.value}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Risk register */}
+              <div className="pt-7">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/50 mb-4">
+                  {service.commandCenter.risksLabel}
+                </p>
+                <ol className="flex flex-col gap-2.5">
+                  {service.commandCenter.risks.map((r, ri) => (
+                    <li key={r.item} className="flex items-center gap-4 rounded-xl border border-white/[0.07] bg-white/[0.02] px-4 py-3">
+                      <span className="font-mono text-xs text-white/50 tabular-nums shrink-0">{String(ri + 1).padStart(2, '0')}</span>
+                      <span className="flex-1 text-sm text-white/75 leading-snug">{r.item}</span>
+                      <span
+                        className={`shrink-0 rounded-md px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider ${
+                          r.level === 'HIGH'
+                            ? 'bg-red-500/15 text-red-300'
+                            : r.level === 'MEDIUM'
+                              ? 'bg-amber-500/15 text-amber-300'
+                              : 'bg-white/10 text-white/60'
+                        }`}
+                      >
+                        {r.level}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+
+            <p className="mt-5 text-sm text-white/55 leading-relaxed max-w-3xl">
+              Illustrative console. Every figure above is a worked example of the shape this reporting takes —
+              thresholds, domains and weightings are set against your own baseline during the engagement, and
+              Kangqore publishes no client metrics it has not measured.
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════ MID-PAGE CTA ══════════════════════ */}
       {service.outcomeCard && (
         <section className="py-16" style={{ backgroundColor: '#000000' }}>
@@ -3583,7 +4233,14 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ JOURNEY TIMELINE ══════════════════════ */}
-      {!service.servicePackages && (
+      {/* Suppressed by default wherever a service defines its own engagement
+          packages, because the generic four-phase default said the same thing
+          twice. `showJourney` opts back in for a service whose methodology is
+          genuinely distinct from its commercial packages — a phased delivery
+          model is not the same statement as "here are five ways to buy", and a
+          page carrying a real one should be able to show it. Without the flag
+          the other 61 pages behave exactly as before. */}
+      {(!service.servicePackages || service.showJourney) && (
         <section id="svc-phases" className="py-16 md:py-32 overflow-hidden relative" style={{ backgroundColor: '#000000' }}>
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
@@ -3648,7 +4305,12 @@ const featureMicros   = service.featureMicros
                                 </div>
                               )}
                             </div>
-                            <h4 className="text-lg font-black text-white mb-1">{item.title}</h4>
+                            {/* h3, not h4: the only heading above these cards
+                                is the section h2, so h4 skipped a level. Axe
+                                flags it as heading-order and a screen-reader
+                                user loses the outline. Visual size is set by
+                                the class, not by the tag. */}
+                            <h3 className="text-lg font-black text-white mb-1">{item.title}</h3>
                             <p className="text-sm text-white/50 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
                           </div>
                         </div>
@@ -3664,18 +4326,28 @@ const featureMicros   = service.featureMicros
                   <div>
                     <div className="flex items-center gap-4 mb-4">
                       <div className="h-[1px] w-12 bg-white/20" />
-                      <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.name} Journey</span>
+                      <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.journeyEyebrow || `${service.name} Journey`}</span>
                     </div>
                     <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
-                      From Ambition to<br />
-                      <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered Outcomes.</span>
+                      {service.journeyHeading
+                        ? <>{service.journeyHeading}<br /><span className="bg-brand-gradient bg-clip-text text-transparent">{service.journeyHeadingHighlight}</span></>
+                        : <>From Ambition to<br /><span className="bg-brand-gradient bg-clip-text text-transparent">Delivered Outcomes.</span></>}
                     </h2>
                     <p className="text-white/50 text-lg font-light leading-relaxed max-w-lg">
-                      A connected system for moving from business goals through solution design to implementation and continuous optimization.
+                      {service.journeyLede
+                        || 'A connected system for moving from business goals through solution design to implementation and continuous optimization.'}
                     </p>
                   </div>
+                  {/* The third stat used to read "Confidence — 100%" on all 62
+                      pages. Nothing measures it, no client produced it, and on
+                      an assurance page it is the least defensible sentence we
+                      could publish. Replaced with a statement about how we
+                      work, which is true everywhere and claims no number.
+                      Overridable per service via `journeyStats`. */}
                   <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
-                    {[['Phases', String(activeJourney.length).padStart(2, '0')], ['Timeline', '4-16 wks'], ['Confidence', '100%']].map(([label, val], i) => (
+                    {(service.journeyStats
+                      || [['Phases', String(activeJourney.length).padStart(2, '0')], ['Timeline', '4-16 wks'], ['Delivery', 'Co-owned']]
+                    ).map(([label, val], i) => (
                       <div key={label}>
                         <div className="font-mono text-[11px] text-white/60 tracking-widest uppercase font-bold mb-2">{label}</div>
                         <div className={`text-2xl font-black ${i === 2 ? 'bg-brand-gradient bg-clip-text text-transparent' : 'text-white'}`}>{val}</div>
@@ -3878,6 +4550,66 @@ const featureMicros   = service.featureMicros
           imageAlt={service.toolsStack.imageAlt}
           inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
         />
+      )}
+
+      {/* ══════════════════════ ACCELERATORS ══════════════════════ */}
+      {/* Opt-in, page-scoped. Named methods and reusable assets a practice
+          brings to an engagement — deliberately not described as products,
+          because Kangqore ships no licensed software and a page that implies
+          otherwise is a representation to a buyer. Each card states what the
+          asset is for, then what it actually does, so the name is a label on
+          real work rather than a trademark standing on its own. */}
+      {service.accelerators && (
+        <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.accelerators.eyebrow}
+              </span>
+            </div>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
+              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white max-w-3xl">
+                {service.accelerators.title}{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent">
+                  {service.accelerators.titleHighlight}
+                </span>
+              </h2>
+              {service.accelerators.lede && (
+                <p className="text-lg text-white/50 leading-relaxed max-w-md lg:text-right">
+                  {service.accelerators.lede}
+                </p>
+              )}
+            </div>
+
+            <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {service.accelerators.items.map((a, ai) => (
+                <li
+                  key={a.name}
+                  className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition-colors duration-500 hover:border-[#4ab6d4]/40 hover:bg-white/[0.04]"
+                >
+                  <span className="font-mono text-xs text-white/50 tabular-nums mb-4">{String(ai + 1).padStart(2, '0')}</span>
+                  <h3 className="text-lg font-bold tracking-tight text-white leading-snug mb-3">{a.name}</h3>
+                  <p className="text-sm text-white/55 leading-relaxed mb-5">{a.desc}</p>
+                  <ul className="mt-auto flex flex-col gap-1.5 border-t border-white/[0.07] pt-4">
+                    {a.functions.map((f) => (
+                      <li key={f} className="flex gap-2 text-sm text-white/65 leading-snug">
+                        <span aria-hidden="true" className="text-[#4ab6d4]/60 shrink-0">&#8250;</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+
+            {service.accelerators.footnote && (
+              <p className="mt-8 text-sm text-white/55 leading-relaxed max-w-3xl">
+                {service.accelerators.footnote}
+              </p>
+            )}
+          </div>
+        </section>
       )}
 
       {/* ══════════════════ DATA BOUNDARY ══════════════════ */}
