@@ -675,9 +675,9 @@ export const serviceSEO = {
     url: '/services/salesforce',
   },
   'servicenow': {
-    title: 'ServiceNow — Platforms | Kangqore',
-    description: 'ServiceNow implementation — ITSM, ITOM, HR Service Delivery, custom apps, and integration for unified enterprise service management.',
-    keywords: 'ServiceNow implementation, ITSM, ITOM, HR Service Delivery, ServiceNow consulting',
+    title: 'ServiceNow Implementation & Managed Services | Kangqore',
+    description: 'ServiceNow consulting and implementation: ITSM, ITOM and CMDB, asset management, SecOps, HR and customer workflows, App Engine, upgrades and operations.',
+    keywords: 'ServiceNow implementation, ServiceNow consulting, ITSM, ITOM, CMDB, CSDM, ServiceNow upgrade, IT asset management, SecOps, HRSD, App Engine, ServiceNow managed services',
     url: '/services/servicenow',
   },
   'global-capability-centers': {

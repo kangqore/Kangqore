@@ -11400,12 +11400,870 @@ export const servicesData = {
     name: 'ServiceNow',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
-    shortDescription: 'ServiceNow implementation and optimization',
-    fullDescription: 'Implement ServiceNow for IT service management and beyond.',
-    keyFeatures: ['ITSM', 'ITOM', 'HR Service Delivery', 'Custom apps', 'Integration'],
-    relatedServiceSlugs: ['enterprise-platform-integration', 'salesforce', 'unified-services-management'],
+    shortDescription: 'Building on ServiceNow so the platform still upgrades cleanly in year five',
+    fullDescription: 'Advisory, implementation and managed operations across the Now Platform — built close to baseline, so your instance still upgrades in year five.',
+    // Without this the hero description inherits the template default
+    // max-w-[520px] and wraps to three lines. Two is the standard.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['ITSM', 'ITOM & CMDB', 'ITAM', 'SecOps & IRM', 'HRSD & CSM', 'App Engine', 'Upgrade health'],
+    relatedServiceSlugs: ['enterprise-platform-integration', 'business-process-management', 'it-security-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80',
+    lastReviewed: '2026-08-24',
+
+    // ── Positioning ──────────────────────────────────────────────────
+    // 584 bytes on the Platforms parity default: five keyFeatures, one sentence
+    // of description, and a crawler seeing 2 per cent of the page. 25/40.
+    //
+    // Every large SI leads their ServiceNow page with the same three things --
+    // partner tier, awards, and a satisfaction score. Tech Mahindra's opens
+    // with Elite Partner, a Global Partner Award, CSAT 4.9/5 and an ISG Leader
+    // placement, then names five pieces of industry IP. Accenture, Infosys and
+    // Wipro run the same shape. That page is a credentials page, and it works
+    // because those credentials are real.
+    //
+    // Kangqore has none of them. No partner tier, no awards, no named clients.
+    // Competing on that axis is not available, and implying it would be the
+    // fastest way to lose a buyer who checks the ServiceNow partner finder in
+    // about forty seconds. So this page competes on the argument instead, and
+    // FAQ 01 answers the partner-tier question directly rather than hoping it
+    // does not come up.
+    //
+    // The wedge is the cost nobody quotes. ServiceNow ships two family releases
+    // a year. Every customization outside the platform model is a thing that
+    // has to be retested, and often reworked, on that cadence -- so a build
+    // decision made in month three is a bill that arrives twice a year for as
+    // long as the instance lives. Partners paid by the implementation hour have
+    // no reason to say this, and the second-order effect is the one that
+    // actually hurts: instances fall behind, drop out of the support window,
+    // and need a remediation project to get current again.
+    //
+    // Underneath that sits the CMDB, which everything else depends on -- ITOM,
+    // SecOps, impact analysis, asset management -- and which almost nobody
+    // owns. Outcomes are therefore upgrade lag, baseline ratio, CMDB health and
+    // license utilization. Not MTTR and ticket deflection, which every partner
+    // quotes and which move for reasons unrelated to the platform.
+    heroTitle: 'ServiceNow Implementation That\nSurvives the Next Upgrade',
+    heroBadge: 'Close to Baseline. Current. Owned.',
+    heroStripItems: [
+      'ITSM', 'ITOM & Discovery', 'CMDB & CSDM', 'IT Asset Management',
+      'SecOps & IRM', 'HR & Workplace', 'App Engine', 'Upgrade Health',
+    ],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'What a ServiceNow program actually costs',
+    whatIsTitle: 'Every Customization Is a Bill',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'You Pay Twice a Year.',
+    whatIsPara2: 'ServiceNow ships two family releases a year. That cadence is the single most important fact about building on it, and it is the one most implementation plans treat as somebody else’s problem. Anything you build inside the platform model comes along for the ride. Anything built outside it — a rewritten workflow engine, a form doing something the form was not meant to do, a scoped app quietly reimplementing a baseline table — has to be retested and often reworked, every six months, for as long as the instance lives.',
+    whatIsPara3: 'That is why so many instances are three or four families behind. Each upgrade looked expensive, each one got deferred, and eventually the instance dropped out of the support window and the catch-up became a project of its own. By then the original build team has moved on, nobody can say why a given customization exists, and the safest-looking option is to leave it alone — which is how a platform bought for agility becomes the thing nobody dares touch.',
+    whatIsPara4: 'Kangqore builds close to baseline and says no to the rest, in writing, with the reason recorded. Where a customization genuinely earns itself we build it inside the platform model so it upgrades, and we log what it costs to carry. Underneath all of it we treat the CMDB as the dependency it actually is — ITOM, security operations, impact analysis and asset management are all only as good as it is — with a named owner and a discovery cadence rather than a spreadsheet somebody refreshes before an audit.',
+
+    // ── Outcomes ────────────────────────────────────────────────────
+    // Not MTTR, ticket deflection or CSAT. Every partner page quotes those,
+    // they move with staffing and demand as much as with the platform, and none
+    // of them tells you whether the instance is healthy.
+    //
+    // These four do. Each is visible in the instance itself, each can be read
+    // before the engagement starts, and each degrades quietly if the build was
+    // wrong.
+    outcomesEyebrow: 'WHAT DECIDES WHETHER AN INSTANCE STAYS HEALTHY',
+    outcomesHeading: 'Four numbers your platform owner',
+    outcomesHeadingHighlight: 'is actually judged on.',
+    businessMetrics: [
+      { illustrative: true, title: 'Upgrade Lag',         desc: 'Family releases behind current, held inside the supported window so upgrades stay routine maintenance rather than becoming their own remediation project.',                value: '0–1', suffix: ' Behind', metricLabel: 'Family Releases Behind', icon: 'TrendingUp' },
+      { illustrative: true, title: 'Baseline Ratio',      desc: 'Share of processes running on baseline configuration rather than custom code, which is the number that predicts what every future upgrade will cost you.',              value: '85', suffix: '%',       metricLabel: 'Running Out of the Box',  icon: 'ShieldCheck' },
+      { illustrative: true, title: 'CMDB Health',         desc: 'Business-critical services with a discovered, owned and current configuration record — the dependency that ITOM, SecOps and impact analysis all quietly rest on.',      value: '95', suffix: '%',       metricLabel: 'Critical Services Mapped', icon: 'Database' },
+      { illustrative: true, title: 'License Utilization', desc: 'Fulfiller seats and activated SKUs actually in use. Unused entitlement is the cheapest money on the table and the last thing an hourly implementation partner looks for.', value: '30', suffix: '%',      metricLabel: 'Unused Entitlement Found', icon: 'Target' },
+    ],
+
+    // ── Engagement outcomes ────────────────────────────────────────
+    // Overridden rather than left on the parity default, which invents a client
+    // called "Global Enterprise Organization" and asserts "100% operational
+    // reliability". Both scenarios say what they are in the descriptor and
+    // again in the body.
+    outcomeCard: {
+      illustrative: true,
+      metric: '4 → 0',
+      metricLabel: 'family releases behind',
+      industry: 'Modeled scenario — financial services, ~9,000 fulfillers',
+      problem: 'An instance two years out of the support window, with 140 customizations nobody could justify and an upgrade everyone had learned to defer.',
+      outcome: 'Customizations triaged into keep, rebuild-inside-the-model and retire, then two upgrades run back to back. Figures are modeled from typical remediation profiles, not measured on a named client.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '1,400 seats',
+      metricLabel: 'of unused entitlement found',
+      industry: 'Modeled scenario — manufacturing group, multi-region instance',
+      problem: 'Fulfiller licenses provisioned during a rollout that finished eighteen months earlier, plus two SKUs activated for a pilot that never went live.',
+      outcome: 'Entitlement reconciled against actual usage before renewal rather than after it. Modeled figures, shown to convey the shape of the work rather than a specific engagement.',
+    },
+
+    // ── Capability areas ───────────────────────────────────────────
+    // Eight, and the boundary matters more here than on almost any other page
+    // because ServiceNow touches every practice Kangqore already sells. Five
+    // rich pages already reference it, so each seam is stated on the card
+    // rather than claimed twice:
+    //   - process design and value-stream work -> business-process-management
+    //   - case-management applications -> digital-process-automation
+    //   - the security program behind SecOps and IRM -> it-security-services
+    //   - integration architecture beyond IntegrationHub -> enterprise-platform-integration
+    //   - the HR operating model behind HRSD -> talent-organization
+    //   - release testing strategy and ATF suites -> quality-engineering-assurance
+    //   - model governance behind Now Assist -> ai-governance
+    // What is left is the platform itself, which is what this page is for.
+    //
+    // Bento slots: 01 opens tall, 06 takes width, and 08 closes full width
+    // because platform health is the argument the whole page is built on.
+    capabilitiesLabel: 'SERVICENOW PLATFORM SERVICES',
+    capabilitiesSectionTitle: 'ServiceNow',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Eight areas across the Now Platform — advisory through managed operations, roughly a hundred named services, and the seven seams where another Kangqore practice takes the work on.',
+    capabilityAreas: [
+      {
+        title: 'ServiceNow Advisory & Platform Strategy',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What to put on the platform, what to keep off it, and which SKUs you are paying for without using. Licensing shapes every architecture decision that follows, and an implementation partner billing by the hour has no reason to raise it — so we do it first, before anything is designed.',
+        items: [
+          'Platform Strategy and Target Architecture',
+          'License and Entitlement Review',
+          'SKU Rationalization Before Renewal',
+          'Fulfiller Seat Modeling',
+          'Instance Strategy and Domain Separation',
+          'Build-Versus-Baseline Decision Framework',
+          'Platform Roadmap and Release Planning',
+          'Consulting & Roadmap',
+          'Consulting and Roadmap Definition',
+          'Strategic Portfolio Management (SPM)',
+          'Demand and Idea Management',
+          'Design Thinking for Service Experience',
+          'Business Case and Benefit Baselining',
+          'Vendor and Partner Landscape Review',
+          'Governance and Demand Intake Design',
+          'Platform Operating Model',
+          'Total Cost of Ownership Modeling',
+          'Readiness Assessment Before a Module Purchase',
+        ],
+      },
+      {
+        title: 'ITSM & Service Operations',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Incident, request, change and problem, configured close to baseline. The process design behind them belongs to business process management.',
+        items: [
+          'IT Services & Operations Management',
+          'Incident and Major Incident Management',
+          'Request Management and Service Catalog',
+          'Change Enablement and CAB Automation',
+          'Problem Management',
+          'Knowledge Management',
+          'Service Portal and Employee Center',
+          'Virtual Agent and Deflection Design',
+          'Service Level Management',
+          'Walk-Up and Onsite Support',
+          'Predictive Intelligence for Routing',
+          'Reporting, Dashboards and Performance Analytics',
+          'ITIL and ISO 20000 Alignment',
+          'Baseline-First Configuration Standards',
+        ],
+      },
+      {
+        title: 'ITOM, Discovery & the CMDB',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The dependency everything else rests on. A CMDB without an owner and a discovery cadence is a record of what was true once.',
+        items: [
+          'CMDB Design Against CSDM',
+          'Discovery Design and Credential Strategy',
+          'Service Mapping for Critical Services',
+          'CMDB Health Dashboards and Remediation',
+          'Data Ownership and Stewardship Model',
+          'Duplicate and Orphan CI Cleanup',
+          'Cloud and Container Discovery',
+          'Event Management and Alert Correlation',
+          'AIOps and Anomaly Detection',
+          'Orchestration and Runbook Automation',
+          'Certification and Reconciliation Rules',
+          'Third-Party Data Source Integration',
+          'CMDB Refresh Cadence Written Into Operations',
+        ],
+      },
+      {
+        title: 'IT Asset Management & Software Spend',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Hardware and software asset management against a CMDB you can trust, so renewal starts from evidence rather than a vendor spreadsheet.',
+        items: [
+          'Software Asset Management',
+          'Hardware Asset Management',
+          'License Position and Entitlement Reconciliation',
+          'SaaS License Management',
+          'Publisher Pack Configuration',
+          'Contract and Renewal Management',
+          'Audit Defense Preparation',
+          'Asset Lifecycle and Disposal',
+          'Procurement and Request Integration',
+          'Consumption and Chargeback Reporting',
+          'Cloud Cost Visibility',
+          'Shadow IT Discovery',
+          'Reclaim and Redeployment Workflows',
+        ],
+      },
+      {
+        title: 'Security Operations & Integrated Risk',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'SecOps and IRM configured on the platform. The security program itself — threat modeling, testing, the response function — is a separate service.',
+        items: [
+          'Security Management',
+          'Security Incident Response Configuration',
+          'Vulnerability Response and Prioritization',
+          'SIEM and Scanner Integration',
+          'Configuration Compliance',
+          'Governance, Risk and Compliance',
+          'Policy and Compliance Management',
+          'Risk Register and Assessment Workflows',
+          'Control Testing and Evidence Capture',
+          'Third-Party Risk Management',
+          'Audit Management',
+          'Business Continuity Management',
+          'Regulatory Change Tracking',
+          'Risk Reporting for Boards and Committees',
+          'Segregation of Duties in Platform Roles',
+        ],
+      },
+      {
+        title: 'Enterprise Service Management & Workflows',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'ServiceNow organizes work into four workflow families — IT, employee, customer and platform. This area is the three beyond IT. The HR operating model behind HRSD, and the service design behind customer workflows, sit with our talent and organization and business process practices.',
+        items: [
+          'Enterprise Service Management Beyond IT',
+          'Employee, Customer and Platform Workflows',
+          'Shared Services Portal Consolidation',
+          'HR Service Delivery and Case Management',
+          'Onboarding and Transitions',
+          'Employee Center and Journey Design',
+          'Onboarding and Offboarding Orchestration',
+          'HR Knowledge and Document Management',
+          'Workplace Service Delivery',
+          'Workplace Reservation and Space Management',
+          'Customer Service Management',
+          'Field Service Management',
+          'Order Management and Fulfillment Workflows',
+          'Legal and Finance Service Delivery',
+          'Employee Data Privacy Configuration',
+          'Multi-Language and Multi-Region Rollout',
+          'Adoption Measurement, Not Portal Traffic',
+        ],
+      },
+      {
+        title: 'App Engine, Integrations & Custom Build',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Custom applications built inside the platform model, so they survive upgrades rather than blocking them.',
+        items: [
+          'Scoped Application Design and Build',
+          'Custom Applications on App Engine',
+          'App Engine Studio and Low-Code Governance',
+          'Custom Table and Data Model Design',
+          'Integration Management',
+          'IntegrationHub Spokes and Flow Designer',
+          'REST API',
+          'REST, SOAP and MID Server Integration',
+          'Third-Party Application Integration',
+          'Data Synchronization Across Systems',
+          'Import Set and Transform Map Design',
+          'Update Set and Application Repository Strategy',
+          'Automated Test Framework Suites',
+          'Code Review and Development Standards',
+          'Technical Debt Register for Customizations',
+          'App Store',
+          'ServiceNow Store Evaluation Before Building',
+          'Citizen Development Guardrails',
+          'Decommissioning Apps Nobody Uses',
+        ],
+      },
+      {
+        title: 'Platform Health, Upgrades & Managed Operations',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The half of the ServiceNow lifecycle that decides the other half. Two family releases a year is not a maintenance detail — it is the cadence every build decision is measured against, and instances that defer it fall out of the support window and need a remediation project to get back. We run upgrades as routine work, keep a register of what each customization costs to carry, and operate the platform under a service level where you would rather not carry it yourself. The rule we hold everywhere applies here too: the instance has to stay operable by your own team.',
+        items: [
+          'Instance Health Assessment',
+          'Upgrade Planning and Impact Analysis',
+          'Skipped-Customization Triage',
+          'Regression Testing and ATF Coverage',
+          'Family Release Adoption on Cadence',
+          'Patch and Hotfix Management',
+          'Performance and Table Growth Management',
+          'Instance Cloning and Sub-Production Strategy',
+          'Technical Debt Reduction Programs',
+          'Platform Team Enablement and Handover',
+          'Center of Excellence & Innovation',
+          'Center of Excellence Enablement',
+          'Reusable Templates and Starter Kits',
+          'Agile and SAFe Delivery Pods',
+          'Delivery-as-a-Service',
+          'Shared and Dedicated Delivery Models',
+          'KPI and Outcome-Based Delivery',
+          'Use-Case Repository and Reusable Assets',
+          'Managed Platform Operations to Service Levels',
+          'Release Governance and Change Control',
+          'Exit Planning and Knowledge Transfer',
+        ],
+      },
+    ],
+
+    // ── Platform stack ────────────────────────────────────────────
+    // Rendered from data as stacked bands rather than as an image, so every
+    // node name reaches the crawler as text and the whole thing reflows on a
+    // phone. Read downward as a dependency chain: each layer is only worth what
+    // the layer beneath it is worth, which is the entire argument for fixing
+    // the CMDB before buying the module that depends on it.
+    enterpriseArchitecture: {
+      eyebrow: 'HOW THE NOW PLATFORM ACTUALLY STACKS',
+      title: 'Eight layers,',
+      titleHighlight: 'and modules get bought at the top.',
+      lede: 'Almost every disappointing ServiceNow investment is a layer bought before the layer beneath it could support it. ITOM without discovery credentials, SecOps without a CMDB, AI without knowledge worth retrieving. The order is not a preference.',
+      layers: [
+        { label: 'Business Outcome',        role: 'What the platform is answerable for',        nodes: ['Service Availability', 'Cost to Serve', 'Audit Position', 'Employee Experience', 'Risk Exposure'] },
+        { label: 'Workflow Products',       role: 'The modules that appear on the invoice',      nodes: ['ITSM', 'ITOM', 'ITAM', 'SecOps & IRM', 'HRSD', 'CSM & FSM'] },
+        { label: 'Process & Governance',    role: 'Who may change what, and on whose authority', nodes: ['Demand Intake', 'Release Governance', 'Role Model', 'Exception Register', 'Change Control'] },
+        { label: 'Custom Build',            role: 'Everything you added, and its carrying cost', nodes: ['Scoped Applications', 'Flow Designer', 'Business Rules', 'UI Policies', 'Technical Debt Register'] },
+        { label: 'Integration',             role: 'How the platform reaches the rest of the estate', nodes: ['IntegrationHub Spokes', 'REST and SOAP', 'MID Servers', 'Import Sets', 'Event Ingestion'] },
+        { label: 'Service Data',            role: 'The dependency nearly every module inherits', nodes: ['CMDB', 'CSDM Alignment', 'Discovery', 'Service Mapping', 'Asset Records', 'Data Ownership'] },
+        { label: 'Platform Foundation',     role: 'The instance itself, and its release cadence', nodes: ['Instance Topology', 'Family Releases', 'Patches', 'Performance', 'Clone Strategy'] },
+        { label: 'Commercial',              role: 'What all of the above is costing you',        nodes: ['Fulfiller Seats', 'Activated SKUs', 'Enterprise Agreement', 'Renewal Date', 'Utilization'] },
+      ],
+      principle: 'Buy the module when the layer beneath it can carry it. An ITOM license over an unowned CMDB produces expensive dashboards over data nobody trusts.',
+    },
+
+    // ── Data boundary ─────────────────────────────────────────────
+    // Page-scoped, and every statement here is a representation to an
+    // enterprise buyer, so nothing is inherited by default. Sub-production
+    // cloning is the item that belongs on a ServiceNow page specifically and
+    // appears on almost no partner page: a clone copies production data into an
+    // instance with a wider access list, and that is a disclosure most
+    // organizations have never assessed.
+    dataBoundary: {
+      eyebrow: 'WHERE YOUR DATA ACTUALLY SITS',
+      title: 'Four questions about your instance',
+      titleHighlight: 'worth answering before an audit does.',
+      lede: 'ServiceNow holds incident detail, employee cases, asset registers and, increasingly, HR records. Where that data lives, who can reach it, and what happens when somebody clones production are governance questions the implementation plan rarely covers.',
+      blocks: [
+        {
+          label: 'Sub-production cloning',
+          body: 'A clone copies production into an instance with a wider access list — developers, contractors and sometimes a partner. Unless clone data preservers and masking rules are configured deliberately, that is a disclosure of live incident, HR and asset data into a weaker control environment. It is the most common finding we raise and the cheapest to fix.',
+        },
+        {
+          label: 'Instance topology and residency',
+          body: 'Which datacenter pair your instances sit in, whether that satisfies the residency commitments you have made to customers and regulators, and what your contractual position is on data location. Worth confirming rather than assuming, particularly where HR or health-adjacent data has been added to the platform since the original agreement.',
+        },
+        {
+          label: 'Who can read what',
+          body: 'Admin rights handed out during a project and never withdrawn are the norm rather than the exception. Access control lists, domain separation where genuinely required, and a periodic recertification of elevated roles — because the platform accumulates administrators the way it accumulates scoped applications.',
+        },
+        {
+          label: 'What leaves the platform',
+          body: 'Integrations, exports, reporting extracts and any AI feature that sends content to a model endpoint. Each is a path out, each needs to be inventoried, and the ones nobody documented are usually reporting extracts built by a well-meaning analyst three years ago.',
+        },
+      ],
+    },
+
+    // ── Lifecycle ───────────────────────────────────────────────────
+    // Five stages, one column each. Deliberately ends on Sustain rather than
+    // Go-Live: on this platform the interesting half of the lifecycle starts
+    // after the first release, which is the whole argument of the page.
+    architectureEyebrow: 'THE PLATFORM LIFECYCLE',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Assess to Sustain.',
+    architectureLede: 'Five stages, and the one that decides the outcome is the last. Most ServiceNow programs are funded through go-live and then surprised, twice a year, for the next decade.',
+    architectureNodes: [
+      {
+        title: 'Assess',
+        icon: 'Search',
+        description: 'Read the instance before proposing anything. How far behind the current family it is, what has been customized and why, whether the CMDB can be trusted, and which entitlements are being paid for and not used.',
+        features: [
+          'Upgrade lag and support-window position',
+          'Customization inventory with justification',
+          'CMDB completeness and staleness',
+          'License and SKU utilization',
+          'Baseline set for every metric the work is judged on',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Decide what runs on baseline, what genuinely earns a customization, and what should not be on the platform at all. Every exception is written down with the reason and the carrying cost.',
+        features: [
+          'Baseline-first configuration standard',
+          'Documented exception register',
+          'CMDB and CSDM data model',
+          'Integration and instance topology',
+          'Store evaluation before any custom build',
+        ],
+      },
+      {
+        title: 'Build',
+        icon: 'Cpu',
+        description: 'Engineered inside the platform model so it upgrades — scoped applications, update-set discipline, peer review, and ATF coverage written alongside the configuration rather than after it.',
+        features: [
+          'Scoped applications, not global hacks',
+          'Update set and repository strategy',
+          'Development standards and peer review',
+          'Automated Test Framework suites',
+          'Technical debt logged as it is created',
+        ],
+      },
+      {
+        title: 'Adopt',
+        icon: 'Rocket',
+        description: 'A portal nobody uses is a failed rollout with good uptime. Adoption is designed and measured, not announced — including the deflection targets that decide whether the license count was justified.',
+        features: [
+          'Catalog and portal experience design',
+          'Fulfiller and end-user enablement',
+          'Deflection and self-service measurement',
+          'Hypercare with the build team attached',
+          'Adoption measured, not assumed',
+        ],
+      },
+      {
+        title: 'Sustain',
+        icon: 'Activity',
+        description: 'Two family releases a year, taken on cadence. The stage that keeps the instance supportable, and the first one cut when a budget tightens — which is exactly how instances end up four families behind.',
+        features: [
+          'Upgrades run as routine, not as projects',
+          'Customization carrying cost reviewed',
+          'CMDB discovery cadence maintained',
+          'Entitlement reconciled before renewal',
+          'Platform team able to run it without us',
+        ],
+      },
+    ],
+
+    // ── The argument ──────────────────────────────────────────────
+    // Both instances went live on time and both were signed off. The
+    // difference shows up on the first upgrade, which is the only horizon on
+    // which a platform build can honestly be judged.
+    comparisonTable: {
+      eyebrow: 'WHERE SERVICENOW INSTANCES QUIETLY DECAY',
+      heading: 'Both went live on time.',
+      lede: 'Neither column describes a failed implementation. They differ on the first upgrade, and then again on every one after it.',
+      beforeLabel: 'BUILT TO GO LIVE',
+      afterLabel: 'BUILT TO STAY CURRENT',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'DELIVERED',
+      afterShort: 'SUSTAINED',
+      rows: [
+        {
+          dimension: 'When the next family release lands',
+          before: 'The upgrade is scoped as a project, costed, and deferred. Two years later the instance is out of the support window and getting current is its own program.',
+          after: 'Upgrades are routine maintenance because the build stayed close to baseline, and the exception register says exactly what needs retesting.',
+        },
+        {
+          dimension: 'Why a customization exists',
+          before: 'Nobody knows. The person who built it has left, the requirement was never written down, and it is safer to leave it than to ask.',
+          after: 'Every exception carries a recorded reason, an owner and a carrying cost, reviewed each release so the register shrinks rather than grows.',
+        },
+        {
+          dimension: 'What the CMDB is worth',
+          before: 'Populated during the implementation, never refreshed, and quietly wrong — so ITOM, SecOps and impact analysis are all built on it and all unreliable.',
+          after: 'Modeled against CSDM, populated by discovery on a cadence, with a named data owner and a health dashboard somebody is accountable for.',
+        },
+        {
+          dimension: 'How the license bill is set',
+          before: 'Fulfiller seats provisioned during rollout and never reconciled, plus SKUs activated for pilots that never launched.',
+          after: 'Entitlement reconciled against real usage before renewal, with seat and SKU decisions made on evidence rather than on the account team’s forecast.',
+        },
+        {
+          dimension: 'Where a new requirement goes',
+          before: 'Straight into a custom build, because the platform makes it easy and nobody is asking whether the Store already has it.',
+          after: 'Baseline first, Store second, custom third — and sometimes the honest answer is that it does not belong on ServiceNow at all.',
+          link: { href: '/services/business-process-management', label: 'Process design' },
+        },
+        {
+          dimension: 'Who can change what',
+          before: 'Admin rights handed out during the project and never withdrawn, so production changes arrive from four teams with no shared standard.',
+          after: 'Role-based platform governance, an intake process for demand, and update-set discipline that makes a change reviewable before it ships.',
+        },
+        {
+          dimension: 'What happens when you leave',
+          before: 'The partner holds the knowledge, the documentation is a handover deck, and the next change needs a statement of work.',
+          after: 'Standards, exception register and runbooks in your repositories, and your platform team able to take the next release without us.',
+        },
+      ],
+    },
+
+    // ── Toolchain ─────────────────────────────────────────────────
+    // Framed by what each product family is genuinely for and when it is not
+    // worth its SKU, including the row no ServiceNow partner writes: the things
+    // that should not be built on the platform at all. We hold no reseller
+    // margin on any of this, which is the only reason that row is available.
+    toolsStack: {
+      eyebrow: 'THE PLATFORM',
+      title: 'The ServiceNow product families,',
+      titleHighlight: 'and what does not belong here.',
+      subtitle: 'Module choice is mostly settled by what the enterprise agreement already covers and by whether the CMDB can support it. These are the defaults, what overrides them, and where the platform is the wrong home entirely.',
+      items: [
+        {
+          icon: 'Settings',
+          title: 'IT Service Management',
+          managed: 'ITSM, ITSM Pro, Virtual Agent, Predictive Intelligence',
+          selfHosted: 'Baseline first; Pro when the deflection case is real',
+          desc: 'The foundation most instances start from and the easiest to over-configure. Pro tiers pay for themselves where volume is high enough for deflection and routing to matter, and not otherwise — which is a calculation worth doing before the renewal, not after.',
+        },
+        {
+          icon: 'Database',
+          title: 'IT Operations Management',
+          managed: 'Discovery, Service Mapping, Event Management, AIOps',
+          selfHosted: 'Only as good as the credentials and the CMDB model',
+          desc: 'ITOM is where ServiceNow stops being a ticket system. It is also the module most often bought before the CMDB can support it, which produces expensive dashboards over unreliable data. Model first, license second.',
+        },
+        {
+          icon: 'Target',
+          title: 'IT Asset Management',
+          managed: 'SAM Pro, HAM Pro, publisher packs',
+          selfHosted: 'Pays for itself fastest of any module, when the data is real',
+          desc: 'The one module with a defensible payback on its own, because software entitlement reconciliation usually finds more than it costs. It depends entirely on asset data quality, which depends on discovery, which depends on the CMDB.',
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Security Operations & Risk',
+          managed: 'SecOps, Vulnerability Response, IRM, Third-Party Risk',
+          selfHosted: 'Where the security team will actually work in it',
+          desc: 'Strong when the security function adopts it as their working surface and hollow when it becomes a reporting layer they update after the fact. The platform work is ours; the security program behind it is a separate discipline.',
+          link: { href: '/services/it-security-services', label: 'Security operations' },
+        },
+        {
+          icon: 'Users',
+          title: 'Employee and customer workflows',
+          managed: 'HRSD, Workplace Service Delivery, CSM, FSM',
+          selfHosted: 'Where the process is already owned by someone',
+          desc: 'Extending the platform past IT is where most of the license growth happens. It works when a function owns the process and fails when IT builds it on their behalf — the HR operating model question sits with our talent and organization practice.',
+          link: { href: '/services/talent-organization', label: 'HR operating model' },
+        },
+        {
+          icon: 'Layers',
+          title: 'App Engine and integration',
+          managed: 'App Engine Studio, Flow Designer, IntegrationHub',
+          selfHosted: 'Scoped apps, update sets, and a debt register',
+          desc: 'Genuinely productive for departmental applications close to service data. The failure mode is volume: easy building produces two hundred scoped apps in three years, and governance has to exist before that rather than after.',
+          link: { href: '/services/enterprise-platform-integration', label: 'Integration architecture' },
+        },
+        {
+          icon: 'BrainCircuit',
+          title: 'AI on the platform',
+          managed: 'Now Assist, AI Search, Predictive Intelligence',
+          selfHosted: 'Priced as a premium tier; evaluate on your own data',
+          desc: 'Summarization and search work well against knowledge that is already good and add little against knowledge that is not. Treat vendor benchmarks as a starting hypothesis and evaluate on your own corpus before committing to the tier.',
+          link: { href: '/services/ai-governance', label: 'AI governance' },
+        },
+        {
+          icon: 'Zap',
+          title: 'What does not belong here',
+          managed: 'Systems of record, high-volume transactions, customer-facing commerce',
+          selfHosted: 'A platform is not free because you already own it',
+          desc: 'ServiceNow is a workflow platform, not a database of record or a transaction engine. Building those on it produces table growth, performance work and a license conversation you did not plan for — and "we already have it" is the most expensive architecture argument in the enterprise.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve ServiceNow questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    // ── FAQ ─────────────────────────────────────────────────────
+    // Question one is the partner-tier question, answered directly. Every
+    // competitor page answers it implicitly by leading with a badge; a buyer
+    // who checks the ServiceNow partner finder will know our position in under
+    // a minute, so the only sensible move is to state it, say what the tier
+    // does and does not buy, and name the cases where they should choose an
+    // Elite partner instead. A page that dodges it loses the deal twice.
+    customFAQs: [
+      {
+        q: 'Are you a ServiceNow Elite partner?',
+        sources: [
+          { label: 'ServiceNow Partner Program', url: 'https://www.servicenow.com/partners.html' },
+        ],
+        a: 'No, and you can verify that in the ServiceNow partner finder in under a minute, so there is no version of this answer worth dressing up.\n\nWhat the tier genuinely buys: access to certain programs and co-sell motions, a volume of certifications, and a signal that the firm has delivered enough scale to be measured. On the largest transformations — multi-region, multi-module, thousands of fulfillers, where you want the vendor in the room and escalation paths that already exist — that is a real advantage and we would tell you to take it.\n\nWhat it does not buy: any guarantee that the build will still upgrade cleanly in year three. Tier is measured on delivered volume, and volume is exactly the incentive that produces over-customized instances. Some of the worst estates we have read were built by very senior partners.\n\nWhere we are the better call: reading an instance somebody else built, getting an estate back inside the support window, license and SKU work where an hourly partner has no incentive to find savings, and mid-sized builds where you want the standard held rather than the scope grown.',
+      },
+      {
+        q: 'Why is our instance three releases behind?',
+        sources: [
+          { label: 'ServiceNow product lifecycle and support policy', url: 'https://www.servicenow.com/support/product-lifecycle.html' },
+        ],
+        a: 'Because each individual upgrade looked more expensive than deferring it, and that arithmetic was correct every single time until it was catastrophic.\n\nThe mechanism is always the same. Customizations outside the platform model have to be retested and often reworked each family release. The first deferral is rational. The second is easier. By the fourth, the regression surface is large enough that nobody can scope the work confidently, the people who built it have gone, and the instance has left the supported window — which means new problems get a support answer of "upgrade first".\n\nGetting current is then a project rather than maintenance, and it is worth being honest that it will cost more than any single upgrade would have. The way out is usually two upgrades run back to back after a triage pass, not one heroic jump.\n\nWhat prevents the recurrence is not discipline in the abstract. It is a written exception register with a carrying cost against each entry, reviewed every release, so deferral becomes a visible decision rather than a default.',
+      },
+      {
+        q: 'Should we customize the platform or change the process?',
+        a: 'Change the process, in most cases, and we will make that argument before quoting a build — which costs us the larger engagement and is the right advice anyway.\n\nThe test we apply has three parts. Does the difference create genuine commercial or regulatory advantage, or is it just how this organization happens to work. Would a new joiner from another company find the baseline behavior reasonable. And what does carrying it cost, twice a year, for the next decade.\n\nMost requirements that arrive as "the platform must do X" fail the first two. They are habits inherited from a tool that was replaced, and the honest recommendation is to adopt the baseline and retrain rather than to rebuild the baseline in someone else’s image.\n\nWhere a customization does earn itself — and some genuinely do — we build it inside the platform model so it upgrades, put it in the exception register with its reason, and review it each release. The register existing at all is what stops the count climbing.',
+      },
+      {
+        q: 'Our CMDB is wrong. Where do we start?',
+        a: 'With scope, not with cleanup. Trying to make the whole CMDB accurate is how these programs die.\n\nStart from the business services that matter — the ones where an outage is a board conversation — and get those right end to end: discovered, mapped, owned, and correct. That is usually a few dozen services rather than several thousand configuration items, and it makes ITOM, SecOps and impact analysis useful for the cases that matter while the rest is still messy.\n\nThe structural fixes come with it. A data model aligned to CSDM so classes and relationships mean the same thing to everyone. Discovery with credentials that actually reach the estate, which is normally the real blocker and normally a security conversation rather than a technical one. Reconciliation rules so authoritative sources win. And a named data owner per class, because a CMDB without an owner returns to its previous state within a year no matter how good the cleanup was.\n\nThen a health dashboard somebody is accountable for, reviewed on a cadence. Not a one-off remediation.',
+      },
+      {
+        q: 'We are being sold another SKU. Do we actually need it?',
+        sources: [
+          { label: 'ServiceNow Store', url: 'https://store.servicenow.com/' },
+        ],
+        a: 'Sometimes. The question we would ask first is what you already own and are not using, because that answer changes the conversation more often than not.\n\nThree checks before any new tier. What is already activated in your instance and dormant — pilots that never launched are extremely common. Whether the Store already has an application, often free or low-cost, that covers the requirement. And whether the module depends on data quality you do not yet have, which is the usual reason an ITOM or SAM purchase disappoints: the license arrives, the CMDB cannot support it, and the value lands two years late if at all.\n\nWhere the case is genuinely strong we will say so — asset management in particular tends to pay for itself, because entitlement reconciliation usually finds more than the SKU costs.\n\nWe hold no reseller margin on ServiceNow. That is the only reason we can give you this answer without a conflict, and it is worth asking any partner the same question.',
+      },
+      {
+        q: 'Should we build this application on ServiceNow or somewhere else?',
+        a: 'On ServiceNow when the work is a workflow over service data with a human in the loop. Somewhere else more often than the platform’s ease of building suggests.\n\nIt fits when the application is request-and-fulfil shaped, when it needs the CMDB, users, or approvals that already live there, and when the volume is human-scale. Departmental applications close to service management are exactly what App Engine is for, and building them elsewhere usually means rebuilding identity, approvals and reporting for no reason.\n\nIt does not fit when the application is a system of record, when transaction volume is machine-scale, or when it is customer-facing commerce. Those produce table growth, performance engineering and a license discussion nobody budgeted for. "We already have the platform" is the most expensive architecture argument in the enterprise, because the license is not the cost — the carrying cost is.\n\nThe governance point matters more than any single decision. Easy building produces two hundred scoped apps in three years, most unused, all upgradeable. Guardrails have to exist before that, not after.',
+      },
+      {
+        q: 'What does Now Assist actually do today?',
+        sources: [
+          { label: 'EU AI Act (Regulation 2024/1689)', url: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj' },
+        ],
+        a: 'Summarization, search and drafting, well, against content that is already good — and very little against content that is not.\n\nWhere it earns the tier: summarizing long incident and case threads for handover, surfacing knowledge that exists but nobody can find, drafting resolution notes and knowledge articles from work already done. Real time saved on genuine friction.\n\nWhere it disappoints: as a substitute for knowledge management. If your articles are stale, contradictory or absent, generative retrieval over them produces confident, fluent, wrong answers faster than a human would have found nothing. The remedy is unglamorous knowledge work first.\n\nTwo things to hold in mind. Treat vendor benchmarks as a hypothesis and evaluate on your own corpus before committing — the delta between a good and a poor knowledge base is larger than the delta between vendors. And where these features touch employment or affect individuals, the EU AI Act and your own governance obligations apply to workflows too, not only to models you build yourself.',
+      },
+      {
+        q: 'How long does an ITSM implementation take?',
+        sources: [
+          { label: 'ITIL 4 service management framework', url: 'https://www.axelos.com/certifications/itil-service-management' },
+        ],
+        a: 'Twelve to twenty weeks for core ITSM in one region on baseline, and the variance has almost nothing to do with the platform.\n\nWhat actually sets the timeline: how many source systems have to integrate and how long access to them takes, whether your security review is a week or a quarter, whether process decisions have an owner who can make them, and how much data migration you insist on rather than archiving.\n\nWhat makes it longer, reliably: deciding to customize during build rather than during design, and discovering in week ten that nobody can approve a change to the incident model because the process is owned by a committee.\n\nSubsequent modules and regions are faster — often six to ten weeks — provided the first one held the baseline standard. If it did not, the second is as slow as the first, because every decision is relitigated.\n\nWe would rather quote a range with the assumptions written down than a date with them buried.',
+      },
+      {
+        q: 'What does the platform cost to run, not to implement?',
+        a: 'Implementation is the number that gets budgeted and the smaller one. Three things follow it and only the first appears on an invoice.\n\nSubscription: fulfiller seats and activated SKUs, which grow quietly as the platform spreads beyond IT and rarely shrink without somebody deliberately reconciling them. This is the largest ongoing line and the one most amenable to being reduced.\n\nUpgrades: two family releases a year. On a baseline-heavy instance this is routine maintenance. On a heavily customized one it is a recurring project, and that difference is decided by build choices made years earlier.\n\nPlatform operations: a platform owner, a CMDB data owner, release governance and the demand intake process. Small as headcount, and the absence of it is why instances drift.\n\nWe are pre-launch and do not publish rate cards. What we will commit to is shape: the instance assessment is scoped so you can stop after it and keep the findings, including the license position.',
+      },
+      {
+        q: 'Can you take over an instance another partner built?',
+        a: 'Yes, and it is the engagement we are best suited to. It is also the one where we will say the least comfortable things early.\n\nThe first fortnight is reading rather than building: what has been customized and whether anyone can justify it, how far behind the support window you are, what the CMDB is actually worth, which entitlements are dormant, and where admin rights ended up. That produces a picture most platform owners have never been shown in one place.\n\nWhat we will not do is quietly rebuild the previous partner’s work to bill the rebuild. Plenty of what we find is fine, and saying so is part of the job. What usually needs attention is narrower than it looks: a handful of customizations doing real damage at upgrade time, a CMDB that was never owned, and a license position nobody reconciled.\n\nWe will also flag where the incumbent is doing good work and the right answer is to keep them.',
+      },
+      {
+        q: 'Who owns the platform after you leave?',
+        a: 'Your team, and we build on that assumption from the first sprint rather than negotiating it at handover.\n\nIn practice: configuration standards and the exception register in your repositories, not in our methodology deck. Update sets and application repositories under your change control from day one. A runbook per integration and per custom application covering the failure modes we actually hit, not the ones we imagined. Your platform team pairing on the build rather than receiving a document at the end. And the next family upgrade planned with them, so the first one they run alone is not the first one they have seen.\n\nWe will run managed platform operations under a service level where carrying it is genuinely not realistic, and we price that separately and plainly. The line we hold is the one we hold everywhere: the instance must remain operable by your own people. A platform only we can maintain is a commercial arrangement, not an engineering outcome.',
+      },
+      {
+        q: 'Where does this stop and your other services start?',
+        sources: [
+          { label: 'ISO/IEC 20000-1 service management standard', url: 'https://www.iso.org/standard/70636.html' },
+        ],
+        a: 'ServiceNow touches nearly every practice we sell, which is why the boundary is worth stating rather than blurring.\n\nWe own the platform: strategy and licensing, ITSM, ITOM and the CMDB, asset management, the SecOps and IRM configuration, HR and customer workflow builds, App Engine, and upgrades and managed operations. That is this page.\n\nWe do not own the process design behind the workflows — reengineering a value stream, standardizing it across markets and governing it belongs to business process management, and case-management applications to digital process automation. We do not own the security program behind SecOps: threat modeling, testing and the response function are a separate discipline. We do not own integration architecture beyond IntegrationHub. We do not own the HR operating model behind HRSD. We do not own test strategy, though we build ATF suites here. And we do not own model governance behind Now Assist.\n\nThe division that matters: this service decides how the platform is built and kept healthy. What the workflows should be, and who is accountable for them, belongs to the services linked throughout this page.',
+      },
+    ],
+
+    // ── How we engage ─────────────────────────────────────────────
+    // The first package reads an instance that already exists, deliberately
+    // ahead of any build offer. Most inbound ServiceNow conversations are not
+    // "we want to implement", they are "we are three releases behind and the
+    // renewal is in four months" -- and a page that only sells implementation
+    // is answering a question nobody asked.
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Six ways in,',
+    engagementHeadingHighlight: 'starting with the instance you have.',
+    engagementLede: 'Most groups arrive with a live instance and a problem, not with a blank slate. The useful first engagement is usually a reading of what is already there, including the license position.',
+    servicePackages: [
+      {
+        name: 'Instance Health Assessment',
+        description: 'For a platform that has drifted. What has been customized and why, how far behind the support window you are, whether the CMDB can be trusted, and what you are paying for and not using.',
+        deliverables: [
+          'Upgrade lag and position against the supported window',
+          'Customization inventory with justification and carrying cost',
+          'CMDB completeness, staleness and ownership gaps',
+          'License and SKU utilization against actual usage',
+          'Remediation sequence with a keep, rebuild or retire call per item',
+        ],
+      },
+      {
+        name: 'Advisory & Licensing Review',
+        description: 'For leadership facing a renewal or a module decision, and wanting an opinion from someone who holds no reseller margin on the answer.',
+        deliverables: [
+          'Entitlement position reconciled against real consumption',
+          'SKU-by-SKU recommendation ahead of renewal',
+          'Fulfiller seat model with growth assumptions stated',
+          'Store-versus-build assessment for open requirements',
+          'Platform roadmap sequenced against the release calendar',
+        ],
+      },
+      {
+        name: 'Implementation & Module Rollout',
+        description: 'Delivery against your instance and your standards. Where no configuration standard exists yet, writing one is part of the first engagement rather than an afterthought.',
+        deliverables: [
+          'Baseline-first configuration with a documented exception register',
+          'CMDB and CSDM data model where the module depends on it',
+          'Scoped applications and update-set discipline',
+          'ATF regression coverage built alongside the configuration',
+          'Runbooks and enablement for your platform team',
+        ],
+      },
+      {
+        name: 'Upgrade & Remediation Program',
+        description: 'For instances that have fallen out of the support window. Triage first, then two upgrades run back to back — rarely one heroic jump.',
+        deliverables: [
+          'Customization triage into keep, rebuild inside the model, or retire',
+          'Regression scope defined from the exception register',
+          'Sub-production strategy and clone plan',
+          'Two family releases adopted, with the second run by your team',
+          'Cadence and governance so the lag does not return',
+        ],
+      },
+      {
+        name: 'Center of Excellence Enablement',
+        description: 'For enterprises standing up their own platform capability rather than outsourcing it. Standards, templates and starter kits so your team builds the way we would, and stops needing us.',
+        deliverables: [
+          'Configuration and development standards your team owns',
+          'Reusable templates, starter kits and a use-case repository',
+          'Demand intake, release governance and role model',
+          'Platform team roles, skills and onboarding path',
+          'Shared or dedicated delivery model, with the handover point named',
+        ],
+      },
+      {
+        name: 'Managed Platform Operations',
+        description: 'Running the platform under a service level — releases, health, demand intake and governance — for teams who want the capability without carrying a permanent platform function.',
+        deliverables: [
+          'Family releases adopted on cadence, not deferred',
+          'Instance health and performance monitored and reported',
+          'CMDB discovery and reconciliation maintained',
+          'Demand intake, release governance and change control operated',
+          'Monthly reporting on lag, baseline ratio, CMDB health and entitlement',
+        ],
+      },
+    ],
+
+    // ── By industry ───────────────────────────────────────────────
+    // Each headline names the reason ServiceNow gets bought in that sector,
+    // which is rarely ITSM by the time the second module lands. Deliberately
+    // not modeled on any competitor's named industry IP.
+    industryHeading: 'ServiceNow work,',
+    industryHeadingHighlight: 'shaped by why you bought it.',
+    industryLede: 'Eight sectors and the workflow that actually justified the platform in each. It is almost never the one in the original business case.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Every change to a production system has to be evidenced, so change enablement is a control rather than a convenience.',
+        items: [
+          'Change enablement with audit-grade evidence',
+          'Regulatory change tracking and attestation',
+          'Third-party and vendor risk workflows',
+          'Access recertification and segregation of duties',
+          'Incident reporting against regulatory clocks',
+          'Control testing and evidence capture',
+          'Operational resilience service mapping',
+        ],
+      },
+      {
+        industry: 'Telecommunications',
+        headline: 'The service catalog is the product catalog, and network operations generate more events than any team can triage by hand.',
+        items: [
+          'Event correlation and noise reduction',
+          'Network and service impact mapping',
+          'Order and provisioning workflow orchestration',
+          'Field service dispatch and scheduling',
+          'B2B customer service workflows',
+          'Asset lifecycle across network estate',
+          'Outage communication automation',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Clinical systems cannot be interrupted, so change control and service mapping carry patient-safety weight rather than convenience weight.',
+        items: [
+          'Clinical application change control',
+          'Service mapping for patient-critical systems',
+          'Medical device asset tracking',
+          'Validated system documentation workflows',
+          'Access management for clinical roles',
+          'Vendor and supplier risk workflows',
+          'Incident handling with safety escalation paths',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Plant downtime is measured in money per minute, and the asset estate spans IT and operational technology.',
+        items: [
+          'IT and OT asset visibility',
+          'Plant and site service management',
+          'Maintenance request and work order workflows',
+          'Supplier and contractor onboarding',
+          'Multi-site rollout with local variation control',
+          'Shift-aware routing and escalation',
+          'Spare parts and hardware asset lifecycle',
+        ],
+      },
+      {
+        industry: 'Retail & Consumer',
+        headline: 'Store estate support is high-volume and seasonal, and the peak the platform must survive is a single trading weekend.',
+        items: [
+          'Store and franchise service desk',
+          'High-volume request catalog design',
+          'Seasonal capacity and staffing workflows',
+          'Point-of-sale asset lifecycle',
+          'Peak-event readiness and freeze management',
+          'Supplier onboarding workflows',
+          'Self-service deflection for store staff',
+        ],
+      },
+      {
+        industry: 'Public Sector',
+        headline: 'Procurement rules constrain what can be bought and when, so entitlement and baseline discipline are budget instruments.',
+        items: [
+          'Entitlement management under fixed budgets',
+          'Citizen and employee service portals',
+          'Accessibility conformance for public-facing portals',
+          'Records retention and disclosure workflows',
+          'Cross-department shared service models',
+          'Procurement and approval workflows',
+          'Audit and public scrutiny evidence',
+        ],
+      },
+      {
+        industry: 'Energy & Utilities',
+        headline: 'Field work, regulated assets and long-lived infrastructure make asset data the center of gravity rather than the ticket.',
+        items: [
+          'Field service management and dispatch',
+          'Regulated asset register and compliance',
+          'Outage and incident coordination',
+          'Contractor access and safety workflows',
+          'Long-horizon asset lifecycle tracking',
+          'Environmental and compliance reporting workflows',
+          'OT and IT service boundary mapping',
+        ],
+      },
+      {
+        industry: 'Technology & Professional Services',
+        headline: 'The platform gets extended beyond IT quickly, which is where license growth and governance debt arrive together.',
+        items: [
+          'Employee service and onboarding at scale',
+          'Customer service management for product support',
+          'Professional services delivery workflows',
+          'Scoped application governance',
+          'Multi-instance and domain separation strategy',
+          'Developer enablement and standards',
+          'Entitlement control as headcount moves',
+        ],
+      },
+    ],
+
+    // ── Practice cluster ──────────────────────────────────────────
+    // The default heading names the internal department ("The complete
+    // Platforms practice") and the default lede is one sentence, which leaves
+    // the band under the density floor. Overridden to state the service
+    // boundary, which on this page is unusually load-bearing: ServiceNow is
+    // referenced by five other Kangqore services.
+    practiceLabel: 'ENTERPRISE PLATFORMS',
+    practiceHeading: 'Where the platform stops,',
+    practiceHeadingHighlight: 'and the practice starts.',
+    practiceLede: 'ServiceNow reaches into almost everything, which is why the boundary is stated rather than assumed. We own the platform — strategy and licensing, ITSM, ITOM and the CMDB, asset management, the SecOps configuration, workflow builds, App Engine, upgrades and operations. Process design, the security program, integration architecture, the HR operating model, test strategy and model governance are each their own service, and the pages below go into those subjects at the depth this one gives the platform.',
+
+    conciergeHeading: 'Ask about your own instance',
+    conciergeIntro: 'Bring a real number — how many families behind you are, how many customizations you cannot justify, how many fulfiller seats you pay for. eQORE will tell you what it would read first and what it would need from you.',
+    conciergeChips: [
+      'How far behind the support window are we?',
+      'How do we know which customizations to keep?',
+      'Are we paying for ServiceNow SKUs we do not use?',
+      'Can you take over an instance another partner built?',
+      'Book an instance health assessment',
+    ],
+
+    midCta: 'The instance went live. The upgrade is the part nobody budgeted.',
+    midCtaLabel: 'Book an Instance Health Assessment',
+    closingCta: {
+      title: 'One instance,',
+      highlight: 'honestly read.',
+      body: 'Tell us which family release you are on and roughly how many customizations you carry. In 30 minutes we will tell you how far outside the support window that puts you, which of those customizations will hurt at upgrade time, and where your license position is probably leaking — before anyone proposes building anything.',
+      proofLabel: 'From first call to a read of your instance',
+    },
   },
 
   'global-capability-centers': {
