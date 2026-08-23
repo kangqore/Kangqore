@@ -1,4 +1,4 @@
-import { Component, type ReactNode } from 'react'
+import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 
 interface Props {
@@ -20,6 +20,20 @@ export class ErrorBoundary extends Component<Props, State> {
   static getDerivedStateFromError(err: unknown): State {
     const message = err instanceof Error ? err.message : 'Something went wrong'
     return { hasError: true, message }
+  }
+
+  // Without this the boundary was silent: it printed the message on screen and
+  // logged nothing, so a crash could be seen but never located. This wraps
+  // every route in App.jsx, so "Cannot read properties of undefined" appeared
+  // on the page with no stack and no component name anywhere in the console.
+  //
+  // `componentStack` is the part that matters — it names the component that
+  // threw, which the message alone never does.
+  componentDidCatch(err: unknown, info: ErrorInfo) {
+    /* eslint-disable no-console */
+    console.error('[ErrorBoundary] caught:', err)
+    console.error('[ErrorBoundary] component stack:', info?.componentStack)
+    /* eslint-enable no-console */
   }
 
   reset = () => this.setState({ hasError: false, message: '' })
