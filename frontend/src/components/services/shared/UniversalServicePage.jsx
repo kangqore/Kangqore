@@ -1,4 +1,4 @@
-// Universal PSED-style service page for all 61 capability pages.
+// Universal PSED-style service page for all 62 capability pages.
 // Takes { service, department } props derived from servicesData / departmentsData.
 // Visual design mirrors /services/product-strategy-experience-design exactly —
 // black bg, cyan accents, full-screen hero, GSAP journey timeline, capabilities
@@ -3517,6 +3517,80 @@ const featureMicros   = service.featureMicros
           carries durations and tiers the three-step version lacked.
           Together they cost 1,267px of height for duplicated argument. */}
 
+      {/* ══════════════════ ENTERPRISE ARCHITECTURE STACK ══════════════════ */}
+      {/* Opt-in, page-scoped. A layered architecture drawn from data rather
+          than as a bespoke SVG, for three reasons: it is reusable by any
+          service that has a genuine layer model, every label is real text so
+          the crawler that never runs our JS receives the whole diagram, and it
+          reflows on a phone instead of becoming a 460px horizontal scroll.
+          Signal flows bottom-up — systems emit, the top layer decides. */}
+      {service.enterpriseArchitecture && (
+        <section className="py-16 md:py-24 border-t border-white/[0.05] overflow-hidden" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.enterpriseArchitecture.eyebrow}
+              </span>
+            </div>
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-4xl">
+              {service.enterpriseArchitecture.title}{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {service.enterpriseArchitecture.titleHighlight}
+              </span>
+            </h2>
+            {service.enterpriseArchitecture.lede && (
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-14">
+                {service.enterpriseArchitecture.lede}
+              </p>
+            )}
+
+            <ol className="relative flex flex-col gap-3" aria-label="Assurance architecture, decomposed from the business outcome at the top down to the systems under test at the foot">
+              {service.enterpriseArchitecture.layers.map((layer, li) => (
+                <li key={layer.label} className="relative">
+                  {/* Read downward as a decomposition: the outcome at the top
+                      is supported by the layer beneath it, and so on down to
+                      the systems a release can actually break. */}
+                  {li > 0 && (
+                    <span aria-hidden="true" className="absolute -top-3 left-1/2 -translate-x-1/2 text-[#4ab6d4]/45 text-xs leading-none">&#9660;</span>
+                  )}
+                  <div
+                    className="rounded-2xl border px-5 py-5 sm:px-7 sm:py-6 transition-colors duration-500"
+                    style={{
+                      borderColor: `rgba(74,182,212,${0.14 + li * 0.06})`,
+                      background: `linear-gradient(135deg, rgba(37,100,234,${0.05 + li * 0.025}) 0%, rgba(74,182,212,${0.03 + li * 0.02}) 100%)`,
+                    }}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
+                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-white">{layer.label}</h3>
+                      {layer.role && (
+                        <p className="text-xs sm:text-sm text-white/55 font-medium sm:text-right sm:max-w-md leading-snug">{layer.role}</p>
+                      )}
+                    </div>
+                    <ul className="flex flex-wrap gap-2">
+                      {layer.nodes.map((n) => (
+                        <li
+                          key={n}
+                          className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm leading-snug text-white/75"
+                        >
+                          {n}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            {service.enterpriseArchitecture.principle && (
+              <p className="mt-10 border-l-2 border-[#4ab6d4]/50 pl-5 text-white/70 text-base sm:text-lg leading-relaxed max-w-3xl">
+                {service.enterpriseArchitecture.principle}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════ CAPABILITIES ══════════════════════ */}
       {service.capabilityAreas ? (
         /* ── BENTO GRID (when capabilityAreas override is set) ── */
@@ -3526,6 +3600,15 @@ const featureMicros   = service.featureMicros
               opacity: 1; transform: translateY(0);
               transition: opacity 0.4s cubic-bezier(0.25,1,0.5,1), transform 0.4s cubic-bezier(0.25,1,0.5,1);
               visibility: visible;
+              /* Safety net, not a layout mechanism. The description box is
+                 sized by the flex row above it, so a long description used to
+                 spill straight out of its box and render across the "Explore
+                 Capability" link at the foot of the card. Measured on
+                 /services/robotic-process-automation before this: 4 of 7 cards
+                 overflowing, the worst by 74px. Copy should still be written to
+                 fit the card; this only guarantees that when it is not, the
+                 text clips instead of colliding with a control. */
+              overflow: hidden;
             }
             .svc-cap-group:hover .svc-cap-desc {
               opacity: 0; transform: translateY(12px); visibility: hidden; pointer-events: none;
@@ -3616,6 +3699,28 @@ const featureMicros   = service.featureMicros
                   else if (i === 7) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else if (i === 8) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else if (i === 11) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 20) {
+                  /* ── 8 + 8 + 4 ──
+                     Three bento movements in one continuous grid. Blocks A and
+                     B repeat the same shape (a tall opener, a two-wide, then a
+                     full-width closer) so the eye learns the rhythm and reads
+                     the repeat as structure rather than as a longer list. Block
+                     C breaks it with a two-card pinwheel, which is what stops
+                     the last four reading as an afterthought.
+
+                     Tiling in three columns, no gaps:
+                       A  r1-2 [00 tall][01][02] / [03][04]
+                          r3   [05 wide-2      ][06]
+                          r4   [07 wide-3           ]
+                       B  r5-6 [08 tall][09][10] / [11][12]
+                          r7   [13 wide-2      ][14]
+                          r8   [15 wide-3           ]
+                       C  r9   [16 wide-2      ][17]
+                          r10  [18][19 wide-2      ] */
+                  if (i === 0 || i === 8) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 5 || i === 13 || i === 16 || i === 19) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 7 || i === 15) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 14) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
@@ -4003,6 +4108,112 @@ const featureMicros   = service.featureMicros
         );
       })()}
 
+      {/* ══════════════════════ COMMAND CENTER ══════════════════════ */}
+      {/* Opt-in, page-scoped. An executive console rendered in HTML rather than
+          as an image or an SVG, so every figure is selectable text a crawler
+          receives and a screen reader can announce in reading order. Nothing
+          here is a client result: the disclaimer is part of the component and
+          not a caption a future edit can drop, because a dashboard is the most
+          quotable thing on a page and the easiest to mistake for measurement. */}
+      {service.commandCenter && (
+        <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.commandCenter.eyebrow}
+              </span>
+            </div>
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-4xl">
+              {service.commandCenter.title}{' '}
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {service.commandCenter.titleHighlight}
+              </span>
+            </h2>
+            {service.commandCenter.lede && (
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-12">
+                {service.commandCenter.lede}
+              </p>
+            )}
+
+            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#2564ea]/[0.07] to-[#4ab6d4]/[0.05] p-5 sm:p-8">
+              {/* Headline index */}
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-7 border-b border-white/10">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/50 mb-2">
+                    {service.commandCenter.headline.label}
+                  </p>
+                  <p className="text-white/60 text-sm leading-snug max-w-md">
+                    {service.commandCenter.headline.note}
+                  </p>
+                </div>
+                <p className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-none bg-brand-gradient bg-clip-text text-transparent">
+                  {service.commandCenter.headline.value}
+                  <span className="text-xl sm:text-2xl text-white/50 font-bold"> / {service.commandCenter.headline.outOf}</span>
+                </p>
+              </div>
+
+              {/* Domain scores */}
+              <ul className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.07] rounded-2xl overflow-hidden my-7">
+                {service.commandCenter.domains.map((d) => (
+                  <li key={d.label} className="bg-[#050a14] px-4 py-5">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/55 mb-2 leading-snug">{d.label}</p>
+                    <p className="text-3xl font-extrabold text-white tracking-tight leading-none mb-3">{d.value}</p>
+                    <div className="h-1 rounded-full bg-white/10 overflow-hidden" role="img" aria-label={`${d.label}: ${d.value} out of 100`}>
+                      <div className="h-full rounded-full bg-brand-gradient" style={{ width: `${d.value}%` }} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Signals */}
+              <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3 pb-7 border-b border-white/10">
+                {service.commandCenter.signals.map((s) => (
+                  <li key={s.label} className="flex items-baseline justify-between gap-4 border-b border-white/[0.06] pb-2.5">
+                    <span className="text-sm text-white/60 leading-snug">{s.label}</span>
+                    <span className={`text-sm font-bold tracking-tight shrink-0 ${s.good === false ? 'text-amber-400' : 'text-emerald-400'}`}>
+                      {s.value}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Risk register */}
+              <div className="pt-7">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/50 mb-4">
+                  {service.commandCenter.risksLabel}
+                </p>
+                <ol className="flex flex-col gap-2.5">
+                  {service.commandCenter.risks.map((r, ri) => (
+                    <li key={r.item} className="flex items-center gap-4 rounded-xl border border-white/[0.07] bg-white/[0.02] px-4 py-3">
+                      <span className="font-mono text-xs text-white/50 tabular-nums shrink-0">{String(ri + 1).padStart(2, '0')}</span>
+                      <span className="flex-1 text-sm text-white/75 leading-snug">{r.item}</span>
+                      <span
+                        className={`shrink-0 rounded-md px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider ${
+                          r.level === 'HIGH'
+                            ? 'bg-red-500/15 text-red-300'
+                            : r.level === 'MEDIUM'
+                              ? 'bg-amber-500/15 text-amber-300'
+                              : 'bg-white/10 text-white/60'
+                        }`}
+                      >
+                        {r.level}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+
+            <p className="mt-5 text-sm text-white/55 leading-relaxed max-w-3xl">
+              Illustrative console. Every figure above is a worked example of the shape this reporting takes —
+              thresholds, domains and weightings are set against your own baseline during the engagement, and
+              Kangqore publishes no client metrics it has not measured.
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════ MID-PAGE CTA ══════════════════════ */}
       {service.outcomeCard && (
         <section className="py-16" style={{ backgroundColor: '#000000' }}>
@@ -4022,7 +4233,14 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ JOURNEY TIMELINE ══════════════════════ */}
-      {!service.servicePackages && (
+      {/* Suppressed by default wherever a service defines its own engagement
+          packages, because the generic four-phase default said the same thing
+          twice. `showJourney` opts back in for a service whose methodology is
+          genuinely distinct from its commercial packages — a phased delivery
+          model is not the same statement as "here are five ways to buy", and a
+          page carrying a real one should be able to show it. Without the flag
+          the other 61 pages behave exactly as before. */}
+      {(!service.servicePackages || service.showJourney) && (
         <section id="svc-phases" className="py-16 md:py-32 overflow-hidden relative" style={{ backgroundColor: '#000000' }}>
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
@@ -4087,7 +4305,12 @@ const featureMicros   = service.featureMicros
                                 </div>
                               )}
                             </div>
-                            <h4 className="text-lg font-black text-white mb-1">{item.title}</h4>
+                            {/* h3, not h4: the only heading above these cards
+                                is the section h2, so h4 skipped a level. Axe
+                                flags it as heading-order and a screen-reader
+                                user loses the outline. Visual size is set by
+                                the class, not by the tag. */}
+                            <h3 className="text-lg font-black text-white mb-1">{item.title}</h3>
                             <p className="text-sm text-white/50 group-hover:text-white font-light leading-relaxed transition-colors duration-500">{item.desc}</p>
                           </div>
                         </div>
@@ -4103,18 +4326,28 @@ const featureMicros   = service.featureMicros
                   <div>
                     <div className="flex items-center gap-4 mb-4">
                       <div className="h-[1px] w-12 bg-white/20" />
-                      <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.name} Journey</span>
+                      <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.journeyEyebrow || `${service.name} Journey`}</span>
                     </div>
                     <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
-                      From Ambition to<br />
-                      <span className="bg-brand-gradient bg-clip-text text-transparent">Delivered Outcomes.</span>
+                      {service.journeyHeading
+                        ? <>{service.journeyHeading}<br /><span className="bg-brand-gradient bg-clip-text text-transparent">{service.journeyHeadingHighlight}</span></>
+                        : <>From Ambition to<br /><span className="bg-brand-gradient bg-clip-text text-transparent">Delivered Outcomes.</span></>}
                     </h2>
                     <p className="text-white/50 text-lg font-light leading-relaxed max-w-lg">
-                      A connected system for moving from business goals through solution design to implementation and continuous optimization.
+                      {service.journeyLede
+                        || 'A connected system for moving from business goals through solution design to implementation and continuous optimization.'}
                     </p>
                   </div>
+                  {/* The third stat used to read "Confidence — 100%" on all 62
+                      pages. Nothing measures it, no client produced it, and on
+                      an assurance page it is the least defensible sentence we
+                      could publish. Replaced with a statement about how we
+                      work, which is true everywhere and claims no number.
+                      Overridable per service via `journeyStats`. */}
                   <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/[0.08]">
-                    {[['Phases', String(activeJourney.length).padStart(2, '0')], ['Timeline', '4-16 wks'], ['Confidence', '100%']].map(([label, val], i) => (
+                    {(service.journeyStats
+                      || [['Phases', String(activeJourney.length).padStart(2, '0')], ['Timeline', '4-16 wks'], ['Delivery', 'Co-owned']]
+                    ).map(([label, val], i) => (
                       <div key={label}>
                         <div className="font-mono text-[11px] text-white/60 tracking-widest uppercase font-bold mb-2">{label}</div>
                         <div className={`text-2xl font-black ${i === 2 ? 'bg-brand-gradient bg-clip-text text-transparent' : 'text-white'}`}>{val}</div>
@@ -4317,6 +4550,66 @@ const featureMicros   = service.featureMicros
           imageAlt={service.toolsStack.imageAlt}
           inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
         />
+      )}
+
+      {/* ══════════════════════ ACCELERATORS ══════════════════════ */}
+      {/* Opt-in, page-scoped. Named methods and reusable assets a practice
+          brings to an engagement — deliberately not described as products,
+          because Kangqore ships no licensed software and a page that implies
+          otherwise is a representation to a buyer. Each card states what the
+          asset is for, then what it actually does, so the name is a label on
+          real work rather than a trademark standing on its own. */}
+      {service.accelerators && (
+        <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.accelerators.eyebrow}
+              </span>
+            </div>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
+              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white max-w-3xl">
+                {service.accelerators.title}{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent">
+                  {service.accelerators.titleHighlight}
+                </span>
+              </h2>
+              {service.accelerators.lede && (
+                <p className="text-lg text-white/50 leading-relaxed max-w-md lg:text-right">
+                  {service.accelerators.lede}
+                </p>
+              )}
+            </div>
+
+            <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {service.accelerators.items.map((a, ai) => (
+                <li
+                  key={a.name}
+                  className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition-colors duration-500 hover:border-[#4ab6d4]/40 hover:bg-white/[0.04]"
+                >
+                  <span className="font-mono text-xs text-white/50 tabular-nums mb-4">{String(ai + 1).padStart(2, '0')}</span>
+                  <h3 className="text-lg font-bold tracking-tight text-white leading-snug mb-3">{a.name}</h3>
+                  <p className="text-sm text-white/55 leading-relaxed mb-5">{a.desc}</p>
+                  <ul className="mt-auto flex flex-col gap-1.5 border-t border-white/[0.07] pt-4">
+                    {a.functions.map((f) => (
+                      <li key={f} className="flex gap-2 text-sm text-white/65 leading-snug">
+                        <span aria-hidden="true" className="text-[#4ab6d4]/60 shrink-0">&#8250;</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+
+            {service.accelerators.footnote && (
+              <p className="mt-8 text-sm text-white/55 leading-relaxed max-w-3xl">
+                {service.accelerators.footnote}
+              </p>
+            )}
+          </div>
+        </section>
       )}
 
       {/* ══════════════════ DATA BOUNDARY ══════════════════ */}
