@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T09:55:24.184Z",
+  "generatedAt": "2026-08-23T06:14:01.550Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1033,10 +1033,73 @@
       "url": "/services/it-security-services",
       "name": "IT Security Services",
       "department": "Shield",
-      "description": "Enterprise cybersecurity — security assessment, threat detection, incident response, security operations, and compliance management.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "description": "Enterprise cybersecurity — Zero Trust architecture, cloud and application security, managed detection and response, and compliance evidence you can prove.",
+      "capabilities": [
+        "Cyber Risk, Strategy & Security Architecture",
+        "Identity, Access & Zero Trust Security",
+        "Cloud, Network & Infrastructure Security",
+        "Application & Data Security",
+        "Security Operations, Detection & Managed Response",
+        "Threat Intelligence, Exposure & Offensive Security",
+        "OT, IoT & Industrial Security",
+        "Incident Response, Resilience & Compliance"
+      ],
+      "faqs": [
+        {
+          "q": "Do we actually need a SOC, or can we get by on the alerts our existing tools already send?",
+          "a": "Depends entirely on whether anyone is triaging those alerts, and for most mid-size estates the honest answer is no. A modern EDR or SIEM will generate more alerts than any single analyst can review in a day, most low severity, several worth acting on immediately, with no obvious way to tell which is which without tuning. Without a team — internal or managed — whose job is to triage that queue every day, the alerts exist but the detection does not. The useful question is not build-versus-buy on a SOC. It is whether what you are protecting justifies round-the-clock coverage, or whether business-hours monitoring with a documented after-hours escalation path is enough. We size that from your actual telemetry rather than a rule of thumb, because a SOC sized for the wrong workload is expensive either way — too small and it misses things, too large and it is triaging noise nobody needed watched."
+        },
+        {
+          "q": "Is Zero Trust a product we buy, or an architecture we build?",
+          "a": "An architecture, and any vendor telling you otherwise is selling you one component of it. Zero Trust is a principle: verify identity and device posture continuously, grant the minimum access required, and assume the network itself is not trustworthy. No single product delivers that. It requires identity infrastructure, device management, network segmentation, application-level access controls and a policy engine that ties them together — usually assembled from tools you already own plus a handful you do not. Most organizations already have half of a Zero Trust architecture and do not realize it. Conditional access in the identity provider, endpoint management not yet used for posture checks, segmentation started and never finished. The work is usually completing and connecting what exists rather than starting from nothing, and a maturity assessment against your current state tells you which half you already have before anyone proposes a purchase."
+        },
+        {
+          "q": "What is the real difference between hiring an MSSP and what Kangqore does?",
+          "a": "An MSSP typically operates a shared SOC across many clients on a standard playbook and reports what happened. We design the architecture, implement the controls to fit your specific estate, and can operate detection and response — but the design work and the operations are not decoupled the way they often are under a pure managed-security contract. The practical difference shows up when something does not fit the standard playbook: a legacy system the MSSP’s tooling was not built for, an OT network their standard onboarding does not cover, a compliance framework specific to your sector. We would rather architect around your actual environment than fit your environment into a template built for the median customer. We are also not trying to make a managed contract the only viable outcome of the conversation. An assessment or an architecture engagement stands on its own, and managed operations is one option among several — not the default we steer every call toward."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Security analytics & SIEM",
+          "detail": "The system of record for detection. Value comes entirely from the use cases and tuning built on top — an untuned SIEM is an expensive log archive that happens to page someone at 3am."
+        },
+        {
+          "rule": "Endpoint detection & response",
+          "detail": "Near-mandatory on any estate past a few hundred endpoints. What actually separates vendors is response speed and false-positive rate, not the marketing page."
+        },
+        {
+          "rule": "Identity & access management",
+          "detail": "The control plane every other control depends on. Get identity wrong and the rest of the stack is defending the wrong perimeter."
+        },
+        {
+          "rule": "Privileged access management",
+          "detail": "Non-negotiable past a handful of admin accounts. A shared root password in a spreadsheet is the finding that ends a security program’s credibility with the board."
+        },
+        {
+          "rule": "Cloud security posture",
+          "detail": "Finds the misconfigured storage bucket and the over-permissioned role before an attacker does. Coverage across every account matters more than depth on any one."
+        },
+        {
+          "rule": "Vulnerability & exposure management",
+          "detail": "A scan report with four thousand findings is not a program. The work is prioritizing the handful that are actually exploitable and actually reachable."
+        },
+        {
+          "rule": "Network & perimeter security",
+          "detail": "Increasingly the real perimeter is identity, not network — but segmentation and inspection still stop lateral movement once something gets past the first control."
+        },
+        {
+          "rule": "Application security testing",
+          "detail": "Runs earliest and cheapest inside the pipeline, not as a report delivered after the release already shipped."
+        },
+        {
+          "rule": "Compliance & evidence automation",
+          "detail": "Turns “we believe this control works” into continuous, exportable evidence — the difference between a good answer to an auditor and a defensible one."
+        },
+        {
+          "rule": "The alternative to another tool",
+          "detail": "Most security programs already have enough tools and not enough ownership of what they bought. We will say so before selling you another license."
+        }
+      ],
       "dataHandling": []
     },
     {
