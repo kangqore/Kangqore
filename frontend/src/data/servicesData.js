@@ -9191,7 +9191,7 @@ export const servicesData = {
         name: 'OT Service Management & Governance',
         description: 'Bringing engineering, operations, IT and OEMs together around one operating model, so a change is evaluated in its operational context instead of discovered after the fact.',
         deliverables: [
-          'OT operating-model and service catalogue design',
+          'OT operating-model and service catalog design',
           'Change, incident and request management processes',
           'Vendor and OEM coordination workflows',
           'Asset lifecycle and configuration management',
@@ -9497,7 +9497,7 @@ export const servicesData = {
         desc: 'Operational discipline across engineering, operations, IT, cybersecurity, OEMs and integrators — so a change is evaluated in its operational context instead of five teams discovering it after the fact.',
         items: [
           'OT Operating-Model Design',
-          'OT Service Catalogue Development',
+          'OT Service Catalog Development',
           'OT Change Management',
           'OT Incident & Request Management',
           'Asset Lifecycle Management',
