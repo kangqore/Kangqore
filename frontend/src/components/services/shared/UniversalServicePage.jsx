@@ -3781,13 +3781,52 @@ const featureMicros   = service.featureMicros
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 6) {
+                  /* The previous six-card shape left a hole. A tall opener plus
+                     a single two-wide closer tiles as [00][01][02] / [00][03][04]
+                     / [05 wide-2] — which leaves the third column of the last
+                     row empty, and an empty cell at the foot of a bento reads
+                     as a missing card rather than as composition.
+
+                     Two two-wide cards instead, one per remaining row:
+                       r1  [00 tall][01][02]
+                       r2  [00     ][03 wide-2]
+                       r3  [04][05 wide-2]
+                     No gaps, and the width lands on 03 and 05 rather than on
+                     03 alone. No page shipped with exactly six areas before
+                     this, so nothing else changes shape. */
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
-                  else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
+                  else if (i === 3 || i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 8) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
                   else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else if (i === 7) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
+                  else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+                } else if (capabilities.length === 9) {
+                  /* ── Nine ──
+                     There was no case for nine, so every card fell through to
+                     the 1x1 default and the section rendered as a flat 3x3 grid
+                     of squares. Every other supported count gets a bento; nine
+                     did not, purely because no page had shipped with nine areas
+                     before.
+
+                     A tall opener plus two two-wide cards, offset to different
+                     columns so the widths do not stack into a stripe:
+
+                       lg, three columns          sm, two columns
+                       r1  [00 tall][01][02]      r1  [00 tall][01]
+                       r2  [00     ][03][04]      r2  [00     ][02]
+                       r3  [05 wide-2   ][06]     r3  [03][04]
+                       r4  [07][08 wide-2   ]     r4  [05 wide-2]
+                                                  r5  [06][07]
+                                                  r6  [08 wide-2]
+
+                     No gaps at either breakpoint. The widths land on 05 and 08
+                     starting in different columns, which is the same reasoning
+                     as the six-card case: an offset reads as composition, a
+                     stack reads as a template. */
+                  if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
+                  else if (i === 5 || i === 8) cardClass = 'col-span-1 sm:col-span-2 h-[380px] lg:h-[400px]';
                   else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 } else if (capabilities.length === 10) {
                   if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
