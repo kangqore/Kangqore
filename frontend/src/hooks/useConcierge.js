@@ -53,7 +53,7 @@ function writeStoredConversationId(id) {
 }
 
 const DEFAULT_GREETING_TEXT =
-  "Hi — I'm eQORE, Kangqore's unified intelligence. Ask me anything about Kangqore.";
+  "Hi, I'm eQORE — Kangqore’s Unified Intelligence. Ask me anything about Kangqore.";
 
 function buildGreeting(seedContext) {
   // 1. Try the contextual intelligence registry for a domain-specific greeting
@@ -63,10 +63,10 @@ function buildGreeting(seedContext) {
   // 2. Fallback: generic service/department greeting
   const name = seedContext?.name?.trim();
   if (seedContext?.surface === 'service' && name) {
-    return `Hi — I'm eQORE. Ask me about ${name}, or anything else about Kangqore.`;
+    return `Hi, I'm eQORE. Ask me about ${name}, or anything else about Kangqore.`;
   }
   if (seedContext?.surface === 'department' && name) {
-    return `Hi — I'm eQORE. Ask me about ${name}, or anything else about Kangqore.`;
+    return `Hi, I'm eQORE. Ask me about ${name}, or anything else about Kangqore.`;
   }
   return DEFAULT_GREETING_TEXT;
 }
@@ -106,14 +106,122 @@ function parseSSEChunk(buffer) {
   return { events, remainder };
 }
 
+// Module-scoped global state store to keep ALL useConcierge components synchronized across the page
+let globalMessages = null;
+let globalStreaming = false;
+let globalConversationId = null;
+let globalRestoring = false;
+let globalError = null;
+const globalListeners = new Set();
+
+function notifyGlobalListeners() {
+  const snapshot = {
+    messages: globalMessages,
+    streaming: globalStreaming,
+    conversationId: globalConversationId,
+    restoring: globalRestoring,
+    error: globalError,
+  };
+  globalListeners.forEach((listener) => listener(snapshot));
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('eqore:concierge:sync', { detail: snapshot }));
+  }
+}
+
+function updateGlobalMessages(updater) {
+  if (typeof updater === 'function') {
+    globalMessages = updater(globalMessages || []);
+  } else {
+    globalMessages = updater;
+  }
+  notifyGlobalListeners();
+}
+
+function updateGlobalStreaming(val) {
+  globalStreaming = val;
+  notifyGlobalListeners();
+}
+
+function updateGlobalConversationId(id, persist = true) {
+  globalConversationId = id;
+  if (persist) writeStoredConversationId(id);
+  notifyGlobalListeners();
+}
+
+function updateGlobalRestoring(val) {
+  globalRestoring = val;
+  notifyGlobalListeners();
+}
+
+function updateGlobalError(err) {
+  globalError = err;
+  notifyGlobalListeners();
+}
+
 export function useConcierge(options = {}) {
   const { persist = true, seedContext = null } = options;
-  const [messages, setMessages] = useState(() => [buildGreetingMessage(seedContext)]);
-  const [streaming, setStreaming] = useState(false);
-  const [conversationId, setConversationIdState] = useState(null);
-  const [restoring, setRestoring] = useState(false);
-  const [error, setError] = useState(null);
+
+  if (!globalMessages) {
+    globalMessages = [buildGreetingMessage(seedContext)];
+  }
+
+  const [messages, setMessagesState] = useState(globalMessages);
+  const [streaming, setStreamingState] = useState(globalStreaming);
+  const [conversationId, setConversationIdLocal] = useState(globalConversationId);
+  const [restoring, setRestoringState] = useState(globalRestoring);
+  const [error, setErrorState] = useState(globalError);
   const abortRef = useRef(null);
+
+  // Subscribe local component to global store changes
+  useEffect(() => {
+    const handleSync = (snapshot) => {
+      if (snapshot.messages) setMessagesState(snapshot.messages);
+      setStreamingState(snapshot.streaming);
+      setConversationIdLocal(snapshot.conversationId);
+      setRestoringState(snapshot.restoring);
+      setErrorState(snapshot.error);
+    };
+
+    globalListeners.add(handleSync);
+
+    const onCustomEvent = (e) => {
+      if (e.detail) handleSync(e.detail);
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('eqore:concierge:sync', onCustomEvent);
+    }
+
+    return () => {
+      globalListeners.delete(handleSync);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('eqore:concierge:sync', onCustomEvent);
+      }
+    };
+  }, []);
+
+  const setMessages = useCallback((updater) => {
+    updateGlobalMessages(updater);
+  }, []);
+
+  const setStreaming = useCallback((val) => {
+    updateGlobalStreaming(val);
+  }, []);
+
+  const setError = useCallback((err) => {
+    updateGlobalError(err);
+  }, []);
+
+  const setRestoring = useCallback((val) => {
+    updateGlobalRestoring(val);
+  }, []);
+
+  const setConversationId = useCallback(
+    (id) => {
+      updateGlobalConversationId(id, persist);
+    },
+    [persist]
+  );
 
   // When seedContext changes (e.g. visitor clicked "Ask eQORE" CTA on a different
   // service page), refresh the greeting — but ONLY if the visitor hasn't started
@@ -126,14 +234,6 @@ export function useConcierge(options = {}) {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seedContext?.surface, seedContext?.slug, seedContext?.name]);
-
-  const setConversationId = useCallback(
-    (id) => {
-      setConversationIdState(id);
-      if (persist) writeStoredConversationId(id);
-    },
-    [persist]
-  );
 
   useEffect(() => {
     if (!persist) return;
@@ -163,8 +263,8 @@ export function useConcierge(options = {}) {
           writeStoredConversationId(null);
           return;
         }
-        setMessages([INITIAL_GREETING, ...restored]);
-        setConversationIdState(stored);
+        setMessages([buildGreetingMessage(seedContext), ...restored]);
+        updateGlobalConversationId(stored, true);
       })
       .catch(() => {
         writeStoredConversationId(null);

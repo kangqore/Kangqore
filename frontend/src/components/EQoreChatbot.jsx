@@ -477,11 +477,8 @@ const EQoreChatbot = () => {
           <div className="absolute inset-0 bg-brand-cyan/5 blur-xl pointer-events-none"></div>
           
           <div className="flex items-center gap-3 relative z-10">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.2)] bg-[#050505]">
-                <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
-              </div>
-              <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-cyan-400 border-2 border-[#111115] rounded-full animate-pulse shadow-[0_0_10px_rgba(34,211,238,0.6)]"></span>
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20 bg-slate-900 shrink-0 shadow-md">
+              <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
             </div>
             <div>
               <h3 className="font-display font-bold text-sm tracking-wide">eQORE</h3>
@@ -546,15 +543,19 @@ const EQoreChatbot = () => {
             return (
               <div key={msg.id} className={`flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}`}>
                 <div className={`flex items-end gap-2 max-w-[85%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-                  {!isUser && (
-                    <div className="w-6 h-6 rounded-md overflow-hidden border border-cyan-400/20 bg-[#050505] shrink-0 mb-1 shadow-[0_0_10px_rgba(34,211,238,0.1)]">
+                  {isUser ? (
+                    <div className="w-6 h-6 rounded-md overflow-hidden border border-white/20 bg-black/60 text-white shrink-0 mb-1 shadow-sm flex items-center justify-center text-[9px] font-black tracking-wider select-none">
+                      YOU
+                    </div>
+                  ) : (
+                    <div className="w-6 h-6 rounded-md overflow-hidden border border-white/20 bg-slate-950 shrink-0 mb-1 shadow-sm">
                       <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
                     </div>
                   )}
-                  <div className={`p-3.5 text-[14px] leading-relaxed shadow-sm whitespace-pre-wrap ${
+                  <div className={`text-[14px] leading-relaxed transition-all ${
                     isUser
-                      ? 'bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white rounded-2xl rounded-br-sm font-medium'
-                      : 'bg-[#1a1a1e] border border-white/5 text-slate-200 rounded-2xl rounded-bl-sm'
+                      ? 'p-3.5 bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white rounded-2xl rounded-br-sm font-medium shadow-[0_6px_20px_rgba(37,100,234,0.35)] border border-white/20'
+                      : 'bg-transparent text-slate-200 border-0 shadow-none p-0 py-0.5 font-normal'
                   }`}>
                     {!isUser && !msg.done && msg.content === '' ? (
                       <div className="flex items-center gap-1.5 h-4 px-1">
@@ -641,9 +642,12 @@ const EQoreChatbot = () => {
                     <button
                       type="button"
                       onClick={() => setShowLeadFor(msg.id)}
-                      className="text-[11px] font-bold text-white hover:text-gray-200 hover:underline flex items-center gap-1.5 transition-colors"
+                      className="group text-[11px] font-bold flex items-center gap-1.5 transition-all bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 px-3 py-1.5 rounded-full backdrop-blur-md"
                     >
-                      <span>&rarr;</span> Talk to a Kangqore consultant
+                      <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:from-white group-hover:to-white transition-all">
+                        Talk to a Kangqore consultant
+                      </span>
+                      <ArrowRight className="w-3 h-3 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-[#4ab6d4] group-hover:text-white" strokeWidth={2.2} />
                     </button>
                   </div>
                 )}
@@ -737,7 +741,7 @@ const EQoreChatbot = () => {
               }}
               disabled={streaming || isListening}
               aria-label="Message eQORE AI"
-              placeholder={isListening ? 'Listening...' : 'Query the intelligence core...'}
+              placeholder={isListening ? 'Listening… speak now' : 'Ask eQORE anything about Kangqore…'}
               className={`w-full pl-4 pr-24 py-2 bg-[#050505] border rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60 resize-none leading-relaxed ${
                 isListening ? 'border-red-500/60 ring-1 ring-red-500/30' : 'border-white/10'
               }`}

@@ -51,54 +51,132 @@ function cleanTextForSpeech(text) {
     .trim();
 }
 
-function renderFormattedText(text) {
+function parseInlineMarkdown(text) {
   if (!text) return text;
-  
-  // Strip out citations and any preceding whitespace to fix punctuation spacing
-  const cleanText = text.replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
-  
-  // For non-citation parts, handle **bold** syntax
-  const boldParts = cleanText.split(/(\*\*.*?\*\*)/g);
-  return boldParts.flatMap((bPart, j) => {
-    if (bPart.startsWith('**') && bPart.endsWith('**')) {
-      const boldInner = bPart.slice(2, -2);
-      // Check if the bold text itself contains a link
-      const boldLinkParts = boldInner.split(/(\[.*?\]\(.*?\))/g);
-      return <strong key={`bold-${j}`} className="text-white font-semibold">
-        {boldLinkParts.map((lPart, k) => {
-          const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
-          if (m) {
-            return (
-              <a key={`blink-${j}-${k}`} href={m[2]} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline">
-                {m[1]}
-              </a>
-            );
-          }
-          return <span key={`btext-${j}-${k}`}>{lPart}</span>;
-        })}
-      </strong>;
+
+  let cleaned = text.replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
+  const regex = /(\[.*?\]\(.*?\))|(\*\*.*?\*\*)|(\*.*?\*)|(`.*?`)/g;
+  const parts = cleaned.split(regex).filter(Boolean);
+
+  return parts.map((part, idx) => {
+    const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
+    if (linkMatch) {
+      return (
+        <a
+          key={idx}
+          href={linkMatch[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-300 font-semibold hover:underline transition-colors"
+        >
+          {linkMatch[1]}
+        </a>
+      );
     }
-    
-    // Also parse markdown links outside of bold [text](url)
-    const linkParts = bPart.split(/(\[.*?\]\(.*?\))/g);
-    return linkParts.map((lPart, k) => {
-      const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
-      if (m) {
-        return (
-          <a
-            key={`link-${j}-${k}`}
-            href={m[2]}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline"
-          >
-            {m[1]}
-          </a>
-        );
-      }
-      return <span key={`text-${j}-${k}`}>{lPart}</span>;
-    });
+
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return (
+        <strong key={idx} className="text-white font-semibold">
+          {parseInlineMarkdown(part.slice(2, -2))}
+        </strong>
+      );
+    }
+
+    if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+      return (
+        <em key={idx} className="text-white/90 italic">
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+
+    if (part.startsWith('`') && part.endsWith('`') && part.length > 2) {
+      return (
+        <code key={idx} className="px-1.5 py-0.5 rounded bg-white/10 text-cyan-300 font-mono text-sm border border-white/15">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+
+    return <span key={idx}>{part}</span>;
   });
+}
+
+function renderFormattedText(text) {
+  if (!text) return null;
+
+  const lines = text.split('\n');
+  const elements = [];
+  let currentList = [];
+
+  const flushList = (keyPrefix) => {
+    if (currentList.length > 0) {
+      elements.push(
+        <ul key={`ul-${keyPrefix}`} className="my-2 space-y-1.5 pl-1">
+          {currentList.map((item, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-white/95 text-[15px] sm:text-[16px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2.5 shrink-0 shadow-[0_0_6px_rgba(34,211,238,0.6)]" />
+              <span className="flex-1">{parseInlineMarkdown(item)}</span>
+            </li>
+          ))}
+        </ul>
+      );
+      currentList = [];
+    }
+  };
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+      currentList.push(trimmed.slice(2));
+      return;
+    }
+
+    flushList(index);
+
+    if (!trimmed) {
+      elements.push(<div key={`sp-${index}`} className="h-2" />);
+      return;
+    }
+
+    if (trimmed.startsWith('### ')) {
+      elements.push(
+        <h3 key={`h3-${index}`} className="text-[17px] font-bold text-white mt-4 mb-1.5 tracking-tight flex items-center gap-2">
+          {parseInlineMarkdown(trimmed.slice(4))}
+        </h3>
+      );
+      return;
+    }
+
+    if (trimmed.startsWith('## ')) {
+      elements.push(
+        <h2 key={`h2-${index}`} className="text-[19px] font-extrabold text-white mt-5 mb-2 tracking-tight">
+          {parseInlineMarkdown(trimmed.slice(3))}
+        </h2>
+      );
+      return;
+    }
+
+    if (trimmed.startsWith('# ')) {
+      elements.push(
+        <h1 key={`h1-${index}`} className="text-[22px] font-black text-white mt-6 mb-2 tracking-tight">
+          {parseInlineMarkdown(trimmed.slice(2))}
+        </h1>
+      );
+      return;
+    }
+
+    elements.push(
+      <p key={`p-${index}`} className="my-1.5 leading-[1.65] text-white/95 text-[15px] sm:text-[16px]">
+        {parseInlineMarkdown(line)}
+      </p>
+    );
+  });
+
+  flushList('end');
+
+  return <div className="space-y-1">{elements}</div>;
 }
 
 const DEFAULT_PROMPTS = [
@@ -119,6 +197,94 @@ const DEFAULT_PROMPTS = [
   "Schedule Your Consultation",
   "Contact Us...",
 ];
+
+const TypewriterSkateText = ({
+  text,
+  speed = 45,
+  pauseDelay = 3500,
+  className = '',
+  disableLoop = false,
+}) => {
+  const [displayedLength, setDisplayedLength] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isInView || !text) {
+      setIsTyping(false);
+      return;
+    }
+
+    let isCancelled = false;
+    let charTimer = null;
+    let pauseTimer = null;
+
+    const startTyping = () => {
+      setDisplayedLength(0);
+      setIsTyping(true);
+      let index = 0;
+
+      charTimer = setInterval(() => {
+        if (isCancelled) return;
+        index++;
+        setDisplayedLength(index);
+
+        if (index >= text.length) {
+          clearInterval(charTimer);
+          setIsTyping(false);
+
+          if (!disableLoop) {
+            pauseTimer = setTimeout(() => {
+              if (!isCancelled) {
+                startTyping();
+              }
+            }, pauseDelay);
+          }
+        }
+      }, speed);
+    };
+
+    startTyping();
+
+    return () => {
+      isCancelled = true;
+      if (charTimer) clearInterval(charTimer);
+      if (pauseTimer) clearTimeout(pauseTimer);
+    };
+  }, [isInView, text, speed, pauseDelay, disableLoop]);
+
+  const visibleText = text.slice(0, displayedLength);
+
+  return (
+    <span ref={containerRef} className={`relative inline-wrap font-medium text-white/95 leading-[1.6] ${className}`}>
+      <span className="transition-all duration-150 ease-out tracking-[0.01em]">
+        {visibleText}
+      </span>
+      {isTyping && (
+        <span 
+          className="inline-block w-[2px] h-[1.15em] bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.8)] align-middle ml-1 rounded-full animate-pulse transition-opacity duration-300"
+          aria-hidden="true"
+        />
+      )}
+    </span>
+  );
+};
 
 // `heading` is the lead-in only; the "Ask eQORE AI" mark and its trademark stay
 // fixed so the branding cannot be overridden away. Both fall back to the copy
@@ -245,7 +411,12 @@ const ConciergeSection = ({
       aria-labelledby="eqore-ai-heading"
     >
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="mb-12">
+        {/* Apple macOS Ambient Liquid Backdrop Blobs */}
+        <div className="absolute -top-24 left-1/4 w-[600px] h-[400px] bg-indigo-950/30 rounded-full blur-[150px] pointer-events-none animate-blob" />
+        <div className="absolute top-1/3 -right-24 w-[500px] h-[500px] bg-slate-800/20 rounded-full blur-[150px] pointer-events-none animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-24 left-10 w-[500px] h-[400px] bg-blue-950/20 rounded-full blur-[140px] pointer-events-none animate-blob animation-delay-4000" />
+
+        <div className="mb-12 relative z-10">
           <div className="flex items-center gap-4 mb-4">
             <div className={`h-[1px] w-12 ${inverted ? 'bg-white/40' : 'bg-gray-400 dark:bg-gray-600'}`}></div>
             <span className={`text-sm font-semibold uppercase tracking-widest ${inverted ? 'text-white/60' : 'text-gray-500 dark:text-gray-400'}`}>
@@ -263,29 +434,22 @@ const ConciergeSection = ({
           </p>
         </div>
 
-        <div className="group relative rounded-[32px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/25 bg-gradient-to-br from-white/[0.09] via-white/[0.03] to-[#2564ea]/[0.06] backdrop-blur-3xl shadow-[0_30px_80px_-15px_rgba(0,0,0,0.8),inset_0_1px_2px_rgba(255,255,255,0.35),inset_0_-1px_1px_rgba(255,255,255,0.08)]">
-          {/* Top specular hairline reflection */}
-          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" />
-          
-          {/* Subtle interior light sheen */}
-          <div className="absolute inset-0 pointer-events-none z-0" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.08) 0%, transparent 60%)' }} />
+        <div className="group relative rounded-[30px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.14] bg-[#0c0d14]/65 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_35px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0_-1px_1px_0_rgba(0,0,0,0.5)]">
+          {/* macOS Tahoe Specular Hairline Rim Beam */}
+          <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" />
 
           {/* ───────────── Header Bar ───────────── */}
           <div className="relative z-10 px-6 sm:px-8 pt-6 pb-2 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-2xl overflow-hidden flex items-center justify-center shrink-0 border border-white/30 bg-slate-900/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_4px_16px_rgba(0,0,0,0.25)]">
+              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-white/20 bg-slate-900/80 shadow-md">
                 <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
               </div>
               <div>
-                <p className="text-[16px] font-black tracking-tight text-white flex items-center gap-2">
+                <p className="text-[16px] font-black tracking-tight text-white">
                   eQORE
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-60" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-white/75 shadow-[0_0_6px_rgba(255,255,255,0.6)]" />
-                  </span>
                 </p>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60 mt-0.5">
-                  {streaming ? 'Synchronizing Intelligence…' : 'Your AI Assistant'}
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mt-0.5">
+                  {streaming ? 'Synchronizing Intelligence…' : 'AI ASSISTANT'}
                 </p>
               </div>
             </div>
@@ -296,7 +460,7 @@ const ConciergeSection = ({
                 title="Launch Immersive Full-Screen AI Experience"
               >
                 <span>Immersive AI Experience</span>
-                <ArrowRight className="w-3.5 h-3.5 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-cyan-300 group-hover:text-white" strokeWidth={2.5} />
+                <ArrowRight className="w-3.5 h-3.5 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-white/80 group-hover:text-white" strokeWidth={2.5} />
               </Link>
               <button
                 type="button"
@@ -309,12 +473,12 @@ const ConciergeSection = ({
                 }}
                 className={`inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border transition-all duration-300 backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2)] active:scale-95 ${
                   isVoiceEnabled
-                    ? 'bg-cyan-500/25 text-cyan-200 border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)]'
-                    : 'bg-white/[0.08] text-white/90 hover:text-white hover:bg-white/[0.18] border-white/20 hover:border-white/40'
+                    ? 'bg-white/[0.22] text-white border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)]'
+                    : 'bg-white/[0.06] text-white/85 hover:text-white border-white/15 hover:border-white/30'
                 }`}
                 title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
               >
-                {isVoiceEnabled ? <Volume2 className="w-3.5 h-3.5 text-cyan-300" /> : <VolumeX className="w-3.5 h-3.5" />}
+                {isVoiceEnabled ? <Volume2 className="w-3.5 h-3.5 text-white" /> : <VolumeX className="w-3.5 h-3.5" />}
                 <span className="hidden sm:inline">Voice</span>
               </button>
               {hasUserMessages && (
@@ -324,7 +488,7 @@ const ConciergeSection = ({
                   className="group inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border border-white/20 hover:border-white/40 bg-white/[0.08] hover:bg-white/[0.18] text-white backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-300 active:scale-95"
                   title="Start a new conversation"
                 >
-                  <MessageSquarePlus className="w-3.5 h-3.5 text-cyan-300" /> New Session
+                  <MessageSquarePlus className="w-3.5 h-3.5 text-white/80 group-hover:text-white" /> New Session
                 </button>
               )}
             </div>
@@ -358,10 +522,10 @@ const ConciergeSection = ({
                       className={`flex items-start gap-3 max-w-[90%] sm:max-w-[85%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
                     >
                       <div
-                        className={`w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0 mt-1 border backdrop-blur-xl shadow-md ${
+                        className={`w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0 mt-1 border backdrop-blur-xl ${
                           isUser 
-                            ? 'border-white/35 bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] shadow-[0_0_15px_rgba(37,100,234,0.3)]' 
-                            : 'border-white/20 bg-slate-900/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]'
+                            ? 'border-white/20 bg-black/60 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]' 
+                            : 'border-white/20 bg-black/60 shadow-sm'
                         }`}
                       >
                         {isUser ? (
@@ -371,16 +535,14 @@ const ConciergeSection = ({
                         )}
                       </div>
                       <div
-                        className={`px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-[16px] leading-[1.6] whitespace-pre-wrap transition-all backdrop-blur-2xl ${
+                        className={`text-[16px] leading-[1.65] transition-all ${
                           isUser
-                            ? 'bg-gradient-to-br from-[#2564ea] via-[#2564ea]/90 to-[#4ab6d4] text-white border border-white/30 shadow-[0_8px_25px_rgba(37,100,234,0.35),inset_0_1px_2px_rgba(255,255,255,0.3)] font-medium'
-                            : 'bg-white/[0.06] text-white/95 border border-white/15 shadow-[0_8px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.18)] font-normal'
+                            ? 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white font-medium shadow-[0_8px_25px_rgba(37,100,234,0.4)] backdrop-blur-2xl border border-white/20'
+                            : 'bg-transparent text-white/95 border-0 shadow-none px-0 py-0.5 font-normal'
                         }`}
                       >
                         {msg.id === 'greeting' ? (
-                          <span className="text-white/95 font-medium">
-                            {msg.content}
-                          </span>
+                          <TypewriterSkateText text={msg.content} speed={45} pauseDelay={3500} disableLoop={hasUserMessages} />
                         ) : (
                           renderFormattedText(msg.content)
                         )}
@@ -398,7 +560,7 @@ const ConciergeSection = ({
                             href="https://kangqore.com" 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="text-cyan-300 hover:underline lowercase tracking-normal font-semibold"
+                            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline lowercase tracking-normal font-semibold"
                           >
                             kangqore.com
                           </a>
@@ -497,10 +659,12 @@ const ConciergeSection = ({
                         <button
                           type="button"
                           onClick={() => setShowLeadFor(msg.id)}
-                          className="group inline-flex items-center gap-2.5 text-xs font-bold text-cyan-300 hover:text-white transition-all bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 hover:border-cyan-400/40 px-3.5 py-1.5 rounded-full backdrop-blur-md"
+                          className="group inline-flex items-center gap-2.5 text-xs font-bold transition-all bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 px-4 py-2 rounded-full backdrop-blur-md shadow-sm"
                         >
-                          <span>Talk to a Kangqore consultant</span>
-                          <ArrowRight className="w-3 h-3 -rotate-45 group-hover:rotate-0 transition-transform duration-300" strokeWidth={2.5} />
+                          <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:from-white group-hover:to-white transition-all">
+                            Talk to a Kangqore consultant
+                          </span>
+                          <ArrowRight className="w-3.5 h-3.5 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-[#4ab6d4] group-hover:text-white" strokeWidth={2.5} />
                         </button>
                       </div>
                     )}
@@ -526,7 +690,7 @@ const ConciergeSection = ({
           {/* ───────────── Bottom Prompt Chips & Input Bar ───────────── */}
           <div className="relative z-10 px-6 sm:px-8 pb-6 pt-2 bg-transparent">
             {!hasUserMessages && (
-              <div className="mb-6 -mx-1 flex flex-wrap gap-2.5">
+              <div className="mb-4 -mx-1 flex flex-wrap gap-2">
                 {prompts.map((p) => (
                   <SuggestedPromptChip
                     key={p}
@@ -540,7 +704,7 @@ const ConciergeSection = ({
             )}
 
             <form onSubmit={submit} className="relative">
-              <div className="relative flex items-center rounded-full bg-gradient-to-b from-white/[0.10] to-white/[0.03] border border-white/20 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.4),inset_0_1px_2px_rgba(255,255,255,0.2)] focus-within:border-white/40 focus-within:ring-1 focus-within:ring-white/15 transition-all duration-300">
+              <div className="relative flex items-center rounded-full bg-white/[0.05] hover:bg-white/[0.07] focus-within:bg-white/[0.08] border border-white/15 focus-within:border-white/30 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.18),0_12px_32px_rgba(0,0,0,0.4)] focus-within:ring-1 focus-within:ring-white/15 transition-all duration-300">
                 <input
                   ref={inputRef}
                   type="text"
@@ -548,7 +712,7 @@ const ConciergeSection = ({
                   onChange={(e) => setInput(e.target.value)}
                   disabled={streaming}
                   aria-label="Ask eQORE AI a question"
-                  placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
+                  placeholder={voice.listening ? 'Listening… speak now' : 'Ask eQORE anything about Kangqore…'}
                   className="w-full bg-transparent pl-6 pr-28 py-4 text-[16px] font-medium text-white placeholder-white/45 focus:outline-none disabled:opacity-60"
                 />
                 
