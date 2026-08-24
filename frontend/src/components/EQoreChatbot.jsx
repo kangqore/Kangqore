@@ -477,11 +477,8 @@ const EQoreChatbot = () => {
           <div className="absolute inset-0 bg-brand-cyan/5 blur-xl pointer-events-none"></div>
           
           <div className="flex items-center gap-3 relative z-10">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.2)] bg-[#050505]">
-                <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
-              </div>
-              <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-cyan-400 border-2 border-[#111115] rounded-full animate-pulse shadow-[0_0_10px_rgba(34,211,238,0.6)]"></span>
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-slate-900 shrink-0">
+              <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
             </div>
             <div>
               <h3 className="font-display font-bold text-sm tracking-wide">eQORE</h3>
@@ -551,9 +548,8 @@ const EQoreChatbot = () => {
                       YOU
                     </div>
                   ) : (
-                    <div className="w-6 h-6 rounded-md overflow-hidden border border-cyan-400/40 bg-slate-950 shrink-0 mb-1 shadow-[0_0_10px_rgba(34,211,238,0.3)] relative">
+                    <div className="w-6 h-6 rounded-md overflow-hidden border border-white/20 bg-slate-950 shrink-0 mb-1 shadow-sm">
                       <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
-                      <span className="absolute bottom-0 right-0 w-1.5 h-1.5 bg-cyan-400 rounded-full border border-slate-950 shadow-[0_0_4px_rgba(34,211,238,0.8)] animate-pulse" />
                     </div>
                   )}
                   <div className={`text-[14px] leading-relaxed transition-all ${

@@ -445,12 +445,8 @@ const ConciergeSection = ({
                 <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
               </div>
               <div>
-                <p className="text-[16px] font-black tracking-tight text-white flex items-center gap-2">
+                <p className="text-[16px] font-black tracking-tight text-white">
                   eQORE
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-60" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-white/75 shadow-[0_0_6px_rgba(255,255,255,0.6)]" />
-                  </span>
                 </p>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60 mt-0.5">
                   {streaming ? 'Synchronizing Intelligence…' : 'Your AI Assistant'}
@@ -478,7 +474,7 @@ const ConciergeSection = ({
                 className={`inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border transition-all duration-300 backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2)] active:scale-95 ${
                   isVoiceEnabled
                     ? 'bg-white/[0.22] text-white border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)]'
-                    : 'bg-white/[0.08] text-white/90 hover:text-white hover:bg-white/[0.18] border-white/20 hover:border-white/40'
+                    : 'bg-white/[0.06] text-white/85 hover:text-white border-white/15 hover:border-white/30'
                 }`}
                 title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
               >
@@ -529,16 +525,13 @@ const ConciergeSection = ({
                         className={`w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0 mt-1 border backdrop-blur-xl ${
                           isUser 
                             ? 'border-white/20 bg-black/60 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]' 
-                            : 'border-cyan-400/40 bg-slate-950/90 shadow-[0_0_15px_rgba(34,211,238,0.35)] relative'
+                            : 'border-white/20 bg-black/60 shadow-sm'
                         }`}
                       >
                         {isUser ? (
                           <span className="text-[11px] font-black text-white tracking-wider select-none">YOU</span>
                         ) : (
-                          <>
-                            <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
-                            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-950 shadow-[0_0_8px_rgba(34,211,238,0.8)] animate-pulse" />
-                          </>
+                          <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
                         )}
                       </div>
                       <div
