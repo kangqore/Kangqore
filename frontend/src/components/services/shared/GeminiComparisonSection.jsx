@@ -108,10 +108,10 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                 <th role="columnheader" scope="col" className="md:col-span-3 p-5 sm:p-6 text-white/50 font-black">
                   {comparisonTable?.dimensionLabel || 'FEATURE'}
                 </th>
-                <th role="columnheader" scope="col" className="md:col-span-4 p-5 sm:p-6 text-white/60 font-black border-r border-white/[0.06]">
+                <th role="columnheader" scope="col" className="md:col-span-4 p-5 sm:p-6 text-white/60 font-black">
                   {beforeLabel}
                 </th>
-                <th role="columnheader" scope="col" className="md:col-span-5 p-5 sm:p-6 flex items-center justify-between font-black bg-white/[0.02]">
+                <th role="columnheader" scope="col" className="md:col-span-5 p-5 sm:p-6 flex items-center justify-between font-black">
                   <span style={GRADIENT_STYLE} className="font-black">
                     {afterLabel}
                   </span>
