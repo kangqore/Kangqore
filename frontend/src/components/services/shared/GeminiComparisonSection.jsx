@@ -97,34 +97,26 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
             parse raw HTML, and the explicit ARIA roles restore that same
             structure for assistive technology, which reads the computed tree.
             Removing either half breaks one of the two audiences. */}
-        <div className="rounded-3xl bg-[#030814]/90 backdrop-blur-xl overflow-hidden shadow-2xl">
+        <div className="rounded-[30px] bg-[#0c0d14]/65 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_35px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.25)] border border-white/[0.14] overflow-hidden relative">
           <table role="table" className="w-full text-left border-collapse">
             <caption className="sr-only">
               {`${beforeLabel} compared with ${afterLabel} across ${rows.length} dimensions.`}
             </caption>
 
-            {/* Hidden below `md`, where three stacked cells no longer head
-                anything. Mobile keeps its column context from the per-cell
-                labels further down, which are real text and are announced. */}
             <thead role="rowgroup" className="hidden md:table-header-group">
-              <tr role="row" className="md:grid md:grid-cols-12 bg-white/[0.02] text-xs font-black tracking-[0.2em] uppercase">
+              <tr role="row" className="md:grid md:grid-cols-12 bg-white/[0.03] text-xs font-black tracking-[0.2em] uppercase border-b border-white/[0.08]">
                 <th role="columnheader" scope="col" className="md:col-span-3 p-5 sm:p-6 text-white/50 font-black">
                   {comparisonTable?.dimensionLabel || 'FEATURE'}
                 </th>
-                <th role="columnheader" scope="col" className="md:col-span-4 p-5 sm:p-6 text-white/60 font-black">
+                <th role="columnheader" scope="col" className="md:col-span-4 p-5 sm:p-6 text-white/60 font-black border-r border-white/[0.06]">
                   {beforeLabel}
                 </th>
-                <th role="columnheader" scope="col" className="md:col-span-5 p-5 sm:p-6 flex items-center justify-between font-black">
+                <th role="columnheader" scope="col" className="md:col-span-5 p-5 sm:p-6 flex items-center justify-between font-black bg-white/[0.02]">
                   <span style={GRADIENT_STYLE} className="font-black">
                     {afterLabel}
                   </span>
                   <span
-                    className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-widest"
-                    style={{
-                      background: 'rgba(37, 100, 234, 0.2)',
-                      border: '1px solid rgba(74, 182, 212, 0.4)',
-                      color: '#4ab6d4'
-                    }}
+                    className="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-widest bg-white/[0.08] border border-white/20 text-white backdrop-blur-xl shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
                   >
                     {afterBadge}
                   </span>
@@ -143,17 +135,10 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                     role="row"
                     onMouseEnter={() => setHoveredRow(i)}
                     onMouseLeave={() => setHoveredRow(null)}
-                    /* mt-0.5 replaces the `space-y-0.5` that was on the wrapper
-                       <div> this <tbody> took over from. Without it the rows
-                       sit flush and every page using this component loses the
-                       2px hairline between them, which measured as a uniform
-                       8px height drop across all five siblings. */
-                    className={`grid grid-cols-1 md:grid-cols-12 transition-all duration-300 ${
-                      i > 0 ? 'mt-0.5' : ''
-                    } ${isHovered ? 'bg-white/[0.04]' : 'bg-transparent'}`}
+                    className={`grid grid-cols-1 md:grid-cols-12 transition-all duration-300 border-b border-white/[0.05] last:border-b-0 ${
+                      isHovered ? 'bg-white/[0.06]' : 'bg-transparent'
+                    }`}
                   >
-                    {/* Row header, not a plain cell. This is the axis label, and
-                        it is what an answer engine anchors an extracted row to. */}
                     <th
                       role="rowheader"
                       scope="row"
@@ -164,23 +149,23 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                           className="w-2.5 h-2.5 rounded-full transition-all duration-300 shrink-0"
                           style={{
                             backgroundColor: accentColor,
-                            boxShadow: isHovered ? `0 0 12px ${accentColor}` : `0 0 4px ${accentColor}`
+                            boxShadow: isHovered ? `0 0 14px ${accentColor}` : `0 0 6px ${accentColor}`
                           }}
                         />
                         <span className={`text-xs font-black tracking-[0.25em] uppercase transition-colors ${
-                          isHovered ? 'text-white font-bold' : 'text-white/70'
+                          isHovered ? 'text-white font-bold' : 'text-white/75'
                         }`}>
                           {row.dimension}
                         </span>
                       </span>
                     </th>
 
-                    <td role="cell" className="md:col-span-4 px-5 pb-3 sm:p-6">
+                    <td role="cell" className="md:col-span-4 px-5 pb-3 sm:p-6 border-r border-white/[0.06]">
                       <span className="md:hidden block text-[11px] font-black tracking-[0.2em] uppercase text-white/50 mb-1">
                         {beforeShort}
                       </span>
                       <p className={`text-sm leading-relaxed transition-colors ${
-                        isHovered ? 'text-white/80' : 'text-white/50'
+                        isHovered ? 'text-white/85' : 'text-white/55'
                       }`}>
                         {row.before}
                       </p>
@@ -188,9 +173,9 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
 
                     <td
                       role="cell"
-                      className="md:col-span-5 px-5 py-4 sm:p-6 transition-all duration-300"
+                      className="md:col-span-5 px-5 py-4 sm:p-6 transition-all duration-300 relative"
                       style={{
-                        backgroundColor: isHovered ? 'rgba(37, 100, 234, 0.16)' : 'rgba(37, 100, 234, 0.06)'
+                        backgroundColor: isHovered ? 'rgba(37, 100, 234, 0.18)' : 'rgba(37, 100, 234, 0.08)'
                       }}
                     >
                       <span className="md:hidden block text-[11px] font-black tracking-[0.2em] uppercase mb-1" style={GRADIENT_STYLE}>
@@ -201,14 +186,10 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
                       }`}>
                         {row.after}
                       </p>
-                      {/* Opt-in per row. In-content contextual links are the ones
-                          that build topical authority; sitewide nav is discounted
-                          as boilerplate. Rows without a genuine target get none
-                          rather than a stretched one. */}
                       {row.link?.href && (
                         <a
                           href={row.link.href}
-                          className="mt-3 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent underline underline-offset-4 transition-colors"
+                          className="mt-3 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline underline-offset-4 transition-colors"
                         >
                           {row.link.label}
                           <span aria-hidden="true">&rarr;</span>
