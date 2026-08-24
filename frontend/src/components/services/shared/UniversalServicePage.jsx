@@ -75,7 +75,7 @@ const ServicePackageCardItem = ({ pkg, idx }) => {
             className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
             title="Read deliverables"
           >
-            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline">
+            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent no-underline">
               You leave with
             </span>
             <ChevronDown className={`w-3.5 h-3.5 text-[#4ab6d4] transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
