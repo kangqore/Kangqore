@@ -6,15 +6,14 @@ const SuggestedPromptChip = ({ prompt, onSelect, disabled, inverted = false }) =
     type="button"
     disabled={disabled}
     onClick={() => onSelect(prompt)}
-    className={`group inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full border backdrop-blur-md disabled:opacity-30 disabled:cursor-not-allowed transition-all whitespace-nowrap shadow-sm ${
-      inverted
-        ? 'border-white/40 bg-white/25 text-white hover:bg-white/40 hover:border-white/60'
-        : 'border-white/15 bg-white/[0.08] text-gray-200 hover:text-white hover:bg-white/[0.12] hover:border-brand-cyan/40 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)]'
-    }`}
+    className="group inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-full border border-white/15 hover:border-white/40 bg-white/[0.07] hover:bg-white/[0.16] text-white/90 hover:text-white backdrop-blur-2xl shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] hover:shadow-[0_6px_25px_rgba(255,255,255,0.12),inset_0_1px_1px_rgba(255,255,255,0.25)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 whitespace-nowrap hover:-translate-y-0.5 active:scale-95"
   >
-    {prompt}
-    <ArrowRight className="w-3 h-3 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+    <span>{prompt}</span>
+    <ArrowRight className="w-3.5 h-3.5 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-white/80 group-hover:text-white" strokeWidth={2.5} />
   </button>
 );
 
 export default SuggestedPromptChip;
+
+
+

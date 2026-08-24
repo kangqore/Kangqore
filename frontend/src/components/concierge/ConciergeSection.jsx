@@ -16,6 +16,8 @@ import {
   Volume2,
   VolumeX,
   ExternalLink,
+  Cpu,
+  ArrowRight,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useConcierge } from '../../hooks/useConcierge';
@@ -261,39 +263,40 @@ const ConciergeSection = ({
           </p>
         </div>
 
-        <div className={`group relative rounded-2xl overflow-hidden w-full transition-all duration-500 hover:-translate-y-1 ${inverted ? 'border border-white/10' : 'border border-white/[0.05] bg-[#11131a]'}`}>
-          <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl pointer-events-none" style={{ background: inverted ? 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' : 'linear-gradient(145deg, #181a20 0%, #000000 100%)' }}>
-            {/* Sharp diagonal gloss reflection */}
-            <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(125deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 30%, rgba(255,255,255,0) 50%)' }} />
-            
-            {/* Soft inner glow from the top edge */}
-            <div className="absolute inset-x-0 top-0 h-[100px] z-[2]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%)' }} />
-            
-            {/* Subtle bottom edge reflection */}
-            <div className="absolute inset-x-0 bottom-0 h-1/3 z-[1]" style={{ background: 'linear-gradient(0deg, rgba(255,255,255,0.02) 0%, transparent 100%)' }} />
-          </div>
+        <div className="group relative rounded-[32px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/25 bg-gradient-to-br from-white/[0.09] via-white/[0.03] to-[#2564ea]/[0.06] backdrop-blur-3xl shadow-[0_30px_80px_-15px_rgba(0,0,0,0.8),inset_0_1px_2px_rgba(255,255,255,0.35),inset_0_-1px_1px_rgba(255,255,255,0.08)]">
+          {/* Top specular hairline reflection */}
+          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" />
+          
+          {/* Subtle interior light sheen */}
+          <div className="absolute inset-0 pointer-events-none z-0" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.08) 0%, transparent 60%)' }} />
 
-          <div className={`relative z-10 px-6 sm:px-8 py-5 border-b flex items-center justify-between gap-2 ${inverted ? 'border-white/20' : 'border-white/5'}`}>
-            <div className="flex items-center gap-4">
-              <div className={`w-11 h-11 rounded-full overflow-hidden flex items-center justify-center shrink-0 ${inverted ? 'bg-white/30' : 'bg-slate-800'}`}>
+          {/* ───────────── Header Bar ───────────── */}
+          <div className="relative z-10 px-6 sm:px-8 pt-6 pb-2 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-2xl overflow-hidden flex items-center justify-center shrink-0 border border-white/30 bg-slate-900/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_4px_16px_rgba(0,0,0,0.25)]">
                 <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
               </div>
               <div>
-                <p className="text-[16px] font-semibold tracking-tight text-white">
+                <p className="text-[16px] font-black tracking-tight text-white flex items-center gap-2">
                   eQORE
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-60" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-white/75 shadow-[0_0_6px_rgba(255,255,255,0.6)]" />
+                  </span>
                 </p>
-                <p className="text-[11px] uppercase tracking-widest font-bold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mt-0.5">
-                  {streaming ? 'Syncing...' : 'System Active'}
+                <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60 mt-0.5">
+                  {streaming ? 'Synchronizing Intelligence…' : 'Your AI Assistant'}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <Link
                 to="/eqore-ai"
-                className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-white/25 text-white hover:bg-white/40 border-white/40' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
+                className="group inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-full border border-white/20 hover:border-white/40 bg-white/[0.08] hover:bg-white/[0.18] text-white backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.15)] transition-all duration-300 active:scale-95"
                 title="Launch Immersive Full-Screen AI Experience"
               >
-                <ExternalLink className="w-3.5 h-3.5 text-[#2564ea]" /> Immersive AI Experience
+                <span>Immersive AI Experience</span>
+                <ArrowRight className="w-3.5 h-3.5 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-cyan-300 group-hover:text-white" strokeWidth={2.5} />
               </Link>
               <button
                 type="button"
@@ -304,41 +307,40 @@ const ConciergeSection = ({
                     window.speechSynthesis.cancel();
                   }
                 }}
-                className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${
+                className={`inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border transition-all duration-300 backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2)] active:scale-95 ${
                   isVoiceEnabled
-                    ? 'bg-cyan-400/20 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent border-cyan-400/30'
-                    : inverted
-                    ? 'bg-white/20 text-white hover:bg-white/30 border-white/20'
-                    : 'bg-white/10 text-white/60 hover:text-white border-white/10'
+                    ? 'bg-cyan-500/25 text-cyan-200 border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)]'
+                    : 'bg-white/[0.08] text-white/90 hover:text-white hover:bg-white/[0.18] border-white/20 hover:border-white/40'
                 }`}
                 title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
               >
-                {isVoiceEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                {isVoiceEnabled ? <Volume2 className="w-3.5 h-3.5 text-cyan-300" /> : <VolumeX className="w-3.5 h-3.5" />}
                 <span className="hidden sm:inline">Voice</span>
               </button>
               {hasUserMessages && (
                 <button
                   type="button"
                   onClick={reset}
-                  className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all ${inverted ? 'bg-white/25 text-white hover:bg-white/40 border-white/40' : 'bg-white/10 text-white/60 hover:text-white border-white/10'}`}
+                  className="group inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border border-white/20 hover:border-white/40 bg-white/[0.08] hover:bg-white/[0.18] text-white backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-300 active:scale-95"
                   title="Start a new conversation"
                 >
-                  <MessageSquarePlus className="w-3.5 h-3.5" /> New Session
+                  <MessageSquarePlus className="w-3.5 h-3.5 text-cyan-300" /> New Session
                 </button>
               )}
             </div>
           </div>
 
+          {/* ───────────── Message Conversation Area ───────────── */}
           <div 
             ref={chatContainerRef}
-            className="relative z-10 px-6 sm:px-8 py-8 max-h-[520px] overflow-y-auto custom-scrollbar bg-transparent scroll-smooth"
+            className="relative z-10 px-6 sm:px-8 py-6 max-h-[520px] overflow-y-auto custom-scrollbar bg-transparent scroll-smooth"
           >
             {restoring && (
-              <div className={`text-[11px] uppercase tracking-widest font-bold mb-3 flex items-center gap-2 ${inverted ? 'text-white/70' : 'text-slate-400 dark:text-slate-500'}`}>
-                <RefreshCw className="w-3 h-3 animate-spin" /> Restoring previous conversation
+              <div className="text-[11px] uppercase tracking-[0.2em] font-bold mb-4 flex items-center gap-2 text-cyan-300">
+                <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Restoring previous conversation
               </div>
             )}
-            <div className="space-y-5">
+            <div className="space-y-6">
               {messages.map((msg) => {
                 const isUser = msg.role === 'user';
                 const showHandoffOffer =
@@ -353,58 +355,50 @@ const ConciergeSection = ({
                     className={`flex flex-col gap-2 ${isUser ? 'items-end' : 'items-start'}`}
                   >
                     <div
-                      className={`flex items-start gap-3 max-w-[90%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
+                      className={`flex items-start gap-3 max-w-[90%] sm:max-w-[85%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
                     >
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 overflow-hidden ${
-                          isUser ? '' : inverted ? 'bg-white/30' : 'bg-slate-800'
+                        className={`w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0 mt-1 border backdrop-blur-xl shadow-md ${
+                          isUser 
+                            ? 'border-white/35 bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] shadow-[0_0_15px_rgba(37,100,234,0.3)]' 
+                            : 'border-white/20 bg-slate-900/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]'
                         }`}
-                        style={isUser ? {
-                          background: 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)',
-                          boxShadow: '0 0 12px rgba(37,100,234,0.3)',
-                        } : {}}
                       >
                         {isUser ? (
-                          <span className="text-[11px] font-bold text-white tracking-wide select-none">You</span>
+                          <span className="text-[11px] font-black text-white tracking-wider select-none">YOU</span>
                         ) : (
                           <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
                         )}
                       </div>
                       <div
-                        className={`px-5 py-4 rounded-3xl text-[16px] leading-relaxed whitespace-pre-wrap transition-all shadow-sm ${
+                        className={`px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-[16px] leading-[1.6] whitespace-pre-wrap transition-all backdrop-blur-2xl ${
                           isUser
-                            ? 'bg-brand-blue text-white rounded-br-sm'
-                            : msg.id === 'greeting'
-                            ? inverted
-                              ? 'bg-white/35 font-semibold rounded-bl-sm border border-white/50 text-white'
-                              : 'bg-[#1c202a]/80 backdrop-blur-md font-semibold rounded-bl-sm border border-white/10'
-                            : inverted
-                            ? 'bg-white/35 text-white rounded-bl-sm border border-white/50'
-                            : 'bg-[#1c202a]/80 backdrop-blur-md text-gray-100 rounded-bl-sm border border-white/10'
+                            ? 'bg-gradient-to-br from-[#2564ea] via-[#2564ea]/90 to-[#4ab6d4] text-white border border-white/30 shadow-[0_8px_25px_rgba(37,100,234,0.35),inset_0_1px_2px_rgba(255,255,255,0.3)] font-medium'
+                            : 'bg-white/[0.06] text-white/95 border border-white/15 shadow-[0_8px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.18)] font-normal'
                         }`}
                       >
                         {msg.id === 'greeting' ? (
-                          <span className={inverted ? 'text-white font-semibold' : 'bg-gradient-to-r from-cyan-300 via-sky-200 to-blue-300 bg-clip-text text-transparent font-medium'}>
+                          <span className="text-white/95 font-medium">
                             {msg.content}
                           </span>
                         ) : (
                           renderFormattedText(msg.content)
                         )}
                         {!msg.done && msg.role === 'assistant' && (
-                          <span className="inline-block w-1.5 h-4 ml-0.5 align-middle bg-brand-cyan animate-pulse rounded-sm" />
+                          <span className="inline-block w-1.5 h-4 ml-1 align-middle bg-white animate-pulse rounded-sm shadow-[0_0_6px_rgba(255,255,255,0.8)]" />
                         )}
                       </div>
                     </div>
 
                     {!isUser && msg.done && msg.citations && msg.citations.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-1.5 ml-10">
-                        <span className={`text-[11px] uppercase tracking-widest font-bold ${inverted ? 'text-white/70' : 'text-slate-400 dark:text-slate-500'}`}>
+                      <div className="flex flex-wrap items-center gap-1.5 ml-12">
+                        <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-white/70">
                           Sources:{' '}
                           <a 
                             href="https://kangqore.com" 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline lowercase tracking-normal"
+                            className="text-cyan-300 hover:underline lowercase tracking-normal font-semibold"
                           >
                             kangqore.com
                           </a>
@@ -416,16 +410,16 @@ const ConciergeSection = ({
                     )}
 
                     {!isUser && msg.done && msg.id !== 'greeting' && (
-                      <div className="flex items-center gap-1 ml-10 mt-0.5 opacity-60 hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1.5 ml-12 mt-0.5 opacity-80 hover:opacity-100 transition-opacity">
                         <button
                           type="button"
                           onClick={() => copyMessage(msg)}
-                          className={`inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded transition-colors ${inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'}`}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-white/15 bg-white/[0.06] hover:bg-white/[0.15] text-white/80 hover:text-white transition-all shadow-sm"
                           title="Copy"
                         >
                           {copiedId === msg.id ? (
                             <>
-                              <Check className="w-3 h-3 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent" /> Copied
+                              <Check className="w-3 h-3 text-cyan-300" /> Copied
                             </>
                           ) : (
                             <>
@@ -437,7 +431,7 @@ const ConciergeSection = ({
                           type="button"
                           onClick={() => retry(msg.id)}
                           disabled={streaming}
-                          className={`inline-flex items-center gap-1 text-[11px] disabled:opacity-50 px-1.5 py-0.5 rounded transition-colors ${inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'}`}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold disabled:opacity-50 px-2.5 py-1 rounded-full border border-white/15 bg-white/[0.06] hover:bg-white/[0.15] text-white/80 hover:text-white transition-all shadow-sm"
                           title="Retry this answer"
                         >
                           <RotateCcw className="w-3 h-3" /> Retry
@@ -446,10 +440,10 @@ const ConciergeSection = ({
                           type="button"
                           onClick={() => submitFeedback(msg.id, 'up')}
                           disabled={!conversationId || msg.feedback === 'up'}
-                          className={`inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded transition-colors ${
+                          className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full border transition-all shadow-sm ${
                             msg.feedback === 'up'
-                              ? 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'
-                              : inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'
+                              ? 'border-cyan-400/40 bg-cyan-500/20 text-cyan-200'
+                              : 'border-white/15 bg-white/[0.06] hover:bg-white/[0.15] text-white/80 hover:text-white'
                           } disabled:opacity-50`}
                           title="Helpful"
                         >
@@ -459,10 +453,10 @@ const ConciergeSection = ({
                           type="button"
                           onClick={() => submitFeedback(msg.id, 'down')}
                           disabled={!conversationId || msg.feedback === 'down'}
-                          className={`inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded transition-colors ${
+                          className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full border transition-all shadow-sm ${
                             msg.feedback === 'down'
-                              ? 'text-rose-400'
-                              : inverted ? 'text-white/70 hover:text-white' : 'text-white/50 hover:text-white'
+                              ? 'border-rose-400/40 bg-rose-500/20 text-rose-300'
+                              : 'border-white/15 bg-white/[0.06] hover:bg-white/[0.15] text-white/80 hover:text-white'
                           } disabled:opacity-50`}
                           title="Not helpful"
                         >
@@ -472,7 +466,7 @@ const ConciergeSection = ({
                     )}
 
                     {!isUser && msg.done && msg.followups && msg.followups.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 ml-10 mt-1">
+                      <div className="flex flex-wrap gap-2 ml-12 mt-2">
                         {msg.followups.map((q, i) => (
                           <SuggestedPromptChip
                             key={`${msg.id}-fu-${i}`}
@@ -486,12 +480,12 @@ const ConciergeSection = ({
                     )}
 
                     {!isUser && msg.leadCaptured && (
-                      <div className="ml-10 w-full max-w-md rounded-xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50 dark:bg-emerald-500/5 p-4 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                      <div className="ml-12 w-full max-w-md rounded-2xl border border-emerald-400/30 bg-emerald-950/40 backdrop-blur-2xl p-4 flex items-start gap-3.5 shadow-xl">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0 border border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                           <Check className="w-4 h-4" />
                         </div>
-                        <div className="text-xs">
-                          <p className="font-semibold text-emerald-700 dark:text-emerald-300">
+                        <div className="text-xs leading-relaxed">
+                          <p className="font-semibold text-emerald-200">
                             Got it — a Kangqore consultant will reach out to {msg.leadCaptured.email} within one business day.
                           </p>
                         </div>
@@ -499,19 +493,20 @@ const ConciergeSection = ({
                     )}
 
                     {showHandoffOffer && !msg.leadCaptured && (
-                      <div className="ml-11 mt-1">
+                      <div className="ml-12 mt-1">
                         <button
                           type="button"
                           onClick={() => setShowLeadFor(msg.id)}
-                          className={`text-xs font-bold hover:underline flex items-center gap-1.5 transition-colors ${inverted ? 'text-white hover:text-white/80' : 'text-white hover:text-gray-200'}`}
+                          className="group inline-flex items-center gap-2.5 text-xs font-bold text-cyan-300 hover:text-white transition-all bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 hover:border-cyan-400/40 px-3.5 py-1.5 rounded-full backdrop-blur-md"
                         >
-                          <span>&rarr;</span> Talk to a Kangqore consultant
+                          <span>Talk to a Kangqore consultant</span>
+                          <ArrowRight className="w-3 h-3 -rotate-45 group-hover:rotate-0 transition-transform duration-300" strokeWidth={2.5} />
                         </button>
                       </div>
                     )}
 
                     {!isUser && showLeadFor === msg.id && !msg.leadCaptured && (
-                      <div className="ml-10 w-full max-w-md">
+                      <div className="ml-12 w-full max-w-md">
                         <LeadCaptureInline
                           conversationId={conversationId}
                           defaultIntent={
@@ -528,9 +523,10 @@ const ConciergeSection = ({
             </div>
           </div>
 
-          <div className={`relative z-10 px-6 sm:px-8 py-6 border-t bg-transparent ${inverted ? 'border-white/20' : 'border-white/5'}`}>
+          {/* ───────────── Bottom Prompt Chips & Input Bar ───────────── */}
+          <div className="relative z-10 px-6 sm:px-8 pb-6 pt-2 bg-transparent">
             {!hasUserMessages && (
-              <div className="mb-6 -mx-1 flex flex-wrap gap-2">
+              <div className="mb-6 -mx-1 flex flex-wrap gap-2.5">
                 {prompts.map((p) => (
                   <SuggestedPromptChip
                     key={p}
@@ -544,69 +540,73 @@ const ConciergeSection = ({
             )}
 
             <form onSubmit={submit} className="relative">
-              <input
-                ref={inputRef}
-                type="text"
-                value={voice.listening && voice.interim ? `${input} ${voice.interim}`.trim() : input}
-                onChange={(e) => setInput(e.target.value)}
-                disabled={streaming}
-                aria-label="Ask eQORE AI a question"
-                placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
-                className={`w-full pl-6 pr-28 py-[18px] rounded-full text-[16px] focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/20 disabled:opacity-60 transition-all shadow-lg ${inverted ? 'bg-white/30 border border-white/50 text-white placeholder-white/75' : 'bg-[#1c202a]/80 backdrop-blur-md border border-white/10 text-white placeholder-slate-400'}`}
-              />
-              {voice.supported && (
-                <button
-                  type="button"
-                  onClick={voice.toggle}
+              <div className="relative flex items-center rounded-full bg-gradient-to-b from-white/[0.10] to-white/[0.03] border border-white/20 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.4),inset_0_1px_2px_rgba(255,255,255,0.2)] focus-within:border-white/40 focus-within:ring-1 focus-within:ring-white/15 transition-all duration-300">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={voice.listening && voice.interim ? `${input} ${voice.interim}`.trim() : input}
+                  onChange={(e) => setInput(e.target.value)}
                   disabled={streaming}
-                  className={`absolute right-[52px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                    voice.listening
-                      ? 'bg-rose-500 text-white animate-pulse'
-                      : inverted
-                      ? 'bg-white/20 text-white hover:bg-white/30'
-                      : 'bg-[#f8fafc] hover:bg-white dark:bg-gray-900 dark:border-gray-800 text-slate-700 dark:text-gray-300'
-                  } disabled:opacity-40 disabled:cursor-not-allowed shadow-sm`}
-                  aria-label={voice.listening ? 'Stop voice input' : 'Start voice input'}
-                  title={voice.listening ? 'Stop' : 'Voice input'}
-                >
-                  {voice.listening ? (
-                    <MicOff className="w-[18px] h-[18px]" />
-                  ) : (
-                    <Mic className="w-[18px] h-[18px]" />
+                  aria-label="Ask eQORE AI a question"
+                  placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
+                  className="w-full bg-transparent pl-6 pr-28 py-4 text-[16px] font-medium text-white placeholder-white/45 focus:outline-none disabled:opacity-60"
+                />
+                
+                <div className="absolute right-2 flex items-center gap-1.5">
+                  {voice.supported && (
+                    <button
+                      type="button"
+                      onClick={voice.toggle}
+                      disabled={streaming}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-xl shadow-md active:scale-95 ${
+                        voice.listening
+                          ? 'bg-rose-500 text-white animate-pulse shadow-[0_0_20px_rgba(244,63,94,0.7)]'
+                          : 'bg-white/[0.10] hover:bg-white/[0.20] border border-white/20 text-white/90 hover:text-white'
+                      } disabled:opacity-40 disabled:cursor-not-allowed`}
+                      aria-label={voice.listening ? 'Stop voice input' : 'Start voice input'}
+                      title={voice.listening ? 'Stop' : 'Voice input'}
+                    >
+                      {voice.listening ? (
+                        <MicOff className="w-[18px] h-[18px]" />
+                      ) : (
+                        <Mic className="w-[18px] h-[18px]" />
+                      )}
+                    </button>
                   )}
-                </button>
-              )}
-              {streaming ? (
-                <button
-                  type="button"
-                  onClick={stop}
-                  className={`absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm ${inverted ? 'bg-white/30 text-white hover:bg-white/45' : 'bg-slate-700 text-white hover:bg-slate-600'}`}
-                  aria-label="Stop generating"
-                  title="Stop"
-                >
-                  <Square className="w-4 h-4 fill-current" />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  disabled={!input.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1e3a5f] hover:bg-brand-blue text-[#60a5fa] hover:text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
-                  aria-label="Send"
-                >
-                  <Send className="w-[18px] h-[18px] ml-0.5" />
-                </button>
-              )}
+                  {streaming ? (
+                    <button
+                      type="button"
+                      onClick={stop}
+                      className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 bg-white/[0.15] hover:bg-white/[0.25] border border-white/20 text-white shadow-md active:scale-95 backdrop-blur-xl"
+                      aria-label="Stop generating"
+                      title="Stop"
+                    >
+                      <Square className="w-4 h-4 fill-current text-white" />
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={!input.trim()}
+                      className="w-10 h-10 rounded-full bg-white/[0.10] hover:bg-white/[0.20] text-white/90 hover:text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-md backdrop-blur-xl border border-white/20 hover:border-white/40 active:scale-95"
+                      aria-label="Send"
+                    >
+                      <ArrowRight className="w-4 h-4 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-white/90 group-hover:text-white" strokeWidth={2.5} />
+                    </button>
+                  )}
+                </div>
+              </div>
             </form>
 
             {error && (
-              <p className="mt-2 text-xs text-red-500 dark:text-red-400">{error}</p>
+              <p className="mt-2 text-xs text-rose-400 font-semibold">{error}</p>
             )}
 
-            <p className={`mt-3 text-[11px] text-center ${inverted ? 'text-white/60' : 'text-slate-400 dark:text-slate-500'}`}>
+            <p className="mt-3.5 text-[11px] text-center text-white/50 font-medium tracking-wide">
               eQORE provides guidance based on Kangqore’s service knowledge. Final scope, pricing, and commitments are confirmed by our consultants.
             </p>
           </div>
         </div>
+
       </div>
 
       {/* Dynamic Background Styles */}
