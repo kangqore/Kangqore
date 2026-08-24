@@ -277,14 +277,14 @@ const ConciergeSection = ({
                 <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
               </div>
               <div>
-                <p className="text-[17px] font-black tracking-tight text-white flex items-center gap-2">
+                <p className="text-[16px] font-black tracking-tight text-white flex items-center gap-2">
                   eQORE
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-60" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-white/75 shadow-[0_0_6px_rgba(255,255,255,0.6)]" />
                   </span>
                 </p>
-                <p className="text-[8px] font-semibold uppercase tracking-[0.25em] text-white/40 mt-0.5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60 mt-0.5">
                   {streaming ? 'Synchronizing Intelligence…' : 'Your AI Assistant'}
                 </p>
               </div>
@@ -371,7 +371,7 @@ const ConciergeSection = ({
                         )}
                       </div>
                       <div
-                        className={`px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-[15px] sm:text-[16px] leading-[1.6] whitespace-pre-wrap transition-all backdrop-blur-2xl ${
+                        className={`px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-[16px] leading-[1.6] whitespace-pre-wrap transition-all backdrop-blur-2xl ${
                           isUser
                             ? 'bg-gradient-to-br from-[#2564ea] via-[#2564ea]/90 to-[#4ab6d4] text-white border border-white/30 shadow-[0_8px_25px_rgba(37,100,234,0.35),inset_0_1px_2px_rgba(255,255,255,0.3)] font-medium'
                             : 'bg-white/[0.06] text-white/95 border border-white/15 shadow-[0_8px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.18)] font-normal'
