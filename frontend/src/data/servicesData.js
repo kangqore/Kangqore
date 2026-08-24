@@ -11708,29 +11708,6 @@ export const servicesData = {
       },
     ],
 
-    // ── Platform stack ────────────────────────────────────────────
-    // Rendered from data as stacked bands rather than as an image, so every
-    // node name reaches the crawler as text and the whole thing reflows on a
-    // phone. Read downward as a dependency chain: each layer is only worth what
-    // the layer beneath it is worth, which is the entire argument for fixing
-    // the CMDB before buying the module that depends on it.
-    enterpriseArchitecture: {
-      eyebrow: 'HOW THE NOW PLATFORM ACTUALLY STACKS',
-      title: 'Eight layers,',
-      titleHighlight: 'and modules get bought at the top.',
-      lede: 'Almost every disappointing ServiceNow investment is a layer bought before the layer beneath it could support it. ITOM without discovery credentials, SecOps without a CMDB, AI without knowledge worth retrieving. The order is not a preference.',
-      layers: [
-        { label: 'Business Outcome',        role: 'What the platform is answerable for',        nodes: ['Service Availability', 'Cost to Serve', 'Audit Position', 'Employee Experience', 'Risk Exposure'] },
-        { label: 'Workflow Products',       role: 'The modules that appear on the invoice',      nodes: ['ITSM', 'ITOM', 'ITAM', 'SecOps & IRM', 'HRSD', 'CSM & FSM'] },
-        { label: 'Process & Governance',    role: 'Who may change what, and on whose authority', nodes: ['Demand Intake', 'Release Governance', 'Role Model', 'Exception Register', 'Change Control'] },
-        { label: 'Custom Build',            role: 'Everything you added, and its carrying cost', nodes: ['Scoped Applications', 'Flow Designer', 'Business Rules', 'UI Policies', 'Technical Debt Register'] },
-        { label: 'Integration',             role: 'How the platform reaches the rest of the estate', nodes: ['IntegrationHub Spokes', 'REST and SOAP', 'MID Servers', 'Import Sets', 'Event Ingestion'] },
-        { label: 'Service Data',            role: 'The dependency nearly every module inherits', nodes: ['CMDB', 'CSDM Alignment', 'Discovery', 'Service Mapping', 'Asset Records', 'Data Ownership'] },
-        { label: 'Platform Foundation',     role: 'The instance itself, and its release cadence', nodes: ['Instance Topology', 'Family Releases', 'Patches', 'Performance', 'Clone Strategy'] },
-        { label: 'Commercial',              role: 'What all of the above is costing you',        nodes: ['Fulfiller Seats', 'Activated SKUs', 'Enterprise Agreement', 'Renewal Date', 'Utilization'] },
-      ],
-      principle: 'Buy the module when the layer beneath it can carry it. An ITOM license over an unowned CMDB produces expensive dashboards over data nobody trusts.',
-    },
 
     // ── Data boundary ─────────────────────────────────────────────
     // Page-scoped, and every statement here is a representation to an
