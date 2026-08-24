@@ -120,12 +120,12 @@ export const serviceRoutes = [
   <Route key="analytics" path="/services/analytics-insights/analytics" element={<Analytics />} />,
   <Route key="big-data" path="/services/analytics-insights/big-data" element={<BigData />} />,
   
-  // Cloud Engineering (5)
-  <Route key="managed-cloud" path="/services/cloud-engineering/managed-cloud-services" element={<ManagedCloudServices />} />,
-  <Route key="aws" path="/services/cloud-engineering/aws" element={<AWS />} />,
-  <Route key="microsoft" path="/services/cloud-engineering/microsoft-services" element={<MicrosoftServices />} />,
-  <Route key="google-cloud" path="/services/cloud-engineering/google-cloud-services" element={<GoogleCloudServices />} />,
-  <Route key="cloud-computing" path="/services/cloud-engineering/cloud-computing" element={<CloudComputing />} />,
+  // Cloud Engineering (5) — Foundry Department
+  <Route key="managed-cloud" path="/services/cloud-engineering/managed-cloud-services" element={<ServicePage6 slug="managed-cloud-services" />} />,
+  <Route key="aws" path="/services/cloud-engineering/aws" element={<ServicePage6 slug="aws" />} />,
+  <Route key="microsoft" path="/services/cloud-engineering/microsoft-services" element={<ServicePage6 slug="microsoft-services" />} />,
+  <Route key="google-cloud" path="/services/cloud-engineering/google-cloud-services" element={<ServicePage6 slug="google-cloud-services" />} />,
+  <Route key="cloud-computing" path="/services/cloud-engineering/cloud-computing" element={<ServicePage6 slug="cloud-computing" />} />,
   
   // Cybersecurity (1)
   <Route key="it-security" path="/services/cybersecurity/it-security-services" element={<ITSecurityServices />} />,
@@ -153,32 +153,32 @@ export const serviceRoutes = [
   <Route key="bpm" path="/services/automation/business-process-management" element={<BusinessProcessManagement />} />,
   <Route key="intelligent-automation" path="/services/automation/intelligent-automation" element={<IntelligentAutomation />} />,
   
-  // Product Engineering (7)
-  <Route key="embedded-design" path="/services/product-engineering/embedded-design-systems" element={<EmbeddedDesignSystems />} />,
-  <Route key="engineering-foundry" path="/services/product-engineering/engineering-foundry" element={<EngineeringFoundry />} />,
-  <Route key="engineering-rd" path="/services/product-engineering/engineering-rd-services" element={<EngineeringRDServices />} />,
-  <Route key="product-digital" path="/services/product-engineering/product-digital-engineering" element={<ProductDigitalEngineering />} />,
+  // Product Engineering (6) — Foundry Department
+  <Route key="embedded-design" path="/services/product-engineering/embedded-design-systems" element={<ServicePage6 slug="embedded-design-systems" />} />,
+  <Route key="engineering-foundry" path="/services/product-engineering/engineering-foundry" element={<ServicePage6 slug="engineering-foundry" />} />,
+  <Route key="engineering-rd" path="/services/product-engineering/engineering-rd-services" element={<ServicePage6 slug="engineering-rd-services" />} />,
+  <Route key="product-digital" path="/services/product-engineering/product-digital-engineering" element={<ServicePage6 slug="product-digital-engineering" />} />,
 
-  <Route key="quality-engineering" path="/services/product-engineering/quality-engineering-assurance" element={<QualityEngineeringAssurance />} />,
-  <Route key="devops" path="/services/product-engineering/devops-as-a-service" element={<DevopsAsAService />} />,
+  <Route key="quality-engineering" path="/services/product-engineering/quality-engineering-assurance" element={<ServicePage6 slug="quality-engineering-assurance" />} />,
+  <Route key="devops" path="/services/product-engineering/devops-as-a-service" element={<ServicePage6 slug="devops-as-a-service" />} />,
   
-  // Infrastructure (5)
-  <Route key="managed-infra" path="/services/infrastructure-networks-operations/managed-infrastructure-services" element={<ManagedInfrastructureServices />} />,
-  <Route key="modernization-infra" path="/services/infrastructure-networks-operations/modernization-infrastructure" element={<ModernizationInfrastructure />} />,
-  <Route key="managed-services" path="/services/infrastructure-networks-operations/managed-services" element={<ManagedServicesInfra />} />,
-  <Route key="support-maintenance" path="/services/infrastructure-networks-operations/support-maintenance" element={<SupportMaintenance />} />,
-  <Route key="operation-tech" path="/services/infrastructure-networks-operations/operation-technology" element={<OperationTechnology />} />,
+  // Infrastructure (5) — Foundry Department
+  <Route key="managed-infra" path="/services/infrastructure-networks-operations/managed-infrastructure-services" element={<ServicePage6 slug="managed-infrastructure-services" />} />,
+  <Route key="modernization-infra" path="/services/infrastructure-networks-operations/modernization-infrastructure" element={<ServicePage6 slug="modernization-infrastructure" />} />,
+  <Route key="managed-services" path="/services/infrastructure-networks-operations/managed-services" element={<ServicePage6 slug="managed-services" />} />,
+  <Route key="support-maintenance" path="/services/infrastructure-networks-operations/support-maintenance" element={<ServicePage6 slug="support-maintenance" />} />,
+  <Route key="operation-tech" path="/services/infrastructure-networks-operations/operation-technology" element={<ServicePage6 slug="operation-technology" />} />,
   
   // Consulting & Advisory (3)
   <Route key="tech-consulting" path="/services/consulting-advisory/technology-consulting" element={<TechnologyConsulting />} />,
   <Route key="strategy-consulting" path="/services/consulting-advisory/strategy-consulting" element={<StrategyConsulting />} />,
   <Route key="discover-frame" path="/services/consulting-advisory/discover-frame-workshops" element={<DiscoverFrameWorkshops />} />,
   
-  // Product Software Platform (5)
+  // Product Software Platform — Foundry Services
   <Route key="mvp-acceleration" path="/services/digital-engineering/mvp-acceleration" element={<MVPAcceleration />} />,
   <Route key="product-strategy" path="/services/digital-engineering/product-strategy-experience-design" element={<ProductStrategyExperienceDesign />} />,
-  <Route key="software-development" path="/services/digital-engineering/software-development" element={<SoftwareDevelopment />} />,
-  <Route key="api-microservices" path="/services/digital-engineering/api-microservices-engineering" element={<APIMicroservicesEngineering />} />,
+  <Route key="software-development" path="/services/digital-engineering/software-development" element={<ServicePage6 slug="software-development" />} />,
+  <Route key="api-microservices" path="/services/digital-engineering/api-microservices-engineering" element={<ServicePage6 slug="api-microservices-engineering" />} />,
   
   // Enterprise Applications (6)
   <Route key="enterprise-integration" path="/services/enterprise-applications/enterprise-platform-integration" element={<EnterprisePlatformIntegration />} />,
@@ -187,10 +187,10 @@ export const serviceRoutes = [
   <Route key="servicenow" path="/services/enterprise-applications/servicenow" element={<Servicenow />} />,
 
   
-  // Emerging Technologies (3)
+  // Emerging Technologies — Foundry Services
   <Route key="blockchain" path="/services/emerging-technologies/blockchain" element={<Blockchain />} />,
 
-  <Route key="iot" path="/services/emerging-technologies/internet-of-things" element={<InternetOfThings />} />,
+  <Route key="iot" path="/services/emerging-technologies/internet-of-things" element={<ServicePage6 slug="internet-of-things" />} />,
   
   // Business Operations (5)
   <Route key="finance-risk" path="/services/business-operations/finance-risk-management" element={<FinanceRiskManagement />} />,

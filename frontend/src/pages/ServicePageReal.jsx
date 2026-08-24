@@ -44,8 +44,9 @@ const PSED_REGISTRY = {
   'product-strategy-experience-design': REIMAGINE_SECTIONS['product-strategy-experience-design'],
 };
 
-const ServicePage = () => {
-  const { slug } = useParams();
+const ServicePage = ({ slug: overrideSlug }) => {
+  const { slug: paramSlug } = useParams();
+  const slug = overrideSlug || paramSlug;
 
   // Everything below the hook must be computed unconditionally: hooks cannot sit
   // behind the NotFound early-return. `valid` gates the payload, not the call.
