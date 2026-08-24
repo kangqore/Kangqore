@@ -62,7 +62,7 @@ const ServicePackageCardItem = ({ pkg, idx }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className={`bg-[#03060d]/90 p-6 sm:p-7 flex flex-col gap-4 rounded-2xl border transition-all duration-300 hover:bg-[#070b14] shadow-lg ${expanded ? 'border-white/25 ring-1 ring-white/10' : 'border-white/[0.08] hover:border-white/20'}`}>
+    <div className="bg-[#03060d]/90 p-6 sm:p-7 flex flex-col gap-4 rounded-2xl border border-white/[0.08] hover:border-white/20 transition-all duration-300 hover:bg-[#070b14] shadow-lg">
       <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
       <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
       <p className="text-white/50 text-sm font-medium leading-relaxed">{pkg.description}</p>
@@ -72,7 +72,7 @@ const ServicePackageCardItem = ({ pkg, idx }) => {
           <button
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1"
+            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
             title="Read deliverables"
           >
             <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline">
