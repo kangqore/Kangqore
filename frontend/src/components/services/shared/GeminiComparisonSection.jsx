@@ -63,31 +63,74 @@ export default function GeminiComparisonSection({ comparisonTable, lede }) {
         
         {/* Section Header */}
         <div className="mb-14">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-[2px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]" />
-            <span className="text-xs sm:text-sm font-extrabold uppercase tracking-[0.25em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
-              {comparisonTable?.eyebrow || 'WHY IT MATTERS'}
-            </span>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-[1px] w-12 bg-white/20" />
+            <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{comparisonTable?.eyebrow || 'WHY IT MATTERS'}</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.1] tracking-tight text-white font-display">
-            {/* Newlines in the data become line breaks, the same convention
-                heroTitle already uses, so a service can control where its
-                comparison heading wraps. */}
-            {comparisonTable?.heading
-              ? comparisonTable.heading.split('\n').map((line, li) => (
-                  <React.Fragment key={li}>{li > 0 && <br />}{line}</React.Fragment>
-                ))
-              : (
+          <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3.2rem] font-extrabold leading-[1.15] tracking-tight text-white">
+            {(() => {
+              if (comparisonTable?.headingHighlight && comparisonTable?.heading) {
+                const hText = comparisonTable.heading;
+                const hHighlight = comparisonTable.headingHighlight;
+                if (hText.includes(hHighlight)) {
+                  const parts = hText.split(hHighlight);
+                  return (
+                    <>
+                      {parts[0].split('\n').map((line, li) => (
+                        <React.Fragment key={li}>
+                          {li > 0 && <br />}
+                          {line}
+                        </React.Fragment>
+                      ))}
+                      <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
+                        {hHighlight}
+                      </span>
+                      {parts[1]}
+                    </>
+                  );
+                }
+              }
+              if (comparisonTable?.heading) {
+                const lines = comparisonTable.heading.split('\n');
+                if (lines.length > 1) {
+                  return (
+                    <>
+                      {lines[0]}
+                      <br />
+                      <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
+                        {lines.slice(1).join(' ')}
+                      </span>
+                    </>
+                  );
+                }
+                if (comparisonTable.heading.includes(' vs. ')) {
+                  const [first, second] = comparisonTable.heading.split(' vs. ');
+                  return (
+                    <>
+                      {first} vs.
+                      <br />
+                      <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
+                        {second}
+                      </span>
+                    </>
+                  );
+                }
+                return comparisonTable.heading;
+              }
+              return (
                 <>
                   The shift from automation<br />
-                  to autonomy.
+                  <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
+                    to autonomy.
+                  </span>
                 </>
-              )}
+              );
+            })()}
           </h2>
           {/* Answer-first lead-in: the section previously went straight from the
               heading into the comparison table, leaving nothing for featured
               snippets or AI answer engines to extract. */}
-          <p className="mt-5 text-white/70 text-base sm:text-lg font-medium leading-relaxed max-w-3xl">
+          <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
             {lede || 'The difference is not speed of execution but who decides the next step. Rule-based automation follows a script a human wrote in advance; an agentic system evaluates the current state against a goal and chooses the action itself, escalating when the decision exceeds its remit.'}
           </p>
         </div>
