@@ -526,22 +526,25 @@ const ConciergeSection = ({
                       className={`flex items-start gap-3 max-w-[90%] sm:max-w-[85%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
                     >
                       <div
-                        className={`w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0 mt-1 border backdrop-blur-xl shadow-md ${
+                        className={`w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0 mt-1 border backdrop-blur-xl ${
                           isUser 
-                            ? 'border-white/35 bg-gradient-to-br from-[#2564ea] to-[#4ab6d4] shadow-[0_0_15px_rgba(37,100,234,0.3)]' 
-                            : 'border-white/20 bg-slate-900/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]'
+                            ? 'border-white/20 bg-black/60 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]' 
+                            : 'border-cyan-400/40 bg-slate-950/90 shadow-[0_0_15px_rgba(34,211,238,0.35)] relative'
                         }`}
                       >
                         {isUser ? (
                           <span className="text-[11px] font-black text-white tracking-wider select-none">YOU</span>
                         ) : (
-                          <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
+                          <>
+                            <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
+                            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-950 shadow-[0_0_8px_rgba(34,211,238,0.8)] animate-pulse" />
+                          </>
                         )}
                       </div>
                       <div
                         className={`text-[16px] leading-[1.65] transition-all ${
                           isUser
-                            ? 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-white/[0.12] text-white border border-white/20 shadow-[0_8px_25px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.25)] font-medium backdrop-blur-2xl'
+                            ? 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white font-medium shadow-[0_8px_25px_rgba(37,100,234,0.4)] backdrop-blur-2xl border border-white/20'
                             : 'bg-transparent text-white/95 border-0 shadow-none px-0 py-0.5 font-normal'
                         }`}
                       >

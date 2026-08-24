@@ -546,15 +546,20 @@ const EQoreChatbot = () => {
             return (
               <div key={msg.id} className={`flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}`}>
                 <div className={`flex items-end gap-2 max-w-[85%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-                  {!isUser && (
-                    <div className="w-6 h-6 rounded-md overflow-hidden border border-cyan-400/20 bg-[#050505] shrink-0 mb-1 shadow-[0_0_10px_rgba(34,211,238,0.1)]">
+                  {isUser ? (
+                    <div className="w-6 h-6 rounded-md overflow-hidden border border-white/20 bg-black/60 text-white shrink-0 mb-1 shadow-sm flex items-center justify-center text-[9px] font-black tracking-wider select-none">
+                      YOU
+                    </div>
+                  ) : (
+                    <div className="w-6 h-6 rounded-md overflow-hidden border border-cyan-400/40 bg-slate-950 shrink-0 mb-1 shadow-[0_0_10px_rgba(34,211,238,0.3)] relative">
                       <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
+                      <span className="absolute bottom-0 right-0 w-1.5 h-1.5 bg-cyan-400 rounded-full border border-slate-950 shadow-[0_0_4px_rgba(34,211,238,0.8)] animate-pulse" />
                     </div>
                   )}
-                  <div className={`p-3.5 text-[14px] leading-relaxed shadow-sm whitespace-pre-wrap ${
+                  <div className={`text-[14px] leading-relaxed transition-all ${
                     isUser
-                      ? 'bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white rounded-2xl rounded-br-sm font-medium'
-                      : 'bg-[#1a1a1e] border border-white/5 text-slate-200 rounded-2xl rounded-bl-sm'
+                      ? 'p-3.5 bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white rounded-2xl rounded-br-sm font-medium shadow-[0_6px_20px_rgba(37,100,234,0.35)] border border-white/20'
+                      : 'bg-transparent text-slate-200 border-0 shadow-none p-0 py-0.5 font-normal'
                   }`}>
                     {!isUser && !msg.done && msg.content === '' ? (
                       <div className="flex items-center gap-1.5 h-4 px-1">
