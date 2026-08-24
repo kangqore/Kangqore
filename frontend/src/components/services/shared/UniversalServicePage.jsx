@@ -72,12 +72,13 @@ const ServicePackageCardItem = ({ pkg, idx }) => {
           <button
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className="group/btn inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 text-[11px] font-bold tracking-[0.12em] uppercase text-white/80 hover:text-white transition-all duration-200 cursor-pointer"
+            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1"
             title="Read deliverables"
           >
-            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-black">✦</span>
-            <span>You leave with</span>
-            <ChevronDown className={`w-3.5 h-3.5 text-white/60 group-hover/btn:text-white transition-transform duration-300 ${expanded ? 'rotate-180 text-cyan-400' : ''}`} />
+            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline">
+              You leave with
+            </span>
+            <ChevronDown className={`w-3.5 h-3.5 text-[#4ab6d4] transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
           </button>
 
           {expanded && (
