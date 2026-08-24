@@ -114,7 +114,7 @@ function renderFormattedText(text) {
       elements.push(
         <ul key={`ul-${keyPrefix}`} className="my-2 space-y-1.5 pl-1">
           {currentList.map((item, i) => (
-            <li key={i} className="flex items-start gap-2.5 text-white/95 text-[15px] sm:text-[16px]">
+            <li key={i} className="flex items-start gap-2.5 text-white/95 text-[16px]">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2.5 shrink-0 shadow-[0_0_6px_rgba(34,211,238,0.6)]" />
               <span className="flex-1">{parseInlineMarkdown(item)}</span>
             </li>
@@ -142,7 +142,7 @@ function renderFormattedText(text) {
 
     if (trimmed.startsWith('### ')) {
       elements.push(
-        <h3 key={`h3-${index}`} className="text-[17px] font-bold text-white mt-4 mb-1.5 tracking-tight flex items-center gap-2">
+        <h3 key={`h3-${index}`} className="text-[16px] font-bold text-white mt-4 mb-1.5 tracking-tight flex items-center gap-2">
           {parseInlineMarkdown(trimmed.slice(4))}
         </h3>
       );
@@ -151,7 +151,7 @@ function renderFormattedText(text) {
 
     if (trimmed.startsWith('## ')) {
       elements.push(
-        <h2 key={`h2-${index}`} className="text-[19px] font-extrabold text-white mt-5 mb-2 tracking-tight">
+        <h2 key={`h2-${index}`} className="text-[20px] font-extrabold text-white mt-5 mb-2 tracking-tight">
           {parseInlineMarkdown(trimmed.slice(3))}
         </h2>
       );
@@ -160,7 +160,7 @@ function renderFormattedText(text) {
 
     if (trimmed.startsWith('# ')) {
       elements.push(
-        <h1 key={`h1-${index}`} className="text-[22px] font-black text-white mt-6 mb-2 tracking-tight">
+        <h1 key={`h1-${index}`} className="text-[24px] font-black text-white mt-6 mb-2 tracking-tight">
           {parseInlineMarkdown(trimmed.slice(2))}
         </h1>
       );
@@ -168,7 +168,7 @@ function renderFormattedText(text) {
     }
 
     elements.push(
-      <p key={`p-${index}`} className="my-1.5 leading-[1.65] text-white/95 text-[15px] sm:text-[16px]">
+      <p key={`p-${index}`} className="my-1.5 leading-[1.65] text-white/95 text-[16px]">
         {parseInlineMarkdown(line)}
       </p>
     );

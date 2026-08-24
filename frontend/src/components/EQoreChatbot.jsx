@@ -544,7 +544,7 @@ const EQoreChatbot = () => {
               <div key={msg.id} className={`flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}`}>
                 <div className={`flex items-end gap-2 max-w-[85%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
                   {isUser ? (
-                    <div className="w-6 h-6 rounded-md overflow-hidden border border-white/20 bg-black/60 text-white shrink-0 mb-1 shadow-sm flex items-center justify-center text-[9px] font-black tracking-wider select-none">
+                    <div className="w-6 h-6 rounded-md overflow-hidden border border-white/20 bg-black/60 text-white shrink-0 mb-1 shadow-sm flex items-center justify-center text-[11px] font-black tracking-wider select-none">
                       YOU
                     </div>
                   ) : (
