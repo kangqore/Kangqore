@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, X, Info, ChevronRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff, ExternalLink, Square, Copy, Maximize2, Minimize2 } from 'lucide-react';
+import { Send, X, Info, ChevronRight, ArrowRight, RefreshCw, Check, Volume2, VolumeX, Mic, MicOff, ExternalLink, Square, Copy, Maximize2, Minimize2 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useConcierge, getSuggestedPrompts, stripSystemMetadata } from '../hooks/useConcierge';
 import { setOverlayOpen } from '../lib/overlayCoordinator';

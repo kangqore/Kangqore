@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { MessageSquare } from 'lucide-react'; // Import icons used
+import { MessageSquare, ArrowRight } from 'lucide-react'; // Import icons used
 import DashboardLayout from '../../../components/DashboardLayout';
 import { useAuth } from '../../../context/AuthContext';
 import StatCard from '../../../components/dashboard/StatCard';
