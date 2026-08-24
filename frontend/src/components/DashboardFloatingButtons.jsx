@@ -206,7 +206,7 @@ const DashboardFloatingButtons = () => {
           {/* Menu Button */}
         <button
           onClick={() => setShowFullMenu(true)}
-          className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 hover:bg-gray-100 text-gray-700 dark:text-gray-300 rounded-full shadow-[0_8px_16px_rgba(0,0,0,0.15),0_4px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 border border-gray-200"
+          className="p-3 bg-white dark:bg-gray-900 dark:border-gray-800 hover:bg-gray-100 text-gray-700 dark:text-gray-300 rounded-full shadow-[0_8px_16px_rgba(0,0,0,0.15),0_4px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 border border-gray-200 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
           aria-label="Open menu"
         >
           <Menu className="w-5 h-5" />
@@ -215,7 +215,7 @@ const DashboardFloatingButtons = () => {
         {/* WhatsApp Button */}
         <button
           onClick={openWhatsApp}
-          className="p-3 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full shadow-[0_8px_16px_rgba(0,0,0,0.3),0_12px_32px_rgba(34,197,94,0.4)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4),0_16px_40px_rgba(34,197,94,0.5)] transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
+          className="p-3 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full shadow-[0_8px_16px_rgba(0,0,0,0.3),0_12px_32px_rgba(34,197,94,0.4)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4),0_16px_40px_rgba(34,197,94,0.5)] transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
           aria-label="Contact on WhatsApp"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -227,7 +227,7 @@ const DashboardFloatingButtons = () => {
         {isVisible && (
           <button
             onClick={scrollToTop}
-            className="p-3 bg-brand-gradient text-white rounded-full shadow-[0_8px_16px_rgba(0,0,0,0.3),0_12px_32px_rgba(6,182,212,0.4)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4),0_16px_40px_rgba(6,182,212,0.5)] transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
+            className="p-3 bg-brand-gradient text-white rounded-full shadow-[0_8px_16px_rgba(0,0,0,0.3),0_12px_32px_rgba(6,182,212,0.4)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4),0_16px_40px_rgba(6,182,212,0.5)] transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
             aria-label="Scroll to top"
           >
             <ArrowUp className="w-5 h-5" />

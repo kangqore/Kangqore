@@ -219,7 +219,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
         <div className="group/item relative md:hidden">
           <button
             onClick={() => setShowFullMenu(true)}
-            className="w-[56px] h-[56px] rounded-full bg-brand-gradient text-white shadow-2xl flex items-center justify-center transition-all duration-500 transform hover:scale-110 active:scale-95 hover:shadow-[0_0_25px_rgba(74,182,212,0.5)]"
+            className="w-[56px] h-[56px] rounded-full bg-brand-gradient text-white shadow-2xl flex items-center justify-center transition-all duration-500 transform hover:scale-110 active:scale-95 hover:shadow-[0_0_25px_rgba(74,182,212,0.5)] focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
             aria-label="Open Menu"
           >
             <Menu className="w-6 h-6 text-white" />
@@ -241,7 +241,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
       >
         {/* Standalone Scroll to Top - Rendered first to be at the very bottom in flex-col-reverse */}
         {isVisible && (
-          <button onClick={scrollToTop} className="w-[44px] h-[44px] bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-full shadow-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center group/btn overflow-hidden relative" title="Scroll to Top">
+          <button onClick={scrollToTop} className="w-[44px] h-[44px] bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-full shadow-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center group/btn overflow-hidden relative focus:outline-none focus:ring-0 focus-visible:outline-none select-none" title="Scroll to Top">
             <div className="flex flex-col items-center justify-center -space-y-[12px] group-hover/btn:-translate-y-1 transition-transform relative z-10 pt-[2px]">
               <ChevronUp className="w-5 h-5 stroke-[2.5]" />
               <ChevronUp className="w-5 h-5 stroke-[2.5]" />
@@ -252,14 +252,14 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
 
         <button
           onClick={() => setIsOmniOpen(!isOmniOpen)}
-          className={`w-12 h-12 rounded-full shadow-2xl transition-all duration-500 transform hover:scale-110 active:scale-95 flex items-center justify-center ${
+          className={`w-12 h-12 rounded-full shadow-2xl transition-all duration-500 transform hover:scale-110 active:scale-95 flex items-center justify-center focus:outline-none focus:ring-0 focus-visible:outline-none select-none ${
             isOmniOpen 
-              ? (isLightBackground ? 'bg-brand-blue text-white rotate-45' : 'bg-white text-gray-900 rotate-45')
+              ? (isLightBackground ? 'bg-brand-blue text-white' : 'bg-white text-gray-900')
               : (isLightBackground ? 'bg-gray-900 text-white' : 'bg-brand-gradient text-white')
           }`}
           aria-label="Toggle Actions"
         >
-          {isOmniOpen ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+          <Plus className={`w-5 h-5 transition-transform duration-300 ${isOmniOpen ? 'rotate-45' : ''}`} />
         </button>
 
         <div className={`flex flex-col gap-4 transition-all duration-500 origin-bottom ${
@@ -269,7 +269,7 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
           <div className="group/item relative">
             <button
               onClick={toggleChatbot}
-              className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-[0_10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex items-center justify-center transition-all duration-500 hover:scale-110 hover:shadow-[0_0_25px_rgba(37,100,234,0.4)] group"
+              className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-[0_10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex items-center justify-center transition-all duration-500 hover:scale-110 hover:shadow-[0_0_25px_rgba(37,100,234,0.4)] group focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
               aria-label="Ask eQORE AI"
             >
               <ResponsiveImage
@@ -288,10 +288,10 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
               Ask eQORE AI
             </div>
           </div>
-          <button onClick={openWhatsApp} className="w-12 h-12 bg-white dark:bg-gray-900 rounded-full shadow-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center group overflow-hidden" title="WhatsApp Support">
+          <button onClick={openWhatsApp} className="w-12 h-12 bg-white dark:bg-gray-900 rounded-full shadow-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center group overflow-hidden focus:outline-none focus:ring-0 focus-visible:outline-none select-none" title="WhatsApp Support">
             <img src="/images/icons/whatsapp-3d.webp" alt="WhatsApp Support" className="w-[115%] h-[115%] max-w-none object-cover transition-transform duration-300 group-hover:scale-[1.25]" />
           </button>
-          <button onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} className="w-12 h-12 bg-gradient-to-b from-[#60a5fa] to-[#1d4ed8] shadow-[inset_0_-4px_6px_rgba(0,0,0,0.4),inset_0_4px_6px_rgba(255,255,255,0.4),0_8px_15px_rgba(29,78,216,0.4)] border border-blue-500 rounded-full flex items-center justify-center group transition-transform duration-300 hover:scale-[1.15] active:scale-95" title="Appearance Settings">
+          <button onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} className="w-12 h-12 bg-gradient-to-b from-[#60a5fa] to-[#1d4ed8] shadow-[inset_0_-4px_6px_rgba(0,0,0,0.4),inset_0_4px_6px_rgba(255,255,255,0.4),0_8px_15px_rgba(29,78,216,0.4)] border border-blue-500 rounded-full flex items-center justify-center group transition-transform duration-300 hover:scale-[1.15] active:scale-95 focus:outline-none focus:ring-0 focus-visible:outline-none select-none" title="Appearance Settings">
             <svg className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeWidth="0">
               <path d="M12 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM6.5 10a1.5 1.5 0 0 0 0 3h1.867l-1.393 4.873a1.5 1.5 0 1 0 2.884.825L12 11.237l2.142 7.461a1.5 1.5 0 1 0 2.884-.825L15.633 13H17.5a1.5 1.5 0 0 0 0-3h-11Z" />
             </svg>
