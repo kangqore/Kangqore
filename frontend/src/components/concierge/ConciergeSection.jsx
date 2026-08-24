@@ -692,7 +692,7 @@ const ConciergeSection = ({
           {/* ───────────── Bottom Prompt Chips & Input Bar ───────────── */}
           <div className="relative z-10 px-6 sm:px-8 pb-6 pt-2 bg-transparent">
             {!hasUserMessages && (
-              <div className="mb-6 -mx-1 flex flex-wrap gap-2.5">
+              <div className="mb-4 -mx-1 flex flex-wrap gap-2">
                 {prompts.map((p) => (
                   <SuggestedPromptChip
                     key={p}
