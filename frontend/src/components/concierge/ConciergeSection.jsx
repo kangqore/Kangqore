@@ -380,7 +380,7 @@ const ConciergeSection = ({
                         }`}
                       >
                         {msg.id === 'greeting' ? (
-                          <span className="text-white/95 font-medium">
+                          <span className="inline-block animate-skate-text text-white/95 font-medium tracking-wide">
                             {msg.content}
                           </span>
                         ) : (
@@ -621,6 +621,27 @@ const ConciergeSection = ({
         }
         .animate-blob {
           animation: blob 15s infinite alternate;
+        }
+        @keyframes skateText {
+          0% {
+            opacity: 0;
+            transform: translateX(-14px) scale(0.99);
+            filter: blur(4px);
+          }
+          60% {
+            opacity: 0.9;
+            transform: translateX(1.5px) scale(1.001);
+            filter: blur(0px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0px) scale(1);
+            filter: blur(0px);
+          }
+        }
+        .animate-skate-text {
+          animation: skateText 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          will-change: transform, opacity, filter;
         }
         .animation-delay-2000 {
           animation-delay: 2s;
