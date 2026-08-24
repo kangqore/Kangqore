@@ -276,7 +276,7 @@ const HeroChatWidget = ({ isActive }) => {
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 disabled={streaming}
-                placeholder={voice.listening ? 'Listening…' : 'Ask me anything'}
+                placeholder={voice.listening ? 'Listening… speak now' : 'Ask eQORE anything about Kangqore…'}
                 className="w-full pl-9 pr-4 py-3 rounded-xl text-[13px] backdrop-blur-md bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/30 disabled:opacity-50 transition-all shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
               />
             </div>

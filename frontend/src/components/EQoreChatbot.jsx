@@ -742,7 +742,7 @@ const EQoreChatbot = () => {
               }}
               disabled={streaming || isListening}
               aria-label="Message eQORE AI"
-              placeholder={isListening ? 'Listening...' : 'Query the intelligence core...'}
+              placeholder={isListening ? 'Listening… speak now' : 'Ask eQORE anything about Kangqore…'}
               className={`w-full pl-4 pr-24 py-2 bg-[#050505] border rounded-xl focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/50 outline-none text-sm text-white placeholder-slate-500 transition-all shadow-inner disabled:opacity-60 resize-none leading-relaxed ${
                 isListening ? 'border-red-500/60 ring-1 ring-red-500/30' : 'border-white/10'
               }`}

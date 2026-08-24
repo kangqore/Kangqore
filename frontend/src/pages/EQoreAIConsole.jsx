@@ -588,7 +588,7 @@ const EQoreAIConsole = () => {
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder={isListening ? "Listening to your voice..." : "Ask eQORE AI a question... (e.g. Build me a capability roadmap)"}
+                placeholder={isListening ? 'Listening… speak now' : 'Ask eQORE anything about Kangqore…'}
                 className="w-full bg-transparent pl-4 pr-4 pt-4 pb-2 text-sm placeholder-gray-500 text-white outline-none relative z-10"
                 disabled={streaming}
               />

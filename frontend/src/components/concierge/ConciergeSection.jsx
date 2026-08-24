@@ -717,7 +717,7 @@ const ConciergeSection = ({
                   onChange={(e) => setInput(e.target.value)}
                   disabled={streaming}
                   aria-label="Ask eQORE AI a question"
-                  placeholder={voice.listening ? 'System Listening…' : 'Engineer a query…'}
+                  placeholder={voice.listening ? 'Listening… speak now' : 'Ask eQORE anything about Kangqore…'}
                   className="w-full bg-transparent pl-6 pr-28 py-4 text-[16px] font-medium text-white placeholder-white/45 focus:outline-none disabled:opacity-60"
                 />
                 
