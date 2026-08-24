@@ -268,9 +268,9 @@ const ConciergeSection = ({
           </p>
         </div>
 
-        <div className="group relative rounded-[28px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.12] bg-[#12141c]/55 dark:bg-[#0c0d13]/65 backdrop-blur-[50px] backdrop-saturate-190 shadow-[0_30px_90px_rgba(0,0,0,0.7),inset_0_1px_0_0_rgba(255,255,255,0.22),inset_0_-1px_0_0_rgba(0,0,0,0.4)]">
-          {/* Apple Hairline Specular Reflection */}
-          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
+        <div className="group relative rounded-[30px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.14] bg-[#0c0d14]/65 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_35px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0_-1px_1px_0_rgba(0,0,0,0.5)]">
+          {/* macOS Tahoe Specular Hairline Rim Beam */}
+          <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" />
 
           {/* ───────────── Header Bar ───────────── */}
           <div className="relative z-10 px-6 sm:px-8 pt-6 pb-2 flex items-center justify-between gap-3">
