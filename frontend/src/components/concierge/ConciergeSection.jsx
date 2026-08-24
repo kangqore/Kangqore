@@ -245,7 +245,12 @@ const ConciergeSection = ({
       aria-labelledby="eqore-ai-heading"
     >
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="mb-12">
+        {/* Apple macOS Ambient Liquid Backdrop Blobs */}
+        <div className="absolute -top-24 left-1/4 w-[600px] h-[400px] bg-indigo-950/30 rounded-full blur-[150px] pointer-events-none animate-blob" />
+        <div className="absolute top-1/3 -right-24 w-[500px] h-[500px] bg-slate-800/20 rounded-full blur-[150px] pointer-events-none animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-24 left-10 w-[500px] h-[400px] bg-blue-950/20 rounded-full blur-[140px] pointer-events-none animate-blob animation-delay-4000" />
+
+        <div className="mb-12 relative z-10">
           <div className="flex items-center gap-4 mb-4">
             <div className={`h-[1px] w-12 ${inverted ? 'bg-white/40' : 'bg-gray-400 dark:bg-gray-600'}`}></div>
             <span className={`text-sm font-semibold uppercase tracking-widest ${inverted ? 'text-white/60' : 'text-gray-500 dark:text-gray-400'}`}>
@@ -263,12 +268,9 @@ const ConciergeSection = ({
           </p>
         </div>
 
-        <div className="group relative rounded-[32px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/25 bg-gradient-to-br from-white/[0.09] via-white/[0.03] to-[#2564ea]/[0.06] backdrop-blur-3xl shadow-[0_30px_80px_-15px_rgba(0,0,0,0.8),inset_0_1px_2px_rgba(255,255,255,0.35),inset_0_-1px_1px_rgba(255,255,255,0.08)]">
-          {/* Top specular hairline reflection */}
-          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" />
-          
-          {/* Subtle interior light sheen */}
-          <div className="absolute inset-0 pointer-events-none z-0" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.08) 0%, transparent 60%)' }} />
+        <div className="group relative rounded-[28px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.12] bg-[#12141c]/55 dark:bg-[#0c0d13]/65 backdrop-blur-[50px] backdrop-saturate-190 shadow-[0_30px_90px_rgba(0,0,0,0.7),inset_0_1px_0_0_rgba(255,255,255,0.22),inset_0_-1px_0_0_rgba(0,0,0,0.4)]">
+          {/* Apple Hairline Specular Reflection */}
+          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-20" />
 
           {/* ───────────── Header Bar ───────────── */}
           <div className="relative z-10 px-6 sm:px-8 pt-6 pb-2 flex items-center justify-between gap-3">
@@ -296,7 +298,7 @@ const ConciergeSection = ({
                 title="Launch Immersive Full-Screen AI Experience"
               >
                 <span>Immersive AI Experience</span>
-                <ArrowRight className="w-3.5 h-3.5 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-cyan-300 group-hover:text-white" strokeWidth={2.5} />
+                <ArrowRight className="w-3.5 h-3.5 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-white/80 group-hover:text-white" strokeWidth={2.5} />
               </Link>
               <button
                 type="button"
@@ -309,12 +311,12 @@ const ConciergeSection = ({
                 }}
                 className={`inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border transition-all duration-300 backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2)] active:scale-95 ${
                   isVoiceEnabled
-                    ? 'bg-cyan-500/25 text-cyan-200 border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.3),inset_0_1px_1px_rgba(255,255,255,0.3)]'
+                    ? 'bg-white/[0.22] text-white border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)]'
                     : 'bg-white/[0.08] text-white/90 hover:text-white hover:bg-white/[0.18] border-white/20 hover:border-white/40'
                 }`}
                 title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
               >
-                {isVoiceEnabled ? <Volume2 className="w-3.5 h-3.5 text-cyan-300" /> : <VolumeX className="w-3.5 h-3.5" />}
+                {isVoiceEnabled ? <Volume2 className="w-3.5 h-3.5 text-white" /> : <VolumeX className="w-3.5 h-3.5" />}
                 <span className="hidden sm:inline">Voice</span>
               </button>
               {hasUserMessages && (
@@ -324,7 +326,7 @@ const ConciergeSection = ({
                   className="group inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border border-white/20 hover:border-white/40 bg-white/[0.08] hover:bg-white/[0.18] text-white backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-300 active:scale-95"
                   title="Start a new conversation"
                 >
-                  <MessageSquarePlus className="w-3.5 h-3.5 text-cyan-300" /> New Session
+                  <MessageSquarePlus className="w-3.5 h-3.5 text-white/80 group-hover:text-white" /> New Session
                 </button>
               )}
             </div>
@@ -373,8 +375,8 @@ const ConciergeSection = ({
                       <div
                         className={`px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-[16px] leading-[1.6] whitespace-pre-wrap transition-all backdrop-blur-2xl ${
                           isUser
-                            ? 'bg-gradient-to-br from-[#2564ea] via-[#2564ea]/90 to-[#4ab6d4] text-white border border-white/30 shadow-[0_8px_25px_rgba(37,100,234,0.35),inset_0_1px_2px_rgba(255,255,255,0.3)] font-medium'
-                            : 'bg-white/[0.06] text-white/95 border border-white/15 shadow-[0_8px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.18)] font-normal'
+                            ? 'bg-white/[0.12] text-white border border-white/20 shadow-[0_8px_25px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.25)] font-medium'
+                            : 'bg-white/[0.04] text-white/95 border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.12)] font-normal'
                         }`}
                       >
                         {msg.id === 'greeting' ? (
@@ -540,7 +542,7 @@ const ConciergeSection = ({
             )}
 
             <form onSubmit={submit} className="relative">
-              <div className="relative flex items-center rounded-full bg-gradient-to-b from-white/[0.10] to-white/[0.03] border border-white/20 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.4),inset_0_1px_2px_rgba(255,255,255,0.2)] focus-within:border-white/40 focus-within:ring-1 focus-within:ring-white/15 transition-all duration-300">
+              <div className="relative flex items-center rounded-full bg-white/[0.05] hover:bg-white/[0.07] focus-within:bg-white/[0.08] border border-white/15 focus-within:border-white/30 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.18),0_12px_32px_rgba(0,0,0,0.4)] focus-within:ring-1 focus-within:ring-white/15 transition-all duration-300">
                 <input
                   ref={inputRef}
                   type="text"
