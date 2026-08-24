@@ -461,10 +461,12 @@ const ConciergeSection = ({
                         )}
                       </div>
                       <div
-                        className={`px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-[16px] leading-[1.6] whitespace-pre-wrap transition-all backdrop-blur-2xl ${
+                        className={`text-[16px] leading-[1.6] whitespace-pre-wrap transition-all backdrop-blur-2xl ${
                           isUser
-                            ? 'bg-white/[0.12] text-white border border-white/20 shadow-[0_8px_25px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.25)] font-medium'
-                            : 'bg-white/[0.04] text-white/95 border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.12)] font-normal'
+                            ? 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-white/[0.12] text-white border border-white/20 shadow-[0_8px_25px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.25)] font-medium'
+                            : msg.id === 'greeting'
+                              ? 'bg-transparent text-white/95 border-0 shadow-none px-0 py-1 font-medium'
+                              : 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-white/[0.04] text-white/95 border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.12)] font-normal'
                         }`}
                       >
                         {msg.id === 'greeting' ? (
