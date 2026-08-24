@@ -51,54 +51,132 @@ function cleanTextForSpeech(text) {
     .trim();
 }
 
-function renderFormattedText(text) {
+function parseInlineMarkdown(text) {
   if (!text) return text;
-  
-  // Strip out citations and any preceding whitespace to fix punctuation spacing
-  const cleanText = text.replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
-  
-  // For non-citation parts, handle **bold** syntax
-  const boldParts = cleanText.split(/(\*\*.*?\*\*)/g);
-  return boldParts.flatMap((bPart, j) => {
-    if (bPart.startsWith('**') && bPart.endsWith('**')) {
-      const boldInner = bPart.slice(2, -2);
-      // Check if the bold text itself contains a link
-      const boldLinkParts = boldInner.split(/(\[.*?\]\(.*?\))/g);
-      return <strong key={`bold-${j}`} className="text-white font-semibold">
-        {boldLinkParts.map((lPart, k) => {
-          const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
-          if (m) {
-            return (
-              <a key={`blink-${j}-${k}`} href={m[2]} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline">
-                {m[1]}
-              </a>
-            );
-          }
-          return <span key={`btext-${j}-${k}`}>{lPart}</span>;
-        })}
-      </strong>;
+
+  let cleaned = text.replace(/\s*\[CHUNK:[A-Za-z0-9_\-#]+\]/g, '');
+  const regex = /(\[.*?\]\(.*?\))|(\*\*.*?\*\*)|(\*.*?\*)|(`.*?`)/g;
+  const parts = cleaned.split(regex).filter(Boolean);
+
+  return parts.map((part, idx) => {
+    const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
+    if (linkMatch) {
+      return (
+        <a
+          key={idx}
+          href={linkMatch[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-300 font-semibold hover:underline transition-colors"
+        >
+          {linkMatch[1]}
+        </a>
+      );
     }
-    
-    // Also parse markdown links outside of bold [text](url)
-    const linkParts = bPart.split(/(\[.*?\]\(.*?\))/g);
-    return linkParts.map((lPart, k) => {
-      const m = lPart.match(/^\[(.*?)\]\((.*?)\)$/);
-      if (m) {
-        return (
-          <a
-            key={`link-${j}-${k}`}
-            href={m[2]}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline"
-          >
-            {m[1]}
-          </a>
-        );
-      }
-      return <span key={`text-${j}-${k}`}>{lPart}</span>;
-    });
+
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return (
+        <strong key={idx} className="text-white font-semibold">
+          {parseInlineMarkdown(part.slice(2, -2))}
+        </strong>
+      );
+    }
+
+    if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+      return (
+        <em key={idx} className="text-white/90 italic">
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+
+    if (part.startsWith('`') && part.endsWith('`') && part.length > 2) {
+      return (
+        <code key={idx} className="px-1.5 py-0.5 rounded bg-white/10 text-cyan-300 font-mono text-sm border border-white/15">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+
+    return <span key={idx}>{part}</span>;
   });
+}
+
+function renderFormattedText(text) {
+  if (!text) return null;
+
+  const lines = text.split('\n');
+  const elements = [];
+  let currentList = [];
+
+  const flushList = (keyPrefix) => {
+    if (currentList.length > 0) {
+      elements.push(
+        <ul key={`ul-${keyPrefix}`} className="my-2 space-y-1.5 pl-1">
+          {currentList.map((item, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-white/95 text-[15px] sm:text-[16px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2.5 shrink-0 shadow-[0_0_6px_rgba(34,211,238,0.6)]" />
+              <span className="flex-1">{parseInlineMarkdown(item)}</span>
+            </li>
+          ))}
+        </ul>
+      );
+      currentList = [];
+    }
+  };
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+      currentList.push(trimmed.slice(2));
+      return;
+    }
+
+    flushList(index);
+
+    if (!trimmed) {
+      elements.push(<div key={`sp-${index}`} className="h-2" />);
+      return;
+    }
+
+    if (trimmed.startsWith('### ')) {
+      elements.push(
+        <h3 key={`h3-${index}`} className="text-[17px] font-bold text-white mt-4 mb-1.5 tracking-tight flex items-center gap-2">
+          {parseInlineMarkdown(trimmed.slice(4))}
+        </h3>
+      );
+      return;
+    }
+
+    if (trimmed.startsWith('## ')) {
+      elements.push(
+        <h2 key={`h2-${index}`} className="text-[19px] font-extrabold text-white mt-5 mb-2 tracking-tight">
+          {parseInlineMarkdown(trimmed.slice(3))}
+        </h2>
+      );
+      return;
+    }
+
+    if (trimmed.startsWith('# ')) {
+      elements.push(
+        <h1 key={`h1-${index}`} className="text-[22px] font-black text-white mt-6 mb-2 tracking-tight">
+          {parseInlineMarkdown(trimmed.slice(2))}
+        </h1>
+      );
+      return;
+    }
+
+    elements.push(
+      <p key={`p-${index}`} className="my-1.5 leading-[1.65] text-white/95 text-[15px] sm:text-[16px]">
+        {parseInlineMarkdown(line)}
+      </p>
+    );
+  });
+
+  flushList('end');
+
+  return <div className="space-y-1">{elements}</div>;
 }
 
 const DEFAULT_PROMPTS = [
@@ -461,12 +539,10 @@ const ConciergeSection = ({
                         )}
                       </div>
                       <div
-                        className={`text-[16px] leading-[1.6] whitespace-pre-wrap transition-all backdrop-blur-2xl ${
+                        className={`text-[16px] leading-[1.65] transition-all ${
                           isUser
-                            ? 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-white/[0.12] text-white border border-white/20 shadow-[0_8px_25px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.25)] font-medium'
-                            : msg.id === 'greeting'
-                              ? 'bg-transparent text-white/95 border-0 shadow-none px-0 py-1 font-medium'
-                              : 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-white/[0.04] text-white/95 border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.12)] font-normal'
+                            ? 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-white/[0.12] text-white border border-white/20 shadow-[0_8px_25px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.25)] font-medium backdrop-blur-2xl'
+                            : 'bg-transparent text-white/95 border-0 shadow-none px-0 py-0.5 font-normal'
                         }`}
                       >
                         {msg.id === 'greeting' ? (
