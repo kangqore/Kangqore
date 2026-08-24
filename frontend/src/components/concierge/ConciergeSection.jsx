@@ -560,7 +560,7 @@ const ConciergeSection = ({
                             href="https://kangqore.com" 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="text-cyan-300 hover:underline lowercase tracking-normal font-semibold"
+                            className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:underline lowercase tracking-normal font-semibold"
                           >
                             kangqore.com
                           </a>
@@ -659,10 +659,12 @@ const ConciergeSection = ({
                         <button
                           type="button"
                           onClick={() => setShowLeadFor(msg.id)}
-                          className="group inline-flex items-center gap-2.5 text-xs font-bold text-cyan-300 hover:text-white transition-all bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 hover:border-cyan-400/40 px-3.5 py-1.5 rounded-full backdrop-blur-md"
+                          className="group inline-flex items-center gap-2.5 text-xs font-bold transition-all bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 px-4 py-2 rounded-full backdrop-blur-md shadow-sm"
                         >
-                          <span>Talk to a Kangqore consultant</span>
-                          <ArrowRight className="w-3 h-3 -rotate-45 group-hover:rotate-0 transition-transform duration-300" strokeWidth={2.5} />
+                          <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:from-white group-hover:to-white transition-all">
+                            Talk to a Kangqore consultant
+                          </span>
+                          <ArrowRight className="w-3.5 h-3.5 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-[#4ab6d4] group-hover:text-white" strokeWidth={2.5} />
                         </button>
                       </div>
                     )}

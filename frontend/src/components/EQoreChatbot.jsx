@@ -642,9 +642,12 @@ const EQoreChatbot = () => {
                     <button
                       type="button"
                       onClick={() => setShowLeadFor(msg.id)}
-                      className="text-[11px] font-bold text-white hover:text-gray-200 hover:underline flex items-center gap-1.5 transition-colors"
+                      className="group text-[11px] font-bold flex items-center gap-1.5 transition-all bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 px-3 py-1.5 rounded-full backdrop-blur-md"
                     >
-                      <span>&rarr;</span> Talk to a Kangqore consultant
+                      <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:from-white group-hover:to-white transition-all">
+                        Talk to a Kangqore consultant
+                      </span>
+                      <ArrowRight className="w-3 h-3 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-[#4ab6d4] group-hover:text-white" strokeWidth={2.2} />
                     </button>
                   </div>
                 )}
