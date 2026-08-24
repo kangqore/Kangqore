@@ -120,6 +120,45 @@ const DEFAULT_PROMPTS = [
   "Contact Us...",
 ];
 
+const TypewriterSkateText = ({ text, speed = 20, className = '' }) => {
+  const [displayedLength, setDisplayedLength] = useState(0);
+  const [isTyping, setIsTyping] = useState(true);
+
+  useEffect(() => {
+    setDisplayedLength(0);
+    setIsTyping(true);
+    if (!text) return;
+
+    let index = 0;
+    const timer = setInterval(() => {
+      index++;
+      setDisplayedLength(index);
+      if (index >= text.length) {
+        clearInterval(timer);
+        setTimeout(() => setIsTyping(false), 300);
+      }
+    }, speed);
+
+    return () => clearInterval(timer);
+  }, [text, speed]);
+
+  const visibleText = text.slice(0, displayedLength);
+
+  return (
+    <span className={`relative inline-wrap font-medium text-white/95 leading-[1.6] ${className}`}>
+      <span className="transition-all duration-150 ease-out tracking-[0.01em]">
+        {visibleText}
+      </span>
+      {isTyping && (
+        <span 
+          className="inline-block w-[2px] h-[1.15em] bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.8)] align-middle ml-1 rounded-full animate-pulse transition-opacity duration-300"
+          aria-hidden="true"
+        />
+      )}
+    </span>
+  );
+};
+
 // `heading` is the lead-in only; the "Ask eQORE AI" mark and its trademark stay
 // fixed so the branding cannot be overridden away. Both fall back to the copy
 // that shipped on every page, so a service that sets neither is unchanged.
@@ -380,9 +419,7 @@ const ConciergeSection = ({
                         }`}
                       >
                         {msg.id === 'greeting' ? (
-                          <span className="inline-block animate-skate-text text-white/95 font-medium tracking-wide">
-                            {msg.content}
-                          </span>
+                          <TypewriterSkateText text={msg.content} speed={20} />
                         ) : (
                           renderFormattedText(msg.content)
                         )}
@@ -621,27 +658,6 @@ const ConciergeSection = ({
         }
         .animate-blob {
           animation: blob 15s infinite alternate;
-        }
-        @keyframes skateText {
-          0% {
-            opacity: 0;
-            transform: translateX(-14px) scale(0.99);
-            filter: blur(4px);
-          }
-          60% {
-            opacity: 0.9;
-            transform: translateX(1.5px) scale(1.001);
-            filter: blur(0px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0px) scale(1);
-            filter: blur(0px);
-          }
-        }
-        .animate-skate-text {
-          animation: skateText 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          will-change: transform, opacity, filter;
         }
         .animation-delay-2000 {
           animation-delay: 2s;
