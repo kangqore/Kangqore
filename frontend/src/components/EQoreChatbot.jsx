@@ -477,7 +477,7 @@ const EQoreChatbot = () => {
           <div className="absolute inset-0 bg-brand-cyan/5 blur-xl pointer-events-none"></div>
           
           <div className="flex items-center gap-3 relative z-10">
-            <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-slate-900 shrink-0">
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20 bg-slate-900 shrink-0 shadow-md">
               <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
             </div>
             <div>

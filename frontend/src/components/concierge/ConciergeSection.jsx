@@ -441,15 +441,15 @@ const ConciergeSection = ({
           {/* ───────────── Header Bar ───────────── */}
           <div className="relative z-10 px-6 sm:px-8 pt-6 pb-2 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-2xl overflow-hidden flex items-center justify-center shrink-0 border border-white/30 bg-slate-900/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_4px_16px_rgba(0,0,0,0.25)]">
+              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-white/20 bg-slate-900/80 shadow-md">
                 <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
               </div>
               <div>
                 <p className="text-[16px] font-black tracking-tight text-white">
                   eQORE
                 </p>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60 mt-0.5">
-                  {streaming ? 'Synchronizing Intelligence…' : 'Your AI Assistant'}
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mt-0.5">
+                  {streaming ? 'Synchronizing Intelligence…' : 'AI ASSISTANT'}
                 </p>
               </div>
             </div>
