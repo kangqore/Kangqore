@@ -120,32 +120,81 @@ const DEFAULT_PROMPTS = [
   "Contact Us...",
 ];
 
-const TypewriterSkateText = ({ text, speed = 20, className = '' }) => {
+const TypewriterSkateText = ({
+  text,
+  speed = 45,
+  pauseDelay = 3500,
+  className = '',
+  disableLoop = false,
+}) => {
   const [displayedLength, setDisplayedLength] = useState(0);
-  const [isTyping, setIsTyping] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    setDisplayedLength(0);
-    setIsTyping(true);
-    if (!text) return;
+    const node = containerRef.current;
+    if (!node) return;
 
-    let index = 0;
-    const timer = setInterval(() => {
-      index++;
-      setDisplayedLength(index);
-      if (index >= text.length) {
-        clearInterval(timer);
-        setTimeout(() => setIsTyping(false), 300);
-      }
-    }, speed);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
 
-    return () => clearInterval(timer);
-  }, [text, speed]);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isInView || !text) {
+      setIsTyping(false);
+      return;
+    }
+
+    let isCancelled = false;
+    let charTimer = null;
+    let pauseTimer = null;
+
+    const startTyping = () => {
+      setDisplayedLength(0);
+      setIsTyping(true);
+      let index = 0;
+
+      charTimer = setInterval(() => {
+        if (isCancelled) return;
+        index++;
+        setDisplayedLength(index);
+
+        if (index >= text.length) {
+          clearInterval(charTimer);
+          setIsTyping(false);
+
+          if (!disableLoop) {
+            pauseTimer = setTimeout(() => {
+              if (!isCancelled) {
+                startTyping();
+              }
+            }, pauseDelay);
+          }
+        }
+      }, speed);
+    };
+
+    startTyping();
+
+    return () => {
+      isCancelled = true;
+      if (charTimer) clearInterval(charTimer);
+      if (pauseTimer) clearTimeout(pauseTimer);
+    };
+  }, [isInView, text, speed, pauseDelay, disableLoop]);
 
   const visibleText = text.slice(0, displayedLength);
 
   return (
-    <span className={`relative inline-wrap font-medium text-white/95 leading-[1.6] ${className}`}>
+    <span ref={containerRef} className={`relative inline-wrap font-medium text-white/95 leading-[1.6] ${className}`}>
       <span className="transition-all duration-150 ease-out tracking-[0.01em]">
         {visibleText}
       </span>
@@ -419,7 +468,7 @@ const ConciergeSection = ({
                         }`}
                       >
                         {msg.id === 'greeting' ? (
-                          <TypewriterSkateText text={msg.content} speed={20} />
+                          <TypewriterSkateText text={msg.content} speed={45} pauseDelay={3500} disableLoop={hasUserMessages} />
                         ) : (
                           renderFormattedText(msg.content)
                         )}
