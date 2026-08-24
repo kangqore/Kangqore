@@ -57,6 +57,55 @@ const TypewriterText = ({ text, start = true, delay = 28 }) => {
   );
 };
 
+// ─── Service Package Card with Collapsible Deliverables ───────────────────────
+const ServicePackageCardItem = ({ pkg, idx }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="bg-[#03060d]/90 p-6 sm:p-7 flex flex-col gap-4 rounded-2xl border border-white/[0.08] hover:border-white/20 transition-all duration-300 hover:bg-[#070b14] shadow-lg">
+      <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
+      <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
+      <p className="text-white/50 text-sm font-medium leading-relaxed">{pkg.description}</p>
+      
+      {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
+        <div className="mt-auto pt-2">
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
+            title="Read deliverables"
+          >
+            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent no-underline">
+              You leave with
+            </span>
+            <ChevronDown className={`w-3.5 h-3.5 text-[#4ab6d4] transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+          </button>
+
+          {expanded && (
+            <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
+              <ul className="space-y-1.5">
+                {pkg.deliverables.map((d, di) => (
+                  <li key={di} className="flex items-start gap-2 text-[12px] leading-snug text-white/75">
+                    <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0 mt-px">✦</span>
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+      {!Array.isArray(pkg.deliverables) && <div className="mt-auto" />}
+
+      {pkg.duration && (
+        <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
+          {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
+        </span>
+      )}
+    </div>
+  );
+};
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 const CAP_COLORS = ['#22D3EE', '#60A5FA', '#A78BFA', '#FB923C', '#34D399', '#F472B6', '#FDE047', '#E8614A'];
 const ICON_POOL  = [Target, Zap, Layers, Search, Cpu, Radar, BrainCircuit, TrendingUp, Shield, Activity, Globe, BarChart3, Network, Settings, Rocket, Users];
@@ -4519,39 +4568,9 @@ const featureMicros   = service.featureMicros
                 {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
               </p>
             </div>
-            <CardRail label="Ways to start" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
+            <CardRail label="Ways to start" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-start bg-transparent">
               {service.servicePackages.map((pkg, idx) => (
-                <div key={idx} className="bg-[#000000] p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
-                  <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
-                  <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
-                  <p className="text-white/50 text-sm font-medium leading-relaxed">{pkg.description}</p>
-                  {/* Opt-in. The section said what each engagement is and never
-                      what you own afterwards, which is the last question asked
-                      before signing. Services without the key render exactly as
-                      before. */}
-                  {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
-                    <div className="flex-1">
-                      {/* Matches the duration chip below. The first cut used a
-                          fainter white at 10px and measured 3.65 against black,
-                          under the 4.5 floor; axe caught it on all five cards. */}
-                      <span className="block text-[11px] font-black tracking-[0.2em] uppercase text-white/60 mb-2">You leave with</span>
-                      <ul className="space-y-1.5">
-                        {pkg.deliverables.map((d, di) => (
-                          <li key={di} className="flex items-start gap-2 text-[12px] leading-snug text-white/60">
-                            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0 mt-px">✦</span>
-                            {d}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {!Array.isArray(pkg.deliverables) && <div className="flex-1" />}
-                  {pkg.duration && (
-                    <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
-                      {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
-                    </span>
-                  )}
-                </div>
+                <ServicePackageCardItem key={idx} pkg={pkg} idx={idx} />
               ))}
             </CardRail>
           </div>
