@@ -76,7 +76,7 @@ const ServicePackageCardItem = ({ pkg, idx }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="bg-[#000000] p-6 sm:p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
+    <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-6 sm:p-7 flex flex-col gap-4 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.04] self-start w-full">
       <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
       <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
       <p className="text-white/50 text-sm font-medium leading-relaxed">{pkg.description}</p>
@@ -4568,7 +4568,7 @@ const featureMicros   = service.featureMicros
                 {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
               </p>
             </div>
-            <CardRail label="Ways to start" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
+            <CardRail label="Ways to start" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:items-start">
               {service.servicePackages.map((pkg, idx) => (
                 <ServicePackageCardItem key={idx} pkg={pkg} idx={idx} />
               ))}
