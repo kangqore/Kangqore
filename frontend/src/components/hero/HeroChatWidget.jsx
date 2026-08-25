@@ -121,6 +121,16 @@ const HeroChatWidget = ({ isActive }) => {
       className="relative w-full bg-white/[0.02] backdrop-blur-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-3xl flex flex-col animate-fade-in mt-6"
       style={{ minHeight: '278px', maxHeight: '420px', overflow: 'visible' }}
     >
+      {/* Iridescent Liquid Background Overlay */}
+      <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none opacity-50 z-0">
+        <img 
+          src="/images/concierge-bg.png" 
+          alt="" 
+          className="w-full h-full object-cover object-center mix-blend-screen"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/40" />
+      </div>
+
       {/* 🎙️ Centralized Floating Mic atop the card border with realistic 3D appearance */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2/3 z-20">
         <div className="p-1 rounded-full border border-white/14 bg-white/3 backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.25)]">

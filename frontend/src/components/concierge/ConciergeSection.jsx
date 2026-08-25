@@ -430,7 +430,17 @@ const ConciergeSection = ({
           </p>
         </div>
 
-        <div className="group relative rounded-[30px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.14] bg-[#060810]/75 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_35px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0_-1px_1px_0_rgba(0,0,0,0.5)]">
+        <div className="group relative rounded-[30px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.14] bg-[#060810]/50 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_35px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0_-1px_1px_0_rgba(0,0,0,0.5)]">
+          {/* Iridescent Liquid Background Overlay */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-50 group-hover:opacity-70 transition-opacity duration-700">
+            <ResponsiveImage 
+              src="/images/concierge-bg.png" 
+              alt="" 
+              className="w-full h-full object-cover object-center mix-blend-screen"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#060810]/50 via-transparent to-[#060810]/50" />
+          </div>
+
           {/* macOS Tahoe Specular Hairline Rim Beam */}
           <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" />
 
@@ -700,7 +710,7 @@ const ConciergeSection = ({
             )}
 
             <form onSubmit={submit} className="relative">
-              <div className="relative flex items-center rounded-full bg-white/[0.05] hover:bg-white/[0.07] focus-within:bg-white/[0.08] border border-white/15 focus-within:border-white/30 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.18),0_12px_32px_rgba(0,0,0,0.4)] focus-within:ring-1 focus-within:ring-white/15 transition-all duration-300">
+              <div className="relative flex items-center rounded-full bg-black/40 hover:bg-black/55 focus-within:bg-black/70 border border-white/20 focus-within:border-white/40 backdrop-blur-3xl shadow-[inset_0_2px_6px_rgba(0,0,0,0.6),0_12px_32px_rgba(0,0,0,0.5)] focus-within:shadow-[0_0_24px_rgba(255,255,255,0.2),inset_0_2px_6px_rgba(0,0,0,0.6)] transition-all duration-300">
                 <input
                   ref={inputRef}
                   type="text"
