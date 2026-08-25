@@ -69,38 +69,282 @@ const TECH_STACK_ICON_COLORS = [
   { bg: 'linear-gradient(135deg, #065f46 0%, #34d399 100%)', glow: '0 8px 24px rgba(52,211,153,0.4),  0 2px 8px rgba(52,211,153,0.25)' },
 ];
 
+const DEFAULT_ARCHITECTURE_STAGE_IMAGES = [
+  { image: '/images/insights/tech-trends.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0a0f1d]', textColor: 'text-white', descColor: 'text-white/80' },
+  { image: '/images/insights/ai-maturity.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0f172a]', textColor: 'text-white', descColor: 'text-white/80' },
+  { image: '/images/insights/pulse-of-change.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0b062b]', textColor: 'text-white', descColor: 'text-white/80' },
+  { image: '/images/insights/leadership-principles.png', blendMode: 'multiply', objectFit: 'contain', bgColor: 'bg-[#ececec]', textColor: 'text-black', descColor: 'text-black/80' },
+  { image: '/images/insights/production-audit.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0f151c]', textColor: 'text-white', descColor: 'text-white/80' },
+];
+
 // Deterministic icon from slug (no Math.random → stable across renders)
+
+const CARD_PALETTES = [
+  {
+    // 01 Arctic Ice (#E6F4FF → #B3DAFF)
+    bg: 'linear-gradient(135deg, #e6f4ff 0%, #b3daff 100%)',
+    border: 'rgba(179, 218, 255, 0.7)',
+    glow: '0 16px 40px -10px rgba(59, 130, 246, 0.25)',
+    accent: '#2563EB',
+    titleColor: '#0F172A',
+    descColor: '#334155',
+    deliverableColor: '#1E293B',
+    borderDivider: 'rgba(37, 99, 235, 0.25)',
+    iconBadgeBg: 'bg-white/80',
+    icon: Target,
+    image: '/images/insights/tech-trends.png',
+    blendMode: 'multiply',
+    objectFit: 'cover',
+  },
+  {
+    // 02 Skyline Blue (#D6EBFF → #93C5FD)
+    bg: 'linear-gradient(135deg, #d6ebff 0%, #93c5fd 100%)',
+    border: 'rgba(147, 197, 253, 0.7)',
+    glow: '0 16px 40px -10px rgba(37, 99, 235, 0.25)',
+    accent: '#1D4ED8',
+    titleColor: '#0F172A',
+    descColor: '#1E293B',
+    deliverableColor: '#0F172A',
+    borderDivider: 'rgba(29, 78, 216, 0.25)',
+    iconBadgeBg: 'bg-white/80',
+    icon: Layers,
+    image: '/images/insights/ai-maturity.png',
+    blendMode: 'multiply',
+    objectFit: 'cover',
+  },
+  {
+    // 03 Azure Blue (#C7E0FF → #60A5FA)
+    bg: 'linear-gradient(135deg, #c7e0ff 0%, #60a5fa 100%)',
+    border: 'rgba(96, 165, 250, 0.7)',
+    glow: '0 16px 40px -10px rgba(29, 78, 216, 0.3)',
+    accent: '#1E40AF',
+    titleColor: '#0F172A',
+    descColor: '#1E293B',
+    deliverableColor: '#0F172A',
+    borderDivider: 'rgba(30, 64, 175, 0.25)',
+    iconBadgeBg: 'bg-white/80',
+    icon: Shield,
+    image: '/images/insights/pulse-of-change.png',
+    blendMode: 'multiply',
+    objectFit: 'cover',
+  },
+  {
+    // 04 True Blue (#93BFFF → #3B82F6)
+    bg: 'linear-gradient(135deg, #93bfff 0%, #3b82f6 100%)',
+    border: 'rgba(59, 130, 246, 0.7)',
+    glow: '0 16px 40px -10px rgba(59, 130, 246, 0.4)',
+    accent: '#FFFFFF',
+    numberColor: '#E0F2FE',
+    titleColor: '#FFFFFF',
+    descColor: '#F0F9FF',
+    deliverableColor: '#FFFFFF',
+    borderDivider: 'rgba(255, 255, 255, 0.35)',
+    iconBadgeBg: 'bg-white/20 text-white',
+    icon: Zap,
+    image: '/images/insights/leadership-principles.png',
+    blendMode: 'screen',
+    objectFit: 'contain',
+  },
+  {
+    // 05 Sapphire Blue (#60A5FA → #1D4ED8)
+    bg: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)',
+    border: 'rgba(29, 78, 216, 0.7)',
+    glow: '0 16px 40px -10px rgba(29, 78, 216, 0.45)',
+    accent: '#FFFFFF',
+    numberColor: '#BFDBFE',
+    titleColor: '#FFFFFF',
+    descColor: '#EFF6FF',
+    deliverableColor: '#FFFFFF',
+    borderDivider: 'rgba(255, 255, 255, 0.35)',
+    iconBadgeBg: 'bg-white/20 text-white',
+    icon: Rocket,
+    image: '/images/insights/production-audit.png',
+    blendMode: 'screen',
+    objectFit: 'cover',
+  },
+  {
+    // 06 Cobalt Blue (#3B82F6 → #1E40AF)
+    bg: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+    border: 'rgba(30, 64, 175, 0.7)',
+    glow: '0 16px 40px -10px rgba(30, 64, 175, 0.45)',
+    accent: '#FFFFFF',
+    numberColor: '#93C5FD',
+    titleColor: '#FFFFFF',
+    descColor: '#EFF6FF',
+    deliverableColor: '#FFFFFF',
+    borderDivider: 'rgba(255, 255, 255, 0.35)',
+    iconBadgeBg: 'bg-white/20 text-white',
+    icon: Cpu,
+    image: '/images/insights/execution-gap.png',
+    blendMode: 'screen',
+    objectFit: 'cover',
+  },
+  {
+    // 07 Indigo Blue (#6366F1 → #4338CA)
+    bg: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)',
+    border: 'rgba(67, 56, 202, 0.7)',
+    glow: '0 16px 40px -10px rgba(99, 102, 241, 0.45)',
+    accent: '#FFFFFF',
+    numberColor: '#C7D2FE',
+    titleColor: '#FFFFFF',
+    descColor: '#EEF2FF',
+    deliverableColor: '#FFFFFF',
+    borderDivider: 'rgba(255, 255, 255, 0.35)',
+    iconBadgeBg: 'bg-white/20 text-white',
+    icon: Radar,
+    image: '/images/insights/tokenomics.png',
+    blendMode: 'screen',
+    objectFit: 'cover',
+  },
+  {
+    // 08 Navy Blue (#1E3A8A → #0F172A)
+    bg: 'linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)',
+    border: 'rgba(30, 58, 138, 0.7)',
+    glow: '0 16px 40px -10px rgba(30, 58, 138, 0.45)',
+    accent: '#60A5FA',
+    numberColor: '#93C5FD',
+    titleColor: '#FFFFFF',
+    descColor: '#E2E8F0',
+    deliverableColor: '#F8FAFC',
+    borderDivider: 'rgba(96, 165, 250, 0.35)',
+    iconBadgeBg: 'bg-white/10 text-[#60A5FA]',
+    icon: BrainCircuit,
+    image: '/images/insights/tech-trends.png',
+    blendMode: 'screen',
+    objectFit: 'cover',
+  },
+  {
+    // 09 Midnight Blue (#1E293B → #0B1020)
+    bg: 'linear-gradient(135deg, #1e293b 0%, #0b1020 100%)',
+    border: 'rgba(30, 41, 59, 0.7)',
+    glow: '0 16px 40px -10px rgba(30, 41, 59, 0.45)',
+    accent: '#38BDF8',
+    numberColor: '#7DD3FC',
+    titleColor: '#FFFFFF',
+    descColor: '#E2E8F0',
+    deliverableColor: '#F8FAFC',
+    borderDivider: 'rgba(56, 189, 248, 0.35)',
+    iconBadgeBg: 'bg-white/10 text-[#38BDF8]',
+    icon: TrendingUp,
+    image: '/images/insights/ai-maturity.png',
+    blendMode: 'screen',
+    objectFit: 'cover',
+  },
+  {
+    // 10 Ocean Deep (#0D47A1 → #042F6C)
+    bg: 'linear-gradient(135deg, #0d47a1 0%, #042f6c 100%)',
+    border: 'rgba(13, 71, 161, 0.7)',
+    glow: '0 16px 40px -10px rgba(13, 71, 161, 0.45)',
+    accent: '#64B5F6',
+    numberColor: '#90CAF9',
+    titleColor: '#FFFFFF',
+    descColor: '#E3F2FD',
+    deliverableColor: '#F5F5F5',
+    borderDivider: 'rgba(100, 181, 246, 0.35)',
+    iconBadgeBg: 'bg-white/10 text-[#64B5F6]',
+    icon: Search,
+    image: '/images/insights/production-audit.png',
+    blendMode: 'screen',
+    objectFit: 'cover',
+  },
+];
 
 // ─── Service Package Card with Collapsible Deliverables ───────────────────────
 const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
   const [expanded, setExpanded] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0, active: false });
+  const cardRef = useRef(null);
+  const palette = CARD_PALETTES[idx % CARD_PALETTES.length];
+
+  // Base subtle organic rotation per card index (feels like physical card floating in space)
+  const baseRotations = [-2.2, 1.8, -1.5, 2.4, -1.8, 2.0];
+  const baseRot = baseRotations[idx % baseRotations.length];
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    // Calculate 3D tilt angles
+    const rotateX = (-y / (rect.height / 2)) * 9;
+    const rotateY = (x / (rect.width / 2)) * 9;
+    setTilt({ x: rotateX, y: rotateY, active: true });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0, active: false });
+  };
+
+  const transformStyle = tilt.active
+    ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateZ(18px) scale(1.03)`
+    : `perspective(1000px) rotate(${baseRot}deg) rotateX(2deg) rotateY(-2deg) translateZ(0px)`;
 
   return (
-    <div className={`group relative bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-[2rem] p-7 flex flex-col gap-4 transition-all duration-500 hover:border-white/25 hover:bg-white/[0.06] hover:shadow-[0_16px_48px_rgba(0,0,0,0.6)] self-start w-full ${offsetClass}`}>
-      <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
-      <p className="text-white font-extrabold text-lg sm:text-xl leading-snug tracking-tight">{pkg.name}</p>
-      <p className="text-white/55 text-sm font-normal leading-relaxed">{pkg.description}</p>
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => setExpanded((prev) => !prev)}
+      className={`group relative rounded-[2.2rem] p-7 flex flex-col gap-4 transition-transform duration-200 ease-out self-start w-full cursor-pointer select-none overflow-hidden min-h-[300px] ${offsetClass}`}
+      style={{
+        background: palette.bg,
+        border: `1px solid ${palette.border}`,
+        boxShadow: tilt.active
+          ? `-26px 36px 60px -12px rgba(0, 0, 0, 0.7), -8px 12px 24px -6px rgba(0, 0, 0, 0.45), inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.55)`
+          : `-16px 22px 42px -10px rgba(0, 0, 0, 0.6), -4px 8px 18px -4px rgba(0, 0, 0, 0.4), inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.45)`,
+        transform: transformStyle,
+        transformStyle: 'preserve-3d',
+        willChange: 'transform, box-shadow',
+      }}
+    >
+      {/* Blended Background Image */}
+      {palette.image && (
+        <ResponsiveImage 
+          src={palette.image} 
+          alt={pkg.name} 
+          className={`absolute bottom-0 left-0 right-0 w-full h-[65%] object-${palette.objectFit || 'cover'} object-bottom transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none opacity-30 group-hover:opacity-45 z-0`}
+          style={{ 
+            mixBlendMode: palette.blendMode || 'screen',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 35%)',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 35%)'
+          }}
+          loading="lazy"
+        />
+      )}
+
+      {/* Package Title */}
+      <p className="font-extrabold text-xl sm:text-[1.35rem] leading-snug tracking-tight pointer-events-none relative z-10" style={{ color: palette.titleColor }}>
+        {pkg.name}
+      </p>
+
+      {/* Package Description */}
+      <p className="text-sm font-medium leading-relaxed pointer-events-none relative z-10" style={{ color: palette.descColor }}>
+        {pkg.description}
+      </p>
       
+      {/* Collapsible Deliverables */}
       {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
-        <div className="mt-auto pt-2">
+        <div className="mt-auto pt-2 relative z-20 pointer-events-auto">
           <button
             type="button"
-            onClick={() => setExpanded(!expanded)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded((prev) => !prev);
+            }}
             className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
             title="Read deliverables"
+            style={{ color: palette.accent }}
           >
-            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent no-underline">
-              You leave with
-            </span>
-            <ChevronDown className={`w-3.5 h-3.5 text-[#4ab6d4] transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+            <span>You leave with</span>
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} style={{ color: palette.accent }} />
           </button>
 
           {expanded && (
-            <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
-              <ul className="space-y-1.5">
+            <div className="mt-3 pt-3 space-y-2 relative z-20" style={{ borderTop: `1px solid ${palette.borderDivider}` }}>
+              <ul className="space-y-2">
                 {pkg.deliverables.map((d, di) => (
-                  <li key={di} className="flex items-start gap-2 text-[12px] leading-snug text-white/75">
-                    <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0 mt-px">✦</span>
+                  <li key={di} className="flex items-start gap-2.5 text-[12px] font-semibold leading-snug" style={{ color: palette.deliverableColor }}>
+                    <span className="shrink-0 mt-px font-bold" style={{ color: palette.accent }}>✦</span>
                     {d}
                   </li>
                 ))}
@@ -110,7 +354,6 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
         </div>
       )}
       {!Array.isArray(pkg.deliverables) && <div className="mt-auto" />}
-
     </div>
   );
 };
@@ -4061,13 +4304,18 @@ const featureMicros   = service.featureMicros
             <div className={`grid grid-cols-1 sm:grid-cols-2 ${service.architectureNodes.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-6`}>
               {service.architectureNodes.map((node, idx) => {
                 const NodeIcon = JOURNEY_ICON_MAP[node.icon] || Target;
-                const LAYER_COLORS = ['#38bdf8', '#818cf8', '#6366f1', '#10b981', '#f59e0b'];
-                const color = LAYER_COLORS[idx % LAYER_COLORS.length];
+                const stageFallback = DEFAULT_ARCHITECTURE_STAGE_IMAGES[idx % DEFAULT_ARCHITECTURE_STAGE_IMAGES.length];
+                const imgSrc = node.image || node.bgImage || stageFallback.image;
+                const blendMode = node.blendMode || stageFallback.blendMode;
+                const objectFit = node.objectFit || stageFallback.objectFit;
+                const cardBgColor = node.bgColor || stageFallback.bgColor;
+                const cardTextColor = node.textColor || stageFallback.textColor;
+                const cardDescColor = node.descColor || stageFallback.descColor;
 
                 return (
                   <div 
                     key={idx}
-                    className={`group relative rounded-2xl overflow-hidden min-h-[375px] md:min-h-[350px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/10 ${node.bgColor || 'bg-[#060a12]'} ${node.textColor || 'text-white'}`}
+                    className={`group relative rounded-2xl overflow-hidden min-h-[375px] md:min-h-[350px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/10 ${cardBgColor} ${cardTextColor}`}
                   >
                     {/* Card Title (Always visible at the top) */}
                     <div className="relative z-10">
