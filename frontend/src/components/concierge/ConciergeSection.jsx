@@ -411,10 +411,6 @@ const ConciergeSection = ({
       aria-labelledby="eqore-ai-heading"
     >
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        {/* Apple macOS Ambient Liquid Backdrop Blobs */}
-        <div className="absolute -top-24 left-1/4 w-[600px] h-[400px] bg-indigo-950/30 rounded-full blur-[150px] pointer-events-none animate-blob" />
-        <div className="absolute top-1/3 -right-24 w-[500px] h-[500px] bg-slate-800/20 rounded-full blur-[150px] pointer-events-none animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-24 left-10 w-[500px] h-[400px] bg-blue-950/20 rounded-full blur-[140px] pointer-events-none animate-blob animation-delay-4000" />
 
         <div className="mb-12 relative z-10">
           <div className="flex items-center gap-4 mb-4">
@@ -434,7 +430,7 @@ const ConciergeSection = ({
           </p>
         </div>
 
-        <div className="group relative rounded-[30px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.14] bg-[#0c0d14]/65 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_35px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0_-1px_1px_0_rgba(0,0,0,0.5)]">
+        <div className="group relative rounded-[30px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.14] bg-[#060810]/75 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_35px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0_-1px_1px_0_rgba(0,0,0,0.5)]">
           {/* macOS Tahoe Specular Hairline Rim Beam */}
           <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" />
 
