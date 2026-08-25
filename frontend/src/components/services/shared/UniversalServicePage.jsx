@@ -111,11 +111,6 @@ const ServicePackageCardItem = ({ pkg, idx }) => {
       )}
       {!Array.isArray(pkg.deliverables) && <div className="mt-auto" />}
 
-      {pkg.duration && (
-        <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
-          {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
-        </span>
-      )}
     </div>
   );
 };
