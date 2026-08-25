@@ -70,8 +70,8 @@ const TECH_STACK_ICON_COLORS = [
 ];
 
 const DEFAULT_ARCHITECTURE_STAGE_IMAGES = [
-  { image: '/images/insights/tech-trends.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0a0f1d]', textColor: 'text-white', descColor: 'text-white/80' },
-  { image: '/images/insights/ai-maturity.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0f172a]', textColor: 'text-white', descColor: 'text-white/80' },
+  { image: '/images/insights/execution-gap.png', blendMode: 'multiply', objectFit: 'cover', bgColor: 'bg-gradient-to-b from-[#d5d7dc] via-[#e2e4e8] to-[#ffffff]', textColor: 'text-black', descColor: 'text-black/80' },
+  { image: '/images/insights/tokenomics.png', blendMode: 'multiply', objectFit: 'contain', bgColor: 'bg-[#ffffff]', textColor: 'text-black', descColor: 'text-black/80' },
   { image: '/images/insights/pulse-of-change.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0b062b]', textColor: 'text-white', descColor: 'text-white/80' },
   { image: '/images/insights/leadership-principles.png', blendMode: 'multiply', objectFit: 'contain', bgColor: 'bg-[#ececec]', textColor: 'text-black', descColor: 'text-black/80' },
   { image: '/images/insights/production-audit.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0f151c]', textColor: 'text-white', descColor: 'text-white/80' },
