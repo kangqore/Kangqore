@@ -278,7 +278,7 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
               e.stopPropagation();
               setExpanded((prev) => !prev);
             }}
-            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1.5 px-2 -ml-2 rounded-lg hover:bg-black/5 active:scale-95 transition-all focus:outline-none focus:ring-0 select-none"
+            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
             title="Read deliverables"
             style={{ color: palette.accent }}
           >
