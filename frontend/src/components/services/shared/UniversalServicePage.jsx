@@ -474,10 +474,6 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
             </ul>
           </div>
         </div>
-        <div className={`inline-flex items-center font-bold w-fit mt-4 shrink-0 transition-all duration-300 text-sm lg:text-base ${isVibrant ? 'text-gray-900 group-hover:text-blue-600' : 'text-white'}`}>
-          Explore Capability
-          <ArrowRight className="ml-2 w-5 h-5" />
-        </div>
       </div>
 
       {/* Expanded Detail Overlay */}
