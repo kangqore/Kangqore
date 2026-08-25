@@ -92,9 +92,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(37, 99, 235, 0.25)',
     iconBadgeBg: 'bg-white/80',
     icon: Target,
-    image: '/images/insights/tech-trends.png',
-    blendMode: 'multiply',
-    objectFit: 'cover',
   },
   {
     // 02 Skyline Blue (#D6EBFF → #93C5FD)
@@ -108,9 +105,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(29, 78, 216, 0.25)',
     iconBadgeBg: 'bg-white/80',
     icon: Layers,
-    image: '/images/insights/ai-maturity.png',
-    blendMode: 'multiply',
-    objectFit: 'cover',
   },
   {
     // 03 Azure Blue (#C7E0FF → #60A5FA)
@@ -124,9 +118,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(30, 64, 175, 0.25)',
     iconBadgeBg: 'bg-white/80',
     icon: Shield,
-    image: '/images/insights/pulse-of-change.png',
-    blendMode: 'multiply',
-    objectFit: 'cover',
   },
   {
     // 04 True Blue (#93BFFF → #3B82F6)
@@ -141,9 +132,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(255, 255, 255, 0.35)',
     iconBadgeBg: 'bg-white/20 text-white',
     icon: Zap,
-    image: '/images/insights/leadership-principles.png',
-    blendMode: 'screen',
-    objectFit: 'contain',
   },
   {
     // 05 Sapphire Blue (#60A5FA → #1D4ED8)
@@ -158,9 +146,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(255, 255, 255, 0.35)',
     iconBadgeBg: 'bg-white/20 text-white',
     icon: Rocket,
-    image: '/images/insights/production-audit.png',
-    blendMode: 'screen',
-    objectFit: 'cover',
   },
   {
     // 06 Cobalt Blue (#3B82F6 → #1E40AF)
@@ -175,9 +160,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(255, 255, 255, 0.35)',
     iconBadgeBg: 'bg-white/20 text-white',
     icon: Cpu,
-    image: '/images/insights/execution-gap.png',
-    blendMode: 'screen',
-    objectFit: 'cover',
   },
   {
     // 07 Indigo Blue (#6366F1 → #4338CA)
@@ -192,9 +174,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(255, 255, 255, 0.35)',
     iconBadgeBg: 'bg-white/20 text-white',
     icon: Radar,
-    image: '/images/insights/tokenomics.png',
-    blendMode: 'screen',
-    objectFit: 'cover',
   },
   {
     // 08 Navy Blue (#1E3A8A → #0F172A)
@@ -209,9 +188,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(96, 165, 250, 0.35)',
     iconBadgeBg: 'bg-white/10 text-[#60A5FA]',
     icon: BrainCircuit,
-    image: '/images/insights/tech-trends.png',
-    blendMode: 'screen',
-    objectFit: 'cover',
   },
   {
     // 09 Midnight Blue (#1E293B → #0B1020)
@@ -226,9 +202,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(56, 189, 248, 0.35)',
     iconBadgeBg: 'bg-white/10 text-[#38BDF8]',
     icon: TrendingUp,
-    image: '/images/insights/ai-maturity.png',
-    blendMode: 'screen',
-    objectFit: 'cover',
   },
   {
     // 10 Ocean Deep (#0D47A1 → #042F6C)
@@ -243,9 +216,6 @@ const CARD_PALETTES = [
     borderDivider: 'rgba(100, 181, 246, 0.35)',
     iconBadgeBg: 'bg-white/10 text-[#64B5F6]',
     icon: Search,
-    image: '/images/insights/production-audit.png',
-    blendMode: 'screen',
-    objectFit: 'cover',
   },
 ];
 
@@ -285,7 +255,7 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={() => setExpanded((prev) => !prev)}
-      className={`group relative rounded-[2.2rem] p-7 flex flex-col gap-4 transition-transform duration-200 ease-out self-start w-full cursor-pointer select-none overflow-hidden min-h-[300px] ${offsetClass}`}
+      className={`group relative rounded-[2.2rem] p-7 flex flex-col gap-4 transition-transform duration-200 ease-out self-start w-full cursor-pointer select-none ${offsetClass}`}
       style={{
         background: palette.bg,
         border: `1px solid ${palette.border}`,
@@ -297,28 +267,13 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
         willChange: 'transform, box-shadow',
       }}
     >
-      {/* Blended Background Image */}
-      {palette.image && (
-        <ResponsiveImage 
-          src={palette.image} 
-          alt={pkg.name} 
-          className={`absolute bottom-0 left-0 right-0 w-full h-[65%] object-${palette.objectFit || 'cover'} object-bottom transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none opacity-30 group-hover:opacity-45 z-0`}
-          style={{ 
-            mixBlendMode: palette.blendMode || 'screen',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 35%)',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 35%)'
-          }}
-          loading="lazy"
-        />
-      )}
-
       {/* Package Title */}
-      <p className="font-extrabold text-xl sm:text-[1.35rem] leading-snug tracking-tight pointer-events-none relative z-10" style={{ color: palette.titleColor }}>
+      <p className="font-extrabold text-xl sm:text-[1.35rem] leading-snug tracking-tight pointer-events-none" style={{ color: palette.titleColor }}>
         {pkg.name}
       </p>
 
       {/* Package Description */}
-      <p className="text-sm font-medium leading-relaxed pointer-events-none relative z-10" style={{ color: palette.descColor }}>
+      <p className="text-sm font-medium leading-relaxed pointer-events-none" style={{ color: palette.descColor }}>
         {pkg.description}
       </p>
       
