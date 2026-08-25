@@ -71,7 +71,54 @@ const TECH_STACK_ICON_COLORS = [
 
 // Deterministic icon from slug (no Math.random → stable across renders)
 
-// ─── Fixed delivery content (same across all 60 service pages) ───────────────
+// ─── Service Package Card with Collapsible Deliverables ───────────────────────
+const ServicePackageCardItem = ({ pkg, idx }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="bg-[#000000] p-6 sm:p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
+      <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
+      <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
+      <p className="text-white/50 text-sm font-medium leading-relaxed">{pkg.description}</p>
+      
+      {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
+        <div className="mt-auto pt-2">
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
+            title="Read deliverables"
+          >
+            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent no-underline">
+              You leave with
+            </span>
+            <ChevronDown className={`w-3.5 h-3.5 text-[#4ab6d4] transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+          </button>
+
+          {expanded && (
+            <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
+              <ul className="space-y-1.5">
+                {pkg.deliverables.map((d, di) => (
+                  <li key={di} className="flex items-start gap-2 text-[12px] leading-snug text-white/75">
+                    <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0 mt-px">✦</span>
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+      {!Array.isArray(pkg.deliverables) && <div className="mt-auto" />}
+
+      {pkg.duration && (
+        <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
+          {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
+        </span>
+      )}
+    </div>
+  );
+};
 
 const HOW_WE_WORK = [
   { n: '01', color: CAP_COLORS[0], title: 'Concierge Engagement',         desc: 'Every client gets a dedicated specialist team matched to their context — not a generic delivery squad rotating across accounts.' },
