@@ -105,7 +105,7 @@ const TrustPillarsCarousel = ({ pillars, rightPanelTitle, rightPanelDescription,
   }, [pillars.length, isPlaying]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="max-w-[1536px] mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
       <div className="grid lg:grid-cols-2 gap-8 items-stretch">
         {/* Left Panel - Sliding Cards */}
         <div className="relative bg-brand-gradient rounded-3xl p-8 lg:p-12 min-h-[500px] flex flex-col justify-between shadow-2xl border border-white/10">
@@ -233,7 +233,7 @@ const SolutionsCarousel = ({ solutions }) => {
   if (!solutions || solutions.length === 0) return null;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="max-w-[1536px] mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
       <div className="grid lg:grid-cols-2 gap-12 items-center">
         {/* Left - Solution Card */}
         <div className="relative bg-brand-gradient rounded-3xl p-10 lg:p-12 min-h-[450px] flex flex-col justify-between shadow-2xl">
@@ -685,7 +685,7 @@ const PhilosophyAccordionItem = ({ feature, isOpen, onClick }) => {
 const GenericMidPageCTA = ({ serviceName, ctaLink }) => {
   return (
     <section className="py-24 bg-[#FEFFFC]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-4 lg:px-6">
         <div className="relative cta-section rounded-[32px] p-16 lg:p-24 text-center text-white overflow-hidden shadow-2xl bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]">
           <div 
             className="absolute -inset-20 z-0" 
@@ -700,7 +700,7 @@ const GenericMidPageCTA = ({ serviceName, ctaLink }) => {
           
           <div className="relative z-20">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 tracking-tight font-display">Assess Your {serviceName || 'Capabilities'} Maturity</h2>
-            <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto font-light leading-relaxed tracking-wide">
+            <p className="text-xl text-white/90 mb-10 max-w-4xl mx-auto font-light leading-relaxed tracking-wide">
               Don't guess. Download the <strong className="text-white">Kangqore {serviceName || 'Maturity'} Scorecard</strong> to objectively assess your capabilities, readiness, and ROI potential.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -950,7 +950,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
 
       {/* Overview Section */}
       {!service.hideOverview && <section className="py-20 bg-white dark:bg-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1536px] mx-auto px-3 sm:px-4 lg:px-6">
           {service.fullWidthCustomOverview && service.customOverview ? (
             <div className="w-full">
               {service.customOverview}
@@ -974,7 +974,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
                       {service.highFidelity.narrative?.titleLine2}
                    </h2>
                    <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
-                   <p className="text-2xl text-gray-500 leading-relaxed font-light max-w-2xl mb-12">
+                   <p className="text-2xl text-gray-500 leading-relaxed font-light max-w-4xl mb-12">
                       {service.highFidelity.narrative?.description || service.description || service.shortDescription}
                    </p>
 
@@ -1034,7 +1034,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
                             <span className="text-transparent bg-clip-text bg-brand-gradient italic font-extrabold">{service.highFidelity.philosophy?.titleHighlight || 'Logic-First.'}</span>
                          </h3>
                           <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
-                         <p className="text-xl lg:text-2xl text-gray-400 font-light leading-snug max-w-2xl opacity-80">
+                         <p className="text-xl lg:text-2xl text-gray-400 font-light leading-snug max-w-4xl opacity-80">
                             "{service.highFidelity.philosophy?.description || 'We architect systems that prioritize relevance and governance — turning reactive assets into proactive strategic advantages.'}"
                          </p>
                       </div>
@@ -1089,7 +1089,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
                 className={`py-12 reveal-on-scroll ${matrixVisible ? 'is-visible' : ''}`}
               >
                  <div className="flex justify-between items-end mb-20 gap-8">
-                    <div className="max-w-2xl">
+                    <div className="max-w-4xl">
                        <div className="flex items-center gap-4 mb-8">
                            <div className="h-[1.5px] w-16 bg-brand-blue"></div>
                            <span className="text-[10px] font-black text-brand-blue uppercase tracking-[0.3em]">{service.highFidelity.matrix?.engineId || 'Engine :: Kang_V4'}</span>
@@ -1227,11 +1227,11 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
           ref={capabilitiesRef} 
           className={`py-24 lg:py-32 bg-[#FEFFFC] overflow-hidden relative reveal-on-scroll ${capabilitiesVisible ? 'is-visible' : ''}`}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-[1536px] mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
             <div 
               ref={parallaxCapHeadRef} 
               style={parallaxCapHeadStyle}
-              className="mb-20 text-left max-w-4xl"
+              className="mb-20 text-left max-w-6xl"
             >
               <div className="flex items-center gap-4 mb-8">
                 <div className="h-[1.5px] w-16 bg-brand-blue"></div>
@@ -1248,7 +1248,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
                 )}
               </h2>
               <div className="w-24 h-1.5 bg-brand-blue/20 rounded-full mb-10"></div>
-              <p className="text-xl lg:text-2xl text-gray-500 font-light tracking-tight leading-[1.4] max-w-4xl opacity-80 mt-6 lg:mt-8">
+              <p className="text-xl lg:text-2xl text-gray-500 font-light tracking-tight leading-[1.4] max-w-6xl opacity-80 mt-6 lg:mt-8">
                 {service.capabilitiesDescription || 'Kangqore provides comprehensive digital transformation services that empower organizations to foster agility, enhance customer experience, and spur business transformation. Our services leverage advanced technology enablers such as AI, Cloud, Automation, and Advanced Analytics to modernize operations, unlock actionable insights, and scale up quickly.'}
               </p>
             </div>
@@ -1341,8 +1341,8 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
         {/* Parallax Background decorative element */}
         <div ref={parallaxWhyBgRef} style={{...parallaxWhyBgStyle, pointerEvents: 'none'}} className="absolute -left-64 top-20 w-[600px] h-[600px] bg-gradient-to-r from-brand-blue/5 to-transparent rounded-full blur-[100px]" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="mb-20 text-left max-w-4xl">
+        <div className="max-w-[1536px] mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
+          <div className="mb-20 text-left max-w-6xl">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-[1.5px] w-16 bg-brand-blue"></div>
               <span className="text-[10px] font-black text-brand-blue uppercase tracking-[0.3em]">The Advantage</span>
@@ -1352,9 +1352,9 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
             </h2>
             <div className={`w-24 h-1.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] rounded-full mb-10 opacity-20`}></div>
             {service.whyKangqoreIntro ? (
-              <p className="text-2xl text-gray-500 leading-relaxed font-light max-w-2xl">{service.whyKangqoreIntro}</p>
+              <p className="text-2xl text-gray-500 leading-relaxed font-light max-w-4xl">{service.whyKangqoreIntro}</p>
             ) : (
-              <p className="text-2xl text-gray-500 leading-relaxed font-light max-w-2xl">Partner with us to leverage our expertise and accelerate your ${(service?.name || '').toLowerCase()} journey.</p>
+              <p className="text-2xl text-gray-500 leading-relaxed font-light max-w-4xl">Partner with us to leverage our expertise and accelerate your ${(service?.name || '').toLowerCase()} journey.</p>
             )}
           </div>
           <WhyKangqoreCarousel items={whyKangqore} />
@@ -1370,8 +1370,8 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
         className={`py-24 lg:py-32 bg-[#FEFFFC] reveal-on-scroll relative overflow-hidden ${industriesVisible ? 'is-visible' : ''}`}
       >
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="mb-20 text-left max-w-4xl">
+        <div className="max-w-[1536px] mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
+          <div className="mb-20 text-left max-w-6xl">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-[1.5px] w-16 bg-brand-blue"></div>
               <span className="text-[10px] font-black text-brand-blue uppercase tracking-[0.3em]">Sector Depth</span>
@@ -1388,13 +1388,13 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
             </h2>
             <div className={`w-24 h-1.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] rounded-full mb-10 opacity-20`}></div>
             {service.industryIntro ? (
-              <div className="text-2xl text-gray-500 leading-relaxed font-light max-w-2xl space-y-4">
+              <div className="text-2xl text-gray-500 leading-relaxed font-light max-w-4xl space-y-4">
                 {service.industryIntro.split('\n\n').map((para, idx) => (
                   <p key={idx}>{para}</p>
                 ))}
               </div>
             ) : (
-              <p className="text-2xl text-gray-500 leading-relaxed font-light max-w-2xl">We bring deep domain knowledge to deliver {service.name.toLowerCase()} solutions across industries.</p>
+              <p className="text-2xl text-gray-500 leading-relaxed font-light max-w-4xl">We bring deep domain knowledge to deliver {service.name.toLowerCase()} solutions across industries.</p>
             )}
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 auto-rows-[280px]">
@@ -1446,7 +1446,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
         ref={faqRef}
         className={`py-20 bg-[#FEFFFC] reveal-on-scroll ${faqVisible ? 'is-visible' : ''}`}
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -1487,7 +1487,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
       {/* CTA Section */}
       {service.finalCtaSection ? service.finalCtaSection : (
         <section className="py-24 bg-white dark:bg-black">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1536px] mx-auto px-3 sm:px-4 lg:px-6">
             <div className="relative cta-section rounded-[32px] p-16 lg:p-24 text-center text-white overflow-hidden shadow-2xl bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]">
               {/* Background Image with parallax */}
               <div 
@@ -1507,7 +1507,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
               {/* Content */}
               <div className="relative z-20">
                 <h2 className="text-4xl lg:text-5xl font-bold mb-6 tracking-tight font-display">{service.ctaTitle || 'Ready to Get Started?'}</h2>
-                <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto font-light leading-relaxed tracking-wide">{service.ctaDescription || `Let's discuss how ${service.name.toLowerCase()} can drive your success.`}</p>
+                <p className="text-xl text-white/90 mb-10 max-w-4xl mx-auto font-light leading-relaxed tracking-wide">{service.ctaDescription || `Let's discuss how ${service.name.toLowerCase()} can drive your success.`}</p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link to={service.ctaButtonLink || "/contact"} className="inline-flex items-center gap-2 px-10 py-5 bg-white dark:bg-gray-900 dark:border-gray-800 text-brand-blue font-semibold rounded-full hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-xl group">
                     {service.ctaButtonText || 'Talk to Our Experts'} 

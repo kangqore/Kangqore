@@ -57,55 +57,6 @@ const TypewriterText = ({ text, start = true, delay = 28 }) => {
   );
 };
 
-// ─── Service Package Card with Collapsible Deliverables ───────────────────────
-const ServicePackageCardItem = ({ pkg, idx }) => {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div className="bg-[#000000] p-6 sm:p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
-      <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
-      <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
-      <p className="text-white/50 text-sm font-medium leading-relaxed">{pkg.description}</p>
-      
-      {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
-        <div className="mt-auto pt-2">
-          <button
-            type="button"
-            onClick={() => setExpanded(!expanded)}
-            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
-            title="Read deliverables"
-          >
-            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent no-underline">
-              You leave with
-            </span>
-            <ChevronDown className={`w-3.5 h-3.5 text-[#4ab6d4] transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
-          </button>
-
-          {expanded && (
-            <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
-              <ul className="space-y-1.5">
-                {pkg.deliverables.map((d, di) => (
-                  <li key={di} className="flex items-start gap-2 text-[12px] leading-snug text-white/75">
-                    <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0 mt-px">✦</span>
-                    {d}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
-      {!Array.isArray(pkg.deliverables) && <div className="mt-auto" />}
-
-      {pkg.duration && (
-        <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
-          {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
-        </span>
-      )}
-    </div>
-  );
-};
-
 // ─── Constants ────────────────────────────────────────────────────────────────
 const CAP_COLORS = ['#22D3EE', '#60A5FA', '#A78BFA', '#FB923C', '#34D399', '#F472B6', '#FDE047', '#E8614A'];
 const ICON_POOL  = [Target, Zap, Layers, Search, Cpu, Radar, BrainCircuit, TrendingUp, Shield, Activity, Globe, BarChart3, Network, Settings, Rocket, Users];
@@ -447,7 +398,7 @@ function getParityService(service, department) {
   const midCta = service.midCta || deptCopy.midCta;
   const closingCta = service.closingCta || deptCopy.closingCta;
 
-  const heroMaxWidth = service.heroMaxWidth || 'max-w-[92%]';
+  const heroMaxWidth = service.heroMaxWidth || 'max-w-[82%]';
   const heroTitleSize = service.heroTitleSize || 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]';
 
   // WhatIs Fallbacks
@@ -1002,8 +953,8 @@ function industrySlug(label) {
 // compete: a rule, a line of copy, and a link.
 const InlineCta = ({ text, cta = 'Talk through your workflow' }) => (
   <section className="border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }}>
-    <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-      <p className="text-white/70 text-lg font-medium leading-snug max-w-4xl">{text}</p>
+    <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+      <p className="text-white/70 text-lg font-medium leading-snug max-w-2xl">{text}</p>
       <Link
         to="/contact"
         className="flex-shrink-0 inline-flex items-center gap-2 py-2 min-h-[24px] text-sm font-black tracking-wide bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors"
@@ -1197,8 +1148,8 @@ const featureMicros   = service.featureMicros
           </div>
 
           <div className="relative z-10 h-full flex flex-col justify-center">
-            <div className="max-w-[1536px] mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-              <div className={`${service.heroMaxWidth || 'max-w-[80%]'} mt-[1cm] shrink-0`}>
+            <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-16 flex items-center justify-between">
+              <div className={`${service.heroMaxWidth || 'max-w-[62%]'} mt-[1cm] shrink-0`}>
 
                 {/* Typewriter badge */}
                 <div className="inline-flex items-center gap-3 mb-10 mt-[1cm]">
@@ -1215,7 +1166,7 @@ const featureMicros   = service.featureMicros
                 </h1>
 
                 {/* Sub */}
-                <p className={`text-base sm:text-lg text-white/50 leading-[1.8] ${service.fullDescriptionMaxWidth || 'max-w-[760px]'} mb-12 font-medium`}>
+                <p className={`text-base sm:text-lg text-white/50 leading-[1.8] ${service.fullDescriptionMaxWidth || 'max-w-[520px]'} mb-12 font-medium`}>
                   {service.fullDescription}
                 </p>
 
@@ -1297,7 +1248,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ DEFINITION / OVERVIEW ══════════════════════ */}
       <section id="svc-what" className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div ref={defRef} className={`relative z-10 max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div ref={defRef} className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 
           <div className="mb-14">
             {'whatIsEyebrow' in service
@@ -1314,7 +1265,7 @@ const featureMicros   = service.featureMicros
                 </div>
               )
             }
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-6xl">
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
               {/* `whatIsHighlightNewLine` puts the gradient clause on its own
                   line without needing a second white line to carry the break.
                   The <br> is suppressed below `sm`: forcing it there costs a
@@ -1345,8 +1296,8 @@ const featureMicros   = service.featureMicros
             <div>
               {/* data-speakable pairs with SpeakableSpecification in the page
                   schema: this is the passage a voice assistant reads aloud. */}
-              <p data-speakable className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-8 font-light max-w-4xl">{service.shortDescription}</p>
-              <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-4xl text-white/60 mb-0">
+              <p data-speakable className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-8 font-light max-w-2xl">{service.shortDescription}</p>
+              <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0">
                 {service.whatIsPara2 || <>A service can be technically delivered and still fail if the strategy and execution are misaligned.{' '}<span className="text-white">Kangqore closes that gap.</span></>}
               </p>
               {/* Both paragraphs stay in the DOM at all times and collapse via
@@ -1389,17 +1340,17 @@ const featureMicros   = service.featureMicros
                     >
                       <div className="overflow-hidden">
                         {service.whatIsPara3 && (
-                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-4xl text-white/60 mb-0">
+                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0">
                             {service.whatIsPara3}
                           </p>
                         )}
                         {service.whatIsPara4 && (
-                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-4xl text-white/60 mt-8 mb-0">
+                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
                             {service.whatIsPara4}
                           </p>
                         )}
                         {service.whatIsPara5 && (
-                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-4xl text-white/60 mt-8 mb-0">
+                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
                             {service.whatIsPara5}
                           </p>
                         )}
@@ -1419,7 +1370,7 @@ const featureMicros   = service.featureMicros
                 )
               ) : service.whatIsPara3 && (
                 <div className="mt-8">
-                  <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-4xl text-white/60 mb-0">
+                  <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mb-0">
                     {service.whatIsPara3}
                   </p>
 
@@ -1431,11 +1382,11 @@ const featureMicros   = service.featureMicros
                       inert={!isReadMoreExpanded}
                     >
                       <div className="overflow-hidden">
-                        <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-4xl text-white/60 mt-8 mb-0">
+                        <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
                           {service.whatIsPara4}
                         </p>
                         {service.whatIsPara5 && (
-                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-4xl text-white/60 mt-8 mb-0">
+                          <p className="text-lg sm:text-xl leading-[1.7] font-light max-w-2xl text-white/60 mt-8 mb-0">
                             {service.whatIsPara5}
                           </p>
                         )}
@@ -3612,7 +3563,7 @@ const featureMicros   = service.featureMicros
           </div>
 
           {(service.businessMetrics || []).some((m) => m.illustrative) ? (
-            <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-16 max-w-5xl">
+            <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-16 max-w-3xl">
               Illustrative figures — modeled on typical engagement patterns, not a specific client result.
             </p>
           ) : <div className="mb-16" />}
@@ -3631,7 +3582,7 @@ const featureMicros   = service.featureMicros
             <div className="group border-l-2 border-white/10 pl-8 py-6 pr-8 rounded-r-2xl bg-[#06090f] relative overflow-hidden hover:border-transparent transition-all duration-500">
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, #2564ea 0%, #4ab6d4 100%)' }} />
               <div className="relative z-10">
-                <p className="text-xl sm:text-2xl font-black text-white/50 group-hover:text-white leading-snug max-w-6xl transition-colors duration-500">
+                <p className="text-xl sm:text-2xl font-black text-white/50 group-hover:text-white leading-snug max-w-4xl transition-colors duration-500">
                   "{service.pullQuote || service.fullDescription}"
                 </p>
                 <p className="text-lg font-black text-white mt-3">
@@ -3677,21 +3628,21 @@ const featureMicros   = service.featureMicros
           Signal flows bottom-up — systems emit, the top layer decides. */}
       {service.enterpriseArchitecture && (
         <section className="py-16 md:py-24 border-t border-white/[0.05] overflow-hidden" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                 {service.enterpriseArchitecture.eyebrow}
               </span>
             </div>
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-6xl">
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-4xl">
               {service.enterpriseArchitecture.title}{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">
                 {service.enterpriseArchitecture.titleHighlight}
               </span>
             </h2>
             {service.enterpriseArchitecture.lede && (
-              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-5xl mb-14">
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-14">
                 {service.enterpriseArchitecture.lede}
               </p>
             )}
@@ -3734,7 +3685,7 @@ const featureMicros   = service.featureMicros
             </ol>
 
             {service.enterpriseArchitecture.principle && (
-              <p className="mt-10 border-l-2 border-[#4ab6d4]/50 pl-5 text-white/70 text-base sm:text-lg leading-relaxed max-w-5xl">
+              <p className="mt-10 border-l-2 border-[#4ab6d4]/50 pl-5 text-white/70 text-base sm:text-lg leading-relaxed max-w-3xl">
                 {service.enterpriseArchitecture.principle}
               </p>
             )}
@@ -3778,7 +3729,7 @@ const featureMicros   = service.featureMicros
             .svc-cap-no-scroll::-webkit-scrollbar { display: none; }
             .svc-cap-no-scroll { -ms-overflow-style: none; scrollbar-width: none; }
           `}} />
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
             {/* Section Header — mirrors DepartmentCarousel */}
             <div className="mb-16">
@@ -3941,7 +3892,7 @@ const featureMicros   = service.featureMicros
       ) : (
         /* ── ORIGINAL LIST + DETAIL PANEL (all other services) ── */
         <section id="svc-capabilities" className="py-16 md:py-32 relative" style={{ backgroundColor: '#000000' }}>
-          <div ref={capRef} className={`max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${capVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div ref={capRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${capVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="mb-16">
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
@@ -4038,7 +3989,7 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
       {service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && service.slug !== 'agentic-ai' && (
         <section id="svc-architecture" className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
               <div>
@@ -4141,7 +4092,7 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ INDUSTRY USE CASES ══════════════════════ */}
       {service.industryUseCases && (
         <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="mb-14">
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
@@ -4154,7 +4105,7 @@ const featureMicros   = service.featureMicros
                 {service.industryHeading || 'Agents built for'}<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">{service.industryHeadingHighlight || 'your industry.'}</span>
               </h2>
-              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-5xl">
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
                 {service.industryLede || `Kangqore deploys ${lowerServiceName(service.name)} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
               </p>
             </div>
@@ -4221,7 +4172,7 @@ const featureMicros   = service.featureMicros
         const metricSize = allCards.length === 3 ? 'clamp(2.8rem, 5vw, 4.5rem)' : 'clamp(3.5rem, 8vw, 6rem)';
         return (
           <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
-            <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
               {/* The section shipped with an eyebrow and no h2 at all, so it was
                   the one block on the page absent from the heading outline.
@@ -4232,7 +4183,7 @@ const featureMicros   = service.featureMicros
                 <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">{service.outcomesEyebrow || 'Engagement Outcomes'}</span>
               </div>
               {service.outcomesHeading && (
-                <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-16 max-w-6xl">
+                <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-16 max-w-4xl">
                   {service.outcomesHeading}<br />
                   <span className="bg-brand-gradient bg-clip-text text-transparent">{service.outcomesHeadingHighlight}</span>
                 </h2>
@@ -4307,21 +4258,21 @@ const featureMicros   = service.featureMicros
           quotable thing on a page and the easiest to mistake for measurement. */}
       {service.commandCenter && (
         <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                 {service.commandCenter.eyebrow}
               </span>
             </div>
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-6xl">
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-4xl">
               {service.commandCenter.title}{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">
                 {service.commandCenter.titleHighlight}
               </span>
             </h2>
             {service.commandCenter.lede && (
-              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-5xl mb-12">
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-12">
                 {service.commandCenter.lede}
               </p>
             )}
@@ -4395,7 +4346,7 @@ const featureMicros   = service.featureMicros
               </div>
             </div>
 
-            <p className="mt-5 text-sm text-white/55 leading-relaxed max-w-5xl">
+            <p className="mt-5 text-sm text-white/55 leading-relaxed max-w-3xl">
               Illustrative console. Every figure above is a worked example of the shape this reporting takes —
               thresholds, domains and weightings are set against your own baseline during the engagement, and
               Kangqore publishes no client metrics it has not measured.
@@ -4407,7 +4358,7 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ MID-PAGE CTA ══════════════════════ */}
       {service.outcomeCard && (
         <section className="py-16" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-8">
             <p className="text-2xl sm:text-3xl font-bold text-white leading-snug max-w-xl">
               {service.midCta || 'Your next workflow runs itself.'}
             </p>
@@ -4436,7 +4387,7 @@ const featureMicros   = service.featureMicros
             <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
           </div>
 
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={journeyRef}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={journeyRef}>
             <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
 
               {/* Timeline cards */}
@@ -4554,7 +4505,7 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ SERVICE PACKAGES ══════════════════════ */}
       {service.servicePackages && (
         <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="mb-14">
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
@@ -4564,13 +4515,43 @@ const featureMicros   = service.featureMicros
                 {service.engagementHeading || 'Five ways to start.'}<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">{service.engagementHeadingHighlight || 'One partner throughout.'}</span>
               </h2>
-              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-5xl">
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
                 {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
               </p>
             </div>
             <CardRail label="Ways to start" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
               {service.servicePackages.map((pkg, idx) => (
-                <ServicePackageCardItem key={idx} pkg={pkg} idx={idx} />
+                <div key={idx} className="bg-[#000000] p-7 flex flex-col gap-4 transition-colors duration-300 hover:bg-[#060a10]">
+                  <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
+                  <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
+                  <p className="text-white/50 text-sm font-medium leading-relaxed">{pkg.description}</p>
+                  {/* Opt-in. The section said what each engagement is and never
+                      what you own afterwards, which is the last question asked
+                      before signing. Services without the key render exactly as
+                      before. */}
+                  {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
+                    <div className="flex-1">
+                      {/* Matches the duration chip below. The first cut used a
+                          fainter white at 10px and measured 3.65 against black,
+                          under the 4.5 floor; axe caught it on all five cards. */}
+                      <span className="block text-[11px] font-black tracking-[0.2em] uppercase text-white/60 mb-2">You leave with</span>
+                      <ul className="space-y-1.5">
+                        {pkg.deliverables.map((d, di) => (
+                          <li key={di} className="flex items-start gap-2 text-[12px] leading-snug text-white/60">
+                            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0 mt-px">✦</span>
+                            {d}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {!Array.isArray(pkg.deliverables) && <div className="flex-1" />}
+                  {pkg.duration && (
+                    <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/60 bg-white/[0.04] px-2 py-1 rounded-md self-start">
+                      {pkg.duration}{pkg.tier && <span className="text-white/15 mx-1">·</span>}{pkg.tier && pkg.tier}
+                    </span>
+                  )}
+                </div>
               ))}
             </CardRail>
           </div>
@@ -4582,7 +4563,7 @@ const featureMicros   = service.featureMicros
           generic to consultancy and add ~1,160px for ~93 words. */}
       {!service.hidePartnershipModel && (
       <section id="svc-partnership" className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-16">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
@@ -4616,7 +4597,7 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ TECH STACK (service-specific) ══════════════════════ */}
       {service.techStack && service.techStack.length > 0 && (
         <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
             {/* Header */}
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-16">
@@ -4721,7 +4702,7 @@ const featureMicros   = service.featureMicros
           real work rather than a trademark standing on its own. */}
       {service.accelerators && (
         <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
@@ -4729,7 +4710,7 @@ const featureMicros   = service.featureMicros
               </span>
             </div>
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
-              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white max-w-5xl">
+              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white max-w-3xl">
                 {service.accelerators.title}{' '}
                 <span className="bg-brand-gradient bg-clip-text text-transparent">
                   {service.accelerators.titleHighlight}
@@ -4764,7 +4745,7 @@ const featureMicros   = service.featureMicros
             </ul>
 
             {service.accelerators.footnote && (
-              <p className="mt-8 text-sm text-white/55 leading-relaxed max-w-5xl">
+              <p className="mt-8 text-sm text-white/55 leading-relaxed max-w-3xl">
                 {service.accelerators.footnote}
               </p>
             )}
@@ -4780,21 +4761,21 @@ const featureMicros   = service.featureMicros
           default. Only add the key to a service whose facts you have confirmed. */}
       {service.dataBoundary && (
         <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                 {service.dataBoundary.eyebrow}
               </span>
             </div>
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-5xl">
+            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-3xl">
               {service.dataBoundary.title}{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">
                 {service.dataBoundary.titleHighlight}
               </span>
             </h2>
             {service.dataBoundary.lede && (
-              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-5xl mb-14">
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-3xl mb-14">
                 {service.dataBoundary.lede}
               </p>
             )}
@@ -4856,7 +4837,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ FAQ ══════════════════════ */}
       <section id="svc-faq" className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-        <div ref={faqRef} className={`max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${faqVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div ref={faqRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${faqVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-32 items-end mb-10 sm:mb-20">
             <div>
               <div className="flex items-center gap-4 mb-4">
@@ -4867,7 +4848,7 @@ const featureMicros   = service.featureMicros
                 {service.faqHeading || 'The hard questions,'}<br />
                 <span className="bg-brand-gradient bg-clip-text text-transparent">{service.faqHeadingHighlight || 'answered (FAQ).'}</span>
               </h2>
-              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-4xl">
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-2xl">
                 {service.faqLede || `The questions below are the ones buyers actually ask in a first call — on scope, risk, timelines and what happens when something goes wrong. Answers are direct rather than promotional.`}
               </p>
             </div>
@@ -4970,7 +4951,7 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ PRACTICE CLUSTER ══════════════════════ */}
       {clusterSiblings.length > 0 && (
         <section className="py-16 border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }} aria-labelledby="practice-cluster-heading">
-          <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
               {/* Department names are internal taxonomy. "COGNITION" and "SHIELD"
@@ -4984,7 +4965,7 @@ const featureMicros   = service.featureMicros
                 ? <>{service.practiceHeading}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{service.practiceHeadingHighlight}</span></>
                 : <>The complete <span className="bg-brand-gradient bg-clip-text text-transparent">{department.name}</span> practice.</>}
             </h2>
-            <p className="text-white/50 text-sm font-medium leading-relaxed max-w-4xl mb-10">
+            <p className="text-white/50 text-sm font-medium leading-relaxed max-w-2xl mb-10">
               {service.practiceLede || `${service.name} is one of ${clusterSiblings.length + 1} services in this practice. Explore how they combine.`}
             </p>
 
@@ -5013,7 +4994,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ CTA ══════════════════════ */}
       <section className="py-16 md:py-32" style={{ backgroundColor: '#000000' }}>
-        <div ref={ctaRef} className={`max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div ref={ctaRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="grid lg:grid-cols-[1fr_auto] gap-16 lg:gap-24 items-end">
 
             {/* Left — statement */}
