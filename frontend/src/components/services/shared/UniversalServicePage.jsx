@@ -71,16 +71,165 @@ const TECH_STACK_ICON_COLORS = [
 
 // Deterministic icon from slug (no Math.random → stable across renders)
 
+const CARD_PALETTES = [
+  {
+    // 01 Aurora Blue
+    bg: 'linear-gradient(145deg, #dbeafe 0%, #eff6ff 100%)',
+    border: 'rgba(59, 130, 246, 0.35)',
+    glow: '0 16px 40px -10px rgba(59, 130, 246, 0.3)',
+    accent: '#3B82F6',
+    titleColor: '#0f172a',
+    descColor: '#334155',
+    deliverableColor: '#1e293b',
+    borderDivider: 'rgba(59, 130, 246, 0.25)',
+    icon: Target,
+  },
+  {
+    // 02 Evergreen Mint
+    bg: 'linear-gradient(145deg, #d1fae5 0%, #ecfdf5 100%)',
+    border: 'rgba(16, 185, 129, 0.35)',
+    glow: '0 16px 40px -10px rgba(16, 185, 129, 0.3)',
+    accent: '#10B981',
+    titleColor: '#064e3b',
+    descColor: '#047857',
+    deliverableColor: '#065f46',
+    borderDivider: 'rgba(16, 185, 129, 0.25)',
+    icon: Layers,
+  },
+  {
+    // 03 Royal Purple
+    bg: 'linear-gradient(145deg, #ede9fe 0%, #faf5ff 100%)',
+    border: 'rgba(139, 92, 246, 0.35)',
+    glow: '0 16px 40px -10px rgba(139, 92, 246, 0.3)',
+    accent: '#8B5CF6',
+    titleColor: '#3b0764',
+    descColor: '#581c87',
+    deliverableColor: '#4c1d95',
+    borderDivider: 'rgba(139, 92, 246, 0.25)',
+    icon: Shield,
+  },
+  {
+    // 04 Amber Gold
+    bg: 'linear-gradient(145deg, #fef3c7 0%, #fffbeb 100%)',
+    border: 'rgba(245, 158, 11, 0.35)',
+    glow: '0 16px 40px -10px rgba(245, 158, 11, 0.3)',
+    accent: '#F59E0B',
+    titleColor: '#451a03',
+    descColor: '#78350f',
+    deliverableColor: '#92400e',
+    borderDivider: 'rgba(245, 158, 11, 0.25)',
+    icon: Zap,
+  },
+  {
+    // 05 Coral Rose
+    bg: 'linear-gradient(145deg, #ffe4e6 0%, #fff1f2 100%)',
+    border: 'rgba(244, 63, 94, 0.35)',
+    glow: '0 16px 40px -10px rgba(244, 63, 94, 0.3)',
+    accent: '#F43F5E',
+    titleColor: '#4c0519',
+    descColor: '#881337',
+    deliverableColor: '#9f1239',
+    borderDivider: 'rgba(244, 63, 94, 0.25)',
+    icon: Rocket,
+  },
+  {
+    // 06 Ocean Teal
+    bg: 'linear-gradient(145deg, #ccfbf1 0%, #f0fdfa 100%)',
+    border: 'rgba(20, 184, 166, 0.35)',
+    glow: '0 16px 40px -10px rgba(20, 184, 166, 0.3)',
+    accent: '#14B8A6',
+    titleColor: '#042f2e',
+    descColor: '#0f766e',
+    deliverableColor: '#115e59',
+    borderDivider: 'rgba(20, 184, 166, 0.25)',
+    icon: Cpu,
+  },
+  {
+    // 07 Sunset Peach
+    bg: 'linear-gradient(145deg, #ffedd5 0%, #fff7ed 100%)',
+    border: 'rgba(251, 146, 60, 0.35)',
+    glow: '0 16px 40px -10px rgba(251, 146, 60, 0.3)',
+    accent: '#FB923C',
+    titleColor: '#431407',
+    descColor: '#9a3412',
+    deliverableColor: '#7c2d12',
+    borderDivider: 'rgba(251, 146, 60, 0.25)',
+    icon: Radar,
+  },
+  {
+    // 08 Slate Indigo
+    bg: 'linear-gradient(145deg, #e0e7ff 0%, #eef2ff 100%)',
+    border: 'rgba(99, 102, 241, 0.35)',
+    glow: '0 16px 40px -10px rgba(99, 102, 241, 0.3)',
+    accent: '#6366F1',
+    titleColor: '#1e1b4b',
+    descColor: '#3730a3',
+    deliverableColor: '#312e81',
+    borderDivider: 'rgba(99, 102, 241, 0.25)',
+    icon: BrainCircuit,
+  },
+  {
+    // 09 Emerald Green
+    bg: 'linear-gradient(145deg, #dcfce7 0%, #f0fdf4 100%)',
+    border: 'rgba(34, 197, 94, 0.35)',
+    glow: '0 16px 40px -10px rgba(34, 197, 94, 0.3)',
+    accent: '#22C55E',
+    titleColor: '#052e16',
+    descColor: '#15803d',
+    deliverableColor: '#166534',
+    borderDivider: 'rgba(34, 197, 94, 0.25)',
+    icon: TrendingUp,
+  },
+  {
+    // 10 Cosmic Magenta
+    bg: 'linear-gradient(145deg, #fce7f3 0%, #fdf4ff 100%)',
+    border: 'rgba(217, 70, 239, 0.35)',
+    glow: '0 16px 40px -10px rgba(217, 70, 239, 0.3)',
+    accent: '#D946EF',
+    titleColor: '#4a044e',
+    descColor: '#a21caf',
+    deliverableColor: '#86198f',
+    borderDivider: 'rgba(217, 70, 239, 0.25)',
+    icon: Search,
+  },
+];
+
 // ─── Service Package Card with Collapsible Deliverables ───────────────────────
 const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
   const [expanded, setExpanded] = useState(false);
+  const palette = CARD_PALETTES[idx % CARD_PALETTES.length];
+  const IconComp = palette.icon;
 
   return (
-    <div className={`group relative bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-[2rem] p-7 flex flex-col gap-4 transition-all duration-500 hover:border-white/25 hover:bg-white/[0.06] hover:shadow-[0_16px_48px_rgba(0,0,0,0.6)] self-start w-full ${offsetClass}`}>
-      <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
-      <p className="text-white font-extrabold text-lg sm:text-xl leading-snug tracking-tight">{pkg.name}</p>
-      <p className="text-white/55 text-sm font-normal leading-relaxed">{pkg.description}</p>
+    <div
+      className={`group relative rounded-[2.2rem] p-7 flex flex-col gap-4 transition-all duration-500 hover:-translate-y-1.5 self-start w-full ${offsetClass}`}
+      style={{
+        background: palette.bg,
+        border: `1px solid ${palette.border}`,
+        boxShadow: palette.glow,
+      }}
+    >
+      {/* Top Header: Circular Icon Badge + Large Index Number */}
+      <div className="flex items-center justify-between mb-1">
+        <div className="w-11 h-11 rounded-full bg-white/80 backdrop-blur-md shadow-sm flex items-center justify-center">
+          <IconComp className="w-5 h-5" style={{ color: palette.accent }} />
+        </div>
+        <span className="font-mono font-extrabold text-2xl tracking-tight" style={{ color: palette.accent }}>
+          0{idx + 1}
+        </span>
+      </div>
+
+      {/* Package Title */}
+      <p className="font-extrabold text-xl sm:text-[1.35rem] leading-snug tracking-tight" style={{ color: palette.titleColor }}>
+        {pkg.name}
+      </p>
+
+      {/* Package Description */}
+      <p className="text-sm font-medium leading-relaxed" style={{ color: palette.descColor }}>
+        {pkg.description}
+      </p>
       
+      {/* Collapsible Deliverables */}
       {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
         <div className="mt-auto pt-2">
           <button
@@ -88,19 +237,18 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
             onClick={() => setExpanded(!expanded)}
             className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
             title="Read deliverables"
+            style={{ color: palette.accent }}
           >
-            <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent no-underline">
-              You leave with
-            </span>
-            <ChevronDown className={`w-3.5 h-3.5 text-[#4ab6d4] transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+            <span>You leave with</span>
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} style={{ color: palette.accent }} />
           </button>
 
           {expanded && (
-            <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
-              <ul className="space-y-1.5">
+            <div className="mt-3 pt-3 space-y-2" style={{ borderTop: `1px solid ${palette.borderDivider}` }}>
+              <ul className="space-y-2">
                 {pkg.deliverables.map((d, di) => (
-                  <li key={di} className="flex items-start gap-2 text-[12px] leading-snug text-white/75">
-                    <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent shrink-0 mt-px">✦</span>
+                  <li key={di} className="flex items-start gap-2.5 text-[12px] font-semibold leading-snug" style={{ color: palette.deliverableColor }}>
+                    <span className="shrink-0 mt-px font-bold" style={{ color: palette.accent }}>✦</span>
                     {d}
                   </li>
                 ))}
