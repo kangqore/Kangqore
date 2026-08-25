@@ -456,7 +456,7 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
           <h3 id={`svc-cap-${i}-title`} className={`text-2xl lg:text-3xl font-bold mb-2 transition-transform duration-300 shrink-0 ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
             {cap.title}
           </h3>
-          <p className={`text-xs lg:text-sm font-semibold mb-6 shrink-0 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>
+          <p className={`text-xs lg:text-sm font-semibold mb-6 shrink-0 ${isVibrant ? 'text-gray-500' : 'text-white/50'}`}>
             {cap.items.length} Key Capabilities
           </p>
           <div className="relative flex-1">
@@ -465,7 +465,7 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
             </p>
             <ul className={`svc-cap-items absolute inset-0 space-y-2.5 ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
               <span className={`block text-xs font-bold uppercase tracking-widest mb-2.5 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>Key Capabilities:</span>
-              {cap.items.slice(0, 6).map((item, j) => (
+              {cap.items.slice(0, 4).map((item, j) => (
                 <li key={j} className="flex items-start text-[14px] lg:text-sm font-medium">
                   <span className={`mr-2 opacity-80 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>✦</span>
                   {item.includes(':') ? item.split(':')[0] : item}
@@ -473,10 +473,6 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
               ))}
             </ul>
           </div>
-        </div>
-        <div className={`inline-flex items-center font-bold w-fit mt-4 shrink-0 transition-all duration-300 text-sm lg:text-base ${isVibrant ? 'text-gray-900 group-hover:text-blue-600' : 'text-white'}`}>
-          Explore Capability
-          <ArrowRight className="ml-2 w-5 h-5" />
         </div>
       </div>
 
