@@ -4280,13 +4280,13 @@ const featureMicros   = service.featureMicros
                     </div>
 
                     {/* Graphic/Illustration positioned absolutely at the bottom with seamless blend */}
-                    {(node.image || node.bgImage) && (
+                    {imgSrc && (
                       <ResponsiveImage 
-                        src={node.image || node.bgImage} 
+                        src={imgSrc} 
                         alt={node.title} 
-                        className={`absolute bottom-0 left-0 right-0 w-full h-[65%] object-${node.objectFit || 'cover'} object-bottom transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none z-10`}
+                        className={`absolute bottom-0 left-0 right-0 w-full h-[65%] object-${objectFit} object-bottom transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none z-10`}
                         style={{ 
-                          mixBlendMode: node.blendMode || 'normal',
+                          mixBlendMode: blendMode,
                           WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 25%)',
                           maskImage: 'linear-gradient(to bottom, transparent, black 25%)'
                         }}
