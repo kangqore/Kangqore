@@ -72,14 +72,14 @@ const TECH_STACK_ICON_COLORS = [
 // Deterministic icon from slug (no Math.random → stable across renders)
 
 // ─── Service Package Card with Collapsible Deliverables ───────────────────────
-const ServicePackageCardItem = ({ pkg, idx }) => {
+const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-6 sm:p-7 flex flex-col gap-4 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.04] self-start w-full">
+    <div className={`group relative bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-[2rem] p-7 flex flex-col gap-4 transition-all duration-500 hover:border-white/25 hover:bg-white/[0.06] hover:shadow-[0_16px_48px_rgba(0,0,0,0.6)] self-start w-full ${offsetClass}`}>
       <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60">0{idx + 1}</span>
-      <p className="text-white font-bold text-base leading-snug">{pkg.name}</p>
-      <p className="text-white/50 text-sm font-medium leading-relaxed">{pkg.description}</p>
+      <p className="text-white font-extrabold text-lg sm:text-xl leading-snug tracking-tight">{pkg.name}</p>
+      <p className="text-white/55 text-sm font-normal leading-relaxed">{pkg.description}</p>
       
       {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
         <div className="mt-auto pt-2">
@@ -4546,28 +4546,49 @@ const featureMicros   = service.featureMicros
         </section>
       )}
 
-      {/* ══════════════════════ SERVICE PACKAGES ══════════════════════ */}
+      {/* ══════════════════════ SERVICE PACKAGES (2-Column Offset Layout) ══════════════════════ */}
       {service.servicePackages && (
-        <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
+        <section className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <div className="mb-14">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.engagementEyebrow || 'HOW WE ENGAGE'}</span>
+            <div className="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-16">
+              
+              {/* Left Column: Heading & Description */}
+              <div className="w-full lg:w-5/12 lg:sticky lg:top-32 flex flex-col">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-[1px] w-12 bg-white/20" />
+                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.engagementEyebrow || 'HOW WE ENGAGE'}</span>
+                </div>
+                <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-extrabold leading-[1.15] tracking-tight text-white mb-6">
+                  {service.engagementHeading || 'Five ways to start.'}<br />
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">{service.engagementHeadingHighlight || 'One partner throughout.'}</span>
+                </h2>
+                <p className="text-white/60 text-base sm:text-lg font-normal leading-relaxed">
+                  {service.engagementLede || `Five entry points, from a three-week audit to continuous assurance. Most programs start by finding out which systems are in scope and what evidence is missing, because building controls before you know your risk tiers is the most common way governance work stalls.`}
+                </p>
               </div>
-              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                {service.engagementHeading || 'Five ways to start.'}<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.engagementHeadingHighlight || 'One partner throughout.'}</span>
-              </h2>
-              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
-                {service.engagementLede || `There are five entry points, from a two-week advisory audit to an ongoing managed program. Most clients begin with a scoped pilot to prove the model on one workflow before committing to the wider estate.`}
-              </p>
+
+              {/* Right Column: Staggered Offset Card Cluster */}
+              <div className="w-full lg:w-7/12">
+                <CardRail label="Ways to start" className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 items-start">
+                  {/* Column 1 (Cards 0, 2, 4) */}
+                  <div className="flex flex-col gap-6 lg:gap-8">
+                    {service.servicePackages.filter((_, idx) => idx % 2 === 0).map((pkg, idx) => {
+                      const originalIdx = idx * 2;
+                      return <ServicePackageCardItem key={originalIdx} pkg={pkg} idx={originalIdx} offsetClass={idx === 1 ? 'lg:translate-y-4' : idx === 2 ? 'lg:translate-y-8' : ''} />;
+                    })}
+                  </div>
+
+                  {/* Column 2 (Cards 1, 3) - Offset downwards for staggered cluster effect */}
+                  <div className="flex flex-col gap-6 lg:gap-8 lg:pt-12">
+                    {service.servicePackages.filter((_, idx) => idx % 2 === 1).map((pkg, idx) => {
+                      const originalIdx = idx * 2 + 1;
+                      return <ServicePackageCardItem key={originalIdx} pkg={pkg} idx={originalIdx} offsetClass={idx === 1 ? 'lg:translate-y-6' : ''} />;
+                    })}
+                  </div>
+                </CardRail>
+              </div>
+
             </div>
-            <CardRail label="Ways to start" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:items-start">
-              {service.servicePackages.map((pkg, idx) => (
-                <ServicePackageCardItem key={idx} pkg={pkg} idx={idx} />
-              ))}
-            </CardRail>
           </div>
         </section>
       )}
