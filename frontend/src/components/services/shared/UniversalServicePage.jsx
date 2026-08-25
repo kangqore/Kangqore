@@ -3632,13 +3632,13 @@ const featureMicros   = service.featureMicros
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
-                {service.enterpriseArchitecture.eyebrow}
+                {service.enterpriseArchitecture?.eyebrow}
               </span>
             </div>
             <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-4xl">
-              {service.enterpriseArchitecture.title}{' '}
+              {service.enterpriseArchitecture?.title}{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">
-                {service.enterpriseArchitecture.titleHighlight}
+                {service.enterpriseArchitecture?.titleHighlight}
               </span>
             </h2>
             {service.enterpriseArchitecture.lede && (
@@ -3944,21 +3944,23 @@ const featureMicros   = service.featureMicros
               </div>
 
               {/* Desktop detail panel */}
-              <div className="hidden lg:flex items-start pt-5">
-                <div className="w-full sticky top-8">
-                  <p className="text-[11px] font-black tracking-[0.35em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-6">CAPABILITY {capabilities[safeCapIdx].n}</p>
-                  <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">{capabilities[safeCapIdx].title}</h3>
-                  <p className="text-white/60 text-base leading-relaxed mb-8 max-w-lg">{capabilities[safeCapIdx].desc}</p>
-                  <ul className="space-y-3">
-                    {capabilities[safeCapIdx].items.map(item => (
-                      <li key={item} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: capabilities[safeCapIdx].color }} />
-                        <span className="text-white/55 text-sm font-medium leading-snug">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+              {capabilities.length > 0 && capabilities[safeCapIdx] && (
+                <div className="hidden lg:flex items-start pt-5">
+                  <div className="w-full sticky top-8">
+                    <p className="text-[11px] font-black tracking-[0.35em] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent uppercase mb-6">CAPABILITY {capabilities[safeCapIdx]?.n}</p>
+                    <h3 className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4">{capabilities[safeCapIdx]?.title}</h3>
+                    <p className="text-white/60 text-base leading-relaxed mb-8 max-w-lg">{capabilities[safeCapIdx]?.desc}</p>
+                    <ul className="space-y-3">
+                      {capabilities[safeCapIdx]?.items?.map(item => (
+                        <li key={item} className="flex items-start gap-3">
+                          <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: capabilities[safeCapIdx]?.color }} />
+                          <span className="text-white/55 text-sm font-medium leading-snug">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </section>
@@ -4262,13 +4264,13 @@ const featureMicros   = service.featureMicros
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
-                {service.commandCenter.eyebrow}
+                {service.commandCenter?.eyebrow}
               </span>
             </div>
             <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-6 max-w-4xl">
-              {service.commandCenter.title}{' '}
+              {service.commandCenter?.title}{' '}
               <span className="bg-brand-gradient bg-clip-text text-transparent">
-                {service.commandCenter.titleHighlight}
+                {service.commandCenter?.titleHighlight}
               </span>
             </h2>
             {service.commandCenter.lede && (
@@ -4639,8 +4641,8 @@ const featureMicros   = service.featureMicros
                       <div
                         className="relative z-10 w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-110"
                         style={{
-                          background: TECH_STACK_ICON_COLORS[i % TECH_STACK_ICON_COLORS.length].bg,
-                          boxShadow: TECH_STACK_ICON_COLORS[i % TECH_STACK_ICON_COLORS.length].glow,
+                          background: TECH_STACK_ICON_COLORS[i % TECH_STACK_ICON_COLORS.length]?.bg,
+                          boxShadow: TECH_STACK_ICON_COLORS[i % TECH_STACK_ICON_COLORS.length]?.glow,
                         }}
                       >
                         <TechIcon className="w-5 h-5 text-white drop-shadow" />
@@ -4670,11 +4672,11 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ TOOLS & TECHNOLOGY ══════════════════════ */}
       {service.toolsStack && (
         <AIToolsSection
-          title={service.toolsStack.title}
-          eyebrow={service.toolsStack.eyebrow}
-          titleHighlight={service.toolsStack.titleHighlight}
-          subtitle={service.toolsStack.subtitle}
-          items={service.toolsStack.items}
+          title={service.toolsStack?.title}
+          eyebrow={service.toolsStack?.eyebrow}
+          titleHighlight={service.toolsStack?.titleHighlight}
+          subtitle={service.toolsStack?.subtitle}
+          items={service.toolsStack?.items}
           image={
             service.slug === 'agentic-ai-led-application-modernization' ? (
               <AgenticModernization3DModel />
@@ -4685,10 +4687,10 @@ const featureMicros   = service.featureMicros
             ) : service.slug === 'genai-business-services' ? (
               <GenAI3DModel />
             ) : (
-              service.toolsStack.image
+              service.toolsStack?.image
             )
           }
-          imageAlt={service.toolsStack.imageAlt}
+          imageAlt={service.toolsStack?.imageAlt}
           inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
         />
       )}

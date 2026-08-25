@@ -5286,21 +5286,51 @@ export const servicesData = {
     ],
     hidePartnershipModel: true,
 
-    // ── Capability areas ────────────────────────────────────────────────────
-    // /services/intelligent-automation carries "RPA & Digital Workforce" as one
-    // area of seven, ten items deep. This page is that area taken to depth, so
-    // the test for every entry below was: does it belong to driving an
-    // interface you do not control? If it belongs to the AI layer it stays on
-    // intelligent automation; if it belongs to redesigning the process it stays
-    // on BPM; if it belongs to giving the process an application it stays on
-    // DPA.
-    //
-    // Areas 02, 03 and 06 exist nowhere else on the site and are the real
-    // discipline: surface automation for systems with no API, keeping bots
-    // alive through somebody else's release cycle, and running an estate whose
-    // licensed runtime costs money whether it works or not. Area 07 is the one
-    // most vendors omit -- retiring bots, including the ones we would have to
-    // admit should never have been built.
+    capabilities: [
+      {
+        n: '01',
+        title: 'Surface & Interface Automation',
+        desc: 'Driving applications through the user interface when no API exists, keystroke by keystroke, across desktop, web, mainframe, and virtualized environments.',
+        items: ['Attended & unattended bot engineering', 'Mainframe & 3270 terminal automation', 'Citrix & virtual desktop automation', 'Web & desktop surface automation'],
+        color: '#2564ea'
+      },
+      {
+        n: '02',
+        title: 'Selector & Element Resilience',
+        desc: 'Engineering locators anchored to stable application structures rather than brittle screen coordinates, ensuring bots survive upstream updates.',
+        items: ['Resilient selector architecture', 'Dynamic element handling', 'Pre-release bot testing', 'Interface drift detection'],
+        color: '#4ab6d4'
+      },
+      {
+        n: '03',
+        title: 'Bot Identity & Credential Vaulting',
+        desc: 'Securing bot credentials in enterprise PAM vaults under dedicated bot identities that satisfy strict enterprise audit requirements.',
+        items: ['CyberArk & Vault integration', 'Bot identity management', 'Zero-plaintext credential handling', 'Audit-ready execution logging'],
+        color: '#3b82f6'
+      },
+      {
+        n: '04',
+        title: 'Orchestrator Operations & Queue Management',
+        desc: 'Managing unattended bot schedules, work queues, and runtime allocation to maximize licensed capacity utilization.',
+        items: ['Work queue optimization', 'Runtime capacity management', 'Unattended schedule tuning', 'Multi-tenant orchestrator setup'],
+        color: '#60a5fa'
+      },
+      {
+        n: '05',
+        title: 'Output-Level Observability & Alerting',
+        desc: 'Monitoring bot output quality rather than just execution exit codes to detect silent failure modes before business impact.',
+        items: ['Output verification checks', 'Exception routing & recovery', 'Real-time telemetry & alerts', 'Business impact dashboards'],
+        color: '#06b6d4'
+      },
+      {
+        n: '06',
+        title: 'Estate Rationalization & Migration',
+        desc: 'Auditing legacy bot portfolios to retire unneeded bots, consolidate duplicates, or migrate to modern orchestrators.',
+        items: ['Bot estate audit & scoring', 'Duplicate bot consolidation', 'API migration pathing', 'UiPath / AA / Power Automate migration'],
+        color: '#38bdf8'
+      }
+    ],
+
     // ── Toolchain ───────────────────────────────────────────────────────────
     // Framed by what each platform is genuinely better at, including where we
     // would argue against buying one at all. We hold no reseller margin on any
