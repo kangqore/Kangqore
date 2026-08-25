@@ -73,64 +73,141 @@ const TECH_STACK_ICON_COLORS = [
 
 const CARD_PALETTES = [
   {
-    // 01 Vibrant Yellow
-    bg: '#FFF475',
-    border: 'rgba(234, 179, 8, 0.5)',
-    glow: '0 12px 32px -8px rgba(253, 224, 71, 0.45)',
-    accent: '#92400E',
-    titleColor: '#1F2937',
-    descColor: '#374151',
-    deliverableColor: '#1F2937',
-    borderDivider: 'rgba(146, 64, 14, 0.25)',
+    // 01 Arctic Ice (#E6F4FF → #B3DAFF)
+    bg: 'linear-gradient(135deg, #e6f4ff 0%, #b3daff 100%)',
+    border: 'rgba(179, 218, 255, 0.7)',
+    glow: '0 16px 40px -10px rgba(59, 130, 246, 0.25)',
+    accent: '#2563EB',
+    titleColor: '#0F172A',
+    descColor: '#334155',
+    deliverableColor: '#1E293B',
+    borderDivider: 'rgba(37, 99, 235, 0.25)',
+    iconBadgeBg: 'bg-white/80',
     icon: Target,
   },
   {
-    // 02 Sky Blue
-    bg: '#75D6FF',
-    border: 'rgba(14, 165, 233, 0.5)',
-    glow: '0 12px 32px -8px rgba(117, 214, 255, 0.45)',
-    accent: '#0369A1',
+    // 02 Skyline Blue (#D6EBFF → #93C5FD)
+    bg: 'linear-gradient(135deg, #d6ebff 0%, #93c5fd 100%)',
+    border: 'rgba(147, 197, 253, 0.7)',
+    glow: '0 16px 40px -10px rgba(37, 99, 235, 0.25)',
+    accent: '#1D4ED8',
     titleColor: '#0F172A',
     descColor: '#1E293B',
     deliverableColor: '#0F172A',
-    borderDivider: 'rgba(3, 105, 161, 0.25)',
+    borderDivider: 'rgba(29, 78, 216, 0.25)',
+    iconBadgeBg: 'bg-white/80',
     icon: Layers,
   },
   {
-    // 03 Warm Orange / Peach
-    bg: '#FFC078',
-    border: 'rgba(249, 115, 22, 0.5)',
-    glow: '0 12px 32px -8px rgba(255, 192, 120, 0.45)',
-    accent: '#C2410C',
-    titleColor: '#431407',
-    descColor: '#7C2D12',
-    deliverableColor: '#431407',
-    borderDivider: 'rgba(194, 65, 12, 0.25)',
+    // 03 Azure Blue (#C7E0FF → #60A5FA)
+    bg: 'linear-gradient(135deg, #c7e0ff 0%, #60a5fa 100%)',
+    border: 'rgba(96, 165, 250, 0.7)',
+    glow: '0 16px 40px -10px rgba(29, 78, 216, 0.3)',
+    accent: '#1E40AF',
+    titleColor: '#0F172A',
+    descColor: '#1E293B',
+    deliverableColor: '#0F172A',
+    borderDivider: 'rgba(30, 64, 175, 0.25)',
+    iconBadgeBg: 'bg-white/80',
     icon: Shield,
   },
   {
-    // 04 Vibrant Rose Pink
-    bg: '#FF7BB4',
-    border: 'rgba(244, 63, 94, 0.5)',
-    glow: '0 12px 32px -8px rgba(255, 123, 180, 0.45)',
-    accent: '#BE123C',
-    titleColor: '#4C0519',
-    descColor: '#881337',
-    deliverableColor: '#4C0519',
-    borderDivider: 'rgba(190, 18, 60, 0.25)',
+    // 04 True Blue (#93BFFF → #3B82F6)
+    bg: 'linear-gradient(135deg, #93bfff 0%, #3b82f6 100%)',
+    border: 'rgba(59, 130, 246, 0.7)',
+    glow: '0 16px 40px -10px rgba(59, 130, 246, 0.4)',
+    accent: '#FFFFFF',
+    numberColor: '#E0F2FE',
+    titleColor: '#FFFFFF',
+    descColor: '#F0F9FF',
+    deliverableColor: '#FFFFFF',
+    borderDivider: 'rgba(255, 255, 255, 0.35)',
+    iconBadgeBg: 'bg-white/20 text-white',
     icon: Zap,
   },
   {
-    // 05 Bright Lime Green
-    bg: '#D6FF75',
-    border: 'rgba(132, 204, 22, 0.5)',
-    glow: '0 12px 32px -8px rgba(214, 255, 117, 0.45)',
-    accent: '#4D7C0F',
-    titleColor: '#1A2E05',
-    descColor: '#365314',
-    deliverableColor: '#1A2E05',
-    borderDivider: 'rgba(77, 124, 15, 0.25)',
+    // 05 Sapphire Blue (#60A5FA → #1D4ED8)
+    bg: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)',
+    border: 'rgba(29, 78, 216, 0.7)',
+    glow: '0 16px 40px -10px rgba(29, 78, 216, 0.45)',
+    accent: '#FFFFFF',
+    numberColor: '#BFDBFE',
+    titleColor: '#FFFFFF',
+    descColor: '#EFF6FF',
+    deliverableColor: '#FFFFFF',
+    borderDivider: 'rgba(255, 255, 255, 0.35)',
+    iconBadgeBg: 'bg-white/20 text-white',
     icon: Rocket,
+  },
+  {
+    // 06 Cobalt Blue (#3B82F6 → #1E40AF)
+    bg: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+    border: 'rgba(30, 64, 175, 0.7)',
+    glow: '0 16px 40px -10px rgba(30, 64, 175, 0.45)',
+    accent: '#FFFFFF',
+    numberColor: '#93C5FD',
+    titleColor: '#FFFFFF',
+    descColor: '#EFF6FF',
+    deliverableColor: '#FFFFFF',
+    borderDivider: 'rgba(255, 255, 255, 0.35)',
+    iconBadgeBg: 'bg-white/20 text-white',
+    icon: Cpu,
+  },
+  {
+    // 07 Indigo Blue (#6366F1 → #4338CA)
+    bg: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)',
+    border: 'rgba(67, 56, 202, 0.7)',
+    glow: '0 16px 40px -10px rgba(99, 102, 241, 0.45)',
+    accent: '#FFFFFF',
+    numberColor: '#C7D2FE',
+    titleColor: '#FFFFFF',
+    descColor: '#EEF2FF',
+    deliverableColor: '#FFFFFF',
+    borderDivider: 'rgba(255, 255, 255, 0.35)',
+    iconBadgeBg: 'bg-white/20 text-white',
+    icon: Radar,
+  },
+  {
+    // 08 Navy Blue (#1E3A8A → #0F172A)
+    bg: 'linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)',
+    border: 'rgba(30, 58, 138, 0.7)',
+    glow: '0 16px 40px -10px rgba(30, 58, 138, 0.45)',
+    accent: '#60A5FA',
+    numberColor: '#93C5FD',
+    titleColor: '#FFFFFF',
+    descColor: '#E2E8F0',
+    deliverableColor: '#F8FAFC',
+    borderDivider: 'rgba(96, 165, 250, 0.35)',
+    iconBadgeBg: 'bg-white/10 text-[#60A5FA]',
+    icon: BrainCircuit,
+  },
+  {
+    // 09 Midnight Blue (#1E293B → #0B1020)
+    bg: 'linear-gradient(135deg, #1e293b 0%, #0b1020 100%)',
+    border: 'rgba(30, 41, 59, 0.7)',
+    glow: '0 16px 40px -10px rgba(30, 41, 59, 0.45)',
+    accent: '#38BDF8',
+    numberColor: '#7DD3FC',
+    titleColor: '#FFFFFF',
+    descColor: '#E2E8F0',
+    deliverableColor: '#F8FAFC',
+    borderDivider: 'rgba(56, 189, 248, 0.35)',
+    iconBadgeBg: 'bg-white/10 text-[#38BDF8]',
+    icon: TrendingUp,
+  },
+  {
+    // 10 Ocean Deep (#0D47A1 → #042F6C)
+    bg: 'linear-gradient(135deg, #0d47a1 0%, #042f6c 100%)',
+    border: 'rgba(13, 71, 161, 0.7)',
+    glow: '0 16px 40px -10px rgba(13, 71, 161, 0.45)',
+    accent: '#64B5F6',
+    numberColor: '#90CAF9',
+    titleColor: '#FFFFFF',
+    descColor: '#E3F2FD',
+    deliverableColor: '#F5F5F5',
+    borderDivider: 'rgba(100, 181, 246, 0.35)',
+    iconBadgeBg: 'bg-white/10 text-[#64B5F6]',
+    icon: Search,
   },
 ];
 
@@ -138,7 +215,6 @@ const CARD_PALETTES = [
 const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
   const [expanded, setExpanded] = useState(false);
   const palette = CARD_PALETTES[idx % CARD_PALETTES.length];
-  const IconComp = palette.icon;
 
   return (
     <div
@@ -149,16 +225,6 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
         boxShadow: palette.glow,
       }}
     >
-      {/* Top Header: Circular Icon Badge + Large Index Number */}
-      <div className="flex items-center justify-between mb-1">
-        <div className="w-11 h-11 rounded-full bg-white/80 backdrop-blur-md shadow-sm flex items-center justify-center">
-          <IconComp className="w-5 h-5" style={{ color: palette.accent }} />
-        </div>
-        <span className="font-mono font-extrabold text-2xl tracking-tight" style={{ color: palette.accent }}>
-          0{idx + 1}
-        </span>
-      </div>
-
       {/* Package Title */}
       <p className="font-extrabold text-xl sm:text-[1.35rem] leading-snug tracking-tight" style={{ color: palette.titleColor }}>
         {pkg.name}
@@ -198,7 +264,6 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
         </div>
       )}
       {!Array.isArray(pkg.deliverables) && <div className="mt-auto" />}
-
     </div>
   );
 };
