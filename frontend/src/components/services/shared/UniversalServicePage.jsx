@@ -246,6 +246,7 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={() => setExpanded((prev) => !prev)}
       className={`group relative rounded-[2.2rem] p-7 flex flex-col gap-4 transition-transform duration-200 ease-out self-start w-full cursor-pointer select-none ${offsetClass}`}
       style={{
         background: palette.bg,
@@ -259,25 +260,25 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
       }}
     >
       {/* Package Title */}
-      <p className="font-extrabold text-xl sm:text-[1.35rem] leading-snug tracking-tight" style={{ color: palette.titleColor }}>
+      <p className="font-extrabold text-xl sm:text-[1.35rem] leading-snug tracking-tight pointer-events-none" style={{ color: palette.titleColor }}>
         {pkg.name}
       </p>
 
       {/* Package Description */}
-      <p className="text-sm font-medium leading-relaxed" style={{ color: palette.descColor }}>
+      <p className="text-sm font-medium leading-relaxed pointer-events-none" style={{ color: palette.descColor }}>
         {pkg.description}
       </p>
       
       {/* Collapsible Deliverables */}
       {Array.isArray(pkg.deliverables) && pkg.deliverables.length > 0 && (
-        <div className="mt-auto pt-2">
+        <div className="mt-auto pt-2 relative z-20 pointer-events-auto">
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              setExpanded(!expanded);
+              setExpanded((prev) => !prev);
             }}
-            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
+            className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1.5 px-2 -ml-2 rounded-lg hover:bg-black/5 active:scale-95 transition-all focus:outline-none focus:ring-0 select-none"
             title="Read deliverables"
             style={{ color: palette.accent }}
           >
@@ -286,7 +287,7 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
           </button>
 
           {expanded && (
-            <div className="mt-3 pt-3 space-y-2" style={{ borderTop: `1px solid ${palette.borderDivider}` }}>
+            <div className="mt-3 pt-3 space-y-2 relative z-20" style={{ borderTop: `1px solid ${palette.borderDivider}` }}>
               <ul className="space-y-2">
                 {pkg.deliverables.map((d, di) => (
                   <li key={di} className="flex items-start gap-2.5 text-[12px] font-semibold leading-snug" style={{ color: palette.deliverableColor }}>
