@@ -214,15 +214,48 @@ const CARD_PALETTES = [
 // ─── Service Package Card with Collapsible Deliverables ───────────────────────
 const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
   const [expanded, setExpanded] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0, active: false });
+  const cardRef = useRef(null);
   const palette = CARD_PALETTES[idx % CARD_PALETTES.length];
+
+  // Base subtle organic rotation per card index (feels like physical card floating in space)
+  const baseRotations = [-2.2, 1.8, -1.5, 2.4, -1.8, 2.0];
+  const baseRot = baseRotations[idx % baseRotations.length];
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    // Calculate 3D tilt angles
+    const rotateX = (-y / (rect.height / 2)) * 9;
+    const rotateY = (x / (rect.width / 2)) * 9;
+    setTilt({ x: rotateX, y: rotateY, active: true });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0, active: false });
+  };
+
+  const transformStyle = tilt.active
+    ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateZ(18px) scale(1.03)`
+    : `perspective(1000px) rotate(${baseRot}deg) rotateX(2deg) rotateY(-2deg) translateZ(0px)`;
 
   return (
     <div
-      className={`group relative rounded-[2.2rem] p-7 flex flex-col gap-4 transition-all duration-500 hover:-translate-y-1.5 self-start w-full ${offsetClass}`}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`group relative rounded-[2.2rem] p-7 flex flex-col gap-4 transition-transform duration-200 ease-out self-start w-full cursor-pointer select-none ${offsetClass}`}
       style={{
         background: palette.bg,
         border: `1px solid ${palette.border}`,
-        boxShadow: palette.glow,
+        boxShadow: tilt.active
+          ? `-26px 36px 60px -12px rgba(0, 0, 0, 0.7), -8px 12px 24px -6px rgba(0, 0, 0, 0.45), inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.55)`
+          : `-16px 22px 42px -10px rgba(0, 0, 0, 0.6), -4px 8px 18px -4px rgba(0, 0, 0, 0.4), inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.45)`,
+        transform: transformStyle,
+        transformStyle: 'preserve-3d',
+        willChange: 'transform, box-shadow',
       }}
     >
       {/* Package Title */}
@@ -240,7 +273,10 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
         <div className="mt-auto pt-2">
           <button
             type="button"
-            onClick={() => setExpanded(!expanded)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded(!expanded);
+            }}
             className="group/btn inline-flex items-center gap-1.5 text-[11px] font-black tracking-[0.2em] uppercase cursor-pointer py-1 focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
             title="Read deliverables"
             style={{ color: palette.accent }}
