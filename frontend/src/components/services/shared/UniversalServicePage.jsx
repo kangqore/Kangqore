@@ -69,6 +69,14 @@ const TECH_STACK_ICON_COLORS = [
   { bg: 'linear-gradient(135deg, #065f46 0%, #34d399 100%)', glow: '0 8px 24px rgba(52,211,153,0.4),  0 2px 8px rgba(52,211,153,0.25)' },
 ];
 
+const DEFAULT_ARCHITECTURE_STAGE_IMAGES = [
+  { image: '/images/insights/tech-trends.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0a0f1d]', textColor: 'text-white', descColor: 'text-white/80' },
+  { image: '/images/insights/ai-maturity.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0f172a]', textColor: 'text-white', descColor: 'text-white/80' },
+  { image: '/images/insights/pulse-of-change.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0b062b]', textColor: 'text-white', descColor: 'text-white/80' },
+  { image: '/images/insights/leadership-principles.png', blendMode: 'multiply', objectFit: 'contain', bgColor: 'bg-[#ececec]', textColor: 'text-black', descColor: 'text-black/80' },
+  { image: '/images/insights/production-audit.png', blendMode: 'screen', objectFit: 'cover', bgColor: 'bg-[#0f151c]', textColor: 'text-white', descColor: 'text-white/80' },
+];
+
 // Deterministic icon from slug (no Math.random → stable across renders)
 
 const CARD_PALETTES = [
@@ -4251,13 +4259,18 @@ const featureMicros   = service.featureMicros
             <div className={`grid grid-cols-1 sm:grid-cols-2 ${service.architectureNodes.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-6`}>
               {service.architectureNodes.map((node, idx) => {
                 const NodeIcon = JOURNEY_ICON_MAP[node.icon] || Target;
-                const LAYER_COLORS = ['#38bdf8', '#818cf8', '#6366f1', '#10b981', '#f59e0b'];
-                const color = LAYER_COLORS[idx % LAYER_COLORS.length];
+                const stageFallback = DEFAULT_ARCHITECTURE_STAGE_IMAGES[idx % DEFAULT_ARCHITECTURE_STAGE_IMAGES.length];
+                const imgSrc = node.image || node.bgImage || stageFallback.image;
+                const blendMode = node.blendMode || stageFallback.blendMode;
+                const objectFit = node.objectFit || stageFallback.objectFit;
+                const cardBgColor = node.bgColor || stageFallback.bgColor;
+                const cardTextColor = node.textColor || stageFallback.textColor;
+                const cardDescColor = node.descColor || stageFallback.descColor;
 
                 return (
                   <div 
                     key={idx}
-                    className={`group relative rounded-2xl overflow-hidden min-h-[375px] md:min-h-[350px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/10 ${node.bgColor || 'bg-[#060a12]'} ${node.textColor || 'text-white'}`}
+                    className={`group relative rounded-2xl overflow-hidden min-h-[375px] md:min-h-[350px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/10 ${cardBgColor} ${cardTextColor}`}
                   >
                     {/* Card Title (Always visible at the top) */}
                     <div className="relative z-10">
