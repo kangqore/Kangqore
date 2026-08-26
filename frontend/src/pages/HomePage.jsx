@@ -46,16 +46,7 @@ const heroSlides = [
     link: "/services",
     secondaryLink: "/contact",
     video: "/videos/hero-bg.mp4",
-  },
-  {
-    id: 2,
-    type: 'chat',
-    tag: "eQORE AI™ CONCIERGE",
-    title: "Innovate ",
-    titleTypewriter: "Your Next Move.",
-    description: "",
-    video: "/videos/hero-bg.mp4",
-  },
+  }
 ];
 
 const homeTestimonials = [
@@ -343,13 +334,13 @@ const HeroCarousel = () => {
               )}
 
 
-              <div className={`${slide.type === 'chat' ? 'w-full' : 'max-w-5xl'} flex flex-col h-full`}>
+              <div className={`${slide.type === 'chat' ? 'w-full' : 'max-w-5xl'} flex flex-col h-full justify-center`}>
 
-                <div className="space-y-5 flex-shrink-0">
+                <div className="flex-shrink-0">
 
                   <h1
                     key={`title-${slide.id}`}
-                    className={`text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-in fade-in zoom-in-75 duration-1000 ease-out origin-left ${
+                    className={`mb-5 text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-in fade-in zoom-in-75 duration-1000 ease-out origin-left ${
                       slide.id === 2 ? '-translate-y-6' : ''
                     }`}
                   >
@@ -368,7 +359,7 @@ const HeroCarousel = () => {
                 {slide.description && (
                   <p
                     key={`desc-${slide.id}`}
-                    className="text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-3xl animate-fade-in font-medium line-clamp-3 py-4 sm:py-6"
+                    className="mb-12 text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-3xl animate-fade-in font-medium line-clamp-3"
                   >
                     {slide.description}
                   </p>
@@ -376,14 +367,12 @@ const HeroCarousel = () => {
 
                 {/* Chat widget for slide 2 */}
                 {slide.type === 'chat' && (
-                  <div className="py-4 sm:py-6 hero-chat-widget" style={{ overflow: 'visible' }}>
+                  <div className="mb-12 hero-chat-widget" style={{ overflow: 'visible' }}>
                     <HeroChatWidget isActive={index === activeSlide} />
                   </div>
                 )}
 
                 </div>
-
-                <div className="flex-grow min-h-[20px]" />
 
                 {/* CTAs for slides */}
                 {slide.cta && (
@@ -423,40 +412,8 @@ const HeroCarousel = () => {
         ))}
       </div>
 
-      {/* ── Slide Dot Indicators ── */}
-      <div className="absolute bottom-8 sm:bottom-10 left-0 right-0 z-30 hero-slide-indicators mt-[76px]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center gap-4">
-          <div className="flex items-center gap-2.5">
-            {heroSlides.map((_, index) => (
-              <button
-                key={`dot-${index}`}
-                onClick={() => goToSlide(index)}
-                className={`transition-all duration-500 rounded-full ${
-                  index === activeSlide
-                    ? 'w-8 h-[5px] bg-brand-gradient shadow-lg shadow-blue-500/30'
-                    : 'w-[5px] h-[5px] bg-white/30 hover:bg-white/60'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-          
-          {/* Media Controls */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                goToSlide((activeSlide + 1) % slideCount);
-              }}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/15 text-white/70 hover:text-white transition-all duration-300 backdrop-blur-sm hover:scale-110 active:scale-95 opacity-25 hover:opacity-100"
-              aria-label="Next slide"
-            >
-              <SkipForward className="w-5 h-5 fill-current" />
-            </button>
-          </div>
-        </div>
       </div>
-      </div>
+
       <style>{`
         @media (prefers-reduced-motion: reduce) {
           @keyframes trust-logo-scroll { 0%, 100% { transform: translateX(0); } }
