@@ -25,6 +25,7 @@ import axios from 'axios';
 import { useToast } from '../../hooks/use-toast';
 import { parseSchedulingRequestAsync, timeRangeToTimeStr } from '../../hooks/nlpSchedulingParser';
 import VoiceAssistant from '../voice/VoiceAssistant';
+import { triggerHaptic } from '../../utils/haptics';
 
 function detectTimezone() {
   try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; }
@@ -69,6 +70,7 @@ const BookingWidget = ({ eventTypeSlug, schedulingLinkId, showVoiceAssistant = f
       });
 
       if (slot) {
+        triggerHaptic('medium');
         setSelectedSlot(slot);
         setStep(2); // Automatically move to form step
         toast({
