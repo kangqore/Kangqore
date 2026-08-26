@@ -170,17 +170,19 @@ const TransformCTA = () => {
           <div className="flex flex-col md:flex-row gap-4 w-full mt-10">
             <Link
               to="/contact"
-              className="group flex-1 flex items-center justify-between bg-white/70 dark:bg-[#1a1c29]/70 backdrop-blur-xl border border-white/40 dark:border-white/10 rounded-3xl px-8 py-8 shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:scale-[1.02] hover:bg-white/80 dark:hover:bg-[#1a1c29]/80 transition-all duration-300 text-gray-900 dark:text-white"
+              className="group flex-1 flex items-center justify-between bg-white/10 dark:bg-white/5 backdrop-blur-3xl rounded-[32px] px-8 py-8 shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_0_0_1px_rgba(255,255,255,0.5),inset_0_4px_10px_rgba(255,255,255,0.8)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_4px_10px_rgba(255,255,255,0.05)] hover:scale-[1.02] hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-500 text-gray-900 dark:text-white relative overflow-hidden"
             >
-              <span className="text-2xl md:text-3xl font-normal tracking-tight">Get in touch</span>
-              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 stroke-[1.5] transform transition-transform duration-300 group-hover:translate-x-2" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="relative z-10 text-2xl md:text-3xl font-normal tracking-tight">Get in touch</span>
+              <ArrowRight className="relative z-10 w-6 h-6 md:w-8 md:h-8 stroke-[1.5] transform transition-transform duration-500 group-hover:translate-x-2" />
             </Link>
             <Link
               to="/book-discovery"
-              className="group flex-1 flex items-center justify-between bg-white/70 dark:bg-[#1a1c29]/70 backdrop-blur-xl border border-white/40 dark:border-white/10 rounded-3xl px-8 py-8 shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:scale-[1.02] hover:bg-white/80 dark:hover:bg-[#1a1c29]/80 transition-all duration-300 text-gray-900 dark:text-white"
+              className="group flex-1 flex items-center justify-between bg-white/10 dark:bg-white/5 backdrop-blur-3xl rounded-[32px] px-8 py-8 shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_0_0_1px_rgba(255,255,255,0.5),inset_0_4px_10px_rgba(255,255,255,0.8)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_4px_10px_rgba(255,255,255,0.05)] hover:scale-[1.02] hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-500 text-gray-900 dark:text-white relative overflow-hidden"
             >
-              <span className="text-2xl md:text-3xl font-normal tracking-tight">Schedule Your 30-min Discovery Call</span>
-              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 stroke-[1.5] transform transition-transform duration-300 group-hover:translate-x-2" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="relative z-10 text-2xl md:text-3xl font-normal tracking-tight">Schedule Your 30-min Discovery Call</span>
+              <ArrowRight className="relative z-10 w-6 h-6 md:w-8 md:h-8 stroke-[1.5] transform transition-transform duration-500 group-hover:translate-x-2" />
             </Link>
           </div>
         </div>

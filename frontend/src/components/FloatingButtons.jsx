@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogIn, LogOut, ChevronUp, Menu, X, ChevronRight, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Plus } from 'lucide-react';
+import { LogIn, LogOut, ChevronUp, ChevronsUp, Menu, X, ChevronRight, ChevronDown, Building2, Users, Handshake, MessageSquare, Sparkles, Briefcase, TrendingUp, MapPin, UsersRound, Palette, BookOpen, FileText, Calendar, FileSpreadsheet, Award, Landmark, Shield, GraduationCap, Heart, FlaskConical, Tv, ShoppingCart, Plane, Zap, Factory, Database, Package, Plus, Accessibility } from 'lucide-react';
 import { departmentData } from '../data/departmentData';
 import { useAuth } from '../context/AuthContext';
 import EQoreChatbot from './EQoreChatbot';
@@ -234,88 +234,149 @@ const FloatingButtons = ({ showFullMenu, setShowFullMenu }) => {
       {/* Unified Omni-Action Trigger - Moved to RIGHT */}
       {/* Second landmark: this stack's hover tooltips were the last orphaned
           content axe reported after the left stack was covered. */}
-      <div
+      {/* Unified Omni-Action Trigger - Moved to RIGHT */}
+      {/* Second landmark: this stack's hover tooltips were the last orphaned
+          content axe reported after the left stack was covered. */}
+      <motion.div
         role="complementary"
         aria-label="Page actions"
-        className={`fixed bottom-[calc(2.25rem-0.4cm)] sm:bottom-[calc(2.75rem-0.4cm)] right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-4 transition-all duration-500 ${isYielding || showFullMenu || isErootActive ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
+        initial={false}
+        animate={{ opacity: isYielding || showFullMenu || isErootActive ? 0 : 1, y: isYielding || showFullMenu || isErootActive ? 40 : 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className="fixed bottom-[calc(2.25rem-0.4cm)] sm:bottom-[calc(2.75rem-0.4cm)] right-[calc(2rem+0.5cm)] z-[40] flex flex-col-reverse items-center gap-5 pointer-events-none"
       >
         {/* Standalone Scroll to Top - Rendered first to be at the very bottom in flex-col-reverse */}
-        {isVisible && (
-          <button onClick={scrollToTop} className="w-[44px] h-[44px] bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-full shadow-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center group/btn overflow-hidden relative focus:outline-none focus:ring-0 focus-visible:outline-none select-none" title="Scroll to Top">
-            <div className="flex flex-col items-center justify-center -space-y-[12px] group-hover/btn:-translate-y-1 transition-transform relative z-10 pt-[2px]">
-              <ChevronUp className="w-5 h-5 stroke-[2.5]" />
-              <ChevronUp className="w-5 h-5 stroke-[2.5]" />
-              <ChevronUp className="w-5 h-5 stroke-[2.5]" />
-            </div>
-          </button>
-        )}
+        <AnimatePresence>
+          {isVisible && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.5, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.5, y: 20 }}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.92 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              onClick={scrollToTop}
+              className="w-[54px] h-[54px] bg-white dark:bg-[#1c1c1e] text-gray-900 dark:text-white rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex items-center justify-center pointer-events-auto focus:outline-none focus:ring-0 focus-visible:outline-none select-none relative overflow-hidden group/btn"
+              title="Scroll to Top"
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent dark:from-white/10 pointer-events-none" />
+              <div className="flex flex-col items-center justify-center -space-y-[12px] group-hover/btn:-translate-y-1 transition-transform relative z-10 pt-[2px]">
+                <ChevronsUp className="w-[22px] h-[22px] stroke-[2.5]" />
+              </div>
+            </motion.button>
+          )}
+        </AnimatePresence>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           onClick={() => setIsOmniOpen(!isOmniOpen)}
-          className={`w-12 h-12 rounded-full shadow-2xl transition-all duration-500 transform hover:scale-110 active:scale-95 flex items-center justify-center focus:outline-none focus:ring-0 focus-visible:outline-none select-none ${
-            isOmniOpen 
-              ? (isLightBackground ? 'bg-brand-blue text-white' : 'bg-white text-gray-900')
-              : (isLightBackground ? 'bg-gray-900 text-white' : 'bg-brand-gradient text-white')
-          }`}
+          className={`w-[56px] h-[56px] rounded-full flex items-center justify-center pointer-events-auto focus:outline-none focus:ring-0 focus-visible:outline-none select-none relative overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.15)] transition-colors duration-300 bg-white dark:bg-[#1c1c1e] text-gray-900 dark:text-white`}
           aria-label="Toggle Actions"
         >
-          <Plus className={`w-5 h-5 transition-transform duration-300 ${isOmniOpen ? 'rotate-45' : ''}`} />
-        </button>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent dark:from-white/10 pointer-events-none" />
+          <motion.div animate={{ rotate: isOmniOpen ? 0 : -45 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="relative z-10">
+            {isOmniOpen ? <X className="w-6 h-6 stroke-[2.5px]" /> : <Plus className="w-6 h-6 stroke-[2.5px]" />}
+          </motion.div>
+        </motion.button>
 
-        <div className={`flex flex-col gap-4 transition-all duration-500 origin-bottom ${
-          isOmniOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-50 pointer-events-none'
-        }`}>
-          {/* eQORE AI Button */}
-          <div className="group/item relative">
-            <button
-              onClick={toggleChatbot}
-              className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-[0_10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex items-center justify-center transition-all duration-500 hover:scale-110 hover:shadow-[0_0_25px_rgba(37,100,234,0.4)] group focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
-              aria-label="Ask eQORE AI"
+        <AnimatePresence>
+          {isOmniOpen && (
+            <motion.div 
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={{
+                visible: { transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
+                hidden: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
+              }}
+              className="flex flex-col gap-4 origin-bottom pointer-events-none"
             >
-              <ResponsiveImage
-                src="/images/eqore-avatar.png"
-                alt="eQORE AI"
-                loading="lazy"
-                sizes="48px"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              {hasUnread && (
-                <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white dark:border-gray-800 animate-pulse"></span>
-              )}
-            </button>
-            {/* Tooltip */}
-            <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10">
-              Ask eQORE AI
-            </div>
-          </div>
-          <button onClick={openWhatsApp} className="w-12 h-12 bg-white dark:bg-gray-900 rounded-full shadow-lg border border-gray-100 dark:border-gray-800 flex items-center justify-center group overflow-hidden focus:outline-none focus:ring-0 focus-visible:outline-none select-none" title="WhatsApp Support">
-            <img src="/images/icons/whatsapp-3d.webp" alt="WhatsApp Support" className="w-[115%] h-[115%] max-w-none object-cover transition-transform duration-300 group-hover:scale-[1.25]" />
-          </button>
-          <button onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} className="w-12 h-12 bg-gradient-to-b from-[#60a5fa] to-[#1d4ed8] shadow-[inset_0_-4px_6px_rgba(0,0,0,0.4),inset_0_4px_6px_rgba(255,255,255,0.4),0_8px_15px_rgba(29,78,216,0.4)] border border-blue-500 rounded-full flex items-center justify-center group transition-transform duration-300 hover:scale-[1.15] active:scale-95 focus:outline-none focus:ring-0 focus-visible:outline-none select-none" title="Appearance Settings">
-            <svg className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeWidth="0">
-              <path d="M12 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM6.5 10a1.5 1.5 0 0 0 0 3h1.867l-1.393 4.873a1.5 1.5 0 1 0 2.884.825L12 11.237l2.142 7.461a1.5 1.5 0 1 0 2.884-.825L15.633 13H17.5a1.5 1.5 0 0 0 0-3h-11Z" />
-            </svg>
-          </button>
-        </div>
+              {/* Accessibility Button */}
+              <motion.div variants={{ hidden: { opacity: 0, y: 20, scale: 0.5 }, visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 400, damping: 25 } } }} className="group/item relative pointer-events-auto">
+                <motion.button 
+                  whileHover={{ scale: 1.08 }} 
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() => { setShowAccessibility(!showAccessibility); setIsOmniOpen(false); }} 
+                  className="w-[56px] h-[56px] bg-gradient-to-b from-[#60a5fa] to-[#2563eb] shadow-[inset_0_2px_4px_rgba(255,255,255,0.4),0_8px_20px_rgba(37,100,234,0.3)] rounded-full flex items-center justify-center focus:outline-none focus:ring-0 focus-visible:outline-none select-none relative overflow-hidden" 
+                  title="Appearance Settings"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                  <Accessibility className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] relative z-10 stroke-[2.5]" />
+                </motion.button>
+              </motion.div>
+
+              {/* WhatsApp Button */}
+              <motion.div variants={{ hidden: { opacity: 0, y: 20, scale: 0.5 }, visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 400, damping: 25 } } }} className="group/item relative pointer-events-auto">
+                <motion.button 
+                  whileHover={{ scale: 1.08 }} 
+                  whileTap={{ scale: 0.92 }}
+                  onClick={openWhatsApp} 
+                  className="w-[56px] h-[56px] bg-transparent rounded-full shadow-[0_8px_20px_rgba(0,0,0,0.12)] flex items-center justify-center overflow-hidden focus:outline-none focus:ring-0 focus-visible:outline-none select-none relative" 
+                  title="WhatsApp Support"
+                >
+                  <img src="/images/icons/whatsapp-3d.webp" alt="WhatsApp Support" className="w-[120%] h-[120%] max-w-none object-cover relative z-0" />
+                </motion.button>
+              </motion.div>
+
+              {/* eQORE AI Button */}
+              <motion.div variants={{ hidden: { opacity: 0, y: 20, scale: 0.5 }, visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 400, damping: 25 } } }} className="group/item relative pointer-events-auto">
+                <motion.button
+                  whileHover={{ scale: 1.08 }} 
+                  whileTap={{ scale: 0.92 }}
+                  onClick={toggleChatbot}
+                  className="w-[56px] h-[56px] rounded-full bg-[#1c1c1e] shadow-[0_8px_30px_rgba(0,0,0,0.3)] overflow-hidden flex items-center justify-center focus:outline-none focus:ring-0 focus-visible:outline-none select-none relative"
+                  aria-label="Ask eQORE AI"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none z-10" />
+                  <ResponsiveImage
+                    src="/images/eqore-avatar.png"
+                    alt="eQORE AI"
+                    loading="lazy"
+                    sizes="56px"
+                    className="w-[105%] h-[105%] object-cover relative z-0"
+                  />
+                  {hasUnread && (
+                    <span className="absolute top-1 right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white dark:border-[#1c1c1e] animate-pulse z-20"></span>
+                  )}
+                </motion.button>
+                {/* Tooltip */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-4 py-2 rounded-[12px] bg-white/90 dark:bg-[#2c2c2e]/90 backdrop-blur-xl text-gray-900 dark:text-white text-sm font-semibold whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-200/50 dark:border-white/10">
+                  Ask eQORE AI
+                </div>
+              </motion.div>
+
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Accessibility Panel */}
-        {showAccessibility && (
-          <div className="absolute bottom-24 right-0 bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl p-8 w-80 border border-gray-100 dark:border-gray-700 z-[101] animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-3 text-xl">Appearance</h3>
-              <button onClick={() => setShowAccessibility(false)} className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#050505] flex items-center justify-center text-gray-400"><X className="w-4 h-4" /></button>
-            </div>
-            <div className="space-y-6">
-              <div className="flex gap-2 p-1.5 bg-gray-50 dark:bg-gray-900 rounded-2xl">
-                <button onClick={() => adjustFontSize(-10)} className="flex-1 py-2 font-black">A-</button>
-                <button onClick={() => { setFontSize(100); document.documentElement.style.fontSize = '100%'; }} className="flex-1 py-2 text-[10px] text-gray-400 uppercase">Reset</button>
-                <button onClick={() => adjustFontSize(10)} className="flex-1 py-2 font-black">A+</button>
+        <AnimatePresence>
+          {showAccessibility && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              className="absolute bottom-[240px] right-0 bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-3xl rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-8 w-80 border border-gray-200/50 dark:border-white/10 z-[101] pointer-events-auto"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-3 text-xl">Appearance</h3>
+                <button onClick={() => setShowAccessibility(false)} className="w-8 h-8 rounded-full bg-gray-100/80 dark:bg-white/10 flex items-center justify-center text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/20 transition-colors"><X className="w-4 h-4" /></button>
               </div>
-              <button onClick={toggleHighContrast} className={`w-full py-4 px-5 rounded-2xl border-2 font-bold ${highContrast ? 'bg-gray-900 text-white' : 'border-gray-100 dark:text-white'}`}>High Contrast {highContrast ? 'ON' : 'OFF'}</button>
-            </div>
-          </div>
-        )}
-      </div>
+              <div className="space-y-6">
+                <div className="flex gap-2 p-1.5 bg-gray-100/80 dark:bg-black/40 rounded-[20px]">
+                  <button onClick={() => adjustFontSize(-10)} className="flex-1 py-2 font-black text-gray-900 dark:text-white hover:bg-white dark:hover:bg-[#2c2c2e] rounded-xl transition-colors">A-</button>
+                  <button onClick={() => { setFontSize(100); document.documentElement.style.fontSize = '100%'; }} className="flex-1 py-2 text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold hover:bg-white dark:hover:bg-[#2c2c2e] rounded-xl transition-colors">Reset</button>
+                  <button onClick={() => adjustFontSize(10)} className="flex-1 py-2 font-black text-gray-900 dark:text-white hover:bg-white dark:hover:bg-[#2c2c2e] rounded-xl transition-colors">A+</button>
+                </div>
+                <button onClick={toggleHighContrast} className={`w-full py-4 px-5 rounded-[20px] border font-bold transition-colors ${highContrast ? 'bg-[#007aff] text-white border-transparent' : 'bg-transparent border-gray-200 dark:border-white/10 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/5'}`}>High Contrast {highContrast ? 'ON' : 'OFF'}</button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
       {/* Sidebar Menu Overlay */}
       <AnimatePresence>

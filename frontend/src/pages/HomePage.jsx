@@ -533,29 +533,38 @@ const trustCards = [
 
 const EditorialCard = ({ card }) => {
   return (
-    <Link viewTransition
-      to={card.href}
-      className={`group relative z-10 overflow-hidden bg-slate-900 dark:bg-black transition-all duration-700 w-full rounded-2xl ${card.aspect}`}
-      style={{ transform: 'translateZ(0)' }}
+    <motion.div
+      whileHover={{ scale: 1.03, y: -4 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+      className={`group relative z-10 w-full ${card.aspect} rounded-[28px] shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] transition-shadow duration-500`}
     >
-      <div className="absolute inset-0 overflow-hidden rounded-2xl">
-        <img
-          src={card.image}
-          alt={card.title}
-          className="h-full w-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent rounded-2xl" />
-      </div>
+      <Link viewTransition
+        to={card.href}
+        className="block w-full h-full rounded-[28px] overflow-hidden bg-gray-900 relative"
+      >
+        <div className="absolute inset-0 overflow-hidden rounded-[28px]">
+          <img
+            src={card.image}
+            alt={card.title}
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+        </div>
 
-      <div className="relative z-10 flex h-full flex-col justify-end p-6 md:p-8">
-        <p className="mb-4 text-[13px] font-bold uppercase tracking-[0.2em] text-gray-400 font-sans">
-          {card.type}
-        </p>
-        <h3 className="font-sans text-2xl lg:text-3xl font-bold text-white leading-tight tracking-tight group-hover:underline decoration-white/30 underline-offset-8 transition-all">
-          {card.title} <span className="inline-block ml-1 font-sans text-xl font-light">›</span>
-        </h3>
-      </div>
-    </Link>
+        {/* Spatial Glass Edge (Inner Ring) */}
+        <div className="absolute inset-0 rounded-[28px] ring-1 ring-inset ring-white/20 pointer-events-none" />
+
+        <div className="relative z-10 flex h-full flex-col justify-end p-6 md:p-8 pointer-events-none">
+          <p className="mb-3 text-xs md:text-[13px] font-semibold uppercase tracking-[0.15em] text-white/80 font-sans drop-shadow-sm">
+            {card.type}
+          </p>
+          <h3 className="font-sans text-sm md:text-[15px] lg:text-base font-semibold text-white leading-[1.3] tracking-tight drop-shadow-md">
+            {card.title} <span className="inline-block ml-0.5 text-white/50 font-normal">›</span>
+          </h3>
+        </div>
+      </Link>
+    </motion.div>
   );
 };
 
@@ -605,77 +614,87 @@ const InsightsSubscribeBlock = () => {
   };
 
   return (
-    <div className="bg-gray-900 dark:bg-black p-10 flex flex-col justify-center aspect-video rounded-2xl">
-      {status === 'success' ? (
-        /* ── Success State ── */
-        <div className="flex flex-col items-center justify-center text-center gap-4 animate-fade-in">
-          <div className="w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center">
-            <Check className="w-7 h-7 text-emerald-400" />
-          </div>
-          <h3 className="font-serif text-2xl text-white leading-[1.2]">You're in.</h3>
-          <p className="text-sm text-gray-400 font-sans max-w-xs">{message}</p>
-        </div>
-      ) : (
-        /* ── Default / Loading / Error State ── */
-        <>
-          <h3 className="font-serif text-2xl md:text-3xl text-white mb-8 text-center leading-[1.2]">
-            Subscribe to the latest Kangqore Insights on the topics you care about.
-          </h3>
-          
-          <form onSubmit={handleSubscribe} className="relative mb-4 flex rounded-xl overflow-hidden">
-            <input 
-              type="email"
-              id="insights-subscribe-email"
-              name="insights-email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); if (status === 'error') { setStatus('idle'); setMessage(''); } }}
-              placeholder="Email address"
-              disabled={status === 'loading'}
-              className="w-full bg-white dark:bg-black px-6 py-4 text-gray-900 dark:text-white focus:outline-none font-sans text-base disabled:opacity-60"
-            />
-            <button 
-              type="submit"
-              disabled={status === 'loading'}
-              className="bg-[#0055ff] px-6 flex items-center justify-center hover:bg-blue-600 transition-colors disabled:opacity-60 min-w-[60px]"
-            >
-              {status === 'loading' ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <ArrowRight className="w-6 h-6 text-white" />
-              )}
-            </button>
-          </form>
-
-          {/* Feedback message */}
-          {status === 'error' && message && (
-            <p className="text-red-400 text-xs font-sans text-center mb-6">{message}</p>
-          )}
-          {status !== 'error' && <div className="mb-6" />}
-
-          <div className="relative flex items-center justify-center mb-10">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10"></div>
+    <motion.div 
+      whileHover={{ scale: 1.01 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      className="bg-[#1c1c1e] p-8 flex flex-col justify-center h-full min-h-[360px] rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.2)] border border-white/10 relative overflow-hidden w-full"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+      
+      <div className="relative z-10 h-full flex flex-col justify-center">
+        {status === 'success' ? (
+          /* ── Success State ── */
+          <div className="flex flex-col items-center justify-center text-center gap-4 animate-fade-in">
+            <div className="w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center">
+              <Check className="w-7 h-7 text-emerald-400" />
             </div>
-            <span className="relative px-6 text-[11px] font-bold text-gray-500 uppercase tracking-widest bg-gray-900 dark:bg-black font-sans">
-              Or continue with
-            </span>
+            <h3 className="font-serif text-2xl text-white leading-[1.2]">You're in.</h3>
+            <p className="text-sm text-gray-400 font-sans max-w-xs">{message}</p>
           </div>
+        ) : (
+          /* ── Default / Loading / Error State ── */
+          <>
+            <h3 className="font-serif text-xl md:text-2xl text-white mb-6 text-center leading-[1.2] drop-shadow-sm px-2">
+              Subscribe to the latest Kangqore Insights on the topics you care about.
+            </h3>
+            
+            <form onSubmit={handleSubscribe} className="relative mb-5 flex rounded-xl overflow-hidden bg-white/5 border border-white/10 backdrop-blur-xl shadow-inner focus-within:ring-2 focus-within:ring-blue-500/50 transition-all">
+              <input 
+                type="email"
+                id="insights-subscribe-email"
+                name="insights-email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); if (status === 'error') { setStatus('idle'); setMessage(''); } }}
+                placeholder="Email address"
+                disabled={status === 'loading'}
+                className="w-full bg-transparent px-5 py-3 text-white placeholder-white/50 focus:outline-none font-sans text-[15px] disabled:opacity-60"
+              />
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                type="submit"
+                disabled={status === 'loading'}
+                className="bg-[#007aff] px-6 flex items-center justify-center hover:bg-blue-500 transition-colors disabled:opacity-60 min-w-[60px]"
+              >
+                {status === 'loading' ? (
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <ArrowRight className="w-5 h-5 text-white" />
+                )}
+              </motion.button>
+            </form>
 
-          <div className="grid grid-cols-3 gap-3">
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 hover:scale-105 active:scale-95 transition-all duration-300 font-sans rounded-xl">
-              Apple
-            </button>
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 hover:scale-105 active:scale-95 transition-all duration-300 font-sans rounded-xl">
-              Google
-            </button>
-            <button className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black dark:bg-gray-900 dark:border-gray-800/5 hover:scale-105 active:scale-95 transition-all duration-300 font-sans rounded-xl">
-              LinkedIn
-            </button>
-          </div>
-        </>
-      )}
-    </div>
+            {/* Feedback message */}
+            {status === 'error' && message && (
+              <p className="text-red-400 text-xs font-sans text-center mb-4">{message}</p>
+            )}
+
+            <div className="relative flex items-center justify-center mb-6 mt-2">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/10"></div>
+              </div>
+              <span className="relative px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-[#1c1c1e] font-sans">
+                Or continue with
+              </span>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              {['Apple', 'Google', 'LinkedIn'].map((provider) => (
+                <motion.button 
+                  key={provider}
+                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                  className="flex items-center justify-center gap-2 border border-white/10 py-3 px-2 text-[10px] font-bold text-white uppercase tracking-widest bg-transparent rounded-xl transition-colors font-sans shadow-sm"
+                >
+                  {provider}
+                </motion.button>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </motion.div>
   );
 };
 
@@ -701,17 +720,17 @@ const TrustIntelligenceLayer = () => {
           </div>
 
           {/* 2. Featured Card (Right Side - Spans entire height) */}
-          <div className="lg:row-span-2 lg:col-start-3 h-full">
+          <div className="lg:row-span-2 lg:col-start-3 h-full flex flex-col justify-end">
             <EditorialCard card={trustCards[0]} />
           </div>
 
           {/* 3. Small Card Left (Bottom Left) */}
-          <div className="lg:col-start-1 lg:row-start-2">
+          <div className="lg:col-start-1 lg:row-start-2 h-full flex flex-col justify-end">
             <EditorialCard card={trustCards[2]} />
           </div>
 
           {/* 4. Small Card Middle (Bottom Middle) */}
-          <div className="lg:col-start-2 lg:row-start-2">
+          <div className="lg:col-start-2 lg:row-start-2 h-full flex flex-col justify-end">
             <EditorialCard card={trustCards[3]} />
           </div>
 
