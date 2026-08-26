@@ -133,7 +133,7 @@ const Footer = () => {
         </div>
 
         {/* RIGHT CARD — Navigation */}
-        <div className="bg-[#f0f1f5] dark:bg-[#0a0a0c] footer-right-card" style={{ borderRadius: 28, padding: 40, overflow: 'visible', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative' }}>
+        <div className="bg-white/70 dark:bg-[#1a1c29]/70 backdrop-blur-xl border border-white/40 dark:border-white/10 footer-right-card" style={{ borderRadius: 28, padding: 40, overflow: 'visible', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative' }}>
 
           {/* Floating Let's Connect Badge */}
           <a href="/contact" className="absolute -top-8 -right-6 flex flex-col items-center z-50 group hover:-translate-y-2 transition-transform duration-300" style={{ textDecoration: 'none' }}>
@@ -230,7 +230,7 @@ const Footer = () => {
       {/* Watermark */}
       <div style={{ maxWidth: 1150, margin: '-60px auto 0', pointerEvents: 'none', userSelect: 'none', position: 'relative', zIndex: 0, lineHeight: 0 }} aria-hidden="true">
         <svg id="footerWatermarkSvg" viewBox="62 95 876 175" preserveAspectRatio="xMidYMid meet" style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible' }}>
-          <text id="footerWatermarkText" x="500" y="240" textAnchor="middle" fontSize="320" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: '-0.03em', fill: 'rgba(0,0,0,0.04)' }}>Kangqore</text>
+          <text id="footerWatermarkText" x="500" y="240" textAnchor="middle" fontSize="320" style={{ fontFamily: "-apple-system, system-ui, BlinkMacSystemFont, 'SF Pro Display', sans-serif", fontWeight: 800, letterSpacing: '-0.04em', fill: '#ffffff', filter: 'drop-shadow(0px 10px 20px rgba(0,0,0,0.15)) drop-shadow(0px 3px 6px rgba(0,0,0,0.1))' }}>Kangqore</text>
         </svg>
       </div>
 

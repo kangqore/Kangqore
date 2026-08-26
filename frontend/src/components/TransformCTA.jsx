@@ -135,7 +135,7 @@ const TransformCTA = () => {
   }, []);
 
   return (
-    <section className="py-28 md:py-36 lg:py-44 bg-white dark:bg-black">
+    <section className="pt-28 md:pt-36 lg:pt-44 pb-14 md:pb-16 lg:pb-20 bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div 
           ref={sectionRef}
@@ -144,9 +144,9 @@ const TransformCTA = () => {
           }`}
         >
           {/* Main Content */}
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-20">
+          <div className="flex flex-col gap-8 mb-16">
             {/* Large Headline */}
-            <h2 className="text-5xl md:text-6xl lg:text-8xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl cursor-default">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 dark:text-white leading-tight cursor-default lg:whitespace-nowrap">
               <DancingWord word="We" startIndex={0} hasSpaceAfter={true} isDancing={isDancing} />
               <DancingWord 
                 word="innovate" 
@@ -157,24 +157,32 @@ const TransformCTA = () => {
               />
               <DancingWord word="futures." startIndex={10} isDancing={isDancing} />
             </h2>
-            {/* Get in Touch Link */}
-            <Link
-              to="/contact"
-              className="group inline-flex items-center gap-3 text-xl md:text-2xl font-bold text-gray-900 dark:text-white hover:text-brand-blue dark:hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors duration-300 self-start lg:self-auto pt-4 lg:pt-2 mt-2"
-            >
-              Get in touch
-              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 transform transition-transform duration-300 group-hover:translate-x-2" />
-            </Link>
+            
+            {/* Bottom Description */}
+            <div className="max-w-4xl">
+              <p className="text-gray-600 dark:text-gray-400 text-lg lg:text-xl leading-relaxed">
+                Let’s define your next competitive advantage. Talk to Kangqore’s transformation advisors.
+              </p>
+            </div>
           </div>
           
-          {/* Bottom Description */}
-          <div className="max-w-4xl">
-            <p className="text-gray-600 dark:text-gray-400 text-lg lg:text-xl leading-relaxed">
-              Let’s define your next competitive advantage. Talk to Kangqore’s transformation advisors.
-            </p>
+          {/* Action Buttons */}
+          <div className="flex flex-col md:flex-row gap-4 w-full mt-10">
+            <Link
+              to="/contact"
+              className="group flex-1 flex items-center justify-between bg-white/70 dark:bg-[#1a1c29]/70 backdrop-blur-xl border border-white/40 dark:border-white/10 rounded-3xl px-8 py-8 shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:scale-[1.02] hover:bg-white/80 dark:hover:bg-[#1a1c29]/80 transition-all duration-300 text-gray-900 dark:text-white"
+            >
+              <span className="text-2xl md:text-3xl font-normal tracking-tight">Get in touch</span>
+              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 stroke-[1.5] transform transition-transform duration-300 group-hover:translate-x-2" />
+            </Link>
+            <Link
+              to="/book-discovery"
+              className="group flex-1 flex items-center justify-between bg-white/70 dark:bg-[#1a1c29]/70 backdrop-blur-xl border border-white/40 dark:border-white/10 rounded-3xl px-8 py-8 shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:scale-[1.02] hover:bg-white/80 dark:hover:bg-[#1a1c29]/80 transition-all duration-300 text-gray-900 dark:text-white"
+            >
+              <span className="text-2xl md:text-3xl font-normal tracking-tight">Schedule Your 30-min Discovery Call</span>
+              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 stroke-[1.5] transform transition-transform duration-300 group-hover:translate-x-2" />
+            </Link>
           </div>
-
-
         </div>
       </div>
     </section>

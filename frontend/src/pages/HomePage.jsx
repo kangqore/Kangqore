@@ -324,17 +324,9 @@ const HeroCarousel = () => {
               index === activeSlide ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
           >
-            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-[194px] lg:pt-[250px] pb-[167px] sm:pb-[175px] h-full flex flex-col">
+            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-[194px] lg:pt-[250px] pb-[167px] sm:pb-[175px] h-full flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
 
-              {/* Right panel — conditional per slide type */}
-              {slide.type === 'video' && (
-                <div className="hidden lg:block absolute top-[253px] right-6 sm:right-8 lg:right-16 xl:right-24 w-[245px] xl:w-[265px] z-10 scale-[1.02] origin-top-right">
-                  <HeroGlassCards />
-                </div>
-              )}
-
-
-              <div className={`${slide.type === 'chat' ? 'w-full' : 'max-w-5xl'} flex flex-col h-full justify-center`}>
+              <div className={`${slide.type === 'chat' ? 'w-full' : 'w-full lg:max-w-[850px] xl:max-w-[950px]'} flex flex-col h-full justify-center z-10`}>
 
                 <div className="flex-shrink-0">
 
@@ -344,15 +336,12 @@ const HeroCarousel = () => {
                       slide.id === 2 ? '-translate-y-6' : ''
                     }`}
                   >
-                  {slide.title}
+                  <span className="block xl:whitespace-nowrap">{slide.title}</span>
                   {slide.titleTypewriter && (
                     <HUDText text={slide.titleTypewriter} delay={300} startTyping={index === activeSlide} loop={true} />
                   )}
                   {slide.titleGradient && (
-                    <>
-                      {' '}
-                      <span className="bg-brand-gradient bg-clip-text text-transparent">{slide.titleGradient}</span>
-                    </>
+                    <span className="block bg-brand-gradient bg-clip-text text-transparent xl:whitespace-nowrap mt-1 sm:mt-2">{slide.titleGradient}</span>
                   )}
                 </h1>
 
@@ -376,7 +365,7 @@ const HeroCarousel = () => {
 
                 {/* CTAs for slides */}
                 {slide.cta && (
-                  <div className="flex flex-col sm:flex-row items-center gap-8 animate-fade-in">
+                  <div className="flex flex-col sm:flex-row items-center gap-8 animate-fade-in mt-2">
                     {slide.cta && (
                       <Link viewTransition
                         to={slide.link}
@@ -407,6 +396,13 @@ const HeroCarousel = () => {
                   </div>
                 )}
               </div>
+              
+              {/* Right Side: Hero Glass Cards (Restored) */}
+              {slide.type !== 'chat' && (
+                <div className="hidden lg:block absolute right-[6%] xl:right-[10%] top-[30%] lg:top-[35%] z-10 pointer-events-auto">
+                  <HeroGlassCards activeSlide={activeSlide} />
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -885,7 +881,7 @@ const IndustriesWeServe = () => {
   };
 
   return (
-    <section className="py-32 bg-black text-white">
+    <section className="py-32 bg-white text-gray-900">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Header Section */}
         <div 
@@ -896,15 +892,15 @@ const IndustriesWeServe = () => {
         >
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] w-12 bg-gray-500"></div>
-            <span className="text-sm font-semibold text-gray-400 uppercase tracking-widest">
+            <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
               {t('home.industries_section.label')}
             </span>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              {t('home.industries_section.heading_prefix')} <span className="bg-brand-gradient bg-clip-text text-transparent">{t('home.industries_section.heading_highlight')}</span> {t('home.industries_section.heading_suffix')}.
+              {t('home.industries_section.heading_prefix')} <span className="bg-brand-gradient bg-clip-text text-transparent">{t('home.industries_section.heading_highlight')}</span>{t('home.industries_section.heading_suffix') ? ' ' + t('home.industries_section.heading_suffix') : ''}.
             </h2>
-            <p className="text-lg text-gray-400 leading-relaxed max-w-md lg:text-right">
+            <p className="text-lg text-gray-600 leading-relaxed max-w-md lg:text-right">
               {t('home.industries_section.description')}
             </p>
           </div>
@@ -928,21 +924,21 @@ const IndustriesWeServe = () => {
             <Link viewTransition 
               key={idx}
               to={item.to}
-              className="group flex items-center justify-between py-5 border-b border-white/5 hover:border-brand-blue/30 transition-all duration-300"
+              className="group flex items-center justify-between py-5 transition-all duration-300"
             >
-              <span className="text-sm font-bold uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">
+              <span className="text-sm font-bold uppercase tracking-widest text-gray-600 group-hover:text-gray-900 transition-colors">
                 {t(`industries.${item.id}`)}
               </span>
-              <ArrowRight className="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 group-hover:rotate-[-45deg] transition-all duration-500" />
+              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 group-hover:rotate-[-45deg] transition-all duration-500" />
             </Link>
           ))}
           
           {/* Last Action: Explore All */}
           <Link viewTransition 
             to="/industries"
-            className="group flex items-center justify-between py-5 border-b border-brand-blue/20 hover:border-brand-blue/50 transition-all duration-300"
+            className="group flex items-center justify-between py-5 transition-all duration-300"
           >
-            <span className="text-sm font-extrabold uppercase tracking-widest bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:text-white transition-colors">
+            <span className="text-sm font-extrabold uppercase tracking-widest bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:text-gray-900 transition-colors">
               Explore the other INDUSTRIES
             </span>
             <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 group-hover:rotate-[-45deg] transition-all duration-500" />
@@ -1608,9 +1604,9 @@ const HomePage = () => {
       </SectionWrapper>
 
       {/* ── Intelligent Solutions 3-card section ── */}
-      <section className="py-20 bg-black overflow-hidden">
+      <section className="py-20 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white mb-16 max-w-3xl">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 mb-16 max-w-3xl">
             {lockedIntent === 'enterpriseBuyer' ? (
               <>Enterprise cloud infrastructure that powers up your <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">scale</span>.</>
             ) : lockedIntent === 'developer' ? (

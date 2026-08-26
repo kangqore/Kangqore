@@ -9,7 +9,7 @@ import { usePodcast } from '../../context/PodcastContext';
 
 const EqoreShowSection = () => {
   return (
-    <section id="eqore-show" className="relative w-full py-28 md:py-36 lg:py-44 bg-black overflow-hidden">
+    <section id="eqore-show" className="relative w-full py-28 md:py-36 lg:py-44 bg-white overflow-hidden">
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         
@@ -17,10 +17,13 @@ const EqoreShowSection = () => {
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-16 lg:mb-20">
           {/* Left Side — Title */}
           <div className="lg:w-1/2">
-            <span className="text-sm font-semibold text-blue-500 uppercase tracking-wider mb-4 block">
-              Podcast
-            </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-gray-500"></div>
+              <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
+                Podcast
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
               The eQORE{' '}
               <span className="bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">
                 Show
@@ -30,7 +33,7 @@ const EqoreShowSection = () => {
           
           {/* Right Side — Description + Listen Button */}
           <div className="lg:w-1/2 lg:pt-8 flex flex-col items-start gap-6">
-            <p className="text-gray-400 text-lg lg:text-xl leading-relaxed">
+            <p className="text-gray-600 text-lg lg:text-xl leading-relaxed">
               A shortcut to clarity in a noisy world, The eQORE Show dives into the ideas, issues, and innovations reshaping enterprise architecture.
             </p>
             <button
@@ -44,7 +47,7 @@ const EqoreShowSection = () => {
         </div>
 
         {/* ── Featured Episode Card ── */}
-        <div className="bg-white rounded-sm overflow-hidden shadow-2xl flex flex-col md:flex-row relative">
+        <div className="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col md:flex-row relative">
           
           {/* Card Content — Left Side */}
           <div className="flex-1 p-8 md:p-12 lg:p-16 flex flex-col justify-between">
@@ -58,7 +61,7 @@ const EqoreShowSection = () => {
                 Host: eQORE <span className="text-gray-300 mx-2">|</span> Produced by: Kangqore
               </p>
               <div className="text-gray-600 text-lg leading-relaxed mb-8 max-w-xl space-y-4">
-                <p>At Kangqore — this is foundational to everything we build. Across all 15 departments. Across all 61 services. From Agentic AI to AI Governance. From Cybersecurity to Digital Transformation. From our Engineering Foundry to our Quality Engineering & Assurance practice.</p>
+                <p>At Kangqore — this is foundational to everything we build. Across all 60+ services, under 6 major departments. From Agentic AI to AI Governance. From Cybersecurity to Digital Transformation. From our Engineering Foundry to our Quality Engineering & Assurance practice.</p>
                 <p className="font-medium text-gray-800">Because we believe intelligence only earns the right to scale when it scales with trust.</p>
               </div>
             </div>
