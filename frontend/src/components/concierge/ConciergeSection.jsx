@@ -182,17 +182,14 @@ function renderFormattedText(text) {
 const DEFAULT_PROMPTS = [
   "What is Kangqore?",
   "Services/Capabilities",
-  "What are your departments?",
   "Which industries do you serve?",
   "Why choose Kangqore?",
-  "What services does Kangqore offer?",
   "Who is the founder and CEO of the company?",
   "who is eQORE in Kangqore?",
   "Tell me about your success stories.",
   "How does your GCC model work?",
   "What is your approach to Agentic AI?",
   "How do you ensure data security?",
-  "What is your approach to SAP S/4HANA migration?",
   "Do you have SOC 2 Type II?",
   "Schedule Your Consultation",
   "Contact Us...",
@@ -430,22 +427,22 @@ const ConciergeSection = ({
           </p>
         </div>
 
-        <div className="group relative rounded-[30px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.14] bg-[#060810]/50 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_35px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0_-1px_1px_0_rgba(0,0,0,0.5)]">
-          {/* Iridescent Liquid Background Overlay */}
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-50 group-hover:opacity-70 transition-opacity duration-700">
+        <div className="group relative rounded-[30px] overflow-hidden w-full transition-all duration-500 hover:-translate-y-0.5 border border-white/[0.14] bg-[#060810]/50 backdrop-blur-[60px] backdrop-saturate-200 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.15),inset_0_1px_0px_0_rgba(255,255,255,0.2),inset_0_-1px_0px_0_rgba(0,0,0,0.2)]">
+          {/* Slate Texture Background (Matched with Explore Capabilities cards) */}
+          <div className="absolute inset-0 z-0 pointer-events-none bg-[#0a0a0c] overflow-hidden transition-opacity duration-700">
             <ResponsiveImage 
-              src="/images/concierge-bg.png" 
+              src="/images/capabilities/agentic-governed-autonomy.png" 
               alt="" 
-              className="w-full h-full object-cover object-center mix-blend-screen"
+              className="w-full h-full object-cover object-center opacity-40 transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#060810]/50 via-transparent to-[#060810]/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/80 to-[#0a0a0c]/40 z-10 pointer-events-none" />
           </div>
 
           {/* macOS Tahoe Specular Hairline Rim Beam */}
           <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" />
 
           {/* ───────────── Header Bar ───────────── */}
-          <div className="relative z-10 px-6 sm:px-8 pt-6 pb-2 flex items-center justify-between gap-3">
+          <div className="relative z-10 px-6 sm:px-8 py-5 flex flex-wrap sm:flex-nowrap items-center justify-between gap-4 border-b border-white/20 bg-gradient-to-r from-white/[0.05] via-white/[0.12] to-white/[0.05] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.2)]">
             <div className="flex items-center gap-3.5">
               <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-white/20 bg-slate-900/80 shadow-md">
                 <ResponsiveImage src="/images/eqore-avatar.png" alt="eQORE" loading="lazy" sizes="64px" className="w-full h-full object-cover" />
@@ -462,7 +459,7 @@ const ConciergeSection = ({
             <div className="flex items-center gap-2.5">
               <Link
                 to="/eqore-ai"
-                className="group inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-full border border-white/20 hover:border-white/40 bg-white/[0.08] hover:bg-white/[0.18] text-white backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.15)] transition-all duration-300 active:scale-95"
+                className="group inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-full border border-white/20 hover:border-white/40 bg-white/[0.08] hover:bg-white/[0.18] text-white backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_0_rgba(255,255,255,0.25)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.15),inset_0_1px_0_0_rgba(255,255,255,0.35)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.03] active:scale-95"
                 title="Launch Immersive Full-Screen AI Experience"
               >
                 <span>Immersive AI Experience</span>
@@ -477,10 +474,10 @@ const ConciergeSection = ({
                     window.speechSynthesis.cancel();
                   }
                 }}
-                className={`inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border transition-all duration-300 backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.2)] active:scale-95 ${
+                className={`inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full border backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.2)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.03] active:scale-95 ${
                   isVoiceEnabled
-                    ? 'bg-white/[0.22] text-white border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)]'
-                    : 'bg-white/[0.06] text-white/85 hover:text-white border-white/15 hover:border-white/30'
+                    ? 'bg-white/[0.22] text-white border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.35),inset_0_1px_0_0_rgba(255,255,255,0.4)]'
+                    : 'bg-white/[0.06] text-white/85 hover:text-white border-white/15 hover:border-white/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.15),inset_0_1px_0_0_rgba(255,255,255,0.25)]'
                 }`}
                 title={isVoiceEnabled ? 'Disable Voice Output' : 'Enable Voice Output'}
               >
@@ -541,10 +538,10 @@ const ConciergeSection = ({
                         )}
                       </div>
                       <div
-                        className={`text-[16px] leading-[1.65] transition-all ${
+                        className={`leading-[1.65] transition-all ${
                           isUser
-                            ? 'px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white font-medium shadow-[0_8px_25px_rgba(37,100,234,0.4)] backdrop-blur-2xl border border-white/20'
-                            : 'bg-transparent text-white/95 border-0 shadow-none px-0 py-0.5 font-normal'
+                            ? 'text-[14px] sm:text-[16px] px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white font-medium shadow-[0_8px_25px_rgba(37,100,234,0.4)] backdrop-blur-2xl border border-white/20'
+                            : 'text-[16px] sm:text-[20px] bg-transparent text-white/95 border-0 shadow-none px-0 py-0.5 font-normal'
                         }`}
                       >
                         {msg.id === 'greeting' ? (
@@ -709,63 +706,69 @@ const ConciergeSection = ({
               </div>
             )}
 
-            <form onSubmit={submit} className="relative">
-              <div className="relative flex items-center rounded-full bg-black/40 hover:bg-black/55 focus-within:bg-black/70 border border-white/20 focus-within:border-white/40 backdrop-blur-3xl shadow-[inset_0_2px_6px_rgba(0,0,0,0.6),0_12px_32px_rgba(0,0,0,0.5)] focus-within:shadow-[0_0_24px_rgba(255,255,255,0.2),inset_0_2px_6px_rgba(0,0,0,0.6)] transition-all duration-300">
-                <input
+            <form onSubmit={submit} className="relative flex flex-row items-end gap-3">
+              <div className="relative flex-1 rounded-[24px] bg-black/40 hover:bg-black/55 focus-within:bg-black/70 border border-white/20 focus-within:border-white/40 backdrop-blur-3xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.6),0_1px_1px_rgba(255,255,255,0.15),0_8px_20px_rgba(0,0,0,0.2)] focus-within:shadow-[0_0_24px_rgba(255,255,255,0.15),inset_0_2px_8px_rgba(0,0,0,0.6)] transition-all duration-300">
+                <textarea
                   ref={inputRef}
-                  type="text"
                   value={voice.listening && voice.interim ? `${input} ${voice.interim}`.trim() : input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      if (input.trim()) submit(e);
+                    }
+                  }}
                   disabled={streaming}
                   aria-label="Ask eQORE AI a question"
                   placeholder={voice.listening ? 'Listening… speak now' : 'Ask eQORE anything about Kangqore…'}
-                  className="w-full bg-transparent pl-6 pr-28 py-4 text-[16px] font-medium text-white placeholder-white/45 focus:outline-none disabled:opacity-60"
+                  className="w-full bg-transparent px-6 py-5 text-[16px] leading-[1.6] font-medium text-white placeholder-white/45 focus:outline-none disabled:opacity-60 resize-none min-h-[96px] chat-scrollbar"
                 />
+              </div>
                 
-                <div className="absolute right-2 flex items-center gap-1.5">
-                  {voice.supported && (
-                    <button
-                      type="button"
-                      onClick={voice.toggle}
-                      disabled={streaming}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-xl shadow-md active:scale-95 ${
-                        voice.listening
-                          ? 'bg-rose-500 text-white animate-pulse shadow-[0_0_20px_rgba(244,63,94,0.7)]'
-                          : 'bg-white/[0.10] hover:bg-white/[0.20] border border-white/20 text-white/90 hover:text-white'
-                      } disabled:opacity-40 disabled:cursor-not-allowed`}
-                      aria-label={voice.listening ? 'Stop voice input' : 'Start voice input'}
-                      title={voice.listening ? 'Stop' : 'Voice input'}
-                    >
-                      {voice.listening ? (
-                        <MicOff className="w-[18px] h-[18px]" />
-                      ) : (
-                        <Mic className="w-[18px] h-[18px]" />
-                      )}
-                    </button>
-                  )}
-                  {streaming ? (
-                    <button
-                      type="button"
-                      onClick={stop}
-                      className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 bg-white/[0.15] hover:bg-white/[0.25] border border-white/20 text-white shadow-md active:scale-95 backdrop-blur-xl"
-                      aria-label="Stop generating"
-                      title="Stop"
-                    >
-                      <Square className="w-4 h-4 fill-current text-white" />
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      disabled={!input.trim()}
-                      className="w-10 h-10 rounded-full bg-white/[0.10] hover:bg-white/[0.20] text-white/90 hover:text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-md backdrop-blur-xl border border-white/20 hover:border-white/40 active:scale-95"
-                      aria-label="Send"
-                    >
-                      <ArrowRight className="w-4 h-4 -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-white/90 group-hover:text-white" strokeWidth={2.5} />
-                    </button>
-                  )}
-                </div>
+              <div className="flex justify-end items-center gap-2 pb-4 shrink-0">
+                {voice.supported && (
+                  <button
+                    type="button"
+                    onClick={voice.toggle}
+                    disabled={streaming}
+                    className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-xl shadow-md active:scale-95 ${
+                      voice.listening
+                        ? 'bg-rose-500 text-white animate-pulse shadow-[0_0_20px_rgba(244,63,94,0.7)]'
+                        : 'bg-white/[0.10] hover:bg-white/[0.20] border border-white/20 text-white/90 hover:text-white'
+                    } disabled:opacity-40 disabled:cursor-not-allowed`}
+                    aria-label={voice.listening ? 'Stop voice input' : 'Start voice input'}
+                    title={voice.listening ? 'Stop' : 'Voice input'}
+                  >
+                    {voice.listening ? (
+                      <MicOff className="w-[20px] h-[20px]" />
+                    ) : (
+                      <Mic className="w-[20px] h-[20px]" />
+                    )}
+                  </button>
+                )}
+                {streaming ? (
+                  <button
+                    type="button"
+                    onClick={stop}
+                    className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 bg-white/[0.15] hover:bg-white/[0.25] border border-white/20 text-white shadow-md active:scale-95 backdrop-blur-xl"
+                    aria-label="Stop generating"
+                    title="Stop"
+                  >
+                    <Square className="w-5 h-5 fill-current text-white" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={!input.trim()}
+                    className="w-11 h-11 rounded-full bg-white/[0.10] hover:bg-white/[0.20] text-white/90 hover:text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-md backdrop-blur-xl border border-white/20 hover:border-white/40 active:scale-95 group"
+                    aria-label="Send"
+                  >
+                    <ArrowRight className="w-5 h-5 group-hover:-rotate-45 transition-transform duration-300 text-white/90 group-hover:text-white" strokeWidth={2.5} />
+                  </button>
+                )}
               </div>
             </form>
+
 
             {error && (
               <p className="mt-2 text-xs text-rose-400 font-semibold">{error}</p>
