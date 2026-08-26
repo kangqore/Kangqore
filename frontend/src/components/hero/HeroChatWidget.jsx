@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useConcierge } from '../../hooks/useConcierge';
 import { useVoiceInput } from '../../hooks/useVoiceInput';
+import { triggerHaptic } from '../../utils/haptics';
 
 function renderFormattedText(text) {
   if (!text) return text;
@@ -136,7 +137,10 @@ const HeroChatWidget = ({ isActive }) => {
         <div className="p-1 rounded-full border border-white/14 bg-white/3 backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.25)]">
           <button
           type="button"
-          onClick={voice.toggle}
+          onClick={() => {
+            triggerHaptic('medium');
+            voice.toggle();
+          }}
           disabled={streaming}
           onMouseDown={() => setMicPressed(true)}
           onMouseUp={() => setMicPressed(false)}

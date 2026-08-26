@@ -1,11 +1,15 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { triggerHaptic } from '../../utils/haptics';
 
 const SuggestedPromptChip = ({ prompt, onSelect, disabled, inverted = false }) => (
   <button
     type="button"
     disabled={disabled}
-    onClick={() => onSelect(prompt)}
+    onClick={() => {
+      triggerHaptic('light');
+      onSelect(prompt);
+    }}
     className="group inline-flex items-center gap-2 text-[12px] font-semibold px-4 py-2 rounded-full border border-white/20 hover:border-white/45 bg-black/40 hover:bg-black/65 text-white/95 hover:text-white backdrop-blur-2xl shadow-[0_4px_14px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.25)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.15),inset_0_1px_1px_rgba(255,255,255,0.35)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 whitespace-nowrap hover:-translate-y-0.5 active:scale-95"
   >
     <span>{prompt}</span>
