@@ -27,7 +27,7 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
 
   // Simple scroll parallax for the background image
   // It moves slightly based on the scroll position
-  const yParallax = useTransform(scrollYProgress, [0, 1], [0, 40]);
+  const yParallax = useTransform(scrollYProgress, [0, 1], [-15, 15]);
 
   // Framer motion variants for the staggered entrance
   const cardVariants = {
@@ -75,13 +75,13 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
       className={`group svc-cap-group relative rounded-2xl overflow-hidden transition-all duration-500 ${cardClass} ${
         isExpanded 
           ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
-          : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.85),0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,1)]'
+          : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25)]'
       }`}
     >
       {!isExpanded && (
         <>
-          <div className="absolute inset-0 z-30 pointer-events-none rounded-2xl border border-white/[0.06] shadow-[inset_0_1.5px_0_0_rgba(255,255,255,0.15),inset_0_-1.5px_0_0_rgba(0,0,0,0.6)]" />
-          <div className="absolute inset-x-0 bottom-0 h-[3px] bg-black/40 z-30 pointer-events-none" />
+          <div className="absolute inset-0 z-30 pointer-events-none rounded-2xl border border-white/[0.06] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),inset_0_-1px_0_0_rgba(0,0,0,0.3)]" />
+          <div className="absolute inset-x-0 bottom-0 h-[2px] bg-black/30 z-30 pointer-events-none" />
         </>
       )}
 
@@ -94,24 +94,22 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
           }}
         />
       )}
-
+      {/* Background Image & Original Gradient */}
       <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         {bgImage && (
           <motion.img
             src={bgImage}
             alt={`${dept.title} — ${dept.desc}`}
             loading={i === 0 ? 'eager' : 'lazy'}
-            className="w-full h-full object-cover transition-transform duration-700"
+            className="w-full h-full object-cover opacity-60 transition-transform duration-700"
             style={{
               y: yParallax,
-              transform: tilt.active ? `translate3d(${-tilt.y * 0.5}px, ${tilt.x * 0.5}px, 0) scale3d(1.1, 1.1, 1.1)` : 'scale3d(1.05, 1.05, 1.05)',
+              transform: tilt.active ? `translate3d(${-tilt.y * 0.5}px, ${tilt.x * 0.5}px, 0) scale3d(1.15, 1.15, 1.15)` : 'scale3d(1.1, 1.1, 1.1)',
               transition: tilt.active ? 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)' : 'transform 0.5s ease',
             }}
           />
         )}
-        <div className="absolute inset-0 bg-black/35 z-[1]" />
-        <div className="absolute inset-x-0 top-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.45) 45%,rgba(0,0,0,0) 100%)' }} />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 z-[2]" style={{ background: 'linear-gradient(0deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 50%,rgba(0,0,0,0) 100%)' }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/80 to-transparent" />
       </div>
 
       {!isExpanded && (
@@ -120,17 +118,17 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
 
       <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <div className="flex flex-col h-full">
-          <h3 className="text-2xl lg:text-3xl font-bold mb-2 transition-transform duration-300 shrink-0 text-white">
+          <h3 className="text-xl sm:text-2xl lg:text-[28px] leading-tight tracking-tight font-bold mb-2 transition-transform duration-300 shrink-0 text-white">
             {dept.title}
           </h3>
           <p className="text-xs lg:text-sm font-semibold mb-6 shrink-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
             {dept.items.length} Key Capabilities
           </p>
           <div className="relative flex-1">
-            <p className="svc-cap-desc absolute inset-0 leading-relaxed text-sm lg:text-[15px] text-white/90">
+            <p className="svc-cap-desc absolute inset-0 overflow-y-auto no-scrollbar leading-relaxed text-sm lg:text-[15px] text-white/90 pb-2">
               {dept.desc}
             </p>
-            <ul className="svc-cap-items absolute inset-0 space-y-2.5 text-white/90">
+            <ul className="svc-cap-items absolute inset-0 overflow-y-auto no-scrollbar space-y-2.5 text-white/90 pb-2">
               <span className="block text-xs font-bold uppercase tracking-widest mb-2.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Key Capabilities:</span>
               {dept.items.slice(0, 6).map((item, j) => (
                 <li key={j} className="flex items-start text-[13px] lg:text-sm font-medium">
@@ -142,9 +140,9 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
           </div>
         </div>
         <div className="flex items-center justify-between mt-4">
-          <Link to={dept.link} viewTransition className="inline-flex items-center font-bold w-fit shrink-0 transition-all duration-300 text-sm lg:text-base text-white hover:text-[#2564ea]">
+          <Link to={dept.link} viewTransition className="inline-flex items-center font-bold w-fit shrink-0 transition-all duration-300 text-[9px] lg:text-[10px] text-white hover:text-[#2564ea] uppercase tracking-wider">
             Explore Capability
-            <ArrowRight className="ml-2 w-5 h-5" />
+            <ArrowRight className="ml-1.5 w-3 h-3" />
           </Link>
           <button 
             onClick={(e) => {
@@ -272,7 +270,7 @@ const DepartmentCarousel = () => {
         </div>
 
         <motion.div
-          className="kq-rail grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          className="kq-rail grid gap-3 sm:grid-cols-2 md:grid-cols-4 sm:grid-rows-auto md:grid-rows-2 grid-cols-1"
           variants={gridVariants}
           initial="hidden"
           whileInView="show"
@@ -284,10 +282,12 @@ const DepartmentCarousel = () => {
           {carouselDepartments.map((dept, i) => {
             const isExpanded = !!expandedCaps[i];
             
-            let cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
-            if (i === 0) cardClass = 'col-span-1 sm:row-span-2 h-[380px] sm:h-[772px] lg:h-[812px]';
-            else if (i === 5) cardClass = 'col-span-1 sm:col-span-2 lg:col-span-3 h-[380px] lg:h-[400px]';
-            else cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
+            let cardClass = 'col-span-1 row-span-1 h-[380px] lg:h-[400px]';
+            if (dept.slug === 'shield') {
+              cardClass = 'col-span-1 sm:row-span-2 row-span-1 h-[380px] sm:h-[772px] lg:h-[812px]';
+            } else if (dept.slug === 'growth') {
+              cardClass = 'sm:col-span-2 col-span-1 row-span-1 h-[380px] lg:h-[400px]';
+            }
 
             return (
               <BentoCard
