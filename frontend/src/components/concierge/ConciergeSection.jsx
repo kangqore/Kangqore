@@ -540,8 +540,8 @@ const ConciergeSection = ({
                       <div
                         className={`leading-[1.65] transition-all ${
                           isUser
-                            ? 'text-[15px] sm:text-[16px] px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white font-medium shadow-[0_8px_25px_rgba(37,100,234,0.4)] backdrop-blur-2xl border border-white/20'
-                            : 'text-[17px] sm:text-[18px] bg-transparent text-white/95 border-0 shadow-none px-0 py-0.5 font-normal'
+                            ? 'text-[14px] sm:text-[16px] px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-[linear-gradient(90deg,#2564ea_0%,#4ab6d4_100%)] text-white font-medium shadow-[0_8px_25px_rgba(37,100,234,0.4)] backdrop-blur-2xl border border-white/20'
+                            : 'text-[16px] sm:text-[20px] bg-transparent text-white/95 border-0 shadow-none px-0 py-0.5 font-normal'
                         }`}
                       >
                         {msg.id === 'greeting' ? (
