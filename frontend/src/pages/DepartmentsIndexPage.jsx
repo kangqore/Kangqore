@@ -12,6 +12,7 @@ import { ArrowRight, ChevronRight } from 'lucide-react';
 import { departmentsData, departmentsList } from '../data/departmentsData';
 import { servicesData } from '../data/servicesData';
 import { coreSEO } from '../data/seoData';
+import { BOOKING_CTA_LABEL, BOOKING_CTA_ROUTE } from '../data/cta';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import VisualBackground from '../components/VisualBackground';
 import ConciergeSection from '../components/concierge/ConciergeSection';
@@ -25,10 +26,10 @@ const BRAND_GRADIENT = 'linear-gradient(135deg, #2564ea 0%, #4ab6d4 100%)';
 const DepartmentsIndexPage = () => {
   const seo = coreSEO.departments || {};
   const pageUrl = `${SITE_URL}/departments`;
-  const pageTitle = seo.title || 'Departments — 6 Departments · 61 Services | Kangqore';
+  const pageTitle = seo.title || 'Departments — 6 Departments · 62 Services | Kangqore';
   const pageDescription =
     seo.description ||
-    '6 Kangqore departments · 61 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.';
+    '6 Kangqore departments · 62 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.';
   const ogImage = `${SITE_URL}/og/default.png`;
 
   const [heroRef, heroVisible]   = useScrollAnimation({ once: true, threshold: 0.1 });
@@ -119,7 +120,7 @@ const DepartmentsIndexPage = () => {
 
               <h1 className="text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white mb-8 drop-shadow-2xl">
                 6 Departments{' '}
-                <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">· 61 Services</span>
+                <span className="bg-brand-gradient bg-clip-text text-transparent filter drop-shadow-[0_0_30px_rgba(37,100,234,0.4)]">· 62 Services</span>
               </h1>
 
               <p className="text-base text-white/50 leading-[1.8] max-w-lg mb-14 font-medium">
@@ -128,10 +129,10 @@ const DepartmentsIndexPage = () => {
 
               <div className="flex flex-col sm:flex-row items-center gap-5">
                 <Link
-                  to="/contact"
+                  to={BOOKING_CTA_ROUTE}
                   className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
                 >
-                  <span className="relative z-10 font-bold text-sm tracking-wide">Schedule Your 30-min Discovery Call</span>
+                  <span className="relative z-10 font-bold text-sm tracking-wide">{BOOKING_CTA_LABEL}</span>
                   <div className="relative w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center group-hover:bg-white transition-colors duration-300 z-10">
                     <ArrowRight className="w-4 h-4 text-white group-hover:text-brand-blue" />
                   </div>
@@ -238,7 +239,7 @@ const DepartmentsIndexPage = () => {
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
               <span className="text-white font-black text-lg tracking-tight">Kangqore</span>
               <span className="hidden sm:block w-px h-5 bg-white/10" />
-              <span className="text-white/35 text-sm font-medium">6 Departments · 61 Services · One Ecosystem</span>
+              <span className="text-white/35 text-sm font-medium">6 Departments · 62 Services · One Ecosystem</span>
             </div>
             <a
               href="#departments"
@@ -364,13 +365,13 @@ const DepartmentsIndexPage = () => {
           <div className="mt-16 pt-10 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
               <p className="text-[9px] font-black tracking-[0.4em] text-white/25 uppercase mb-2">FULL CATALOG</p>
-              <p className="text-white/50 text-sm font-medium">All 61 services across 6 departments — indexed and browsable.</p>
+              <p className="text-white/50 text-sm font-medium">All 62 services across 6 departments — indexed and browsable.</p>
             </div>
             <Link
               to="/services"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 hover:border-brand-cyan/50 hover:bg-white/5 transition-all duration-300 group flex-shrink-0"
             >
-              <span className="text-white font-black text-sm tracking-wide">Explore all 61 services</span>
+              <span className="text-white font-black text-sm tracking-wide">Explore all 62 services</span>
               <ArrowRight className="w-4 h-4 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </div>
@@ -391,10 +392,10 @@ const DepartmentsIndexPage = () => {
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 self-start lg:self-auto pt-4 lg:pt-6">
               <Link
-                to="/contact"
+                to={BOOKING_CTA_ROUTE}
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-all duration-300 hover:scale-[1.02]"
               >
-                Schedule Your 30-min Discovery Call
+                {BOOKING_CTA_LABEL}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
               </Link>
               <Link

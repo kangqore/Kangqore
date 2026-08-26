@@ -17,12 +17,6 @@ const EqoreShowSection = () => {
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-16 lg:mb-20">
           {/* Left Side — Title */}
           <div className="lg:w-1/2">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-gray-500"></div>
-              <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
-                Podcast
-              </span>
-            </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
               The eQORE{' '}
               <span className="bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">

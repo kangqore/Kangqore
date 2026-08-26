@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ShieldCheck, Award, Globe, Fingerprint, HeartPulse, CreditCard, Layers } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { BOOKING_CTA_LABEL, BOOKING_CTA_HREF } from '../data/cta';
 
 const DancingWord = ({ word, startIndex = 0, letterClassName = "", hasSpaceAfter = false, isDancing = true }) => {
   return (
@@ -176,14 +177,19 @@ const TransformCTA = () => {
               <span className="relative z-10 text-2xl md:text-3xl font-normal tracking-tight">Get in touch</span>
               <ArrowRight className="relative z-10 w-6 h-6 md:w-8 md:h-8 stroke-[1.5] transform transition-transform duration-500 group-hover:translate-x-2" />
             </Link>
-            <Link
-              to="/book-discovery"
+            {/* This pointed at /book-discovery, which is not a declared route —
+                it fell through to App.jsx's `path="*"` catch-all, so the page's
+                most valuable CTA never reached the booking flow. TransformCTA is
+                homepage-only, so it anchors to the BookingWidget already mounted
+                above rather than navigating. */}
+            <a
+              href={BOOKING_CTA_HREF}
               className="group flex-1 flex items-center justify-between bg-white/10 dark:bg-white/5 backdrop-blur-3xl rounded-[32px] px-8 py-8 shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_0_0_1px_rgba(255,255,255,0.5),inset_0_4px_10px_rgba(255,255,255,0.8)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_4px_10px_rgba(255,255,255,0.05)] hover:scale-[1.02] hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-500 text-gray-900 dark:text-white relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <span className="relative z-10 text-2xl md:text-3xl font-normal tracking-tight">Schedule Your 30-min Discovery Call</span>
+              <span className="relative z-10 text-2xl md:text-3xl font-normal tracking-tight">{BOOKING_CTA_LABEL}</span>
               <ArrowRight className="relative z-10 w-6 h-6 md:w-8 md:h-8 stroke-[1.5] transform transition-transform duration-500 group-hover:translate-x-2" />
-            </Link>
+            </a>
           </div>
         </div>
       </div>

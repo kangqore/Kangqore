@@ -24,12 +24,6 @@ const LatestInsightsSection = () => {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Section Header */}
         <div className="mb-16">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="h-[1px] w-12 bg-gray-400"></div>
-            <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
-              testimonials
-            </span>
-          </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
               Trusted by <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">leaders</span>.

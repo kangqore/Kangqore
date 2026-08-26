@@ -6,6 +6,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import useSeo from '../seo/useSeo';
+import { BOOKING_CTA_LABEL, BOOKING_CTA_ROUTE } from '../data/cta';
 import { ArrowRight, ChevronRight, Users, Target, Wrench } from 'lucide-react';
 
 import { departmentsData, departmentsList } from '../data/departmentsData';
@@ -154,10 +155,10 @@ export default function DepartmentPageReal() {
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                 <Link
-                  to="/contact"
+                  to={BOOKING_CTA_ROUTE}
                   className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_40px_rgba(37,100,234,0.2)] hover:shadow-[0_0_60px_rgba(37,100,234,0.4)] hover:bg-white/20"
                 >
-                  <span className="relative z-10 font-bold text-sm tracking-wide">Schedule Your 30-min Discovery Call</span>
+                  <span className="relative z-10 font-bold text-sm tracking-wide">{BOOKING_CTA_LABEL}</span>
                   <div className="relative w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center group-hover:bg-white transition-colors duration-300 z-10">
                     <ArrowRight className="w-4 h-4 text-white group-hover:text-brand-blue" />
                   </div>
@@ -531,10 +532,10 @@ export default function DepartmentPageReal() {
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 self-start lg:self-auto pt-4 lg:pt-6">
               <Link
-                to="/contact"
+                to={BOOKING_CTA_ROUTE}
                 className="group inline-flex items-center gap-3 px-7 py-4 rounded-full bg-white text-gray-900 font-black text-sm tracking-wide hover:bg-white/90 transition-colors duration-200"
               >
-                Schedule Your 30-min Discovery Call
+                {BOOKING_CTA_LABEL}
                 <ArrowRight className="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link

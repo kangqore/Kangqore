@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import { motion, useScroll } from 'framer-motion';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import AvailabilityPulse from '../components/scheduling/AvailabilityPulse';
@@ -9,18 +9,16 @@ const ConciergeSection = lazy(() =>
 );
 
 import HeroGlassCards from '../components/hero/HeroGlassCards';
-import HeroChatWidget from '../components/hero/HeroChatWidget';
 
 import { Link } from 'react-router-dom';
 import {
-  ChevronRight, ChevronDown, Check, ArrowRight,
-  SkipForward
+  ChevronDown, Check, ArrowRight
 } from 'lucide-react';
 
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
-import { departmentData } from '../data/departmentData';
 import SEO from '../components/SEO';
+import { BOOKING_CTA_LABEL, BOOKING_CTA_HREF } from '../data/cta';
 import { coreSEO } from '../data/seoData';
 import DepartmentCarousel from '../components/home/DepartmentCarousel';
 import HomeRuler from '../components/home/HomeRuler';
@@ -31,140 +29,19 @@ import LatestInsightsSection from '../components/home/LatestInsightsSection';
 import CareersSection from '../components/home/CareersSection';
 
 // ============================================================================
-// MOCK DATA
+// HERO
 // ============================================================================
-const heroSlides = [
-  {
-    id: 1,
-    type: 'video',
-    tag: "ENTERPRISE TRANSFORMATION",
-    title: "Infrastructure So Intelligent, ",
-    titleGradient: "Growth Becomes Inevitable.",
-    description: "Kangqore partners with ambitious organizations to engineer intelligent digital infrastructure that modernizes operations, automates enterprise workflows, secures critical systems, and accelerates measurable growth.",
-    cta: "Explore Our Capabilities",
-    secondaryCta: "Schedule Your 30-min Discovery Call",
-    link: "/services",
-    secondaryLink: "/contact",
-    video: "/videos/hero-bg.mp4",
-  }
-];
-
-const homeTestimonials = [
-  {
-    quote: "Their AI solutions helped us predict customer behavior with 95% accuracy, revolutionizing our marketing strategy.",
-    author: "Sarah Chen",
-    role: "VP Digital, Retail Giant",
-    initials: "SC",
-    rating: 5
-  },
-  {
-    quote: "Kangqore transformed our digital infrastructure, resulting in 40% cost reduction and 3x faster deployment cycles.",
-    author: "James Miller",
-    role: "CTO, Fortune 500 Bank",
-    initials: "JM",
-    rating: 5
-  },
-  {
-    quote: "The team's expertise in cloud migration was exceptional. Zero downtime during our entire transition.",
-    author: "Michael Brown",
-    role: "IT Director, Healthcare Corp",
-    initials: "MB",
-    rating: 5
-  }
-];
-
-const newsItems = [
-  {
-    id: 1,
-    type: "Platform Update",
-    date: "Dec 18, 2025",
-    title: "Kangqore Launches Next-Generation Agentic AI Integration Services",
-    excerpt: "New autonomous agents allow enterprises to execute multi-step workflows across disparate business systems, driving operational efficiency.",
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&q=80",
-    link: "/insights"
-  },
-  {
-    id: 2,
-    type: "Tech Insight",
-    date: "Dec 17, 2025",
-    title: "The Death of the Cookie: Why First-Party Data Sovereignty is Critical",
-    excerpt: "As third-party cookies disappear, enterprises must build robust CDP architectures to retain customer intelligence.",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&q=80",
-    link: "/insights"
-  },
-  {
-    id: 3,
-    type: "Company News",
-    date: "Dec 10, 2025",
-    title: "Kangqore Expands Cloud Engineering Practice",
-    excerpt: "Bolstering our commitment to resilient digital foundations, the expanded practice focuses on Kubernetes orchestration and zero-trust security.",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80",
-    link: "/insights"
-  }
-];
-
-// ============================================================================
-// SECTION 1: HERO CAROUSEL
-// ============================================================================
-// ============================================================================
-// ============================================================================
-
-
-
-const HUDText = ({ text, delay = 0, isCyan = false, startTyping = true, loop = false }) => {
-  const [displayText, setDisplayText] = useState('');
-  
-  useEffect(() => {
-    if (!startTyping) return;
-    
-    let isCancelled = false;
-    let timeout;
-    
-    const typeCycle = async () => {
-      if (isCancelled) return;
-      setDisplayText('');
-      
-      // Type out
-      for (let i = 1; i <= text.length; i++) {
-        if (isCancelled) return;
-        setDisplayText(text.slice(0, i));
-        await new Promise(r => { timeout = setTimeout(r, 60); });
-      }
-      
-      if (!loop) return;
-      
-      // Pause at the end
-      await new Promise(r => { timeout = setTimeout(r, 3000); });
-      
-      // Delete backwards
-      for (let i = text.length - 1; i >= 0; i--) {
-        if (isCancelled) return;
-        setDisplayText(text.slice(0, i));
-        await new Promise(r => { timeout = setTimeout(r, 30); });
-      }
-      
-      // Small pause before restarting
-      await new Promise(r => { timeout = setTimeout(r, 500); });
-      
-      if (!isCancelled) typeCycle();
-    };
-    
-    const startTimeout = setTimeout(() => {
-      typeCycle();
-    }, delay);
-    
-    return () => {
-      isCancelled = true;
-      clearTimeout(startTimeout);
-      clearTimeout(timeout);
-    };
-  }, [text, delay, startTyping, loop]);
-
-  return (
-    <span className="relative inline-flex items-center">
-      {displayText}
-    </span>
-  );
+// Dropped alongside the carousel: `id` and `type` (only ever read by the slide
+// loop), `tag: "ENTERPRISE TRANSFORMATION"` (never rendered), and
+// `secondaryCta` / `secondaryLink` — the booking CTA's wording and target now
+// come from data/cta.js so they cannot drift from the page's other CTAs.
+const HERO = {
+  title: "Infrastructure So Intelligent, ",
+  titleGradient: "Growth Becomes Inevitable.",
+  description: "Kangqore partners with ambitious organizations to engineer intelligent digital infrastructure that modernizes operations, automates enterprise workflows, secures critical systems, and accelerates measurable growth.",
+  cta: "Explore Our Capabilities",
+  link: "/services",
+  video: "/videos/hero-bg.mp4",
 };
 
 const trustLogos = [
@@ -180,283 +57,111 @@ const trustLogos = [
   { name: "NIT Jamshedpur", src: "/assets/logos/nit-jamshedpur.png", scale: "h-12 sm:h-14" },
 ];
 
-const HeroCarousel = () => {
-  const { t } = useTranslation();
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [isManuallyPaused, setIsManuallyPaused] = useState(false);
-  const [isChatEngaged, setIsChatEngaged] = useState(false);
-  const videoRef = useRef(null);
-  const touchStartX = useRef(0);
-  const clickCount = useRef(0);
-  const clickTimeout = useRef(null);
-  const slideCount = heroSlides.length;
-
-  // Derived: auto-play only when ALL conditions are met
-  const isAutoPlaying = !isManuallyPaused && !isChatEngaged;
-
-  // Listen for eQORE chat engagement events from HeroChatWidget
-  useEffect(() => {
-    const handleChatEngaged = () => setIsChatEngaged(true);
-    const handleChatIdle = () => setIsChatEngaged(false);
-    window.addEventListener('hero-chat-engaged', handleChatEngaged);
-    window.addEventListener('hero-chat-idle', handleChatIdle);
-    return () => {
-      window.removeEventListener('hero-chat-engaged', handleChatEngaged);
-      window.removeEventListener('hero-chat-idle', handleChatIdle);
-    };
-  }, []);
-
-  // Auto-advance with dynamic duration
-  useEffect(() => {
-    if (!isAutoPlaying) return;
-    
-    const duration = activeSlide === 0 ? 62000 : 20000;
-    const timer = setTimeout(() => {
-      setActiveSlide(prev => (prev + 1) % slideCount);
-    }, duration);
-    
-    return () => clearTimeout(timer);
-  }, [isAutoPlaying, activeSlide, slideCount]);
-
-  // Pause/play video based on active slide
-  useEffect(() => {
-    if (videoRef.current) {
-      if (activeSlide === 0) {
-        videoRef.current.play().catch(() => {});
-      } else {
-        videoRef.current.pause();
-      }
-    }
-  }, [activeSlide]);
-
-  const goToSlide = (index) => {
-    setActiveSlide(index);
-  };
-
-  // Touch swipe handlers
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-  const handleTouchEnd = (e) => {
-    const delta = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(delta) > 50) {
-      if (delta > 0) goToSlide((activeSlide + 1) % slideCount);
-      else goToSlide((activeSlide - 1 + slideCount) % slideCount);
-    }
-  };
-
-  const currentSlide = heroSlides[activeSlide];
+// This was previously a full carousel over a one-item `heroSlides` array:
+// auto-advance on a 62s timer, touch-swipe handlers, a click counter giving
+// 1-click-pause / 2-click-next / 3-click-prev, opacity-crossfade stacks, and
+// branches for a chat slide (`type === 'chat'`) and a second slide (`id === 2`)
+// that never existed. None of it was reachable with one slide, and
+// HeroChatWidget — 351 lines, eagerly imported — could never mount.
+const HeroSection = () => {
+  const slide = HERO;
 
   return (
     <>
     <div className="w-full h-screen bg-white dark:bg-black p-2 relative transition-colors duration-500">
 
-    <section
-      className="relative w-full h-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228]"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onClick={(e) => {
-        // Multi-click navigation on empty-area clicks (not buttons, links, inputs, or the chat widget)
-        const tag = e.target.tagName.toLowerCase();
-        const isInteractive = ['button', 'a', 'input', 'textarea', 'select'].includes(tag);
-        const isInsideInteractive = e.target.closest('button, a, input, textarea, form, [role="button"], .hero-chat-widget');
-        if (!isInteractive && !isInsideInteractive) {
-          clickCount.current += 1;
-          if (clickTimeout.current) clearTimeout(clickTimeout.current);
-          clickTimeout.current = setTimeout(() => {
-            if (clickCount.current === 1) {
-              setIsManuallyPaused(prev => !prev);
-            } else if (clickCount.current === 2) {
-              goToSlide((activeSlide + 1) % slideCount);
-            } else if (clickCount.current >= 3) {
-              goToSlide((activeSlide - 1 + slideCount) % slideCount);
-            }
-            clickCount.current = 0;
-          }, 250);
-        }
-      }}
-    >
-      {/* ── ACTUAL HERO AREA (bg + content + dots only — trust strip & HeroBottomStrip live OUTSIDE this wrapper) ── */}
+    <section className="relative w-full h-full overflow-hidden rounded-[1rem] sm:rounded-[1.25rem] lg:rounded-[1.5rem] border border-white/5 ring-1 ring-white/10 z-[1] bg-[#0a1228]">
+
+      {/* ── HERO AREA (bg + content — trust strip lives OUTSIDE this wrapper) ── */}
       <div className="relative h-full overflow-hidden pb-[0.3cm]">
-      {/* ── BACKGROUND LAYERS (stacked, crossfade via opacity) ── */}
-      {heroSlides.map((slide, index) => (
-        <div
-          key={`bg-${slide.id}`}
-          className={`absolute inset-0 transition-opacity duration-[800ms] ease-in-out ${
-            index === activeSlide ? 'opacity-100 z-[1]' : 'opacity-0 z-0'
-          }`}
-        >
+
+        {/* ── BACKGROUND ── */}
+        <div className="absolute inset-0 z-[1]">
           <div className="absolute inset-0 bg-[#0a1228]">
-            {(slide.type === 'video' || slide.video) && (
-              <video
-                ref={index === 0 ? videoRef : null}
-                autoPlay
-                loop
-                muted
-                playsInline
-                disablePictureInPicture
-                controlsList="nodownload nofullscreen noremoteplayback"
-                className="absolute inset-0 w-full h-full object-cover"
-              >
-                <source src={slide.video} type="video/mp4" />
-              </video>
-            )}
-            {slide.type === 'chat' && slide.image && !slide.video && (
-              <img
-                src={slide.image}
-                alt="Kangqore AI Tennis"
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: 'center calc(50% + 38px)' }}
-              />
-            )}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              disablePictureInPicture
+              controlsList="nodownload nofullscreen noremoteplayback"
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={slide.video} type="video/mp4" />
+            </video>
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
           </div>
         </div>
-      ))}
 
-      {/* ── CONTENT LAYERS (stacked, crossfade) ── */}
-      <div className="relative z-[2] h-full">
-        {heroSlides.map((slide, index) => (
-          <div
-            key={`content-${slide.id}`}
-            className={`absolute inset-0 transition-opacity duration-[800ms] ease-in-out ${
-              index === activeSlide ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-            }`}
-          >
-            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-[194px] lg:pt-[250px] pb-[167px] sm:pb-[175px] h-full flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+        {/* ── CONTENT ── */}
+        <div className="relative z-[2] h-full">
+          <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-[194px] lg:pt-[250px] pb-[167px] sm:pb-[175px] h-full flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
 
-              <div className={`${slide.type === 'chat' ? 'w-full' : 'w-full lg:max-w-[850px] xl:max-w-[950px]'} flex flex-col h-full justify-center z-10`}>
+            <div className="w-full lg:max-w-[850px] xl:max-w-[950px] flex flex-col h-full justify-center z-10">
 
-                <div className="flex-shrink-0">
-
-                  <h1
-                    key={`title-${slide.id}`}
-                    className={`mb-5 text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-in fade-in zoom-in-75 duration-1000 ease-out origin-left ${
-                      slide.id === 2 ? '-translate-y-6' : ''
-                    }`}
-                  >
+              <div className="flex-shrink-0">
+                <h1 className="mb-5 text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-in fade-in zoom-in-75 duration-1000 ease-out origin-left">
                   <span className="block xl:whitespace-nowrap">{slide.title}</span>
-                  {slide.titleTypewriter && (
-                    <HUDText text={slide.titleTypewriter} delay={300} startTyping={index === activeSlide} loop={true} />
-                  )}
-                  {slide.titleGradient && (
-                    <span className="block bg-brand-gradient bg-clip-text text-transparent xl:whitespace-nowrap mt-1 sm:mt-2">{slide.titleGradient}</span>
-                  )}
+                  <span className="block bg-brand-gradient bg-clip-text text-transparent xl:whitespace-nowrap mt-1 sm:mt-2">{slide.titleGradient}</span>
                 </h1>
 
-                {slide.description && (
-                  <p
-                    key={`desc-${slide.id}`}
-                    className="mb-12 text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-3xl animate-fade-in font-medium line-clamp-3"
-                  >
-                    {slide.description}
-                  </p>
-                )}
-
-                {/* Chat widget for slide 2 */}
-                {slide.type === 'chat' && (
-                  <div className="mb-12 hero-chat-widget" style={{ overflow: 'visible' }}>
-                    <HeroChatWidget isActive={index === activeSlide} />
-                  </div>
-                )}
-
-                </div>
-
-                {/* CTAs for slides */}
-                {slide.cta && (
-                  <div className="flex flex-col sm:flex-row items-center gap-8 animate-fade-in mt-2">
-                    {slide.cta && (
-                      <Link viewTransition
-                        to={slide.link}
-                        className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/[0.07] backdrop-blur-md border border-white/14 text-white shadow-xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
-                        <span className="relative z-10 text-white font-bold tracking-wide text-[13px]">
-                          {slide.cta}
-                        </span>
-                        <div className="relative z-10 w-7 h-7 rounded-full bg-white/10 flex items-center justify-center transition-all duration-500 group-hover:bg-white shadow-md">
-                          <ArrowRight className="w-4 h-4 text-white group-hover:text-gray-900 transition-all duration-500 group-hover:translate-x-0.5" />
-                        </div>
-                        <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-cyan-400/50 blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      </Link>
-                    )}
-
-                    {slide.secondaryCta && (
-                      <Link viewTransition
-                        to={slide.secondaryLink || "/contact"}
-                        className="group inline-flex items-center gap-2 px-4 py-2 hover:opacity-80 transition-opacity duration-300"
-                      >
-                        <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
-                          {slide.secondaryCta}
-                        </span>
-                        <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" />
-                      </Link>
-                    )}
-                  </div>
-                )}
+                <p className="mb-12 text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-3xl animate-fade-in font-medium line-clamp-3">
+                  {slide.description}
+                </p>
               </div>
-              
-              {/* Right Side: Hero Glass Cards (Restored) */}
-              {slide.type !== 'chat' && (
-                <div className="hidden lg:block absolute right-[6%] xl:right-[10%] top-[30%] lg:top-[35%] z-10 pointer-events-auto">
-                  <HeroGlassCards activeSlide={activeSlide} />
-                </div>
-              )}
+
+              {/* ── CTAs ── */}
+              <div className="flex flex-col sm:flex-row items-center gap-8 animate-fade-in mt-2">
+                <Link viewTransition
+                  to={slide.link}
+                  className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.97] bg-white/[0.07] backdrop-blur-md border border-white/14 text-white shadow-xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
+                  <span className="relative z-10 text-white font-bold tracking-wide text-[13px]">
+                    {slide.cta}
+                  </span>
+                  <div className="relative z-10 w-7 h-7 rounded-full bg-white/10 flex items-center justify-center transition-all duration-500 group-hover:bg-white shadow-md">
+                    <ArrowRight className="w-4 h-4 text-white group-hover:text-gray-900 transition-all duration-500 group-hover:translate-x-0.5" />
+                  </div>
+                  <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-cyan-400/50 blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </Link>
+
+                {/* Booking CTA — wording and target come from data/cta.js so this
+                    cannot drift from the other booking CTAs on the page. It used
+                    to read "Schedule Your 30-min Discovery Call" and navigate to
+                    /contact, away from the BookingWidget mounted below. */}
+                <a
+                  href={BOOKING_CTA_HREF}
+                  className="group inline-flex items-center gap-2 px-4 py-2 hover:opacity-80 transition-opacity duration-300"
+                >
+                  <span className="text-[13px] font-bold text-white/90 tracking-wide uppercase">
+                    {BOOKING_CTA_LABEL}
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" />
+                </a>
+              </div>
+            </div>
+
+            {/* Right Side: Hero Glass Cards (desktop only) */}
+            <div className="hidden lg:block absolute right-[6%] xl:right-[10%] top-[30%] lg:top-[35%] z-10 pointer-events-auto">
+              <HeroGlassCards />
             </div>
           </div>
-        ))}
-      </div>
+        </div>
 
       </div>
-
-      <style>{`
-        @media (prefers-reduced-motion: reduce) {
-          @keyframes trust-logo-scroll { 0%, 100% { transform: translateX(0); } }
-        }
-        @keyframes heroPulseRing {
-          0% { transform: scale(1); opacity: 0.6; }
-          70% { transform: scale(1.35); opacity: 0; }
-          100% { transform: scale(1.35); opacity: 0; }
-        }
-        @keyframes scroll-line {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100%); }
-        }
-        .animate-scroll-line {
-          animation: scroll-line 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-        @keyframes pond-button {
-          0% { transform: scale(1); opacity: 1; }
-          20% { transform: scale(2); opacity: 0.2; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes pond-ring {
-          0% { transform: scale(1); opacity: 0.8; border-width: 2px; }
-          100% { transform: scale(4); opacity: 0; border-width: 0px; }
-        }
-        .animate-pond-button {
-          animation: pond-button 0.8s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
-        }
-        .animate-pond-ring {
-          animation: pond-ring 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-        }
-        @keyframes statementGradient {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-      `}</style>
     </section>
-
-
 
     </div>
 
     {/* ── Hero Trust Logo Strip (Free from container) ── */}
     <div className="relative z-20 w-full bg-transparent py-[calc(1.25rem+0.5cm)] sm:py-[calc(1.5rem+0.5cm)] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-10">
-        <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 dark:text-white/50 uppercase tracking-[0.25em] text-center mx-auto leading-relaxed whitespace-nowrap">
+        {/* `whitespace-nowrap` on a ~48-character eyebrow at tracking-[0.25em],
+            inside an overflow-hidden parent, clipped this at both edges on any
+            viewport under ~400px. Letting it wrap costs nothing. */}
+        <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 dark:text-white/50 uppercase tracking-[0.25em] text-center mx-auto leading-relaxed">
           TRUSTED BY GLOBAL ENTERPRISES TO DELIVER AT SCALE.
         </p>
       </div>
@@ -464,10 +169,23 @@ const HeroCarousel = () => {
         <div className="flex w-max animate-[heroTrustMarquee_35s_linear_infinite] items-center gap-12 sm:gap-16 lg:gap-20 hover:[animation-play-state:paused] py-2">
           {[...trustLogos, ...trustLogos, ...trustLogos, ...trustLogos].map((logo, index) => (
             <div key={`${logo.name}-${index}`} className="flex flex-col items-center justify-center group shrink-0 w-28 sm:w-32">
-              <div className="h-10 sm:h-12 w-full flex items-center justify-center opacity-100 transition-opacity duration-300">
-                <img src={logo.src} alt={logo.name} className="max-h-8 sm:max-h-10 w-auto object-contain filter brightness-0 dark:invert transition-transform duration-300 group-hover:scale-105" />
+              <div className="h-10 sm:h-12 w-full flex items-center justify-center transition-opacity duration-300">
+                {/* Was `brightness-0`, which flattens every mark to a solid black
+                    silhouette — discarding the brand identity these logos are
+                    here to lend. Grayscale reads as deliberate and stays legible. */}
+                <img
+                  src={logo.src}
+                  alt={logo.name}
+                  loading="lazy"
+                  decoding="async"
+                  className="max-h-8 sm:max-h-10 w-auto object-contain grayscale opacity-75 dark:invert transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105"
+                />
               </div>
-              <span className="mt-3 text-[9px] sm:text-[10px] font-bold text-gray-400 dark:text-white/30 group-hover:text-gray-600 dark:group-hover:text-white/75 transition-colors duration-300 uppercase tracking-widest text-center">
+              {/* Was text-[9px] at text-gray-400 / dark:text-white/30 — measured
+                  2.54:1 and 2.48:1, both failing WCAG 1.4.3 (needs 4.5:1) on the
+                  highest-value trust copy on the page. Now 11px at gray-600 /
+                  white-70, which clears it in both themes. */}
+              <span className="mt-3 text-[11px] font-bold text-gray-600 dark:text-white/70 group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300 uppercase tracking-widest text-center">
                 {logo.name}
               </span>
             </div>
@@ -781,12 +499,6 @@ const PartnerBadgesStrip = () => {
         {/* Left-aligned heading block — exact match to "Explore our services" */}
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-gray-400"></div>
-              <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
-                Our Ecosystem
-              </span>
-            </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl">
               Strategic <span className="bg-brand-gradient bg-clip-text text-transparent">Partnerships</span>
             </h2>
@@ -859,13 +571,16 @@ const StickyMobileCTA = () => {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden p-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
-      <Link viewTransition
-        to="/contact"
+      {/* Was "Get a Free Consultation" → /contact, which navigated past the
+          BookingWidget already on this page. Same wording and target as every
+          other booking CTA now. */}
+      <a
+        href={BOOKING_CTA_HREF}
         className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
       >
-        Get a Free Consultation
+        {BOOKING_CTA_LABEL}
         <ArrowRight className="w-4 h-4" />
-      </Link>
+      </a>
     </div>
   );
 };
@@ -889,16 +604,6 @@ const IndustriesWeServe = () => {
   const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
   
   // Group industries into categories
-  const categories = {
-    "Financial Services": departmentData.filter(d => ["Banking", "Capital_Markets", "Insurance", "Payments"].includes(d.id)),
-    "Healthcare & Life Sciences": departmentData.filter(d => ["Healthcare", "Life_Sciences", "Medical_Technology"].includes(d.id)),
-    "Communications & Media": departmentData.filter(d => ["Communications", "Media_Entertainment", "Information_Services", "Education"].includes(d.id)),
-    "Retail & Consumer": departmentData.filter(d => ["Retail", "Consumer_Goods", "Travel_Hospitality"].includes(d.id)),
-    "Industrial & Manufacturing": departmentData.filter(d => ["Manufacturing", "Automotive", "Aerospace_Defense", "Oil_Gas", "Utilities"].includes(d.id)),
-    "Technology & Services": departmentData.filter(d => ["High_Tech", "Software_Platforms", "Professional_Services"].includes(d.id)),
-    "Public Sector": departmentData.filter(d => ["Public_Sector"].includes(d.id))
-  };
-
   return (
     <section className="py-32 bg-white text-gray-900">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -909,12 +614,6 @@ const IndustriesWeServe = () => {
             titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
           }`}
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="h-[1px] w-12 bg-gray-500"></div>
-            <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
-              {t('home.industries_section.label')}
-            </span>
-          </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               {t('home.industries_section.heading_prefix')} <span className="bg-brand-gradient bg-clip-text text-transparent">{t('home.industries_section.heading_highlight')}</span>{t('home.industries_section.heading_suffix') ? ' ' + t('home.industries_section.heading_suffix') : ''}.
@@ -1191,241 +890,6 @@ const TrustStatementTypewriter = ({ isVisible }) => {
   );
 };
 
-const TestimonialsSection = () => {
-  const { t } = useTranslation();
-  const [titleRef, titleVisible] = useScrollAnimation({ once: true, threshold: 0.3 });
-  const sectionRef = useRef(null);
-  const [parallaxOffset, setParallaxOffset] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      
-      // Calculate how far the section has moved through the viewport
-      if (rect.top < viewportHeight && rect.bottom > 0) {
-        const scrollDistance = viewportHeight + rect.height;
-        const scrollPosition = viewportHeight - rect.top;
-        const progress = scrollPosition / scrollDistance;
-        
-        // Move content up as we scroll down
-        setParallaxOffset((progress - 0.5) * -100);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (
-    <section 
-      ref={sectionRef}
-      className="pt-32 pb-24 relative overflow-hidden bg-[#111827]"
-    >
-      <div 
-        className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-transform duration-100 ease-out"
-        style={{ transform: `translateY(${parallaxOffset}px)` }}
-      >
-        {/* Section Header */}
-        <div 
-          ref={titleRef}
-          className={`mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6 transition-all duration-1000 ${
-            titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
-        >
-          <div>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-cyan-400"></div>
-              <span className="text-sm font-semibold text-gray-300 uppercase tracking-widest font-mono">
-                INSIGHTS
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight font-display">
-              Research & <span className="bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">Insights</span>.
-            </h2>
-          </div>
-          <Link viewTransition 
-            to="/contact" 
-            className="group flex items-center gap-3 text-[15px] font-bold text-white hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors uppercase tracking-widest"
-          >
-            {t('home.case_studies.see_all')}
-            <span className="w-10 h-10 rounded-full bg-white flex items-center justify-center group-hover:bg-brand-blue transition-all duration-300 shadow-lg">
-              <ArrowRight className="w-5 h-5 text-gray-900 group-hover:text-white transition-all duration-300" />
-            </span>
-          </Link>
-        </div>
-
-        {/* Editorial Layered Content Architecture Composition */}
-        <div className="flex flex-col gap-16 w-full pt-6">
-          
-          {/* Hero Composition: Neon Waves + Overlay Card (Top Row) */}
-          <div className="relative w-full h-[340px] flex items-center group">
-            
-            {/* Media Block: Edge-to-edge backdrop SVG */}
-            <div className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden shadow-2xl z-0">
-              {/* Custom High-Fidelity Laser Glow Neon waves background */}
-              <svg className="absolute inset-0 w-full h-full object-cover scale-[1.01] group-hover:scale-[1.04] transition-transform duration-[1.5s] ease-out" viewBox="0 0 800 350" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="neon-wave-bg" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#080a10" />
-                    <stop offset="50%" stopColor="#030408" />
-                    <stop offset="100%" stopColor="#010204" />
-                  </linearGradient>
-                  <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="10" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#neon-wave-bg)" />
-                {/* Tech grid lines */}
-                <g stroke="rgba(255,255,255,0.02)" strokeWidth="1">
-                  <path d="M0 50 H800 M0 100 H800 M0 150 H800 M0 200 H800 M0 250 H800 M0 300 H800" />
-                  <path d="M50 0 V350 M100 0 V350 M150 0 V350 M200 0 V350 M250 0 V350 M300 0 V350 M350 0 V350 M400 0 V350 M450 0 V350 M500 0 V350 M550 0 V350 M600 0 V350 M650 0 V350 M700 0 V350 M750 0 V350" />
-                </g>
-                {/* Wavy Neon Curves - Laser cores on glowing blur paths */}
-                <path d="M-50 160 Q150 40 350 160 T750 160" stroke="#f43f5e" strokeWidth="6" filter="url(#neon-glow)" opacity="0.7" fill="none" />
-                <path d="M-50 160 Q150 40 350 160 T750 160" stroke="#ffffff" strokeWidth="1.5" opacity="0.9" fill="none" />
-
-                <path d="M-50 190 Q150 310 350 190 T750 190" stroke="#3b82f6" strokeWidth="5" filter="url(#neon-glow)" opacity="0.65" fill="none" />
-                <path d="M-50 190 Q150 310 350 190 T750 190" stroke="#ffffff" strokeWidth="1.2" opacity="0.95" fill="none" />
-
-                <path d="M-50 130 Q150 180 350 130 T750 130" stroke="#a855f7" strokeWidth="5" filter="url(#neon-glow)" opacity="0.6" fill="none" />
-                <path d="M-50 130 Q150 180 350 130 T750 130" stroke="#ffffff" strokeWidth="1.2" opacity="0.9" fill="none" />
-              </svg>
-            </div>
-
-            {/* Content Block: Floating Card overlay, 40% width, aligned right, taller height for overflow overlap */}
-            <div className="absolute right-6 w-[90%] md:w-[40%] h-[300px] bg-[#20242e] p-8 lg:p-10 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.7)] z-10 hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between">
-              <div>
-                <p className="text-xs font-semibold text-gray-400 mb-6">
-                  — Report
-                </p>
-                <h3 className="text-xl md:text-2xl font-medium text-white leading-tight mb-8 font-display">
-                  AI meets the grid: Shaping the data center power play
-                </h3>
-              </div>
-              <div className="mt-auto">
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase font-mono block">
-                  CAPGEMINI RESEARCH INSTITUTE
-                </span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Row 2: Story Block A (Left) & Story Block B (Right) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
-            
-            {/* Story Block A: Solid Slate-Blue Glass Card (col-span-4) */}
-            <div className="group relative lg:col-span-4 w-full rounded-3xl bg-[#1c2d47] p-8 lg:p-10 flex flex-col justify-between h-[380px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-500">
-              {/* Bevel highlight */}
-              <div className="absolute inset-0 z-30 pointer-events-none rounded-3xl border border-white/[0.06] shadow-[inset_0_1.5px_0_0_rgba(255,255,255,0.12),inset_0_-1.5px_0_0_rgba(0,0,0,0.6)]" />
-              
-              <div>
-                <p className="text-xs font-semibold text-slate-300 mb-6">
-                  — Capgemini Research Institute
-                </p>
-                <h3 className="text-lg lg:text-xl font-medium text-white leading-relaxed mb-8 font-display">
-                  Open source: Key to reclaiming public sector digital sovereignty
-                </h3>
-              </div>
-              
-              <div className="mt-auto">
-                <span className="text-[10px] font-bold text-slate-300 tracking-widest uppercase font-mono block">
-                  CAPGEMINI RESEARCH INSTITUTE
-                </span>
-              </div>
-            </div>
-
-            {/* Story Block B: Organic Leaves + Overlay Card (col-span-8) */}
-            <div className="relative lg:col-span-8 w-full h-[380px] flex items-center group">
-              
-              {/* Media Block: Edge-to-edge backdrop SVG */}
-              <div className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden shadow-2xl z-0">
-                {/* Custom Organic Teal Foliage / Bokeh SVG Background */}
-                <svg className="absolute inset-0 w-full h-full object-cover scale-[1.01] group-hover:scale-[1.04] transition-transform duration-[1.5s] ease-out" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="organic-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#011b15" />
-                      <stop offset="50%" stopColor="#010c10" />
-                      <stop offset="100%" stopColor="#000204" />
-                    </linearGradient>
-                    <filter id="organic-glow-filter-1" x="-30%" y="-30%" width="160%" height="160%">
-                      <feGaussianBlur stdDeviation="25" result="blur" />
-                    </filter>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#organic-grad-1)" />
-                  {/* Glowing bokeh spots */}
-                  <circle cx="600" cy="180" r="140" fill="#0d9488" opacity="0.25" filter="url(#organic-glow-filter-1)" />
-                  <circle cx="450" cy="120" r="100" fill="#0891b2" opacity="0.2" filter="url(#organic-glow-filter-1)" />
-                  <circle cx="720" cy="140" r="90" fill="#10b981" opacity="0.15" filter="url(#organic-glow-filter-1)" />
-                  
-                  {/* Overlapping organic leaves tapering to beautiful points (Uncropped) */}
-                  <g fill="#0d9488" opacity="0.22">
-                    {/* Leaf 1 (Large) */}
-                    <path d="M 480 400 C 550 300, 640 180, 720 100 C 660 160, 540 280, 480 400 Z" />
-                    {/* Leaf 2 (Medium) */}
-                    <path d="M 560 400 C 620 310, 700 220, 780 160 C 730 210, 630 300, 560 400 Z" opacity="0.6" />
-                    {/* Leaf 3 (Small) */}
-                    <path d="M 400 400 C 460 320, 540 240, 620 180 C 570 230, 470 320, 400 400 Z" opacity="0.8" fill="#115e59" />
-                  </g>
-                  
-                  {/* Fine glowing neon-teal outline veins tapering to tips */}
-                  <path d="M 480 400 C 550 300, 640 180, 720 100" stroke="#14b8a6" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" fill="none" />
-                  <path d="M 560 400 C 620 310, 700 220, 780 160" stroke="#06b6d4" strokeWidth="1.5" strokeLinecap="round" opacity="0.4" fill="none" />
-                  <path d="M 400 400 C 460 320, 540 240, 620 180" stroke="#10b981" strokeWidth="1.5" strokeLinecap="round" opacity="0.3" fill="none" />
-                </svg>
-              </div>
-
-              {/* Content Block: Floating Card overlay, 42% width, aligned left, taller height for overflow overlap */}
-              <div className="absolute left-6 w-[90%] md:w-[42%] h-[340px] bg-[#20242e] p-8 lg:p-10 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.7)] z-10 hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between">
-                <div>
-                  <p className="text-xs font-semibold text-gray-400 mb-6">
-                    — Report
-                  </p>
-                  <h3 className="text-lg lg:text-xl font-medium text-white leading-relaxed mb-8 font-display">
-                    Data-powered Innovation Review | Wave 12
-                  </h3>
-                </div>
-                <div className="mt-auto">
-                  <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase font-mono block">
-                    CAPGEMINI RESEARCH INSTITUTE
-                  </span>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* New CTA Banner - Attached to bottom (Outside Parallax) */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mt-20">
-        <div className="bg-brand-gradient p-8 md:p-12 rounded-t-sm shadow-2xl animate-fade-in-up">
-          <div className="max-w-4xl">
-            <h3 className="text-xl md:text-2xl font-medium text-white leading-relaxed mb-8">
-              Explore how organizations partner with us to strengthen delivery performance, enhance compliance posture, and achieve measurable operational outcomes.
-            </h3>
-            <Link viewTransition 
-              to="/contact" 
-              className="inline-flex items-center gap-2 text-lg font-bold text-white hover:text-white/90 transition-colors group"
-            >
-              Speak with our team
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 // ============================================================================
 
 // ============================================================================
@@ -1593,7 +1057,7 @@ const HomePage = () => {
         }]}
       />
       <HomeRuler />
-      <HeroCarousel />
+      <HeroSection />
       {/* Dynamic AI Banner if website shifted */}
       {lockedIntent && (
         <div className="w-full bg-brand-blue/10 border-b border-brand-cyan/20 py-3 text-center animate-fade-in z-50 relative">
@@ -1711,10 +1175,12 @@ const HomePage = () => {
       <SectionWrapper><EqoreShowSection /></SectionWrapper>
 
 
-      <section id="scheduling-widget" className="py-24 bg-white dark:bg-black relative overflow-hidden">
+      {/* scroll-mt keeps the heading clear of the fixed header when the page's
+          booking CTAs anchor here (see data/cta.js). */}
+      <section id="scheduling-widget" className="scroll-mt-28 py-24 bg-white dark:bg-black relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Schedule Your <span className="bg-brand-gradient bg-clip-text text-transparent">Consultation</span>
+            Book a 30-minute <span className="bg-brand-gradient bg-clip-text text-transparent">discovery call</span>
           </h2>
           <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-10">
             Choose a time that works for you and let's discuss how we can innovate your future together.

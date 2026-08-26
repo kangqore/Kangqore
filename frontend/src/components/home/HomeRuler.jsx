@@ -2,14 +2,21 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import '../services/reimagine/PSEDRuler.css';
 
+// Every id here must correspond to a real section on the homepage — the
+// IntersectionObserver below silently skips ids it cannot find, so a stale
+// entry renders as a tick that can never activate or scroll.
+//
+// Removed: { id: 'home-bids', num: '06', label: 'Kangqore BIDS™' }. There is no
+// `home-bids` element on the page; BIDS™ appears only as one card in the
+// "Intelligent solutions" grid, which is not a section of its own. Re-add this
+// entry if a dedicated BIDS™ section is ever added to the homepage.
 const NAV_ITEMS = [
   { id: 'trust-intelligence', num: '01', label: 'Insights'     },
   { id: 'home-concierge',     num: '02', label: 'eQORE AI™'   },
   { id: 'home-services',      num: '03', label: 'Our Services' },
   { id: 'home-industries',    num: '04', label: 'Industries'   },
   { id: 'trust-statement',    num: '05', label: 'Why Kangqore' },
-  { id: 'home-bids',          num: '06', label: 'Kangqore BIDS™' },
-  { id: 'scheduling-widget',  num: '07', label: 'Book a Call'  },
+  { id: 'scheduling-widget',  num: '06', label: 'Book a Call'  },
 ];
 
 export default function HomeRuler() {
