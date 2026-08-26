@@ -577,40 +577,38 @@ const Services = () => {
                 <div
                   key={dept.slug}
                   onClick={(e) => handleCardClick(dept.slug, dept.link, e)}
-                  className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-[0_20px_40px_rgba(37,100,234,0.15)] transition-all duration-500 hover:-translate-y-1 block ${cardPlacement} ${
+                  className={`group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-1 block ${cardPlacement} ${
                     isExpanded 
                       ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
-                      : 'border border-transparent'
+                      : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.25)]'
                   }`}
                 >
-                  {/* Background Image */}
+                  {!isExpanded && (
+                    <>
+                      <div className="absolute inset-0 z-30 pointer-events-none rounded-2xl border border-white/[0.06] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),inset_0_-1px_0_0_rgba(0,0,0,0.3)]" />
+                      <div className="absolute inset-x-0 bottom-0 h-[2px] bg-black/30 z-30 pointer-events-none" />
+                    </>
+                  )}
+                  {/* Background Image & Original Gradient */}
                   <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                     <img
                       src={dept.image}
-                      alt={dept.title}
-                      className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${dept.imageClass}`}
+                      alt={`${dept.title} — ${dept.subtitle}`}
+                      loading="lazy"
+                      className={`w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105 ${dept.imageClass || ''}`}
                     />
-                    {/* Subtle overall dark tint for contrast */}
-                    <div className="absolute inset-0 bg-black/25 z-[1] group-hover:bg-black/15 transition-colors duration-500" />
-                    
-                    {/* Premium top gradient vignette */}
-                    <div
-                      className="absolute inset-x-0 top-0 h-1/2 z-[2]"
-                      style={{
-                        background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 100%)',
-                      }}
-                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/80 to-transparent" />
                   </div>
 
                   {/* Hover Gradient Overlay */}
                   {!isExpanded && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#2564ea]/90 to-[#4ab6d4]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
                   )}
 
                   {/* Default Content Overlay */}
                   <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                     <div className="flex flex-col h-full">
-                      <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 transition-transform duration-300 group-hover:translate-x-1 shrink-0">
+                      <h3 className="text-xl sm:text-2xl lg:text-[28px] leading-tight tracking-tight font-bold text-white mb-2 transition-transform duration-300 group-hover:translate-x-1 shrink-0">
                         {dept.title}
                       </h3>
                       <p className="text-xs lg:text-sm font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-6 group-hover:text-white transition-colors duration-300 shrink-0">
@@ -620,12 +618,12 @@ const Services = () => {
                       {/* Description vs Top Services container */}
                       <div className="relative flex-1">
                         {/* Short Description (Visible by default, hidden on hover) */}
-                        <p className="bento-desc absolute inset-0 text-white/90 leading-relaxed text-sm lg:text-[15px]">
+                        <p className="bento-desc absolute inset-0 overflow-y-auto no-scrollbar text-white/90 leading-relaxed text-sm lg:text-[15px] pb-2">
                           {dept.description}
                         </p>
 
                         {/* Top Services List (Hidden by default, visible on hover) */}
-                        <ul className="bento-services absolute inset-0 space-y-2.5">
+                        <ul className="bento-services absolute inset-0 overflow-y-auto no-scrollbar space-y-2.5 pb-2">
                           <span className="block text-xs font-bold uppercase tracking-widest bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-2.5">Key Capabilities:</span>
                           {dept.topServices.slice(0, 6).map((service, sIdx) => (
                             <li key={sIdx} className="flex items-start text-white/90 text-[13px] lg:text-sm font-medium">
@@ -638,9 +636,9 @@ const Services = () => {
                     </div>
 
                     {/* Floating Action Link Button */}
-                    <div className="inline-flex items-center text-white font-bold w-fit mt-4 shrink-0 transition-all duration-300 group-hover:translate-x-1.5 text-sm lg:text-base">
+                    <div className="inline-flex items-center text-white font-bold w-fit mt-4 shrink-0 transition-all duration-300 group-hover:translate-x-1.5 text-[9px] lg:text-[10px] uppercase tracking-wider">
                       Learn More
-                      <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRight className="ml-1.5 w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
                     </div>
                   </div>
 
@@ -707,10 +705,10 @@ const Services = () => {
                     <div className="pt-4 border-t border-white/5 mt-6 flex justify-between items-center pr-14">
                       <Link
                         to={dept.link}
-                        className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors group/link"
+                        className="inline-flex items-center gap-2 text-[8px] sm:text-[9px] font-bold text-white hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors group/link uppercase tracking-wider"
                       >
                         Explore Full Department
-                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
+                        <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover/link:translate-x-1" />
                       </Link>
                     </div>
                   </div>
