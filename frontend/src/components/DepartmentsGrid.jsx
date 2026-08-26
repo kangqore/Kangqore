@@ -32,10 +32,10 @@ const DepartmentsGrid = () => {
             id="departments-grid-heading"
             className="text-3xl md:text-5xl font-bold mb-5 tracking-tight"
           >
-            6 Departments. 61 Services. One Execution Ecosystem.
+            6 Departments. 62 Services. One Execution Ecosystem.
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-            61 services organized across six intelligence-led departments —
+            62 services organized across six intelligence-led departments —
             built for modernization, execution, trust, platforms, and growth.
           </p>
         </div>

@@ -346,6 +346,20 @@ html.dark body {
   50% { transform: scale(1.4); opacity: 0.7; }
 }
 
+/* ─── heroPulseRing ───────────────────────────────────────────────────────────
+   Used by BookingWidget (`animate-[heroPulseRing_3s_ease-out_infinite]`).
+
+   This lived in an inline <style> block inside HomePage's hero, which meant the
+   animation only existed while the homepage was mounted — on /book/:slug, where
+   BookingWidget renders standalone, the keyframe was undefined and the ring sat
+   static. Keyframes consumed across components belong in global CSS.
+   ──────────────────────────────────────────────────────────────────────────── */
+@keyframes heroPulseRing {
+  0%   { transform: scale(1);    opacity: 0.6; }
+  70%  { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
 .animate-marquee-vertical {
   animation: marquee-vertical 25s linear infinite;
 }

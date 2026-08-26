@@ -17,19 +17,19 @@ export const coreSEO = {
   },
   aboutUs: {
     title: 'About Us — Engineering Modern Business',
-    description: 'Kangqore is a value-driven IT company delivering AI, cloud, cybersecurity, and digital transformation solutions across 15 departments and 61+ services.',
+    description: 'Kangqore is a value-driven IT company delivering AI, cloud, cybersecurity, and digital transformation solutions across 6 departments and 62 services.',
     keywords: 'about Kangqore, IT company, enterprise solutions, digital engineering, AI innovation',
     url: '/about-us',
   },
   services: {
-    title: 'Services — 6 Departments · 61 Services',
-    description: 'Explore Kangqore\'s 61 services across 6 departments: AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
+    title: 'Services — 6 Departments · 62 Services',
+    description: 'Explore Kangqore\'s 62 services across 6 departments: AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
     keywords: 'IT services, AI services, cloud services, digital transformation, enterprise technology, Kangqore departments',
     url: '/services',
   },
   departments: {
-    title: 'Departments — 6 Departments · 61 Services',
-    description: '6 Kangqore departments · 61 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
+    title: 'Departments — 6 Departments · 62 Services',
+    description: '6 Kangqore departments · 62 services. AI & Automation, Cloud & Engineering, Modernization, Security & Trust, Enterprise Platforms, and Growth.',
     keywords: 'Kangqore departments, AI department, cloud department, modernization department, security department, enterprise platforms, growth department',
     url: '/departments',
   },
@@ -350,7 +350,7 @@ export const departmentSEO = {
   },
 };
 
-// ─── Service Pages (61 services — flat /services/<slug>) ───────────────────────
+// ─── Service Pages (62 services — flat /services/<slug>) ───────────────────────
 // Source-of-truth: servicesData.js. SEO titles follow the formula:
 //   [Service Name] — [Department ShortName] | Kangqore
 // Descriptions: 140–155 chars, outcome-led, banner-brand-anchored.

@@ -1,10 +1,12 @@
-// ─── Kangqore Services — 61 Canonical Services ────────────────────────────────
-// Single source of truth for all 61 services, keyed by slug.
+// ─── Kangqore Services — 62 Canonical Services ────────────────────────────────
+// Single source of truth for all 62 services, keyed by slug.
 // Every service belongs to EXACTLY ONE department via `departmentSlug` — no
 // cross-tagging. The `relatedServiceSlugs` array provides cross-department
 // discoverability without breaking canonical ownership.
 //
-// ARCHITECTURE: 6 Departments · 61 Services (canonical, single-layer)
+// ARCHITECTURE: 6 Departments · 62 Services (canonical, single-layer)
+// Verified count: cognition 12 · shield 5 · foundry 17 · reimagine 12 ·
+// platforms 8 · growth 8 = 62.
 // Supersedes the nested legacy 15-department structure in departmentData.js.
 // See: /Users/maheshkumar/.claude/plans/act-as-the-lead-curious-starlight.md
 //      Sections 17, 18, 19 for the architecture decisions and rationale.

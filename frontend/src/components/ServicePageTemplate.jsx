@@ -6,6 +6,7 @@ import {
   Briefcase, Zap, Star, Play, Pause, Search, Layers, Activity
 } from 'lucide-react';
 import PageHero from './PageHero';
+import { BOOKING_CTA_LABEL, BOOKING_CTA_ROUTE } from '../data/cta';
 import SEO from './SEO';
 import Realistic3DIcon from './ui/Realistic3DIcon';
 import AskEqoreCTA from './concierge/AskEqoreCTA';
@@ -826,7 +827,7 @@ const ServicePageTemplate = ({ service, department, disableSEO = false }) => {
   }));
 
   // Button Config
-  const primaryButton = service.primaryButton || { text: 'Schedule Your 30-min Discovery Call', link: '/contact' };
+  const primaryButton = service.primaryButton || { text: BOOKING_CTA_LABEL, link: BOOKING_CTA_ROUTE };
   const secondaryButton = service.secondaryButton === null ? null : (service.secondaryButton || { text: 'Explore Our Capabilities', link: `/departments/${department.slug}` });
 
   // ─── JSON-LD SCHEMA GENERATION (SEO/AEO/GEO) ────────────────────────────────

@@ -85,7 +85,7 @@ const VisualBackground = ({ forceDark = false, hideCards = false }) => {
               </div>
             </div>
 
-            {/* Right Middle - 61 Services */}
+            {/* Right Middle - 62 Services */}
             <div
               className="absolute flex items-center gap-4 bg-[#0a0f1a]/60 backdrop-blur-md border border-cyan-500/30 p-3 pr-6 shadow-[0_0_20px_rgba(34,211,238,0.1)] hover:bg-[#0a0f1a]/80 hover:border-cyan-400/50 transition-all duration-500 z-20 cursor-default group"
               style={{ top: '250px', left: '470px', transform: 'translate(-50%, -50%)', clipPath: 'polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}
@@ -96,7 +96,7 @@ const VisualBackground = ({ forceDark = false, hideCards = false }) => {
                 <div className="w-1.5 h-1.5 bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
               </div>
               <div className="font-mono">
-                <div className="text-xl font-bold text-cyan-50 tracking-widest leading-none">61</div>
+                <div className="text-xl font-bold text-cyan-50 tracking-widest leading-none">62</div>
                 <div className="text-[9px] bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent font-semibold uppercase tracking-[0.2em] mt-1">SERVICES</div>
               </div>
             </div>

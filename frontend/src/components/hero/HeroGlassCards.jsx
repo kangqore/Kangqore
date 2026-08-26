@@ -7,7 +7,7 @@ import { servicesData } from '../../data/servicesData';
  * Two stacked cards for the hero right panel — chat-bubble style, compact.
  *
  * UPPER CARD: relatable photo (4 themes cycle) with text overlay
- * LOWER CARD: brand-gradient showing all 61 services on a fast loop.
+ * LOWER CARD: brand-gradient showing all 62 services on a fast loop.
  */
 const SERVICE_ROTATE_MS = 2800; // Faster loop for services
 
