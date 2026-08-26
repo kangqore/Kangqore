@@ -122,7 +122,7 @@ const BentoCard = ({ dept, i, cardClass, isExpanded, setExpandedCaps, scrollYPro
             {dept.title}
           </h3>
           <p className="text-xs lg:text-sm font-semibold mb-6 shrink-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
-            {dept.items.length} Key Capabilities
+            {dept.serviceCount} Key Capabilities
           </p>
           <div className="relative flex-1">
             <p className="svc-cap-desc absolute inset-0 overflow-y-auto no-scrollbar leading-relaxed text-sm lg:text-[15px] text-white/90 pb-2">
