@@ -82,7 +82,7 @@ const LatestInsightsSection = () => {
             
             {/* Bottom-Left Solid Navy Blue Card + Pill CTA */}
             <div className="lg:col-span-4 flex flex-col gap-6 w-full">
-              <div className="bg-[#1a3458] p-8 lg:p-10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-white/[0.06] flex flex-col justify-between min-h-[300px] lg:min-h-[340px]">
+              <div className="bg-black p-8 lg:p-10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-white/[0.06] flex flex-col justify-between min-h-[300px] lg:min-h-[340px]">
                 <div>
                   <p className="text-xs sm:text-sm font-normal text-slate-300 mb-5 flex items-center gap-2">
                     <span className="inline-block w-4 h-[1px] bg-slate-300" />
