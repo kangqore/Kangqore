@@ -10773,10 +10773,10 @@ export const servicesData = {
     // Area 03 is written to that boundary so the two do not collide later.
     heroTitle: 'Enterprise Integration Platform\nServices for Intelligence Operations',
     whatIsEyebrow: 'What an enterprise integration platform capability covers',
-    whatIsTitle: 'Integration Is an',
-    whatIsTitleLine2: 'Architecture,',
+    whatIsTitle: 'Enterprise Integration,',
+    whatIsTitleLine2: 'Architected as a',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'Not a Connector Inventory.',
+    whatIsHighlight: 'Business Capability.',
     whatIsPara2: 'No enterprise runs on one platform. Yours runs across ERP, CRM, HCM, supply chain, finance and CX, a data estate, applications nobody wants to touch, a SaaS portfolio that grew by department, partner networks, several clouds and now AI systems that expect to reach all of it.',
     whatIsPara3: 'Connectivity on its own stopped being the difficulty a long time ago. Every point-to-point interface you add is a dependency somebody has to remember, and estates reach a threshold where changing one system quietly breaks three others \u2014 at which point the integration layer is no longer enabling change, it is the reason change is slow. What is being asked of it now is harder again: not only to move data between functions, but to run a process across CX, CRM, ERP, HCM, supply chain and finance as one flow rather than six handoffs, and to let AI reach those same platforms under the same controls as everything else.',
     whatIsPara4: 'Kangqore designs, engineers, modernizes and operates that layer as an architected capability: applications, APIs, data, events, processes, partners and AI, across on-premises, private cloud, public cloud and hybrid, with security, identity, policy, observability and lifecycle governance designed in rather than added afterwards. Intelligence belongs inside that architecture rather than in place of it \u2014 a model reaching your systems through governed interfaces inherits every control the estate already enforces, and one reaching them any other way inherits none of them. Discover, architect, engineer, modernize, govern, operate.',
