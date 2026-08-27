@@ -101,7 +101,7 @@ import {
   USMExecutionEcosystem,
 } from './USMCustomSections';
 
-// ─── enterprise-platform-integration (Platforms) ───────────────────────────────
+// ─── enterprise-integration-platform (Platforms) ───────────────────────────────
 const enterprisePlatformIntegration = {
   titleLine1: 'Enterprise Platform',
   titleHighlight: 'Integration.',
@@ -1773,7 +1773,7 @@ const unifiedServicesManagement = {
 //     Supply Chain, Unified Service Management)
 // All consolidated under the canonical Platforms department in 6-dept architecture.
 export const PLATFORMS_SECTIONS = {
-  'enterprise-platform-integration': enterprisePlatformIntegration,
+  'enterprise-integration-platform': enterprisePlatformIntegration,
   'pimcore': pimcore,
   'salesforce': salesforce,
   'servicenow': servicenow,

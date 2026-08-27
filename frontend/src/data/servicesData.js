@@ -7232,7 +7232,7 @@ export const servicesData = {
     shortDescription: 'Design and build modern API-first architectures',
     fullDescription: 'Implement API-first and microservices architectures for scalable applications.',
     keyFeatures: ['API design', 'Microservices architecture', 'API gateway', 'Service mesh', 'API management'],
-    relatedServiceSlugs: ['software-development', 'devops-as-a-service', 'enterprise-platform-integration'],
+    relatedServiceSlugs: ['software-development', 'devops-as-a-service', 'enterprise-integration-platform'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
   },
@@ -10731,9 +10731,9 @@ export const servicesData = {
   // KANGQORE PLATFORMS — 8 services
   // ═════════════════════════════════════════════════════════════════════════════
 
-  'enterprise-platform-integration': {
-    slug: 'enterprise-platform-integration',
-    name: 'Enterprise Platform Integration',
+  'enterprise-integration-platform': {
+    slug: 'enterprise-integration-platform',
+    name: 'Enterprise Integration Platform',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS\u2122',
     shortDescription: 'Architecting and engineering the integration fabric across applications, APIs, data, events and partners',
@@ -10771,7 +10771,7 @@ export const servicesData = {
     // messaging *as integration mechanisms* -- how systems reach each other.
     // That page will own how an API is designed, versioned and productized.
     // Area 03 is written to that boundary so the two do not collide later.
-    heroTitle: 'Enterprise Platform Integration\nServices for Connected Operations',
+    heroTitle: 'Enterprise Integration Platform\nServices for Intelligence Operations',
     whatIsEyebrow: 'What enterprise platform integration actually is',
     whatIsTitle: 'Integration Is an Architecture,',
     whatIsHighlightNewLine: true,
@@ -11011,7 +11011,7 @@ export const servicesData = {
     // in that sector -- clinical standards in healthcare, settlement windows in
     // banking, carrier networks in logistics -- rather than restating the
     // capability list with a sector word attached.
-    industryHeading: 'Enterprise Platform Integration',
+    industryHeading: 'Enterprise Integration Platform',
     industryHeadingHighlight: 'by industry.',
     industryLede: 'Six sectors, and the interoperability constraint that decides what an integration architecture there actually has to solve.',
     industryUseCases: [
@@ -11213,8 +11213,8 @@ export const servicesData = {
       },
     ],
 
-    capabilitiesLabel: 'ENTERPRISE PLATFORM INTEGRATION SERVICES',
-    capabilitiesSectionTitle: 'Enterprise Platform Integration',
+    capabilitiesLabel: 'ENTERPRISE INTEGRATION PLATFORM SERVICES',
+    capabilitiesSectionTitle: 'Enterprise Integration Platform',
     capabilitiesSectionHighlight: 'Capabilities.',
     capabilitiesLede: 'Assess the estate, decide the architecture, consolidate what accumulated, engineer the connections, govern them as one capability, and run them afterwards if you would rather not.',
     capabilityAreas: [
@@ -11411,7 +11411,7 @@ export const servicesData = {
     shortDescription: 'Pimcore PIM/DAM implementation and customization',
     fullDescription: 'Implement Pimcore for product information management and digital asset management.',
     keyFeatures: ['PIM implementation', 'DAM setup', 'Data modeling', 'Integration', 'Custom development'],
-    relatedServiceSlugs: ['enterprise-platform-integration', 'supply-chain'],
+    relatedServiceSlugs: ['enterprise-integration-platform', 'supply-chain'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
   },
@@ -11424,7 +11424,7 @@ export const servicesData = {
     shortDescription: 'Salesforce implementation and customization',
     fullDescription: 'Transform customer relationships with Salesforce solutions.',
     keyFeatures: ['Sales Cloud', 'Service Cloud', 'Marketing Cloud', 'Custom development', 'Integration'],
-    relatedServiceSlugs: ['enterprise-platform-integration', 'cdp-strategy', 'servicenow'],
+    relatedServiceSlugs: ['enterprise-integration-platform', 'cdp-strategy', 'servicenow'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80',
   },
@@ -11440,7 +11440,7 @@ export const servicesData = {
     // max-w-[520px] and wraps to three lines. Two is the standard.
     fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
     keyFeatures: ['ITSM', 'ITOM & CMDB', 'ITAM', 'SecOps & IRM', 'HRSD & CSM', 'App Engine', 'Upgrade health'],
-    relatedServiceSlugs: ['enterprise-platform-integration', 'business-process-management', 'it-security-services'],
+    relatedServiceSlugs: ['enterprise-integration-platform', 'business-process-management', 'it-security-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80',
     lastReviewed: '2026-08-24',
@@ -11541,7 +11541,7 @@ export const servicesData = {
     //   - process design and value-stream work -> business-process-management
     //   - case-management applications -> digital-process-automation
     //   - the security program behind SecOps and IRM -> it-security-services
-    //   - integration architecture beyond IntegrationHub -> enterprise-platform-integration
+    //   - integration architecture beyond IntegrationHub -> enterprise-integration-platform
     //   - the HR operating model behind HRSD -> talent-organization
     //   - release testing strategy and ATF suites -> quality-engineering-assurance
     //   - model governance behind Now Assist -> ai-governance
@@ -11953,7 +11953,7 @@ export const servicesData = {
           managed: 'App Engine Studio, Flow Designer, IntegrationHub',
           selfHosted: 'Scoped apps, update sets, and a debt register',
           desc: 'Genuinely productive for departmental applications close to service data. The failure mode is volume: easy building produces two hundred scoped apps in three years, and governance has to exist before that rather than after.',
-          link: { href: '/services/enterprise-platform-integration', label: 'Integration architecture' },
+          link: { href: '/services/enterprise-integration-platform', label: 'Integration architecture' },
         },
         {
           icon: 'BrainCircuit',

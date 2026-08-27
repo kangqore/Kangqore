@@ -108,9 +108,21 @@ if (serviceRedirectCount !== 62) {
   fail(`Expected 62 /services/* nested redirects, found ${serviceRedirectCount}`);
 }
 
-// ─── Check 5: every canonical service is the TARGET of exactly one redirect ────
-// (Each old nested URL collapses to ONE canonical URL; the canonical service
-//  should appear as a redirect target exactly once.)
+// ─── Check 5: every canonical service is the TARGET of at least one redirect ──
+// (Each old nested URL collapses to a canonical URL; every canonical service
+//  must still be reachable from whatever URL it used to live at.)
+//
+// This was "exactly one" until a service was renamed. Two things made that
+// wrong. The source paths are keys of a JSON object, so duplicate sources are
+// impossible by construction — the >1 branch could never fire on the data error
+// it named. And a renamed service legitimately has more than one historical
+// URL, each of which should point straight at the canonical one; forcing a
+// single redirect meant either chaining (an extra hop, and the chain's middle
+// target then fails Check 4) or dropping an old URL and 404ing it.
+//
+// enterprise-platform-integration -> enterprise-integration-platform is the
+// first rename to hit this. The zero-coverage check below is the one carrying
+// the value and it is unchanged.
 
 const serviceTargetCounts = new Map();
 for (const to of Object.values(redirects)) {
@@ -121,8 +133,6 @@ for (const slug of canonicalServiceSlugs) {
   const count = serviceTargetCounts.get(slug) || 0;
   if (count === 0) {
     fail(`Canonical service "${slug}" has NO legacy redirect pointing to it — old URL coverage gap`);
-  } else if (count > 1) {
-    fail(`Canonical service "${slug}" is the target of ${count} redirects — duplicate source paths`);
   }
 }
 
@@ -146,7 +156,7 @@ if (failures.length === 0) {
   console.log(`✓ Legacy coverage audit pass:`);
   console.log(`  • ${deptRedirectCount} /department/<old> → /departments/<new> redirects (target = 1 of 6 canonical depts)`);
   console.log(`  • ${serviceRedirectCount} /services/<old-dept>/<svc> → /services/<svc> flat redirects (target = canonical service)`);
-  console.log(`  • Every one of 62 canonical services has exactly one legacy redirect pointing to it`);
+  console.log(`  • Every one of 62 canonical services has at least one legacy redirect pointing to it`);
   console.log(`  • All 6 canonical departments are reachable via at least one legacy /department/* redirect`);
   process.exit(0);
 }

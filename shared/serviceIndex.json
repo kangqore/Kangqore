@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-27T18:39:34.165Z",
+  "generatedAt": "2026-08-27T18:56:30.055Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1378,9 +1378,9 @@
       "dataHandling": []
     },
     {
-      "slug": "enterprise-platform-integration",
-      "url": "/services/enterprise-platform-integration",
-      "name": "Enterprise Platform Integration",
+      "slug": "enterprise-integration-platform",
+      "url": "/services/enterprise-integration-platform",
+      "name": "Enterprise Integration Platform",
       "department": "Platforms",
       "description": "Enterprise integration architecture and engineering — APIs, events, messaging, B2B and EDI, hybrid cloud and iPaaS, modernization and governed operations.",
       "capabilities": [

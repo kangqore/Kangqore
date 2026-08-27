@@ -353,7 +353,7 @@ export class GraphSeedService {
         title: 'Enterprise Platform Integration Specialist',
         bio: 'Deep expertise in ServiceNow, Salesforce, and Pimcore enterprise platform implementations.',
         departmentSlugs: ['enterprise-applications'],
-        serviceSlugs: ['servicenow', 'salesforce', 'enterprise-platform-integration', 'pimcore'],
+        serviceSlugs: ['servicenow', 'salesforce', 'enterprise-integration-platform', 'pimcore'],
         expertiseTags: ['ServiceNow', 'Salesforce', 'ITSM', 'CRM', 'Platform Integration'],
         industryExperience: ['financial-services', 'manufacturing', 'professional-services'],
         priorityLevel: 'senior'
@@ -402,7 +402,7 @@ export class GraphSeedService {
         description: 'Complete ServiceNow-powered ITSM transformation for a major financial institution, reducing ticket resolution time by 60%.',
         industrySlug: 'financial-services',
         departmentSlug: 'enterprise-applications',
-        servicesSlugs: ['servicenow', 'enterprise-platform-integration'],
+        servicesSlugs: ['servicenow', 'enterprise-integration-platform'],
         outcomeMetrics: [
           { metric: 'Ticket Resolution Time', value: '-60%' },
           { metric: 'ITSM Automation Rate', value: '78%' },

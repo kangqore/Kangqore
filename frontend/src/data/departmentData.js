@@ -571,7 +571,7 @@ export const departmentData = [
     services: [
       {
         name: 'Enterprise Platform Integration',
-        slug: 'enterprise-platform-integration',
+        slug: 'enterprise-integration-platform',
         shortDescription: 'Integrate enterprise platforms and applications',
         fullDescription: 'Connect your enterprise applications for seamless data flow and process automation.',
         image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
