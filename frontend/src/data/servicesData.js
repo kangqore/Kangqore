@@ -10796,10 +10796,10 @@ export const servicesData = {
     outcomesHeading: 'Integration Metrics',
     outcomesHeadingHighlight: 'Worth Baselining.',
     businessMetrics: [
-      { illustrative: true, title: 'Integration Velocity',   desc: 'Time to design, build and deploy a new integration once a reusable API and connector layer exists, against the same work built point to point.', value: '3\u20135', suffix: ' Days', metricLabel: 'Design to Deploy',        icon: 'Zap'      },
+      { illustrative: true, title: 'Interface Ownership',    desc: 'Share of the integration estate with a named owner, a lifecycle stage and a retirement date after rationalization \u2014 against how much of it had one at discovery.', value: '95',  suffix: '%',    metricLabel: 'Interfaces Owned',     icon: 'ShieldCheck' },
       { illustrative: true, title: 'Reuse Rate',             desc: 'Share of new integrations assembled from existing APIs, events and connectors rather than built from scratch, after the shared layer is established.', value: '60',  suffix: '%',    metricLabel: 'Built From Reuse',     icon: 'Layers'   },
       { illustrative: true, title: 'Interface Rationalization', desc: 'Point-to-point interfaces retired or consolidated during modernization without losing a business flow \u2014 usually duplicates built by different teams.', value: '40',  suffix: '%',    metricLabel: 'Interfaces Retired',   icon: 'Network'  },
-      { illustrative: true, title: 'Partner Onboarding',     desc: 'From signed agreement to a trading partner exchanging live transactions, once onboarding is templated rather than engineered each time.',              value: '5\u201310', suffix: ' Days', metricLabel: 'Contract to Live',    icon: 'Globe'    },
+      { illustrative: true, title: 'Traceable Flows',       desc: 'Share of business-critical integrations with end-to-end transaction tracing rather than run-status monitoring, so a missing payload is located instead of investigated.', value: '90',  suffix: '%',    metricLabel: 'Flows Under Trace',    icon: 'Eye'      },
     ],
 
     heroBadge: 'Architected. Engineered. Governed.',
