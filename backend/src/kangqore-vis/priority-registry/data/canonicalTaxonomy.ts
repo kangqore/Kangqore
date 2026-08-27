@@ -71,7 +71,7 @@ export const CANONICAL_SERVICES: CanonicalService[] = [
   { slug: 'finance-risk-management', name: 'Finance & Risk Management', departmentSlug: 'shield', featured: false },
   { slug: 'quality-engineering-assurance', name: 'Quality Engineering & Assurance', departmentSlug: 'shield', featured: false },
   { slug: 'operation-technology', name: 'Operation Technology (OT)', departmentSlug: 'shield', featured: false },
-  { slug: 'enterprise-platform-integration', name: 'Enterprise Platform Integration', departmentSlug: 'platforms', featured: false },
+  { slug: 'enterprise-integration-platform', name: 'Enterprise Integration Platform', departmentSlug: 'platforms', featured: false },
   { slug: 'pimcore', name: 'Pimcore', departmentSlug: 'platforms', featured: false },
   { slug: 'salesforce', name: 'Salesforce', departmentSlug: 'platforms', featured: true },
   { slug: 'servicenow', name: 'ServiceNow', departmentSlug: 'platforms', featured: false },

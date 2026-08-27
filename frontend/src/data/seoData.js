@@ -656,11 +656,11 @@ export const serviceSEO = {
   },
 
   // ─── Platforms (8) ──
-  'enterprise-platform-integration': {
-    title: 'Enterprise Platform Integration — Platforms | Kangqore',
+  'enterprise-integration-platform': {
+    title: 'Enterprise Integration Platform — Platforms | Kangqore',
     description: 'Enterprise integration architecture and engineering — APIs, events, messaging, B2B and EDI, hybrid cloud and iPaaS, modernization and governed operations.',
     keywords: 'enterprise integration, API integration, ESB, iPaaS, data integration, platform integration',
-    url: '/services/enterprise-platform-integration',
+    url: '/services/enterprise-integration-platform',
   },
   'pimcore': {
     title: 'Pimcore — Platforms | Kangqore',

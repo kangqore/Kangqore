@@ -2647,7 +2647,7 @@ const featureMicros   = service.featureMicros
                     <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
                   </svg>
                 </div>
-              ) : service.slug === 'enterprise-platform-integration' ? (
+              ) : service.slug === 'enterprise-integration-platform' ? (
                 /* ── Point to point, or a fabric ──
                    Replaces the shared Platforms default. The argument is the
                    contrast at the top: the same six systems either wired to

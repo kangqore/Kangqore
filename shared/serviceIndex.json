@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T06:51:48.171Z",
+  "generatedAt": "2026-08-27T21:52:04.497Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1378,21 +1378,21 @@
       "dataHandling": []
     },
     {
-      "slug": "enterprise-platform-integration",
-      "url": "/services/enterprise-platform-integration",
-      "name": "Enterprise Platform Integration",
+      "slug": "enterprise-integration-platform",
+      "url": "/services/enterprise-integration-platform",
+      "name": "Enterprise Integration Platform",
       "department": "Platforms",
       "description": "Enterprise integration architecture and engineering — APIs, events, messaging, B2B and EDI, hybrid cloud and iPaaS, modernization and governed operations.",
       "capabilities": [
-        "Integration Strategy & Enterprise Architecture",
-        "Application & Legacy Integration",
-        "API, Event & Messaging Integration",
-        "Data Integration & Process Orchestration",
-        "B2B, EDI & Partner Integration",
-        "Hybrid Cloud & iPaaS Integration",
-        "Integration Modernization & Rationalization",
-        "Integration Governance, Security & Operations",
-        "Intelligent & Agentic Integration"
+        "Gen AI-Powered Platform Consulting",
+        "Enterprise Integration Strategy",
+        "Integration Optimization & Consolidation",
+        "Industry-Based Integration Solutions",
+        "Next Gen Center of Excellence",
+        "Implementation & Engineering Services",
+        "Operations & Customer Value Services",
+        "Agent Integration Services",
+        "B2B Platform as a Service"
       ],
       "faqs": [
         {

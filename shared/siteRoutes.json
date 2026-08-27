@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-11T13:10:23.647Z",
+  "generatedAt": "2026-08-27T18:56:30.006Z",
   "baseUrl": "https://kangqore.com",
   "routes": [
     {
@@ -543,7 +543,7 @@
       "changefreq": "monthly"
     },
     {
-      "path": "/services/enterprise-platform-integration",
+      "path": "/services/enterprise-integration-platform",
       "type": "SERVICE",
       "priority": "0.8",
       "changefreq": "monthly"

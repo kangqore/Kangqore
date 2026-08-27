@@ -121,7 +121,7 @@ export const KANGQORE_DEPARTMENTS: KangqoreDepartment[] = [
     name: 'Enterprise Applications',
     slug: 'enterprise-applications',
     description: 'Implement and optimize enterprise software platforms.',
-    services: ['enterprise-platform-integration', 'pimcore', 'salesforce', 'servicenow']
+    services: ['enterprise-integration-platform', 'pimcore', 'salesforce', 'servicenow']
   },
   {
     name: 'Emerging Technologies',
@@ -712,8 +712,8 @@ export const KANGQORE_SERVICES: Record<string, KangqoreService> = {
     recommendedSolutionPackages: ['API & Microservices Engineering Strategy Audit', 'API & Microservices Engineering Implementation Roadmap'],
     priorityLevel: 'high'
   },
-  'enterprise-platform-integration': {
-    slug: 'enterprise-platform-integration',
+  'enterprise-integration-platform': {
+    slug: 'enterprise-integration-platform',
     name: 'Enterprise Platform Integration',
     departmentSlug: 'enterprise-applications',
     departmentName: 'Enterprise Applications',

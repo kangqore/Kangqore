@@ -212,7 +212,7 @@ export const departmentsData = {
     accentColor: '#0891b2',
     serviceCount: 8,
     serviceSlugs: [
-      'enterprise-platform-integration',
+      'enterprise-integration-platform',
       'pimcore',
       'salesforce',
       'servicenow',
@@ -226,7 +226,7 @@ export const departmentsData = {
     heroServiceSlugs: [
       'salesforce',
       'servicenow',
-      'enterprise-platform-integration',
+      'enterprise-integration-platform',
       'global-capability-centers',
       'pimcore',
     ],
