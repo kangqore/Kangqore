@@ -16,7 +16,7 @@ const carouselDepartments = departmentsList.map((slug, index) => {
     desc: dept.description,
     link: `/departments/${slug}`,
     image: bgImage,
-    items: dept.heroServiceSlugs.map((s) => servicesData[s].name),
+    items: (dept.heroServiceSlugs || []).map((s) => servicesData[s]?.name || servicesData[s]?.title || s),
     serviceCount: dept.serviceCount,
   };
 });
