@@ -419,7 +419,7 @@ const InsightsSubscribeBlock = () => {
 const TrustIntelligenceLayer = () => {
   return (
     <section id="trust-intelligence" className="relative z-20 bg-white dark:bg-black py-24 md:pb-32 transition-colors duration-500">
-      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-[1380px] px-6 xl:px-0">
         
         {/* The McKinsey Hero Grid Layout (Applied to Intelligence Section) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_1fr_1.75fr] gap-4">
@@ -427,7 +427,7 @@ const TrustIntelligenceLayer = () => {
           {/* 1. Headline Block (Top Left - Spans 2 cols) */}
           <div className="lg:col-span-2 bg-white dark:bg-black py-12 flex flex-col justify-center">
             <div className="flex flex-col md:flex-row md:items-center gap-10 lg:pr-10">
-              <p className="max-w-2xl text-2xl md:text-3xl lg:text-4xl leading-snug md:leading-snug text-gray-900 dark:text-white font-medium tracking-tight">
+              <p className="max-w-4xl text-2xl md:text-3xl lg:text-4xl leading-snug md:leading-snug text-gray-900 dark:text-white font-medium tracking-tight">
                 Insights engineered for decision-makers. The ideas, research, and perspectives defining the future of intelligent enterprise infrastructure.
               </p>
               <Link viewTransition to="/insights" className="w-14 h-14 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center group hover:scale-110 hover:shadow-[0_0_20px_rgba(37,100,234,0.3)] transition-all duration-500 shrink-0 mt-4 md:mt-0 relative overflow-hidden">
