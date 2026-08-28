@@ -97,7 +97,7 @@ const Footer = () => {
   return (
     <footer className="bg-white dark:bg-black text-[#2d3148] dark:text-gray-300" style={{ padding: '97px 24px 0', fontFamily: "'DM Sans', sans-serif" }}>
       {/* Two-Card Grid */}
-      <div style={{ maxWidth: 1150, margin: '0 auto', display: 'grid', gridTemplateColumns: '350px 1fr', gap: 16, alignItems: 'stretch' }} className="footer-grid-wrapper">
+      <div style={{ maxWidth: 1380, margin: '0 auto', display: 'grid', gridTemplateColumns: '380px 1fr', gap: 20, alignItems: 'stretch' }} className="footer-grid-wrapper">
 
         {/* LEFT CARD — Video Background */}
         <div style={{ position: 'relative', minHeight: 420, borderRadius: 28, padding: 32, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.12)', background: '#111214', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -155,7 +155,7 @@ const Footer = () => {
           </a>
 
           {/* Nav Columns */}
-          <div style={{ display: 'flex', gap: 28, paddingTop: 8, flexWrap: 'wrap' }} className="footer-nav-cols">
+          <div style={{ display: 'flex', gap: 48, paddingTop: 8, flexWrap: 'wrap' }} className="footer-nav-cols">
             {/* Capabilities */}
             <div style={{ flex: '0 1 150px', minWidth: 140 }}>
               <h3 className="text-gray-600 dark:text-gray-400" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Capabilities</h3>
@@ -228,7 +228,7 @@ const Footer = () => {
       </div>
 
       {/* Watermark */}
-      <div style={{ maxWidth: 1150, margin: '-60px auto 0', pointerEvents: 'none', userSelect: 'none', position: 'relative', zIndex: 0, lineHeight: 0 }} aria-hidden="true">
+      <div style={{ maxWidth: 1380, margin: '-60px auto 0', pointerEvents: 'none', userSelect: 'none', position: 'relative', zIndex: 0, lineHeight: 0 }} aria-hidden="true">
         <svg id="footerWatermarkSvg" viewBox="62 95 876 175" preserveAspectRatio="xMidYMid meet" style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible' }}>
           <text id="footerWatermarkText" x="500" y="240" textAnchor="middle" fontSize="320" style={{ fontFamily: "-apple-system, system-ui, BlinkMacSystemFont, 'SF Pro Display', sans-serif", fontWeight: 800, letterSpacing: '-0.04em', fill: '#ffffff', filter: 'drop-shadow(0px 10px 20px rgba(0,0,0,0.15)) drop-shadow(0px 3px 6px rgba(0,0,0,0.1))' }}>Kangqore</text>
         </svg>
