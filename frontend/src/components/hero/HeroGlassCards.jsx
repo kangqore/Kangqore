@@ -78,13 +78,13 @@ const HeroGlassCards = () => {
   // Flatten all services from canonical servicesData (62 services)
   const ALL_SERVICES = useMemo(() => {
     return Object.keys(servicesData).map(slug => {
-      const svc = servicesData[slug];
+      const svc = servicesData[slug] || {};
       const dept = departmentsData[svc.departmentSlug] || {};
       return {
-        name: svc.name,
-        dept: dept.shortName || dept.name || svc.departmentSlug,
+        name: svc.name || slug,
+        dept: dept.shortName || dept.name || svc.departmentSlug || '',
         slug: slug,
-        deptSlug: svc.departmentSlug
+        deptSlug: svc.departmentSlug || ''
       };
     });
   }, []);
@@ -108,7 +108,7 @@ const HeroGlassCards = () => {
   }, [reducedMotion, paused]);
 
   const currentDeptSlug = departmentsList[deptIdx];
-  const currentDept = departmentsData[currentDeptSlug];
+  const currentDept = departmentsData[currentDeptSlug] || {};
 
   return (
     <div

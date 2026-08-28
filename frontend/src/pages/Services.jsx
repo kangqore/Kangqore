@@ -126,7 +126,7 @@ const carouselDepartments = departmentsList.map((slug) => {
     link: `/departments/${slug}`,
     image: presentation.image,
     imageClass: presentation.imageClass || DEFAULT_IMAGE_CLASS,
-    topServices: dept.heroServiceSlugs.map((s) => servicesData[s].name),
+    topServices: (dept.heroServiceSlugs || []).map((s) => servicesData[s]?.name || servicesData[s]?.title || s),
     icon: dept.icon,
     serviceCount: dept.serviceCount,
     businessOutcomes: dept.businessOutcomes,

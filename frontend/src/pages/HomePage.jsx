@@ -98,12 +98,12 @@ const HeroSection = () => {
         <div className="relative z-[2] h-full">
           <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-[194px] lg:pt-[250px] pb-[167px] sm:pb-[175px] h-full flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
 
-            <div className="w-full md:max-w-[58%] lg:max-w-[60%] flex flex-col h-full justify-center z-10">
+            <div className="w-full lg:max-w-[850px] xl:max-w-[950px] flex flex-col h-full justify-center z-10">
 
               <div className="flex-shrink-0">
-                <h1 className="mb-5 text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[1.1] sm:leading-[0.96] tracking-[-0.045em] text-white animate-in fade-in zoom-in-75 duration-1000 ease-out origin-left">
+                <h1 className="mb-5 text-[2rem] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem] font-bold leading-[0.98] sm:leading-[0.92] tracking-[-0.045em] text-white animate-in fade-in zoom-in-75 duration-1000 ease-out origin-left">
                   <span className="block xl:whitespace-nowrap">{slide.title}</span>
-                  <span className="block bg-brand-gradient bg-clip-text text-transparent xl:whitespace-nowrap mt-1 sm:mt-2">{slide.titleGradient}</span>
+                  <span className="block bg-brand-gradient bg-clip-text text-transparent xl:whitespace-nowrap">{slide.titleGradient}</span>
                 </h1>
 
                 <p className="mb-12 text-base sm:text-lg lg:text-xl text-gray-300 leading-[1.8] max-w-3xl animate-fade-in font-medium line-clamp-3">
