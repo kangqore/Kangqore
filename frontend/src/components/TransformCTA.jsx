@@ -137,7 +137,7 @@ const TransformCTA = () => {
 
   return (
     <section className="pt-28 md:pt-36 lg:pt-44 pb-14 md:pb-16 lg:pb-20 bg-white dark:bg-black">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="max-w-[1380px] mx-auto px-6 xl:px-0">
         <div 
           ref={sectionRef}
           className={`transition-all duration-1000 ${
