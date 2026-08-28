@@ -96,7 +96,7 @@ export const servicesData = {
       body: 'Talk through your highest-value workflow in 30 minutes — we will scope the right entry point and show you what a production agent looks like for your context.',
     },
     heroTitle: 'Agentic AI Services That\nExecute Your Enterprise Workflows',
-    heroMaxWidth: 'max-w-[78%]',
+    heroMaxWidth: 'w-full md:max-w-[58%] lg:max-w-[60%]',
     heroTitleSize: 'text-[1.6rem] sm:text-[1.92rem] lg:text-[2.688rem] xl:text-[3.6rem]',
     heroBadge: 'AI Agents Built to Execute',
     departmentSlug: 'cognition',
@@ -403,7 +403,7 @@ export const servicesData = {
       body: 'Talk through your highest-value workflow in 30 minutes — we will scope the right entry point and show you what a production agent looks like for your context.',
     },
     heroTitle: 'Agentic AI-led Application\nModernization at Machine Speed',
-    heroMaxWidth: 'max-w-[82%]',
+    heroMaxWidth: 'w-full md:max-w-[58%] lg:max-w-[60%]',
     heroTitleSize: 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]',
     heroBadge: 'Modernize Faster. Risk Less.',
     departmentSlug: 'cognition',
@@ -755,7 +755,7 @@ export const servicesData = {
     slug: 'ai-cognitive-computing',
     name: 'AI & Cognitive Computing',
     heroTitle: 'AI & Cognitive Computing\nServices for the Thinking Enterprise',
-    heroMaxWidth: 'max-w-[82%]',
+    heroMaxWidth: 'w-full md:max-w-[58%] lg:max-w-[60%]',
     heroTitleSize: 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]',
     heroBadge: 'Systems That Understand, Reason & Act',
     departmentSlug: 'cognition',
@@ -2491,7 +2491,7 @@ export const servicesData = {
     heroBadge: 'Machine Learning Built to Operate',
     heroTitle: 'MLOps Services That\nRun the Full Model Lifecycle',
     heroTitleSize: 'text-[1.6rem] sm:text-[1.92rem] lg:text-[2.688rem] xl:text-[3.6rem]',
-    heroMaxWidth: 'max-w-[78%]',
+    heroMaxWidth: 'w-full md:max-w-[58%] lg:max-w-[60%]',
     // The Cognition default ends "…Knowledge Graphs, Autonomous Agents, AI
     // Governance" — three chips promising agents in the hero strip of an MLOps
     // page, and the last agentic strings left above the fold.
@@ -2977,7 +2977,7 @@ export const servicesData = {
     slug: 'ai-governance',
     name: 'AI Governance',
     heroTitle: 'AI Governance Services That\nScale Trust Across the Enterprise',
-    heroMaxWidth: 'max-w-[80%]',
+    heroMaxWidth: 'w-full md:max-w-[58%] lg:max-w-[60%]',
     heroTitleSize: 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.5rem]',
     heroBadge: 'Governed AI. Compliant AI. Trusted AI.',
     departmentSlug: 'shield',
@@ -10771,7 +10771,10 @@ export const servicesData = {
     // messaging *as integration mechanisms* -- how systems reach each other.
     // That page will own how an API is designed, versioned and productized.
     // Area 03 is written to that boundary so the two do not collide later.
-    heroTitle: 'Enterprise Integration Platform\nServices for Intelligence Operations',
+    heroTitle: 'Enterprise Integration Platform\nHybrid Services for Intelligence Operations',
+    heroTitleHighlight: 'Intelligence Operations',
+    heroTitleSize: 'text-[1.8rem] sm:text-[2.1rem] lg:text-[2.4rem] xl:text-[2.7rem]',
+    heroMaxWidth: 'w-full md:max-w-[58%] lg:max-w-[60%]',
     whatIsEyebrow: 'What an enterprise integration platform capability covers',
     whatIsTitle: 'Enterprise Integration,',
     whatIsTitleLine2: 'Architected as a',

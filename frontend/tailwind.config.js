@@ -12,8 +12,8 @@ module.exports = {
 
       // ── Fonts ───────────────────────────────────────────────────────────
       fontFamily: {
-        sans:    ['"Inter"',   'system-ui', '-apple-system', 'sans-serif'],
-        display: ['"Figtree"', 'system-ui', '-apple-system', 'sans-serif'],
+        sans:    ['"Alliance No.2"', '"Outfit"', '"Space Grotesk"', '"Barlow"', '"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['"Alliance No.2"', '"Outfit"', '"Space Grotesk"', '"Barlow"', '"Figtree"', 'system-ui', '-apple-system', 'sans-serif'],
         mono:    ['"JetBrains Mono"', '"Fira Code"', 'ui-monospace', 'monospace'],
       },
 

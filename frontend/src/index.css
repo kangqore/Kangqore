@@ -1118,3 +1118,25 @@ html, body, #root { border-top: none !important; box-shadow: none !important; }
 .chat-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* ── Palantir-style Geometric Typography (Site-Wide) ────────────────────────── */
+body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea, span {
+  font-family: 'Alliance No.2', 'Outfit', 'Space Grotesk', 'Barlow', system-ui, -apple-system, sans-serif;
+}
+
+/* Palantir Headline Typography Match: Light/Regular Weight (300/400), Tight Letter Spacing, Clean Line Height */
+h1 {
+  font-weight: 300 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.08 !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+h2, h3 {
+  font-weight: 400 !important;
+  letter-spacing: -0.02em !important;
+}
+
+
+

@@ -109,7 +109,7 @@ const DepartmentsIndexPage = () => {
             ref={heroRef}
             className={`relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-48 transition-all duration-1000 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
-            <div className="max-w-3xl">
+            <div className="w-full md:max-w-[58%] lg:max-w-[60%]">
               {/* Animated badge */}
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12">
                 <div className="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" />

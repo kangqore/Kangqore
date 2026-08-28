@@ -1213,8 +1213,16 @@ export default function UniversalServicePage({ service: rawService, department }
     ? heroTitleSource.split('\n')
     : [null, heroTitleSource];
   const words = heroLineBody.split(' ');
-  const titleHighlight = words.length > 1 ? words[words.length - 1] : heroLineBody;
-  const titleLine      = words.length > 1 ? words.slice(0, -1).join(' ') : '';
+  const customHighlight = service.heroTitleHighlight;
+  let titleLine, titleHighlight;
+  if (customHighlight && heroLineBody.includes(customHighlight)) {
+    const idx = heroLineBody.lastIndexOf(customHighlight);
+    titleLine = heroLineBody.slice(0, idx);
+    titleHighlight = customHighlight;
+  } else {
+    titleHighlight = words.length > 1 ? words[words.length - 1] : heroLineBody;
+    titleLine      = words.length > 1 ? words.slice(0, -1).join(' ') : '';
+  }
 
   // ── Section heading split: always derived from service.name, not heroTitle ──
   const nameWords          = service.name.split(' ');
@@ -1385,7 +1393,7 @@ const featureMicros   = service.featureMicros
 
           <div className="relative z-10 h-full flex flex-col justify-center">
             <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-16 flex items-center justify-between">
-              <div className={`${service.heroMaxWidth || 'max-w-[62%]'} mt-[1cm] shrink-0`}>
+              <div className={`${service.heroMaxWidth || 'w-full md:max-w-[58%] lg:max-w-[60%]'} mt-[1cm] shrink-0`}>
 
                 {/* Typewriter badge */}
                 <div className="inline-flex items-center gap-3 mb-10 mt-[1cm]">
