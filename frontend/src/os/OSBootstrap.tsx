@@ -46,9 +46,15 @@ const ROLE_POLICIES: Record<UserRole, string[]> = {
 };
 
 /**
- * The root entrypoint for the Kangqore Enterprise OS.
- * This mounts the WAANDA Kernel (Supreme Intelligence) at the absolute top,
- * which then renders the Workspace Orchestrator (Shell Manager).
+ * HATHAWAY — the root entrypoint for KEOS (Kangqore Enterprise Operating
+ * System). This is the shell layer the README names HATHAWAY; the name lives
+ * in backend/src/kangqore-view/hathaway/keos.ts, which mirrors the ROLE_POLICIES
+ * capability registry above and is kept in sync by
+ * `npm run audit:hathaway-manifest`. Add a capability here and that audit will
+ * tell you to declare it there.
+ *
+ * Mounts the WAANDA Kernel (Supreme Intelligence) at the absolute top, which
+ * then renders the Workspace Orchestrator (Shell Manager).
  */
 export const OSBootstrap: React.FC = () => {
     const [booted, setBooted] = useState(false);

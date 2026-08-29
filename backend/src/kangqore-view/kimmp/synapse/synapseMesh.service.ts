@@ -1,7 +1,7 @@
 import logger from '../../../utils/logger'
 import { codeOverlord } from './codeOverlord.service'
 
-export type SubsystemType = 'NOLAN' | 'AEGIS' | 'ALIS' | 'HCIP' | 'EQORE' | 'VIS' | 'KIMMP'
+export type SubsystemType = 'HATHAWAY' | 'NOLAN' | 'AEGIS' | 'ALIS' | 'HCIP' | 'EQORE' | 'VIS' | 'KIMMP'
 
 export interface SynapseSignal {
   id: string

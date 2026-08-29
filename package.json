@@ -36,7 +36,8 @@
     "build:web": "cd frontend && npm run build && cd .. && npm run gen:all && npm run compress",
     "audit:page-quality": "node scripts/audit-page-quality.mjs",
     "audit:page-quality:all": "node scripts/audit-page-quality.mjs --all",
-    "audit:ontology-writes": "node scripts/audit-ontology-write-path.mjs"
+    "audit:ontology-writes": "node scripts/audit-ontology-write-path.mjs",
+    "audit:hathaway-manifest": "node scripts/audit-hathaway-manifest.mjs"
   },
   "devDependencies": {
     "sharp": "^0.35.3"
