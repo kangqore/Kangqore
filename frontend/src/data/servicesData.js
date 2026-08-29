@@ -13118,21 +13118,6 @@ export const servicesData = {
     whatIsPara3: 'The usual answer is to buy a platform and let each function configure its own corner of it. That produces one tool and five operating models, which looks unified on a license schedule and does not feel unified to anyone using it. The work that actually unifies is upstream of the tool: one service taxonomy, one intake, one set of response commitments, and one place where ownership of a request is unambiguous.',
     whatIsPara4: 'Kangqore designs that operating model first and implements it second, on whichever platform you already run. We hold no reseller margin on any service management product, so the recommendation to stay on what you own \u2014 which is frequently the right one \u2014 costs us nothing. Where ServiceNow is the target, our ServiceNow practice does that build; this service decides what should be built and why.',
 
-    // ── Outcomes ────────────────────────────────────────────────────────────
-    // Chosen so a service owner can check all four against their own tooling
-    // this week. Deliberately not deflection rate or CSAT: the first is gamed
-    // by making it harder to reach a human, and the second peaks after any
-    // relaunch and tells you nothing by month six.
-    outcomesEyebrow: 'WHAT A SERVICE OWNER CAN CHECK THIS WEEK',
-    outcomesHeading: 'Service Management Metrics',
-    outcomesHeadingHighlight: 'Worth Baselining.',
-    businessMetrics: [
-      { illustrative: true, title: 'Request Coverage',  desc: 'Share of employee requests raised through one governed intake rather than through email, chat or a colleague who knows who to ask.',                       value: '85', suffix: '%', metricLabel: 'Through One Intake',   icon: 'Layers'     },
-      { illustrative: true, title: 'Unowned Requests',  desc: 'Reduction in requests sitting with no named owner at any point in their life \u2014 the state most breached response commitments start in.',                  value: '70', suffix: '%', metricLabel: 'Fewer Unowned',        icon: 'ShieldCheck'},
-      { illustrative: true, title: 'Reassignment Rate', desc: 'Fewer times a request changes hands before reaching the team that resolves it, after the service taxonomy and routing rules are rebuilt.',                value: '50', suffix: '%', metricLabel: 'Fewer Handoffs',       icon: 'Network'    },
-      { illustrative: true, title: 'Catalog in Use',    desc: 'Share of the published service catalog actually requested in a quarter \u2014 the measure that exposes how much of it was written for an audit.',            value: '60', suffix: '%', metricLabel: 'Catalog Actually Used', icon: 'Activity'   },
-    ],
-
     heroBadge: 'Designed. Implemented. Operated.',
     heroStripItems: [
       'Service Operating Model', 'Process & ITIL Design', 'Service Catalog', 'Enterprise Service Management',
@@ -13145,6 +13130,12 @@ export const servicesData = {
     hideComparison: true,
     hideArchitecture: true,
     hideIndustry: true,
+    hideToolsStack: true,
+    // The two outcome cards were never ours: getParityService synthesizes them
+    // for any service that supplies none, so this page was publishing an
+    // invented "Global Enterprise Organization" engagement asserting perfect
+    // operational reliability. Deleting keys we never set cannot remove them.
+    hideOutcomeCards: true,
 
     // ── The experience imperative ───────────────────────────────────────────
     // Total experience framed the way this page argues everything else: the
@@ -13201,58 +13192,6 @@ export const servicesData = {
         ],
       },
     ],
-
-    // ── Toolchain ───────────────────────────────────────────────────────────
-    toolsStack: {
-      eyebrow: 'THE PLATFORM LANDSCAPE',
-      title: 'The platforms,',
-      titleHighlight: 'and when to keep the one you have.',
-      subtitle: 'Platform choice is mostly settled by what you already license and by how far beyond IT you intend to go. These are the defaults and what overrides them.',
-      items: [
-        {
-          icon: 'Layers',
-          title: 'Enterprise service management suites',
-          managed: 'ServiceNow',
-          selfHosted: 'Where the ambition is genuinely enterprise-wide',
-          desc: 'The most capable option and the most expensive to own. Earns its cost when service management genuinely extends across functions; oversized for an IT-only desk, where the licensing outruns the benefit within about two years.',
-        },
-        {
-          icon: 'Settings',
-          title: 'Mid-market and IT-first platforms',
-          managed: 'Jira Service Management, Freshservice, Ivanti',
-          selfHosted: 'Jira SM where engineering already lives there',
-          desc: 'Substantially cheaper and sufficient for most IT service desks. The constraint appears when you extend beyond IT: HR and legal workflows are possible but the model is less opinionated, so governance has to come from you.',
-        },
-        {
-          icon: 'Globe',
-          title: 'What you already license',
-          managed: 'Microsoft, SAP and Oracle estates often include workflow',
-          selfHosted: 'Frequently unconfigured rather than absent',
-          desc: 'The most common right answer and the least often proposed. Unused service management capability inside an existing estate is widespread, and we have no license margin to lose by pointing at it.',
-        },
-        {
-          icon: 'Eye',
-          title: 'Experience and measurement',
-          managed: 'XLA tooling, sentiment capture, survey platforms',
-          selfHosted: 'Instrumented in the workflow, not bolted on',
-          desc: 'Operational metrics say the ticket closed on time. Experience measures say whether the person got what they needed. Both are required, and a deflection rate improved by making a human harder to reach is not an improvement.',
-        },
-        {
-          icon: 'Network',
-          title: 'Integration and identity',
-          managed: 'Identity providers, HR systems, asset and finance platforms',
-          selfHosted: 'Engineered on our integration service',
-          desc: 'Ownership is only real if the platform knows who someone is, what they own and who approves for them. That data comes from elsewhere, and the integration is usually the critical path rather than the configuration.',
-        },
-        {
-          icon: 'Cpu',
-          title: 'Automation and virtual agents',
-          managed: 'Platform-native automation, conversational interfaces',
-          selfHosted: 'After the taxonomy, never before it',
-          desc: 'Automating a request type nobody agreed the definition of encodes the disagreement. Self-service deflects well when the catalog is real and badly when it is a list written for an audit.',
-        },
-      ],
-    },
 
     faqEyebrow: 'ASKED ON THE FIRST CALL',
     faqHeading: 'Twelve service management questions,',

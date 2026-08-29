@@ -4695,7 +4695,13 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ OUTCOMES ══════════════════════ */}
-      {service.outcomeCard && (() => {
+      {/* Opt-out per service via hideOutcomeCards. getParityService synthesizes
+          outcomeCard/outcomeCard2 for any service that supplies none, so
+          deleting the keys does not remove this band — it restores two
+          invented engagements instead. The outcomesHeading renders inside this
+          block, so hiding it takes the heading with it. The mid-page CTA below
+          is also keyed on outcomeCard and is deliberately left alone. */}
+      {!service.hideOutcomeCards && service.outcomeCard && (() => {
         const allCards = [
           service.outcomeCard,
           ...(service.outcomeCard2 ? [service.outcomeCard2] : []),
@@ -5195,7 +5201,12 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ TOOLS & TECHNOLOGY ══════════════════════ */}
-      {service.toolsStack && (
+      {/* Opt-out per service via hideToolsStack, mirroring hideComparison.
+          Deleting the data key does not remove this section: getParityService
+          resolves an absent `toolsStack` to a per-department default, so the
+          page swaps in a generic technology stack rather than hiding
+          anything. Defaults to showing, so the other 61 pages are unchanged. */}
+      {!service.hideToolsStack && service.toolsStack && (
         <AIToolsSection
           title={service.toolsStack?.title}
           eyebrow={service.toolsStack?.eyebrow}
