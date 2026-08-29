@@ -9225,3 +9225,100 @@ model AppAgentBinding {
   @@index([kimmpAgentId])
   @@map("app_agent_bindings")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PHASE 6 — Agents as the Primary UX
+//
+// A mission is the durable record of one intent moving through the pipeline:
+//   intent → context → analysis → diagnosis → simulation → proposal →
+//   policy → approval → execution → verification
+//
+// It must be durable rather than a function call, because the pipeline *pauses*
+// at approval and may resume hours or days later, in a different process.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model AgentMission {
+  id            String    @id @default(cuid())
+  intentText    String    @db.Text
+  actorId       String
+  tenantId      String    @default("default")
+
+  status        String    @default("PLANNING")
+  // PLANNING | AWAITING_APPROVAL | APPROVED | EXECUTING | VERIFYING | COMPLETED | REJECTED | FAILED | NO_ACTION
+
+  goal          Json?                              // parsed structured intent
+  contextSummary Json?                             // what the mission actually resolved
+  findings      Json?                              // analysis + diagnosis output
+  simulations   Json?                              // scenarios with computed outcomes
+  verification  Json?                              // measured outcome after execution
+
+  /// Whether policy demanded a human decision, and which policy said so.
+  policyId      String?
+  policyName    String?
+  policyEffect  String?
+
+  failureReason String?   @db.Text
+  startedAt     DateTime  @default(now())
+  plannedAt     DateTime?
+  approvedAt    DateTime?
+  approvedBy    String?
+  completedAt   DateTime?
+  updatedAt     DateTime  @updatedAt
+
+  steps         AgentMissionStep[]
+  actions       AgentProposedAction[]
+
+  @@index([actorId, startedAt])
+  @@index([status])
+  @@map("agent_missions")
+}
+
+model AgentMissionStep {
+  id          String   @id @default(cuid())
+  missionId   String
+  ordinal     Int
+  stage       String                               // INTERPRET | RESOLVE_CONTEXT | ANALYZE | DIAGNOSE | SIMULATE | PROPOSE | POLICY | APPROVAL | EXECUTE | VERIFY
+  title       String
+  detail      String   @db.Text
+  /// Evidence the stage actually computed — never a canned string.
+  data        Json?
+  durationMs  Int?
+  createdAt   DateTime @default(now())
+
+  mission     AgentMission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+
+  @@index([missionId, ordinal])
+  @@map("agent_mission_steps")
+}
+
+model AgentProposedAction {
+  id            String    @id @default(cuid())
+  missionId     String
+  ordinal       Int
+
+  actionName    String                             // OntologyAction.name where one exists
+  params        Json
+  targetType    String?                            // e.g. "Project"
+  targetId      String?                            // real record id this acts on
+  rationale     String    @db.Text
+  expectedImpact String?  @db.Text
+
+  status        String    @default("PROPOSED")
+  // PROPOSED | AWAITING_APPROVAL | APPROVED | REJECTED | EXECUTED | FAILED | SKIPPED
+
+  policyEffect  String?
+  approvalId    String?                            // PendingApproval.id when one was raised
+  executionId   String?                            // ActionExecution id once run
+  resultSummary String?   @db.Text
+  errorMessage  String?   @db.Text
+  executedAt    DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  mission       AgentMission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+
+  @@index([missionId, ordinal])
+  @@index([status])
+  @@map("agent_proposed_actions")
+}
