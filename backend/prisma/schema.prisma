@@ -9179,3 +9179,49 @@ model AppTestRun {
   @@index([appId, createdAt])
   @@map("app_test_runs")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PHASE 5 (completion) — App webhook delivery + agent binding
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model AppWebhookDelivery {
+  id             String    @id @default(cuid())
+  appId          String
+  installationId String?
+  tenantId       String
+
+  event          String                              // app.installed | action.executed | action.denied | app.published
+  targetUrl      String
+  payload        Json
+  signature      String                              // HMAC-SHA256 of the body, hex
+
+  status         String    @default("PENDING")       // PENDING | DELIVERED | FAILED
+  responseStatus Int?
+  responseBody   String?   @db.Text
+  errorMessage   String?   @db.Text
+  attempts       Int       @default(0)
+  durationMs     Int?
+
+  createdAt      DateTime  @default(now())
+  deliveredAt    DateTime?
+
+  @@index([appId, createdAt])
+  @@index([tenantId, event])
+  @@index([status])
+  @@map("app_webhook_deliveries")
+}
+
+/// Binds a manifest-declared agent to the real KimmpAgent row that executes it,
+/// so app agents run on the existing runtime rather than a parallel path.
+model AppAgentBinding {
+  id            String   @id @default(cuid())
+  appId         String
+  agentName     String                               // name as declared in the manifest
+  kimmpAgentId  String                               // KimmpAgent.id that actually runs
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([appId, agentName])
+  @@index([kimmpAgentId])
+  @@map("app_agent_bindings")
+}
