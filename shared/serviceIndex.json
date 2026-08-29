@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T03:23:49.589Z",
+  "generatedAt": "2026-08-29T19:35:00.465Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1633,8 +1633,25 @@
       "name": "Unified Services Management (USM)",
       "department": "Platforms",
       "description": "Unified service management — service strategy, process design, tool implementation, governance, and continuous improvement for consistent delivery.",
-      "capabilities": [],
-      "faqs": [],
+      "capabilities": [
+        "Consulting & Advisory Services",
+        "Managed Services",
+        "Project & Transformation Services"
+      ],
+      "faqs": [
+        {
+          "q": "What is Kangqore’s approach to unified service management, in short?",
+          "a": "Design the operating model first, implement it second, on whichever platform you already run. That order is the entire approach, and it is only unusual because the reverse is so common. Most programs in this category open with a platform decision, which fixes the tool before anybody has agreed what a service is, who owns one, or when a commitment starts counting. Everything after that is configuration arguing with itself. We do the agreement first — taxonomy, ownership, commitment definitions, catalog architecture — and build against it. Where the build is ServiceNow, our ServiceNow practice does it. Where the right answer is the platform you already license, we say so, because we hold no margin on any product in this category. The first engagement is a measurement rather than a proposal: what your intake actually looks like, how much arrives outside it, and how long work sits with nobody named against it."
+        },
+        {
+          "q": "What does unified service management actually fix in a large enterprise?",
+          "a": "Four things, and they are all symptoms of one cause. Requests arrive through channels nobody governs, so the volume you can see is not the volume you have. Work sits with no named owner, which is where most breached commitments begin. The same request changes hands three or four times before reaching someone able to resolve it. And the published catalog describes services that either do not exist or nobody asks for. None of these are fixed by the platform, because none of them are caused by it. They are caused by five functions agreeing on nothing — not what a service is, not who owns one, not when the clock starts. A large enterprise feels it harder because every one of those disagreements is multiplied by geography, and by however many acquisitions are still running their own way of working."
+        },
+        {
+          "q": "What role does AI actually play in service management?",
+          "a": "Three roles worth having, and one that is mostly sold. Worth having: deflection at intake, where a model answers the question instead of routing it — but only for request types whose answer is genuinely stable. Classification and routing, which is the highest-value application in this category, because misrouting is where most elapsed time goes. And summarization at handoff, so the third person to touch a request does not have to re-read the whole thread. Mostly sold: the autonomous agent that resolves tickets end to end. It demonstrates well on request types that were already automatable through a form, and struggles on the rest — because the hard part was never the language. It was the entitlement, the approval and the system of record. The precondition is the same as for automation generally. A model trained on a queue where one request type is filed under four names learns the four names. Fix the taxonomy first, or you are paying to scale the disagreement."
+        }
+      ],
       "method": [],
       "dataHandling": []
     },

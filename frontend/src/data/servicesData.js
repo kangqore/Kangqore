@@ -13074,18 +13074,274 @@ export const servicesData = {
     slug: 'unified-services-management',
     name: 'Unified Services Management (USM)',
     departmentSlug: 'platforms',
-    bannerBrand: 'ALIS™',
-    shortDescription: 'Unified approach to service management',
-    fullDescription: 'Implement unified service management for consistent service delivery.',
-    keyFeatures: ['Service strategy', 'Process design', 'Tool implementation', 'Governance', 'Continuous improvement'],
-    relatedServiceSlugs: ['servicenow', 'global-capability-centers', 'managed-services'],
+    bannerBrand: 'ALIS\u2122',
+    shortDescription: 'GenAI-ready service management across IT, HR, facilities, legal and finance',
+    fullDescription: 'Service strategy and operating model, process design across ITIL practices, and implementation on whichever platform you already run \u2014 consulting, managed services and transformation delivery.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Service operating model', 'Process design', 'Platform-independent', 'Managed operations', 'Beyond IT'],
+    relatedServiceSlugs: ['servicenow', 'managed-services', 'enterprise-integration-platform'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1542744173-05336fcc7ad4?w=800&q=80',
-  },
 
-  // ═════════════════════════════════════════════════════════════════════════════
-  // KANGQORE GROWTH — 8 services
-  // ═════════════════════════════════════════════════════════════════════════════
+    // ── Positioning ─────────────────────────────────────────────────────────
+    // 860 bytes of data and a crawler seeing 2.2 per cent of the page.
+    //
+    // The boundary against /services/servicenow decides everything here. That
+    // page owns ITSM & Service Operations, Enterprise Service Management &
+    // Workflows, and Platform Health & Managed Operations -- on ServiceNow.
+    // Writing those again here would rebuild the duplication the automation
+    // cluster took three PRs to remove.
+    //
+    // So this page owns the same disciplines *platform-independently*: the
+    // service operating model, the process design and the governance, designed
+    // once and implemented on whichever platform you already run. ServiceNow is
+    // one target among several and is linked rather than assumed.
+    //
+    // That is also the position HCLTech's Unified Service Management page
+    // cannot take. Read in full, theirs is a ServiceNow partnership page --
+    // every one of their sixteen offerings names the platform, they resell its
+    // licenses, their awards are ServiceNow Partner of the Year and three ISG
+    // ServiceNow Ecosystem placements, and one of their two leadership quotes
+    // is from ServiceNow's own CEO. Vendor neutrality is only credible from a
+    // firm holding no license margin, which is us and is not them.
+    //
+    // Three capability groups, matching the shape their page uses, because it
+    // is a clean procurement split a buyer scans quickly: consulting, managed
+    // services, project and transformation delivery.
+    heroTitle: 'Unified Service Management\nfor the Whole Enterprise',
+    whatIsEyebrow: 'What unified service management covers',
+    whatIsTitle: 'Service Management',
+    whatIsTitleLine2: 'in the GenAI Era,',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'Operating Model First.',
+    whatIsPara2: 'The pitch for GenAI in service management is a portal that answers instead of routing, a queue that classifies itself, and a handoff that arrives already summarized. All three are real. All three are also downstream of the same thing \u2014 a service taxonomy where a request type has one name, one owner and one clock. A model trained on a queue where nobody ever agreed those learns the disagreement and returns it faster.',
+    whatIsPara3: 'Our work spans the same four things every firm in this category lists: consulting, design, implementation and managed operations. What differs is the order and the incentive. The operating model is agreed before the configuration, because configuration is the cheap part to change and the model is not. We hold no reseller margin on any product here, so the conclusion that you should keep the platform you own and change how you use it costs us nothing to reach.',
+    whatIsPara4: 'Integration is where most of this is won or lost. Routing a request correctly means knowing who the requester is, what they hold and who approves on their behalf \u2014 data that lives in the HR system, the identity provider and the asset estate rather than in the service tool. Legacy systems are rarely the obstacle people expect. The obstacle is four systems holding four versions of the same person. Where ServiceNow is the target, our ServiceNow practice does that build; this service decides what should be built and why.',
+
+    // Market context rather than our results: these describe where enterprise
+    // leaders report focusing, so they carry `sourced` and an attribution
+    // instead of the illustrative disclaimer.
+    businessMetrics: [
+      { sourced: true, source: 'HCLTech Total Experience research', title: 'Vision and Culture',   desc: 'of leaders name setting the vision and culture as a primary focus in becoming an experience-driven organization.', value: '56', suffix: '%', metricLabel: 'Vision & Culture',      icon: 'Layers'     },
+      { sourced: true, source: 'HCLTech Total Experience research', title: 'New Models',           desc: 'are focused on creating new business models and services rather than optimizing the ones they already run.',           value: '43', suffix: '%', metricLabel: 'New Models & Services', icon: 'Network'    },
+      { sourced: true, source: 'HCLTech Total Experience research', title: 'Design Thinking',      desc: 'are working to establish a design-thinking culture across the functions that actually deliver the services.',          value: '39', suffix: '%', metricLabel: 'Design Thinking',       icon: 'Activity'   },
+      { sourced: true, source: 'HCLTech Total Experience research', title: 'Citizen Developers',   desc: 'are creating roles such as citizen developers, so workflows are built and owned inside the business that uses them.',    value: '24', suffix: '%', metricLabel: 'Citizen Developers',    icon: 'ShieldCheck'},
+    ],
+
+    heroBadge: 'Designed. Implemented. Operated.',
+    heroStripItems: [
+      'Service Operating Model', 'Process & ITIL Design', 'Service Catalog', 'Enterprise Service Management',
+      'Platform Selection', 'SIAM & Multi-Vendor', 'Managed Service Operations', 'XLA & Experience Measures',
+    ],
+    hidePartnershipModel: true,
+    // The comparison band is opted out rather than deleted. Removing only
+    // the data key would resolve to the Platforms department default, so
+    // the page would show generic copy instead of nothing.
+    hideComparison: true,
+    hideArchitecture: true,
+    hideIndustry: true,
+    hideToolsStack: true,
+    // The two outcome cards were never ours: getParityService synthesizes them
+    // for any service that supplies none, so this page was publishing an
+    // invented "Global Enterprise Organization" engagement asserting perfect
+    // operational reliability. Deleting keys we never set cannot remove them.
+    hideOutcomeCards: true,
+
+    // ── The experience imperative ───────────────────────────────────────────
+    // Total experience framed the way this page argues everything else: the
+    // four experience layers are outcomes of the operating model, so each card
+    // carries what can be measured rather than what can be asserted. The
+    // disclosure list is measures, not deliverables, hence disclosureLabel.
+    engagementEyebrow: 'THE EXPERIENCE IMPERATIVE',
+    engagementHeading: 'Four Experiences,',
+    engagementHeadingHighlight: 'One Operating Model Underneath.',
+    engagementLede: 'Total experience is usually run as a survey program. It is not one. Innovation, user, customer and business experience are four readings of the same thing — whether a request reaches an owner and gets answered. The operating model decides all four, which is why they move together or not at all.',
+    servicePackages: [
+      {
+        name: 'Innovation Experience',
+        description: 'Whether someone inside the business can get a new service stood up without it becoming a project. Most models route a request to try something into the same queue as a password reset, where it waits behind volume. The question is which requests are allowed a different path, and who is permitted to approve one.',
+        disclosureLabel: 'How we measure it',
+        deliverables: [
+          'Requests needing a new service, and how long they wait',
+          'Approval hops between an idea and a working service',
+          'Share of new services standing up outside the catalog',
+          'Time from request to a usable first version',
+        ],
+      },
+      {
+        name: 'User Experience',
+        description: 'What it is actually like to raise a request here — how many places you have to know about, how often you re-explain the same thing, and whether anything tells you where it got to. Onboarding is the clearest test: a joiner touches IT, HR, facilities and access on day one, and meets your operating model rather than your intranet.',
+        disclosureLabel: 'How we measure it',
+        deliverables: [
+          'Intake routes an employee is expected to know',
+          'Requests where the same information is asked twice',
+          'Time a request sits with no owner attached',
+          'Day-one joiner completion across functions, not just IT',
+        ],
+      },
+      {
+        name: 'Customer Experience',
+        description: 'The link most decks assert and few instrument. When an internal team cannot get an access request or a contract review cleared, the delay lands on a customer with the internal steps invisible to them. Working out which internal queues sit underneath customer-facing work is a service management question before it is a CX one.',
+        disclosureLabel: 'How we measure it',
+        deliverables: [
+          'Internal queues with customer-facing work behind them',
+          'Breaches on internal steps inside a customer commitment',
+          'Escalations traced back to an unowned internal request',
+          'Handoffs between functions on a single customer outcome',
+        ],
+      },
+      {
+        name: 'Business Experience',
+        description: 'What the enterprise gets once the other three hold: capacity released from moving work around, a cost per request you can defend in a budget conversation, and enough evidence about where work backs up to make an operating decision. It is the layer executives are asked about, and the one that cannot be bought on its own.',
+        disclosureLabel: 'How we measure it',
+        deliverables: [
+          'Cost per request, by function and by channel',
+          'Effort spent moving work rather than doing it',
+          'Where volume concentrates, and whether it is avoidable',
+          'Commitments met without heroics or manual escalation',
+        ],
+      },
+    ],
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Ten service management questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    customFAQs: [
+      {
+        q: 'What is Kangqore’s approach to unified service management, in short?',
+        a: 'Design the operating model first, implement it second, on whichever platform you already run.\n\nThat order is the entire approach, and it is only unusual because the reverse is so common. Most programs in this category open with a platform decision, which fixes the tool before anybody has agreed what a service is, who owns one, or when a commitment starts counting. Everything after that is configuration arguing with itself.\n\nWe do the agreement first — taxonomy, ownership, commitment definitions, catalog architecture — and build against it. Where the build is ServiceNow, our ServiceNow practice does it. Where the right answer is the platform you already license, we say so, because we hold no margin on any product in this category.\n\nThe first engagement is a measurement rather than a proposal: what your intake actually looks like, how much arrives outside it, and how long work sits with nobody named against it.',
+      },
+      {
+        q: 'What does unified service management actually fix in a large enterprise?',
+        a: 'Four things, and they are all symptoms of one cause.\n\nRequests arrive through channels nobody governs, so the volume you can see is not the volume you have. Work sits with no named owner, which is where most breached commitments begin. The same request changes hands three or four times before reaching someone able to resolve it. And the published catalog describes services that either do not exist or nobody asks for.\n\nNone of these are fixed by the platform, because none of them are caused by it. They are caused by five functions agreeing on nothing — not what a service is, not who owns one, not when the clock starts. A large enterprise feels it harder because every one of those disagreements is multiplied by geography, and by however many acquisitions are still running their own way of working.',
+      },
+      {
+        q: 'What role does AI actually play in service management?',
+        a: 'Three roles worth having, and one that is mostly sold.\n\nWorth having: deflection at intake, where a model answers the question instead of routing it — but only for request types whose answer is genuinely stable. Classification and routing, which is the highest-value application in this category, because misrouting is where most elapsed time goes. And summarization at handoff, so the third person to touch a request does not have to re-read the whole thread.\n\nMostly sold: the autonomous agent that resolves tickets end to end. It demonstrates well on request types that were already automatable through a form, and struggles on the rest — because the hard part was never the language. It was the entitlement, the approval and the system of record.\n\nThe precondition is the same as for automation generally. A model trained on a queue where one request type is filed under four names learns the four names. Fix the taxonomy first, or you are paying to scale the disagreement.',
+      },
+      {
+        q: 'Which platforms do you work on?',
+        a: 'Whichever one you already own, in most cases.\n\nThe enterprise suites, ServiceNow chief among them, are the most capable option in this category and the most expensive to own. They earn the cost when service management genuinely extends across functions, and are oversized for an IT-only desk, where the licensing tends to outrun the benefit inside about two years.\n\nThe mid-market and IT-first tools are considerably cheaper and sufficient for most IT service desks. The constraint appears when you extend past IT: HR and legal workflows are possible, but the model is less opinionated, so governance has to come from you rather than from the product.\n\nThe third option is the one least often proposed and most often right — service management capability you already license and have never turned on. We have no license margin to lose by pointing at it.\n\nWhere the target is ServiceNow specifically, our ServiceNow practice does the build. This service decides what should be built.',
+      },
+      {
+        q: 'Which industries do you work in?',
+        a: 'The discipline transfers. The regulatory surface does not.\n\nA request that needs an approval, an owner and a clock behaves the same way in a bank and in a hospital. What differs is what the approval has to prove, how long the record must be kept, and who is permitted to see it — and that difference lands on the operating model rather than on the platform.\n\nIn practice it shows up in four places: which request types require segregation of duties, what evidence an audit expects to find attached to a closed request, where data may be stored and processed, and which functions are in scope at all. Clinical service desks, trading floor support and plant maintenance each carry constraints an office IT desk does not.\n\nWe would rather ask those questions during the assessment than claim sector expertise on a web page. If the regulatory surface is the hard part of your estate, say so early and we will bring a specialist in rather than improvise.',
+      },
+      {
+        q: 'How does employee experience actually improve, rather than get measured?',
+        a: 'By reducing what a person has to know before they can ask for something.\n\nMost experience programs start with a survey and end with a redesigned portal. Both are downstream. The improvements that hold come from a shorter list: one place to raise anything, a form that does not ask for information the organization already holds, a status that updates without being chased, and an owner who exists.\n\nExperience measures are worth running alongside operational ones, because a ticket closed inside its commitment window and a person who got what they needed are not the same event. But an experience score is a thermometer. It tells you the temperature. It does not tell you which of those four things is broken.',
+      },
+      {
+        q: 'How does this improve day-to-day IT operations?',
+        a: 'Mostly by removing work that should never have reached a person.\n\nThree specific movements. Requests that arrive misrouted stop arriving misrouted, which is the largest single recovery available in most estates, because reassignment time dwarfs resolution time. Requests that were only ever a lookup get answered at intake instead of queued. And requests needing an approval get it from a system that knows who approves, rather than from whoever replied first.\n\nWhat is left is work that genuinely needs a person, arriving with enough information to act on. Incident and problem management improve as a consequence rather than as a separate initiative — a major incident review is only as good as the record it draws on, and the record improves the moment ownership stops being null.\n\nChange management is the one to be careful with. Tightening it is easy and usually the wrong instinct: a change process that slows a team deploying daily has moved risk rather than reduced it. The useful version separates changes by blast radius and stops treating them alike.',
+      },
+      {
+        q: 'How do you handle integration with the rest of the estate?',
+        a: 'Identity and asset data first, because ownership is a claim the platform has to be able to check.\n\nRouting a request correctly means knowing who the requester is, what they hold, which cost center they sit in and who approves on their behalf. None of that originates in the service management tool. It arrives from the HR system, the identity provider, the asset estate and the finance ledger, and the quality of those feeds sets the ceiling on everything built above them.\n\nThis is usually the critical path and usually underestimated, because configuration is visible in a demo and data quality is not. Where the integration is substantial in its own right, our enterprise integration practice takes it on. On most engagements it is four or five connections done properly rather than a program.',
+      },
+      {
+        q: 'Does this work alongside agile delivery?',
+        a: 'Yes for the rollout, with one caveat about the design.\n\nImplementation sequences well by function: take one, run it end to end, learn what the model got wrong, then take the next. That is genuinely iterative, and it is how we would rather work, because the second function is always cheaper than the first for reasons you only find by doing the first.\n\nThe caveat is the taxonomy. Service definitions, ownership and commitment standards are cross-cutting, and negotiating them incrementally means renegotiating them at every increment. That part is agreed once, up front, across functions. It is the shortest phase and the one most often skipped.\n\nWhere you already run product teams and platform engineering, service management has to meet them rather than the reverse. A change process built for quarterly releases becomes the binding constraint on a team deploying daily, and that is something to resolve in the design rather than escalate later.',
+      },
+      {
+        q: 'What experience do you actually have in this?',
+        a: 'Less than the firms you are also talking to, and we will not pretend otherwise.\n\nThe large integrators in this category count certified practitioners in the thousands. For a program that needs two hundred people across eleven countries next quarter, that is the right answer and we are not it.\n\nWhat we do is narrower. The operating model work — taxonomy, ownership, commitment definitions, catalog architecture — is a small-team discipline, and it is the part most often skipped inside a large program because it is unglamorous and it holds up the configuration everyone can see. We hold no license margin in this category, so the honest conclusion that you should keep what you own and change how you use it is one we are free to reach.\n\nIf the real shape of your problem is scale, take the scale. If it is that nobody has ever agreed what a service is, that is the work we do, and the first engagement is a fixed-price assessment you can stop after.',
+      },
+    ],
+
+    // ── Capability areas ────────────────────────────────────────────────────
+    // Three groups, matching the procurement split HCLTech uses on their page,
+    // because it is genuinely clean: what you think about, what you hand over,
+    // and what you build. Sixteen named offerings there, forty-two here.
+    //
+    // The template renders three areas as sm:grid-cols-3 rather than the bento,
+    // so the section reads as one row of equals. That suits three co-ordinate
+    // groups better than a bento's implied hierarchy would.
+    //
+    // Every item is written to be platform-independent. Where a line is only
+    // achievable on a specific product it says so, and ServiceNow-specific
+    // delivery is cross-linked rather than restated -- /services/servicenow
+    // already carries ITSM, ESM and platform operations at depth.
+    capabilitiesLabel: 'UNIFIED SERVICE MANAGEMENT SERVICES',
+    capabilitiesSectionTitle: 'Unified Service Management',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Three ways to buy this: think it through with us, hand the running of it to us, or have us build it. Most groups start with the first and are surprised by how much of the answer is a decision rather than a deployment.',
+    capabilityAreas: [
+      {
+        title: 'Consulting & Advisory Services',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The work upstream of the tool, and the part that decides whether unifying anything is possible. A service taxonomy nobody agreed is why five functions configure five operating models on one platform and call it unified.',
+        items: [
+          'Service Management Strategy & Vision',
+          'Target Service Operating Model Design',
+          'Service Taxonomy & Catalog Architecture',
+          'ITIL Practice Design and Adoption',
+          'Request, Incident, Problem and Change Design',
+          'Service Ownership & RACI Definition',
+          'Response and Resolution Commitment Design',
+          'XLA and Experience Measure Design',
+          'Platform Selection and Vendor Evaluation',
+          'Current-State Assessment & Maturity Benchmarking',
+          'Tool Rationalization Across Functions',
+          'SIAM and Multi-Vendor Governance Design',
+          'Service Management Business Case',
+          'Adoption, Change and Communications Planning',
+        ],
+      },
+      {
+        title: 'Managed Services',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Running it once it exists, under a service level with the volumes and response times written down. For groups who want the operating model without standing up the team that operates it, or who need cover while they build one.',
+        items: [
+          'Service Desk Operations',
+          'Round-the-Clock Service Coverage',
+          'Incident, Request and Escalation Management',
+          'Major Incident and Crisis Coordination',
+          'Problem Management and Root-Cause Analysis',
+          'Change Enablement and CAB Facilitation',
+          'Service Level and Experience Reporting',
+          'Knowledge Base Curation and Deflection Design',
+          'Platform Administration and Configuration Support',
+          'Release, Upgrade and Regression Testing',
+          'Continuous Service Improvement Backlog',
+          'Multi-Vendor Coordination Under SIAM',
+          'Capacity, License and Consumption Management',
+          'Transition In and Transition Out Planning',
+        ],
+      },
+      {
+        title: 'Project & Transformation Services',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Building it. Implementation on whichever platform you run, extension beyond IT into HR, facilities, legal and finance, and migration when the tool you have is the wrong one \u2014 which we will tell you before quoting the migration.',
+        items: [
+          'Service Management Platform Implementation',
+          'Enterprise Service Management Rollout Beyond IT',
+          'HR, Facilities, Legal and Finance Service Design',
+          'Service Catalog Build and Publication',
+          'Workflow, Approval and Routing Configuration',
+          'CMDB and Asset Data Foundation',
+          'Integration to Identity, HR and Finance Systems',
+          'Platform-to-Platform Migration',
+          'Custom Application and Portal Development',
+          'Virtual Agent and Self-Service Enablement',
+          'Data Migration, Cleansing and Reconciliation',
+          'Test Strategy, UAT and Cutover',
+          'Hypercare and Handover to Your Operations Team',
+          'Benefits Measurement Against the Baseline',
+        ],
+      },
+    ],
+
+    midCta: 'One tool and five operating models is not a unified service.',
+    midCtaLabel: 'Review One Service Desk',
+    closingCta: {
+      title: 'One service desk,',
+      highlight: 'measured end to end.',
+      body: 'Pick the function your employees complain about most. In 30 minutes we will tell you how many intake routes it really has, how many requests sit unowned, and whether the fix is a platform, a process or a decision about who owns what \u2014 which is usually the third one.',
+      proofLabel: 'From first call to a mapped service model',
+    },
+  },
 
   'cdp-strategy': {
     slug: 'cdp-strategy',

@@ -254,7 +254,9 @@ ${(u.items || u.agents || []).map((it) => `          <li>${esc(it)}</li>`).join(
     : '';
 
   // Narrative case studies. `metrics` above already emits the headline numbers.
-  const outcomes = [svc.outcomeCard, svc.outcomeCard2].filter(Boolean);
+  // `hideOutcomeCards` suppresses this band on the page, so the snapshot drops
+  // it too — otherwise crawlers are served case studies no visitor can see.
+  const outcomes = svc.hideOutcomeCards ? [] : [svc.outcomeCard, svc.outcomeCard2].filter(Boolean);
   const outcomeBlock = outcomes.length
     ? `    <h2>${esc([svc.outcomesHeading, svc.outcomesHeadingHighlight].filter(Boolean).join(' ') || 'Engagement outcomes')}</h2>
 ${outcomes.map((o) => `      <section>
@@ -327,7 +329,9 @@ ${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
     return `          <li><strong>${esc(i.title)}</strong>: ${esc(i.desc)}${named ? ` ${named}.` : ''}${linkTo(i.link)}</li>`;
   };
 
-  const method = svc.toolsStack
+  // `hideToolsStack` suppresses this band on the page, so the snapshot has to
+  // drop it too — otherwise crawlers are served a section no visitor can see.
+  const method = svc.toolsStack && !svc.hideToolsStack
     ? `    <h2>${heading(svc.toolsStack)}</h2>
     ${svc.toolsStack.subtitle ? `<p>${esc(svc.toolsStack.subtitle)}</p>` : ''}
       <ul>
@@ -582,7 +586,7 @@ if (process.argv.includes('--check')) {
         // emitting the same six generic questions under 58 services would fill
         // it with duplicates and bury the services that have real answers.
         faqs: (svc.customFAQs || []).slice(0, 3).map((f) => ({ q: f.q, a: faqPlainText(f.a) })),
-        method: (svc.toolsStack?.items || []).map((i) => ({ rule: i.title, detail: i.desc })),
+        method: (svc.hideToolsStack ? [] : (svc.toolsStack?.items || [])).map((i) => ({ rule: i.title, detail: i.desc })),
         dataHandling: (svc.dataBoundary?.blocks || []).map((b) => ({ topic: b.label, detail: b.body })),
       };
     }),
