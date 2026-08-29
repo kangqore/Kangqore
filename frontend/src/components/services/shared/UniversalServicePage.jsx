@@ -2738,6 +2738,96 @@ const featureMicros   = service.featureMicros
                     <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
                   </svg>
                 </div>
+              ) : service.slug === 'unified-services-management' ? (
+                /* ── Five intakes, or one ──
+                   Replaces the shared Platforms default. The argument is the
+                   top contrast: five functions each with their own intake,
+                   their own clock and their own idea of ownership, against one
+                   taxonomy every function routes through.
+
+                   The five stages match architectureNodes below exactly. The
+                   band underneath names the four measures the outcome tiles and
+                   the final FAQ are both held to, all of which a service owner
+                   can pull from their own tooling.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="Five separate service intakes across IT, HR, facilities, legal and finance, each with its own clock and ownership model, against one taxonomy every function routes through; the lifecycle runs assess, design, build, extend and operate, measured on requests through one intake, time spent unowned, reassignment rate and catalog actually used" tabIndex={0}>
+                  <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why one platform can still be five operating models</title>
+                    <desc>IT, HR, facilities, legal and finance each run their own intake, their own response clock and their own idea of who owns a request, even on a single platform. One service model routes every function through one taxonomy with ownership that is never null. The lifecycle runs assess, design, build, extend and operate, and is measured on requests arriving through the governed intake, time spent unowned, reassignment rate and how much of the catalog is actually used.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="usm-spine" gradientUnits="userSpaceOnUse" x1="26" y1="286" x2="514" y2="286">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <linearGradient id="usm-stage" gradientUnits="userSpaceOnUse" x1="0" y1="228" x2="0" y2="280">
+                        <stop offset="0" stopColor="#131d31" />
+                        <stop offset="1" stopColor="#0a0f1a" />
+                      </linearGradient>
+                      <marker id="usm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="usm-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                    </defs>
+
+                    {/* ── Five intakes ── */}
+                    <text x="26" y="30" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#f59e0b">FIVE INTAKES, FIVE CLOCKS</text>
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="42" width="90" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                      <text x="71"  y="63" fontSize="12" fill="white" fillOpacity="0.8">IT</text>
+                      <rect x="126" y="42" width="90" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                      <text x="171" y="63" fontSize="12" fill="white" fillOpacity="0.8">HR</text>
+                      <rect x="226" y="42" width="90" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                      <text x="271" y="63" fontSize="12" fill="white" fillOpacity="0.8">FACILITIES</text>
+                      <rect x="326" y="42" width="90" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                      <text x="371" y="63" fontSize="12" fill="white" fillOpacity="0.8">LEGAL</text>
+                      <rect x="426" y="42" width="88" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                      <text x="470" y="63" fontSize="12" fill="white" fillOpacity="0.8">FINANCE</text>
+                    </g>
+                    <g stroke="#f59e0b" strokeOpacity="0.35" strokeWidth="1" strokeDasharray="3 4" markerEnd="url(#usm-arrow-amber)">
+                      <line x1="71"  y1="78" x2="71"  y2="104" /><line x1="171" y1="78" x2="171" y2="104" />
+                      <line x1="271" y1="78" x2="271" y2="104" /><line x1="371" y1="78" x2="371" y2="104" />
+                      <line x1="470" y1="78" x2="470" y2="104" />
+                    </g>
+                    <text x="270" y="126" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">one license · five operating models · email fills the gaps</text>
+
+                    {/* ── One taxonomy ── */}
+                    <rect x="26" y="146" width="488" height="58" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="270" y="170" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#4ab6d4">ONE SERVICE TAXONOMY</text>
+                    <text x="270" y="190" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">one intake · one clock · ownership never null</text>
+
+                    {/* ── The five stages, matching architectureNodes ── */}
+                    <g fontFamily="monospace" textAnchor="middle">
+                      <rect x="26"  y="228" width="96" height="52" rx="9" fill="url(#usm-stage)" stroke="#2564ea" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="74"  y="259" fontSize="12" fontWeight="bold" fill="white">ASSESS</text>
+                      <rect x="124" y="228" width="96" height="52" rx="9" fill="url(#usm-stage)" stroke="#2c74e8" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="172" y="259" fontSize="12" fontWeight="bold" fill="white">DESIGN</text>
+                      <rect x="222" y="228" width="96" height="52" rx="9" fill="url(#usm-stage)" stroke="#3486e4" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="270" y="259" fontSize="12" fontWeight="bold" fill="white">BUILD</text>
+                      <rect x="320" y="228" width="96" height="52" rx="9" fill="url(#usm-stage)" stroke="#3f9ede" strokeOpacity="0.6"  strokeWidth="1.5" />
+                      <text x="368" y="259" fontSize="12" fontWeight="bold" fill="white">EXTEND</text>
+                      <rect x="418" y="228" width="96" height="52" rx="9" fill="url(#usm-stage)" stroke="#4ab6d4" strokeOpacity="0.75" strokeWidth="1.5" />
+                      <text x="466" y="259" fontSize="12" fontWeight="bold" fill="white">OPERATE</text>
+                    </g>
+                    <line x1="26" y1="286" x2="506" y2="286" stroke="url(#usm-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#usm-arrow)" />
+
+                    {/* ── One function at a time ── */}
+                    <rect x="26" y="312" width="488" height="58" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="270" y="336" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">EXTENDED ONE FUNCTION AT A TIME</text>
+                    <text x="270" y="356" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">each measured before the next one starts</text>
+
+                    {/* ── What it is held to ── */}
+                    <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">one intake · unowned time · reassignments · catalog used</text>
+                  </svg>
+                </div>
               ) : service.slug === 'talent-organization' ? (
                 /* ── The boxes moved, the authority did not ──
                    Replaces the shared agentic default, which put AI COMMANDER,

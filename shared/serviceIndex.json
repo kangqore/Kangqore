@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T03:23:49.589Z",
+  "generatedAt": "2026-08-29T09:04:11.764Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1633,9 +1633,51 @@
       "name": "Unified Services Management (USM)",
       "department": "Platforms",
       "description": "Unified service management — service strategy, process design, tool implementation, governance, and continuous improvement for consistent delivery.",
-      "capabilities": [],
-      "faqs": [],
-      "method": [],
+      "capabilities": [
+        "Consulting & Advisory Services",
+        "Managed Services",
+        "Project & Transformation Services"
+      ],
+      "faqs": [
+        {
+          "q": "What is unified service management, and how is it different from ITSM?",
+          "a": "ITSM is service management applied to IT. Unified service management is the same discipline applied across every function that receives requests from employees — IT, HR, facilities, legal, finance, procurement — on one taxonomy, one ownership model and one definition of what a response commitment means. The word doing the work is unified, and it is about the operating model rather than the tool. Five functions configuring five corners of one platform is a single license and five operating models. It looks unified on a procurement schedule and does not feel unified to anybody raising a request. What makes it one service is upstream of any product: an agreed service taxonomy, one intake, one clock standard, and ownership that is never null."
+        },
+        {
+          "q": "We already bought ServiceNow. What would you do that we have not?",
+          "a": "Probably nothing to the platform, and quite a lot to what it is configured against. The common pattern is a competent IT rollout followed by each other function being given a corner to configure. Two years later HR has its own request types, facilities has its own priority scale, legal defines a working day differently, and the cross-function report has to be assembled by hand because no two definitions agree. That is not a platform problem and no amount of further configuration fixes it. The work is the taxonomy, the ownership model and the commitment definitions, agreed across functions and then imposed on the configuration rather than derived from it. Where the answer genuinely is platform work, our ServiceNow practice does that build. This service decides what should be built and why."
+        },
+        {
+          "q": "Do you resell any service management platform?",
+          "a": "No, and it is the reason we can answer the previous question honestly. We hold no reseller agreement and no license margin on ServiceNow, Jira Service Management, Freshservice or anything else in this category. A recommendation to keep the platform you already own and fix the process costs us the larger engagement and nothing else. That is worth stating plainly because the largest firms in this market are structurally unable to say it. Read any major integrator’s unified service management page and count how many of their named offerings are tied to a single vendor whose licenses they also sell. The advice may still be good; it is not neutral, and you should price that in."
+        }
+      ],
+      "method": [
+        {
+          "rule": "Enterprise service management suites",
+          "detail": "The most capable option and the most expensive to own. Earns its cost when service management genuinely extends across functions; oversized for an IT-only desk, where the licensing outruns the benefit within about two years."
+        },
+        {
+          "rule": "Mid-market and IT-first platforms",
+          "detail": "Substantially cheaper and sufficient for most IT service desks. The constraint appears when you extend beyond IT: HR and legal workflows are possible but the model is less opinionated, so governance has to come from you."
+        },
+        {
+          "rule": "What you already license",
+          "detail": "The most common right answer and the least often proposed. Unused service management capability inside an existing estate is widespread, and we have no license margin to lose by pointing at it."
+        },
+        {
+          "rule": "Experience and measurement",
+          "detail": "Operational metrics say the ticket closed on time. Experience measures say whether the person got what they needed. Both are required, and a deflection rate improved by making a human harder to reach is not an improvement."
+        },
+        {
+          "rule": "Integration and identity",
+          "detail": "Ownership is only real if the platform knows who someone is, what they own and who approves for them. That data comes from elsewhere, and the integration is usually the critical path rather than the configuration."
+        },
+        {
+          "rule": "Automation and virtual agents",
+          "detail": "Automating a request type nobody agreed the definition of encodes the disagreement. Self-service deflects well when the catalog is real and badly when it is a list written for an audit."
+        }
+      ],
       "dataHandling": []
     },
     {
