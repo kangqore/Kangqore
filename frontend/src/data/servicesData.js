@@ -12303,7 +12303,7 @@ export const servicesData = {
     fullDescription: 'Design the operating model, decision rights, skills system and people function an enterprise needs to execute — and prove it moved.',
     // Without this the hero description inherits the template default
     // max-w-[520px] and wraps to three lines. Two is the standard.
-    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    fullDescriptionMaxWidth: 'max-w-[760px] lg:max-w-[60%]',
     keyFeatures: ['Workforce strategy', 'Operating model design', 'Decision rights', 'Skills architecture', 'People intelligence', 'HR transformation'],
     relatedServiceSlugs: ['global-capability-centers', 'business-process-management', 'unified-services-management'],
     featured: false,
@@ -12542,23 +12542,7 @@ export const servicesData = {
     // node name is real text a crawler receives and it reflows on a phone.
     // Read downward as a dependency chain: each layer is only as good as the
     // one beneath it, which is the argument for doing them together.
-    enterpriseArchitecture: {
-      eyebrow: 'FROM TALENT MANAGEMENT TO WORKFORCE INTELLIGENCE',
-      title: 'Eight layers,',
-      titleHighlight: 'and most programs touch two.',
-      lede: 'Talent work fails at the seams rather than inside the disciplines. A skills program with no link to your operating model produces a catalog; an operating model with no link to decision rights produces a chart. These are the layers, and the value is in connecting them.',
-      layers: [
-        { label: 'Business Strategy',        role: 'Where value is created next',                nodes: ['Growth Priorities', 'Market Moves', 'Cost Position', 'Regulatory Exposure'] },
-        { label: 'Work & Operating Model',   role: 'How the work is actually organized',         nodes: ['Value Streams', 'Process Ownership', 'Human and Machine Split', 'Service Levels'] },
-        { label: 'Organization Design',      role: 'Who is accountable, and who decides',        nodes: ['Structure', 'Decision Rights', 'Spans and Layers', 'Governance Forums'] },
-        { label: 'Roles & Skills',           role: 'What the work requires of people',           nodes: ['Role Architecture', 'Skills Taxonomy', 'Critical Roles', 'Capability Gaps'] },
-        { label: 'Talent & Leadership',      role: 'Who is in the seats, and who is next',       nodes: ['Succession', 'Pipeline', 'Mobility', 'Leadership Capability', 'Culture'] },
-        { label: 'AI & Technology',          role: 'The systems the people function runs on',    nodes: ['HCM Platform', 'Skills Intelligence', 'Learning Ecosystem', 'HR Service Delivery'] },
-        { label: 'Workforce Intelligence',   role: 'Signals turned into something decidable',    nodes: ['People Analytics', 'Predictive Models', 'Talent Risk', 'Productivity Signals'] },
-        { label: 'Business Performance',     role: 'What the whole chain is answerable for',     nodes: ['Time to Decision', 'Critical-Role Fill', 'Regretted Attrition', 'Cost to Serve'] },
-      ],
-      principle: 'Talent decisions are only as good as the layer beneath them. A skills taxonomy built without an operating model describes a company that does not exist.',
-    },
+
 
     // ── Lifecycle ───────────────────────────────────────────────────
     // The brief's Diagnose, Design, Deploy, Scale. Kept at four because it is
