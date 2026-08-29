@@ -11481,7 +11481,7 @@ export const servicesData = {
     // owns. Outcomes are therefore upgrade lag, baseline ratio, CMDB health and
     // license utilization. Not MTTR and ticket deflection, which every partner
     // quotes and which move for reasons unrelated to the platform.
-    heroTitle: 'ServiceNow Implementation That\nSurvives the Next Upgrade',
+    heroTitle: 'ServiceNow Services\nDelivering digital workflows',
     heroBadge: 'Close to Baseline. Current. Owned.',
     heroStripItems: [
       'ITSM', 'ITOM & Discovery', 'CMDB & CSDM', 'IT Asset Management',
