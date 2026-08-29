@@ -4505,7 +4505,12 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
-      {service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && service.slug !== 'agentic-ai' && (
+      {/* Opt-out per service via hideArchitecture, mirroring hideComparison.
+          Deleting the data key does not remove this section: getParityService
+          resolves an absent `architectureNodes` to the department default, so
+          the page swaps in a generic 4-Layer Stack rather than hiding
+          anything. Defaults to showing, so the other 61 pages are unchanged. */}
+      {!service.hideArchitecture && service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && service.slug !== 'agentic-ai' && (
         <section id="svc-architecture" className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
@@ -4613,7 +4618,10 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ INDUSTRY USE CASES ══════════════════════ */}
-      {service.industryUseCases && (
+      {/* Opt-out per service via hideIndustry, mirroring hideComparison. An
+          absent industryUseCases resolves to the department default through
+          getParityService, so deletion alone shows generic sector copy. */}
+      {!service.hideIndustry && service.industryUseCases && (
         <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="mb-14">

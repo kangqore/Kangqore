@@ -13139,6 +13139,12 @@ export const servicesData = {
       'Platform Selection', 'SIAM & Multi-Vendor', 'Managed Service Operations', 'XLA & Experience Measures',
     ],
     hidePartnershipModel: true,
+    // The comparison band is opted out rather than deleted. Removing only
+    // the data key would resolve to the Platforms department default, so
+    // the page would show generic copy instead of nothing.
+    hideComparison: true,
+    hideArchitecture: true,
+    hideIndustry: true,
 
     // ── How we engage ───────────────────────────────────────────────────────
     engagementEyebrow: 'HOW WE ENGAGE',
@@ -13296,160 +13302,6 @@ export const servicesData = {
       {
         q: 'How do you measure whether it worked?',
         a: 'Against four numbers captured before anything changes, and reported afterwards whether or not they flatter us.\n\nHow many requests arrive through the governed intake rather than through email, chat or a colleague. How much time requests spend with no named owner. How many times a request changes hands before reaching the team that resolves it. And how much of the published catalog anybody actually requested this quarter.\n\nAll four are countable from your own tooling this week, which is the point \u2014 a number you can check reads differently from one you cannot. Deliberately absent: deflection rate, which improves when a human becomes harder to reach, and satisfaction scores, which peak after any relaunch and say nothing by month six.',
-      },
-    ],
-
-    // ── The argument ────────────────────────────────────────────────────────
-    // One tool, five operating models. That is the failure this page exists to
-    // name, and it is invisible on a license schedule -- which is why it
-    // survives so long.
-    comparisonTable: {
-      eyebrow: 'ONE PLATFORM IS NOT ONE SERVICE',
-      heading: 'One Tool, or One Operating Model.',
-      lede: 'Both columns describe an organization that bought a service management platform and rolled it out competently. They differ on whether anything was agreed before it was configured.',
-      beforeLabel: 'ONE TOOL, FIVE MODELS',
-      afterLabel: 'ONE OPERATING MODEL',
-      afterBadge: 'KANGQORE',
-      beforeShort: 'ONE TOOL',
-      afterShort: 'ONE MODEL',
-      rows: [
-        {
-          dimension: 'How an employee raises anything',
-          before: 'Five intake forms, five sets of required fields, and a colleague who knows which queue actually gets read. Most requests still arrive by email or chat.',
-          after: 'One intake with one taxonomy behind it. The routing is the system\u2019s problem rather than the employee\u2019s, and email arrivals are measured rather than assumed to be zero.',
-        },
-        {
-          dimension: 'What a response commitment means',
-          before: 'Each function set its own, none of them share a clock definition, and the reported attainment is calculated differently in every one.',
-          after: 'One definition of when the clock starts, pauses and stops, applied across functions, with experience measures alongside the operational ones.',
-        },
-        {
-          dimension: 'Who owns a request at any moment',
-          before: 'Whoever it was last assigned to. Requests sit unowned between teams, which is where most breached commitments actually start.',
-          after: 'Ownership is never null. Every state has an accountable team, and time spent unowned is a reported metric rather than an invisible one.',
-        },
-        {
-          dimension: 'What the service catalog is for',
-          before: 'Written comprehensively for an audit, published once, and largely unrequested. Nobody knows which entries are dead because nobody measures use.',
-          after: 'Built from what people actually request, measured quarterly, and pruned. An entry nobody used in a year is removed rather than maintained.',
-        },
-        {
-          dimension: 'When the platform is the wrong one',
-          before: 'The question is not asked, because asking it reopens a decision somebody sponsored and a license somebody signed.',
-          after: 'Asked during assessment, answered honestly, and frequently answered "keep what you have and fix the process" \u2014 which costs us the larger engagement.',
-        },
-        {
-          dimension: 'What happens beyond IT',
-          before: 'HR, facilities, legal and finance each get a corner of the platform and configure it their own way. One license, five operating models.',
-          after: 'The same taxonomy, ownership model and commitment definitions extended function by function, with each rollout measured before the next one starts.',
-        },
-      ],
-    },
-
-    // ── Lifecycle ───────────────────────────────────────────────────────────
-    // Five stages because the template renders architectureNodes as a
-    // four-column grid unless the array is exactly five.
-    architectureEyebrow: 'THE DELIVERY LIFECYCLE',
-    architectureTitle: 'How It Works.',
-    architectureTitleHighlight: 'Assess to Operate.',
-    architectureLede: 'Five stages, and the first two decide whether the last three are worth doing. Most service management programs start at Build and discover the taxonomy problem in month five.',
-    architectureNodes: [
-      {
-        title: 'Assess',
-        icon: 'Search',
-        description: 'Establish what is actually happening: how many intake routes exist, how many requests arrive outside them, how long things sit unowned, and how much of the published catalog anybody uses.',
-        features: [
-          'Intake route and shadow-channel discovery',
-          'Request volume and reassignment analysis',
-          'Unowned-time and commitment breach baselining',
-          'Catalog usage measurement',
-          'Platform fit and entitlement review',
-        ],
-      },
-      {
-        title: 'Design',
-        icon: 'Layers',
-        description: 'The service taxonomy, the ownership model and the commitment definitions \u2014 agreed across functions before anything is configured. This is the stage that gets skipped and the reason unification fails.',
-        features: [
-          'Service taxonomy and catalog architecture',
-          'Ownership, RACI and escalation design',
-          'Response and resolution commitment definitions',
-          'Experience measures alongside operational ones',
-          'Target operating model across functions',
-        ],
-      },
-      {
-        title: 'Build',
-        icon: 'Cpu',
-        description: 'Configuration on whichever platform you run, with the integrations that make ownership real \u2014 identity, HR and asset data. Where the target is ServiceNow, our ServiceNow practice does this build.',
-        features: [
-          'Platform configuration to the agreed design',
-          'Workflow, approval and routing implementation',
-          'CMDB and asset data foundation',
-          'Identity, HR and finance system integration',
-          'Self-service and virtual agent enablement',
-        ],
-      },
-      {
-        title: 'Extend',
-        icon: 'Network',
-        description: 'Beyond IT, one function at a time, each measured before the next begins. Rolling HR, facilities, legal and finance simultaneously is how one tool becomes five operating models.',
-        features: [
-          'HR, facilities, legal and finance service design',
-          'Function-by-function rollout sequencing',
-          'Shared taxonomy enforced across functions',
-          'Adoption measured before the next rollout',
-          'Cross-function reporting on one definition',
-        ],
-      },
-      {
-        title: 'Operate',
-        icon: 'Activity',
-        description: 'Run it against the baseline taken at Assess. A service model drifts back toward local variation the moment nobody reports on it, and catalogs rot faster than anyone expects.',
-        features: [
-          'Service desk and escalation operations',
-          'Commitment and experience reporting',
-          'Catalog pruning on measured usage',
-          'Continuous improvement backlog',
-          'Platform upgrades and regression testing',
-        ],
-      },
-    ],
-
-    // ── Industry ────────────────────────────────────────────────────────────
-    industryHeading: 'Unified Service Management',
-    industryHeadingHighlight: 'by industry.',
-    industryLede: 'Six sectors, and the constraint that decides what a service model there has to accommodate before anything is configured.',
-    industryUseCases: [
-      {
-        industry: 'Financial Services',
-        headline: 'Access requests and change records are audit evidence, so the service desk is a control point rather than a convenience.',
-        items: ['Access request and recertification workflows', 'Change enablement with evidenced approvals', 'Regulatory and audit reporting from service data'],
-      },
-      {
-        industry: 'Healthcare & Life Sciences',
-        headline: 'Clinical systems cannot wait behind a standard queue, so priority and escalation are patient-safety decisions.',
-        items: ['Clinical priority and escalation design', 'Medical device and asset service workflows', 'Validated-environment change control'],
-      },
-      {
-        industry: 'Manufacturing & Industrial',
-        headline: 'Plant requests come from people without a desk, on a shift pattern, often with no corporate device.',
-        items: ['Shop-floor and shift-based intake design', 'Field and maintenance request workflows', 'OT asset and downtime service coordination'],
-      },
-      {
-        industry: 'Retail & Consumer',
-        headline: 'Store estates generate volume in bursts and have no local IT, so first-time-fix and remote resolution decide the model.',
-        items: ['Store and franchise service desk design', 'Peak-season capacity and surge planning', 'Point-of-sale and device lifecycle workflows'],
-      },
-      {
-        industry: 'Public Sector',
-        headline: 'Statutory response times and procurement rules constrain both the service commitments and the platform you may buy.',
-        items: ['Statutory response and casework commitments', 'Procurement-constrained platform selection', 'Cross-agency and shared-service models'],
-      },
-      {
-        industry: 'Professional & Business Services',
-        headline: 'Billable time is the constraint, so every minute a fee earner spends chasing a request is measurable revenue.',
-        items: ['Fee-earner experience and self-service design', 'Client-confidentiality-aware request routing', 'Matter and engagement onboarding workflows'],
       },
     ],
 
