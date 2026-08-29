@@ -18,7 +18,23 @@ import { GovernanceKernel } from './GovernanceKernel'
 import { AppAgentService } from './AppAgentService'
 import { AppWebhookService } from './AppWebhookService'
 import { prisma } from '../../lib/prisma'
+import { OntologyGateway, type GatewayActor } from '../eof/OntologyGateway'
 import type { KangqoreAppManifest } from './AppManifest'
+
+/**
+ * The gateway identity a third-party app acts under.
+ *
+ * Clearances are deliberately empty: an installed app can reach unmarked
+ * objects only. Marked data requires an explicit grant that does not exist yet,
+ * and defaulting to `['*']` would hand every app the clearance of a system
+ * service. Secure by default, widened later if a marking grant is added to the
+ * installation record.
+ */
+const appActor = (auth: { appId: string; userId?: string | null }): GatewayActor => ({
+  id: auth.userId ?? `app:${auth.appId}`,
+  type: 'API',
+  clearances: [],
+})
 
 const router = Router()
 
@@ -310,16 +326,23 @@ router.post('/apps/:appId/ontology/query', authenticateApp, requireAppMatch, asy
   const type = await prisma.ontologyObjectType.findFirst({ where: { name: objectType }, select: { id: true } })
   if (!type) return res.json({ objects: [], total: 0 })
 
-  const [objects, total] = await Promise.all([
-    prisma.ontologyObject.findMany({
-      where: { typeId: type.id },
-      take: Math.min(Number(req.body?.limit) || 50, 200),
-      skip: Number(req.body?.offset) || 0,
-      orderBy: { updatedAt: 'desc' },
-    }),
-    prisma.ontologyObject.count({ where: { typeId: type.id } }),
-  ])
-  return res.json({ objects, total, auditId: decision.auditId })
+  const rows = await prisma.ontologyObject.findMany({
+    where: { typeId: type.id },
+    take: Math.min(Number(req.body?.limit) || 50, 200),
+    skip: Number(req.body?.offset) || 0,
+    orderBy: { updatedAt: 'desc' },
+  })
+
+  // Marking filter. Apps hold no clearances, so anything classified is invisible
+  // to them — without this the endpoint returned marked objects to third-party
+  // code that was never granted them.
+  const objects = OntologyGateway.filterObjects(rows, appActor(auth))
+  return res.json({
+    objects,
+    total: objects.length,
+    withheldByClearance: rows.length - objects.length,
+    auditId: decision.auditId,
+  })
 })
 
 // ── Ontology writes (governed per object type) ───────────────────────────────
@@ -342,6 +365,14 @@ router.get('/apps/:appId/ontology/objects/:objectId', authenticateApp, requireAp
   })
   if (!decision.allowed) {
     return res.status(403).json({ error: decision.reason, auditId: decision.auditId, governanceDetails: { outcome: decision.outcome } })
+  }
+
+  // A marked object is not merely filtered from lists — it is not readable by id.
+  if (!OntologyGateway.canRead(object.markings, appActor(auth))) {
+    return res.status(403).json({
+      error: 'Insufficient clearance for this object\'s markings',
+      auditId: decision.auditId,
+    })
   }
   return res.json({ ...object, auditId: decision.auditId })
 })
@@ -370,11 +401,20 @@ router.post('/apps/:appId/ontology/objects', authenticateApp, requireAppMatch, a
     return res.status(400).json({ error: msg, auditId: decision.auditId })
   }
 
-  const created = await prisma.ontologyObject.create({
-    data: { typeId: type.id, properties: (properties ?? {}) as any },
+  // Through the gateway, not around it: this applies the policy gate and emits
+  // CDC, neither of which a direct prisma write would have done.
+  const result = await OntologyGateway.createObject(appActor(auth), {
+    typeId: type.id,
+    properties: (properties ?? {}) as any,
   })
-  await GovernanceKernel.recordResult(decision.auditId, { objectId: created.id })
-  return res.status(201).json({ ...created, auditId: decision.auditId })
+  if (result.status !== 'OK') {
+    await GovernanceKernel.recordResult(decision.auditId, null, result.reason)
+    return res.status(result.status === 'PENDING_APPROVAL' ? 202 : 403).json({
+      error: result.reason, status: result.status, pendingId: result.pendingId, auditId: decision.auditId,
+    })
+  }
+  await GovernanceKernel.recordResult(decision.auditId, { objectId: result.data.id })
+  return res.status(201).json({ ...result.data, auditId: decision.auditId })
 })
 
 router.patch('/apps/:appId/ontology/objects/:objectId', authenticateApp, requireAppMatch, async (req: Request, res: Response) => {
@@ -399,12 +439,15 @@ router.patch('/apps/:appId/ontology/objects/:objectId', authenticateApp, require
 
   // Merge rather than replace, so a partial patch cannot silently drop fields.
   const merged = { ...(object.properties as any), ...(req.body?.properties ?? {}) }
-  const updated = await prisma.ontologyObject.update({
-    where: { id: object.id },
-    data: { properties: merged as any },
-  })
-  await GovernanceKernel.recordResult(decision.auditId, { objectId: updated.id })
-  return res.json({ ...updated, auditId: decision.auditId })
+  const result = await OntologyGateway.updateObject(appActor(auth), object.id, { properties: merged as any })
+  if (result.status !== 'OK') {
+    await GovernanceKernel.recordResult(decision.auditId, null, result.reason)
+    return res.status(result.status === 'PENDING_APPROVAL' ? 202 : 403).json({
+      error: result.reason, status: result.status, pendingId: result.pendingId, auditId: decision.auditId,
+    })
+  }
+  await GovernanceKernel.recordResult(decision.auditId, { objectId: result.data.id })
+  return res.json({ ...result.data, auditId: decision.auditId })
 })
 
 // ── Agent SDK ────────────────────────────────────────────────────────────────
