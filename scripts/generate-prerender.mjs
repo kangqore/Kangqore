@@ -213,7 +213,11 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
     return href ? ` <a href="${BASE_URL}${esc(href)}">${esc(l.label || href)}</a>` : '';
   };
 
-  const comparison = svc.comparisonTable
+  // `hideComparison` suppresses this band on the page, so the snapshot has to
+  // honor it too. Emitting it here regardless would describe a section the
+  // visitor never sees — the same page-versus-snapshot mismatch that put stale
+  // content in front of crawlers on two other services.
+  const comparison = svc.comparisonTable && !svc.hideComparison
     ? `    <h2>${esc(svc.comparisonTable.heading || 'How this differs')}</h2>
     ${svc.comparisonTable.lede ? `<p>${esc(svc.comparisonTable.lede)}</p>` : ''}
       <table>

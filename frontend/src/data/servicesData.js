@@ -11488,6 +11488,11 @@ export const servicesData = {
       'SecOps & IRM', 'HR & Workplace', 'App Engine', 'Upgrade Health',
     ],
     hidePartnershipModel: true,
+    // The comparison band is removed on this page. Note the key itself stays:
+    // getParityService resolves `service.comparisonTable || <department
+    // default>`, so deleting it would replace our argument with generic
+    // Platforms copy rather than hiding the section.
+    hideComparison: true,
 
     whatIsEyebrow: 'What a ServiceNow program actually costs',
     whatIsTitle: 'Every Customization Is a Bill',
