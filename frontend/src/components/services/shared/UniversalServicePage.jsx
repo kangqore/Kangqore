@@ -35,6 +35,7 @@ import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
 import { MLOps3DModel } from '../../ui/MLOps3DModel';
 import { GenAI3DModel } from '../../ui/GenAI3DModel';
 import ServiceGlassCards from './ServiceGlassCards';
+import SolutionsCarousel from './SolutionsCarousel';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -4632,6 +4633,19 @@ const featureMicros   = service.featureMicros
           3,222px on this service with nothing actionable in it. */}
       {service.capabilityAreas && service.inlineCtaAfterCapabilities && (
         <InlineCta text={service.inlineCtaAfterCapabilities} />
+      )}
+
+      {/* ══════════════════════ SOLUTIONS CAROUSEL ══════════════════════ */}
+      {/* Opt-in per service. Renders nothing without solutionsCarousel data,
+          so the other 61 pages are unaffected. */}
+      {service.solutionsCarousel && (
+        <SolutionsCarousel
+          eyebrow={service.solutionsCarousel.eyebrow}
+          title={service.solutionsCarousel.title}
+          titleHighlight={service.solutionsCarousel.titleHighlight}
+          subtitle={service.solutionsCarousel.subtitle}
+          items={service.solutionsCarousel.items}
+        />
       )}
 
       {/* Early slot for the platform stack — see toolsStackSection above. */}

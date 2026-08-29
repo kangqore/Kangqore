@@ -11525,11 +11525,44 @@ export const servicesData = {
     // category still list the pre-2020 cloud lineup, so naming what each
     // product is actually for -- and the condition that makes buying it a
     // mistake -- is the part they structurally cannot match.
-    // Sits directly under the capability grid rather than in the default slot
-    // below the engagement band. On a platform page the products are the offer,
-    // so the landscape reads as an extension of the capability list; leaving it
-    // after "how we engage" put the answer after the pricing.
-    toolsStackAfterCapabilities: true,
+    // The five clouds a buyer already has a name for, sitting under the
+    // capability grid. Deliberately separate from the landscape section below:
+    // this one says what we build on each, that one says which to buy and when
+    // not to. Community Cloud is absent because it became Experience Cloud in
+    // 2020 — the rename is the point, and it is made in the landscape entry.
+    solutionsCarousel: {
+      eyebrow: 'WHAT WE BUILD ON',
+      title: 'Five clouds,',
+      titleHighlight: 'and what we actually do with each.',
+      subtitle: 'Most Salesforce estates run some combination of these five. What follows is the work itself rather than the product description — the second is on Salesforce’s own site and reads the same everywhere it is reprinted.',
+      items: [
+        {
+          title: 'Sales Cloud',
+          desc: 'Pipeline and forecasting built against a sales process someone has actually agreed. We fix the stage definitions and the close criteria first, because a forecast configured over a disagreement just reports the disagreement more precisely.',
+        },
+        {
+          title: 'Service Cloud',
+          desc: 'Case routing, the agent console and knowledge, configured so a customer is not asked twice for what the record already holds. Where the requests turn out to come from employees rather than customers, we say so before the licenses are signed.',
+          href: '/services/unified-services-management',
+          linkLabel: 'Employee service',
+        },
+        {
+          title: 'Experience Cloud',
+          desc: 'Customer and partner portals sitting on live Salesforce records, with a sharing model that is designed rather than inherited. This is what Community Cloud was renamed to in 2020, which is worth knowing when comparing vendor pages.',
+        },
+        {
+          title: 'Commerce Cloud',
+          desc: 'Storefront, order management and point of sale on the same customer record as sales and service. We model the revenue-share pricing against a standalone platform before recommending it, because on thin margins that comparison decides the answer.',
+        },
+        {
+          title: 'Marketing Cloud',
+          desc: 'Journeys and campaign orchestration, plus the unglamorous part underneath: which system owns consent, which owns the contact, and what happens when the two disagree. Two different products share this name, and we establish which one you mean first.',
+          href: '/services/cdp-strategy',
+          linkLabel: 'Customer data',
+        },
+      ],
+    },
+
     toolsStack: {
       eyebrow: 'THE SALESFORCE LANDSCAPE',
       title: 'The clouds,',

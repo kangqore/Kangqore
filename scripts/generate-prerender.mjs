@@ -279,6 +279,17 @@ ${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
       </section>`).join('\n')}`
     : '';
 
+  // The carousel is a horizontal scroller, so a crawler that does not run the
+  // rail still needs every card. Emitted flat.
+  const carousel = (svc.solutionsCarousel?.items || []).length
+    ? `    <h2>${esc([svc.solutionsCarousel.title, svc.solutionsCarousel.titleHighlight].filter(Boolean).join(' '))}</h2>
+    ${svc.solutionsCarousel.subtitle ? `<p>${esc(svc.solutionsCarousel.subtitle)}</p>` : ''}
+${svc.solutionsCarousel.items.map((s) => `      <section>
+        <h3>${esc(s.title)}</h3>
+        <p>${esc(s.desc)}</p>${s.href ? `\n        <p><a href="${esc(s.href)}">${esc(s.linkLabel || 'Learn more')}</a></p>` : ''}
+      </section>`).join('\n')}`
+    : '';
+
   const closing = svc.closingCta
     ? `    <h2>${esc([svc.closingCta.title, svc.closingCta.highlight].filter(Boolean).join(' '))}</h2>
     ${svc.closingCta.body ? `<p>${esc(svc.closingCta.body)}</p>` : ''}`
@@ -470,6 +481,8 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
     ${metrics ? `<h2>${esc([svc.outcomesHeading, svc.outcomesHeadingHighlight].filter(Boolean).join(' ') || 'Business Outcomes')}</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${svc.capabilitiesLede ? `      <p>${esc(svc.capabilitiesLede)}</p>\n` : ''}${capabilities}` : ''}
+
+    ${carousel}
 
     ${entArch}
 
