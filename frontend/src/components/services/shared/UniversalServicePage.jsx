@@ -634,7 +634,7 @@ function getParityService(service, department) {
   const midCta = service.midCta || deptCopy.midCta;
   const closingCta = service.closingCta || deptCopy.closingCta;
 
-  const heroMaxWidth = service.heroMaxWidth || 'max-w-[82%]';
+  const heroMaxWidth = service.heroMaxWidth || 'w-full md:max-w-[58%] lg:max-w-[70%]';
   const heroTitleSize = service.heroTitleSize || 'text-[1.5rem] sm:text-[1.88rem] lg:text-[2.6rem] xl:text-[3.4rem]';
 
   // WhatIs Fallbacks
