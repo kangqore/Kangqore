@@ -290,7 +290,12 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
             title="Read deliverables"
             style={{ color: palette.accent }}
           >
-            <span>You leave with</span>
+            {/* Per-package label override. "You leave with" is right for an
+                engagement model, where the list is deliverables, and wrong
+                wherever the list is something else (measures, preconditions).
+                Falls back to the original string, so every package that does
+                not set it renders exactly as before. */}
+            <span>{pkg.disclosureLabel || 'You leave with'}</span>
             <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} style={{ color: palette.accent }} />
           </button>
 
