@@ -229,7 +229,7 @@ export const WorkItemService = {
 
     // Clean up OntologyObject
     if (item.objectId) {
-      await prisma.ontologyObject.delete({ where: { id: item.objectId } }).catch(() => {})
+      await OntologyGateway.deleteObject(SYSTEM_ACTOR, item.objectId).catch(() => {})
     }
 
     await (prisma as any).workItem.delete({ where: { id } })
@@ -282,12 +282,10 @@ export const WorkItemService = {
       (prisma as any).workItem.findUnique({ where: { id: targetWorkItemId } }),
     ])
     if (!source?.objectId || !target?.objectId) return
-    await prisma.ontologyRelationship.deleteMany({
-      where: {
-        sourceId: source.objectId,
-        targetId: target.objectId,
-        relationshipType: type,
-      },
+    await OntologyGateway.deleteRelationships(SYSTEM_ACTOR, {
+      sourceId: source.objectId,
+      targetId: target.objectId,
+      relationshipType: type,
     })
   },
 

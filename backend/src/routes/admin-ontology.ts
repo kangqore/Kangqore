@@ -723,10 +723,8 @@ router.post('/relationships', ...guard, async (req, res) => {
 
 router.delete('/relationships/:id', ...guard, async (req, res) => {
   try {
-    await prisma.ontologyRelationship.update({
-      where: { id: req.params.id },
-      data: { validTo: new Date() },
-    })
+    const result = await OntologyGateway.retireRelationship(actorFrom(req), req.params.id)
+    if (result.status !== 'OK') return sendGatewayResult(res, result)
     res.json({ ok: true })
   } catch { res.status(404).json({ error: 'Not found' }) }
 })

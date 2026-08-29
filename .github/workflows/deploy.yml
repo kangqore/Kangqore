@@ -109,6 +109,12 @@ jobs:
     - name: Design token audit (type scale, section rhythm)
       run: npm run audit:design-tokens
 
+    # Ontology single-write-path gate. OntologyGateway declares itself the only
+    # write path; this proves it. A direct prisma write skips data markings, the
+    # AEGIS policy gate, cardinality, and CDC emission — all four fail silently.
+    - name: Audit ontology write path (no gateway bypasses)
+      run: npm run audit:ontology-writes
+
     # Backend Build
     - name: Install Backend Dependencies
       working-directory: ./backend

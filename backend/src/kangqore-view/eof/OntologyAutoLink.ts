@@ -1,4 +1,5 @@
 import { prisma } from '../../lib/prisma'
+import { OntologyGateway, SYSTEM_ACTOR } from './OntologyGateway'
 
 interface AutoLinkResult {
   created: number
@@ -17,12 +18,14 @@ async function upsertRel(
   })
   if (existing) return 'exists'
 
-  await prisma.ontologyRelationship.create({
-    data: {
-      sourceId, targetId, sourceType, targetType, relationshipType,
-      confidence: 0.85, inferredBy: 'AUTO_LINK', reason, strength: 0.8,
-    },
+  // Through the gateway so inferred edges are cardinality-checked like any
+  // other. Auto-link previously wrote directly, which meant inference could
+  // create edges the schema forbids.
+  const result = await OntologyGateway.createRelationship(SYSTEM_ACTOR, {
+    sourceId, targetId, sourceType, targetType, relationshipType,
+    confidence: 0.85, inferredBy: 'AUTO_LINK', reason, strength: 0.8,
   })
+  if (result.status !== 'OK') return 'exists'  // rejected by cardinality — not an error
   return 'created'
 }
 

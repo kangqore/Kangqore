@@ -186,4 +186,54 @@ export const OntologyGateway = {
     CdcService.emit('ontology_relationships', 'UPSERT', null, rel).catch(() => {})
     return { status: 'OK', data: rel }
   },
+
+  // ── Deletes ────────────────────────────────────────────────────────────────
+  //
+  // The gateway had no delete path, so every caller that needed one wrote
+  // directly to prisma and skipped markings, policy, and CDC. Deleting a record
+  // you are not cleared to read is a disclosure in reverse, so it is gated the
+  // same way a read is.
+
+  async deleteObject(actor: GatewayActor, id: string): Promise<GatewayResult> {
+    const existing = await prisma.ontologyObject.findUnique({
+      where: { id }, select: { markings: true },
+    })
+    if (!existing) return { status: 'OK', data: null }  // already gone — idempotent
+
+    if (!canAccess((existing.markings as string[]) ?? [], actor.clearances)) {
+      return { status: 'DENIED', reason: 'Insufficient clearance for this object\'s markings' }
+    }
+
+    const gate = await policyGate('DELETE_OBJECT', { id }, actor, id)
+    if (gate) return gate
+
+    const obj = await prisma.ontologyObject.delete({ where: { id } })
+    CdcService.emit('ontology_objects', 'DELETE', obj, null).catch(() => {})
+    return { status: 'OK', data: obj }
+  },
+
+  async deleteRelationships(
+    actor: GatewayActor,
+    where: { sourceId: string; targetId: string; relationshipType: string },
+  ): Promise<GatewayResult<{ count: number }>> {
+    const gate = await policyGate('DELETE_RELATIONSHIP', where, actor)
+    if (gate) return gate
+
+    const result = await prisma.ontologyRelationship.deleteMany({ where })
+    CdcService.emit('ontology_relationships', 'DELETE', where, null).catch(() => {})
+    return { status: 'OK', data: result }
+  },
+
+  /** Soft-delete: closes a relationship's validity window, preserving history. */
+  async retireRelationship(actor: GatewayActor, id: string): Promise<GatewayResult> {
+    const gate = await policyGate('DELETE_RELATIONSHIP', { id }, actor)
+    if (gate) return gate
+
+    const rel = await prisma.ontologyRelationship.update({
+      where: { id },
+      data: { validTo: new Date() },
+    })
+    CdcService.emit('ontology_relationships', 'UPDATE', null, rel).catch(() => {})
+    return { status: 'OK', data: rel }
+  },
 }

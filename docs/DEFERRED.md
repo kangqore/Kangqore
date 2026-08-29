@@ -148,6 +148,31 @@ surface currently answers one family of question.
   LLM pass belongs *after* that gate, enriching an already-classified goal, not
   deciding the safety question. Preserve that boundary when extending.
 
+### 13 grandfathered ontology gateway bypasses (P2)
+
+`scripts/audit-ontology-write-path.mjs` now blocks new direct writes to
+`OntologyObject` / `OntologyRelationship`, but six files were allowlisted so the
+gate could be switched on immediately rather than after a large refactor. Five
+carry real debt, 13 writes in total:
+
+| File | Writes | Why |
+| --- | --- | --- |
+| `eof/OntologyPipeline.ts` | 4 | bulk pipeline writes |
+| `eof/CanvasOntologyBridge.ts` | 3 | canvas sync |
+| `eof/OntologyVersioning.ts` | 3 | version snapshots |
+| `eof/OntologyCsvImport.ts` | 2 | bulk CSV import |
+| `eof/OntologyBranch.ts` | 2 | branch materialisation |
+| `automation/ActionEngine.ts` | 2 | action effects write objects directly |
+
+Each skips data markings, the AEGIS policy gate, cardinality, and CDC emission.
+`ActionEngine` is the most significant — it is the main execution path, so an
+action effect can currently write an object the schema would reject.
+
+- **Run** `npm run audit:ontology-writes -- --list` to see the current state.
+- **Fix:** route through `OntologyGateway` and delete the allowlist entry. The
+  gateway now has `deleteObject`, `deleteRelationships`, and
+  `retireRelationship`, which is what most of these were missing.
+
 ### Legacy listings have no certification path (P3)
 
 The 13 `MarketplaceListing` rows surface with `governanceScore: 0` and no
