@@ -2743,6 +2743,105 @@ const featureMicros   = service.featureMicros
                     <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
                   </svg>
                 </div>
+              ) : service.slug === 'salesforce' ? (
+                /* ── What a decade of changes leaves behind ──
+                   Replaces the shared agentic default, which put AGENTIC
+                   ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on a CRM
+                   page. The argument is the top contrast: an org accumulates
+                   fields, layouts and three separate automation engines that
+                   can all write the same record, and the assessment is the
+                   gate that decides what survives before anything is built.
+
+                   The five stages match servicePackages and capabilityAreas.
+                   The band underneath names the four measures the outcome
+                   tiles and the final FAQ are both held to, each of which an
+                   org owner can pull from setup and login history.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="A Salesforce org after a decade of changes accumulates custom fields, page layouts, three separate automation engines and duplicated report definitions; the org health assessment is the gate before any build, and the lifecycle runs assess, retire, build, integrate and run, measured on fields with an owner, automation paths per object, seats actually signed into and metrics with one definition" tabIndex={0}>
+                <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                  <title>What a decade of Salesforce changes leaves behind</title>
+                  <desc>A long-lived Salesforce org accumulates custom fields nobody owns, a page layout per profile, automation split across workflow rules, Process Builder and Flow that can all update the same record, and report definitions that disagree. The org health assessment is the gate: it decides what is retired before anything new is built. The lifecycle runs assess, retire, build, integrate and run, and is measured on fields with a named owner, how many automation paths can write one object, how many purchased seats are actually signed into, and how many board-facing metrics resolve to a single definition.</desc>
+
+                  <defs>
+                    <linearGradient id="sf-spine" gradientUnits="userSpaceOnUse" x1="26" y1="286" x2="514" y2="286">
+                      <stop offset="0" stopColor="#2564ea" />
+                      <stop offset="1" stopColor="#4ab6d4" />
+                    </linearGradient>
+                    <linearGradient id="sf-stage" gradientUnits="userSpaceOnUse" x1="0" y1="228" x2="0" y2="280">
+                      <stop offset="0" stopColor="#131d31" />
+                      <stop offset="1" stopColor="#0a0f1a" />
+                    </linearGradient>
+                    <marker id="sf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                      <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                    </marker>
+                    <marker id="sf-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                      <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                    </marker>
+                  </defs>
+
+                  {/* ── What accumulates ── */}
+                  <text x="26" y="30" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#f59e0b">AFTER A DECADE OF CHANGES</text>
+                  <g fontFamily="monospace" textAnchor="middle">
+                    <rect x="26"  y="42" width="112" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                    <text x="82"  y="63" fontSize="12" fill="white" fillOpacity="0.8">FIELDS</text>
+                    <rect x="148" y="42" width="112" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                    <text x="204" y="63" fontSize="12" fill="white" fillOpacity="0.8">LAYOUTS</text>
+                    <rect x="270" y="42" width="112" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                    <text x="326" y="63" fontSize="12" fill="white" fillOpacity="0.8">REPORTS</text>
+                    <rect x="392" y="42" width="122" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                    <text x="453" y="63" fontSize="12" fill="white" fillOpacity="0.8">SEATS</text>
+                  </g>
+
+                  {/* ── Three engines, one record ── */}
+                  <g fontFamily="monospace" textAnchor="middle">
+                    <rect x="26"  y="96" width="152" height="32" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.3" />
+                    <text x="102" y="116" fontSize="12" fill="white" fillOpacity="0.72">WORKFLOW RULES</text>
+                    <rect x="194" y="96" width="152" height="32" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.3" />
+                    <text x="270" y="116" fontSize="12" fill="white" fillOpacity="0.72">PROCESS BUILDER</text>
+                    <rect x="362" y="96" width="152" height="32" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.3" />
+                    <text x="438" y="116" fontSize="12" fill="white" fillOpacity="0.72">FLOW</text>
+                    <path d="M 102 130 L 262 154" stroke="#f59e0b" strokeOpacity="0.5" strokeWidth="1.4" markerEnd="url(#sf-arrow-amber)" />
+                    <path d="M 270 130 L 270 152" stroke="#f59e0b" strokeOpacity="0.5" strokeWidth="1.4" markerEnd="url(#sf-arrow-amber)" />
+                    <path d="M 438 130 L 278 154" stroke="#f59e0b" strokeOpacity="0.5" strokeWidth="1.4" markerEnd="url(#sf-arrow-amber)" />
+                    <text x="270" y="176" fontSize="12" fill="#f59e0b" fillOpacity="0.95">all three can write the same record</text>
+                  </g>
+
+                  {/* ── The gate ── */}
+                  <rect x="26" y="192" width="488" height="40" rx="9" fill="#0a1220" stroke="#2564ea" strokeOpacity="0.5" />
+                  <text x="270" y="217" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.2" fill="#4ab6d4">ORG HEALTH ASSESSMENT — WHAT SURVIVES, WHAT RETIRES</text>
+
+                  {/* ── The lifecycle ── */}
+                  <line x1="26" y1="286" x2="514" y2="286" stroke="url(#sf-spine)" strokeWidth="2" markerEnd="url(#sf-arrow)" />
+                  <g fontFamily="monospace" textAnchor="middle">
+                    <rect x="26"  y="252" width="88" height="30" rx="7" fill="url(#sf-stage)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="70"  y="271" fontSize="12" fill="white" fillOpacity="0.85">ASSESS</text>
+                    <rect x="126" y="252" width="88" height="30" rx="7" fill="url(#sf-stage)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="170" y="271" fontSize="12" fill="white" fillOpacity="0.85">RETIRE</text>
+                    <rect x="226" y="252" width="88" height="30" rx="7" fill="url(#sf-stage)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="270" y="271" fontSize="12" fill="white" fillOpacity="0.85">BUILD</text>
+                    <rect x="326" y="252" width="98" height="30" rx="7" fill="url(#sf-stage)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="375" y="271" fontSize="12" fill="white" fillOpacity="0.85">INTEGRATE</text>
+                    <rect x="436" y="252" width="78" height="30" rx="7" fill="url(#sf-stage)" stroke="#4ab6d4" strokeOpacity="0.5" />
+                    <text x="475" y="271" fontSize="12" fill="white" fillOpacity="0.85">RUN</text>
+                  </g>
+
+                  {/* ── The modern layer, sequenced after the foundation ── */}
+                  <g fontFamily="monospace" textAnchor="middle">
+                    <rect x="26"  y="312" width="236" height="34" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="144" y="333" fontSize="12" fill="white" fillOpacity="0.7">DATA CLOUD — ONE PROFILE</text>
+                    <rect x="278" y="312" width="236" height="34" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="396" y="333" fontSize="12" fill="white" fillOpacity="0.7">AGENTFORCE — AFTER, NOT BEFORE</text>
+                  </g>
+
+                  {/* ── What it is measured on ── */}
+                  <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                  <text x="270" y="412" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">fields with an owner · automation paths per object</text>
+                  <text x="270" y="428" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">seats actually signed into · metrics with one definition</text>
+                </svg>
+                </div>
               ) : service.slug === 'unified-services-management' ? (
                 /* ── Five intakes, or one ──
                    Replaces the shared Platforms default. The argument is the

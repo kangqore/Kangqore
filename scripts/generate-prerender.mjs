@@ -324,7 +324,11 @@ ${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
   // retrieval engine matches a "does Kangqore use Playwright" question against
   // — was invisible to it.
   const toolRow = (i) => {
-    const named = [i.managed && `Managed: ${esc(i.managed)}`, i.selfHosted && `Self-hosted: ${esc(i.selfHosted)}`]
+    // Mirrors the per-item label overrides the page renders, so the snapshot
+    // does not describe a column as "Managed" where the page calls it
+    // something else.
+    const named = [i.managed && `${esc(i.managedLabel || 'Managed')}: ${esc(i.managed)}`,
+                   i.selfHosted && `${esc(i.selfHostedLabel || 'Self-hosted')}: ${esc(i.selfHosted)}`]
       .filter(Boolean).join('. ');
     return `          <li><strong>${esc(i.title)}</strong>: ${esc(i.desc)}${named ? ` ${named}.` : ''}${linkTo(i.link)}</li>`;
   };

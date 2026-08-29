@@ -642,15 +642,22 @@ export const AIToolsSection = ({
                             panel below now carries the judgment, not the list. */}
                         {(item.managed || item.selfHosted) && (
                           <span className="mt-2 flex flex-col gap-1.5">
+                            {/* Per-item label overrides. "Managed"/"Self-hosted"
+                                describe a hosting choice, which is the right
+                                framing for a toolchain and the wrong one for any
+                                stack whose two columns mean something else (what
+                                a product is for, versus when it is the wrong
+                                buy). Both fall back to the original strings, so
+                                every item that sets neither is unchanged. */}
                             {item.managed && (
                               <span className="flex flex-wrap items-baseline gap-x-2">
-                                <span className="text-[11px] font-black tracking-[0.18em] uppercase text-white/50 shrink-0">Managed</span>
+                                <span className="text-[11px] font-black tracking-[0.18em] uppercase text-white/50 shrink-0">{item.managedLabel || 'Managed'}</span>
                                 <span className="text-sm text-white/70 leading-snug">{item.managed}</span>
                               </span>
                             )}
                             {item.selfHosted && (
                               <span className="flex flex-wrap items-baseline gap-x-2">
-                                <span className="text-[11px] font-black tracking-[0.18em] uppercase text-white/50 shrink-0">Self-hosted</span>
+                                <span className="text-[11px] font-black tracking-[0.18em] uppercase text-white/50 shrink-0">{item.selfHostedLabel || 'Self-hosted'}</span>
                                 <span className="text-sm text-white/70 leading-snug">{item.selfHosted}</span>
                               </span>
                             )}
