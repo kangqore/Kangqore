@@ -308,7 +308,16 @@ async function measure(browserRef, ctx, slug) {
 
   // Off-topic contamination: agentic vocabulary is only on-topic for the two
   // agentic services, so it is measured against every other page.
-  const offTopic = slug.startsWith('agentic')
+  //
+  // Salesforce is the exception, and it is a product exception rather than a
+  // courtesy. Salesforce ships Agentforce, and Service Cloud has called its
+  // users agents since long before the word meant an LLM — so "agent console"
+  // and "an agent produces confident answers from bad records" are the correct
+  // nouns on that page, not a leak from the agentic services. Scoring them as
+  // contamination pushed the page toward avoiding the vendor's own product
+  // name, which is the opposite of what this metric is for.
+  const AGENTIC_ON_TOPIC = new Set(['salesforce']);
+  const offTopic = slug.startsWith('agentic') || AGENTIC_ON_TOPIC.has(slug)
     ? 0
     : (dom.text.match(/\bagent\b|\bagents\b|\bagentic\b|\bautonomous\b/gi) || []).length;
 

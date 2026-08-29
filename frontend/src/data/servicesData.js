@@ -11425,12 +11425,384 @@ export const servicesData = {
     name: 'Salesforce',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
-    shortDescription: 'Salesforce implementation and customization',
-    fullDescription: 'Transform customer relationships with Salesforce solutions.',
-    keyFeatures: ['Sales Cloud', 'Service Cloud', 'Marketing Cloud', 'Custom development', 'Integration'],
+    shortDescription: 'Salesforce org assessment, implementation, integration, data migration and managed operations',
+    fullDescription: 'We assess the org before proposing anything to it, then implement, integrate, migrate or run it — across Sales, Service, Experience, Data Cloud, Agentforce and Revenue Cloud, holding no license margin on either side of the advice.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    keyFeatures: ['Org assessment', 'Implementation', 'Integration', 'Data migration', 'Managed operations'],
     relatedServiceSlugs: ['enterprise-integration-platform', 'cdp-strategy', 'servicenow'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80',
+
+    heroTitle: 'Salesforce Work That Starts\nWith the Org You Already Have',
+    heroBadge: 'Assessed. Built. Integrated. Run.',
+    heroStripItems: [
+      'Org Health Assessment', 'Sales & Service Cloud', 'Experience Cloud', 'Data Cloud',
+      'Agentforce', 'Revenue Cloud', 'Integration & Migration', 'Managed Operations',
+    ],
+
+    whatIsEyebrow: 'What Salesforce consulting actually covers',
+    whatIsTitle: 'The Platform Is Rarely',
+    whatIsTitleLine2: 'the Problem.',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'The Org Around It Usually Is.',
+    whatIsPara2: 'Most enterprises do not have a Salesforce problem. They have an org that a decade of well-meant changes has made expensive to change — several hundred custom fields nobody can name an owner for, a page layout per profile, automation split across workflow rules, Process Builder and Flow, and a report library where the number that goes to the board is calculated two different ways.',
+    whatIsPara3: 'That surfaces first on the license line, because the usual answer to a slow org is more of it: more seats, more add-ons, another sandbox. It surfaces second in delivery speed, when a change that should take a day takes a quarter because nobody is confident what depends on what. Neither is fixed by buying the next cloud, and both get worse when you do.',
+    whatIsPara4: 'Kangqore assesses the org before proposing anything to it, then implements, integrates, migrates or runs it depending on what the assessment finds. We hold no reseller margin on Salesforce licenses, so advising you to consolidate three orgs into one and drop the seats nobody has signed into costs us nothing to say. Where the answer genuinely is new capability — Data Cloud underneath Agentforce, Revenue Cloud replacing CPQ — we say so, and we say what it costs to run rather than only what it costs to build.',
+
+    // Org-health measures a Salesforce owner can pull from their own instance
+    // this week, using the setup menu and the login history. Deliberately not
+    // adoption or pipeline: both move for reasons that have nothing to do with
+    // the build, and both flatter whoever is reporting them.
+    businessMetrics: [
+      { illustrative: true, title: 'Field Ownership',    desc: 'Share of custom fields with a named owner and a reason to still exist, after the org assessment retires the rest.',                              value: '90', suffix: '%', metricLabel: 'Fields Owned',        icon: 'Layers'     },
+      { illustrative: true, title: 'Automation Paths',   desc: 'Fewer places a single object can be updated automatically, once workflow rules and Process Builder are consolidated into Flow.',                  value: '70', suffix: '%', metricLabel: 'Fewer Automations',   icon: 'Network'    },
+      { illustrative: true, title: 'License Use',        desc: 'Share of purchased seats actually signed into over ninety days — measured before the renewal conversation rather than after it.',            value: '85', suffix: '%', metricLabel: 'Seats Actually Used', icon: 'Activity'   },
+      { illustrative: true, title: 'Report Agreement',   desc: 'Fewer board-facing metrics that resolve to more than one definition across the report library.',                                                  value: '60', suffix: '%', metricLabel: 'One Definition',      icon: 'ShieldCheck'},
+    ],
+
+    // Four bands opted out rather than deleted. getParityService resolves each
+    // absent key to a Platforms department default, so deleting the data shows
+    // generic copy instead of nothing. hideOutcomeCards also suppresses two
+    // synthesized case studies this page never authored.
+    hidePartnershipModel: true,
+    hideComparison: true,
+    hideArchitecture: true,
+    hideIndustry: true,
+    hideOutcomeCards: true,
+
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Four ways in,',
+    engagementHeadingHighlight: 'starting with the org you already run.',
+    engagementLede: 'Most teams arrive holding a build they have stopped trusting and a renewal date they cannot move. The useful first engagement measures the org, and it is scoped so you can stop after it.',
+    servicePackages: [
+      {
+        name: 'Org Health Assessment',
+        description: 'What is in the org, what uses it, what nothing has touched in a year, and what the license position looks like against actual logins. Fixed price, scoped so you can stop after it and keep the output.',
+        deliverables: [
+          'Object, field and automation inventory with owners',
+          'Technical debt register, ranked by what it blocks',
+          'License and seat utilization against ninety-day logins',
+          'Multi-org overlap and consolidation options',
+          'Costed roadmap, sequenced by what unblocks the most',
+        ],
+      },
+      {
+        name: 'Implementation & Build',
+        description: 'Configuration first, code only where configuration genuinely cannot reach. Across Sales, Service and Experience Cloud, on Lightning, with the data model agreed before anything is built on top of it.',
+        deliverables: [
+          'Data model and object architecture',
+          'Configuration, Flow automation and Lightning build',
+          'Apex and LWC only where declarative cannot reach',
+          'Permission and sharing model with a documented rationale',
+          'Release management, sandboxes and deployment pipeline',
+        ],
+      },
+      {
+        name: 'Integration & Data Migration',
+        description: 'Getting the rest of the estate into Salesforce and the history in cleanly. REST, SOAP, Bulk and Streaming APIs, MuleSoft and ETL middleware, AppExchange and legacy connections, org-to-org consolidation.',
+        deliverables: [
+          'Integration architecture and API design',
+          'MuleSoft, ETL or native connector implementation',
+          'Data quality assessment, de-duplication and mapping',
+          'Migration execution with reconciliation evidence',
+          'Cutover plan, fallback position and go-live support',
+        ],
+      },
+      {
+        name: 'Managed Operations',
+        description: 'Running the org under a service level, including the backlog nobody gets to. For teams who want a maintained Salesforce estate without carrying a permanent admin, developer and architect between them.',
+        deliverables: [
+          'Admin, configuration and enhancement requests',
+          'Release readiness across the three annual updates',
+          'Monitoring of limits, storage and integration failures',
+          'Technical debt burn-down against the assessment register',
+          'Quarterly license review before each renewal',
+        ],
+      },
+    ],
+
+    // The landscape section, rebuilt rather than cut. Competitor pages in this
+    // category still list the pre-2020 cloud lineup, so naming what each
+    // product is actually for -- and the condition that makes buying it a
+    // mistake -- is the part they structurally cannot match.
+    // The five clouds a buyer already has a name for, sitting under the
+    // capability grid. Deliberately separate from the landscape section below:
+    // this one says what we build on each, that one says which to buy and when
+    // not to. Community Cloud is absent because it became Experience Cloud in
+    // 2020 — the rename is the point, and it is made in the landscape entry.
+    solutionsCarousel: {
+      eyebrow: 'WHAT WE BUILD ON',
+      title: 'Five clouds,',
+      titleHighlight: 'and what we actually do with each.',
+      subtitle: 'Most Salesforce estates run some combination of these five. What follows is the work itself rather than the product description — the second is on Salesforce’s own site and reads the same everywhere it is reprinted.',
+      items: [
+        {
+          title: 'Sales Cloud',
+          desc: 'Pipeline and forecasting built against a sales process someone has actually agreed. We fix the stage definitions and the close criteria first, because a forecast configured over a disagreement just reports the disagreement more precisely.',
+        },
+        {
+          title: 'Service Cloud',
+          desc: 'Case routing, the agent console and knowledge, configured so a customer is not asked twice for what the record already holds. Where the requests turn out to come from employees rather than customers, we say so before the licenses are signed.',
+          href: '/services/unified-services-management',
+          linkLabel: 'Employee service',
+        },
+        {
+          title: 'Experience Cloud',
+          desc: 'Customer and partner portals sitting on live Salesforce records, with a sharing model that is designed rather than inherited. This is what Community Cloud was renamed to in 2020, which is worth knowing when comparing vendor pages.',
+        },
+        {
+          title: 'Commerce Cloud',
+          desc: 'Storefront, order management and point of sale on the same customer record as sales and service. We model the revenue-share pricing against a standalone platform before recommending it, because on thin margins that comparison decides the answer.',
+        },
+        {
+          title: 'Marketing Cloud',
+          desc: 'Journeys and campaign orchestration, plus the unglamorous part underneath: which system owns consent, which owns the contact, and what happens when the two disagree. Two different products share this name, and we establish which one you mean first.',
+          href: '/services/cdp-strategy',
+          linkLabel: 'Customer data',
+        },
+      ],
+    },
+
+    toolsStack: {
+      eyebrow: 'THE SALESFORCE LANDSCAPE',
+      title: 'The clouds,',
+      titleHighlight: 'and when each one is the wrong buy.',
+      subtitle: 'Salesforce sells well over a dozen products under one name. Most estates need three or four. These are the ones that come up, what each is genuinely for, and the condition under which buying it makes things worse.',
+      items: [
+        {
+          icon: 'Zap',
+          title: 'Sales Cloud',
+          managedLabel: 'What it is for',
+          managed: 'Pipeline, forecasting, opportunity and account management',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'When the sales process has never been agreed off the platform',
+          desc: 'The default entry point and the one most orgs already own more of than they use. Configuring a forecast against a sales process nobody has agreed produces an expensive record of the disagreement. Agree the stages first; they are free to change on a whiteboard and costly to change in production.',
+        },
+        {
+          icon: 'Layers',
+          title: 'Service Cloud',
+          managedLabel: 'What it is for',
+          managed: 'Case management, omni-channel routing, agent console, knowledge',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'For an internal IT desk, where a service management tool fits better',
+          desc: 'Strong for customer-facing support and frequently mis-bought for internal service management, where the licensing outruns the fit. If the requests come from employees rather than customers, price it against a dedicated service management platform before committing.',
+        },
+        {
+          icon: 'Network',
+          title: 'Experience Cloud',
+          managedLabel: 'What it is for',
+          managed: 'Customer, partner and self-service portals on Salesforce data',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'For a public marketing site, which it will serve slowly and expensively',
+          desc: 'Renamed from Community Cloud in 2020, which is a useful date check on any vendor page that still calls it the old name. Genuinely good where a portal needs live Salesforce records behind it; a poor and costly substitute for an ordinary content-managed website.',
+        },
+        {
+          icon: 'Activity',
+          title: 'Data Cloud',
+          managedLabel: 'What it is for',
+          managed: 'Unifying customer records across systems into one profile',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'Before anyone has agreed which system holds the truth',
+          desc: 'The layer most 2026 Salesforce roadmaps rest on, and the one most often bought too early. It resolves identity across sources; it does not decide which source wins. That decision is a governance conversation, and buying the product does not hold it for you.',
+        },
+        {
+          icon: 'Cpu',
+          title: 'Agentforce',
+          managedLabel: 'What it is for',
+          managed: 'Agentic automation over Salesforce data and actions',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'On an org whose data quality would embarrass a human agent',
+          desc: 'Consumption-priced rather than seat-priced, which changes the budgeting conversation more than most buyers expect. It performs in proportion to the quality of the data and the clarity of the permissions underneath it, so an org with unowned fields and inconsistent records is the wrong place to start.',
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Revenue Cloud',
+          managedLabel: 'What it is for',
+          managed: 'Quoting, configuration, pricing, contracts and billing',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'As a like-for-like lift of a CPQ build you already regret',
+          desc: 'The successor to CPQ, and the migration is a re-implementation rather than an upgrade. That is inconvenient and also an opportunity: a pricing model that accumulated exceptions for a decade is easier to simplify during a move than during business as usual.',
+        },
+        {
+          icon: 'ShoppingCart',
+          title: 'Commerce Cloud',
+          managedLabel: 'What it is for',
+          managed: 'Digital storefronts, order management, point of sale',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'Where the storefront is the business and margins are thin',
+          desc: 'Strong where commerce needs to sit on the same customer record as sales and service, and where order management is genuinely complex. Priced on a share of the revenue that passes through it, which is a very different commercial shape from a seat license — and the reason a high-volume, low-margin retailer should model it against a standalone platform before committing.',
+        },
+        {
+          icon: 'Target',
+          title: 'Marketing Cloud',
+          managedLabel: 'What it is for',
+          managed: 'Journeys, campaign orchestration and customer engagement',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'Where the estate is one product line and one segment',
+          desc: 'Two different products share the name, which is the first thing to establish in any conversation about it. Powerful for genuinely multi-brand, multi-segment orchestration and heavy for a single-segment business that needs email and a form.',
+        },
+        {
+          icon: 'Cloud',
+          title: 'MuleSoft, Heroku and Slack',
+          managedLabel: 'What it is for',
+          managed: 'Integration middleware, custom applications, workflow surface',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'Where four or five connections would do the same job',
+          desc: 'MuleSoft earns its cost on integration estates measured in dozens of connections and rarely below that; the alternative is native connectors and a small amount of engineering. Heroku matters where custom applications need Salesforce data without living in the org. Slack is increasingly where the workflow surfaces.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve Salesforce questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    customFAQs: [
+      {
+        q: 'What is Salesforce consulting, and what does it cover?',
+        a: 'Four things, and most engagements are one or two of them rather than all four.\n\nImplementation is configuring and building the platform against an agreed process. Integration is connecting it to the rest of the estate. Data migration is getting history in cleanly, including org-to-org consolidation. Managed operations is running the result under a service level once it is live.\n\nWhat sits in front of all four, and gets skipped most often, is the assessment: what is already in the org, what still gets used, and what the license position looks like against actual logins. Skipping it is how a build proposal becomes the answer to a question nobody asked.',
+      },
+      {
+        q: 'Do you resell Salesforce licenses?',
+        a: 'No, and it changes what we are able to recommend.\n\nWe hold no reseller agreement and take no margin on Salesforce seats, add-ons or consumption. So the finding that you should consolidate three orgs into one, drop the seats nobody signs into and spend the difference on fixing the data model is a finding we are free to reach.\n\nThis is worth checking on any firm you are evaluating. Salesforce partner status is a commercial relationship with volume expectations attached. The advice may well still be sound — but read any major integrator page in this category and count how many of their named offerings involve buying more of the product whose licenses they also sell.',
+      },
+      {
+        q: 'Our org is a mess after years of changes. Where do you even start?',
+        a: 'With an inventory, not a redesign.\n\nEvery custom object and field, when it was last written to, and which automation touches it. Every flow, workflow rule and Process Builder still active, and which of them can update the same record. Every integration user and what it can see. Every report that reaches an executive, and whether two of them define the same metric differently.\n\nThat produces a debt register ranked by what it actually blocks, which is usually a much shorter list than the full inventory. Most orgs discover that four or five items are responsible for the majority of the delivery drag, and that a redesign was never required to clear them.',
+      },
+      {
+        q: 'Should we move to Agentforce?',
+        a: 'Probably eventually, and probably not first.\n\nAgentforce performs in proportion to the data and permissions underneath it. On an org where the same customer exists three times, fields have no owner and sharing rules have accumulated exceptions, an agent produces confident answers from bad records — which is worse than no agent, because people believe it.\n\nThe second thing to understand is the pricing. It is consumption-based rather than per seat, so the cost curve follows usage rather than headcount. That is a materially different budgeting conversation and it should happen before the pilot, not after it goes well.\n\nWhere the data foundation is sound, it is genuinely capable and worth the work. Where it is not, Data Cloud and a data-quality pass come first.',
+      },
+      {
+        q: 'What does a Salesforce engagement cost?',
+        a: 'The assessment is fixed price and deliberately small, because its job is to tell you whether the rest is worth doing.\n\nBeyond that, honest ranges depend on three things we cannot know in advance: how much of the existing build survives, how many integrations are in scope, and whether data migration involves one source or several. A single-cloud implementation on a clean process is a different order of work from consolidating four orgs with fifteen years of history between them.\n\nWhat we will not do is quote a build before the assessment. A number produced without knowing what is in the org is a guess wearing a proposal, and it is usually wrong in the direction that favors whoever wrote it.',
+      },
+      {
+        q: 'Can you migrate us from Classic to Lightning?',
+        a: 'Yes, and the migration is a smaller part of the work than the cleanup it exposes.\n\nThe mechanical conversion is well understood. What takes the time is everything Classic was tolerating: JavaScript buttons that have no Lightning equivalent, page layouts multiplied per profile, VisualForce that predates the component model, and customizations whose original requester left years ago.\n\nWe map the org first, separate what must be rebuilt from what can simply be retired, and sequence by user group so one team moves and the lessons apply to the next. Treating it as a like-for-like lift is how organizations arrive in Lightning with the same debt and a new interface.',
+      },
+      {
+        q: 'We are on CPQ. Do we have to move to Revenue Cloud?',
+        a: 'Eventually yes, and the honest framing is that it is a re-implementation rather than an upgrade.\n\nThat is genuinely inconvenient. It is also the best opportunity you will get for some years to simplify a pricing model that has been accumulating exceptions since it went in. Most CPQ builds carry rules that exist because of a deal in a particular quarter and have never been revisited.\n\nSo the sequence we would argue for is: establish which pricing rules are still commercially real, agree the simplification with the people who own the numbers, then build. Lifting the existing configuration across unexamined is possible and it wastes the only chance to fix it.',
+      },
+      {
+        q: 'What does integrating Salesforce with our other systems involve?',
+        a: 'By the shape of the problem rather than by a default tool.\n\nMost estates need four or five connections done properly: REST or SOAP where the system offers an API, Bulk for volume, Streaming where something has to react to a change, and native or AppExchange connectors where a supported one already exists. That is engineering, not a platform purchase.\n\nMiddleware earns its cost at a different scale — dozens of connections, reuse across teams, an integration function that needs governance rather than scripts. MuleSoft is capable and expensive, and it is frequently proposed to organizations whose integration estate would never justify it. Where connecting the estate turns out to be the larger half of the program rather than a workstream inside it, our enterprise integration platform service leads and this one delivers into it.',
+      },
+      {
+        q: 'How risky is data migration, honestly?',
+        a: 'The technical movement is rarely where it goes wrong. Agreeing what the data means is.\n\nTwo systems that both hold customers do not hold the same customer. One has duplicates it tolerates, the other has a required field the first never captured, and both have a status value that means something slightly different to the teams using it. Mapping those is the work, and it needs someone from the business who can decide rather than escalate.\n\nWhat we hold ourselves to is reconciliation evidence: record counts by object, a documented rule for every field that did not map one to one, and a fallback position that stays available through go-live. We will not describe a migration as flawless, because at any real scale some records need judgment applied to them.',
+      },
+      {
+        q: 'How is this different from your enterprise integration platform service?',
+        a: 'This service is accountable for Salesforce. That one is accountable for the connections between everything.\n\nIf the question is how Salesforce should be structured, what should be built in it and how it should be run, that is here. If the question is how a dozen systems exchange data reliably, with Salesforce as one participant among several, that is the integration platform service and it leads.\n\nOn engagements that need both, one of the two holds the plan and the other delivers into it. Which way round depends on where the center of gravity is, and we agree that at the start rather than discovering it in the third month.',
+      },
+      {
+        q: 'Who owns the org after you leave?',
+        a: 'Your team, and if they cannot the engagement has failed regardless of what got built.\n\nConcretely that means a named org owner inside your organization, admins who were in the room during design rather than trained at handover, documentation of why decisions were made and not only what was configured, and a deployment pipeline your people can run without us.\n\nWe would rather be re-engaged for the next piece of work than retained because nobody else understands the build. A configuration only we can safely change is a commercial advantage we are not interested in holding.',
+      },
+      {
+        q: 'How do you measure whether it worked?',
+        a: 'Against numbers captured before anything changes, and reported afterwards whether or not they flatter us.\n\nHow many custom fields have an owner. How many places a single object can be automatically updated. How many purchased seats have been signed into in the last ninety days. How many board-facing metrics resolve to more than one definition. All four come from your own instance, and all four can be pulled again without us.\n\nWe deliberately avoid adoption and pipeline as the headline measures. Both move for reasons that have nothing to do with the build — a good quarter, a reorganization, a mandate from a new leader — and both are easy to present favourably by whoever is presenting them.',
+      },
+    ],
+
+    capabilitiesLabel: 'SALESFORCE SERVICES',
+    capabilitiesSectionTitle: 'Salesforce',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Five ways this gets bought. Most engagements start with the first and are surprised by how much of the answer turns out to be a retirement decision rather than a build.',
+    capabilityAreas: [
+      {
+        title: 'Advisory & Org Assessment',
+        description: 'Establishing what is actually in the org and what it costs before anyone proposes changing it.',
+        items: [
+          'Org health and technical debt assessment',
+          'Object, field and automation inventory',
+          'License and seat utilization review',
+          'Multi-org strategy and consolidation analysis',
+          'Data model and architecture review',
+          'Security, sharing and permission audit',
+          'Release and deployment maturity review',
+          'Roadmap definition and sequencing',
+          'Build-versus-retire recommendations',
+          'Renewal preparation and negotiation support',
+        ],
+      },
+      {
+        title: 'Implementation & Configuration',
+        description: 'Configuration first, code only where configuration genuinely cannot reach.',
+        items: [
+          'Sales Cloud implementation',
+          'Service Cloud and omni-channel routing',
+          'Experience Cloud portals',
+          'Data model and object design',
+          'Flow automation and business rules',
+          'Lightning migration and component build',
+          'Apex, LWC and custom development',
+          'Permission sets and sharing model',
+          'Sandbox strategy and release pipeline',
+          'User acceptance testing and rollout',
+        ],
+      },
+      {
+        title: 'Integration & Data',
+        description: 'Connecting the estate and getting history in cleanly, with reconciliation evidence.',
+        items: [
+          'REST, SOAP, Bulk and Streaming API integration',
+          'MuleSoft and ETL middleware implementation',
+          'Native and AppExchange connectors',
+          'Heroku and external application integration',
+          'Legacy and third-party system connections',
+          'Data quality assessment and de-duplication',
+          'Migration mapping and execution',
+          'Org-to-org consolidation',
+          'Reconciliation and cutover planning',
+          'Master data and system-of-record definition',
+        ],
+      },
+      {
+        title: 'Data Cloud & Agentforce',
+        description: 'The 2026 layer, sequenced after the data foundation rather than before it.',
+        items: [
+          'Data Cloud readiness assessment',
+          'Identity resolution and unified profiles',
+          'Source-of-truth governance definition',
+          'Agentforce use case qualification',
+          'Agent design, guardrails and escalation paths',
+          'Consumption modeling and cost forecasting',
+          'Einstein and predictive feature enablement',
+          'Prompt and action testing before release',
+          'Human-in-the-loop and approval design',
+          'Post-release monitoring and correction',
+        ],
+      },
+      {
+        title: 'Managed Operations',
+        description: 'Running the org under a service level, including the backlog nobody gets to.',
+        items: [
+          'Admin and configuration request handling',
+          'Enhancement backlog and delivery',
+          'Three-times-yearly release readiness',
+          'Limit, storage and integration monitoring',
+          'Technical debt burn-down',
+          'Quarterly license and seat review',
+          'Security and permission maintenance',
+          'Knowledge transfer and admin enablement',
+          'Incident response and root cause analysis',
+          'Documentation kept current with the build',
+        ],
+      },
+    ],
+
+    midCta: 'A bigger org is not a better one.',
+    midCtaLabel: 'Book an Org Assessment',
+    closingCta: {
+      title: 'One org assessment,',
+      highlight: 'before anyone proposes a build.',
+      body: 'Point us at the org you have stopped trusting. In 30 minutes we will tell you roughly how many custom fields have no owner, how many places a single record can be updated automatically, and whether your next move is a build, a consolidation or a renewal conversation — which is more often the third than anyone expects.',
+      proofLabel: 'From first call to a ranked debt register',
+    },
   },
 
   'servicenow': {

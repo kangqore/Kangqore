@@ -279,6 +279,24 @@ ${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
       </section>`).join('\n')}`
     : '';
 
+  // The carousel is a horizontal scroller, so a crawler that does not run the
+  // rail still needs every card. Emitted flat.
+  //
+  // Carries its own indentation and trailing blank line, and is interpolated at
+  // the start of a line below, so a service without a carousel emits nothing at
+  // all. The first version wrapped it in newlines like the blocks around it,
+  // which put two blank lines into the 61 snapshots that have no carousel and
+  // failed check:prerender in CI on pure whitespace. Same trap the concierge
+  // chips below already document.
+  const carousel = (svc.solutionsCarousel?.items || []).length
+    ? `    <h2>${esc([svc.solutionsCarousel.title, svc.solutionsCarousel.titleHighlight].filter(Boolean).join(' '))}</h2>\n`
+      + (svc.solutionsCarousel.subtitle ? `    <p>${esc(svc.solutionsCarousel.subtitle)}</p>\n` : '')
+      + svc.solutionsCarousel.items.map((s) => `      <section>
+        <h3>${esc(s.title)}</h3>
+        <p>${esc(s.desc)}</p>${s.href ? `\n        <p><a href="${esc(s.href)}">${esc(s.linkLabel || 'Learn more')}</a></p>` : ''}
+      </section>`).join('\n') + '\n\n'
+    : '';
+
   const closing = svc.closingCta
     ? `    <h2>${esc([svc.closingCta.title, svc.closingCta.highlight].filter(Boolean).join(' '))}</h2>
     ${svc.closingCta.body ? `<p>${esc(svc.closingCta.body)}</p>` : ''}`
@@ -324,7 +342,11 @@ ${(k.deliverables || []).map((d) => `          <li>${esc(d)}</li>`).join('\n')}
   // retrieval engine matches a "does Kangqore use Playwright" question against
   // — was invisible to it.
   const toolRow = (i) => {
-    const named = [i.managed && `Managed: ${esc(i.managed)}`, i.selfHosted && `Self-hosted: ${esc(i.selfHosted)}`]
+    // Mirrors the per-item label overrides the page renders, so the snapshot
+    // does not describe a column as "Managed" where the page calls it
+    // something else.
+    const named = [i.managed && `${esc(i.managedLabel || 'Managed')}: ${esc(i.managed)}`,
+                   i.selfHosted && `${esc(i.selfHostedLabel || 'Self-hosted')}: ${esc(i.selfHosted)}`]
       .filter(Boolean).join('. ');
     return `          <li><strong>${esc(i.title)}</strong>: ${esc(i.desc)}${named ? ` ${named}.` : ''}${linkTo(i.link)}</li>`;
   };
@@ -467,7 +489,7 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${svc.capabilitiesLede ? `      <p>${esc(svc.capabilitiesLede)}</p>\n` : ''}${capabilities}` : ''}
 
-    ${entArch}
+${carousel}    ${entArch}
 
     ${svc.midCta ? `<p>${esc(svc.midCta)}</p>` : ''}
 
