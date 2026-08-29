@@ -11,6 +11,7 @@ import { validateAppManifest, KangqoreAppManifest, AppCategory } from './AppMani
 import { generateDeveloperCliScript, generateTypescriptSdkBundle, generatePythonSdkBundle } from './DeveloperCliGenerator'
 import { AppSandboxEngine, SandboxExecutionInput } from './AppSandboxEngine'
 import { GovernanceKernel } from './GovernanceKernel'
+import { AppAgentService } from './AppAgentService'
 
 export interface CreateDeveloperAppInput {
   name: string
@@ -250,8 +251,11 @@ export const DeveloperPlatformService = {
       },
     })
 
+    // Materialise manifest-declared agents so they are immediately runnable.
+    const agents = await AppAgentService.syncAgentsFromManifest(appId, manifest)
+
     const { clientSecretHash, ...safe } = published
-    return { app: safe, governanceScore: score, certifiedBadge: certified, certificationNotes: notes }
+    return { app: safe, governanceScore: score, certifiedBadge: certified, certificationNotes: notes, agents }
   },
 
   /** Verify a client_id / client_secret pair for OAuth and CLI auth. */

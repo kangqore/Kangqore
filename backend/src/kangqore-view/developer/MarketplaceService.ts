@@ -11,6 +11,7 @@
 import { prisma } from '../../lib/prisma'
 import { AppCategory, KangqoreAppManifest } from './AppManifest'
 import { GovernanceKernel } from './GovernanceKernel'
+import { AppWebhookService } from './AppWebhookService'
 
 export const MARKETPLACE_CATEGORIES: AppCategory[] = [
   'CERTIFIED',
@@ -228,6 +229,14 @@ export const MarketplaceService = {
       })
     }
 
+    // Notify the app it was installed. Never blocks or fails the install.
+    void AppWebhookService.dispatch({
+      event: 'app.installed',
+      tenantId: args.tenantId,
+      appId: app.appId,
+      payload: { installationId: installation.id, grantedScopes: envelope.grantedScopes },
+    })
+
     return {
       installationId: installation.id,
       appId: app.appId,
@@ -274,6 +283,13 @@ export const MarketplaceService = {
         eventType: 'UNINSTALL',
         outcome: 'ALLOWED',
       },
+    })
+
+    void AppWebhookService.dispatch({
+      event: 'app.uninstalled',
+      tenantId,
+      appId,
+      payload: { installationId: installation.id },
     })
 
     return { appId, tenantId, status: 'UNINSTALLED', tokensRevoked: true }

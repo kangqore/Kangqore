@@ -9,6 +9,8 @@ import crypto from 'crypto'
 import { prisma } from '../../../lib/prisma'
 import { GovernanceKernel } from '../GovernanceKernel'
 import { MarketplaceService } from '../MarketplaceService'
+import { AppAgentService } from '../AppAgentService'
+import { AppWebhookService } from '../AppWebhookService'
 
 const APP_ID = 'app-e2e-probe'
 const TENANT = 'e2e-tenant'
@@ -128,7 +130,56 @@ async function main() {
   check('telemetry counts calls', telemetry.totalCalls >= 8, String(telemetry.totalCalls))
   check('telemetry separates denied', telemetry.denied >= 4, String(telemetry.denied))
 
+  // ── Phase 5 completion: agents, UI widgets, ontology writes, webhooks ──────
+  console.log('\n11. Agent SDK — manifest agents are materialised and governed')
+  await prisma.developerApp.update({
+    where: { appId: APP_ID },
+    data: {
+      manifest: {
+        ...(await prisma.developerApp.findUnique({ where: { appId: APP_ID } }))!.manifest as any,
+        agents: [{ name: 'ProbeAgent', role: 'Probe', goal: 'verify the agent bridge', capabilities: [] }],
+        uiWidgets: [],
+        webhooks: [{ event: 'app.installed', targetUrl: 'http://insecure.example.com/hook' }],
+      } as any,
+    },
+  })
+  const app = await prisma.developerApp.findUnique({ where: { appId: APP_ID } })
+  const synced = await AppAgentService.syncAgentsFromManifest(APP_ID, app!.manifest as any)
+  check('manifest agent bound to a real KimmpAgent', synced.length === 1 && !!synced[0].kimmpAgentId)
+
+  const listed = await AppAgentService.listAgents(APP_ID)
+  check('agent listed as runnable', listed.length === 1 && listed[0].runnable === true)
+
+  // Re-install (previous step uninstalled) so agent runs are authorised again.
+  await MarketplaceService.installApp({ appId: APP_ID, tenantId: TENANT, installedBy: 'e2e-user', budgetCredits: 2 })
+
+  const undeclared = await AppAgentService.runAgent({
+    appId: APP_ID, agentName: 'NoSuchAgent', tenantId: TENANT, actorId: 'e2e-user', prompt: 'hi',
+  })
+  check('undeclared agent refused', undeclared.allowed === false)
+  check('agent refusal is audited', !!undeclared.auditId)
+
+  console.log('\n12. Agent runs are budgeted (cost 5 > budget 2)')
+  const overBudget = await AppAgentService.runAgent({
+    appId: APP_ID, agentName: 'ProbeAgent', tenantId: TENANT, actorId: 'e2e-user', prompt: 'hi',
+  })
+  check('agent run denied when budget < cost', overBudget.allowed === false, String(overBudget.outcome))
+
+  console.log('\n13. Webhooks — plaintext targets are refused, not silently sent')
+  const deliveries = await AppWebhookService.dispatch({
+    event: 'app.installed', tenantId: TENANT, appId: APP_ID, payload: { probe: true },
+  })
+  check('http:// target skipped (no delivery attempted)', deliveries.length === 0, `${deliveries.length} attempted`)
+  const signed = AppWebhookService.signPayload('{"a":1}', 'secret')
+  check('signature is sha256-prefixed hex', /^sha256=[0-9a-f]{64}$/.test(signed))
+  check('signature verifies', AppWebhookService.verifySignature('{"a":1}', 'secret', signed))
+  check('tampered body fails verification', !AppWebhookService.verifySignature('{"a":2}', 'secret', signed))
+
   // ── Cleanup ────────────────────────────────────────────────────────────────
+  await prisma.appWebhookDelivery.deleteMany({ where: { appId: APP_ID } })
+  const bindings = await prisma.appAgentBinding.findMany({ where: { appId: APP_ID } })
+  await prisma.appAgentBinding.deleteMany({ where: { appId: APP_ID } })
+  await prisma.kimmpAgent.deleteMany({ where: { id: { in: bindings.map(b => b.kimmpAgentId) } } })
   await prisma.appAuditEvent.deleteMany({ where: { appId: APP_ID } })
   await prisma.appInstallation.deleteMany({ where: { appId: APP_ID } })
   await prisma.developerApp.deleteMany({ where: { appId: APP_ID } })

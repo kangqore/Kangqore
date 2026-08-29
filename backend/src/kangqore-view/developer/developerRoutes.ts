@@ -15,7 +15,10 @@ import { AppSandboxEngine } from './AppSandboxEngine'
 import { AppOAuthService } from './AppOAuthService'
 import { AppTestingFramework, AppDeploymentEngine } from './AppTestingFramework'
 import { GovernanceKernel } from './GovernanceKernel'
+import { AppAgentService } from './AppAgentService'
+import { AppWebhookService } from './AppWebhookService'
 import { prisma } from '../../lib/prisma'
+import type { KangqoreAppManifest } from './AppManifest'
 
 const router = Router()
 
@@ -317,6 +320,166 @@ router.post('/apps/:appId/ontology/query', authenticateApp, requireAppMatch, asy
     prisma.ontologyObject.count({ where: { typeId: type.id } }),
   ])
   return res.json({ objects, total, auditId: decision.auditId })
+})
+
+// ── Ontology writes (governed per object type) ───────────────────────────────
+
+/** Resolve the object, then authorise against *its* type. */
+router.get('/apps/:appId/ontology/objects/:objectId', authenticateApp, requireAppMatch, async (req: Request, res: Response) => {
+  const auth = (req as any).appAuth
+  const object = await prisma.ontologyObject.findUnique({
+    where: { id: req.params.objectId },
+    include: { type: { select: { name: true } } },
+  })
+  if (!object) return res.status(404).json({ error: 'Object not found' })
+
+  const decision = await GovernanceKernel.authorize({
+    appId: req.params.appId,
+    tenantId: auth.tenantId,
+    actorId: auth.userId ?? `app:${auth.appId}`,
+    objectType: object.type.name,
+    creditCost: 1,
+  })
+  if (!decision.allowed) {
+    return res.status(403).json({ error: decision.reason, auditId: decision.auditId, governanceDetails: { outcome: decision.outcome } })
+  }
+  return res.json({ ...object, auditId: decision.auditId })
+})
+
+router.post('/apps/:appId/ontology/objects', authenticateApp, requireAppMatch, async (req: Request, res: Response) => {
+  const auth = (req as any).appAuth
+  const { objectType, properties } = req.body ?? {}
+  if (!objectType) return res.status(400).json({ error: 'objectType is required' })
+
+  const decision = await GovernanceKernel.authorize({
+    appId: req.params.appId,
+    tenantId: auth.tenantId,
+    actorId: auth.userId ?? `app:${auth.appId}`,
+    objectType,
+    params: { objectType },
+    creditCost: 2,
+  })
+  if (!decision.allowed) {
+    return res.status(403).json({ error: decision.reason, auditId: decision.auditId, governanceDetails: { outcome: decision.outcome } })
+  }
+
+  const type = await prisma.ontologyObjectType.findFirst({ where: { name: objectType }, select: { id: true } })
+  if (!type) {
+    const msg = `Object type "${objectType}" does not exist in the ontology`
+    await GovernanceKernel.recordResult(decision.auditId, null, msg)
+    return res.status(400).json({ error: msg, auditId: decision.auditId })
+  }
+
+  const created = await prisma.ontologyObject.create({
+    data: { typeId: type.id, properties: (properties ?? {}) as any },
+  })
+  await GovernanceKernel.recordResult(decision.auditId, { objectId: created.id })
+  return res.status(201).json({ ...created, auditId: decision.auditId })
+})
+
+router.patch('/apps/:appId/ontology/objects/:objectId', authenticateApp, requireAppMatch, async (req: Request, res: Response) => {
+  const auth = (req as any).appAuth
+  const object = await prisma.ontologyObject.findUnique({
+    where: { id: req.params.objectId },
+    include: { type: { select: { name: true } } },
+  })
+  if (!object) return res.status(404).json({ error: 'Object not found' })
+
+  const decision = await GovernanceKernel.authorize({
+    appId: req.params.appId,
+    tenantId: auth.tenantId,
+    actorId: auth.userId ?? `app:${auth.appId}`,
+    objectType: object.type.name,
+    params: req.body,
+    creditCost: 2,
+  })
+  if (!decision.allowed) {
+    return res.status(403).json({ error: decision.reason, auditId: decision.auditId, governanceDetails: { outcome: decision.outcome } })
+  }
+
+  // Merge rather than replace, so a partial patch cannot silently drop fields.
+  const merged = { ...(object.properties as any), ...(req.body?.properties ?? {}) }
+  const updated = await prisma.ontologyObject.update({
+    where: { id: object.id },
+    data: { properties: merged as any },
+  })
+  await GovernanceKernel.recordResult(decision.auditId, { objectId: updated.id })
+  return res.json({ ...updated, auditId: decision.auditId })
+})
+
+// ── Agent SDK ────────────────────────────────────────────────────────────────
+
+router.get('/apps/:appId/agents', authenticateApp, requireAppMatch, async (req: Request, res: Response) => {
+  return res.json(await AppAgentService.listAgents(req.params.appId))
+})
+
+router.post('/apps/:appId/agents/:agentName/run', authenticateApp, requireAppMatch, async (req: Request, res: Response) => {
+  const auth = (req as any).appAuth
+  if (!req.body?.prompt) return res.status(400).json({ error: 'prompt is required' })
+  try {
+    const result = await AppAgentService.runAgent({
+      appId: req.params.appId,
+      agentName: req.params.agentName,
+      tenantId: auth.tenantId,
+      actorId: auth.userId ?? `app:${auth.appId}`,
+      prompt: req.body.prompt,
+      context: req.body.context,
+    })
+    if (!result.allowed) {
+      return res.status(403).json({
+        error: result.reason,
+        auditId: result.auditId,
+        governanceDetails: { outcome: result.outcome },
+      })
+    }
+    return res.json(result)
+  } catch (err: any) {
+    return fail(res, err, 500)
+  }
+})
+
+// ── UI SDK ───────────────────────────────────────────────────────────────────
+// Widgets live in the manifest, which stays the single source of truth for what
+// surfaces an app contributes.
+
+router.get('/apps/:appId/ui/widgets', authenticateApp, requireAppMatch, async (req: Request, res: Response) => {
+  const app = await prisma.developerApp.findUnique({ where: { appId: req.params.appId } })
+  if (!app) return res.status(404).json({ error: 'App not found' })
+  const manifest = app.manifest as unknown as KangqoreAppManifest
+  return res.json(manifest?.uiWidgets ?? [])
+})
+
+router.post('/apps/:appId/ui/widgets', authenticateApp, requireAppMatch, async (req: Request, res: Response) => {
+  const { name, title, type, entryUrl } = req.body ?? {}
+  if (!name || !title || !type || !entryUrl) {
+    return res.status(400).json({ error: 'name, title, type and entryUrl are all required' })
+  }
+  const VALID = ['BOARD_WIDGET', 'DASHBOARD_PANEL', 'NAV_TAB', 'MODAL']
+  if (!VALID.includes(type)) {
+    return res.status(400).json({ error: `type must be one of ${VALID.join(', ')}` })
+  }
+
+  const app = await prisma.developerApp.findUnique({ where: { appId: req.params.appId } })
+  if (!app) return res.status(404).json({ error: 'App not found' })
+
+  const manifest = app.manifest as unknown as KangqoreAppManifest
+  const widgets = [...(manifest.uiWidgets ?? [])]
+  const idx = widgets.findIndex(w => w.name === name)
+  const widget = { name, title, type, entryUrl }
+  if (idx >= 0) widgets[idx] = widget
+  else widgets.push(widget)
+
+  await prisma.developerApp.update({
+    where: { appId: req.params.appId },
+    data: { manifest: { ...manifest, uiWidgets: widgets } as any },
+  })
+  return res.status(idx >= 0 ? 200 : 201).json({ registered: true, widget })
+})
+
+// ── Webhook deliveries ───────────────────────────────────────────────────────
+
+router.get('/apps/:appId/webhooks/deliveries', authenticate, async (req: Request, res: Response) => {
+  return res.json({ deliveries: await AppWebhookService.listDeliveries(req.params.appId, Number(req.query.limit) || 50) })
 })
 
 // ═══════════════════════════════════════════════════════════════════════════════
