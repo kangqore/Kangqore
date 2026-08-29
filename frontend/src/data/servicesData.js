@@ -11481,8 +11481,8 @@ export const servicesData = {
     // owns. Outcomes are therefore upgrade lag, baseline ratio, CMDB health and
     // license utilization. Not MTTR and ticket deflection, which every partner
     // quotes and which move for reasons unrelated to the platform.
-    heroTitle: 'ServiceNow Implementation That\nSurvives the Next Upgrade',
-    heroBadge: 'Close to Baseline. Current. Owned.',
+    heroTitle: 'ServiceNow Services\nDelivering digital workflows',
+    heroBadge: 'Empower Customer’s Digital Journey',
     heroStripItems: [
       'ITSM', 'ITOM & Discovery', 'CMDB & CSDM', 'IT Asset Management',
       'SecOps & IRM', 'HR & Workplace', 'App Engine', 'Upgrade Health',
@@ -11494,10 +11494,10 @@ export const servicesData = {
     // Platforms copy rather than hiding the section.
     hideComparison: true,
 
-    whatIsEyebrow: 'What a ServiceNow program actually costs',
-    whatIsTitle: 'Every Customization Is a Bill',
+    whatIsEyebrow: 'What it takes to keep them delivering',
+    whatIsTitle: 'Digital Workflows That',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'You Pay Twice a Year.',
+    whatIsHighlight: 'Keep Delivering.',
     whatIsPara2: 'ServiceNow ships two family releases a year, each with a name and a support window \u2014 Xanadu, Yokohama, Zurich and whatever follows them. That cadence is the single most important fact about building on it, and it is the one most implementation plans treat as somebody else’s problem. Anything you build inside the platform model comes along for the ride. Anything built outside it — a rewritten workflow engine, a form doing something the form was not meant to do, a scoped app quietly reimplementing a baseline table — has to be retested and often reworked, every six months, for as long as the instance lives.',
     whatIsPara3: 'That is why so many instances are three or four families behind. Each upgrade looked expensive, each one got deferred, and eventually the instance dropped out of the support window and the catch-up became a project of its own. By then the original build team has moved on, nobody can say why a given customization exists, and the safest-looking option is to leave it alone — which is how a platform bought for agility becomes the thing nobody dares touch.',
     whatIsPara4: 'Kangqore builds close to baseline and says no to the rest, in writing, with the reason recorded. Where a customization genuinely earns itself we build it inside the platform model so it upgrades, and we log what it costs to carry. Underneath all of it we treat the CMDB as the dependency it actually is — ITOM, security operations, impact analysis and asset management are all only as good as it is — with a named owner and a discovery cadence rather than a spreadsheet somebody refreshes before an audit.',
