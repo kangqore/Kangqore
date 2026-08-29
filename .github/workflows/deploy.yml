@@ -67,6 +67,31 @@ jobs:
     - name: Verify sitemap.xml matches canonical data
       run: npm run sitemap:check
 
+    # Prerender drift gate — fails fast if servicesData.js or seoData.js changed
+    # without regenerating frontend/public/prerender/services/*.html.
+    #
+    # Those snapshots are what GPTBot, ClaudeBot, PerplexityBot and CCBot
+    # actually receive, since none of them run our JS. When a snapshot falls
+    # behind its source the site keeps serving crawlers content it no longer
+    # has, and nothing surfaces it — there is no visible symptom for a human.
+    #
+    # This has already happened three times: enterprise-integration-platform
+    # kept a superseded h1, and talent-organization twice served 87 stale lines
+    # including a section that had been deliberately removed. Each arrived
+    # through a commit that edited data and skipped the regeneration, and each
+    # was found by hand rather than by CI.
+    #
+    # This workflow runs on push to main as well as on pull_request, so the gate
+    # catches drift landing directly on main — which is where all three
+    # instances actually came from.
+    #
+    # Note the sibling `npm run check:images` is deliberately NOT added here: it
+    # currently reports 8 missing image variants, so gating on it would paint
+    # main red on the first push. Worth fixing separately, as an image change
+    # rather than a CI change.
+    - name: Verify prerender snapshots match canonical data
+      run: npm run check:prerender
+
     # Phase F audit gates — pure static analysis, sub-second each.
     # Each audit script exits non-zero on any failure with a precise reason.
     - name: Audit SEO data completeness (departmentSEO + serviceSEO)
