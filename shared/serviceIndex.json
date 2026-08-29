@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-27T21:52:04.497Z",
+  "generatedAt": "2026-08-29T01:32:26.191Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1518,6 +1518,10 @@
           "detail": "Summarization and search work well against knowledge that is already good and add little against knowledge that is not. Treat vendor benchmarks as a starting hypothesis and evaluate on your own corpus before committing to the tier."
         },
         {
+          "rule": "The desk you are leaving",
+          "detail": "Cherwell is end-of-life under Ivanti, which is forcing migrations rather than inviting them. The trap in all of these is a like-for-like port: rebuilding twenty years of workarounds on a platform whose baseline already solves most of them, and paying for that decision at every upgrade."
+        },
+        {
           "rule": "What does not belong here",
           "detail": "ServiceNow is a workflow platform, not a database of record or a transaction engine. Building those on it produces table growth, performance work and a license conversation you did not plan for — and \"we already have it\" is the most expensive architecture argument in the enterprise."
         }
@@ -1563,7 +1567,7 @@
         "Organization & Operating Model Design",
         "Leadership, Culture & Change",
         "Skills, Learning & Workforce Transformation",
-        "AI-Powered HR Transformation & People Intelligence",
+        "People Intelligence & HR Technology",
         "Talent Acquisition, Deployment & HR Managed Services"
       ],
       "faqs": [
