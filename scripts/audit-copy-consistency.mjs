@@ -211,9 +211,17 @@ if (fs.existsSync(dataFile)) {
     if (!/suffix: '\s*%'/.test(seg)) continue;
     // One `illustrative: true` per metric object is the contract; the template
     // renders its disclaimer off the same flag.
+    //
+    // `sourced: true` is the second accepted label, for a figure that is real
+    // but is not ours -- published research about the market rather than a
+    // result we are reporting. It must carry a `source` naming where it came
+    // from, so the exemption cannot be claimed without an attribution the
+    // template can render. An unattributed third-party number presented as a
+    // page metric is the failure this rule exists to catch.
     for (const obj of seg.matchAll(/\{[^}]*\}/g)) {
       if (!/suffix: '\s*%'/.test(obj[0])) continue;
       if (obj[0].includes('illustrative: true')) continue;
+      if (obj[0].includes('sourced: true') && /source: '[^']+'/.test(obj[0])) continue;
       const value = (obj[0].match(/value: '([^']*)'/) || [, '?'])[1];
       const title = (obj[0].match(/title: '([^']*)'/) || [, '(untitled)'])[1];
       claimHits.push({

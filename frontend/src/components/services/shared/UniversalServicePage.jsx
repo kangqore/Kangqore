@@ -4076,7 +4076,18 @@ const featureMicros   = service.featureMicros
             ))}
           </div>
 
-          {(service.businessMetrics || []).some((m) => m.illustrative) ? (
+          {/* Two different disclaimers, because these are two different kinds
+              of number. `illustrative` marks a figure we modeled; `sourced`
+              marks a real figure that is not ours, and it renders the
+              attribution instead — calling published research "modeled on
+              typical engagement patterns" would be false. Sourced wins when
+              both appear, since a misattributed real figure is the worse
+              error. */}
+          {(service.businessMetrics || []).some((m) => m.sourced) ? (
+            <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-16 max-w-3xl">
+              {service.metricsNote || `Source: ${[...new Set((service.businessMetrics || []).filter((m) => m.sourced).map((m) => m.source))].join('; ')}. Figures describe the market, not Kangqore engagement results.`}
+            </p>
+          ) : (service.businessMetrics || []).some((m) => m.illustrative) ? (
             <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-16 max-w-3xl">
               Illustrative figures — modeled on typical engagement patterns, not a specific client result.
             </p>

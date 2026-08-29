@@ -13075,7 +13075,7 @@ export const servicesData = {
     name: 'Unified Services Management (USM)',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS\u2122',
-    shortDescription: 'One service operating model across IT, HR, facilities, legal and finance',
+    shortDescription: 'GenAI-ready service management across IT, HR, facilities, legal and finance',
     fullDescription: 'Service strategy and operating model, process design across ITIL practices, and implementation on whichever platform you already run \u2014 consulting, managed services and transformation delivery.',
     fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
     keyFeatures: ['Service operating model', 'Process design', 'Platform-independent', 'Managed operations', 'Beyond IT'],
@@ -13110,13 +13110,23 @@ export const servicesData = {
     // services, project and transformation delivery.
     heroTitle: 'Unified Service Management\nfor the Whole Enterprise',
     whatIsEyebrow: 'What unified service management covers',
-    whatIsTitle: 'One Service Model,',
-    whatIsTitleLine2: 'Every Function,',
+    whatIsTitle: 'Service Management',
+    whatIsTitleLine2: 'in the GenAI Era,',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'Whichever Platform You Run.',
-    whatIsPara2: 'Service management stopped being an IT discipline some time ago. Your employees raise a laptop request, an onboarding, a contract review, a facilities ticket and an expense query \u2014 and meet five different intake forms, five different response promises and five teams that cannot see each other\u2019s queues.',
-    whatIsPara3: 'The usual answer is to buy a platform and let each function configure its own corner of it. That produces one tool and five operating models, which looks unified on a license schedule and does not feel unified to anyone using it. The work that actually unifies is upstream of the tool: one service taxonomy, one intake, one set of response commitments, and one place where ownership of a request is unambiguous.',
-    whatIsPara4: 'Kangqore designs that operating model first and implements it second, on whichever platform you already run. We hold no reseller margin on any service management product, so the recommendation to stay on what you own \u2014 which is frequently the right one \u2014 costs us nothing. Where ServiceNow is the target, our ServiceNow practice does that build; this service decides what should be built and why.',
+    whatIsHighlight: 'Operating Model First.',
+    whatIsPara2: 'The pitch for GenAI in service management is a portal that answers instead of routing, a queue that classifies itself, and a handoff that arrives already summarized. All three are real. All three are also downstream of the same thing \u2014 a service taxonomy where a request type has one name, one owner and one clock. A model trained on a queue where nobody ever agreed those learns the disagreement and returns it faster.',
+    whatIsPara3: 'Our work spans the same four things every firm in this category lists: consulting, design, implementation and managed operations. What differs is the order and the incentive. The operating model is agreed before the configuration, because configuration is the cheap part to change and the model is not. We hold no reseller margin on any product here, so the conclusion that you should keep the platform you own and change how you use it costs us nothing to reach.',
+    whatIsPara4: 'Integration is where most of this is won or lost. Routing a request correctly means knowing who the requester is, what they hold and who approves on their behalf \u2014 data that lives in the HR system, the identity provider and the asset estate rather than in the service tool. Legacy systems are rarely the obstacle people expect. The obstacle is four systems holding four versions of the same person. Where ServiceNow is the target, our ServiceNow practice does that build; this service decides what should be built and why.',
+
+    // Market context rather than our results: these describe where enterprise
+    // leaders report focusing, so they carry `sourced` and an attribution
+    // instead of the illustrative disclaimer.
+    businessMetrics: [
+      { sourced: true, source: 'HCLTech Total Experience research', title: 'Vision and Culture',   desc: 'of leaders name setting the vision and culture as a primary focus in becoming an experience-driven organization.', value: '56', suffix: '%', metricLabel: 'Vision & Culture',      icon: 'Layers'     },
+      { sourced: true, source: 'HCLTech Total Experience research', title: 'New Models',           desc: 'are focused on creating new business models and services rather than optimizing the ones they already run.',           value: '43', suffix: '%', metricLabel: 'New Models & Services', icon: 'Network'    },
+      { sourced: true, source: 'HCLTech Total Experience research', title: 'Design Thinking',      desc: 'are working to establish a design-thinking culture across the functions that actually deliver the services.',          value: '39', suffix: '%', metricLabel: 'Design Thinking',       icon: 'Activity'   },
+      { sourced: true, source: 'HCLTech Total Experience research', title: 'Citizen Developers',   desc: 'are creating roles such as citizen developers, so workflows are built and owned inside the business that uses them.',    value: '24', suffix: '%', metricLabel: 'Citizen Developers',    icon: 'ShieldCheck'},
+    ],
 
     heroBadge: 'Designed. Implemented. Operated.',
     heroStripItems: [
