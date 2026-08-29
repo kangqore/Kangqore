@@ -1,246 +1,345 @@
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Sparkles, Send, Play, CheckCircle2, ShieldCheck, AlertTriangle, 
-  Clock, ArrowRight, Activity, Cpu, Layers, UserCheck, RefreshCw, BarChart2
+import { useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  Sparkles, ArrowRight, ShieldAlert, Check, X, Play, Clock,
+  Search, Brain, Stethoscope, FlaskConical, ListChecks, Scale, CheckCircle2,
 } from 'lucide-react'
+import { api } from '@lib/api'
 
-const SAMPLE_INTENTS = [
-  { id: '1', text: 'Fix the projects that are going to miss their deadlines.', category: 'PROJECT_RECOVERY', icon: AlertTriangle },
-  { id: '2', text: 'Optimize team allocation across Q3 deliverables to eliminate bottlenecks.', category: 'RESOURCE_OPTIMIZATION', icon: Cpu },
-  { id: '3', text: 'Resolve all high-priority customer escalations with pending SLA breaches.', category: 'CUSTOMER_HEALTH', icon: ShieldCheck },
-  { id: '4', text: 'Simulate financial impact of shifting Milestone 3 by 14 days.', category: 'FINANCIAL_SIMULATION', icon: BarChart2 },
-]
+const T1   = 'var(--os-text-1)'
+const T2   = 'var(--os-text-2)'
+const BDR  = 'var(--os-border)'
+const CARD = 'var(--os-card)'
+const SURF = 'var(--os-surface-0)'
 
-export default function AgentPrimaryUxView() {
-  const [intentInput, setIntentInput] = useState('Fix the projects that are going to miss their deadlines.')
-  const [isExecuting, setIsExecuting] = useState(false)
-  const [activeExecution, setActiveExecution] = useState(null)
+const PURP = '#7c3aed'
+const BLUE = '#579bfc'
+const GRN  = '#10b981'
+const AMB  = '#f59e0b'
+const RED  = '#ef4444'
 
-  const handleRunIntent = async (overrideText?: string) => {
-    const query = overrideText || intentInput
-    if (!query) return
+interface Step {
+  id: string; ordinal: number; stage: string; title: string
+  detail: string; data: any; durationMs: number | null
+}
+interface ProposedAction {
+  id: string; ordinal: number; actionName: string; params: any
+  targetType: string | null; targetId: string | null
+  rationale: string; expectedImpact: string | null; status: string
+  resultSummary: string | null; errorMessage: string | null
+}
+interface Mission {
+  id: string; intentText: string; status: string
+  policyName: string | null; failureReason: string | null
+  findings: any; simulations: any; verification: any
+  steps: Step[]; actions: ProposedAction[]
+}
 
-    setIsExecuting(true)
+const STAGE_ICON: Record<string, React.FC<any>> = {
+  INTERPRET: Brain, RESOLVE_CONTEXT: Search, ANALYZE: Brain,
+  DIAGNOSE: Stethoscope, SIMULATE: FlaskConical, PROPOSE: ListChecks,
+  POLICY: Scale, APPROVAL: ShieldAlert, EXECUTE: Play, VERIFY: CheckCircle2,
+}
 
-    // Simulate real-time pipeline execution stages
-    try {
-      const res = await fetch('/api/agent-ux/intent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ intentText: query })
-      })
-      const data = await res.json()
-      if (data.success) {
-        setActiveExecution(data.execution)
-      }
-    } catch (e) {
-      // Mock fallback if offline
-      setActiveExecution({
-        executionId: `intent-exec-${Date.now()}`,
-        intent: query,
-        currentStage: 'COMPLETED',
-        stages: [
-          { stage: 'IDENTIFYING_PROJECTS', title: '1. Identify Projects at Risk', description: 'Found 3 projects with high delay probability.', timestamp: new Date().toISOString() },
-          { stage: 'ANALYZING_DEPENDENCIES', title: '2. Analyze Enterprise Dependency Graph', description: 'Traversed 42 relationship nodes to map critical path.', timestamp: new Date().toISOString() },
-          { stage: 'PREDICTING_DELAYS', title: '3. Predictive Delay Forecast', description: 'Forecasted combined 43-day cumulative SLA delay.', timestamp: new Date().toISOString() },
-          { stage: 'ROOT_CAUSE_DIAGNOSIS', title: '4. Root Cause Analysis', description: 'Senior Engineer capacity bottleneck on Payment Integration.', timestamp: new Date().toISOString() },
-          { stage: 'SIMULATING_INTERVENTIONS', title: '5. Monte Carlo Intervention Simulation', description: 'Simulated 3 corrective reallocation scenarios.', timestamp: new Date().toISOString() },
-          { stage: 'RECOMMENDING_CHANGES', title: '6. Prescriptive Action Plan', description: 'Formulated 3 atomic actions with high confidence.', timestamp: new Date().toISOString() },
-          { stage: 'PENDING_APPROVAL', title: '7. AEGIS Security Governance Gate', description: 'Generated PendingApproval cryptographic execution token.', timestamp: new Date().toISOString() },
-          { stage: 'REASSIGNING_RESOURCES', title: '8. Reassign Resources via ActionEngine', description: 'Reallocated 2 Senior Engineers to Payment Gateway project.', timestamp: new Date().toISOString() },
-          { stage: 'UPDATING_SCHEDULES', title: '9. Atomically Update Schedules', description: 'Updated 14 WorkItem schedule nodes in KORE runtime.', timestamp: new Date().toISOString() },
-          { stage: 'NOTIFYING_STAKEHOLDERS', title: '10. Dispatch Stakeholder Notifications', description: 'Dispatched notifications to Project Leads and Sponsors.', timestamp: new Date().toISOString() },
-          { stage: 'TRACKING_OUTCOME', title: '11. Outcome Telemetry & Signal Record', description: 'Recorded telemetry in KIMMP Trace and Signal Ledger.', timestamp: new Date().toISOString() },
-        ],
-        identifiedProjects: [
-          { id: 'proj-alpha-101', name: 'Global Payment Gateway Modernization', health: 'AT_RISK', riskDays: 14 },
-          { id: 'proj-beta-204', name: 'Cloud Infrastructure Migration Q3', health: 'CRITICAL', riskDays: 21 },
-          { id: 'proj-gamma-309', name: 'AI Customer Service Concierge V2', health: 'BEHIND_SCHEDULE', riskDays: 8 },
-        ],
-        dependencyGraph: { nodeCount: 42, criticalPathCount: 5, bottleneckResources: ['DevOps Security Lead', 'Principal Architect'] },
-        simulations: [
-          { scenarioName: 'Status Quo (No Intervention)', projectedDelayDays: 21, confidenceScore: 0.95, recommended: false },
-          { scenarioName: 'Reallocate 2 Senior Engineers from Internal Ops', projectedDelayDays: 2, confidenceScore: 0.89, recommended: true },
-          { scenarioName: 'Extend Timeline by 14 Days & Shift Milestones', projectedDelayDays: 14, confidenceScore: 0.92, recommended: false },
-        ],
-        proposedActions: [
-          { actionName: 'reassignResource', params: { sourceTeam: 'InternalOps', targetProject: 'proj-alpha-101', fteCount: 2 }, impact: 'Reduces delay by 19 days' },
-          { actionName: 'updateWorkItemSchedule', params: { projectId: 'proj-alpha-101', newTargetDate: '2026-09-15' }, impact: 'Aligns SLA milestone' }
-        ],
-        approvalRequired: true,
-        approvalToken: `token-aegis-${Date.now().toString(36)}-approved`,
-        executionOutcome: { resourcesReassigned: 2, schedulesUpdated: 14, notificationsDispatched: 3, telemetryRecorded: true }
-      })
-    } finally {
-      setIsExecuting(false)
-    }
-  }
+const STATUS_CFG: Record<string, { color: string; bg: string; label: string }> = {
+  PLANNING:          { color: BLUE, bg: 'rgba(87,155,252,0.1)',  label: 'Planning' },
+  AWAITING_APPROVAL: { color: AMB,  bg: 'rgba(245,158,11,0.12)',  label: 'Awaiting approval' },
+  APPROVED:          { color: GRN,  bg: 'rgba(16,185,129,0.1)',   label: 'Approved' },
+  EXECUTING:         { color: BLUE, bg: 'rgba(87,155,252,0.1)',   label: 'Executing' },
+  VERIFYING:         { color: BLUE, bg: 'rgba(87,155,252,0.1)',   label: 'Verifying' },
+  COMPLETED:         { color: GRN,  bg: 'rgba(16,185,129,0.1)',   label: 'Completed' },
+  REJECTED:          { color: RED,  bg: 'rgba(239,68,68,0.1)',    label: 'Rejected' },
+  FAILED:            { color: RED,  bg: 'rgba(239,68,68,0.1)',    label: 'Failed' },
+  NO_ACTION:         { color: T2,   bg: 'var(--os-surface-1)',    label: 'No action needed' },
+}
+
+const RISK_COLOR: Record<string, string> = {
+  OVERDUE: RED, CRITICAL: RED, AT_RISK: AMB, WATCH: AMB, ON_TRACK: GRN,
+}
+
+function Pill({ children, color, bg }: { children: React.ReactNode; color: string; bg: string }) {
+  return (
+    <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide whitespace-nowrap"
+      style={{ color, background: bg }}>{children}</span>
+  )
+}
+
+/** Analysis evidence — the numbers the forecast actually computed. */
+function RiskTable({ rows }: { rows: any[] }) {
+  return (
+    <div className="overflow-x-auto rounded" style={{ border: `1px solid ${BDR}` }}>
+      <table className="w-full text-xs" style={{ background: SURF }}>
+        <thead>
+          <tr style={{ color: T2 }}>
+            {['Project', 'Risk', 'Prog', 'Days left', 'Observed', 'Required', 'Slip'].map(h => (
+              <th key={h} className="text-left px-2.5 py-1.5 font-semibold text-[10px] uppercase tracking-wide whitespace-nowrap">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r: any) => (
+            <tr key={r.projectId} style={{ borderTop: `1px solid ${BDR}` }}>
+              <td className="px-2.5 py-1.5 max-w-[200px] truncate" style={{ color: T1 }}>{r.title}</td>
+              <td className="px-2.5 py-1.5">
+                <Pill color={RISK_COLOR[r.riskBand] ?? T2} bg="transparent">{r.riskBand}</Pill>
+              </td>
+              <td className="px-2.5 py-1.5 tabular-nums" style={{ color: T2 }}>{r.progress}%</td>
+              <td className="px-2.5 py-1.5 tabular-nums" style={{ color: T2 }}>{r.daysRemaining}</td>
+              <td className="px-2.5 py-1.5 tabular-nums" style={{ color: T2 }}>{r.observedVelocity}%/d</td>
+              <td className="px-2.5 py-1.5 tabular-nums" style={{ color: T2 }}>{r.requiredVelocity ?? '—'}</td>
+              <td className="px-2.5 py-1.5 tabular-nums font-medium" style={{ color: (r.projectedSlipDays ?? 0) > 0 ? RED : GRN }}>
+                {r.projectedSlipDays ?? '—'}d
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function StageRow({ step }: { step: Step }) {
+  const [open, setOpen] = useState(false)
+  const Icon = STAGE_ICON[step.stage] ?? Sparkles
+  const riskRows = step.stage === 'ANALYZE' ? step.data?.atRisk : null
+  const hasDetail = !!step.data
 
   return (
-    <div className="space-y-8 p-6 bg-slate-950 text-slate-100 min-h-screen">
-
-      {/* Top Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-blue-900/40 via-slate-900 to-indigo-900/40 border border-blue-500/20 space-y-3">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400">
-          <Sparkles className="w-4 h-4" />
-          KIMMP Agent-First Primary Interface
+    <div className="flex gap-3 py-2.5" style={{ borderTop: `1px solid ${BDR}` }}>
+      <div className="w-6 h-6 shrink-0 rounded grid place-items-center mt-0.5"
+        style={{ background: 'rgba(124,58,237,0.1)' }}>
+        <Icon size={13} style={{ color: PURP }} />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <span className="text-sm font-medium" style={{ color: T1 }}>{step.title}</span>
+          <span className="text-[10px] font-mono" style={{ color: T2 }}>{step.stage}</span>
+          {step.durationMs != null && (
+            <span className="text-[10px] tabular-nums" style={{ color: T2 }}>{step.durationMs}ms</span>
+          )}
         </div>
-        <h1 className="text-3xl font-extrabold text-white">
-          Intent-Driven Enterprise OS
+        <p className="text-xs mt-0.5" style={{ color: T2 }}>{step.detail}</p>
+
+        {riskRows?.length > 0 && <div className="mt-2"><RiskTable rows={riskRows} /></div>}
+
+        {hasDetail && !riskRows && (
+          <button onClick={() => setOpen(v => !v)}
+            className="text-[10px] mt-1 underline underline-offset-2" style={{ color: T2 }}>
+            {open ? 'Hide evidence' : 'Show evidence'}
+          </button>
+        )}
+        {open && !riskRows && (
+          <pre className="mt-1.5 rounded p-2 text-[10px] overflow-x-auto max-h-56"
+            style={{ background: SURF, border: `1px solid ${BDR}`, color: T2 }}>
+            {JSON.stringify(step.data, null, 2)}
+          </pre>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default function AgentPrimaryUxView() {
+  const qc = useQueryClient()
+  const [intent, setIntent] = useState('')
+  const [missionId, setMissionId] = useState<string | null>(null)
+
+  const { data: samples } = useQuery<{ intents: string[] }>({
+    queryKey: ['agent-samples'],
+    queryFn: () => api.get('/agent-ux/sample-intents').then(r => r.data),
+  })
+
+  const { data: missionData } = useQuery<{ mission: Mission }>({
+    queryKey: ['agent-mission', missionId],
+    queryFn: () => api.get(`/agent-ux/missions/${missionId}`).then(r => r.data),
+    enabled: !!missionId,
+  })
+
+  const submit = useMutation({
+    mutationFn: () => api.post('/agent-ux/intent', { intentText: intent }).then(r => r.data),
+    onSuccess: d => setMissionId(d.mission.id),
+  })
+
+  const refresh = () => qc.invalidateQueries({ queryKey: ['agent-mission', missionId] })
+
+  const decide = useMutation({
+    mutationFn: (approve: boolean) =>
+      api.post(`/agent-ux/missions/${missionId}/${approve ? 'approve' : 'reject'}`, {}).then(r => r.data),
+    onSuccess: refresh,
+  })
+  const execute = useMutation({
+    mutationFn: () => api.post(`/agent-ux/missions/${missionId}/execute`, {}).then(r => r.data),
+    onSuccess: refresh,
+  })
+
+  const m = missionData?.mission
+  const cfg = m ? STATUS_CFG[m.status] ?? STATUS_CFG.PLANNING : null
+  const busy = submit.isPending || decide.isPending || execute.isPending
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-lg font-semibold flex items-center gap-2" style={{ color: T1 }}>
+          <Sparkles size={18} style={{ color: PURP }} />
+          Ask Kangqore
         </h1>
-        <p className="text-sm text-slate-300 max-w-3xl">
-          State your intent. KIMMP understands enterprise context, traverses the dependency graph, predicts delays, runs Monte Carlo simulations, requests AEGIS policy approval, and executes governed outcomes.
+        <p className="text-xs mt-0.5" style={{ color: T2 }}>
+          State an outcome. Kangqore reads your live projects, forecasts what will slip, proposes concrete
+          changes, and waits for your approval before touching anything.
         </p>
       </div>
 
-      {/* Main Intent Prompt Bar */}
-      <div className="space-y-3">
-        <div className="relative">
+      {/* Intent */}
+      <div className="rounded-lg p-3" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+        <div className="flex gap-2">
           <input
-            type="text"
-            value={intentInput}
-            onChange={e => setIntentInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleRunIntent()}
-            placeholder="Type your executive intent (e.g. Fix the projects that are going to miss their deadlines)..."
-            className="w-full pl-5 pr-36 py-4 rounded-2xl bg-slate-900 border border-slate-700 text-white text-base placeholder-slate-500 focus:outline-none focus:border-blue-500 shadow-xl"
+            value={intent}
+            onChange={e => setIntent(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter' && intent.trim() && !busy) submit.mutate() }}
+            placeholder="Fix the projects that are going to miss their deadlines."
+            className="flex-1 rounded px-3 py-2 text-sm outline-none"
+            style={{ background: SURF, border: `1px solid ${BDR}`, color: T1 }}
           />
           <button
-            onClick={() => handleRunIntent()}
-            disabled={isExecuting}
-            className="absolute right-2.5 top-2.5 px-6 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 flex items-center gap-2 transition-all disabled:opacity-50"
+            onClick={() => submit.mutate()}
+            disabled={!intent.trim() || busy}
+            className="px-3 py-2 rounded text-xs font-semibold flex items-center gap-1.5 disabled:opacity-40"
+            style={{ background: PURP, color: '#fff' }}
           >
-            {isExecuting ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-            <span>Execute Intent</span>
+            {submit.isPending ? 'Thinking…' : <>Run <ArrowRight size={13} /></>}
           </button>
         </div>
-
-        {/* Preset Sample Intents */}
-        <div className="flex flex-wrap items-center gap-2 pt-1">
-          <span className="text-xs font-medium text-slate-500">Sample Intents:</span>
-          {SAMPLE_INTENTS.map(sample => {
-            const Icon = sample.icon
-            return (
-              <button
-                key={sample.id}
-                onClick={() => {
-                  setIntentInput(sample.text)
-                  handleRunIntent(sample.text)
-                }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 transition-all"
-              >
-                <Icon className="w-3.5 h-3.5 text-blue-400" />
-                <span>"{sample.text}"</span>
-              </button>
-            )
-          })}
+        <div className="flex gap-1.5 mt-2 flex-wrap">
+          {(samples?.intents ?? []).map(s => (
+            <button key={s} onClick={() => setIntent(s)}
+              className="text-[10px] px-2 py-1 rounded"
+              style={{ background: SURF, border: `1px solid ${BDR}`, color: T2 }}>
+              {s}
+            </button>
+          ))}
         </div>
+        {submit.isError && (
+          <p className="text-xs mt-2" style={{ color: RED }}>
+            {(submit.error as any)?.response?.data?.error ?? 'Could not run that intent'}
+          </p>
+        )}
       </div>
 
-      {/* Active Pipeline Visualizer */}
-      {activeExecution && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* Left Column: 11-Stage Pipeline Stepper */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-white">11-Stage Agent Execution Pipeline</h3>
-                  <p className="text-xs text-slate-400">Execution ID: <span className="font-mono text-blue-400">{activeExecution.executionId}</span></p>
-                </div>
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  Intent Fulfilled
-                </span>
-              </div>
+      {/* Mission */}
+      {m && (
+        <div className="rounded-lg" style={{ background: CARD, border: `1px solid ${BDR}` }}>
+          <div className="p-3 flex items-start justify-between gap-3 flex-wrap">
+            <div className="min-w-0">
+              <p className="text-sm font-medium" style={{ color: T1 }}>{m.intentText}</p>
+              <p className="text-[10px] font-mono mt-0.5" style={{ color: T2 }}>{m.id}</p>
+            </div>
+            {cfg && <Pill color={cfg.color} bg={cfg.bg}>{cfg.label}</Pill>}
+          </div>
 
-              {/* Stage Stepper List */}
-              <div className="space-y-4">
-                {activeExecution.stages.map((step, idx) => (
-                  <div key={idx} className="flex items-start gap-4 p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80">
-                    <div className="w-7 h-7 rounded-full bg-blue-500/20 border border-blue-500/40 text-blue-400 font-bold text-xs flex items-center justify-center shrink-0">
-                      {idx + 1}
+          {m.status === 'NO_ACTION' && (
+            <div className="mx-3 mb-3 rounded px-3 py-2 text-xs"
+              style={{ background: SURF, color: T2, border: `1px solid ${BDR}` }}>
+              {m.failureReason ?? 'Nothing needed doing — no project is forecast to miss its date.'}
+            </div>
+          )}
+
+          {/* Pipeline */}
+          <div className="px-3 pb-1">
+            {m.steps.map(s => <StageRow key={s.id} step={s} />)}
+          </div>
+
+          {/* Proposals + approval gate */}
+          {m.actions.length > 0 && (
+            <div className="p-3" style={{ borderTop: `1px solid ${BDR}` }}>
+              <div className="text-xs font-semibold mb-2" style={{ color: T1 }}>
+                Proposed changes ({m.actions.length})
+              </div>
+              <div className="space-y-1.5">
+                {m.actions.map(a => (
+                  <div key={a.id} className="rounded p-2.5"
+                    style={{ background: SURF, border: `1px solid ${BDR}` }}>
+                    <div className="flex items-start justify-between gap-2 flex-wrap">
+                      <span className="text-xs font-mono" style={{ color: PURP }}>{a.actionName}</span>
+                      <Pill
+                        color={a.status === 'EXECUTED' ? GRN : a.status === 'REJECTED' || a.status === 'FAILED' ? RED : AMB}
+                        bg="transparent"
+                      >{a.status}</Pill>
                     </div>
-                    <div className="space-y-1 flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-sm text-white">{step.title}</span>
-                        <span className="text-[10px] text-slate-500 font-mono">{new Date(step.timestamp).toLocaleTimeString()}</span>
-                      </div>
-                      <p className="text-xs text-slate-400 leading-relaxed">{step.description}</p>
-                    </div>
+                    <p className="text-xs mt-1" style={{ color: T1 }}>{a.rationale}</p>
+                    {a.expectedImpact && (
+                      <p className="text-[11px] mt-0.5" style={{ color: T2 }}>{a.expectedImpact}</p>
+                    )}
+                    {a.resultSummary && (
+                      <p className="text-[11px] mt-1" style={{ color: GRN }}>{a.resultSummary}</p>
+                    )}
+                    {a.errorMessage && (
+                      <p className="text-[11px] mt-1" style={{ color: RED }}>{a.errorMessage}</p>
+                    )}
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
 
-          {/* Right Column: Simulations, Approval & Outcome Cards */}
-          <div className="space-y-6">
-            
-            {/* Card 1: Monte Carlo Simulation Results */}
-            <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
-              <h4 className="text-base font-bold text-white flex items-center gap-2">
-                <BarChart2 className="w-4 h-4 text-purple-400" />
-                Monte Carlo Intervention Simulations
-              </h4>
-              <div className="space-y-2.5">
-                {activeExecution.simulations.map((sim, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`p-3 rounded-2xl border text-xs space-y-1 ${
-                      sim.recommended 
-                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' 
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between font-semibold">
-                      <span>{sim.scenarioName}</span>
-                      {sim.recommended && <span className="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded text-emerald-400">RECOMMENDED</span>}
-                    </div>
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span>Projected Delay: <strong>{sim.projectedDelayDays} days</strong></span>
-                      <span>Confidence: <strong>{(sim.confidenceScore * 100).toFixed(0)}%</strong></span>
-                    </div>
+              {m.status === 'AWAITING_APPROVAL' && (
+                <div className="mt-3 rounded p-3 flex items-start gap-2.5 flex-wrap"
+                  style={{ background: 'rgba(245,158,11,0.08)', border: `1px solid ${AMB}` }}>
+                  <ShieldAlert size={15} style={{ color: AMB }} className="mt-0.5 shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-semibold" style={{ color: T1 }}>Your approval is required</p>
+                    <p className="text-[11px] mt-0.5" style={{ color: T2 }}>
+                      Nothing has been changed yet.
+                      {m.policyName ? ` Policy "${m.policyName}" applies.` : ' This mission would modify records.'}
+                    </p>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Card 2: Cryptographic AEGIS PendingApproval Token */}
-            <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
-              <h4 className="text-base font-bold text-white flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                AEGIS Security Governance Token
-              </h4>
-              <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">
-                <div className="text-slate-500">Status: <span className="text-emerald-400">APPROVED</span></div>
-                <div className="text-slate-500 break-all">Token: <span className="text-blue-400">{activeExecution.approvalToken}</span></div>
-              </div>
-            </div>
-
-            {/* Card 3: Execution Outcome Telemetry */}
-            <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
-              <h4 className="text-base font-bold text-white flex items-center gap-2">
-                <Activity className="w-4 h-4 text-blue-400" />
-                Governed Execution Telemetry
-              </h4>
-              <div className="grid grid-cols-2 gap-2 text-center text-xs">
-                <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
-                  <div className="text-xl font-extrabold text-blue-400">{activeExecution.executionOutcome.resourcesReassigned}</div>
-                  <div className="text-[10px] text-slate-400">FTEs Reassigned</div>
+                  <div className="flex gap-2">
+                    <button onClick={() => decide.mutate(false)} disabled={busy}
+                      className="px-3 py-1.5 rounded text-xs font-medium flex items-center gap-1 disabled:opacity-40"
+                      style={{ border: `1px solid ${BDR}`, color: T1 }}>
+                      <X size={12} /> Reject
+                    </button>
+                    <button onClick={() => decide.mutate(true)} disabled={busy}
+                      className="px-3 py-1.5 rounded text-xs font-semibold flex items-center gap-1 disabled:opacity-40"
+                      style={{ background: GRN, color: '#fff' }}>
+                      <Check size={12} /> Approve
+                    </button>
+                  </div>
                 </div>
-                <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
-                  <div className="text-xl font-extrabold text-emerald-400">{activeExecution.executionOutcome.schedulesUpdated}</div>
-                  <div className="text-[10px] text-slate-400">Schedules Updated</div>
-                </div>
-              </div>
-            </div>
+              )}
 
-          </div>
+              {m.status === 'APPROVED' && (
+                <button onClick={() => execute.mutate()} disabled={busy}
+                  className="mt-3 px-3 py-2 rounded text-xs font-semibold flex items-center gap-1.5 disabled:opacity-40"
+                  style={{ background: PURP, color: '#fff' }}>
+                  <Play size={13} /> {execute.isPending ? 'Executing…' : 'Execute approved changes'}
+                </button>
+              )}
+
+              {(decide.isError || execute.isError) && (
+                <p className="text-xs mt-2" style={{ color: RED }}>
+                  {((decide.error ?? execute.error) as any)?.response?.data?.error ?? 'Action failed'}
+                </p>
+              )}
+            </div>
+          )}
+
+          {m.verification && (
+            <div className="p-3 flex items-center gap-2" style={{ borderTop: `1px solid ${BDR}` }}>
+              <CheckCircle2 size={14} style={{ color: GRN }} />
+              <span className="text-xs" style={{ color: T1 }}>
+                Verified: {m.verification.resolved} of {m.verification.projectsTouched} project(s) no longer at risk.
+              </span>
+            </div>
+          )}
         </div>
       )}
 
+      {!m && !submit.isPending && (
+        <div className="rounded-lg p-6 text-center" style={{ background: CARD, border: `1px dashed ${BDR}` }}>
+          <Clock size={20} style={{ color: T2 }} className="mx-auto mb-2" />
+          <p className="text-xs" style={{ color: T2 }}>
+            No mission yet. Describe an outcome above and Kangqore will plan it against your real projects.
+          </p>
+        </div>
+      )}
     </div>
   )
 }
