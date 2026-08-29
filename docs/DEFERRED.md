@@ -173,6 +173,28 @@ action effect can currently write an object the schema would reject.
   gateway now has `deleteObject`, `deleteRelationships`, and
   `retireRelationship`, which is what most of these were missing.
 
+### The Synapse Mesh is dormant (P2)
+
+`kangqore-view/kimmp/synapse/` defines a subsystem signal bus — `SynapseMesh`,
+eight registered perceptron nodes (HATHAWAY, NOLAN, AEGIS, ALIS, HCIP, EQORE,
+VIS, KIMMP) — and **none of it runs**:
+
+- `bootPerceptronNetwork()` is exported and **never called** from anywhere.
+- `synapseMesh` has **zero callers** outside its own directory, so no signal is
+  ever emitted.
+
+So no node is registered at runtime and no callback ever executes. It reads as
+a working neural mesh across subsystems and is inert.
+
+- **Where:** `backend/src/kangqore-view/kimmp/synapse/`
+- **Note:** booting it from `index.ts` alone would *not* make it real —
+  registration without emitters still does nothing, and would look active while
+  being inert. Making it live means both calling `bootPerceptronNetwork()` at
+  startup **and** having subsystems actually emit signals at the points where
+  cross-subsystem intelligence matters.
+- **Discovered:** while naming HATHAWAY (2026-08-30). The `SubsystemType` entry
+  and `keos.ts` manifest are real and audited; the mesh registration is not.
+
 ### Legacy listings have no certification path (P3)
 
 The 13 `MarketplaceListing` rows surface with `governanceScore: 0` and no

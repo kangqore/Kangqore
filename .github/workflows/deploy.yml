@@ -115,6 +115,12 @@ jobs:
     - name: Audit ontology write path (no gateway bypasses)
       run: npm run audit:ontology-writes
 
+    # HATHAWAY (KEOS) manifest gate. keos.ts names the OS shell and mirrors the
+    # cap.* registry enforced in OSBootstrap.tsx; this fails if the two drift,
+    # so the manifest cannot quietly become wrong while reading as authoritative.
+    - name: Audit HATHAWAY (KEOS) manifest
+      run: npm run audit:hathaway-manifest
+
     # Backend Build
     - name: Install Backend Dependencies
       working-directory: ./backend

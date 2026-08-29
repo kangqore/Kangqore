@@ -1,15 +1,40 @@
 import { synapseMesh, SynapseSignal } from './synapseMesh.service'
 import logger from '../../../utils/logger'
 import { getIO } from '../../../socket'
+import { KEOS } from '../../hathaway/keos'
 
 /**
  * PerceptronNodes
  * Registers all Kangqore Ecosystem subsystems into the Synapse Mesh.
  * Allows them to receive and process intelligence signals autonomously.
+ *
+ * ⚠ DORMANT as of 2026-08-30. `bootPerceptronNetwork()` is exported and never
+ * called — nothing invokes it at startup, and `synapseMesh` has zero callers
+ * outside this directory. No node below is registered at runtime and no signal
+ * is ever emitted, so none of these callbacks execute.
+ *
+ * Booting it alone would not make it live: registration without emitters still
+ * does nothing, and would read as active while being inert. Making the mesh
+ * real means calling this from index.ts *and* having subsystems emit signals.
+ * Tracked in docs/DEFERRED.md.
  */
 
 export function bootPerceptronNetwork() {
   logger.info('[SynapseMesh] Booting C.O.D.E. Perceptron Network...')
+
+  // 0. HATHAWAY (KEOS Shell Node)
+  //
+  // The shell every other subsystem is seen through. It listens for UX
+  // anomalies because it owns the surface they manifest on, and for policy
+  // overrides because those change which workspaces a principal can reach.
+  synapseMesh.registerNode('HATHAWAY', async (signal: SynapseSignal) => {
+    if (signal.signalType === 'UX_ANOMALY') {
+      logger.info(`[Perceptron:HATHAWAY] UX anomaly from ${signal.origin} — shell surface affected, ${KEOS.workspaces.length} workspaces in scope.`)
+    }
+    if (signal.signalType === 'POLICY_OVERRIDE') {
+      logger.warn(`[Perceptron:HATHAWAY] Policy override from ${signal.origin} — workspace reachability may have changed.`)
+    }
+  })
 
   // 1. NOLAN (Ontology Node)
   synapseMesh.registerNode('NOLAN', async (signal: SynapseSignal) => {
