@@ -11493,10 +11493,15 @@ export const servicesData = {
     whatIsTitle: 'Every Customization Is a Bill',
     whatIsHighlightNewLine: true,
     whatIsHighlight: 'You Pay Twice a Year.',
-    whatIsPara2: 'ServiceNow ships two family releases a year. That cadence is the single most important fact about building on it, and it is the one most implementation plans treat as somebody else’s problem. Anything you build inside the platform model comes along for the ride. Anything built outside it — a rewritten workflow engine, a form doing something the form was not meant to do, a scoped app quietly reimplementing a baseline table — has to be retested and often reworked, every six months, for as long as the instance lives.',
+    whatIsPara2: 'ServiceNow ships two family releases a year, each with a name and a support window \u2014 Xanadu, Yokohama, Zurich and whatever follows them. That cadence is the single most important fact about building on it, and it is the one most implementation plans treat as somebody else’s problem. Anything you build inside the platform model comes along for the ride. Anything built outside it — a rewritten workflow engine, a form doing something the form was not meant to do, a scoped app quietly reimplementing a baseline table — has to be retested and often reworked, every six months, for as long as the instance lives.',
     whatIsPara3: 'That is why so many instances are three or four families behind. Each upgrade looked expensive, each one got deferred, and eventually the instance dropped out of the support window and the catch-up became a project of its own. By then the original build team has moved on, nobody can say why a given customization exists, and the safest-looking option is to leave it alone — which is how a platform bought for agility becomes the thing nobody dares touch.',
     whatIsPara4: 'Kangqore builds close to baseline and says no to the rest, in writing, with the reason recorded. Where a customization genuinely earns itself we build it inside the platform model so it upgrades, and we log what it costs to carry. Underneath all of it we treat the CMDB as the dependency it actually is — ITOM, security operations, impact analysis and asset management are all only as good as it is — with a named owner and a discovery cadence rather than a spreadsheet somebody refreshes before an audit.',
-
+    // The page argued cost-of-ownership against a benefit it never stated,
+    // which reads one-sided to a buyer who has already decided to buy. It also
+    // left "why do companies use ServiceNow" — a high-intent query — uncovered.
+    // Stating the value case honestly is what earns the right to the paragraph
+    // above it.
+    whatIsPara5: 'None of which is an argument against the platform. Enterprises buy ServiceNow for four good reasons, and all four hold. Tool sprawl reaches a point where nobody can say how many open requests the company has. The CMDB and identity data underneath mean the next workflow is configuration rather than a new product, which is why landing in IT and expanding outward works so reliably. Every change, approval and access grant lands in one attributable place, which in a regulated sector carries the business case on its own. And it is the safe choice, rarely said aloud and frequently decisive. The question this page answers is not whether to buy it. It is what happens in year three.',
     // ── Outcomes ────────────────────────────────────────────────────
     // Not MTTR, ticket deflection or CSAT. Every partner page quotes those,
     // they move with staffing and demand as much as with the platform, and none
@@ -11566,6 +11571,7 @@ export const servicesData = {
           'Platform Strategy and Target Architecture',
           'License and Entitlement Review',
           'SKU Rationalization Before Renewal',
+          'Fulfiller, Requester and Approver Licensing Model',
           'Fulfiller Seat Modeling',
           'Instance Strategy and Domain Separation',
           'Build-Versus-Baseline Decision Framework',
@@ -11581,6 +11587,9 @@ export const servicesData = {
           'Platform Operating Model',
           'Total Cost of Ownership Modeling',
           'Readiness Assessment Before a Module Purchase',
+          'Legacy Service Desk Assessment',
+          'Migration from Remedy, Cherwell or Ivanti',
+          'Consolidating Jira Service Management and Homegrown Desks',
         ],
       },
       {
@@ -11599,6 +11608,7 @@ export const servicesData = {
           'Service Level Management',
           'Walk-Up and Onsite Support',
           'Predictive Intelligence for Routing',
+          'AI Agents for Case Deflection',
           'Reporting, Dashboards and Performance Analytics',
           'ITIL and ISO 20000 Alignment',
           'Baseline-First Configuration Standards',
@@ -11712,6 +11722,7 @@ export const servicesData = {
           'Technical Debt Register for Customizations',
           'App Store',
           'ServiceNow Store Evaluation Before Building',
+          'AI Agent Development and Guardrails',
           'Citizen Development Guardrails',
           'Decommissioning Apps Nobody Uses',
         ],
@@ -11741,6 +11752,7 @@ export const servicesData = {
           'Use-Case Repository and Reusable Assets',
           'Managed Platform Operations to Service Levels',
           'Release Governance and Change Control',
+          'Platform Migration and Historical Data Import',
           'Exit Planning and Knowledge Transfer',
         ],
       },
@@ -11839,7 +11851,7 @@ export const servicesData = {
       {
         title: 'Sustain',
         icon: 'Activity',
-        description: 'Two family releases a year, taken on cadence. The stage that keeps the instance supportable, and the first one cut when a budget tightens — which is exactly how instances end up four families behind.',
+        description: 'Two named family releases a year, taken on cadence. The stage that keeps the instance supportable, and the first one cut when a budget tightens — which is exactly how instances end up four families behind.',
         features: [
           'Upgrades run as routine, not as projects',
           'Customization carrying cost reviewed',
@@ -11962,10 +11974,17 @@ export const servicesData = {
         {
           icon: 'BrainCircuit',
           title: 'AI on the platform',
-          managed: 'Now Assist, AI Search, Predictive Intelligence',
+          managed: 'Now Assist, AI Agents, AI Search, Predictive Intelligence',
           selfHosted: 'Priced as a premium tier; evaluate on your own data',
           desc: 'Summarization and search work well against knowledge that is already good and add little against knowledge that is not. Treat vendor benchmarks as a starting hypothesis and evaluate on your own corpus before committing to the tier.',
           link: { href: '/services/ai-governance', label: 'AI governance' },
+        },
+        {
+          icon: 'Network',
+          title: 'The desk you are leaving',
+          managed: 'Remedy, Cherwell, Ivanti, Jira Service Management, homegrown',
+          selfHosted: 'Migrate the process, not the workarounds',
+          desc: 'Cherwell is end-of-life under Ivanti, which is forcing migrations rather than inviting them. The trap in all of these is a like-for-like port: rebuilding twenty years of workarounds on a platform whose baseline already solves most of them, and paying for that decision at every upgrade.',
         },
         {
           icon: 'Zap',
@@ -12064,7 +12083,7 @@ export const servicesData = {
     // renewal is in four months" -- and a page that only sells implementation
     // is answering a question nobody asked.
     engagementEyebrow: 'HOW WE ENGAGE',
-    engagementHeading: 'Six ways in,',
+    engagementHeading: 'Seven ways in,',
     engagementHeadingHighlight: 'starting with the instance you have.',
     engagementLede: 'Most groups arrive with a live instance and a problem, not with a blank slate. The useful first engagement is usually a reading of what is already there, including the license position.',
     servicePackages: [
@@ -12110,6 +12129,17 @@ export const servicesData = {
           'Sub-production strategy and clone plan',
           'Two family releases adopted, with the second run by your team',
           'Cadence and governance so the lag does not return',
+        ],
+      },
+      {
+        name: 'Migration to ServiceNow',
+        description: 'For estates leaving Remedy, Cherwell or Ivanti, or consolidating Jira Service Management and a homegrown desk. The first question is which of it is worth bringing.',
+        deliverables: [
+          'Current-state assessment of the desk you are leaving',
+          'Process and data mapping, with what should not migrate named',
+          'Historical ticket and asset data import strategy',
+          'Parallel run and cutover plan with a rollback point',
+          'Baseline-first target build rather than a like-for-like port',
         ],
       },
       {
@@ -12340,9 +12370,13 @@ export const servicesData = {
     // for the same reason.
     heroTitle: 'Talent and Organization Design\nThat Moves Decisions, Not Boxes',
     heroBadge: 'Diagnose. Design. Deploy. Scale.',
+    // 'Engineering Org Design' is here rather than buried in the sector
+    // grid because a technology CTO is the second buyer for this service and
+    // nothing above the fold spoke to them. The other eight are unchanged: the
+    // CHRO signs, and their vocabulary keeps the positions it had.
     heroStripItems: [
       'Workforce Planning', 'Operating Model Design', 'Decision Rights', 'Leadership & Culture',
-      'Skills Architecture', 'People Intelligence', 'HR Transformation', 'Talent Acquisition',
+      'Skills Architecture', 'People Intelligence', 'Engineering Org Design', 'Talent Acquisition',
     ],
     hidePartnershipModel: true,
 
@@ -12352,7 +12386,7 @@ export const servicesData = {
     whatIsHighlight: 'The Ones That Work Move Decisions.',
     whatIsPara2: 'Talent and organization consulting is the work of changing how an enterprise decides, staffs and builds capability. The chart is an output. The intervention is everything underneath it — who holds a decision, what a manager is genuinely accountable for, which capabilities the business is actually short of, and how fast a critical role gets filled when the person in it resigns.',
     whatIsPara3: 'The failure mode is well documented and close to universal. A structure is redrawn, titles change, the announcement lands well, and eighteen months later the same escalations arrive on the same three desks — because the boxes moved and the authority did not. Meanwhile the skills taxonomy built during the program has gone stale, since it was scoped as a deliverable rather than as a dataset with an owner and a refresh cadence.',
-    whatIsPara4: 'Kangqore works it the other way round. We measure how long a defined class of decision actually takes today and where it stalls, then design the structure that follows from the answer rather than the one that looks tidy on a slide. Skills work is scoped as an operating commitment, not a mapping exercise. And every design is tested against numbers a board can check a year later, which is a harder promise than an engagement score and a more useful one.',
+    whatIsPara4: 'Kangqore works it the other way round. We measure how long a defined class of decision actually takes today and where it stalls, then design the structure that follows from the answer rather than the one that looks tidy on a slide. Skills work is scoped as an operating commitment, not a mapping exercise. The same method applies to an engineering organization outgrowing its structure, where team boundaries and system boundaries have quietly stopped matching. And every design is tested against numbers a board can check a year later, which is a harder promise than an engagement score and a more useful one.',
 
     // ── Outcomes ────────────────────────────────────────────────────
     // Deliberately not engagement, eNPS or total attrition. All three are on
@@ -12495,7 +12529,7 @@ export const servicesData = {
         ],
       },
       {
-        title: 'AI-Powered HR Transformation & People Intelligence',
+        title: 'People Intelligence & HR Technology',
         image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Your workforce data turned into decisions leaders take, and employment AI governed as regulated activity.',
         items: [
@@ -12725,7 +12759,7 @@ export const servicesData = {
     },
 
     faqEyebrow: 'ASKED ON THE FIRST CALL',
-    faqHeading: 'Twelve questions about org design,',
+    faqHeading: 'Thirteen questions about org design,',
     faqHeadingHighlight: 'answered without hedging.',
 
     // ── FAQ ──────────────────────────────────────────────────────
@@ -12792,6 +12826,10 @@ export const servicesData = {
       {
         q: 'Who owns this after you leave?',
         a: 'Your team, and we scope it that way from the first workshop rather than negotiating it at handover.\n\nIn practice: named internal owners for the structure, the decision framework and the skills data, each with the review cadence written into the operating model rather than into a closure plan. The model documented well enough that someone who was not in the room can apply it to next year’s question. Your HR and business leaders in the design work rather than receiving its output. And the measurement instrumented in your systems, so the year-one review does not require us to come back and run it.\n\nWe will run HR operations under a service level where carrying it is genuinely not realistic, and we price that separately and honestly. The line we hold is the same one we hold everywhere: the capability has to remain operable by your own people. An organization only we can maintain is a commercial arrangement, not an outcome.',
+      },
+      {
+        q: 'Our engineering organization is going from 40 to 120. When do we need platform teams, and how many layers?',
+        a: 'Two different questions, and the second one is usually asked when the first is the real problem.\n\nA platform team earns its cost at roughly the point where three product teams are solving the same infrastructure problem separately and disagreeing about the answer. Before that it is premature and starves delivery; after it, the duplication compounds and every team builds a slightly different deployment pipeline. The trigger is duplicated effort, not headcount.\n\nLayers are the wrong instrument for the problem they usually get used on. A manager stops doing the job somewhere around seven to nine direct reports, so growth does force a layer eventually. But most layers get added because a decision keeps escalating, and inserting a manager does not move the decision \u2014 it adds a stop on the way to the same desk. If escalation is the symptom, the fix is a decision-rights threshold, not a new box.\n\nThe structural constraint underneath both is that team boundaries and system boundaries drift apart as an architecture evolves, and the organization is usually two or three reorganizations behind it. So we start from the architecture and the measures it produces \u2014 lead time by team, on-call load, how often a change needs three teams to ship \u2014 and design the structure that follows, rather than the one that fits the headcount plan.',
       },
       {
         q: 'Where does this stop and your other services start?',
@@ -12935,6 +12973,8 @@ export const servicesData = {
           'Engineering capability and level framework',
           'Team boundaries aligned to system boundaries',
           'Technical career track design',
+          'Lead time and on-call load as org-design inputs',
+          'Senior-engineer time-to-hire and internal mobility',
           'Build-versus-partner capability decisions',
           'Retention for scarce engineering skills',
           'Span and layer design for fast-growing teams',

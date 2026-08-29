@@ -2561,6 +2561,89 @@ const featureMicros   = service.featureMicros
                     <text x="270" y="391" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">cost per terabyte measured at every layer, attributed to a team</text>
                   </svg>
                 </div>
+              ) : service.slug === 'servicenow' ? (
+                /* ── What the release cadence does to a build ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AGENTIC ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on
+                   a ServiceNow page. That is also measurable: the page-quality
+                   rubric counts agentic vocabulary as off-topic contamination
+                   on every non-agentic service, and those three labels were
+                   two thirds of this page's score on that check.
+
+                   The diagram is the page's argument rather than a product
+                   map. Two family releases a year is the fixed input; the only
+                   variable is which side of the split a build sits on. Baseline
+                   rides the upgrade, work outside the platform model gets
+                   retested every six months, and the compounding of that choice
+                   is what decides whether the instance stays inside the support
+                   window.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="What the ServiceNow release cadence does to a build: two named family releases ship each year; configuration kept close to baseline upgrades with the platform, while work built outside the platform model is retested and often reworked every six months; the first path stays inside the support window, the second falls out of it and needs a remediation project" tabIndex={0}>
+                  <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why a ServiceNow build is priced twice a year</title>
+                    <desc>ServiceNow ships two named family releases annually. Configuration kept close to baseline is carried by the upgrade at no additional cost. Anything built outside the platform model must be retested and frequently reworked on that same cadence, for as long as the instance lives. The first path keeps the instance inside the supported window where upgrades stay routine maintenance; the second accumulates deferrals until the instance falls out of support and getting current becomes a remediation project of its own.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the spine below is a straight line. */}
+                      <linearGradient id="snow-spine" gradientUnits="userSpaceOnUse" x1="26" y1="150" x2="514" y2="150">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <marker id="snow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                      </marker>
+                      <marker id="snow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#00c875" />
+                      </marker>
+                      <marker id="snow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                    </defs>
+
+                    {/* ── The fixed input ── */}
+                    <text x="26" y="34" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.6" fill="#4ab6d4">TWO FAMILY RELEASES A YEAR</text>
+                    <rect x="26" y="46" width="488" height="46" rx="9" fill="#0a1220" stroke="#4ab6d4" strokeOpacity="0.3" />
+                    <text x="270" y="75" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.85">Xanadu · Yokohama · Zurich · and the next one</text>
+
+                    <line x1="270" y1="94" x2="270" y2="128" stroke="#ffffff" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 4" />
+                    <text x="270" y="120" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.45">every build meets this, twice</text>
+
+                    <line x1="26" y1="150" x2="506" y2="150" stroke="url(#snow-spine)" strokeWidth="2" strokeOpacity="0.45" markerEnd="url(#snow-arrow)" />
+
+                    {/* ── The only variable: which side the build sits on ── */}
+                    <rect x="26" y="172" width="230" height="104" rx="9" fill="#08160f" stroke="#00c875" strokeOpacity="0.4" strokeWidth="1.5" />
+                    <text x="141" y="198" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="0.6" fill="#00c875">CLOSE TO BASELINE</text>
+                    <text x="141" y="223" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">carried by the upgrade</text>
+                    <text x="141" y="243" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">tested, not rebuilt</text>
+                    <text x="141" y="263" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">cost: near zero</text>
+
+                    <rect x="284" y="172" width="230" height="104" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.4" strokeWidth="1.5" />
+                    <text x="399" y="198" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">OUTSIDE THE MODEL</text>
+                    <text x="399" y="223" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">retested every six months</text>
+                    <text x="399" y="243" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">often reworked</text>
+                    <text x="399" y="263" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">cost: recurring, forever</text>
+
+                    <line x1="141" y1="278" x2="141" y2="304" stroke="#00c875" strokeOpacity="0.55" strokeWidth="1.5" markerEnd="url(#snow-green)" />
+                    <line x1="399" y1="278" x2="399" y2="304" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#snow-amber)" />
+
+                    {/* ── Where each path ends up ── */}
+                    <rect x="26" y="308" width="230" height="64" rx="9" fill="#0a1220" stroke="#00c875" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="141" y="332" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#00c875">INSIDE SUPPORT</text>
+                    <text x="141" y="353" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">upgrades stay routine</text>
+
+                    <rect x="284" y="308" width="230" height="64" rx="9" fill="#0a1220" stroke="#f59e0b" strokeOpacity="0.45" strokeWidth="1.5" />
+                    <text x="399" y="332" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="bold" letterSpacing="0.6" fill="#f59e0b">OUT OF WINDOW</text>
+                    <text x="399" y="353" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">remediation project</text>
+
+                    {/* ── The number the instance is held to ── */}
+                    <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">upgrade lag, measured in family releases behind</text>
+                  </svg>
+                </div>
               ) : service.slug === 'quality-engineering-assurance' ? (
                 /* ── A green run is a claim, not evidence ──
                    Replaces the shared agentic default, which put AI COMMANDER,
@@ -2653,6 +2736,98 @@ const featureMicros   = service.featureMicros
                     <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
                     <path d="M 62 407 a 9 9 0 1 0 5 -3" fill="none" stroke="#4ab6d4" strokeOpacity="0.7" strokeWidth="1.5" markerEnd="url(#qea-arrow)" />
                     <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
+                  </svg>
+                </div>
+              ) : service.slug === 'talent-organization' ? (
+                /* ── The boxes moved, the authority did not ──
+                   Replaces the shared agentic default, which put AI COMMANDER,
+                   AUTONOMOUS COMMIT and AGENTIC ORCHESTRATOR above the fold on
+                   an organization-design page. On this service that default is
+                   worse than merely off-topic: a technology buyer recognises it
+                   as a template artifact and reads it as nobody having built
+                   the page for them.
+
+                   The diagram is the page's own thesis. The same three
+                   escalations reach the same three desks before and after a
+                   reorganization, because a chart was redrawn and no decision
+                   right moved. The lower half shows what a redesign changes,
+                   and the band names the measures the comparison table and the
+                   outcome tiles are both held to.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="Why most reorganizations do not change anything: before the reorganization three escalations reach three desks, and after it the chart has been redrawn but the same escalations reach the same desks because no decision right moved. A redesign moves decision rights to named roles with thresholds and retires the forums that held them, and is measured on time to decision, internal fill, regretted attrition and layers between a customer and a yes" tabIndex={0}>
+                  <svg viewBox="0 0 540 470" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                    <title>Why the chart changed and nothing else did</title>
+                    <desc>Before a reorganization, escalations converge on a small number of desks. After it, the chart has been redrawn and the same escalations reach the same desks, because reporting lines moved and decision rights did not. A redesign moves those rights to named roles with defined thresholds and retires the forums that used to hold them, and is measured on time to decision, internal fill on critical roles, regretted attrition and the number of layers between a customer and a yes.</desc>
+
+                    <defs>
+                      {/* objectBoundingBox units do not render on a zero-height
+                          element, and the divider below is a straight line. */}
+                      <linearGradient id="to-rule" gradientUnits="userSpaceOnUse" x1="26" y1="0" x2="514" y2="0">
+                        <stop offset="0" stopColor="#2564ea" />
+                        <stop offset="1" stopColor="#4ab6d4" />
+                      </linearGradient>
+                      <marker id="to-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                      </marker>
+                      <marker id="to-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#00c875" />
+                      </marker>
+                    </defs>
+
+                    {/* ── Before and after, and nothing changed ── */}
+                    <text x="26"  y="30" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#f59e0b">BEFORE THE REORG</text>
+                    <text x="300" y="30" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#f59e0b">AFTER THE ANNOUNCEMENT</text>
+
+                    <rect x="26" y="40" width="230" height="120" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.28" />
+                    <g fill="#f59e0b" fillOpacity="0.75">
+                      <rect x="52"  y="58" width="46" height="17" rx="3" /><rect x="118" y="58" width="46" height="17" rx="3" /><rect x="184" y="58" width="46" height="17" rx="3" />
+                    </g>
+                    <g stroke="#f59e0b" strokeOpacity="0.4" strokeWidth="1.5" markerEnd="url(#to-arrow-amber)">
+                      <line x1="75"  y1="78" x2="103" y2="118" /><line x1="141" y1="78" x2="141" y2="118" /><line x1="207" y1="78" x2="179" y2="118" />
+                    </g>
+                    <g fill="#f59e0b">
+                      <circle cx="103" cy="126" r="6" /><circle cx="141" cy="126" r="6" /><circle cx="179" cy="126" r="6" />
+                    </g>
+                    <text x="141" y="150" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">three desks</text>
+
+                    <rect x="284" y="40" width="230" height="120" rx="9" fill="#171208" stroke="#f59e0b" strokeOpacity="0.28" />
+                    <g fill="#f59e0b" fillOpacity="0.75">
+                      <rect x="300" y="58" width="40" height="17" rx="3" /><rect x="356" y="58" width="52" height="17" rx="3" /><rect x="424" y="58" width="46" height="17" rx="3" /><rect x="480" y="58" width="20" height="17" rx="3" />
+                    </g>
+                    <g stroke="#f59e0b" strokeOpacity="0.4" strokeWidth="1.5" markerEnd="url(#to-arrow-amber)">
+                      <line x1="320" y1="78" x2="361" y2="118" /><line x1="382" y1="78" x2="382" y2="118" /><line x1="447" y1="78" x2="437" y2="118" /><line x1="490" y1="78" x2="443" y2="118" />
+                    </g>
+                    <g fill="#f59e0b">
+                      <circle cx="361" cy="126" r="6" /><circle cx="399" cy="126" r="6" /><circle cx="437" cy="126" r="6" />
+                    </g>
+                    <text x="399" y="150" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">the same three desks</text>
+
+                    <text x="270" y="182" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.5">the chart changed · the authority did not</text>
+
+                    <line x1="26" y1="206" x2="514" y2="206" stroke="url(#to-rule)" strokeWidth="2" strokeOpacity="0.4" />
+
+                    {/* ── What a redesign actually moves ── */}
+                    <text x="26" y="240" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#00c875">WHAT A REDESIGN MOVES</text>
+
+                    <rect x="26" y="252" width="488" height="118" rx="9" fill="#08130d" stroke="#00c875" strokeOpacity="0.4" strokeWidth="1.5" />
+                    <g fill="#00c875" fillOpacity="0.8">
+                      <rect x="60"  y="274" width="60" height="18" rx="3" /><rect x="240" y="274" width="60" height="18" rx="3" /><rect x="420" y="274" width="60" height="18" rx="3" />
+                    </g>
+                    <text x="90"  y="308" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">named role</text>
+                    <text x="270" y="308" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">named role</text>
+                    <text x="450" y="308" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.8">named role</text>
+                    <g stroke="#00c875" strokeOpacity="0.5" strokeWidth="1.5" markerEnd="url(#to-arrow)">
+                      <line x1="90"  y1="316" x2="90"  y2="332" /><line x1="270" y1="316" x2="270" y2="332" /><line x1="450" y1="316" x2="450" y2="332" />
+                    </g>
+                    <text x="270" y="352" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.65">decision thresholds · retired forums · one owner each</text>
+
+                    {/* ── What it is measured on ── */}
+                    <rect x="26" y="390" width="488" height="60" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                    <text x="270" y="414" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="0.8" fill="#4ab6d4">CHECKED A YEAR LATER</text>
+                    <text x="270" y="434" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.75">time to decision · internal fill · attrition · layers to a yes</text>
                   </svg>
                 </div>
               ) : service.slug === 'enterprise-integration-platform' ? (
