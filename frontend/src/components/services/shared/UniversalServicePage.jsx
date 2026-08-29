@@ -4397,7 +4397,14 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
-      {service.comparisonTable && (
+      {/* Opt-out per service via hideComparison, mirroring
+          hidePartnershipModel. Deleting the data key is not the way to remove
+          this section: getParityService resolves `service.comparisonTable ||
+          <department default>`, so an absent key swaps in generic department
+          copy rather than hiding anything. A page that wants the section gone
+          needs a flag, not a deletion. Defaults to showing, so the other 61
+          pages are unchanged. */}
+      {!service.hideComparison && service.comparisonTable && (
         <GeminiComparisonSection comparisonTable={service.comparisonTable} lede={service.comparisonLede || service.comparisonTable?.lede} />
       )}
 
