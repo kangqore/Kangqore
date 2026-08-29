@@ -154,33 +154,47 @@ const Footer = () => {
             </div>
           </a>
 
-          {/* Nav Columns */}
-          <div style={{ display: 'flex', gap: 48, paddingTop: 8, flexWrap: 'wrap' }} className="footer-nav-cols">
-            {/* Capabilities */}
-            <div style={{ flex: '0 1 150px', minWidth: 140 }}>
-              <h3 className="text-gray-600 dark:text-gray-400" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Capabilities</h3>
+          {/* Nav Columns — 4 Pillars */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 xl:gap-10 pt-2 footer-nav-cols">
+            {/* 01. What We Do */}
+            <div>
+              <h3 className="text-black dark:text-white font-extrabold text-[13px] uppercase tracking-[0.15em] mb-7">What We Do</h3>
               <Link to="/department/ai-cognitive" style={navLinkStyle}>AI & Cognitive</Link>
-              <Link to="/department/cloud-engineering" style={navLinkStyle}>Cloud & Engineering</Link>
-              <Link to="/department/cybersecurity" style={navLinkStyle}>Cybersecurity</Link>
+              <Link to="/department/cybersecurity" style={navLinkStyle}>Cybersecurity & Trust</Link>
+              <Link to="/department/product-engineering" style={navLinkStyle}>Product Engineering</Link>
               <Link to="/department/digital-transformation-modernization" style={navLinkStyle}>Digital Transformation</Link>
-              <Link to="/services" style={{ ...navLinkStyle, color: '#2564ea', fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 4 }}>View All →</Link>
+              <Link to="/department/cloud-engineering" style={navLinkStyle}>Cloud & Platforms</Link>
+              <Link to="/department/marketing-visibility-growth" style={navLinkStyle}>Growth & Strategy</Link>
+              <Link to="/services" style={{ ...navLinkStyle, color: '#2564ea', fontSize: 11.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 4 }}>View All 62 Services →</Link>
             </div>
-            {/* Company */}
-            <div style={{ flex: '0 1 150px', minWidth: 140 }}>
-              <h3 className="text-gray-600 dark:text-gray-400" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Company</h3>
+            {/* 02. Industries */}
+            <div>
+              <h3 className="text-black dark:text-white font-extrabold text-[13px] uppercase tracking-[0.15em] mb-7">Industries We Serve</h3>
+              <Link to="/industries/manufacturing" style={navLinkStyle}>Manufacturing & Industrial</Link>
+              <Link to="/industries/financial-services" style={navLinkStyle}>Financial & Banking</Link>
+              <Link to="/industries/healthcare" style={navLinkStyle}>Healthcare & Life Sciences</Link>
+              <Link to="/industries/energy" style={navLinkStyle}>Energy & Utilities</Link>
+              <Link to="/industries/public-sector" style={navLinkStyle}>Public Sector & Defense</Link>
+              <Link to="/industries/retail" style={navLinkStyle}>Retail & Commerce</Link>
+            </div>
+            {/* 03. Company */}
+            <div>
+              <h3 className="text-black dark:text-white font-extrabold text-[13px] uppercase tracking-[0.15em] mb-7">Company & Network</h3>
               <Link to="/about-us" style={navLinkStyle}>{t('menu.about_us')}</Link>
-              <Link to="/values" style={navLinkStyle}>Values & Culture</Link>
               <Link to="/leadership" style={navLinkStyle}>{t('menu.leadership')}</Link>
-              <Link to="/careers" style={navLinkStyle}>Careers</Link>
+              <Link to="/values" style={navLinkStyle}>Values & Culture</Link>
+              <Link to="/careers" style={navLinkStyle}>Careers <span className="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">Hiring</span></Link>
+              <Link to="/global-capability-centers" style={navLinkStyle}>Global Capability Ctrs</Link>
               <Link to="/partners" style={navLinkStyle}>{t('menu.partners')}</Link>
             </div>
-            {/* Insights */}
-            <div style={{ flex: '0 1 150px', minWidth: 140 }}>
-              <h3 className="text-gray-600 dark:text-gray-400" style={{ fontFamily: "'Caveat', cursive", fontSize: 24, fontWeight: 600, fontStyle: 'italic', marginBottom: 18 }}>Insights</h3>
+            {/* 04. Insights */}
+            <div>
+              <h3 className="text-black dark:text-white font-extrabold text-[13px] uppercase tracking-[0.15em] mb-7">Insights & Research</h3>
               <Link to="/blogs" style={navLinkStyle}>Engineering Blog</Link>
-              <Link to="/case-studies" style={navLinkStyle}>Case Studies</Link>
-              <Link to="/white-paper" style={navLinkStyle}>White Papers</Link>
+              <Link to="/case-studies" style={navLinkStyle}>Case Studies (Tata Steel)</Link>
+              <Link to="/white-paper" style={navLinkStyle}>White Papers & Reports</Link>
               <Link to="/events" style={navLinkStyle}>Events & Webinars</Link>
+              <Link to="/resources" style={navLinkStyle}>Knowledge Library</Link>
             </div>
           </div>
 
@@ -228,7 +242,7 @@ const Footer = () => {
       </div>
 
       {/* Watermark */}
-      <div style={{ maxWidth: 1380, margin: '-60px auto 0', pointerEvents: 'none', userSelect: 'none', position: 'relative', zIndex: 0, lineHeight: 0 }} aria-hidden="true">
+      <div style={{ maxWidth: 1380, margin: '-10px auto 0', pointerEvents: 'none', userSelect: 'none', position: 'relative', zIndex: 0, lineHeight: 0 }} aria-hidden="true">
         <svg id="footerWatermarkSvg" viewBox="62 95 876 175" preserveAspectRatio="xMidYMid meet" style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible' }}>
           <text id="footerWatermarkText" x="500" y="240" textAnchor="middle" fontSize="320" style={{ fontFamily: "-apple-system, system-ui, BlinkMacSystemFont, 'SF Pro Display', sans-serif", fontWeight: 800, letterSpacing: '-0.04em', fill: '#ffffff', filter: 'drop-shadow(0px 10px 20px rgba(0,0,0,0.15)) drop-shadow(0px 3px 6px rgba(0,0,0,0.1))' }}>Kangqore</text>
         </svg>
