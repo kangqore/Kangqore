@@ -158,7 +158,7 @@ const Footer = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 xl:gap-10 pt-2 footer-nav-cols">
             {/* 01. What We Do */}
             <div>
-              <h3 className="text-black dark:text-white font-extrabold text-[13px] uppercase tracking-[0.15em] mb-7">What We Do</h3>
+              <h3 className="text-black dark:text-white font-extrabold text-[14px] uppercase tracking-[0.15em] mb-7">What We Do</h3>
               <Link to="/department/ai-cognitive" style={navLinkStyle}>AI & Cognitive</Link>
               <Link to="/department/cybersecurity" style={navLinkStyle}>Cybersecurity & Trust</Link>
               <Link to="/department/product-engineering" style={navLinkStyle}>Product Engineering</Link>
@@ -169,7 +169,7 @@ const Footer = () => {
             </div>
             {/* 02. Industries */}
             <div>
-              <h3 className="text-black dark:text-white font-extrabold text-[13px] uppercase tracking-[0.15em] mb-7">Industries We Serve</h3>
+              <h3 className="text-black dark:text-white font-extrabold text-[14px] uppercase tracking-[0.15em] mb-7">Industries We Serve</h3>
               <Link to="/industries/manufacturing" style={navLinkStyle}>Manufacturing & Industrial</Link>
               <Link to="/industries/financial-services" style={navLinkStyle}>Financial & Banking</Link>
               <Link to="/industries/healthcare" style={navLinkStyle}>Healthcare & Life Sciences</Link>
@@ -179,17 +179,17 @@ const Footer = () => {
             </div>
             {/* 03. Company */}
             <div>
-              <h3 className="text-black dark:text-white font-extrabold text-[13px] uppercase tracking-[0.15em] mb-7">Company & Network</h3>
+              <h3 className="text-black dark:text-white font-extrabold text-[14px] uppercase tracking-[0.15em] mb-7">Company & Network</h3>
               <Link to="/about-us" style={navLinkStyle}>{t('menu.about_us')}</Link>
               <Link to="/leadership" style={navLinkStyle}>{t('menu.leadership')}</Link>
               <Link to="/values" style={navLinkStyle}>Values & Culture</Link>
-              <Link to="/careers" style={navLinkStyle}>Careers <span className="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">Hiring</span></Link>
+              <Link to="/careers" style={navLinkStyle}>Careers <span className="ml-1 text-[11px] font-bold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">Hiring</span></Link>
               <Link to="/global-capability-centers" style={navLinkStyle}>Global Capability Ctrs</Link>
               <Link to="/partners" style={navLinkStyle}>{t('menu.partners')}</Link>
             </div>
             {/* 04. Insights */}
             <div>
-              <h3 className="text-black dark:text-white font-extrabold text-[13px] uppercase tracking-[0.15em] mb-7">Insights & Research</h3>
+              <h3 className="text-black dark:text-white font-extrabold text-[14px] uppercase tracking-[0.15em] mb-7">Insights & Research</h3>
               <Link to="/blogs" style={navLinkStyle}>Engineering Blog</Link>
               <Link to="/case-studies" style={navLinkStyle}>Case Studies (Tata Steel)</Link>
               <Link to="/white-paper" style={navLinkStyle}>White Papers & Reports</Link>
