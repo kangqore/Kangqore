@@ -11525,6 +11525,11 @@ export const servicesData = {
     // category still list the pre-2020 cloud lineup, so naming what each
     // product is actually for -- and the condition that makes buying it a
     // mistake -- is the part they structurally cannot match.
+    // Sits directly under the capability grid rather than in the default slot
+    // below the engagement band. On a platform page the products are the offer,
+    // so the landscape reads as an extension of the capability list; leaving it
+    // after "how we engage" put the answer after the pricing.
+    toolsStackAfterCapabilities: true,
     toolsStack: {
       eyebrow: 'THE SALESFORCE LANDSCAPE',
       title: 'The clouds,',
@@ -11584,6 +11589,15 @@ export const servicesData = {
           selfHostedLabel: 'When it is the wrong buy',
           selfHosted: 'As a like-for-like lift of a CPQ build you already regret',
           desc: 'The successor to CPQ, and the migration is a re-implementation rather than an upgrade. That is inconvenient and also an opportunity: a pricing model that accumulated exceptions for a decade is easier to simplify during a move than during business as usual.',
+        },
+        {
+          icon: 'ShoppingCart',
+          title: 'Commerce Cloud',
+          managedLabel: 'What it is for',
+          managed: 'Digital storefronts, order management, point of sale',
+          selfHostedLabel: 'When it is the wrong buy',
+          selfHosted: 'Where the storefront is the business and margins are thin',
+          desc: 'Strong where commerce needs to sit on the same customer record as sales and service, and where order management is genuinely complex. Priced on a share of the revenue that passes through it, which is a very different commercial shape from a seat license — and the reason a high-volume, low-margin retailer should model it against a standalone platform before committing.',
         },
         {
           icon: 'Target',

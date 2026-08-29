@@ -1370,6 +1370,39 @@ const featureMicros   = service.featureMicros
   const badgeRaw   = service.heroBadge || service.shortDescription;
   const badgeText  = badgeRaw.length > 80 ? badgeRaw.slice(0, 77) + '…' : badgeRaw;
 
+  // Built once here rather than inline, because it renders in one of two slots.
+  // Default is after the engagement band. `toolsStackAfterCapabilities` moves
+  // it directly under the capability grid, for services where the stack is an
+  // extension of the capability list rather than a footnote to the engagement
+  // model — a platform page whose products ARE the offer reads that way, and
+  // burying the product landscape below "how we engage" puts the answer after
+  // the pricing. Extracting it keeps one copy of the markup, so the two slots
+  // cannot drift apart.
+  const toolsStackSection = (!service.hideToolsStack && service.toolsStack) ? (
+    <AIToolsSection
+      title={service.toolsStack?.title}
+      eyebrow={service.toolsStack?.eyebrow}
+      titleHighlight={service.toolsStack?.titleHighlight}
+      subtitle={service.toolsStack?.subtitle}
+      items={service.toolsStack?.items}
+      image={
+        service.slug === 'agentic-ai-led-application-modernization' ? (
+          <AgenticModernization3DModel />
+        ) : service.slug === 'agentic-ai' ? (
+          <AgenticAI3DModel />
+        ) : service.slug === 'mlops' ? (
+          <MLOps3DModel />
+        ) : service.slug === 'genai-business-services' ? (
+          <GenAI3DModel />
+        ) : (
+          service.toolsStack?.image
+        )
+      }
+      imageAlt={service.toolsStack?.imageAlt}
+      inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
+    />
+  ) : null;
+
   return (
     <div ref={sectionRef} className="text-white overflow-x-hidden font-sans selection:bg-brand-blue selection:text-white" style={{ backgroundColor: '#000000' }}>
 
@@ -4601,6 +4634,9 @@ const featureMicros   = service.featureMicros
         <InlineCta text={service.inlineCtaAfterCapabilities} />
       )}
 
+      {/* Early slot for the platform stack — see toolsStackSection above. */}
+      {service.toolsStackAfterCapabilities && toolsStackSection}
+
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
       {/* Opt-out per service via hideComparison, mirroring
           hidePartnershipModel. Deleting the data key is not the way to remove
@@ -5311,35 +5347,10 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ TOOLS & TECHNOLOGY ══════════════════════ */}
-      {/* Opt-out per service via hideToolsStack, mirroring hideComparison.
-          Deleting the data key does not remove this section: getParityService
-          resolves an absent `toolsStack` to a per-department default, so the
-          page swaps in a generic technology stack rather than hiding
-          anything. Defaults to showing, so the other 61 pages are unchanged. */}
-      {!service.hideToolsStack && service.toolsStack && (
-        <AIToolsSection
-          title={service.toolsStack?.title}
-          eyebrow={service.toolsStack?.eyebrow}
-          titleHighlight={service.toolsStack?.titleHighlight}
-          subtitle={service.toolsStack?.subtitle}
-          items={service.toolsStack?.items}
-          image={
-            service.slug === 'agentic-ai-led-application-modernization' ? (
-              <AgenticModernization3DModel />
-            ) : service.slug === 'agentic-ai' ? (
-              <AgenticAI3DModel />
-            ) : service.slug === 'mlops' ? (
-              <MLOps3DModel />
-            ) : service.slug === 'genai-business-services' ? (
-              <GenAI3DModel />
-            ) : (
-              service.toolsStack?.image
-            )
-          }
-          imageAlt={service.toolsStack?.imageAlt}
-          inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
-        />
-      )}
+      {/* Default slot. Suppressed when the service asked for the stack to sit
+          under the capability grid instead, so it never renders twice.
+          hideToolsStack is handled where toolsStackSection is built. */}
+      {!service.toolsStackAfterCapabilities && toolsStackSection}
 
       {/* ══════════════════════ ACCELERATORS ══════════════════════ */}
       {/* Opt-in, page-scoped. Named methods and reusable assets a practice

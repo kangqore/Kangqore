@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T20:29:13.887Z",
+  "generatedAt": "2026-08-29T20:52:16.397Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1498,6 +1498,10 @@
         {
           "rule": "Revenue Cloud",
           "detail": "The successor to CPQ, and the migration is a re-implementation rather than an upgrade. That is inconvenient and also an opportunity: a pricing model that accumulated exceptions for a decade is easier to simplify during a move than during business as usual."
+        },
+        {
+          "rule": "Commerce Cloud",
+          "detail": "Strong where commerce needs to sit on the same customer record as sales and service, and where order management is genuinely complex. Priced on a share of the revenue that passes through it, which is a very different commercial shape from a seat license — and the reason a high-volume, low-margin retailer should model it against a standalone platform before committing."
         },
         {
           "rule": "Marketing Cloud",
