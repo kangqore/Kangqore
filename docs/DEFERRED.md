@@ -11,7 +11,7 @@ commit — this file tracks open debt only, not history.
 Severity: **P1** = wrong/broken, fix before it reaches users · **P2** = missing
 capability with a real cost · **P3** = tidy-up.
 
-Last updated: 2026-08-20
+Last updated: 2026-08-30
 
 ---
 
@@ -121,6 +121,32 @@ rows into one catalog. The existing admin UI still reads a *different* endpoint,
 
 - **Where:** `frontend/src/os/features/marketplace/pages/MarketplacePage.tsx:76`
 - **Why skipped:** folding it in blind risked breaking a working screen mid-PR.
+
+### Agent missions bypass the Action Engine for schedule changes (P2)
+
+`UPDATE_PROJECT_SCHEDULE` is not one of the 1,090 registered `OntologyAction`s,
+so when an approved mission changes a project's due date the executor falls back
+to writing `prisma.project.update()` directly. The change is still gated by
+approval and recorded on the `AgentProposedAction` row, but it does **not** get
+the Action Engine's validation rules, effects, or `ActionExecution` audit trail.
+
+- **Where:** `backend/src/kangqore-view/kimmp/agents/AgentMissionEngine.ts`, the
+  `else if (a.targetType === 'Project' …)` branch in `execute()`.
+- **Fix:** register `UPDATE_PROJECT_SCHEDULE` as a real action; the engine
+  already prefers the registered path when one exists, so no code change needed.
+
+### Only one agent objective is implemented (P2)
+
+`interpretIntent` recognises `RECOVER_AT_RISK_PROJECTS` and `REPORT_STATUS`.
+Everything else classifies as `UNKNOWN` and the mission stops cleanly with
+`NO_ACTION` rather than guessing — correct behaviour, but it means the agentic
+surface currently answers one family of question.
+
+- **Where:** `backend/src/kangqore-view/kimmp/agents/AgentMissionEngine.ts`
+- **Note:** parsing is rule-based on purpose — the classification decides whether
+  a mission may mutate anything, so it must be inspectable and deterministic. An
+  LLM pass belongs *after* that gate, enriching an already-classified goal, not
+  deciding the safety question. Preserve that boundary when extending.
 
 ### Legacy listings have no certification path (P3)
 
