@@ -11425,15 +11425,20 @@ export const servicesData = {
     name: 'Salesforce',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
-    shortDescription: 'Salesforce org assessment, implementation, integration, data migration and managed operations',
-    fullDescription: 'We assess the org before proposing anything to it, then implement, integrate, migrate or run it — across Sales, Service, Experience, Data Cloud, Agentforce and Revenue Cloud, holding no license margin on either side of the advice.',
+    shortDescription: 'Salesforce consulting services: org assessment, implementation, integration, data migration and managed support',
+    fullDescription: 'Salesforce implementation, integration, data migration and managed services across Sales Cloud, Service Cloud, Data Cloud, Agentforce and Revenue Cloud.',
     fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
     keyFeatures: ['Org assessment', 'Implementation', 'Integration', 'Data migration', 'Managed operations'],
     relatedServiceSlugs: ['enterprise-integration-platform', 'cdp-strategy', 'servicenow'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80',
 
-    heroTitle: 'Salesforce Work That Starts\nWith the Org You Already Have',
+    // Keyword-led rather than positioning-led. "Salesforce consulting
+    // services" is the head term for this page, and naming Kangqore in the h1
+    // states the entity relationship outright — the provider-to-service triple
+    // an answer engine needs to cite us for the query, rather than inferring it
+    // from the domain.
+    heroTitle: 'Salesforce Consulting Services\nDelivered by Kangqore',
     heroBadge: 'Assessed. Built. Integrated. Run.',
     heroStripItems: [
       'Org Health Assessment', 'Sales & Service Cloud', 'Experience Cloud', 'Data Cloud',
