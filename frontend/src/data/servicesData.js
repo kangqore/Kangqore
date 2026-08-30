@@ -11427,7 +11427,11 @@ export const servicesData = {
     bannerBrand: 'ALIS™',
     shortDescription: 'Salesforce consulting services: org assessment, implementation, integration, data migration and managed support',
     fullDescription: 'Salesforce implementation, integration, data migration and managed services across Sales Cloud, Service Cloud, Data Cloud, Agentforce and Revenue Cloud.',
-    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[880px]',
+    // Holds the wrap so the second line starts on "Service Cloud,". At 880px
+    // the first line ran to "Sales Cloud, Service Cloud," and split the cloud
+    // list mid-pair. Measured: 760-780px puts the break after "Sales Cloud,"
+    // at every desktop width; 800px and above pulls "Service" back up.
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[780px]',
     keyFeatures: ['Org assessment', 'Implementation', 'Integration', 'Data migration', 'Managed operations'],
     relatedServiceSlugs: ['enterprise-integration-platform', 'cdp-strategy', 'servicenow'],
     featured: true,
