@@ -397,7 +397,7 @@ seedEnterpriseObjectModel()
   // Intelligence and Decision layers run on live records. Governed changes
   // (an approved re-baseline, an escalation) are preserved, not overwritten.
   .then(() => EnterpriseProjection.run())
-  .then(r => console.log(`[EnterpriseProjection] ${r.programs} programs, ${r.customers} customers, ${r.contracts} contracts`))
+  .then(r => console.log(`[EnterpriseProjection] ${r.projects} projects, ${r.customers} customers, ${r.contracts} contracts`))
   .catch(e => console.warn('[EnterpriseObjectModel] seed failed:', e.message));
 app.use('/api/admin/crm/partners', adminPartnersCrmRoutes);
 app.use('/api/admin/crm',          adminCrmSubentities);

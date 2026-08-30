@@ -50,9 +50,16 @@ const GOVERNED: Record<string, (props: any) => boolean> = {
 /** Create or update by externalId, always through the gateway. */
 async function upsert(typeName: string, externalId: string, properties: Record<string, any>) {
   const existing = await prisma.ontologyObject.findFirst({
-    where: { externalId }, select: { id: true, properties: true },
+    where: { externalId }, select: { id: true, properties: true, typeId: true },
   })
   if (existing) {
+    // Retype in place when the model moves a record to a better-fitting type —
+    // projects lived on Program only because tier 5 was empty. Recreating them
+    // would orphan every edge and lose the ids the missions point at.
+    const wanted = await typeId(typeName)
+    if (existing.typeId !== wanted) {
+      await OntologyGateway.updateObject(SYSTEM_ACTOR, existing.id, { typeId: wanted })
+    }
     const current = (existing.properties ?? {}) as any
     const patch = { ...properties }
     for (const [field, isGoverned] of Object.entries(GOVERNED)) {
@@ -101,13 +108,20 @@ export const EnterpriseProjection = {
     })
     await linkOnce(deliveryOutcome, deliveryGoal, 'Outcome', 'EnterpriseGoal', 'realises')
 
-    let programs = 0
+    let projects_ = 0
     for (const p of projects) {
       // budget is a Decimal column; only a real number becomes value at risk.
       const budget = p.budget !== null && p.budget !== undefined ? Number(p.budget) : null
 
-      const id = await upsert('Program', `project:${p.id}`, {
+      // Key on the bare Project id, which is the convention an earlier
+      // ontology sync already used. Inventing a `project:` prefix created a
+      // second object for every project that was already mirrored — the same
+      // 15 rows twice on one type, and double-counted in any assessment.
+      const id = await upsert('Project', p.id, {
         title: p.title,
+        // The legacy mirror wrote `name`; keep it in step so nothing reading
+        // the old key silently sees a stale value.
+        name: p.title,
         status: PROJECT_STATE[p.status] ?? 'IN_PROGRESS',
         progress: typeof p.progress === 'number' ? p.progress : 0,
         dueDate: p.dueDate ? p.dueDate.toISOString() : null,
@@ -116,8 +130,8 @@ export const EnterpriseProjection = {
         description: p.description ?? null,
         sourceRecord: `Project:${p.id}`,
       })
-      await linkOnce(id, deliveryOutcome, 'Program', 'Outcome', 'deliversOn')
-      programs++
+      await linkOnce(id, deliveryOutcome, 'Project', 'Outcome', 'deliversOn')
+      projects_++
     }
 
     // ── Revenue: customers and their contracts ───────────────────────────────
@@ -163,7 +177,7 @@ export const EnterpriseProjection = {
     }
 
     return {
-      programs, customers, contracts,
+      projects: projects_, customers, contracts,
       goals: 2,
       // Stated in the return value so a caller cannot mistake this for a
       // complete picture of the enterprise.

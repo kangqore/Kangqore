@@ -267,6 +267,21 @@ that maps to nothing lands on the non-mutating `REVIEW_ITEM`.
 Widening this set needs the ownership model resolved first (see the
 `StaffMember` ↔ `User` note above).
 
+### Two orphaned legacy Project objects (P4)
+
+An earlier ontology sync mirrored `Project` rows into the graph keyed on the
+bare Project id. Seventeen of those objects survive; **fifteen** match live
+`Project` rows and are now the authoritative mirror (`EnterpriseProjection`
+adopts them rather than creating a parallel set). The remaining **two** point at
+Project rows that no longer exist, carry no `title`, and will render as blank
+rows on any board over `Project`.
+
+They are pre-existing data, not something the projection created, so they have
+been left alone rather than deleted. Removing them is a one-line `deleteMany` on
+`externalId` values that match no `Project.id` — worth doing, but it is business
+data and should be a deliberate call.
+
+
 ---
 
 ## Notes

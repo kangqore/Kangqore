@@ -109,17 +109,12 @@ const TEMPORAL: ObjectSchema = {
 // so a reader can tell a strong signal from a guess.
 
 const INTELLIGENCE: ObjectSchema = {
-  aiRecommendation:  { type: 'string',  description: 'What KIMMP suggests doing next', columnClass: 'INTELLIGENCE', label: 'Recommendation', columnType: 'text', order: 50 },
   aiConfidence:      { type: 'percent', description: 'Confidence in that recommendation, 0–1', columnClass: 'INTELLIGENCE', label: 'Confidence', columnType: 'number', order: 51 },
   predictedRisk:     { type: 'percent', description: 'Probability this misses its commitment', columnClass: 'INTELLIGENCE', label: 'Predicted risk', columnType: 'number', order: 52 },
   nextBestAction:    { type: 'string',  description: 'The single highest-value next move', columnClass: 'INTELLIGENCE', label: 'Next best action', columnType: 'text', order: 53 },
-  opportunityScore:  { type: 'number',  description: 'Upside if this goes well', columnClass: 'INTELLIGENCE', label: 'Opportunity', columnType: 'number', order: 54, hidden: true },
   anomalyScore:      { type: 'number',  description: 'How far this deviates from comparable objects', columnClass: 'INTELLIGENCE', label: 'Anomaly', columnType: 'number', order: 55, hidden: true },
-  sentiment:         { type: 'select',  description: 'Tone of recent interactions', columnClass: 'INTELLIGENCE', label: 'Sentiment', columnType: 'badge', options: ['POSITIVE', 'NEUTRAL', 'NEGATIVE'], order: 56, hidden: true },
   rootCause:         { type: 'string',  description: 'Why it is in its current state', columnClass: 'INTELLIGENCE', label: 'Root cause', columnType: 'text', order: 57 },
-  expectedOutcome:   { type: 'string',  description: 'What this is expected to produce', columnClass: 'INTELLIGENCE', label: 'Expected outcome', columnType: 'text', order: 58, hidden: true },
   businessImpact:    { type: 'currency', description: 'Value at stake', columnClass: 'INTELLIGENCE', label: 'Business impact', columnType: 'number', order: 59 },
-  decisionConfidence:{ type: 'percent', description: 'Confidence in the last decision taken here', columnClass: 'INTELLIGENCE', label: 'Decision confidence', columnType: 'number', order: 60, hidden: true },
 }
 
 // ── Governance columns (§6) ──────────────────────────────────────────────────
@@ -127,6 +122,7 @@ const INTELLIGENCE: ObjectSchema = {
 // applies to only some objects is not governance.
 
 const GOVERNANCE: ObjectSchema = {
+  permission:        { type: 'string',  description: 'Access rule applied to this record', columnClass: 'GOVERNANCE', label: 'Permission', columnType: 'text', order: 70, hidden: true },
   policy:             { type: 'string', description: 'KimmpPolicy governing changes to this object', columnClass: 'GOVERNANCE', label: 'Policy', columnType: 'text', order: 70, hidden: true },
   approvalRequired:   { type: 'boolean', description: 'Whether changes need human approval', columnClass: 'GOVERNANCE', label: 'Approval required', columnType: 'badge', order: 71 },
   approvalState:      { type: 'select', description: 'Where the approval stands', columnClass: 'GOVERNANCE', label: 'Approval', columnType: 'badge', options: ['NOT_REQUIRED', 'PENDING', 'APPROVED', 'REJECTED'], colorMap: { NOT_REQUIRED: '#94a3b8', PENDING: '#f59e0b', APPROVED: '#10b981', REJECTED: '#ef4444' }, order: 72 },
@@ -179,6 +175,9 @@ export const ENTERPRISE_OBJECTS: EnterpriseObjectDef[] = [
     description: 'A funded body of work advancing an objective.' },
   { name: 'Program', displayName: 'Program', icon: 'Layers', color: '#0ea5e9', tier: 4,
     description: 'A coordinated set of projects.' },
+  { name: 'Project', displayName: 'Project', icon: 'FolderKanban', color: '#3b82f6', tier: 5,
+    description: 'A bounded delivery with its own budget, dates and owner.',
+    extra: { budget: { type: 'number', description: 'Committed budget', columnClass: 'ENTERPRISE', label: 'Budget', columnType: 'number', order: 5 } } },
   { name: 'Workstream', displayName: 'Workstream', icon: 'GitBranch', color: '#14b8a6', tier: 6,
     description: 'A parallel track of delivery inside a project.' },
   { name: 'Task', displayName: 'Task', icon: 'CheckSquare', color: '#22c55e', tier: 7,
@@ -199,8 +198,7 @@ export const ENTERPRISE_OBJECTS: EnterpriseObjectDef[] = [
     description: 'An organisation the enterprise serves.',
     extra: { tier:     { type: 'select', description: 'Account tier', columnClass: 'ENTERPRISE', label: 'Tier', columnType: 'badge', options: ['STRATEGIC', 'ENTERPRISE', 'STANDARD', 'STARTER'], order: 5 },
              arr:      { type: 'currency', description: 'Annual recurring revenue', columnClass: 'ENTERPRISE', label: 'ARR', columnType: 'number', order: 6 },
-             health:   { type: 'select', description: 'Account health', columnClass: 'ENTERPRISE', label: 'Health', columnType: 'badge', options: ['EXCELLENT', 'GOOD', 'AT_RISK', 'CRITICAL'], colorMap: { EXCELLENT: '#10b981', GOOD: '#22c55e', AT_RISK: '#f59e0b', CRITICAL: '#ef4444' }, order: 7 },
-             churnRisk:{ type: 'percent', description: 'Modelled churn probability', columnClass: 'INTELLIGENCE', label: 'Churn risk', columnType: 'number', order: 61 } } },
+             health:   { type: 'select', description: 'Account health', columnClass: 'ENTERPRISE', label: 'Health', columnType: 'badge', options: ['EXCELLENT', 'GOOD', 'AT_RISK', 'CRITICAL'], colorMap: { EXCELLENT: '#10b981', GOOD: '#22c55e', AT_RISK: '#f59e0b', CRITICAL: '#ef4444' }, order: 7 } } },
   { name: 'Contract', displayName: 'Contract', icon: 'FileSignature', color: '#8b5cf6',
     description: 'A commercial agreement with a customer or vendor.',
     extra: { value:      { type: 'currency', description: 'Contract value', columnClass: 'ENTERPRISE', label: 'Value', columnType: 'number', order: 5 },
@@ -208,8 +206,7 @@ export const ENTERPRISE_OBJECTS: EnterpriseObjectDef[] = [
   { name: 'Deal', displayName: 'Deal', icon: 'Handshake', color: '#10b981',
     description: 'A revenue opportunity in the pipeline.',
     extra: { stage:       { type: 'select', description: 'Pipeline stage', columnClass: 'ENTERPRISE', label: 'Stage', columnType: 'badge', options: ['NEW', 'QUALIFIED', 'DISCOVERY', 'PROPOSAL', 'NEGOTIATION', 'WON', 'LOST'], order: 5 },
-             value:       { type: 'currency', description: 'Deal value', columnClass: 'ENTERPRISE', label: 'Value', columnType: 'number', order: 6 },
-             probability: { type: 'percent', description: 'Modelled win probability', columnClass: 'INTELLIGENCE', label: 'Win probability', columnType: 'number', order: 61 } } },
+             value:       { type: 'currency', description: 'Deal value', columnClass: 'ENTERPRISE', label: 'Value', columnType: 'number', order: 6 } } },
   { name: 'Opportunity', displayName: 'Opportunity', icon: 'TrendingUp', color: '#22c55e',
     description: 'An identified chance to create value, before it becomes a deal.' },
 
@@ -218,6 +215,13 @@ export const ENTERPRISE_OBJECTS: EnterpriseObjectDef[] = [
     description: 'A unit of service work — a claim, matter, or engagement.' },
   { name: 'Request', displayName: 'Request', icon: 'Inbox', color: '#0ea5e9',
     description: 'Something asked for that must be triaged and fulfilled.' },
+  { name: 'Risk', displayName: 'Risk', icon: 'AlertTriangle', color: '#f97316',
+    extra: {
+      probability: { type: 'percent', description: 'Likelihood of occurring', columnClass: 'ENTERPRISE', label: 'Probability', columnType: 'number', order: 5 },
+      impact:      { type: 'select',  description: 'Severity if it occurs', columnClass: 'ENTERPRISE', label: 'Impact', columnType: 'badge', options: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], order: 6 },
+      mitigation:  { type: 'string',  description: 'Planned mitigation', columnClass: 'ENTERPRISE', label: 'Mitigation', columnType: 'text', order: 7 },
+    },
+    description: 'A probability of future loss, distinct from an Incident, which has already happened.' },
   { name: 'Incident', displayName: 'Incident', icon: 'AlertOctagon', color: '#ef4444',
     description: 'An unplanned disruption requiring response.',
     extra: { severity: { type: 'select', description: 'Incident severity', columnClass: 'ENTERPRISE', label: 'Severity', columnType: 'badge', options: ['SEV1', 'SEV2', 'SEV3', 'SEV4'], colorMap: { SEV1: '#dc2626', SEV2: '#f97316', SEV3: '#f59e0b', SEV4: '#94a3b8' }, order: 5 } } },
