@@ -11455,7 +11455,7 @@ export const servicesData = {
     whatIsHighlightNewLine: true,
     whatIsHighlight: 'CRM Transformation.',
     whatIsPara2: 'Customers judge a company on the parts of it they can see: how quickly a question gets answered, whether the person answering already knows what they bought, and whether the answer holds through every channel they try. Salesforce is where most enterprises decide to keep that record, which is why the platform ends up carrying the customer relationship rather than merely reporting on it.',
-    whatIsPara3: 'Our Salesforce consulting services cover the configuration and the custom development on either side of it \u2014 Sales Cloud, Service Cloud, Experience Cloud, Data Cloud and Revenue Cloud, built declaratively wherever declarative reaches and in Apex and Lightning Web Components where it does not. We hold no reseller agreement and take no margin on licenses, so advising you to use more of what you already own is a recommendation we are free to make.',
+    whatIsPara3: 'Our Salesforce consulting services cover the configuration and the custom development on either side of it \u2014 Sales, Service, Experience, Commerce and Marketing Cloud, with Data Cloud and Agentforce layered above them where the data supports it, built declaratively wherever declarative reaches and in Apex and Lightning Web Components where it does not. We hold no reseller agreement and take no margin on licenses, so advising you to use more of what you already own is a recommendation we are free to make.',
     whatIsPara4: 'What decides the result is rarely the technical build. It is the assessment in front of it \u2014 which processes are genuinely agreed, what data can be trusted, and which of the existing configuration should be retired rather than migrated. CRM transformation that skips that step delivers a faster version of the same disagreement, and the cost of it lands on the license line rather than in the project plan.',
 
 
@@ -11529,9 +11529,9 @@ export const servicesData = {
     // 2020 — the rename is the point, and it is made in the landscape entry.
     solutionsCarousel: {
       eyebrow: 'WHAT WE BUILD ON',
-      title: 'Five clouds,',
+      title: 'Eight Salesforce products,',
       titleHighlight: 'and what we actually do with each.',
-      subtitle: 'Most Salesforce estates run some combination of these five. What follows is the work itself rather than the product description — the second is on Salesforce’s own site and reads the same everywhere it is reprinted.',
+      subtitle: 'Most estates run some combination of these. What follows is the work itself rather than the product description \u2014 the second is on Salesforce\u2019s own site and reads the same everywhere it is reprinted.',
       items: [
         {
           title: 'Sales Cloud',
@@ -11556,6 +11556,20 @@ export const servicesData = {
           desc: 'Journeys and campaign orchestration, plus the unglamorous part underneath: which system owns consent, which owns the contact, and what happens when the two disagree. Two different products share this name, and we establish which one you mean first.',
           href: '/services/cdp-strategy',
           linkLabel: 'Customer data',
+        },
+        {
+          title: 'Data Cloud',
+          desc: 'Identity resolution across the systems that each hold a version of the same customer. The work is deciding which source wins before the product is switched on \u2014 Data Cloud unifies records, it does not settle which one is true, and that is a governance decision rather than a configuration one.',
+          href: '/services/cdp-strategy',
+          linkLabel: 'Customer data',
+        },
+        {
+          title: 'Agentforce',
+          desc: 'Agent design, guardrails, and the escalation path for when an agent should stop and hand over. We qualify the use case against the data underneath it first, because an agent answering confidently from duplicate records is worse than no agent. Pricing is consumption-based, so the cost curve gets modeled before the pilot rather than after it goes well.',
+        },
+        {
+          title: 'Revenue Cloud',
+          desc: 'Quoting, pricing and contracts, including the migration from CPQ \u2014 which is a re-implementation rather than an upgrade. We treat that as the opening it is: a pricing model that has collected exceptions for a decade is far easier to simplify during a move than during business as usual.',
         },
       ],
     },
