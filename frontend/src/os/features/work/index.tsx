@@ -3,9 +3,10 @@
 // Decision Matrix Engine evaluates 8 enterprise inputs and outputs structured prescriptive trade-offs.
 
 import { useLocation, Routes, Route, NavLink, Navigate } from 'react-router-dom'
-import { LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles, Scale, Activity } from 'lucide-react'
+import { FileStack, LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles, Scale, Activity } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
+import { TemplatesView }      from './pages/TemplatesView'
 import { BoardView }          from './pages/BoardView'
 import { TableView }          from './pages/TableView'
 import { TimelineView }       from './pages/TimelineView'
@@ -24,6 +25,7 @@ const BASE = '/kangqore-view/admin/work'
 const TABS = [
   { path: 'agent-ux',       label: 'AI Agent Workspace (Primary UX)', icon: Sparkles, primary: true },
   { path: 'decision-matrix',label: 'Decision Engine', icon: Scale },
+  { path: 'templates',       label: 'Templates',       icon: FileStack          },
   { path: 'board',           label: 'Board',           icon: LayoutGrid         },
   { path: 'table',           label: 'Table',           icon: Table2             },
   { path: 'timeline',        label: 'Timeline',        icon: GanttChartSquare   },
@@ -74,6 +76,7 @@ export function WorkModule() {
             <Route index element={<Navigate to="agent-ux" replace />} />
             <Route path="agent-ux"        element={<AgentPrimaryUxView />}  />
             <Route path="decision-matrix" element={<DecisionEngineView />}  />
+            <Route path="templates"       element={<TemplatesView />}       />
             <Route path="board"           element={<BoardView />}           />
             <Route path="table"           element={<TableView />}           />
             <Route path="timeline"        element={<TimelineView />}        />
