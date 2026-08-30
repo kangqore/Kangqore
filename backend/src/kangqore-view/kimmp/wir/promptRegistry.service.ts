@@ -56,7 +56,7 @@ export class PromptRegistry {
   }
 
   // S311 — same lookup as get(), but also returns which version actually
-  // served the call. Gateway callers (kimmpLLMRouter/withWaandax/AEGIS
+  // served the call. Gateway callers (kimmpLLMRouter/withKrisnam/AEGIS
   // callLLM) need this to record promptName+promptVersion on LlmCallLog.
   static async getWithVersion(name: string, version?: number): Promise<{ content: string; version: number } | null> {
     try {

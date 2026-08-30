@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
-import { withWaandax } from '../llm/waandaxAnthropic'
+import { withKrisnam } from '../llm/krisnamAnthropic'
 import crypto   from 'crypto'
 import logger from '../../../utils/logger'
 import { SignalLedger } from '../signals/signalLedger.service'
@@ -140,7 +140,7 @@ export const SCOUT_SOURCES: ScoutSource[] = [
   },
 ]
 
-const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
+const anthropic = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 async function extractSignals(
   query: string,

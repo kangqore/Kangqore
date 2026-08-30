@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { withWaandax } from '../../kangqore-immp/llm/waandaxAnthropic';
+import { withKrisnam } from '../../kangqore-immp/llm/krisnamAnthropic';
 import { API_KEYS } from '../../api-keys';
 import logger from '../../utils/logger';
 import { prisma } from '../../lib/prisma';
@@ -12,7 +12,7 @@ export class EqoreNurtureAgent {
   private static getClient(): Anthropic {
     if (!this.client) {
       if (!API_KEYS.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY missing');
-      this.client = withWaandax(new Anthropic({ apiKey: API_KEYS.ANTHROPIC_API_KEY }));
+      this.client = withKrisnam(new Anthropic({ apiKey: API_KEYS.ANTHROPIC_API_KEY }));
     }
     return this.client;
   }

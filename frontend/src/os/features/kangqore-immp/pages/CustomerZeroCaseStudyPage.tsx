@@ -228,7 +228,7 @@ export function CustomerZeroCaseStudyPage() {
             link={`${BASE}/workflows`} linkLabel="Workflows"
           />
           <WinCard
-            icon={Cpu} color={GOLD} title="WAANDAx Gen2 Inference"
+            icon={Cpu} color={GOLD} title="Krisnam Gen2 Inference"
             desc="Local Llama 3.2-3B running on-device via MLX. Gen2 inference panel live in Training. Sub-30s responses."
             link={`${BASE}/training`} linkLabel="Training"
           />
@@ -257,7 +257,7 @@ export function CustomerZeroCaseStudyPage() {
               },
               {
                 title: 'Gen2 inference is offline-first',
-                detail: 'WAANDAx MLX server must be manually restarted after reboot. Acceptable for Customer Zero. Customer One needs auto-start or cloud fallback.',
+                detail: 'Krisnam MLX server must be manually restarted after reboot. Acceptable for Customer Zero. Customer One needs auto-start or cloud fallback.',
               },
               {
                 title: 'COIG overshot our 90-day target at launch',

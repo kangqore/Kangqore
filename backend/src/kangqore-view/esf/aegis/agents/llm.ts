@@ -1,21 +1,21 @@
 import Anthropic from '@anthropic-ai/sdk'
-import { withWaandax } from '../../../../kangqore-immp/llm/waandaxAnthropic'
+import { withKrisnam } from '../../../../kangqore-immp/llm/krisnamAnthropic'
 import { logCall, scanPii } from '../../../kimmp/gateway/KimmpGatewayCore'
 import { PromptRegistry } from '../../../../kangqore-immp/wir/promptRegistry.service'
 
-const client = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
+const client = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 // S308 — explicit gateway logging with actorType:'AEGIS'. This is the shared
 // helper ~40 AEGIS engine agent files call, so instrumenting it here covers
-// all of them without touching each file. The passive withWaandax() logger
-// skips AEGIS-attributed calls (see waandaxAnthropic.ts logGatewayCall) to
+// all of them without touching each file. The passive withKrisnam() logger
+// skips AEGIS-attributed calls (see krisnamAnthropic.ts logGatewayCall) to
 // avoid double-counting the same call from both places.
 export async function callLLM(
   system: string,
   user: string,
   maxTokens = 500,
   // S311 — same registry-backed override as kimmpLLMRouter.routedCall/
-  // withWaandax: resolved via PromptRegistry, falls back to `system` on a miss.
+  // withKrisnam: resolved via PromptRegistry, falls back to `system` on a miss.
   promptName?: string,
 ): Promise<string> {
   if (!process.env.ANTHROPIC_API_KEY) return ''
@@ -37,7 +37,7 @@ export async function callLLM(
       messages: [{ role: 'user', content: user }],
     })
     const text = res.content[0]?.type === 'text' ? res.content[0].text : ''
-    const provider = res.id?.toString().startsWith('waandax_') ? 'waandax' : 'claude'
+    const provider = res.id?.toString().startsWith('krisnam_') ? 'krisnam' : 'claude'
     scanPii(resolvedSystem + '\n' + user).then(scan => logCall({
       actorType: 'AEGIS', model: res.model, provider,
       promptTokens: res.usage?.input_tokens ?? 0,

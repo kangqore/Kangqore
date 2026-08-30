@@ -5777,14 +5777,14 @@ function LLMEngineStrip() {
   const byName: Record<string, { calls: number; health: string; available: boolean }> = {}
   for (const p of data.providers ?? []) byName[p.name] = p
 
-  const localModel = (data.waandaxModel ?? '').split('/').pop() || '—'
-  // Platform policy: Claude-first when usable; WAANDAx is the resilience layer
+  const localModel = (data.krisnamModel ?? '').split('/').pop() || '—'
+  // Platform policy: Claude-first when usable; Krisnam is the resilience layer
   const chain = [
     ...(data.deployedGen2Model ? [{ key: 'gen2', label: 'GEN2', model: 'fine-tuned' }] : []),
     { key: 'claude',  label: 'CLAUDE',  model: 'sonnet-4-6' },
     { key: 'openai',  label: 'OPENAI',  model: 'gpt-4o' },
     { key: 'gemini',  label: 'GEMINI',  model: 'flash' },
-    { key: 'waandax', label: 'WAANDAX', model: localModel },
+    { key: 'krisnam', label: 'KRISNAM', model: localModel },
   ]
   // Ground truth from the router's last actual successful call — NOT a guess
   // from circuit-breaker health. Health can read 'recovering' (not 'offline')
@@ -6840,7 +6840,7 @@ export function AdminOverview() {
 
               {/* WAANDA Command Bar */}
               <div style={{ width: '85%' }}>
-                <Panel title="WAANDAx" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C} collapsible>
+                <Panel title="Krisnam" subtitle="Workforce-Aware Autonomous Navigation, Decision & Advisory" color={C} collapsible>
                   <HUDCommandBar
                     insights={insights} color={C} recentSignals={recentSignals} criticalAlert={criticalAlert}
                     onScenario={handleScenario} onGoalCockpit={handleGoalCockpit}

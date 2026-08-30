@@ -16,7 +16,7 @@ Kangqore is not a workflow tool or a dashboard. It is an operating environment �
 
 The intelligence engine powering every AI interaction across the platform. WAANDA is the commercial identity; KIMMP is the engineering runtime. All AI calls route through KIMMP's unified gateway, which enforces token budgets, logs every LLM call, and applies AEGIS governance before any action executes.
 
-- **WAANDAx** — local Llama 3.2-3B (via MLX) for low-latency reasoning; Claude (Anthropic) as the primary engine; Gen5 Foundation Model in training
+- **Krisnam** — local Llama 3.2-3B (via MLX) for low-latency reasoning; Claude (Anthropic) as the primary engine; Gen5 Foundation Model in training
 - **WAANDA Studio** → **WAANDA OS Engine** → **KIMMP Runtime** — the full execution stack
 - **WVIS (WAANDA Graph)** — visual intelligence canvas: 11 intelligence node types, 7 operational node types, dependency mapping, AI explain drawer
 
@@ -95,7 +95,7 @@ The universal semantic data architecture powering every business object and rela
 - Node.js ≥ 22, TypeScript, Express
 - Prisma ORM → PostgreSQL 15 with pgvector extension
 - Redis 7 + BullMQ for async queues
-- Anthropic SDK (Claude), local MLX server (WAANDAx)
+- Anthropic SDK (Claude), local MLX server (Krisnam)
 - Passport.js — local, Google, LinkedIn, Apple, SAML/SSO
 - Socket.io for real-time
 

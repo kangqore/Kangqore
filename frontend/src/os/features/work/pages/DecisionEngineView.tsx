@@ -135,7 +135,7 @@ export default function DecisionEngineView() {
           Prescriptive Decision Matrix & Trade-Off Engine
         </h1>
         <p className="text-sm text-slate-300 max-w-3xl">
-          Ingests 8 enterprise inputs (Ontology, Telemetry, Historical Outcomes, AEGIS Policies, WAANDAx LLM, Goals, Constraints, Preferences) and evaluates trade-offs between primary recommendations and alternatives.
+          Ingests 8 enterprise inputs (Ontology, Telemetry, Historical Outcomes, AEGIS Policies, Krisnam LLM, Goals, Constraints, Preferences) and evaluates trade-offs between primary recommendations and alternatives.
         </p>
       </div>
 
@@ -147,7 +147,7 @@ export default function DecisionEngineView() {
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Telemetry Bus</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Outcome History</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">AEGIS Policies</div>
-          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center text-blue-400">WAANDAx LLM</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center text-blue-400">Krisnam LLM</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">WorkGoal OKRs</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Constraints</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center text-purple-400">Executive Rules</div>

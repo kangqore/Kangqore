@@ -19,14 +19,14 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic     from '@anthropic-ai/sdk'
-import { withWaandax } from '../llm/waandaxAnthropic'
+import { withKrisnam } from '../llm/krisnamAnthropic'
 import { prisma }   from '../../../lib/prisma'
 import logger       from '../../../utils/logger'
 import { classifyCurriculum } from '../../waanda/training/curriculumClassifier'
 import { critiqueDecision } from './adversarialCritic.service'
 import { getReflexPattern } from './kimmpReflex.service'
 
-const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
+const anthropic = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 const FINE_TUNE_THRESHOLD = 1_000   // approved examples needed to graduate
 

@@ -178,7 +178,7 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'kimmp-alerts',     label: 'Alerts',          path: `${BASE}/kangqore-immp/alerts`,           category: 'Execution & Ops' },
       { id: 'kimmp-workflows',  label: 'Workflows',       path: `${BASE}/kangqore-immp/workflows`,        category: 'Execution & Ops' },
       { id: 'kimmp-gen2',           label: 'Gen 2 Training',         path: `${BASE}/kangqore-immp/training`,              category: 'Execution & Ops' },
-      { id: 'kimmp-waanda-gen2',    label: 'WAANDAx Gen 2',          path: `${BASE}/kangqore-immp/waanda-gen2`,           category: 'Execution & Ops', badge: 'new' },
+      { id: 'kimmp-waanda-gen2',    label: 'Krisnam Gen 2',          path: `${BASE}/kangqore-immp/waanda-gen2`,           category: 'Execution & Ops', badge: 'new' },
       { id: 'kimmp-gen3',           label: 'Gen 3 Runtime',          path: `${BASE}/kangqore-immp/gen3`,                  category: 'Execution & Ops', badge: 'new' },
       { id: 'kimmp-gen2-accuracy',  label: 'Gen 2 Accuracy',         path: `${BASE}/kangqore-immp/gen2-accuracy`,         category: 'Execution & Ops', badge: 'new' },
       { id: 'kimmp-agent-coord',    label: 'Multi-Agent',            path: `${BASE}/kangqore-immp/agent-coordination`,    category: 'Execution & Ops', badge: 'new' },

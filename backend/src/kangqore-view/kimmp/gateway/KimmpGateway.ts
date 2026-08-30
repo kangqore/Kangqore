@@ -1,10 +1,10 @@
 // S308-S310 — KIMMP Intelligence Gateway: the explicit, richer entrypoint
 // (complete()) for new call sites that want real budget enforcement (a real
 // userId) and PII REDACT/BLOCK — not just AUDIT. See kimmpGatewayCore.ts for
-// the logging/PII/budget primitives, which the router and withWaandax also
+// the logging/PII/budget primitives, which the router and withKrisnam also
 // use directly for passive, near-total coverage of the ~85 existing call
 // sites without rewriting them all (see kimmpLLMRouter.ts routedCall() and
-// kangqore-immp/llm/waandaxAnthropic.ts withWaandax() for those call sites).
+// kangqore-immp/llm/krisnamAnthropic.ts withKrisnam() for those call sites).
 
 import { routedCall, type RouterMeta } from '../../../kangqore-immp/llm/kimmpLLMRouter'
 import {

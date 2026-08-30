@@ -695,14 +695,14 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         </div>
       </div>
 
-      {/* ── WAANDAx Server Status ────────────────────────────────────────────── */}
+      {/* ── Krisnam Server Status ────────────────────────────────────────────── */}
       <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full" style={{ background: routerStats?.waandaxAvailable ? GRN : RED }} />
-            <p className="text-xs font-bold" style={{ color: T1 }}>WAANDAx Local Server</p>
-            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: routerStats?.waandaxAvailable ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)', color: routerStats?.waandaxAvailable ? GRN : RED }}>
-              {routerStats?.waandaxAvailable ? 'ONLINE' : 'OFFLINE'}
+            <span className="w-2 h-2 rounded-full" style={{ background: routerStats?.krisnamAvailable ? GRN : RED }} />
+            <p className="text-xs font-bold" style={{ color: T1 }}>Krisnam Local Server</p>
+            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: routerStats?.krisnamAvailable ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)', color: routerStats?.krisnamAvailable ? GRN : RED }}>
+              {routerStats?.krisnamAvailable ? 'ONLINE' : 'OFFLINE'}
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -719,31 +719,31 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         <div className="grid grid-cols-2 gap-3 text-[11px]">
           <div>
             <span style={{ color: T2 }}>Model path: </span>
-            <span className="font-mono font-bold" style={{ color: routerStats?.waandaxModel ? T1 : RED }}>
-              {routerStats?.waandaxModel ?? 'WAANDAX_MODEL not set'}
+            <span className="font-mono font-bold" style={{ color: routerStats?.krisnamModel ? T1 : RED }}>
+              {routerStats?.krisnamModel ?? 'KRISNAM_MODEL not set'}
             </span>
           </div>
           <div>
             <span style={{ color: T2 }}>Server URL: </span>
-            <span className="font-mono" style={{ color: T2 }}>{routerStats?.waandaxUrl ?? 'http://localhost:11435'}</span>
+            <span className="font-mono" style={{ color: T2 }}>{routerStats?.krisnamUrl ?? 'http://localhost:11435'}</span>
           </div>
           <div>
             <span style={{ color: T2 }}>Local calls: </span>
-            <span className="font-bold" style={{ color: GRN }}>{routerStats?.callsWaandax ?? 0}</span>
+            <span className="font-bold" style={{ color: GRN }}>{routerStats?.callsKrisnam ?? 0}</span>
           </div>
           <div>
             <span style={{ color: T2 }}>Autonomy ratio: </span>
             <span className="font-bold" style={{ color: PURP }}>{((routerStats?.autonomyRatio ?? 0) * 100).toFixed(1)}%</span>
           </div>
         </div>
-        {!routerStats?.waandaxAvailable && (
+        {!routerStats?.krisnamAvailable && (
           <div className="mt-3 p-2 rounded-2xl font-mono text-[10px]" style={{ background: 'rgba(239,68,68,0.06)', color: RED, border: '1px solid rgba(239,68,68,0.2)' }}>
-            cd ~/.kimmp-venv && mlx_lm.server --model {routerStats?.waandaxModel ?? '$WAANDAX_MODEL'} --port 11435
+            cd ~/.kimmp-venv && mlx_lm.server --model {routerStats?.krisnamModel ?? '$KRISNAM_MODEL'} --port 11435
           </div>
         )}
-        {routerStats?.waandaxAvailable && routerStats?.waandaxModel && (
+        {routerStats?.krisnamAvailable && routerStats?.krisnamModel && (
           <p className="text-[11px] mt-2" style={{ color: GRN }}>
-            Router Step 1 active — WAANDAx handles local inference before Claude
+            Router Step 1 active — Krisnam handles local inference before Claude
           </p>
         )}
       </div>
@@ -754,7 +754,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           <p className="text-xs font-bold mb-1" style={{ color: T1 }}>Live Router Stats</p>
           <p className="text-[11px]" style={{ color: T2 }}>
             {routerStats
-              ? `${routerStats.callsTotal} total calls · WAANDAx ${routerStats.callsWaandax ?? 0} · Gen2 ${routerStats.callsGen2 ?? 0} (${((routerStats.gen2Ratio ?? 0) * 100).toFixed(1)}%) · Autonomy ${((routerStats.autonomyRatio ?? 0) * 100).toFixed(1)}%`
+              ? `${routerStats.callsTotal} total calls · Krisnam ${routerStats.callsKrisnam ?? 0} · Gen2 ${routerStats.callsGen2 ?? 0} (${((routerStats.gen2Ratio ?? 0) * 100).toFixed(1)}%) · Autonomy ${((routerStats.autonomyRatio ?? 0) * 100).toFixed(1)}%`
               : 'Loading…'}
           </p>
         </div>
@@ -852,7 +852,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
             <Cpu className="w-8 h-8 mx-auto mb-2 opacity-30" />
             <p className="text-sm font-medium" style={{ color: T2 }}>No Gen 2 models registered</p>
             <p className="text-[11px] mt-1" style={{ color: T2 }}>
-              Run MLX-LM fine-tune, then use POST /waandax/register-model to register the deployed weights path.
+              Run MLX-LM fine-tune, then use POST /krisnam/register-model to register the deployed weights path.
             </p>
           </div>
         ) : (
@@ -1148,7 +1148,7 @@ function QualityDiffTab() {
           <p className="text-sm font-bold" style={{ color: T1 }}>Gen 1 vs Gen 2 Quality Diff</p>
         </div>
         <p className="text-xs" style={{ color: T2 }}>
-          Run the same prompt through Gen 1 (Claude) and Gen 2 / WAANDAx in parallel. Compare response quality, latency, and output length to validate Gen 2 readiness.
+          Run the same prompt through Gen 1 (Claude) and Gen 2 / Krisnam in parallel. Compare response quality, latency, and output length to validate Gen 2 readiness.
         </p>
       </div>
 
@@ -1199,7 +1199,7 @@ function QualityDiffTab() {
           <div className="grid grid-cols-2 gap-4">
             {[
               { key: 'gen1', label: 'Gen 1 · Claude', data: result.gen1, accent: BLUE },
-              { key: 'gen2', label: `Gen 2 · ${result.gen2.provider === 'gen1' ? 'Claude (WAANDAx offline)' : 'WAANDAx'}`, data: result.gen2, accent: result.gen2.provider === 'gen1' ? AMB : PURP },
+              { key: 'gen2', label: `Gen 2 · ${result.gen2.provider === 'gen1' ? 'Claude (Krisnam offline)' : 'Krisnam'}`, data: result.gen2, accent: result.gen2.provider === 'gen1' ? AMB : PURP },
             ].map(({ key, label, data, accent }) => (
               <div key={key} className="rounded-2xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: BDR, background: SURF }}>
@@ -1231,8 +1231,8 @@ function QualityDiffTab() {
               Gen 1: <span className="font-mono" style={{ color: T1 }}>{result.gen1.model}</span> ·
               Gen 2: <span className="font-mono" style={{ color: T1 }}>{result.gen2.model}</span> ·
               {result.gen2.provider !== 'gen1'
-                ? <span style={{ color: GRN }}> WAANDAx active — local inference serving Gen 2 slot</span>
-                : <span style={{ color: AMB }}> WAANDAx offline — both slots served by Claude</span>
+                ? <span style={{ color: GRN }}> Krisnam active — local inference serving Gen 2 slot</span>
+                : <span style={{ color: AMB }}> Krisnam offline — both slots served by Claude</span>
               }
             </p>
           </div>

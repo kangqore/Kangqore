@@ -29,7 +29,7 @@ export function Gen4GatePage() {
           <Trophy style={{ width: 28, height: 28, color: allPass ? GREEN : PURPLE }} />
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 18, fontWeight: 900, color: T1 }}>Gate S166 — WAANDAx Foundation v0.1</div>
+          <div style={{ fontSize: 18, fontWeight: 900, color: T1 }}>Gate S166 — Krisnam Foundation v0.1</div>
           <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>Gen4 at 50% KIMMP routing · parity ≥ 80% vs Claude · cost reduction confirmed · circuit healthy</div>
         </div>
         <div style={{ textAlign: 'right' }}>
@@ -83,7 +83,7 @@ export function Gen4GatePage() {
 
       {allPass && (
         <div style={{ padding: '16px 22px', borderRadius: 14, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)' }}>
-          <div style={{ fontSize: 14, fontWeight: 900, color: GREEN, marginBottom: 4 }}>✓ WAANDAx Foundation v0.1 declared — Track 4 complete</div>
+          <div style={{ fontSize: 14, fontWeight: 900, color: GREEN, marginBottom: 4 }}>✓ Krisnam Foundation v0.1 declared — Track 4 complete</div>
           <div style={{ fontSize: 12, color: T2 }}>Gen4 model in production. AI self-sufficiency milestone achieved. Cost-per-inference below Claude baseline. Revenue Ops (S167–S170) closes Chapter 9.</div>
         </div>
       )}

@@ -10,13 +10,13 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk'
-import { withWaandax } from '../llm/waandaxAnthropic'
+import { withKrisnam } from '../llm/krisnamAnthropic'
 import { SystemLearning } from './systemLearning'
 import { SystemRAG } from './systemRAG'
 import { SignalLedger } from '../signals/signalLedger.service'
 import logger from '../../../utils/logger'
 
-const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
+const anthropic = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
 
 const META_SYSTEM_PROMPT = `You are KIMMP/WAANDA — the governing intelligence of the Kangqore platform.
 You are reviewing your own performance data. Be honest, precise, and actionable.

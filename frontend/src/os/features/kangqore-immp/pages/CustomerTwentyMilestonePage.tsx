@@ -139,7 +139,7 @@ export function CustomerTwentyMilestonePage() {
         <p className="text-xs font-bold uppercase tracking-widest" style={{ color: PURP }}>What Comes Next</p>
         <p className="text-base font-black" style={{ color: T1 }}>Chapter 9 — Market Expansion & Ecosystem Scale</p>
         <p className="text-sm leading-relaxed" style={{ color: T2 }}>
-          Platform v1.0 declared. The Chapter 9 roadmap covers vertical SaaS licensing (pre-configured industry editions), OEM white-label deployments through the partner network, international GTM across UK/EU/India (regions already live), and WAANDAx Gen4 foundation model training as corpus reaches threshold.
+          Platform v1.0 declared. The Chapter 9 roadmap covers vertical SaaS licensing (pre-configured industry editions), OEM white-label deployments through the partner network, international GTM across UK/EU/India (regions already live), and Krisnam Gen4 foundation model training as corpus reaches threshold.
         </p>
         <div className="flex flex-wrap gap-2 pt-1">
           {['Vertical SaaS Licensing', 'OEM / White-label', 'International GTM', 'Gen4 Training'].map(chip => (

@@ -1,10 +1,10 @@
-// Phase 7 — Advanced Decision Engine Architecture (WAANDA / WAANDAx / KIMMP)
+// Phase 7 — Advanced Decision Engine Architecture (WAANDA / Krisnam / KIMMP)
 // Ingests 8 Enterprise Inputs:
 //   1. Ontology (NOLAN: ROBERT + ALFRED)
 //   2. Live Telemetry (Signal Ledger & Traces)
 //   3. Historical Outcomes & Learning Examples
 //   4. AEGIS Policies & Constraints
-//   5. WAANDAx Mainstream LLM Models
+//   5. Krisnam Mainstream LLM Models
 //   6. Business Objectives & Goals
 //   7. Human Preferences & Executive Rules
 //   8. Predictive Forecast Models
@@ -228,7 +228,7 @@ Formulate prescriptive action plan, confidence %, expected primary impact, alter
 
     const llmResult = await routedCall(
       'claude-sonnet-4-6',
-      'You are WAANDAx, Kangqore View\'s Decision Engine. Output structured prescriptive decision matrix.',
+      'You are Krisnam, Kangqore View\'s Decision Engine. Output structured prescriptive decision matrix.',
       llmPrompt,
       1000
     ).catch(() => null);

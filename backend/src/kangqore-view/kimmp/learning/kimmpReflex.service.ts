@@ -10,7 +10,7 @@ export interface ReflexMatch {
 
 /**
  * KimmpReflexCache (The Fast-Response Memory Tier)
- * Retrieves highly accurate (Critic-approved) patterns instantly so KIMMP/WAANDAx 
+ * Retrieves highly accurate (Critic-approved) patterns instantly so KIMMP/Krisnam 
  * can reuse proven logic in real-time, bypassing the slow LLM fine-tuning cycle.
  */
 export async function getReflexPattern(
