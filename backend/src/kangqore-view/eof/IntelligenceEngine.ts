@@ -37,6 +37,9 @@ export interface Inference {
   rootCause: string
   nextBestAction: string
   businessImpact: number | null
+  /** Which object holds that value. Two threats reaching the same contract
+   *  must not each be counted — a contract can only be lost once. */
+  businessImpactSourceId: string | null
   anomalyScore: number | null
   aiConfidence: number           // 0–1
 
@@ -188,8 +191,9 @@ export const IntelligenceEngine = {
     }
 
     // ── Business impact: traverse to something that holds a real value ───────
-    const businessImpact = await this.traverseToValue(objectId)
-    if (businessImpact !== null) evidence.push(`value reached via graph traversal: ${businessImpact}`)
+    const valueHit = await this.traverseToValue(objectId)
+    const businessImpact = valueHit?.value ?? null
+    if (valueHit) evidence.push(`value ${valueHit.value} reached via graph traversal from ${valueHit.sourceId}`)
 
     // ── Confidence: a function of evidence, not a flattering constant ────────
     // History, movement, and a due date each make the forecast more trustworthy.
@@ -212,6 +216,7 @@ export const IntelligenceEngine = {
       rootCause,
       nextBestAction,
       businessImpact,
+      businessImpactSourceId: valueHit?.sourceId ?? null,
       anomalyScore,
       aiConfidence,
       evidence,
@@ -224,7 +229,7 @@ export const IntelligenceEngine = {
    * Returns null rather than 0 when nothing is reachable: "unknown" and "zero"
    * are different answers.
    */
-  async traverseToValue(objectId: string, depth = 0): Promise<number | null> {
+  async traverseToValue(objectId: string, depth = 0): Promise<{ value: number; sourceId: string } | null> {
     if (depth > 3) return null
 
     const out = await prisma.ontologyRelationship.findMany({
@@ -243,7 +248,7 @@ export const IntelligenceEngine = {
     for (const t of targets) {
       const p = (t.properties ?? {}) as any
       const direct = p.value ?? p.arr ?? p.measuredValue
-      if (typeof direct === 'number' && direct > 0) return direct
+      if (typeof direct === 'number' && direct > 0) return { value: direct, sourceId: t.id }
     }
     // Nothing here holds a value — keep walking outward.
     for (const t of targets) {
