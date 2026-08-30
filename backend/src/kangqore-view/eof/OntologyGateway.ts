@@ -119,9 +119,18 @@ export const OntologyGateway = {
     return { status: 'OK', data: obj }
   },
 
+  /**
+   * Replace semantics: `data` is passed to Prisma as given, so supplying
+   * `{ properties: {...} }` REPLACES the whole properties document. That is
+   * almost never what a caller wants — use `patchObject` to merge.
+   *
+   * Kept for callers that genuinely intend replacement (bulk reload, import).
+   */
   async updateObject(actor: GatewayActor, id: string, data: Record<string, any>): Promise<GatewayResult> {
-    // Marking check before policy: can this actor even see the object?
-    const existing = await prisma.ontologyObject.findUnique({ where: { id }, select: { markings: true } })
+    // Fetch the whole row, not just markings: it is needed for the marking
+    // check AND as the CDC `before` image. Emitting before=null made every
+    // diff-shaped consumer (status/priority/assignment change) underivable.
+    const existing = await prisma.ontologyObject.findUnique({ where: { id } })
     if (existing && !canAccess((existing.markings as string[]) ?? [], actor.clearances)) {
       return { status: 'DENIED', reason: 'Insufficient clearance for this object\'s markings' }
     }
@@ -130,7 +139,42 @@ export const OntologyGateway = {
     if (gate) return gate
 
     const obj = await prisma.ontologyObject.update({ where: { id }, data })
-    CdcService.emit('ontology_objects', 'UPDATE', null, obj).catch(() => {})
+    CdcService.emit('ontology_objects', 'UPDATE', existing, obj).catch(() => {})
+    return { status: 'OK', data: obj }
+  },
+
+  /**
+   * Merge semantics — the one callers almost always want.
+   *
+   * `properties` is shallow-merged over the existing document, so a partial
+   * patch cannot silently drop unrelated fields. This matches what
+   * `ActionEngine.applyDbEffect` already does for UPDATE_OBJECT effects; the
+   * two write paths previously disagreed, which meant the same logical edit
+   * destroyed data through one path and not the other.
+   */
+  async patchObject(
+    actor: GatewayActor,
+    id: string,
+    patch: { properties?: Record<string, any>; markings?: string[]; externalId?: string | null },
+  ): Promise<GatewayResult> {
+    const existing = await prisma.ontologyObject.findUnique({ where: { id } })
+    if (!existing) return { status: 'DENIED', reason: `Object "${id}" not found` }
+    if (!canAccess((existing.markings as string[]) ?? [], actor.clearances)) {
+      return { status: 'DENIED', reason: 'Insufficient clearance for this object\'s markings' }
+    }
+
+    const gate = await policyGate('UPDATE_OBJECT', { id, ...patch }, actor, id)
+    if (gate) return gate
+
+    const data: Record<string, any> = {}
+    if (patch.properties) {
+      data.properties = { ...((existing.properties as object) ?? {}), ...patch.properties }
+    }
+    if (patch.markings !== undefined) data.markings = patch.markings
+    if (patch.externalId !== undefined) data.externalId = patch.externalId
+
+    const obj = await prisma.ontologyObject.update({ where: { id }, data })
+    CdcService.emit('ontology_objects', 'UPDATE', existing, obj).catch(() => {})
     return { status: 'OK', data: obj }
   },
 
@@ -183,7 +227,7 @@ export const OntologyGateway = {
       create: upsertData.create as any,
       update: upsertData.update as any,
     })
-    CdcService.emit('ontology_relationships', 'UPSERT', null, rel).catch(() => {})
+    CdcService.emit('ontology_relationships', existing ? 'UPDATE' : 'INSERT', existing ?? null, rel).catch(() => {})
     return { status: 'OK', data: rel }
   },
 
