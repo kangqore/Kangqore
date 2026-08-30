@@ -30,6 +30,7 @@ const SRC = join(ROOT, 'backend/src')
 const ALLOWLIST = new Map([
   ['kangqore-view/eof/OntologyGateway.ts', 'the gateway itself'],
   ['kangqore-view/esf/aegis/compliance/aegisComplianceTestSuite.ts', 'compliance suite: constructs fixtures to prove the gateway blocks them'],
+  ['kangqore-view/eof/scripts/slice0-foundations-e2e.ts', 'probe: creates and tears down its own throwaway type, and asserts gateway behaviour'],
 
   // ── Known debt, tracked in docs/DEFERRED.md ────────────────────────────────
   // These predate the gate. They are grandfathered so the check can be turned
@@ -42,7 +43,13 @@ const ALLOWLIST = new Map([
   ['kangqore-view/automation/ActionEngine.ts', 'DEBT: action effects write objects directly'],
 ])
 
-const WRITE = /prisma\s*\.\s*ontology(Object|Relationship)\s*\.\s*(create|createMany|update|updateMany|upsert|delete|deleteMany)\b/g
+// Matches any Prisma client alias, not just `prisma`. The original regex only
+// caught `prisma.ontologyObject.*`, so writes made through a transaction client
+// — `tx.ontologyObject.update(...)` inside `$transaction` — were invisible.
+// ActionEngine, the main execution path, writes exactly that way, so the gate
+// reported clean while the busiest bypass in the codebase went unseen.
+const WRITE =
+  /\b(prisma|tx|client|db|trx)\s*\.\s*ontology(Object|Relationship)\s*\.\s*(create|createMany|update|updateMany|upsert|delete|deleteMany)\b/g
 
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir)) {
