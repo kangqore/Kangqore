@@ -379,12 +379,25 @@ app.use('/api/admin/crm/clients',  adminClientsCrmRoutes);
 import clientOnboardingRoutes from './routes/client-onboarding.routes';
 app.use('/api/admin/client-onboarding', clientOnboardingRoutes);
 
+import workOsRoutes from './routes/work-os.routes';
+app.use('/api/admin/work-os', workOsRoutes);
+
 // Materialise the Universal Enterprise Object Model into NOLAN on boot.
 // Idempotent: types/schemas/cardinality rules are upserted, so editing
 // EnterpriseObjectModel.ts and restarting is the whole update path.
 import { seedEnterpriseObjectModel } from './kangqore-view/eof/EnterpriseObjectSeeder';
+import { RecoveryActionSeeder } from './kangqore-view/eof/RecoveryActionSeeder';
+import { EnterpriseProjection } from './kangqore-view/eof/EnterpriseProjection';
 seedEnterpriseObjectModel()
   .then(r => console.log(`[EnterpriseObjectModel] ${r.typesCreated} created, ${r.typesUpdated} updated, ${r.cardinalityRules} cardinality rules`))
+  // Types must exist before actions can be bound to them.
+  .then(() => RecoveryActionSeeder.seed())
+  .then(r => console.log(`[RecoveryActions] ${r.created} created, ${r.updated} updated across ${r.types} types`))
+  // Mirrors real Projects and ClientCRM rows into the enterprise model so the
+  // Intelligence and Decision layers run on live records. Governed changes
+  // (an approved re-baseline, an escalation) are preserved, not overwritten.
+  .then(() => EnterpriseProjection.run())
+  .then(r => console.log(`[EnterpriseProjection] ${r.programs} programs, ${r.customers} customers, ${r.contracts} contracts`))
   .catch(e => console.warn('[EnterpriseObjectModel] seed failed:', e.message));
 app.use('/api/admin/crm/partners', adminPartnersCrmRoutes);
 app.use('/api/admin/crm',          adminCrmSubentities);

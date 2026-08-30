@@ -191,7 +191,13 @@ export const IntelligenceEngine = {
     }
 
     // ── Business impact: traverse to something that holds a real value ───────
-    const valueHit = await this.traverseToValue(objectId)
+    // An object that carries its own value needs no traversal: a £320k project
+    // running late puts £320k at risk whether or not it is wired to a contract.
+    // Only when it holds no value of its own is the graph walked outward.
+    const own = props.value ?? props.arr ?? props.measuredValue ?? props.budget
+    const valueHit = typeof own === 'number' && own > 0
+      ? { value: own, sourceId: objectId }
+      : await this.traverseToValue(objectId)
     const businessImpact = valueHit?.value ?? null
     if (valueHit) evidence.push(`value ${valueHit.value} reached via graph traversal from ${valueHit.sourceId}`)
 
@@ -247,7 +253,7 @@ export const IntelligenceEngine = {
 
     for (const t of targets) {
       const p = (t.properties ?? {}) as any
-      const direct = p.value ?? p.arr ?? p.measuredValue
+      const direct = p.value ?? p.arr ?? p.measuredValue ?? p.budget
       if (typeof direct === 'number' && direct > 0) return { value: direct, sourceId: t.id }
     }
     // Nothing here holds a value — keep walking outward.

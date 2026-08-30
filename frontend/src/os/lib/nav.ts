@@ -323,6 +323,7 @@ export const RAIL_ITEMS: RailEntry[] = [
     defaultPath: `${BASE}/intelligence`,
     matchPrefixes: [
       `${BASE}/intelligence`,
+      `${BASE}/outcome-risk`,
       `${BASE}/systems`,
       `${BASE}/agent-logs`, `${BASE}/analytics`,
     ],
@@ -331,6 +332,7 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'intel-predictive',   label: 'Predictions',         path: `${BASE}/intelligence/predictive`,     category: 'Enterprise Brain', badge: 'new' },
       { id: 'intel-prescriptive', label: 'Recommendations',     path: `${BASE}/intelligence/prescriptive`,   category: 'Enterprise Brain', badge: 'new' },
       { id: 'intel-autonomous',   label: 'Autonomous',          path: `${BASE}/intelligence/autonomous`,     category: 'Enterprise Brain', badge: 'new' },
+      { id: 'outcome-risk',       label: 'Outcome Risk',        path: `${BASE}/outcome-risk`,                category: 'Enterprise Brain', badge: 'new' },
       { id: 'systems',            label: 'Systems',             path: `${BASE}/systems`,                     category: 'Platform'          },
       { id: 'agent-logs',         label: 'Agent Logs',          path: `${BASE}/agent-logs`,                  category: 'Platform'          },
       { id: 'analytics',          label: 'Analytics',           path: `${BASE}/analytics`,                   category: 'Platform'          },

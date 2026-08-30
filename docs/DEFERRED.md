@@ -230,6 +230,43 @@ comment explaining Node 20 broke the frontend build (`vite@8` needs
 this hasn't bitten — but two workflows disagreeing about the supported runtime
 is a trap waiting to spring.
 
+### Delivery work is not connected to revenue (P1)
+
+Discovered while projecting real records into the enterprise object model
+(`EnterpriseProjection.ts`). The two client key spaces are not merely
+"unreconciled" — in this database they share **nothing**:
+
+| Check | Result |
+|---|---|
+| `ClientCRM.projectIds` populated | 0 of 6 rows |
+| `ClientCRM.userId` populated | 0 of 6 rows |
+| `Project.clientId` matching any CRM row | 0 of 15 |
+| CRM company names overlapping project account names | 0 |
+
+So no code can answer "which late project threatens which contract" — not
+because the traversal is missing, but because the edge does not exist in the
+data. The projection therefore builds two separate sub-graphs (delivery from
+`Project`, revenue from `ClientCRM`) and leaves the gap visible rather than
+inventing a join, which would make every exposure figure fiction.
+
+Unblocking it is a data decision, not an engineering one: either backfill
+`ClientCRM.userId` / `projectIds`, or pick one of the two as canonical. Until
+then, project exposure is priced from `Project.budget` (which is real) and
+contract exposure from `ClientCRM.arr` (also real), but the two never meet.
+
+### Recovery actions are four, not forty (P3)
+
+`RecoveryActionSeeder.ts` registers only `REBASELINE_TIMELINE`, `ESCALATE_ITEM`,
+`FLAG_CAPACITY_REQUEST` and `REVIEW_ITEM`, because those are the only changes
+the assessment carries enough information to make. Notably absent is a real
+reassignment: nothing in the graph knows who is free, and `StaffMember` has no
+FK to `User`, so "reassign to X" cannot be computed. `FLAG_CAPACITY_REQUEST`
+deliberately flags the need instead of guessing the person. Any recommendation
+that maps to nothing lands on the non-mutating `REVIEW_ITEM`.
+
+Widening this set needs the ownership model resolved first (see the
+`StaffMember` ↔ `User` note above).
+
 ---
 
 ## Notes
