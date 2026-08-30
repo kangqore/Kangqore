@@ -55,7 +55,7 @@ export function DependencyGraphView({ projectId, portfolioId }: Props) {
 
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['work', 'dependency-graph', projectId, portfolioId],
-    queryFn: () => api.get('/admin/work/dependency-graph', { params: { projectId, portfolioId } }).then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/dependency-graph', { params: { projectId, portfolioId } }).then(r => r.data),
     staleTime: 60_000,
   })
 
@@ -157,7 +157,7 @@ export function DependencyGraphView({ projectId, portfolioId }: Props) {
                 if (!pos) return null
                 const isH = hovered === node.id
                 const stroke = node.criticalPath ? '#8b5cf6' : node.isCycleNode ? '#f59e0b' : PRIORITY_STROKE[node.priority] ?? '#64748b'
-                const textColor = node.status === 'DONE' ? '#64748b' : '#e2e8f0'
+                const textColor = node.status === 'COMPLETED' ? '#64748b' : '#e2e8f0'
                 return (
                   <g key={node.id} transform={`translate(${pos.x}, ${pos.y})`}
                      onMouseEnter={() => setHovered(node.id)} onMouseLeave={() => setHovered(null)}
@@ -169,13 +169,13 @@ export function DependencyGraphView({ projectId, portfolioId }: Props) {
                       strokeWidth={isH ? 2.5 : node.criticalPath ? 2 : 1.5}
                     />
                     {/* Progress fill */}
-                    {node.status !== 'DONE' && (
+                    {node.status !== 'COMPLETED' && (
                       <rect width={NODE_W * 0.01} height={4} rx={2} y={NODE_H - 6} x={2}
                             fill="#8b5cf6" style={{ width: `${(idMap.get(node.id) as any)?.progress ?? 0}%` }}
                             className="transition-all" />
                     )}
                     <text x={10} y={18} fontSize={10} fill="#94a3b8">{node.type}</text>
-                    <text x={10} y={33} fontSize={11} fontWeight={600} fill={textColor} style={{ textDecoration: node.status === 'DONE' ? 'line-through' : undefined }}>
+                    <text x={10} y={33} fontSize={11} fontWeight={600} fill={textColor} style={{ textDecoration: node.status === 'COMPLETED' ? 'line-through' : undefined }}>
                       {node.title.length > 18 ? node.title.slice(0, 17) + '…' : node.title}
                     </text>
                     {node.criticalPath && (

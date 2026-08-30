@@ -95,7 +95,7 @@ function CreateGoalModal({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({ title: '', description: '', type: 'OBJECTIVE', dueDate: '' })
 
   const create = useMutation({
-    mutationFn: (data: any) => api.post('/admin/work/goals', data),
+    mutationFn: (data: any) => api.post('/admin/work-os/work/goals', data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['work', 'goals'] }); onClose() },
   })
 
@@ -135,7 +135,7 @@ export function GoalsView() {
 
   const { data = [], isLoading, isFetching, refetch } = useQuery<WorkGoal[]>({
     queryKey: ['work', 'goals'],
-    queryFn: () => api.get('/admin/work/goals').then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/goals').then(r => r.data),
     staleTime: 60_000,
   })
 

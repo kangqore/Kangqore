@@ -19,6 +19,8 @@ import { ModelIntrospection } from './ModelIntrospection'
 import { IntentCompiler } from './IntentCompiler'
 import { ObjectQueryCompiler } from './ObjectQueryCompiler'
 import { WorkTemplateEngine } from './WorkTemplateEngine'
+import { WorkViewService } from './WorkViewService'
+import { WorkAutomationEngine } from './WorkAutomationEngine'
 import { AgentMissionEngine } from '../kimmp/agents/AgentMissionEngine'
 import { ENTERPRISE_OBJECTS } from './EnterpriseObjectModel'
 import { prisma } from '../../lib/prisma'
@@ -103,6 +105,103 @@ router.post('/views/compile', ...guard, async (req, res) => {
     const result = await ObjectQueryCompiler.run(intent.query, actorOf(req))
     return res.json({ ...intent, result })
   } catch (e) { return fail(res, e) }
+})
+
+// ── Work views (replaces the dead /api/admin/work/* surface) ─────────────────
+
+const workFilter = (q: any) => ({
+  types: q.types ? String(q.types).split(',') : undefined,
+  status: q.status ? String(q.status).split(',') : undefined,
+  assigneeId: q.assigneeId as string | undefined,
+  parentId: q.parentId as string | undefined,
+  openOnly: q.openOnly === 'true',
+  limit: q.limit ? Number(q.limit) : undefined,
+})
+
+router.get('/work/items', ...guard, async (req, res) => {
+  try { res.json(await WorkViewService.items(workFilter(req.query))) }
+  catch (e) { fail(res, e) }
+})
+
+router.post('/work/items', ...guard, async (req, res) => {
+  if (!req.body?.title) return res.status(400).json({ error: 'title is required' })
+  try { return res.status(201).json(await WorkViewService.createItem(req.body, actorOf(req))) }
+  catch (e) { return fail(res, e) }
+})
+
+router.put('/work/items/:id', ...guard, async (req, res) => {
+  try { res.json(await WorkViewService.updateItem(req.params.id, req.body ?? {}, actorOf(req))) }
+  catch (e) { fail(res, e) }
+})
+
+router.post('/work/items/:id/move', ...guard, async (req, res) => {
+  const { status } = req.body ?? {}
+  if (!status) return res.status(400).json({ error: 'status is required' })
+  try { return res.json(await WorkViewService.moveItem(req.params.id, status, actorOf(req))) }
+  catch (e) { return fail(res, e) }
+})
+
+router.get('/work/board', ...guard, async (req, res) => {
+  try { res.json(await WorkViewService.board(workFilter(req.query))) } catch (e) { fail(res, e) }
+})
+
+router.get('/work/timeline', ...guard, async (req, res) => {
+  const { dateFrom, dateTo } = req.query as Record<string, string>
+  try {
+    res.json(await WorkViewService.timeline(
+      { from: dateFrom ? new Date(dateFrom) : undefined, to: dateTo ? new Date(dateTo) : undefined },
+      workFilter(req.query),
+    ))
+  } catch (e) { fail(res, e) }
+})
+
+router.get('/work/workload', ...guard, async (req, res) => {
+  try { res.json(await WorkViewService.workload(workFilter(req.query))) } catch (e) { fail(res, e) }
+})
+
+router.get('/work/dependency-graph', ...guard, async (req, res) => {
+  try { res.json(await WorkViewService.dependencyGraph(workFilter(req.query))) } catch (e) { fail(res, e) }
+})
+
+router.get('/work/executive', ...guard, async (_req, res) => {
+  try { res.json(await WorkViewService.executive()) } catch (e) { fail(res, e) }
+})
+
+router.get('/work/automations', ...guard, async (_req, res) => {
+  try { res.json(await WorkAutomationEngine.list()) } catch (e) { fail(res, e) }
+})
+
+router.post('/work/automations', ...guard, async (req, res) => {
+  try {
+    res.status(201).json(await WorkAutomationEngine.create({
+      ...req.body, createdBy: (req as any).user?.id,
+    }))
+  } catch (e) { fail(res, e) }
+})
+
+router.post('/work/automations/:id/toggle', ...guard, async (req, res) => {
+  try { res.json(await WorkAutomationEngine.toggle(req.params.id)) } catch (e) { fail(res, e) }
+})
+
+router.delete('/work/automations/:id', ...guard, async (req, res) => {
+  try { await WorkAutomationEngine.delete(req.params.id); res.json({ ok: true }) }
+  catch (e) { fail(res, e) }
+})
+
+router.get('/work/automations/:id/runs', ...guard, async (req, res) => {
+  try { res.json({ runs: await WorkAutomationEngine.runs(req.params.id) }) } catch (e) { fail(res, e) }
+})
+
+router.get('/work/goals', ...guard, async (_req, res) => {
+  try { res.json(await WorkViewService.goals()) } catch (e) { fail(res, e) }
+})
+
+router.get('/work/portfolios', ...guard, async (_req, res) => {
+  try { res.json(await WorkViewService.portfolios()) } catch (e) { fail(res, e) }
+})
+
+router.post('/work/score', ...guard, async (req, res) => {
+  try { res.json({ scored: await WorkViewService.score(req.body?.types) }) } catch (e) { fail(res, e) }
 })
 
 // ── Templates (the path from nothing to real work) ───────────────────────────

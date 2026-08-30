@@ -30,7 +30,7 @@ function CreatePortfolioModal({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({ name: '', description: '', status: 'ACTIVE' })
 
   const create = useMutation({
-    mutationFn: (data: any) => api.post('/admin/work/portfolios', data),
+    mutationFn: (data: any) => api.post('/admin/work-os/work/portfolios', data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['work', 'portfolios'] }); onClose() },
   })
 
@@ -67,7 +67,7 @@ export function PortfolioView() {
 
   const { data = [], isLoading, isFetching, refetch } = useQuery<WorkPortfolio[]>({
     queryKey: ['work', 'portfolios'],
-    queryFn: () => api.get('/admin/work/portfolios').then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/portfolios').then(r => r.data),
     staleTime: 60_000,
   })
 

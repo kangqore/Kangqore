@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@lib/api'
 import { X } from 'lucide-react'
-import { type WorkItemType, type WorkItemStatus, type WorkItemPriority } from '../types'
+import { type WorkItemType, type WorkItemStatus, type WorkItemPriority, STATUS_COLUMNS, statusLabel } from '../types'
 
 interface Props {
   onClose: () => void
@@ -11,7 +11,7 @@ interface Props {
   defaultStatus?: WorkItemStatus
 }
 
-export function CreateWorkItemModal({ onClose, projectId, portfolioId, defaultStatus = 'TODO' }: Props) {
+export function CreateWorkItemModal({ onClose, projectId, portfolioId, defaultStatus = 'QUEUED' }: Props) {
   const qc = useQueryClient()
   const [form, setForm] = useState({
     title: '', description: '',
@@ -23,7 +23,7 @@ export function CreateWorkItemModal({ onClose, projectId, portfolioId, defaultSt
   })
 
   const create = useMutation({
-    mutationFn: (data: any) => api.post('/admin/work/items', data),
+    mutationFn: (data: any) => api.post('/admin/work-os/work/items', data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['work'] })
       onClose()
@@ -88,7 +88,7 @@ export function CreateWorkItemModal({ onClose, projectId, portfolioId, defaultSt
             )}
             {field('Status',
               <select className={select} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value as WorkItemStatus }))}>
-                {['BACKLOG','TODO','IN_PROGRESS','IN_REVIEW','DONE','BLOCKED'].map(s => (
+                {STATUS_COLUMNS.map(s => (
                   <option key={s} value={s}>{s.replace('_',' ')}</option>
                 ))}
               </select>

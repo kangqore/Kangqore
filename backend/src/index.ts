@@ -300,8 +300,6 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 import adminOntologyRoutes from './routes/admin-ontology';
 app.use('/api/admin/ontology', adminOntologyRoutes);
 
-import workRoutes from './routes/work';
-app.use('/api/admin/work', workRoutes);
 
 import intelligenceRoutes from './routes/intelligence';
 app.use('/api/admin/intelligence', intelligenceRoutes);
@@ -388,6 +386,7 @@ app.use('/api/admin/work-os', workOsRoutes);
 import { seedEnterpriseObjectModel } from './kangqore-view/eof/EnterpriseObjectSeeder';
 import { RecoveryActionSeeder } from './kangqore-view/eof/RecoveryActionSeeder';
 import { seedWorkTemplates } from './kangqore-view/eof/WorkTemplateEngine';
+import { startWorkAutomations } from './kangqore-view/eof/WorkAutomationEngine';
 import { EnterpriseProjection } from './kangqore-view/eof/EnterpriseProjection';
 import { IntelligenceEngine } from './kangqore-view/eof/IntelligenceEngine';
 seedEnterpriseObjectModel()
@@ -416,6 +415,10 @@ seedEnterpriseObjectModel()
       IntelligenceEngine.inferAndWrite(t).catch(() => ({ inferred: 0, atRisk: 0 }))),
   ))
   .then(rs => console.log(`[Intelligence] ${rs.reduce((n, r) => n + r.inferred, 0)} objects scored, ${rs.reduce((n, r) => n + r.atRisk, 0)} at risk`))
+  // The wire that was missing: the automation engine existed, the CDC feed
+  // existed, and nothing connected them.
+  .then(() => startWorkAutomations())
+  .then(r => console.log(`[WorkAutomations] subscribed to CDC, ${r.active} active`))
   .catch(e => console.warn('[EnterpriseObjectModel] seed failed:', e.message));
 app.use('/api/admin/crm/partners', adminPartnersCrmRoutes);
 app.use('/api/admin/crm',          adminCrmSubentities);
@@ -536,6 +539,18 @@ function loadKnownRoutes(): Set<string> {
   knownRoutes = new Set();
   return knownRoutes;
 }
+
+// An unmatched /api/* path must NOT fall through to the SPA. It did, which
+// meant a deleted or misspelt endpoint answered 200 with index.html — a caller
+// sees a success and a body of HTML, which is harder to diagnose than the 500
+// it replaced. API namespaces get an honest JSON 404.
+app.use(['/api', '/health'], (req, res) => {
+  res.status(404).json({
+    error: 'Not found',
+    path: req.originalUrl,
+    method: req.method,
+  });
+});
 
 // Serve index.html for all non-API routes (client-side routing)
 app.get('*', (req, res) => {

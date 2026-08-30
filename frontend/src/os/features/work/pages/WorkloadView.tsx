@@ -32,7 +32,7 @@ function loadLabel(hours: number): string {
 export function WorkloadView() {
   const { data = [], isLoading, isFetching, refetch } = useQuery<StaffWorkload[]>({
     queryKey: ['work', 'workload'],
-    queryFn: () => api.get('/admin/work/workload').then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/workload').then(r => r.data),
     staleTime: 60_000,
   })
 
