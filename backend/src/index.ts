@@ -388,6 +388,7 @@ app.use('/api/admin/work-os', workOsRoutes);
 import { seedEnterpriseObjectModel } from './kangqore-view/eof/EnterpriseObjectSeeder';
 import { RecoveryActionSeeder } from './kangqore-view/eof/RecoveryActionSeeder';
 import { EnterpriseProjection } from './kangqore-view/eof/EnterpriseProjection';
+import { IntelligenceEngine } from './kangqore-view/eof/IntelligenceEngine';
 seedEnterpriseObjectModel()
   .then(r => console.log(`[EnterpriseObjectModel] ${r.typesCreated} created, ${r.typesUpdated} updated, ${r.cardinalityRules} cardinality rules`))
   // Types must exist before actions can be bound to them.
@@ -398,6 +399,15 @@ seedEnterpriseObjectModel()
   // (an approved re-baseline, an escalation) are preserved, not overwritten.
   .then(() => EnterpriseProjection.run())
   .then(r => console.log(`[EnterpriseProjection] ${r.projects} projects, ${r.customers} customers, ${r.contracts} contracts`))
+  // Inference must run after projection, or the INTELLIGENCE columns stay
+  // empty and every query over predictedRisk / predictedCompletion returns
+  // nothing — the columns would be declared, populated by no one, and quietly
+  // wrong in exactly the way this model was built to avoid.
+  .then(() => Promise.all(
+    ['Project', 'Customer', 'Contract', 'Outcome'].map(t =>
+      IntelligenceEngine.inferAndWrite(t).catch(() => ({ inferred: 0, atRisk: 0 }))),
+  ))
+  .then(rs => console.log(`[Intelligence] ${rs.reduce((n, r) => n + r.inferred, 0)} objects scored, ${rs.reduce((n, r) => n + r.atRisk, 0)} at risk`))
   .catch(e => console.warn('[EnterpriseObjectModel] seed failed:', e.message));
 app.use('/api/admin/crm/partners', adminPartnersCrmRoutes);
 app.use('/api/admin/crm',          adminCrmSubentities);

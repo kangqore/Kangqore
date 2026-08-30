@@ -15,6 +15,9 @@ import { IntelligenceEngine } from './IntelligenceEngine'
 import { DecisionEngine } from './DecisionEngine'
 import { RecoveryPlanService } from './RecoveryPlanService'
 import { EnterpriseProjection } from './EnterpriseProjection'
+import { ModelIntrospection } from './ModelIntrospection'
+import { IntentCompiler } from './IntentCompiler'
+import { ObjectQueryCompiler } from './ObjectQueryCompiler'
 import { AgentMissionEngine } from '../kimmp/agents/AgentMissionEngine'
 import { ENTERPRISE_OBJECTS } from './EnterpriseObjectModel'
 import { prisma } from '../../lib/prisma'
@@ -56,6 +59,49 @@ router.post('/projection/run', ...guard, async (_req, res) => {
   try {
     res.json(await EnterpriseProjection.run())
   } catch (e) { fail(res, e) }
+})
+
+// ── Model introspection (what the intelligence layer can see) ────────────────
+
+router.get('/model', ...guard, async (_req, res) => {
+  res.json({
+    types: ModelIntrospection.catalogue(),
+    executionChain: ModelIntrospection.executionChain().map(t => ({ tier: t.tier, name: t.name })),
+  })
+})
+
+/** How does one type reach another? The basis for cross-tier reasoning. */
+router.get('/model/path', ...guard, async (req, res) => {
+  const { from, to } = req.query as Record<string, string>
+  if (!from || !to) return res.status(400).json({ error: 'from and to are required' })
+  const path = ModelIntrospection.pathBetween(from, to)
+  return res.json({
+    from, to,
+    connected: path !== null,
+    hops: path?.length ?? null,
+    path: path ?? [],
+  })
+})
+
+/**
+ * "Show me all high-risk projects" → a real, executed query.
+ * Compilation is deterministic and grounded in the model's own vocabulary, so
+ * an unparseable request fails loudly instead of quietly selecting the wrong
+ * rows.
+ */
+router.post('/views/compile', ...guard, async (req, res) => {
+  const { text, execute } = req.body ?? {}
+  if (typeof text !== 'string' || !text.trim()) {
+    return res.status(400).json({ error: 'text is required' })
+  }
+  const intent = await IntentCompiler.compileBound(text)
+  if (!intent.ok) return res.status(422).json(intent)
+
+  if (!execute) return res.json(intent)
+  try {
+    const result = await ObjectQueryCompiler.run(intent.query, actorOf(req))
+    return res.json({ ...intent, result })
+  } catch (e) { return fail(res, e) }
 })
 
 // ── Boards (Work) ────────────────────────────────────────────────────────────

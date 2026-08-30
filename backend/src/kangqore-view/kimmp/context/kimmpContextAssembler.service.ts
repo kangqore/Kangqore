@@ -7,6 +7,7 @@ import { KimmpRag } from '../rag/kimmpRag.service'
 import { SemanticMapper } from '../../eof/SemanticMapper'
 import type { ExternalRef, ResolvedEntity } from '../../eof/SemanticMapper'
 import { ObjectSetService } from '../../eof/ObjectSet'
+import { ModelIntrospection } from '../../eof/ModelIntrospection'
 
 export interface EnterpriseContext {
   // Temporal
@@ -18,6 +19,18 @@ export interface EnterpriseContext {
   signals:      Array<{ id: string; signalType: string; signalValue: string; severity: string; createdAt: Date }>
   // Goals (ACTIVE/APPROVED)
   goals:        Array<{ id: string; objective: string; progressPct: number; status: string; deadline: Date | null }>
+  /**
+   * The enterprise object model itself — types, tiers, relationships, states.
+   * Without this KIMMP sees objects but not the grammar connecting them: that
+   * a Project sits under a Program, or that `threatens` is what makes
+   * something a risk. Read-only; understanding the model confers no ability to
+   * change it.
+   */
+  objectModel: {
+    executionChain: string[]
+    typeCount:      number
+    summary:        string
+  }
   // Graph snapshot (top ontology objects + relationships)
   graph: {
     objects:       Array<{ id: string; name: string; typeName: string; properties: any }>
@@ -206,9 +219,16 @@ export class KimmpContextAssembler {
       if (present.length > 0) objectSets = present
     }
 
+    const objectModel = {
+      executionChain: ModelIntrospection.executionChain().map(t => t.name),
+      typeCount:      ModelIntrospection.typeNames().length,
+      summary:        ModelIntrospection.describeForPrompt(),
+    }
+
     return {
       currentTime:      now,
       userId:           opts.userId,
+      objectModel,
       userProfile:      userResult.status === 'fulfilled' ? userResult.value : null,
       signals,
       goals:            goalsResult.status        === 'fulfilled' ? goalsResult.value        : [],

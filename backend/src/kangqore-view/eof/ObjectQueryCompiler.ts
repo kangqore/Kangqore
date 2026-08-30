@@ -83,6 +83,13 @@ function flattenToFilters(node: QueryNode): FilterNode[] | null {
 /** Virtual fields the evaluator understands but SQL does not. */
 const VIRTUAL_FIELDS = new Set(['typeName', 'kimmpLinkedRecently'])
 
+/** True when the field resolves to a jsonb text extraction rather than a real column. */
+function isJsonField(field: string): boolean {
+  if (COLUMN_SQL[field]) return false
+  if (VIRTUAL_FIELDS.has(field)) return false
+  return field.startsWith('properties.') || /^[A-Za-z0-9_]+$/.test(field)
+}
+
 function fieldToSql(field: string): Prisma.Sql | null {
   if (COLUMN_SQL[field]) return Prisma.raw(COLUMN_SQL[field])
   if (VIRTUAL_FIELDS.has(field)) return null
@@ -105,6 +112,25 @@ function filterToSql(f: FilterNode): Prisma.Sql | null {
 
   const asText = (v: any) => (v === null || v === undefined ? null : String(v))
 
+  /**
+   * jsonb `->>` yields text, so a range comparison against it is
+   * lexicographic: '90000' > '100000' is TRUE, and "customers with ARR over
+   * 100k" returned every customer. Cast to numeric when the operand is a
+   * number, guarded by a regex so a non-numeric value yields NULL (excluded)
+   * instead of raising and killing the whole query.
+   *
+   * String operands — ISO-8601 dates in practice — are left as text, where
+   * lexicographic order is already chronological order.
+   */
+  const numericCol = () =>
+    isJsonField(f.field)
+      ? Prisma.sql`(CASE WHEN ${col} ~ '^-?[0-9]+(\.[0-9]+)?$' THEN (${col})::numeric END)`
+      : col
+  const range = (op: Prisma.Sql) =>
+    typeof f.value === 'number'
+      ? Prisma.sql`${numericCol()} ${op} ${f.value}::numeric`
+      : Prisma.sql`${col} ${op} ${asText(f.value)}`
+
   switch (f.op as FilterOp) {
     case 'eq':
       return f.value === null
@@ -119,12 +145,11 @@ function filterToSql(f: FilterNode): Prisma.Sql | null {
       if (!arr.length) return Prisma.sql`FALSE`
       return Prisma.sql`${col} = ANY(${arr}::text[])`
     }
-    // Numeric/date comparisons: cast the extracted text. Postgres will use the
-    // expression index for equality; range scans still benefit from the type index.
-    case 'gt':  return Prisma.sql`${col} > ${asText(f.value)}`
-    case 'gte': return Prisma.sql`${col} >= ${asText(f.value)}`
-    case 'lt':  return Prisma.sql`${col} < ${asText(f.value)}`
-    case 'lte': return Prisma.sql`${col} <= ${asText(f.value)}`
+    // Range comparisons — see numericCol() above for why the cast matters.
+    case 'gt':  return range(Prisma.raw('>'))
+    case 'gte': return range(Prisma.raw('>='))
+    case 'lt':  return range(Prisma.raw('<'))
+    case 'lte': return range(Prisma.raw('<='))
     default:
       return null   // within_km and anything new — fall back
   }

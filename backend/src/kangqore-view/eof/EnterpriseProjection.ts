@@ -155,6 +155,8 @@ export const EnterpriseProjection = {
         tier: c.tier ?? null,
         health: c.health ?? null,
         industry: c.industry ?? null,
+        ...(c.arr !== null && c.arr !== undefined && Number(c.arr) > 0
+          ? { arr: Number(c.arr) } : {}),
         sourceRecord: `ClientCRM:${c.id}`,
       })
       customers++

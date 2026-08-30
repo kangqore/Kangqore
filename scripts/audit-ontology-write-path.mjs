@@ -36,6 +36,7 @@ const ALLOWLIST = new Map([
   ['kangqore-view/eof/scripts/intelligence-e2e.ts', 'probe: seeds and tears down its own objects and edges'],
   ['kangqore-view/eof/scripts/decision-e2e.ts', 'probe: seeds and tears down its own enterprise graph'],
   ['kangqore-view/eof/scripts/recovery-e2e.ts', 'probe: backdates and tears down its own fixture graph to test the approval gate'],
+  ['kangqore-view/eof/scripts/introspection-e2e.ts', 'probe: read-only, but counts objects directly to verify filters'],
   ['kangqore-view/eof/scripts/query-compiler-e2e.ts', 'probe: seeds and tears down its own throwaway type to test the compiler'],
 
   // ── Known debt, tracked in docs/DEFERRED.md ────────────────────────────────
