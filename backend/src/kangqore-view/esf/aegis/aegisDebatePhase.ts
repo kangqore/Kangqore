@@ -18,13 +18,13 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic                    from '@anthropic-ai/sdk'
-import { withWaandax } from '../../../kangqore-immp/llm/waandaxAnthropic'
+import { withKrisnam } from '../../../kangqore-immp/llm/krisnamAnthropic'
 import type { AegisAgentResult }    from './agents/types'
 import type { AegisAction }         from './aegisActionProposer'
 import { SignalLedger }             from '../../../kangqore-immp/signals/signalLedger.service'
 import { prisma }                   from '../../../lib/prisma'
 
-const anthropic    = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
+const anthropic    = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
 const TIMEOUT_MS   = 25_000
 
 export interface AegisDebateResult {

@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk';
-import { withWaandax } from '../llm/waandaxAnthropic';
+import { withKrisnam } from '../llm/krisnamAnthropic';
 import logger from '../../../utils/logger';
 import { KimmpFlags } from '../core/flags';
 import { Tier1Result } from './signalExtractor.service';
@@ -18,7 +18,7 @@ import { tier2ResponseSchema, Tier2ResponseParsed } from './behaviorSchema';
 import { KimmpCostTracker } from '../governance/costTracker.service';
 import { KimmpRag } from '../rag/kimmpRag.service';
 
-const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }));
+const anthropic = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }));
 
 const SYSTEM_PROMPT = `You are the KIMMP Human Behavior Intelligence Layer for Kangqore.
 

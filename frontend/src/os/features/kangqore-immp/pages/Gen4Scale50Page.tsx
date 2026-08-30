@@ -25,7 +25,7 @@ export function Gen4Scale50Page() {
         </div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 18, fontWeight: 900, color: T1 }}>S171 — Gen4 50% Routing Milestone</div>
-          <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>Scale WAANDAx Foundation v0.1 to handle half of all KIMMP reasoning · intermediate production gate</div>
+          <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>Scale Krisnam Foundation v0.1 to handle half of all KIMMP reasoning · intermediate production gate</div>
         </div>
         {s && (
           <div style={{ textAlign: 'right' }}>

@@ -26,7 +26,7 @@ export function Gen4Scale80Page() {
         </div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 18, fontWeight: 900, color: T1 }}>S172 — Gen4 Production Declaration ⭐</div>
-          <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>WAANDAx Foundation v0.1 handles 80% of KIMMP reasoning · parity ≥ 85% · cost savings ≥ 30% · Kangqore's own AI runs the platform</div>
+          <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>Krisnam Foundation v0.1 handles 80% of KIMMP reasoning · parity ≥ 85% · cost savings ≥ 30% · Kangqore's own AI runs the platform</div>
         </div>
         {s && (
           <div style={{ textAlign: 'right' }}>
@@ -42,7 +42,7 @@ export function Gen4Scale80Page() {
           <div style={{ fontSize: 28 }}>🏆</div>
           <div>
             <div style={{ fontSize: 15, fontWeight: 900, color: GREEN }}>Gen4 Declared Production AI</div>
-            <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>WAANDAx Foundation v0.1 is the primary KIMMP reasoning engine. Kangqore is now self-sufficient — running its own AI at scale. Gen5 architecture begins next.</div>
+            <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>Krisnam Foundation v0.1 is the primary KIMMP reasoning engine. Kangqore is now self-sufficient — running its own AI at scale. Gen5 architecture begins next.</div>
           </div>
         </div>
       )}
@@ -103,7 +103,7 @@ export function Gen4Scale80Page() {
       {/* What's next */}
       {declared && (
         <div style={{ background: CARD, border: `1px solid ${PURPLE}44`, borderRadius: 14, padding: '20px 24px' }}>
-          <div style={{ fontSize: 13, fontWeight: 800, color: T1, marginBottom: 10 }}>What's Next — WAANDAx Gen5</div>
+          <div style={{ fontSize: 13, fontWeight: 800, color: T1, marginBottom: 10 }}>What's Next — Krisnam Gen5</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
             {[
               { label: 'Corpus Growth',    desc: 'Scale training data to 50k+ decisions · annual re-fine-tune cadence' },

@@ -1,10 +1,10 @@
 import Anthropic from '@anthropic-ai/sdk'
-import { withWaandax } from '../llm/waandaxAnthropic'
+import { withKrisnam } from '../llm/krisnamAnthropic'
 import { KimmpActionsService, ActionType } from './kimmpActions.service'
 import { ACTION_LEVELS } from '../authority/kimmpAuthority.service'
 import logger from '../../../utils/logger'
 
-const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
+const anthropic = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 // Maps proactive alert category → best action to propose
 const ALERT_ACTION_MAP: Record<string, { type: ActionType; descriptionTemplate: (title: string) => string; paramsBuilder: (title: string, meta: any) => Record<string, any> }> = {

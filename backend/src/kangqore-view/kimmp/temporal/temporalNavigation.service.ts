@@ -34,17 +34,17 @@ export class TemporalNavigationService {
     }
     
     // [PREDICTIVE TRAJECTORY]
-    logger.info(`[TemporalFabric] Invoking KIMMP Simulation Engine (WAANDAx LLM) for predictive trajectory of ${objectId} at ${targetCoordinate.toISOString()}`)
+    logger.info(`[TemporalFabric] Invoking KIMMP Simulation Engine (Krisnam LLM) for predictive trajectory of ${objectId} at ${targetCoordinate.toISOString()}`)
     
-    // Mocking the WAANDAx simulation for the semantic response
-    let rawProjectedRiskScore = 0.84 // E.g., WAANDAx hallucinates a very high risk score
+    // Mocking the Krisnam simulation for the semantic response
+    let rawProjectedRiskScore = 0.84 // E.g., Krisnam hallucinates a very high risk score
     
-    // AEGIS Determinism Leash: Clamp the WAANDAx prediction to historical physics
+    // AEGIS Determinism Leash: Clamp the Krisnam prediction to historical physics
     const riskCheck = await aegisDeterminism.verifyPrediction(objectId, 'riskScore', rawProjectedRiskScore)
 
     const simulatedData = {
       projectedRiskScore: riskCheck.clampedValue, // The safe, bounded value
-      rawWaandaxScore: rawProjectedRiskScore,
+      rawKrisnamScore: rawProjectedRiskScore,
       isHallucination: riskCheck.isHallucination,
       confidenceInterval: 0.92,
       simulatedAnomalies: [

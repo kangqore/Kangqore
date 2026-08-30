@@ -7,7 +7,7 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk'
-import { withWaandax } from '../llm/waandaxAnthropic'
+import { withKrisnam } from '../llm/krisnamAnthropic'
 import { WebSearchService } from '../scout/webSearch.service'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { prisma } from '../../../lib/prisma'
@@ -53,7 +53,7 @@ function fallbackResult(question: string, domain?: string): ResearchResult {
 
 function getClient(): Anthropic | null {
   if (!process.env.ANTHROPIC_API_KEY) return null
-  return withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
+  return withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
 }
 
 // ---------------------------------------------------------------------------

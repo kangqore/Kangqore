@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { withWaandax } from '../../../kangqore-immp/llm/waandaxAnthropic';
+import { withKrisnam } from '../../../kangqore-immp/llm/krisnamAnthropic';
 import { API_KEYS } from '../../../api-keys';
 import { getKB, KBChunk, KBIndex } from '../../kimmp/knowledge/KbLoader';
 import { postfilter, HANDOFF_MESSAGE } from './ConciergeGuardrails';
@@ -16,8 +16,8 @@ const DAILY_TOKEN_BUDGET = parseInt(
 let client: Anthropic | null = null;
 function getClient(): Anthropic {
   if (!client) {
-    const key = API_KEYS.ANTHROPIC_API_KEY || 'sk-ant-dummy-for-waandax-fallback';
-    client = withWaandax(new Anthropic({ apiKey: key }));
+    const key = API_KEYS.ANTHROPIC_API_KEY || 'sk-ant-dummy-for-krisnam-fallback';
+    client = withKrisnam(new Anthropic({ apiKey: key }));
   }
   return client;
 }
@@ -428,7 +428,7 @@ export async function streamConcierge(
       }
     }
   } catch (e: any) {
-    logger.warn(`concierge.anthropic.stream.error: ${e.message} — falling back to WAANDAx`);
+    logger.warn(`concierge.anthropic.stream.error: ${e.message} — falling back to Krisnam`);
     try {
       const fallbackResponse = await anthropic.messages.create({
         model: MODEL,
@@ -447,7 +447,7 @@ export async function streamConcierge(
       outputTokens = fallbackResponse.usage?.output_tokens || 0;
       cacheReadTokens = (fallbackResponse.usage as any)?.cache_read_input_tokens || 0;
     } catch (fallbackErr: any) {
-      logger.error(`concierge.waandax.fallback.error: ${fallbackErr.message}`);
+      logger.error(`concierge.krisnam.fallback.error: ${fallbackErr.message}`);
       handlers.onError(fallbackErr);
       return;
     }

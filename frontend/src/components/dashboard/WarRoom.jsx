@@ -90,7 +90,7 @@ export const WarRoom = () => {
             >
               <div className="flex items-center gap-3 mb-4 text-orange-400">
                 <Brain className="w-6 h-6" />
-                <h3 className="font-semibold tracking-wide uppercase">WAANDAx Forecast</h3>
+                <h3 className="font-semibold tracking-wide uppercase">Krisnam Forecast</h3>
               </div>
               <p className="text-xl font-medium leading-relaxed text-neutral-200">
                 {impact}

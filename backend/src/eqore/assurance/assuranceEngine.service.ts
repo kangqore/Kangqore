@@ -9,11 +9,11 @@
 import { prisma } from '../../lib/prisma';
 import { EqoreAgentResult } from '../orchestrator/agentResult';
 import Anthropic from '@anthropic-ai/sdk';
-import { withWaandax } from '../../kangqore-immp/llm/waandaxAnthropic';
+import { withKrisnam } from '../../kangqore-immp/llm/krisnamAnthropic';
 import logger from '../../utils/logger';
 import { KANGQORE_DEPARTMENTS } from '../../eqore-lead-intelligence/taxonomy/kangqoreServiceTaxonomy';
 
-const anthropic = withWaandax(new Anthropic({
+const anthropic = withKrisnam(new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || ''
 }));
 

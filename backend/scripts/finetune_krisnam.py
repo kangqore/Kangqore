@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-WAANDAx Gen 2 — Fine-Tune Script (Apple Silicon / MLX)
+Krisnam Gen 2 — Fine-Tune Script (Apple Silicon / MLX)
 =======================================================
 Fine-tunes Llama-3.2-3B-Instruct on Kangqore's REASON phase training data
 to produce a local reasoning model that replaces Claude API calls in REASON phase.
@@ -9,7 +9,7 @@ Runs on Apple M-series chips via MLX (mlx_lm LoRA fine-tuning).
 For NVIDIA GPU (cloud), use --cloud to print the Colab/Unsloth recipe.
 
 Architecture after fine-tune:
-  REASON phase → WAANDAx Gen 2  (local, ~50ms latency, no API cost)
+  REASON phase → Krisnam Gen 2  (local, ~50ms latency, no API cost)
   SPEAK  phase → Claude claude-opus-4-8  (unchanged)
   GOVERN phase → Claude claude-opus-4-8  (unchanged)
 
@@ -18,13 +18,13 @@ Quick start:
   curl -s "http://localhost:5050/api/admin/waanda-training/export?incremental=false" > /dev/null
 
   # Run fine-tune (uses ~/.kimmp-venv by default):
-  ~/.kimmp-venv/bin/python scripts/finetune_waandax.py
+  ~/.kimmp-venv/bin/python scripts/finetune_krisnam.py
 
   # Dry run (verify data + print command, skip training):
-  ~/.kimmp-venv/bin/python scripts/finetune_waandax.py --dry-run
+  ~/.kimmp-venv/bin/python scripts/finetune_krisnam.py --dry-run
 
   # After training, deploy to Ollama:
-  ~/.kimmp-venv/bin/python scripts/finetune_waandax.py --create-ollama-model
+  ~/.kimmp-venv/bin/python scripts/finetune_krisnam.py --create-ollama-model
 """
 
 import argparse
@@ -39,12 +39,12 @@ HOME = Path.home()
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
-parser = argparse.ArgumentParser(description='Fine-tune WAANDAx Gen 2 (Apple Silicon / MLX)')
-parser.add_argument('--data-dir',       type=str, default=str(HOME / 'models' / 'WAANDAx' / 'training-exports'),
+parser = argparse.ArgumentParser(description='Fine-tune Krisnam Gen 2 (Apple Silicon / MLX)')
+parser.add_argument('--data-dir',       type=str, default=str(HOME / 'models' / 'Krisnam' / 'training-exports'),
                     help='WAANDA export directory (matches WAANDA_EXPORT_DIR in .env)')
-parser.add_argument('--mlx-model',      type=str, default=str(HOME / 'models' / 'WAANDAx' / 'fused'),
+parser.add_argument('--mlx-model',      type=str, default=str(HOME / 'models' / 'Krisnam' / 'fused'),
                     help='MLX base model path (the Gen 1 fused model)')
-parser.add_argument('--output-dir',     type=str, default=str(HOME / 'models' / 'WAANDAx' / 'finetune'),
+parser.add_argument('--output-dir',     type=str, default=str(HOME / 'models' / 'Krisnam' / 'finetune'),
                     help='Output directory for adapter + fused model')
 parser.add_argument('--iters',          type=int, default=1000,  help='Training iterations (100 for smoke test, 1000+ for real run)')
 parser.add_argument('--batch-size',     type=int, default=4,     help='Batch size')
@@ -54,7 +54,7 @@ parser.add_argument('--val-pct',        type=float, default=0.1,  help='Validati
 parser.add_argument('--dry-run',        action='store_true', help='Prepare data and print command, then exit')
 parser.add_argument('--cloud',          action='store_true', help='Print Google Colab / Unsloth recipe and exit')
 parser.add_argument('--create-ollama-model', action='store_true', help='Convert trained model to Ollama after training')
-parser.add_argument('--ollama-model-name', type=str, default='waandax:v2', help='Ollama model name to create')
+parser.add_argument('--ollama-model-name', type=str, default='krisnam:v2', help='Ollama model name to create')
 args = parser.parse_args()
 
 # ── Cloud recipe (Colab / Unsloth) ───────────────────────────────────────────
@@ -62,14 +62,14 @@ args = parser.parse_args()
 if args.cloud:
     print("""
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WAANDAx Gen 2 — Google Colab / Unsloth Fine-Tune Recipe
+Krisnam Gen 2 — Google Colab / Unsloth Fine-Tune Recipe
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. Export training data from your local backend:
    curl http://localhost:5050/api/admin/waanda-training/export
-   Get the alpaca_*.jsonl from ~/models/WAANDAx/training-exports/
+   Get the alpaca_*.jsonl from ~/models/Krisnam/training-exports/
 
-2. Upload alpaca_*.jsonl to Colab as /content/alpaca_waandax.jsonl
+2. Upload alpaca_*.jsonl to Colab as /content/alpaca_krisnam.jsonl
 
 3. In Colab (GPU runtime — T4 free, A100 ~$0.50/hr):
 
@@ -85,7 +85,7 @@ WAANDAx Gen 2 — Google Colab / Unsloth Fine-Tune Recipe
    from transformers import TrainingArguments
    import json
 
-   with open('/content/alpaca_waandax.jsonl') as f:
+   with open('/content/alpaca_krisnam.jsonl') as f:
        rows = [json.loads(l) for l in f if l.strip()]
 
    TEMPLATE = '''Below is an instruction. Write a response.
@@ -115,14 +115,14 @@ WAANDAx Gen 2 — Google Colab / Unsloth Fine-Tune Recipe
        args=TrainingArguments(per_device_train_batch_size=2,
            gradient_accumulation_steps=4, warmup_steps=5,
            num_train_epochs=3, learning_rate=2e-4, fp16=True,
-           logging_steps=1, optim='adamw_8bit', output_dir='./waandax-out',
+           logging_steps=1, optim='adamw_8bit', output_dir='./krisnam-out',
            report_to='none'))
    trainer.train()
 
 5. Export GGUF for Ollama:
-   model.save_pretrained_gguf('./waandax-v2', tokenizer, quantization_method='q4_k_m')
+   model.save_pretrained_gguf('./krisnam-v2', tokenizer, quantization_method='q4_k_m')
 
-6. Download waandax-v2-Q4_K_M.gguf and deploy locally with Ollama.
+6. Download krisnam-v2-Q4_K_M.gguf and deploy locally with Ollama.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """)
     sys.exit(0)
@@ -157,7 +157,7 @@ if len(rows) < 200:
     print('  Proceeding anyway (--dry-run to just verify setup)...')
 
 # MLX expects train.jsonl + valid.jsonl in a directory
-data_prep_dir = Path('/tmp/waandax-mlx-data')
+data_prep_dir = Path('/tmp/krisnam-mlx-data')
 data_prep_dir.mkdir(parents=True, exist_ok=True)
 
 random.seed(42)
@@ -197,7 +197,7 @@ try:
 except ImportError:
     print('[ERROR] mlx-lm not installed.')
     print('  Install: ~/.kimmp-venv/bin/pip install mlx-lm')
-    print('  Or run with: ~/.kimmp-venv/bin/python scripts/finetune_waandax.py')
+    print('  Or run with: ~/.kimmp-venv/bin/python scripts/finetune_krisnam.py')
     sys.exit(1)
 
 # ── Build mlx_lm.lora command ─────────────────────────────────────────────────
@@ -241,7 +241,7 @@ print(f'\n[DONE] Adapter saved to {output_dir}/adapters/')
 # ── Fuse adapter into base model ──────────────────────────────────────────────
 
 fused_dir    = output_dir / 'fused'
-gguf_path_direct = fused_dir / 'waandax-v2.gguf'
+gguf_path_direct = fused_dir / 'krisnam-v2.gguf'
 
 print(f'[FUSE] Merging LoRA adapter into base model → {fused_dir}...')
 
@@ -291,7 +291,7 @@ PARAMETER num_predict 512
 PARAMETER stop "<|end_of_text|>"
 PARAMETER stop "<|eot_id|>"
 
-SYSTEM \"\"\"You are WAANDAx — the reasoning core of Kangqore's WAANDA Intelligence Engine. You make agent selection decisions for autonomous system activations. Select the minimum agents needed for the trigger. Return only valid JSON: {{"selectedAgents": [...], "reasoning": "...", "priority": "NORMAL|HIGH|CRITICAL"}}\"\"\"
+SYSTEM \"\"\"You are Krisnam — the reasoning core of Kangqore's WAANDA Intelligence Engine. You make agent selection decisions for autonomous system activations. Select the minimum agents needed for the trigger. Return only valid JSON: {{"selectedAgents": [...], "reasoning": "...", "priority": "NORMAL|HIGH|CRITICAL"}}\"\"\"
 """)
     print(f'\n[DEPLOY] Modelfile written: {modelfile_path}')
     print(f'\nDeploy to Ollama (optional — MLX server is primary):')

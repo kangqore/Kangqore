@@ -4,7 +4,7 @@ const GENERATIONS = [
   { gen: 'Gen1', label: 'Claude Orchestrator', status: 'LIVE', color: GREEN,  desc: 'KIMMP routes requests to Claude via structured prompts. Training data collection begins.', year: '2026 Q1' },
   { gen: 'Gen2', label: 'Fine-tuned Adapter',  status: 'LIVE', color: GREEN,  desc: 'LoRA adapter on Mistral-7B. A/B split vs Claude. Accuracy 78%. Corpus 50K+.', year: '2026 Q2' },
   { gen: 'Gen3', label: 'Domain Expert',       status: 'LIVE', color: GREEN,  desc: 'Multi-domain specialisation. Projects/Finance/CRM/HR verticals. Gen3 handles 20%.', year: '2026 Q2' },
-  { gen: 'Gen4', label: 'WAANDAx Foundation',  status: 'LIVE', color: GREEN,  desc: 'Primary engine at 80% routing. Claude fallback 20%. Foundation model v0.1.', year: '2026 Q3' },
+  { gen: 'Gen4', label: 'Krisnam Foundation',  status: 'LIVE', color: GREEN,  desc: 'Primary engine at 80% routing. Claude fallback 20%. Foundation model v0.1.', year: '2026 Q3' },
   { gen: 'Gen5', label: 'Cognitive Engine',    status: 'IN PROGRESS', color: AMBER, desc: 'Native reasoning. Sub-goal decomposition. Chain-of-thought. Mistral-22B / Qwen-32B target. 10% shadow/beta.', year: '2026 Q3' },
 ]
 

@@ -8,14 +8,14 @@
 // ---------------------------------------------------------------------------
 
 import Anthropic from '@anthropic-ai/sdk';
-import { withWaandax } from '../llm/waandaxAnthropic';
+import { withKrisnam } from '../llm/krisnamAnthropic';
 import logger from '../../../utils/logger';
 import { KimmpFlags } from '../core/flags';
 import { pageContentSchema, PageContent } from './pageSchema';
 import { ClaimValidator, ClaimIssue } from './claimValidator';
 import { KimmpCostTracker } from '../governance/costTracker.service';
 
-const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }));
+const anthropic = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }));
 
 const SYSTEM_PROMPT = `You generate website page content for Kangqore, an enterprise
 technology consulting company.

@@ -86,7 +86,7 @@ export function Chapter9GatePage() {
         <div style={{ padding: '20px 24px', borderRadius: 16, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)' }}>
           <div style={{ fontSize: 16, fontWeight: 900, color: GREEN, marginBottom: 6 }}>🏆 Chapter 9 — Market Expansion COMPLETE</div>
           <div style={{ fontSize: 13, color: T2, lineHeight: 1.7 }}>
-            35 customers across 4 regions (UK, EU, India, US). 3 vertical SaaS editions launched. OEM white-label program live. International GTM active. WAANDAx Gen4 in production. Revenue Ops automated. Chapter 10 begins.
+            35 customers across 4 regions (UK, EU, India, US). 3 vertical SaaS editions launched. OEM white-label program live. International GTM active. Krisnam Gen4 in production. Revenue Ops automated. Chapter 10 begins.
           </div>
         </div>
       )}

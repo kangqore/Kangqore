@@ -289,7 +289,7 @@ function LocalModelPanel({ status }: { status: GenStatus }) {
             <div className="bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl p-4 space-y-2">
               {[
                 '1. Run the fine-tune script (see below)',
-                `2. ollama create ${lm.model} -f ~/models/WAANDAx/finetune/Modelfile`,
+                `2. ollama create ${lm.model} -f ~/models/Krisnam/finetune/Modelfile`,
                 `3. Set KIMMP_LOCAL_REASON_MODEL=${lm.model}`,
                 '4. Restart core-backend — REASON phase auto-switches',
               ].map((step, i) => (
@@ -463,11 +463,11 @@ function CorpusPanel({ stats }: { stats: CorpusStats }) {
 
 function ScriptPanel() {
   const steps = [
-    { n: '1', label: 'Export approved corpus',  cmd: 'curl -o waandax-corpus.jsonl \\\n  "http://localhost:3000/api/admin/kangqore-immp/learning/export-jsonl?minQuality=0.5"' },
-    { n: '2', label: 'Fine-tune via MLX-LM LoRA', cmd: 'cd ~/.kimmp-venv\nsource bin/activate\nmlx_lm.lora \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --train --data ~/waandax-corpus.jsonl \\\n  --iters 1000 --batch-size 4 \\\n  --adapter-path ~/.kimmp-models/waandax-gen2-v1/adapters' },
-    { n: '3', label: 'Fuse adapter → final weights', cmd: 'mlx_lm.fuse \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --adapter-path ~/.kimmp-models/waandax-gen2-v1/adapters \\\n  --save-path ~/.kimmp-models/waandax-gen2-v1' },
-    { n: '4', label: 'Start WAANDAx server',    cmd: 'mlx_lm.server \\\n  --model ~/.kimmp-models/waandax-gen2-v1 \\\n  --port 11435' },
-    { n: '5', label: 'Set env + register + restart', cmd: `# In backend .env:\nWAANDAX_URL=http://localhost:11435\nWAANDAX_MODEL=~/.kimmp-models/waandax-gen2-v1\n\n# Register in KIMMP:\ncurl -X POST http://localhost:3000/api/admin/kangqore-immp/waandax/register-model \\\n  -H "Content-Type: application/json" \\\n  -d '{"name":"WAANDAx Gen2 v1","modelPath":"~/.kimmp-models/waandax-gen2-v1","trainingExamples":1000}'\n\n# Restart backend:\ndocker compose up -d core-backend` },
+    { n: '1', label: 'Export approved corpus',  cmd: 'curl -o krisnam-corpus.jsonl \\\n  "http://localhost:3000/api/admin/kangqore-immp/learning/export-jsonl?minQuality=0.5"' },
+    { n: '2', label: 'Fine-tune via MLX-LM LoRA', cmd: 'cd ~/.kimmp-venv\nsource bin/activate\nmlx_lm.lora \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --train --data ~/krisnam-corpus.jsonl \\\n  --iters 1000 --batch-size 4 \\\n  --adapter-path ~/.kimmp-models/krisnam-gen2-v1/adapters' },
+    { n: '3', label: 'Fuse adapter → final weights', cmd: 'mlx_lm.fuse \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --adapter-path ~/.kimmp-models/krisnam-gen2-v1/adapters \\\n  --save-path ~/.kimmp-models/krisnam-gen2-v1' },
+    { n: '4', label: 'Start Krisnam server',    cmd: 'mlx_lm.server \\\n  --model ~/.kimmp-models/krisnam-gen2-v1 \\\n  --port 11435' },
+    { n: '5', label: 'Set env + register + restart', cmd: `# In backend .env:\nKRISNAM_URL=http://localhost:11435\nKRISNAM_MODEL=~/.kimmp-models/krisnam-gen2-v1\n\n# Register in KIMMP:\ncurl -X POST http://localhost:3000/api/admin/kangqore-immp/krisnam/register-model \\\n  -H "Content-Type: application/json" \\\n  -d '{"name":"Krisnam Gen2 v1","modelPath":"~/.kimmp-models/krisnam-gen2-v1","trainingExamples":1000}'\n\n# Restart backend:\ndocker compose up -d core-backend` },
   ]
 
   return (
@@ -523,7 +523,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
     if (!prompt.trim() || loading) return
     setLoading(true); setResult(null)
     try {
-      const res = await api.post('/admin/kangqore-immp/waandax/infer', { prompt: prompt.trim() })
+      const res = await api.post('/admin/kangqore-immp/krisnam/infer', { prompt: prompt.trim() })
       setResult(res.data)
     } catch {
       setResult({ gen2: null, gen2Available: false, latencyMs: 0, error: 'Request failed' })
@@ -538,7 +538,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
       <div className="px-6 py-4 border-b border-[var(--os-border)] flex items-center gap-3">
         <GitCompare style={{ width: 16, height: 16, color: '#a78bfa' }} />
         <p className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-wider flex-1">
-          WAANDAx Gen2 — Live Inference
+          Krisnam Gen2 — Live Inference
         </p>
         {modelAvailable
           ? <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.25)' }}>
@@ -571,7 +571,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
             value={prompt}
             onChange={e => setPrompt(e.target.value)}
             rows={3}
-            placeholder="Ask WAANDAx a strategic reasoning question…"
+            placeholder="Ask Krisnam a strategic reasoning question…"
             className="w-full text-sm font-mono leading-relaxed p-4 rounded-2xl resize-none outline-none transition-colors"
             style={{
               background:  'var(--os-surface-0)',
@@ -604,7 +604,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
               <div className="rounded-2xl p-4 space-y-2" style={{ background: 'rgba(127,83,249,0.06)', border: '1px solid rgba(127,83,249,0.2)' }}>
                 <div className="flex items-center gap-2">
                   <Brain style={{ width: 12, height: 12, color: '#a78bfa' }} />
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[#a78bfa]">WAANDAx Gen2</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#a78bfa]">Krisnam Gen2</span>
                   <span className="ml-auto inline-flex items-center gap-1 text-[9px] font-bold text-[var(--os-text-4)]">
                     <Clock style={{ width: 9, height: 9 }} /> {result.latencyMs}ms
                   </span>
@@ -616,7 +616,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
                 <div className="flex items-start gap-2">
                   <WifiOff style={{ width: 12, height: 12, color: '#fbbf24', flexShrink: 0, marginTop: 1 }} />
                   <div>
-                    <p className="text-[10px] font-bold text-amber-400 mb-1">WAANDAx Offline</p>
+                    <p className="text-[10px] font-bold text-amber-400 mb-1">Krisnam Offline</p>
                     <pre className="text-[10px] text-[var(--os-text-3)] font-mono leading-relaxed whitespace-pre-wrap break-all">
                       {result.error ?? 'MLX server not running on port 11435'}
                     </pre>
@@ -630,7 +630,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
         {!modelAvailable && !result && (
           <div className="rounded-2xl p-4" style={{ background: 'rgba(251,191,36,0.04)', border: '1px solid rgba(251,191,36,0.15)' }}>
             <p className="text-[10px] font-semibold text-[var(--os-text-3)] leading-relaxed">
-              WAANDAx Gen2 is offline. Start it with:<br />
+              Krisnam Gen2 is offline. Start it with:<br />
               <code className="font-mono text-amber-400">cd ~/.kimmp-venv && mlx_lm.server --model mlx-community/Llama-3.2-3B-Instruct-4bit --port 11435</code>
             </p>
           </div>
@@ -685,7 +685,7 @@ export function TrainingPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Brain style={{ width: 24, height: 24, color: '#a78bfa' }} />
-            <h2 className="text-xl font-bold text-[var(--os-text-1)] tracking-tight">WAANDAx Gen 2 — Local Reasoning Model</h2>
+            <h2 className="text-xl font-bold text-[var(--os-text-1)] tracking-tight">Krisnam Gen 2 — Local Reasoning Model</h2>
           </div>
           <p className="text-sm font-semibold text-[var(--os-text-2)] leading-relaxed max-w-xl">
             Capture REASON phase training data until 1,000 examples, then fine-tune Llama-3.2-3B-Instruct with QLoRA.
@@ -751,7 +751,7 @@ export function TrainingPage() {
             <p className="text-sm font-medium text-[var(--os-text-2)] leading-relaxed">
               Every KIMMP activation captures the REASON prompt + Claude's response as a training example. Once 1,000
               high-quality REASON examples are labelled, QLoRA fine-tuning on Llama-3.2-3B produces{' '}
-              <span className="font-bold text-[var(--os-text-1)]">WAANDAx Gen 2</span> — a Kangqore-specific reasoning model.
+              <span className="font-bold text-[var(--os-text-1)]">Krisnam Gen 2</span> — a Kangqore-specific reasoning model.
               The dispatcher automatically switches REASON → local model, SPEAK + GOVERN stay on Claude.
               This eliminates ~50% of Claude API calls and reduces REASON latency from ~1,500 ms to &lt;100 ms.
             </p>

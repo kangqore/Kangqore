@@ -108,7 +108,7 @@ export function IntlGatePage() {
       {allPass && (
         <div style={{ padding: '16px 22px', borderRadius: 14, background: GREEN + '08', border: `1px solid ${GREEN}25` }}>
           <div style={{ fontSize: 14, fontWeight: 900, color: GREEN, marginBottom: 4 }}>✓ International GTM v1.0 declared — Track 3 complete</div>
-          <div style={{ fontSize: 12, color: T2 }}>3 regions commercially live. 35-customer fleet achieved. Regional ARR intelligence active. Track 4 (WAANDAx Gen4) begins next.</div>
+          <div style={{ fontSize: 12, color: T2 }}>3 regions commercially live. 35-customer fleet achieved. Regional ARR intelligence active. Track 4 (Krisnam Gen4) begins next.</div>
         </div>
       )}
 

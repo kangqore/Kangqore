@@ -119,7 +119,7 @@ export function Gen2AccuracyPage() {
                 style={{ borderColor: BDR, background: SURF, color: T1 }}>
                 <option value="gen1">Gen1 (Claude)</option>
                 <option value="gen2">Gen2 (fine-tuned)</option>
-                <option value="waandax">WAANDAx</option>
+                <option value="krisnam">Krisnam</option>
               </select>
             </div>
           </div>
