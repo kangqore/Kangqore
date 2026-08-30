@@ -41,7 +41,7 @@ const GENERATIONS = [
   },
   {
     gen: 2,
-    name: 'Local Llama (WAANDAx)',
+    name: 'Local Llama (Krisnam)',
     color: '#7c3aed',
     status: 'live' as const,
     desc: 'Llama 3.2-3B via MLX on port 11435. REASON phase uses it before falling back to Claude.',

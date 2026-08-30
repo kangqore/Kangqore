@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
-import { withWaandax } from '../llm/waandaxAnthropic'
+import { withKrisnam } from '../llm/krisnamAnthropic'
 import { prisma } from '../../../lib/prisma'
 import { SignalLedger } from '../signals/signalLedger.service'
 import { KimmpGoalEngine } from '../goals/kimmpGoal.service'
@@ -22,7 +22,7 @@ export interface ProactiveAlert {
   createdAt:       string
 }
 
-const anthropic = withWaandax(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
+const anthropic = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
 export class KimmpProactiveEngine {
 

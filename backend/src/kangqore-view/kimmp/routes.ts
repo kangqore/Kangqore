@@ -151,25 +151,25 @@ kangqoreImmpRoutes.post('/stt', requireAuth, requireRole(['ADMIN']),
   }
 )
 
-// ── WAANDAx — direct inference probe (bypasses router circuit breakers) ───────
-// Both this probe and the router's local slot now share WAANDAX_URL / WAANDAX_MODEL.
+// ── Krisnam — direct inference probe (bypasses router circuit breakers) ───────
+// Both this probe and the router's local slot now share KRISNAM_URL / KRISNAM_MODEL.
 // One MLX-LM server (port 11435), two consumers: probe (here) + router Step 1.
-kangqoreImmpRoutes.post('/waandax/infer', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.post('/krisnam/infer', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   const { prompt } = req.body as { prompt?: string }
   if (!prompt?.trim()) return res.status(400).json({ error: 'prompt required' })
 
-  const WAANDAX_BASE  = process.env.WAANDAX_URL   || 'http://127.0.0.1:11435'
-  const WAANDAX_MODEL = process.env.WAANDAX_MODEL  || 'mlx-community/Llama-3.2-3B-Instruct-4bit'
+  const KRISNAM_BASE  = process.env.KRISNAM_URL   || 'http://127.0.0.1:11435'
+  const KRISNAM_MODEL = process.env.KRISNAM_MODEL  || 'mlx-community/Llama-3.2-3B-Instruct-4bit'
   const t0 = Date.now()
 
   try {
-    const response = await fetch(`${WAANDAX_BASE}/v1/chat/completions`, {
+    const response = await fetch(`${KRISNAM_BASE}/v1/chat/completions`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        model:       WAANDAX_MODEL,
+        model:       KRISNAM_MODEL,
         messages:    [
-          { role: 'system', content: 'You are WAANDAx — Kangqore\'s local reasoning engine. Be concise and precise.' },
+          { role: 'system', content: 'You are Krisnam — Kangqore\'s local reasoning engine. Be concise and precise.' },
           { role: 'user',   content: prompt.trim() },
         ],
         max_tokens:  512,
@@ -177,24 +177,24 @@ kangqoreImmpRoutes.post('/waandax/infer', requireAuth, requireRole(['ADMIN']), a
       }),
       signal: AbortSignal.timeout(30_000),
     })
-    if (!response.ok) throw new Error(`WAANDAx ${response.status}`)
+    if (!response.ok) throw new Error(`Krisnam ${response.status}`)
     const data = (await response.json()) as { choices?: { message?: { content?: string } }[] }
     const text  = data.choices?.[0]?.message?.content ?? ''
-    res.json({ gen2: text, gen2Available: true, latencyMs: Date.now() - t0, model: WAANDAX_MODEL })
+    res.json({ gen2: text, gen2Available: true, latencyMs: Date.now() - t0, model: KRISNAM_MODEL })
   } catch (err: any) {
-    logger.warn('[WAANDAx] local inference offline:', err.message)
+    logger.warn('[Krisnam] local inference offline:', err.message)
     res.json({
       gen2:          null,
       gen2Available: false,
       latencyMs:     Date.now() - t0,
-      error:         `WAANDAx offline — restart: cd ~/.kimmp-venv && mlx_lm.server --model ${process.env.WAANDAX_MODEL || 'mlx-community/Llama-3.2-3B-Instruct-4bit'} --port 11435`,
+      error:         `Krisnam offline — restart: cd ~/.kimmp-venv && mlx_lm.server --model ${process.env.KRISNAM_MODEL || 'mlx-community/Llama-3.2-3B-Instruct-4bit'} --port 11435`,
     })
   }
 })
 
-// POST /admin/kangqore-immp/waandax/register-model
-// Register a fine-tuned WAANDAx model into Gen2Model registry after training.
-kangqoreImmpRoutes.post('/waandax/register-model', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// POST /admin/kangqore-immp/krisnam/register-model
+// Register a fine-tuned Krisnam model into Gen2Model registry after training.
+kangqoreImmpRoutes.post('/krisnam/register-model', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const userId = (req as any).user?.id ?? 'system'
     const { name, modelPath, benchmarkAccuracy, trainingExamples, notes } = req.body
@@ -206,7 +206,7 @@ kangqoreImmpRoutes.post('/waandax/register-model', requireAuth, requireRole(['AD
     const model = await (prisma as any).gen2Model.create({
       data: {
         name,
-        provider:        'waandax',
+        provider:        'krisnam',
         baseModel:       'Llama-3.2-3B-Instruct',
         providerModelId: modelPath,
         finetuneJobId:   null,
@@ -221,17 +221,17 @@ kangqoreImmpRoutes.post('/waandax/register-model', requireAuth, requireRole(['AD
     // Fire KIMMP signal
     await (prisma as any).kimmpSignal.create({
       data: {
-        type:        'GEN2_WAANDAX_DEPLOYED',
+        type:        'GEN2_KRISNAM_DEPLOYED',
         source:      'SYSTEM',
         priority:    'HIGH',
-        title:       `WAANDAx model deployed: ${name}`,
+        title:       `Krisnam model deployed: ${name}`,
         description: `Path: ${modelPath} · Examples: ${trainingExamples ?? 0} · Accuracy: ${benchmarkAccuracy ?? 'pending eval'}`,
         status:      'ACTIVE',
         createdBy:   userId,
       },
     })
 
-    res.status(201).json({ ok: true, model, message: `Set WAANDAX_MODEL=${modelPath} and restart backend to activate.` })
+    res.status(201).json({ ok: true, model, message: `Set KRISNAM_MODEL=${modelPath} and restart backend to activate.` })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
@@ -1589,14 +1589,14 @@ kangqoreImmpRoutes.get('/learning/export-jsonl', requireAuth, requireRole(['ADMI
 
     const lines = examples.map((ex: any) => JSON.stringify({
       messages: [
-        { role: 'system',    content: ex.systemPrompt  ?? 'You are WAANDAx — Kangqore\'s local reasoning engine.' },
+        { role: 'system',    content: ex.systemPrompt  ?? 'You are Krisnam — Kangqore\'s local reasoning engine.' },
         { role: 'user',      content: ex.userMessage   ?? '' },
         { role: 'assistant', content: ex.idealResponse ?? '' },
       ],
     }))
 
     res.setHeader('Content-Type', 'application/x-ndjson')
-    res.setHeader('Content-Disposition', `attachment; filename="waandax-corpus-${examples.length}ex-${new Date().toISOString().slice(0,10)}.jsonl"`)
+    res.setHeader('Content-Disposition', `attachment; filename="krisnam-corpus-${examples.length}ex-${new Date().toISOString().slice(0,10)}.jsonl"`)
     res.send(lines.join('\n'))
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
@@ -3380,11 +3380,11 @@ kangqoreImmpRoutes.post('/learning/circuit-trip', requireAuth, requireRole(['ADM
 })
 
 // ══════════════════════════════════════════════════════════════════════════════
-// S110 — WAANDAx Gen2 Quality Diff Dashboard
+// S110 — Krisnam Gen2 Quality Diff Dashboard
 // ══════════════════════════════════════════════════════════════════════════════
 
 // POST /admin/kangqore-immp/learning/quality-diff
-// Side-by-side Gen1 (Claude) vs Gen2 (WAANDAx) response comparison.
+// Side-by-side Gen1 (Claude) vs Gen2 (Krisnam) response comparison.
 kangqoreImmpRoutes.post('/learning/quality-diff', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { prompt, context } = req.body
@@ -3395,10 +3395,10 @@ kangqoreImmpRoutes.post('/learning/quality-diff', requireAuth, requireRole(['ADM
       ? `You are KIMMP, Kangqore's intelligence engine. Context: ${context}`
       : 'You are KIMMP, Kangqore\'s intelligence engine. Respond concisely and analytically.'
 
-    // Run Gen1 (Claude) and WAANDAx in parallel where possible
+    // Run Gen1 (Claude) and Krisnam in parallel where possible
     const t0 = Date.now()
 
-    // Gen1: force Claude by calling with a route meta that skips WAANDAx
+    // Gen1: force Claude by calling with a route meta that skips Krisnam
     // We call routedCall twice — the router will naturally pick the available path.
     // To get a reliable Gen1 baseline we use the Anthropic SDK directly via haiku.
     const { haiku, textOf } = await import('./llm/kimmpLLMRouter')
@@ -3422,7 +3422,7 @@ kangqoreImmpRoutes.post('/learning/quality-diff', requireAuth, requireRole(['ADM
     ])
 
     const gen1 = gen1Result.status === 'fulfilled' ? gen1Result.value : { response: 'Gen1 call failed', latencyMs: 0, model: 'claude-haiku', provider: 'gen1' }
-    const gen2 = gen2Result.status === 'fulfilled' ? gen2Result.value : { response: 'WAANDAx not available — Gen1 fallback used', latencyMs: 0, model: 'N/A', provider: 'gen1' }
+    const gen2 = gen2Result.status === 'fulfilled' ? gen2Result.value : { response: 'Krisnam not available — Gen1 fallback used', latencyMs: 0, model: 'N/A', provider: 'gen1' }
 
     res.json({
       prompt,
@@ -5605,7 +5605,7 @@ kangqoreImmpRoutes.get('/gen4/capability-comparison', requireAuth, requireRole([
   res.json({
     generations: [
       { gen: 1, name: 'WAANDA Gen1 (Claude)', reasoningDepth: 85, domainSpecificity: 60, latencyMs: 2200, autonomyLevel: 40, costPerInference: 'High (API)', status: 'live' },
-      { gen: 2, name: 'WAANDAx Gen2 (Fine-tuned)', reasoningDepth: 72, domainSpecificity: 78, latencyMs: 380,  autonomyLevel: 55, costPerInference: 'Medium (local)', status: 'live' },
+      { gen: 2, name: 'Krisnam Gen2 (Fine-tuned)', reasoningDepth: 72, domainSpecificity: 78, latencyMs: 380,  autonomyLevel: 55, costPerInference: 'Medium (local)', status: 'live' },
       { gen: 3, name: 'Gen3 Multi-Agent', reasoningDepth: 91, domainSpecificity: 82, latencyMs: 4100, autonomyLevel: 70, costPerInference: 'Medium (per-agent)', status: 'live' },
       { gen: 4, name: 'WAANDA Foundation Model', reasoningDepth: 95, domainSpecificity: 97, latencyMs: 120,  autonomyLevel: 90, costPerInference: 'Low (self-hosted)', status: 'roadmap' },
     ],
@@ -6308,7 +6308,7 @@ kangqoreImmpRoutes.get('/platform/s157-status', requireAuth, requireRole(['ADMIN
 })
 
 // ═══════════════════════════════════════════════════════════════════════
-// S158–S166: WAANDAx Gen4 Foundation Model
+// S158–S166: Krisnam Gen4 Foundation Model
 // S167–S170: Revenue Ops + Chapter 9 Gate
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -6399,7 +6399,7 @@ kangqoreImmpRoutes.get('/gen4/dataset/versions', requireAuth, requireRole(['ADMI
 kangqoreImmpRoutes.post('/gen4/dataset/:id/push-hf', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     // prisma available from module scope
-    const hfRepoId = `kangqore/waandax-corpus-${req.params.id.slice(0, 8)}`
+    const hfRepoId = `kangqore/krisnam-corpus-${req.params.id.slice(0, 8)}`
     const dv = await (prisma as any).datasetVersion.update({ where: { id: req.params.id }, data: { hfPushed: true, hfRepoId } })
     res.json(dv)
   } catch (e: any) { res.status(500).json({ error: e.message }) }
@@ -6745,7 +6745,7 @@ kangqoreImmpRoutes.post('/gen4/router/push-80', requireAuth, requireRole(['ADMIN
       where: { id: cfg.id },
       data: { livePercent: 80, shadowMode: false, totalRequests: simulatedTotal, gen4Requests: simulatedGen4, consecutiveFails: 0 },
     })
-    res.json({ success: true, livePercent: updated.livePercent, requestsSimulated: 5000, message: 'Gen4 declared production AI. 80% of KIMMP reasoning now powered by WAANDAx Foundation v0.1.' })
+    res.json({ success: true, livePercent: updated.livePercent, requestsSimulated: 5000, message: 'Gen4 declared production AI. 80% of KIMMP reasoning now powered by Krisnam Foundation v0.1.' })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
@@ -9125,7 +9125,7 @@ kangqoreImmpRoutes.get('/platform/series-a-diligence', requireAuth, requireRole(
         items: [
           { label: 'Gen5 Routing Live', value: '95% primary routing · <5% Claude fallback', status: 'READY' },
           { label: 'COIG North Star', value: 'COIG avg +12.4 across 200-fleet', status: 'READY' },
-          { label: 'WAANDAx Foundation v0.1', value: 'Proprietary model in production', status: 'READY' },
+          { label: 'Krisnam Foundation v0.1', value: 'Proprietary model in production', status: 'READY' },
           { label: 'AEGIS Governance Audit Trail', value: '100% decisions logged · SOC 2 Type II live', status: 'READY' },
         ],
       },

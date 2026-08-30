@@ -49,7 +49,7 @@ export const TemporalSlider = () => {
   const modeConfig = {
     RETROSPECTIVE: { color: 'text-amber-500', bg: 'bg-amber-500/20', border: 'border-amber-500/30', icon: <History className="w-4 h-4" />, label: 'Historical Ledger' },
     PRESENT: { color: 'text-blue-500', bg: 'bg-blue-500/20', border: 'border-blue-500/30', icon: <Activity className="w-4 h-4" />, label: 'Real-time Reality' },
-    PREDICTIVE: { color: 'text-purple-500', bg: 'bg-purple-500/20', border: 'border-purple-500/30', icon: <BrainCircuit className="w-4 h-4" />, label: 'WAANDAx Simulation' }
+    PREDICTIVE: { color: 'text-purple-500', bg: 'bg-purple-500/20', border: 'border-purple-500/30', icon: <BrainCircuit className="w-4 h-4" />, label: 'Krisnam Simulation' }
   };
 
   const activeMode = modeConfig[temporalMode];

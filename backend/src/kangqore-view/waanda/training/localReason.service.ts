@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // LocalReasonService — Gen 2 inference layer
 //
-// Supports two backends for the WAANDAx REASON phase local model:
+// Supports two backends for the Krisnam REASON phase local model:
 //
 //   1. MLX server  (mlx_lm.server — Apple Silicon, OpenAI-compatible API)
 //      KIMMP_MLX_SERVER_URL  = http://localhost:11435
@@ -9,7 +9,7 @@
 //
 //   2. Ollama      (ollama serve — OpenAI-compatible via /api/chat)
 //      KIMMP_OLLAMA_URL          = http://localhost:11434
-//      KIMMP_LOCAL_REASON_MODEL  = waandax:latest
+//      KIMMP_LOCAL_REASON_MODEL  = krisnam:latest
 //
 // MLX server is tried first (lower latency on Apple Silicon).
 // Falls back to Ollama, then to Claude if both are unavailable.
@@ -49,11 +49,11 @@ export interface LocalModelStatus {
 export class LocalReasonService {
   // MLX server (mlx_lm.server — OpenAI-compatible)
   private static readonly MLX_URL   = process.env.KIMMP_MLX_SERVER_URL ?? 'http://127.0.0.1:11435'
-  private static readonly MLX_MODEL = process.env.KIMMP_MLX_MODEL ?? `${process.env.HOME}/models/WAANDAx/fused`
+  private static readonly MLX_MODEL = process.env.KIMMP_MLX_MODEL ?? `${process.env.HOME}/models/Krisnam/fused`
 
   // Ollama fallback
   private static readonly OLLAMA_URL   = process.env.KIMMP_OLLAMA_URL ?? 'http://localhost:11434'
-  private static readonly OLLAMA_MODEL = process.env.KIMMP_LOCAL_REASON_MODEL ?? 'waandax:latest'
+  private static readonly OLLAMA_MODEL = process.env.KIMMP_LOCAL_REASON_MODEL ?? 'krisnam:latest'
 
   private static _status: LocalModelStatus | null = null
   private static _lastCheck = 0
@@ -144,7 +144,7 @@ export class LocalReasonService {
           available: true, backend: 'mlx',
           model: this.MLX_MODEL, serverUrl: this.MLX_URL,
           loadedModels: loaded,
-          note: `WAANDAx (MLX) serving at ${this.MLX_URL} — REASON phase uses local model`,
+          note: `Krisnam (MLX) serving at ${this.MLX_URL} — REASON phase uses local model`,
         }
         this._lastCheck = now
         return this._status
@@ -164,7 +164,7 @@ export class LocalReasonService {
           model: this.OLLAMA_MODEL, serverUrl: this.OLLAMA_URL,
           loadedModels: loaded,
           note: found
-            ? `${this.OLLAMA_MODEL} (Ollama) ready — REASON phase uses WAANDAx local model`
+            ? `${this.OLLAMA_MODEL} (Ollama) ready — REASON phase uses Krisnam local model`
             : `Ollama reachable but ${this.OLLAMA_MODEL} not loaded. Run: ollama pull ${this.OLLAMA_MODEL}`,
         }
         this._lastCheck = now
@@ -175,7 +175,7 @@ export class LocalReasonService {
     this._status = {
       available: false, backend: 'none',
       model: this.MLX_MODEL, serverUrl: this.MLX_URL,
-      note: `No local model available. Start MLX server: python -m mlx_lm.server --model ~/models/WAANDAx/fused --port 11435`,
+      note: `No local model available. Start MLX server: python -m mlx_lm.server --model ~/models/Krisnam/fused --port 11435`,
     }
     this._lastCheck = now
     return this._status

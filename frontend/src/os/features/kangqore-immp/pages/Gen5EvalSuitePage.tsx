@@ -51,7 +51,7 @@ export function Gen5EvalSuitePage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
             {[
               { model: 'Gen5 (WAANDA)', accuracy: latest.gen5Accuracy, latency: latest.gen5Latency, cost: latest.gen5Cost, color: AMBER },
-              { model: 'Gen4 (WAANDAx)', accuracy: latest.gen4Accuracy, latency: latest.gen4Latency, cost: latest.gen4Cost, color: BLUE },
+              { model: 'Gen4 (Krisnam)', accuracy: latest.gen4Accuracy, latency: latest.gen4Latency, cost: latest.gen4Cost, color: BLUE },
               { model: 'Claude (Fallback)', accuracy: latest.claudeAccuracy, latency: latest.claudeLatency, cost: null, color: GREEN },
             ].map(m => (
               <div key={m.model} style={{ background: m.color + '08', border: `1px solid ${m.color}25`, borderRadius: 12, padding: '16px 18px' }}>

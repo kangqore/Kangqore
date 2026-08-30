@@ -1,7 +1,7 @@
 // S308-S310 — KIMMP Intelligence Gateway core primitives: call logging, PII
 // scanning, budget checks, cost estimation. Deliberately zero-dependency on
 // kimmpLLMRouter.ts so the router can import this file directly (mirrors
-// waandaxAnthropic.ts's own "no imports from kimmpLLMRouter" rule, to avoid
+// krisnamAnthropic.ts's own "no imports from kimmpLLMRouter" rule, to avoid
 // a circular import between the router and the higher-level gateway service
 // that itself calls into the router — see kimmpGateway.service.ts).
 
@@ -13,7 +13,7 @@ const TRUNCATE = 2000
 // ── Cost estimation — approximate public list pricing (USD per million tokens).
 // Not tied to actual billing reconciliation; good enough for cost-visibility UI.
 const MODEL_PRICING: Record<string, { input: number; output: number }> = {
-  'waandax': { input: 1.0,    output: 3.0 },
+  'krisnam': { input: 1.0,    output: 3.0 },
   'opus':    { input: 15,     output: 75 },
   'sonnet':  { input: 3,      output: 15 },
   'haiku':   { input: 0.8,    output: 4 },
@@ -24,7 +24,7 @@ const MODEL_PRICING: Record<string, { input: number; output: number }> = {
 function pricingFor(model: string): { input: number; output: number } {
   const lower = model.toLowerCase()
   const key = Object.keys(MODEL_PRICING).find(k => lower.includes(k))
-  return key ? MODEL_PRICING[key] : { input: 1.0, output: 3.0 } // WAANDAx mainstream model default
+  return key ? MODEL_PRICING[key] : { input: 1.0, output: 3.0 } // Krisnam mainstream model default
 }
 
 export function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
@@ -91,7 +91,7 @@ export class GatewayBudgetExceededError extends Error {
 
 // mode='AUDIT' never modifies text or blocks — only flags. mode='REDACT'
 // replaces matches. mode='BLOCK' only throws when allowBlock=true — the
-// passive router/withWaandax instrumentation always calls this with
+// passive router/withKrisnam instrumentation always calls this with
 // allowBlock=false since it can't assume every existing caller tolerates a
 // newly-thrown error; only kimmpGateway.complete() (an opt-in explicit
 // entrypoint) passes allowBlock=true.
@@ -207,8 +207,8 @@ export async function logCall(input: LogCallInput): Promise<void> {
 }
 
 // ── Best-effort caller-module attribution for passively-instrumented call
-// sites (withWaandax) that carry no explicit metadata. Parses the stack for
-// the first frame outside this file and waandaxAnthropic.ts.
+// sites (withKrisnam) that carry no explicit metadata. Parses the stack for
+// the first frame outside this file and krisnamAnthropic.ts.
 export function inferCallerModule(): { sourceModule: string; actorType: string } {
   try {
     const stack = new Error().stack ?? ''
@@ -217,7 +217,7 @@ export function inferCallerModule(): { sourceModule: string; actorType: string }
       const match = line.match(/backend\/(?:src|dist)\/(.+?):\d+:\d+/)
       if (!match) continue
       const path = match[1]
-      if (path.includes('kimmpGatewayCore') || path.includes('waandaxAnthropic')) continue
+      if (path.includes('kimmpGatewayCore') || path.includes('krisnamAnthropic')) continue
       const actorType = path.includes('kangqore-aegis') ? 'AEGIS'
         : path.includes('eqore') ? 'EQORE'
         : path.includes('kangqore-immp') ? 'KIMMP'

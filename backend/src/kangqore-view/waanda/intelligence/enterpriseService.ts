@@ -810,8 +810,8 @@ export async function generateOperatingPulse(activity: ActivitySnapshot): Promis
   }
 
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
-  const { withWaandax } = await import('../../../kangqore-immp/llm/waandaxAnthropic')
-  const client = withWaandax(new Anthropic({ apiKey }))
+  const { withKrisnam } = await import('../../../kangqore-immp/llm/krisnamAnthropic')
+  const client = withKrisnam(new Anthropic({ apiKey }))
 
   const driverText = drivers.map(d => `  ${d.metric}: ${d.value} [${d.signal}]`).join('\n')
   const prompt = `Enterprise health classification: ${health.toUpperCase()}

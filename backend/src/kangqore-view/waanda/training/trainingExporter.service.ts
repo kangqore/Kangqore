@@ -23,7 +23,7 @@ import os   from 'os'
 import { prisma } from '../../../lib/prisma'
 import logger     from '../../../utils/logger'
 
-const EXPORT_DIR = process.env.WAANDA_EXPORT_DIR ?? path.join(os.homedir(), 'models', 'WAANDAx', 'training-exports')
+const EXPORT_DIR = process.env.WAANDA_EXPORT_DIR ?? path.join(os.homedir(), 'models', 'Krisnam', 'training-exports')
 
 export interface ExportResult {
   exportDir:     string

@@ -2,7 +2,7 @@
 // KIMMP LLM Router — multi-provider with circuit breakers
 //
 // Provider chain (Mainstream Foundation LLM Providers):
-//   1. WAANDAx — Mainstream Enterprise Foundation LLM Engine (WAANDAx-3B / Gen5)
+//   1. Krisnam — Mainstream Enterprise Foundation LLM Engine (Krisnam-3B / Gen5)
 //   2. Claude (Anthropic) — Cloud Foundation LLM Provider (Opus, Sonnet, Haiku)
 //   3. OpenAI (GPT-4o) — Cloud Foundation LLM Provider
 //   4. Gemini (Google) — Cloud Foundation LLM Provider (Flash)
@@ -14,7 +14,7 @@
 //   half-open → testing after recovery window; single probe call
 //
 // Autonomy & Independence:
-//   WAANDAx operates as a standalone mainstream foundation model.
+//   Krisnam operates as a standalone mainstream foundation model.
 //   It handles reasoning, classification, summarization, and action proposals
 //   interchangeably with Claude, GPT-4o, and Gemini.
 // ---------------------------------------------------------------------------
@@ -22,15 +22,15 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { prisma } from '../../../lib/prisma'
 import logger from '../../../utils/logger'
-import { waandaxSlot, isWaandaxBusyError } from './waandaxAnthropic'
+import { krisnamSlot, isKrisnamBusyError } from './krisnamAnthropic'
 import { logCall, scanPii } from '../gateway/KimmpGatewayCore'
 import { PromptRegistry } from '../wir/promptRegistry.service'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const WAANDAX_URL   = process.env.WAANDAX_URL         || 'http://127.0.0.1:11435'
-const WAANDAX_MODEL = process.env.WAANDAX_MODEL        || 'waandax-3b'
-const WAANDAX_PRIMARY = process.env.WAANDAX_PRIMARY !== 'false' // WAANDAx as primary LLM engine
+const KRISNAM_URL   = process.env.KRISNAM_URL         || 'http://127.0.0.1:11435'
+const KRISNAM_MODEL = process.env.KRISNAM_MODEL        || 'krisnam-3b'
+const KRISNAM_PRIMARY = process.env.KRISNAM_PRIMARY !== 'false' // Krisnam as primary LLM engine
 const OPENAI_KEY    = process.env.OPENAI_API_KEY       || ''
 const GEMINI_KEY    = process.env.GEMINI_API_KEY       || ''
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY    || ''
@@ -66,7 +66,7 @@ const _cb: Record<string, CircuitBreaker> = {
   claude:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
   openai:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
   gemini:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
-  waandax:  { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
+  krisnam:  { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
   gen2:     { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
 }
 
@@ -157,7 +157,7 @@ function cbFailure(provider: string) {
 
 // ─── In-memory call counters ──────────────────────────────────────────────────
 
-const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, waandax: 0, gen2: 0 }
+const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, krisnam: 0, gen2: 0 }
 
 // Ground truth for "who answered the last call" — the HUD's LLM ENGINE panel
 // must show this, NOT a guess derived from circuit-breaker health. Breaker
@@ -202,32 +202,32 @@ async function _getGen2TrafficPct(): Promise<number> {
   return _gen2TrafficPct
 }
 
-// ─── Provider: WAANDAx (local MLX-LM — OpenAI-compatible) ────────────────────
+// ─── Provider: Krisnam (local MLX-LM — OpenAI-compatible) ────────────────────
 
-let _waandaxOk: boolean | null = null
-let _waandaxCheckedAt = 0
+let _krisnamOk: boolean | null = null
+let _krisnamCheckedAt = 0
 
-async function _waandaxAvailable(): Promise<boolean> {
-  if (!WAANDAX_MODEL) return false
+async function _krisnamAvailable(): Promise<boolean> {
+  if (!KRISNAM_MODEL) return false
   const now = Date.now()
-  if (_waandaxOk !== null && now - _waandaxCheckedAt < 5 * 60_000) return _waandaxOk
+  if (_krisnamOk !== null && now - _krisnamCheckedAt < 5 * 60_000) return _krisnamOk
   try {
-    const res = await fetch(`${WAANDAX_URL}/v1/models`, { signal: AbortSignal.timeout(2000) })
-    _waandaxOk = res.ok
+    const res = await fetch(`${KRISNAM_URL}/v1/models`, { signal: AbortSignal.timeout(2000) })
+    _krisnamOk = res.ok
   } catch {
-    _waandaxOk = false
+    _krisnamOk = false
   }
-  _waandaxCheckedAt = Date.now()
-  return _waandaxOk
+  _krisnamCheckedAt = Date.now()
+  return _krisnamOk
 }
 
-async function _callWaandax(system: string, user: string, maxTokens: number): Promise<{ text: string; inputTokens: number; outputTokens: number }> {
-  return waandaxSlot(async () => {
-  const res = await fetch(`${WAANDAX_URL}/v1/chat/completions`, {
+async function _callKrisnam(system: string, user: string, maxTokens: number): Promise<{ text: string; inputTokens: number; outputTokens: number }> {
+  return krisnamSlot(async () => {
+  const res = await fetch(`${KRISNAM_URL}/v1/chat/completions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model:       WAANDAX_MODEL,
+      model:       KRISNAM_MODEL,
       messages: [
         { role: 'system', content: system },
         { role: 'user',   content: user },
@@ -237,7 +237,7 @@ async function _callWaandax(system: string, user: string, maxTokens: number): Pr
     }),
     signal: AbortSignal.timeout(30_000),
   })
-  if (!res.ok) throw new Error(`WAANDAx ${res.status}`)
+  if (!res.ok) throw new Error(`Krisnam ${res.status}`)
   const data = await res.json() as any
   return {
     text: String(data.choices?.[0]?.message?.content ?? ''),
@@ -452,7 +452,7 @@ export interface RouterOptions {
   // Logic Tool support — pass tool definitions and an executor for the tool_use loop
   tools?:        Anthropic.Tool[]
   toolExecutor?: (name: string, input: any) => any
-  // Persona-critical calls: skip the Gen2/WAANDAx local slots and go straight to Claude
+  // Persona-critical calls: skip the Gen2/Krisnam local slots and go straight to Claude
   preferClaude?: boolean
   // S308 — set by kimmpGateway.complete(), which already logs this call itself
   // with richer explicit metadata; prevents the passive routedCall() wrapper
@@ -510,14 +510,14 @@ async function _routedCallImpl(
   })
 
   // ── 0. Gen2 fine-tuned model — A/B traffic split (AutonomyConfig.gen2TrafficPct) ─
-  // Gen2 is LOCAL_MLX — always call _callWaandax() (port 11435), never _callClaude().
+  // Gen2 is LOCAL_MLX — always call _callKrisnam() (port 11435), never _callClaude().
   // No ANTHROPIC_KEY dependency: Gen2 must route even when Claude credits are exhausted.
   const gen2ModelId   = options.preferClaude ? null : await _getDeployedGen2()
   const gen2TrafficPct = await _getGen2TrafficPct()
-  const routeToGen2   = gen2ModelId && !options.tools?.length && await _waandaxAvailable() && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
+  const routeToGen2   = gen2ModelId && !options.tools?.length && await _krisnamAvailable() && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
   if (routeToGen2 && gen2ModelId) {
     try {
-      const { text, inputTokens, outputTokens } = await _callWaandax(system, user, maxTokens)
+      const { text, inputTokens, outputTokens } = await _callKrisnam(system, user, maxTokens)
       _counts.gen2++
       markServed('gen2')
       cbSuccess('gen2')
@@ -533,30 +533,30 @@ async function _routedCallImpl(
     }
   }
 
-  // ── 1. WAANDAx (Local Enterprise LLM Engine) — Primary Provider
-  // WAANDAx acts as the native system LLM, replacing Claude, ChatGPT, and Gemini.
-  // When WAANDAX_PRIMARY is enabled or external keys are absent, WAANDAx responds first.
-  const waandaxIsPrimary = WAANDAX_PRIMARY || !ANTHROPIC_KEY
-  const claudeUsable = !!ANTHROPIC_KEY && cbAllow('claude') && !waandaxIsPrimary
+  // ── 1. Krisnam (Local Enterprise LLM Engine) — Primary Provider
+  // Krisnam acts as the native system LLM, replacing Claude, ChatGPT, and Gemini.
+  // When KRISNAM_PRIMARY is enabled or external keys are absent, Krisnam responds first.
+  const krisnamIsPrimary = KRISNAM_PRIMARY || !ANTHROPIC_KEY
+  const claudeUsable = !!ANTHROPIC_KEY && cbAllow('claude') && !krisnamIsPrimary
 
-  if (waandaxIsPrimary && !options.tools?.length && await _waandaxAvailable() && cbAllow('waandax')) {
+  if (krisnamIsPrimary && !options.tools?.length && await _krisnamAvailable() && cbAllow('krisnam')) {
     try {
-      const { text, inputTokens, outputTokens } = await _callWaandax(system, user, maxTokens)
-      _counts.waandax++
-      markServed('waandax')
-      cbSuccess('waandax')
-      _capture(system, user, text, WAANDAX_MODEL, 'waandax', meta).catch(() => {})
+      const { text, inputTokens, outputTokens } = await _callKrisnam(system, user, maxTokens)
+      _counts.krisnam++
+      markServed('krisnam')
+      cbSuccess('krisnam')
+      _capture(system, user, text, KRISNAM_MODEL, 'krisnam', meta).catch(() => {})
       return {
         content: [{ type: 'text', text }],
-        model: WAANDAX_MODEL,
-        _routerMeta: makeMeta('waandax', WAANDAX_MODEL, false, inputTokens, outputTokens),
+        model: KRISNAM_MODEL,
+        _routerMeta: makeMeta('krisnam', KRISNAM_MODEL, false, inputTokens, outputTokens),
       }
     } catch (err) {
-      if (isWaandaxBusyError(err)) {
-        logger.debug('[KIMMP Router] WAANDAx slots full — passing to fallback provider (no CB penalty)')
+      if (isKrisnamBusyError(err)) {
+        logger.debug('[KIMMP Router] Krisnam slots full — passing to fallback provider (no CB penalty)')
       } else {
-        cbFailure('waandax')
-        logger.warn('[KIMMP Router] WAANDAx failed, trying cloud fallback:', (err as Error).message)
+        cbFailure('krisnam')
+        logger.warn('[KIMMP Router] Krisnam failed, trying cloud fallback:', (err as Error).message)
       }
     }
   }
@@ -624,34 +624,34 @@ async function _routedCallImpl(
     }
   }
 
-  // ── 4.5 cloud providers exhausted — WAANDAx as the universal last resort.
+  // ── 4.5 cloud providers exhausted — Krisnam as the universal last resort.
   // preferClaude and tool-carrying calls both skipped the local slot up front;
   // they land here when the cloud chain fails. Tool calls are served WITHOUT
   // their Logic Tools (the local model has no tool_use) — a degraded answer
   // beats returning empty. Callers can detect this via _routerMeta.fallback.
-  if (await _waandaxAvailable() && cbAllow('waandax')) {
+  if (await _krisnamAvailable() && cbAllow('krisnam')) {
     try {
-      const { text, inputTokens, outputTokens } = await _callWaandax(system, user, maxTokens)
-      _counts.waandax++
-      markServed('waandax')
-      cbSuccess('waandax')
-      _capture(system, user, text, claudeModel, 'waandax', meta).catch(() => {})
+      const { text, inputTokens, outputTokens } = await _callKrisnam(system, user, maxTokens)
+      _counts.krisnam++
+      markServed('krisnam')
+      cbSuccess('krisnam')
+      _capture(system, user, text, claudeModel, 'krisnam', meta).catch(() => {})
       if (options.tools?.length) {
-        logger.warn('[KIMMP Router] cloud exhausted — WAANDAx served WITHOUT Logic Tools (tool execution unavailable)')
+        logger.warn('[KIMMP Router] cloud exhausted — Krisnam served WITHOUT Logic Tools (tool execution unavailable)')
       } else {
-        logger.info('[KIMMP Router] cloud exhausted — served by WAANDAx last resort')
+        logger.info('[KIMMP Router] cloud exhausted — served by Krisnam last resort')
       }
       return {
         content: [{ type: 'text', text }],
-        model: WAANDAX_MODEL,
-        _routerMeta: makeMeta('waandax', WAANDAX_MODEL, true, inputTokens, outputTokens),
+        model: KRISNAM_MODEL,
+        _routerMeta: makeMeta('krisnam', KRISNAM_MODEL, true, inputTokens, outputTokens),
       }
     } catch (err) {
-      if (isWaandaxBusyError(err)) {
-        logger.debug('[KIMMP Router] WAANDAx last-resort slots full (no CB penalty)')
+      if (isKrisnamBusyError(err)) {
+        logger.debug('[KIMMP Router] Krisnam last-resort slots full (no CB penalty)')
       } else {
-        cbFailure('waandax')
-        logger.warn('[KIMMP Router] WAANDAx last-resort failed:', (err as Error).message)
+        cbFailure('krisnam')
+        logger.warn('[KIMMP Router] Krisnam last-resort failed:', (err as Error).message)
       }
     }
   }
@@ -823,7 +823,7 @@ export async function getRouterStats() {
       name === 'claude'  && !!ANTHROPIC_KEY,
       name === 'openai'  && !!OPENAI_KEY,
       name === 'gemini'  && !!GEMINI_KEY,
-      name === 'waandax' && !!WAANDAX_MODEL,
+      name === 'krisnam' && !!KRISNAM_MODEL,
     ].some(Boolean),
   }))
 
@@ -832,28 +832,28 @@ export async function getRouterStats() {
     callsClaude:       _counts.claude,
     callsOpenAI:       _counts.openai,
     callsGemini:       _counts.gemini,
-    callsWaandax:      _counts.waandax,
+    callsKrisnam:      _counts.krisnam,
     callsGen2:         _counts.gen2,
     lastServedBy:      _lastServedBy,
     lastServedAgoMs:   _lastServedBy ? Date.now() - _lastServedAt : null,
-    autonomyRatio:     total > 0 ? (_counts.waandax + _counts.gen2) / total : 0,
+    autonomyRatio:     total > 0 ? (_counts.krisnam + _counts.gen2) / total : 0,
     gen2Ratio:         total > 0 ? _counts.gen2 / total : 0,
     providers,
-    waandaxAvailable:  _waandaxOk ?? false,
-    waandaxModel:      WAANDAX_MODEL || null,
-    waandaxUrl:        WAANDAX_URL,
+    krisnamAvailable:  _krisnamOk ?? false,
+    krisnamModel:      KRISNAM_MODEL || null,
+    krisnamUrl:        KRISNAM_URL,
     deployedGen2Model: _gen2ModelId,
     distillationCount,
     totalCorpus,
     distillationCap:   DISTILLATION_CAP,
     circuitBreakers:   getCircuitBreakerStatus(),
-    phase: WAANDAX_MODEL ? 'routing' : distillationCount > 500 ? 'pre-graduation' : 'distilling',
+    phase: KRISNAM_MODEL ? 'routing' : distillationCount > 500 ? 'pre-graduation' : 'distilling',
     activeProviders: [
       _gen2ModelId   && 'gen2',
       ANTHROPIC_KEY  && 'claude',
       OPENAI_KEY     && 'openai',
       GEMINI_KEY     && 'gemini',
-      WAANDAX_MODEL  && 'waandax',
+      KRISNAM_MODEL  && 'krisnam',
     ].filter(Boolean),
   }
 }

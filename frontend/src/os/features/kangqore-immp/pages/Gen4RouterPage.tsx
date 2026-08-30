@@ -52,7 +52,7 @@ export function Gen4RouterPage() {
         </div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 18, fontWeight: 900, color: T1 }}>Gen4 A/B Router + Scale</div>
-          <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>Shadow → 10% → 50% → 80% production · WAANDAx Foundation v0.1 routing path</div>
+          <div style={{ fontSize: 12, color: T2, marginTop: 2 }}>Shadow → 10% → 50% → 80% production · Krisnam Foundation v0.1 routing path</div>
         </div>
         {cfg && (
           <div style={{ textAlign: 'right' }}>

@@ -9,8 +9,8 @@ import { Loader2 } from 'lucide-react'
 import { gatewayService, type LlmCallLog } from '../gatewayService'
 
 // S308-S310 — KIMMP Intelligence Gateway dashboard. Every LLM call — Claude,
-// WAANDAx, Gen2, OpenAI, Gemini fallback — is logged in one table via
-// passive instrumentation of the existing kimmpLLMRouter / withWaandax /
+// Krisnam, Gen2, OpenAI, Gemini fallback — is logged in one table via
+// passive instrumentation of the existing kimmpLLMRouter / withKrisnam /
 // AEGIS callLLM chokepoints (see backend commit for the full breakdown).
 // S315 adds the Tool Calls tab — OntologyActions Claude invoked via S313/S314's
 // tool-calling bridge, cross-linked to their ActionExecution rows.
@@ -633,7 +633,7 @@ export function GatewayExplorerPage() {
     <div className="space-y-5">
       <div>
         <h1 className="text-[22px] font-black tracking-tight mb-1" style={{ color: 'var(--os-text-1)' }}>Intelligence Gateway</h1>
-        <p className="text-xs text-[var(--os-text-2)]">Every LLM call — Claude, WAANDAx, Gen2, fallback — logged, PII-scanned, and budget-checked in one place.</p>
+        <p className="text-xs text-[var(--os-text-2)]">Every LLM call — Claude, Krisnam, Gen2, fallback — logged, PII-scanned, and budget-checked in one place.</p>
       </div>
 
       <div className="flex items-center gap-1 border-b border-[var(--os-border)] overflow-x-auto">

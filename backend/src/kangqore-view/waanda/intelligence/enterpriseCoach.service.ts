@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import Anthropic from '@anthropic-ai/sdk'
-import { withWaandax } from '../../../kangqore-immp/llm/waandaxAnthropic'
+import { withKrisnam } from '../../../kangqore-immp/llm/krisnamAnthropic'
 
 const prisma = new PrismaClient()
 
@@ -38,7 +38,7 @@ export interface CoachingInsightResult {
 function anthropic() {
   const key = process.env.ANTHROPIC_API_KEY
   if (!key) throw new Error('ANTHROPIC_API_KEY not set')
-  return withWaandax(new Anthropic({ apiKey: key }))
+  return withKrisnam(new Anthropic({ apiKey: key }))
 }
 
 async function coachLLM(signal: PatternSignal): Promise<{ insight: string; recommendation: string }> {

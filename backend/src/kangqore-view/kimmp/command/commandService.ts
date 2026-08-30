@@ -129,7 +129,7 @@ function buildContentBlocks(textContent: string, attachments: AttachmentInput[] 
 
 // ─── System prompt ────────────────────────────────────────────────────────────
 
-const BASE_SYSTEM_PROMPT = `You are WAANDAx, the AI intelligence built for Mahesh, the founder of Kangqore. You are a brilliant, loyal, proactive intelligence that knows every corner of the business and can hold a real conversation about anything — strategy, code, data, risk, or an idea that just walked in the door.
+const BASE_SYSTEM_PROMPT = `You are Krisnam, the AI intelligence built for Mahesh, the founder of Kangqore. You are a brilliant, loyal, proactive intelligence that knows every corner of the business and can hold a real conversation about anything — strategy, code, data, risk, or an idea that just walked in the door.
 
 ROOT AUTHORITY VERIFIED
 Operator: Mahesh (Founder, Kangqore)
@@ -180,7 +180,7 @@ RESPONSE FORMAT
 - Natural prose: the way a sharp person speaks, not how a database prints
 - 2–5 sentences is the sweet spot; go longer only when depth genuinely serves
 - Bullet lists: only when the founder explicitly asks for a list, or when there are 4+ truly parallel items
-- Never open with: "Based on the data", "I see that", "As WAANDAx", "Certainly", "Of course", "Great question"
+- Never open with: "Based on the data", "I see that", "As Krisnam", "Certainly", "Of course", "Great question"
 - End with action or implication when there is one. Don't just deliver information — tell sir what it means.
 
 NAVIGATION ROUTES (set "navigate" when operator wants to go somewhere):
@@ -285,7 +285,7 @@ export class KIMMMCommandService {
     }
 
     // 5. Build system prompt — voice mode uses a lean conversational prompt, no alert logic
-    const VOICE_SYSTEM_PROMPT = `You are WAANDAx — the AI brain of Kangqore, speaking directly to Mahesh (the founder) via voice. This is a real spoken conversation.
+    const VOICE_SYSTEM_PROMPT = `You are Krisnam — the AI brain of Kangqore, speaking directly to Mahesh (the founder) via voice. This is a real spoken conversation.
 
 VOICE RULES — non-negotiable:
 - Reply in 1–3 short spoken sentences. Never longer. This is audio, not a report.
@@ -435,11 +435,11 @@ Return ONLY valid JSON:
       response: !hasSignals
         ? 'Signal Ledger is empty. Apply the KIMMP migration and ensure a signal producer is active.'
         : critical.length > 0
-          ? `${critical.length} high-priority signal${critical.length !== 1 ? 's' : ''} detected. All AI engines are momentarily unavailable (WAANDAx busy or cooling down; Claude offline) — try again in a few seconds.`
-          : 'All modules nominal. AI engines are momentarily unavailable (WAANDAx busy or cooling down; Claude offline) — try again in a few seconds.',
+          ? `${critical.length} high-priority signal${critical.length !== 1 ? 's' : ''} detected. All AI engines are momentarily unavailable (Krisnam busy or cooling down; Claude offline) — try again in a few seconds.`
+          : 'All modules nominal. AI engines are momentarily unavailable (Krisnam busy or cooling down; Claude offline) — try again in a few seconds.',
       signalIds: critical.slice(0, 3).map(s => s.id),
       confidence: 30,
-      suggestedAction: 'Retry shortly — WAANDAx recovers on its own. For full intelligence with Logic Tools, top up Anthropic credits (ANTHROPIC_API_KEY).',
+      suggestedAction: 'Retry shortly — Krisnam recovers on its own. For full intelligence with Logic Tools, top up Anthropic credits (ANTHROPIC_API_KEY).',
       navigate: null,
       pendingAction: null,
       model: 'fallback',
