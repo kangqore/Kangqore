@@ -378,6 +378,14 @@ app.use('/api/admin/crm/clients',  adminClientsCrmRoutes);
 
 import clientOnboardingRoutes from './routes/client-onboarding.routes';
 app.use('/api/admin/client-onboarding', clientOnboardingRoutes);
+
+// Materialise the Universal Enterprise Object Model into NOLAN on boot.
+// Idempotent: types/schemas/cardinality rules are upserted, so editing
+// EnterpriseObjectModel.ts and restarting is the whole update path.
+import { seedEnterpriseObjectModel } from './kangqore-view/eof/EnterpriseObjectSeeder';
+seedEnterpriseObjectModel()
+  .then(r => console.log(`[EnterpriseObjectModel] ${r.typesCreated} created, ${r.typesUpdated} updated, ${r.cardinalityRules} cardinality rules`))
+  .catch(e => console.warn('[EnterpriseObjectModel] seed failed:', e.message));
 app.use('/api/admin/crm/partners', adminPartnersCrmRoutes);
 app.use('/api/admin/crm',          adminCrmSubentities);
 
