@@ -669,7 +669,7 @@ export const serviceSEO = {
     url: '/services/pimcore',
   },
   'salesforce': {
-    title: 'Salesforce Implementation & Managed Services | Kangqore',
+    title: 'Salesforce Consulting & Implementation Services | Kangqore',
     description: 'Salesforce consulting: org health assessment, implementation, integration and data migration, Data Cloud and Agentforce, plus managed operations.',
     keywords: 'Salesforce consulting, Salesforce implementation, org health assessment, Sales Cloud, Service Cloud, Experience Cloud, Data Cloud, Agentforce, Revenue Cloud, CPQ migration, Classic to Lightning, Salesforce integration, data migration, MuleSoft, Salesforce managed services',
     url: '/services/salesforce',

@@ -369,7 +369,9 @@ ${blockList(svc.dataBoundary.blocks || [], 'label', 'body')}
       </ul>`
     : '';
 
-  const metrics = (svc.businessMetrics || [])
+  // `hideMetrics` suppresses the stats row on the page, so the snapshot drops
+  // it too — otherwise crawlers receive figures no visitor can see.
+  const metrics = (svc.hideMetrics ? [] : (svc.businessMetrics || []))
     .map((m) => `        <li><strong>${esc(m.value)}${esc(m.suffix || '')}</strong> ${esc(m.metricLabel || m.title)} — ${esc(m.desc)}</li>`)
     .join('\n');
 

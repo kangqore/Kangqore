@@ -4186,7 +4186,16 @@ const featureMicros   = service.featureMicros
               The outcome cards further down carry an "Illustrative scenario"
               line and these did not, so the larger and more prominent numbers
               were the unqualified ones. Any service flagging a metric
-              illustrative now gets the same disclaimer beneath them. */}
+              illustrative now gets the same disclaimer beneath them.
+
+              Opt out with hideMetrics, which suppresses the row AND the
+              disclaimer below it. Deleting businessMetrics is not the way:
+              getParityService resolves an absent key to a per-department
+              default, so a page that removes its own metrics gets generic
+              department figures instead of nothing — that is exactly how
+              "60% Faster Cycle / 35% TCO Reduction" reappeared on a service
+              management page. Defaults to showing. */}
+          {!service.hideMetrics && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-12 border-t border-white/[0.08]">
             {service.businessMetrics ? service.businessMetrics.map((m, i) => (
               <div key={i}>
@@ -4208,6 +4217,7 @@ const featureMicros   = service.featureMicros
               </div>
             ))}
           </div>
+          )}
 
           {/* Two different disclaimers, because these are two different kinds
               of number. `illustrative` marks a figure we modeled; `sourced`
@@ -4215,8 +4225,9 @@ const featureMicros   = service.featureMicros
               attribution instead — calling published research "modeled on
               typical engagement patterns" would be false. Sourced wins when
               both appear, since a misattributed real figure is the worse
-              error. */}
-          {(service.businessMetrics || []).some((m) => m.sourced) ? (
+              error. Suppressed with the row itself under hideMetrics: a
+              disclaimer for figures nobody can see is worse than neither. */}
+          {service.hideMetrics ? null : (service.businessMetrics || []).some((m) => m.sourced) ? (
             <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-16 max-w-3xl">
               {service.metricsNote || `Source: ${[...new Set((service.businessMetrics || []).filter((m) => m.sourced).map((m) => m.source))].join('; ')}. Figures describe the market, not Kangqore engagement results.`}
             </p>
