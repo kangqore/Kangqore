@@ -37,7 +37,7 @@ export function WorkItemCard({ item, compact, onClick, draggable, onDragStart }:
       <div className="flex items-start gap-2">
         <span className="text-sm shrink-0 mt-0.5">{TYPE_ICON[item.type] ?? '☐'}</span>
         <div className="flex-1 min-w-0">
-          <p className={cn('text-sm font-medium text-[var(--os-text-1)] leading-snug', item.status === 'DONE' && 'line-through text-[var(--os-text-3)]')}>
+          <p className={cn('text-sm font-medium text-[var(--os-text-1)] leading-snug', item.status === 'COMPLETED' && 'line-through text-[var(--os-text-3)]')}>
             {item.title}
           </p>
           {!compact && item.description && (
@@ -56,7 +56,7 @@ export function WorkItemCard({ item, compact, onClick, draggable, onDragStart }:
 
           {/* Due date */}
           {item.dueDate && (
-            <span className={cn('flex items-center gap-1 text-xs', isOverdue(item.dueDate) && item.status !== 'DONE' ? 'text-red-500' : 'text-[var(--os-text-3)]')}>
+            <span className={cn('flex items-center gap-1 text-xs', isOverdue(item.dueDate) && item.status !== 'COMPLETED' ? 'text-red-500' : 'text-[var(--os-text-3)]')}>
               <CalendarDays className="w-3 h-3" />
               {daysUntil(item.dueDate)}
             </span>
@@ -79,7 +79,7 @@ export function WorkItemCard({ item, compact, onClick, draggable, onDragStart }:
       )}
 
       {/* Progress bar */}
-      {!compact && item.progress > 0 && item.status !== 'DONE' && (
+      {!compact && item.progress > 0 && item.status !== 'COMPLETED' && (
         <div className="mt-2 h-1 bg-[var(--os-bg-3)] rounded-full overflow-hidden">
           <div className="h-full bg-violet-500 transition-all" style={{ width: `${item.progress}%` }} />
         </div>

@@ -7,24 +7,28 @@ import { api } from '@lib/api'
 import { Plus, RefreshCw } from 'lucide-react'
 import { WorkItemCard } from '../components/WorkItemCard'
 import { CreateWorkItemModal } from '../components/CreateWorkItemModal'
-import { type WorkItem, STATUS_COLOR } from '../types'
+import { type WorkItem, STATUS_COLOR, BOARD_COLUMNS, statusLabel } from '../types'
 import { cn } from '@design-system/cn'
 
-const COLUMNS = ['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE', 'BLOCKED'] as const
+const COLUMNS = BOARD_COLUMNS
 
-const COL_LABEL: Record<string, string> = {
-  BACKLOG: 'Backlog', TODO: 'To Do', IN_PROGRESS: 'In Progress',
-  IN_REVIEW: 'In Review', DONE: 'Done', BLOCKED: 'Blocked',
-}
-
+// Accents for the twelve ontology states. A state missing from this map would
+// render a column with no top border, so it falls back rather than vanishing.
 const COL_ACCENT: Record<string, string> = {
-  BACKLOG: 'border-t-[var(--os-border)]',
-  TODO: 'border-t-blue-500',
-  IN_PROGRESS: 'border-t-violet-500',
-  IN_REVIEW: 'border-t-amber-500',
-  DONE: 'border-t-emerald-500',
-  BLOCKED: 'border-t-red-500',
+  DRAFT:             'border-t-[var(--os-border)]',
+  QUEUED:            'border-t-[var(--os-border)]',
+  READY:             'border-t-blue-500',
+  IN_PROGRESS:       'border-t-violet-500',
+  BLOCKED:           'border-t-red-500',
+  AT_RISK:           'border-t-orange-500',
+  AWAITING_APPROVAL: 'border-t-amber-500',
+  AWAITING_CUSTOMER: 'border-t-amber-500',
+  UNDER_REVIEW:      'border-t-cyan-500',
+  ESCALATED:         'border-t-red-600',
+  COMPLETED:         'border-t-emerald-500',
+  CANCELLED:         'border-t-[var(--os-border)]',
 }
+const accentFor = (s: string) => COL_ACCENT[s] ?? 'border-t-[var(--os-border)]'
 
 interface Props {
   projectId?: string
@@ -34,19 +38,19 @@ interface Props {
 export function BoardView({ projectId, portfolioId }: Props) {
   const qc = useQueryClient()
   const [showCreate, setShowCreate] = useState(false)
-  const [createStatus, setCreateStatus] = useState('TODO')
+  const [createStatus, setCreateStatus] = useState('QUEUED')
   const [dragItem, setDragItem] = useState<string | null>(null)
   const [dragOver, setDragOver] = useState<string | null>(null)
 
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['work', 'board', projectId, portfolioId],
-    queryFn: () => api.get('/admin/work/board', { params: { projectId, portfolioId } }).then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/board', { params: { projectId, portfolioId } }).then(r => r.data),
     staleTime: 30_000,
   })
 
   const move = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) =>
-      api.post(`/admin/work/items/${id}/move`, { status }),
+      api.post(`/admin/work-os/work/items/${id}/move`, { status }),
     onMutate: async ({ id, status }) => {
       await qc.cancelQueries({ queryKey: ['work', 'board'] })
       const prev = qc.getQueryData(['work', 'board', projectId, portfolioId])
@@ -99,7 +103,7 @@ export function BoardView({ projectId, portfolioId }: Props) {
           </button>
         </div>
         <button
-          onClick={() => { setCreateStatus('TODO'); setShowCreate(true) }}
+          onClick={() => { setCreateStatus('QUEUED'); setShowCreate(true) }}
           className="flex items-center gap-1.5 text-sm px-3 py-1.5 bg-violet-500 hover:bg-violet-600 text-white rounded transition-colors"
         >
           <Plus className="w-3.5 h-3.5" />
@@ -120,7 +124,7 @@ export function BoardView({ projectId, portfolioId }: Props) {
               onDrop={e => handleDrop(e, col)}
               className={cn(
                 'flex flex-col gap-2 min-h-[400px] rounded-2xl border-t-2 border border-[var(--os-border)] bg-[var(--os-bg-2)] p-3 transition-colors',
-                COL_ACCENT[col],
+                accentFor(col),
                 isDragTarget && 'bg-violet-500/5 border-violet-500/30',
               )}
             >
@@ -128,7 +132,7 @@ export function BoardView({ projectId, portfolioId }: Props) {
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
                   <span className={cn('text-xs font-semibold', STATUS_COLOR[col].split(' ')[0])}>
-                    {COL_LABEL[col]}
+                    {statusLabel(col)}
                   </span>
                   <span className="text-xs text-[var(--os-text-3)] bg-[var(--os-bg-3)] px-1.5 py-0.5 rounded-full">
                     {colItems.length}

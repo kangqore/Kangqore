@@ -46,7 +46,7 @@ function KpiCard({ icon: Icon, label, value, sub, color }: {
 export function ExecutiveView() {
   const { data, isLoading, isFetching, refetch } = useQuery<ExecutiveData>({
     queryKey: ['work', 'executive'],
-    queryFn: () => api.get('/admin/work/executive').then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/executive').then(r => r.data),
     staleTime: 60_000,
   })
 

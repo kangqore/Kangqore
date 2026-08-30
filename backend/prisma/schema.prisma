@@ -9434,6 +9434,61 @@ model BoardGroup {
 
 /// Per-board manual ordering. Float positions (fractional indexing) so dropping
 /// a card between two others is one row write rather than renumbering a column.
+/// An automation that actually fires.
+///
+/// The previous WorkAutomationService stored nothing (no model existed) and its
+/// `run()` had zero callers, so a rule could be authored and would never
+/// execute. This is backed by a real table and driven from the CDC stream.
+model WorkAutomation {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+
+  /// { type: STATUS_CHANGE | CREATED | DUE_DATE_PASSED | PROGRESS_REACHED, config }
+  trigger     Json
+  /// AutomationCondition[] — all must hold for the actions to run.
+  conditions  Json     @default("[]")
+  /// AutomationAction[]
+  actions     Json     @default("[]")
+  /// Limit to one object type; null means every work type.
+  typeName    String?
+
+  enabled     Boolean  @default(true)
+  runCount    Int      @default(0)
+  lastRunAt   DateTime?
+  lastError   String?  @db.Text
+  createdBy   String?
+
+  runs        WorkAutomationRun[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([enabled])
+  @@map("work_automations")
+}
+
+/// Every evaluation, matched or not. Without this there is no way to tell an
+/// automation that fired from one that was never reached.
+model WorkAutomationRun {
+  id             String   @id @default(cuid())
+  automationId   String
+  automation     WorkAutomation @relation(fields: [automationId], references: [id], onDelete: Cascade)
+
+  objectId       String
+  /// The CDC operation that reached it.
+  triggeredBy    String
+  /// False when the trigger matched but a condition did not.
+  matched        Boolean  @default(false)
+  actionsApplied Json     @default("[]")
+  error          String?  @db.Text
+  createdAt      DateTime @default(now())
+
+  @@index([automationId, createdAt])
+  @@index([objectId])
+  @@map("work_automation_runs")
+}
+
 /// A playbook that MATERIALISES work, not a saved view.
 ///
 /// Board templates copy a display config; this creates real OntologyObjects and

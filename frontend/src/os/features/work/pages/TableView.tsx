@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@lib/api'
 import { Plus, RefreshCw, ChevronUp, ChevronDown } from 'lucide-react'
 import { CreateWorkItemModal } from '../components/CreateWorkItemModal'
-import { type WorkItem, STATUS_COLOR, PRIORITY_COLOR, PRIORITY_DOT, TYPE_ICON } from '../types'
+import { type WorkItem, STATUS_COLOR, PRIORITY_COLOR, PRIORITY_DOT, TYPE_ICON, STATUS_COLUMNS } from '../types'
 import { cn } from '@design-system/cn'
 
 type SortKey = 'title' | 'status' | 'priority' | 'dueDate' | 'progress' | 'type' | 'createdAt'
@@ -25,7 +25,7 @@ function sortItems(items: WorkItem[], key: SortKey, dir: 'asc' | 'desc'): WorkIt
   })
 }
 
-const STATUS_OPTIONS = ['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE', 'BLOCKED', 'CANCELLED']
+const STATUS_OPTIONS = STATUS_COLUMNS
 const PRIORITY_OPTIONS = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
 
 interface Props { projectId?: string; portfolioId?: string }
@@ -40,14 +40,14 @@ export function TableView({ projectId, portfolioId }: Props) {
 
   const { data: rawItems = [], isLoading, isFetching, refetch } = useQuery({
     queryKey: ['work', 'items', projectId, portfolioId, search, statusFilter],
-    queryFn: () => api.get('/admin/work/items', {
+    queryFn: () => api.get('/admin/work-os/work/items', {
       params: { projectId, portfolioId, search: search || undefined, status: statusFilter || undefined, limit: 200 }
     }).then(r => r.data),
     staleTime: 30_000,
   })
 
   const update = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => api.put(`/admin/work/items/${id}`, data),
+    mutationFn: ({ id, data }: { id: string; data: any }) => api.put(`/admin/work-os/work/items/${id}`, data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['work'] }); setEditCell(null) },
   })
 
@@ -157,7 +157,7 @@ export function TableView({ projectId, portfolioId }: Props) {
 
                   {/* Title */}
                   <td className="px-3 py-2 max-w-[280px]">
-                    <span className={cn('font-medium text-[var(--os-text-1)]', item.status === 'DONE' && 'line-through text-[var(--os-text-3)]')}>
+                    <span className={cn('font-medium text-[var(--os-text-1)]', item.status === 'COMPLETED' && 'line-through text-[var(--os-text-3)]')}>
                       {item.title}
                     </span>
                   </td>

@@ -42,7 +42,7 @@ function CreateAutomationModal({ onClose }: { onClose: () => void }) {
   })
 
   const create = useMutation({
-    mutationFn: (data: any) => api.post('/admin/work/automations', data),
+    mutationFn: (data: any) => api.post('/admin/work-os/work/automations', data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['work', 'automations'] }); onClose() },
   })
 
@@ -112,17 +112,17 @@ export function AutomationsView() {
 
   const { data = [], isLoading, isFetching, refetch } = useQuery<WorkAutomation[]>({
     queryKey: ['work', 'automations'],
-    queryFn: () => api.get('/admin/work/automations').then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/automations').then(r => r.data),
     staleTime: 60_000,
   })
 
   const toggle = useMutation({
-    mutationFn: (id: string) => api.post(`/admin/work/automations/${id}/toggle`),
+    mutationFn: (id: string) => api.post(`/admin/work-os/work/automations/${id}/toggle`),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['work', 'automations'] }),
   })
 
   const remove = useMutation({
-    mutationFn: (id: string) => api.delete(`/admin/work/automations/${id}`),
+    mutationFn: (id: string) => api.delete(`/admin/work-os/work/automations/${id}`),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['work', 'automations'] }),
   })
 

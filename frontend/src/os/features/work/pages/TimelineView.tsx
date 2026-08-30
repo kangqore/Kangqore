@@ -41,7 +41,7 @@ export function TimelineView({ projectId, portfolioId }: Props) {
 
   const { data: items = [], isLoading, isFetching, refetch } = useQuery<WorkItem[]>({
     queryKey: ['work', 'timeline', projectId, portfolioId, offsetWeeks],
-    queryFn: () => api.get('/admin/work/timeline', {
+    queryFn: () => api.get('/admin/work-os/work/timeline', {
       params: { projectId, portfolioId, dateFrom: viewFrom.toISOString(), dateTo: viewTo.toISOString() }
     }).then(r => r.data),
     staleTime: 60_000,
