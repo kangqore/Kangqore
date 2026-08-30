@@ -11472,8 +11472,8 @@ export const servicesData = {
     hideOutcomeCards: true,
 
     engagementEyebrow: 'HOW WE ENGAGE',
-    engagementHeading: 'Four ways in,',
-    engagementHeadingHighlight: 'starting with the org you already run.',
+    engagementHeading: 'Salesforce consulting,',
+    engagementHeadingHighlight: 'four ways to start.',
     engagementLede: 'Most teams arrive holding a build they have stopped trusting and a renewal date they cannot move. The useful first engagement measures the org, and it is scoped so you can stop after it.',
     servicePackages: [
       {
@@ -11575,7 +11575,7 @@ export const servicesData = {
     },
 
     faqEyebrow: 'ASKED ON THE FIRST CALL',
-    faqHeading: 'Twelve Salesforce questions,',
+    faqHeading: 'Twelve Salesforce consulting questions,',
     faqHeadingHighlight: 'answered without hedging.',
 
     customFAQs: [
@@ -11719,7 +11719,7 @@ export const servicesData = {
     midCta: 'A bigger org is not a better one.',
     midCtaLabel: 'Book an Org Assessment',
     closingCta: {
-      title: 'One org assessment,',
+      title: 'One Salesforce org assessment,',
       highlight: 'before anyone proposes a build.',
       body: 'Point us at the org you have stopped trusting. In 30 minutes we will tell you roughly how many custom fields have no owner, how many places a single record can be updated automatically, and whether your next move is a build, a consolidation or a renewal conversation — which is more often the third than anyone expects.',
       proofLabel: 'From first call to a ranked debt register',
