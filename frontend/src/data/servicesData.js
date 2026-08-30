@@ -11635,6 +11635,7 @@ export const servicesData = {
     capabilitiesLede: 'Five ways this gets bought. Most engagements start with the first and are surprised by how much of the answer turns out to be a retirement decision rather than a build.',
     capabilityAreas: [
       {
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Advisory & Org Assessment',
         description: 'Establishing what is actually in the org and what it costs before anyone proposes changing it.',
         items: [
@@ -11651,6 +11652,7 @@ export const servicesData = {
         ],
       },
       {
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Implementation & Configuration',
         description: 'Configuration first, code only where configuration genuinely cannot reach.',
         items: [
@@ -11667,6 +11669,7 @@ export const servicesData = {
         ],
       },
       {
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Integration & Data',
         description: 'Connecting the estate and getting history in cleanly, with reconciliation evidence.',
         items: [
@@ -11683,6 +11686,7 @@ export const servicesData = {
         ],
       },
       {
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Data Cloud & Agentforce',
         description: 'The 2026 layer, sequenced after the data foundation rather than before it.',
         items: [
@@ -11699,6 +11703,7 @@ export const servicesData = {
         ],
       },
       {
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Managed Operations',
         description: 'Running the org under a service level, including the backlog nobody gets to.',
         items: [
