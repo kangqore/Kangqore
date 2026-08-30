@@ -268,6 +268,32 @@ export const OntologyGateway = {
     return { status: 'OK', data: result }
   },
 
+  /**
+   * Remove every relationship touching any of these objects, in either
+   * direction. Needed when a set of objects is being deleted together —
+   * undoing a template run, for instance — where the caller knows the objects
+   * but not the triples.
+   */
+  async deleteRelationshipsForObjects(
+    actor: GatewayActor,
+    objectIds: string[],
+  ): Promise<GatewayResult<{ count: number }>> {
+    if (!objectIds.length) return { status: 'OK', data: { count: 0 } }
+    const where = { OR: [{ sourceId: { in: objectIds } }, { targetId: { in: objectIds } }] }
+
+    const gate = await policyGate('DELETE_RELATIONSHIP', { objectIds }, actor)
+    if (gate) return gate
+
+    // Read before deleting so CDC carries a real before-image per edge rather
+    // than one anonymous bulk event.
+    const doomed = await prisma.ontologyRelationship.findMany({ where })
+    const result = await prisma.ontologyRelationship.deleteMany({ where })
+    for (const r of doomed) {
+      CdcService.emit('ontology_relationships', 'DELETE', r, null).catch(() => {})
+    }
+    return { status: 'OK', data: result }
+  },
+
   /** Soft-delete: closes a relationship's validity window, preserving history. */
   async retireRelationship(actor: GatewayActor, id: string): Promise<GatewayResult> {
     const gate = await policyGate('DELETE_RELATIONSHIP', { id }, actor)
