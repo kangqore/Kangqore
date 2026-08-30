@@ -409,23 +409,41 @@ export const AgentMissionEngine = {
     for (const a of actions) {
       const t = Date.now()
       try {
-        const registered = await prisma.ontologyAction.findFirst({ where: { name: a.actionName } })
+        // An action is registered per object type, so prefer the one bound to
+        // the type of the object being acted on. Falling straight back to a
+        // name match would let a Task-scoped action be applied to a Contract.
+        const onObject = a.targetType === 'OntologyObject' && a.targetId
+          ? await prisma.ontologyObject.findUnique({ where: { id: a.targetId }, select: { typeId: true } })
+          : null
+        const registered = onObject
+          ? await prisma.ontologyAction.findUnique({
+              where: { typeId_name: { typeId: onObject.typeId, name: a.actionName } },
+            })
+          : await prisma.ontologyAction.findFirst({ where: { name: a.actionName } })
 
         if (registered) {
           const result: any = await ActionEngine.execute({
             actionId: registered.id,
             params: a.params as any,
+            // Effects such as UPDATE_OBJECT need the object in context; without
+            // this every ontology-scoped action fails on "requires an object".
+            objectId: onObject ? a.targetId : (a.params as any)?.objectId ?? null,
             actorId,
             actorType: 'KIMMP',
           })
-          const ok = result?.success !== false
+          // ActionEngine.execute returns the ActionExecution row itself: the
+          // outcome is `status`, and the audit id is `id`. Reading a `success`
+          // field that does not exist made every failure look like a success.
+          const ok = result?.status === 'SUCCESS'
           await prisma.agentProposedAction.update({
             where: { id: a.id },
             data: {
               status: ok ? 'EXECUTED' : 'FAILED',
-              executionId: result?.executionId ?? null,
-              resultSummary: ok ? 'Executed via ActionEngine' : null,
-              errorMessage: ok ? null : String(result?.error ?? 'Action failed'),
+              executionId: result?.id ?? null,
+              resultSummary: ok
+                ? `Executed via ActionEngine (${(result?.effectsApplied as any[])?.length ?? 0} effect(s))`
+                : null,
+              errorMessage: ok ? null : String(result?.errorMessage ?? 'Action failed'),
               executedAt: new Date(),
             },
           })

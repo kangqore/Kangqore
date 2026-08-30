@@ -9338,3 +9338,112 @@ model AgentProposedAction {
   @@index([status])
   @@map("agent_proposed_actions")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WORK LAYER — Boards as projections of the ontology
+//
+// A Board is a saved VIEW, not a container: it holds a query and a column
+// configuration, while the items themselves are OntologyObjects that exist
+// independently and may appear on many boards at once. This follows the product
+// law — One Studio. One Graph. Multiple Views. — and is what makes a board
+// object-aware rather than a spreadsheet.
+//
+// Because an item can appear on several boards, per-board ordering cannot live
+// on the item; five boards would fight over one sortOrder. It lives on the
+// board, in BoardItemPosition.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model Board {
+  id           String   @id @default(cuid())
+  name         String
+  description  String?
+  icon         String?
+  color        String?
+  workspace    String?                          // KEOS workspace id (HATHAWAY)
+
+  // WHAT — the query. Either an ontology type, or a saved ObjectSet, or both.
+  rootTypeName String?                          // OntologyObjectType.name
+  objectSetId  String?
+  query        Json     @default("{}")          // QueryNode
+  sort         Json     @default("[]")          // SortSpec[]
+
+  // HOW — the display
+  defaultView  String   @default("table")       // table | kanban | timeline | graph
+  groupByField String?                          // e.g. "status"
+  statusField  String?  @default("status")
+
+  ownerId      String?
+  isPublic     Boolean  @default(false)
+  isSystem     Boolean  @default(false)
+  isTemplate   Boolean  @default(false)
+  templateKey  String?  @unique
+
+  columns      BoardColumn[]
+  groups       BoardGroup[]
+  positions    BoardItemPosition[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([rootTypeName])
+  @@index([ownerId])
+  @@index([isTemplate])
+  @@map("boards")
+}
+
+/// Shaped to the ColumnDef the existing BoardEngine already consumes, so the
+/// frontend needs no mapping layer. Defaults are derived from the object type's
+/// schema (columnClass / label / columnType / options / colorMap).
+model BoardColumn {
+  id           String   @id @default(cuid())
+  boardId      String
+  key          String                           // ColumnDef.id
+  header       String
+  field        String                           // property name, or a column
+  type         String?                          // text | select | date | badge | number
+  columnClass  String?                          // CORE | ENTERPRISE | INTELLIGENCE | GOVERNANCE
+  editable     Boolean  @default(false)
+  options      String[] @default([])
+  colorMap     Json     @default("{}")
+  width        String?
+  order        Int      @default(0)
+  hidden       Boolean  @default(false)
+
+  board        Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@unique([boardId, key])
+  @@index([boardId, order])
+  @@map("board_columns")
+}
+
+model BoardGroup {
+  id        String  @id @default(cuid())
+  boardId   String
+  key       String                              // matches the grouped field's value
+  label     String
+  color     String?
+  order     Int     @default(0)
+  collapsed Boolean @default(false)
+
+  board     Board   @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@unique([boardId, key])
+  @@index([boardId, order])
+  @@map("board_groups")
+}
+
+/// Per-board manual ordering. Float positions (fractional indexing) so dropping
+/// a card between two others is one row write rather than renumbering a column.
+model BoardItemPosition {
+  id       String @id @default(cuid())
+  boardId  String
+  objectId String
+  groupKey String
+  position Float
+
+  board    Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@unique([boardId, objectId])
+  @@index([boardId, groupKey, position])
+  @@map("board_item_positions")
+}

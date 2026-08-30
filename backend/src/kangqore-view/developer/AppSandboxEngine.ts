@@ -110,19 +110,24 @@ export const AppSandboxEngine = {
         actorType: 'DEVELOPER_APP',
       })
 
-      const failed = execResult?.success === false
+      // execute() returns the ActionExecution row: the outcome is `status`.
+      // Testing a non-existent `success` field recorded every failure as a
+      // success in the governance audit.
+      const failed = execResult?.status === 'FAILED'
       await GovernanceKernel.recordResult(
         decision.auditId,
-        execResult?.result ?? execResult,
-        failed ? execResult?.error ?? 'Action execution failed' : undefined,
+        execResult,
+        failed ? execResult?.errorMessage ?? 'Action execution failed' : undefined,
       )
 
       return {
         success: !failed,
-        executionId: execResult?.executionId || `exec-${Date.now()}`,
+        // The real audit id, never a synthesised one — an invented execution id
+        // points at no record and cannot be traced.
+        executionId: execResult?.id ?? null,
         auditId: decision.auditId,
-        result: execResult?.result ?? execResult,
-        error: failed ? execResult?.error : undefined,
+        result: execResult,
+        error: failed ? execResult?.errorMessage : undefined,
         governanceDetails: { ...governanceDetails, outcome: failed ? 'ERROR' : 'ALLOWED' },
       }
     } catch (err: any) {

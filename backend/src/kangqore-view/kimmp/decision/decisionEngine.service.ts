@@ -307,28 +307,59 @@ Formulate prescriptive action plan, confidence %, expected primary impact, alter
       throw new Error('Invalid or missing cryptographic AEGIS approval token.');
     }
 
-    const actionResult = await ActionEngine.execute({
-      actionId: 'act-reassign-resource-1',
-      params: { decisionId, approvalToken },
-      actorId,
-      actorType: 'EXECUTIVE_APPROVER',
-    }).catch(() => ({ success: true, executionId: `exec-${Date.now()}` }));
+    // The action id here was hardcoded to a row that does not exist, so
+    // execute() always threw and the catch fabricated `{ success: true }` with
+    // an invented execution id — an approval that reported COMMITTED while
+    // executing nothing. Resolve by name, and report the real outcome.
+    const action = await prisma.ontologyAction.findFirst({
+      where: { name: 'REASSIGN_RESOURCE' },
+      select: { id: true },
+    });
+
+    let executionId: string | null = null;
+    let executed = false;
+    let failureReason: string | null = action
+      ? null
+      : 'No REASSIGN_RESOURCE action is registered — nothing was executed.';
+
+    if (action) {
+      try {
+        const execution = await ActionEngine.execute({
+          actionId: action.id,
+          params: { decisionId, approvalToken },
+          actorId,
+          actorType: 'EXECUTIVE_APPROVER',
+        });
+        executionId = execution.id;
+        executed = execution.status === 'SUCCESS';
+        failureReason = executed ? null : execution.errorMessage ?? 'Action failed';
+      } catch (e: any) {
+        failureReason = e?.message ?? 'Action execution threw';
+      }
+    }
 
     await (prisma as any).kimmpAuditLog?.create({
       data: {
         action: `DECISION_APPROVED:${decisionId}`,
         actorId,
         actorType: 'EXECUTIVE_APPROVER',
-        details: JSON.stringify({ decisionId, approvalToken, status: 'EXECUTIVE_COMMITTED' }),
+        details: JSON.stringify({
+          decisionId, approvalToken,
+          status: executed ? 'EXECUTIVE_COMMITTED' : 'APPROVED_NOT_EXECUTED',
+          executionId, failureReason,
+        }),
       },
     }).catch(() => null);
 
+    // The approval is real either way; whether anything executed is reported
+    // separately rather than folded into a blanket success.
     return {
-      success: true,
+      success: executed,
       decisionId,
       approvalToken,
-      status: 'COMMITTED',
-      executionId: actionResult.executionId || `exec-${Date.now()}`,
+      status: executed ? 'COMMITTED' : 'APPROVED_NOT_EXECUTED',
+      executionId,
+      failureReason,
       committedAt: new Date().toISOString(),
     };
   }
