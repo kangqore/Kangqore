@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T23:42:06.517Z",
+  "generatedAt": "2026-08-30T01:07:23.492Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1474,44 +1474,7 @@
           "a": "With an inventory, not a redesign. Every custom object and field, when it was last written to, and which automation touches it. Every flow, workflow rule and Process Builder still active, and which of them can update the same record. Every integration user and what it can see. Every report that reaches an executive, and whether two of them define the same metric differently. That produces a debt register ranked by what it actually blocks, which is usually a much shorter list than the full inventory. Most orgs discover that four or five items are responsible for the majority of the delivery drag, and that a redesign was never required to clear them."
         }
       ],
-      "method": [
-        {
-          "rule": "Sales Cloud",
-          "detail": "The default entry point and the one most orgs already own more of than they use. Configuring a forecast against a sales process nobody has agreed produces an expensive record of the disagreement. Agree the stages first; they are free to change on a whiteboard and costly to change in production."
-        },
-        {
-          "rule": "Service Cloud",
-          "detail": "Strong for customer-facing support and frequently mis-bought for internal service management, where the licensing outruns the fit. If the requests come from employees rather than customers, price it against a dedicated service management platform before committing."
-        },
-        {
-          "rule": "Experience Cloud",
-          "detail": "Renamed from Community Cloud in 2020, which is a useful date check on any vendor page that still calls it the old name. Genuinely good where a portal needs live Salesforce records behind it; a poor and costly substitute for an ordinary content-managed website."
-        },
-        {
-          "rule": "Data Cloud",
-          "detail": "The layer most 2026 Salesforce roadmaps rest on, and the one most often bought too early. It resolves identity across sources; it does not decide which source wins. That decision is a governance conversation, and buying the product does not hold it for you."
-        },
-        {
-          "rule": "Agentforce",
-          "detail": "Consumption-priced rather than seat-priced, which changes the budgeting conversation more than most buyers expect. It performs in proportion to the quality of the data and the clarity of the permissions underneath it, so an org with unowned fields and inconsistent records is the wrong place to start."
-        },
-        {
-          "rule": "Revenue Cloud",
-          "detail": "The successor to CPQ, and the migration is a re-implementation rather than an upgrade. That is inconvenient and also an opportunity: a pricing model that accumulated exceptions for a decade is easier to simplify during a move than during business as usual."
-        },
-        {
-          "rule": "Commerce Cloud",
-          "detail": "Strong where commerce needs to sit on the same customer record as sales and service, and where order management is genuinely complex. Priced on a share of the revenue that passes through it, which is a very different commercial shape from a seat license — and the reason a high-volume, low-margin retailer should model it against a standalone platform before committing."
-        },
-        {
-          "rule": "Marketing Cloud",
-          "detail": "Two different products share the name, which is the first thing to establish in any conversation about it. Powerful for genuinely multi-brand, multi-segment orchestration and heavy for a single-segment business that needs email and a form."
-        },
-        {
-          "rule": "MuleSoft, Heroku and Slack",
-          "detail": "MuleSoft earns its cost on integration estates measured in dozens of connections and rarely below that; the alternative is native connectors and a small amount of engineering. Heroku matters where custom applications need Salesforce data without living in the org. Slack is increasingly where the workflow surfaces."
-        }
-      ],
+      "method": [],
       "dataHandling": []
     },
     {
