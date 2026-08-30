@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useQuery }   from '@tanstack/react-query'
-import { LayoutGrid, UserCircle, Truck, Shield, BookOpen } from 'lucide-react'
+import { LayoutGrid, UserCircle, Truck, Shield, BookOpen, UserPlus } from 'lucide-react'
 import { cn }         from '@design-system/cn'
 import { api, isDemo } from '@lib/api'
 import { useClientsStore } from './store'
 import type { Client, Contact, Interaction, SLAMetric, Milestone, GovernanceItem } from './types'
 import { ClientsOverview }  from './pages/ClientsOverview'
+import { ClientOnboardingBoard } from './pages/ClientOnboardingBoard'
 import { ClientProfile }    from './pages/ClientProfile'
 import { DeliveryTracking } from './pages/DeliveryTracking'
 import { SLADashboard }     from './pages/SLADashboard'
@@ -15,6 +16,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 
 const TABS = [
   { path: '',           label: 'Overview',   icon: LayoutGrid  },
+  { path: 'onboarding', label: 'Onboarding', icon: UserPlus    },
   { path: 'profile',    label: 'Profile',    icon: UserCircle  },
   { path: 'delivery',   label: 'Delivery',   icon: Truck       },
   { path: 'sla',        label: 'SLA',        icon: Shield      },
@@ -154,6 +156,7 @@ export function ClientsModule() {
 
         <Routes>
           <Route index              element={<ClientsOverview />}  />
+          <Route path="onboarding"  element={<ClientOnboardingBoard />} />
           <Route path="profile"     element={<ClientProfile />}    />
           <Route path="delivery"    element={<DeliveryTracking />} />
           <Route path="sla"         element={<SLADashboard />}     />

@@ -1346,6 +1346,22 @@ model ClientCRM {
   contractStart     DateTime?
   contractEnd       DateTime?
   accountManager    String?
+
+  // ── Onboarding board ──────────────────────────────────────────────────────
+  // The five stages the CS team already worked in, previously hardcoded in
+  // CSOnboarding.tsx with fabricated data. `status` is lifecycle
+  // (active|onboarding|paused|churned); this is *where in onboarding* a client
+  // is, which is what the board groups by.
+  onboardingStage      String    @default("PROSPECT")
+  // PROSPECT | KICKOFF | PLATFORM_SETUP | TRAINING | GO_LIVE | HANDOVER | ACTIVE
+  onboardingStartedAt  DateTime?
+  onboardingCompletedAt DateTime?
+  onboardingOwnerId    String?                 // User.id of the team member driving it
+
+  /// Bridge to the portal login created during onboarding. Deliberately
+  /// nullable and non-authoritative — the ClientCRM-vs-User canonical question
+  /// is still open, so both sides link and neither owns the other.
+  userId               String?
   satisfactionScore Int             @default(0)            // 0–100
   description       String?         @db.Text
   logo              String?         // 2-letter initials
