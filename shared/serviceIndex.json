@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T02:23:34.178Z",
+  "generatedAt": "2026-08-30T23:09:56.614Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1570,7 +1570,15 @@
       "name": "Global Capability Centers (GCC)",
       "department": "Platforms",
       "description": "Build and scale GCCs — GCC setup, operating model, talent management, process excellence, and technology enablement for global delivery.",
-      "capabilities": [],
+      "capabilities": [
+        "Zero-Capex Launch",
+        "Nearshore AI, Cloud and Security Pods",
+        "Talent-as-a-Service Pods",
+        "Post-Launch Growth and Management",
+        "New GCC — Build and Accelerate",
+        "Existing GCC — Scale and Transform",
+        "Existing GCC — Restructure and Exit"
+      ],
       "faqs": [],
       "method": [],
       "dataHandling": []
