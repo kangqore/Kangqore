@@ -11637,7 +11637,7 @@ export const servicesData = {
       {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Advisory & Org Assessment',
-        description: 'Establishing what is actually in the org and what it costs before anyone proposes changing it.',
+        desc: 'Establishing what is actually in the org and what it costs before anyone proposes changing it.',
         items: [
           'Org health and technical debt assessment',
           'Object, field and automation inventory',
@@ -11654,7 +11654,7 @@ export const servicesData = {
       {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Implementation & Configuration',
-        description: 'Configuration first, code only where configuration genuinely cannot reach.',
+        desc: 'Configuration first, code only where configuration genuinely cannot reach.',
         items: [
           'Sales Cloud implementation',
           'Service Cloud and omni-channel routing',
@@ -11671,7 +11671,7 @@ export const servicesData = {
       {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Integration & Data',
-        description: 'Connecting the estate and getting history in cleanly, with reconciliation evidence.',
+        desc: 'Connecting the estate and getting history in cleanly, with reconciliation evidence.',
         items: [
           'REST, SOAP, Bulk and Streaming API integration',
           'MuleSoft and ETL middleware implementation',
@@ -11688,7 +11688,7 @@ export const servicesData = {
       {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Data Cloud & Agentforce',
-        description: 'The 2026 layer, sequenced after the data foundation rather than before it.',
+        desc: 'The 2026 layer, sequenced after the data foundation rather than before it.',
         items: [
           'Data Cloud readiness assessment',
           'Identity resolution and unified profiles',
@@ -11705,7 +11705,7 @@ export const servicesData = {
       {
         image: '/images/capabilities/agentic-governed-autonomy.png',
         title: 'Managed Operations',
-        description: 'Running the org under a service level, including the backlog nobody gets to.',
+        desc: 'Running the org under a service level, including the backlog nobody gets to.',
         items: [
           'Admin and configuration request handling',
           'Enhancement backlog and delivery',
