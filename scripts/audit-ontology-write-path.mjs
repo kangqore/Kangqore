@@ -32,6 +32,7 @@ const ALLOWLIST = new Map([
   ['kangqore-view/esf/aegis/compliance/aegisComplianceTestSuite.ts', 'compliance suite: constructs fixtures to prove the gateway blocks them'],
   ['kangqore-view/eof/scripts/slice0-foundations-e2e.ts', 'probe: creates and tears down its own throwaway type, and asserts gateway behaviour'],
   ['kangqore-view/eof/scripts/enterprise-model-e2e.ts', 'probe: seeds and tears down its own fixture objects'],
+  ['kangqore-view/eof/scripts/board-layer-e2e.ts', 'probe: seeds and tears down its own boards and objects'],
   ['kangqore-view/eof/scripts/query-compiler-e2e.ts', 'probe: seeds and tears down its own throwaway type to test the compiler'],
 
   // ── Known debt, tracked in docs/DEFERRED.md ────────────────────────────────
