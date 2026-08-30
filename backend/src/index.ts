@@ -375,6 +375,9 @@ import adminClientsCrmRoutes   from './routes/admin-clients-crm';
 import adminPartnersCrmRoutes  from './routes/admin-partners-crm';
 import adminCrmSubentities     from './routes/admin-crm-subentities';
 app.use('/api/admin/crm/clients',  adminClientsCrmRoutes);
+
+import clientOnboardingRoutes from './routes/client-onboarding.routes';
+app.use('/api/admin/client-onboarding', clientOnboardingRoutes);
 app.use('/api/admin/crm/partners', adminPartnersCrmRoutes);
 app.use('/api/admin/crm',          adminCrmSubentities);
 
