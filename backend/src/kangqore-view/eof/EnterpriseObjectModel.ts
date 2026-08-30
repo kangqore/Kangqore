@@ -281,6 +281,8 @@ export const ENTERPRISE_RELATIONSHIPS: RelationshipDef[] = [
 
   // Risk propagation — how a delay becomes a revenue problem
   { sourceType: 'Risk', targetType: 'Project',  relationshipType: 'threatens', cardinality: 'MANY_TO_MANY', description: 'Risk threatens delivery' },
+  // A risk with no owned work attached is a register entry, not a control.
+  { sourceType: 'Project', targetType: 'Risk', relationshipType: 'mitigates', cardinality: 'MANY_TO_ONE', description: 'Project mitigates a risk' },
   { sourceType: 'Risk', targetType: 'Contract', relationshipType: 'threatens', cardinality: 'MANY_TO_MANY', description: 'Risk threatens a contract' },
   { sourceType: 'Risk', targetType: 'Customer', relationshipType: 'threatens', cardinality: 'MANY_TO_MANY', description: 'Risk threatens the relationship' },
   { sourceType: 'Risk', targetType: 'Outcome',  relationshipType: 'threatens', cardinality: 'MANY_TO_MANY', description: 'Risk threatens an outcome' },

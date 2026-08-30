@@ -387,11 +387,19 @@ app.use('/api/admin/work-os', workOsRoutes);
 // EnterpriseObjectModel.ts and restarting is the whole update path.
 import { seedEnterpriseObjectModel } from './kangqore-view/eof/EnterpriseObjectSeeder';
 import { RecoveryActionSeeder } from './kangqore-view/eof/RecoveryActionSeeder';
+import { seedWorkTemplates } from './kangqore-view/eof/WorkTemplateEngine';
 import { EnterpriseProjection } from './kangqore-view/eof/EnterpriseProjection';
 import { IntelligenceEngine } from './kangqore-view/eof/IntelligenceEngine';
 seedEnterpriseObjectModel()
   .then(r => console.log(`[EnterpriseObjectModel] ${r.typesCreated} created, ${r.typesUpdated} updated, ${r.cardinalityRules} cardinality rules`))
   // Types must exist before actions can be bound to them.
+  .then(() => seedWorkTemplates())
+  .then(r => {
+    console.log(`[WorkTemplates] ${r.created} created, ${r.updated} updated`)
+    // A template that cannot apply cleanly is reported here rather than
+    // discovered by whoever clicks it.
+    for (const bad of r.invalid) console.warn(`[WorkTemplates] INVALID ${bad}`)
+  })
   .then(() => RecoveryActionSeeder.seed())
   .then(r => console.log(`[RecoveryActions] ${r.created} created, ${r.updated} updated across ${r.types} types`))
   // Mirrors real Projects and ClientCRM rows into the enterprise model so the

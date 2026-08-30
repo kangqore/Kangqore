@@ -18,6 +18,7 @@ import { EnterpriseProjection } from './EnterpriseProjection'
 import { ModelIntrospection } from './ModelIntrospection'
 import { IntentCompiler } from './IntentCompiler'
 import { ObjectQueryCompiler } from './ObjectQueryCompiler'
+import { WorkTemplateEngine } from './WorkTemplateEngine'
 import { AgentMissionEngine } from '../kimmp/agents/AgentMissionEngine'
 import { ENTERPRISE_OBJECTS } from './EnterpriseObjectModel'
 import { prisma } from '../../lib/prisma'
@@ -102,6 +103,40 @@ router.post('/views/compile', ...guard, async (req, res) => {
     const result = await ObjectQueryCompiler.run(intent.query, actorOf(req))
     return res.json({ ...intent, result })
   } catch (e) { return fail(res, e) }
+})
+
+// ── Templates (the path from nothing to real work) ───────────────────────────
+
+router.get('/templates', ...guard, async (req, res) => {
+  res.json({ templates: await WorkTemplateEngine.list(req.query.category as string | undefined) })
+})
+
+/** Materialise a template: real objects, real edges, optionally a board. */
+router.post('/templates/:key/apply', ...guard, async (req, res) => {
+  const { values, startDate, createBoard } = req.body ?? {}
+  try {
+    const result = await WorkTemplateEngine.apply({
+      templateKey: req.params.key,
+      actorId: (req as any).user?.id ?? 'unknown',
+      values,
+      startDate: startDate ? new Date(startDate) : undefined,
+      createBoard: createBoard !== false,
+    }, actorOf(req))
+    return res.status(result.status === 'FAILED' ? 422 : 201).json(result)
+  } catch (e) { return fail(res, e) }
+})
+
+router.get('/templates/runs/:runId', ...guard, async (req, res) => {
+  const run = await WorkTemplateEngine.run(req.params.runId)
+  if (!run) return res.status(404).json({ error: 'No such template run' })
+  return res.json({ run })
+})
+
+/** Remove what a run created, keeping anything since edited. */
+router.post('/templates/runs/:runId/undo', ...guard, async (req, res) => {
+  try {
+    res.json(await WorkTemplateEngine.undo(req.params.runId, actorOf(req)))
+  } catch (e) { fail(res, e) }
 })
 
 // ── Boards (Work) ────────────────────────────────────────────────────────────

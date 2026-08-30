@@ -9434,6 +9434,70 @@ model BoardGroup {
 
 /// Per-board manual ordering. Float positions (fractional indexing) so dropping
 /// a card between two others is one row write rather than renumbering a column.
+/// A playbook that MATERIALISES work, not a saved view.
+///
+/// Board templates copy a display config; this creates real OntologyObjects and
+/// the relationships between them, so applying "Client Onboarding" produces
+/// actual milestones and tasks that the Intelligence and Decision layers can
+/// then reason over. That is the difference between a template that makes a
+/// board look right and one that makes the graph non-empty.
+model WorkTemplate {
+  id           String   @id @default(cuid())
+  key          String   @unique                 // "client-onboarding"
+  name         String
+  description  String   @db.Text
+  category     String                           // Delivery | Commercial | People | Risk
+  icon         String?
+  color        String?
+
+  /// Type of the object the template is rooted at, e.g. "Project".
+  rootTypeName String
+
+  /// [{ ref, typeName, properties, offsetDays?, durationDays? }] — `ref` is a
+  /// template-local name the edges refer to.
+  nodes        Json     @default("[]")
+  /// [{ from, to, relationshipType }] using the refs above.
+  edges        Json     @default("[]")
+  /// Optional board created over the result: { name, groupByField, showClasses }
+  board        Json?
+
+  isSystem     Boolean  @default(true)
+  runs         WorkTemplateRun[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([category])
+  @@map("work_templates")
+}
+
+/// What a template application actually created. Without this there is no way
+/// to tell a template that provisioned twelve objects from one that silently
+/// provisioned none.
+model WorkTemplateRun {
+  id             String   @id @default(cuid())
+  templateId     String
+  template       WorkTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  actorId        String
+  /// { templateRef: ontologyObjectId } for everything created.
+  createdObjects Json     @default("{}")
+  createdEdges   Int      @default(0)
+  rootObjectId   String?
+  boardId        String?
+
+  status         String   @default("COMPLETED")  // COMPLETED | PARTIAL | FAILED
+  /// Why a node or edge was skipped — a cardinality rejection, a missing type.
+  notes          Json     @default("[]")
+  error          String?  @db.Text
+
+  createdAt      DateTime @default(now())
+
+  @@index([templateId, createdAt])
+  @@index([rootObjectId])
+  @@map("work_template_runs")
+}
+
 model BoardItemPosition {
   id       String @id @default(cuid())
   boardId  String
