@@ -13692,12 +13692,302 @@ export const servicesData = {
     name: 'Supply Chain',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
-    shortDescription: 'Supply chain optimization and transformation',
-    fullDescription: 'Optimize and transform supply chain operations for efficiency and resilience.',
-    keyFeatures: ['Supply chain strategy', 'Planning & forecasting', 'Logistics optimization', 'Visibility', 'Sustainability'],
-    relatedServiceSlugs: ['pimcore', 'blockchain', 'analytics'],
+    shortDescription: 'Supply chain strategy, planning platform selection, implementation and managed operations',
+    fullDescription: 'Business case, platform selection, planning and execution implementation, and the data foundation underneath all three — across Blue Yonder, o9, Kinaxis, SAP IBP, Oracle and the tools you already own.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[820px]',
+    keyFeatures: ['Business case', 'Platform selection', 'Planning implementation', 'Execution systems', 'Managed operations'],
+    relatedServiceSlugs: ['enterprise-integration-platform', 'analytics', 'managed-services'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=800&q=80',
+
+    heroTitle: 'Supply Chain Consulting\nand Planning Implementation',
+    heroBadge: 'Assess. Select. Implement. Run.',
+    heroStripItems: [
+      'Business Case & Value Model', 'Platform Selection', 'Demand & Supply Planning', 'S&OP and IBP',
+      'Execution Systems', 'Master Data Foundation', 'Control Tower', 'Managed Operations',
+    ],
+
+    whatIsEyebrow: 'What our supply chain services cover',
+    whatIsTitle: 'Planning Tools Rarely Fail',
+    whatIsTitleLine2: 'on the Math.',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'They Fail on the Data.',
+    whatIsPara2: 'A planning platform is an engine that runs on lead times, bills of material, calendars and demand history. Where those are estimates nobody has revisited since the last implementation, the engine returns a confident answer built on them — and it returns it faster than the spreadsheet it replaced, which is the part that makes it dangerous.',
+    whatIsPara3: 'That is why so many transformations are justified on an inventory reduction that never arrives. The business case assumes better plans; the plans assume parameters that were never corrected; and eighteen months later the planners are back in Excel, overriding the system for reasons they can each explain individually and nobody has written down.',
+    whatIsPara4: 'We assess the data foundation before recommending a platform, run the selection without holding a reseller agreement with any vendor in the category, and implement planning and execution on whichever tool the assessment actually points at. Where that turns out to be the one you already license and have not configured properly, we say so.',
+
+    // Two synthesized case cards are opted out rather than deleted:
+    // getParityService fills an absent outcomeCard with an invented client
+    // asserting perfect reliability, so deletion alone would keep them.
+    hideOutcomeCards: true,
+    // The department toolchain default renders a generic "Supply Chain
+    // Technology Stack" directly alongside the platform carousel below, which
+    // names the actual products. Two platform sections, one of them generic,
+    // is a contradiction the carousel created — so the generic one goes.
+    hideToolsStack: true,
+
+    capabilitiesLabel: 'SUPPLY CHAIN SERVICES',
+    capabilitiesSectionTitle: 'Supply Chain',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Seven ways this gets bought. Most engagements start with the first two, and a good number stop there because the answer turns out to be configuration rather than replacement.',
+    capabilityAreas: [
+      {
+        title: 'Strategy & Business Case',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'What the transformation is worth, stated in numbers somebody will still defend in year two.',
+        items: [
+          'Current-state assessment across plan, source, make and deliver',
+          'Value model built on measures you already report',
+          'Inventory, service level and cost-to-serve baselines',
+          'Benefit attribution: what the tool moves versus what the process moves',
+          'Cost and effort estimate with the assumptions named',
+          'Sequencing by what unblocks the most, not by module order',
+          'Executive business case with a defensible payback',
+        ],
+      },
+      {
+        title: 'Platform Selection',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A shortlist reached on fit, run by a firm holding no reseller agreement with anyone on it.',
+        items: [
+          'Requirement definition from process, not from vendor feature lists',
+          'Fitment analysis against your actual planning problem',
+          'Blue Yonder, o9, Kinaxis, SAP IBP, Oracle and Dynamics assessed on merit',
+          'Existing entitlement review before anything new is priced',
+          'Deployment model and total cost of ownership at year three',
+          'Proof-of-concept design that tests the hard cases, not the demo cases',
+          'Selection record documenting why the runner-up lost',
+        ],
+      },
+      {
+        title: 'Planning Implementation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Demand, supply and integrated planning built against parameters somebody has actually verified.',
+        items: [
+          'Demand planning, segmentation and forecast hierarchy',
+          'Supply, capacity and distribution planning',
+          'S&OP and integrated business planning cadence',
+          'Inventory policy and safety stock modeling',
+          'Scenario planning and what-if capability',
+          'Planner workbench design and adoption',
+          'Forecast accuracy baselined before go-live, not after',
+        ],
+      },
+      {
+        title: 'Execution Systems',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Warehouse, transport and order management, where the plan meets a physical constraint.',
+        items: [
+          'Warehouse management selection and implementation',
+          'Transport management and carrier integration',
+          'Order management and available-to-promise logic',
+          'Manufacturing execution and shop-floor integration',
+          'Returns, reverse logistics and disposition',
+          'Labor and slotting optimization',
+          'Cutover planning with a fallback position',
+        ],
+      },
+      {
+        title: 'Data Foundation',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The unglamorous half, and the one that decides whether any of the above returns a usable answer.',
+        items: [
+          'Master data assessment across item, location and supplier',
+          'Lead time verification against actual receipts',
+          'Bill of material and routing accuracy review',
+          'Demand history cleansing and outlier treatment',
+          'Calendar, UOM and hierarchy standardization',
+          'Data governance with named owners per domain',
+          'Ongoing quality monitoring rather than a one-time cleanse',
+        ],
+      },
+      {
+        title: 'Visibility & Control Tower',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Knowing where things are, and — harder — which exceptions are worth a person looking at them.',
+        items: [
+          'End-to-end visibility across internal and partner systems',
+          'Exception definition and alert thresholds that survive a month',
+          'Supplier and carrier data integration',
+          'Disruption detection and impact modeling',
+          'Resolution workflow with ownership attached',
+          'Performance reporting on one agreed definition',
+          'AI applied to triage once the exceptions are agreed',
+        ],
+      },
+      {
+        title: 'Managed Operations',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Running the planning estate under a service level, including the parameter maintenance nobody owns.',
+        items: [
+          'Planning system administration and release readiness',
+          'Parameter and policy review on a fixed cadence',
+          'Forecast accuracy and bias reporting',
+          'Master data stewardship',
+          'Integration monitoring and failure resolution',
+          'Planner support and continuous enablement',
+          'Improvement backlog against the opening baseline',
+        ],
+      },
+    ],
+
+    solutionsCarousel: {
+      eyebrow: 'THE PLANNING LANDSCAPE',
+      title: 'Eight platforms,',
+      titleHighlight: 'and when each one is the wrong buy.',
+      subtitle: 'Selection in this category is unusually distorted, because most firms running the evaluation hold a partnership tier with two of the vendors on the shortlist. These are the products that come up and the condition that makes each a mistake.',
+      items: [
+        {
+          title: 'Blue Yonder',
+          desc: 'Deep retail and distribution planning with the longest track record in the category. Heavy to implement and heavier to change afterwards, so it rewards an organization whose process is genuinely settled and punishes one still deciding how it plans.',
+        },
+        {
+          title: 'o9 Solutions',
+          desc: 'Strong where planning has to reason across commercial and supply data in one model. The demonstrations are excellent and the build is substantial — the graph that makes it powerful is the same graph somebody has to define, and that work is yours, not the vendor’s.',
+        },
+        {
+          title: 'Kinaxis',
+          desc: 'Built for fast scenario simulation, which is the right answer when the business question is genuinely "what if" rather than "what is". Less compelling where the real problem is that the current plan is wrong for reasons nobody has diagnosed.',
+        },
+        {
+          title: 'SAP IBP',
+          desc: 'The default where the estate is already SAP, and the integration advantage is real rather than marketing. Worth checking against the alternatives anyway: the default is often right and being right by default is not the same as being verified.',
+        },
+        {
+          title: 'Oracle SCM Cloud',
+          desc: 'Coherent when planning, execution and finance sit on one stack, and awkward where the rest of the estate does not. Its strongest case is not planning sophistication but having one vendor accountable end to end.',
+        },
+        {
+          title: 'Microsoft Dynamics SCM',
+          desc: 'Reasonable for mid-market complexity and increasingly capable, particularly where the organization already runs the Microsoft stack. The ceiling arrives sooner on multi-echelon and constraint-based planning than the roadmap suggests.',
+          href: '/services/enterprise-integration-platform',
+          linkLabel: 'Integration',
+        },
+        {
+          title: 'Execution suites',
+          desc: 'Warehouse, transport and order management from Manhattan, Blue Yonder, Körber and others. Selected on a different axis from planning — throughput, labor model and site complexity decide it, not forecasting sophistication.',
+        },
+        {
+          title: 'What you already license',
+          desc: 'The most common right answer and the least often proposed. Unused planning capability inside an existing ERP is widespread, and the reason it stays unused is usually a data problem that a new platform would inherit intact. We hold no reseller margin here, so pointing at it costs us nothing.',
+        },
+      ],
+    },
+
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'Supply chain consulting,',
+    engagementHeadingHighlight: 'four ways to start.',
+    engagementLede: 'Most conversations begin with a planning tool that was bought and is not trusted, or a business case that needs a number somebody will defend. Both are assessment problems before they are implementation problems.',
+    servicePackages: [
+      {
+        name: 'Assessment & Business Case',
+        description: 'What the current process actually does, what the data underneath it can support, and what a change is worth in numbers you already report. Fixed price, scoped so you can stop after it and keep the output.',
+        deliverables: [
+          'Current-state map across plan, source, make and deliver',
+          'Master data quality assessment with named gaps',
+          'Baselines for inventory, service level and forecast accuracy',
+          'Value model separating process benefit from tool benefit',
+          'Costed roadmap sequenced by what unblocks the most',
+        ],
+      },
+      {
+        name: 'Platform Selection',
+        description: 'Requirements from your process, fitment against the real shortlist, and a recommendation from a firm with no reseller agreement on either side of it. Includes the option that you keep what you own.',
+        deliverables: [
+          'Requirement definition traceable to process steps',
+          'Fitment analysis across the credible shortlist',
+          'Existing entitlement and license position review',
+          'Total cost of ownership modeled at year three',
+          'Selection record stating why each option lost',
+        ],
+      },
+      {
+        name: 'Planning & Execution Implementation',
+        description: 'Building it, on whichever platform the selection landed on. Parameters verified before configuration, because a planning system configured over wrong lead times is an expensive way to be wrong faster.',
+        deliverables: [
+          'Solution design and planning process definition',
+          'Configuration, integration and data migration',
+          'Parameter verification against actual performance',
+          'Planner enablement and adoption support',
+          'Hypercare with forecast accuracy tracked from day one',
+        ],
+      },
+      {
+        name: 'Managed Planning Operations',
+        description: 'Running the estate under a service level, including the parameter maintenance that quietly decides whether the system stays trusted. For teams who want the capability without carrying a permanent planning systems function.',
+        deliverables: [
+          'System administration and release readiness',
+          'Scheduled parameter and policy review',
+          'Forecast accuracy and bias reporting',
+          'Master data stewardship with named owners',
+          'Improvement backlog against the opening baseline',
+        ],
+      },
+    ],
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve supply chain questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    customFAQs: [
+      {
+        q: 'What does supply chain consulting actually cover?',
+        a: 'Four distinct pieces of work, sold separately, and most buyers need two of them.\n\nAssessment and business case: what the current process does, what the data can support, and what a change is worth. Platform selection: which tool fits, run against your process rather than a feature matrix. Implementation: building planning or execution on the tool that was chosen. Managed operations: running the result once it is live.\n\nWhat sits in front of all four is the data foundation. A planning platform is an engine running on lead times, calendars, bills of material and demand history. Where those are wrong, every layer above them is wrong with more confidence.',
+      },
+      {
+        q: 'Do you resell any supply chain planning platform?',
+        a: 'No, and in this category it matters more than in most.\n\nWe hold no reseller agreement and take no margin on Blue Yonder, o9, Kinaxis, SAP, Oracle or anyone else in this market. So a selection that concludes you should configure what you already own is a conclusion we are free to reach.\n\nThis is worth pressing on any firm running your evaluation. Most large integrators hold a formal partnership tier with two or three of the vendors likely to be on your shortlist, with volume commitments attached — while describing the selection as unbiased and objective. Both things can be published on the same page, and frequently are. The advice may still be sound; it is not neutral, and you should price that in.',
+      },
+      {
+        q: 'Our planners have gone back to Excel. Why?',
+        a: 'Almost always because the system gave an answer they could not defend, and they were still accountable for the outcome.\n\nThat traces to one of three things. The parameters are wrong — lead times that were estimates at go-live and were never corrected against actual receipts. The segmentation is wrong, so a slow-moving spare is being forecast with the same method as a fast-moving line. Or the exceptions are wrong, and the planner is drowning in alerts that do not distinguish a real problem from a rounding difference.\n\nNone of the three is fixed by a new platform, and all three follow the new platform across if you buy one. Diagnosing which it is takes days, not months, and it is the cheapest work in this category.',
+      },
+      {
+        q: 'How do you choose between Blue Yonder, o9, Kinaxis and SAP IBP?',
+        a: 'On the shape of your planning problem, not on a feature matrix — every product in that list will answer yes to most rows.\n\nThe questions that actually separate them: is the hard part scenario speed, or plan quality, or the breadth of data the plan has to reason over. Is your process settled enough to encode, or still being decided. Does the estate already carry an integration advantage worth real money. And who will own the model after go-live, because the more capable products need more ownership, not less.\n\nWe run the fitment against your own hard cases rather than the vendor demonstration cases, and we document why the runner-up lost. That record is worth more than the decision in eighteen months, when somebody asks.',
+      },
+      {
+        q: 'What does a supply chain engagement cost?',
+        a: 'Two numbers, and only one of them is knowable up front.\n\nThe assessment is fixed price and small. It has to be, because its job is partly to tell you that the implementation is not worth doing.\n\nThe implementation is where honesty gets awkward, because the variable that moves it most is the one nobody can see from outside: what condition your master data is in. Two companies with the same number of sites, the same planning processes and the same platform can differ by a factor of two on effort, entirely on whether lead times and bills of material are trustworthy. A firm that quotes both identically has decided one of them will subsidize the other, and it is not the one with the clean data.\n\nSo we price the assessment, and we price the build after it. Anything else is a guess with a cover sheet.',
+      },
+      {
+        q: 'How long before we see anything?',
+        a: 'Weeks for the diagnosis, quarters for the platform work, and the sequence matters more than either.\n\nThe assessment produces findings in weeks, and a meaningful share of engagements never go further because the finding is that the parameters and the segmentation are the problem. Fixing those inside the existing tool shows movement in a quarter without a procurement cycle.\n\nWhere a platform genuinely is the answer, plan on quarters rather than months for the first meaningful go-live, and be suspicious of anyone promising otherwise before seeing your data.',
+      },
+      {
+        q: 'How do you handle forecast accuracy claims?',
+        a: 'By baselining it before we start, and reporting it afterwards whether or not it flatters us.\n\nForecast accuracy is the most quoted and least comparable number in this category. It moves with the aggregation level, the time horizon, the error metric and which items are in scope — so an improvement claim without all four stated is not a claim, it is a shape.\n\nWhat we commit to is narrower and checkable: the measure, the level and the horizon agreed before the engagement starts, the baseline captured from your own history, and the same calculation run afterwards. If it did not move, that is what the report says.',
+      },
+      {
+        q: 'What about AI in supply chain planning?',
+        a: 'Genuinely useful in three places, and oversold in a fourth.\n\nUseful: demand sensing on short horizons where signal exists; exception triage, which is the highest-value application because alert fatigue is what stops planners trusting a system; and anomaly detection on master data, where it finds the lead time that is wrong before the plan does.\n\nOversold: the autonomous plan that executes without review. It demonstrates well on stable, high-volume items that were already automatable with a policy, and it degrades exactly where judgment was the reason a person was in the loop.\n\nThe precondition is the same as the rest of this page. A model trained on demand history nobody cleaned learns the history nobody cleaned.',
+      },
+      {
+        q: 'Do you work on execution systems as well as planning?',
+        a: 'Yes, and they are selected on a different axis.\n\nPlanning tools are chosen on modeling capability. Warehouse, transport and order management are chosen on throughput, labor model, site complexity and integration reach. A firm that treats them as one decision usually optimizes for whichever half it sells more of.\n\nThe connection worth getting right is available-to-promise: the point where a plan meets a real commitment to a real customer. That is where planning and execution disagree in a way the customer can see, and it is worth designing deliberately rather than discovering.',
+      },
+      {
+        q: 'How is this different from your analytics service?',
+        a: 'This service is accountable for the plan. That one is accountable for the answer.\n\nIf the question is what the supply chain should do next week — what to make, what to move, what to hold — that is planning, and it is here. If the question is why margin moved, or which customers cost more to serve than they return, that is analysis, and the analytics practice leads it.\n\nThey meet at the data foundation, and on engagements that need both we agree at the start which one holds the plan rather than discovering it in month three.',
+      },
+      {
+        q: 'Who owns the system after you leave?',
+        a: 'Your planners, and if they cannot defend the plan the engagement has failed regardless of what was configured.\n\nConcretely: planners who helped make the design decisions rather than meeting them at go-live, documented reasoning for every parameter and policy, a named owner per master data domain, and a review cadence your team already runs without us.\n\nThe measure we would use is simple. Six months after go-live, can a planner explain why the system recommended what it recommended, without calling anyone. Where the answer is no, the system will be overridden, and the overrides will not be written down.',
+      },
+      {
+        q: 'How do you measure whether it worked?',
+        a: 'Four numbers, agreed in writing before we touch anything.\n\nForecast accuracy at a stated level and horizon \u2014 all three parts matter, because the same forecast can be reported as excellent or poor depending on which you pick. Inventory measured against service level, never alone, since either one moves easily by sacrificing the other. The proportion of planner hours going to exceptions rather than to keeping the system fed. And the rate at which planners override the system.\n\nThat fourth one is the measure we would watch hardest, and almost nobody reports it. A plan that is never overridden is either trusted or unexamined, and those two look identical on a dashboard until the first quarter where demand does something unusual.\n\nAll four come from your own systems, and all four can be pulled again after we leave.',
+      },
+    ],
+
+    midCta: 'A faster wrong plan is still a wrong plan.',
+    midCtaLabel: 'Book a Supply Chain Assessment',
+    closingCta: {
+      title: 'One assessment,',
+      highlight: 'before any platform is priced.',
+      body: 'Point us at the planning process your team has stopped trusting. In 30 minutes we will tell you whether the problem is the tool, the parameters or the data underneath both — and it is more often the third than any vendor will say.',
+      proofLabel: 'From first call to a named data-quality gap list',
+    },
   },
 
   'unified-services-management': {
