@@ -31,8 +31,13 @@ async function main() {
   check('every type reports all four column classes',
     cat.every(t => t.columns.CORE.length && t.columns.ENTERPRISE.length &&
                    t.columns.INTELLIGENCE.length && t.columns.GOVERNANCE.length))
-  check('Project now occupies tier 5', cat.find(t => t.name === 'Project')?.tier === 5,
-    String(cat.find(t => t.name === 'Project')?.tier))
+  // Positional, not a fixed number: inserting Portfolio shifted every tier
+  // below it, and an assertion pinned to "5" then tested a different type while
+  // still reading as though it tested Project.
+  const tierOf = (n: string) => cat.find(t => t.name === n)?.tier ?? -1
+  check('Project sits directly below Program',
+    tierOf('Project') === tierOf('Program') + 1,
+    `Program ${tierOf('Program')}, Project ${tierOf('Project')}`)
   check('Risk is a type in its own right', !!cat.find(t => t.name === 'Risk'))
 
   console.log('\n2. The execution chain is ordered, goal → evidence')
@@ -42,8 +47,11 @@ async function main() {
     tiers.join(','))
   check('starts at EnterpriseGoal', chain[0].name === 'EnterpriseGoal', chain[0].name)
   check('ends at Outcome', chain[chain.length - 1].name === 'Outcome', chain[chain.length - 1].name)
-  check('no gap where Project used to be missing',
-    tiers.includes(5), tiers.join(','))
+  check('the chain has no gaps at all',
+    tiers.every((t, i) => i === 0 || t === tiers[i - 1] + 1), tiers.join(','))
+  check('Project and Portfolio both hold a tier',
+    chain.some(t => t.name === 'Project') && chain.some(t => t.name === 'Portfolio'),
+    chain.map(t => t.name).join(' → '))
 
   console.log('\n3. Cross-tier reasoning — "CEO objective to execution" (§7)')
   const p = ModelIntrospection.pathBetween('Task', 'EnterpriseGoal')

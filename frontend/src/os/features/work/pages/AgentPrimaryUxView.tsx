@@ -5,6 +5,7 @@ import {
   Search, Brain, Stethoscope, FlaskConical, ListChecks, Scale, CheckCircle2,
 } from 'lucide-react'
 import { api } from '@lib/api'
+import { errorMessage } from '../../../lib/errorMessage'
 
 const T1   = 'var(--os-text-1)'
 const T2   = 'var(--os-text-2)'
@@ -220,7 +221,7 @@ export default function AgentPrimaryUxView() {
         </div>
         {submit.isError && (
           <p className="text-xs mt-2" style={{ color: RED }}>
-            {(submit.error as any)?.response?.data?.error ?? 'Could not run that intent'}
+            {errorMessage(submit.error, 'Could not run that intent')}
           </p>
         )}
       </div>
@@ -315,7 +316,7 @@ export default function AgentPrimaryUxView() {
 
               {(decide.isError || execute.isError) && (
                 <p className="text-xs mt-2" style={{ color: RED }}>
-                  {((decide.error ?? execute.error) as any)?.response?.data?.error ?? 'Action failed'}
+                  {errorMessage(decide.error ?? execute.error, 'Action failed')}
                 </p>
               )}
             </div>

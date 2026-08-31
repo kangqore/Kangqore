@@ -12,6 +12,7 @@ import {
   Play, X, Check, AlertTriangle, Loader2, Undo2, ArrowRight, Layers, Link2,
 } from 'lucide-react'
 import { api } from '@lib/api'
+import { errorMessage } from '../../../lib/errorMessage'
 
 const T1 = 'var(--os-text-1)'
 const T2 = 'var(--os-text-2)'
@@ -320,7 +321,7 @@ function Loading({ label }: { label: string }) {
 }
 
 function ErrorText({ err }: { err: any }) {
-  const msg = err?.response?.data?.error ?? err?.message ?? 'Something went wrong'
+  const msg = errorMessage(err)
   return (
     <div style={{ fontSize: 12.5, color: '#ef4444', display: 'flex', gap: 7, alignItems: 'center', marginTop: 10 }}>
       <AlertTriangle size={14} /> {msg}

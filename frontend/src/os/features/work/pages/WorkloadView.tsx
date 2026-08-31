@@ -32,12 +32,12 @@ function loadLabel(hours: number): string {
 export function WorkloadView() {
   const { data = [], isLoading, isFetching, refetch } = useQuery<StaffWorkload[]>({
     queryKey: ['work', 'workload'],
-    queryFn: () => api.get('/admin/work-os/work/workload').then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/workload').then(r => r.data.buckets ?? []),
     staleTime: 60_000,
   })
 
-  const totalAssigned = data.reduce((s, m) => s + m.activeItems, 0)
-  const overloaded = data.filter(m => m.totalEstimatedHours >= CAPACITY_HOURS * 0.8).length
+  const totalAssigned = data.reduce((s, m) => s + (m.activeItems ?? 0), 0)
+  const overloaded = data.filter(m => (m as any).blockedItems > 0 || (m as any).overdue > 0).length
 
   if (isLoading) return <div className="text-sm text-[var(--os-text-2)] py-8 text-center">Loading workload…</div>
 
@@ -51,7 +51,7 @@ export function WorkloadView() {
         </div>
         {overloaded > 0 && (
           <span className="text-xs text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full font-medium">
-            {overloaded} overloaded
+            {overloaded} with blocked or overdue work
           </span>
         )}
         <button onClick={() => refetch()} className="ml-auto text-[var(--os-text-3)] hover:text-[var(--os-text-1)]">

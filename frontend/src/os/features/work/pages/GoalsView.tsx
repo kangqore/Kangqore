@@ -135,13 +135,14 @@ export function GoalsView() {
 
   const { data = [], isLoading, isFetching, refetch } = useQuery<WorkGoal[]>({
     queryKey: ['work', 'goals'],
-    queryFn: () => api.get('/admin/work-os/work/goals').then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/goals').then(r => r.data.goals ?? []),
     staleTime: 60_000,
   })
 
   const roots = data.filter(g => !g.parentId)
-  const totalOnTrack = data.filter(g => g.status === 'ON_TRACK').length
-  const avgProgress = data.length ? Math.round(data.reduce((s, g) => s + g.progress, 0) / data.length) : 0
+  // ON_TRACK is not one of the twelve states; on track means moving and not in trouble.
+  const totalOnTrack = data.filter(g => g.status === 'IN_PROGRESS' || g.status === 'COMPLETED').length
+  const avgProgress = data.length ? Math.round(data.reduce((s, g) => s + (g.progress ?? 0), 0) / data.length) : 0
 
   if (isLoading) return <div className="text-sm text-[var(--os-text-2)] py-8 text-center">Loading goals…</div>
 

@@ -3,10 +3,11 @@
 // Decision Matrix Engine evaluates 8 enterprise inputs and outputs structured prescriptive trade-offs.
 
 import { useLocation, Routes, Route, NavLink, Navigate } from 'react-router-dom'
-import { FileStack, Sparkles as SparkleIcon, Inbox, LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles, Scale, Activity } from 'lucide-react'
+import { FileStack, Sparkles as SparkleIcon, Inbox, Gauge, LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles, Scale, Activity } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { TemplatesView }      from './pages/TemplatesView'
+import { DashboardView }      from './pages/DashboardView'
 import { FieldsView }         from './pages/FieldsView'
 import { IngestionView }      from './pages/IngestionView'
 import { BoardView }          from './pages/BoardView'
@@ -27,6 +28,7 @@ const BASE = '/kangqore-view/admin/work'
 const TABS = [
   { path: 'agent-ux',       label: 'AI Agent Workspace (Primary UX)', icon: Sparkles, primary: true },
   { path: 'decision-matrix',label: 'Decision Engine', icon: Scale },
+  { path: 'dashboard',       label: 'Dashboard',       icon: Gauge              },
   { path: 'templates',       label: 'Templates',       icon: FileStack          },
   { path: 'board',           label: 'Board',           icon: LayoutGrid         },
   { path: 'table',           label: 'Table',           icon: Table2             },
@@ -80,6 +82,7 @@ export function WorkModule() {
             <Route index element={<Navigate to="agent-ux" replace />} />
             <Route path="agent-ux"        element={<AgentPrimaryUxView />}  />
             <Route path="decision-matrix" element={<DecisionEngineView />}  />
+            <Route path="dashboard"       element={<DashboardView />}       />
             <Route path="templates"       element={<TemplatesView />}       />
             <Route path="board"           element={<BoardView />}           />
             <Route path="table"           element={<TableView />}           />

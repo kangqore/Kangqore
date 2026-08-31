@@ -21,6 +21,7 @@
 
 import { prisma } from '../../lib/prisma'
 import { OntologyGateway, SYSTEM_ACTOR } from './OntologyGateway'
+import { WORK_STATES, ENTERPRISE_OBJECTS } from './EnterpriseObjectModel'
 
 /** Real Project.status values are a small set; map them onto the 12-state machine. */
 const PROJECT_STATE: Record<string, string> = {
@@ -87,6 +88,20 @@ async function linkOnce(
   await OntologyGateway.createRelationship(SYSTEM_ACTOR, {
     sourceId, targetId, sourceType, targetType, relationshipType,
   })
+}
+
+/**
+ * Map a status that is not in the 12-state machine onto one that is.
+ *
+ * Legacy objects predate the model and carry their own vocabulary — a Project
+ * left over from an earlier sync still said ACTIVE. One stray value is enough
+ * to add a phantom column to every board and dashboard grouped by status, and
+ * an object holding a thirteenth state is invalid however it got there.
+ */
+const LEGACY_STATE: Record<string, string> = {
+  ACTIVE: 'IN_PROGRESS', OPEN: 'IN_PROGRESS', IN_REVIEW: 'UNDER_REVIEW',
+  TODO: 'QUEUED', BACKLOG: 'QUEUED', DONE: 'COMPLETED', CLOSED: 'COMPLETED',
+  ON_HOLD: 'BLOCKED', STUCK: 'BLOCKED', ARCHIVED: 'CANCELLED',
 }
 
 export const EnterpriseProjection = {
@@ -178,12 +193,52 @@ export const EnterpriseProjection = {
       contracts++
     }
 
+    const normalised = await this.normaliseStates()
+
     return {
-      projects: projects_, customers, contracts,
+      projects: projects_, customers, contracts, normalised,
       goals: 2,
       // Stated in the return value so a caller cannot mistake this for a
       // complete picture of the enterprise.
       unlinked: 'Projects are not linked to contracts: no join exists in the data.',
     }
+  },
+
+  /**
+   * Bring any object on an enterprise type onto the 12-state machine. Runs over
+   * everything, not only the records the projection mirrors, because a legacy
+   * object the projection never touches is exactly where a stray state hides.
+   */
+  async normaliseStates() {
+    const names = ENTERPRISE_OBJECTS.map(o => o.name)
+    const types = await prisma.ontologyObjectType.findMany({
+      where: { name: { in: names } }, select: { id: true },
+    })
+    if (!types.length) return { checked: 0, fixed: 0, unmapped: [] as string[] }
+
+    const objects = await prisma.ontologyObject.findMany({
+      where: { typeId: { in: types.map(t => t.id) }, validTo: null },
+      select: { id: true, properties: true },
+    })
+
+    let fixed = 0
+    const unmapped = new Set<string>()
+    for (const o of objects) {
+      const status = String((o.properties as any)?.status ?? '')
+      if (!status || (WORK_STATES as readonly string[]).includes(status)) continue
+
+      const mapped = LEGACY_STATE[status.toUpperCase()]
+      if (!mapped) {
+        // Reported rather than guessed: an unrecognised state is a modelling
+        // question, not something to silently coerce.
+        unmapped.add(status)
+        continue
+      }
+      await OntologyGateway.patchObject(SYSTEM_ACTOR, o.id, {
+        properties: { status: mapped, legacyStatus: status },
+      })
+      fixed++
+    }
+    return { checked: objects.length, fixed, unmapped: [...unmapped] }
   },
 }

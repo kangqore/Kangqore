@@ -389,6 +389,7 @@ import { seedWorkTemplates } from './kangqore-view/eof/WorkTemplateEngine';
 import { startWorkAutomations } from './kangqore-view/eof/WorkAutomationEngine';
 import { seedIntelligenceFields } from './kangqore-view/eof/IntelligenceFieldSeeder';
 import { startIntelligenceFieldRefresh } from './kangqore-view/eof/IntelligenceFieldScheduler';
+import { seedDashboards } from './kangqore-view/eof/DashboardSeeder';
 import { EnterpriseProjection } from './kangqore-view/eof/EnterpriseProjection';
 import { IntelligenceEngine } from './kangqore-view/eof/IntelligenceEngine';
 seedEnterpriseObjectModel()
@@ -407,7 +408,9 @@ seedEnterpriseObjectModel()
   // Intelligence and Decision layers run on live records. Governed changes
   // (an approved re-baseline, an escalation) are preserved, not overwritten.
   .then(() => EnterpriseProjection.run())
-  .then(r => console.log(`[EnterpriseProjection] ${r.projects} projects, ${r.customers} customers, ${r.contracts} contracts`))
+  .then(r => console.log(`[EnterpriseProjection] ${r.projects} projects, ${r.customers} customers, ${r.contracts} contracts` +
+    (r.normalised.fixed ? `, ${r.normalised.fixed} state(s) normalised` : '') +
+    (r.normalised.unmapped.length ? ` — UNMAPPED: ${r.normalised.unmapped.join(', ')}` : '')))
   // Inference must run after projection, or the INTELLIGENCE columns stay
   // empty and every query over predictedRisk / predictedCompletion returns
   // nothing — the columns would be declared, populated by no one, and quietly
@@ -421,6 +424,8 @@ seedEnterpriseObjectModel()
   // existed, and nothing connected them.
   .then(() => seedIntelligenceFields())
   .then(r => console.log(`[IntelligenceFields] ${r.created} created, ${r.updated} updated, ${r.disabled} seeded disabled`))
+  .then(() => seedDashboards())
+  .then(r => console.log(`[Dashboards] ${r.created} created, ${r.updated} updated, ${r.panels} panels`))
   .then(() => startIntelligenceFieldRefresh())
   .then(r => console.log(`[IntelligenceFields] refresh armed — ${r.onChange} on-change, ${r.scheduled} scheduled`))
   .then(() => startWorkAutomations())
