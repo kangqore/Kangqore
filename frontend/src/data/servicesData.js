@@ -12635,9 +12635,11 @@ export const servicesData = {
     ],
 
     whatIsEyebrow: 'Where AI actually creates advantage inside a GCC',
-    whatIsTitle: 'Why Is Kangqore the Partner of Choice',
+    // Split so the second line opens on "of Choice". Two segments rather than
+    // three: a whatIsTitleLine2 here forces a third line at every desktop width.
+    whatIsTitle: 'Why Is Kangqore the Partner',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'for GCCs?',
+    whatIsHighlight: 'of Choice for GCCs?',
     whatIsPara2: 'Access to AI stopped being the constraint some time ago. A capability center can license the same models as its parent, and most already have. What decides whether any of it turns into something is narrower and considerably harder \u2014 whether the center understands how the business actually runs well enough to tell a useful automation from a convincing demonstration.',
     whatIsPara3: 'Four things set the ceiling, and none of them are technical. What the parent business has genuinely prioritized, rather than what appears in the strategy deck. What the center is allowed to decide on its own, without escalating. Which skills are in the building as opposed to on the org chart. And whether the center holds a transformation mandate or only permission to experiment. Where those four disagree, AI produces activity \u2014 pilots, proofs of concept, something that worked on demo day \u2014 rather than advantage.',
     whatIsPara4: 'Our position is that the AI work follows the operating model rather than leading it. We qualify use cases against the data and the decision rights underneath them, build the ones that survive that test, and say so plainly where a process is not settled enough to automate. Applied to a workflow nobody has agreed, AI encodes the disagreement and then runs it faster, which is the most expensive failure mode in this category and the hardest to unwind afterwards.',
