@@ -282,6 +282,29 @@ been left alone rather than deleted. Removing them is a one-line `deleteMany` on
 data and should be a deliberate call.
 
 
+### `Process` as an object type (P3)
+
+§2A of the Monday analysis asks for `Portfolio` and `Process`. Portfolio was
+added (tier 4). **Process was deliberately not**, because a repeatable procedure
+with steps, owners and dependencies is what `WorkTemplate` already is, and a
+parallel type would give two answers to "where is our onboarding process
+defined" — the same duplicate-concept problem as `Client`/`Customer` and
+`Goal`/`EnterpriseGoal`.
+
+Unblocks when someone can state what a Process holds that a template does not —
+a running instance with state, most likely, which would make it an *instance of*
+a template rather than a sibling of one.
+
+### No committed smoke test over the Work OS screens (P2)
+
+Four pages crashed while every probe and gate stayed green, because nothing
+loads a page. The sweep that found them is a throwaway Playwright script written
+per session. A committed smoke test that opens each Work OS tab and asserts no
+error boundary would have caught all four, and would catch the next one.
+
+See `docs/learn.md`, 2026-08-31 — "Endpoint 200s are not page verification".
+
+
 ---
 
 ## Notes
