@@ -25,6 +25,7 @@ import { ThreadService } from './ThreadService'
 import { EvidenceLedger } from './EvidenceLedger'
 import { IntelligenceFieldEngine } from './IntelligenceFieldEngine'
 import { IngestionEngine } from './IngestionEngine'
+import { FieldComposer } from './FieldComposer'
 import { AgentMissionEngine } from '../kimmp/agents/AgentMissionEngine'
 import { ENTERPRISE_OBJECTS } from './EnterpriseObjectModel'
 import { prisma } from '../../lib/prisma'
@@ -181,6 +182,31 @@ router.get('/fields', ...guard, async (req, res) => {
       tiers: IntelligenceFieldEngine.tiers(),
     })
   } catch (e) { fail(res, e) }
+})
+
+/** What can be added, grouped the way someone thinks about it. */
+router.get('/fields/catalogue', ...guard, async (req, res) => {
+  res.json(FieldComposer.catalogue(req.query.typeName as string | undefined))
+})
+
+/** A sentence becomes a draft definition. Nothing is stored. */
+router.post('/fields/compose', ...guard, async (req, res) => {
+  const { text, typeName } = req.body ?? {}
+  if (!text?.trim() || !typeName) {
+    return res.status(400).json({ error: 'text and typeName are required' })
+  }
+  const composed = FieldComposer.compose(text, typeName)
+  return res.status(composed.ok ? 200 : 422).json(composed)
+})
+
+/** Run a draft against one real record without writing to it. */
+router.post('/fields/preview', ...guard, async (req, res) => {
+  const { draft, objectId } = req.body ?? {}
+  if (!draft?.typeName || !draft?.outputField) {
+    return res.status(400).json({ error: 'a draft with typeName and outputField is required' })
+  }
+  try { return res.json(await FieldComposer.preview(draft, objectId)) }
+  catch (e) { return fail(res, e) }
 })
 
 router.post('/fields', ...guard, async (req, res) => {

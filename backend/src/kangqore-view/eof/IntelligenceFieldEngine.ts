@@ -258,8 +258,17 @@ export const IntelligenceFieldEngine = {
     })
   },
 
-  /** Compute one field for one object, recording the run either way. */
-  async computeOne(fieldId: string, objectId: string, actor: GatewayActor = FIELD_ACTOR): Promise<ComputeResult> {
+  /**
+   * Compute one field for one object, recording the run either way.
+   *
+   * `dryRun` computes and returns the answer without writing to the object or
+   * recording a run — used by preview, which must be able to show what a field
+   * would produce without touching the record it is previewing on.
+   */
+  async computeOne(
+    fieldId: string, objectId: string, actor: GatewayActor = FIELD_ACTOR,
+    opts: { dryRun?: boolean } = {},
+  ): Promise<ComputeResult> {
     const field = await prisma.intelligenceField.findUnique({ where: { id: fieldId } })
     if (!field) throw new Error('No such field')
     if (!field.enabled) {
@@ -270,6 +279,8 @@ export const IntelligenceFieldEngine = {
     const result: ComputeResult = field.compute === 'GENERATIVE'
       ? await computeGenerative(field, objectId)
       : await computeDerived(field, objectId)
+
+    if (opts.dryRun) return result
 
     await prisma.intelligenceFieldRun.create({
       data: {
