@@ -11,6 +11,7 @@ import {
   X, Sparkles, Loader2, AlertTriangle, Check, Play, ArrowRight, Info,
 } from 'lucide-react'
 import { api } from '@lib/api'
+import { errorMessage } from '../../../lib/errorMessage'
 
 const T1 = 'var(--os-text-1)'
 const T2 = 'var(--os-text-2)'
@@ -280,7 +281,7 @@ const ghost: React.CSSProperties = {
 }
 
 function ErrorText({ err }: { err: any }) {
-  const msg = err?.response?.data?.error ?? err?.message ?? 'Something went wrong'
+  const msg = errorMessage(err)
   return (
     <div style={{ fontSize: 12.5, color: '#ef4444', display: 'flex', gap: 7, alignItems: 'center', margin: '10px 0' }}>
       <AlertTriangle size={14} /> {msg}

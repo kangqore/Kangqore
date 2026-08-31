@@ -14,6 +14,7 @@ import {
   ChevronRight, Loader2, Info,
 } from 'lucide-react'
 import { api } from '@lib/api'
+import { errorMessage } from '../../../lib/errorMessage'
 
 const T1   = 'var(--os-text-1)'
 const T2   = 'var(--os-text-2)'
@@ -468,7 +469,7 @@ function Empty({ icon, title, body }: { icon: React.ReactNode; title: string; bo
 }
 
 function ErrorText({ err }: { err: any }) {
-  const msg = err?.response?.data?.error ?? err?.message ?? 'Something went wrong'
+  const msg = errorMessage(err)
   return (
     <div style={{ fontSize: 12.5, color: '#ef4444', display: 'flex', gap: 7, alignItems: 'center' }}>
       <AlertTriangle size={14} /> {msg}

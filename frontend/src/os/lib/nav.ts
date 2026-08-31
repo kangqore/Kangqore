@@ -345,6 +345,8 @@ export const RAIL_ITEMS: RailEntry[] = [
     defaultPath: `${BASE}/work/board`,
     matchPrefixes: [`${BASE}/work`],
     sidebarItems: [
+      { id: 'work-dashboard',   label: 'Dashboard',      path: `${BASE}/work/dashboard`,   category: 'Work OS', badge: 'new' },
+      { id: 'work-templates',   label: 'Templates',      path: `${BASE}/work/templates`,   category: 'Work OS', badge: 'new' },
       { id: 'work-board',       label: 'Board',          path: `${BASE}/work/board`,       category: 'Work OS', badge: 'new' },
       { id: 'work-table',       label: 'Table',          path: `${BASE}/work/table`,       category: 'Work OS' },
       { id: 'work-timeline',    label: 'Timeline',       path: `${BASE}/work/timeline`,    category: 'Work OS' },
@@ -354,6 +356,8 @@ export const RAIL_ITEMS: RailEntry[] = [
       { id: 'work-portfolio',   label: 'Portfolio',      path: `${BASE}/work/portfolio`,   category: 'Strategy' },
       { id: 'work-executive',   label: 'Command Center', path: `${BASE}/work/executive`,   category: 'Strategy' },
       { id: 'work-automations', label: 'Automations',    path: `${BASE}/work/automations`, category: 'Automation' },
+      { id: 'work-fields',      label: 'Intelligence',   path: `${BASE}/work/fields`,      category: 'Automation', badge: 'new' },
+      { id: 'work-ingest',      label: 'Ingestion',      path: `${BASE}/work/ingest`,      category: 'Automation', badge: 'new' },
     ],
   },
   {
