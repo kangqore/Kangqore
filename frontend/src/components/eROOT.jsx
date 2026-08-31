@@ -177,7 +177,22 @@ function canShowEroot() {
   return !cookieBannerOpen();
 }
 
+/**
+ * Gate only. This previously lived inside the panel as an early `return null`
+ * placed BETWEEN hook calls, so the component ran five hooks on
+ * /kangqore-view routes and twelve elsewhere — and React threw "Rendered more
+ * hooks than during the previous render" when the path changed without a
+ * remount, blanking the page. Hoisting the decision into its own component
+ * keeps every hook below unconditional, and the panel's effects still only run
+ * where the panel is actually shown.
+ */
 const EROOT = () => {
+  const location = useLocation();
+  if (location.pathname.startsWith('/kangqore-view')) return null;
+  return <ERootPanel />;
+};
+
+const ERootPanel = () => {
   const navigate  = useNavigate();
   const location  = useLocation();
   const { user }  = useAuth();
@@ -197,8 +212,7 @@ const EROOT = () => {
     [],
   );
   const isHomepage = location.pathname === '/';
-  
-  if (location.pathname.startsWith('/kangqore-view')) return null;
+
   const ctx = useMemo(() => getSmartContext(), []);
   
   // Hook into the Human Context Intelligence Layer
