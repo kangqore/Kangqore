@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T02:26:57.962Z",
+  "generatedAt": "2026-08-31T02:45:13.664Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1569,7 +1569,7 @@
       "url": "/services/global-capability-centers",
       "name": "Global Capability Centers (GCC)",
       "department": "Platforms",
-      "description": "Build and scale GCCs — GCC setup, operating model, talent management, process excellence, and technology enablement for global delivery.",
+      "description": "Global capability center services: zero-capex launch, talent pods, managed operations, and the full lifecycle from build and scale to carve-out and exit.",
       "capabilities": [
         "Zero-Capex Launch",
         "Nearshore AI, Cloud and Security Pods",

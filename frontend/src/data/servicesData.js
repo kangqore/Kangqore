@@ -12620,14 +12620,14 @@ export const servicesData = {
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
     shortDescription: 'GCC advisory, setup, talent, AI-led operations, carve-out and exit',
-    fullDescription: 'Build, scale, restructure or exit a global capability center — strategy and business case, entity and location, hiring and retention, run and transform, and the handover when ownership moves.',
+    fullDescription: 'Zero-capex launch, nearshore AI and cloud pods, talent-as-a-service and managed operations — across building a new center, scaling an existing one, or restructuring and exiting it.',
     fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[820px]',
     keyFeatures: ['Zero-capex launch', 'Talent pods', 'BOTT', 'Scale & transform', 'Carve-out & exit'],
     relatedServiceSlugs: ['managed-services', 'talent-organization', 'unified-services-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
 
-    heroTitle: 'Global Capability Center\nServices, Build to Exit',
+    heroTitle: 'Global Capability Centers (GCC)\nas a Service',
     heroBadge: 'Advise. Build. Scale. Hand over.',
     heroStripItems: [
       'Strategy & Business Case', 'Entity & Location', 'Zero-Capex Launch', 'Talent Pods',
