@@ -12648,6 +12648,16 @@ export const servicesData = {
     // getParityService fills an absent outcomeCard with an invented client
     // asserting perfect reliability, so deletion alone would keep them.
     hideOutcomeCards: true,
+    // Four department defaults plus the engagement band, opted out rather than
+    // deleted. Each resolves through getParityService, so an absent key shows
+    // generic Platforms copy instead of nothing. The servicePackages data stays
+    // behind hideEngagement on purpose: the four advisory models are authored
+    // content, and the flag turns the section off without discarding them.
+    hideComparison: true,
+    hideArchitecture: true,
+    hidePartnershipModel: true,
+    hideToolsStack: true,
+    hideEngagement: true,
 
     capabilitiesLabel: 'GLOBAL CAPABILITY CENTER SERVICES',
     capabilitiesSectionTitle: 'GCC',

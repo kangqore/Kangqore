@@ -267,7 +267,10 @@ ${outcomes.map((o) => `      <section>
       </section>`).join('\n')}`
     : '';
 
-  const packages = (svc.servicePackages || []).length
+  // `hideEngagement` suppresses this band on the page, so the snapshot drops it
+  // too — a service can keep authored packages in the data with the section
+  // off, and neither the visitor nor the crawler should then see them.
+  const packages = (svc.hideEngagement ? [] : (svc.servicePackages || [])).length
     ? `    <h2>${esc([svc.engagementHeading, svc.engagementHeadingHighlight].filter(Boolean).join(' ') || 'How we engage')}</h2>
     ${svc.engagementLede ? `<p>${esc(svc.engagementLede)}</p>` : ''}
 ${svc.servicePackages.map((k) => `      <section>

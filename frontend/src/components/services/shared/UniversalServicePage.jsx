@@ -5216,7 +5216,14 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ SERVICE PACKAGES (2-Column Offset Layout) ══════════════════════ */}
-      {service.servicePackages && (
+      {/* Opt-out per service via hideEngagement, mirroring hideComparison.
+          Deleting servicePackages does not remove this band: getParityService
+          resolves an absent key to genericServicePackages, so the page swaps
+          in five generic engagement models rather than hiding anything. The
+          flag also lets a service keep its authored packages in the data while
+          the section is off, so the content survives the decision. Defaults to
+          showing, so the other 61 pages are unchanged. */}
+      {!service.hideEngagement && service.servicePackages && (
         <section className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-16">
