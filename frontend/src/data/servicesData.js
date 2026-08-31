@@ -12619,35 +12619,78 @@ export const servicesData = {
     name: 'Global Capability Centers (GCC)',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
-    shortDescription: 'GCC advisory, setup, talent, managed operations, carve-out and exit',
-    fullDescription: 'Build, scale, restructure or exit a global capability center — strategy and business case, entity and location, hiring and retention, run and transform, and the handover when ownership moves.',
+    shortDescription: 'GCC advisory, setup, talent, AI-led operations, carve-out and exit',
+    fullDescription: 'Zero-capex launch, nearshore AI and cloud pods, talent-as-a-service and managed operations — across building a new center, scaling an existing one, or restructuring and exiting it.',
     fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[820px]',
     keyFeatures: ['Zero-capex launch', 'Talent pods', 'BOTT', 'Scale & transform', 'Carve-out & exit'],
     relatedServiceSlugs: ['managed-services', 'talent-organization', 'unified-services-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
 
-    heroTitle: 'Global Capability Center\nServices, Build to Exit',
+    heroTitle: 'Global Capability Centers (GCC)\nas a Service',
     heroBadge: 'Advise. Build. Scale. Hand over.',
     heroStripItems: [
       'Strategy & Business Case', 'Entity & Location', 'Zero-Capex Launch', 'Talent Pods',
       'BOTT', 'Scale & Transform', 'Carve-Out', 'Managed Exit',
     ],
 
-    whatIsEyebrow: 'What our global capability center services cover',
-    whatIsTitle: 'A GCC Is Easier',
-    whatIsTitleLine2: 'to Open',
+    whatIsEyebrow: 'Where AI actually creates advantage inside a GCC',
+    // Split so the second line opens on "of Choice". Two segments rather than
+    // three: a whatIsTitleLine2 here forces a third line at every desktop width.
+    whatIsTitle: 'Why Is Kangqore the Partner',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'Than It Is to Keep.',
-    whatIsPara2: 'The business case is usually built on a labor cost difference, and that difference is at its widest on the day it is written. Wage inflation in every established GCC market runs ahead of the home market, so a model that only works at year-one rates is a model with an expiry date on it. What survives is a center that owns outcomes rather than seats.',
-    whatIsPara3: 'The second problem arrives in year two. The launch team leaves, attrition finds its real level, regulation moves, and the center quietly drifts from what it was built for to whatever it was last asked to do. Nobody notices until a cost review asks what it is actually for, and by then the answer takes a year to rebuild.',
-    whatIsPara4: 'We work across the whole span: whether the center should exist and where, building it with or without your capital, running it against a service level, scaling or restructuring it, and handing it over when ownership moves. The advisory is available on its own, including the version where the finding is that you should not build one.',
+    whatIsHighlight: 'of Choice for GCCs?',
+    whatIsPara2: 'Access to AI stopped being the constraint some time ago. A capability center can license the same models as its parent, and most already have. What decides whether any of it turns into something is narrower and considerably harder \u2014 whether the center understands how the business actually runs well enough to tell a useful automation from a convincing demonstration.',
+    whatIsPara3: 'Four things set the ceiling, and none of them are technical. What the parent business has genuinely prioritized, rather than what appears in the strategy deck. What the center is allowed to decide on its own, without escalating. Which skills are in the building as opposed to on the org chart. And whether the center holds a transformation mandate or only permission to experiment. Where those four disagree, AI produces activity \u2014 pilots, proofs of concept, something that worked on demo day \u2014 rather than advantage.',
+    whatIsPara4: 'Our position is that the AI work follows the operating model rather than leading it. We qualify use cases against the data and the decision rights underneath them, build the ones that survive that test, and say so plainly where a process is not settled enough to automate. Applied to a workflow nobody has agreed, AI encodes the disagreement and then runs it faster, which is the most expensive failure mode in this category and the hardest to unwind afterwards.',
 
     // The two synthesized case cards are opted out rather than deleted:
     // getParityService fills an absent outcomeCard with an invented client
     // asserting perfect reliability, so deletion alone would keep them.
     hideOutcomeCards: true,
+    // Four department defaults plus the engagement band, opted out rather than
+    // deleted. Each resolves through getParityService, so an absent key shows
+    // generic Platforms copy instead of nothing. The servicePackages data stays
+    // behind hideEngagement on purpose: the four advisory models are authored
+    // content, and the flag turns the section off without discarding them.
+    hideComparison: true,
+    hidePartnershipModel: true,
+    hideToolsStack: true,
+    hideEngagement: true,
 
+    // The section argues operating culture rather than lifecycle: the five
+    // stages it replaced duplicated what the capability areas already cover.
+    architectureEyebrow: 'HOW THE OPERATING CULTURE IS SET',
+    architectureTitle: 'How We Design',
+    architectureTitleHighlight: 'the GCC Mindset?',
+    architectureLede: 'A center inherits the working habits of whoever set it up. These are the five we set deliberately, in the first ninety days, because they are far cheaper to establish than to correct.',
+    architectureNodes: [
+      {
+        title: 'Flat Governance',
+        icon: 'Network',
+        description: 'Governance designed to be short rather than complete. Every layer between the person doing the work and the person who can approve it costs a day, and across eight time zones it costs two.',
+      },
+      {
+        title: 'Agile Rituals, Fitted',
+        icon: 'Activity',
+        description: 'Ceremonies matched to how the center actually works rather than to a framework certificate. A team shipping weekly and a team shipping quarterly do not need the same meetings, and one cadence imposed on both produces attendance rather than delivery.',
+      },
+      {
+        title: 'Squad-Based Execution',
+        icon: 'Zap',
+        description: 'Squads owning a slice end to end, seeded with people who have run the model before. Culture does not transfer through documentation. It transfers through the first two or three teams getting it right and everyone else copying them.',
+      },
+      {
+        title: 'Behavioral Onboarding',
+        icon: 'Layers',
+        description: 'Onboarding that covers what the business does and who it serves, not only where the systems are. A joiner who understands the customer makes better calls in week three than one who has memorized the architecture.',
+      },
+      {
+        title: 'KPI Ownership From Day One',
+        icon: 'Target',
+        description: 'Every pod and talent-as-a-service team owns numbers it can actually move, agreed before it starts. A team measured on something outside its control learns to explain rather than to improve.',
+      },
+    ],
     capabilitiesLabel: 'GLOBAL CAPABILITY CENTER SERVICES',
     capabilitiesSectionTitle: 'GCC',
     capabilitiesSectionHighlight: 'Capabilities.',
@@ -12847,13 +12890,72 @@ export const servicesData = {
       },
     ],
 
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve GCC questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    customFAQs: [
+      {
+        q: 'What is a global capability center?',
+        a: 'A part of your own company that happens to sit in another country.\n\nThat is the whole distinction. A GCC is staffed by your employees, holds your intellectual property, and reports into your structure. It is not a supplier relationship with a different address on it.\n\nWhat has changed is what they are trusted with. The first generation ran defined processes under instruction. The ones that work now own capabilities outright — a product, a platform, a risk function — with the decision rights to match. The difference between those two is not headcount or location. It is whether the center can decide anything without asking.',
+      },
+      {
+        q: 'How is a GCC different from outsourcing?',
+        a: 'Ownership, and what happens to the knowledge.\n\nAn outsourcing arrangement buys execution of a defined scope under a contract. The supplier owns the method, staffs it as they see fit, and keeps what they learn. That is a reasonable trade for work you do not intend to be good at yourself.\n\nA GCC keeps all of it. The people are yours, the process knowledge accumulates in your organization rather than the vendor’s, and the capability is still there when the contract that never existed does not end.\n\nThe honest version of the comparison: outsourcing is cheaper to start and cheaper to stop. A GCC costs more up front and is worth it only where the capability is something you intend to still own in five years. If you cannot name that capability, outsourcing is probably the right answer.',
+      },
+      {
+        q: 'What does a GCC typically own?',
+        a: 'It varies, and the trajectory is more informative than the list.\n\nMost start with technology and IT services, finance and accounting, and customer operations. Data and analytics, procurement, HR and legal follow. The centers that mature move into product engineering, platform ownership and risk — work where being wrong has consequences, which is the real signal that the parent trusts it.\n\nThe question worth asking of your own center is narrower: name one thing it decides without asking the home organization. If the answer is nothing, it is a delivery site rather than a capability center, regardless of what the org chart says.',
+      },
+      {
+        q: 'Why India, and is that still the right answer?',
+        a: 'Usually, and less automatically than five years ago.\n\nIndia has depth that is difficult to replicate — engineering scale, an ecosystem of centers that have already made every mistake available, and enough regulatory experience across banking, healthcare and insurance that compliance is not being invented from scratch. For most enterprises it remains the default and the default is usually right.\n\nWhere it stops being automatic: wage inflation in the established hubs runs ahead of the home market, so a business case built on today’s difference narrows every year. Tier-two Indian cities, Poland, Mexico and the Philippines each win specific cases on cost, time-zone overlap or language.\n\nWe run the location analysis on talent depth for the capability you actually need rather than on average salary. Those two produce different answers more often than the cost model suggests.',
+      },
+      {
+        q: 'What engagement models do you offer?',
+        a: 'Seven, and most enterprises use two of them.\n\nGreenfield build for a center that does not exist. Build-operate-transform-transfer, where we run it and hand it over once it is genuinely stable rather than merely live. Joint venture and partner-led structures. M&A-led integration or separation. Expansion for a center that already works. Collaborative hybrid, where we operate part of it while your capability is built underneath. Carve-out and managed exit.\n\nThe zero-capex option cuts across all of them: we carry the entity, premises, infrastructure and first cohort, and bill against the running center. It exists because the capital lands twelve to eighteen months before any of the benefit does, and that gap is what kills business cases that were otherwise sound.',
+      },
+      {
+        q: 'Can we start small and scale later?',
+        a: 'Yes, and it is usually the better sequence.\n\nA single pod owning one capability end to end teaches you more about whether the model works than fifty seats spread across four functions. It also fails cheaply, which matters, because the first attempt reveals things the business case could not.\n\nWhat has to be decided up front regardless of size is the operating model — what the center owns, who decides what, how commitments are defined. Those are cross-cutting, and negotiating them again at every increment is how a phased rollout becomes a permanent negotiation.\n\nSo: small on scope, complete on governance. The reverse is the common mistake.',
+      },
+      {
+        q: 'Do you do AI-led GCC transformation?',
+        a: 'Yes, and the order matters more than the tooling.\n\nThe work spans readiness assessment, automation, and agentic AI across operations, engineering and back-office functions. What decides the outcome is not which models get used. It is whether the process being automated is one anybody has agreed.\n\nApplied to a settled process, AI removes work that should never have reached a person. Applied to an unsettled one, it encodes the disagreement and then runs it faster — which is the most expensive failure in this category, because the output looks authoritative and people act on it.\n\nSo we qualify use cases against the data and the decision rights underneath them first, and we will say when a process is not ready. That answer is less satisfying than a pilot, and it is usually correct.',
+      },
+      {
+        q: 'How do you design the operating model?',
+        a: 'Starting from what the center will own, not from how many people it will have.\n\nHeadcount is an output of scope, and designing in the other direction produces a center that is fully staffed and accountable for nothing. So the sequence is: name the capabilities, establish the decision rights that make owning them possible, then size it.\n\nThe part most often skipped is escalation. A center with no authority escalates everything, which reproduces the home organization’s bottleneck at a distance and adds a time zone to it. Writing down what the center settles alone is unglamorous and it is the single highest-leverage hour of the design.\n\nGovernance, risk and compliance are designed in the same pass rather than added afterwards, because retrofitting them into a running center costs several times what including them does.',
+      },
+      {
+        q: 'Which industries do you support?',
+        a: 'Every industry we would name, which is why the answer is worth less than the question behind it.\n\nWhat actually varies between sectors is not whether a capability center works. It is which functions are permitted to leave the home country at all. In banking and insurance, some risk and control roles cannot; in healthcare and life sciences, patient and trial data carries residency rules that decide the location before any cost model does; in defense-adjacent manufacturing, export control does the same.\n\nSo the sector question we ask early is narrow: which of the capabilities you want the center to own are legally able to sit where you are proposing to put it. That answer reshapes the location shortlist more often than salary data does, and finding it out in month seven is expensive.\n\nWhere the constraint is genuinely the hard part of your case, we bring in a specialist rather than improvise around it.',
+      },
+      {
+        q: 'What does a GCC engagement cost?',
+        a: 'The assessment is fixed price. What follows it depends on three things nobody knows on a first call.\n\nWhether an entity already exists in the target country, because incorporation, statutory setup and compliance are close to a fixed cost whether the center ends up at ten people or five hundred. What the center will own, since a single pod running one product and a multi-function build are not the same undertaking priced differently \u2014 they are different undertakings. And who carries the launch capital, because on a zero-capex model the commercial shape changes entirely: cost follows the running center rather than arriving twelve to eighteen months ahead of it.\n\nThe figure worth arguing about is not the setup cost anyway. It is the fully loaded cost per outcome at year three, after wage inflation has done its work and the center is at steady state. That is the number a cost review eventually tests, and it is the one the business case is built on.',
+      },
+      {
+        q: 'Who owns the center after you leave?',
+        a: 'Your team, and the transfer point should be a set of conditions rather than a date.\n\nOn a build-operate-transform-transfer engagement that means agreeing at the start what stable actually means: delivery holding its service levels through a full quarter without us intervening, a center leader and a management layer appointed from inside, attrition at a level the center absorbs rather than survives, and process knowledge that demonstrably sits in more than one head.\n\nHanding over on a calendar date irrespective of those is how a transfer becomes a slow failure nobody can point at \u2014 the date is met, the capability is not, and it takes two years before anyone says so out loud. We would rather move the date and say why.',
+      },
+      {
+        q: 'How do we get started?',
+        a: 'With the capability, not the headcount.\n\nThe first conversation we find useful is about what you are trying to own rather than what you are trying to move. Those produce different centers, and the second one is the one that gets closed in a cost review three years later.\n\nAfter that: a fixed-price assessment covering business case at maturity, location shortlist, capability scope and regulatory constraints. It is scoped so you can stop after it and keep the output, including the version where the finding is that a center is not the right answer and something smaller is.\n\nIf you already have a center and the question is why it is not delivering, the same assessment runs against the existing one instead.',
+      },
+    ],
+
     midCta: 'A center full of seats is not a capability.',
     midCtaLabel: 'Book a GCC Assessment',
     closingCta: {
-      title: 'One GCC business case,',
-      highlight: 'modeled at maturity.',
-      body: 'Tell us the capability you are trying to own rather than the headcount you are trying to move. In 30 minutes we will tell you roughly what it costs at year three rather than year one, which locations still work at that number, and whether building a center is the right answer at all — which it sometimes is not.',
-      proofLabel: 'From first call to a costed location shortlist',
+      // Break placed before "a number" rather than after the comma. This
+      // column is 543px against the 693px the same block gets elsewhere, so
+      // splitting at the comma pushed "defend." onto an orphaned third line.
+      // Dropping the comma and carrying "and" up keeps the phrase whole.
+      title: 'Thirty minutes and',
+      highlight: 'a number you can defend.',
+      body: 'Bring the capability you want the center to own. You leave with what it costs at year three rather than year one, which locations still work at that number, and whether a center is the right answer at all.',
+      proofLabel: 'From first call to a year-three cost and a location shortlist',
     },
   },
 

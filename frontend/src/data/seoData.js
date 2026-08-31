@@ -681,9 +681,9 @@ export const serviceSEO = {
     url: '/services/servicenow',
   },
   'global-capability-centers': {
-    title: 'Global Capability Centers (GCC) — Platforms | Kangqore',
-    description: 'Build and scale GCCs — GCC setup, operating model, talent management, process excellence, and technology enablement for global delivery.',
-    keywords: 'global capability centers, GCC setup, GCC operating model, GCC talent management',
+    title: 'Global Capability Center (GCC) Services | Kangqore',
+    description: 'Global capability center services: zero-capex launch, talent pods, managed operations, and the full lifecycle from build and scale to carve-out and exit.',
+    keywords: 'global capability centers, GCC as a service, GCC setup, GCC advisory, zero-capex GCC, talent as a service, build operate transfer, BOTT, GCC carve-out, GCC exit, GCC managed operations, nearshore delivery centers',
     url: '/services/global-capability-centers',
   },
   'talent-organization': {
