@@ -15,6 +15,7 @@ import { IntelligenceFieldEngine, type FieldKind } from './IntelligenceFieldEngi
 
 interface SystemField {
   key: string; name: string; description: string
+  refresh?: string
   typeName: string; compute: 'DERIVED' | 'GENERATIVE'; kind: FieldKind
   outputField: string; governanceTier: number
   inputs?: string[]; relatedTypes?: string[]; instruction?: string; options?: string[]
@@ -30,37 +31,37 @@ export const SYSTEM_FIELDS: SystemField[] = [
       key: `${t.toLowerCase()}-predicted-risk`, name: 'Predicted risk',
       description: 'Likelihood this slips, from observed velocity, blockers and its own dates.',
       typeName: t, compute: 'DERIVED', kind: 'SCORE',
-      outputField: 'predictedRisk', governanceTier: 2,
+      inputs: ['status', 'progress', 'dueDate', 'startDate'], outputField: 'predictedRisk', governanceTier: 2, refresh: 'ON_CHANGE',
     },
     {
       key: `${t.toLowerCase()}-predicted-completion`, name: 'Predicted completion',
       description: 'Forecast finish date from measured pace. Absent where there is no history.',
       typeName: t, compute: 'DERIVED', kind: 'FORECAST',
-      outputField: 'predictedCompletion', governanceTier: 2,
+      inputs: ['status', 'progress', 'dueDate', 'startDate'], outputField: 'predictedCompletion', governanceTier: 2, refresh: 'ON_CHANGE',
     },
     {
       key: `${t.toLowerCase()}-root-cause`, name: 'Root cause',
       description: 'Why this is at risk, from its own dates and its blocking edges.',
       typeName: t, compute: 'DERIVED', kind: 'RECOMMEND',
-      outputField: 'rootCause', governanceTier: 3,
+      inputs: ['status', 'progress', 'dueDate', 'startDate'], outputField: 'rootCause', governanceTier: 3, refresh: 'ON_CHANGE',
     },
     {
       key: `${t.toLowerCase()}-next-best-action`, name: 'Next best action',
       description: 'What to do about it. Advisory: the field recommends, it never decides.',
       typeName: t, compute: 'DERIVED', kind: 'RECOMMEND',
-      outputField: 'nextBestAction', governanceTier: 3,
+      inputs: ['status', 'progress', 'dueDate', 'startDate'], outputField: 'nextBestAction', governanceTier: 3,
     },
     {
       key: `${t.toLowerCase()}-business-impact`, name: 'Business impact',
       description: 'Value at stake, reached by traversing the graph. Blank when nothing priceable is reachable.',
       typeName: t, compute: 'DERIVED', kind: 'SCORE',
-      outputField: 'businessImpact', governanceTier: 4,
+      inputs: ['status', 'progress', 'dueDate', 'startDate'], outputField: 'businessImpact', governanceTier: 4,
     },
     {
       key: `${t.toLowerCase()}-anomaly`, name: 'Anomaly score',
       description: 'Distance from peers of the same type. Needs at least three peers.',
       typeName: t, compute: 'DERIVED', kind: 'SCORE',
-      outputField: 'anomalyScore', governanceTier: 2,
+      inputs: ['status', 'progress', 'dueDate', 'startDate'], outputField: 'anomalyScore', governanceTier: 2, refresh: 'SCHEDULED',
     },
   ]),
 
@@ -106,6 +107,7 @@ export async function seedIntelligenceFields() {
           inputs: (f.inputs ?? []) as any, relatedTypes: (f.relatedTypes ?? []) as any,
           instruction: f.instruction ?? null, options: (f.options ?? []) as any,
           governanceTier: f.governanceTier, isSystem: true,
+          refresh: f.refresh ?? 'MANUAL',
         },
       })
       updated++

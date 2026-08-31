@@ -291,6 +291,9 @@ export const IntelligenceFieldEngine = {
         properties: {
           [field.outputField]: result.value,
           [`${field.outputField}_confidence`]: result.confidence ?? null,
+          // Marks the CDC event this write emits, so the ON_CHANGE refresh
+          // cannot see a field's own output and recompute it forever.
+          _fieldComputed: true,
         },
       })
     }
