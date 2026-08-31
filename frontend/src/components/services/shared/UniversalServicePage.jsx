@@ -4767,7 +4767,17 @@ const featureMicros   = service.featureMicros
                         </p>
 
                         <div className="mt-4 pt-3 border-t border-current/10">
-                          <span className="block text-[11px] font-bold tracking-widest uppercase mb-2 opacity-60">Key Capabilities</span>
+                          {/* Per-service label. "Key Capabilities" is right when
+                              the list is capabilities and wrong when it is
+                              something else — habits, stages, controls. Set
+                              architectureFeatureLabel to '' to drop the label
+                              entirely; omit it and the original string renders,
+                              so the other 61 pages are unchanged. */}
+                          {service.architectureFeatureLabel !== '' && (
+                            <span className="block text-[11px] font-bold tracking-widest uppercase mb-2 opacity-60">
+                              {service.architectureFeatureLabel || 'Key Capabilities'}
+                            </span>
+                          )}
                           <ul className="flex flex-col gap-y-1.5">
                             {node.features.map((f, i) => (
                               <li key={i} className="flex items-center gap-2 text-[12px] font-bold leading-tight">

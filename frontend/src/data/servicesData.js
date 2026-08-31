@@ -12663,6 +12663,9 @@ export const servicesData = {
     architectureEyebrow: 'HOW THE OPERATING CULTURE IS SET',
     architectureTitle: 'How We Design',
     architectureTitleHighlight: 'the GCC Mindset?',
+    // These lists are working habits, not capabilities — the capability areas
+    // above own that word. Empty string drops the label rather than renaming it.
+    architectureFeatureLabel: '',
     architectureLede: 'A center inherits the working habits of whoever set it up. These are the five we set deliberately, in the first ninety days, because they are far cheaper to establish than to correct.',
     architectureNodes: [
       {
