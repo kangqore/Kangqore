@@ -326,7 +326,7 @@ export const WorkViewService = {
    * cannot report green while its projects are late.
    */
   async portfolios() {
-    const { ids, nameById } = await workTypeIds(['Initiative', 'Program'])
+    const { ids, nameById } = await workTypeIds(['Portfolio', 'Initiative', 'Program'])
     if (!ids.length) return { portfolios: [] }
 
     const rows = await prisma.ontologyObject.findMany({
