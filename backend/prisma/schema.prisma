@@ -4831,6 +4831,7 @@ model OntologyObject {
   @@index([externalId])
   @@index([validTo])
   @@map("ontology_objects")
+  comments   ObjectComment[]
 }
 
 // ─── Data Layer Expansion — S303 ──────────────────────────────────────────────
@@ -9487,6 +9488,224 @@ model WorkAutomationRun {
   @@index([automationId, createdAt])
   @@index([objectId])
   @@map("work_automation_runs")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Contextual thread — conversation next to the work, on any ontology object.
+//
+// The problem this solves is context fragmentation: task in one tool,
+// conversation in another, decision in someone's memory. A thread hangs off the
+// object itself, so the discussion and the record cannot drift apart.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model ObjectComment {
+  id         String   @id @default(cuid())
+  objectId   String
+  object     OntologyObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+
+  /// Threading: a reply points at its parent.
+  parentId   String?
+  parent     ObjectComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies    ObjectComment[] @relation("CommentReplies")
+
+  body       String   @db.Text
+  /// HUMAN or the subsystem that wrote it. An agent posting to a thread is
+  /// accountable in the same place a person is.
+  authorType String   @default("HUMAN")   // HUMAN | KIMMP | AEGIS | AUTOMATION
+  authorId   String?
+
+  /// Set when a subsystem posted this, so the UI can show provenance.
+  sourceModule String?
+  /// Evidence the post rests on — object ids, execution ids, event ids.
+  evidence   Json     @default("[]")
+
+  editedAt   DateTime?
+  deletedAt  DateTime?
+  createdAt  DateTime @default(now())
+
+  mentions   CommentMention[]
+  reactions  CommentReaction[]
+
+  @@index([objectId, createdAt])
+  @@index([parentId])
+  @@map("object_comments")
+}
+
+/// A mention resolves to a person OR a responsibility role (@Approver,
+/// @Finance), which is what makes routing possible rather than decorative.
+model CommentMention {
+  id         String   @id @default(cuid())
+  commentId  String
+  comment    ObjectComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  /// USER | ROLE — a role mention resolves through the object's own
+  /// responsibility columns at read time.
+  kind       String   @default("USER")
+  userId     String?
+  role       String?
+  /// Whether the mentioned party has seen it.
+  acknowledgedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([commentId])
+  @@index([userId, acknowledgedAt])
+  @@map("comment_mentions")
+}
+
+model CommentReaction {
+  id        String   @id @default(cuid())
+  commentId String
+  comment   ObjectComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  /// Constrained vocabulary, not free emoji: each carries an operational
+  /// meaning the system can act on. See REACTIONS in ThreadService.
+  reaction  String
+  actorId   String
+  createdAt DateTime @default(now())
+
+  @@unique([commentId, actorId, reaction])
+  @@index([commentId])
+  @@map("comment_reactions")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Intelligence Fields — AI as a computed enterprise attribute.
+//
+// A column declared with nothing computing it is an empty promise; seven such
+// columns were removed from EnterpriseObjectModel for exactly that reason. This
+// is the missing half: a field definition that says what to compute, from what
+// inputs, how often, with what confidence, and under which governance tier.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model IntelligenceField {
+  id           String   @id @default(cuid())
+  key          String   @unique              // "customer-churn-risk"
+  name         String
+  description  String?  @db.Text
+
+  /// Object type this field computes over.
+  typeName     String
+
+  /// DERIVED  — computed from the graph and the intelligence engine, no model call.
+  /// GENERATIVE — needs a language model (summary, classification, sentiment).
+  compute      String   @default("DERIVED")
+  /// SUMMARY | CLASSIFY | SENTIMENT | SCORE | RECOMMEND | FORECAST | EXTRACT
+  kind         String
+
+  /// Property names on the object this field is allowed to read.
+  inputs       Json     @default("[]")
+  /// Related types to pull context from, walked through the relationship graph.
+  relatedTypes Json     @default("[]")
+  /// For GENERATIVE fields: what the model is asked to produce.
+  instruction  String?  @db.Text
+  /// For CLASSIFY/SENTIMENT: the permitted output values. A result outside this
+  /// set is rejected rather than stored.
+  options      Json     @default("[]")
+
+  /// Where the result is written on the object.
+  outputField  String
+
+  /// ON_CHANGE | SCHEDULED | MANUAL
+  refresh      String   @default("MANUAL")
+
+  /// 0 formatting · 1 summarise · 2 classify · 3 recommend · 4 decision support
+  /// · 5 external action. Tier 3+ is advisory only and never writes a decision.
+  governanceTier Int    @default(1)
+  enabled      Boolean  @default(true)
+  isSystem     Boolean  @default(false)
+
+  runs         IntelligenceFieldRun[]
+
+  createdBy    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([typeName, enabled])
+  @@map("intelligence_fields")
+}
+
+/// One computation, for one object. Holds the answer AND its basis, so a value
+/// can always be traced back to what produced it.
+model IntelligenceFieldRun {
+  id        String   @id @default(cuid())
+  fieldId   String
+  field     IntelligenceField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  objectId  String
+
+  /// OK | SKIPPED | FAILED — SKIPPED when the inputs were absent, FAILED when
+  /// the computation could not run. Neither writes a value.
+  status    String   @default("OK")
+  value     Json?
+  confidence Float?
+  /// What the answer rests on, in plain terms.
+  evidence  Json     @default("[]")
+  reasoning String?  @db.Text
+  /// Which model answered, where one did.
+  model     String?
+  error     String?  @db.Text
+  durationMs Int?
+  createdAt DateTime @default(now())
+
+  @@index([fieldId, createdAt])
+  @@index([objectId])
+  @@map("intelligence_field_runs")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Ingestion — unstructured input becomes candidate structure.
+//
+// Extraction PROPOSES; it never writes business records directly. A document
+// that says "Acme Ltd, £400,000" produces a candidate a human or a policy
+// promotes, because an extraction confident enough to be wrong is how a graph
+// fills up with fiction.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model IngestionDocument {
+  id          String   @id @default(cuid())
+  filename    String
+  mimeType    String
+  sizeBytes   Int
+  /// Extracted plain text. Null when the type could not be read.
+  text        String?  @db.Text
+  /// PENDING | EXTRACTED | UNREADABLE | FAILED
+  status      String   @default("PENDING")
+  error       String?  @db.Text
+
+  /// Object this document is evidence for, where the uploader said.
+  linkedObjectId String?
+
+  uploadedBy  String?
+  createdAt   DateTime @default(now())
+
+  candidates  IngestionCandidate[]
+
+  @@index([status, createdAt])
+  @@index([linkedObjectId])
+  @@map("ingestion_documents")
+}
+
+/// A proposed object, awaiting promotion. Never an OntologyObject until someone
+/// or some policy says so.
+model IngestionCandidate {
+  id          String   @id @default(cuid())
+  documentId  String
+  document    IngestionDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  typeName    String
+  properties  Json     @default("{}")
+  confidence  Float    @default(0)
+  /// The text the extraction came from, so a human can check it.
+  sourceText  String?  @db.Text
+
+  /// PROPOSED | PROMOTED | REJECTED
+  status      String   @default("PROPOSED")
+  promotedObjectId String?
+  decidedBy   String?
+  decidedAt   DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([documentId, status])
+  @@map("ingestion_candidates")
 }
 
 /// A playbook that MATERIALISES work, not a saved view.

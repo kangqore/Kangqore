@@ -21,6 +21,10 @@ import { ObjectQueryCompiler } from './ObjectQueryCompiler'
 import { WorkTemplateEngine } from './WorkTemplateEngine'
 import { WorkViewService } from './WorkViewService'
 import { WorkAutomationEngine } from './WorkAutomationEngine'
+import { ThreadService } from './ThreadService'
+import { EvidenceLedger } from './EvidenceLedger'
+import { IntelligenceFieldEngine } from './IntelligenceFieldEngine'
+import { IngestionEngine } from './IngestionEngine'
 import { AgentMissionEngine } from '../kimmp/agents/AgentMissionEngine'
 import { ENTERPRISE_OBJECTS } from './EnterpriseObjectModel'
 import { prisma } from '../../lib/prisma'
@@ -105,6 +109,149 @@ router.post('/views/compile', ...guard, async (req, res) => {
     const result = await ObjectQueryCompiler.run(intent.query, actorOf(req))
     return res.json({ ...intent, result })
   } catch (e) { return fail(res, e) }
+})
+
+// ── Contextual thread ────────────────────────────────────────────────────────
+
+router.get('/objects/:id/thread', ...guard, async (req, res) => {
+  try { res.json(await ThreadService.thread(req.params.id)) } catch (e) { fail(res, e) }
+})
+
+router.post('/objects/:id/thread', ...guard, async (req, res) => {
+  try {
+    res.status(201).json(await ThreadService.post({
+      objectId: req.params.id,
+      body: req.body?.body,
+      parentId: req.body?.parentId,
+      authorId: (req as any).user?.id,
+    }))
+  } catch (e) { fail(res, e) }
+})
+
+router.post('/comments/:id/react', ...guard, async (req, res) => {
+  try {
+    res.json(await ThreadService.react(req.params.id, req.body?.reaction, (req as any).user?.id ?? 'unknown'))
+  } catch (e) { fail(res, e) }
+})
+
+router.delete('/comments/:id', ...guard, async (req, res) => {
+  try { res.json(await ThreadService.remove(req.params.id, (req as any).user?.id ?? 'unknown')) }
+  catch (e) { fail(res, e) }
+})
+
+router.get('/thread/reactions', ...guard, async (_req, res) => {
+  res.json({ reactions: ThreadService.reactionVocabulary() })
+})
+
+router.get('/thread/inbox', ...guard, async (req, res) => {
+  try { res.json(await ThreadService.inbox((req as any).user?.id ?? 'unknown')) } catch (e) { fail(res, e) }
+})
+
+router.post('/thread/mentions/:id/ack', ...guard, async (req, res) => {
+  try { res.json(await ThreadService.acknowledge(req.params.id)) } catch (e) { fail(res, e) }
+})
+
+// ── Evidence ledger ──────────────────────────────────────────────────────────
+
+router.get('/objects/:id/ledger', ...guard, async (req, res) => {
+  const { since, limit, sources } = req.query as Record<string, string>
+  try {
+    res.json(await EvidenceLedger.forObject(req.params.id, {
+      since: since ? new Date(since) : undefined,
+      limit: limit ? Number(limit) : undefined,
+      sources: sources ? (sources.split(',') as any) : undefined,
+    }))
+  } catch (e) { fail(res, e) }
+})
+
+router.get('/objects/:id/ledger/narrative', ...guard, async (req, res) => {
+  try { res.json(await EvidenceLedger.narrate(req.params.id)) } catch (e) { fail(res, e, 404) }
+})
+
+router.get('/ledger/type/:typeName', ...guard, async (req, res) => {
+  try { res.json(await EvidenceLedger.forType(req.params.typeName)) } catch (e) { fail(res, e, 404) }
+})
+
+// ── Intelligence fields ──────────────────────────────────────────────────────
+
+router.get('/fields', ...guard, async (req, res) => {
+  try {
+    res.json({
+      fields: await IntelligenceFieldEngine.list(req.query.typeName as string | undefined),
+      tiers: IntelligenceFieldEngine.tiers(),
+    })
+  } catch (e) { fail(res, e) }
+})
+
+router.post('/fields', ...guard, async (req, res) => {
+  try {
+    res.status(201).json(await IntelligenceFieldEngine.create({
+      ...req.body, createdBy: (req as any).user?.id,
+    }))
+  } catch (e) { fail(res, e) }
+})
+
+router.post('/fields/:id/compute', ...guard, async (req, res) => {
+  try {
+    res.json(req.body?.objectId
+      ? await IntelligenceFieldEngine.computeOne(req.params.id, req.body.objectId, actorOf(req))
+      : await IntelligenceFieldEngine.computeAll(req.params.id))
+  } catch (e) { fail(res, e) }
+})
+
+router.post('/fields/:id/toggle', ...guard, async (req, res) => {
+  try { res.json(await IntelligenceFieldEngine.toggle(req.params.id)) } catch (e) { fail(res, e) }
+})
+
+router.get('/fields/:id/runs', ...guard, async (req, res) => {
+  try { res.json({ runs: await IntelligenceFieldEngine.runs(req.params.id) }) } catch (e) { fail(res, e) }
+})
+
+/** Why does this object show this value? */
+router.get('/objects/:id/explain/:outputField', ...guard, async (req, res) => {
+  try { res.json(await IntelligenceFieldEngine.explain(req.params.id, req.params.outputField)) }
+  catch (e) { fail(res, e, 404) }
+})
+
+// ── Ingestion ────────────────────────────────────────────────────────────────
+
+router.post('/ingest', ...guard, async (req, res) => {
+  const { filename, mimeType, content, linkedObjectId } = req.body ?? {}
+  if (!filename || !mimeType || content === undefined) {
+    return res.status(400).json({ error: 'filename, mimeType and content are required' })
+  }
+  try {
+    const doc = await IngestionEngine.ingest({
+      filename, mimeType, content, linkedObjectId,
+      uploadedBy: (req as any).user?.id,
+    })
+    return res.status(201).json(doc)
+  } catch (e) { return fail(res, e) }
+})
+
+router.post('/ingest/:id/extract', ...guard, async (req, res) => {
+  try {
+    res.json(await IngestionEngine.extract(req.params.id, {
+      typeName: req.body?.typeName, useModel: req.body?.useModel === true,
+    }))
+  } catch (e) { fail(res, e) }
+})
+
+router.get('/ingest/candidates', ...guard, async (req, res) => {
+  try { res.json({ candidates: await IngestionEngine.candidates(req.query.status as string | undefined) }) }
+  catch (e) { fail(res, e) }
+})
+
+router.post('/ingest/candidates/:id/promote', ...guard, async (req, res) => {
+  try {
+    res.status(201).json(await IngestionEngine.promote(
+      req.params.id, (req as any).user?.id ?? 'unknown', actorOf(req)))
+  } catch (e) { fail(res, e) }
+})
+
+router.post('/ingest/candidates/:id/reject', ...guard, async (req, res) => {
+  try { res.json(await IngestionEngine.reject(req.params.id, (req as any).user?.id ?? 'unknown')) }
+  catch (e) { fail(res, e) }
 })
 
 // ── Work views (replaces the dead /api/admin/work/* surface) ─────────────────

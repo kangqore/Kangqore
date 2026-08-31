@@ -3,10 +3,12 @@
 // Decision Matrix Engine evaluates 8 enterprise inputs and outputs structured prescriptive trade-offs.
 
 import { useLocation, Routes, Route, NavLink, Navigate } from 'react-router-dom'
-import { FileStack, LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles, Scale, Activity } from 'lucide-react'
+import { FileStack, Sparkles as SparkleIcon, Inbox, LayoutGrid, Table2, GanttChartSquare, GitMerge, Users, Target, Briefcase, BarChart3, Zap, Layers, Sparkles, Scale, Activity } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { TemplatesView }      from './pages/TemplatesView'
+import { FieldsView }         from './pages/FieldsView'
+import { IngestionView }      from './pages/IngestionView'
 import { BoardView }          from './pages/BoardView'
 import { TableView }          from './pages/TableView'
 import { TimelineView }       from './pages/TimelineView'
@@ -36,6 +38,8 @@ const TABS = [
   { path: 'outcomes',        label: 'Outcomes',        icon: Activity           },
   { path: 'executive',       label: 'Command',         icon: BarChart3          },
   { path: 'automations',     label: 'Automations',     icon: Zap                },
+  { path: 'fields',          label: 'Intelligence',    icon: SparkleIcon        },
+  { path: 'ingest',          label: 'Ingestion',       icon: Inbox              },
 ]
 
 export function WorkModule() {
@@ -87,6 +91,8 @@ export function WorkModule() {
             <Route path="outcomes"        element={<OutcomeIntelligenceView />} />
             <Route path="executive"       element={<ExecutiveView />}       />
             <Route path="automations"     element={<AutomationsView />}     />
+            <Route path="fields"          element={<FieldsView />}          />
+            <Route path="ingest"          element={<IngestionView />}       />
           </Routes>
         </motion.div>
       </AnimatePresence>

@@ -387,6 +387,8 @@ import { seedEnterpriseObjectModel } from './kangqore-view/eof/EnterpriseObjectS
 import { RecoveryActionSeeder } from './kangqore-view/eof/RecoveryActionSeeder';
 import { seedWorkTemplates } from './kangqore-view/eof/WorkTemplateEngine';
 import { startWorkAutomations } from './kangqore-view/eof/WorkAutomationEngine';
+import { seedIntelligenceFields } from './kangqore-view/eof/IntelligenceFieldSeeder';
+import { startIntelligenceFieldRefresh } from './kangqore-view/eof/IntelligenceFieldScheduler';
 import { EnterpriseProjection } from './kangqore-view/eof/EnterpriseProjection';
 import { IntelligenceEngine } from './kangqore-view/eof/IntelligenceEngine';
 seedEnterpriseObjectModel()
@@ -417,6 +419,10 @@ seedEnterpriseObjectModel()
   .then(rs => console.log(`[Intelligence] ${rs.reduce((n, r) => n + r.inferred, 0)} objects scored, ${rs.reduce((n, r) => n + r.atRisk, 0)} at risk`))
   // The wire that was missing: the automation engine existed, the CDC feed
   // existed, and nothing connected them.
+  .then(() => seedIntelligenceFields())
+  .then(r => console.log(`[IntelligenceFields] ${r.created} created, ${r.updated} updated, ${r.disabled} seeded disabled`))
+  .then(() => startIntelligenceFieldRefresh())
+  .then(r => console.log(`[IntelligenceFields] refresh armed — ${r.onChange} on-change, ${r.scheduled} scheduled`))
   .then(() => startWorkAutomations())
   .then(r => console.log(`[WorkAutomations] subscribed to CDC, ${r.active} active`))
   .catch(e => console.warn('[EnterpriseObjectModel] seed failed:', e.message));

@@ -22,6 +22,25 @@ export class CronManager {
     this.scheduleWorkflowExecutor();
     this.scheduleInvoiceNotifications();
     this.scheduleProjectOpsHealthSweep();
+    this.scheduleIntelligenceFieldSweep();
+  }
+
+  /**
+   * Hourly sweep for fields whose refresh policy is SCHEDULED — those whose
+   * inputs drift without the object itself being written, such as a due date
+   * passing or a peer group shifting.
+   */
+  private static scheduleIntelligenceFieldSweep() {
+    cron.schedule('7 * * * *', async () => {
+      try {
+        const { IntelligenceFieldScheduler } = await import('../kangqore-view/eof/IntelligenceFieldScheduler')
+        const r = await IntelligenceFieldScheduler.runScheduled()
+        if (r.fields > 0) console.log(`   -> Intelligence field sweep: ${r.fields} field(s)`)
+      } catch (err) {
+        console.error('❌ Error in Intelligence field sweep:', err);
+      }
+    });
+    console.log('   -> Intelligence field sweep scheduled (Hourly)');
   }
 
   /**
