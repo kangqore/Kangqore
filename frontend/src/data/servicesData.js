@@ -12948,10 +12948,14 @@ export const servicesData = {
     midCta: 'A center full of seats is not a capability.',
     midCtaLabel: 'Book a GCC Assessment',
     closingCta: {
-      title: 'One GCC business case,',
-      highlight: 'modeled at maturity.',
-      body: 'Tell us the capability you are trying to own rather than the headcount you are trying to move. In 30 minutes we will tell you roughly what it costs at year three rather than year one, which locations still work at that number, and whether building a center is the right answer at all — which it sometimes is not.',
-      proofLabel: 'From first call to a costed location shortlist',
+      // Break placed before "a number" rather than after the comma. This
+      // column is 543px against the 693px the same block gets elsewhere, so
+      // splitting at the comma pushed "defend." onto an orphaned third line.
+      // Dropping the comma and carrying "and" up keeps the phrase whole.
+      title: 'Thirty minutes and',
+      highlight: 'a number you can defend.',
+      body: 'Bring the capability you want the center to own. You leave with what it costs at year three rather than year one, which locations still work at that number, and whether a center is the right answer at all.',
+      proofLabel: 'From first call to a year-three cost and a location shortlist',
     },
   },
 
