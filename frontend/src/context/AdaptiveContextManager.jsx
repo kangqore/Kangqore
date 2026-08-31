@@ -10,18 +10,26 @@ export const AdaptiveProvider = ({ children }) => {
   const [warRoomContext, setWarRoomContext] = useState(null);
 
   useEffect(() => {
-    // Connect to the backend socket
-    const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5001', {
-      withCredentials: true,
-    });
+    // War Room is a dashboard feature, but this provider wraps the whole app,
+    // so every public marketing page was opening a socket it can never use.
+    // Only signed-in users need it.
+    const token = localStorage.getItem('token');
+    if (!token) return undefined;
 
-    socket.on('connect', () => {
-      console.log('[AdaptiveContext] Connected to Synapse Mesh');
+    // `VITE_API_URL` is defined nowhere, so this fell back to :5001 — a port
+    // with no server — and retried forever on every page load. Same-origin,
+    // matching lib/socket.js, is the resolution that actually works.
+    const socket = io(import.meta.env.VITE_BACKEND_URL || '', {
+      withCredentials: true,
+      auth: { token },
+      // Bounded: a dead endpoint should give up, not fill the console.
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
     });
 
     // Listen for Visual Intelligence (VIS) shifts
     socket.on('vis:layout_shift', (data) => {
-      console.log('[AdaptiveContext] Received VIS Layout Shift:', data);
       if (data.layoutState === 'WAR_ROOM') {
         setWarRoomContext(data);
         setLayoutState('WAR_ROOM');
