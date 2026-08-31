@@ -37,6 +37,7 @@ export interface WorkItemView {
   /** Inferred, not entered — null when it has not been scored. */
   predictedRisk: number | null
   predictedCompletion: string | null
+  estimatedHours: number | null
   tags: string[]
   createdAt: string
   updatedAt: string
@@ -69,6 +70,7 @@ function flatten(o: any, typeName: string, parentId: string | null = null): Work
     predictedRisk: typeof p.predictedRisk === 'number' ? p.predictedRisk : null,
     predictedCompletion: p.predictedCompletion ?? null,
     tags: Array.isArray(p.tags) ? p.tags : [],
+    estimatedHours: typeof p.estimatedHours === 'number' ? p.estimatedHours : null,
     createdAt: o.createdAt.toISOString(),
     updatedAt: o.updatedAt.toISOString(),
   }
@@ -169,13 +171,22 @@ export const WorkViewService = {
 
     const now = Date.now()
     const buckets = [...byAssignee.entries()].map(([assigneeId, list]) => ({
+      id: assigneeId,
       assigneeId: assigneeId === '__unassigned__' ? null : assigneeId,
+      name: assigneeId === '__unassigned__' ? 'Unassigned' : assigneeId,
+      activeItems: list.length,
       open: list.length,
+      inProgressItems: list.filter(i => i.status === 'IN_PROGRESS').length,
+      blockedItems: list.filter(i => i.status === 'BLOCKED').length,
       overdue: list.filter(i => i.dueDate && new Date(i.dueDate).getTime() < now).length,
       blocked: list.filter(i => i.status === 'BLOCKED').length,
       atRisk: list.filter(i => i.status === 'AT_RISK' || (i.predictedRisk ?? 0) >= 0.5).length,
+      // Summed from the real column. Items without an estimate contribute
+      // nothing rather than a guess, so this is a floor, not a projection.
+      totalEstimatedHours: list.reduce((sum, i) => sum + (Number((i as any).estimatedHours) || 0), 0),
+      estimatedFrom: list.filter(i => Number((i as any).estimatedHours) > 0).length,
       items: list.slice(0, 25),
-    })).sort((a, b) => b.open - a.open)
+    })).sort((a, b) => b.activeItems - a.activeItems)
 
     return {
       buckets,
@@ -293,8 +304,10 @@ export const WorkViewService = {
         const p = (r.properties ?? {}) as any
         return {
           id: r.id,
+          objectId: r.id,
           title: String(p.title ?? 'Untitled'),
           description: p.description ?? null,
+          ownerName: p.owner ?? null,
           type: nameById.get(r.typeId) === 'EnterpriseGoal' ? 'GOAL' : 'OBJECTIVE',
           status: String(p.status ?? 'DRAFT'),
           progress: typeof p.progress === 'number' ? p.progress : 0,
@@ -343,6 +356,7 @@ export const WorkViewService = {
 
         return {
           id: r.id,
+          objectId: r.id,
           name: String(p.title ?? 'Untitled'),
           description: p.description ?? null,
           type: nameById.get(r.typeId),

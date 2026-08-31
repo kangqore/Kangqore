@@ -67,12 +67,13 @@ export function PortfolioView() {
 
   const { data = [], isLoading, isFetching, refetch } = useQuery<WorkPortfolio[]>({
     queryKey: ['work', 'portfolios'],
-    queryFn: () => api.get('/admin/work-os/work/portfolios').then(r => r.data),
+    queryFn: () => api.get('/admin/work-os/work/portfolios').then(r => r.data.portfolios ?? []),
     staleTime: 60_000,
   })
 
-  const active = data.filter(p => p.status === 'ACTIVE').length
-  const avgProgress = data.length ? Math.round(data.reduce((s, p) => s + p.progress, 0) / data.length) : 0
+  // ACTIVE is not one of the twelve states.
+  const active = data.filter(p => p.status === 'IN_PROGRESS').length
+  const avgProgress = data.length ? Math.round(data.reduce((s, p) => s + (p.progress ?? 0), 0) / data.length) : 0
 
   if (isLoading) return <div className="text-sm text-[var(--os-text-2)] py-8 text-center">Loading portfolios…</div>
 
