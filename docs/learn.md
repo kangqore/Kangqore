@@ -1,8 +1,10 @@
 # Learnings
 
-The core learning file of the **Kangqore Closed-Loop Execution System**
-(`.claude/skills/kangqoreexecution/`) and the **Kangqore Completion Protocol**
-(`.claude/skills/kangqorecompletion/`). Both loops' learning steps write here.
+The core learning file of the three Kangqore operating doctrines — the
+**Closed-Loop Execution System** (`.claude/skills/kangqoreexecution/`), the
+**Execution Protocol** (`.claude/skills/kangqoreexecutionmode/`), and the
+**Completion Protocol** (`.claude/skills/kangqorecompletion/`). Every loop's
+learning step writes here.
 
 A mistake should not disappear after it is fixed — it should become organizational
 knowledge. Step 9 of the loop records the learning here; step 10 changes the system
