@@ -12654,10 +12654,79 @@ export const servicesData = {
     // behind hideEngagement on purpose: the four advisory models are authored
     // content, and the flag turns the section off without discarding them.
     hideComparison: true,
-    hideArchitecture: true,
     hidePartnershipModel: true,
     hideToolsStack: true,
     hideEngagement: true,
+
+    // Restored with authored stages rather than the department default, which
+    // renders a generic "4-Layer Stack". Five stages, matching the lifecycle
+    // the capability areas and the closing CTA both describe.
+    architectureEyebrow: 'HOW A ROLLOUT IS STRUCTURED',
+    architectureTitle: 'How It Works.',
+    architectureTitleHighlight: 'Five Stages, One Handover.',
+    architectureLede: 'The sequence is the same whether we are building a center from nothing or taking one over. What changes is where you join it.',
+    architectureNodes: [
+      {
+        title: 'Assess',
+        icon: 'Search',
+        description: 'Establish whether the center should exist, where, and what it should be accountable for — before an entity is registered. The business case is modeled at maturity, because the labor cost difference is widest on the day it is written.',
+        features: [
+          'Business case modeled at year three, not year one',
+          'Location analysis weighted on talent depth',
+          'Capability scope: what the center will own outright',
+          'Regulatory and entity constraints by jurisdiction',
+          'Baseline set for every measure the work is judged on',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'The operating model, agreed before anything is built against it. Decision rights are the part that gets skipped, and the reason centers drift from what they were set up to do.',
+        features: [
+          'Operating model and reporting lines',
+          'Decision rights: what the center settles without escalating',
+          'Governance, risk and compliance framework',
+          'Workforce plan mapped to owned capabilities',
+          'Phased roadmap with named accountabilities',
+        ],
+      },
+      {
+        title: 'Build',
+        icon: 'Network',
+        description: 'Entity, premises, infrastructure and the first cohort. On a zero-capex model this runs on our balance sheet, so the spend does not precede the output by eighteen months.',
+        features: [
+          'Legal entity, registration and statutory setup',
+          'Premises, fit-out and workplace design',
+          'Network, devices, collaboration and zero-trust security',
+          'First-cohort hiring and onboarding',
+          'Employer brand established in the local market',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'Running the center against a service level, and improving it against the baseline taken at assessment. Automation follows process agreement rather than leading it.',
+        features: [
+          'Delivery run to agreed service levels',
+          'Attrition and engagement reported monthly',
+          'Cost per outcome against the opening baseline',
+          'Automation applied after the process is settled',
+          'Technical and process debt burned down, not accrued',
+        ],
+      },
+      {
+        title: 'Hand Over',
+        icon: 'ShieldCheck',
+        description: 'Transfer, carve-out or managed exit. The risk sits entirely here: undocumented process, the people who leave at announcement, and dependencies nobody mapped.',
+        features: [
+          'Knowledge captured before the people holding it leave',
+          'Retention plan for those the center cannot lose',
+          'Continuity checkpoints rather than a cliff edge',
+          'Ownership and IP transfer on agreed terms',
+          'Post-handover support window with an end date',
+        ],
+      },
+    ],
 
     capabilitiesLabel: 'GLOBAL CAPABILITY CENTER SERVICES',
     capabilitiesSectionTitle: 'GCC',
@@ -12855,6 +12924,61 @@ export const servicesData = {
           'Knowledge capture completed before the incumbent leaves',
           'Optimization roadmap sequenced after stabilization',
         ],
+      },
+    ],
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve GCC questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    customFAQs: [
+      {
+        q: 'What is a global capability center?',
+        a: 'A part of your own company that happens to sit in another country.\n\nThat is the whole distinction. A GCC is staffed by your employees, holds your intellectual property, and reports into your structure. It is not a supplier relationship with a different address on it.\n\nWhat has changed is what they are trusted with. The first generation ran defined processes under instruction. The ones that work now own capabilities outright — a product, a platform, a risk function — with the decision rights to match. The difference between those two is not headcount or location. It is whether the center can decide anything without asking.',
+      },
+      {
+        q: 'How is a GCC different from outsourcing?',
+        a: 'Ownership, and what happens to the knowledge.\n\nAn outsourcing arrangement buys execution of a defined scope under a contract. The supplier owns the method, staffs it as they see fit, and keeps what they learn. That is a reasonable trade for work you do not intend to be good at yourself.\n\nA GCC keeps all of it. The people are yours, the process knowledge accumulates in your organization rather than the vendor’s, and the capability is still there when the contract that never existed does not end.\n\nThe honest version of the comparison: outsourcing is cheaper to start and cheaper to stop. A GCC costs more up front and is worth it only where the capability is something you intend to still own in five years. If you cannot name that capability, outsourcing is probably the right answer.',
+      },
+      {
+        q: 'What does a GCC typically own?',
+        a: 'It varies, and the trajectory is more informative than the list.\n\nMost start with technology and IT services, finance and accounting, and customer operations. Data and analytics, procurement, HR and legal follow. The centers that mature move into product engineering, platform ownership and risk — work where being wrong has consequences, which is the real signal that the parent trusts it.\n\nThe question worth asking of your own center is narrower: name one thing it decides without asking the home organization. If the answer is nothing, it is a delivery site rather than a capability center, regardless of what the org chart says.',
+      },
+      {
+        q: 'Why India, and is that still the right answer?',
+        a: 'Usually, and less automatically than five years ago.\n\nIndia has depth that is difficult to replicate — engineering scale, an ecosystem of centers that have already made every mistake available, and enough regulatory experience across banking, healthcare and insurance that compliance is not being invented from scratch. For most enterprises it remains the default and the default is usually right.\n\nWhere it stops being automatic: wage inflation in the established hubs runs ahead of the home market, so a business case built on today’s difference narrows every year. Tier-two Indian cities, Poland, Mexico and the Philippines each win specific cases on cost, time-zone overlap or language.\n\nWe run the location analysis on talent depth for the capability you actually need rather than on average salary. Those two produce different answers more often than the cost model suggests.',
+      },
+      {
+        q: 'What engagement models do you offer?',
+        a: 'Seven, and most enterprises use two of them.\n\nGreenfield build for a center that does not exist. Build-operate-transform-transfer, where we run it and hand it over once it is genuinely stable rather than merely live. Joint venture and partner-led structures. M&A-led integration or separation. Expansion for a center that already works. Collaborative hybrid, where we operate part of it while your capability is built underneath. Carve-out and managed exit.\n\nThe zero-capex option cuts across all of them: we carry the entity, premises, infrastructure and first cohort, and bill against the running center. It exists because the capital lands twelve to eighteen months before any of the benefit does, and that gap is what kills business cases that were otherwise sound.',
+      },
+      {
+        q: 'Can we start small and scale later?',
+        a: 'Yes, and it is usually the better sequence.\n\nA single pod owning one capability end to end teaches you more about whether the model works than fifty seats spread across four functions. It also fails cheaply, which matters, because the first attempt reveals things the business case could not.\n\nWhat has to be decided up front regardless of size is the operating model — what the center owns, who decides what, how commitments are defined. Those are cross-cutting, and negotiating them again at every increment is how a phased rollout becomes a permanent negotiation.\n\nSo: small on scope, complete on governance. The reverse is the common mistake.',
+      },
+      {
+        q: 'Do you do AI-led GCC transformation?',
+        a: 'Yes, and the order matters more than the tooling.\n\nThe work spans readiness assessment, automation, and agentic AI across operations, engineering and back-office functions. What decides the outcome is not which models get used. It is whether the process being automated is one anybody has agreed.\n\nApplied to a settled process, AI removes work that should never have reached a person. Applied to an unsettled one, it encodes the disagreement and then runs it faster — which is the most expensive failure in this category, because the output looks authoritative and people act on it.\n\nSo we qualify use cases against the data and the decision rights underneath them first, and we will say when a process is not ready. That answer is less satisfying than a pilot, and it is usually correct.',
+      },
+      {
+        q: 'How do you design the operating model?',
+        a: 'Starting from what the center will own, not from how many people it will have.\n\nHeadcount is an output of scope, and designing in the other direction produces a center that is fully staffed and accountable for nothing. So the sequence is: name the capabilities, establish the decision rights that make owning them possible, then size it.\n\nThe part most often skipped is escalation. A center with no authority escalates everything, which reproduces the home organization’s bottleneck at a distance and adds a time zone to it. Writing down what the center settles alone is unglamorous and it is the single highest-leverage hour of the design.\n\nGovernance, risk and compliance are designed in the same pass rather than added afterwards, because retrofitting them into a running center costs several times what including them does.',
+      },
+      {
+        q: 'Which industries do you support?',
+        a: 'Every industry we would name, which is why the answer is worth less than the question behind it.\n\nWhat actually varies between sectors is not whether a capability center works. It is which functions are permitted to leave the home country at all. In banking and insurance, some risk and control roles cannot; in healthcare and life sciences, patient and trial data carries residency rules that decide the location before any cost model does; in defense-adjacent manufacturing, export control does the same.\n\nSo the sector question we ask early is narrow: which of the capabilities you want the center to own are legally able to sit where you are proposing to put it. That answer reshapes the location shortlist more often than salary data does, and finding it out in month seven is expensive.\n\nWhere the constraint is genuinely the hard part of your case, we bring in a specialist rather than improvise around it.',
+      },
+      {
+        q: 'What does a GCC engagement cost?',
+        a: 'The assessment is fixed price. What follows it depends on three things nobody knows on a first call.\n\nWhether an entity already exists in the target country, because incorporation, statutory setup and compliance are close to a fixed cost whether the center ends up at ten people or five hundred. What the center will own, since a single pod running one product and a multi-function build are not the same undertaking priced differently \u2014 they are different undertakings. And who carries the launch capital, because on a zero-capex model the commercial shape changes entirely: cost follows the running center rather than arriving twelve to eighteen months ahead of it.\n\nThe figure worth arguing about is not the setup cost anyway. It is the fully loaded cost per outcome at year three, after wage inflation has done its work and the center is at steady state. That is the number a cost review eventually tests, and it is the one the business case is built on.',
+      },
+      {
+        q: 'Who owns the center after you leave?',
+        a: 'Your team, and the transfer point should be a set of conditions rather than a date.\n\nOn a build-operate-transform-transfer engagement that means agreeing at the start what stable actually means: delivery holding its service levels through a full quarter without us intervening, a center leader and a management layer appointed from inside, attrition at a level the center absorbs rather than survives, and process knowledge that demonstrably sits in more than one head.\n\nHanding over on a calendar date irrespective of those is how a transfer becomes a slow failure nobody can point at \u2014 the date is met, the capability is not, and it takes two years before anyone says so out loud. We would rather move the date and say why.',
+      },
+      {
+        q: 'How do we get started?',
+        a: 'With the capability, not the headcount.\n\nThe first conversation we find useful is about what you are trying to own rather than what you are trying to move. Those produce different centers, and the second one is the one that gets closed in a cost review three years later.\n\nAfter that: a fixed-price assessment covering business case at maturity, location shortlist, capability scope and regulatory constraints. It is scoped so you can stop after it and keep the output, including the version where the finding is that a center is not the right answer and something smaller is.\n\nIf you already have a center and the question is why it is not delivering, the same assessment runs against the existing one instead.',
       },
     ],
 

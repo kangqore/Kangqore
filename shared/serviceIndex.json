@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T03:06:57.984Z",
+  "generatedAt": "2026-08-31T03:44:50.929Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1579,7 +1579,20 @@
         "Existing GCC — Scale and Transform",
         "Existing GCC — Restructure and Exit"
       ],
-      "faqs": [],
+      "faqs": [
+        {
+          "q": "What is a global capability center?",
+          "a": "A part of your own company that happens to sit in another country. That is the whole distinction. A GCC is staffed by your employees, holds your intellectual property, and reports into your structure. It is not a supplier relationship with a different address on it. What has changed is what they are trusted with. The first generation ran defined processes under instruction. The ones that work now own capabilities outright — a product, a platform, a risk function — with the decision rights to match. The difference between those two is not headcount or location. It is whether the center can decide anything without asking."
+        },
+        {
+          "q": "How is a GCC different from outsourcing?",
+          "a": "Ownership, and what happens to the knowledge. An outsourcing arrangement buys execution of a defined scope under a contract. The supplier owns the method, staffs it as they see fit, and keeps what they learn. That is a reasonable trade for work you do not intend to be good at yourself. A GCC keeps all of it. The people are yours, the process knowledge accumulates in your organization rather than the vendor’s, and the capability is still there when the contract that never existed does not end. The honest version of the comparison: outsourcing is cheaper to start and cheaper to stop. A GCC costs more up front and is worth it only where the capability is something you intend to still own in five years. If you cannot name that capability, outsourcing is probably the right answer."
+        },
+        {
+          "q": "What does a GCC typically own?",
+          "a": "It varies, and the trajectory is more informative than the list. Most start with technology and IT services, finance and accounting, and customer operations. Data and analytics, procurement, HR and legal follow. The centers that mature move into product engineering, platform ownership and risk — work where being wrong has consequences, which is the real signal that the parent trusts it. The question worth asking of your own center is narrower: name one thing it decides without asking the home organization. If the answer is nothing, it is a delivery site rather than a capability center, regardless of what the org chart says."
+        }
+      ],
       "method": [],
       "dataHandling": []
     },
