@@ -7,8 +7,9 @@
 
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Play, Loader2, AlertTriangle, Power, ChevronRight, Sparkles } from 'lucide-react'
+import { Play, Loader2, AlertTriangle, Power, ChevronRight, Sparkles, Plus } from 'lucide-react'
 import { api } from '@lib/api'
+import { AddFieldModal } from '../components/AddFieldModal'
 
 const T1 = 'var(--os-text-1)'
 const T2 = 'var(--os-text-2)'
@@ -26,6 +27,7 @@ export function FieldsView() {
   const qc = useQueryClient()
   const [result, setResult] = useState<RunResult | null>(null)
   const [openRuns, setOpenRuns] = useState<string | null>(null)
+  const [adding, setAdding] = useState(false)
 
   const { data, isLoading } = useQuery({
     queryKey: ['fields'],
@@ -50,11 +52,21 @@ export function FieldsView() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, justifyContent: 'space-between' }}>
       <p style={{ margin: 0, fontSize: 13, color: T2, maxWidth: 680, lineHeight: 1.6 }}>
         A field computes a value onto every object of its type, and records what it rests on.
         <strong style={{ color: T1 }}> A field that cannot compute writes nothing</strong> — the run is
         recorded as skipped with a reason, and the object keeps whatever it had.
       </p>
+        <button
+          onClick={() => setAdding(true)}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 7, background: '#2564ea', color: '#fff',
+            border: 'none', borderRadius: 8, padding: '9px 14px', fontSize: 12.5, fontWeight: 550,
+            cursor: 'pointer', whiteSpace: 'nowrap',
+          }}
+        ><Plus size={14} /> Add field</button>
+      </div>
 
       {result && (
         <div style={{
@@ -154,6 +166,8 @@ export function FieldsView() {
           </div>
         </div>
       ))}
+
+      {adding && <AddFieldModal onClose={() => setAdding(false)} />}
     </div>
   )
 }
