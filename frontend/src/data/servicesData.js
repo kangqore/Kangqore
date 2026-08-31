@@ -12619,7 +12619,7 @@ export const servicesData = {
     name: 'Global Capability Centers (GCC)',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
-    shortDescription: 'GCC advisory, setup, talent, managed operations, carve-out and exit',
+    shortDescription: 'GCC advisory, setup, talent, AI-led operations, carve-out and exit',
     fullDescription: 'Build, scale, restructure or exit a global capability center — strategy and business case, entity and location, hiring and retention, run and transform, and the handover when ownership moves.',
     fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[820px]',
     keyFeatures: ['Zero-capex launch', 'Talent pods', 'BOTT', 'Scale & transform', 'Carve-out & exit'],
@@ -12634,14 +12634,14 @@ export const servicesData = {
       'BOTT', 'Scale & Transform', 'Carve-Out', 'Managed Exit',
     ],
 
-    whatIsEyebrow: 'What our global capability center services cover',
-    whatIsTitle: 'A GCC Is Easier',
-    whatIsTitleLine2: 'to Open',
+    whatIsEyebrow: 'Where AI actually creates advantage inside a GCC',
+    whatIsTitle: 'AI in a GCC Produces',
+    whatIsTitleLine2: 'Activity Quickly.',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'Than It Is to Keep.',
-    whatIsPara2: 'The business case is usually built on a labor cost difference, and that difference is at its widest on the day it is written. Wage inflation in every established GCC market runs ahead of the home market, so a model that only works at year-one rates is a model with an expiry date on it. What survives is a center that owns outcomes rather than seats.',
-    whatIsPara3: 'The second problem arrives in year two. The launch team leaves, attrition finds its real level, regulation moves, and the center quietly drifts from what it was built for to whatever it was last asked to do. Nobody notices until a cost review asks what it is actually for, and by then the answer takes a year to rebuild.',
-    whatIsPara4: 'We work across the whole span: whether the center should exist and where, building it with or without your capital, running it against a service level, scaling or restructuring it, and handing it over when ownership moves. The advisory is available on its own, including the version where the finding is that you should not build one.',
+    whatIsHighlight: 'Advantage Takes Longer.',
+    whatIsPara2: 'Access to AI stopped being the constraint some time ago. A capability center can license the same models as its parent, and most already have. What decides whether any of it turns into something is narrower and considerably harder \u2014 whether the center understands how the business actually runs well enough to tell a useful automation from a convincing demonstration.',
+    whatIsPara3: 'Four things set the ceiling, and none of them are technical. What the parent business has genuinely prioritized, rather than what appears in the strategy deck. What the center is allowed to decide on its own, without escalating. Which skills are in the building as opposed to on the org chart. And whether the center holds a transformation mandate or only permission to experiment. Where those four disagree, AI produces activity \u2014 pilots, proofs of concept, something that worked on demo day \u2014 rather than advantage.',
+    whatIsPara4: 'Our position is that the AI work follows the operating model rather than leading it. We qualify use cases against the data and the decision rights underneath them, build the ones that survive that test, and say so plainly where a process is not settled enough to automate. Applied to a workflow nobody has agreed, AI encodes the disagreement and then runs it faster, which is the most expensive failure mode in this category and the hardest to unwind afterwards.',
 
     // The two synthesized case cards are opted out rather than deleted:
     // getParityService fills an absent outcomeCard with an invented client
