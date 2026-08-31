@@ -12619,12 +12619,242 @@ export const servicesData = {
     name: 'Global Capability Centers (GCC)',
     departmentSlug: 'platforms',
     bannerBrand: 'ALIS™',
-    shortDescription: 'Establish and optimize global capability centers',
-    fullDescription: 'Build and scale global capability centers for operational excellence.',
-    keyFeatures: ['GCC setup', 'Operating model', 'Talent management', 'Process excellence', 'Technology enablement'],
-    relatedServiceSlugs: ['talent-organization', 'unified-services-management'],
+    shortDescription: 'GCC advisory, setup, talent, managed operations, carve-out and exit',
+    fullDescription: 'Build, scale, restructure or exit a global capability center — strategy and business case, entity and location, hiring and retention, run and transform, and the handover when ownership moves.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[820px]',
+    keyFeatures: ['Zero-capex launch', 'Talent pods', 'BOTT', 'Scale & transform', 'Carve-out & exit'],
+    relatedServiceSlugs: ['managed-services', 'talent-organization', 'unified-services-management'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
+
+    heroTitle: 'Global Capability Center\nServices, Build to Exit',
+    heroBadge: 'Advise. Build. Scale. Hand over.',
+    heroStripItems: [
+      'Strategy & Business Case', 'Entity & Location', 'Zero-Capex Launch', 'Talent Pods',
+      'BOTT', 'Scale & Transform', 'Carve-Out', 'Managed Exit',
+    ],
+
+    whatIsEyebrow: 'What our global capability center services cover',
+    whatIsTitle: 'A GCC Is Easier',
+    whatIsTitleLine2: 'to Open',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'Than It Is to Keep.',
+    whatIsPara2: 'The business case is usually built on a labor cost difference, and that difference is at its widest on the day it is written. Wage inflation in every established GCC market runs ahead of the home market, so a model that only works at year-one rates is a model with an expiry date on it. What survives is a center that owns outcomes rather than seats.',
+    whatIsPara3: 'The second problem arrives in year two. The launch team leaves, attrition finds its real level, regulation moves, and the center quietly drifts from what it was built for to whatever it was last asked to do. Nobody notices until a cost review asks what it is actually for, and by then the answer takes a year to rebuild.',
+    whatIsPara4: 'We work across the whole span: whether the center should exist and where, building it with or without your capital, running it against a service level, scaling or restructuring it, and handing it over when ownership moves. The advisory is available on its own, including the version where the finding is that you should not build one.',
+
+    // The two synthesized case cards are opted out rather than deleted:
+    // getParityService fills an absent outcomeCard with an invented client
+    // asserting perfect reliability, so deletion alone would keep them.
+    hideOutcomeCards: true,
+
+    capabilitiesLabel: 'GLOBAL CAPABILITY CENTER SERVICES',
+    capabilitiesSectionTitle: 'GCC',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Seven ways this gets bought, across the three states a center is ever in: not built yet, running and needing to change, or being handed to someone else.',
+    capabilityAreas: [
+      {
+        title: 'Zero-Capex Launch',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The capital lands long before any of the benefit does. We carry it and bill against the running center instead.',
+        items: [
+          'Entity and incorporation: registration, statutory setup and filings carried, not invoiced up front',
+          'Premises and fit-out: property secured and built out without a capital line on your side',
+          'Infrastructure provisioning: network, devices, collaboration and security stood up before day one',
+          'First-cohort hiring: recruitment and onboarding absorbed ahead of the first billable month',
+          'Consumption-based commercials: cost follows delivered output rather than preceding it',
+          'Conversion path to owned: a defined route to taking the center onto your own balance sheet',
+          'Exit terms agreed at the start: what transfers, at what price, on what notice',
+        ],
+      },
+      {
+        title: 'Nearshore AI, Cloud and Security Pods',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Standing pods that already have a lead, a working agreement and a delivery cadence. The first eight weeks happened somewhere else.',
+        items: [
+          'Cloud platform pods: landing zones, migration and platform engineering',
+          'Data and analytics pods: pipelines, modeling and reporting foundations',
+          'AI and applied ML pods: use case qualification through to production support',
+          'Security pods: identity, posture management and detection engineering',
+          'Named pod lead: a single accountable person, not a rotating coordinator',
+          'Established working agreement: ceremonies, definition of done and escalation already set',
+          'Time-zone overlap defined up front: how many hours actually overlap, agreed before signature',
+        ],
+      },
+      {
+        title: 'Talent-as-a-Service Pods',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Skill-specific teams you can start and stop, priced against the measure you care about rather than seats filled.',
+        items: [
+          'Platform engineering pods: build and run the internal platform other teams ship on',
+          'Migration and modernization pods: application and data movement with a rollback position',
+            'Product engineering pods: full delivery teams rather than augmented individuals',
+          'AI development pods: model, prompt and evaluation work with a release process',
+          'KPI-based commercials: paid against time-to-market, quality or cost, whichever you choose',
+          'Start and stop terms: notice periods that assume demand changes, because it does',
+          'Continuity across changes: the pod persists when individuals rotate',
+        ],
+      },
+      {
+        title: 'Post-Launch Growth and Management',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A center is easier to open than to keep. This is the work of holding the model together after the launch team has gone.',
+        items: [
+          'Capability development: growing what the center owns rather than only who it employs',
+          'Attrition management: measured monthly against a baseline, not reviewed annually',
+          'Regulatory and compliance affairs: keeping pace with rules that move after go-live',
+          'Operating rhythm: the governance cadence that stops drift going unnoticed',
+          'Scope reconciliation: checking annually what the center does against what it was built for',
+          'Leadership bench: successors identified before they are needed',
+          'Cost defensibility: the numbers that answer a cost review before it is called',
+        ],
+      },
+      {
+        title: 'New GCC — Build and Accelerate',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Five routes into a center that does not exist yet, from a blueprint through to a joint venture or an acquisition.',
+        items: [
+          'GCC strategy and blueprint: vision, scope and a business case modeled at maturity rather than at launch, with location, operating model, governance and a phased investment plan',
+          'Greenfield setup end to end: entity, compliance, real estate, talent, technology and the stabilization period after go-live',
+          'Build-operate-transform-transfer: we build it, run it, mature it, and transfer ownership once it is genuinely stable rather than merely live',
+          'Joint venture and partner-led models: JV structuring, governance and compliance, with the talent and transition capability underneath it',
+          'M&A-led enablement: integrating or separating centers after an acquisition or carve-out, aligning operating model, people and technology',
+        ],
+      },
+      {
+        title: 'Existing GCC — Scale and Transform',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Three routes for a center that exists and has to change, without stopping what it currently delivers.',
+        items: [
+          'Expansion and scale-up: growing across functions, skills and locations on delivery models that have already survived the first scale step',
+          'Transformation and optimization: operating model redesign, cost and productivity work, automation applied after the process is agreed, and governance that holds',
+          'Collaborative hybrid model: we jointly operate and transform selected functions while your own capability is built underneath, so speed now does not cost self-sufficiency later',
+        ],
+      },
+      {
+        title: 'Existing GCC — Restructure and Exit',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Three routes for a center that is being separated, monetized or wound down. All of the risk here is in the handover.',
+        items: [
+          'Carve-out and transition support: workforce, process, risk and compliance managed through separation, with knowledge captured before the people holding it leave',
+          'Monetization and value realization: cost optimization, asset rationalization and operating model realignment to convert built capability into a return',
+          'Transition and managed exit: we take operational responsibility, stabilize delivery and run a disciplined handover with continuity checkpoints rather than a cliff edge',
+        ],
+      },
+    ],
+
+    solutionsCarousel: {
+      eyebrow: 'GCC MICROSERVICES',
+      title: 'Ten services,',
+      titleHighlight: 'bought on their own or together.',
+      subtitle: 'A center needs all of these and rarely needs all of them at once. Each is available separately, which matters most in the first year when the shape of the center is still moving.',
+      items: [
+        {
+          title: 'Talent acquisition',
+          desc: 'Workforce planning through to onboarding, including the background checks and hiring operations nobody budgets for. AI-assisted sourcing shortens time-to-hire; agreeing the role definition before the requisition opens shortens it more.',
+        },
+        {
+          title: 'Corporate functions',
+          desc: 'Finance, accounting, tax, legal, regulatory reporting and entity governance run as a service rather than staffed as a department. Most centers do not need a full back office in year one, and building one anyway is where the cost case starts to slip.',
+        },
+        {
+          title: 'HR and wellbeing',
+          desc: 'Policy, payroll, benefits, workforce planning, learning and engagement. The wellbeing part is not decoration: attrition in a new center is usually a management problem presenting as a people problem, and it is measurable well before it is visible.',
+        },
+        {
+          title: 'Marketing and employer brand',
+          desc: 'Employer branding, local marketing, communications and engagement programs. In a market where your name means nothing, employer brand is a hiring cost — it decides whether a good engineer returns the recruiter call or does not.',
+        },
+        {
+          title: 'Infrastructure',
+          desc: 'Networks, security, devices, collaboration tooling and IT operations, built cloud-first and zero-trust from the start. Retrofitting either onto a running center costs several times what designing it in does.',
+          href: '/services/managed-infrastructure-services',
+          linkLabel: 'Infrastructure services',
+        },
+        {
+          title: 'Operations',
+          desc: 'Procurement, vendors, facilities, transport, utilities and site services. Unglamorous, and the first thing to break at scale — a center that cannot get people to the building on time has an operations problem, not a talent one.',
+        },
+        {
+          title: 'Leadership',
+          desc: 'Leadership hiring, coaching, organization design and performance management. The strongest single predictor of whether a center becomes a capability or stays a cost line is whether it has a leader with real authority, appointed early.',
+          href: '/services/talent-organization',
+          linkLabel: 'Talent and org design',
+        },
+        {
+          title: 'Workspace',
+          desc: 'Design, build-out, audits, facility management and workplace experience, planned for hybrid rather than for a floor plan drawn in 2015. What people will travel for has changed, and the office has to earn the commute.',
+        },
+        {
+          title: 'AI and transformation',
+          desc: 'Automation, intelligent workflows, analytics-led decisioning and agentic AI across operations, HR, finance and delivery. Applied to a process nobody has agreed, it encodes the disagreement faster — so this follows the operating model rather than leading it.',
+        },
+        {
+          title: 'GCC advisory',
+          desc: 'Market assessment, setup strategy, operating model design, transformation planning, risk management and value realization. Available entirely on its own, including the version where the finding is that you should not build a center at all.',
+        },
+      ],
+    },
+
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'GCC advisory,',
+    engagementHeadingHighlight: 'four ways to start.',
+    engagementLede: 'Most conversations start in one of four places: the center does not exist, it exists and cannot hire, it exists and costs too much, or somebody else built it and it is now yours.',
+    servicePackages: [
+      {
+        name: 'GCC Setup',
+        description: 'Whether the center should exist, where it should sit and what it should be accountable for — answered before an entity is registered. The business case gets modeled at maturity, because the labor cost difference is at its widest on the day it is written.',
+        deliverables: [
+          'Feasibility assessment and business case modeled at maturity',
+          'Location analysis weighted on talent depth, not only cost',
+          'Legal entity, registration and regulatory setup',
+          'Operating model, governance and reporting lines',
+          'Phased onboarding roadmap with named accountabilities',
+        ],
+      },
+      {
+        name: 'Talent Transformation',
+        description: 'Hiring is the visible problem and retention is the expensive one. A center that fills two hundred seats and loses a third of them inside a year has bought a recruitment function rather than a capability.',
+        deliverables: [
+          'Workforce plan mapped to the capabilities the center owns',
+          'Accelerated hiring across the required technology stacks',
+          'Upskilling paths that give people somewhere to go',
+          'Retention and engagement reported monthly against a baseline',
+          'Leadership bench identified before it is needed',
+        ],
+      },
+      {
+        name: 'Run, Optimize and Transform',
+        description: 'Running the center against a service level and improving it against a baseline captured before we started. Automation is worth having where the process is agreed and worth nothing where it is not, so the order matters more than the tooling.',
+        deliverables: [
+          'Operations run to agreed service levels',
+          'Governance, risk and compliance under one framework',
+          'Automation applied after process agreement, not before it',
+          'Cost and productivity reported against the opening baseline',
+          'Improvement backlog with named owners and dates',
+        ],
+      },
+      {
+        name: 'Carve-Out and Takeover',
+        description: 'Taking on a center somebody else built, or separating one from a business being sold. The risk sits almost entirely in the handover: undocumented process, the people who leave at announcement, and dependencies nobody mapped.',
+        deliverables: [
+          'Due diligence across process, people and dependencies',
+          'Retention plan for the people the center cannot lose',
+          'Transition plan with continuity checkpoints, not a cliff edge',
+          'Knowledge capture completed before the incumbent leaves',
+          'Optimization roadmap sequenced after stabilization',
+        ],
+      },
+    ],
+
+    midCta: 'A center full of seats is not a capability.',
+    midCtaLabel: 'Book a GCC Assessment',
+    closingCta: {
+      title: 'One GCC business case,',
+      highlight: 'modeled at maturity.',
+      body: 'Tell us the capability you are trying to own rather than the headcount you are trying to move. In 30 minutes we will tell you roughly what it costs at year three rather than year one, which locations still work at that number, and whether building a center is the right answer at all — which it sometimes is not.',
+      proofLabel: 'From first call to a costed location shortlist',
+    },
   },
 
   'talent-organization': {
