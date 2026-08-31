@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@lib/api'
+import { ObjectDetailPanel } from '../components/ObjectDetailPanel'
 import { Plus, RefreshCw, ChevronUp, ChevronDown } from 'lucide-react'
 import { CreateWorkItemModal } from '../components/CreateWorkItemModal'
 import { type WorkItem, STATUS_COLOR, PRIORITY_COLOR, PRIORITY_DOT, TYPE_ICON, STATUS_COLUMNS } from '../types'
@@ -37,6 +38,7 @@ export function TableView({ projectId, portfolioId }: Props) {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [editCell, setEditCell] = useState<{ id: string; field: string } | null>(null)
+  const [openObject, setOpenObject] = useState<{ id: string; title: string } | null>(null)
 
   const { data: rawItems = [], isLoading, isFetching, refetch } = useQuery({
     queryKey: ['work', 'items', projectId, portfolioId, search, statusFilter],
@@ -157,7 +159,9 @@ export function TableView({ projectId, portfolioId }: Props) {
 
                   {/* Title */}
                   <td className="px-3 py-2 max-w-[280px]">
-                    <span className={cn('font-medium text-[var(--os-text-1)]', item.status === 'COMPLETED' && 'line-through text-[var(--os-text-3)]')}>
+                    <span
+                      onClick={() => setOpenObject({ id: item.id, title: item.title })}
+                      className={cn('font-medium text-[var(--os-text-1)] cursor-pointer hover:underline', item.status === 'COMPLETED' && 'line-through text-[var(--os-text-3)]')}>
                       {item.title}
                     </span>
                   </td>
@@ -222,6 +226,14 @@ export function TableView({ projectId, portfolioId }: Props) {
       </div>
 
       {showCreate && <CreateWorkItemModal onClose={() => setShowCreate(false)} projectId={projectId} portfolioId={portfolioId} />}
+
+      {openObject && (
+        <ObjectDetailPanel
+          objectId={openObject.id}
+          title={openObject.title}
+          onClose={() => setOpenObject(null)}
+        />
+      )}
     </div>
   )
 }

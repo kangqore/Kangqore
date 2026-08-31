@@ -37,11 +37,14 @@ export type FieldKind =
  * runs through AgentMissionEngine's approval gate.
  */
 export const TIERS: Record<number, string> = {
+  // Tiers describe how much AUTHORITY a field's output carries, not which
+  // technique produced it — a score and a label sit at the same tier because
+  // they warrant the same scrutiny, however differently they are computed.
   0: 'Formatting — no inference',
-  1: 'Summarisation — restates what is already there',
-  2: 'Classification — assigns a label from a fixed set',
-  3: 'Recommendation — advisory only',
-  4: 'Decision support — advisory, requires stated evidence',
+  1: 'Descriptive — restates what is already recorded',
+  2: 'Analytical — derives a value or label from existing data',
+  3: 'Advisory — recommends an action; never decides',
+  4: 'Decision support — informs a decision, and must state its evidence',
   5: 'External action — not available as a field; use a governed mission',
 }
 
