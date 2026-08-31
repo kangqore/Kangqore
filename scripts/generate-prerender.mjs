@@ -234,10 +234,10 @@ ${(svc.comparisonTable.rows || []).map((r) => `          <tr><th scope="row">${e
     ${svc.architectureLede ? `<p>${esc(svc.architectureLede)}</p>` : ''}
 ${svc.architectureNodes.map((n) => `      <section>
         <h3>${esc(n.title)}</h3>
-        ${n.description ? `<p>${esc(n.description)}</p>` : ''}
+        ${n.description ? `<p>${esc(n.description)}</p>` : ''}${(n.features || []).length ? `
         <ul>
-${(n.features || []).map((f) => `          <li>${esc(f)}</li>`).join('\n')}
-        </ul>
+${n.features.map((f) => `          <li>${esc(f)}</li>`).join('\n')}
+        </ul>` : ''}
       </section>`).join('\n')}`
     : '';
 

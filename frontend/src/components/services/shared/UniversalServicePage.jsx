@@ -4766,27 +4766,32 @@ const featureMicros   = service.featureMicros
                           {node.description}
                         </p>
 
-                        <div className="mt-4 pt-3 border-t border-current/10">
-                          {/* Per-service label. "Key Capabilities" is right when
-                              the list is capabilities and wrong when it is
-                              something else — habits, stages, controls. Set
-                              architectureFeatureLabel to '' to drop the label
-                              entirely; omit it and the original string renders,
-                              so the other 61 pages are unchanged. */}
-                          {service.architectureFeatureLabel !== '' && (
-                            <span className="block text-[11px] font-bold tracking-widest uppercase mb-2 opacity-60">
-                              {service.architectureFeatureLabel || 'Key Capabilities'}
-                            </span>
-                          )}
-                          <ul className="flex flex-col gap-y-1.5">
-                            {node.features.map((f, i) => (
-                              <li key={i} className="flex items-center gap-2 text-[12px] font-bold leading-tight">
-                                <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 flex-shrink-0" />
-                                <span>{f}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                        {/* Whole block, divider included, only where the node
+                            has features. A node carrying none used to render an
+                            empty bordered box under its description. */}
+                        {node.features?.length > 0 && (
+                          <div className="mt-4 pt-3 border-t border-current/10">
+                            {/* Per-service label. "Key Capabilities" is right
+                                when the list is capabilities and wrong when it
+                                is something else — habits, stages, controls.
+                                Set architectureFeatureLabel to '' to drop the
+                                label; omit it and the original string renders,
+                                so the other 61 pages are unchanged. */}
+                            {service.architectureFeatureLabel !== '' && (
+                              <span className="block text-[11px] font-bold tracking-widest uppercase mb-2 opacity-60">
+                                {service.architectureFeatureLabel || 'Key Capabilities'}
+                              </span>
+                            )}
+                            <ul className="flex flex-col gap-y-1.5">
+                              {node.features.map((f, i) => (
+                                <li key={i} className="flex items-center gap-2 text-[12px] font-bold leading-tight">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 flex-shrink-0" />
+                                  <span>{f}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

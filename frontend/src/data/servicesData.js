@@ -12663,70 +12663,32 @@ export const servicesData = {
     architectureEyebrow: 'HOW THE OPERATING CULTURE IS SET',
     architectureTitle: 'How We Design',
     architectureTitleHighlight: 'the GCC Mindset?',
-    // These lists are working habits, not capabilities — the capability areas
-    // above own that word. Empty string drops the label rather than renaming it.
-    architectureFeatureLabel: '',
     architectureLede: 'A center inherits the working habits of whoever set it up. These are the five we set deliberately, in the first ninety days, because they are far cheaper to establish than to correct.',
     architectureNodes: [
       {
         title: 'Flat Governance',
         icon: 'Network',
         description: 'Governance designed to be short rather than complete. Every layer between the person doing the work and the person who can approve it costs a day, and across eight time zones it costs two.',
-        features: [
-          'Approval paths capped at a named number of hops',
-          'Decision rights written down, not inferred from seniority',
-          'Escalation routes naming people rather than functions',
-          'Standing forums only where a decision is actually made',
-          'Reporting lines that do not cross the time zone twice',
-        ],
       },
       {
         title: 'Agile Rituals, Fitted',
         icon: 'Activity',
         description: 'Ceremonies matched to how the center actually works rather than to a framework certificate. A team shipping weekly and a team shipping quarterly do not need the same meetings, and one cadence imposed on both produces attendance rather than delivery.',
-        features: [
-          'Cadence set from the release rhythm, not the playbook',
-          'Ceremonies dropped where they produce no decision',
-          'Definition of done agreed with the home organization',
-          'Overlap hours protected for what genuinely needs them',
-          'Ritual review at ninety days, when the first version is wrong',
-        ],
       },
       {
         title: 'Squad-Based Execution',
         icon: 'Zap',
         description: 'Squads owning a slice end to end, seeded with people who have run the model before. Culture does not transfer through documentation. It transfers through the first two or three teams getting it right and everyone else copying them.',
-        features: [
-          'Squads owning a capability rather than a queue',
-          'Seed members who have worked this way elsewhere',
-          'Backlog owned in the center, not handed down',
-          'Demo cadence visible to the parent business',
-          'Second cohort grown from the first, not hired cold',
-        ],
       },
       {
         title: 'Behavioral Onboarding',
         icon: 'Layers',
         description: 'Onboarding that covers what the business does and who it serves, not only where the systems are. A joiner who understands the customer makes better calls in week three than one who has memorized the architecture.',
-        features: [
-          'Domain and customer context before tooling',
-          'Early time with the people the center serves',
-          'Shadowing built into the first month',
-          'Judgment rehearsed against real past decisions',
-          'Ramp measured on contribution, not on course completion',
-        ],
       },
       {
         title: 'KPI Ownership From Day One',
         icon: 'Target',
         description: 'Every pod and talent-as-a-service team owns numbers it can actually move, agreed before it starts. A team measured on something outside its control learns to explain rather than to improve.',
-        features: [
-          'One named owner per measure, from the first week',
-          'Measures held inside the team’s own control',
-          'Baselines captured before the team starts work',
-          'Reported monthly, whether or not they flatter',
-          'Commercial terms tied to the same numbers',
-        ],
       },
     ],
     capabilitiesLabel: 'GLOBAL CAPABILITY CENTER SERVICES',
