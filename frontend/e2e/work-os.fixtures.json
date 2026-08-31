@@ -1,0 +1,567 @@
+{
+ "work/items": [
+  {
+   "id": "cmsauac9k006j9fihirumk6eo",
+   "objectId": "cmsauac9k006j9fihirumk6eo",
+   "title": "LinkedUp \u2014 Professional Network App",
+   "description": "Professional networking mobile app: skill-based matching, job discovery, portfolio showcasing, community features.",
+   "type": "Project",
+   "status": "IN_PROGRESS",
+   "priority": "MEDIUM",
+   "progress": 60,
+   "startDate": null,
+   "dueDate": "2026-10-15T00:00:00.000Z",
+   "assigneeId": null,
+   "parentId": null,
+   "predictedRisk": 0,
+   "predictedCompletion": "2026-09-19T16:35:25.377Z",
+   "tags": [],
+   "estimatedHours": null,
+   "createdAt": "2026-08-01T20:44:08.216Z",
+   "updatedAt": "2026-08-31T08:35:25.379Z"
+  },
+  {
+   "id": "cmsauac9j006h9fihyvubrl41",
+   "objectId": "cmsauac9j006h9fihyvubrl41",
+   "title": "Glamer \u2014 Beauty & Wellness App",
+   "description": "Consumer app connecting users to beauty, wellness, and grooming services \u2014 booking, reviews, loyalty rewards.",
+   "type": "Project",
+   "status": "IN_PROGRESS",
+   "priority": "MEDIUM",
+   "progress": 40,
+   "startDate": null,
+   "dueDate": "2026-11-30T00:00:00.000Z",
+   "assigneeId": null,
+   "parentId": null,
+   "predictedRisk": 0,
+   "predictedCompletion": "2026-10-13T20:35:25.376Z",
+   "tags": [],
+   "estimatedHours": null,
+   "createdAt": "2026-08-01T20:44:08.216Z",
+   "updatedAt": "2026-08-31T08:35:25.378Z"
+  }
+ ],
+ "work/board": {
+  "items": {
+   "DRAFT": [],
+   "QUEUED": [],
+   "READY": [],
+   "IN_PROGRESS": [
+    {
+     "id": "cmsauac9k006j9fihirumk6eo",
+     "objectId": "cmsauac9k006j9fihirumk6eo",
+     "title": "LinkedUp \u2014 Professional Network App",
+     "description": "Professional networking mobile app: skill-based matching, job discovery, portfolio showcasing, community features.",
+     "type": "Project",
+     "status": "IN_PROGRESS",
+     "priority": "MEDIUM",
+     "progress": 60,
+     "startDate": null,
+     "dueDate": "2026-10-15T00:00:00.000Z",
+     "assigneeId": null,
+     "parentId": null,
+     "predictedRisk": 0,
+     "predictedCompletion": "2026-09-19T16:35:25.377Z",
+     "tags": [],
+     "estimatedHours": null,
+     "createdAt": "2026-08-01T20:44:08.216Z",
+     "updatedAt": "2026-08-31T08:35:25.379Z"
+    },
+    {
+     "id": "cmsauac9j006h9fihyvubrl41",
+     "objectId": "cmsauac9j006h9fihyvubrl41",
+     "title": "Glamer \u2014 Beauty & Wellness App",
+     "description": "Consumer app connecting users to beauty, wellness, and grooming services \u2014 booking, reviews, loyalty rewards.",
+     "type": "Project",
+     "status": "IN_PROGRESS",
+     "priority": "MEDIUM",
+     "progress": 40,
+     "startDate": null,
+     "dueDate": "2026-11-30T00:00:00.000Z",
+     "assigneeId": null,
+     "parentId": null,
+     "predictedRisk": 0,
+     "predictedCompletion": "2026-10-13T20:35:25.376Z",
+     "tags": [],
+     "estimatedHours": null,
+     "createdAt": "2026-08-01T20:44:08.216Z",
+     "updatedAt": "2026-08-31T08:35:25.378Z"
+    }
+   ],
+   "BLOCKED": [],
+   "AT_RISK": [],
+   "AWAITING_APPROVAL": [],
+   "AWAITING_CUSTOMER": [],
+   "UNDER_REVIEW": [],
+   "ESCALATED": [],
+   "COMPLETED": [
+    {
+     "id": "cmr3chjp1000rk7fsx1dgcvgs",
+     "objectId": "cmr3chjp1000rk7fsx1dgcvgs",
+     "title": "Dr. Priya Rao \u2014 Compliance Review",
+     "description": null,
+     "type": "Project",
+     "status": "COMPLETED",
+     "priority": "MEDIUM",
+     "progress": 0,
+     "startDate": null,
+     "dueDate": null,
+     "assigneeId": null,
+     "parentId": null,
+     "predictedRisk": 0,
+     "predictedCompletion": null,
+     "tags": [],
+     "estimatedHours": null,
+     "createdAt": "2026-07-02T10:11:45.782Z",
+     "updatedAt": "2026-08-31T08:35:25.352Z"
+    }
+   ],
+   "CANCELLED": []
+  },
+  "groups": [
+   {
+    "id": "DRAFT",
+    "label": "Draft",
+    "color": "#94a3b8",
+    "items": []
+   },
+   {
+    "id": "QUEUED",
+    "label": "Queued",
+    "color": "#64748b",
+    "items": []
+   }
+  ],
+  "total": 17,
+  "states": 12
+ },
+ "work/timeline": {
+  "items": [
+   {
+    "id": "cmsauac9d00679fihugcn8bt5",
+    "objectId": "cmsauac9d00679fihugcn8bt5",
+    "title": "Geeks Mindspace \u2014 Website & Online Presence",
+    "description": "Professional website: library services, event calendar, online catalogue preview, membership enquiry portal.",
+    "type": "Project",
+    "status": "IN_PROGRESS",
+    "priority": "MEDIUM",
+    "progress": 80,
+    "startDate": null,
+    "dueDate": "2026-09-09T20:00:32.520Z",
+    "assigneeId": null,
+    "parentId": null,
+    "predictedRisk": 0,
+    "predictedCompletion": "2026-09-07T14:35:25.366Z",
+    "tags": [],
+    "estimatedHours": null,
+    "createdAt": "2026-08-01T20:44:08.209Z",
+    "updatedAt": "2026-08-31T08:35:25.368Z"
+   },
+   {
+    "id": "cmsauac97005z9fihj3d29bys",
+    "objectId": "cmsauac97005z9fihj3d29bys",
+    "title": "Geeks IT Services \u2014 Website & Brand Refresh",
+    "description": "Full website redesign with modern UI, brand identity system, responsive layout, and CMS integration.",
+    "type": "Project",
+    "status": "IN_PROGRESS",
+    "priority": "MEDIUM",
+    "progress": 60,
+    "startDate": null,
+    "dueDate": "2026-09-28T03:47:41.811Z",
+    "assigneeId": null,
+    "parentId": null,
+    "predictedRisk": 0,
+    "predictedCompletion": "2026-09-19T16:35:25.358Z",
+    "tags": [],
+    "estimatedHours": null,
+    "createdAt": "2026-08-01T20:44:08.204Z",
+    "updatedAt": "2026-08-31T08:35:25.360Z"
+   }
+  ],
+  "from": "2026-08-01T08:42:31.877Z",
+  "to": "2026-11-29T08:42:31.877Z",
+  "undated": 11
+ },
+ "work/workload": {
+  "buckets": [
+   {
+    "id": "__unassigned__",
+    "assigneeId": null,
+    "name": "Unassigned",
+    "activeItems": 16,
+    "open": 16,
+    "inProgressItems": 16,
+    "blockedItems": 0,
+    "overdue": 1,
+    "blocked": 0,
+    "atRisk": 1,
+    "totalEstimatedHours": 0,
+    "estimatedFrom": 0,
+    "items": [
+     {
+      "id": "cmsauac9k006j9fihirumk6eo",
+      "objectId": "cmsauac9k006j9fihirumk6eo",
+      "title": "LinkedUp \u2014 Professional Network App",
+      "description": "Professional networking mobile app: skill-based matching, job discovery, portfolio showcasing, community features.",
+      "type": "Project",
+      "status": "IN_PROGRESS",
+      "priority": "MEDIUM",
+      "progress": 60,
+      "startDate": null,
+      "dueDate": "2026-10-15T00:00:00.000Z",
+      "assigneeId": null,
+      "parentId": null,
+      "predictedRisk": 0,
+      "predictedCompletion": "2026-09-19T16:35:25.377Z",
+      "tags": [],
+      "estimatedHours": null,
+      "createdAt": "2026-08-01T20:44:08.216Z",
+      "updatedAt": "2026-08-31T08:35:25.379Z"
+     },
+     {
+      "id": "cmsauac9j006h9fihyvubrl41",
+      "objectId": "cmsauac9j006h9fihyvubrl41",
+      "title": "Glamer \u2014 Beauty & Wellness App",
+      "description": "Consumer app connecting users to beauty, wellness, and grooming services \u2014 booking, reviews, loyalty rewards.",
+      "type": "Project",
+      "status": "IN_PROGRESS",
+      "priority": "MEDIUM",
+      "progress": 40,
+      "startDate": null,
+      "dueDate": "2026-11-30T00:00:00.000Z",
+      "assigneeId": null,
+      "parentId": null,
+      "predictedRisk": 0,
+      "predictedCompletion": "2026-10-13T20:35:25.376Z",
+      "tags": [],
+      "estimatedHours": null,
+      "createdAt": "2026-08-01T20:44:08.216Z",
+      "updatedAt": "2026-08-31T08:35:25.378Z"
+     }
+    ]
+   }
+  ],
+  "totalOpen": 16,
+  "unassigned": 16
+ },
+ "work/goals": {
+  "goals": [
+   {
+    "id": "cmtfpv9gb0001nj7cx2y1enzb",
+    "objectId": "cmtfpv9gb0001nj7cx2y1enzb",
+    "title": "Deliver committed client work",
+    "description": "Every active project delivers on time and on budget.",
+    "ownerName": null,
+    "type": "GOAL",
+    "status": "IN_PROGRESS",
+    "progress": 0,
+    "horizon": "YEAR",
+    "dueDate": null,
+    "parentId": null,
+    "predictedRisk": null
+   },
+   {
+    "id": "cmtfpv9hb001vnj7c3pgyhxn8",
+    "objectId": "cmtfpv9hb001vnj7c3pgyhxn8",
+    "title": "Protect recurring revenue",
+    "description": "Retain the contracted ARR already on the books.",
+    "ownerName": null,
+    "type": "GOAL",
+    "status": "IN_PROGRESS",
+    "progress": 0,
+    "horizon": "YEAR",
+    "dueDate": null,
+    "parentId": null,
+    "predictedRisk": null
+   }
+  ]
+ },
+ "work/portfolios": {
+  "portfolios": []
+ },
+ "work/executive": {
+  "summary": {
+   "total": 17,
+   "done": 1,
+   "inProgress": 16,
+   "blocked": 0,
+   "atRisk": 1,
+   "escalated": 0,
+   "overdue": 1,
+   "completionRate": 6,
+   "scored": 17
+  },
+  "byStatus": {
+   "IN_PROGRESS": 16,
+   "COMPLETED": 1
+  },
+  "byPriority": {
+   "MEDIUM": 17
+  },
+  "byType": {
+   "Project": 17
+  },
+  "atRiskItems": [
+   {
+    "id": "cmsauac9g006b9fihfhnoa0sk",
+    "objectId": "cmsauac9g006b9fihfhnoa0sk",
+    "title": "One 0' Eight \u2014 Website",
+    "description": "Brand website with portfolio showcase, service pages, contact flow, and performance-optimised delivery.",
+    "type": "Project",
+    "status": "IN_PROGRESS",
+    "priority": "MEDIUM",
+    "progress": 85,
+    "startDate": null,
+    "dueDate": "2026-07-31T00:00:00.000Z",
+    "assigneeId": null,
+    "parentId": null,
+    "predictedRisk": 0.55,
+    "predictedCompletion": "2026-09-05T11:24:50.075Z",
+    "tags": [],
+    "estimatedHours": null,
+    "createdAt": "2026-08-01T20:44:08.213Z",
+    "updatedAt": "2026-08-31T08:35:25.372Z"
+   }
+  ],
+  "overdueItems": [
+   {
+    "id": "cmsauac9g006b9fihfhnoa0sk",
+    "objectId": "cmsauac9g006b9fihfhnoa0sk",
+    "title": "One 0' Eight \u2014 Website",
+    "description": "Brand website with portfolio showcase, service pages, contact flow, and performance-optimised delivery.",
+    "type": "Project",
+    "status": "IN_PROGRESS",
+    "priority": "MEDIUM",
+    "progress": 85,
+    "startDate": null,
+    "dueDate": "2026-07-31T00:00:00.000Z",
+    "assigneeId": null,
+    "parentId": null,
+    "predictedRisk": 0.55,
+    "predictedCompletion": "2026-09-05T11:24:50.075Z",
+    "tags": [],
+    "estimatedHours": null,
+    "createdAt": "2026-08-01T20:44:08.213Z",
+    "updatedAt": "2026-08-31T08:35:25.372Z"
+   }
+  ]
+ },
+ "work/dependency-graph": {
+  "nodes": [
+   {
+    "id": "cmsauac9k006j9fihirumk6eo",
+    "title": "LinkedUp \u2014 Professional Network App",
+    "type": "Project",
+    "status": "IN_PROGRESS",
+    "priority": "MEDIUM",
+    "progress": 60,
+    "blockedBy": []
+   },
+   {
+    "id": "cmsauac9j006h9fihyvubrl41",
+    "title": "Glamer \u2014 Beauty & Wellness App",
+    "type": "Project",
+    "status": "IN_PROGRESS",
+    "priority": "MEDIUM",
+    "progress": 40,
+    "blockedBy": []
+   }
+  ],
+  "edges": [],
+  "edgesOutsideView": 0
+ },
+ "work/automations": [],
+ "templates": {
+  "templates": [
+   {
+    "id": "cmtg9w3m7000zysvkg5g477na",
+    "key": "client-onboarding",
+    "name": "Client Onboarding",
+    "description": "Takes a signed client from contract to steady state. Creates the workstreams and tasks the delivery team actually runs, so progress is measured rather than asserted.",
+    "category": "Commercial",
+    "icon": "UserPlus",
+    "color": "#0ea5e9",
+    "rootTypeName": "Project",
+    "creates": 15,
+    "links": 20,
+    "timesApplied": 1
+   },
+   {
+    "id": "cmtg9w3ma0011ysvk99q3nzr9",
+    "key": "project-delivery",
+    "name": "Project Delivery",
+    "description": "The standard shape of a client engagement: discovery, build, launch, with the evidence needed to close it out.",
+    "category": "Delivery",
+    "icon": "FolderKanban",
+    "color": "#3b82f6",
+    "rootTypeName": "Project",
+    "creates": 13,
+    "links": 17,
+    "timesApplied": 1
+   }
+  ]
+ },
+ "fields": {
+  "fields": [
+   {
+    "id": "cmtgfcmuj005yynz9lrdo3hj5",
+    "key": "case-classification",
+    "name": "Category",
+    "description": "Classifies incoming work so it can be routed without a human reading every one.",
+    "typeName": "Case",
+    "compute": "GENERATIVE",
+    "kind": "CLASSIFY",
+    "inputs": [
+     "title",
+     "description"
+    ],
+    "relatedTypes": [],
+    "instruction": "Classify this case.",
+    "options": [
+     "BUG",
+     "REQUEST"
+    ],
+    "outputField": "category",
+    "refresh": "MANUAL",
+    "governanceTier": 2,
+    "enabled": false,
+    "isSystem": true,
+    "createdBy": null,
+    "createdAt": "2026-08-30T23:12:20.396Z",
+    "updatedAt": "2026-08-31T08:35:25.389Z",
+    "_count": {
+     "runs": 0
+    }
+   },
+   {
+    "id": "cmtgfcmui005xynz9tz2mvvbb",
+    "key": "customer-sentiment",
+    "name": "Sentiment",
+    "description": "Tone of the record and its recent interactions.",
+    "typeName": "Customer",
+    "compute": "GENERATIVE",
+    "kind": "SENTIMENT",
+    "inputs": [
+     "title",
+     "health"
+    ],
+    "relatedTypes": [],
+    "instruction": "Judge the overall sentiment of this customer relationship.",
+    "options": [
+     "POSITIVE",
+     "NEUTRAL"
+    ],
+    "outputField": "sentiment",
+    "refresh": "MANUAL",
+    "governanceTier": 2,
+    "enabled": false,
+    "isSystem": true,
+    "createdBy": null,
+    "createdAt": "2026-08-30T23:12:20.395Z",
+    "updatedAt": "2026-08-31T08:35:25.389Z",
+    "_count": {
+     "runs": 0
+    }
+   }
+  ],
+  "tiers": {
+   "0": "Formatting \u2014 no inference",
+   "1": "Descriptive \u2014 restates what is already recorded",
+   "2": "Analytical \u2014 derives a value or label from existing data",
+   "3": "Advisory \u2014 recommends an action; never decides",
+   "4": "Decision support \u2014 informs a decision, and must state its evidence",
+   "5": "External action \u2014 not available as a field; use a governed mission"
+  }
+ },
+ "ingest/candidates": {
+  "candidates": []
+ },
+ "dashboards/executive": {
+  "dashboard": {
+   "key": "executive",
+   "name": "Executive",
+   "description": "What is happening, why, what it means in money, and what to do about it.",
+   "columns": 12
+  },
+  "panels": [
+   {
+    "key": "summary",
+    "title": "Work",
+    "question": "WHAT",
+    "render": "stat",
+    "span": 12,
+    "data": {
+     "total": 17,
+     "done": 1,
+     "inProgress": 16,
+     "blocked": 0,
+     "atRisk": 1,
+     "escalated": 0,
+     "overdue": 1,
+     "completionRate": 6,
+     "scored": 17
+    }
+   },
+   {
+    "key": "status",
+    "title": "By state",
+    "question": "WHAT",
+    "render": "breakdown",
+    "span": 6,
+    "data": {
+     "entries": [
+      [
+       "IN_PROGRESS",
+       16
+      ],
+      [
+       "COMPLETED",
+       1
+      ]
+     ],
+     "total": 17
+    }
+   },
+   {
+    "key": "coverage",
+    "title": "Model coverage",
+    "question": "WHAT",
+    "render": "breakdown",
+    "span": 6,
+    "data": {
+     "declared": 22,
+     "populated": 5,
+     "objects": 33,
+     "byType": [
+      {
+       "name": "Project",
+       "count": 17
+      },
+      {
+       "name": "Customer",
+       "count": 6
+      },
+      {
+       "name": "Contract",
+       "count": 6
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "assessment/targets": {
+  "targets": [
+   {
+    "id": "cmtfpv9gb0001nj7cx2y1enzb",
+    "title": "Deliver committed client work",
+    "typeName": "EnterpriseGoal"
+   },
+   {
+    "id": "cmtfpv9ge0003nj7ctug3x9vz",
+    "title": "Committed work delivered",
+    "typeName": "Outcome"
+   }
+  ]
+ }
+}

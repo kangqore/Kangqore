@@ -295,14 +295,17 @@ Unblocks when someone can state what a Process holds that a template does not â€
 a running instance with state, most likely, which would make it an *instance of*
 a template rather than a sibling of one.
 
-### No committed smoke test over the Work OS screens (P2)
+### Work OS smoke-test fixtures can drift (P3)
 
-Four pages crashed while every probe and gate stayed green, because nothing
-loads a page. The sweep that found them is a throwaway Playwright script written
-per session. A committed smoke test that opens each Work OS tab and asserts no
-error boundary would have caught all four, and would catch the next one.
+`frontend/e2e/work-os.spec.ts` now opens every Work OS screen, but it serves
+responses from `work-os.fixtures.json`, captured from the live backend. If an
+endpoint's shape changes and the fixtures are not recaptured, the spec keeps
+passing against a shape that no longer exists.
 
-See `docs/learn.md`, 2026-08-31 â€” "Endpoint 200s are not page verification".
+Mitigated rather than solved: `api-contract-e2e` asserts the backend still
+returns these shapes, so a change there fails the backend probe. The gap is a
+change to both sides that leaves the fixtures stale. Recapture with the
+snippet in the spec's header comment whenever a Work OS endpoint changes.
 
 
 ---

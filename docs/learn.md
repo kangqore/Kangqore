@@ -112,6 +112,14 @@ works.
 **Learning:** frontend work is verified by loading the page. A browser sweep of
 every tab in a module takes two minutes and found four crashes that thirteen
 probes and every gate missed.
-**System change:** none yet — the sweep is currently a manual Playwright script
-per session. A committed smoke test over the Work OS tabs would be the real fix.
+**System change:** added `frontend/e2e/work-os.spec.ts` — every Work OS tab plus
+Outcome Risk, asserting no uncaught error and no error boundary, running in the
+existing `os-smoke` CI job.
+
+**Follow-on learning:** the first version of that test was worthless, and I only
+found out by deliberately reintroducing a crash and watching it stay green.
+Without a backend the pages sit in a loading state, so the data path never runs.
+It now serves captured fixtures, and was re-verified by reproducing the original
+failure — "items.map is not a function" — before being committed. **A test that
+has not been seen to fail has not been tested.**
 
