@@ -26,6 +26,7 @@ import { EvidenceLedger } from './EvidenceLedger'
 import { IntelligenceFieldEngine } from './IntelligenceFieldEngine'
 import { IngestionEngine } from './IngestionEngine'
 import { FieldComposer } from './FieldComposer'
+import { DashboardService } from './DashboardService'
 import { AgentMissionEngine } from '../kimmp/agents/AgentMissionEngine'
 import { ENTERPRISE_OBJECTS } from './EnterpriseObjectModel'
 import { prisma } from '../../lib/prisma'
@@ -110,6 +111,36 @@ router.post('/views/compile', ...guard, async (req, res) => {
     const result = await ObjectQueryCompiler.run(intent.query, actorOf(req))
     return res.json({ ...intent, result })
   } catch (e) { return fail(res, e) }
+})
+
+// ── Dashboards ───────────────────────────────────────────────────────────────
+
+router.get('/dashboards', ...guard, async (req, res) => {
+  try { res.json({ dashboards: await DashboardService.list(req.query.workspace as string | undefined), sources: DashboardService.sources() }) }
+  catch (e) { fail(res, e) }
+})
+
+router.get('/dashboards/:key', ...guard, async (req, res) => {
+  try { res.json(await DashboardService.resolve(req.params.key)) } catch (e) { fail(res, e, 404) }
+})
+
+router.post('/dashboards', ...guard, async (req, res) => {
+  try { res.status(201).json(await DashboardService.create({ ...req.body, ownerId: (req as any).user?.id })) }
+  catch (e) { fail(res, e) }
+})
+
+router.post('/dashboards/:key/panels', ...guard, async (req, res) => {
+  try { res.status(201).json(await DashboardService.addPanel(req.params.key, req.body)) }
+  catch (e) { fail(res, e) }
+})
+
+router.delete('/dashboards/panels/:id', ...guard, async (req, res) => {
+  try { await DashboardService.removePanel(req.params.id); res.json({ ok: true }) } catch (e) { fail(res, e) }
+})
+
+router.post('/dashboards/:key/reorder', ...guard, async (req, res) => {
+  try { res.json(await DashboardService.reorder(req.params.key, req.body?.panelIds ?? [])) }
+  catch (e) { fail(res, e) }
 })
 
 // ── Contextual thread ────────────────────────────────────────────────────────

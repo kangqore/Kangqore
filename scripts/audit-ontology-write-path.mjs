@@ -42,6 +42,7 @@ const ALLOWLIST = new Map([
   ['kangqore-view/eof/scripts/thread-ledger-fields-e2e.ts', 'probe: tears down its own objects, comments, runs and documents'],
   ['kangqore-view/eof/scripts/field-refresh-e2e.ts', 'probe: creates and tears down one task to exercise the refresh policy'],
   ['kangqore-view/eof/scripts/field-composer-e2e.ts', 'probe: creates and tears down its own tasks to exercise compose and preview'],
+  ['kangqore-view/eof/scripts/dashboard-e2e.ts', 'probe: creates and tears down a goal to force an empty panel'],
   ['kangqore-view/eof/scripts/query-compiler-e2e.ts', 'probe: seeds and tears down its own throwaway type to test the compiler'],
 
   // ── Known debt, tracked in docs/DEFERRED.md ────────────────────────────────

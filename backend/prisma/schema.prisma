@@ -9708,6 +9708,67 @@ model IngestionCandidate {
   @@map("ingestion_candidates")
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Dashboards — configurable, because a widget you cannot add is a code change.
+//
+// There were 97 hardcoded widget components behind a compile-time registry, so
+// adding or reordering one meant a redeploy. The layout shape here follows
+// packs/professional-services/dashboards/mission-control-config.json, which was
+// already the declarative format in the repo and was consumed by nothing.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Dashboard {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  name        String
+  description String?  @db.Text
+  /// KEOS workspace this belongs to, where it belongs to one.
+  workspace   String?
+
+  /// Grid columns the panels lay out against.
+  columns     Int      @default(12)
+
+  ownerId     String?
+  isSystem    Boolean  @default(false)
+  isDefault   Boolean  @default(false)
+
+  panels      DashboardPanel[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([workspace])
+  @@map("dashboards")
+}
+
+/// One panel. `source` names what produces its data; nothing is stored here
+/// except the question being asked, so a panel cannot drift from the truth.
+model DashboardPanel {
+  id          String   @id @default(cuid())
+  dashboardId String
+  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+
+  key         String
+  title       String
+  /// Which of the four questions this panel answers: WHAT | WHY | SO_WHAT | NOW_WHAT
+  question    String   @default("WHAT")
+  /// Data source key, resolved by DashboardService against real services.
+  source      String
+  /// Source-specific arguments — typeName, targetId, a window in days.
+  params      Json     @default("{}")
+
+  /// stat | list | breakdown | timeline | exposure
+  render      String   @default("stat")
+  span        Int      @default(3)
+  order       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+
+  @@unique([dashboardId, key])
+  @@index([dashboardId, order])
+  @@map("dashboard_panels")
+}
+
 /// A playbook that MATERIALISES work, not a saved view.
 ///
 /// Board templates copy a display config; this creates real OntologyObjects and
