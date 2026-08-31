@@ -693,9 +693,9 @@ export const serviceSEO = {
     url: '/services/talent-organization',
   },
   'supply-chain': {
-    title: 'Supply Chain — Platforms | Kangqore',
-    description: 'Supply chain transformation — strategy, planning and forecasting, logistics optimization, visibility, and sustainability for resilient operations.',
-    keywords: 'supply chain transformation, supply chain strategy, demand forecasting, logistics optimization',
+    title: 'Supply Chain Consulting & Planning | Kangqore',
+    description: 'Supply chain consulting: business case, planning platform selection, demand and supply planning implementation, execution systems and managed operations.',
+    keywords: 'supply chain consulting, supply chain planning, planning platform selection, demand planning, supply planning, S&OP, integrated business planning, Blue Yonder, o9, Kinaxis, SAP IBP, Oracle SCM, warehouse management, transport management, forecast accuracy, supply chain master data',
     url: '/services/supply-chain',
   },
   'unified-services-management': {

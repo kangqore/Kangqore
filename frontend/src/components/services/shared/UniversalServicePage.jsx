@@ -2777,6 +2777,92 @@ const featureMicros   = service.featureMicros
                     <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
                   </svg>
                 </div>
+              ) : service.slug === 'supply-chain' ? (
+                /* ── The engine and what it runs on ──
+                   Replaces the shared agentic default, which put AGENTIC
+                   ORCHESTRATOR and AUTONOMOUS COMMIT above the fold on a
+                   planning page. The argument is the page's own: the planning
+                   engine is fine, the four inputs underneath it are estimates
+                   nobody has revisited, and the output is a confident wrong
+                   answer arriving faster than the spreadsheet it replaced.
+
+                   The five stages match servicePackages and capabilityAreas.
+                   The band underneath names the four measures the FAQ commits
+                   to, each of which a planner can pull from their own system.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="A planning engine runs on lead times, bills of material, calendars and demand history; where those are unverified estimates the plan is confidently wrong. The lifecycle runs assess, select, verify, implement and operate, measured on forecast accuracy at an agreed level, inventory against service level, planner time on exceptions, and system override rate" tabIndex={0}>
+                <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                  <title>Why planning tools return confident wrong answers</title>
+                  <desc>A planning platform is an engine running on four inputs: lead times, bills of material, calendars and demand history. Where those are estimates nobody has revisited since the last implementation, the engine returns an answer built on them faster than the spreadsheet it replaced. Verifying the parameters is the gate before configuration. The lifecycle runs assess, select, verify, implement and operate, and is measured on forecast accuracy at an agreed level and horizon, inventory against service level, the share of planner time spent on exceptions, and the rate at which planners override the system.</desc>
+
+                  <defs>
+                    <linearGradient id="sc-spine" gradientUnits="userSpaceOnUse" x1="26" y1="286" x2="514" y2="286">
+                      <stop offset="0" stopColor="#2564ea" />
+                      <stop offset="1" stopColor="#4ab6d4" />
+                    </linearGradient>
+                    <linearGradient id="sc-stage" gradientUnits="userSpaceOnUse" x1="0" y1="228" x2="0" y2="280">
+                      <stop offset="0" stopColor="#131d31" />
+                      <stop offset="1" stopColor="#0a0f1a" />
+                    </linearGradient>
+                    <marker id="sc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                      <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                    </marker>
+                    <marker id="sc-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                      <path d="M0,0 L10,5 L0,10 z" fill="#f59e0b" />
+                    </marker>
+                  </defs>
+
+                  {/* ── What the engine runs on ── */}
+                  <text x="26" y="30" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#f59e0b">ESTIMATES NOBODY REVISITED</text>
+                  <g fontFamily="monospace" textAnchor="middle">
+                    <rect x="26"  y="42" width="112" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                    <text x="82"  y="63" fontSize="12" fill="white" fillOpacity="0.8">LEAD TIMES</text>
+                    <rect x="148" y="42" width="112" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                    <text x="204" y="63" fontSize="12" fill="white" fillOpacity="0.8">BILLS OF MAT.</text>
+                    <rect x="270" y="42" width="112" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                    <text x="326" y="63" fontSize="12" fill="white" fillOpacity="0.8">CALENDARS</text>
+                    <rect x="392" y="42" width="122" height="34" rx="7" fill="#171208" stroke="#f59e0b" strokeOpacity="0.35" />
+                    <text x="453" y="63" fontSize="12" fill="white" fillOpacity="0.8">DEMAND HISTORY</text>
+                    <path d="M 82 80 L 258 106"  stroke="#f59e0b" strokeOpacity="0.5" strokeWidth="1.4" markerEnd="url(#sc-arrow-amber)" />
+                    <path d="M 204 80 L 264 104" stroke="#f59e0b" strokeOpacity="0.5" strokeWidth="1.4" markerEnd="url(#sc-arrow-amber)" />
+                    <path d="M 326 80 L 276 104" stroke="#f59e0b" strokeOpacity="0.5" strokeWidth="1.4" markerEnd="url(#sc-arrow-amber)" />
+                    <path d="M 453 80 L 282 106" stroke="#f59e0b" strokeOpacity="0.5" strokeWidth="1.4" markerEnd="url(#sc-arrow-amber)" />
+                  </g>
+
+                  {/* ── The engine ── */}
+                  <rect x="150" y="112" width="240" height="40" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.16" />
+                  <text x="270" y="137" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.2" fill="white" fillOpacity="0.85">THE PLANNING ENGINE</text>
+                  <path d="M 270 154 L 270 174" stroke="#f59e0b" strokeOpacity="0.55" strokeWidth="1.4" markerEnd="url(#sc-arrow-amber)" />
+                  <text x="270" y="190" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="#f59e0b" fillOpacity="0.95">a confident answer, faster than the spreadsheet</text>
+
+                  {/* ── The gate ── */}
+                  <rect x="26" y="204" width="488" height="38" rx="9" fill="#0a1220" stroke="#2564ea" strokeOpacity="0.5" />
+                  <text x="270" y="228" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.2" fill="#4ab6d4">VERIFY THE PARAMETERS BEFORE CONFIGURING ANYTHING</text>
+
+                  {/* ── The lifecycle ── */}
+                  <line x1="26" y1="296" x2="514" y2="296" stroke="url(#sc-spine)" strokeWidth="2" markerEnd="url(#sc-arrow)" />
+                  <g fontFamily="monospace" textAnchor="middle">
+                    <rect x="26"  y="262" width="88" height="30" rx="7" fill="url(#sc-stage)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="70"  y="281" fontSize="12" fill="white" fillOpacity="0.85">ASSESS</text>
+                    <rect x="126" y="262" width="88" height="30" rx="7" fill="url(#sc-stage)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="170" y="281" fontSize="12" fill="white" fillOpacity="0.85">SELECT</text>
+                    <rect x="226" y="262" width="88" height="30" rx="7" fill="url(#sc-stage)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="270" y="281" fontSize="12" fill="white" fillOpacity="0.85">VERIFY</text>
+                    <rect x="326" y="262" width="98" height="30" rx="7" fill="url(#sc-stage)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="375" y="281" fontSize="12" fill="white" fillOpacity="0.85">IMPLEMENT</text>
+                    <rect x="436" y="262" width="78" height="30" rx="7" fill="url(#sc-stage)" stroke="#4ab6d4" strokeOpacity="0.5" />
+                    <text x="475" y="281" fontSize="12" fill="white" fillOpacity="0.85">OPERATE</text>
+                  </g>
+
+                  {/* ── What it is measured on ── */}
+                  <rect x="26" y="392" width="488" height="44" rx="9" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.14" />
+                  <text x="270" y="412" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">forecast accuracy at an agreed level · inventory vs service</text>
+                  <text x="270" y="428" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">planner time on exceptions · system override rate</text>
+                </svg>
+                </div>
               ) : service.slug === 'salesforce' ? (
                 /* ── What a decade of changes leaves behind ──
                    Replaces the shared agentic default, which put AGENTIC

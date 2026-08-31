@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T04:26:18.905Z",
+  "generatedAt": "2026-08-31T06:37:04.676Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1661,9 +1661,30 @@
       "url": "/services/supply-chain",
       "name": "Supply Chain",
       "department": "Platforms",
-      "description": "Supply chain transformation — strategy, planning and forecasting, logistics optimization, visibility, and sustainability for resilient operations.",
-      "capabilities": [],
-      "faqs": [],
+      "description": "Supply chain consulting: business case, planning platform selection, demand and supply planning implementation, execution systems and managed operations.",
+      "capabilities": [
+        "Strategy & Business Case",
+        "Platform Selection",
+        "Planning Implementation",
+        "Execution Systems",
+        "Data Foundation",
+        "Visibility & Control Tower",
+        "Managed Operations"
+      ],
+      "faqs": [
+        {
+          "q": "What does supply chain consulting actually cover?",
+          "a": "Four distinct pieces of work, sold separately, and most buyers need two of them. Assessment and business case: what the current process does, what the data can support, and what a change is worth. Platform selection: which tool fits, run against your process rather than a feature matrix. Implementation: building planning or execution on the tool that was chosen. Managed operations: running the result once it is live. What sits in front of all four is the data foundation. A planning platform is an engine running on lead times, calendars, bills of material and demand history. Where those are wrong, every layer above them is wrong with more confidence."
+        },
+        {
+          "q": "Do you resell any supply chain planning platform?",
+          "a": "No, and in this category it matters more than in most. We hold no reseller agreement and take no margin on Blue Yonder, o9, Kinaxis, SAP, Oracle or anyone else in this market. So a selection that concludes you should configure what you already own is a conclusion we are free to reach. This is worth pressing on any firm running your evaluation. Most large integrators hold a formal partnership tier with two or three of the vendors likely to be on your shortlist, with volume commitments attached — while describing the selection as unbiased and objective. Both things can be published on the same page, and frequently are. The advice may still be sound; it is not neutral, and you should price that in."
+        },
+        {
+          "q": "Our planners have gone back to Excel. Why?",
+          "a": "Almost always because the system gave an answer they could not defend, and they were still accountable for the outcome. That traces to one of three things. The parameters are wrong — lead times that were estimates at go-live and were never corrected against actual receipts. The segmentation is wrong, so a slow-moving spare is being forecast with the same method as a fast-moving line. Or the exceptions are wrong, and the planner is drowning in alerts that do not distinguish a real problem from a rounding difference. None of the three is fixed by a new platform, and all three follow the new platform across if you buy one. Diagnosing which it is takes days, not months, and it is the cheapest work in this category."
+        }
+      ],
       "method": [],
       "dataHandling": []
     },
