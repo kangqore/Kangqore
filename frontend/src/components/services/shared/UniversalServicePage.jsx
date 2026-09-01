@@ -9,7 +9,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Rocket, Zap, Target, Layers, Search,
-  Cpu, Radar, ArrowRight, ChevronRight,
+  Cpu, Radar, ArrowRight, ChevronRight, ChevronLeft,
   TrendingUp, Users, BrainCircuit,
   ChevronDown, Activity, Shield,
   Globe, BarChart3, Network, Settings,
@@ -1525,9 +1525,33 @@ const featureMicros   = service.featureMicros
   const [openFaq,          setOpenFaq]          = useState(null);
   const [isFaqExpanded,    setIsFaqExpanded]    = useState(false);
   const [activeCapability, setActiveCapability] = useState(0);
+  const [activeArchNode,   setActiveArchNode]   = useState(0);
+  const [archOffset,       setArchOffset]       = useState(0);
+  const [isArchPaused,     setIsArchPaused]     = useState(false);
   const [expandedCaps,     setExpandedCaps]     = useState({});
   // Data-boundary blocks: none open on load, active only while hovered/focused.
   const [openBoundary,     setOpenBoundary]     = useState(null);
+
+  // ── Architecture Automated Loop (Advances by 3 cards per batch) ─────────
+  useEffect(() => {
+    setArchOffset(0);
+    setActiveArchNode(0);
+  }, [service.slug]);
+
+  useEffect(() => {
+    const totalArch = service.architectureNodes?.length || 0;
+    if (totalArch <= 3 || isArchPaused) return;
+
+    const timer = setInterval(() => {
+      setArchOffset(prev => {
+        const next = (prev + 3) % totalArch;
+        setActiveArchNode(next);
+        return next;
+      });
+    }, 5500);
+
+    return () => clearInterval(timer);
+  }, [service.architectureNodes, service.slug, isArchPaused]);
 
   // ── Scroll animations ─────────────────────────────────────────────────────
   const [defRef,   defVisible]   = useScrollAnimation({ once: true, threshold: 0.1 });
@@ -5065,122 +5089,107 @@ const featureMicros   = service.featureMicros
           resolves an absent `architectureNodes` to the department default, so
           the page swaps in a generic 4-Layer Stack rather than hiding
           anything. Defaults to showing, so the other 61 pages are unchanged. */}
-      {!service.hideArchitecture && service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && service.slug !== 'agentic-ai' && (
-        <section id="svc-architecture" className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      {!service.hideArchitecture && service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && service.slug !== 'agentic-ai' && (() => {
+        const archNodes = service.architectureNodes || [];
+        const totalArch = archNodes.length;
+        const visibleArchIndices = totalArch <= 3
+          ? archNodes.map((_, i) => i)
+          : [0, 1, 2].map(k => (archOffset + k) % totalArch);
 
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
-              <div>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
-                  {/* "EXECUTION LOOP" is agentic vocabulary, and it was
-                      hardcoded onto every service using this section — including
-                      pages about perception and reasoning, which do not execute
-                      anything. Opt-in overrides; unset services render as before. */}
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.architectureEyebrow || 'ARCHITECTURE & EXECUTION LOOP'}</span>
-                </div>
-                <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                  {service.architectureTitle || 'How It Works.'}<br />
-                  <span className="bg-brand-gradient bg-clip-text text-transparent">
-                    {service.architectureTitleHighlight
-                      || (service.architectureNodes.length === 5 ? 'The 5-Stage Autonomous Execution Loop.' : `The ${service.architectureNodes.length}-Layer Stack.`)}
-                  </span>
-                </h2>
-              </div>
-              <p className="text-white/50 text-sm font-medium leading-relaxed max-w-xs lg:text-right">
-                {service.architectureLede || 'Every deployment runs on a governed, modular architecture built for enterprise scale.'}
-              </p>
-            </div>
+        return (
+          <section id="svc-architecture" className="py-24 md:py-32" style={{ backgroundColor: '#000000' }}>
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 
-            <div className={`grid grid-cols-1 sm:grid-cols-2 ${service.architectureNodes.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-6`}>
-              {service.architectureNodes.map((node, idx) => {
-                const NodeIcon = JOURNEY_ICON_MAP[node.icon] || Target;
-                const stageFallback = DEFAULT_ARCHITECTURE_STAGE_IMAGES[idx % DEFAULT_ARCHITECTURE_STAGE_IMAGES.length];
-                const imgSrc = node.image || node.bgImage || stageFallback.image;
-                const blendMode = node.blendMode || stageFallback.blendMode;
-                const objectFit = node.objectFit || stageFallback.objectFit;
-                const cardBgColor = node.bgColor || stageFallback.bgColor;
-                const cardTextColor = node.textColor || stageFallback.textColor;
-                const cardDescColor = node.descColor || stageFallback.descColor;
-
-                return (
-                  <div 
-                    key={idx}
-                    className={`group relative rounded-2xl overflow-hidden min-h-[375px] md:min-h-[350px] flex flex-col justify-between pt-8 px-6 pb-6 transition-all duration-500 border border-white/10 ${cardBgColor} ${cardTextColor}`}
-                  >
-                    {/* Card Title (Always visible at the top) */}
-                    <div className="relative z-10">
-                      <h3 id={`svc-arch-${idx}-title`} className="font-extrabold text-2xl leading-snug tracking-tight drop-shadow-md">
-                        {node.title}
-                      </h3>
-                    </div>
-
-                    {/* Graphic/Illustration positioned absolutely at the bottom with seamless blend */}
-                    {imgSrc && (
-                      <ResponsiveImage 
-                        src={imgSrc} 
-                        alt={node.title} 
-                        className={`absolute bottom-0 left-0 right-0 w-full h-[65%] object-${objectFit} object-bottom transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none z-10`}
-                        style={{ 
-                          mixBlendMode: blendMode,
-                          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 25%)',
-                          maskImage: 'linear-gradient(to bottom, transparent, black 25%)'
-                        }}
-                        loading="lazy"
-                      />
-                    )}
-
-                    {/* Slide-up details panel */}
-                    <div
-                      className={`absolute inset-0 pt-8 px-6 pb-6 transition-all duration-500 ease-in-out transform md:translate-y-full md:group-hover:translate-y-0 flex flex-col justify-between ${node.bgColor || 'bg-[#060a12]'} ${node.textColor || 'text-white'} z-20`}
-                      aria-labelledby={`svc-arch-${idx}-title`}
-                    >
-                      <div>
-                        {/* Presentational, not an <h4>: this panel slides over the
-                            card and repeated the <h3> underneath it. */}
-                        <p aria-hidden="true" className="font-extrabold text-2xl leading-snug tracking-tight mb-3">
-                          {node.title}
-                        </p>
-                        <p className={`text-[12px] leading-relaxed font-semibold ${node.descColor || 'text-white/70'}`}>
-                          {node.description}
-                        </p>
-
-                        {/* Whole block, divider included, only where the node
-                            has features. A node carrying none used to render an
-                            empty bordered box under its description. */}
-                        {node.features?.length > 0 && (
-                          <div className="mt-4 pt-3 border-t border-current/10">
-                            {/* Per-service label. "Key Capabilities" is right
-                                when the list is capabilities and wrong when it
-                                is something else — habits, stages, controls.
-                                Set architectureFeatureLabel to '' to drop the
-                                label; omit it and the original string renders,
-                                so the other 61 pages are unchanged. */}
-                            {service.architectureFeatureLabel !== '' && (
-                              <span className="block text-[11px] font-bold tracking-widest uppercase mb-2 opacity-60">
-                                {service.architectureFeatureLabel || 'Key Capabilities'}
-                              </span>
-                            )}
-                            <ul className="flex flex-col gap-y-1.5">
-                              {node.features.map((f, i) => (
-                                <li key={i} className="flex items-center gap-2 text-[12px] font-bold leading-tight">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 flex-shrink-0" />
-                                  <span>{f}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+              {/* Header: Eyebrow + Title (Left) and Lede (Right) */}
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14 md:mb-18">
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="h-[1px] w-12 bg-white/20" />
+                    <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.architectureEyebrow || 'ARCHITECTURE & EXECUTION LOOP'}</span>
                   </div>
-                );
-              })}
-            </div>
+                  <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white font-display">
+                    {service.architectureTitle || 'How It Works.'}{' '}
+                    <span className="bg-brand-gradient bg-clip-text text-transparent">
+                      {service.architectureTitleHighlight
+                        || (service.architectureNodes.length === 5 ? 'The 5-Stage Autonomous Execution Loop.' : `The ${service.architectureNodes.length}-Layer Stack.`)}
+                    </span>
+                  </h2>
+                </div>
+                <div className="max-w-md lg:pb-1">
+                  <p className="text-white/60 text-base sm:text-lg font-medium leading-relaxed">
+                    {service.architectureLede || 'Every deployment runs on a governed, modular architecture built for enterprise scale.'}
+                  </p>
+                </div>
+              </div>
 
-          </div>
-        </section>
-      )}
+              {/* 2-Column Master-Detail: Interactive 4:5 Media Left, 3 Stacked Cards Right */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                
+                {/* Left Column: 4:5 Visual Showcase Card */}
+                <div className="lg:col-span-5 order-2 lg:order-1 flex justify-center">
+                  <div className="relative w-full max-w-[460px] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/15 bg-[#080d16] shadow-[0_20px_60px_rgba(0,0,0,0.9)] aspect-[4/5] group">
+                    {/* Layer Image (4:5) with Smooth Transition */}
+                    <img
+                      src={archNodes[activeArchNode]?.image || '/images/architecture/enterprise-architecture-showcase-4-5.jpg'}
+                      alt={archNodes[activeArchNode]?.title || 'Enterprise Architecture'}
+                      className="w-full h-full object-cover object-center transition-all duration-700 select-none pointer-events-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column: 3-Card Automated Rotating Stack (All 3 Open, Smooth In-Place Fade) */}
+                <div 
+                  className="lg:col-span-7 order-1 lg:order-2 flex flex-col justify-center space-y-6 sm:space-y-8"
+                  onMouseEnter={() => setIsArchPaused(true)}
+                  onMouseLeave={() => setIsArchPaused(false)}
+                >
+                  {visibleArchIndices.map((nodeIdx, slotIdx) => {
+                    const node = archNodes[nodeIdx];
+                    if (!node) return null;
+                    const isActive = activeArchNode === nodeIdx;
+
+                    return (
+                      <div
+                        key={slotIdx}
+                        onClick={() => setActiveArchNode(nodeIdx)}
+                        onMouseEnter={() => setActiveArchNode(nodeIdx)}
+                        className="group cursor-pointer select-none"
+                      >
+                        <div className={`relative pl-6 sm:pl-8 border-l-2 sm:border-l-[3px] transition-colors duration-500 ${
+                          isActive 
+                            ? 'border-white' 
+                            : 'border-white/80 hover:border-white'
+                        }`}>
+                          {/* Smooth in-place cross-fade */}
+                          <div key={nodeIdx} className="animate-arch-fade">
+                            {/* Title */}
+                            <div className="flex items-center gap-3">
+                              <h3 className={`text-xl sm:text-2xl lg:text-[1.65rem] font-extrabold tracking-tight transition-colors duration-300 font-display ${
+                                isActive ? 'text-white' : 'text-white/95 group-hover:text-white'
+                              }`}>
+                                {node.title}
+                              </h3>
+                            </div>
+
+                            {/* Open Description */}
+                            <div className="mt-2.5 sm:mt-3">
+                              <p className="text-sm sm:text-base text-white/75 font-normal leading-relaxed">
+                                {node.description}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ══════════════════════ CUSTOM AI INSIGHTS SECTION ══════════════════════ */}
       {service.slug === 'agentic-ai' && (
