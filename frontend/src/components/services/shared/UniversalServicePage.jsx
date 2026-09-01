@@ -429,6 +429,109 @@ const ServicePackageCardItem = ({ pkg, idx, offsetClass = '' }) => {
   );
 };
 
+// ─── Service Packages Section with 4-Card Truncation + Read More ───────────
+const ServicePackagesSection = ({ service }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (service.hideEngagement || !service.servicePackages || service.servicePackages.length === 0) {
+    return null;
+  }
+
+  const packages = service.servicePackages;
+  const hasMoreThan4 = packages.length > 4;
+  const visiblePackages = hasMoreThan4 && !isExpanded ? packages.slice(0, 4) : packages;
+
+  return (
+    <section className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-16">
+          
+          {/* Left Column: Heading & Description */}
+          <div className="w-full lg:w-5/12 lg:sticky lg:top-32 flex flex-col">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.engagementEyebrow || 'HOW WE ENGAGE'}</span>
+            </div>
+            <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-extrabold leading-[1.15] tracking-tight text-white mb-6">
+              {service.engagementHeading || 'Five ways to start.'}<br />
+              <span className="bg-brand-gradient bg-clip-text text-transparent">{service.engagementHeadingHighlight || 'One partner throughout.'}</span>
+            </h2>
+            <p className="text-white/60 text-base sm:text-lg font-normal leading-relaxed mb-0">
+              {service.engagementLede || `Five entry points, from a three-week audit to continuous assurance. Most programs start by finding out which systems are in scope and what evidence is missing, because building controls before you know your risk tiers is the most common way governance work stalls.`}
+            </p>
+
+            {/* Read More button on Desktop Left Column */}
+            {hasMoreThan4 && (
+              <div className="hidden lg:block mt-8">
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded((prev) => !prev)}
+                  aria-expanded={isExpanded}
+                  className="text-[#60a5fa] hover:text-white py-1 min-h-[24px] font-semibold text-sm tracking-wide uppercase transition-colors inline-flex items-center gap-2 cursor-pointer select-none"
+                >
+                  {isExpanded ? 'Read Less' : 'Read More'}
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Right Column: Staggered Offset Card Cluster */}
+          <div className="w-full lg:w-7/12">
+            <CardRail label="Ways to start" className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 items-start">
+              {/* Column 1 (Cards 0, 2, 4...) */}
+              <div className="flex flex-col gap-6 lg:gap-8">
+                {visiblePackages.filter((_, idx) => idx % 2 === 0).map((pkg, idx) => {
+                  const originalIdx = idx * 2;
+                  return (
+                    <ServicePackageCardItem
+                      key={originalIdx}
+                      pkg={pkg}
+                      idx={originalIdx}
+                      offsetClass={idx === 1 ? 'lg:translate-y-4' : idx === 2 ? 'lg:translate-y-8' : ''}
+                    />
+                  );
+                })}
+              </div>
+
+              {/* Column 2 (Cards 1, 3, 5...) - Offset downwards for staggered cluster effect */}
+              <div className="flex flex-col gap-6 lg:gap-8 lg:pt-12">
+                {visiblePackages.filter((_, idx) => idx % 2 === 1).map((pkg, idx) => {
+                  const originalIdx = idx * 2 + 1;
+                  return (
+                    <ServicePackageCardItem
+                      key={originalIdx}
+                      pkg={pkg}
+                      idx={originalIdx}
+                      offsetClass={idx === 1 ? 'lg:translate-y-6' : ''}
+                    />
+                  );
+                })}
+              </div>
+            </CardRail>
+
+            {/* Read More button on Mobile / below grid */}
+            {hasMoreThan4 && (
+              <div className="lg:hidden mt-8 flex justify-center sm:justify-start">
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded((prev) => !prev)}
+                  aria-expanded={isExpanded}
+                  className="text-[#60a5fa] hover:text-white py-1 min-h-[24px] font-semibold text-sm tracking-wide uppercase transition-colors inline-flex items-center gap-2 cursor-pointer select-none"
+                >
+                  {isExpanded ? 'Read Less' : 'Read More'}
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const HOW_WE_WORK = [
   { n: '01', color: CAP_COLORS[0], title: 'Concierge Engagement',         desc: 'Every client gets a dedicated specialist team matched to their context — not a generic delivery squad rotating across accounts.' },
   { n: '02', color: CAP_COLORS[1], title: 'Co-Ownership from Day One',    desc: 'We share accountability for your objectives and remain aligned to the same outcomes. We don\'t take briefs and disappear.' },
@@ -5451,58 +5554,7 @@ const featureMicros   = service.featureMicros
       )}
 
       {/* ══════════════════════ SERVICE PACKAGES (2-Column Offset Layout) ══════════════════════ */}
-      {/* Opt-out per service via hideEngagement, mirroring hideComparison.
-          Deleting servicePackages does not remove this band: getParityService
-          resolves an absent key to genericServicePackages, so the page swaps
-          in five generic engagement models rather than hiding anything. The
-          flag also lets a service keep its authored packages in the data while
-          the section is off, so the content survives the decision. Defaults to
-          showing, so the other 61 pages are unchanged. */}
-      {!service.hideEngagement && service.servicePackages && (
-        <section className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <div className="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-16">
-              
-              {/* Left Column: Heading & Description */}
-              <div className="w-full lg:w-5/12 lg:sticky lg:top-32 flex flex-col">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.engagementEyebrow || 'HOW WE ENGAGE'}</span>
-                </div>
-                <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-extrabold leading-[1.15] tracking-tight text-white mb-6">
-                  {service.engagementHeading || 'Five ways to start.'}<br />
-                  <span className="bg-brand-gradient bg-clip-text text-transparent">{service.engagementHeadingHighlight || 'One partner throughout.'}</span>
-                </h2>
-                <p className="text-white/60 text-base sm:text-lg font-normal leading-relaxed">
-                  {service.engagementLede || `Five entry points, from a three-week audit to continuous assurance. Most programs start by finding out which systems are in scope and what evidence is missing, because building controls before you know your risk tiers is the most common way governance work stalls.`}
-                </p>
-              </div>
-
-              {/* Right Column: Staggered Offset Card Cluster */}
-              <div className="w-full lg:w-7/12">
-                <CardRail label="Ways to start" className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 items-start">
-                  {/* Column 1 (Cards 0, 2, 4) */}
-                  <div className="flex flex-col gap-6 lg:gap-8">
-                    {service.servicePackages.filter((_, idx) => idx % 2 === 0).map((pkg, idx) => {
-                      const originalIdx = idx * 2;
-                      return <ServicePackageCardItem key={originalIdx} pkg={pkg} idx={originalIdx} offsetClass={idx === 1 ? 'lg:translate-y-4' : idx === 2 ? 'lg:translate-y-8' : ''} />;
-                    })}
-                  </div>
-
-                  {/* Column 2 (Cards 1, 3) - Offset downwards for staggered cluster effect */}
-                  <div className="flex flex-col gap-6 lg:gap-8 lg:pt-12">
-                    {service.servicePackages.filter((_, idx) => idx % 2 === 1).map((pkg, idx) => {
-                      const originalIdx = idx * 2 + 1;
-                      return <ServicePackageCardItem key={originalIdx} pkg={pkg} idx={originalIdx} offsetClass={idx === 1 ? 'lg:translate-y-6' : ''} />;
-                    })}
-                  </div>
-                </CardRail>
-              </div>
-
-            </div>
-          </div>
-        </section>
-      )}
+      <ServicePackagesSection service={service} />
 
       {/* ══════════════════════ TRUST PILLARS / PARTNERSHIP MODEL ══════════════════════ */}
       {/* Opt-out per service via hidePartnershipModel — the six claims here are
