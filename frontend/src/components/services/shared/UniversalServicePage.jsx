@@ -1522,7 +1522,7 @@ const featureMicros   = service.featureMicros
   const featureIcons    = featureLabels.map((_, i) => ICON_POOL[i % ICON_POOL.length]);
 
   // ── State ─────────────────────────────────────────────────────────────────
-  const [openFaq,          setOpenFaq]          = useState(0);
+  const [openFaq,          setOpenFaq]          = useState(null);
   const [isFaqExpanded,    setIsFaqExpanded]    = useState(false);
   const [activeCapability, setActiveCapability] = useState(0);
   const [expandedCaps,     setExpandedCaps]     = useState({});
