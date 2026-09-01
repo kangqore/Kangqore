@@ -8382,6 +8382,68 @@ export const servicesData = {
     relatedServiceSlugs: ['legacy-modernization', 'cloud-computing', 'api-microservices-engineering'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE APPLICATION MODERNIZATION FABRIC',
+      title: 'The application modernization planes,',
+      titleHighlight: 'from monolithic debt to modular agility.',
+      subtitle: 'Decomposing legacy monoliths into cloud-native microservices, event-driven backbones, automated API contracts, and containerized runtime platforms.',
+      items: [
+        {
+          icon: 'Code',
+          title: 'Codebase Analysis & AST Extraction',
+          category: 'STATIC CODE ANALYSIS',
+          managed: ['CAST Highlight', 'SonarQube Enterprise', 'AWS Blu Age'],
+          selfHosted: ['Tree-sitter AST parsers', 'Joern code property graphs', 'Custom COBOL/Java scanners'],
+          desc: 'Full-codebase semantic parsing, cyclomatic debt quantification, and business logic extraction.',
+          keyRule: 'Legacy business rules are extracted into executable specifications before refactoring begins.'
+        },
+        {
+          icon: 'Brain',
+          title: 'Domain Boundary & Bounded Contexts',
+          category: 'DOMAIN MODELING',
+          managed: ['vFunction Architectural Engine', 'Lucidchart Enterprise'],
+          selfHosted: ['Event storming modeling tools', 'Neo4j dependency graph analyzers'],
+          desc: 'Isolating transactional domains, shared-data coupling analysis, and microservices boundary mapping.',
+          keyRule: 'Service boundaries follow domain transactional boundaries rather than legacy folder structures.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'API Facade & Strangler Routing',
+          category: 'TRAFFIC STRANGLER',
+          managed: ['Kong Gateway Enterprise', 'Apigee X', 'AWS App Mesh'],
+          selfHosted: ['Envoy reverse proxy', 'Traefik', 'OpenResty NGINX lua gateways'],
+          desc: 'Strangler-fig proxy facades routing incremental traffic from legacy monoliths to modern microservices.',
+          keyRule: 'Traffic migration executes transparently behind reverse proxies with zero downtime.'
+        },
+        {
+          icon: 'Database',
+          title: 'Database Decomposition & CDC',
+          category: 'DATA MODERNIZATION',
+          managed: ['AWS Database Migration Service', 'Confluent Cloud Kafka'],
+          selfHosted: ['Debezium change data capture (CDC)', 'pgloader migration pipelines'],
+          desc: 'Breaking monolithic shared schemas into domain-isolated databases via event-driven synchronization.',
+          keyRule: 'Shared database monoliths are decoupled using asynchronous change data capture streams.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Automated Regression Testing',
+          category: 'EQUIVALENCE VERIFICATION',
+          managed: ['Diffblue Cover', 'Dynatrace Test Automation', 'LaunchDarkly'],
+          selfHosted: ['Keploy zero-code API recording', 'WireMock stub servers', 'pytest characterization runners'],
+          desc: 'Recording live production traffic to generate regression suites proving behavioral parity.',
+          keyRule: 'Modernized services must pass recorded production traffic replay before cutover.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'Cloud-Native Container Delivery',
+          category: 'TARGET RUNTIME',
+          managed: ['AWS EKS / ECS', 'Azure Container Apps', 'Google Cloud Run'],
+          selfHosted: ['ArgoCD GitOps', 'Helm chart registries', 'Kubernetes clusters'],
+          desc: 'Containerized microservices deployments with autoscaling, health probes, and automated rollbacks.',
+          keyRule: 'Modernized workloads deploy strictly via GitOps with automated blue-green rollouts.'
+        }
+      ]
+    },
   },
 
   'digital-transformation': {
@@ -8395,6 +8457,68 @@ export const servicesData = {
     relatedServiceSlugs: ['strategy-consulting', 'technology-transformation', 'digital-business-transformation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE DIGITAL ENTERPRISE FABRIC',
+      title: 'The digital transformation planes,',
+      titleHighlight: 'for continuous business agility.',
+      subtitle: 'Connecting legacy backbones, real-time data streaming, digital customer touchpoints, and agile operational delivery models.',
+      items: [
+        {
+          icon: 'Compass',
+          title: 'Enterprise Architecture & Value Streams',
+          category: 'STRATEGIC ARCHITECTURE',
+          managed: ['LeanIX Enterprise Architecture', 'Miro Enterprise', 'Celonis Process Mining'],
+          selfHosted: ['C4 architecture models in code', 'Custom value stream mapping portals'],
+          desc: 'Mapping end-to-end business value streams, technology portfolio rationalization, and capability roadmaps.',
+          keyRule: 'Technology initiatives are prioritized strictly by measurable business value stream impact.'
+        },
+        {
+          icon: 'Network',
+          title: 'Digital Integration & Omnichannel Core',
+          category: 'INTEGRATION FABRIC',
+          managed: ['MuleSoft Anypoint', 'Workato Enterprise iPaaS', 'Boomi'],
+          selfHosted: ['Apache Kafka event mesh', 'GraphQL federated gateways', 'REST microservices'],
+          desc: 'Unifying siloed ERP, CRM, and supply chain applications into an agile real-time API mesh.',
+          keyRule: 'Core enterprise systems expose standard event contracts rather than point-to-point links.'
+        },
+        {
+          icon: 'Cloud',
+          title: 'Cloud & Modern Digital Platforms',
+          category: 'CLOUD COMPUTING',
+          managed: ['AWS', 'Microsoft Azure', 'Google Cloud Platform'],
+          selfHosted: ['Hybrid cloud landing zones', 'Red Hat OpenShift', 'Sovereign Kubernetes'],
+          desc: 'Elastic infrastructure foundations supporting rapid digital application scaling and innovation.',
+          keyRule: 'Cloud adoption establishes automated landing zones with immutable compliance policies.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Customer Experience & Mobile Engines',
+          category: 'EXPERIENCE LAYER',
+          managed: ['Adobe Experience Manager (AEM)', 'Contentful', 'Segment CDP'],
+          selfHosted: ['Next.js headless frontends', 'React Native mobile apps', 'Tailwind design systems'],
+          desc: 'Omnichannel personalized web and mobile experiences delivering sub-second response times.',
+          keyRule: 'Frontend applications decouple from backend monoliths via headless API architectures.'
+        },
+        {
+          icon: 'Database',
+          title: 'Data Intelligence & Analytics Mesh',
+          category: 'DECISION INTELLIGENCE',
+          managed: ['Snowflake Data Cloud', 'Databricks Lakehouse', 'Power BI'],
+          selfHosted: ['ClickHouse', 'dbt data transformation pipelines', 'Apache Superset'],
+          desc: 'Enterprise-wide single source of truth powering predictive operational decisions and executive KPIs.',
+          keyRule: 'Data governance enforces unified business glossary definitions across all reporting.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Agile Product Delivery & Governance',
+          category: 'OPERATING MODEL',
+          managed: ['Jira Align', 'Azure DevOps Enterprise', 'ServiceNow SPM'],
+          selfHosted: ['GitLab Enterprise', 'Custom engineering KPI and DORA metrics dashboards'],
+          desc: 'Transitioning from rigid project funding to continuous product-centric delivery squads.',
+          keyRule: 'Delivery performance is measured continuously using standard DORA deployment metrics.'
+        }
+      ]
+    },
   },
 
   'legacy-modernization': {
@@ -8408,6 +8532,68 @@ export const servicesData = {
     relatedServiceSlugs: ['application-modernization', 'modernization-infrastructure', 'technology-modernization'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE LEGACY TRANSFORMATION FABRIC',
+      title: 'The legacy modernization planes,',
+      titleHighlight: 'retiring mainframe and monolithic debt.',
+      subtitle: 'Systematic retirement of mainframe COBOL, outdated client-server apps, and monolithic databases with zero business disruption.',
+      items: [
+        {
+          icon: 'Terminal',
+          title: 'Mainframe & Legacy Code Parsing',
+          category: 'CODE DISCOVERY',
+          managed: ['Micro Focus Enterprise Analyzer', 'AWS Mainframe Modernization', 'IBM watsonx Code Assistant'],
+          selfHosted: ['GnuCOBOL parsers', 'ANTLR4 language grammars', 'Custom AST extractors'],
+          desc: 'Deep parsing of COBOL, PL/I, RPG, and Fortran codebases into structured data flow diagrams.',
+          keyRule: 'Mainframe batch jobs and screens are mapped to equivalent modern event pipelines.'
+        },
+        {
+          icon: 'Brain',
+          title: 'Business Rule Mining & Extraction',
+          category: 'RULE RECOVERY',
+          managed: ['CAST Highlight', 'vFunction Architecture Engine'],
+          selfHosted: ['Automated decision table generators', 'OpenAPI specification extractors'],
+          desc: 'Extracting tacit business logic from nested stored procedures and legacy monolithic routines.',
+          keyRule: 'Legacy business rules are converted into versioned microservice contracts before code retirement.'
+        },
+        {
+          icon: 'Database',
+          title: 'Data Tier Migration & Replication',
+          category: 'DATA RETIREMENT',
+          managed: ['AWS DMS', 'Qlik Replicate', 'Informatica Cloud Data Integration'],
+          selfHosted: ['Debezium change data capture', 'pgloader Oracle-to-Postgres tools'],
+          desc: 'Migrating legacy VSAM, DB2, and IMS databases to modern PostgreSQL and cloud lakehouses.',
+          keyRule: 'Data replication operates with dual-write reconciliation to ensure zero record discrepancies.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'Modular Service Re-Architecture',
+          category: 'MICROSERVICES RE-PLATFORM',
+          managed: ['AWS App Runner', 'Azure Container Apps', 'Google Cloud Run'],
+          selfHosted: ['Java Spring Boot, Go, and .NET Core microservices with gRPC and REST'],
+          desc: 'Replacing heavy application servers with lightweight, horizontally scalable containerized services.',
+          keyRule: 'Legacy batch windows are replaced by real-time streaming and event-driven architectures.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Automated Golden Master Testing',
+          category: 'PARITY VERIFICATION',
+          managed: ['Tricentis Tosca', 'Dynatrace Test Automation', 'BrowserStack'],
+          selfHosted: ['Shadow traffic replay proxies', 'Automated bitwise file comparison engines'],
+          desc: 'Simultaneously feeding inputs to legacy and modern systems to verify identical calculation outputs.',
+          keyRule: 'Cutover requires mathematical parity across consecutive monthly financial billing cycles.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'Phased Strangler Cutover',
+          category: 'GOVERNED CUTOVER',
+          managed: ['F5 BIG-IP', 'Cloudflare Workers', 'Kong Konnect'],
+          selfHosted: ['Envoy Proxy canary routing', 'Automated hardware retirement workflows'],
+          desc: 'Gradual tenant-by-tenant traffic migration followed by structured legacy hardware decommissioning.',
+          keyRule: 'Decommissioning requires signed sign-off from compliance, audit, and engineering owners.'
+        }
+      ]
+    },
   },
 
   'technology-modernization': {
@@ -8421,6 +8607,68 @@ export const servicesData = {
     relatedServiceSlugs: ['legacy-modernization', 'technology-transformation', 'application-modernization'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE TECH EVOLUTION FABRIC',
+      title: 'The technology modernization planes,',
+      titleHighlight: 'upgrading the full enterprise stack.',
+      subtitle: 'Modernizing languages, databases, integration protocols, and deployment infrastructure across the entire technology portfolio.',
+      items: [
+        {
+          icon: 'Code',
+          title: 'Language & Framework Evolution',
+          category: 'RUNTIME UPGRADES',
+          managed: ['GitHub Copilot Workspace', 'OpenRewrite Cloud', 'Snyk Code'],
+          selfHosted: ['OpenRewrite automated migration recipes', 'Moderne CLI', 'Automated refactoring daemons'],
+          desc: 'Automated upgrades from legacy Java/PHP/.NET Framework to modern Java 21, TypeScript, and .NET 8.',
+          keyRule: 'Framework migrations are automated through deterministic AST rewrite recipes.'
+        },
+        {
+          icon: 'Database',
+          title: 'Database & Storage Modernization',
+          category: 'PERSISTENCE LAYER',
+          managed: ['Amazon Aurora', 'Azure Cosmos DB', 'Google Cloud Spanner'],
+          selfHosted: ['PostgreSQL', 'Redis Sentinel', 'ClickHouse', 'Apache Cassandra'],
+          desc: 'Transitioning from single-node licensed RDBMS to distributed, cloud-native SQL and NoSQL engines.',
+          keyRule: 'Database engines are chosen per microservice access pattern rather than one-size-fits-all.'
+        },
+        {
+          icon: 'Network',
+          title: 'Modern API & Integration Standards',
+          category: 'API FIRST DESIGN',
+          managed: ['Kong Konnect', 'Apigee X', 'Postman Enterprise'],
+          selfHosted: ['GraphQL federation', 'gRPC protocol buffers', 'OpenAPI 3.1 contracts'],
+          desc: 'Replacing SOAP/XML and flat-file batch transfers with lightweight REST, gRPC, and GraphQL APIs.',
+          keyRule: 'All enterprise integrations adhere to contract-first OpenAPI and protobuf standards.'
+        },
+        {
+          icon: 'GitBranch',
+          title: 'CI/CD & GitOps Automation',
+          category: 'DELIVERY INFRASTRUCTURE',
+          managed: ['GitHub Actions Enterprise', 'GitLab CI/CD', 'CircleCI'],
+          selfHosted: ['ArgoCD', 'Tekton', 'Flux v2 GitOps operators on Kubernetes'],
+          desc: 'Replacing manual build servers with declarative, containerized continuous delivery pipelines.',
+          keyRule: 'Deployments occur with zero manual intervention via automated GitOps synchronization.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Unified Telemetry & OpenTelemetry',
+          category: 'OBSERVABILITY UPGRADE',
+          managed: ['Datadog APM', 'Dynatrace', 'New Relic'],
+          selfHosted: ['OpenTelemetry collector mesh', 'Prometheus', 'Grafana Loki, Tempo'],
+          desc: 'Vendor-neutral instrumentation generating distributed traces, structured logs, and metrics.',
+          keyRule: 'Applications instrument standardized OpenTelemetry SDKs without proprietary lock-in.'
+        },
+        {
+          icon: 'Lock',
+          title: 'Zero Trust & Identity Modernization',
+          category: 'SECURITY FOUNDATION',
+          managed: ['Okta Enterprise', 'Microsoft Entra ID', 'Cloudflare Zero Trust'],
+          selfHosted: ['Keycloak', 'Ory Kratos', 'HashiCorp Vault for secrets management'],
+          desc: 'Eliminating static IP trust and perimeter firewalls with dynamic identity verification.',
+          keyRule: 'Every inter-service request is authenticated with short-lived cryptographic tokens.'
+        }
+      ]
+    },
   },
 
   'technology-transformation': {
@@ -8434,6 +8682,68 @@ export const servicesData = {
     relatedServiceSlugs: ['digital-transformation', 'strategy-consulting', 'technology-modernization'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE TECH TRANSFORMATION FABRIC',
+      title: 'The technology transformation planes,',
+      titleHighlight: 'aligning engineering to strategic growth.',
+      subtitle: 'Transforming legacy IT organizations into high-performing engineering hubs with modern cloud platforms, automated governance, and rapid delivery.',
+      items: [
+        {
+          icon: 'Compass',
+          title: 'Enterprise Portfolio Rationalization',
+          category: 'TECH STRATEGY',
+          managed: ['LeanIX', 'ServiceNow Strategic Portfolio Management', 'Gartner Buy/Build Frameworks'],
+          selfHosted: ['Architecture decision records (ADRs) in Git', 'Portfolio dependency graphs'],
+          desc: 'Evaluating applications across the TIME framework (Tolerate, Invest, Migrate, Eliminate).',
+          keyRule: 'Redundant legacy software licenses are systematically rationalized into shared platforms.'
+        },
+        {
+          icon: 'Terminal',
+          title: 'Cloud & Platform Engineering Mesh',
+          category: 'INTERNAL PLATFORM',
+          managed: ['Port', 'Cortex', 'Humanitec Platform Orchestrator'],
+          selfHosted: ['Backstage developer portals', 'Standardized Kubernetes golden paths'],
+          desc: 'Self-service developer infrastructure reducing cognitive load and accelerating time-to-market.',
+          keyRule: 'Platform engineering teams deliver self-service APIs and golden paths to feature squads.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'DevSecOps & Automated Governance',
+          category: 'SECURITY AUTOMATION',
+          managed: ['Snyk Enterprise', 'Checkmarx One', 'Wiz Cloud Security'],
+          selfHosted: ['Semgrep rules in CI', 'Trivy vulnerability scanners', 'Open Policy Agent'],
+          desc: 'Shifting security and compliance checks directly into developer pull request workflows.',
+          keyRule: 'Security scans execute automatically in CI pipelines before code reaches staging.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Event-Driven Enterprise Backbone',
+          category: 'DATA & INTEGRATION',
+          managed: ['Confluent Cloud Kafka', 'AWS EventBridge', 'Azure Service Bus'],
+          selfHosted: ['Apache Kafka clusters', 'Redpanda', 'RabbitMQ event brokers'],
+          desc: 'Decoupling business transactions across real-time event streams with guaranteed delivery.',
+          keyRule: 'Cross-department workflows communicate via immutable event logs with schema registries.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Continuous Engineering Observability',
+          category: 'SRE & RELIABILITY',
+          managed: ['Datadog', 'PagerDuty', 'Honeycomb'],
+          selfHosted: ['Prometheus', 'Grafana Alertmanager', 'OpenTelemetry tracing'],
+          desc: 'End-to-end service level objectives (SLOs), error budgets, and blameless post-mortem tooling.',
+          keyRule: 'Production incidents trigger blameless post-mortems and automated corrective backlog items.'
+        },
+        {
+          icon: 'Users',
+          title: 'Talent & Engineering Culture Shift',
+          category: 'OPERATIONAL EXCELLENCE',
+          managed: ['Pluralsight Skills', 'O\'Reilly Learning Enterprise', 'GitHub Copilot Enterprise'],
+          selfHosted: ['Internal engineering katas', 'Architecture review guilds', 'Pair-programming workshops'],
+          desc: 'Upskilling developers in cloud-native paradigms, AI tooling, and domain-driven design.',
+          keyRule: 'Engineering teams operate with autonomous squad ownership and product-focused metrics.'
+        }
+      ]
+    },
   },
 
   'digital-business-transformation': {
@@ -8447,6 +8757,68 @@ export const servicesData = {
     relatedServiceSlugs: ['digital-transformation', 'strategy-consulting', 'product-strategy-experience-design'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE BUSINESS TRANSFORMATION FABRIC',
+      title: 'The digital business planes,',
+      titleHighlight: 'connecting models, data, and revenue.',
+      subtitle: 'Re-engineering business models, revenue streams, and customer engagement through intelligent software platforms and automated operations.',
+      items: [
+        {
+          icon: 'TrendingUp',
+          title: 'Business Model Innovation & Monetization',
+          category: 'REVENUE ARCHITECTURE',
+          managed: ['Stripe Billing', 'Chargebee', 'Zuora Subscription Management'],
+          selfHosted: ['Custom usage-based metering engines', 'Multi-tenant billing ledgers'],
+          desc: 'Deploying flexible subscription, usage-based, and marketplace monetization engines.',
+          keyRule: 'Revenue billing engines handle dynamic usage tiers with automated ledger reconciliation.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Customer Experience & Digital Channels',
+          category: 'OMNICHANNEL PORTALS',
+          managed: ['Shopify Plus', 'Contentful', 'Twilio Segment CDP'],
+          selfHosted: ['Next.js commerce frontends', 'React Native mobile apps', 'Tailwind design systems'],
+          desc: 'Frictionless omnichannel customer onboarding, self-service portals, and personalized commerce.',
+          keyRule: 'Customer onboarding workflows complete in under three minutes with automated verification.'
+        },
+        {
+          icon: 'Zap',
+          title: 'AI-Powered Process Automation',
+          category: 'INTELLIGENT WORKFLOWS',
+          managed: ['UiPath Automation Cloud', 'Microsoft Power Automate', 'Camunda'],
+          selfHosted: ['Kangqore AI agent swarms', 'Temporal workflow orchestration'],
+          desc: 'Automating complex cross-department business processes from customer order to settlement.',
+          keyRule: 'High-volume operational tasks execute straight-through without manual touchpoints.'
+        },
+        {
+          icon: 'Database',
+          title: 'Enterprise Data & Customer 360',
+          category: 'UNIFIED DATA MESH',
+          managed: ['Snowflake', 'Salesforce Data Cloud', 'Google BigQuery'],
+          selfHosted: ['PostgreSQL warehouse', 'dbt semantic layers', 'Apache Superset dashboards'],
+          desc: 'Consolidating customer interactions, purchase history, and service tickets into unified 360 profiles.',
+          keyRule: 'Customer 360 records unify across marketing, sales, and support with sub-minute sync.'
+        },
+        {
+          icon: 'Globe',
+          title: 'Partner Ecosystem & API Marketplace',
+          category: 'ECOSYSTEM EXPANSION',
+          managed: ['Apigee X Developer Portal', 'Kong Developer Portal', 'Moesif API Analytics'],
+          selfHosted: ['OpenAPI documentation portals', 'OAuth2 developer registration gateways'],
+          desc: 'Exposing monetized business APIs and developer portals for ecosystem partners.',
+          keyRule: 'Partner APIs enforce rate limits, strict SLA guarantees, and sandbox test environments.'
+        },
+        {
+          icon: 'BarChart',
+          title: 'Executive Visibility & Decision Cockpit',
+          category: 'EXECUTIVE INTELLIGENCE',
+          managed: ['Tableau Cloud', 'Power BI Premium', 'ThoughtSpot'],
+          selfHosted: ['Custom Grafana executive cockpits', 'Real-time Kafka KPI event streams'],
+          desc: 'Real-time executive dashboards tracking customer acquisition cost, churn, and gross margin.',
+          keyRule: 'Executive KPIs update in real time from live transactional databases.'
+        }
+      ]
+    },
   },
 
   'technology-consulting': {
@@ -8460,6 +8832,68 @@ export const servicesData = {
     relatedServiceSlugs: ['strategy-consulting', 'discover-frame-workshops', 'technology-transformation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE TECH ADVISORY FABRIC',
+      title: 'The technology consulting planes,',
+      titleHighlight: 'grounded in proven engineering practice.',
+      subtitle: 'Independent, engineering-backed technology advisory spanning architecture reviews, vendor evaluations, cloud strategy, and technical due diligence.',
+      items: [
+        {
+          icon: 'Compass',
+          title: 'Enterprise Architecture Assessment',
+          category: 'ARCHITECTURE REVIEW',
+          managed: ['LeanIX', 'Ardoq', 'Enterprise Architect'],
+          selfHosted: ['C4 model architecture code bases', 'Custom technology health audit frameworks'],
+          desc: 'Comprehensive audits of system resilience, technical debt, coupling, and scalability bottlenecks.',
+          keyRule: 'Architecture recommendations are backed by empirical codebase and telemetry audits.'
+        },
+        {
+          icon: 'Layers',
+          title: 'Vendor & Platform Evaluation',
+          category: 'VENDOR SELECTION',
+          managed: ['Gartner Buy/Build Frameworks', 'Forrester Wave toolkits'],
+          selfHosted: ['Kangqore multi-criteria decision matrixes (MCDA)', 'Quantitative scoring ledgers'],
+          desc: 'Objective vendor scoring, Total Cost of Ownership (TCO) modeling, and contract negotiation advisory.',
+          keyRule: 'Vendor evaluations include mandatory hands-on PoC validation against client workloads.'
+        },
+        {
+          icon: 'Cloud',
+          title: 'Cloud Strategy & Roadmap Design',
+          category: 'CLOUD ADVISORY',
+          managed: ['AWS Cloud Adoption Framework (CAF)', 'Azure Cloud Adoption Framework'],
+          selfHosted: ['Custom multi-year migration roadmaps', 'Cloud capability maturity models'],
+          desc: 'Designing hybrid and multi-cloud strategies balancing operational agility with FinOps governance.',
+          keyRule: 'Cloud roadmaps align directly with executive budget envelopes and compliance boundaries.'
+        },
+        {
+          icon: 'Search',
+          title: 'Technical Due Diligence (M&A)',
+          category: 'M&A AUDIT',
+          managed: ['Black Duck by Synopsys', 'SonarQube Enterprise', 'Snyk Open Source'],
+          selfHosted: ['Open-source license compliance scanners', 'Codebase quality audit checklists'],
+          desc: 'Evaluating target company code quality, technical debt, open-source license risk, and security posture.',
+          keyRule: 'Due diligence reports provide quantified remediation cost estimates for every identified risk.'
+        },
+        {
+          icon: 'Shield',
+          title: 'Cybersecurity & Compliance Strategy',
+          category: 'SECURITY AUDIT',
+          managed: ['Qualys', 'Rapid7', 'Vanta Compliance Automation'],
+          selfHosted: ['CIS Benchmark automated scanners', 'ISO 27001 / SOC 2 control mappings'],
+          desc: 'Threat modeling, Zero Trust roadmap design, and regulatory compliance posture verification.',
+          keyRule: 'Security strategies prioritize remediation of high-exploitability attack vectors.'
+        },
+        {
+          icon: 'Users',
+          title: 'Engineering Operating Model Design',
+          category: 'ORG & CULTURE',
+          managed: ['Team Topologies Frameworks', 'Jellyfish Engineering Management'],
+          selfHosted: ['DORA metric tracking pipelines', 'Internal guild and chapter charters'],
+          desc: 'Designing team topologies, squad structures, and platform engineering delivery models.',
+          keyRule: 'Team structures are aligned to stream-aligned product teams with decoupled dependencies.'
+        }
+      ]
+    },
   },
 
   'strategy-consulting': {
@@ -8473,6 +8907,68 @@ export const servicesData = {
     relatedServiceSlugs: ['technology-consulting', 'discover-frame-workshops', 'digital-business-transformation'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE STRATEGIC ADVISORY FABRIC',
+      title: 'The business strategy planes,',
+      titleHighlight: 'translating vision into execution.',
+      subtitle: 'Shaping market-defining business strategies, competitive moats, digital transformation roadmaps, and capital allocation frameworks.',
+      items: [
+        {
+          icon: 'Search',
+          title: 'Market & Competitive Intelligence',
+          category: 'MARKET ANALYSIS',
+          managed: ['AlphaSense', 'CB Insights', 'PitchBook'],
+          selfHosted: ['Custom industry scraping daemons', 'Competitive feature taxonomy graphs'],
+          desc: 'Macro market trend analysis, disruption modeling, and competitor benchmarking.',
+          keyRule: 'Market analysis combines macroeconomic data with primary customer interview signals.'
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Digital Business Model Strategy',
+          category: 'VALUE CREATION',
+          managed: ['Miro Strategy Canvases', 'Strategyzer Business Model Generation'],
+          selfHosted: ['Custom unit economic financial models', 'Pricing strategy simulators'],
+          desc: 'Designing platform business models, flywheel dynamics, and scalable pricing structures.',
+          keyRule: 'Business model hypotheses are validated through quantitative customer willingness-to-pay tests.'
+        },
+        {
+          icon: 'Compass',
+          title: 'Capability & Operating Model Design',
+          category: 'TARGET OPERATING MODEL',
+          managed: ['Lucidchart Enterprise', 'Celonis Process Mining'],
+          selfHosted: ['Enterprise capability maps', 'RACI governance frameworks'],
+          desc: 'Designing the Target Operating Model (TOM) required to deliver strategic objectives.',
+          keyRule: 'Operating models define clear decision rights and accountability boundaries across leadership.'
+        },
+        {
+          icon: 'Database',
+          title: 'Capital Allocation & M&A Strategy',
+          category: 'FINANCIAL STRATEGY',
+          managed: ['FactSet', 'S&P Capital IQ', 'Anaplan Financial Planning'],
+          selfHosted: ['Discounted Cash Flow (DCF) models', 'M&A synergy valuation spreadsheets'],
+          desc: 'Strategic capital budgeting, acquisition screening, and investment return prioritization.',
+          keyRule: 'Strategic investments must demonstrate clear IRR hurdle rates and payback timeframes.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Transformation PMO & Value Realization',
+          category: 'EXECUTION GOVERNANCE',
+          managed: ['Smartsheet Enterprise', 'Jira Align', 'Planview'],
+          selfHosted: ['Custom OKR tracking portals', 'Transformation milestone governance dashboards'],
+          desc: 'Tracking transformation milestones, value realization metrics, and change management programs.',
+          keyRule: 'Transformation value realization is tracked against audited financial baseline ledgers.'
+        },
+        {
+          icon: 'Users',
+          title: 'Executive Alignment & Change Leadership',
+          category: 'LEADERSHIP ALIGNMENT',
+          managed: ['Slido Enterprise', 'Mentimeter', 'Culture Amp'],
+          selfHosted: ['Executive alignment workshop playbooks', 'Internal communication toolkits'],
+          desc: 'Facilitating board alignment, leadership consensus, and enterprise-wide change adoption.',
+          keyRule: 'Strategic roadmaps require unanimous sign-off across executive steering committees.'
+        }
+      ]
+    },
   },
 
   'discover-frame-workshops': {
@@ -8486,6 +8982,68 @@ export const servicesData = {
     relatedServiceSlugs: ['strategy-consulting', 'technology-consulting', 'mvp-acceleration'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE WORKSHOP & FRAMING FABRIC',
+      title: 'The discovery & framing planes,',
+      titleHighlight: 'from ambiguity to an actionable blueprint.',
+      subtitle: 'Intensive collaborative workshops aligning stakeholders, mapping user journeys, defining technical architectures, and scoping delivery roadmaps.',
+      items: [
+        {
+          icon: 'Target',
+          title: 'Stakeholder Alignment & Problem Framing',
+          category: 'PROBLEM DEFINITION',
+          managed: ['Miro Enterprise', 'Mural', 'FigJam'],
+          selfHosted: ['Custom problem framing canvases', 'Stakeholder interview synthesis matrices'],
+          desc: 'Uncovering root-cause business bottlenecks, aligning divergent stakeholder goals, and defining KPIs.',
+          keyRule: 'Workshop exercises focus strictly on high-impact customer and operational problem statements.'
+        },
+        {
+          icon: 'Users',
+          title: 'User Journey & Empathy Mapping',
+          category: 'CUSTOMER EXPERIENCE',
+          managed: ['Dovetail User Research', 'Figma', 'UserTesting'],
+          selfHosted: ['Service design blueprints', 'Customer journey maps', 'Persona archetypes'],
+          desc: 'Mapping customer touchpoints, emotional highs/lows, and friction points across the current state.',
+          keyRule: 'Journey maps are grounded in direct customer qualitative recordings and analytics data.'
+        },
+        {
+          icon: 'Brain',
+          title: 'Event Storming & Domain Discovery',
+          category: 'DOMAIN ARCHITECTURE',
+          managed: ['Lucidchart', 'Miro Event Storming Templates'],
+          selfHosted: ['Domain-Driven Design (DDD) ubiquitous language glossaries', 'Domain event maps'],
+          desc: 'Collaborative rapid discovery mapping business domain events, commands, read models, and aggregates.',
+          keyRule: 'Business SMEs and software architects collaborate directly using shared domain terminology.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Technical Feasibility & Architecture Spike',
+          category: 'TECHNICAL SPIKES',
+          managed: ['Postman Cloud', 'SwaggerHub', 'GitHub Copilot'],
+          selfHosted: ['Ephemeral sandbox testbeds', 'Quick API integration spikes', 'Architecture trade-off tables'],
+          desc: 'Validating critical third-party APIs, performance limits, and security constraints in real time.',
+          keyRule: 'Architecture risks are proven feasible through working proof-of-concept code during the sprint.'
+        },
+        {
+          icon: 'Layers',
+          title: 'Prioritization & MVP Scope Definition',
+          category: 'MVP SCOPING',
+          managed: ['Jira Product Discovery', 'Productboard', 'airfocus'],
+          selfHosted: ['MoSCoW feature matrices', 'RICE scoring calculators', 'User story maps'],
+          desc: 'Ruthlessly prioritizing core features versus secondary enhancements to define the minimum viable product.',
+          keyRule: 'MVP scope includes only the minimum features necessary to validate core business value.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'Production Roadmap & Execution Plan',
+          category: 'DELIVERY BLUEPRINT',
+          managed: ['Jira Software', 'Linear', 'Notion Enterprise'],
+          selfHosted: ['Sprint backlog roadmaps', 'Architecture blueprint documents', 'Team staffing plans'],
+          desc: 'Delivering a costed, sprint-by-sprint release roadmap, architecture diagram, and staffing plan.',
+          keyRule: 'Final workshop deliverables include fully estimated sprint backlogs ready for engineering.'
+        }
+      ]
+    },
   },
 
   'mvp-acceleration': {
@@ -8499,6 +9057,68 @@ export const servicesData = {
     relatedServiceSlugs: ['product-strategy-experience-design', 'software-development', 'engineering-foundry'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE MVP VELOCITY FABRIC',
+      title: 'The MVP acceleration planes,',
+      titleHighlight: 'from concept to production in weeks.',
+      subtitle: 'Rapidly engineering production-ready Minimum Viable Products using modular templates, serverless backbones, automated CI/CD, and user analytics.',
+      items: [
+        {
+          icon: 'Target',
+          title: 'Rapid Product Scoping & Prototyping',
+          category: 'PRODUCT DEFINITION',
+          managed: ['Figma Enterprise', 'ProtoPie', 'Linear'],
+          selfHosted: ['Clickable design prototype systems', 'Rapid user testing scripts'],
+          desc: 'Translating concepts into high-fidelity interactive prototypes tested with real users in days.',
+          keyRule: 'Interactive prototypes receive user validation before a single line of code is authored.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Modular Frontend & Design System',
+          category: 'FRONTEND VELOCITY',
+          managed: ['Vercel Enterprise', 'Tailwind UI', 'Radix UI'],
+          selfHosted: ['Next.js', 'React', 'Tailwind CSS', 'shadcn/ui accessible component libraries'],
+          desc: 'Pre-built accessible UI components, responsive layouts, and lightning-fast edge rendering.',
+          keyRule: 'Frontend applications are assembled using standardized, pre-tested component libraries.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'Serverless & BaaS Backend Core',
+          category: 'RAPID BACKEND RUNTIME',
+          managed: ['Supabase Cloud', 'AWS Amplify', 'Firebase'],
+          selfHosted: ['PostgreSQL with PostgREST', 'NestJS microservices', 'Redis caching'],
+          desc: 'Instant database provisioning, automated CRUD APIs, real-time WebSocket subscriptions, and storage.',
+          keyRule: 'Backend core leverages managed BaaS platforms to eliminate custom boilerplate plumbing.'
+        },
+        {
+          icon: 'Lock',
+          title: 'Authentication & Enterprise Access',
+          category: 'IDENTITY & ACCESS',
+          managed: ['Clerk', 'Auth0', 'WorkOS Enterprise SSO'],
+          selfHosted: ['Ory Kratos', 'Keycloak authentication servers'],
+          desc: 'Instant passwordless login, social OAuth, multi-factor authentication, and user management.',
+          keyRule: 'Authentication integrates out-of-the-box with support for enterprise SSO expansion.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Payment & Subscription Engine',
+          category: 'COMMERCE & BILLING',
+          managed: ['Stripe Billing & Checkout', 'Lemon Squeezy', 'Paddle'],
+          selfHosted: ['Stripe webhook handlers', 'Automated invoice generation pipelines'],
+          desc: 'Secure payment collection, subscription lifecycle management, and tax compliance.',
+          keyRule: 'Monetization is enabled from Day 1 using proven, compliant global payment gateways.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Telemetry, Analytics & Feedback',
+          category: 'PRODUCT TELEMETRY',
+          managed: ['PostHog Cloud', 'Sentry', 'Mixpanel'],
+          selfHosted: ['OpenTelemetry collectors', 'Plausible Analytics', 'GlitchTip error tracking'],
+          desc: 'Real-time user behavior funnels, session recordings, and automated crash tracking.',
+          keyRule: 'Every user interaction and application error is tracked to guide rapid iteration cycles.'
+        }
+      ]
+    },
   },
 
   'product-strategy-experience-design': {
@@ -8512,6 +9132,68 @@ export const servicesData = {
     relatedServiceSlugs: ['mvp-acceleration', 'digital-business-transformation', 'discover-frame-workshops'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE PRODUCT & UX FABRIC',
+      title: 'The product design planes,',
+      titleHighlight: 'for intuitive, high-conversion experiences.',
+      subtitle: 'Harmonizing customer research, information architecture, design systems, and rapid prototyping to build digital products people love.',
+      items: [
+        {
+          icon: 'Search',
+          title: 'Qualitative User Research & Insights',
+          category: 'USER DISCOVERY',
+          managed: ['Dovetail', 'UserTesting', 'Lookback'],
+          selfHosted: ['User interview video repositories', 'Customer empathy mapping canvases'],
+          desc: 'Generative user interviews, usability testing, and synthesis of behavioral customer patterns.',
+          keyRule: 'Design decisions are defended by observed user behaviors rather than internal opinions.'
+        },
+        {
+          icon: 'Compass',
+          title: 'Information Architecture & Wireframing',
+          category: 'INFORMATION ARCHITECTURE',
+          managed: ['Whimsical', 'Miro', 'Figma'],
+          selfHosted: ['Card sorting analysis tools', 'Sitemap taxonomy visualizers'],
+          desc: 'Structuring complex application navigation, taxonomy hierarchy, and low-fidelity user flows.',
+          keyRule: 'Application navigation structures undergo tree testing to ensure seamless task completion.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Design System & Design Tokens',
+          category: 'DESIGN SYSTEMS',
+          managed: ['Figma Tokens Studio', 'Storybook Cloud', 'Zeroheight'],
+          selfHosted: ['Tailwind CSS design token configurations', 'Accessible WCAG 2.1 AA component suites'],
+          desc: 'Multi-brand design tokens, typography scales, dark/light modes, and reusable UI components.',
+          keyRule: 'Design tokens synchronize directly from Figma variables into frontend CSS variables.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Micro-Interactions & Motion Design',
+          category: 'INTERACTION DESIGN',
+          managed: ['LottieFiles', 'Rive', 'Jitter Video'],
+          selfHosted: ['Framer Motion animation libraries', 'CSS keyframe transition suites'],
+          desc: 'Delightful micro-animations, loading state transitions, and responsive gesture feedback.',
+          keyRule: 'Motion designs respect user prefers-reduced-motion accessibility settings.'
+        },
+        {
+          icon: 'Eye',
+          title: 'High-Fidelity Interactive Prototyping',
+          category: 'PROTOTYPE VALIDATION',
+          managed: ['ProtoPie Enterprise', 'Axure RP', 'Figma Advanced Prototyping'],
+          selfHosted: ['Next.js code prototypes running with live mock API endpoints'],
+          desc: 'Complex conditional logic prototypes simulating exact production application behavior.',
+          keyRule: 'Prototypes validate critical user conversion funnels before engineering sprint handoff.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Design-to-Code Hand-off & Visual QA',
+          category: 'ENGINEERING COLLABORATION',
+          managed: ['Zeplin', 'Figma Dev Mode', 'Storybook'],
+          selfHosted: ['Automated visual regression testing via Playwright screenshot comparisons'],
+          desc: 'Pixel-perfect design specs, asset export pipelines, and automated visual QA testing.',
+          keyRule: 'Frontend implementation is audited against original designs with zero visual tolerance.'
+        }
+      ]
+    },
   },
 
   'blockchain': {
@@ -8525,6 +9207,68 @@ export const servicesData = {
     relatedServiceSlugs: ['supply-chain', 'finance-risk-management'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE DECENTRALIZED WEB3 FABRIC',
+      title: 'The blockchain & Web3 planes,',
+      titleHighlight: 'for trustless, verifiable architectures.',
+      subtitle: 'Engineering enterprise decentralized applications (dApps), smart contract security audits, Layer-2 rollups, and verifiable cryptographic ledgers.',
+      items: [
+        {
+          icon: 'Code',
+          title: 'Smart Contract Architecture & Solidity',
+          category: 'SMART CONTRACT RUNTIME',
+          managed: ['Hardhat', 'Foundry (Paradigm)', 'Remix IDE'],
+          selfHosted: ['Solidity / Rust smart contracts', 'OpenZeppelin verified security libraries'],
+          desc: 'Gas-optimized smart contract authoring, ERC token standards, and upgradeable proxy patterns.',
+          keyRule: 'Smart contracts utilize battle-tested OpenZeppelin upgradeable proxy architectures.'
+        },
+        {
+          icon: 'Network',
+          title: 'Multi-Chain & Layer-2 Networks',
+          category: 'BLOCKCHAIN INFRASTRUCTURE',
+          managed: ['Alchemy', 'Infura', 'QuickNode', 'AWS Managed Blockchain'],
+          selfHosted: ['Ethereum Geth / Besu private nodes', 'Polygon, Arbitrum, Optimism rollups'],
+          desc: 'High-throughput Layer-2 rollup integration, private permissioned EVM chains, and RPC nodes.',
+          keyRule: 'Enterprise transactions execute on Layer-2 rollups for low-latency transaction confirmation.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Smart Contract Security & Auditing',
+          category: 'FORMAL VERIFICATION',
+          managed: ['CertiK', 'OpenZeppelin Defender', 'Slither Cloud'],
+          selfHosted: ['Slither static analysis', 'Mythril symbolic execution', 'Echidna fuzzing test suites'],
+          desc: 'Automated vulnerability scanning, reentrancy defense, and formal mathematical verification.',
+          keyRule: 'Smart contracts require exhaustive test coverage and static security analysis before mainnet deployment.'
+        },
+        {
+          icon: 'Database',
+          title: 'Decentralized Storage & IPFS',
+          category: 'DECENTRALIZED STORAGE',
+          managed: ['Pinata IPFS', 'Filecoin', 'Arweave Permanent Web'],
+          selfHosted: ['Private IPFS cluster nodes', 'libp2p network daemons'],
+          desc: 'Immutable, content-addressed metadata storage for decentralized applications and token assets.',
+          keyRule: 'Asset metadata is stored permanently on content-addressed IPFS and Arweave networks.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Oracle & Real-World Data Feeds',
+          category: 'ORACLE INTEGRATION',
+          managed: ['Chainlink Decentralized Oracle Network', 'Pyth Network'],
+          selfHosted: ['Custom cryptographic signature verifiers', 'Chainlink Functions API nodes'],
+          desc: 'Securely feeding real-world asset pricing, weather data, and enterprise APIs into smart contracts.',
+          keyRule: 'Financial contract settlements require consensus across multiple independent oracle feeds.'
+        },
+        {
+          icon: 'Lock',
+          title: 'Web3 Wallet & dApp Connectivity',
+          category: 'USER CONNECTIVITY',
+          managed: ['WalletConnect Cloud', 'Dynamic.xyz', 'Privy Embedded Wallets'],
+          selfHosted: ['Ethers.js, Viem, Wagmi React hooks', 'RainbowKit wallet connect components'],
+          desc: 'Seamless user onboarding with social logins, account abstraction (ERC-4337), and hardware wallets.',
+          keyRule: 'User onboarding utilizes ERC-4337 account abstraction for gasless, seedless authentication.'
+        }
+      ]
+    },
   },
 
   // ═════════════════════════════════════════════════════════════════════════════
