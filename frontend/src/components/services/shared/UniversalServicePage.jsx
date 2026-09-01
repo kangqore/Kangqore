@@ -38,6 +38,7 @@ import { GenAI3DModel } from '../../ui/GenAI3DModel';
 import { EnterpriseIntegration3DModel } from '../../ui/EnterpriseIntegration3DModel';
 import ServiceGlassCards from './ServiceGlassCards';
 import SolutionsCarousel from './SolutionsCarousel';
+import { ExecutiveNewsletterSection } from './ExecutiveNewsletterSection';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -5941,17 +5942,12 @@ const featureMicros   = service.featureMicros
         </div>
       </section>
 
-      {/* RELATED SERVICES section removed — 744px of page height for 87 words
-          (11.7 words per 100px, among the lowest-density blocks on the page).
-          The two service links it carried are still emitted in the prerender
-          snapshot as <h2>Related Services</h2>, and the Practice Cluster below
-          keeps a human-facing path to sibling services, so internal linking and
-          topical clustering are preserved. `relatedServiceSlugs` in the data is
-          still read by the prerender generator and the JSON-LD graph. */}
+      {/* ══════════════════════ EXECUTIVE NEWSLETTER (FULL BLEED) ══════════════════════ */}
+      <ExecutiveNewsletterSection />
 
       {/* ══════════════════════ PRACTICE CLUSTER ══════════════════════ */}
       {clusterSiblings.length > 0 && (
-        <section className="py-16 border-t border-white/[0.06]" style={{ backgroundColor: '#000000' }} aria-labelledby="practice-cluster-heading">
+        <section className="py-16" style={{ backgroundColor: '#000000' }} aria-labelledby="practice-cluster-heading">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="h-[1px] w-12 bg-white/20" />
