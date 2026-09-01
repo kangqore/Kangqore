@@ -57,7 +57,16 @@
 
     
 
-    
+        <h2>The AWS enterprise planes, architected to Well-Architected standards.</h2>
+    <p>Enterprise AWS deployments span containerized microservices, serverless event-driven backbones, automated landing zones, and distributed telemetry.</p>
+      <ul>
+          <li><strong>Enterprise Landing Zone</strong>: Multi-account boundary segregation, centralized billing, and service control policy guardrails. Managed: AWS Control Tower,AWS Organizations,AWS IAM Identity Center. Self-hosted: Terraform AWS Modules,Custom SCP policy evaluators.</li>
+          <li><strong>Container &amp; Kubernetes Plane</strong>: High-density container scheduling with sub-second node provisioning and eBPF network security. Managed: Amazon EKS,Amazon ECS,AWS Fargate. Self-hosted: Self-managed EKS nodes with Karpenter auto-scaling and Cilium CNI.</li>
+          <li><strong>Serverless &amp; Event Backbones</strong>: Decoupled event streaming handling hundreds of thousands of asynchronous messages per second. Managed: AWS Lambda,Amazon EventBridge,Amazon SQS / SNS. Self-hosted: KEDA event scalers,Apache Kafka on Amazon MSK.</li>
+          <li><strong>Data Lake &amp; Analytical Mesh</strong>: Centralized object storage lakehouse with automated schema discovery and granular IAM tables. Managed: Amazon S3,AWS Glue Data Catalog,Amazon Redshift Serverless. Self-hosted: Apache Iceberg on S3,Trino query engines.</li>
+          <li><strong>Security &amp; Perimeter Shield</strong>: Automated DDoS mitigation, intelligent threat detection, and envelope encryption with customer keys. Managed: AWS WAF,AWS Shield Advanced,Amazon GuardDuty,AWS KMS. Self-hosted: Vault on AWS,Custom AWS Secrets Manager sync operators.</li>
+          <li><strong>Cloud Observability &amp; Tracing</strong>: Distributed microservice request tracing, synthetic canary probes, and log analytics. Managed: Amazon CloudWatch Container Insights,AWS X-Ray,Amazon Managed Grafana. Self-hosted: OpenTelemetry collectors routing to AWS Managed Prometheus.</li>
+      </ul>
 
     
 
