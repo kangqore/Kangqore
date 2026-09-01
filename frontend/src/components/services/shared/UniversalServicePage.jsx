@@ -4879,8 +4879,8 @@ const featureMicros   = service.featureMicros
         />
       )}
 
-      {/* Early slot for the platform stack — see toolsStackSection above. */}
-      {service.toolsStackAfterCapabilities && toolsStackSection}
+      {/* 3D Ecosystem Cockpit / Tools & Technology Stack — situated directly below Capabilities */}
+      {toolsStackSection}
 
       {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
       {/* Opt-out per service via hideComparison, mirroring
@@ -5613,11 +5613,6 @@ const featureMicros   = service.featureMicros
         </section>
       )}
 
-      {/* ══════════════════════ TOOLS & TECHNOLOGY ══════════════════════ */}
-      {/* Default slot. Suppressed when the service asked for the stack to sit
-          under the capability grid instead, so it never renders twice.
-          hideToolsStack is handled where toolsStackSection is built. */}
-      {!service.toolsStackAfterCapabilities && toolsStackSection}
 
       {/* ══════════════════════ ACCELERATORS ══════════════════════ */}
       {/* Opt-in, page-scoped. Named methods and reusable assets a practice
