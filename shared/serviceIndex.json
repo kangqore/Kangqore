@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T11:42:33.343Z",
+  "generatedAt": "2026-09-01T11:51:27.554Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -783,7 +783,32 @@
       "description": "End-to-end managed cloud — 24/7 monitoring, cost optimization, security management, performance tuning, and compliance support across hyperscalers.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Multi-Cloud Orchestration",
+          "detail": "Hierarchical account provisioning, centralized IAM governance, and automated network perimeter setup."
+        },
+        {
+          "rule": "FinOps & Cost Optimization",
+          "detail": "Unit-economic cost allocation, automated rightsizing, and continuous commitment portfolio balancing."
+        },
+        {
+          "rule": "Zero-Downtime Migration & SRE",
+          "detail": "Continuous block-level replication, cutover rehearsal, and chaos resilience verification."
+        },
+        {
+          "rule": "Unified Observability & APM",
+          "detail": "Full-stack distributed tracing, eBPF kernel network monitoring, and unified log aggregation."
+        },
+        {
+          "rule": "Automated Patching & Compliance",
+          "detail": "Zero-touch OS patching, immutable AMI pipelines, and real-time compliance posture audits."
+        },
+        {
+          "rule": "24/7 Cloud Incident Command",
+          "detail": "Automated on-call escalation, event storm de-duplication, and auto-remediation runbooks."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -794,7 +819,32 @@
       "description": "Expert AWS services — architecture, migration, cost optimization, security best practices, and DevOps on AWS for enterprise workloads.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Enterprise Landing Zone",
+          "detail": "Multi-account boundary segregation, centralized billing, and service control policy guardrails."
+        },
+        {
+          "rule": "Container & Kubernetes Plane",
+          "detail": "High-density container scheduling with sub-second node provisioning and eBPF network security."
+        },
+        {
+          "rule": "Serverless & Event Backbones",
+          "detail": "Decoupled event streaming handling hundreds of thousands of asynchronous messages per second."
+        },
+        {
+          "rule": "Data Lake & Analytical Mesh",
+          "detail": "Centralized object storage lakehouse with automated schema discovery and granular IAM tables."
+        },
+        {
+          "rule": "Security & Perimeter Shield",
+          "detail": "Automated DDoS mitigation, intelligent threat detection, and envelope encryption with customer keys."
+        },
+        {
+          "rule": "Cloud Observability & Tracing",
+          "detail": "Distributed microservice request tracing, synthetic canary probes, and log analytics."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -805,7 +855,32 @@
       "description": "Microsoft cloud services — Azure implementation, Microsoft 365, Power Platform, Dynamics 365, and Microsoft security & compliance.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Identity & Access Plane",
+          "detail": "Conditional access policies, phishing-resistant MFA, and just-in-time administrative elevation."
+        },
+        {
+          "rule": "Azure Cloud Infrastructure",
+          "detail": "Managed Kubernetes clusters, serverless container execution, and multi-tenant web application gateways."
+        },
+        {
+          "rule": "Integration & Logic Engine",
+          "detail": "Enterprise message brokering, hybrid ERP connectors, and governed API distribution."
+        },
+        {
+          "rule": "Data Platform & Fabric",
+          "detail": "Unified analytics platform, multi-model globally distributed NoSQL, and high-performance warehousing."
+        },
+        {
+          "rule": "SecOps & Threat Defense",
+          "detail": "AI-powered cloud SIEM, automated security posture management, and enterprise data loss prevention."
+        },
+        {
+          "rule": "Productivity & Copilot Mesh",
+          "detail": "Automated collaboration governance, enterprise search grounding, and AI workflow integration."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -816,7 +891,32 @@
       "description": "Google Cloud Platform expertise — GCP architecture, BigQuery analytics, AI/ML on GCP, Kubernetes (GKE), and data solutions.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Container & GKE Fleet",
+          "detail": "Fully managed Kubernetes clusters with automated node provisioning, scaling, and security hardening."
+        },
+        {
+          "rule": "Enterprise Data Warehouse",
+          "detail": "Serverless petabyte-scale data warehousing, cross-cloud querying, and real-time streaming analytics."
+        },
+        {
+          "rule": "Vertex AI & Machine Learning",
+          "detail": "End-to-end ML model training, custom embedding vector search, and managed LLM inference."
+        },
+        {
+          "rule": "Global Network & Edge Fabric",
+          "detail": "Anycast global frontend network, Layer 7 DDoS mitigation, and private VPC peering."
+        },
+        {
+          "rule": "Event Streaming & Integration",
+          "detail": "Global message ingestion with millisecond delivery, exactly-once processing, and schema validation."
+        },
+        {
+          "rule": "Observability & Cloud Security",
+          "detail": "Unified log explorer, distributed trace profiling, and automated container vulnerability alerts."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -827,7 +927,32 @@
       "description": "Multi-cloud and hybrid cloud strategy — cloud strategy, multi-cloud management, hybrid solutions, cloud native development, and FinOps.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Multi-Cloud Control Plane",
+          "detail": "Declarative API-driven infrastructure composition across disparate cloud providers."
+        },
+        {
+          "rule": "Universal Compute Runtime",
+          "detail": "Immutable container operating systems and multi-cluster Kubernetes federation."
+        },
+        {
+          "rule": "Global Network & Traffic Mesh",
+          "detail": "Software-defined hybrid WAN interconnects and encrypted inter-cluster transit routes."
+        },
+        {
+          "rule": "Distributed Storage & Data Mesh",
+          "detail": "S3-compatible object layers, cross-region asynchronous replication, and disaster recovery."
+        },
+        {
+          "rule": "Unified FinOps & Allocation",
+          "detail": "Normalized cloud spend analytics, unit cost attribution, and multi-cloud spot arbitrage."
+        },
+        {
+          "rule": "Zero-Trust Multi-Cloud Security",
+          "detail": "Agentless cloud security posture management, secret distribution, and runtime kernel defense."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -838,7 +963,32 @@
       "description": "Embedded systems and IT/OT convergence — firmware development, IT/OT integration, IoT connectivity, and edge computing for industrial use.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Hardware Architecture & Silicon",
+          "detail": "Schematic capture, high-speed board layout, power-budget optimization, and component sourcing."
+        },
+        {
+          "rule": "Real-Time Operating Systems",
+          "detail": "Deterministic task scheduling, memory-safe embedded C/C++/Rust runtimes, and low-latency ISRs."
+        },
+        {
+          "rule": "Secure Boot & Device Identity",
+          "detail": "Cryptographic signature verification on boot, secure element integration, and tamper detection."
+        },
+        {
+          "rule": "Over-The-Air (OTA) Updates",
+          "detail": "Delta-compressed firmware delivery, atomic flash bank switching, and fleet campaign rollouts."
+        },
+        {
+          "rule": "Edge Computing & Protocols",
+          "detail": "Local event filtering, protocol conversion, and edge inference on embedded NPU accelerators."
+        },
+        {
+          "rule": "Hardware-In-The-Loop Testing",
+          "detail": "Automated environmental stress testing, fault injection, and hardware regression validation."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -849,7 +999,32 @@
       "description": "Engineering Foundry™ — rapid prototyping, innovation sprints, technical POCs, experimentation, and technology scouting with embedded engineering pods.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Internal Developer Platform",
+          "detail": "Self-service environment provisioning, software cataloging, and automated API documentation."
+        },
+        {
+          "rule": "Polyglot Backend Systems",
+          "detail": "High-concurrency distributed backend services built for low memory overhead and millisecond latency."
+        },
+        {
+          "rule": "Modern Web & Frontend Mesh",
+          "detail": "Edge-rendered web applications, design token integration, and sub-second Largest Contentful Paint."
+        },
+        {
+          "rule": "Distributed Database Systems",
+          "detail": "Horizontally scalable SQL and NoSQL engines with automatic failover and read replicas."
+        },
+        {
+          "rule": "CI/CD & Release Governance",
+          "detail": "Automated unit and integration testing, semantic versioning, and declarative GitOps deployments."
+        },
+        {
+          "rule": "Quality & Code Health Gates",
+          "detail": "Automated pull request gating, cyclomatic complexity tracking, and security linting."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -860,7 +1035,32 @@
       "description": "Engineering R&D — technology research, innovation labs, IP development, patent support, and academic partnerships for product innovation.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Algorithmic & Mathematical Modeling",
+          "detail": "Mathematical formulation, numerical simulations, and heuristic optimization for complex domains."
+        },
+        {
+          "rule": "Rapid Prototyping & PoC Lab",
+          "detail": "Two-week Proof-of-Concept sprints validating technical feasibility and latency limits."
+        },
+        {
+          "rule": "Hardware & Silicon Emulation",
+          "detail": "Virtual prototyping of custom silicon, FPGA acceleration, and instruction-set simulation."
+        },
+        {
+          "rule": "Autonomous Systems & Robotics Lab",
+          "detail": "Spatial computing, SLAM navigation algorithms, and kinematic simulation for robotic fleets."
+        },
+        {
+          "rule": "Benchmarking & Stress Labs",
+          "detail": "Throughput saturation limits, thermal breakdown points, and memory leak profiling."
+        },
+        {
+          "rule": "Intellectual Property & Patents",
+          "detail": "Novel architecture patent documentation, cleanroom IP verification, and prior art mapping."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -871,7 +1071,32 @@
       "description": "Digital engineering for connected products — product digitization, connected products, digital twins, smart features, and data integration.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Product Discovery & Experimentation",
+          "detail": "A/B testing experimentation engines, cohort tracking, and progressive feature rollout gates."
+        },
+        {
+          "rule": "Frontend & Mobile Engineering",
+          "detail": "Responsive web apps, 60fps native iOS/Android experiences, and accessible UI components."
+        },
+        {
+          "rule": "API & Business Logic Mesh",
+          "detail": "Federated schema composition, real-time WebSocket subscriptions, and business rules."
+        },
+        {
+          "rule": "Search & Recommendation Engines",
+          "detail": "Typo-tolerant instant search, semantic vector retrieval, and personalized user rankings."
+        },
+        {
+          "rule": "Customer Identity & Multi-Tenancy",
+          "detail": "SAML/OIDC enterprise Single Sign-On, SCIM directory provisioning, and tenant isolation."
+        },
+        {
+          "rule": "Product Observability & Feedback",
+          "detail": "Real-user monitoring (RUM), session replay diagnostics, and crash attribution analytics."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -882,7 +1107,32 @@
       "description": "Managed DevOps — CI/CD pipelines, infrastructure as code, container orchestration, monitoring, and SRE practices for faster, reliable delivery.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Infrastructure as Code (IaC)",
+          "detail": "Modular cloud infrastructure provisioning with state locking, cost estimation, and compliance checks."
+        },
+        {
+          "rule": "CI/CD Automation Pipelines",
+          "detail": "Multi-stage build pipelines, parallel unit/integration testing, and Docker image builds."
+        },
+        {
+          "rule": "GitOps & Continuous Deployment",
+          "detail": "Automated synchronization of Git repository states to production clusters with drift remediation."
+        },
+        {
+          "rule": "Secrets & Configuration Mesh",
+          "detail": "Dynamic secret rotation, encrypted secret injection, and centralized configuration key-values."
+        },
+        {
+          "rule": "Container Security & Scanning",
+          "detail": "Vulnerability scanning in container images, SBOM generation, and cryptographic image signing."
+        },
+        {
+          "rule": "SRE & Incident Auto-Remediation",
+          "detail": "SLO/SLA error budget tracking, automated pod health remediation, and on-call escalation."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -893,7 +1143,32 @@
       "description": "End-to-end managed infrastructure — 24/7 monitoring, incident management, capacity planning, performance optimization, and automation.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Compute & Virtualization Plane",
+          "detail": "Enterprise virtualization management, live VM migration, resource overcommit, and high availability."
+        },
+        {
+          "rule": "Software-Defined Networking",
+          "detail": "Micro-segmentation, dynamic VLAN routing, load balancing, and dedicated low-latency interconnects."
+        },
+        {
+          "rule": "Enterprise Storage & SAN/NAS",
+          "detail": "High-IOPS block and file storage, automated volume snapshots, and deduplication."
+        },
+        {
+          "rule": "Automated OS & Fleet Patching",
+          "detail": "Automated operating system provisioning, package repository mirroring, and security compliance."
+        },
+        {
+          "rule": "Backup & Disaster Recovery",
+          "detail": "Air-gapped ransomware-proof backups, instant VM recovery, and multi-region failover."
+        },
+        {
+          "rule": "Infrastructure Monitoring & NOC",
+          "detail": "Hardware IPMI sensor monitoring, power distribution telemetry, and 24/7 NOC alert triage."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -904,7 +1179,32 @@
       "description": "Modernize legacy infrastructure — assessment, modernization roadmap, cloud migration, hybrid infrastructure, and infrastructure as code (IaC).",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Estate Discovery & Dependency Map",
+          "detail": "Automated hardware inventory, software dependency graph extraction, and migration wave planning."
+        },
+        {
+          "rule": "Server Re-Platforming & Migration",
+          "detail": "Continuous block-level data replication and automated cutover to modern cloud instances."
+        },
+        {
+          "rule": "VM to Container Migration",
+          "detail": "Packaging legacy application binaries into standard container images running on modern Kubernetes."
+        },
+        {
+          "rule": "Database Modernization & Migration",
+          "detail": "Schema conversion from proprietary engines (Oracle/DB2) to open-source PostgreSQL and MySQL."
+        },
+        {
+          "rule": "Legacy Network to SD-WAN",
+          "detail": "Retiring legacy MPLS circuits in favor of secure, encrypted, internet-based SD-WAN connectivity."
+        },
+        {
+          "rule": "Modern Observability & Telemetry",
+          "detail": "Transitioning from fragmented ping-based monitoring to unified high-cardinality distributed telemetry."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -915,7 +1215,32 @@
       "description": "Full suite of managed IT services — service desk, application management, infrastructure management, security services, and cloud management.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Omnichannel Service Desk (L1/L2)",
+          "detail": "24/7 global support desk, AI-assisted ticket categorization, and automated user self-service."
+        },
+        {
+          "rule": "Advanced Engineering Support (L3/L4)",
+          "detail": "Deep architectural troubleshooting, code bug fixing, database index tuning, and kernel debugging."
+        },
+        {
+          "rule": "Proactive ITOM & Observability",
+          "detail": "Automated anomaly detection, predictive outage warning, and event storm suppression."
+        },
+        {
+          "rule": "Patch Management & Hardening",
+          "detail": "Monthly vulnerability patching, endpoint hardening, and zero-day emergency remediation."
+        },
+        {
+          "rule": "Asset & Configuration Governance",
+          "detail": "Continuous tracking of enterprise software licenses, server warranties, and asset depreciation."
+        },
+        {
+          "rule": "SLA & Business Executive Reporting",
+          "detail": "Real-time visibility into mean time to resolution (MTTR), SLA compliance, and user satisfaction."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -926,7 +1251,32 @@
       "description": "Ongoing support and maintenance — helpdesk support, application support, system maintenance, patch management, and SLA management.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Continuous Bug Fixes & Code Health",
+          "detail": "Systematic triage and resolution of functional software bugs, edge cases, and user-reported defects."
+        },
+        {
+          "rule": "Dependency & Framework Upgrades",
+          "detail": "Upgrading runtime environments (Java, Node.js, Python, .NET), third-party libraries, and APIs."
+        },
+        {
+          "rule": "Performance Tuning & Optimization",
+          "detail": "Eliminating N+1 database queries, optimizing memory leaks, and tuning garbage collection."
+        },
+        {
+          "rule": "Security Patching & Vulnerabilities",
+          "detail": "Rapid remediation of CVE vulnerabilities in application code, dependencies, and containers."
+        },
+        {
+          "rule": "Database Maintenance & Archiving",
+          "detail": "Database vacuuming, index re-indexing, historical data partitioning, and backup verification."
+        },
+        {
+          "rule": "Emergency 24/7 Tier-3 Response",
+          "detail": "Round-the-clock emergency developer response for production-down application incidents."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -937,7 +1287,32 @@
       "description": "Custom software development — full-stack development, agile methodology, code quality, CI/CD, and documentation tailored to your business needs.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Architecture & Domain Modeling",
+          "detail": "Clean architecture design, modular service boundaries, and event-driven data flow schemas."
+        },
+        {
+          "rule": "Modern Frontend Engineering",
+          "detail": "High-performance responsive web applications, design token systems, and accessible interfaces."
+        },
+        {
+          "rule": "High-Throughput Backend Services",
+          "detail": "Stateless microservices, asynchronous message queues, and high-concurrency API backends."
+        },
+        {
+          "rule": "Database & Data Persistence",
+          "detail": "Relational, document, and key-value databases tailored to specific domain query access patterns."
+        },
+        {
+          "rule": "Automated Testing & QA Gates",
+          "detail": "Unit test coverage, consumer-driven contract testing, and visual regression suites."
+        },
+        {
+          "rule": "DevOps & Container Deployment",
+          "detail": "Automated container builds, semantic versioning, and zero-downtime rolling deployments."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -948,7 +1323,32 @@
       "description": "API-first and microservices — API design, microservices architecture, API gateway, service mesh, and API management for scalable applications.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "API Gateway & Traffic Routing",
+          "detail": "Centralized rate limiting, JWT token verification, dynamic route rewrites, and SSL termination."
+        },
+        {
+          "rule": "Service Mesh & East-West Security",
+          "detail": "Mutual TLS (mTLS) inter-service encryption, circuit breaking, and traffic shadowing."
+        },
+        {
+          "rule": "Contract & Protocol Engineering",
+          "detail": "Design-first API authoring, automated mock generation, and breaking change detection in CI."
+        },
+        {
+          "rule": "Event Streaming & Saga Orchestration",
+          "detail": "Decoupled event publishing, distributed transaction sagas, and outbox pattern implementation."
+        },
+        {
+          "rule": "Distributed Caching & Acceleration",
+          "detail": "In-memory query caching, distributed session storage, and global lock coordination."
+        },
+        {
+          "rule": "Distributed Tracing & Observability",
+          "detail": "End-to-end distributed span tracing across dozens of microservices with W3C trace context."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -959,7 +1359,32 @@
       "description": "End-to-end IoT — IoT architecture, device connectivity, IoT analytics, platform integration, and security for connected device ecosystems.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Device Provisioning & Identity",
+          "detail": "Zero-touch secure bootstrapping, unique device certificate generation, and cryptographic authentication."
+        },
+        {
+          "rule": "High-Throughput Ingestion Gateway",
+          "detail": "MQTT / CoAP / HTTPS protocol ingestion handling millions of concurrent persistent connections."
+        },
+        {
+          "rule": "Edge Processing & Local Analytics",
+          "detail": "Local machine learning inference, sensor data filtering, and autonomous edge control loops."
+        },
+        {
+          "rule": "Time-Series Telemetry Storage",
+          "detail": "Sub-second ingestion of sensor time-series metrics with automated compression and downsampling."
+        },
+        {
+          "rule": "Firmware OTA Fleet Updates",
+          "detail": "Staged phased firmware rollouts, automated health canary checks, and failure rollback."
+        },
+        {
+          "rule": "Digital Twins & Business Integration",
+          "detail": "Real-time physical asset twin representation, spatial sensor mapping, and predictive maintenance alerts."
+        }
+      ],
       "dataHandling": []
     },
     {

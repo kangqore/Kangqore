@@ -7103,6 +7103,68 @@ export const servicesData = {
     relatedServiceSlugs: ['cloud-computing', 'managed-infrastructure-services', 'devops-as-a-service'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE CLOUD OPERATIONS FABRIC',
+      title: 'The managed cloud planes,',
+      titleHighlight: 'engineered for high availability.',
+      subtitle: 'Enterprise cloud operations requires continuous FinOps, infrastructure-as-code automation, multi-cloud governance, and automated incident response across public and hybrid clusters.',
+      items: [
+        {
+          icon: 'Layers',
+          title: 'Multi-Cloud Orchestration',
+          category: 'CLOUD CONTROL PLANE',
+          managed: ['AWS Control Tower', 'Azure Landing Zones', 'Google Cloud Resource Manager'],
+          selfHosted: ['Crossplane', 'Terraform Enterprise', 'OpenTofu on Kubernetes'],
+          desc: 'Hierarchical account provisioning, centralized IAM governance, and automated network perimeter setup.',
+          keyRule: 'Landing zones enforce immutable security baselines before workloads are provisioned.'
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'FinOps & Cost Optimization',
+          category: 'FINANCIAL ENGINEERING',
+          managed: ['CloudZero', 'Kubecost Cloud', 'AWS Cost Explorer'],
+          selfHosted: ['OpenCost', 'Infracost in CI/CD', 'Grafana Cloud Cost dashboards'],
+          desc: 'Unit-economic cost allocation, automated rightsizing, and continuous commitment portfolio balancing.',
+          keyRule: 'Cost governance runs inside pull requests, preventing runaway cloud commitments before merge.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'Zero-Downtime Migration & SRE',
+          category: 'RESILIENCE ENGINEERING',
+          managed: ['AWS MGN', 'Azure Migrate', 'CloudEndure'],
+          selfHosted: ['Velero disaster recovery', 'Chaos Mesh', 'LitmusChaos automated injection'],
+          desc: 'Continuous block-level replication, cutover rehearsal, and chaos resilience verification.',
+          keyRule: 'Disaster recovery is proven through continuous chaos simulation rather than static runbooks.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Unified Observability & APM',
+          category: 'TELEMETRY & LOGGING',
+          managed: ['Datadog', 'Dynatrace', 'New Relic'],
+          selfHosted: ['Prometheus', 'Grafana Loki', 'OpenTelemetry collector mesh'],
+          desc: 'Full-stack distributed tracing, eBPF kernel network monitoring, and unified log aggregation.',
+          keyRule: 'Telemetry must trace every request from edge gateway down to database query.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Automated Patching & Compliance',
+          category: 'POLICY ENFORCEMENT',
+          managed: ['AWS Systems Manager', 'Azure Automation', 'Qualys Cloud Platform'],
+          selfHosted: ['Ansible Automation Platform', 'OpenSCAP', 'Custom compliance daemons'],
+          desc: 'Zero-touch OS patching, immutable AMI pipelines, and real-time compliance posture audits.',
+          keyRule: 'Nodes are replaced via immutable golden image rollouts rather than patched in-place.'
+        },
+        {
+          icon: 'Zap',
+          title: '24/7 Cloud Incident Command',
+          category: 'MISSION ASSURANCE',
+          managed: ['PagerDuty', 'ServiceNow ITOM', 'Splunk On-Call'],
+          selfHosted: ['Alertmanager webhook automations', 'Automated runbook execution pods'],
+          desc: 'Automated on-call escalation, event storm de-duplication, and auto-remediation runbooks.',
+          keyRule: 'High-severity alerts trigger automated failover runbooks before human escalation.'
+        }
+      ]
+    },
   },
 
   'aws': {
@@ -7116,6 +7178,68 @@ export const servicesData = {
     relatedServiceSlugs: ['cloud-computing', 'devops-as-a-service', 'managed-cloud-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE AWS ARCHITECTURAL FABRIC',
+      title: 'The AWS enterprise planes,',
+      titleHighlight: 'architected to Well-Architected standards.',
+      subtitle: 'Enterprise AWS deployments span containerized microservices, serverless event-driven backbones, automated landing zones, and distributed telemetry.',
+      items: [
+        {
+          icon: 'Layers',
+          title: 'Enterprise Landing Zone',
+          category: 'ORGANIZATION GOVERNANCE',
+          managed: ['AWS Control Tower', 'AWS Organizations', 'AWS IAM Identity Center'],
+          selfHosted: ['Terraform AWS Modules', 'Custom SCP policy evaluators'],
+          desc: 'Multi-account boundary segregation, centralized billing, and service control policy guardrails.',
+          keyRule: 'Workloads deploy into isolated member accounts bounded by strict service control policies.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'Container & Kubernetes Plane',
+          category: 'COMPUTE FABRIC',
+          managed: ['Amazon EKS', 'Amazon ECS', 'AWS Fargate'],
+          selfHosted: ['Self-managed EKS nodes with Karpenter auto-scaling and Cilium CNI'],
+          desc: 'High-density container scheduling with sub-second node provisioning and eBPF network security.',
+          keyRule: 'Workload scheduling uses Karpenter for just-in-time compute scaling on spot instances.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Serverless & Event Backbones',
+          category: 'EVENT-DRIVEN FABRIC',
+          managed: ['AWS Lambda', 'Amazon EventBridge', 'Amazon SQS / SNS'],
+          selfHosted: ['KEDA event scalers', 'Apache Kafka on Amazon MSK'],
+          desc: 'Decoupled event streaming handling hundreds of thousands of asynchronous messages per second.',
+          keyRule: 'Microservices communicate through schema-validated EventBridge buses rather than direct HTTP.'
+        },
+        {
+          icon: 'Database',
+          title: 'Data Lake & Analytical Mesh',
+          category: 'DATA LAYER',
+          managed: ['Amazon S3', 'AWS Glue Data Catalog', 'Amazon Redshift Serverless'],
+          selfHosted: ['Apache Iceberg on S3', 'Trino query engines'],
+          desc: 'Centralized object storage lakehouse with automated schema discovery and granular IAM tables.',
+          keyRule: 'Data lake storage enforces S3 Object Lock and automated lifecycle archiving.'
+        },
+        {
+          icon: 'Shield',
+          title: 'Security & Perimeter Shield',
+          category: 'PERIMETER SECURITY',
+          managed: ['AWS WAF', 'AWS Shield Advanced', 'Amazon GuardDuty', 'AWS KMS'],
+          selfHosted: ['Vault on AWS', 'Custom AWS Secrets Manager sync operators'],
+          desc: 'Automated DDoS mitigation, intelligent threat detection, and envelope encryption with customer keys.',
+          keyRule: 'All data at rest and in transit is encrypted using customer-managed KMS keys.'
+        },
+        {
+          icon: 'Eye',
+          title: 'Cloud Observability & Tracing',
+          category: 'MONITORING LAYER',
+          managed: ['Amazon CloudWatch Container Insights', 'AWS X-Ray', 'Amazon Managed Grafana'],
+          selfHosted: ['OpenTelemetry collectors routing to AWS Managed Prometheus'],
+          desc: 'Distributed microservice request tracing, synthetic canary probes, and log analytics.',
+          keyRule: 'Every Lambda and container logs structured JSON with correlation IDs.'
+        }
+      ]
+    },
   },
 
   'microsoft-services': {
@@ -7129,6 +7253,68 @@ export const servicesData = {
     relatedServiceSlugs: ['cloud-computing', 'managed-cloud-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE MICROSOFT ENTERPRISE FABRIC',
+      title: 'The Azure & Microsoft 365 planes,',
+      titleHighlight: 'for governed enterprise scale.',
+      subtitle: 'Bridging Azure cloud infrastructure, Microsoft Entra ID zero-trust security, Power Platform automation, and Teams enterprise collaboration.',
+      items: [
+        {
+          icon: 'Shield',
+          title: 'Identity & Access Plane',
+          category: 'ENTRA ZERO TRUST',
+          managed: ['Microsoft Entra ID P2', 'Entra Privileged Identity Management (PIM)'],
+          selfHosted: ['Entra Connect Sync', 'Hybrid Active Directory Domain Services'],
+          desc: 'Conditional access policies, phishing-resistant MFA, and just-in-time administrative elevation.',
+          keyRule: 'Administrative roles require PIM activation with approval and time-bounded expiration.'
+        },
+        {
+          icon: 'Cloud',
+          title: 'Azure Cloud Infrastructure',
+          category: 'AZURE PLATFORM CORE',
+          managed: ['Azure Kubernetes Service (AKS)', 'Azure Container Apps', 'Azure App Service'],
+          selfHosted: ['Azure Arc-enabled servers and Kubernetes on hybrid edge'],
+          desc: 'Managed Kubernetes clusters, serverless container execution, and multi-tenant web application gateways.',
+          keyRule: 'Azure landing zones enforce Azure Policy guardrails at management group scope.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'Integration & Logic Engine',
+          category: 'ORCHESTRATION LAYER',
+          managed: ['Azure Integration Services', 'Logic Apps Standard', 'Azure Service Bus'],
+          selfHosted: ['Azure API Management Self-Hosted Gateway'],
+          desc: 'Enterprise message brokering, hybrid ERP connectors, and governed API distribution.',
+          keyRule: 'Enterprise workflows decouple via Service Bus FIFO queues and dead-letter handling.'
+        },
+        {
+          icon: 'Database',
+          title: 'Data Platform & Fabric',
+          category: 'ANALYTICS PLANE',
+          managed: ['Microsoft Fabric', 'Azure Synapse Analytics', 'Azure Cosmos DB'],
+          selfHosted: ['Azure SQL Managed Instance', 'Self-hosted integration runtimes'],
+          desc: 'Unified analytics platform, multi-model globally distributed NoSQL, and high-performance warehousing.',
+          keyRule: 'Analytical data consolidates into Fabric OneLake with uniform Delta Parquet tables.'
+        },
+        {
+          icon: 'Lock',
+          title: 'SecOps & Threat Defense',
+          category: 'MICROSOFT SHIELD',
+          managed: ['Microsoft Sentinel SIEM', 'Microsoft Defender for Cloud', 'Microsoft Purview'],
+          selfHosted: ['Defender for Endpoint agents on hybrid Windows/Linux server fleets'],
+          desc: 'AI-powered cloud SIEM, automated security posture management, and enterprise data loss prevention.',
+          keyRule: 'Security events correlate in Sentinel with automated SOAR investigation playbooks.'
+        },
+        {
+          icon: 'Users',
+          title: 'Productivity & Copilot Mesh',
+          category: 'MODERN WORKPLACE',
+          managed: ['Microsoft 365 E5', 'Microsoft 365 Copilot', 'Power Automate'],
+          selfHosted: ['Custom Copilot Studio agent extensions on private Azure OpenAI'],
+          desc: 'Automated collaboration governance, enterprise search grounding, and AI workflow integration.',
+          keyRule: 'M365 Copilot permissions inherit exact SharePoint and OneDrive security ACLs.'
+        }
+      ]
+    },
   },
 
   'google-cloud-services': {
@@ -7142,6 +7328,68 @@ export const servicesData = {
     relatedServiceSlugs: ['cloud-computing', 'data-science-ai', 'big-data'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE GCP CLOUD FABRIC',
+      title: 'The Google Cloud planes,',
+      titleHighlight: 'for AI-native data and compute.',
+      subtitle: 'Built for massive scale data analytics, Google Kubernetes Engine (GKE) clusters, Vertex AI foundational infrastructure, and global networking.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Container & GKE Fleet',
+          category: 'CLOUD-NATIVE RUNTIME',
+          managed: ['Google Kubernetes Engine (GKE) Autopilot', 'Cloud Run'],
+          selfHosted: ['Anthos / Google Distributed Cloud on bare-metal fleets'],
+          desc: 'Fully managed Kubernetes clusters with automated node provisioning, scaling, and security hardening.',
+          keyRule: 'GKE Autopilot enforces Google-managed node security and per-pod resource optimization.'
+        },
+        {
+          icon: 'Database',
+          title: 'Enterprise Data Warehouse',
+          category: 'ANALYTIC QUERY PLANE',
+          managed: ['Google BigQuery', 'BigQuery Omni', 'Dataproc Serverless'],
+          selfHosted: ['Apache Spark on private clusters', 'dbt on BigQuery'],
+          desc: 'Serverless petabyte-scale data warehousing, cross-cloud querying, and real-time streaming analytics.',
+          keyRule: 'BigQuery datasets enforce column-level IAM and automatic partitioning by transaction date.'
+        },
+        {
+          icon: 'Brain',
+          title: 'Vertex AI & Machine Learning',
+          category: 'AI & REASONING RUNTIME',
+          managed: ['Vertex AI Platform', 'Gemini Enterprise', 'Model Garden'],
+          selfHosted: ['Kubeflow Pipelines on GKE', 'vLLM on GCP TPU v5e pods'],
+          desc: 'End-to-end ML model training, custom embedding vector search, and managed LLM inference.',
+          keyRule: 'ML pipelines execute on Vertex AI with automated artifact lineage tracking.'
+        },
+        {
+          icon: 'Globe',
+          title: 'Global Network & Edge Fabric',
+          category: 'PERIMETER NETWORK',
+          managed: ['Google Cloud Armor', 'Cloud CDN', 'Cloud Load Balancing'],
+          selfHosted: ['Private Service Connect', 'Cloud Interconnect hybrid fiber circuits'],
+          desc: 'Anycast global frontend network, Layer 7 DDoS mitigation, and private VPC peering.',
+          keyRule: 'All ingress traffic passes through Cloud Armor with OWASP Top 10 rule inspection.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Event Streaming & Integration',
+          category: 'EVENT-DRIVEN BACKBONE',
+          managed: ['Cloud Pub/Sub', 'Workflows', 'Cloud Tasks'],
+          selfHosted: ['Apache Kafka on GKE', 'Google Cloud Dataflow streaming pipelines'],
+          desc: 'Global message ingestion with millisecond delivery, exactly-once processing, and schema validation.',
+          keyRule: 'Pub/Sub topics enforce dead-letter queues and AVRO schema validation on publish.'
+        },
+        {
+          icon: 'Eye',
+          title: 'Observability & Cloud Security',
+          category: 'OPERATIONAL TELEMETRY',
+          managed: ['Google Cloud Operations (Stackdriver)', 'Security Command Center (SCC)'],
+          selfHosted: ['Prometheus on GKE with Google Managed Service for Prometheus'],
+          desc: 'Unified log explorer, distributed trace profiling, and automated container vulnerability alerts.',
+          keyRule: 'Security Command Center premium continuously monitors misconfigurations and IAM risks.'
+        }
+      ]
+    },
   },
 
   'cloud-computing': {
@@ -7155,6 +7403,68 @@ export const servicesData = {
     relatedServiceSlugs: ['aws', 'microsoft-services', 'google-cloud-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE MULTI-CLOUD ARCHITECTURE',
+      title: 'The cloud computing planes,',
+      titleHighlight: 'beyond single-vendor lock-in.',
+      subtitle: 'Architecting portable multi-cloud and hybrid environments spanning AWS, Azure, GCP, and private infrastructure with unified governance.',
+      items: [
+        {
+          icon: 'Layers',
+          title: 'Multi-Cloud Control Plane',
+          category: 'HYBRID MANAGEMENT',
+          managed: ['AWS Control Tower', 'Azure Arc', 'Google Anthos'],
+          selfHosted: ['Crossplane universal control planes', 'OpenTofu orchestrators'],
+          desc: 'Declarative API-driven infrastructure composition across disparate cloud providers.',
+          keyRule: 'Infrastructure is defined declaratively and validated through automated drift detection.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'Universal Compute Runtime',
+          category: 'CONTAINER ORCHESTRATION',
+          managed: ['EKS', 'AKS', 'GKE', 'Red Hat OpenShift Dedicated'],
+          selfHosted: ['Talos Linux', 'Rancher Kubernetes Engine (RKE2)', 'Nomad'],
+          desc: 'Immutable container operating systems and multi-cluster Kubernetes federation.',
+          keyRule: 'Application workloads deploy to standardized OCI containers without cloud-specific APIs.'
+        },
+        {
+          icon: 'Globe',
+          title: 'Global Network & Traffic Mesh',
+          category: 'INTERCONNECT LAYER',
+          managed: ['Megaport', 'Equinix Cloud Exchange', 'Cloudflare Magic WAN'],
+          selfHosted: ['WireGuard meshes', 'Cilium ClusterMesh with eBPF encryption'],
+          desc: 'Software-defined hybrid WAN interconnects and encrypted inter-cluster transit routes.',
+          keyRule: 'Cross-cloud traffic is encrypted at the network layer using mutual TLS and IPsec tunnels.'
+        },
+        {
+          icon: 'Database',
+          title: 'Distributed Storage & Data Mesh',
+          category: 'STORAGE PLANE',
+          managed: ['AWS S3', 'Azure Blob', 'Google Cloud Storage'],
+          selfHosted: ['MinIO multi-tenant object storage', 'Ceph distributed block storage'],
+          desc: 'S3-compatible object layers, cross-region asynchronous replication, and disaster recovery.',
+          keyRule: 'Data replication across clouds complies with strict regional data sovereignty policies.'
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Unified FinOps & Allocation',
+          category: 'FINANCIAL GOVERNANCE',
+          managed: ['Apptio Cloudability', 'Vantage', 'CloudZero'],
+          selfHosted: ['OpenCost on Kubernetes', 'Infracost automated CI/CD checks'],
+          desc: 'Normalized cloud spend analytics, unit cost attribution, and multi-cloud spot arbitrage.',
+          keyRule: 'Cloud spend is attributed directly to product engineering teams and business units.'
+        },
+        {
+          icon: 'Shield',
+          title: 'Zero-Trust Multi-Cloud Security',
+          category: 'SECURITY PERIMETER',
+          managed: ['Wiz', 'Palo Alto Prisma Cloud', 'Lacework'],
+          selfHosted: ['HashiCorp Vault', 'Falco runtime security', 'Open Policy Agent (OPA)'],
+          desc: 'Agentless cloud security posture management, secret distribution, and runtime kernel defense.',
+          keyRule: 'Secrets are dynamically injected with ephemeral lifespans and zero static credentials.'
+        }
+      ]
+    },
   },
 
   'embedded-design-systems': {
@@ -7168,6 +7478,68 @@ export const servicesData = {
     relatedServiceSlugs: ['internet-of-things', 'operation-technology', 'product-digital-engineering'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE EMBEDDED & EDGE FABRIC',
+      title: 'The embedded engineering planes,',
+      titleHighlight: 'from silicon to cloud telemetry.',
+      subtitle: 'Designing mission-critical embedded firmware, real-time operating systems (RTOS), hardware-in-the-loop validation, and secure edge computing.',
+      items: [
+        {
+          icon: 'Cpu',
+          title: 'Hardware Architecture & Silicon',
+          category: 'SILICON & BOARD PLANE',
+          managed: ['ARM Cortex-M/A', 'RISC-V', 'Nordic Semiconductor', 'STM32 platforms'],
+          selfHosted: ['Custom multi-layer PCB design in Altium Designer', 'KiCad design suites'],
+          desc: 'Schematic capture, high-speed board layout, power-budget optimization, and component sourcing.',
+          keyRule: 'Hardware designs undergo automated signal integrity simulation and thermal profiling.'
+        },
+        {
+          icon: 'Layers',
+          title: 'Real-Time Operating Systems',
+          category: 'EMBEDDED RTOS RUNTIME',
+          managed: ['FreeRTOS', 'Zephyr RTOS', 'Embedded Linux (Yocto / Buildroot)'],
+          selfHosted: ['Custom deterministic microkernels', 'QNX real-time OS'],
+          desc: 'Deterministic task scheduling, memory-safe embedded C/C++/Rust runtimes, and low-latency ISRs.',
+          keyRule: 'Critical safety loops execute inside isolated memory-protected RTOS task partitions.'
+        },
+        {
+          icon: 'Lock',
+          title: 'Secure Boot & Device Identity',
+          category: 'HARDWARE ROOT OF TRUST',
+          managed: ['Microchip ATECC608', 'NXP EdgeLock', 'TPM 2.0 cryptoprocessors'],
+          selfHosted: ['Hardware-based cryptographic key storage', 'Immutable bootloader stages'],
+          desc: 'Cryptographic signature verification on boot, secure element integration, and tamper detection.',
+          keyRule: 'Firmware execution is blocked unless signed by verified hardware root-of-trust keys.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'Over-The-Air (OTA) Updates',
+          category: 'LIFECYCLE MANAGEMENT',
+          managed: ['AWS IoT Core Jobs', 'Memfault', 'Mender OTA'],
+          selfHosted: ['Dual-bank A/B partition updates with automated rollback daemons'],
+          desc: 'Delta-compressed firmware delivery, atomic flash bank switching, and fleet campaign rollouts.',
+          keyRule: 'OTA updates must guarantee atomic rollback if self-tests fail post-installation.'
+        },
+        {
+          icon: 'Radio',
+          title: 'Edge Computing & Protocols',
+          category: 'COMMUNICATION PROTOCOLS',
+          managed: ['AWS IoT Greengrass', 'Azure IoT Edge'],
+          selfHosted: ['MQTT with TLS', 'CoAP', 'CAN bus', 'Modbus', 'OPC UA industrial daemons'],
+          desc: 'Local event filtering, protocol conversion, and edge inference on embedded NPU accelerators.',
+          keyRule: 'Edge nodes buffer telemetry locally during network outages and sync upon reconnection.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Hardware-In-The-Loop Testing',
+          category: 'VERIFICATION & HIL',
+          managed: ['National Instruments HIL racks', 'dSPACE simulator suites'],
+          selfHosted: ['Custom automated test fixtures with oscilloscope and logic analyzer telemetry'],
+          desc: 'Automated environmental stress testing, fault injection, and hardware regression validation.',
+          keyRule: 'Firmware builds pass automated HIL test rigs before release to production manufacturing.'
+        }
+      ]
+    },
   },
 
   'engineering-foundry': {
@@ -7181,6 +7553,68 @@ export const servicesData = {
     relatedServiceSlugs: ['engineering-rd-services', 'mvp-acceleration', 'software-development'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE FOUNDRY PLATFORM FABRIC',
+      title: 'The core engineering planes,',
+      titleHighlight: 'for elite digital products.',
+      subtitle: 'Accelerating software delivery with platform engineering, standardized golden paths, modular micro-frontends, and automated release gates.',
+      items: [
+        {
+          icon: 'Terminal',
+          title: 'Internal Developer Platform',
+          category: 'DEVELOPER EXPERIENCE',
+          managed: ['Port', 'Cortex', 'Humanitec Platform Orchestrator'],
+          selfHosted: ['Backstage developer portals', 'Standardized golden path templates'],
+          desc: 'Self-service environment provisioning, software cataloging, and automated API documentation.',
+          keyRule: 'Developers provision production-ready environments in under five minutes via self-service.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'Polyglot Backend Systems',
+          category: 'HIGH-THROUGHPUT RUNTIME',
+          managed: ['AWS App Runner', 'Azure Container Apps', 'Google Cloud Run'],
+          selfHosted: ['Go, Rust, Node.js, and Java Spring microservices with gRPC transport'],
+          desc: 'High-concurrency distributed backend services built for low memory overhead and millisecond latency.',
+          keyRule: 'Internal services communicate via typed gRPC protocols with protocol buffer contracts.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Modern Web & Frontend Mesh',
+          category: 'EXPERIENCE ARCHITECTURE',
+          managed: ['Vercel Enterprise', 'Cloudflare Pages', 'Netlify Core'],
+          selfHosted: ['Next.js', 'Vite', 'Module Federation micro-frontend architectures on NGINX'],
+          desc: 'Edge-rendered web applications, design token integration, and sub-second Largest Contentful Paint.',
+          keyRule: 'Frontend architectures enforce strict design tokens and Core Web Vitals performance budgets.'
+        },
+        {
+          icon: 'Database',
+          title: 'Distributed Database Systems',
+          category: 'STATE & STORAGE',
+          managed: ['CockroachDB Dedicated', 'PlanetScale', 'Amazon Aurora PostgreSQL'],
+          selfHosted: ['PostgreSQL with streaming replication', 'Redis clusters', 'ClickHouse'],
+          desc: 'Horizontally scalable SQL and NoSQL engines with automatic failover and read replicas.',
+          keyRule: 'Schema migrations run as automated zero-downtime forward-compatible pipelines.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'CI/CD & Release Governance',
+          category: 'CONTINUOUS DELIVERY',
+          managed: ['GitHub Enterprise', 'GitLab CI/CD', 'CircleCI'],
+          selfHosted: ['ArgoCD GitOps', 'Tekton pipelines', 'Woodpecker CI'],
+          desc: 'Automated unit and integration testing, semantic versioning, and declarative GitOps deployments.',
+          keyRule: 'Deployments are driven exclusively through declarative GitOps without manual server access.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Quality & Code Health Gates',
+          category: 'ENGINEERING ASSURANCE',
+          managed: ['SonarQube Cloud', 'Snyk Code', 'Codecov'],
+          selfHosted: ['Static analysis linters', 'Semgrep security rules', 'Automated mutation testing'],
+          desc: 'Automated pull request gating, cyclomatic complexity tracking, and security linting.',
+          keyRule: 'Pull requests require all passing automated test and security gates before merging.'
+        }
+      ]
+    },
   },
 
   'engineering-rd-services': {
@@ -7194,6 +7628,68 @@ export const servicesData = {
     relatedServiceSlugs: ['engineering-foundry', 'product-digital-engineering'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE R&D INNOVATION FABRIC',
+      title: 'The research & development planes,',
+      titleHighlight: 'from concept to market breakthrough.',
+      subtitle: 'De-risking new technological frontiers through rapid prototyping, algorithmic research, feasibility benchmarks, and scalable patentable architectures.',
+      items: [
+        {
+          icon: 'Brain',
+          title: 'Algorithmic & Mathematical Modeling',
+          category: 'APPLIED RESEARCH',
+          managed: ['MATLAB Cloud', 'Wolfram Alpha Enterprise', 'AWS Braket quantum simulator'],
+          selfHosted: ['Python NumPy/SciPy', 'Julia computing runtimes', 'Custom optimization solvers'],
+          desc: 'Mathematical formulation, numerical simulations, and heuristic optimization for complex domains.',
+          keyRule: 'Research algorithms are validated against real-world benchmark datasets before engineering.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Rapid Prototyping & PoC Lab',
+          category: 'RAPID EXPERIMENTATION',
+          managed: ['Replit Teams', 'Modal Labs', 'AWS Lambda Labs'],
+          selfHosted: ['Internal sandbox clusters with ephemeral GPU compute and rapid teardown'],
+          desc: 'Two-week Proof-of-Concept sprints validating technical feasibility and latency limits.',
+          keyRule: 'Prototypes must establish empirical pass/fail criteria before production scaling.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'Hardware & Silicon Emulation',
+          category: 'HARDWARE CO-DESIGN',
+          managed: ['Cadence Cloud', 'Synopsys Cloud emulation platforms'],
+          selfHosted: ['QEMU system emulators', 'FPGA synthesis boards (Xilinx, Altera)'],
+          desc: 'Virtual prototyping of custom silicon, FPGA acceleration, and instruction-set simulation.',
+          keyRule: 'Software and hardware architectures are co-designed and simulated concurrently.'
+        },
+        {
+          icon: 'Compass',
+          title: 'Autonomous Systems & Robotics Lab',
+          category: 'ROBOTICS & EMBEDDED AI',
+          managed: ['AWS RoboMaker', 'NVIDIA Isaac Sim Cloud'],
+          selfHosted: ['ROS 2 (Robot Operating System)', 'Gazebo physics simulation engines'],
+          desc: 'Spatial computing, SLAM navigation algorithms, and kinematic simulation for robotic fleets.',
+          keyRule: 'Robotics path-planning algorithms undergo thousands of simulated failure edge-cases.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Benchmarking & Stress Labs',
+          category: 'EMPIRICAL VALIDATION',
+          managed: ['k6 Cloud', 'Flood.io', 'BlazeMeter enterprise'],
+          selfHosted: ['Locust distributed load clusters', 'Custom packet injection test benches'],
+          desc: 'Throughput saturation limits, thermal breakdown points, and memory leak profiling.',
+          keyRule: 'Systems are benchmarked to failure to identify architectural degradation cliffs.'
+        },
+        {
+          icon: 'Shield',
+          title: 'Intellectual Property & Patents',
+          category: 'IP GOVERNANCE',
+          managed: ['Anaqua IP management', 'Clarivate Derwent Innovation'],
+          selfHosted: ['Cryptographically timestamped Git commit ledgers', 'Cleanroom documentation'],
+          desc: 'Novel architecture patent documentation, cleanroom IP verification, and prior art mapping.',
+          keyRule: 'Novel technical mechanisms are documented with cleanroom provenance for patent filing.'
+        }
+      ]
+    },
   },
 
   'product-digital-engineering': {
@@ -7207,6 +7703,68 @@ export const servicesData = {
     relatedServiceSlugs: ['embedded-design-systems', 'internet-of-things', 'software-development'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE PRODUCT ENGINEERING FABRIC',
+      title: 'The digital product planes,',
+      titleHighlight: 'engineered for retention and scale.',
+      subtitle: 'Building customer-facing software products combining user research, scalable microservice architectures, real-time analytics, and continuous experimentation.',
+      items: [
+        {
+          icon: 'Target',
+          title: 'Product Discovery & Experimentation',
+          category: 'EXPERIMENTATION PLANE',
+          managed: ['LaunchDarkly', 'Statsig', 'Amplitude Analytics'],
+          selfHosted: ['GrowthBook open-source feature flags', 'PostHog self-hosted analytics'],
+          desc: 'A/B testing experimentation engines, cohort tracking, and progressive feature rollout gates.',
+          keyRule: 'New features roll out behind feature flags with automated rollback on error spikes.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Frontend & Mobile Engineering',
+          category: 'CROSS-PLATFORM APPS',
+          managed: ['Expo Application Services (EAS)', 'Fastlane', 'Bitrise'],
+          selfHosted: ['React Native', 'Flutter', 'Swift/Kotlin native engines', 'Tailwind CSS design systems'],
+          desc: 'Responsive web apps, 60fps native iOS/Android experiences, and accessible UI components.',
+          keyRule: 'Mobile builds undergo automated screenshot regression testing on device farms.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'API & Business Logic Mesh',
+          category: 'DOMAIN ARCHITECTURE',
+          managed: ['Apollo GraphOS', 'AWS AppSync', 'Kong Enterprise'],
+          selfHosted: ['GraphQL federation gateways', 'NestJS', 'FastAPI microservices'],
+          desc: 'Federated schema composition, real-time WebSocket subscriptions, and business rules.',
+          keyRule: 'Domain microservices expose typed GraphQL schemas with centralized query caching.'
+        },
+        {
+          icon: 'Search',
+          title: 'Search & Recommendation Engines',
+          category: 'DISCOVERY LAYER',
+          managed: ['Algolia', 'Pinecone Serverless', 'AWS OpenSearch'],
+          selfHosted: ['Meilisearch', 'Elasticsearch', 'Typesense distributed clusters'],
+          desc: 'Typo-tolerant instant search, semantic vector retrieval, and personalized user rankings.',
+          keyRule: 'Search queries return ranked results in under 50 milliseconds at peak concurrency.'
+        },
+        {
+          icon: 'Lock',
+          title: 'Customer Identity & Multi-Tenancy',
+          category: 'ACCESS & TENANCY',
+          managed: ['Auth0 by Okta', 'Clerk', 'WorkOS Enterprise SSO'],
+          selfHosted: ['Ory Kratos / Hydra', 'Keycloak identity servers'],
+          desc: 'SAML/OIDC enterprise Single Sign-On, SCIM directory provisioning, and tenant isolation.',
+          keyRule: 'B2B customers access products through dedicated enterprise SSO and RBAC roles.'
+        },
+        {
+          icon: 'Eye',
+          title: 'Product Observability & Feedback',
+          category: 'EXPERIENCE TELEMETRY',
+          managed: ['Sentry', 'FullStory', 'Datadog RUM'],
+          selfHosted: ['OpenTelemetry RUM', 'GlitchTip error tracking', 'Custom feedback event streams'],
+          desc: 'Real-user monitoring (RUM), session replay diagnostics, and crash attribution analytics.',
+          keyRule: 'Client-side exceptions automatically generate actionable bug reports with stack traces.'
+        }
+      ]
+    },
   },
 
   'devops-as-a-service': {
@@ -7220,6 +7778,68 @@ export const servicesData = {
     relatedServiceSlugs: ['software-development', 'api-microservices-engineering', 'quality-engineering-assurance'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE DEVOPS & SRE FABRIC',
+      title: 'The DevOps automation planes,',
+      titleHighlight: 'for continuous zero-touch delivery.',
+      subtitle: 'Transforming software delivery with declarative Infrastructure as Code, automated CI/CD pipelines, GitOps orchestration, and automated SRE operations.',
+      items: [
+        {
+          icon: 'Terminal',
+          title: 'Infrastructure as Code (IaC)',
+          category: 'DECLARATIVE PROVISIONING',
+          managed: ['Terraform Cloud', 'Spacelift', 'env0'],
+          selfHosted: ['OpenTofu', 'Pulumi', 'Terragrunt on self-hosted runners'],
+          desc: 'Modular cloud infrastructure provisioning with state locking, cost estimation, and compliance checks.',
+          keyRule: 'All cloud infrastructure is authored in IaC and reviewed via pull requests.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'CI/CD Automation Pipelines',
+          category: 'BUILD & VERIFICATION',
+          managed: ['GitHub Actions Enterprise', 'GitLab CI', 'CircleCI'],
+          selfHosted: ['Dagger engine', 'Jenkins on Kubernetes', 'Woodpecker CI'],
+          desc: 'Multi-stage build pipelines, parallel unit/integration testing, and Docker image builds.',
+          keyRule: 'Build pipelines produce immutable signed container images pushed to private registries.'
+        },
+        {
+          icon: 'GitBranch',
+          title: 'GitOps & Continuous Deployment',
+          category: 'DECLARATIVE ROLLOUTS',
+          managed: ['ArgoCD Cloud', 'Weave GitOps Enterprise'],
+          selfHosted: ['ArgoCD', 'Flux v2 on Kubernetes clusters'],
+          desc: 'Automated synchronization of Git repository states to production clusters with drift remediation.',
+          keyRule: 'Production cluster state matches Git repository commits with zero manual interventions.'
+        },
+        {
+          icon: 'Lock',
+          title: 'Secrets & Configuration Mesh',
+          category: 'SECRETS MANAGEMENT',
+          managed: ['AWS Secrets Manager', 'Azure Key Vault', 'Doppler'],
+          selfHosted: ['HashiCorp Vault', 'Sealed Secrets', 'External Secrets Operator'],
+          desc: 'Dynamic secret rotation, encrypted secret injection, and centralized configuration key-values.',
+          keyRule: 'Secrets are never stored in source code or CI logs; injection is runtime only.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Container Security & Scanning',
+          category: 'DEVSECOPS GATES',
+          managed: ['Snyk Container', 'Aqua Security', 'Wiz CLI'],
+          selfHosted: ['Trivy', 'Grype', 'Cosign container signing', 'Semgrep SAST'],
+          desc: 'Vulnerability scanning in container images, SBOM generation, and cryptographic image signing.',
+          keyRule: 'Images with critical unpatched CVEs are blocked from entering production clusters.'
+        },
+        {
+          icon: 'Activity',
+          title: 'SRE & Incident Auto-Remediation',
+          category: 'OBSERVABILITY & SRE',
+          managed: ['PagerDuty', 'Better Stack', 'Incident.io'],
+          selfHosted: ['Prometheus Alertmanager', 'Robusta Kubernetes automation', 'Custom restart daemons'],
+          desc: 'SLO/SLA error budget tracking, automated pod health remediation, and on-call escalation.',
+          keyRule: 'SLO violations trigger automated deployment freeze gates to protect service reliability.'
+        }
+      ]
+    },
   },
 
   'managed-infrastructure-services': {
@@ -7233,6 +7853,68 @@ export const servicesData = {
     relatedServiceSlugs: ['managed-cloud-services', 'managed-services', 'support-maintenance'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE INFRASTRUCTURE OPERATIONS FABRIC',
+      title: 'The enterprise infrastructure planes,',
+      titleHighlight: 'managed for continuous availability.',
+      subtitle: 'Unified management across physical data centers, software-defined networks, storage arrays, virtualization hypervisors, and cloud environments.',
+      items: [
+        {
+          icon: 'Server',
+          title: 'Compute & Virtualization Plane',
+          category: 'HYPERVISOR RUNTIME',
+          managed: ['VMware Cloud on AWS', 'Nutanix Cloud Clusters', 'AWS EC2 Bare Metal'],
+          selfHosted: ['Proxmox VE', 'KVM / QEMU hypervisors', 'OpenStack on enterprise hardware'],
+          desc: 'Enterprise virtualization management, live VM migration, resource overcommit, and high availability.',
+          keyRule: 'Host hypervisors maintain N+1 redundancy with automatic VM failover clustering.'
+        },
+        {
+          icon: 'Network',
+          title: 'Software-Defined Networking',
+          category: 'SDN & FABRIC',
+          managed: ['Cisco ACI', 'VMware NSX', 'AWS Direct Connect'],
+          selfHosted: ['Open vSwitch', 'BGP routing with FRRouting', 'WireGuard site-to-site meshes'],
+          desc: 'Micro-segmentation, dynamic VLAN routing, load balancing, and dedicated low-latency interconnects.',
+          keyRule: 'Network traffic across subnets is filtered through stateful firewalls with microsegmentation.'
+        },
+        {
+          icon: 'Database',
+          title: 'Enterprise Storage & SAN/NAS',
+          category: 'STORAGE INFRASTRUCTURE',
+          managed: ['NetApp Cloud Volumes', 'Pure Storage FlashArray', 'AWS FSx'],
+          selfHosted: ['Ceph distributed storage', 'ZFS on Linux', 'TrueNAS Enterprise SAN'],
+          desc: 'High-IOPS block and file storage, automated volume snapshots, and deduplication.',
+          keyRule: 'Storage volumes take hourly immutable snapshots replicated to secondary off-site arrays.'
+        },
+        {
+          icon: 'Settings',
+          title: 'Automated OS & Fleet Patching',
+          category: 'CONFIGURATION MANAGEMENT',
+          managed: ['Red Hat Satellite', 'Microsoft Endpoint Manager', 'AWS Systems Manager'],
+          selfHosted: ['Ansible Tower / AWX', 'Puppet Enterprise', 'SaltStack'],
+          desc: 'Automated operating system provisioning, package repository mirroring, and security compliance.',
+          keyRule: 'Fleet-wide OS configuration drifts are automatically corrected by hourly configuration daemons.'
+        },
+        {
+          icon: 'Shield',
+          title: 'Backup & Disaster Recovery',
+          category: 'BUSINESS CONTINUITY',
+          managed: ['Veeam Backup & Replication', 'Commvault Cloud', 'AWS Backup'],
+          selfHosted: ['Restic automated backups', 'Bacula enterprise', 'ZFS incremental replication'],
+          desc: 'Air-gapped ransomware-proof backups, instant VM recovery, and multi-region failover.',
+          keyRule: 'Backups are stored with immutable WORM locks and tested via monthly automated restore drills.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Infrastructure Monitoring & NOC',
+          category: 'COMMAND OBSERVABILITY',
+          managed: ['Zabbix Enterprise', 'LogicMonitor', 'Datadog Infrastructure'],
+          selfHosted: ['Prometheus node-exporter', 'Grafana alerting', 'SNMP hardware monitors'],
+          desc: 'Hardware IPMI sensor monitoring, power distribution telemetry, and 24/7 NOC alert triage.',
+          keyRule: 'Hardware health alerts trigger automatic ticket creation before component failure occurs.'
+        }
+      ]
+    },
   },
 
   'modernization-infrastructure': {
@@ -7246,6 +7928,68 @@ export const servicesData = {
     relatedServiceSlugs: ['legacy-modernization', 'cloud-computing', 'managed-infrastructure-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1560732488-6b0df240254a?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE MODERNIZATION FOUNDRY',
+      title: 'The infrastructure modernization planes,',
+      titleHighlight: 'from legacy debt to cloud-native speed.',
+      subtitle: 'Migrating legacy monolithic servers, outdated storage arrays, and static networks into containerized, software-defined, cloud-native infrastructure.',
+      items: [
+        {
+          icon: 'Search',
+          title: 'Estate Discovery & Dependency Map',
+          category: 'ASSESSMENT PLANE',
+          managed: ['Device42', 'CAST Highlight', 'AWS Application Discovery Service'],
+          selfHosted: ['Nmap network scans', 'Automated dependency graph visualizers', 'Custom CMDB crawlers'],
+          desc: 'Automated hardware inventory, software dependency graph extraction, and migration wave planning.',
+          keyRule: 'Migration waves are sequenced based on observed inter-server network communication patterns.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'Server Re-Platforming & Migration',
+          category: 'WORKLOAD MIGRATION',
+          managed: ['AWS Application Migration Service (MGN)', 'Azure Migrate', 'Google Migrate for Compute'],
+          selfHosted: ['Clonezilla network imaging', 'virt-v2v hypervisor conversion pipelines'],
+          desc: 'Continuous block-level data replication and automated cutover to modern cloud instances.',
+          keyRule: 'Cutover windows execute with less than 15 minutes of scheduled maintenance downtime.'
+        },
+        {
+          icon: 'Boxes',
+          title: 'VM to Container Migration',
+          category: 'CONTAINERIZATION',
+          managed: ['Red Hat OpenShift Virtualization', 'Google Anthos Migrate'],
+          selfHosted: ['KubeVirt for VMs on Kubernetes', 'Automated Dockerfile generation pipelines'],
+          desc: 'Packaging legacy application binaries into standard container images running on modern Kubernetes.',
+          keyRule: 'Legacy workloads are containerized to eliminate reliance on proprietary OS hypervisors.'
+        },
+        {
+          icon: 'Database',
+          title: 'Database Modernization & Migration',
+          category: 'DATABASE RE-PLATFORMING',
+          managed: ['AWS Database Migration Service (DMS)', 'Azure Database Migration Service'],
+          selfHosted: ['Debezium change data capture (CDC)', 'pgloader Oracle-to-Postgres tools'],
+          desc: 'Schema conversion from proprietary engines (Oracle/DB2) to open-source PostgreSQL and MySQL.',
+          keyRule: 'Database migrations run with active-active CDC replication to verify zero data loss.'
+        },
+        {
+          icon: 'Network',
+          title: 'Legacy Network to SD-WAN',
+          category: 'SOFTWARE-DEFINED NETWORK',
+          managed: ['Cisco Meraki', 'Palo Alto Prisma SD-WAN', 'Cloudflare Zero Trust'],
+          selfHosted: ['BGP EVPN over VXLAN', 'Cilium eBPF network meshes'],
+          desc: 'Retiring legacy MPLS circuits in favor of secure, encrypted, internet-based SD-WAN connectivity.',
+          keyRule: 'Legacy branch connections transition to encrypted Zero Trust Network Access (ZTNA).'
+        },
+        {
+          icon: 'Activity',
+          title: 'Modern Observability & Telemetry',
+          category: 'MONITORING UPGRADE',
+          managed: ['Datadog', 'Dynatrace', 'New Relic'],
+          selfHosted: ['Prometheus, Grafana, OpenTelemetry collectors replacing legacy Nagios/SolarWinds'],
+          desc: 'Transitioning from fragmented ping-based monitoring to unified high-cardinality distributed telemetry.',
+          keyRule: 'Legacy point monitoring tools are consolidated into a single unified telemetry pane.'
+        }
+      ]
+    },
   },
 
   'managed-services': {
@@ -7259,6 +8003,68 @@ export const servicesData = {
     relatedServiceSlugs: ['managed-infrastructure-services', 'managed-cloud-services', 'support-maintenance'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE MANAGED OPERATIONS FABRIC',
+      title: 'The IT managed operations planes,',
+      titleHighlight: 'for governed enterprise SLAs.',
+      subtitle: 'Delivering predictable IT performance with proactive monitoring, Level 1–4 incident resolution, compliance auditing, and continuous process optimization.',
+      items: [
+        {
+          icon: 'Users',
+          title: 'Omnichannel Service Desk (L1/L2)',
+          category: 'SERVICE FRONT DOOR',
+          managed: ['ServiceNow Employee Center', 'Jira Service Management', 'Freshservice'],
+          selfHosted: ['Kangqore AI support copilot', 'Unified omnichannel Slack/Teams request bots'],
+          desc: '24/7 global support desk, AI-assisted ticket categorization, and automated user self-service.',
+          keyRule: 'Standard requests resolve in under five minutes through automated self-service workflows.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Advanced Engineering Support (L3/L4)',
+          category: 'ESCALATION & FIXES',
+          managed: ['PagerDuty on-call routing', 'Opsgenie', 'Jira Software incident workflows'],
+          selfHosted: ['Dedicated Kangqore SRE and platform engineering escalation pods'],
+          desc: 'Deep architectural troubleshooting, code bug fixing, database index tuning, and kernel debugging.',
+          keyRule: 'High-priority incidents escalate to named L3 engineering specialists within 15 minutes.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Proactive ITOM & Observability',
+          category: 'PROACTIVE MONITORING',
+          managed: ['Dynatrace AIOps', 'Datadog Proactive Monitoring', 'Splunk ITSI'],
+          selfHosted: ['Prometheus alert rules', 'Custom synthetic user transaction monitors'],
+          desc: 'Automated anomaly detection, predictive outage warning, and event storm suppression.',
+          keyRule: 'Proactive alerting ensures infrastructure anomalies are detected and mitigated before users notice degradation.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Patch Management & Hardening',
+          category: 'SYSTEM MAINTENANCE',
+          managed: ['Automox', 'Tanium', 'Microsoft Intune'],
+          selfHosted: ['Ansible compliance playbooks', 'Automated testing pipelines for OS updates'],
+          desc: 'Monthly vulnerability patching, endpoint hardening, and zero-day emergency remediation.',
+          keyRule: 'Critical zero-day security patches deploy within 24 hours of vendor release.'
+        },
+        {
+          icon: 'Database',
+          title: 'Asset & Configuration Governance',
+          category: 'CMDB & ASSET LIFECYCLE',
+          managed: ['ServiceNow CMDB', 'Snipe-IT Cloud', 'Flexera ITAM'],
+          selfHosted: ['Automated network discovery daemons', 'Hardware lifecycle tracking databases'],
+          desc: 'Continuous tracking of enterprise software licenses, server warranties, and asset depreciation.',
+          keyRule: 'All IT hardware and software assets are mapped with verified ownership in the CMDB.'
+        },
+        {
+          icon: 'BarChart',
+          title: 'SLA & Business Executive Reporting',
+          category: 'OUTCOME MEASUREMENT',
+          managed: ['Power BI Executive Portals', 'Tableau Server', 'HappySignals XLA'],
+          selfHosted: ['Custom Grafana SLA/XLA dashboards with live contract uptime metrics'],
+          desc: 'Real-time visibility into mean time to resolution (MTTR), SLA compliance, and user satisfaction.',
+          keyRule: 'Monthly executive reviews evaluate business productivity outcomes alongside raw uptime.'
+        }
+      ]
+    },
   },
 
   'support-maintenance': {
@@ -7272,6 +8078,68 @@ export const servicesData = {
     relatedServiceSlugs: ['managed-services', 'managed-infrastructure-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE SUPPORT & LIFECYCLE FABRIC',
+      title: 'The software maintenance planes,',
+      titleHighlight: 'for long-term application health.',
+      subtitle: 'Maintaining mission-critical enterprise applications with proactive bug fixes, dependency upgrades, performance tuning, and 24/7 emergency response.',
+      items: [
+        {
+          icon: 'Settings',
+          title: 'Continuous Bug Fixes & Code Health',
+          category: 'APPLICATION MAINTENANCE',
+          managed: ['GitHub Issues Enterprise', 'Jira Service Management', 'Bugsnag'],
+          selfHosted: ['GitLab Issue Tracker', 'Custom automated patch verification pipelines'],
+          desc: 'Systematic triage and resolution of functional software bugs, edge cases, and user-reported defects.',
+          keyRule: 'Bug fixes include automated regression tests to prevent recurrence in future releases.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'Dependency & Framework Upgrades',
+          category: 'TECHNICAL DEBT MANAGEMENT',
+          managed: ['Dependabot Enterprise', 'Snyk Open Source', 'Renovate Bot'],
+          selfHosted: ['Automated library upgrade CI test suites', 'OpenRewrite modernization recipes'],
+          desc: 'Upgrading runtime environments (Java, Node.js, Python, .NET), third-party libraries, and APIs.',
+          keyRule: 'Application dependencies are kept within one minor version of upstream stable releases.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Performance Tuning & Optimization',
+          category: 'RUNTIME OPTIMIZATION',
+          managed: ['New Relic APM', 'Datadog Profiler', 'Raygun'],
+          selfHosted: ['FlameGraph CPU profilers', 'PostgreSQL slow query analyzers', 'Redis caching layers'],
+          desc: 'Eliminating N+1 database queries, optimizing memory leaks, and tuning garbage collection.',
+          keyRule: 'Database queries running longer than 100ms are automatically flagged for index optimization.'
+        },
+        {
+          icon: 'Shield',
+          title: 'Security Patching & Vulnerabilities',
+          category: 'APPLICATION SECURITY',
+          managed: ['Veracode', 'Checkmarx One', 'GitHub Advanced Security'],
+          selfHosted: ['OWASP Dependency-Check', 'Trivy vulnerability scanners', 'Semgrep'],
+          desc: 'Rapid remediation of CVE vulnerabilities in application code, dependencies, and containers.',
+          keyRule: 'High and critical application vulnerabilities are remediated and patched within SLA limits.'
+        },
+        {
+          icon: 'Database',
+          title: 'Database Maintenance & Archiving',
+          category: 'DATA LIFECYCLE',
+          managed: ['AWS RDS Maintenance Windows', 'Azure SQL Automated Tuning'],
+          selfHosted: ['pg_repack index defragmentation', 'Automated cold data archiving scripts'],
+          desc: 'Database vacuuming, index re-indexing, historical data partitioning, and backup verification.',
+          keyRule: 'Historical operational data older than retention limits is archived to cold storage.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Emergency 24/7 Tier-3 Response',
+          category: 'MISSION CRITICAL SRE',
+          managed: ['PagerDuty', 'Opsgenie', 'VictorOps'],
+          selfHosted: ['Dedicated 24/7 escalation bridge', 'Automated rollback and hotfix pipelines'],
+          desc: 'Round-the-clock emergency developer response for production-down application incidents.',
+          keyRule: 'Production-outage incidents engage senior engineering leads within 15 minutes.'
+        }
+      ]
+    },
   },
 
   'software-development': {
@@ -7285,6 +8153,68 @@ export const servicesData = {
     relatedServiceSlugs: ['api-microservices-engineering', 'devops-as-a-service', 'engineering-foundry'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE SOFTWARE ENGINEERING FABRIC',
+      title: 'The custom software planes,',
+      titleHighlight: 'built for enterprise scale and speed.',
+      subtitle: 'Full-lifecycle custom software development from architectural design, domain-driven microservices, frontend design systems, to automated testing and cloud deployment.',
+      items: [
+        {
+          icon: 'Compass',
+          title: 'Architecture & Domain Modeling',
+          category: 'SYSTEM ARCHITECTURE',
+          managed: ['Lucidchart Enterprise', 'Miro Architecture', 'Enterprise Architect'],
+          selfHosted: ['Domain-Driven Design (DDD) bounded contexts', 'C4 model diagrams in code'],
+          desc: 'Clean architecture design, modular service boundaries, and event-driven data flow schemas.',
+          keyRule: 'Software architectures follow domain-driven design with explicit bounded contexts.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Modern Frontend Engineering',
+          category: 'UI/UX & DESIGN SYSTEM',
+          managed: ['Figma Enterprise', 'Storybook Cloud', 'Vercel'],
+          selfHosted: ['React, Next.js, Vue 3, Tailwind CSS, WCAG 2.1 AA accessible component libraries'],
+          desc: 'High-performance responsive web applications, design token systems, and accessible interfaces.',
+          keyRule: 'Frontend components strictly adhere to standardized design tokens and accessibility rules.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'High-Throughput Backend Services',
+          category: 'BACKEND RUNTIME',
+          managed: ['AWS Lambda', 'Azure Functions', 'Google Cloud Run'],
+          selfHosted: ['Go, Rust, Node.js / TypeScript, Java Spring Boot microservices with gRPC'],
+          desc: 'Stateless microservices, asynchronous message queues, and high-concurrency API backends.',
+          keyRule: 'Backend services enforce strict input validation schemas and structured logging.'
+        },
+        {
+          icon: 'Database',
+          title: 'Database & Data Persistence',
+          category: 'DATA PERSISTENCE',
+          managed: ['Amazon Aurora', 'Azure Cosmos DB', 'MongoDB Atlas'],
+          selfHosted: ['PostgreSQL', 'Redis', 'ClickHouse', 'Apache Cassandra'],
+          desc: 'Relational, document, and key-value databases tailored to specific domain query access patterns.',
+          keyRule: 'Database transactions adhere to strict ACID compliance for financial and stateful models.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Automated Testing & QA Gates',
+          category: 'QUALITY ASSURANCE',
+          managed: ['BrowserStack', 'Cypress Cloud', 'Playwright Enterprise'],
+          selfHosted: ['Jest', 'PyTest', 'Playwright end-to-end suites', 'Pact contract testing'],
+          desc: 'Unit test coverage, consumer-driven contract testing, and visual regression suites.',
+          keyRule: 'All code changes require rigorous unit test coverage and green integration suites before merge.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'DevOps & Container Deployment',
+          category: 'RELEASE AUTOMATION',
+          managed: ['GitHub Actions', 'Docker Hub Enterprise', 'AWS ECR'],
+          selfHosted: ['ArgoCD GitOps', 'Helm chart repositories', 'Kubernetes clusters'],
+          desc: 'Automated container builds, semantic versioning, and zero-downtime rolling deployments.',
+          keyRule: 'Releases deploy via canary or blue-green rollouts with automated health verification.'
+        }
+      ]
+    },
   },
 
   'api-microservices-engineering': {
@@ -7298,6 +8228,68 @@ export const servicesData = {
     relatedServiceSlugs: ['software-development', 'devops-as-a-service', 'enterprise-integration-platform'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE API & MICROSERVICES FABRIC',
+      title: 'The microservices planes,',
+      titleHighlight: 'for decoupled, high-velocity systems.',
+      subtitle: 'Designing resilient distributed microservices, federated API gateways, asynchronous event streams, and service mesh architectures.',
+      items: [
+        {
+          icon: 'Globe',
+          title: 'API Gateway & Traffic Routing',
+          category: 'INGRESS & ROUTING',
+          managed: ['Kong Enterprise', 'Apigee X', 'AWS API Gateway'],
+          selfHosted: ['Envoy Proxy', 'Traefik Enterprise', 'KrakenD API Gateway'],
+          desc: 'Centralized rate limiting, JWT token verification, dynamic route rewrites, and SSL termination.',
+          keyRule: 'All inbound API traffic passes through a governed gateway with token validation.'
+        },
+        {
+          icon: 'Network',
+          title: 'Service Mesh & East-West Security',
+          category: 'SERVICE MESH',
+          managed: ['AWS App Mesh', 'Azure Service Fabric', 'Google Cloud Service Mesh'],
+          selfHosted: ['Istio Service Mesh', 'Linkerd2', 'Cilium Service Mesh with eBPF'],
+          desc: 'Mutual TLS (mTLS) inter-service encryption, circuit breaking, and traffic shadowing.',
+          keyRule: 'Inter-service communication enforces mutual TLS with cryptographic SPIFFE identities.'
+        },
+        {
+          icon: 'Code',
+          title: 'Contract & Protocol Engineering',
+          category: 'API CONTRACTS',
+          managed: ['Stoplight', 'Postman Enterprise', 'SwaggerHub'],
+          selfHosted: ['OpenAPI 3.1 specifications', 'Protocol Buffers (gRPC)', 'AsyncAPI for events'],
+          desc: 'Design-first API authoring, automated mock generation, and breaking change detection in CI.',
+          keyRule: 'API modifications are validated against OpenAPI schemas to prevent breaking client contracts.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Event Streaming & Saga Orchestration',
+          category: 'ASYNCHRONOUS EVENTS',
+          managed: ['Confluent Cloud Kafka', 'AWS EventBridge', 'Azure Event Hubs'],
+          selfHosted: ['Apache Kafka', 'Redpanda', 'Temporal.io distributed workflow saga coordinators'],
+          desc: 'Decoupled event publishing, distributed transaction sagas, and outbox pattern implementation.',
+          keyRule: 'Multi-service distributed transactions execute using Temporal saga state machines.'
+        },
+        {
+          icon: 'Database',
+          title: 'Distributed Caching & Acceleration',
+          category: 'DATA ACCELERATION',
+          managed: ['AWS ElastiCache', 'Redis Enterprise Cloud', 'Upstash'],
+          selfHosted: ['Redis Sentinel clusters', 'Dragonfly', 'Memcached'],
+          desc: 'In-memory query caching, distributed session storage, and global lock coordination.',
+          keyRule: 'Cache invalidation uses event-driven cache-aside patterns with declared TTL timeouts.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Distributed Tracing & Observability',
+          category: 'DISTRIBUTED TELEMETRY',
+          managed: ['Honeycomb', 'Datadog APM', 'Lightstep'],
+          selfHosted: ['Jaeger distributed tracing', 'OpenTelemetry collectors', 'Grafana Tempo'],
+          desc: 'End-to-end distributed span tracing across dozens of microservices with W3C trace context.',
+          keyRule: 'Every incoming request receives a trace ID propagated across all downstream microservices.'
+        }
+      ]
+    },
   },
 
   'internet-of-things': {
@@ -7311,6 +8303,68 @@ export const servicesData = {
     relatedServiceSlugs: ['embedded-design-systems', 'operation-technology', 'product-digital-engineering'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE IOT CONNECTIVITY FABRIC',
+      title: 'The IoT & connected device planes,',
+      titleHighlight: 'from edge sensors to cloud intelligence.',
+      subtitle: 'Connecting millions of distributed physical devices with secure device identity, high-throughput telemetry ingestion, edge analytics, and automated fleet management.',
+      items: [
+        {
+          icon: 'Lock',
+          title: 'Device Provisioning & Identity',
+          category: 'DEVICE PROVISIONING',
+          managed: ['AWS IoT Core Device Provisioning', 'Azure IoT Hub DPS'],
+          selfHosted: ['X.509 certificate authority', 'EST (Enrollment over Secure Transport) servers'],
+          desc: 'Zero-touch secure bootstrapping, unique device certificate generation, and cryptographic authentication.',
+          keyRule: 'Devices authenticate using unique hardware-backed X.509 client certificates.'
+        },
+        {
+          icon: 'Radio',
+          title: 'High-Throughput Ingestion Gateway',
+          category: 'MESSAGE INGESTION',
+          managed: ['AWS IoT Core Message Broker', 'Azure Event Hubs IoT', 'Google Cloud Pub/Sub'],
+          selfHosted: ['EMQX enterprise MQTT broker', 'HiveMQ distributed clusters', 'Mosquitto'],
+          desc: 'MQTT / CoAP / HTTPS protocol ingestion handling millions of concurrent persistent connections.',
+          keyRule: 'Message brokers handle network disconnects with persistent QoS-1 session buffering.'
+        },
+        {
+          icon: 'Cpu',
+          title: 'Edge Processing & Local Analytics',
+          category: 'EDGE RUNTIME',
+          managed: ['AWS IoT Greengrass v2', 'Azure IoT Edge'],
+          selfHosted: ['EdgeX Foundry', 'K3s lightweight Kubernetes', 'Custom Docker edge containers'],
+          desc: 'Local machine learning inference, sensor data filtering, and autonomous edge control loops.',
+          keyRule: 'Edge gateways continue executing control logic even when cloud connectivity is lost.'
+        },
+        {
+          icon: 'Database',
+          title: 'Time-Series Telemetry Storage',
+          category: 'TIME-SERIES STORAGE',
+          managed: ['AWS Timestream', 'Azure Data Explorer', 'InfluxDB Cloud'],
+          selfHosted: ['TimescaleDB on PostgreSQL', 'ClickHouse', 'Apache Druid'],
+          desc: 'Sub-second ingestion of sensor time-series metrics with automated compression and downsampling.',
+          keyRule: 'High-frequency raw sensor data is downsampled and aggregated after 30 days.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'Firmware OTA Fleet Updates',
+          category: 'DEVICE LIFECYCLE',
+          managed: ['AWS IoT Device Management', 'Memfault', 'Particle Device Cloud'],
+          selfHosted: ['Mender.io OTA servers', 'Hawkbit software update management'],
+          desc: 'Staged phased firmware rollouts, automated health canary checks, and failure rollback.',
+          keyRule: 'Firmware updates rollout to a phased canary cohort before full fleet deployment.'
+        },
+        {
+          icon: 'Boxes',
+          title: 'Digital Twins & Business Integration',
+          category: 'DIGITAL TWINS',
+          managed: ['AWS IoT TwinMaker', 'Azure Digital Twins'],
+          selfHosted: ['Custom 3D model visualization pipelines with three.js', 'Kafka connectors to ERP'],
+          desc: 'Real-time physical asset twin representation, spatial sensor mapping, and predictive maintenance alerts.',
+          keyRule: 'Digital twins mirror live physical asset state and feed predictive maintenance models.'
+        }
+      ]
+    },
   },
 
   // ═════════════════════════════════════════════════════════════════════════════

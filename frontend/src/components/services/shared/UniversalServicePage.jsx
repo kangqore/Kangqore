@@ -1496,6 +1496,8 @@ const featureMicros   = service.featureMicros
     service.department === 'Cognition' || 
     service.departmentSlug === 'shield' || 
     service.department === 'Shield' || 
+    service.departmentSlug === 'foundry' || 
+    service.department === 'Foundry' || 
     [
       'enterprise-integration-platform',
       'servicenow',
@@ -1521,7 +1523,24 @@ const featureMicros   = service.featureMicros
       'it-security-services',
       'finance-risk-management',
       'quality-engineering-assurance',
-      'operation-technology'
+      'operation-technology',
+      'managed-cloud-services',
+      'aws',
+      'microsoft-services',
+      'google-cloud-services',
+      'cloud-computing',
+      'embedded-design-systems',
+      'engineering-foundry',
+      'engineering-rd-services',
+      'product-digital-engineering',
+      'devops-as-a-service',
+      'managed-infrastructure-services',
+      'modernization-infrastructure',
+      'managed-services',
+      'support-maintenance',
+      'software-development',
+      'api-microservices-engineering',
+      'internet-of-things'
     ].includes(service.slug);
 
   const toolsStackSection = (!service.hideToolsStack && service.toolsStack) ? (
