@@ -10837,6 +10837,7 @@ export const servicesData = {
       title: 'The platforms,',
       titleHighlight: 'and what each is actually for.',
       subtitle: 'Platform choice is mostly settled by what the group already licenses and by whether the hard problem is transformation, throughput or partner exchange. These are the defaults and what overrides them.',
+      image: null,
       items: [
         {
           icon: 'Network',

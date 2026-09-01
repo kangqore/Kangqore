@@ -32,6 +32,7 @@ import GeminiComparisonSection from './GeminiComparisonSection';
 import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
 import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DModel';
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
+import { IntegrationEcosystemSection } from '../integration/IntegrationEcosystemSection';
 import { MLOps3DModel } from '../../ui/MLOps3DModel';
 import { GenAI3DModel } from '../../ui/GenAI3DModel';
 import { EnterpriseIntegration3DModel } from '../../ui/EnterpriseIntegration3DModel';
@@ -1488,30 +1489,37 @@ const featureMicros   = service.featureMicros
   // the pricing. Extracting it keeps one copy of the markup, so the two slots
   // cannot drift apart.
   const toolsStackSection = (!service.hideToolsStack && service.toolsStack) ? (
-    <AIToolsSection
-      title={service.toolsStack?.title}
-      eyebrow={service.toolsStack?.eyebrow}
-      titleHighlight={service.toolsStack?.titleHighlight}
-      subtitle={service.toolsStack?.subtitle}
-      items={service.toolsStack?.items}
-      image={
-        service.slug === 'agentic-ai-led-application-modernization' ? (
-          <AgenticModernization3DModel />
-        ) : service.slug === 'agentic-ai' ? (
-          <AgenticAI3DModel />
-        ) : service.slug === 'mlops' ? (
-          <MLOps3DModel />
-        ) : service.slug === 'genai-business-services' ? (
-          <GenAI3DModel />
-        ) : service.slug === 'enterprise-integration-platform' ? (
-          <EnterpriseIntegration3DModel />
-        ) : (
-          service.toolsStack?.image
-        )
-      }
-      imageAlt={service.toolsStack?.imageAlt}
-      inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services' || service.slug === 'enterprise-integration-platform'}
-    />
+    service.slug === 'enterprise-integration-platform' ? (
+      <IntegrationEcosystemSection
+        eyebrow={service.toolsStack?.eyebrow}
+        title={service.toolsStack?.title}
+        titleHighlight={service.toolsStack?.titleHighlight}
+        subtitle={service.toolsStack?.subtitle}
+      />
+    ) : (
+      <AIToolsSection
+        title={service.toolsStack?.title}
+        eyebrow={service.toolsStack?.eyebrow}
+        titleHighlight={service.toolsStack?.titleHighlight}
+        subtitle={service.toolsStack?.subtitle}
+        items={service.toolsStack?.items}
+        image={
+          service.slug === 'agentic-ai-led-application-modernization' ? (
+            <AgenticModernization3DModel />
+          ) : service.slug === 'agentic-ai' ? (
+            <AgenticAI3DModel />
+          ) : service.slug === 'mlops' ? (
+            <MLOps3DModel />
+          ) : service.slug === 'genai-business-services' ? (
+            <GenAI3DModel />
+          ) : (
+            service.toolsStack?.image
+          )
+        }
+        imageAlt={service.toolsStack?.imageAlt}
+        inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
+      />
+    )
   ) : null;
 
   return (

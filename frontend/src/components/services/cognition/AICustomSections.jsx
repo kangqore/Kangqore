@@ -531,7 +531,8 @@ export const AIToolsSection = ({
   // Nothing is open on load. A row is active only while it is hovered or
   // focused; leaving the list closes it again.
   const [openTool, setOpenTool] = useState(null);
-  const isCustomModel = typeof image !== 'string' && !inlineModel;
+  const hasImage = image != null;
+  const isCustomModel = hasImage && typeof image !== 'string' && !inlineModel;
   const customModelElement = isCustomModel && React.isValidElement(image)
     ? React.cloneElement(image, { activeStep: openTool })
     : image;
@@ -549,7 +550,7 @@ export const AIToolsSection = ({
             illustration in dead space; the illustration sticks instead. */}
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-12 lg:gap-20">
           {/* Left Column: Title and vertical list of layers */}
-          <div className={`w-full ${isCustomModel ? 'lg:w-[48%]' : 'lg:w-1/2'} flex flex-col`}>
+          <div className={`w-full ${isCustomModel ? 'lg:w-[48%]' : hasImage ? 'lg:w-1/2' : 'lg:w-full'} flex flex-col`}>
             {eyebrow && (
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-[1px] w-12 bg-white/20" />
@@ -711,7 +712,7 @@ export const AIToolsSection = ({
           </div>
 
           {/* Right Column: Isometric Illustration or Inline 3D Model */}
-          {!isCustomModel && (
+          {!isCustomModel && hasImage && (
             <div className={`w-full ${inlineModel ? 'lg:w-[54%]' : 'lg:w-1/2'} flex items-center justify-center lg:sticky lg:top-24 lg:pt-6`}>
               <div className={`relative ${inlineModel ? 'max-w-2xl' : 'max-w-lg'} w-full`}>
                 {/* Soft decorative background glow behind the illustration */}
