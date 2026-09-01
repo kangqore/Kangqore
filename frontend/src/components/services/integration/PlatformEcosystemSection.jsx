@@ -103,6 +103,7 @@ export const PlatformEcosystemSection = ({
 
   return (
     <section 
+      id="svc-ecosystem"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       className="py-20 md:py-32 bg-[#000000] relative overflow-hidden text-white"

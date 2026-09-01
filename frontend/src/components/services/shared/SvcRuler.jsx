@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import '../reimagine/PSEDRuler.css';
 
 const NAV_ITEMS = [
-  { id: 'svc-hero',         num: '01', label: 'Overview'     },
-  { id: 'svc-what',         num: '02', label: 'What Is It'   },
-  { id: 'svc-concierge',    num: '03', label: 'eQORE AI™'    },
-  { id: 'svc-capabilities', num: '04', label: 'Capabilities' },
-  { id: 'svc-phases',       num: '05', label: 'Our Process'  },
-  { id: 'svc-partnership',   num: '06', label: 'Partnership'  },
-  { id: 'svc-faq',          num: '07', label: 'FAQ'          },
+  { id: 'svc-what',         num: '01', label: 'What Is It'   },
+  { id: 'svc-concierge',    num: '02', label: 'eQORE AI™'    },
+  { id: 'svc-capabilities', num: '03', label: 'Capabilities' },
+  { id: 'svc-ecosystem',    num: '04', label: 'Ecosystem'    },
+  { id: 'svc-industry',     num: '05', label: 'By Industry'  },
+  { id: 'svc-faq',          num: '06', label: 'FAQ'          },
+  { id: 'svc-newsletter',   num: '07', label: 'Newsletter'   },
 ];
 
 export default function SvcRuler() {
