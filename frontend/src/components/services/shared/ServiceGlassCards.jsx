@@ -7,7 +7,12 @@ const FAQTeleprompter = ({ faqs }) => {
   const [isTyping, setIsTyping] = useState(false);
   const containerRef = useRef(null);
 
-  const currentFaq = faqs[faqIdx];
+  useEffect(() => {
+    setFaqIdx(0);
+  }, [faqs]);
+
+  const safeFaqIdx = (faqs && faqs.length > 0 && faqIdx >= 0 && faqIdx < faqs.length) ? faqIdx : 0;
+  const currentFaq = faqs?.[safeFaqIdx] || faqs?.[0] || {};
   const fullText = currentFaq?.a || '';
   // Calculate dynamic duration: 30ms per character + 10 seconds pause at the end
   const durationMs = Math.max(8000, (fullText.length * 30) + 10000);
@@ -111,6 +116,10 @@ const CapabilityCycler = ({ capabilities }) => {
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
+    setCapIdx(0);
+  }, [capabilities]);
+
+  useEffect(() => {
     if (typeof window === 'undefined') return;
     const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mql.matches);
@@ -129,7 +138,8 @@ const CapabilityCycler = ({ capabilities }) => {
 
   if (!capabilities || capabilities.length === 0) return null;
 
-  const currentCap = capabilities[capIdx];
+  const safeCapIdx = (capIdx >= 0 && capIdx < capabilities.length) ? capIdx : 0;
+  const currentCap = capabilities[safeCapIdx] || capabilities[0] || {};
 
   return (
     <div 
@@ -150,12 +160,12 @@ const CapabilityCycler = ({ capabilities }) => {
           <div className="flex items-center gap-2 mb-1.5 opacity-80">
             <Cpu className="w-3 h-3 text-white" />
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
-              Capability {capIdx + 1}/{capabilities.length}
+              Capability {safeCapIdx + 1}/{capabilities.length}
             </p>
           </div>
           
           <div
-            key={`title-${capIdx}`}
+            key={`title-${safeCapIdx}`}
             /* `line-clamp` needs display:-webkit-box, and the `flex` that used
                to sit here won the display cascade — so the clamp never applied
                and any capability title over roughly forty characters ran down
@@ -167,7 +177,7 @@ const CapabilityCycler = ({ capabilities }) => {
                (184px) four lines still reach past the bar. */
             className="text-lg xl:text-xl font-black text-white tracking-tight leading-[1.2] animate-fade-in-up overflow-hidden line-clamp-3 mt-2"
           >
-            {currentCap.title}
+            {currentCap.title || ''}
           </div>
         </div>
 
@@ -175,7 +185,7 @@ const CapabilityCycler = ({ capabilities }) => {
         <div className="absolute bottom-6 left-5 right-12 h-[2px] bg-white/20 rounded-full overflow-hidden">
           <div 
             className="h-full bg-white transition-all duration-300 ease-linear"
-            style={{ width: `${((capIdx + 1) / capabilities.length) * 100}%` }}
+            style={{ width: `${((safeCapIdx + 1) / capabilities.length) * 100}%` }}
           />
         </div>
       </div>

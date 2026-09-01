@@ -33,6 +33,7 @@ import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
 import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DModel';
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
 import { IntegrationEcosystemSection } from '../integration/IntegrationEcosystemSection';
+import { PlatformEcosystemSection } from '../integration/PlatformEcosystemSection';
 import { MLOps3DModel } from '../../ui/MLOps3DModel';
 import { GenAI3DModel } from '../../ui/GenAI3DModel';
 import { EnterpriseIntegration3DModel } from '../../ui/EnterpriseIntegration3DModel';
@@ -1488,13 +1489,25 @@ const featureMicros   = service.featureMicros
   // burying the product landscape below "how we engage" puts the answer after
   // the pricing. Extracting it keeps one copy of the markup, so the two slots
   // cannot drift apart.
+  const isPlatformService = service.departmentSlug === 'platforms' || service.department === 'Platforms' || [
+    'enterprise-integration-platform',
+    'servicenow',
+    'salesforce',
+    'talent-organization',
+    'pimcore',
+    'global-capability-centers',
+    'supply-chain',
+    'unified-services-management'
+  ].includes(service.slug);
+
   const toolsStackSection = (!service.hideToolsStack && service.toolsStack) ? (
-    service.slug === 'enterprise-integration-platform' ? (
-      <IntegrationEcosystemSection
+    isPlatformService ? (
+      <PlatformEcosystemSection
         eyebrow={service.toolsStack?.eyebrow}
         title={service.toolsStack?.title}
         titleHighlight={service.toolsStack?.titleHighlight}
         subtitle={service.toolsStack?.subtitle}
+        items={service.toolsStack?.items}
       />
     ) : (
       <AIToolsSection
