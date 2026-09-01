@@ -360,6 +360,21 @@ html.dark body {
   100% { transform: scale(1.35); opacity: 0; }
 }
 
+@keyframes archFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-arch-fade {
+  animation: archFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .animate-marquee-vertical {
   animation: marquee-vertical 25s linear infinite;
 }
