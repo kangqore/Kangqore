@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T10:24:01.335Z",
+  "generatedAt": "2026-09-01T11:23:11.067Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1444,7 +1444,32 @@
       "description": "Pimcore PIM/DAM — PIM implementation, DAM setup, data modeling, integration, and custom development for product information and digital assets.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Product Information Management",
+          "detail": "The single source of truth for product attributes, classifications, translations, and channel variants. Validates schemas before syndicating downstream."
+        },
+        {
+          "rule": "Master Data Management",
+          "detail": "Reconciles suppliers, customers, and locations with strict deduplication and survivorship rules across complex multi-domain enterprise data models."
+        },
+        {
+          "rule": "Digital Asset Management",
+          "detail": "Centralized repository for images, videos, documents, and 3D models with automated format conversion and AI-assisted metadata tagging."
+        },
+        {
+          "rule": "Customer Data Platform",
+          "detail": "Aggregates interaction touchpoints into unified customer profiles for personalization, segment activation, and omnichannel campaign orchestration."
+        },
+        {
+          "rule": "Digital Experience Platform",
+          "detail": "Headless content delivery and personalized customer portals backed by modular component layouts and multi-lingual localized publishing."
+        },
+        {
+          "rule": "Data Director & Integration Bus",
+          "detail": "Bi-directional ETL and event-driven data pipelines connecting ERPs, marketplaces, e-commerce engines, and print publishing systems."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1474,7 +1499,32 @@
           "a": "With an inventory, not a redesign. Every custom object and field, when it was last written to, and which automation touches it. Every flow, workflow rule and Process Builder still active, and which of them can update the same record. Every integration user and what it can see. Every report that reaches an executive, and whether two of them define the same metric differently. That produces a debt register ranked by what it actually blocks, which is usually a much shorter list than the full inventory. Most orgs discover that four or five items are responsible for the majority of the delivery drag, and that a redesign was never required to clear them."
         }
       ],
-      "method": [],
+      "method": [
+        {
+          "rule": "Sales Cloud and Revenue Ops",
+          "detail": "The core commercial pipeline engine. Standard objects over custom tables; product catalog logic and CPQ rules must live in catalog configuration rather than bespoke code."
+        },
+        {
+          "rule": "Service Cloud & Engagement",
+          "detail": "Omnichannel case resolution and contact center deflection. Case routing is only as dependable as the underlying customer entitlement and SLA data models."
+        },
+        {
+          "rule": "Data Cloud & Identity",
+          "detail": "Harmonizes real-time enterprise telemetry and streaming events into a unified customer graph without redundant data copying across systems."
+        },
+        {
+          "rule": "Marketing Cloud & Journeys",
+          "detail": "Dynamic customer journeys across email, SMS, mobile push, and advertising channels with real-time engagement telemetry and lead scoring."
+        },
+        {
+          "rule": "MuleSoft & Integration Plane",
+          "detail": "API-led connectivity unlocking legacy backends and ERP systems. Decouples core Salesforce transactions from brittle point-to-point Apex callouts."
+        },
+        {
+          "rule": "Core Platform & Governance",
+          "detail": "Security, field-level encryption, event monitoring, and source-driven scratch org deployment ensuring zero governor-limit violations."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1685,7 +1735,32 @@
           "a": "Almost always because the system gave an answer they could not defend, and they were still accountable for the outcome. That traces to one of three things. The parameters are wrong — lead times that were estimates at go-live and were never corrected against actual receipts. The segmentation is wrong, so a slow-moving spare is being forecast with the same method as a fast-moving line. Or the exceptions are wrong, and the planner is drowning in alerts that do not distinguish a real problem from a rounding difference. None of the three is fixed by a new platform, and all three follow the new platform across if you buy one. Diagnosing which it is takes days, not months, and it is the cheapest work in this category."
         }
       ],
-      "method": [],
+      "method": [
+        {
+          "rule": "Demand Sensing & AI Forecasting",
+          "detail": "Advanced statistical and machine learning engines that capture market signals, promotional lift, distributor orders, and macroeconomic variance."
+        },
+        {
+          "rule": "Supply & Inventory Optimization",
+          "detail": "Multi-echelon inventory optimization balancing working capital allocation against committed customer service level agreements."
+        },
+        {
+          "rule": "Sales & Operations Planning",
+          "detail": "Monthly executive reconciliation connecting commercial demand projections, manufacturing capacity, and financial P&L targets into one plan."
+        },
+        {
+          "rule": "Warehouse Management (WMS)",
+          "detail": "Real-time inventory putaway, wave picking, dynamic slotting, and automated material handling with sub-second transaction speed."
+        },
+        {
+          "rule": "Transportation Management (TMS)",
+          "detail": "Route optimization, freight audit, carrier bidding, and real-time in-transit visibility with dynamic dwell-time prediction."
+        },
+        {
+          "rule": "Control Tower & Visibility",
+          "detail": "End-to-end exception monitoring and prescriptive resolution recommendations across Tier-1 and Tier-2 supplier networks."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1713,7 +1788,32 @@
           "a": "Three roles worth having, and one that is mostly sold. Worth having: deflection at intake, where a model answers the question instead of routing it — but only for request types whose answer is genuinely stable. Classification and routing, which is the highest-value application in this category, because misrouting is where most elapsed time goes. And summarization at handoff, so the third person to touch a request does not have to re-read the whole thread. Mostly sold: the autonomous agent that resolves tickets end to end. It demonstrates well on request types that were already automatable through a form, and struggles on the rest — because the hard part was never the language. It was the entitlement, the approval and the system of record. The precondition is the same as for automation generally. A model trained on a queue where one request type is filed under four names learns the four names. Fix the taxonomy first, or you are paying to scale the disagreement."
         }
       ],
-      "method": [],
+      "method": [
+        {
+          "rule": "Enterprise Service Management",
+          "detail": "Single unified front door for all employee services across IT, HR, facilities, and finance, eliminating fragmented departmental ticketing silos."
+        },
+        {
+          "rule": "Service Catalog & Automation",
+          "detail": "Standardized request taxonomies and automated approval workflows that provision access and execute tasks without manual email handoffs."
+        },
+        {
+          "rule": "Incident & Crisis Command",
+          "detail": "Automated on-call escalation, major incident swarming, and structured stakeholder communication protocols prioritizing rapid service restoration."
+        },
+        {
+          "rule": "CMDB & Dependency Mapping",
+          "detail": "Continuous automated discovery mapping technical infrastructure components to business services for accurate change impact analysis."
+        },
+        {
+          "rule": "SLA & Experience Agreements",
+          "detail": "Experience Level Agreements (XLAs) measuring employee productivity and sentiment alongside technical response time service levels."
+        },
+        {
+          "rule": "Self-Healing & Observability",
+          "detail": "AI-driven event correlation grouping alert storms into root-cause incidents with automated runbook remediation triggers."
+        }
+      ],
       "dataHandling": []
     },
     {
