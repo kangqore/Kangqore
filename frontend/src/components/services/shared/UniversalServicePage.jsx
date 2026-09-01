@@ -1523,6 +1523,7 @@ const featureMicros   = service.featureMicros
 
   // ── State ─────────────────────────────────────────────────────────────────
   const [openFaq,          setOpenFaq]          = useState(0);
+  const [isFaqExpanded,    setIsFaqExpanded]    = useState(false);
   const [activeCapability, setActiveCapability] = useState(0);
   const [expandedCaps,     setExpandedCaps]     = useState({});
   // Data-boundary blocks: none open on load, active only while hovered/focused.
@@ -5818,8 +5819,8 @@ const featureMicros   = service.featureMicros
                 <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.faqEyebrow || 'BEFORE YOU SIGN'}</span>
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.2] tracking-tight text-white">
-                {service.faqHeading || 'The hard questions,'}<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.faqHeadingHighlight || 'answered (FAQ).'}</span>
+                The hard questions,<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">answered (FAQ).</span>
               </h2>
               <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-2xl">
                 {service.faqLede || `The questions below are the ones buyers actually ask in a first call — on scope, risk, timelines and what happens when something goes wrong. Answers are direct rather than promotional.`}
@@ -5837,7 +5838,7 @@ const featureMicros   = service.featureMicros
           </div>
 
           <div className="space-y-0">
-            {faqs.map((faq, i) => {
+            {((faqs.length > 5 && !isFaqExpanded) ? faqs.slice(0, 5) : faqs).map((faq, i) => {
               const isOpen = openFaq === i;
               return (
                 <div key={i} className="border-t border-white/[0.06]">
@@ -5910,6 +5911,20 @@ const featureMicros   = service.featureMicros
             })}
             <div className="border-t border-white/[0.06]" />
           </div>
+
+          {faqs.length > 5 && (
+            <div className="mt-8 flex justify-start">
+              <button
+                type="button"
+                onClick={() => setIsFaqExpanded((prev) => !prev)}
+                aria-expanded={isFaqExpanded}
+                className="text-[#60a5fa] hover:text-white py-1 min-h-[24px] font-semibold text-sm tracking-wide uppercase transition-colors inline-flex items-center gap-2 cursor-pointer select-none"
+              >
+                {isFaqExpanded ? 'Read Less' : 'Read More'}
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isFaqExpanded ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
