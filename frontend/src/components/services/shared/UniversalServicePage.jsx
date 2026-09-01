@@ -28,7 +28,6 @@ import { servicesData } from '../../../data/servicesData';
 import ResponsiveImage from '../../media/ResponsiveImage';
 import Beams from '../../ui/Beams';
 import { BackgroundBeams } from '../../ui/background-beams';
-import GeminiComparisonSection from './GeminiComparisonSection';
 import { BackgroundNoiseGrid } from '../../ui/BackgroundNoiseGrid';
 import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DModel';
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
@@ -4986,23 +4985,6 @@ const featureMicros   = service.featureMicros
       {/* 3D Ecosystem Cockpit / Tools & Technology Stack — situated directly below Capabilities */}
       {toolsStackSection}
 
-      {/* ══════════════════════ COMPARISON TABLE ══════════════════════ */}
-      {/* Opt-out per service via hideComparison, mirroring
-          hidePartnershipModel. Deleting the data key is not the way to remove
-          this section: getParityService resolves `service.comparisonTable ||
-          <department default>`, so an absent key swaps in generic department
-          copy rather than hiding anything. A page that wants the section gone
-          needs a flag, not a deletion. Defaults to showing, so the other 61
-          pages are unchanged. */}
-      {!service.hideComparison && service.comparisonTable && (
-        <GeminiComparisonSection comparisonTable={service.comparisonTable} lede={service.comparisonLede || service.comparisonTable?.lede} />
-      )}
-
-      {/* The comparison table is the most persuasive block on the page and had
-          no CTA attached to it — the next one was 2,415px further down. */}
-      {service.comparisonTable && service.inlineCtaAfterComparison && (
-        <InlineCta text={service.inlineCtaAfterComparison} cta="Bring us the one that failed" />
-      )}
 
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
       {/* Opt-out per service via hideArchitecture, mirroring hideComparison.
