@@ -16448,6 +16448,68 @@ export const servicesData = {
     relatedServiceSlugs: ['marketing-ai-readiness', 'performance-marketing', 'salesforce'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE CUSTOMER DATA FABRIC',
+      title: 'The customer data planes,',
+      titleHighlight: 'for governed, unified identity.',
+      subtitle: 'Connecting fragmented touchpoints into a unified customer data engine with real-time event streaming, identity resolution, privacy compliance, and reverse ETL activation.',
+      items: [
+        {
+          icon: 'Activity',
+          title: 'Event Tracking & Ingestion',
+          category: 'INGESTION PLANE',
+          managed: ['Twilio Segment', 'RudderStack Cloud', 'mParticle'],
+          selfHosted: ['RudderStack Open Source', 'Snowplow event pipelines on AWS/GCP'],
+          desc: 'Cross-platform event streaming across web, mobile, and server SDKs with automated schema validation.',
+          keyRule: 'Ingestion streams validate event schemas in real time, dropping malformed payloads to dead-letter queues.'
+        },
+        {
+          icon: 'Users',
+          title: 'Identity Resolution & Profiles',
+          category: 'IDENTITY GRAPH',
+          managed: ['Simon Data', 'Treasure Data', 'Amperity'],
+          selfHosted: ['Graph databases (Neo4j)', 'dbt identity resolution models on Snowflake/BigQuery'],
+          desc: 'Deterministic and probabilistic identity graph stitching across anonymous visitor IDs and user emails.',
+          keyRule: 'Identity graph stitching merges anonymous sessions into unified profiles upon user authentication.'
+        },
+        {
+          icon: 'Database',
+          title: 'Customer Lakehouse & Warehouse',
+          category: 'STORAGE LAYER',
+          managed: ['Snowflake Data Cloud', 'Google BigQuery', 'Databricks'],
+          selfHosted: ['ClickHouse', 'PostgreSQL analytics clusters', 'Apache Iceberg tables'],
+          desc: 'Centralized repository storing full customer event histories, behavioral metrics, and RFM segments.',
+          keyRule: 'Customer 360 data resides in the central enterprise lakehouse with granular access controls.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'Reverse ETL & Audience Activation',
+          category: 'ACTIVATION ENGINE',
+          managed: ['Census', 'Hightouch', 'Octolis'],
+          selfHosted: ['Custom dbt reverse ETL scripts', 'Apache Airflow sync pipelines'],
+          desc: 'Synchronizing warehouse-computed cohorts directly into CRM, ad platforms, and marketing automation tools.',
+          keyRule: 'Audience segments sync continuously to ad networks to optimize lookalike targeting and suppress converters.'
+        },
+        {
+          icon: 'Shield',
+          title: 'Privacy, Consent & Governance',
+          category: 'COMPLIANCE & PRIVACY',
+          managed: ['OneTrust', 'Ketch', 'Transcend Privacy'],
+          selfHosted: ['Custom consent management daemons', 'GDPR/CCPA automated deletion workers'],
+          desc: 'Enforcing user consent preferences, cookie policies, right-to-be-forgotten deletion workflows, and audit trails.',
+          keyRule: 'User consent opt-outs propagate immediately across downstream activation destinations.'
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Behavioral Segmentation & AI',
+          category: 'PREDICTIVE ANALYTICS',
+          managed: ['Pecan AI', 'Faraday', 'Amplitude Cohorts'],
+          selfHosted: ['Scikit-learn churn models', 'Python lifetime value (LTV) regression pipelines'],
+          desc: 'Predictive churn scoring, customer lifetime value modeling, and automated micro-segmentation.',
+          keyRule: 'Predictive propensity scores update dynamically to trigger proactive retention workflows.'
+        }
+      ]
+    },
   },
 
   'marketing-ai-readiness': {
@@ -16461,6 +16523,68 @@ export const servicesData = {
     relatedServiceSlugs: ['cdp-strategy', 'genai-business-services', 'performance-marketing'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE MARKETING AI FABRIC',
+      title: 'The marketing AI planes,',
+      titleHighlight: 'for autonomous growth intelligence.',
+      subtitle: 'Preparing enterprise marketing organizations for autonomous AI workflows, unified customer context, automated creative generation, and governed predictive attribution.',
+      items: [
+        {
+          icon: 'Brain',
+          title: 'Enterprise Knowledge & Grounding',
+          category: 'KNOWLEDGE BASE',
+          managed: ['Writer.com Knowledge Graph', 'Jasper Brand Voice', 'Notion AI'],
+          selfHosted: ['LlamaIndex RAG pipelines', 'ChromaDB vector collections', 'Custom brand guideline embeddings'],
+          desc: 'Vectorizing brand positioning, product taxonomies, and tone guidelines for hallucination-free generation.',
+          keyRule: 'AI outputs are grounded against verified brand vectors to enforce strict compliance.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Generative Copy & Asset Studio',
+          category: 'CREATIVE GENERATION',
+          managed: ['OpenAI GPT-4o', 'Anthropic Claude 3.5', 'Midjourney API'],
+          selfHosted: ['Self-hosted Stable Diffusion XL on private GPUs', 'Ollama local model inference'],
+          desc: 'Multimodal generation of high-converting ad copy, email variations, landing page headers, and social assets.',
+          keyRule: 'Generative assets produce multiple variations subjected to automated brand safety screening.'
+        },
+        {
+          icon: 'Target',
+          title: 'Audience Propensity & Lead Scoring',
+          category: 'PREDICTIVE REASONING',
+          managed: ['6sense Predictive AI', 'Demandbase AI', 'MadKudu'],
+          selfHosted: ['XGBoost propensity classifiers', 'Custom intent vector analyzers'],
+          desc: 'Scoring buyer intent signals, account engagement depth, and deal velocity probabilities.',
+          keyRule: 'High-propensity buying signals trigger automated alerts directly to sales development representatives.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'Autonomous Workflow & Agents',
+          category: 'AGENTIC ORCHESTRATION',
+          managed: ['Make.com Enterprise', 'Zapier Central', 'Relevance AI'],
+          selfHosted: ['LangGraph agent frameworks', 'Temporal workflow orchestrators', 'Custom Slack bots'],
+          desc: 'Multi-agent autonomous systems researching prospect accounts, drafting outreach, and scheduling meetings.',
+          keyRule: 'Autonomous agent actions maintain human-in-the-loop approval thresholds for external communications.'
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Predictive Attribution & Media Mix',
+          category: 'ATTRIBUTION ENGINE',
+          managed: ['Northbeam', 'Triple Whale', 'Rockerbox'],
+          selfHosted: ['Robyn (Meta open-source MMM)', 'Meridian (Google MMM) Bayesian statistical models'],
+          desc: 'Multi-touch attribution and Bayesian marketing mix modeling isolating true incremental ad spend lift.',
+          keyRule: 'Media budget adjustments are driven by incremental lift experiments rather than last-click bias.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'AI Governance & Safety Guardrails',
+          category: 'GOVERNANCE & AUDIT',
+          managed: ['Guardrails AI', 'Fiddler AI', 'Arthur Shield'],
+          selfHosted: ['NeMo Guardrails', 'Custom PII redaction filters', 'Model drift monitoring dashboards'],
+          desc: 'Filtering prompt injections, preventing PII leaks, and auditing model responses for demographic fairness.',
+          keyRule: 'All prompts and completions are scrubbed for customer PII before model ingestion.'
+        }
+      ]
+    },
   },
 
   'social-media-management': {
@@ -16474,6 +16598,68 @@ export const servicesData = {
     relatedServiceSlugs: ['performance-marketing', 'campaign-planning'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE SOCIAL OPERATIONS FABRIC',
+      title: 'The social media planes,',
+      titleHighlight: 'for high-velocity brand authority.',
+      subtitle: 'End-to-end social media operations combining audience listening, multi-channel publishing, community engagement, influencer management, and unified sentiment analytics.',
+      items: [
+        {
+          icon: 'Eye',
+          title: 'Social Listening & Trend Intelligence',
+          category: 'AUDIENCE LISTENING',
+          managed: ['Brandwatch', 'Sprout Social Listening', 'Meltwater'],
+          selfHosted: ['Custom Twitter/Reddit API webhooks', 'Open-source sentiment analysis pipelines'],
+          desc: 'Real-time monitoring of brand mentions, competitor share of voice, emerging trends, and crisis alerts.',
+          keyRule: 'Negative sentiment spikes trigger immediate automated escalation to brand risk teams.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Multi-Channel Publishing & Grid',
+          category: 'CONTENT PUBLISHING',
+          managed: ['Hootsuite Enterprise', 'Buffer', 'Sprinklr Modern Social'],
+          selfHosted: ['Direct social API webhooks', 'Automated media transcoding pipelines via FFmpeg'],
+          desc: 'Coordinated content distribution across LinkedIn, X, Instagram, YouTube, and TikTok with optimal timing.',
+          keyRule: 'Posts are scheduled to publish at algorithmic peak engagement windows per target timezone.'
+        },
+        {
+          icon: 'Users',
+          title: 'Community Management & Social CRM',
+          category: 'ENGAGEMENT MESH',
+          managed: ['Sprout Social Smart Inbox', 'Gorgias', 'Khoros Community'],
+          selfHosted: ['Unified webhook listener routing comments directly into Slack and Zendesk'],
+          desc: 'Centralized inbox routing direct messages, comments, and mentions to response specialists.',
+          keyRule: 'Customer inquiries on social channels receive responses within thirty minutes during active hours.'
+        },
+        {
+          icon: 'Target',
+          title: 'Influencer & Advocacy Network',
+          category: 'ADVOCACY ENGINE',
+          managed: ['Grin', 'Traackr', 'AspireIQ'],
+          selfHosted: ['Custom creator CRM database', 'Automated affiliate referral tracking pipelines'],
+          desc: 'Managing creator discovery, contract deliverables, affiliate links, and branded content compliance.',
+          keyRule: 'Creator partnerships track unique UTM parameters to measure exact conversion attribution.'
+        },
+        {
+          icon: 'Code',
+          title: 'Creative Studio & Video Operations',
+          category: 'CREATIVE PRODUCTION',
+          managed: ['Canva Enterprise', 'Figma', 'CapCut Pro'],
+          selfHosted: ['Automated subtitle generation pipelines (Whisper AI)', 'Branded video rendering servers'],
+          desc: 'High-volume short-form video production, motion graphics, and carousel design tailored for algorithms.',
+          keyRule: 'Short-form video assets include hardcoded subtitles and mobile-first vertical framing.'
+        },
+        {
+          icon: 'BarChart',
+          title: 'Social Performance & Attribution',
+          category: 'ANALYTICS PLANE',
+          managed: ['Dash Hudson', 'Rival IQ', 'Google Analytics 4'],
+          selfHosted: ['Custom Grafana social dashboards', 'Warehouse-backed social engagement models'],
+          desc: 'Tracking engagement rate, follower growth velocity, click-through rates, and downstream revenue impact.',
+          keyRule: 'Social analytics isolate organic traffic attribution through dedicated multi-touch modeling.'
+        }
+      ]
+    },
   },
 
   'performance-marketing': {
@@ -16487,6 +16673,68 @@ export const servicesData = {
     relatedServiceSlugs: ['conversion-rate-optimization', 'growth-funnels-conversion-engineering', 'campaign-planning'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE PERFORMANCE MARKETING FABRIC',
+      title: 'The performance growth planes,',
+      titleHighlight: 'engineered for scalable acquisition.',
+      subtitle: 'Executing data-driven customer acquisition across search, social, programmatic, and video channels with automated bidding, creative testing, and unit-economic optimization.',
+      items: [
+        {
+          icon: 'Search',
+          title: 'Paid Search & Intent Capture',
+          category: 'SEARCH BIDDING ENGINE',
+          managed: ['Google Ads (Search, Performance Max)', 'Microsoft Advertising', 'Marin Software'],
+          selfHosted: ['Custom Google Ads Script automations', 'Dynamic keyword insertion API engines'],
+          desc: 'High-intent keyword harvesting, smart bidding portfolio management, and dynamic search ad generation.',
+          keyRule: 'Search ad campaigns prioritize high-intent bottom-of-funnel keywords with strict CPA caps.'
+        },
+        {
+          icon: 'Users',
+          title: 'Paid Social & Demand Generation',
+          category: 'SOCIAL ADVERTISING',
+          managed: ['Meta Ads Manager', 'LinkedIn Campaign Manager', 'TikTok Ads, YouTube Ads'],
+          selfHosted: ['Meta Conversions API (CAPI) gateways', 'LinkedIn offline conversion webhooks'],
+          desc: 'Creative-first ad campaigns targeting segmented buyer personas with dynamic creative optimization (DCO).',
+          keyRule: 'Server-side Conversions API integration ensures accurate event tracking bypassing ad blockers.'
+        },
+        {
+          icon: 'Globe',
+          title: 'Programmatic & Connected TV (CTV)',
+          category: 'DSP & PROGRAMMATIC',
+          managed: ['The Trade Desk', 'DV360 (Display & Video 360)', 'StackAdapt'],
+          selfHosted: ['Custom audience list syncing via warehouse Reverse ETL', 'Pre-bid fraud filters'],
+          desc: 'Premium programmatic display, native ads, and Connected TV placements with brand safety controls.',
+          keyRule: 'Programmatic placements enforce strict exclusion lists and viewability thresholds.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Creative Experimentation & Testing',
+          category: 'CREATIVE ENGINE',
+          managed: ['Motion App ad creative analytics', 'Marpipe', 'Celtra'],
+          selfHosted: ['Automated ad variation testing pipelines', 'Visual asset performance databases'],
+          desc: 'High-tempo creative testing frameworks iterating on hooks, angles, copy, and calls-to-action.',
+          keyRule: 'Ad creatives are refreshed on a regular cadence to combat audience ad fatigue.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Server-Side Tracking & Attribution',
+          category: 'DATA FOUNDATION',
+          managed: ['Google Tag Manager Server-Side', 'Stape.io', 'Northbeam'],
+          selfHosted: ['Server-side GTM running on Google Cloud Run', 'Custom first-party tracking proxies'],
+          desc: 'First-party cookie infrastructure, server-to-server conversion reporting, and deduplication.',
+          keyRule: 'Conversion tracking uses server-side endpoints with cryptographically hashed customer data.'
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Unit Economics & CAC/LTV Cockpit',
+          category: 'FINANCIAL OPTIMIZATION',
+          managed: ['Lifetimely', 'Triple Whale', 'Looker Studio'],
+          selfHosted: ['Custom PostgreSQL unit-economics dashboards', 'Real-time blended ROAS calculators'],
+          desc: 'Monitoring customer acquisition cost (CAC), payback periods, and blended return on ad spend (ROAS).',
+          keyRule: 'Campaign scaling decisions are gated by real-time customer acquisition payback metrics.'
+        }
+      ]
+    },
   },
 
   'seo-organic-growth-strategy': {
@@ -16500,6 +16748,68 @@ export const servicesData = {
     relatedServiceSlugs: ['performance-marketing', 'conversion-rate-optimization'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE ORGANIC GROWTH FABRIC',
+      title: 'The SEO & organic growth planes,',
+      titleHighlight: 'for sustainable search dominance.',
+      subtitle: 'Engineering programmatic SEO architectures, technical crawl optimizations, authoritative topical clusters, and high-converting organic landing experiences.',
+      items: [
+        {
+          icon: 'Code',
+          title: 'Technical Crawl & Architecture',
+          category: 'TECHNICAL SEO',
+          managed: ['Screaming Frog Enterprise', 'Sitebulb Cloud', 'Google Search Console'],
+          selfHosted: ['Automated CI/CD crawl regression tests', 'Server log analyzer daemons (ELK)'],
+          desc: 'Optimizing crawl budgets, canonicalization, XML sitemaps, structured schema markup, and robots.txt.',
+          keyRule: 'Site releases must pass automated CI crawl checks to prevent broken links and indexation loss.'
+        },
+        {
+          icon: 'Database',
+          title: 'Programmatic SEO & Content Mesh',
+          category: 'PROGRAMMATIC SEO',
+          managed: ['Next.js ISR', 'Webflow CMS', 'Contentful'],
+          selfHosted: ['Database-driven static site generation (SSG)', 'Automated markdown compilation engines'],
+          desc: 'Generating thousands of structured landing pages targeting long-tail keyword permutations.',
+          keyRule: 'Programmatic pages generate unique structured JSON-LD schemas and canonical tags.'
+        },
+        {
+          icon: 'Layers',
+          title: 'Topical Authority & Semantic Clusters',
+          category: 'TOPICAL CLUSTERING',
+          managed: ['Ahrefs', 'Semrush', 'SurferSEO'],
+          selfHosted: ['Python NLP topic-modeling scripts', 'Semantic entity extraction graphs'],
+          desc: 'Mapping comprehensive pillar-and-cluster content architectures that establish domain authority.',
+          keyRule: 'Content clusters interconnect with structured internal links pointing upward to pillar pages.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Core Web Vitals & Page Experience',
+          category: 'SPEED & CWV',
+          managed: ['Cloudflare Speed', 'PageSpeed Insights API', 'DebugBear'],
+          selfHosted: ['Lighthouse CI automated performance budgets', 'Edge asset optimization workers'],
+          desc: 'Optimizing Largest Contentful Paint (LCP), Interaction to Next Paint (INP), and Cumulative Layout Shift (CLS).',
+          keyRule: 'Pages maintain sub-second Largest Contentful Paint to maximize organic ranking potential.'
+        },
+        {
+          icon: 'Globe',
+          title: 'Digital PR & Authoritative Backlinks',
+          category: 'AUTHORITY & LINK BUILDING',
+          managed: ['BuzzStream', 'Pitchbox', 'Hunter.io'],
+          selfHosted: ['Unlinked brand mention crawlers', 'Custom outreach campaign tracking databases'],
+          desc: 'Earning high-tier editorial backlinks through original industry research, data studies, and thought leadership.',
+          keyRule: 'Link building focuses exclusively on editorial, relevant, high-domain-rating publications.'
+        },
+        {
+          icon: 'BarChart',
+          title: 'Search Visibility & Revenue Attribution',
+          category: 'SEARCH ANALYTICS',
+          managed: ['Searchmetrics', 'Google Analytics 4', 'Rank Ranger'],
+          selfHosted: ['BigQuery search telemetry lakehouse', 'Custom organic revenue attribution models'],
+          desc: 'Tracking non-brand search rankings, organic pipeline generation, and bottom-line revenue impact.',
+          keyRule: 'Organic search performance is evaluated on qualified pipeline and revenue alongside traffic.'
+        }
+      ]
+    },
   },
 
   'growth-funnels-conversion-engineering': {
@@ -16513,6 +16823,68 @@ export const servicesData = {
     relatedServiceSlugs: ['conversion-rate-optimization', 'performance-marketing', 'campaign-planning'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE CONVERSION ENGINEERING FABRIC',
+      title: 'The growth funnel planes,',
+      titleHighlight: 'engineered for friction-free conversion.',
+      subtitle: 'Building high-velocity user acquisition funnels, interactive product calculators, progressive onboarding flows, and automated lead capture engines.',
+      items: [
+        {
+          icon: 'Compass',
+          title: 'Funnel Architecture & Journey Mapping',
+          category: 'FUNNEL BLUEPRINT',
+          managed: ['Funnelytics', 'Miro Enterprise', 'Heap Analytics'],
+          selfHosted: ['Custom funnel drop-off analytics pipelines', 'Sankey diagram visualizers'],
+          desc: 'Mapping multi-step conversion paths from initial landing page visit to completed activation.',
+          keyRule: 'Funnel steps are instrumented with discrete tracking events to isolate drop-off bottlenecks.'
+        },
+        {
+          icon: 'LayoutGrid',
+          title: 'Interactive Calculators & Magnets',
+          category: 'INTERACTIVE ASSETS',
+          managed: ['Outgrow', 'Calconic', 'Typeform Enterprise'],
+          selfHosted: ['React interactive ROI calculators', 'Dynamic quote estimator widgets'],
+          desc: 'Custom self-service interactive tools providing immediate value to prospects in exchange for intent data.',
+          keyRule: 'Interactive widgets provide real-time value calculations before requesting user contact info.'
+        },
+        {
+          icon: 'Code',
+          title: 'Progressive Profiling & Smart Forms',
+          category: 'LEAD CAPTURE',
+          managed: ['Clearbit Forms', 'HubSpot Smart Forms', 'Marketo'],
+          selfHosted: ['Multi-step dynamic form engines with IP enrichment and email validation APIs'],
+          desc: 'Dynamic short forms that enrich firmographic data automatically in the background without friction.',
+          keyRule: 'Form inputs are minimized by enriching company and industry data from user email domains.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Lead Routing & Instant Scheduling',
+          category: 'LEAD OPS & ROUTING',
+          managed: ['Chili Piper', 'LeanData', 'Zapier Enterprise'],
+          selfHosted: ['Custom lead routing webhooks', 'PostgreSQL lead distribution queues'],
+          desc: 'Instant lead qualification, territory assignment, and immediate calendar booking on thank-you pages.',
+          keyRule: 'Qualified inbound leads are presented with instant scheduling within thirty seconds of submission.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'Automated Email & Lifecycle Nurturing',
+          category: 'LIFECYCLE NURTURING',
+          managed: ['Customer.io', 'ActiveCampaign', 'Klaviyo'],
+          selfHosted: ['Self-hosted SendGrid / AWS SES event dispatchers', 'Transactional email microservices'],
+          desc: 'Behavioral email sequences triggered by specific user actions, abandoned funnels, and feature usage.',
+          keyRule: 'Nurture emails trigger based on actual user behavioral milestones rather than static time delays.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Funnel Telemetry & Drop-off Diagnostics',
+          category: 'FUNNEL TELEMETRY',
+          managed: ['Mixpanel', 'Amplitude', 'PostHog'],
+          selfHosted: ['ClickHouse funnel query engines', 'Grafana conversion waterfall dashboards'],
+          desc: 'Granular cohort analysis, step-by-step conversion velocity, and drop-off root-cause identification.',
+          keyRule: 'Funnel conversion rates are benchmarked continuously against historical cohort performance.'
+        }
+      ]
+    },
   },
 
   'conversion-rate-optimization': {
@@ -16526,6 +16898,68 @@ export const servicesData = {
     relatedServiceSlugs: ['growth-funnels-conversion-engineering', 'performance-marketing', 'seo-organic-growth-strategy'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE CRO EXPERIMENTATION FABRIC',
+      title: 'The conversion optimization planes,',
+      titleHighlight: 'turning traffic into compounding revenue.',
+      subtitle: 'Scientific conversion rate optimization combining quantitative heatmaps, user session replays, rigorous A/B split-testing, and rapid page-speed engineering.',
+      items: [
+        {
+          icon: 'Activity',
+          title: 'Quantitative Analytics & Drop-off Audit',
+          category: 'QUANTITATIVE AUDIT',
+          managed: ['Google Analytics 4', 'Heap', 'Adobe Analytics'],
+          selfHosted: ['PostgreSQL event lake', 'Custom SQL conversion funnel queries'],
+          desc: 'Identifying exact landing pages and checkout steps suffering from anomalous abandonment rates.',
+          keyRule: 'Optimization hypotheses must be grounded in statistically verified drop-off data.'
+        },
+        {
+          icon: 'Eye',
+          title: 'Qualitative UX & Session Diagnostics',
+          category: 'QUALITATIVE RESEARCH',
+          managed: ['Hotjar Enterprise', 'Microsoft Clarity', 'FullStory'],
+          selfHosted: ['Open-source session recording players', 'User rage-click detection daemons'],
+          desc: 'Session replays, scroll heatmaps, click maps, and on-site micro-surveys uncovering user hesitation.',
+          keyRule: 'Rage clicks and form abandonment triggers generate actionable UX remediation tickets.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'A/B & Multivariate Experimentation',
+          category: 'EXPERIMENTATION RUNTIME',
+          managed: ['Optimizely Web Experimentation', 'VWO Enterprise', 'LaunchDarkly'],
+          selfHosted: ['GrowthBook open-source feature flags', 'Custom edge-rendered A/B split workers'],
+          desc: 'Client-side and server-side randomized controlled trials with Bayesian and Frequentist statistics.',
+          keyRule: 'Experiments run until reaching statistical significance before declaring a winning variation.'
+        },
+        {
+          icon: 'Target',
+          title: 'Copywriting & Value Proposition',
+          category: 'MESSAGING ENGINE',
+          managed: ['Copy.ai Enterprise', 'Wynter B2B message testing', 'Wynter Panels'],
+          selfHosted: ['Internal headline testing matrixes', 'User comprehension score databases'],
+          desc: 'Clarity-first headline testing, benefit-oriented bulleting, and objection-handling copy revisions.',
+          keyRule: 'Headlines must communicate the primary value proposition immediately upon landing.'
+        },
+        {
+          icon: 'Zap',
+          title: 'Edge Rendering & Page Speed Engine',
+          category: 'PERFORMANCE CRO',
+          managed: ['Cloudflare Workers', 'Fastly Edge', 'Vercel Edge Middleware'],
+          selfHosted: ['NGINX edge caching proxies', 'WebP/AVIF automated image transformation servers'],
+          desc: 'Eliminating layout shift (CLS) and ensuring sub-second response times on landing pages.',
+          keyRule: 'A/B testing scripts execute at the network edge with zero layout flicker or page flash.'
+        },
+        {
+          icon: 'Database',
+          title: 'Experimentation Insights Ledger',
+          category: 'INSIGHTS LEDGER',
+          managed: ['Airtable Enterprise', 'Notion Knowledge Base', 'Jira Product Discovery'],
+          selfHosted: ['Internal CRO experiment database documenting wins, losses, and learnings'],
+          desc: 'Institutionalizing experimentation insights so successful tests compound across the company.',
+          keyRule: 'Every completed experiment archives a documented post-test analysis regardless of outcome.'
+        }
+      ]
+    },
   },
 
   'campaign-planning': {
@@ -16539,6 +16973,68 @@ export const servicesData = {
     relatedServiceSlugs: ['performance-marketing', 'social-media-management', 'growth-funnels-conversion-engineering'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+    toolsStack: {
+      eyebrow: 'THE CAMPAIGN ORCHESTRATION FABRIC',
+      title: 'The campaign strategy planes,',
+      titleHighlight: 'for synchronized enterprise execution.',
+      subtitle: 'End-to-end strategic campaign orchestration uniting creative messaging, multi-channel media mix modeling, budget allocation, and executive outcome tracking.',
+      items: [
+        {
+          icon: 'Target',
+          title: 'Audience Segmentation & Persona Strategy',
+          category: 'AUDIENCE TARGETING',
+          managed: ['GWI (GlobalWebIndex)', 'ZoomInfo', 'LinkedIn Sales Navigator'],
+          selfHosted: ['Customer segmentation SQL models', 'Custom ICP enrichment pipelines'],
+          desc: 'Defining target accounts, buying committee personas, geographic markets, and psychographic drivers.',
+          keyRule: 'Campaign messaging is customized across buying committee roles (Executive, Technical, Financial).'
+        },
+        {
+          icon: 'Compass',
+          title: 'Campaign Narrative & Creative Concept',
+          category: 'CREATIVE NARRATIVE',
+          managed: ['Miro Enterprise', 'Conceptboard', 'Figma'],
+          selfHosted: ['Campaign messaging hierarchy frameworks', 'Creative asset brief repositories'],
+          desc: 'Developing unified core campaign themes, hero taglines, content pillars, and visual style guides.',
+          keyRule: 'Campaign narratives anchor on a single bold, differentiated core thesis statement.'
+        },
+        {
+          icon: 'TrendingUp',
+          title: 'Media Mix Modeling & Budget Allocation',
+          category: 'MEDIA STRATEGY',
+          managed: ['Anaplan', 'Kantar Media', 'Allocadia (Uptempo)'],
+          selfHosted: ['Marketing mix modeling (MMM) simulations', 'Media flighting budget ledgers'],
+          desc: 'Distributing media investment across channels based on historical CAC and marginal return curves.',
+          keyRule: 'Budgets allocate across channels based on marginal return curves rather than static percentages.'
+        },
+        {
+          icon: 'Workflow',
+          title: 'Multi-Channel Flighting & Channel Sync',
+          category: 'CHANNEL ORCHESTRATION',
+          managed: ['Asana Enterprise', 'Monday.com Work OS', 'CoSchedule'],
+          selfHosted: ['Custom campaign flighting calendar dashboards', 'Synchronized launch webhooks'],
+          desc: 'Coordinating simultaneous rollouts across PR, paid media, organic social, email, and events.',
+          keyRule: 'All campaign channels launch synchronously to maximize initial market impact.'
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Asset Production & Approval Workflows',
+          category: 'PRODUCTION GOVERNANCE',
+          managed: ['Filestage', 'Frame.io', 'Adobe Creative Cloud Enterprise'],
+          selfHosted: ['Automated asset format validation pipelines', 'Digital rights management databases'],
+          desc: 'Governing asset creation, legal reviews, stakeholder sign-offs, and localized format adaptations.',
+          keyRule: 'Campaign assets require legal and brand sign-off before being approved for media flighting.'
+        },
+        {
+          icon: 'Activity',
+          title: 'Campaign War Room & Outcome Telemetry',
+          category: 'MISSION COMMAND',
+          managed: ['Datorama (Salesforce Marketing Cloud Intelligence)', 'Tableau', 'Domo'],
+          selfHosted: ['Real-time campaign war room Grafana dashboards', 'Kafka conversion alert streams'],
+          desc: 'Live monitoring of impressions, engagement, lead velocity, cost per pipeline, and revenue.',
+          keyRule: 'Campaign war rooms conduct daily pacing standups during the primary launch window.'
+        }
+      ]
+    },
   },
 
 };

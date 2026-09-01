@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T11:59:52.807Z",
+  "generatedAt": "2026-09-01T12:07:12.441Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -2561,7 +2561,32 @@
       "description": "First-party customer data strategy — unified profiles, real-time segmentation, privacy & compliance, and cross-channel activation. KVIS™.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Event Tracking & Ingestion",
+          "detail": "Cross-platform event streaming across web, mobile, and server SDKs with automated schema validation."
+        },
+        {
+          "rule": "Identity Resolution & Profiles",
+          "detail": "Deterministic and probabilistic identity graph stitching across anonymous visitor IDs and user emails."
+        },
+        {
+          "rule": "Customer Lakehouse & Warehouse",
+          "detail": "Centralized repository storing full customer event histories, behavioral metrics, and RFM segments."
+        },
+        {
+          "rule": "Reverse ETL & Audience Activation",
+          "detail": "Synchronizing warehouse-computed cohorts directly into CRM, ad platforms, and marketing automation tools."
+        },
+        {
+          "rule": "Privacy, Consent & Governance",
+          "detail": "Enforcing user consent preferences, cookie policies, right-to-be-forgotten deletion workflows, and audit trails."
+        },
+        {
+          "rule": "Behavioral Segmentation & AI",
+          "detail": "Predictive churn scoring, customer lifetime value modeling, and automated micro-segmentation."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -2572,7 +2597,32 @@
       "description": "GenAI for marketing — creative ops audit, GenAI roadmap, content personalization at scale, workflow automation, and AI-driven asset generation.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Enterprise Knowledge & Grounding",
+          "detail": "Vectorizing brand positioning, product taxonomies, and tone guidelines for hallucination-free generation."
+        },
+        {
+          "rule": "Generative Copy & Asset Studio",
+          "detail": "Multimodal generation of high-converting ad copy, email variations, landing page headers, and social assets."
+        },
+        {
+          "rule": "Audience Propensity & Lead Scoring",
+          "detail": "Scoring buyer intent signals, account engagement depth, and deal velocity probabilities."
+        },
+        {
+          "rule": "Autonomous Workflow & Agents",
+          "detail": "Multi-agent autonomous systems researching prospect accounts, drafting outreach, and scheduling meetings."
+        },
+        {
+          "rule": "Predictive Attribution & Media Mix",
+          "detail": "Multi-touch attribution and Bayesian marketing mix modeling isolating true incremental ad spend lift."
+        },
+        {
+          "rule": "AI Governance & Safety Guardrails",
+          "detail": "Filtering prompt injections, preventing PII leaks, and auditing model responses for demographic fairness."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -2583,7 +2633,32 @@
       "description": "Social media strategy and management — strategy development, content creation, community management, and analytics across all platforms.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Social Listening & Trend Intelligence",
+          "detail": "Real-time monitoring of brand mentions, competitor share of voice, emerging trends, and crisis alerts."
+        },
+        {
+          "rule": "Multi-Channel Publishing & Grid",
+          "detail": "Coordinated content distribution across LinkedIn, X, Instagram, YouTube, and TikTok with optimal timing."
+        },
+        {
+          "rule": "Community Management & Social CRM",
+          "detail": "Centralized inbox routing direct messages, comments, and mentions to response specialists."
+        },
+        {
+          "rule": "Influencer & Advocacy Network",
+          "detail": "Managing creator discovery, contract deliverables, affiliate links, and branded content compliance."
+        },
+        {
+          "rule": "Creative Studio & Video Operations",
+          "detail": "High-volume short-form video production, motion graphics, and carousel design tailored for algorithms."
+        },
+        {
+          "rule": "Social Performance & Attribution",
+          "detail": "Tracking engagement rate, follower growth velocity, click-through rates, and downstream revenue impact."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -2594,7 +2669,32 @@
       "description": "Data-driven performance marketing — PPC, social ads, retargeting, conversion optimization, and attribution for measurable pipeline.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Paid Search & Intent Capture",
+          "detail": "High-intent keyword harvesting, smart bidding portfolio management, and dynamic search ad generation."
+        },
+        {
+          "rule": "Paid Social & Demand Generation",
+          "detail": "Creative-first ad campaigns targeting segmented buyer personas with dynamic creative optimization (DCO)."
+        },
+        {
+          "rule": "Programmatic & Connected TV (CTV)",
+          "detail": "Premium programmatic display, native ads, and Connected TV placements with brand safety controls."
+        },
+        {
+          "rule": "Creative Experimentation & Testing",
+          "detail": "High-tempo creative testing frameworks iterating on hooks, angles, copy, and calls-to-action."
+        },
+        {
+          "rule": "Server-Side Tracking & Attribution",
+          "detail": "First-party cookie infrastructure, server-to-server conversion reporting, and deduplication."
+        },
+        {
+          "rule": "Unit Economics & CAC/LTV Cockpit",
+          "detail": "Monitoring customer acquisition cost (CAC), payback periods, and blended return on ad spend (ROAS)."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -2605,7 +2705,32 @@
       "description": "Technical SEO and organic growth — technical SEO, content clustering, off-page footprint, and Core Web Vitals for sustained search visibility.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Technical Crawl & Architecture",
+          "detail": "Optimizing crawl budgets, canonicalization, XML sitemaps, structured schema markup, and robots.txt."
+        },
+        {
+          "rule": "Programmatic SEO & Content Mesh",
+          "detail": "Generating thousands of structured landing pages targeting long-tail keyword permutations."
+        },
+        {
+          "rule": "Topical Authority & Semantic Clusters",
+          "detail": "Mapping comprehensive pillar-and-cluster content architectures that establish domain authority."
+        },
+        {
+          "rule": "Core Web Vitals & Page Experience",
+          "detail": "Optimizing Largest Contentful Paint (LCP), Interaction to Next Paint (INP), and Cumulative Layout Shift (CLS)."
+        },
+        {
+          "rule": "Digital PR & Authoritative Backlinks",
+          "detail": "Earning high-tier editorial backlinks through original industry research, data studies, and thought leadership."
+        },
+        {
+          "rule": "Search Visibility & Revenue Attribution",
+          "detail": "Tracking non-brand search rankings, organic pipeline generation, and bottom-line revenue impact."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -2616,7 +2741,32 @@
       "description": "Engineered growth funnels — funnel design, A/B testing, conversion optimization, growth hacking, and funnel analytics for maximum revenue.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Funnel Architecture & Journey Mapping",
+          "detail": "Mapping multi-step conversion paths from initial landing page visit to completed activation."
+        },
+        {
+          "rule": "Interactive Calculators & Magnets",
+          "detail": "Custom self-service interactive tools providing immediate value to prospects in exchange for intent data."
+        },
+        {
+          "rule": "Progressive Profiling & Smart Forms",
+          "detail": "Dynamic short forms that enrich firmographic data automatically in the background without friction."
+        },
+        {
+          "rule": "Lead Routing & Instant Scheduling",
+          "detail": "Instant lead qualification, territory assignment, and immediate calendar booking on thank-you pages."
+        },
+        {
+          "rule": "Automated Email & Lifecycle Nurturing",
+          "detail": "Behavioral email sequences triggered by specific user actions, abandoned funnels, and feature usage."
+        },
+        {
+          "rule": "Funnel Telemetry & Drop-off Diagnostics",
+          "detail": "Granular cohort analysis, step-by-step conversion velocity, and drop-off root-cause identification."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -2627,7 +2777,32 @@
       "description": "Maximum yield from existing traffic — A/B testing, behavior analytics, heuristic analysis, and friction audits. Pipeline you can attribute.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Quantitative Analytics & Drop-off Audit",
+          "detail": "Identifying exact landing pages and checkout steps suffering from anomalous abandonment rates."
+        },
+        {
+          "rule": "Qualitative UX & Session Diagnostics",
+          "detail": "Session replays, scroll heatmaps, click maps, and on-site micro-surveys uncovering user hesitation."
+        },
+        {
+          "rule": "A/B & Multivariate Experimentation",
+          "detail": "Client-side and server-side randomized controlled trials with Bayesian and Frequentist statistics."
+        },
+        {
+          "rule": "Copywriting & Value Proposition",
+          "detail": "Clarity-first headline testing, benefit-oriented bulleting, and objection-handling copy revisions."
+        },
+        {
+          "rule": "Edge Rendering & Page Speed Engine",
+          "detail": "Eliminating layout shift (CLS) and ensuring sub-second response times on landing pages."
+        },
+        {
+          "rule": "Experimentation Insights Ledger",
+          "detail": "Institutionalizing experimentation insights so successful tests compound across the company."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -2638,7 +2813,32 @@
       "description": "Strategic campaign planning — campaign strategy, channel planning, creative development, execution, and continuous optimization.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Audience Segmentation & Persona Strategy",
+          "detail": "Defining target accounts, buying committee personas, geographic markets, and psychographic drivers."
+        },
+        {
+          "rule": "Campaign Narrative & Creative Concept",
+          "detail": "Developing unified core campaign themes, hero taglines, content pillars, and visual style guides."
+        },
+        {
+          "rule": "Media Mix Modeling & Budget Allocation",
+          "detail": "Distributing media investment across channels based on historical CAC and marginal return curves."
+        },
+        {
+          "rule": "Multi-Channel Flighting & Channel Sync",
+          "detail": "Coordinating simultaneous rollouts across PR, paid media, organic social, email, and events."
+        },
+        {
+          "rule": "Asset Production & Approval Workflows",
+          "detail": "Governing asset creation, legal reviews, stakeholder sign-offs, and localized format adaptations."
+        },
+        {
+          "rule": "Campaign War Room & Outcome Telemetry",
+          "detail": "Live monitoring of impressions, engagement, lead velocity, cost per pipeline, and revenue."
+        }
+      ],
       "dataHandling": []
     }
   ]
