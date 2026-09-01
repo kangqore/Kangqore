@@ -5823,7 +5823,25 @@ const featureMicros   = service.featureMicros
             {((faqs.length > 5 && !isFaqExpanded) ? faqs.slice(0, 5) : faqs).map((faq, i) => {
               const isOpen = openFaq === i;
               return (
-                <div key={i} className="border-t border-white/[0.06]">
+                <div key={i} className={`border-t border-white/[0.06] relative overflow-hidden transition-all duration-500 ${isOpen ? 'rounded-xl my-2' : ''}`}>
+                  {/* Active State: Liquid Black Impasto Paint Texture — same as 3D Ecosystem Cockpit */}
+                  {isOpen && (
+                    <>
+                      <img
+                        src="/images/capabilities/liquid-black-texture.png"
+                        alt=""
+                        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none opacity-80 select-none"
+                      />
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.72) 40%, rgba(0, 0, 0, 0.82) 100%)'
+                        }}
+                      />
+                      {/* Subtle top-edge highlight */}
+                      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none" />
+                    </>
+                  )}
                   {/* <h3> wraps the button rather than sitting inside it: the
                       WAI-ARIA accordion pattern, and the only valid nesting —
                       <button> takes phrasing content, so an <h3> within it is
@@ -5832,15 +5850,28 @@ const featureMicros   = service.featureMicros
                       the most query-shaped strings on any service page, so an
                       answer engine segmenting the document had nothing to
                       anchor them to. */}
-                  <h3 className="m-0">
+                  <h3 className="m-0 relative z-10">
                     <button
                       onClick={() => setOpenFaq(isOpen ? null : i)}
-                      className="w-full flex items-start justify-between gap-5 sm:gap-8 py-4 sm:py-7 text-left group"
+                      className={`w-full flex items-center justify-between gap-5 sm:gap-8 py-4 sm:py-7 text-left group ${isOpen ? 'px-5 sm:px-8' : ''}`}
                       aria-expanded={isOpen}
                       aria-controls={`faq-answer-${i}`}
                     >
                       <span className={`text-base font-semibold leading-snug transition-colors duration-200 ${isOpen ? 'text-white' : 'text-white/55 group-hover:text-white'}`}>{faq.q}</span>
-                      <ChevronDown className={`w-5 h-5 text-white/20 flex-shrink-0 mt-0.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#2564ea]' : ''}`} />
+                      {/* Bright thick + sign, rotates to × when expanded */}
+                      <span
+                        className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 ${
+                          isOpen
+                            ? 'bg-white/10 rotate-45'
+                            : 'bg-white/[0.04] group-hover:bg-white/[0.08]'
+                        }`}
+                      >
+                        <Plus
+                          className={`w-5 h-5 stroke-[3] transition-colors duration-300 ${
+                            isOpen ? 'text-white' : 'text-white/50 group-hover:text-white'
+                          }`}
+                        />
+                      </span>
                     </button>
                   </h3>
                   {/* Every answer stays in the DOM and collapses via grid-template-rows
@@ -5851,10 +5882,10 @@ const featureMicros   = service.featureMicros
                       natural height, so no max-height has to be guessed. */}
                   <div
                     id={`faq-answer-${i}`}
-                    className={`grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+                    className={`grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-10 ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
                   >
                     <div className="min-h-0 overflow-hidden">
-                      <div className="pb-5 sm:pb-7 pr-6 sm:pr-12 space-y-4">
+                      <div className={`pb-5 sm:pb-7 pr-6 sm:pr-12 space-y-4 ${isOpen ? 'px-5 sm:px-8' : ''}`}>
                         {faqParagraphs(faq.a).map((para, p) => (
                           <p key={p} className="text-white/70 text-base font-medium leading-relaxed">{para}</p>
                         ))}
