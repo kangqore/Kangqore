@@ -4987,6 +4987,78 @@ const featureMicros   = service.featureMicros
       {toolsStackSection}
 
 
+      {/* ══════════════════════ INDUSTRY USE CASES ══════════════════════ */}
+      {/* Opt-out per service via hideIndustry, mirroring hideComparison. An
+          absent industryUseCases resolves to the department default through
+          getParityService, so deletion alone shows generic sector copy. */}
+      {!service.hideIndustry && service.industryUseCases && (
+        <section id="svc-industry" className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="mb-14">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="h-[1px] w-12 bg-white/20" />
+                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">BY INDUSTRY</span>
+              </div>
+              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
+                {/* Per service. "Agents built for your industry" is right for
+                    one service and wrong for the rest — the MLOps page ran it
+                    over a list of models, pipelines and registries. */}
+                {service.industryHeading || 'Agents built for'}<br />
+                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.industryHeadingHighlight || 'your industry.'}</span>
+              </h2>
+              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
+                {service.industryLede || `Kangqore deploys ${lowerServiceName(service.name)} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
+              </p>
+            </div>
+            <CardRail label="Industry use cases" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
+              {service.industryUseCases.map((item, idx) => (
+                <div key={idx} className="group bg-[#000000] p-8 flex flex-col transition-all duration-500 hover:bg-[#060a10] cursor-pointer">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors duration-300">{item.industry}</span>
+                    <span className="text-white/50 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none sm:inline hidden">+</span>
+                  </div>
+
+                  {/* Expanded by default below `sm`. The collapse is driven purely
+                      by group-hover, which no touch device fires — so on a phone
+                      the headline, the agent list and the industry cross-link
+                      were all unreachable, not merely hidden. */}
+                  <div className="grid grid-rows-[1fr] sm:grid-rows-[0fr] sm:group-hover:grid-rows-[1fr] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
+                    <div className="min-h-0 flex flex-col gap-4 mt-4">
+                      <p className="text-white font-bold text-lg leading-snug">{item.headline}</p>
+                      <ul className="space-y-2">
+                        {/* `items` is the neutral key; `agents` is kept for the
+                            four services that were written when this section was
+                            agent-specific. An MLOps page listing "Clinical
+                            Validation Agent" was describing a product we do not
+                            sell here. */}
+                        {(item.items || item.agents || []).map((agent, i) => (
+                          <li key={i} className="flex items-start gap-2.5">
+                            <div className="w-1 h-1 rounded-full bg-cyan-400 mt-2 flex-shrink-0" />
+                            <span className="text-white/50 text-sm font-medium leading-relaxed">{agent}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      {/* Contextual cross-link into the industry hub. These are the
+                          in-content links that build topical authority — unlike the
+                          sitewide nav, which crawlers discount as boilerplate. */}
+                      {industrySlug(item.industry) && (
+                        <Link
+                          to={`/industries/${industrySlug(item.industry)}`}
+                          className="mt-2 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors"
+                        >
+                          {service.name} for {item.industry}
+                          <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </CardRail>
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════ ARCHITECTURE ══════════════════════ */}
       {/* Opt-out per service via hideArchitecture, mirroring hideComparison.
           Deleting the data key does not remove this section: getParityService
@@ -5113,78 +5185,6 @@ const featureMicros   = service.featureMicros
       {/* ══════════════════════ CUSTOM AI INSIGHTS SECTION ══════════════════════ */}
       {service.slug === 'agentic-ai' && (
         <AIInsightsSection />
-      )}
-
-      {/* ══════════════════════ INDUSTRY USE CASES ══════════════════════ */}
-      {/* Opt-out per service via hideIndustry, mirroring hideComparison. An
-          absent industryUseCases resolves to the department default through
-          getParityService, so deletion alone shows generic sector copy. */}
-      {!service.hideIndustry && service.industryUseCases && (
-        <section className="py-16 md:py-24" style={{ backgroundColor: '#000000' }}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <div className="mb-14">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">BY INDUSTRY</span>
-              </div>
-              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
-                {/* Per service. "Agents built for your industry" is right for
-                    one service and wrong for the rest — the MLOps page ran it
-                    over a list of models, pipelines and registries. */}
-                {service.industryHeading || 'Agents built for'}<br />
-                <span className="bg-brand-gradient bg-clip-text text-transparent">{service.industryHeadingHighlight || 'your industry.'}</span>
-              </h2>
-              <p className="mt-5 text-white/55 text-base font-medium leading-relaxed max-w-3xl">
-                {service.industryLede || `Kangqore deploys ${lowerServiceName(service.name)} across ${(service.industryUseCases || []).length} regulated and complex sectors. Each engagement starts from that sector's constraints — its compliance regime, data residency rules, and legacy estate — rather than a generic template.`}
-              </p>
-            </div>
-            <CardRail label="Industry use cases" hairline className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden">
-              {service.industryUseCases.map((item, idx) => (
-                <div key={idx} className="group bg-[#000000] p-8 flex flex-col transition-all duration-500 hover:bg-[#060a10] cursor-pointer">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-black tracking-[0.3em] uppercase text-white/60 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors duration-300">{item.industry}</span>
-                    <span className="text-white/50 group-hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent text-xs font-bold transition-transform duration-500 group-hover:rotate-45 select-none sm:inline hidden">+</span>
-                  </div>
-
-                  {/* Expanded by default below `sm`. The collapse is driven purely
-                      by group-hover, which no touch device fires — so on a phone
-                      the headline, the agent list and the industry cross-link
-                      were all unreachable, not merely hidden. */}
-                  <div className="grid grid-rows-[1fr] sm:grid-rows-[0fr] sm:group-hover:grid-rows-[1fr] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
-                    <div className="min-h-0 flex flex-col gap-4 mt-4">
-                      <p className="text-white font-bold text-lg leading-snug">{item.headline}</p>
-                      <ul className="space-y-2">
-                        {/* `items` is the neutral key; `agents` is kept for the
-                            four services that were written when this section was
-                            agent-specific. An MLOps page listing "Clinical
-                            Validation Agent" was describing a product we do not
-                            sell here. */}
-                        {(item.items || item.agents || []).map((agent, i) => (
-                          <li key={i} className="flex items-start gap-2.5">
-                            <div className="w-1 h-1 rounded-full bg-cyan-400 mt-2 flex-shrink-0" />
-                            <span className="text-white/50 text-sm font-medium leading-relaxed">{agent}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      {/* Contextual cross-link into the industry hub. These are the
-                          in-content links that build topical authority — unlike the
-                          sitewide nav, which crawlers discount as boilerplate. */}
-                      {industrySlug(item.industry) && (
-                        <Link
-                          to={`/industries/${industrySlug(item.industry)}`}
-                          className="mt-2 inline-flex items-center gap-1.5 py-1 min-h-[24px] text-xs font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent transition-colors"
-                        >
-                          {service.name} for {item.industry}
-                          <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </CardRail>
-          </div>
-        </section>
       )}
 
       {/* ══════════════════════ OUTCOMES ══════════════════════ */}

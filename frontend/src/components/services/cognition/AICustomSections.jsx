@@ -537,7 +537,7 @@ export const AIToolsSection = ({
     ? React.cloneElement(image, { activeStep: openTool })
     : image;
   return (
-    <section className={`py-16 md:py-24 bg-black border-t border-white/[0.04] relative ${isCustomModel ? '' : 'overflow-hidden'}`}>
+    <section id="svc-ecosystem" className={`py-16 md:py-24 bg-black border-t border-white/[0.04] relative ${isCustomModel ? '' : 'overflow-hidden'}`}>
       {/* Expanded 3D Canvas Background Panel (Full-Section overlay exceeding bounds) */}
       {isCustomModel && (
         <div className="absolute inset-x-0 -top-32 -bottom-32 z-0 pointer-events-none lg:pointer-events-auto">
