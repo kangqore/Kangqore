@@ -364,30 +364,66 @@ export const servicesData = {
       'Book an Agentic AI strategy session',
     ],
     toolsStack: {
-      title: 'Agentic AI Tools & Technology',
-      subtitle: 'The production-grade toolchain behind every Kangqore agentic AI deployment.',
+      eyebrow: 'THE AGENTIC COGNITION FABRIC',
+      title: 'The agentic toolchain,',
+      titleHighlight: 'engineered for governed autonomy.',
+      subtitle: 'Production agentic AI requires a hardened toolchain spanning deterministic graph orchestration, frontier reasoning, context memory, and safety gates. These are the six architectural planes we deploy.',
       items: [
         {
           icon: 'Network',
-          title: 'Orchestration & Frameworks',
-          desc: 'Stateful multi-agent workflows on LangGraph, with LangChain handling tool-calling and chain composition.',
+          title: 'Multi-Agent Orchestration',
+          category: 'MULTI-AGENT RUNTIME',
+          managed: ['LangGraph Cloud', 'AWS Bedrock Agents', 'Azure AI Agent Service'],
+          selfHosted: ['LangGraph Engine on private Kubernetes', 'AutoGen', 'CrewAI swarm nodes'],
+          desc: 'Stateful multi-agent execution graphs, human-in-the-loop interrupt nodes, and dynamic task delegation across specialized sub-agents.',
+          keyRule: 'Agents reason over state graphs with deterministic escalation boundaries.'
         },
         {
-          icon: 'Cpu',
-          title: 'Models',
-          desc: 'GPT-4o, Claude, Gemini, or fine-tuned open-source — selected per use case and compliance requirement, not locked to one vendor.',
+          icon: 'Brain',
+          title: 'Foundation & Reasoning Models',
+          category: 'REASONING ENGINES',
+          managed: ['Claude 3.5 Sonnet', 'GPT-4o', 'Google Gemini 1.5 Pro'],
+          selfHosted: ['DeepSeek-R1', 'Llama 3.3 70B', 'Qwen 2.5 on private vLLM clusters'],
+          desc: 'Frontier reasoning models and self-hosted open-weights selected per workload latency, cost, and strict data residency constraints.',
+          keyRule: 'Model choice decouples from vendor lock-in via standardized inference gateways.'
+        },
+        {
+          icon: 'Database',
+          title: 'Context & Hybrid Vector Memory',
+          category: 'KNOWLEDGE & RETRIEVAL',
+          managed: ['Pinecone Serverless', 'Weaviate Cloud', 'AWS OpenSearch'],
+          selfHosted: ['pgvector on PostgreSQL', 'Qdrant', 'Milvus on private clusters'],
+          desc: 'Hybrid dense/sparse retrieval pipelines, contextual re-ranking, and dynamic knowledge graph grounding preventing hallucinations.',
+          keyRule: 'Context grounding requires semantic re-ranking and source verification.'
         },
         {
           icon: 'Layers',
-          title: 'Integration',
-          desc: 'Enterprise APIs, microservices, and hybrid memory across vector stores — Pinecone, Weaviate, or pgvector depending on constraints.',
+          title: 'Enterprise Tool Integration',
+          category: 'SYSTEM TOOL-USE',
+          managed: ['Workato', 'MuleSoft API Hub', 'Zapier Central'],
+          selfHosted: ['Model Context Protocol (MCP) servers', 'OpenAPI tool runners', 'Kafka event streams'],
+          desc: 'Secure authenticated function calling and tool execution across ERP, CRM, database, and internal microservice backbones.',
+          keyRule: 'Tool execution operates with least-privilege tokens and immutable parameter auditing.'
+        },
+        {
+          icon: 'Eye',
+          title: 'Telemetry & Evaluation',
+          category: 'OBSERVABILITY & TRACING',
+          managed: ['LangSmith', 'Arize Phoenix Cloud', 'Weights & Biases Weave'],
+          selfHosted: ['OpenTelemetry collector', 'Langfuse', 'MLflow on self-managed infrastructure'],
+          desc: 'Full-trace visual debugging, token latency profiling, hallucination scoring, and automated regression evaluations on production runs.',
+          keyRule: 'Every agent token and execution step is logged to an immutable audit ledger.'
         },
         {
           icon: 'Shield',
-          title: 'Monitoring',
-          desc: 'LangSmith-based observability and drift detection, backed by immutable audit trails and checkpoint-based recovery.',
-        },
-      ],
+          title: 'Governance & Safety Guardrails',
+          category: 'POLICY FIREWALL',
+          managed: ['NeMo Guardrails', 'Azure AI Content Safety', 'Bedrock Guardrails'],
+          selfHosted: ['Llama Guard 3', 'Guardrails AI', 'Proprietary AEGIS policy gates'],
+          desc: 'Deterministic input/output filtering, PII redaction, prompt injection defense, and cryptographic human-in-the-loop authorization.',
+          keyRule: 'No autonomous state mutation executes without passing policy guardrail gates.'
+        }
+      ]
     },
   },
 
@@ -715,39 +751,66 @@ export const servicesData = {
     // `cognition` default, which advertises "cognitive computing, machine
     // learning, and AI governance" — wrong practice for this page.
     toolsStack: {
-      eyebrow: 'THE METHOD',
+      eyebrow: 'THE MODERNIZATION FABRIC',
       title: 'How an agentic modernization',
-      titleHighlight: 'actually runs.',
-      subtitle: 'Five rules govern how an engagement executes against your estate. Each one is a method and the outcome it produces — what the agents do, and what you are left holding afterwards.',
-      image: '/images/capabilities/agentic_modernization_3d_pipeline.png',
-      imageAlt: 'Agentic modernization pipeline: a tangled legacy estate is scanned by a runtime of six agents — scan, map, plan, refactor, verify and gate — and emerges as discrete, API-connected cloud-native services.',
+      titleHighlight: 'actually executes.',
+      subtitle: 'Modernization at machine speed decomposes into six governed engineering planes. Each layer combines automated analysis with deterministic verification before cutover.',
       items: [
         {
           icon: 'Database',
-          title: 'Behavior is pinned before anything moves',
-          desc: 'Agents build the dependency graph, take runtime traces from live production paths, and generate a characterization suite that passes green against the legacy system exactly as it stands. The outcome is a regression gate that did not previously exist: every later change is measured against recorded behavior rather than institutional memory, so "did we break something" resolves to a test result instead of an argument.',
+          title: 'Codebase Deconstruction & AST',
+          category: 'STATIC ANALYSIS & AST',
+          managed: ['AWS Blu Age', 'CAST Highlight', 'SonarQube Enterprise Cloud'],
+          selfHosted: ['Tree-sitter AST parsers', 'Joern code property graphs', 'Custom COBOL/Java scanners'],
+          desc: 'Full-estate AST parsing and dependency graph extraction recovering embedded business rules from monolithic codebases in days.',
+          keyRule: 'Behavior is characterized from source code and runtime traces before refactoring.'
         },
         {
           icon: 'Brain',
-          title: 'Target state compiles to a work graph',
-          desc: 'You specify the destination — bounded contexts, service boundaries, target runtime — and a planner compiles it into a dependency-ordered work graph, then executes across that graph concurrently. The outcome is that sequencing derives from coupling actually present in the code rather than from an estimate, and independent branches run at once instead of queueing behind a single engineer.',
+          title: 'Bounded Context & Microservices Plan',
+          category: 'ARCHITECTURE COMPOSITION',
+          managed: ['vFunction Architectural Engine', 'AWS Migration Hub'],
+          selfHosted: ['Domain-driven bounded context planners', 'Neo4j architecture graph analyzers'],
+          desc: 'Autonomous extraction of transactional boundaries and API contracts based on observed coupling and shared-data frequency.',
+          keyRule: 'Seams are cut along actual data access patterns, not outdated team organization charts.'
         },
         {
-          icon: 'Search',
-          title: 'Rules recovered, then seams cut',
-          desc: 'Scanners emit a call graph and a debt score, then stop. Agents continue past that line — reconstructing business rules out of nested conditionals and stored procedures, then deriving service boundaries from observed coupling: call frequency, shared-data access, co-change history. The outcome is decomposition that follows how the system behaves rather than the package structure, which usually encodes team history instead of domain logic.',
-        },
-        {
-          icon: 'Eye',
-          title: 'Strangler-fig rollout behind a facade',
-          desc: 'New services run alongside the legacy path with traffic shifted a slice at a time behind a routing facade, both implementations exercised against identical requests and their responses compared. The outcome is that divergence surfaces while the old path is still serving, which makes reversing a step a routing change rather than an incident.',
+          icon: 'Code',
+          title: 'Autonomous Refactoring Engine',
+          category: 'CODE TRANSFORMATION',
+          managed: ['Amazon Q Developer', 'GitHub Copilot Workspace', 'GitLab Duo'],
+          selfHosted: ['Kangqore modernization agent swarms', 'OpenRewrite', 'Customized LLM refactoring pipelines'],
+          desc: 'Concurrent multi-agent code translation, framework re-platforming, and boilerplate generation producing reviewable diffs.',
+          keyRule: 'Agents generate reviewable pull requests with full diff rationale and characterization tests.'
         },
         {
           icon: 'Shield',
-          title: 'Gated, reversible, and cumulative',
-          desc: 'Agent output arrives as a reviewable change set carrying its tests, diff and rationale; architecture, data-model and go-live decisions require a named human approval, and each increment is versioned independently. The outcome is twofold: any single step rolls back without unwinding the rest, and the artifacts left behind — graph, rule set, test corpus, gating policies — carry into the next application, so effort per service falls as estate coverage rises.',
+          title: 'Characterization Test Generation',
+          category: 'REGRESSION HARNESS',
+          managed: ['Diffblue Cover', 'LaunchDarkly', 'Dynatrace Test Automation'],
+          selfHosted: ['Keploy zero-code test generators', 'WireMock API stubs', 'pytest/JUnit characterization runners'],
+          desc: 'Generating end-to-end regression suites against legacy behavior to prove mathematical and functional equivalence before cutover.',
+          keyRule: 'Equivalence is validated against golden test suites, not manual developer assertions.'
         },
-      ],
+        {
+          icon: 'Server',
+          title: 'Cloud-Native Container Targets',
+          category: 'CLOUD RE-PLATFORMING',
+          managed: ['AWS EKS / ECS', 'Azure Container Apps', 'Google Cloud Run'],
+          selfHosted: ['Red Hat OpenShift', 'Nomad', 'Self-hosted Kubernetes clusters with Istio mesh'],
+          desc: 'Automated generation of Helm charts, Terraform infrastructure-as-code, and container runtimes optimized for modern cloud scales.',
+          keyRule: 'Infrastructure-as-Code is generated alongside application code for deterministic deployments.'
+        },
+        {
+          icon: 'RefreshCw',
+          title: 'Strangler-Fig Routing & Cutover',
+          category: 'GOVERNED TRAFFIC CUTOVER',
+          managed: ['AWS App Mesh', 'Cloudflare Workers', 'Kong Konnect'],
+          selfHosted: ['Envoy Proxy', 'Traefik', 'APISIX with dynamic canary and shadow traffic mirroring'],
+          desc: 'Dual-run traffic routing comparing legacy vs modern responses in real time with instantaneous rollback capability.',
+          keyRule: 'Traffic migration follows shadow execution and canary routing behind a reverse proxy facade.'
+        }
+      ]
     },
   },
 

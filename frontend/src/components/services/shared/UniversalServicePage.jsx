@@ -1489,19 +1489,36 @@ const featureMicros   = service.featureMicros
   // burying the product landscape below "how we engage" puts the answer after
   // the pricing. Extracting it keeps one copy of the markup, so the two slots
   // cannot drift apart.
-  const isPlatformService = service.departmentSlug === 'platforms' || service.department === 'Platforms' || [
-    'enterprise-integration-platform',
-    'servicenow',
-    'salesforce',
-    'talent-organization',
-    'pimcore',
-    'global-capability-centers',
-    'supply-chain',
-    'unified-services-management'
-  ].includes(service.slug);
+  const isEcosystemCockpit = 
+    service.departmentSlug === 'platforms' || 
+    service.department === 'Platforms' ||
+    service.departmentSlug === 'cognition' || 
+    service.department === 'Cognition' || 
+    [
+      'enterprise-integration-platform',
+      'servicenow',
+      'salesforce',
+      'talent-organization',
+      'pimcore',
+      'global-capability-centers',
+      'supply-chain',
+      'unified-services-management',
+      'agentic-ai',
+      'agentic-ai-led-application-modernization',
+      'ai-cognitive-computing',
+      'data-science-ai',
+      'genai-business-services',
+      'mlops',
+      'analytics',
+      'big-data',
+      'digital-process-automation',
+      'robotic-process-automation',
+      'business-process-management',
+      'intelligent-automation'
+    ].includes(service.slug);
 
   const toolsStackSection = (!service.hideToolsStack && service.toolsStack) ? (
-    isPlatformService ? (
+    isEcosystemCockpit ? (
       <PlatformEcosystemSection
         eyebrow={service.toolsStack?.eyebrow}
         title={service.toolsStack?.title}

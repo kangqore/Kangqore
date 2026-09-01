@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T11:23:11.067Z",
+  "generatedAt": "2026-09-01T11:33:53.605Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -34,20 +34,28 @@
       ],
       "method": [
         {
-          "rule": "Orchestration & Frameworks",
-          "detail": "Stateful multi-agent workflows on LangGraph, with LangChain handling tool-calling and chain composition."
+          "rule": "Multi-Agent Orchestration",
+          "detail": "Stateful multi-agent execution graphs, human-in-the-loop interrupt nodes, and dynamic task delegation across specialized sub-agents."
         },
         {
-          "rule": "Models",
-          "detail": "GPT-4o, Claude, Gemini, or fine-tuned open-source — selected per use case and compliance requirement, not locked to one vendor."
+          "rule": "Foundation & Reasoning Models",
+          "detail": "Frontier reasoning models and self-hosted open-weights selected per workload latency, cost, and strict data residency constraints."
         },
         {
-          "rule": "Integration",
-          "detail": "Enterprise APIs, microservices, and hybrid memory across vector stores — Pinecone, Weaviate, or pgvector depending on constraints."
+          "rule": "Context & Hybrid Vector Memory",
+          "detail": "Hybrid dense/sparse retrieval pipelines, contextual re-ranking, and dynamic knowledge graph grounding preventing hallucinations."
         },
         {
-          "rule": "Monitoring",
-          "detail": "LangSmith-based observability and drift detection, backed by immutable audit trails and checkpoint-based recovery."
+          "rule": "Enterprise Tool Integration",
+          "detail": "Secure authenticated function calling and tool execution across ERP, CRM, database, and internal microservice backbones."
+        },
+        {
+          "rule": "Telemetry & Evaluation",
+          "detail": "Full-trace visual debugging, token latency profiling, hallucination scoring, and automated regression evaluations on production runs."
+        },
+        {
+          "rule": "Governance & Safety Guardrails",
+          "detail": "Deterministic input/output filtering, PII redaction, prompt injection defense, and cryptographic human-in-the-loop authorization."
         }
       ],
       "dataHandling": []
@@ -83,24 +91,28 @@
       ],
       "method": [
         {
-          "rule": "Behavior is pinned before anything moves",
-          "detail": "Agents build the dependency graph, take runtime traces from live production paths, and generate a characterization suite that passes green against the legacy system exactly as it stands. The outcome is a regression gate that did not previously exist: every later change is measured against recorded behavior rather than institutional memory, so \"did we break something\" resolves to a test result instead of an argument."
+          "rule": "Codebase Deconstruction & AST",
+          "detail": "Full-estate AST parsing and dependency graph extraction recovering embedded business rules from monolithic codebases in days."
         },
         {
-          "rule": "Target state compiles to a work graph",
-          "detail": "You specify the destination — bounded contexts, service boundaries, target runtime — and a planner compiles it into a dependency-ordered work graph, then executes across that graph concurrently. The outcome is that sequencing derives from coupling actually present in the code rather than from an estimate, and independent branches run at once instead of queueing behind a single engineer."
+          "rule": "Bounded Context & Microservices Plan",
+          "detail": "Autonomous extraction of transactional boundaries and API contracts based on observed coupling and shared-data frequency."
         },
         {
-          "rule": "Rules recovered, then seams cut",
-          "detail": "Scanners emit a call graph and a debt score, then stop. Agents continue past that line — reconstructing business rules out of nested conditionals and stored procedures, then deriving service boundaries from observed coupling: call frequency, shared-data access, co-change history. The outcome is decomposition that follows how the system behaves rather than the package structure, which usually encodes team history instead of domain logic."
+          "rule": "Autonomous Refactoring Engine",
+          "detail": "Concurrent multi-agent code translation, framework re-platforming, and boilerplate generation producing reviewable diffs."
         },
         {
-          "rule": "Strangler-fig rollout behind a facade",
-          "detail": "New services run alongside the legacy path with traffic shifted a slice at a time behind a routing facade, both implementations exercised against identical requests and their responses compared. The outcome is that divergence surfaces while the old path is still serving, which makes reversing a step a routing change rather than an incident."
+          "rule": "Characterization Test Generation",
+          "detail": "Generating end-to-end regression suites against legacy behavior to prove mathematical and functional equivalence before cutover."
         },
         {
-          "rule": "Gated, reversible, and cumulative",
-          "detail": "Agent output arrives as a reviewable change set carrying its tests, diff and rationale; architecture, data-model and go-live decisions require a named human approval, and each increment is versioned independently. The outcome is twofold: any single step rolls back without unwinding the rest, and the artifacts left behind — graph, rule set, test corpus, gating policies — carry into the next application, so effort per service falls as estate coverage rises."
+          "rule": "Cloud-Native Container Targets",
+          "detail": "Automated generation of Helm charts, Terraform infrastructure-as-code, and container runtimes optimized for modern cloud scales."
+        },
+        {
+          "rule": "Strangler-Fig Routing & Cutover",
+          "detail": "Dual-run traffic routing comparing legacy vs modern responses in real time with instantaneous rollback capability."
         }
       ],
       "dataHandling": [
