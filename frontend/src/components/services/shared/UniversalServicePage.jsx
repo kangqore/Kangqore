@@ -1500,6 +1500,8 @@ const featureMicros   = service.featureMicros
     service.department === 'Foundry' || 
     service.departmentSlug === 'reimagine' || 
     service.department === 'Reimagine' || 
+    service.departmentSlug === 'growth' || 
+    service.department === 'Growth' || 
     [
       'enterprise-integration-platform',
       'servicenow',
@@ -1554,7 +1556,15 @@ const featureMicros   = service.featureMicros
       'discover-frame-workshops',
       'mvp-acceleration',
       'product-strategy-experience-design',
-      'blockchain'
+      'blockchain',
+      'cdp-strategy',
+      'marketing-ai-readiness',
+      'social-media-management',
+      'performance-marketing',
+      'seo-organic-growth-strategy',
+      'growth-funnels-conversion-engineering',
+      'conversion-rate-optimization',
+      'campaign-planning'
     ].includes(service.slug);
 
   const toolsStackSection = (!service.hideToolsStack && service.toolsStack) ? (
