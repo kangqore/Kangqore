@@ -1498,6 +1498,8 @@ const featureMicros   = service.featureMicros
     service.department === 'Shield' || 
     service.departmentSlug === 'foundry' || 
     service.department === 'Foundry' || 
+    service.departmentSlug === 'reimagine' || 
+    service.department === 'Reimagine' || 
     [
       'enterprise-integration-platform',
       'servicenow',
@@ -1540,7 +1542,19 @@ const featureMicros   = service.featureMicros
       'support-maintenance',
       'software-development',
       'api-microservices-engineering',
-      'internet-of-things'
+      'internet-of-things',
+      'application-modernization',
+      'digital-transformation',
+      'legacy-modernization',
+      'technology-modernization',
+      'technology-transformation',
+      'digital-business-transformation',
+      'technology-consulting',
+      'strategy-consulting',
+      'discover-frame-workshops',
+      'mvp-acceleration',
+      'product-strategy-experience-design',
+      'blockchain'
     ].includes(service.slug);
 
   const toolsStackSection = (!service.hideToolsStack && service.toolsStack) ? (

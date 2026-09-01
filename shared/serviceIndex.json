@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T11:51:27.554Z",
+  "generatedAt": "2026-09-01T11:59:52.807Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1395,7 +1395,32 @@
       "description": "Modernize legacy applications — legacy assessment, re-platforming, re-architecting, containerization, and API enablement. The Modernization Playbook™.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Codebase Analysis & AST Extraction",
+          "detail": "Full-codebase semantic parsing, cyclomatic debt quantification, and business logic extraction."
+        },
+        {
+          "rule": "Domain Boundary & Bounded Contexts",
+          "detail": "Isolating transactional domains, shared-data coupling analysis, and microservices boundary mapping."
+        },
+        {
+          "rule": "API Facade & Strangler Routing",
+          "detail": "Strangler-fig proxy facades routing incremental traffic from legacy monoliths to modern microservices."
+        },
+        {
+          "rule": "Database Decomposition & CDC",
+          "detail": "Breaking monolithic shared schemas into domain-isolated databases via event-driven synchronization."
+        },
+        {
+          "rule": "Automated Regression Testing",
+          "detail": "Recording live production traffic to generate regression suites proving behavioral parity."
+        },
+        {
+          "rule": "Cloud-Native Container Delivery",
+          "detail": "Containerized microservices deployments with autoscaling, health probes, and automated rollbacks."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1406,7 +1431,32 @@
       "description": "End-to-end digital transformation — digital strategy, operating model design, technology enablement, change management, and value realization.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Enterprise Architecture & Value Streams",
+          "detail": "Mapping end-to-end business value streams, technology portfolio rationalization, and capability roadmaps."
+        },
+        {
+          "rule": "Digital Integration & Omnichannel Core",
+          "detail": "Unifying siloed ERP, CRM, and supply chain applications into an agile real-time API mesh."
+        },
+        {
+          "rule": "Cloud & Modern Digital Platforms",
+          "detail": "Elastic infrastructure foundations supporting rapid digital application scaling and innovation."
+        },
+        {
+          "rule": "Customer Experience & Mobile Engines",
+          "detail": "Omnichannel personalized web and mobile experiences delivering sub-second response times."
+        },
+        {
+          "rule": "Data Intelligence & Analytics Mesh",
+          "detail": "Enterprise-wide single source of truth powering predictive operational decisions and executive KPIs."
+        },
+        {
+          "rule": "Agile Product Delivery & Governance",
+          "detail": "Transitioning from rigid project funding to continuous product-centric delivery squads."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1417,7 +1467,32 @@
       "description": "Modernize aging systems — assessment, migration planning, data migration, testing, and cutover management. Risk-managed, fixed-bid waves.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Mainframe & Legacy Code Parsing",
+          "detail": "Deep parsing of COBOL, PL/I, RPG, and Fortran codebases into structured data flow diagrams."
+        },
+        {
+          "rule": "Business Rule Mining & Extraction",
+          "detail": "Extracting tacit business logic from nested stored procedures and legacy monolithic routines."
+        },
+        {
+          "rule": "Data Tier Migration & Replication",
+          "detail": "Migrating legacy VSAM, DB2, and IMS databases to modern PostgreSQL and cloud lakehouses."
+        },
+        {
+          "rule": "Modular Service Re-Architecture",
+          "detail": "Replacing heavy application servers with lightweight, horizontally scalable containerized services."
+        },
+        {
+          "rule": "Automated Golden Master Testing",
+          "detail": "Simultaneously feeding inputs to legacy and modern systems to verify identical calculation outputs."
+        },
+        {
+          "rule": "Phased Strangler Cutover",
+          "detail": "Gradual tenant-by-tenant traffic migration followed by structured legacy hardware decommissioning."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1428,7 +1503,32 @@
       "description": "Modernize your technology stack — technology assessment, roadmap development, implementation, integration, and optimization.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Language & Framework Evolution",
+          "detail": "Automated upgrades from legacy Java/PHP/.NET Framework to modern Java 21, TypeScript, and .NET 8."
+        },
+        {
+          "rule": "Database & Storage Modernization",
+          "detail": "Transitioning from single-node licensed RDBMS to distributed, cloud-native SQL and NoSQL engines."
+        },
+        {
+          "rule": "Modern API & Integration Standards",
+          "detail": "Replacing SOAP/XML and flat-file batch transfers with lightweight REST, gRPC, and GraphQL APIs."
+        },
+        {
+          "rule": "CI/CD & GitOps Automation",
+          "detail": "Replacing manual build servers with declarative, containerized continuous delivery pipelines."
+        },
+        {
+          "rule": "Unified Telemetry & OpenTelemetry",
+          "detail": "Vendor-neutral instrumentation generating distributed traces, structured logs, and metrics."
+        },
+        {
+          "rule": "Zero Trust & Identity Modernization",
+          "detail": "Eliminating static IP trust and perimeter firewalls with dynamic identity verification."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1439,7 +1539,32 @@
       "description": "Fundamental technology change — vision and strategy, architecture design, transformation execution, change enablement, and value measurement.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Enterprise Portfolio Rationalization",
+          "detail": "Evaluating applications across the TIME framework (Tolerate, Invest, Migrate, Eliminate)."
+        },
+        {
+          "rule": "Cloud & Platform Engineering Mesh",
+          "detail": "Self-service developer infrastructure reducing cognitive load and accelerating time-to-market."
+        },
+        {
+          "rule": "DevSecOps & Automated Governance",
+          "detail": "Shifting security and compliance checks directly into developer pull request workflows."
+        },
+        {
+          "rule": "Event-Driven Enterprise Backbone",
+          "detail": "Decoupling business transactions across real-time event streams with guaranteed delivery."
+        },
+        {
+          "rule": "Continuous Engineering Observability",
+          "detail": "End-to-end service level objectives (SLOs), error budgets, and blameless post-mortem tooling."
+        },
+        {
+          "rule": "Talent & Engineering Culture Shift",
+          "detail": "Upskilling developers in cloud-native paradigms, AI tooling, and domain-driven design."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1450,7 +1575,32 @@
       "description": "Reimagine business models — business model innovation, digital products, customer experience, operational excellence, and data monetization.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Business Model Innovation & Monetization",
+          "detail": "Deploying flexible subscription, usage-based, and marketplace monetization engines."
+        },
+        {
+          "rule": "Customer Experience & Digital Channels",
+          "detail": "Frictionless omnichannel customer onboarding, self-service portals, and personalized commerce."
+        },
+        {
+          "rule": "AI-Powered Process Automation",
+          "detail": "Automating complex cross-department business processes from customer order to settlement."
+        },
+        {
+          "rule": "Enterprise Data & Customer 360",
+          "detail": "Consolidating customer interactions, purchase history, and service tickets into unified 360 profiles."
+        },
+        {
+          "rule": "Partner Ecosystem & API Marketplace",
+          "detail": "Exposing monetized business APIs and developer portals for ecosystem partners."
+        },
+        {
+          "rule": "Executive Visibility & Decision Cockpit",
+          "detail": "Real-time executive dashboards tracking customer acquisition cost, churn, and gross margin."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1461,7 +1611,32 @@
       "description": "Expert technology consulting — technology strategy, architecture advisory, vendor selection, technology roadmaps, and IT governance.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Enterprise Architecture Assessment",
+          "detail": "Comprehensive audits of system resilience, technical debt, coupling, and scalability bottlenecks."
+        },
+        {
+          "rule": "Vendor & Platform Evaluation",
+          "detail": "Objective vendor scoring, Total Cost of Ownership (TCO) modeling, and contract negotiation advisory."
+        },
+        {
+          "rule": "Cloud Strategy & Roadmap Design",
+          "detail": "Designing hybrid and multi-cloud strategies balancing operational agility with FinOps governance."
+        },
+        {
+          "rule": "Technical Due Diligence (M&A)",
+          "detail": "Evaluating target company code quality, technical debt, open-source license risk, and security posture."
+        },
+        {
+          "rule": "Cybersecurity & Compliance Strategy",
+          "detail": "Threat modeling, Zero Trust roadmap design, and regulatory compliance posture verification."
+        },
+        {
+          "rule": "Engineering Operating Model Design",
+          "detail": "Designing team topologies, squad structures, and platform engineering delivery models."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1472,7 +1647,32 @@
       "description": "Business and technology strategy — business strategy, digital strategy, market analysis, competitive positioning, and growth strategy.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Market & Competitive Intelligence",
+          "detail": "Macro market trend analysis, disruption modeling, and competitor benchmarking."
+        },
+        {
+          "rule": "Digital Business Model Strategy",
+          "detail": "Designing platform business models, flywheel dynamics, and scalable pricing structures."
+        },
+        {
+          "rule": "Capability & Operating Model Design",
+          "detail": "Designing the Target Operating Model (TOM) required to deliver strategic objectives."
+        },
+        {
+          "rule": "Capital Allocation & M&A Strategy",
+          "detail": "Strategic capital budgeting, acquisition screening, and investment return prioritization."
+        },
+        {
+          "rule": "Transformation PMO & Value Realization",
+          "detail": "Tracking transformation milestones, value realization metrics, and change management programs."
+        },
+        {
+          "rule": "Executive Alignment & Change Leadership",
+          "detail": "Facilitating board alignment, leadership consensus, and enterprise-wide change adoption."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1483,7 +1683,32 @@
       "description": "Structured workshops — design thinking, problem framing, ideation, solution design, and roadmap development. The diagnostic entry-point.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Stakeholder Alignment & Problem Framing",
+          "detail": "Uncovering root-cause business bottlenecks, aligning divergent stakeholder goals, and defining KPIs."
+        },
+        {
+          "rule": "User Journey & Empathy Mapping",
+          "detail": "Mapping customer touchpoints, emotional highs/lows, and friction points across the current state."
+        },
+        {
+          "rule": "Event Storming & Domain Discovery",
+          "detail": "Collaborative rapid discovery mapping business domain events, commands, read models, and aggregates."
+        },
+        {
+          "rule": "Technical Feasibility & Architecture Spike",
+          "detail": "Validating critical third-party APIs, performance limits, and security constraints in real time."
+        },
+        {
+          "rule": "Prioritization & MVP Scope Definition",
+          "detail": "Ruthlessly prioritizing core features versus secondary enhancements to define the minimum viable product."
+        },
+        {
+          "rule": "Production Roadmap & Execution Plan",
+          "detail": "Delivering a costed, sprint-by-sprint release roadmap, architecture diagram, and staffing plan."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1494,7 +1719,32 @@
       "description": "Rapid MVP build and validation — rapid prototyping, agile sprints, user validation, iterative development, and launch support.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Rapid Product Scoping & Prototyping",
+          "detail": "Translating concepts into high-fidelity interactive prototypes tested with real users in days."
+        },
+        {
+          "rule": "Modular Frontend & Design System",
+          "detail": "Pre-built accessible UI components, responsive layouts, and lightning-fast edge rendering."
+        },
+        {
+          "rule": "Serverless & BaaS Backend Core",
+          "detail": "Instant database provisioning, automated CRUD APIs, real-time WebSocket subscriptions, and storage."
+        },
+        {
+          "rule": "Authentication & Enterprise Access",
+          "detail": "Instant passwordless login, social OAuth, multi-factor authentication, and user management."
+        },
+        {
+          "rule": "Payment & Subscription Engine",
+          "detail": "Secure payment collection, subscription lifecycle management, and tax compliance."
+        },
+        {
+          "rule": "Telemetry, Analytics & Feedback",
+          "detail": "Real-time user behavior funnels, session recordings, and automated crash tracking."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1505,7 +1755,32 @@
       "description": "Product strategy and UX/UI — product vision, user research, UX/UI design, design systems, and usability testing for exceptional product experiences.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Qualitative User Research & Insights",
+          "detail": "Generative user interviews, usability testing, and synthesis of behavioral customer patterns."
+        },
+        {
+          "rule": "Information Architecture & Wireframing",
+          "detail": "Structuring complex application navigation, taxonomy hierarchy, and low-fidelity user flows."
+        },
+        {
+          "rule": "Design System & Design Tokens",
+          "detail": "Multi-brand design tokens, typography scales, dark/light modes, and reusable UI components."
+        },
+        {
+          "rule": "Micro-Interactions & Motion Design",
+          "detail": "Delightful micro-animations, loading state transitions, and responsive gesture feedback."
+        },
+        {
+          "rule": "High-Fidelity Interactive Prototyping",
+          "detail": "Complex conditional logic prototypes simulating exact production application behavior."
+        },
+        {
+          "rule": "Design-to-Code Hand-off & Visual QA",
+          "detail": "Pixel-perfect design specs, asset export pipelines, and automated visual QA testing."
+        }
+      ],
       "dataHandling": []
     },
     {
@@ -1516,7 +1791,32 @@
       "description": "Blockchain solutions — blockchain strategy, smart contracts, private networks, DeFi, and supply chain transparency. Built for enterprise rigor.",
       "capabilities": [],
       "faqs": [],
-      "method": [],
+      "method": [
+        {
+          "rule": "Smart Contract Architecture & Solidity",
+          "detail": "Gas-optimized smart contract authoring, ERC token standards, and upgradeable proxy patterns."
+        },
+        {
+          "rule": "Multi-Chain & Layer-2 Networks",
+          "detail": "High-throughput Layer-2 rollup integration, private permissioned EVM chains, and RPC nodes."
+        },
+        {
+          "rule": "Smart Contract Security & Auditing",
+          "detail": "Automated vulnerability scanning, reentrancy defense, and formal mathematical verification."
+        },
+        {
+          "rule": "Decentralized Storage & IPFS",
+          "detail": "Immutable, content-addressed metadata storage for decentralized applications and token assets."
+        },
+        {
+          "rule": "Oracle & Real-World Data Feeds",
+          "detail": "Securely feeding real-world asset pricing, weather data, and enterprise APIs into smart contracts."
+        },
+        {
+          "rule": "Web3 Wallet & dApp Connectivity",
+          "detail": "Seamless user onboarding with social logins, account abstraction (ERC-4337), and hardware wallets."
+        }
+      ],
       "dataHandling": []
     },
     {
