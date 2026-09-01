@@ -34,6 +34,7 @@ import { AgenticModernization3DModel } from '../../ui/AgenticModernization3DMode
 import { AgenticAI3DModel } from '../../ui/AgenticAI3DModel';
 import { MLOps3DModel } from '../../ui/MLOps3DModel';
 import { GenAI3DModel } from '../../ui/GenAI3DModel';
+import { EnterpriseIntegration3DModel } from '../../ui/EnterpriseIntegration3DModel';
 import ServiceGlassCards from './ServiceGlassCards';
 import SolutionsCarousel from './SolutionsCarousel';
 
@@ -113,12 +114,12 @@ const EIPParallaxImageCard = ({ src, alt }) => {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="flex items-center justify-start sm:justify-center w-full overflow-visible lg:-mt-8 py-4 select-none"
+      className="flex items-center justify-start sm:justify-center w-full overflow-visible lg:mt-0 pt-0 pb-0 select-none"
       role="group"
       aria-label={alt}
       tabIndex={0}
     >
-      <div className="relative w-full max-w-[480px] ml-auto">
+      <div className="relative w-full max-w-[540px] ml-auto">
         {/* 3D Perspective Card Container */}
         <div
           className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-[#0a0f1a]/90 backdrop-blur-md transition-all duration-200 ease-out group"
@@ -1502,12 +1503,14 @@ const featureMicros   = service.featureMicros
           <MLOps3DModel />
         ) : service.slug === 'genai-business-services' ? (
           <GenAI3DModel />
+        ) : service.slug === 'enterprise-integration-platform' ? (
+          <EnterpriseIntegration3DModel />
         ) : (
           service.toolsStack?.image
         )
       }
       imageAlt={service.toolsStack?.imageAlt}
-      inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services'}
+      inlineModel={service.slug === 'mlops' || service.slug === 'genai-business-services' || service.slug === 'enterprise-integration-platform'}
     />
   ) : null;
 
@@ -1637,53 +1640,86 @@ const featureMicros   = service.featureMicros
       </div>
 
       {/* ══════════════════════ DEFINITION / OVERVIEW ══════════════════════ */}
-      <section id="svc-what" className="py-16 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+      <section id="svc-what" className="pt-16 md:pt-24 pb-8 md:pb-12 relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
         <div ref={defRef} className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${defVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 
-          <div className="mb-14">
-            {'whatIsEyebrow' in service
-              ? service.whatIsEyebrow && (
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.whatIsEyebrow}</span>
-                </div>
-              )
-              : (
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">WHAT IS {service.name.toUpperCase()}</span>
-                </div>
-              )
-            }
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
-              {/* `whatIsHighlightNewLine` puts the gradient clause on its own
-                  line without needing a second white line to carry the break.
-                  The <br> is suppressed below `sm`: forcing it there costs a
-                  third line, because the first clause already wraps at 28.8px
-                  in a 342px column. Desktop gets the deliberate break, mobile
-                  keeps natural wrapping. */}
-              {/* The two break flags used to be mutually exclusive branches of
-                  one ternary, so a heading could have a break after line 1 or
-                  before the highlight, never both — and a three-line heading
-                  was unreachable. They compose now. Every previous combination
-                  renders identically: title alone, title + line2, and
-                  title + highlightNewLine all produce the same markup as
-                  before. */}
-              {service.whatIsTitle
-                ? <>
-                    {service.whatIsTitle}
-                    {service.whatIsTitleLine2 && <><br />{service.whatIsTitleLine2}</>}
-                    {service.whatIsHighlightNewLine && <br className="hidden sm:block" />}
-                    {' '}
-                    <span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span>
-                  </>
-                : <>The complete {(sectionLine || service.name).toLowerCase()}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{sectionHighlight.toLowerCase()} framework.</span></>
+          {!(service.whatIsSideBySideHeading || service.slug === 'enterprise-integration-platform') && (
+            <div className="mb-14">
+              {'whatIsEyebrow' in service
+                ? service.whatIsEyebrow && (
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="h-[1px] w-12 bg-white/20" />
+                    <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.whatIsEyebrow}</span>
+                  </div>
+                )
+                : (
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="h-[1px] w-12 bg-white/20" />
+                    <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">WHAT IS {service.name.toUpperCase()}</span>
+                  </div>
+                )
               }
-            </h2>
-          </div>
+              <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl">
+                {/* `whatIsHighlightNewLine` puts the gradient clause on its own
+                    line without needing a second white line to carry the break.
+                    The <br> is suppressed below `sm`: forcing it there costs a
+                    third line, because the first clause already wraps at 28.8px
+                    in a 342px column. Desktop gets the deliberate break, mobile
+                    keeps natural wrapping. */}
+                {/* The two break flags used to be mutually exclusive branches of
+                    one ternary, so a heading could have a break after line 1 or
+                    before the highlight, never both — and a three-line heading
+                    was unreachable. They compose now. Every previous combination
+                    renders identically: title alone, title + line2, and
+                    title + highlightNewLine all produce the same markup as
+                    before. */}
+                {service.whatIsTitle
+                  ? <>
+                      {service.whatIsTitle}
+                      {service.whatIsTitleLine2 && <><br />{service.whatIsTitleLine2}</>}
+                      {service.whatIsHighlightNewLine && <br className="hidden sm:block" />}
+                      {' '}
+                      <span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span>
+                    </>
+                  : <>The complete {(sectionLine || service.name).toLowerCase()}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{sectionHighlight.toLowerCase()} framework.</span></>
+                }
+              </h2>
+            </div>
+          )}
 
-          <div className="grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.1fr)] gap-20 lg:gap-16 items-start mb-20">
+          <div className={`grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.1fr)] gap-16 lg:gap-16 items-start ${service.slug === 'enterprise-integration-platform' ? 'mb-8' : 'mb-20'}`}>
             <div>
+              {(service.whatIsSideBySideHeading || service.slug === 'enterprise-integration-platform') && (
+                <div className="mb-10">
+                  {'whatIsEyebrow' in service
+                    ? service.whatIsEyebrow && (
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="h-[1px] w-12 bg-white/20" />
+                        <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.whatIsEyebrow}</span>
+                      </div>
+                    )
+                    : (
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="h-[1px] w-12 bg-white/20" />
+                        <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">WHAT IS {service.name.toUpperCase()}</span>
+                      </div>
+                    )
+                  }
+                  <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-0 max-w-4xl font-display">
+                    {service.whatIsTitle
+                      ? <>
+                          {service.whatIsTitle}
+                          {service.whatIsTitleLine2 && <><br />{service.whatIsTitleLine2}</>}
+                          {service.whatIsHighlightNewLine && <br className="hidden sm:block" />}
+                          {' '}
+                          <span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span>
+                        </>
+                      : <>The complete {(sectionLine || service.name).toLowerCase()}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{sectionHighlight.toLowerCase()} framework.</span></>
+                    }
+                  </h2>
+                </div>
+              )}
+
               {/* data-speakable pairs with SpeakableSpecification in the page
                   schema: this is the passage a voice assistant reads aloud. */}
               <p data-speakable className="text-white/60 text-lg sm:text-xl leading-[1.7] mb-8 font-light max-w-2xl">{service.shortDescription}</p>
@@ -4292,7 +4328,7 @@ const featureMicros   = service.featureMicros
               "60% Faster Cycle / 35% TCO Reduction" reappeared on a service
               management page. Defaults to showing. */}
           {!service.hideMetrics && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-12 border-t border-white/[0.08]">
+          <div className={`grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 ${service.slug === 'enterprise-integration-platform' ? 'pt-6 sm:pt-8' : 'pt-12'} border-t border-white/[0.08]`}>
             {service.businessMetrics ? service.businessMetrics.map((m, i) => (
               <div key={i}>
                 <p className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
@@ -4324,14 +4360,14 @@ const featureMicros   = service.featureMicros
               error. Suppressed with the row itself under hideMetrics: a
               disclaimer for figures nobody can see is worse than neither. */}
           {service.hideMetrics ? null : (service.businessMetrics || []).some((m) => m.sourced) ? (
-            <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-16 max-w-3xl">
+            <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-0 max-w-3xl">
               {service.metricsNote || `Source: ${[...new Set((service.businessMetrics || []).filter((m) => m.sourced).map((m) => m.source))].join('; ')}. Figures describe the market, not Kangqore engagement results.`}
             </p>
           ) : (service.businessMetrics || []).some((m) => m.illustrative) ? (
-            <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-16 max-w-3xl">
+            <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-0 max-w-3xl">
               Illustrative figures — modeled on typical engagement patterns, not a specific client result.
             </p>
-          ) : <div className="mb-16" />}
+          ) : null}
 
 
 

@@ -712,8 +712,8 @@ export const AIToolsSection = ({
 
           {/* Right Column: Isometric Illustration or Inline 3D Model */}
           {!isCustomModel && (
-            <div className="w-full lg:w-1/2 flex items-center justify-center lg:sticky lg:top-28 lg:pt-24">
-              <div className="relative max-w-lg w-full">
+            <div className={`w-full ${inlineModel ? 'lg:w-[54%]' : 'lg:w-1/2'} flex items-center justify-center lg:sticky lg:top-24 lg:pt-6`}>
+              <div className={`relative ${inlineModel ? 'max-w-2xl' : 'max-w-lg'} w-full`}>
                 {/* Soft decorative background glow behind the illustration */}
                 <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none z-0" />
                 {typeof image === 'string' ? (

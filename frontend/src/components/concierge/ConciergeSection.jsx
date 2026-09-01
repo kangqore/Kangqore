@@ -291,6 +291,7 @@ const ConciergeSection = ({
   suggestedPrompts,
   heading = 'From Business Questions to Solution Direction',
   intro = 'eQORE helps leaders identify relevant Kangqore capabilities, understand possible solution paths, and connect with the right team for deeper consultation.',
+  className = '',
 }) => {
   const prompts = suggestedPrompts || DEFAULT_PROMPTS;
   const {
@@ -404,7 +405,7 @@ const ConciergeSection = ({
   return (
     <section
       id="eqore-ai-concierge"
-      className={`relative w-full py-24 sm:py-32 overflow-hidden ${inverted ? 'bg-black' : 'bg-white dark:bg-black'}`}
+      className={`relative w-full py-16 sm:py-20 overflow-hidden ${inverted ? 'bg-black' : 'bg-white dark:bg-black'} ${className}`}
       aria-labelledby="eqore-ai-heading"
     >
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
