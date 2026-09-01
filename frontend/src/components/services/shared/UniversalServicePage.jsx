@@ -1494,6 +1494,8 @@ const featureMicros   = service.featureMicros
     service.department === 'Platforms' ||
     service.departmentSlug === 'cognition' || 
     service.department === 'Cognition' || 
+    service.departmentSlug === 'shield' || 
+    service.department === 'Shield' || 
     [
       'enterprise-integration-platform',
       'servicenow',
@@ -1514,7 +1516,12 @@ const featureMicros   = service.featureMicros
       'digital-process-automation',
       'robotic-process-automation',
       'business-process-management',
-      'intelligent-automation'
+      'intelligent-automation',
+      'ai-governance',
+      'it-security-services',
+      'finance-risk-management',
+      'quality-engineering-assurance',
+      'operation-technology'
     ].includes(service.slug);
 
   const toolsStackSection = (!service.hideToolsStack && service.toolsStack) ? (

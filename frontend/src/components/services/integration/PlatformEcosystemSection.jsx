@@ -4,12 +4,13 @@ import {
   CheckCircle2, Server, Terminal, ExternalLink, Database, Settings, 
   Boxes, Truck, Workflow, Users, Activity, BarChart, Shield, Search, 
   Radio, Compass, LayoutGrid, Cloud, RefreshCw, Brain, Bot, Sparkles,
-  Code, FileText, Binary, GitBranch
+  Code, FileText, Binary, GitBranch, BarChart2, BrainCircuit, CheckCircle,
+  Lock, Radar, Target, TrendingUp, CheckSquare
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 /* ═══════════════════════════════════════════════════════════════════════════════
-   PLATFORM & COGNITION ECOSYSTEM SECTION — ARCHITECTURAL 3D COCKPIT
+   PLATFORM, COGNITION & SHIELD ECOSYSTEM SECTION — ARCHITECTURAL 3D COCKPIT
    Design: Chamfered Tech Cards with Layered 3D Fanned Gradient Wings & Liquid Obsidian Finish
    ═══════════════════════════════════════════════════════════════════════════════ */
 
@@ -17,7 +18,8 @@ const ICON_REGISTRY = {
   Network, Globe, Zap, Layers, Cpu, Eye, ShieldCheck, Server, 
   Database, Settings, Boxes, Truck, Workflow, Users, Activity, 
   BarChart, Shield, Search, Radio, Compass, LayoutGrid, Cloud, RefreshCw,
-  Brain, Bot, Sparkles, Code, FileText, Binary, GitBranch
+  Brain, Bot, Sparkles, Code, FileText, Binary, GitBranch,
+  BarChart2, BrainCircuit, CheckCircle, CheckCircle2, Lock, Radar, Target, TrendingUp, CheckSquare
 };
 
 export const PlatformEcosystemSection = ({
