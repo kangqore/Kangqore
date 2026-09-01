@@ -211,7 +211,7 @@ export const IntegrationEcosystemSection = ({
                           <span className={`text-xs sm:text-sm font-bold tracking-tight font-display transition-colors ${isActive ? 'text-white font-extrabold' : 'text-slate-800 group-hover:text-slate-950'}`}>
                             {item.title}
                           </span>
-                          <span className={`text-[10px] font-mono tracking-wider uppercase font-semibold transition-colors ${isActive ? 'text-white/60' : 'text-slate-500'}`}>
+                          <span className={`text-[11px] font-mono tracking-wider uppercase font-semibold transition-colors ${isActive ? 'text-white/60' : 'text-slate-500'}`}>
                             {item.category}
                           </span>
                         </div>
