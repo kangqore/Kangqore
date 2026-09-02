@@ -1,8 +1,9 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.'
+const SYSTEM = `You are ${HANUMANAS.name}, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.`
 
 export async function runGdprComplianceAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()

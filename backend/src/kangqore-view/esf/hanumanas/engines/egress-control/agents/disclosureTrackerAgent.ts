@@ -1,8 +1,9 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS. Analyse intelligence disclosure patterns and report concisely on risk to the ADMIN.'
+const SYSTEM = `You are ${HANUMANAS.name}. Analyse intelligence disclosure patterns and report concisely on risk to the ADMIN.`
 
 export async function runDisclosureTrackerAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()

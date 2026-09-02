@@ -1,9 +1,10 @@
 import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
 const EVENT_TYPES = ['ACTIVATION', 'AUTONOMOUS', 'ACCESS_DENIED', 'KNOWLEDGE_ASSET', 'EGRESS', 'POLICY_VIOLATION'] as const
-const SYSTEM = 'You are HANUMANAS. Write concise compliance evidence summaries — what is covered and what gaps exist.'
+const SYSTEM = `You are ${HANUMANAS.name}. Write concise compliance evidence summaries — what is covered and what gaps exist.`
 
 export async function runComplianceEvidenceAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()

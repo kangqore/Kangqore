@@ -13,6 +13,7 @@
 import { Router } from 'express'
 import logger from '../../../utils/logger'
 import { requireAuth, requireRole } from '../../../middleware/rbac'
+import { HANUMANAS } from '../../esf/hanumanas/identity'
 import { sonnet, haiku, textOf } from '../llm/kimmpLLMRouter'
 import {
   loadBrain, searchNotes, addCapture, deleteCapture, getSession, pushSession,
@@ -63,7 +64,7 @@ brainRoutes.get('/telemetry', async (_req, res) => {
         id: `tx-${Date.now()}-2`,
         timestamp: new Date(Date.now() - 1200).toISOString(),
         protocol: 'HANUMANAS_RPC',
-        source: 'HANUMANAS',
+        source: HANUMANAS.name,
         target: 'CORE',
         payload: { phase: 'SECURITY_AUDIT', promptInjections: 0, rbacEnforced: true },
         bytes: '840 B',

@@ -1,9 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 import { LogicToolRegistry } from '../../../../../../kangqore-immp/tools/logicToolRegistry'
 
-const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.'
+const SYSTEM = `You are ${HANUMANAS.name}, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.`
 
 export async function runRiskAssessmentAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()

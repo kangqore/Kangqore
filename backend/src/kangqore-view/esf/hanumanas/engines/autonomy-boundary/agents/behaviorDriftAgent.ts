@@ -1,8 +1,9 @@
 import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS. Analyse autonomous AI behaviour patterns for drift or instability — be precise and action-oriented.'
+const SYSTEM = `You are ${HANUMANAS.name}. Analyse autonomous AI behaviour patterns for drift or instability — be precise and action-oriented.`
 
 export async function runBehaviorDriftAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()

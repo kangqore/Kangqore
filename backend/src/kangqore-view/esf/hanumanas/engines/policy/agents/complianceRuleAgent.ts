@@ -1,8 +1,9 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS. Evaluate whether active governance policies are achieving their goals based on recent violation trends.'
+const SYSTEM = `You are ${HANUMANAS.name}. Evaluate whether active governance policies are achieving their goals based on recent violation trends.`
 
 export async function runComplianceRuleAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()

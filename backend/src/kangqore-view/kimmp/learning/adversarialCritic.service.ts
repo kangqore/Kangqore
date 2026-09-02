@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { withKrisnam } from '../llm/krisnamAnthropic'
+import type { HanumanasName } from '../../esf/hanumanas/identity'
 import logger from '../../../utils/logger'
 
 const anthropic = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
@@ -18,7 +19,7 @@ export interface CriticismResult {
  * logic gaps, and HANUMANAS compliance across the entire ecosystem.
  */
 export async function critiqueDecision(
-  system: 'KANGQORE' | 'EQORE' | 'HCIP' | 'ALIS' | 'HANUMANAS' | 'VIS' | 'KIMMP',
+  system: 'KANGQORE' | 'EQORE' | 'HCIP' | 'ALIS' | HanumanasName | 'VIS' | 'KIMMP',
   context: string,
   proposedActionOrReasoning: string
 ): Promise<CriticismResult> {

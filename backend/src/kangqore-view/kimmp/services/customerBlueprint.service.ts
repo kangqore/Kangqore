@@ -1,4 +1,5 @@
 import { prisma } from '../../../lib/prisma'
+import { HANUMANAS } from '../../esf/hanumanas/identity'
 
 export interface BlueprintOptions {
   customerName:   string
@@ -70,7 +71,7 @@ export function buildBlueprintSpec(opts: BlueprintOptions): Record<string, unkno
       },
     },
     coig: { northStar: true, dimensions: ['velocity', 'depth', 'breadth', 'quality'] },
-    governance: { approvalLevels: { DECISION: 'KIMMP', POLICY: 'HANUMANAS' }, auditRetentionDays: 365 },
+    governance: { approvalLevels: { DECISION: 'KIMMP', POLICY: HANUMANAS.name }, auditRetentionDays: 365 },
   }
 }
 

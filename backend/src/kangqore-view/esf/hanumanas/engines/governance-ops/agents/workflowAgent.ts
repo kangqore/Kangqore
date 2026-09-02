@@ -1,8 +1,9 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Provide executive governance summaries — direct, no fluff, 2 sentences.'
+const SYSTEM = `You are ${HANUMANAS.name}, Kangqore\'s governance AI. Provide executive governance summaries — direct, no fluff, 2 sentences.`
 
 export async function runWorkflowAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()

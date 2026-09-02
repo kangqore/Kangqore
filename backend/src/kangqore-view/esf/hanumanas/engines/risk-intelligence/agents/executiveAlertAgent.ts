@@ -1,8 +1,9 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS. Write a concise executive risk brief for the ADMIN. Be direct and action-oriented.'
+const SYSTEM = `You are ${HANUMANAS.name}. Write a concise executive risk brief for the ADMIN. Be direct and action-oriented.`
 
 export async function runExecutiveAlertAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()

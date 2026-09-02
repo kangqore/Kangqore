@@ -1,10 +1,11 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
 const AUTONOMOUS_RATIO_WARN = 0.75 // warn if > 75% of all activations are autonomous
 
-const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
+const SYSTEM = `You are ${HANUMANAS.name}, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.`
 
 export async function runDetectorAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()

@@ -1,8 +1,9 @@
 import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS. Analyse governance trends factually — be specific about direction and velocity of change.'
+const SYSTEM = `You are ${HANUMANAS.name}. Analyse governance trends factually — be specific about direction and velocity of change.`
 
 export async function runAnalyticsAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()

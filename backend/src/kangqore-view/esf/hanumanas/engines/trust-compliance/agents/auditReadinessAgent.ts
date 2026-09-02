@@ -1,8 +1,9 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS. Assess this AI governance system\'s readiness for an external audit and produce a concise readiness brief.'
+const SYSTEM = `You are ${HANUMANAS.name}. Assess this AI governance system\'s readiness for an external audit and produce a concise readiness brief.`
 
 const EVENT_TYPES = ['ACTIVATION','AUTONOMOUS','POLICY_VIOLATION','ACCESS_DENIED','KNOWLEDGE_ASSET','EGRESS'] as const
 

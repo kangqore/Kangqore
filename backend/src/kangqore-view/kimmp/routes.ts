@@ -1,4 +1,5 @@
 // ---------------------------------------------------------------------------
+import { HANUMANAS } from '../esf/hanumanas/identity';
 // KIMMP — route registry
 //
 // PR 1 is a passive, read-only intelligence layer: it analyzes text on demand
@@ -3615,7 +3616,7 @@ kangqoreImmpRoutes.post('/hanumanas/policy-violation', requireAuth, requireRole(
         signalType:  'HANUMANAS_POLICY_VIOLATION',
         severity:    severity.toUpperCase(),
         signalValue: `Policy violated: ${policyName ?? policyId}`,
-        source:      'HANUMANAS',
+        source:      HANUMANAS.name,
         agentSystem: 'HANUMANAS_SHIELD',
         metadata:    { policyId, policyName, violatorId, violatorRole, endpoint, detail },
         status:      'ACTIVE',
@@ -3772,7 +3773,7 @@ kangqoreImmpRoutes.post('/tenants', requireAuth, requireRole(['ADMIN']), async (
         planTier: planTier ?? 'STARTER',
         maxUsers: maxUsers ?? 10, maxAgents: maxAgents ?? 20,
         blueprintId, blueprintVersion,
-        enabledModules: enabledModules ?? ['KIMMP', 'WAANDA', 'HANUMANAS', 'KEOS'],
+        enabledModules: enabledModules ?? ['KIMMP', 'WAANDA', HANUMANAS.name, 'KEOS'],
         disabledModules: [],
         provisionedBy: userId,
       }
@@ -4121,7 +4122,7 @@ kangqoreImmpRoutes.post('/hanumanas/security-findings', requireAuth, requireRole
     if (severity === 'CRITICAL' || severity === 'HIGH') {
       await (prisma as any).kimmpSignal.create({
         data: {
-          type: 'SECURITY_FINDING', source: 'HANUMANAS', priority: severity === 'CRITICAL' ? 'CRITICAL' : 'HIGH',
+          type: 'SECURITY_FINDING', source: HANUMANAS.name, priority: severity === 'CRITICAL' ? 'CRITICAL' : 'HIGH',
           title: `Security finding: ${title}`,
           description: `Severity: ${severity}${cveRef ? ` | CVE: ${cveRef}` : ''}. ${description.slice(0, 200)}`,
           status: 'ACTIVE', createdBy: userId,
@@ -5782,16 +5783,16 @@ kangqoreImmpRoutes.get('/vertical-editions/:slug/blueprint-seed', requireAuth, r
     const edition = await (prisma as any).verticalEdition.findUnique({ where: { slug: req.params.slug } })
     if (!edition) return res.status(404).json({ error: 'Edition not found' })
     const SEED_MODULES: Record<string, string[]> = {
-      healthtech: ['WAANDA', 'HANUMANAS', 'Projects', 'KIMMP', 'OIS', 'Clinical-Ops'],
-      legaltech:  ['WAANDA', 'HANUMANAS', 'Projects', 'KIMMP', 'OIS', 'Matter-Management'],
-      fintech:    ['WAANDA', 'HANUMANAS', 'Finance', 'KIMMP', 'OIS', 'Trade-Compliance'],
+      healthtech: ['WAANDA', HANUMANAS.name, 'Projects', 'KIMMP', 'OIS', 'Clinical-Ops'],
+      legaltech:  ['WAANDA', HANUMANAS.name, 'Projects', 'KIMMP', 'OIS', 'Matter-Management'],
+      fintech:    ['WAANDA', HANUMANAS.name, 'Finance', 'KIMMP', 'OIS', 'Trade-Compliance'],
     }
     res.json({
       slug: req.params.slug,
       personaName: edition.personaName,
       personaColor: edition.personaColor,
       complianceFlags: edition.complianceFlags,
-      suggestedModules: SEED_MODULES[req.params.slug] ?? ['WAANDA', 'HANUMANAS', 'KIMMP', 'OIS'],
+      suggestedModules: SEED_MODULES[req.params.slug] ?? ['WAANDA', HANUMANAS.name, 'KIMMP', 'OIS'],
       hanumanasProfile: edition.hanumanasProfile,
     })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
@@ -6792,7 +6793,7 @@ kangqoreImmpRoutes.post('/customers/seed-c36-c40', requireAuth, requireRole(['AD
         create: {
           customerName: c.name, version: '1.0', planTier: c.plan as any,
           industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget,
-          enabledModules: ['Projects','Finance','CRM','WAANDA','HANUMANAS'],
+          enabledModules: ['Projects','Finance','CRM','WAANDA',HANUMANAS.name],
           spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] },
           status: 'ACTIVE', deployedAt: new Date(),
         },
@@ -6925,7 +6926,7 @@ kangqoreImmpRoutes.get('/platform/s174-status', requireAuth, requireRole(['ADMIN
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ONBOARDING_MILESTONES = ['DAY_0', 'DAY_1', 'DAY_7', 'DAY_30', 'DAY_90']
-const DEPT_LIST = ['Projects','Finance','CRM','WAANDA','HANUMANAS','Analytics','Workflows','Signals']
+const DEPT_LIST = ['Projects','Finance','CRM','WAANDA',HANUMANAS.name,'Analytics','Workflows','Signals']
 
 kangqoreImmpRoutes.get('/customers/:customerId/onboarding', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
@@ -7036,7 +7037,7 @@ kangqoreImmpRoutes.post('/customers/seed-c41-c50', requireAuth, requireRole(['AD
       const bp = await (prisma as any).customerBlueprint.upsert({
         where: { customerName: c.name },
         update: {},
-        create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA','HANUMANAS'], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() },
+        create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA',HANUMANAS.name], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() },
       })
       await (prisma as any).customerOnboardingMilestone.upsert({ where: { customerId_milestone: { customerId: bp.id, milestone: 'DAY_0' } }, update: {}, create: { customerId: bp.id, milestone: 'DAY_0', status: 'COMPLETED', completedAt: new Date(), notes: `COIG baseline: ${c.oisBaseline}` } })
       created.push({ ref: c.ref, name: c.name, bpId: bp.id, oisBaseline: c.oisBaseline })
@@ -7276,7 +7277,7 @@ kangqoreImmpRoutes.post('/customers/seed-c51-c60', requireAuth, requireRole(['AD
   try {
     const created = []
     for (const c of C51_C60) {
-      const bp = await (prisma as any).customerBlueprint.upsert({ where: { customerName: c.name }, update: {}, create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA','HANUMANAS'], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() } })
+      const bp = await (prisma as any).customerBlueprint.upsert({ where: { customerName: c.name }, update: {}, create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA',HANUMANAS.name], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() } })
       await (prisma as any).customerOnboardingMilestone.upsert({ where: { customerId_milestone: { customerId: bp.id, milestone: 'DAY_0' } }, update: {}, create: { customerId: bp.id, milestone: 'DAY_0', status: 'COMPLETED', completedAt: new Date(), notes: `COIG baseline: ${c.oisBaseline}` } })
       created.push({ ref: c.ref, name: c.name, bpId: bp.id, oisBaseline: c.oisBaseline })
     }
@@ -7448,7 +7449,7 @@ kangqoreImmpRoutes.post('/customers/seed-c61-c75', requireAuth, requireRole(['AD
   try {
     const created = []
     for (const c of C61_C75) {
-      const bp = await (prisma as any).customerBlueprint.upsert({ where: { customerName: c.name }, update: {}, create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA','HANUMANAS'], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() } })
+      const bp = await (prisma as any).customerBlueprint.upsert({ where: { customerName: c.name }, update: {}, create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA',HANUMANAS.name], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() } })
       await (prisma as any).customerOnboardingMilestone.upsert({ where: { customerId_milestone: { customerId: bp.id, milestone: 'DAY_0' } }, update: {}, create: { customerId: bp.id, milestone: 'DAY_0', status: 'COMPLETED', completedAt: new Date(), notes: `COIG baseline: ${c.oisBaseline}` } })
       created.push({ ref: c.ref, name: c.name, bpId: bp.id, oisBaseline: c.oisBaseline })
     }
@@ -7776,10 +7777,10 @@ kangqoreImmpRoutes.delete('/enterprise/rbac/roles/:id', requireAuth, requireRole
 // ─── S188: Enterprise Blueprint Templates ────────────────────────────────────
 
 const ENTERPRISE_TEMPLATES = [
-  { name: 'Finance Automation Pack', useCase: 'Finance Automation', industry: 'FinTech', description: 'Full AP/AR automation, budget intelligence, forecasting workflows, FP&A signals', modules: ['Finance','WAANDA','HANUMANAS','Analytics','Workflows'], config: { budgetAlerts: true, cashflowForecasting: true, approvalWorkflows: true } },
-  { name: 'PMO Intelligence Suite',  useCase: 'PMO',               industry: 'Enterprise', description: 'Portfolio management, resource tracking, milestone intelligence, executive reporting', modules: ['Projects','Finance','WAANDA','Analytics','HANUMANAS'], config: { portfolioView: true, resourceOpt: true, execReporting: true } },
+  { name: 'Finance Automation Pack', useCase: 'Finance Automation', industry: 'FinTech', description: 'Full AP/AR automation, budget intelligence, forecasting workflows, FP&A signals', modules: ['Finance','WAANDA',HANUMANAS.name,'Analytics','Workflows'], config: { budgetAlerts: true, cashflowForecasting: true, approvalWorkflows: true } },
+  { name: 'PMO Intelligence Suite',  useCase: 'PMO',               industry: 'Enterprise', description: 'Portfolio management, resource tracking, milestone intelligence, executive reporting', modules: ['Projects','Finance','WAANDA','Analytics',HANUMANAS.name], config: { portfolioView: true, resourceOpt: true, execReporting: true } },
   { name: 'HR Intelligence Pack',    useCase: 'HR Intelligence',    industry: 'HR', description: 'People analytics, hiring pipeline, performance signals, org health scoring', modules: ['WAANDA','Analytics','CRM','Signals'], config: { peopleAnalytics: true, hiringPipeline: true, orgHealth: true } },
-  { name: 'Legal Operations Suite',  useCase: 'Legal Ops',          industry: 'LegalTech', description: 'Matter management, contract intelligence, compliance tracking, deadline signals', modules: ['Projects','WAANDA','HANUMANAS','Workflows'], config: { matterTracking: true, contractIntel: true, complianceDash: true } },
+  { name: 'Legal Operations Suite',  useCase: 'Legal Ops',          industry: 'LegalTech', description: 'Matter management, contract intelligence, compliance tracking, deadline signals', modules: ['Projects','WAANDA',HANUMANAS.name,'Workflows'], config: { matterTracking: true, contractIntel: true, complianceDash: true } },
   { name: 'Sales Intelligence Pack', useCase: 'Revenue Intelligence', industry: 'SaaS', description: 'Pipeline AI, deal scoring, CRM automation, revenue forecasting signals', modules: ['CRM','Finance','WAANDA','Analytics','Signals'], config: { dealScoring: true, pipelineAI: true, revenueForecasting: true } },
 ]
 

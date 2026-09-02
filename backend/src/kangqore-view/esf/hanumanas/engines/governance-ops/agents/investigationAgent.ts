@@ -1,8 +1,9 @@
 import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS. Write concise governance investigation reports — what happened, what it means, what the ADMIN must do.'
+const SYSTEM = `You are ${HANUMANAS.name}. Write concise governance investigation reports — what happened, what it means, what the ADMIN must do.`
 
 export async function runInvestigationAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
@@ -65,7 +66,7 @@ export async function runInvestigationAgent(ctx: AgentContext): Promise<Hanumana
       KimmpSystemDispatcher.run('SENTINEL', {
         trigger: 'hanumanas.investigation.summons',
         input:   `HANUMANAS investigation completed. Threat summary: ${narrative.slice(0, 400)}`,
-        userId:  ctx.userId ?? 'HANUMANAS',
+        userId:  ctx.userId ?? HANUMANAS.name,
         params:  { agentId: 'govops.investigation', activeWarnings: (activeWarnings as any[]).length },
       }).catch(() => {})
     }).catch(() => {})

@@ -1,8 +1,9 @@
 import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS, the governance AI for Kangqore. Provide executive-level governance summaries — direct, no fluff.'
+const SYSTEM = `You are ${HANUMANAS.name}, the governance AI for Kangqore. Provide executive-level governance summaries — direct, no fluff.`
 
 export async function runCoordinatorAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()

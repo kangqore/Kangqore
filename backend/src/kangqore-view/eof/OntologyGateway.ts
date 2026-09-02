@@ -11,12 +11,13 @@
 
 import { prisma } from '../../lib/prisma'
 import { checkPolicy } from '../esf/PolicyEngine'
+import type { HanumanasName } from '../esf/hanumanas/identity'
 import { CardinalityEngine } from './CardinalityEngine'
 import { CdcService } from '../../lib/cdc/cdcService'
 
 export interface GatewayActor {
   id: string
-  type: 'HUMAN' | 'KIMMP' | 'HANUMANAS' | 'API' | 'SYSTEM'
+  type: 'HUMAN' | 'KIMMP' | HanumanasName | 'API' | 'SYSTEM'
   clearances: string[]  // data-marking labels this actor can read/write
 }
 

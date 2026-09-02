@@ -2,8 +2,9 @@ import { HanumanasSovereignty } from '../../../hanumanasSovereignty.service'
 import { callLLM }           from '../../../agents/llm'
 import { prisma }            from '../../../../../../lib/prisma'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
+import { HANUMANAS } from '../../../identity'
 
-const SYSTEM = 'You are HANUMANAS. Analyse intelligence asset lifecycle states — retention, expiry, and sovereignty health.'
+const SYSTEM = `You are ${HANUMANAS.name}. Analyse intelligence asset lifecycle states — retention, expiry, and sovereignty health.`
 
 export async function runLifecycleAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start    = Date.now()

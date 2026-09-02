@@ -6,7 +6,8 @@
 
 import { prisma } from '../../lib/prisma'
 
-export type FlightSource = 'KIMMP' | 'HANUMANAS' | 'QEF' | 'RGS' | 'WORKFLOW' | 'INCIDENT'
+import { HANUMANAS, type HanumanasName } from '../../kangqore-view/esf/hanumanas/identity'
+export type FlightSource = 'KIMMP' | HanumanasName | 'QEF' | 'RGS' | 'WORKFLOW' | 'INCIDENT'
 
 export interface FlightEvent {
   id:        string
@@ -105,7 +106,7 @@ export async function getFlightEvents(opts: FlightRecorderOpts = {}): Promise<{ 
       id:        r.id,
       timestamp: new Date(r.createdAt),
       type:      r.eventType,
-      source:    'HANUMANAS',
+      source:    HANUMANAS.name,
       title:     formatHanumanasTitle(r),
       actor:     r.actor,
       severity:  r.priority,

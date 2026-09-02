@@ -1,6 +1,7 @@
 import { synapseMesh, SynapseSignal } from './synapseMesh.service'
 import logger from '../../../utils/logger'
 import { getIO } from '../../../socket'
+import { HANUMANAS } from '../../esf/hanumanas/identity'
 import { KEOS } from '../../hathaway/keos'
 
 /**
@@ -44,7 +45,7 @@ export function bootPerceptronNetwork() {
   })
 
   // 2. HANUMANAS (Governance Node)
-  synapseMesh.registerNode('HANUMANAS', async (signal: SynapseSignal) => {
+  synapseMesh.registerNode(HANUMANAS.name, async (signal: SynapseSignal) => {
     logger.info(`[Perceptron:HANUMANAS] Auditing signal from ${signal.origin} for policy violations...`)
     if (signal.signalType === 'POLICY_OVERRIDE') {
       logger.warn(`[Perceptron:HANUMANAS] Processing Policy Override requested by ${signal.origin}.`)
