@@ -123,3 +123,46 @@ It now serves captured fixtures, and was re-verified by reproducing the original
 failure — "items.map is not a function" — before being committed. **A test that
 has not been seen to fail has not been tested.**
 
+
+## 2026-09-02 — A rename has no single seam unless someone built one  (P1)
+
+**Context:** renaming AEGIS → HANUMANAS. 15 commits, ~470k DB rows, code +
+frontend + docs.
+**What happened:** the subsystem name lived as a bare string literal in ~250
+code spots, ~70 DB columns, every agent's LLM prompt, and both frozen specs.
+Each layer was its own pass; "done" kept moving.
+**Why:** the name was never declared once. `shield: 'AEGIS'`,
+`actorType: 'AEGIS'`, `name: 'AEGIS'`, `You are AEGIS` — all independent.
+**Learning:** the cost of a rename is set years earlier, by whether the name has
+a canonical source. Ours didn't, so the rename also had to *create* one
+(`esf/hanumanas/identity.ts`), then prove it by flipping the constant and
+running `tsc` (0 errors = everything follows).
+**System change:** `identity.ts` (backend) + `os/lib/hanumanas.ts` (frontend)
+now own the name. New rule for any new subsystem: declare its identity in one
+`const` on day one — never inline the name.
+
+## 2026-09-02 — Estimate the blast radius from the schema, not from memory  (P1)
+
+**Context:** the historical-data rewrite step.
+**What happened:** I told the user "~35k rows of prose." A full
+`information_schema` scan then found ~200k more across ~70 columns
+(notifications, orchestration, decisions, knowledge base). The estimate was 6×
+low and the user had already approved based on it.
+**Why:** I counted the tables I remembered touching, not every text/jsonb/array
+column in the database.
+**Learning:** before quoting the size of a data migration, run the loop over
+`information_schema.columns` and count for real. A number given to the user is a
+commitment; deriving it from recall makes it a guess dressed as a fact.
+**System change:** the pattern — a `DO $$ ... information_schema.columns ... $$`
+scan — is now in migration `20260902150000` as a reusable template.
+
+## 2026-09-02 — BSD sed silently ignores `\b`  (P2)
+
+**Context:** a scoped identifier rename on macOS.
+**What happened:** `sed -i '' -E 's/\baegisAuditLog\b/.../'` reported success and
+changed nothing. 190 occurrences untouched, no error.
+**Why:** BSD sed has no `\b`; it treats the whole pattern as non-matching and
+exits 0.
+**Learning:** on macOS, `\b` in `sed` is a silent no-op, not an error. Use
+`[[:<:]]`/`[[:>:]]`, or `token([A-Za-z])` capture groups, or `perl -pi`. And
+after any bulk `sed`, grep for the *old* string — exit code 0 is not proof.
