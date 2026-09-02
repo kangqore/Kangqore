@@ -40,9 +40,11 @@ export const contentRoutes = [
   // Main listing pages
   <Route key="insights" path="/insights" element={<Insights />} />,
   <Route key="podcast" path="/podcast" element={<PodcastPage />} />,
+  <Route key="podcasts" path="/podcasts" element={<PodcastPage />} />,
   <Route key="blogs" path="/blogs" element={<Blogs />} />,
   <Route key="case-studies" path="/case-studies" element={<CaseStudiesPage />} />,
   <Route key="white-papers" path="/white-papers" element={<WhitePaper />} />,
+  <Route key="white-paper" path="/white-paper" element={<WhitePaper />} />,
   <Route key="events" path="/events" element={<Events />} />,
   <Route key="brochures" path="/brochures" element={<Brochures />} />,
   

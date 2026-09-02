@@ -273,11 +273,12 @@ const Footer = () => {
             {/* 04. Insights */}
             <div>
               <h3 className="text-black dark:text-white font-black text-[16px] uppercase tracking-[0.15em] mb-7" style={{ fontWeight: 900, WebkitTextStroke: '0.35px currentColor' }}>Insights & Research</h3>
-              <Link to="/blogs" style={navLinkStyle}>Engineering Blog</Link>
-              <Link to="/case-studies" style={navLinkStyle}>Case Studies (Tata Steel)</Link>
-              <Link to="/white-paper" style={navLinkStyle}>White Papers & Reports</Link>
-              <Link to="/events" style={navLinkStyle}>Events & Webinars</Link>
-              <Link to="/resources" style={navLinkStyle}>Knowledge Library</Link>
+              <Link to="/blogs" style={navLinkStyle}>Blogs</Link>
+              <Link to="/case-studies" style={navLinkStyle}>Case Studies</Link>
+              <Link to="/brochures" style={navLinkStyle}>Brochures</Link>
+              <Link to="/podcasts" style={navLinkStyle}>Podcasts</Link>
+              <Link to="/events" style={navLinkStyle}>Events</Link>
+              <Link to="/white-paper" style={navLinkStyle}>White Paper</Link>
             </div>
           </div>
 
