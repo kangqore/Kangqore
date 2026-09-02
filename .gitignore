@@ -121,3 +121,4 @@ get_ontology.js
 packages/*/node_modules/
 packages/*/dist/
 packages/*/*.egg-info/
+backend/backend.restart.log

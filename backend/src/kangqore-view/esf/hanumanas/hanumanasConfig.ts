@@ -3,7 +3,7 @@
 // Resets on process restart — intentional for build-phase use.
 
 const _state = {
-  enabled: (process.env.HANUMANAS_ENABLED ?? process.env.AEGIS_ENABLED) !== 'false',
+  enabled: process.env.HANUMANAS_ENABLED !== 'false',
   toggledAt: null as string | null,
   toggledBy: null as string | null,
 }

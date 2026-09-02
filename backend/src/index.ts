@@ -271,8 +271,6 @@ app.use('/api/admin/kangqore-view/waanda', authenticate, authorize(['ADMIN']), w
 // HANUMANAS — Autonomous Executive Governance & Intelligence Shield
 // Sits above KIMMP: sovereign audit dashboard for ADMIN only.
 app.use('/api/admin/hanumanas', hanumanasShield, hanumanasRouter);
-// Legacy alias — /api/admin/aegis dual-mounted for one release (old clients / bookmarks).
-app.use('/api/admin/aegis', hanumanasShield, hanumanasRouter);
 
 // KIMMP — Human Behavior Intelligence Layer (auth applied per-route inside the router).
 app.use('/api/admin/kangqore-immp', hanumanasAccessLogger, hanumanasEgressMonitor, kangqoreImmpRoutes);

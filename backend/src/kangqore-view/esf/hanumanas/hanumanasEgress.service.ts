@@ -20,9 +20,9 @@ const EGRESS_PATTERNS: RegExp[] = [
   /\/kangqore-immp\/history/,
   /\/kangqore-immp\/synthesis/,
   /\/kangqore-immp\/memory/,
-  /\/(aegis|hanumanas)\/audit/,
-  /\/(aegis|hanumanas)\/autonomy/,
-  /\/(aegis|hanumanas)\/assets/,
+  /\/hanumanas\/audit/,
+  /\/hanumanas\/autonomy/,
+  /\/hanumanas\/assets/,
 ]
 
 function classifyRoute(path: string): string | undefined {
@@ -36,7 +36,7 @@ function classifyRoute(path: string): string | undefined {
 }
 
 // S112 Phase 3: hard-deny egress beyond payload size limit (default 512 KB)
-const EGRESS_LIMIT_BYTES = Number(process.env.HANUMANAS_EGRESS_LIMIT_KB ?? process.env.AEGIS_EGRESS_LIMIT_KB ?? 512) * 1024
+const EGRESS_LIMIT_BYTES = Number(process.env.HANUMANAS_EGRESS_LIMIT_KB ?? 512) * 1024
 
 // Express middleware — intercepts KIMMP intelligence responses and logs egress
 // Phase 3 upgrade: hard-deny if payload exceeds HANUMANAS_EGRESS_LIMIT_KB.

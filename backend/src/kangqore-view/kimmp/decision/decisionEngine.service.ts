@@ -303,7 +303,7 @@ Formulate prescriptive action plan, confidence %, expected primary impact, alter
 
   /** Approves decision and dispatches the execution plan via ActionEngine */
   static async approveAndExecute(decisionId: string, approvalToken: string, actorId: string) {
-    if (!approvalToken || !(approvalToken.startsWith('token-hanumanas-') || approvalToken.startsWith('token-aegis-'))) {
+    if (!approvalToken || !approvalToken.startsWith('token-hanumanas-')) {
       throw new Error('Invalid or missing cryptographic HANUMANAS approval token.');
     }
 

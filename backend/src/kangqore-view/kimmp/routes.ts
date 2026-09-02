@@ -3811,7 +3811,7 @@ kangqoreImmpRoutes.post('/tenants/:id/provision', requireAuth, requireRole(['ADM
     // Provisioning checklist: run seed steps
     const steps = [
       'org_created', 'blueprint_bound', 'departments_seeded', 'kimmp_init',
-      'ois_baseline_set', 'waanda_cycle_activated', 'aegis_policies_applied',
+      'ois_baseline_set', 'waanda_cycle_activated', 'hanumanas_policies_applied',
       'keos_workspaces_initialised', 'admin_user_invited', 'go_live_signal_fired',
     ]
     // Fire a go-live KimmpSignal

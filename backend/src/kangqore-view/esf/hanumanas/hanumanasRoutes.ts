@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // HANUMANAS Routes — ADMIN sovereignty dashboard API
 //
-// Mounted at /api/admin/hanumanas (and /api/admin/aegis, dual-mounted one release) (protected by hanumanasShield upstream).
+// Mounted at /api/admin/hanumanas (protected by hanumanasShield upstream).
 // ---------------------------------------------------------------------------
 
 import { Router, Request, Response } from 'express'
@@ -326,7 +326,7 @@ hanumanasRouter.get('/budget', async (_req: Request, res: Response) => {
   res.json({
     shield:    'HANUMANAS',
     domain:    'BUDGET_ENFORCEMENT',
-    global:    { egressSizeLimitKb: Number(process.env.HANUMANAS_EGRESS_LIMIT_KB ?? process.env.AEGIS_EGRESS_LIMIT_KB ?? 512), hardDeny: true },
+    global:    { egressSizeLimitKb: Number(process.env.HANUMANAS_EGRESS_LIMIT_KB ?? 512), hardDeny: true },
     tenants:   budgets,
     totalTenants: budgets.length,
   })

@@ -16,7 +16,7 @@ import { CdcService } from '../../lib/cdc/cdcService'
 
 export interface GatewayActor {
   id: string
-  type: 'HUMAN' | 'KIMMP' | 'HANUMANAS' | 'AEGIS' | 'API' | 'SYSTEM'
+  type: 'HUMAN' | 'KIMMP' | 'HANUMANAS' | 'API' | 'SYSTEM'
   clearances: string[]  // data-marking labels this actor can read/write
 }
 

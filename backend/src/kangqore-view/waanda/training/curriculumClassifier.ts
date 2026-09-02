@@ -71,7 +71,7 @@ const KEYWORD_RULES: Array<[RegExp, Curriculum]> = [
   [/pric|revenue|arr|mrr|forecast|budget|spend|p&l|invoice|billing/i,  'FINANCE'],
   [/project|workflow|task|delivery|milestone|resource|capacity/i,       'OPERATIONS'],
   [/audit|compliance|policy|access|permission|gdpr|kyc|regul/i,         'GOVERNANCE'],
-  [/risk|threat|vuln|security|breach|attack|sentinel|hanumanas|aegis/i,           'SECURITY'],
+  [/risk|threat|vuln|security|breach|attack|sentinel|hanumanas/i,           'SECURITY'],
   [/strategy|executive|ceo|board|synthesis|decision|coig|ois/i,         'EXECUTIVE'],
   [/benchmark|train|fine.?tune|model|corpus|platform|infra/i,           'PLATFORM'],
   [/simulation|scenario|twin|projection/i,                               'OPERATIONS'],
@@ -93,7 +93,7 @@ export function classifyCurriculum(params: ClassifyParams): Curriculum {
   // Exact system match
   if (system) {
     const sys = system.replace(/^HANUMANAS:/, 'HANUMANAS_')
-    if (sys.startsWith('HANUMANAS') || sys.startsWith('AEGIS')) return 'GOVERNANCE'
+    if (sys.startsWith('HANUMANAS')) return 'GOVERNANCE'
     if (SYSTEM_MAP[system]) return SYSTEM_MAP[system]
   }
 

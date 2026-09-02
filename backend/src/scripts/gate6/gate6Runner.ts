@@ -355,12 +355,12 @@ const governanceChecks: CheckFn[] = [
       const eventTypes = await (prisma as any).hanumanasAuditLog.groupBy({ by: ['action'], _count: true })
       const count = eventTypes.length
       return count >= 3
-        ? pass('governance', 'aegis_audit_coverage', `${count} distinct audit event types recorded`)
+        ? pass('governance', 'hanumanas_audit_coverage', `${count} distinct audit event types recorded`)
         : count > 0
-          ? pending('governance', 'aegis_audit_coverage', `Only ${count} event types — expand HANUMANAS coverage to 10+ types`)
-          : pending('governance', 'aegis_audit_coverage', 'No audit events recorded yet')
+          ? pending('governance', 'hanumanas_audit_coverage', `Only ${count} event types — expand HANUMANAS coverage to 10+ types`)
+          : pending('governance', 'hanumanas_audit_coverage', 'No audit events recorded yet')
     } catch {
-      return pending('governance', 'aegis_audit_coverage', 'HanumanasAuditLog groupBy failed')
+      return pending('governance', 'hanumanas_audit_coverage', 'HanumanasAuditLog groupBy failed')
     }
   },
 
