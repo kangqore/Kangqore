@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 const ContactUs = React.lazy(() => import('../pages/ContactUs'));
 const CareersPage = React.lazy(() => import('../pages/CareersPage'));
 const NewsPage = React.lazy(() => import('../pages/NewsPage'));
@@ -25,6 +25,7 @@ const Team = React.lazy(() => import('../pages/Team'));
 const BrandIdentity = React.lazy(() => import('../pages/BrandIdentity'));
 const OurCulture = React.lazy(() => import('../pages/OurCulture'));
 const BIDSPage = React.lazy(() => import('../pages/BIDSPage'));
+const FAQPage = React.lazy(() => import('../pages/FAQPage'));
 
 // Trust & Governance — Overshadow Roadmap P1 ("Publish the Proof")
 const TrustGovernancePage = React.lazy(() => import('../pages/TrustGovernancePage'));
@@ -102,6 +103,9 @@ export const publicRoutes = [
   <Route key="team" path="/team" element={<Team />} />,
   <Route key="brand-identity" path="/brand-identity" element={<BrandIdentity />} />,
   <Route key="culture" path="/culture" element={<OurCulture />} />,
+  <Route key="kangqore-faqs" path="/kangqore-faqs" element={<FAQPage />} />,
+  <Route key="faqs" path="/faqs" element={<Navigate to="/kangqore-faqs" replace />} />,
+  <Route key="faq" path="/faq" element={<Navigate to="/kangqore-faqs" replace />} />,
 
   // Legal & Compliance pages
   <Route key="privacy" path="/privacy" element={<PrivacyPolicy />} />,
