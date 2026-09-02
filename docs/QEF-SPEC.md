@@ -8,6 +8,8 @@
 **Supersedes:** None (inaugural version)
 
 > QEF/1.0 is a stable internal engineering standard. Changes to certification logic, gate weights, scoring formula, certificate schema, or lifecycle rules require a new schema version (QEF/1.1 or QEF/2.0). Bug fixes and documentation corrections do not require a version bump.
+>
+> **Naming note (2026-09-02):** the governance/security layer was renamed **AEGIS → HANUMANAS**. References to "AEGIS" below are retained as the frozen QEF/1.0 text; the gate-6 internal id `aegis` and check name `aegis_audit_coverage` are unchanged in already-issued certificates.
 
 ---
 

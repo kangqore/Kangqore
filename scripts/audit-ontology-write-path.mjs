@@ -115,7 +115,7 @@ if (violations.length) {
   console.error(`
   These bypass the gateway, and therefore skip:
     • data-marking checks   — classified records become readable/writable
-    • the AEGIS policy gate — DENY and REQUIRE_APPROVAL never evaluate
+    • the HANUMANAS policy gate — DENY and REQUIRE_APPROVAL never evaluate
     • CDC emission          — webhooks and pipelines never fire
 
   Route the write through OntologyGateway.createObject / updateObject, or add

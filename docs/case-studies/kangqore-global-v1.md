@@ -43,7 +43,7 @@ The Day 0 snapshot was auto-fired upon Customer Zero activation. This score repr
 | Kangqore View OS | LIVE |
 | WAANDA Intelligence Engine | LIVE |
 | WAOE (Autonomous Operations) | LIVE |
-| AEGIS (Governance + Security) | LIVE |
+| HANUMANAS (Governance + Security) | LIVE |
 | QEF v1.0 | LIVE |
 | RGS v1.0 | LIVE |
 | OIS Tracking | LIVE |
@@ -159,7 +159,7 @@ Capabilities proven in production at Kangqore Global that are ready to package:
 - [ ] Ontology (Professional Services domain)
 - [ ] KPIs (delivery, financial, client health)
 - [ ] Workflows (project delivery, approvals, risk reviews)
-- [ ] Policies (RGS, AEGIS governance)
+- [ ] Policies (RGS, HANUMANAS governance)
 - [ ] OIS Templates
 - [ ] Executive Dashboards
 - [ ] Agent configurations (KIMMP decision profiles)

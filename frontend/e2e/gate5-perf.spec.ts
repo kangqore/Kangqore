@@ -91,8 +91,8 @@ test('perf: clients page loads within threshold', async ({ page }) => {
   expect(r.bodyMs).toBeLessThan(PERF_THRESHOLD_MS)
 })
 
-test('perf: aegis governance page loads within threshold', async ({ page }) => {
-  const r = await measurePage(page, '/kangqore-view/admin/aegis')
+test('perf: hanumanas governance page loads within threshold', async ({ page }) => {
+  const r = await measurePage(page, '/kangqore-view/admin/hanumanas')
   console.log(`[Perf] ${r.route}: DCL=${r.dclMs}ms body=${r.bodyMs}ms`)
   expect(r.dclMs).toBeLessThan(DCLD_THRESHOLD_MS)
   expect(r.bodyMs).toBeLessThan(PERF_THRESHOLD_MS)

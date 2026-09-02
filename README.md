@@ -14,20 +14,20 @@ Kangqore is not a workflow tool or a dashboard. It is an operating environment �
 
 ### WAANDA / KIMMP — The AI Brain
 
-The intelligence engine powering every AI interaction across the platform. WAANDA is the commercial identity; KIMMP is the engineering runtime. All AI calls route through KIMMP's unified gateway, which enforces token budgets, logs every LLM call, and applies AEGIS governance before any action executes.
+The intelligence engine powering every AI interaction across the platform. WAANDA is the commercial identity; KIMMP is the engineering runtime. All AI calls route through KIMMP's unified gateway, which enforces token budgets, logs every LLM call, and applies HANUMANAS governance before any action executes.
 
 - **Krisnam** — local Llama 3.2-3B (via MLX) for low-latency reasoning; Claude (Anthropic) as the primary engine; Gen5 Foundation Model in training
 - **WAANDA Studio** → **WAANDA OS Engine** → **KIMMP Runtime** — the full execution stack
 - **WVIS (WAANDA Graph)** — visual intelligence canvas: 11 intelligence node types, 7 operational node types, dependency mapping, AI explain drawer
 
-### AEGIS — Governance & Security Layer
+### HANUMANAS — Governance & Security Layer
 
-Sits above KIMMP. Every AI action passes through AEGIS before execution.
+Sits above KIMMP. Every AI action passes through HANUMANAS before execution.
 
 - **OntologyGateway** — 4-stage pipeline: data marking → policy check → cardinality enforcement → commit
 - **CardinalityEngine** — enforces ONE_TO_ONE / ONE_TO_MANY / MANY_TO_ONE / MANY_TO_MANY relationship rules
 - **PendingApproval** — human-in-the-loop gate; high-risk actions physically cannot bypass it
-- **AEGIS Compliance Suite** — 12 adversarial tests covering boundary checks, bypass attempts, and approval flows
+- **HANUMANAS Compliance Suite** — 12 adversarial tests covering boundary checks, bypass attempts, and approval flows
 
 ### Intelligence OS — 4-Layer Enterprise Brain
 
@@ -78,7 +78,7 @@ The universal semantic data architecture powering every business object and rela
 │                  KIMMP Runtime                          │
 │   MissionDispatcher · Action Engine · Prompt Registry   │
 ├─────────────────────────────────────────────────────────┤
-│                  AEGIS Layer                            │
+│              HANUMANAS Layer                            │
 │   Gateway · Cardinality · Policy · Approval Gate        │
 ├─────────────────────────────────────────────────────────┤
 │              Data Layer (Prisma + PostgreSQL)            │
@@ -124,7 +124,7 @@ Kangqore/
 │       ├── routes/       REST API routes
 │       ├── services/     Business logic
 │       ├── kangqore-immp/    KIMMP AI runtime
-│       ├── kangqore-view/    Kangqore OS — incl. esf/hanumanas (AEGIS governance layer)
+│       ├── kangqore-view/    Kangqore OS — incl. esf/hanumanas (HANUMANAS governance layer)
 │       └── waanda/       WAANDA bootstrap + router
 ├── frontend/             React app (Vite)
 │   └── src/

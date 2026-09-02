@@ -19,7 +19,7 @@
     { "name": "intelligence",   "description": "KIMMP signals, decisions, and strategic intelligence" },
     { "name": "workflows",      "description": "WAANDA workflow engine — create, run, inspect" },
     { "name": "enterprise",     "description": "Enterprise definition, goals, policies, ontology" },
-    { "name": "agents",         "description": "AEGIS agent corps and KIMMP agent registry" }
+    { "name": "agents",         "description": "HANUMANAS agent corps and KIMMP agent registry" }
   ],
 
   "paths": {

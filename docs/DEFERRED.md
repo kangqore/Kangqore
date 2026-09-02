@@ -58,7 +58,7 @@ Long-standing, tracked in memory. Each degrades a feature to warnings or stubs:
   intelligence. Currently logs `All providers failed` on every cycle.
 - `PAGESPEED_API_KEY` (or any of the six others) — VIS Outcome Ledger has no
   real data source.
-- Anthropic API credits — exhausted; AEGIS debate phase fails with a billing
+- Anthropic API credits — exhausted; HANUMANAS debate phase fails with a billing
   error, butler falls back to the local 3B model.
 - ElevenLabs — account is on the free plan, so TTS is blocked pending upgrade or
   a vendor swap.
@@ -164,7 +164,7 @@ carry real debt, 13 writes in total:
 | `eof/OntologyBranch.ts` | 2 | branch materialisation |
 | `automation/ActionEngine.ts` | 2 | action effects write objects directly |
 
-Each skips data markings, the AEGIS policy gate, cardinality, and CDC emission.
+Each skips data markings, the HANUMANAS policy gate, cardinality, and CDC emission.
 `ActionEngine` is the most significant — it is the main execution path, so an
 action effect can currently write an object the schema would reject.
 
@@ -176,7 +176,7 @@ action effect can currently write an object the schema would reject.
 ### The Synapse Mesh is dormant (P2)
 
 `kangqore-view/kimmp/synapse/` defines a subsystem signal bus — `SynapseMesh`,
-eight registered perceptron nodes (HATHAWAY, NOLAN, AEGIS, ALIS, HCIP, EQORE,
+eight registered perceptron nodes (HATHAWAY, NOLAN, HANUMANAS, ALIS, HCIP, EQORE,
 VIS, KIMMP) — and **none of it runs**:
 
 - `bootPerceptronNetwork()` is exported and **never called** from anywhere.
