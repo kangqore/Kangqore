@@ -9,7 +9,7 @@ export async function runPermissionEvaluatorAgent(ctx: AgentContext): Promise<Ha
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 
   const byActor: Array<{ actor: string; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['actor'],
       _count: { _all: true },
       where:  { eventType: 'ACTIVATION', createdAt: { gte: last6h } },

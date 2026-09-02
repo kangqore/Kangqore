@@ -9,9 +9,9 @@ export async function runComplianceRuleAgent(ctx: AgentContext): Promise<Hanuman
   const last7d = new Date(Date.now() - 7 * 86_400_000)
 
   const [violations7d, violations24h, agentRuns] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: new Date(Date.now() - 86_400_000) } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'PASS', raisedAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: new Date(Date.now() - 86_400_000) } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'PASS', raisedAt: { gte: last7d } } }).catch(() => 0),
   ])
 
   const policyCompliance = violations7d === 0 ? 100 : Math.max(0, 100 - violations7d * 5)

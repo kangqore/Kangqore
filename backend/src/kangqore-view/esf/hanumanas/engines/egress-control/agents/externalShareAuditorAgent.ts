@@ -12,7 +12,7 @@ export async function runExternalShareAuditorAgent(ctx: AgentContext): Promise<H
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 
   const events: Array<{ actor: string; system: string | null; assetId: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'EGRESS', createdAt: { gte: last6h } },
       select: { actor: true, system: true, assetId: true },
     }).catch(() => [])

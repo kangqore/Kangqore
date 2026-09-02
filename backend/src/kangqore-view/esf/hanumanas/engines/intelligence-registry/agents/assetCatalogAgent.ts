@@ -8,14 +8,14 @@ export async function runAssetCatalogAgent(ctx: AgentContext): Promise<Hanumanas
   const start = Date.now()
 
   const bySystem: Array<{ system: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['system'],
       _count: { _all: true },
       where:  { eventType: 'KNOWLEDGE_ASSET' },
     }).catch(() => [])
 
   const byType: Array<{ assetType: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['assetType'],
       _count: { _all: true },
       where:  { eventType: 'KNOWLEDGE_ASSET' },

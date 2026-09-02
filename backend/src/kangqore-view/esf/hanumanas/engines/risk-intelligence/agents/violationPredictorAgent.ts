@@ -11,10 +11,10 @@ export async function runViolationPredictorAgent(ctx: AgentContext): Promise<Han
   const last1h = new Date(Date.now() - 3_600_000)
 
   const [autonomousHigh, deniedSpike, recentViolations, criticalRuns] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, priority: 'HIGH', createdAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last1h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, priority: 'HIGH', createdAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last1h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last6h } } }).catch(() => 0),
   ])
 
   // Predictive signals: high autonomous + denial spike + CRITICAL findings = violation likely

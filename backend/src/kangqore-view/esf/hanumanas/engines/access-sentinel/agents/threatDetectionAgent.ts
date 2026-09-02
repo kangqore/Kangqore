@@ -12,7 +12,7 @@ export async function runThreatDetectionAgent(ctx: AgentContext): Promise<Hanuma
   const last1h = new Date(Date.now() - 3_600_000)
 
   const denied: Array<{ createdAt: Date; actor: string; system: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:   { eventType: 'ACCESS_DENIED', createdAt: { gte: last1h } },
       select:  { createdAt: true, actor: true, system: true },
       orderBy: { createdAt: 'asc' },

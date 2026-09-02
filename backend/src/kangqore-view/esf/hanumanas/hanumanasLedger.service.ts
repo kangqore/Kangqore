@@ -83,7 +83,7 @@ export class HanumanasLedger {
         ? { ...data, metadata: { ...(data.metadata ?? {}), correlationId } }
         : data
 
-      const row = await (prisma as any).aegisAuditLog.create({ data: rowData })
+      const row = await (prisma as any).hanumanasAuditLog.create({ data: rowData })
       // Broadcast every governance event to admin sockets for live feed
       emitToAdmins('aegis:event', {
         ...row,
@@ -238,13 +238,13 @@ export class HanumanasLedger {
       const skip   = Math.max(0, opts.offset ?? 0)
 
       const [rows, total] = await Promise.all([
-        (prisma as any).aegisAuditLog.findMany({
+        (prisma as any).hanumanasAuditLog.findMany({
           where,
           orderBy: { createdAt: 'desc' },
           take,
           skip,
         }),
-        (prisma as any).aegisAuditLog.count({ where }),
+        (prisma as any).hanumanasAuditLog.count({ where }),
       ])
       return { rows, total }
     } catch (err) {
@@ -262,11 +262,11 @@ export class HanumanasLedger {
   }> {
     try {
       const [activations, autonomous, denied, assets, systemRows] = await Promise.all([
-        (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION' } }),
-        (prisma as any).aegisAuditLog.count({ where: { autonomous: true } }),
-        (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED' } }),
-        (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }),
-        (prisma as any).aegisAuditLog.groupBy({
+        (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION' } }),
+        (prisma as any).hanumanasAuditLog.count({ where: { autonomous: true } }),
+        (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED' } }),
+        (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }),
+        (prisma as any).hanumanasAuditLog.groupBy({
           by: ['system'],
           _count: { _all: true },
           where: { eventType: { in: ['ACTIVATION', 'AUTONOMOUS'] } },

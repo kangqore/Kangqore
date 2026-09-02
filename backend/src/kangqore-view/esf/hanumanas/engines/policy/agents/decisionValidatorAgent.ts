@@ -11,7 +11,7 @@ export async function runDecisionValidatorAgent(ctx: AgentContext): Promise<Hanu
   // HIGH priority activations must have complete decision metadata
   const highPriority: Array<{
     trigger: string | null; priority: string | null; confidence: string | null; dispatchId: string | null; system: string | null
-  }> = await (prisma as any).aegisAuditLog.findMany({
+  }> = await (prisma as any).hanumanasAuditLog.findMany({
     where:  { eventType: 'ACTIVATION', priority: 'HIGH', createdAt: { gte: last6h } },
     select: { trigger: true, priority: true, confidence: true, dispatchId: true, system: true },
   }).catch(() => [])

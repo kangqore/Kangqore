@@ -13,7 +13,7 @@ export async function runRetentionAgent(ctx: AgentContext): Promise<HanumanasAge
   const now   = Date.now()
 
   const assets: Array<{ assetId: string | null; createdAt: Date; classification: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'KNOWLEDGE_ASSET' },
       select: { assetId: true, createdAt: true, classification: true },
       orderBy: { createdAt: 'asc' },

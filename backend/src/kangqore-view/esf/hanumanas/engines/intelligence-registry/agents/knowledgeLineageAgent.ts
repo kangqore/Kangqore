@@ -9,7 +9,7 @@ export async function runKnowledgeLineageAgent(ctx: AgentContext): Promise<Hanum
 
   const assets: Array<{
     assetId: string | null; assetSource: string | null; dispatchId: string | null; actor: string
-  }> = await (prisma as any).aegisAuditLog.findMany({
+  }> = await (prisma as any).hanumanasAuditLog.findMany({
     where:  { eventType: 'KNOWLEDGE_ASSET' },
     select: { assetId: true, assetSource: true, dispatchId: true, actor: true },
   }).catch(() => [])

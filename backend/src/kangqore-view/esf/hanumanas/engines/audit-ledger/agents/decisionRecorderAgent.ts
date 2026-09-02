@@ -9,11 +9,11 @@ export async function runDecisionRecorderAgent(ctx: AgentContext): Promise<Hanum
   const last24h = new Date(Date.now() - 86_400_000)
 
   const [total, missTrigger, missSystem, missPriority, missConfidence] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', trigger:  null, createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', system:   null, createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', priority: null, createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', confidence: null, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', trigger:  null, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', system:   null, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', priority: null, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', confidence: null, createdAt: { gte: last24h } } }).catch(() => 0),
   ])
 
   const totalGaps  = missTrigger + missSystem + missPriority + missConfidence

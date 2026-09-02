@@ -13,7 +13,7 @@ export async function runApprovalGatekeeperAgent(ctx: AgentContext): Promise<Han
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 
   const events: Array<{ actor: string; trigger: string | null; system: string | null; priority: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'ACTIVATION', createdAt: { gte: last6h } },
       select: { actor: true, trigger: true, system: true, priority: true },
     }).catch(() => [])

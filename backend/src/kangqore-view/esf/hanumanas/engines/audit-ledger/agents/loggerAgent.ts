@@ -13,13 +13,13 @@ export async function runLoggerAgent(ctx: AgentContext): Promise<HanumanasAgentR
 
   const counts = await Promise.all(
     EVENT_TYPES.map(type =>
-      (prisma as any).aegisAuditLog.count({ where: { eventType: type, createdAt: { gte: last7d } } }).catch(() => 0)
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: type, createdAt: { gte: last7d } } }).catch(() => 0)
     )
   )
 
   const coverage = EVENT_TYPES.map((type, i) => ({ type, count: counts[i] }))
   const uncovered = coverage.filter(c => c.count === 0)
-  const total24h  = await (prisma as any).aegisAuditLog
+  const total24h  = await (prisma as any).hanumanasAuditLog
     .count({ where: { createdAt: { gte: last24h } } }).catch(() => 0)
   const total7d   = counts.reduce((s, c) => s + c, 0)
 

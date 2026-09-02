@@ -10,9 +10,9 @@ export async function runPolicyEvaluatorAgent(ctx: AgentContext): Promise<Hanuma
   const prev24h = new Date(Date.now() - 2 * 86_400_000)
 
   const [current, previous, bySystem] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: prev24h, lt: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.groupBy({
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: prev24h, lt: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['system'],
       _count: { _all: true },
       where:  { eventType: 'POLICY_VIOLATION', createdAt: { gte: last24h } },

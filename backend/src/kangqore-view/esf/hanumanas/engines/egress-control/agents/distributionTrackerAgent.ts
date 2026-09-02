@@ -9,14 +9,14 @@ export async function runDistributionTrackerAgent(ctx: AgentContext): Promise<Ha
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 
   const byActor: Array<{ actor: string; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['actor'],
       _count: { _all: true },
       where:  { eventType: 'EGRESS', createdAt: { gte: last6h } },
     }).catch(() => [])
 
   const bySystem: Array<{ system: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['system'],
       _count: { _all: true },
       where:  { eventType: 'EGRESS', createdAt: { gte: last6h } },

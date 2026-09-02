@@ -13,7 +13,7 @@ export async function runSelfInitiationAgent(ctx: AgentContext): Promise<Hanuman
   const last24h = new Date(Date.now() - 86_400_000)
 
   const events: Array<{ actor: string; trigger: string | null; system: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { autonomous: true, createdAt: { gte: last24h } },
       select: { actor: true, trigger: true, system: true },
     }).catch(() => [])

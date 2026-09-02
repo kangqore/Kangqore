@@ -10,7 +10,7 @@ export async function runAuthorizationAgent(ctx: AgentContext): Promise<Hanumana
 
   // Group denied events by actor + system to find repeated authorization failures
   const denied: Array<{ actor: string; system: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['actor', 'system'],
       _count: { _all: true },
       where:  { eventType: 'ACCESS_DENIED', createdAt: { gte: last6h } },

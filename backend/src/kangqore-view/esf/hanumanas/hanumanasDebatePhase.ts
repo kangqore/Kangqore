@@ -180,7 +180,7 @@ DEFER    = likely noise — log only, no action required.`,
 
     // Persist debate trace for Gen 2 training data
     if (scepticCase && threatCase && arbitration) {
-      ;(prisma as any).aegisDebateTrace?.create({
+      ;(prisma as any).hanumanasDebateTrace?.create({
         data: {
           agentIds:      criticalResults.map(r => r.agentId),
           engines:       [...engines],

@@ -9,10 +9,10 @@ export async function runCustodyAgent(ctx: AgentContext): Promise<HanumanasAgent
 
   // Check completeness of custody metadata on KNOWLEDGE_ASSET events
   const [total, missingAssetId, missingAssetType, missingSource] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetId:     null } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetType:   null } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetSource: null } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetId:     null } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetType:   null } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetSource: null } }).catch(() => 0),
   ])
 
   const totalGaps = missingAssetId + missingAssetType + missingSource

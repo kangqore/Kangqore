@@ -12,7 +12,7 @@ export async function runRunawayDetectorAgent(ctx: AgentContext): Promise<Hanuma
 
   // Check for high-frequency autonomous events in rolling 1h windows over last 6h
   const events: Array<{ createdAt: Date }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { autonomous: true, createdAt: { gte: last6h } },
       select: { createdAt: true },
       orderBy: { createdAt: 'asc' },

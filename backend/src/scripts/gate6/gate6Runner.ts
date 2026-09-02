@@ -169,7 +169,7 @@ const securityChecks: CheckFn[] = [
   },
 
   async function checkAuditLogExists() {
-    const count = await dbCount('aegisAuditLog')
+    const count = await dbCount('hanumanasAuditLog')
     return count > 0
       ? pass('security', 'audit_log_populated', `AegisAuditLog has ${count} events`)
       : count === 0
@@ -192,7 +192,7 @@ const complianceChecks: CheckFn[] = [
   async function checkAuditLogCapturesAccess() {
     // If AegisAuditLog has DATA_ACCESS events, GDPR data access logging is in place
     try {
-      const count = await (prisma as any).aegisAuditLog.count({
+      const count = await (prisma as any).hanumanasAuditLog.count({
         where: { action: { in: ['DATA_ACCESS', 'DATA_EXPORT', 'DATA_VIEW', 'READ'] } },
       })
       return count > 0
@@ -259,7 +259,7 @@ const complianceChecks: CheckFn[] = [
 
   async function checkSoc2Readiness() {
     // SOC 2 readiness requires external audit — check for key controls
-    const hasAuditLog = await dbCount('aegisAuditLog') > 0
+    const hasAuditLog = await dbCount('hanumanasAuditLog') > 0
     const hasRbac     = grepFile(join(BACK, 'src/routes/admin.ts'), /authorize/)
     const hasEncryption = existsSync(join(BACK, 'src/lib/vault.ts')) ||
       grepDir(join(BACK, 'src'), /crypto\.createCipheriv|aes-256-gcm|bcrypt/i)
@@ -352,7 +352,7 @@ const governanceChecks: CheckFn[] = [
   async function checkAegisAuditCoverage() {
     // AEGIS audit should cover key event types
     try {
-      const eventTypes = await (prisma as any).aegisAuditLog.groupBy({ by: ['action'], _count: true })
+      const eventTypes = await (prisma as any).hanumanasAuditLog.groupBy({ by: ['action'], _count: true })
       const count = eventTypes.length
       return count >= 3
         ? pass('governance', 'aegis_audit_coverage', `${count} distinct audit event types recorded`)

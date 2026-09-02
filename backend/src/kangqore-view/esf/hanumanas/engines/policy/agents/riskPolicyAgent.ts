@@ -9,9 +9,9 @@ export async function runRiskPolicyAgent(ctx: AgentContext): Promise<HanumanasAg
   const last6h  = new Date(Date.now() - 6 * 3_600_000)
 
   const [violations, criticalAgentRuns, warnAgentRuns] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: last6h } } }).catch(() => 0),
   ])
 
   // Risk policy is triggered when violations coincide with CRITICAL agent findings

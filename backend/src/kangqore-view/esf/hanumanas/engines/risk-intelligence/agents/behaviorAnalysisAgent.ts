@@ -13,10 +13,10 @@ export async function runBehaviorAnalysisAgent(ctx: AgentContext): Promise<Hanum
     const from = new Date(Date.now() - (i + 1) * 86_400_000)
     const to   = new Date(Date.now() - i       * 86_400_000)
     const [activations, autonomous, denials, violations] = await Promise.all([
-      (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION',       createdAt: { gte: from, lt: to } } }).catch(() => 0),
-      (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: from, lt: to } } }).catch(() => 0),
-      (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: from, lt: to } } }).catch(() => 0),
-      (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION',       createdAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: from, lt: to } } }).catch(() => 0),
     ])
     days.push({ date: from.toISOString().slice(0, 10), activations, autonomous, denials, violations })
   }

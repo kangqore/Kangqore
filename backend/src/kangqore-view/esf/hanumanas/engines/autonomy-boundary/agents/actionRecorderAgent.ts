@@ -9,10 +9,10 @@ export async function runActionRecorderAgent(ctx: AgentContext): Promise<Hanuman
   const last24h = new Date(Date.now() - 86_400_000)
 
   const [total, withSystem, withDuration, withAgentsRun] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { autonomous: true, createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { autonomous: true, NOT: { system:     null }, createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { autonomous: true, NOT: { durationMs: null }, createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { autonomous: true, NOT: { agentsRun: { isEmpty: true } }, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { autonomous: true, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { autonomous: true, NOT: { system:     null }, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { autonomous: true, NOT: { durationMs: null }, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { autonomous: true, NOT: { agentsRun: { isEmpty: true } }, createdAt: { gte: last24h } } }).catch(() => 0),
   ])
 
   const recordCompleteness = total > 0 ? Math.round(((withSystem + withDuration + withAgentsRun) / (total * 3)) * 100) : 100

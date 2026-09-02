@@ -11,7 +11,7 @@ export async function runEscalationAgent(ctx: AgentContext): Promise<HanumanasAg
   const threshold = new Date(Date.now() - ESCALATION_HOURS * 3_600_000)
 
   const staleWarnings: Array<{ agentId: string; engine: string; summary: string; raisedAt: Date }> =
-    await (prisma as any).aegisAgentRun.findMany({
+    await (prisma as any).hanumanasAgentRun.findMany({
       where:   { verdict: 'WARN', raisedAt: { lte: threshold } },
       orderBy: { raisedAt: 'desc' },
       take:    50,
@@ -21,7 +21,7 @@ export async function runEscalationAgent(ctx: AgentContext): Promise<HanumanasAg
   // Keep only warnings with no subsequent PASS from the same agent
   const escalations: typeof staleWarnings = []
   for (const warn of staleWarnings) {
-    const resolved = await (prisma as any).aegisAgentRun.findFirst({
+    const resolved = await (prisma as any).hanumanasAgentRun.findFirst({
       where: { agentId: warn.agentId, verdict: 'PASS', raisedAt: { gte: warn.raisedAt } },
     }).catch(() => null)
     if (!resolved) escalations.push(warn)

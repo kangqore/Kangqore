@@ -12,7 +12,7 @@ export async function runSchedulerMonitorAgent(ctx: AgentContext): Promise<Hanum
 
   // Find autonomous events with unexpected actors (should always be SCHEDULER)
   const autonomousEvents: Array<{ actor: string; trigger: string | null; userId: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { autonomous: true, createdAt: { gte: last24h } },
       select: { actor: true, trigger: true, userId: true },
       take:   200,

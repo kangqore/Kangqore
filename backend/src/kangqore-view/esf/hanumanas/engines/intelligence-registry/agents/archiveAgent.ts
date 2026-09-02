@@ -11,10 +11,10 @@ export async function runArchiveAgent(ctx: AgentContext): Promise<HanumanasAgent
   const archiveCutoff = new Date(Date.now() - ARCHIVE_THRESHOLD_DAYS * 86_400_000)
 
   const [archivable, total] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'KNOWLEDGE_ASSET', createdAt: { lt: archiveCutoff } },
     }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'KNOWLEDGE_ASSET' },
     }).catch(() => 0),
   ])
@@ -23,7 +23,7 @@ export async function runArchiveAgent(ctx: AgentContext): Promise<HanumanasAgent
   const verdict = archivable > 50 ? 'WARN' : 'PASS'
 
   // Also get oldest asset date for reference
-  const oldest: { createdAt: Date } | null = await (prisma as any).aegisAuditLog.findFirst({
+  const oldest: { createdAt: Date } | null = await (prisma as any).hanumanasAuditLog.findFirst({
     where:   { eventType: 'KNOWLEDGE_ASSET' },
     orderBy: { createdAt: 'asc' },
     select:  { createdAt: true },

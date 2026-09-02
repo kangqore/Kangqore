@@ -9,7 +9,7 @@ export async function runWakeUpTrackerAgent(ctx: AgentContext): Promise<Hanumana
   const last7d = new Date(Date.now() - 7 * 86_400_000)
 
   const triggers: Array<{ trigger: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['trigger'],
       _count: { _all: true },
       where:  { eventType: 'ACTIVATION', createdAt: { gte: last7d } },

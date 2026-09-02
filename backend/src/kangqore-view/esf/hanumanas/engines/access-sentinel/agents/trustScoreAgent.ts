@@ -10,9 +10,9 @@ export async function runTrustScoreAgent(ctx: AgentContext): Promise<HanumanasAg
   const last7d = new Date(Date.now() - 7 * 86_400_000)
 
   const [activations, denied, autonomous] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: last7d } } }).catch(() => 0),
   ])
 
   const totalAttempts = activations + denied

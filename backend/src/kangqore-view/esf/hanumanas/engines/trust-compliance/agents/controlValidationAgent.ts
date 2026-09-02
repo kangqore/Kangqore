@@ -16,11 +16,11 @@ export async function runControlValidationAgent(ctx: AgentContext): Promise<Hanu
   const last7d = new Date(Date.now() - 7 * 86_400_000)
 
   const [recentAgentRun, shieldEvents, egressEvents, policyViolations, activations] = await Promise.all([
-    (prisma as any).aegisAgentRun.count({ where: { raisedAt: { gte: last2h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'EGRESS', createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { raisedAt: { gte: last2h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'EGRESS', createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last7d } } }).catch(() => 0),
   ])
 
   const controls: ControlCheck[] = [

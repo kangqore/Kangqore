@@ -54,7 +54,7 @@ dataPrivacyRouter.get('/audit-log', async (req: Request, res: Response) => {
   }
 
   const [rows, total] = await Promise.all([
-    (prisma as any).aegisAuditLog.findMany({
+    (prisma as any).hanumanasAuditLog.findMany({
       where,
       orderBy: { createdAt: 'desc' },
       take: limit,
@@ -64,7 +64,7 @@ dataPrivacyRouter.get('/audit-log', async (req: Request, res: Response) => {
         actor: true, autonomous: true, priority: true, durationMs: true, createdAt: true,
       },
     }),
-    (prisma as any).aegisAuditLog.count({ where }),
+    (prisma as any).hanumanasAuditLog.count({ where }),
   ])
 
   res.json({ rows, total, page, limit })
@@ -77,7 +77,7 @@ dataPrivacyRouter.post('/delete-request', async (req: Request, res: Response) =>
 
   const { reason } = req.body
 
-  await (prisma as any).aegisAuditLog.create({
+  await (prisma as any).hanumanasAuditLog.create({
     data: {
       eventType: 'GDPR_DELETE_REQUEST',
       actor:     userId,

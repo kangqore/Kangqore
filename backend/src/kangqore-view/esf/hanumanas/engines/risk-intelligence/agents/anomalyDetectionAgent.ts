@@ -16,8 +16,8 @@ export async function runAnomalyDetectionAgent(ctx: AgentContext): Promise<Hanum
 
   const results = await Promise.all(EVENT_TYPES.map(async et => {
     const [hourly, sevenDay] = await Promise.all([
-      (prisma as any).aegisAuditLog.count({ where: { eventType: et, createdAt: { gte: last1h } } }).catch(() => 0),
-      (prisma as any).aegisAuditLog.count({ where: { eventType: et, createdAt: { gte: last7d } } }).catch(() => 0),
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: et, createdAt: { gte: last1h } } }).catch(() => 0),
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: et, createdAt: { gte: last7d } } }).catch(() => 0),
     ])
     const hourlyAvg = sevenDay / (7 * 24) // hourly average over 7 days
     const ratio     = hourlyAvg > 0 ? hourly / hourlyAvg : 0

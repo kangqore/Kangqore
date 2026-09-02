@@ -141,17 +141,17 @@ briefingRouter.get(
         }).catch(() => 0),
 
         // Compliance: AEGIS critical runs last 24h
-        (prisma as any).aegisAgentRun.count({
+        (prisma as any).hanumanasAgentRun.count({
           where: { verdict: 'CRITICAL', raisedAt: { gte: new Date(Date.now() - 86_400_000) } },
         }).catch(() => 0),
 
         // Compliance: AEGIS warn runs last 24h
-        (prisma as any).aegisAgentRun.count({
+        (prisma as any).hanumanasAgentRun.count({
           where: { verdict: 'WARN', raisedAt: { gte: new Date(Date.now() - 86_400_000) } },
         }).catch(() => 0),
 
         // Compliance: latest AEGIS health score from govops.reporting
-        (prisma as any).aegisAgentRun.findFirst({
+        (prisma as any).hanumanasAgentRun.findFirst({
           where:   { agentId: 'govops.reporting' },
           orderBy: { raisedAt: 'desc' },
           select:  { metadata: true, verdict: true },

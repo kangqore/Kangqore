@@ -9,10 +9,10 @@ export async function runAlertingAgent(ctx: AgentContext): Promise<HanumanasAgen
   const since = new Date(Date.now() - 60 * 60_000) // last 1h
 
   const [criticalRuns, warnRuns, policyViolations, accessDenied] = await Promise.all([
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt:  { gte: since } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt:  { gte: since } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: since } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: since } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt:  { gte: since } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt:  { gte: since } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: since } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: since } } }).catch(() => 0),
   ])
 
   const verdict = (criticalRuns > 0 || policyViolations > 0) ? 'CRITICAL'

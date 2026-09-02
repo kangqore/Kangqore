@@ -10,9 +10,9 @@ export async function runPromptRecorderAgent(ctx: AgentContext): Promise<Hanuman
 
   // Proxy for LLM prompt recording: ACTIVATION events with agentsRun populated (means KIMMP ran agents)
   const [total, withAgents, autonomous] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last24h }, NOT: { agentsRun: { isEmpty: true } } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true,  createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last24h }, NOT: { agentsRun: { isEmpty: true } } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true,  createdAt: { gte: last24h } } }).catch(() => 0),
   ])
 
   const coverage = total > 0 ? Math.round((withAgents / total) * 100) : 100

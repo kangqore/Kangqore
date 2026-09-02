@@ -11,7 +11,7 @@ export async function runExceptionHandlerAgent(ctx: AgentContext): Promise<Hanum
   // Exceptions = autonomous actions from KIMMP/SCHEDULER that didn't raise violations
   // but had characteristics that "should" be monitored — high priority + autonomous
   const exceptions: Array<{ actor: string; system: string | null; priority: string | null; trigger: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where: {
         eventType: 'ACTIVATION',
         autonomous: true,

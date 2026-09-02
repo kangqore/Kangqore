@@ -11,8 +11,8 @@ export async function runEnforcementAgent(ctx: AgentContext): Promise<HanumanasA
   const last1h = new Date(Date.now() - 3_600_000)
 
   const [activations, violations] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last1h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last1h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last1h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last1h } } }).catch(() => 0),
   ])
 
   const total            = activations + violations
@@ -20,7 +20,7 @@ export async function runEnforcementAgent(ctx: AgentContext): Promise<HanumanasA
   const degraded         = enforcementRate < ENFORCEMENT_WARN_THRESHOLD && total > 0
 
   // Also check agent-level enforcement: any CRITICAL findings in last 1h
-  const criticalRuns = await (prisma as any).aegisAgentRun
+  const criticalRuns = await (prisma as any).hanumanasAgentRun
     .count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last1h } } }).catch(() => 0)
 
   const verdict = criticalRuns > 0 ? 'CRITICAL' : degraded ? 'WARN' : total > 0 ? 'PASS' : 'INFO'

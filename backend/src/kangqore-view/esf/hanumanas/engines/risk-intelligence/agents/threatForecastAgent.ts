@@ -13,10 +13,10 @@ export async function runThreatForecastAgent(ctx: AgentContext): Promise<Hanuman
     const from = new Date(Date.now() - (i + 1) * 86_400_000)
     const to   = new Date(Date.now() - i       * 86_400_000)
     const [critical, warn, violations, denied] = await Promise.all([
-      (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: from, lt: to } } }).catch(() => 0),
-      (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: from, lt: to } } }).catch(() => 0),
-      (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: from, lt: to } } }).catch(() => 0),
-      (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: from, lt: to } } }).catch(() => 0),
     ])
     days.push({ date: from.toISOString().slice(0, 10), critical, warn, violations, denied })
   }
@@ -26,7 +26,7 @@ export async function runThreatForecastAgent(ctx: AgentContext): Promise<Hanuman
   const earlier3   = days.slice(0, 3).reduce((s, d) => s + d.critical + d.violations, 0)
   const escalating = recent3 > earlier3 && earlier3 >= 0
 
-  // Emit trend risk score to aegisAuditLog via LogicToolRegistry
+  // Emit trend risk score to hanumanasAuditLog via LogicToolRegistry
   LogicToolRegistry.execute('weighted_score', {
     items: [
       { score: Math.min(100, recent3 * 10),  weight: 60 },

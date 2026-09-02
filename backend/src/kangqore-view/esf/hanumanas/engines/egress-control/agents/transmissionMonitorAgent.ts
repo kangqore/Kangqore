@@ -11,7 +11,7 @@ export async function runTransmissionMonitorAgent(ctx: AgentContext): Promise<Ha
   const events: Array<{
     actor: string; system: string | null; assetId: string | null;
     classification: string | null; createdAt: Date
-  }> = await (prisma as any).aegisAuditLog.findMany({
+  }> = await (prisma as any).hanumanasAuditLog.findMany({
     where:  { eventType: 'EGRESS', createdAt: { gte: last1h } },
     select: { actor: true, system: true, assetId: true, classification: true, createdAt: true },
     orderBy: { createdAt: 'desc' },

@@ -459,7 +459,7 @@ export class KimmpSystemDispatcher {
     try {
       const hanumanasCriticals = await (await import('../../../lib/prisma')).prisma.$queryRaw<any[]>`
         SELECT agent_id, summary, raised_at
-        FROM aegis_agent_runs
+        FROM hanumanas_agent_runs
         WHERE verdict = 'CRITICAL'
         AND raised_at > NOW() - INTERVAL '2 hours'
         ORDER BY raised_at DESC

@@ -3632,7 +3632,7 @@ kangqoreImmpRoutes.get('/aegis/threat-feed', requireAuth, requireRole(['ADMIN'])
     const { limit = 50 } = req.query
 
     // Pull from AEGIS shield log (blocked requests) if model exists
-    const shieldRows = await (prisma as any).aegisShieldLog?.findMany?.({
+    const shieldRows = await (prisma as any).hanumanasShieldLog?.findMany?.({
       orderBy: { createdAt: 'desc' },
       take:    parseInt(String(limit)),
       select:  { id: true, ipAddress: true, endpoint: true, method: true, userId: true, userRole: true, reason: true, createdAt: true },
@@ -5271,15 +5271,15 @@ kangqoreImmpRoutes.post('/soc2/periods/:id/collect-evidence', requireAuth, requi
     if (!period) return res.status(404).json({ error: 'Audit period not found' })
 
     const controls = [
-      { controlId: 'CC6.1', controlName: 'Logical Access Controls',      evidenceType: 'ACCESS_CONTROL', sourceTable: 'aegis_audit_logs' },
+      { controlId: 'CC6.1', controlName: 'Logical Access Controls',      evidenceType: 'ACCESS_CONTROL', sourceTable: 'hanumanas_audit_logs' },
       { controlId: 'CC6.2', controlName: 'User Authentication',           evidenceType: 'ACCESS_CONTROL', sourceTable: 'users' },
       { controlId: 'CC6.3', controlName: 'Access Revocation',             evidenceType: 'ACCESS_CONTROL', sourceTable: 'programmatic_api_keys' },
       { controlId: 'CC7.1', controlName: 'Vulnerability Management',      evidenceType: 'INCIDENT',        sourceTable: 'security_findings' },
       { controlId: 'CC7.2', controlName: 'Security Incident Response',    evidenceType: 'INCIDENT',        sourceTable: 'security_findings' },
-      { controlId: 'CC8.1', controlName: 'Change Management',             evidenceType: 'AUDIT_LOG',       sourceTable: 'aegis_audit_logs' },
+      { controlId: 'CC8.1', controlName: 'Change Management',             evidenceType: 'AUDIT_LOG',       sourceTable: 'hanumanas_audit_logs' },
       { controlId: 'A1.1',  controlName: 'System Availability Monitoring',evidenceType: 'AUDIT_LOG',       sourceTable: 'kimmp_signals' },
-      { controlId: 'A1.2',  controlName: 'Incident Recovery',             evidenceType: 'POLICY',          sourceTable: 'aegis_policies' },
-      { controlId: 'C1.1',  controlName: 'Confidentiality Classification',evidenceType: 'ENCRYPTION',      sourceTable: 'aegis_autonomy_logs' },
+      { controlId: 'A1.2',  controlName: 'Incident Recovery',             evidenceType: 'POLICY',          sourceTable: 'hanumanas_policies' },
+      { controlId: 'C1.1',  controlName: 'Confidentiality Classification',evidenceType: 'ENCRYPTION',      sourceTable: 'hanumanas_autonomy_logs' },
       { controlId: 'PI1.1', controlName: 'Processing Integrity',          evidenceType: 'AUDIT_LOG',       sourceTable: 'waanda_fm_training_examples' },
     ]
 
@@ -5294,7 +5294,7 @@ kangqoreImmpRoutes.post('/soc2/periods/:id/collect-evidence', requireAuth, requi
     ])
 
     const countMap: Record<string, number> = {
-      'aegis_audit_logs': auditCount, 'kimmp_signals': signalCount,
+      'hanumanas_audit_logs': auditCount, 'kimmp_signals': signalCount,
       'security_findings': findingCount, 'programmatic_api_keys': keyCount,
     }
 

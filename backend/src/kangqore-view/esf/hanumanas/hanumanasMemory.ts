@@ -39,7 +39,7 @@ export async function getAgentHistory(
   limit    = 5,
 ): Promise<AgentMemoryEntry[]> {
   try {
-    const rows = await (prisma as any).aegisAgentRun.findMany({
+    const rows = await (prisma as any).hanumanasAgentRun.findMany({
       where:   { agentId },
       orderBy: { raisedAt: 'desc' },
       take:    limit,
@@ -85,7 +85,7 @@ export async function getAgentTrajectory(agentId: string): Promise<string> {
  * Stored in HanumanasActionLog with actionType = 'OUTCOME_RECORD'.
  */
 export async function recordOutcome(tuple: AgentOutcomeTuple): Promise<void> {
-  await (prisma as any).aegisActionLog.create({
+  await (prisma as any).hanumanasActionLog.create({
     data: {
       actionType: 'OUTCOME_RECORD',
       level:      0,
@@ -109,7 +109,7 @@ export async function recordOutcome(tuple: AgentOutcomeTuple): Promise<void> {
  */
 export async function getAgentOutcomes(agentId: string, limit = 10): Promise<AgentOutcomeTuple[]> {
   try {
-    const rows = await (prisma as any).aegisActionLog.findMany({
+    const rows = await (prisma as any).hanumanasActionLog.findMany({
       where:   { agentId, actionType: 'OUTCOME_RECORD' },
       orderBy: { executedAt: 'desc' },
       take:    limit,

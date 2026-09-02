@@ -40,7 +40,7 @@ export const HanumanasBudget = {
     const cfg = tenantBudgets[tenantId]
     const since = new Date(Date.now() - (cfg?.windowHours ?? 24) * 3_600_000)
 
-    const callCount = await (prisma as any).aegisActionLog.count({
+    const callCount = await (prisma as any).hanumanasActionLog.count({
       where: { agentId: { contains: tenantId }, executedAt: { gte: since } },
     }).catch(() => 0)
 
@@ -54,7 +54,7 @@ export const HanumanasBudget = {
   async gate(tenantId: string): Promise<{ blocked: boolean; message?: string }> {
     const usage = await this.checkUsage(tenantId)
     if (usage.overBudget && usage.hardDeny) {
-      await (prisma as any).aegisActionLog.create({
+      await (prisma as any).hanumanasActionLog.create({
         data: {
           actionType: 'LOG_AUDIT_ENTRY', level: 0,
           agentId: 'aegis.budget-enforcer', engine: 'AUTONOMY_BOUNDARY',

@@ -8,11 +8,11 @@ export async function runAttributionAgent(ctx: AgentContext): Promise<HanumanasA
   const start = Date.now()
 
   const [total, missSystem, missAssetType, missActor, missSource] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', system:      null } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetType:   null } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', actor:       null } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetSource: null } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', system:      null } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetType:   null } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', actor:       null } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', assetSource: null } }).catch(() => 0),
   ])
 
   const totalGaps   = missSystem + missAssetType + missActor + missSource

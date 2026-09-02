@@ -12,7 +12,7 @@ export async function runExecutionTrackerAgent(ctx: AgentContext): Promise<Hanum
   const last24h = new Date(Date.now() - 86_400_000)
 
   const events: Array<{ durationMs: number | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'ACTIVATION', createdAt: { gte: last24h } },
       select: { durationMs: true },
     }).catch(() => [])

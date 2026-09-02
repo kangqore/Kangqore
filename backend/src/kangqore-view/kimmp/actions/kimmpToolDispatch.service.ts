@@ -48,7 +48,7 @@ export class KimmpToolDispatch {
 
     // Persist to audit log
     try {
-      await (prisma as any).aegisAuditLog.create({
+      await (prisma as any).hanumanasAuditLog.create({
         data: {
           eventType:   'KIMMP_EXTERNAL_WRITE',
           actorId:     userId,

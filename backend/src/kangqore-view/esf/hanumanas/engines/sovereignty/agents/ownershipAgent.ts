@@ -13,9 +13,9 @@ export async function runOwnershipAgent(ctx: AgentContext): Promise<HanumanasAge
   const last24h = new Date(Date.now() - 86_400_000)
 
   const [total, recentTotal, allActors] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.findMany({
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'KNOWLEDGE_ASSET' },
       select: { actor: true },
     }).catch(() => []) as Promise<{ actor: string | null }[]>,

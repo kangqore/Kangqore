@@ -16,7 +16,7 @@ export async function runClassificationAgent(ctx: AgentContext): Promise<Hanuman
   // Flag if RESTRICTED assets exist but there's been no EGRESS check recently
   const last24h     = new Date(Date.now() - 86_400_000)
   const recentEgress = restricted > 0
-    ? await (prisma as any).aegisAuditLog
+    ? await (prisma as any).hanumanasAuditLog
         .count({ where: { eventType: 'EGRESS', createdAt: { gte: last24h } } }).catch(() => 0)
     : 0
 

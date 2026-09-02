@@ -9,10 +9,10 @@ export async function runOutcomeRecorderAgent(ctx: AgentContext): Promise<Hanuma
   const last24h = new Date(Date.now() - 86_400_000)
 
   const [total, withPriority, withConfidence, withDispatchId] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', NOT: { priority:   null }, createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', NOT: { confidence: null }, createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', NOT: { dispatchId: null }, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', NOT: { priority:   null }, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', NOT: { confidence: null }, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', NOT: { dispatchId: null }, createdAt: { gte: last24h } } }).catch(() => 0),
   ])
 
   const outcomeRate = total > 0 ? Math.round(((withPriority + withConfidence + withDispatchId) / (total * 3)) * 100) : 100

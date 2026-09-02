@@ -10,14 +10,14 @@ export async function runDpdpComplianceAgent(ctx: AgentContext): Promise<Hanuman
   const last30d = new Date(Date.now() - 30 * 86_400_000)
 
   const [egressTotal, egressWithDest, egressWithActor, restrictedAssets] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'EGRESS', createdAt: { gte: last30d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'EGRESS', createdAt: { gte: last30d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'EGRESS', createdAt: { gte: last30d } },
     }).catch(() => 0), // placeholder; metadata query not easily filterable without raw SQL
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'EGRESS', actor: { not: null }, createdAt: { gte: last30d } },
     }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'KNOWLEDGE_ASSET', classification: 'RESTRICTED', createdAt: { gte: last30d } },
     }).catch(() => 0),
   ])
@@ -28,7 +28,7 @@ export async function runDpdpComplianceAgent(ctx: AgentContext): Promise<Hanuman
   if (Number(actorCoverage) < 100) gaps.push(`${(100 - Number(actorCoverage)).toFixed(1)}% of EGRESS events missing actor (purpose limitation gap)`)
 
   // DPDP: data fiduciaries must track all personal data processing
-  const processingLogged = await (prisma as any).aegisAuditLog
+  const processingLogged = await (prisma as any).hanumanasAuditLog
     .count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last30d } } }).catch(() => 0)
 
   const verdict = gaps.length > 1 ? 'WARN' : 'PASS'

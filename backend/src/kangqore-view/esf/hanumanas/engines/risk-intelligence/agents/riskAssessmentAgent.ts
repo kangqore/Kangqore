@@ -10,12 +10,12 @@ export async function runRiskAssessmentAgent(ctx: AgentContext): Promise<Hanuman
   const last24h = new Date(Date.now() - 86_400_000)
 
   const [criticalRuns, warnRuns, violations, denied, activations, autonomous] = await Promise.all([
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION',       createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION',       createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: last24h } } }).catch(() => 0),
   ])
 
   const autonomyRatio = activations > 0 ? autonomous / activations : 0
@@ -34,7 +34,7 @@ export async function runRiskAssessmentAgent(ctx: AgentContext): Promise<Hanuman
     criticalWeight + warnWeight + violationWeight + denialWeight + autonomyWeight
   )
 
-  // Emit risk components to aegisAuditLog via LogicToolRegistry for full provenance
+  // Emit risk components to hanumanasAuditLog via LogicToolRegistry for full provenance
   LogicToolRegistry.execute('weighted_score', {
     items: [
       { score: criticalWeight,  weight: 30 },

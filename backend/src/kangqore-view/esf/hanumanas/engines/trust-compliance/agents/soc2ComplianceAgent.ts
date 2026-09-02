@@ -19,14 +19,14 @@ export async function runSoc2ComplianceAgent(ctx: AgentContext): Promise<Hanuman
 
   const criteriaResults = await Promise.all(
     CRITERIA.map(async crit => {
-      const count = await (prisma as any).aegisAuditLog
+      const count = await (prisma as any).hanumanasAuditLog
         .count({ where: { eventType: crit.check, createdAt: { gte: last30d } } }).catch(() => 0)
       return { ...crit, count, evidenced: count > 0 }
     })
   )
 
   // Availability: AEGIS scheduler must have run in last 2h
-  const schedulerActive = await (prisma as any).aegisAgentRun
+  const schedulerActive = await (prisma as any).hanumanasAgentRun
     .count({ where: { raisedAt: { gte: new Date(Date.now() - 2 * 3_600_000) } } }).catch(() => 0)
 
   const evidenced = criteriaResults.filter(c => c.evidenced).length + (schedulerActive > 0 ? 0 : 0)

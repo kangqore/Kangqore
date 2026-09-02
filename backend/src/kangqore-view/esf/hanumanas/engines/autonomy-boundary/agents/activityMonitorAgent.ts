@@ -10,7 +10,7 @@ export async function runActivityMonitorAgent(ctx: AgentContext): Promise<Hanuma
   const last24h = new Date(Date.now() - 86_400_000)
 
   const bySystem: Array<{ system: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['system'],
       _count: { _all: true },
       where:  { autonomous: true, createdAt: { gte: last24h } },

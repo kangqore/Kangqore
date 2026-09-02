@@ -9,7 +9,7 @@ export async function runDataMovementAgent(ctx: AgentContext): Promise<Hanumanas
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 
   const bySystem: Array<{ system: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['system'],
       _count: { _all: true },
       where:  { eventType: 'EGRESS', createdAt: { gte: last6h } },

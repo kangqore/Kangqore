@@ -10,9 +10,9 @@ export async function runApprovalAgent(ctx: AgentContext): Promise<HanumanasAgen
   // Approval = every KNOWLEDGE_ASSET ingest was triggered through an ADMIN-approved ACTIVATION
   // Proxy: assets where dispatchId is set (came through a proper KIMMP dispatch)
   const [total, withDispatch, withoutDispatch] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', NOT: { dispatchId: null } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', dispatchId: null } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET' } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', NOT: { dispatchId: null } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', dispatchId: null } }).catch(() => 0),
   ])
 
   const approvalRate = total > 0 ? Math.round((withDispatch / total) * 100) : 100

@@ -9,11 +9,11 @@ export async function runIntelligenceRiskAgent(ctx: AgentContext): Promise<Hanum
   const last7d = new Date(Date.now() - 7 * 86_400_000)
 
   const [restrictedAssets, unclassified, restrictedEgress, totalAssets, egressTotal] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', classification: 'RESTRICTED',    createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', classification: null,           createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'EGRESS',          classification: 'RESTRICTED',    createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET',                                  createdAt: { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'EGRESS',                                           createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', classification: 'RESTRICTED',    createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', classification: null,           createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'EGRESS',          classification: 'RESTRICTED',    createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET',                                  createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'EGRESS',                                           createdAt: { gte: last7d } } }).catch(() => 0),
   ])
 
   // Intelligence risk score

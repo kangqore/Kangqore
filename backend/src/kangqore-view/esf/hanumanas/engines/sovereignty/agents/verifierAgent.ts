@@ -9,7 +9,7 @@ export async function runVerifierAgent(ctx: AgentContext): Promise<HanumanasAgen
 
   // Check for duplicate assetIds (re-ingested without deduplication)
   const allAssets: Array<{ assetId: string | null; system: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'KNOWLEDGE_ASSET' },
       select: { assetId: true, system: true },
     }).catch(() => [])

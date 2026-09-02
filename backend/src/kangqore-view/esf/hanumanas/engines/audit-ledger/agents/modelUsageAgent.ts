@@ -10,7 +10,7 @@ export async function runModelUsageAgent(ctx: AgentContext): Promise<HanumanasAg
 
   // Proxy for model usage: activations by system (each system uses different models)
   const systemCounts: Array<{ system: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['system'],
       _count: { _all: true },
       where:  { eventType: 'ACTIVATION', createdAt: { gte: last7d } },

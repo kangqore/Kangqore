@@ -4383,7 +4383,7 @@ model KimmpLearningRun {
 //   KNOWLEDGE_ASSET — every RAG document ingested as ADMIN-owned intelligence
 // ---------------------------------------------------------------------------
 
-model AegisAuditLog {
+model HanumanasAuditLog {
   id          String   @id @default(cuid())
   eventType   String   // ACTIVATION | AUTONOMOUS | ACCESS_DENIED | KNOWLEDGE_ASSET
   system      String?  // KIMMP system: EQORE | LEAD_INTEL | ALIS | VIS | SENTINEL | KIMMP
@@ -4409,15 +4409,15 @@ model AegisAuditLog {
   @@index([autonomous, createdAt])
   @@index([system, createdAt])
   @@index([actor, createdAt])
-  @@map("aegis_audit_logs")
+  @@map("hanumanas_audit_logs")
 }
 
 // ---------------------------------------------------------------------------
 // AEGIS Agent Runs — queryable history of every agent's verdict over time.
-// Written by AegisEngineDispatcher after each agent execution.
+// Written by HanumanasEngineDispatcher after each agent execution.
 // ---------------------------------------------------------------------------
 
-model AegisAgentRun {
+model HanumanasAgentRun {
   id         String   @id @default(cuid())
   agentId    String                         // e.g. 'govops.engine-health'
   engine     String                         // e.g. 'GOVERNANCE_OPS'
@@ -4432,14 +4432,14 @@ model AegisAgentRun {
   @@index([engine, raisedAt])
   @@index([verdict, raisedAt])
   @@index([agentId, raisedAt])
-  @@map("aegis_agent_runs")
+  @@map("hanumanas_agent_runs")
 }
 
 // ---------------------------------------------------------------------------
 // AEGIS Phase 2 — Action Layer
 // ---------------------------------------------------------------------------
 
-model AegisPendingAction {
+model HanumanasPendingAction {
   id          String    @id @default(cuid())
   actionType  String                          // PAUSE_KIMMP_LOOP | BLOCK_ACTOR | QUARANTINE_ASSET
   level       Int                             // always 3
@@ -4454,10 +4454,10 @@ model AegisPendingAction {
   resolvedBy  String?
 
   @@index([status, requestedAt])
-  @@map("aegis_pending_actions")
+  @@map("hanumanas_pending_actions")
 }
 
-model AegisActionLog {
+model HanumanasActionLog {
   id          String   @id @default(cuid())
   actionType  String
   level       Int
@@ -4470,7 +4470,7 @@ model AegisActionLog {
 
   @@index([agentId, executedAt])
   @@index([status, executedAt])
-  @@map("aegis_action_logs")
+  @@map("hanumanas_action_logs")
 }
 
 // ─── BIDS™ ───────────────────────────────────────────────────────────────────
@@ -6677,7 +6677,7 @@ model KimmpCognitiveReasoningTrace {
 
 // ─── AEGIS Phase 3.1: Governance & Trust ────────────
 
-model AegisPolicy {
+model HanumanasPolicy {
   id          String   @id @default(uuid())
   name        String   @unique
   description String?
@@ -6687,9 +6687,11 @@ model AegisPolicy {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("hanumanas_policies")
 }
 
-model AegisLedgerEntry {
+model HanumanasLedgerEntry {
   id               String   @id @default(uuid())
   missionId        String
   actor            String   // e.g. WAANDA
@@ -6700,6 +6702,8 @@ model AegisLedgerEntry {
   status           String   // e.g. BLOCKED, APPROVED, EXECUTED
   executionDetails Json?
   createdAt        DateTime @default(now())
+
+  @@map("hanumanas_ledger_entries")
 }
 
 // ─── KORE PERCEPTION & EVIDENCE ENGINE ────────────
@@ -8057,7 +8061,7 @@ model SOC2Evidence {
   controlName String
   evidenceType String                           // AUDIT_LOG | ACCESS_CONTROL | ENCRYPTION | INCIDENT | POLICY
   description String   @db.Text
-  sourceTable String?                           // e.g. "aegis_audit_logs"
+  sourceTable String?                           // e.g. "hanumanas_audit_logs"
   sourceCount Int      @default(0)             // row count at collection time
   collectedAt DateTime @default(now())
   period      SOC2AuditPeriod @relation(fields: [periodId], references: [id])

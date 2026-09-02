@@ -10,10 +10,10 @@ export async function runLeakDetectionAgent(ctx: AgentContext): Promise<Hanumana
 
   // Look for EGRESS events on RESTRICTED assets — highest-risk leak signal
   const [egressEvents, restrictedEgress] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'EGRESS', createdAt: { gte: last1h } },
     }).catch(() => 0),
-    (prisma as any).aegisAuditLog.findMany({
+    (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'EGRESS', classification: 'RESTRICTED', createdAt: { gte: last1h } },
       select: { assetId: true, actor: true, system: true, createdAt: true },
     }).catch(() => []) as Promise<Array<{ assetId: string | null; actor: string; system: string | null; createdAt: Date }>>,
@@ -22,7 +22,7 @@ export async function runLeakDetectionAgent(ctx: AgentContext): Promise<Hanumana
   const restrictedCount = (restrictedEgress as any[]).length
 
   // Also look at rapid consecutive egress (any >5 events in 5 minutes = leak pattern)
-  const recent5min: Array<{ createdAt: Date }> = await (prisma as any).aegisAuditLog.findMany({
+  const recent5min: Array<{ createdAt: Date }> = await (prisma as any).hanumanasAuditLog.findMany({
     where:   { eventType: 'EGRESS', createdAt: { gte: new Date(Date.now() - 5 * 60_000) } },
     select:  { createdAt: true },
   }).catch(() => [])

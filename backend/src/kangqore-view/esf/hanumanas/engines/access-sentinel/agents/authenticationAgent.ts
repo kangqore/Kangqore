@@ -9,14 +9,14 @@ export async function runAuthenticationAgent(ctx: AgentContext): Promise<Hanuman
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 
   const [deniedTotal, deniedBySystem, activationCount] = await Promise.all([
-    (prisma as any).aegisAuditLog
+    (prisma as any).hanumanasAuditLog
       .count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.groupBy({
+    (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['system'],
       _count: { _all: true },
       where:  { eventType: 'ACCESS_DENIED', createdAt: { gte: last6h } },
     }).catch(() => []) as Promise<Array<{ system: string | null; _count: { _all: number } }>>,
-    (prisma as any).aegisAuditLog
+    (prisma as any).hanumanasAuditLog
       .count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last6h } } }).catch(() => 0),
   ])
 

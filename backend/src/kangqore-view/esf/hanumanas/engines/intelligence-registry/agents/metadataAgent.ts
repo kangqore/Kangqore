@@ -9,7 +9,7 @@ const REQUIRED_FIELDS = ['assetId', 'assetType', 'system', 'classification', 'as
 export async function runMetadataAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
 
-  const assets: Array<Record<string, string | null>> = await (prisma as any).aegisAuditLog.findMany({
+  const assets: Array<Record<string, string | null>> = await (prisma as any).hanumanasAuditLog.findMany({
     where:  { eventType: 'KNOWLEDGE_ASSET' },
     select: { assetId: true, assetType: true, system: true, classification: true, assetSource: true, actor: true },
   }).catch(() => [])

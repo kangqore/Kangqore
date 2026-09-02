@@ -41,7 +41,7 @@ export async function getFlightEvents(opts: FlightRecorderOpts = {}): Promise<{ 
 
   const [aegisRows, certRows, goalRows, decisionRows, memoryRows, workflowRows, incidentRows, deployRows] =
     await Promise.all([
-      (prisma as any).aegisAuditLog.findMany({
+      (prisma as any).hanumanasAuditLog.findMany({
         where:   timeWhere(),
         orderBy: { createdAt: 'desc' },
         take:    limit,

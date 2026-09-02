@@ -11,11 +11,11 @@ export async function runRestrictionAgent(ctx: AgentContext): Promise<HanumanasA
   // Find autonomous actions that coincided with a policy violation
   // Proxy: any AUTONOMOUS event that happened within 5 minutes of a POLICY_VIOLATION
   const [violations, autonomousActions] = await Promise.all([
-    (prisma as any).aegisAuditLog.findMany({
+    (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'POLICY_VIOLATION', createdAt: { gte: last24h } },
       select: { createdAt: true, system: true, detail: true },
     }).catch(() => []) as Promise<Array<{ createdAt: Date; system: string | null; detail: string | null }>>,
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({
       where:  { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: last24h } },
     }).catch(() => 0),
   ])
@@ -25,7 +25,7 @@ export async function runRestrictionAgent(ctx: AgentContext): Promise<HanumanasA
   for (const v of violations) {
     const windowStart = new Date(v.createdAt.getTime() - WINDOW_MS)
     const windowEnd   = new Date(v.createdAt.getTime() + WINDOW_MS)
-    const nearbyAuto  = await (prisma as any).aegisAuditLog.count({
+    const nearbyAuto  = await (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: windowStart, lte: windowEnd } },
     }).catch(() => 0)
     if (nearbyAuto > 0) autonomousViolations.push(v)

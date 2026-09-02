@@ -10,7 +10,7 @@ export async function runClassificationRegistryAgent(ctx: AgentContext): Promise
   const start = Date.now()
 
   const byClass: Array<{ classification: string | null; _count: { _all: number } }> =
-    await (prisma as any).aegisAuditLog.groupBy({
+    await (prisma as any).hanumanasAuditLog.groupBy({
       by:     ['classification'],
       _count: { _all: true },
       where:  { eventType: 'KNOWLEDGE_ASSET' },

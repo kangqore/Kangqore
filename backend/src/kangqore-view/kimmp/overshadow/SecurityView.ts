@@ -19,11 +19,11 @@ export async function getAiSecurityView() {
   const since30d = new Date(Date.now() - 30 * 86_400_000)
 
   const [aiTouchedIncidents30d, pendingActionReviews, openFindings, criticalOpenFindings, recentIncidents, pendingReviewQueue] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { eventType: { in: SECURITY_RELEVANT_EVENTS }, createdAt: { gte: since30d } } }),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: { in: SECURITY_RELEVANT_EVENTS }, createdAt: { gte: since30d } } }),
     (prisma as any).kimmpApprovalRequest.count({ where: { status: 'PENDING' } }),
     (prisma as any).securityFinding.count({ where: { status: 'OPEN' } }),
     (prisma as any).securityFinding.count({ where: { status: 'OPEN', severity: 'CRITICAL' } }),
-    (prisma as any).aegisAuditLog.findMany({
+    (prisma as any).hanumanasAuditLog.findMany({
       where: { eventType: { in: SECURITY_RELEVANT_EVENTS } },
       orderBy: { createdAt: 'desc' }, take: 15,
       select: { id: true, eventType: true, system: true, actor: true, autonomous: true, endpoint: true, priority: true, createdAt: true },

@@ -127,7 +127,7 @@ async function computeProjectHealth(projectId: string): Promise<{
 
   const health = Math.min(100, Math.round(progressScore + scheduleScore + taskScore + riskScore + issueScore))
 
-  // Emit to aegisAuditLog via LogicToolRegistry for provenance
+  // Emit to hanumanasAuditLog via LogicToolRegistry for provenance
   LogicToolRegistry.execute('project_health_score', {
     on_time_pct:    (scheduleScore / 25) * 100,
     budget_pct:     project.adminConfidenceScore ?? 80,

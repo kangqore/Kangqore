@@ -14,7 +14,7 @@ export class HanumanasShield {
    * Evaluates the mission against all active policies.
    */
   static async evaluatePolicy(mission: MissionRequest, capabilityId?: string): Promise<HanumanasEvaluationResult> {
-    const policies = await prisma.aegisPolicy.findMany({
+    const policies = await prisma.hanumanasPolicy.findMany({
       where: { isActive: true },
       orderBy: { priority: 'asc' }
     });
@@ -102,7 +102,7 @@ export class HanumanasShield {
       ? { ...(details?.executionDetails ?? {}), correlationId }
       : details?.executionDetails;
 
-    return (prisma as any).aegisLedgerEntry.create({
+    return (prisma as any).hanumanasLedgerEntry.create({
       data: {
         missionId,
         actor,

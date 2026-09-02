@@ -16,12 +16,12 @@ export async function runOperationalRiskAgent(ctx: AgentContext): Promise<Hanuma
   const last24h = new Date(Date.now() - 86_400_000)
 
   // Scheduler health: any agent run in last 2h?
-  const recentRuns = await (prisma as any).aegisAgentRun
+  const recentRuns = await (prisma as any).hanumanasAgentRun
     .count({ where: { raisedAt: { gte: last2h } } }).catch(() => 0)
 
   // Engine silence: any engine with no run in last 24h
   const engineStatus = await Promise.all(ENGINES.map(async engine => {
-    const lastRun = await (prisma as any).aegisAgentRun.findFirst({
+    const lastRun = await (prisma as any).hanumanasAgentRun.findFirst({
       where:   { engine, raisedAt: { gte: last24h } },
       orderBy: { raisedAt: 'desc' },
       select:  { raisedAt: true },

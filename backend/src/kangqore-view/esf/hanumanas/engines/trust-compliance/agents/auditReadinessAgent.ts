@@ -12,14 +12,14 @@ export async function runAuditReadinessAgent(ctx: AgentContext): Promise<Hanuman
 
   const rawCounts = await Promise.all(
     EVENT_TYPES.map(et =>
-      (prisma as any).aegisAuditLog.count({ where: { eventType: et, createdAt: { gte: last30d } } }).catch(() => 0) as Promise<number>
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: et, createdAt: { gte: last30d } } }).catch(() => 0) as Promise<number>
     )
   )
   const counts: Record<string, number> = Object.fromEntries(EVENT_TYPES.map((et, i) => [et, rawCounts[i]]))
   const covered     = rawCounts.filter(c => c > 0).length
   const totalEvents = rawCounts.reduce((s, c) => s + c, 0)
 
-  const recentCritical = await (prisma as any).aegisAgentRun
+  const recentCritical = await (prisma as any).hanumanasAgentRun
     .count({ where: { verdict: 'CRITICAL', raisedAt: { gte: new Date(Date.now() - 7 * 86_400_000) } } }).catch(() => 0) as number
 
   const readinessScore = Math.min(100, Math.max(0,

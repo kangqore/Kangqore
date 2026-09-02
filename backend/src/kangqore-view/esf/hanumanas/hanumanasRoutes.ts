@@ -193,17 +193,17 @@ hanumanasRouter.get('/agents/summary', async (_req: Request, res: Response) => {
   const [engineLatest, critical24h, warn24h, reportRun] = await Promise.all([
     // For each engine, find the latest run
     Promise.all(allEngines.map(async engine => {
-      const row = await (prisma as any).aegisAgentRun.findFirst({
+      const row = await (prisma as any).hanumanasAgentRun.findFirst({
         where:   { engine, raisedAt: { gte: since7d } },
         orderBy: { raisedAt: 'desc' },
         select:  { verdict: true, raisedAt: true, agentId: true, summary: true },
       }).catch(() => null)
       return { engine, latest: row ?? null }
     })),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: since24h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: since24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: since24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: since24h } } }).catch(() => 0),
     // Pull health score from latest govops.reporting run
-    (prisma as any).aegisAgentRun.findFirst({
+    (prisma as any).hanumanasAgentRun.findFirst({
       where:   { agentId: 'govops.reporting' },
       orderBy: { raisedAt: 'desc' },
       select:  { metadata: true, verdict: true, raisedAt: true },
@@ -240,13 +240,13 @@ hanumanasRouter.get('/agents/runs', async (req: Request, res: Response) => {
   if (agentId) where.agentId = agentId
 
   const [rows, total] = await Promise.all([
-    (prisma as any).aegisAgentRun.findMany({
+    (prisma as any).hanumanasAgentRun.findMany({
       where,
       orderBy: { raisedAt: 'desc' },
       take:    limit  ? Number(limit)  : 50,
       skip:    offset ? Number(offset) : 0,
     }),
-    (prisma as any).aegisAgentRun.count({ where }),
+    (prisma as any).hanumanasAgentRun.count({ where }),
   ])
 
   res.json({ shield: 'AEGIS', domain: 'AGENT_RUNS', rows, total })
@@ -278,7 +278,7 @@ hanumanasRouter.post('/agents/:agentId/run', async (req: Request, res: Response)
 // ── Phase 2: Pending L3 Actions ───────────────────────────────────────────────
 
 hanumanasRouter.get('/actions/pending', async (_req: Request, res: Response) => {
-  const rows = await (prisma as any).aegisPendingAction.findMany({
+  const rows = await (prisma as any).hanumanasPendingAction.findMany({
     where:   { status: 'PENDING' },
     orderBy: { requestedAt: 'desc' },
   })
@@ -304,13 +304,13 @@ hanumanasRouter.get('/actions/log', async (req: Request, res: Response) => {
   if (status)  where.status  = status
 
   const [rows, total] = await Promise.all([
-    (prisma as any).aegisActionLog.findMany({
+    (prisma as any).hanumanasActionLog.findMany({
       where,
       orderBy: { executedAt: 'desc' },
       take:    limit  ? Number(limit)  : 50,
       skip:    offset ? Number(offset) : 0,
     }),
-    (prisma as any).aegisActionLog.count({ where }),
+    (prisma as any).hanumanasActionLog.count({ where }),
   ])
 
   res.json({ shield: 'AEGIS', domain: 'ACTION_LOG', rows, total })
@@ -355,7 +355,7 @@ hanumanasRouter.get('/budget/:tenantId/usage', async (req: Request, res: Respons
   const { tenantId } = req.params
   const usage = await HanumanasBudget.checkUsage(tenantId)
   if (usage.overBudget && usage.hardDeny) {
-    await (prisma as any).aegisActionLog.create({
+    await (prisma as any).hanumanasActionLog.create({
       data: {
         actionType: 'LOG_AUDIT_ENTRY', level: 0,
         agentId: 'aegis.budget-enforcer', engine: 'AUTONOMY_BOUNDARY',

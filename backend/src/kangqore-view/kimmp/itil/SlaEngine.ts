@@ -55,7 +55,7 @@ export async function checkSlaBreaches(): Promise<number> {
 
   // Fire one AEGIS signal per breach
   await Promise.all(breached.map(inc =>
-    (prisma as any).aegisAuditLog.create({
+    (prisma as any).hanumanasAuditLog.create({
       data: {
         eventType: 'SLA_BREACH',
         system:    'ITIL',

@@ -20,7 +20,7 @@ export async function runIsoComplianceAgent(ctx: AgentContext): Promise<Hanumana
 
   const controlResults = await Promise.all(
     CONTROLS.map(async ctrl => {
-      const count = await (prisma as any).aegisAuditLog
+      const count = await (prisma as any).hanumanasAuditLog
         .count({ where: { eventType: ctrl.eventType, createdAt: { gte: last30d } } }).catch(() => 0)
       return { ...ctrl, count, covered: count > 0 }
     })

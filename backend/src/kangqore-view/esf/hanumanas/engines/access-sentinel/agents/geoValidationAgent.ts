@@ -12,12 +12,12 @@ export async function runGeoValidationAgent(ctx: AgentContext): Promise<Hanumana
   // Flag actors that appear in both ACTIVATION and ACCESS_DENIED in same window
   // (same actor activated AND was denied = possible impersonation or token re-use).
   const [activatedActors, deniedActors] = await Promise.all([
-    (prisma as any).aegisAuditLog.findMany({
+    (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'ACTIVATION', createdAt: { gte: last24h } },
       select: { actor: true, system: true, createdAt: true },
       distinct: ['actor'],
     }).catch(() => []),
-    (prisma as any).aegisAuditLog.findMany({
+    (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'ACCESS_DENIED', createdAt: { gte: last24h } },
       select: { actor: true, system: true },
       distinct: ['actor'],

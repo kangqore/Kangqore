@@ -12,7 +12,7 @@ export async function runDisclosureTrackerAgent(ctx: AgentContext): Promise<Hanu
   for (let i = 6; i >= 0; i--) {
     const from  = new Date(Date.now() - (i + 1) * 86_400_000)
     const to    = new Date(Date.now() - i       * 86_400_000)
-    const rows: Array<{ actor: string; assetId: string | null }> = await (prisma as any).aegisAuditLog.findMany({
+    const rows: Array<{ actor: string; assetId: string | null }> = await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'EGRESS', createdAt: { gte: from, lt: to } },
       select: { actor: true, assetId: true },
     }).catch(() => [])

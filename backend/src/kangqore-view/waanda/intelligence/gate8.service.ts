@@ -559,7 +559,7 @@ async function computeTrustScore(): Promise<{ score: number; metrics: Record<str
   const since = new Date(Date.now() - THIRTY_DAYS_MS)
 
   const [aegisCount, overrideCount, evalStats] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({ where: { createdAt: { gte: since } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { createdAt: { gte: since } } }).catch(() => 0),
     (prisma as any).deploymentDecision.count({ where: { emergencyOverride: true, evaluatedAt: { gte: since } } }).catch(() => 0),
     (prisma as any).aIEvaluation.findMany({
       where:  { createdAt: { gte: since } },

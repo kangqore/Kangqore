@@ -11,7 +11,7 @@ export async function runKnowledgeRegistrationAgent(ctx: AgentContext): Promise<
   const recent: Array<{
     assetId: string | null; assetType: string | null; system: string | null;
     classification: string | null; assetSource: string | null
-  }> = await (prisma as any).aegisAuditLog.findMany({
+  }> = await (prisma as any).hanumanasAuditLog.findMany({
     where:  { eventType: 'KNOWLEDGE_ASSET', createdAt: { gte: last24h } },
     select: { assetId: true, assetType: true, system: true, classification: true, assetSource: true },
   }).catch(() => [])

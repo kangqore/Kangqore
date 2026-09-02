@@ -36,7 +36,7 @@ const recheckPending: Set<string> = new Set()
 // ---------------------------------------------------------------------------
 
 async function persistRun(result: HanumanasAgentResult): Promise<void> {
-  await (prisma as any).aegisAgentRun.create({
+  await (prisma as any).hanumanasAgentRun.create({
     data: {
       agentId:    result.agentId,
       engine:     result.engine,
@@ -51,7 +51,7 @@ async function persistRun(result: HanumanasAgentResult): Promise<void> {
   }).catch(() => {}) // best-effort — never block the caller
 }
 
-// Agent findings go to aegisAgentRun only — NOT to the audit ledger as
+// Agent findings go to hanumanasAgentRun only — NOT to the audit ledger as
 // POLICY_VIOLATION events. Audit log POLICY_VIOLATION is reserved for real
 // system events (actual access violations, middleware blocks, etc.).
 // Writing agent verdicts there created a feedback loop.

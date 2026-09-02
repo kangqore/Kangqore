@@ -11,7 +11,7 @@ export async function runComplianceEvidenceAgent(ctx: AgentContext): Promise<Han
 
   const counts = await Promise.all(
     EVENT_TYPES.map(type =>
-      (prisma as any).aegisAuditLog.count({ where: { eventType: type, createdAt: { gte: last7d } } }).catch(() => 0)
+      (prisma as any).hanumanasAuditLog.count({ where: { eventType: type, createdAt: { gte: last7d } } }).catch(() => 0)
     )
   )
 

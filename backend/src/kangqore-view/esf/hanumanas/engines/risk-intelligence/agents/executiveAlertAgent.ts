@@ -9,17 +9,17 @@ export async function runExecutiveAlertAgent(ctx: AgentContext): Promise<Hanuman
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 
   const [criticalRuns, warnRuns, violations, denied, autonomous, activations] = await Promise.all([
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: last6h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION',       createdAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', autonomous: true, createdAt: { gte: last6h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION',       createdAt: { gte: last6h } } }).catch(() => 0),
   ])
 
   // Get most recent CRITICAL agent findings for the brief
   const criticalFindings: Array<{ agentId: string; engine: string; summary: string }> =
-    await (prisma as any).aegisAgentRun.findMany({
+    await (prisma as any).hanumanasAgentRun.findMany({
       where:   { verdict: 'CRITICAL', raisedAt: { gte: last6h } },
       orderBy: { raisedAt: 'desc' },
       take:    5,

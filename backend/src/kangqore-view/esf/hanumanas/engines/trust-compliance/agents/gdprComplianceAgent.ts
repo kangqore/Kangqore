@@ -9,14 +9,14 @@ export async function runGdprComplianceAgent(ctx: AgentContext): Promise<Hanuman
   const last30d = new Date(Date.now() - 30 * 86_400_000)
 
   const [restrictedEgress, unclassifiedAssets, totalActivations, deniedTotal] = await Promise.all([
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'EGRESS', classification: 'RESTRICTED', createdAt: { gte: last30d } },
     }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({
+    (prisma as any).hanumanasAuditLog.count({
       where: { eventType: 'KNOWLEDGE_ASSET', classification: null, createdAt: { gte: last30d } },
     }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last30d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last30d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACTIVATION', createdAt: { gte: last30d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last30d } } }).catch(() => 0),
   ])
 
   const gaps: string[] = []

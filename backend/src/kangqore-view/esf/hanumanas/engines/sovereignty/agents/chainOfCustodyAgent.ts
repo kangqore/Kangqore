@@ -8,7 +8,7 @@ export async function runChainOfCustodyAgent(ctx: AgentContext): Promise<Hanuman
   const start = Date.now()
 
   const assets: Array<{ assetId: string | null; assetSource: string | null; dispatchId: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'KNOWLEDGE_ASSET' },
       select: { assetId: true, assetSource: true, dispatchId: true },
       orderBy: { createdAt: 'desc' },

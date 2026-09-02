@@ -12,9 +12,9 @@ export async function runAnalyticsAgent(ctx: AgentContext): Promise<HanumanasAge
     const from = new Date(Date.now() - (i + 1) * 86_400_000)
     const to   = new Date(Date.now() - i       * 86_400_000)
     const [critical, warn, pass] = await Promise.all([
-      (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: from, lt: to } } }).catch(() => 0),
-      (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: from, lt: to } } }).catch(() => 0),
-      (prisma as any).aegisAgentRun.count({ where: { verdict: 'PASS',     raisedAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: from, lt: to } } }).catch(() => 0),
+      (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'PASS',     raisedAt: { gte: from, lt: to } } }).catch(() => 0),
     ])
     days.push({ date: from.toISOString().slice(0, 10), critical, warn, pass })
   }

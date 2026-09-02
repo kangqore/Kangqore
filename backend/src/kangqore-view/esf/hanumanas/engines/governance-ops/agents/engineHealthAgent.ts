@@ -19,7 +19,7 @@ export async function runEngineHealthAgent(ctx: AgentContext): Promise<Hanumanas
   const healthMap: Record<string, { lastRun: Date | null; stale: boolean; critical: boolean }> = {}
 
   await Promise.all(ENGINES.map(async engine => {
-    const row = await (prisma as any).aegisAgentRun.findFirst({
+    const row = await (prisma as any).hanumanasAgentRun.findFirst({
       where:   { engine },
       orderBy: { raisedAt: 'desc' },
       select:  { raisedAt: true },

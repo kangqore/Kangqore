@@ -7,7 +7,7 @@ const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess knowledge asset
 export async function runVersionControlAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
 
-  const assets: Array<{ assetId: string | null }> = await (prisma as any).aegisAuditLog.findMany({
+  const assets: Array<{ assetId: string | null }> = await (prisma as any).hanumanasAuditLog.findMany({
     where:  { eventType: 'KNOWLEDGE_ASSET', assetId: { not: null } },
     select: { assetId: true },
   }).catch(() => [])

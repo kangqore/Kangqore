@@ -8,12 +8,12 @@ export async function runInvestigationAgent(ctx: AgentContext): Promise<Hanumana
   const start = Date.now()
 
   const [recentEvents, activeWarnings] = await Promise.all([
-    (prisma as any).aegisAuditLog.findMany({
+    (prisma as any).hanumanasAuditLog.findMany({
       orderBy: { createdAt: 'desc' },
       take:    10,
       select:  { eventType: true, system: true, trigger: true, actor: true, endpoint: true, createdAt: true },
     }).catch(() => []),
-    (prisma as any).aegisAgentRun.findMany({
+    (prisma as any).hanumanasAgentRun.findMany({
       where:   { verdict: { in: ['WARN', 'CRITICAL'] } },
       orderBy: { raisedAt: 'desc' },
       take:    5,

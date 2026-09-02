@@ -9,10 +9,10 @@ export async function runWorkflowAgent(ctx: AgentContext): Promise<HanumanasAgen
   const last7d = new Date(Date.now() - 7 * 86_400_000)
 
   const [totalRuns, criticalCount, warnCount, totalViolations] = await Promise.all([
-    (prisma as any).aegisAgentRun.count({ where: { raisedAt:  { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt:  { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt:  { gte: last7d } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { raisedAt:  { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt:  { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt:  { gte: last7d } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last7d } } }).catch(() => 0),
   ])
 
   const verdict = criticalCount > 5 ? 'WARN' : 'INFO'

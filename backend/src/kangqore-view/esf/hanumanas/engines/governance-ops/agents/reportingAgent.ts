@@ -9,14 +9,14 @@ export async function runReportingAgent(ctx: AgentContext): Promise<HanumanasAge
   const last24h = new Date(Date.now() - 86_400_000)
 
   const [totalRuns, critical, warn, pass, violations, denied, autonomous, assets] = await Promise.all([
-    (prisma as any).aegisAgentRun.count({ where: { raisedAt:  { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt:  { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt:  { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'PASS',     raisedAt:  { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { autonomous: true,               createdAt: { gte: last24h } } }).catch(() => 0),
-    (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET',  createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { raisedAt:  { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt:  { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt:  { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'PASS',     raisedAt:  { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'POLICY_VIOLATION', createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'ACCESS_DENIED',    createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { autonomous: true,               createdAt: { gte: last24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET',  createdAt: { gte: last24h } } }).catch(() => 0),
   ])
 
   const dataBlock = [

@@ -12,12 +12,12 @@ export async function runRoleValidatorAgent(ctx: AgentContext): Promise<Hanumana
   const last24h = new Date(Date.now() - 86_400_000)
 
   const activations: Array<{ actor: string; system: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'ACTIVATION', createdAt: { gte: last24h } },
       select: { actor: true, system: true },
     }).catch(() => [])
 
-  const denied = await (prisma as any).aegisAuditLog
+  const denied = await (prisma as any).hanumanasAuditLog
     .count({ where: { eventType: 'ACCESS_DENIED', createdAt: { gte: last24h } } }).catch(() => 0)
 
   const unknown = activations.filter(a => !APPROVED_ACTORS.has(a.actor))

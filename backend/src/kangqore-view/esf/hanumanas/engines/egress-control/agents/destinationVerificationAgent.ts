@@ -10,7 +10,7 @@ export async function runDestinationVerificationAgent(ctx: AgentContext): Promis
 
   // Destinations are stored in metadata.destination — query raw metadata
   const events: Array<{ metadata: unknown; actor: string; system: string | null }> =
-    await (prisma as any).aegisAuditLog.findMany({
+    await (prisma as any).hanumanasAuditLog.findMany({
       where:  { eventType: 'EGRESS', createdAt: { gte: last6h } },
       select: { metadata: true, actor: true, system: true },
     }).catch(() => [])
