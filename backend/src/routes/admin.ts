@@ -29,7 +29,7 @@ import { runGate35 } from '../scripts/gate35/gate35Runner';
 import { runGate6 }  from '../scripts/gate6/gate6Runner';
 import { issueCertificate, approveCertificate, latestCertificate, listCertificates, revokeCertificate, computeCertificateDiff } from '../scripts/qef/qefCertificateService';
 import { evaluateRelease, recordDeployment, recordOutcome, recordRollback, emergencyOverride, preflightCheck, listDecisions, listDeployments, listEnvironments } from '../scripts/rgs/rgsService';
-import { AegisLedger } from '../kangqore-aegis/aegisLedger.service';
+import { AegisLedger } from '../kangqore-view/esf/aegis/aegisLedger.service';
 import { getFlightEvents } from '../scripts/flightRecorder/flightRecorderService';
 import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../kangqore-view/waanda/intelligence/gate8.service';
 import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent, computeCoigWeekReport, computeOnboardingChecklist, listDeploymentHealth, computeRenewalRisk, generateQBR } from '../kangqore-view/waanda/intelligence/enterpriseService';

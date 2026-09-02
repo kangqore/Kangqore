@@ -7,7 +7,7 @@ import {
   TwinTransaction,
   KoreQuery
 } from './types';
-import { AegisShield } from '../../kangqore-aegis/AegisShield';
+import { AegisShield } from '../esf/aegis/AegisShield';
 import { MissionRequest } from '../kernel/KeosKernel';
 
 class IdentityEngine {

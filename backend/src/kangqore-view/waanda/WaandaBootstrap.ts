@@ -33,7 +33,7 @@ import { CapabilityRegistry } from '../kernel/CapabilityRegistry'
 import { WaandaAuthority }  from './WaandaAuthority'
 
 // AEGIS — governance shield
-import { AegisScheduler, AegisEventEmitter } from '../../kangqore-aegis'
+import { AegisScheduler, AegisEventEmitter } from '../esf/aegis'
 
 // Cognitive Library — scheduler agents (kangqore-immp = 117 cognitive components)
 import { ScoutScheduler }        from '../../kangqore-immp/scout/scoutScheduler'

@@ -27,7 +27,7 @@ import {
   EmbeddingsUnavailable,
 } from '../knowledge/EmbeddingsService'
 import { SystemType } from './agentRegistry'
-import { AegisLedger } from '../../../kangqore-aegis/aegisLedger.service'
+import { AegisLedger } from '../../esf/aegis/aegisLedger.service'
 import { PgvectorIndex } from '../knowledge/PgvectorIndex'
 import { KimmpFlags } from '../core/flags'
 

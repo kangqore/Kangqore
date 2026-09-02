@@ -44,7 +44,7 @@ export async function callLLM(
       completionTokens: res.usage?.output_tokens ?? 0,
       latencyMs: Date.now() - start,
       prompt: resolvedSystem + '\n' + user, response: text,
-      sourceModule: 'kangqore-aegis/agents/llm.ts',
+      sourceModule: 'kangqore-view/esf/aegis/agents/llm.ts',
       promptName: promptName ?? null, promptVersion,
       status: 'SUCCESS',
       piiDetected: scan.detected, piiPatterns: scan.patterns,
@@ -54,7 +54,7 @@ export async function callLLM(
     logCall({
       actorType: 'AEGIS', model: 'claude-haiku-4-5-20251001', provider: 'none',
       prompt: resolvedSystem + '\n' + user, response: '',
-      sourceModule: 'kangqore-aegis/agents/llm.ts',
+      sourceModule: 'kangqore-view/esf/aegis/agents/llm.ts',
       promptName: promptName ?? null, promptVersion,
       status: 'ERROR',
       errorMessage: (err as Error).message, latencyMs: Date.now() - start,

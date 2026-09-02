@@ -2,7 +2,7 @@ import {
   WaandaSubsystem, WaandaDirective, DirectiveResult,
   SubsystemHealth, SubsystemIntelligence,
 } from '../WaandaDirective'
-import { AegisScheduler } from '../../../kangqore-aegis'
+import { AegisScheduler } from '../../esf/aegis'
 import logger             from '../../../utils/logger'
 
 // Track last known verdict counts (updated by the scheduler on each run)

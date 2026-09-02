@@ -47,7 +47,7 @@ const options: swaggerJsdoc.Options = {
   apis: [
     './src/routes/*.ts',
     './src/kangqore-immp/routes.ts',
-    './src/kangqore-aegis/routes.ts',
+    './src/kangqore-view/esf/aegis/aegisRoutes.ts',
     './src/v1/router.ts',
     // Overshadow Roadmap P6.3 — swagger-jsdoc doesn't follow imports, so
     // v1/router.ts mounting these sub-routers was never enough; their real
