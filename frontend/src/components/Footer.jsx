@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AmbientVideo from './media/AmbientVideo';
+import { departmentsData, departmentsList } from '../data/departmentsData';
+import { servicesData } from '../data/servicesData';
 
 const FOOTER_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
@@ -39,6 +41,15 @@ const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState('idle'); // idle | loading | success | error
   const [subscribeMsg, setSubscribeMsg] = useState('');
+  const [hoveredDept, setHoveredDept] = useState(null);
+  const [expandedDepts, setExpandedDepts] = useState({});
+
+  const toggleDept = (slug) => {
+    setExpandedDepts(prev => ({
+      ...prev,
+      [slug]: !prev[slug]
+    }));
+  };
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -158,18 +169,86 @@ const Footer = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 xl:gap-10 pt-2 footer-nav-cols">
             {/* 01. What We Do */}
             <div>
-              <h3 className="text-black dark:text-white font-extrabold text-[14px] uppercase tracking-[0.15em] mb-7">What We Do</h3>
-              <Link to="/department/ai-cognitive" style={navLinkStyle}>AI & Cognitive</Link>
-              <Link to="/department/cybersecurity" style={navLinkStyle}>Cybersecurity & Trust</Link>
-              <Link to="/department/product-engineering" style={navLinkStyle}>Product Engineering</Link>
-              <Link to="/department/digital-transformation-modernization" style={navLinkStyle}>Digital Transformation</Link>
-              <Link to="/department/cloud-engineering" style={navLinkStyle}>Cloud & Platforms</Link>
-              <Link to="/department/marketing-visibility-growth" style={navLinkStyle}>Growth & Strategy</Link>
-              <Link to="/services" style={{ ...navLinkStyle, color: '#2564ea', fontSize: 11.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 4 }}>View All 62 Services →</Link>
+              <h3 className="text-black dark:text-white font-black text-[16px] uppercase tracking-[0.15em] mb-7" style={{ fontWeight: 900, WebkitTextStroke: '0.35px currentColor' }}>What We Do</h3>
+              <div className="space-y-1">
+                {departmentsList.map((slug) => {
+                  const dept = departmentsData[slug];
+                  if (!dept) return null;
+                  const isOpen = hoveredDept === slug || !!expandedDepts[slug];
+                  const services = (dept.serviceSlugs || []).map(s => servicesData[s]).filter(Boolean);
+
+                  return (
+                    <div 
+                      key={slug} 
+                      className="mb-2 group/dept"
+                      onMouseEnter={() => setHoveredDept(slug)}
+                      onMouseLeave={() => setHoveredDept(null)}
+                    >
+                      {/* Department Row */}
+                      <div className="inline-flex items-center gap-2">
+                        <Link 
+                          to={`/departments/${dept.slug}`} 
+                          style={{ ...navLinkStyle, marginBottom: 0 }}
+                          className="hover:text-[#2564ea] transition-colors"
+                        >
+                          {dept.name}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleDept(slug);
+                          }}
+                          className="flex items-center justify-center select-none"
+                          aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${dept.name} services`}
+                          title={`${isOpen ? 'Collapse' : 'Expand'} services`}
+                        >
+                          <span 
+                            className="text-[14px] leading-none text-gray-500 dark:text-gray-400 select-none pointer-events-none"
+                            style={{ fontWeight: 900, WebkitTextStroke: '0.45px currentColor' }}
+                          >
+                            +
+                          </span>
+                        </button>
+                      </div>
+
+                      {/* Tree Chain of Services */}
+                      <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-2 mb-3' : 'grid-rows-[0fr] opacity-0'}`}>
+                        <div className="overflow-hidden min-h-0 pl-1.5">
+                          <div className="pl-2 space-y-1.5 py-0.5">
+                            {services.map((svc, sIdx) => {
+                              const isLast = sIdx === services.length - 1;
+                              return (
+                                <div key={svc.slug} className="relative pl-4 flex items-center group/svc">
+                                  {/* Vertical connector line */}
+                                  <span 
+                                    className={`absolute left-0 top-0 w-px bg-black/20 dark:bg-white/20 ${isLast ? 'h-1/2' : 'h-full'}`} 
+                                  />
+                                  {/* Horizontal branch spur */}
+                                  <span 
+                                    className="absolute left-0 top-1/2 w-3 h-px bg-black/20 dark:bg-white/20 group-hover/svc:bg-[#2564ea] transition-colors" 
+                                  />
+                                  <Link
+                                    to={`/services/${svc.slug}`}
+                                    className="text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-[#2564ea] dark:hover:text-cyan-400 transition-colors truncate max-w-[240px] pl-1 leading-tight"
+                                    title={svc.name}
+                                  >
+                                    {svc.name}
+                                  </Link>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
             {/* 02. Industries */}
             <div>
-              <h3 className="text-black dark:text-white font-extrabold text-[14px] uppercase tracking-[0.15em] mb-7">Industries We Serve</h3>
+              <h3 className="text-black dark:text-white font-black text-[16px] uppercase tracking-[0.15em] mb-7" style={{ fontWeight: 900, WebkitTextStroke: '0.35px currentColor' }}>Industries We Serve</h3>
               <Link to="/industries/manufacturing" style={navLinkStyle}>Manufacturing & Industrial</Link>
               <Link to="/industries/financial-services" style={navLinkStyle}>Financial & Banking</Link>
               <Link to="/industries/healthcare" style={navLinkStyle}>Healthcare & Life Sciences</Link>
@@ -179,7 +258,7 @@ const Footer = () => {
             </div>
             {/* 03. Company */}
             <div>
-              <h3 className="text-black dark:text-white font-extrabold text-[14px] uppercase tracking-[0.15em] mb-7">Company & Network</h3>
+              <h3 className="text-black dark:text-white font-black text-[16px] uppercase tracking-[0.15em] mb-7" style={{ fontWeight: 900, WebkitTextStroke: '0.35px currentColor' }}>Company & Network</h3>
               <Link to="/about-us" style={navLinkStyle}>{t('menu.about_us')}</Link>
               <Link to="/leadership" style={navLinkStyle}>{t('menu.leadership')}</Link>
               <Link to="/values" style={navLinkStyle}>Values & Culture</Link>
@@ -189,7 +268,7 @@ const Footer = () => {
             </div>
             {/* 04. Insights */}
             <div>
-              <h3 className="text-black dark:text-white font-extrabold text-[14px] uppercase tracking-[0.15em] mb-7">Insights & Research</h3>
+              <h3 className="text-black dark:text-white font-black text-[16px] uppercase tracking-[0.15em] mb-7" style={{ fontWeight: 900, WebkitTextStroke: '0.35px currentColor' }}>Insights & Research</h3>
               <Link to="/blogs" style={navLinkStyle}>Engineering Blog</Link>
               <Link to="/case-studies" style={navLinkStyle}>Case Studies (Tata Steel)</Link>
               <Link to="/white-paper" style={navLinkStyle}>White Papers & Reports</Link>
