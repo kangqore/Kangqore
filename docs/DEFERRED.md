@@ -307,6 +307,20 @@ returns these shapes, so a change there fails the backend probe. The gap is a
 change to both sides that leaves the fixtures stale. Recapture with the
 snippet in the spec's header comment whenever a Work OS endpoint changes.
 
+### `POST /api/admin/hanumanas/engines/:engine/run` ignores hyphenated slugs (P2)
+
+Found while verifying the HANUMANAS rename — pre-existing, unchanged by it
+(the same code shipped as `aegisRoutes.ts` on `main`).
+
+`hanumanasRoutes.ts` does `HanumanasEngineDispatcher.runEngine(engine.toUpperCase())`,
+but the registered engine ids use underscores (`GOVERNANCE_OPS`). A request for
+`governance-ops` becomes `GOVERNANCE-OPS`, matches nothing, and returns
+`{ ran: 0 }` with a 200. The single-agent route (`/agents/:agentId/run`) and the
+scheduler are unaffected — they don't go through this path.
+
+Fix: `engine.toUpperCase().replace(/-/g, '_')` in the route handler, or accept
+the underscore form. Code: `backend/src/kangqore-view/esf/hanumanas/hanumanasRoutes.ts` ~line 258.
+
 
 ---
 
