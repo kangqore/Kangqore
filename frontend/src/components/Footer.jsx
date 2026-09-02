@@ -170,7 +170,7 @@ const Footer = () => {
             {/* 01. What We Do */}
             <div>
               <h3 className="text-black dark:text-white font-black text-[16px] uppercase tracking-[0.15em] mb-7" style={{ fontWeight: 900, WebkitTextStroke: '0.35px currentColor' }}>What We Do</h3>
-              <div className="space-y-1">
+              <div>
                 {departmentsList.map((slug) => {
                   const dept = departmentsData[slug];
                   if (!dept) return null;
@@ -180,15 +180,16 @@ const Footer = () => {
                   return (
                     <div 
                       key={slug} 
-                      className="mb-2 group/dept"
+                      className="group/dept"
+                      style={{ marginBottom: 11 }}
                       onMouseEnter={() => setHoveredDept(slug)}
                       onMouseLeave={() => setHoveredDept(null)}
                     >
                       {/* Department Row */}
-                      <div className="inline-flex items-center gap-2">
+                      <div className="inline-flex items-center gap-2" style={{ minHeight: 24, lineHeight: '24px' }}>
                         <Link 
                           to={`/departments/${dept.slug}`} 
-                          style={{ ...navLinkStyle, marginBottom: 0 }}
+                          style={{ ...navLinkStyle, marginBottom: 0, display: 'inline' }}
                           className="hover:text-[#2564ea] transition-colors"
                         >
                           {dept.name}
@@ -213,7 +214,7 @@ const Footer = () => {
                       </div>
 
                       {/* Tree Chain of Services */}
-                      <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-2 mb-3' : 'grid-rows-[0fr] opacity-0'}`}>
+                      <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-2 mb-2' : 'grid-rows-[0fr] opacity-0'}`}>
                         <div className="overflow-hidden min-h-0 pl-1.5">
                           <div className="pl-2 space-y-1.5 py-0.5">
                             {services.map((svc, sIdx) => {
@@ -249,12 +250,15 @@ const Footer = () => {
             {/* 02. Industries */}
             <div>
               <h3 className="text-black dark:text-white font-black text-[16px] uppercase tracking-[0.15em] mb-7" style={{ fontWeight: 900, WebkitTextStroke: '0.35px currentColor' }}>Industries We Serve</h3>
-              <Link to="/industries/manufacturing" style={navLinkStyle}>Manufacturing & Industrial</Link>
-              <Link to="/industries/financial-services" style={navLinkStyle}>Financial & Banking</Link>
-              <Link to="/industries/healthcare" style={navLinkStyle}>Healthcare & Life Sciences</Link>
-              <Link to="/industries/energy" style={navLinkStyle}>Energy & Utilities</Link>
-              <Link to="/industries/public-sector" style={navLinkStyle}>Public Sector & Defense</Link>
-              <Link to="/industries/retail" style={navLinkStyle}>Retail & Commerce</Link>
+              <div>
+                <Link to="/industries/information-services" style={navLinkStyle}>Information Services</Link>
+                <Link to="/industries/manufacturing" style={navLinkStyle}>Manufacturing</Link>
+                <Link to="/industries/banking" style={navLinkStyle}>Banking</Link>
+                <Link to="/industries/healthcare" style={navLinkStyle}>Healthcare</Link>
+                <Link to="/industries/energy-utilities" style={navLinkStyle}>Energy & Utilities</Link>
+                <Link to="/industries/retail" style={navLinkStyle}>Retail</Link>
+                <Link to="/industries" style={{ ...navLinkStyle, color: '#2564ea', fontSize: 12, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>See More →</Link>
+              </div>
             </div>
             {/* 03. Company */}
             <div>
@@ -263,8 +267,8 @@ const Footer = () => {
               <Link to="/leadership" style={navLinkStyle}>{t('menu.leadership')}</Link>
               <Link to="/values" style={navLinkStyle}>Values & Culture</Link>
               <Link to="/careers" style={navLinkStyle}>Careers <span className="ml-1 text-[11px] font-bold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">Hiring</span></Link>
-              <Link to="/global-capability-centers" style={navLinkStyle}>Global Capability Ctrs</Link>
               <Link to="/partners" style={navLinkStyle}>{t('menu.partners')}</Link>
+              <Link to="/kangqore-faqs" style={navLinkStyle}>Kangqore FAQs</Link>
             </div>
             {/* 04. Insights */}
             <div>
