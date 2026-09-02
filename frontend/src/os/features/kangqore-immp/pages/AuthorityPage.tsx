@@ -7,6 +7,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '@lib/api'
+import { HANUMANAS, type HanumanasName } from '@lib/hanumanas'
 import {
   Crown, Activity, Zap, Radio, Settings2,
   TrendingUp, Eye, Loader2, Send,
@@ -17,7 +18,7 @@ import { cn } from '@design-system/cn'
 
 type HealthStatus = 'OPTIMAL' | 'DEGRADED' | 'PAUSED' | 'UNKNOWN'
 type DirectiveType = 'ALIGN' | 'PAUSE' | 'RESUME' | 'FOCUS' | 'OVERRIDE' | 'REPORT' | 'CONFIGURE'
-type SubsystemName = 'KIMMP' | 'HANUMANAS' | 'KEOS' | 'KORE' | 'EQORE' | 'ALIS' | 'VIS'
+type SubsystemName = 'KIMMP' | HanumanasName | 'KEOS' | 'KORE' | 'EQORE' | 'ALIS' | 'VIS'
 
 // Matches backend SubsystemReport shape exactly
 interface SubsystemReport {
@@ -156,7 +157,7 @@ function SubsystemCard({ system, intel }: { system: SubsystemReport; intel?: Sub
 // ── Issue Directive panel ─────────────────────────────────────────────────────
 
 const DIRECTIVE_TYPES: DirectiveType[] = ['ALIGN', 'PAUSE', 'RESUME', 'FOCUS', 'OVERRIDE', 'REPORT', 'CONFIGURE']
-const SUBSYSTEM_NAMES: SubsystemName[] = ['KIMMP', 'HANUMANAS', 'KEOS', 'KORE', 'EQORE', 'ALIS', 'VIS']
+const SUBSYSTEM_NAMES: SubsystemName[] = ['KIMMP', HANUMANAS.name, 'KEOS', 'KORE', 'EQORE', 'ALIS', 'VIS']
 
 function DirectivePanel() {
   const qc = useQueryClient()

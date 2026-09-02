@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { api } from '@lib/api'
+import { HANUMANAS } from '@lib/hanumanas'
 import { ShieldCheck, Trash2, Plus, Search, RefreshCw } from 'lucide-react'
 
 interface PermissionScope {
@@ -12,7 +13,7 @@ interface PermissionScope {
   createdAt: string
 }
 
-const WORKSPACES = ['HANUMANAS', 'KIMMP', 'WAANDA', 'CRM', 'FINANCE', 'PROJECTS', 'DELIVERY', 'GOVERNANCE', 'HR', 'COMMUNITIES']
+const WORKSPACES = [HANUMANAS.name, 'KIMMP', 'WAANDA', 'CRM', 'FINANCE', 'PROJECTS', 'DELIVERY', 'GOVERNANCE', 'HR', 'COMMUNITIES']
 const ACTIONS    = ['READ', 'WRITE', 'ADMIN'] as const
 
 const ACTION_CHIP: Record<string, string> = {
@@ -29,7 +30,7 @@ export function HanumanasPermissionsPage() {
 
   // Grant form
   const [gUserId,    setGUserId]    = useState('')
-  const [gWorkspace, setGWorkspace] = useState('HANUMANAS')
+  const [gWorkspace, setGWorkspace] = useState(HANUMANAS.name)
   const [gFeature,   setGFeature]   = useState('')
   const [gAction,    setGAction]    = useState<'READ' | 'WRITE' | 'ADMIN'>('READ')
   const [granting,   setGranting]   = useState(false)

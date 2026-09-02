@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@lib/api'
+import { HANUMANAS, type HanumanasName } from '@lib/hanumanas'
 import {
   Play, Pause, RefreshCw, Filter, Loader2,
   Zap, Shield, CheckCircle2, AlertTriangle, Server,
@@ -9,7 +10,7 @@ import {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type FlightSource = 'KIMMP' | 'HANUMANAS' | 'QEF' | 'RGS' | 'WORKFLOW' | 'INCIDENT'
+type FlightSource = 'KIMMP' | HanumanasName | 'QEF' | 'RGS' | 'WORKFLOW' | 'INCIDENT'
 
 interface FlightEvent {
   id:        string
@@ -273,7 +274,7 @@ export function FlightRecorderPage() {
   const reversedEvents = [...events].reverse()
   const replayingId = isReplaying && replayIdx >= 0 ? reversedEvents[replayIdx]?.id : null
 
-  const allSources: FlightSource[] = ['KIMMP', 'HANUMANAS', 'QEF', 'RGS', 'WORKFLOW', 'INCIDENT']
+  const allSources: FlightSource[] = ['KIMMP', HANUMANAS.name, 'QEF', 'RGS', 'WORKFLOW', 'INCIDENT']
 
   return (
     <div style={{ maxWidth: 860, margin: '0 auto' }}>

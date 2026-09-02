@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { HANUMANAS } from '@lib/hanumanas'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -52,7 +53,7 @@ function mapNotification(db: DbNotification): NotificationItem {
     SUCCESS: 'success', WARNING: 'warning', ERROR: 'danger', INFO: 'info',
   }
   const title = db.title ?? ''
-  const source = title.startsWith('HANUMANAS') ? 'HANUMANAS'
+  const source = title.startsWith(HANUMANAS.name) ? HANUMANAS.name
     : title.startsWith('WAANDA') || title.startsWith('WAANDA') ? 'WAANDA'
     : db.type === 'SUCCESS' ? 'System'
     : db.type === 'WARNING' ? 'System'

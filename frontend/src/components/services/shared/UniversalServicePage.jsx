@@ -7,6 +7,7 @@
 // relatedServiceSlugs are the only sources — nothing is hardcoded per-service.
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Rocket, Zap, Target, Layers, Search,
   Cpu, Radar, ArrowRight, ChevronRight, ChevronLeft,
@@ -543,12 +544,12 @@ const HOW_WE_WORK = [
 
 
 // ─── 3D Realistic Card Object Component ───────────────────────────────────────
-const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, service }) => {
+const BentoCard = ({ cap, i, cardClass, isVibrant, onOpenModal, service }) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0, active: false });
   const cardRef = useRef(null);
 
   const handleMouseMove = (e) => {
-    if (!cardRef.current || isExpanded) return;
+    if (!cardRef.current) return;
     // The 3D tilt is driven by inline transforms, so the global
     // prefers-reduced-motion CSS cannot suppress it — it has to be gated here.
     if (typeof window !== 'undefined'
@@ -589,23 +590,16 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={() => onOpenModal(cap)}
       style={transformStyle}
-      className={`group svc-cap-group relative rounded-2xl overflow-hidden transition-all duration-500 ${cardClass} ${
+      className={`group svc-cap-group relative rounded-2xl overflow-hidden transition-all duration-500 cursor-pointer ${cardClass} ${
         isVibrant 
-          ? (isExpanded 
-              ? 'bg-white border border-gray-200 shadow-2xl' 
-              : 'bg-white border border-gray-200/80 shadow-xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]'
-            ) 
-          : (isExpanded 
-              ? 'bg-[#0a0a0c] border border-white/10 shadow-2xl' 
-              // Hover lift is neutral: the blue glow (rgba(37,100,234,0.3))
-              // was reading as a light source behind the card. Depth kept.
-              : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.85),0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_25px_50px_-8px_rgba(0,0,0,0.9),0_10px_20px_rgba(0,0,0,0.8)]'
-            )
+          ? 'bg-white border border-gray-200/80 shadow-xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)]'
+          : 'bg-[#0d0e12] border border-white/[0.08] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.85),0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_25px_50px_-8px_rgba(0,0,0,0.9),0_10px_20px_rgba(0,0,0,0.8)]'
       }`}
     >
       {/* 3D Realistic Bevel & Edge Highlights */}
-      {!isVibrant && !isExpanded && (
+      {!isVibrant && (
         <>
           {/* Inner border to look like thick beveled edge */}
           <div className="absolute inset-0 z-30 pointer-events-none rounded-2xl border border-white/[0.06] shadow-[inset_0_1.5px_0_0_rgba(255,255,255,0.15),inset_0_-1.5px_0_0_rgba(0,0,0,0.6)]" />
@@ -615,18 +609,16 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
       )}
 
       {/* Glossy reflection sweep overlay */}
-      {!isExpanded && (
-        <div 
-          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" 
-          style={{
-            transform: tilt.active ? `translate3d(${-tilt.y * 1.5}px, ${tilt.x * 1.5}px, 0)` : 'none',
-            transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)'
-          }}
-        />
-      )}
+      <div 
+        className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" 
+        style={{
+          transform: tilt.active ? `translate3d(${-tilt.y * 1.5}px, ${tilt.x * 1.5}px, 0)` : 'none',
+          transition: 'transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)'
+        }}
+      />
 
       {/* Background Image */}
-      <div className={`absolute inset-0 z-0 overflow-hidden rounded-2xl transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+      <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl">
         {bgImage && (
           <ResponsiveImage
             src={bgImage}
@@ -662,15 +654,15 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
       </div>
 
       {/* Hover Gradient Overlay */}
-      {!isExpanded && !isVibrant && (
+      {!isVibrant && (
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
       )}
-      {!isExpanded && isVibrant && (
+      {isVibrant && (
         <div className="absolute inset-0 bg-white/95 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
       )}
 
       {/* Default Content */}
-      <div className={`relative z-20 h-full flex flex-col justify-between p-8 lg:p-10 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+      <div className="relative z-20 h-full flex flex-col justify-between p-8 lg:p-10">
         <div className="flex flex-col h-full">
           <h3 id={`svc-cap-${i}-title`} className={`text-2xl lg:text-3xl font-bold mb-2 transition-transform duration-300 shrink-0 ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
             {cap.title}
@@ -695,49 +687,14 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, isExpanded, setExpandedCaps, 
         </div>
       </div>
 
-      {/* Expanded Detail Overlay */}
-      <div className={`absolute inset-0 z-30 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto svc-cap-no-scroll transition-all duration-500 ease-in-out border-t backdrop-blur-xl ${isVibrant ? 'bg-white/98 border-gray-200' : 'bg-[#0a0a0c]/98 border-white/10'} ${isExpanded ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'}`} tabIndex={isExpanded ? 0 : -1} inert={!isExpanded} aria-labelledby={`svc-cap-${i}-title`}>
-        <div className="flex flex-col text-left">
-          <div className="flex items-center justify-between mb-4">
-            <span className={`text-[11px] sm:text-xs font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border font-mono ${isVibrant ? 'text-gray-700 bg-gray-100/50 border-gray-300' : 'text-slate-300 bg-white/5 border-white/10'}`}>
-              {cap.items.length} Sub-Capabilities
-            </span>
-          </div>
-          {/* The overlay covers the card face, so a sighted reader still needs
-              the title for context — but it was an <h4> repeating the <h3>
-              behind it, which put all 14 titles into the outline twice. It is
-              now presentational, and the panel is labeled by that <h3>.
-              cap.desc was also repeated verbatim here; the reader has just
-              read it on the card face, so it is gone rather than duplicated. */}
-          <p aria-hidden="true" className={`text-xl sm:text-2xl font-bold mb-5 tracking-tight ${isVibrant ? 'text-gray-900' : 'text-white'}`}>
-            {cap.title}
-          </p>
-          <ul className="space-y-3">
-            {cap.items.map((item, j) => (
-              <li key={j} className={`flex items-start gap-2 text-sm leading-snug ${isVibrant ? 'text-gray-800' : 'text-slate-300'}`}>
-                <span className={`font-bold shrink-0 mt-0.5 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>✦</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className={`pt-4 border-t mt-6 flex justify-between items-center pr-14 ${isVibrant ? 'border-gray-200' : 'border-white/5'}`}>
-          {/* py-1 + min-h take the hit box from 16px to 24px — WCAG 2.2 AA
-              target size (2.5.8). The text metrics are unchanged. */}
-          <a href="/contact" className={`inline-flex items-center gap-2 py-1 min-h-[24px] text-xs sm:text-sm font-bold transition-colors group/link ${isVibrant ? 'text-gray-900 hover:text-blue-600' : 'text-white hover:bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>
-            Discuss This Capability
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
-          </a>
-        </div>
-      </div>
-
-      {/* Plus / X Toggle */}
+      {/* Plus Button — Triggers Apple-Style Centered Modal */}
       <button
-        onClick={(e) => { e.stopPropagation(); setExpandedCaps(p => ({ ...p, [i]: !p[i] })); }}
-        className={`absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl ${isExpanded ? 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-110 active:scale-95' : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 hover:scale-110 active:scale-95'}`}
-        aria-label={isExpanded ? 'Collapse' : 'Expand'}
+        type="button"
+        onClick={(e) => { e.stopPropagation(); onOpenModal(cap); }}
+        className={`absolute bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl ${isVibrant ? 'bg-black text-white hover:bg-gray-800 hover:scale-110 active:scale-95' : 'bg-white hover:bg-gray-100 text-gray-900 border border-gray-200 hover:scale-110 active:scale-95'}`}
+        aria-label={`Open details for ${cap.title}`}
       >
-        {isExpanded ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+        <Plus className="w-5 h-5" />
       </button>
     </div>
   );
@@ -1529,8 +1486,26 @@ const featureMicros   = service.featureMicros
   const [archOffset,       setArchOffset]       = useState(0);
   const [isArchPaused,     setIsArchPaused]     = useState(false);
   const [expandedCaps,     setExpandedCaps]     = useState({});
+  const [activeModalCap,   setActiveModalCap]   = useState(null);
   // Data-boundary blocks: none open on load, active only while hovered/focused.
   const [openBoundary,     setOpenBoundary]     = useState(null);
+
+  // ── Keyboard / Scroll Lock for Apple-Style Modal ────────────────────────
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setActiveModalCap(null);
+    };
+    if (activeModalCap) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeModalCap]);
 
   // ── Architecture Automated Loop (Advances by 3 cards per batch) ─────────
   useEffect(() => {
@@ -4775,14 +4750,16 @@ const featureMicros   = service.featureMicros
 
             {/* Bento Grid — the single largest block on the mobile page: eight
                 380px cards stacked cost 3,124px. Below `sm` it becomes a rail. */}
-            <CardRail
-              label="Capability areas"
-              className={`grid gap-3 grid-cols-1 ${capabilities.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3'}`}
-            >
-              {capabilities.map((cap, i) => {
-                const isExpanded = !!expandedCaps[i];
-                const isVibrant = service.capabilitiesTheme === 'vibrant-bento';
-                const isDarkBento7 = service.capabilitiesTheme === 'dark-bento-7';
+            {(() => {
+              const isVibrant = service.capabilitiesTheme === 'vibrant-bento';
+              return (
+                <>
+                  <CardRail
+                    label="Capability areas"
+                    className={`grid gap-3 grid-cols-1 ${capabilities.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3'}`}
+                  >
+                    {capabilities.map((cap, i) => {
+                      const isDarkBento7 = service.capabilitiesTheme === 'dark-bento-7';
                 
                 let cardClass = 'col-span-1 h-[380px] lg:h-[400px]';
                 
@@ -4897,13 +4874,99 @@ const featureMicros   = service.featureMicros
                     i={i}
                     cardClass={cardClass}
                     isVibrant={isVibrant}
-                    isExpanded={isExpanded}
-                    setExpandedCaps={setExpandedCaps}
+                    onOpenModal={(selectedCap) => setActiveModalCap(selectedCap)}
                     service={service}
                   />
                 );
               })}
             </CardRail>
+
+            {/* ─── Apple-Style Centered Capabilities Modal ───────────────────────── */}
+            {activeModalCap && typeof document !== 'undefined' && createPortal(
+              <div 
+                className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="apple-cap-modal-title"
+              >
+                {/* Dimmed Backdrop */}
+                <div 
+                  className="fixed inset-0 bg-black/40 backdrop-blur-md transition-opacity duration-300"
+                  onClick={() => setActiveModalCap(null)}
+                  aria-hidden="true"
+                />
+
+                {/* Apple White Modal Card */}
+                <div 
+                  className="relative w-full max-w-[540px] max-h-[88vh] flex flex-col rounded-[28px] bg-white text-gray-900 p-8 sm:p-10 shadow-[0_25px_60px_rgba(0,0,0,0.3)] z-10 transition-all duration-300 overflow-hidden text-left"
+                >
+                  {/* Apple-style circular close button at top-right */}
+                  <button
+                    type="button"
+                    onClick={() => setActiveModalCap(null)}
+                    className="absolute top-6 right-6 w-9 h-9 rounded-full bg-[#1d1d1f] hover:bg-[#333336] text-white flex items-center justify-center transition-transform active:scale-95 z-20"
+                    aria-label="Close dialog"
+                  >
+                    <X className="w-4 h-4 stroke-[2.5]" />
+                  </button>
+
+                  {/* Scrollable Editorial Content */}
+                  <div 
+                    className="overflow-y-auto pr-1 flex-1 [&::-webkit-scrollbar]:hidden"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
+                    {/* Large Headline */}
+                    <h3 
+                      id="apple-cap-modal-title"
+                      className="text-2xl sm:text-[32px] font-semibold text-[#1d1d1f] tracking-tight leading-tight mb-6 pr-10"
+                    >
+                      {activeModalCap.title}
+                    </h3>
+
+                    {/* Section 1: Our approach */}
+                    <div className="mb-6">
+                      <p className="text-sm sm:text-base font-semibold text-[#1d1d1f] mb-1.5">
+                        Our approach.
+                      </p>
+                      <p className="text-sm sm:text-base text-[#515154] leading-relaxed">
+                        {activeModalCap.desc}
+                      </p>
+                    </div>
+
+                    {/* Section 2: Key capabilities breakdown */}
+                    {activeModalCap.items && activeModalCap.items.length > 0 && (
+                      <div className="mb-6">
+                        <p className="text-sm sm:text-base font-semibold text-[#1d1d1f] mb-2">
+                          Key capabilities included.
+                        </p>
+                        <ul className="space-y-2 text-[#515154]">
+                          {activeModalCap.items.map((item, idx) => (
+                            <li key={idx} className="flex items-start gap-2.5 text-sm sm:text-base leading-relaxed">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#86868b] mt-2 shrink-0" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Section 3: Action Link */}
+                    <div className="pt-2">
+                      <a 
+                        href="/contact" 
+                        className="inline-flex items-center gap-1 text-sm sm:text-base text-[#0071e3] hover:underline font-normal"
+                      >
+                        Discuss this capability with our engineering team &gt;
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>,
+              document.body
+            )}
+                </>
+              );
+            })()}
           </div>
         </section>
       ) : (

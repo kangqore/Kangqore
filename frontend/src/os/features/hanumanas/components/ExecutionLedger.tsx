@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { HanumanasName } from '@lib/hanumanas'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   ShieldCheck, ShieldAlert, Activity, User, Briefcase, FileText, 
@@ -12,7 +13,7 @@ export type LedgerResult = 'SUCCESS' | 'BLOCKED' | 'ROLLED_BACK' | 'PENDING'
 export interface LedgerEntry {
   id: string
   timestamp: string
-  who: { type: 'USER' | 'HANUMANAS' | 'WAANDA' | 'KIMMP', name: string, icon?: any }
+  who: { type: 'USER' | HanumanasName | 'WAANDA' | 'KIMMP', name: string, icon?: any }
   what: string
   why: string
   authority: string

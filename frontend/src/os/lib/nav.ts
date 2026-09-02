@@ -40,6 +40,7 @@ import {
   LifebuoyIcon,
 } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
+import { HANUMANAS } from '@lib/hanumanas'
 
 export interface NavSubItem {
   id: string
@@ -261,8 +262,8 @@ export const RAIL_ITEMS: RailEntry[] = [
     ],
   },
   {
-    id: 'hanumanas',
-    label: 'HANUMANAS',
+    id: HANUMANAS.navId,
+    label: HANUMANAS.label,
     icon: ShieldCheckeredIcon,
     defaultPath: `${BASE}/hanumanas`,
     matchPrefixes: [`${BASE}/hanumanas`],
@@ -513,7 +514,7 @@ export const navGroups: NavGroup[] = [
       { id: 'aip-parity',     label: 'AIP Parity',           icon: TrophyIcon,    path: `${BASE}/kimmp-gateway/parity`    },
       { id: 'agent-studio',   label: 'Agent Studio',         icon: RobotIcon,     path: `${BASE}/agent-studio/builder`    },
       { id: 'systems',        label: 'Systems',        icon: HardDrivesIcon,      path: `${BASE}/systems`        },
-      { id: 'hanumanas',          label: 'HANUMANAS',          icon: ShieldCheckeredIcon, path: `${BASE}/hanumanas`          },
+      { id: HANUMANAS.navId, label: HANUMANAS.label, icon: ShieldCheckeredIcon, path: `${BASE}/hanumanas` },
       { id: 'ontology',       label: 'Ontology',       icon: GraphIcon,           path: `${BASE}/ontology`       },
       { id: 'agent-logs',     label: 'Agent Logs',     icon: ScrollIcon,          path: `${BASE}/agent-logs`     },
       { id: 'analytics',      label: 'Analytics',      icon: ChartBarIcon,        path: `${BASE}/analytics`,
