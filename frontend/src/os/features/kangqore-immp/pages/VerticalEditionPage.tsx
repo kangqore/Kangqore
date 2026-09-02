@@ -125,7 +125,7 @@ export function VerticalEditionPage() {
                 ['Starter Price',          '£299/mo',        '£349/mo',         '£399/mo'],
                 ['Enterprise Price',       '£1,999/mo',      '£2,199/mo',       '£2,499/mo'],
                 ['Domain OIS Pack',        'Clinical-Ops',   'Matter-Mgmt',     'Trade-Compliance'],
-                ['AEGIS Profile',          'Clinical audit', 'Jurisdiction-aware', 'Risk monitoring'],
+                ['HANUMANAS Profile',          'Clinical audit', 'Jurisdiction-aware', 'Risk monitoring'],
                 ['Data sensitivity',       'PHI / ePHI',     'PII / Privileged', 'Financial records'],
               ].map(([feature, ...vals], i) => (
                 <tr key={feature} style={{ borderTop: `1px solid ${BDR}`, background: i % 2 === 0 ? undefined : 'var(--os-surface-0)' }}>

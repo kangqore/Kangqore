@@ -88,7 +88,7 @@ export default function EnterpriseSupersetPage() {
             <FeatureCard 
               icon={Shield} 
               title="Governed AI Execution" 
-              desc="Automations are upgraded to autonomous pipelines, restricted by AEGIS policies to prevent unauthorized data actions."
+              desc="Automations are upgraded to autonomous pipelines, restricted by HANUMANAS policies to prevent unauthorized data actions."
             />
             <FeatureCard 
               icon={Activity} 

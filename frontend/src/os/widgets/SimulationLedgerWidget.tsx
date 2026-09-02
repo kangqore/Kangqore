@@ -60,7 +60,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>AEGIS Engine Verdicts</div>
+        <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>HANUMANAS Engine Verdicts</div>
         {engines.map(({ label, verdict, summary }) => {
           const col = verdictCol[verdict] ?? 'var(--os-text-4)'
           return (

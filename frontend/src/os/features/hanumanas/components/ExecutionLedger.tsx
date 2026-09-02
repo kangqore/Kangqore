@@ -12,7 +12,7 @@ export type LedgerResult = 'SUCCESS' | 'BLOCKED' | 'ROLLED_BACK' | 'PENDING'
 export interface LedgerEntry {
   id: string
   timestamp: string
-  who: { type: 'USER' | 'AEGIS' | 'WAANDA' | 'KIMMP', name: string, icon?: any }
+  who: { type: 'USER' | 'HANUMANAS' | 'WAANDA' | 'KIMMP', name: string, icon?: any }
   what: string
   why: string
   authority: string
@@ -37,7 +37,7 @@ const MOCK_LEDGER: LedgerEntry[] = [
       { type: 'MODIFY', target: 'Purchase Order #PO-9912', diff: '+ Reroute instructions added\n- Default carrier removed' },
       { type: 'CREATE', target: 'Logistics Alert #LA-102' }
     ],
-    approval: { required: true, grantedBy: 'AEGIS Budget Controller', method: 'AUTONOMOUS' },
+    approval: { required: true, grantedBy: 'HANUMANAS Budget Controller', method: 'AUTONOMOUS' },
     result: 'SUCCESS'
   },
   {
@@ -222,7 +222,7 @@ function LedgerRow({ entry, isExpanded, onToggle }: { entry: LedgerEntry, isExpa
                 {/* 9. Result */}
                 <DetailItem icon={FileCode2} label="9. Result" value={
                   <span className={isBlocked ? "text-red-400" : "text-emerald-400"}>
-                    {entry.result === 'SUCCESS' ? 'Transaction committed successfully.' : 'Execution blocked by AEGIS safeguards.'}
+                    {entry.result === 'SUCCESS' ? 'Transaction committed successfully.' : 'Execution blocked by HANUMANAS safeguards.'}
                   </span>
                 } />
                 

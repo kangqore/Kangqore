@@ -47,7 +47,7 @@ function timeRangeCutoff(range: TimeRange): Date | null {
   return new Date(Date.now() - ms)
 }
 
-export function AegisAutonomyPage() {
+export function HanumanasAutonomyPage() {
   const [page, setPage]           = useState(0)
   const [timeRange, setTimeRange] = useState<TimeRange>('7d')
   const [search, setSearch]       = useState('')
@@ -55,13 +55,13 @@ export function AegisAutonomyPage() {
   const PAGE_SIZE = 50
 
   const { data, isLoading } = useQuery({
-    queryKey: ['aegis-autonomy', page, timeRange],
+    queryKey: ['hanumanas-autonomy', page, timeRange],
     queryFn: () => {
       const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(page * PAGE_SIZE) })
       const cutoff = timeRangeCutoff(timeRange)
       if (cutoff) params.set('from', cutoff.toISOString())
       if (systemFilter) params.set('system', systemFilter)
-      return api.get(`/admin/aegis/autonomy?${params}`).then(r => r.data)
+      return api.get(`/admin/hanumanas/autonomy?${params}`).then(r => r.data)
     },
     staleTime: 15_000,
     refetchInterval: 60_000,
@@ -152,7 +152,7 @@ export function AegisAutonomyPage() {
       ) : rows.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 24px', color: '#6b7280' }}>
           <Zap style={{ width: 28, height: 28, margin: '0 auto 10px', display: 'block', opacity: 0.4 }} />
-          <p style={{ fontSize: 12 }}>No autonomous actions in this period. AEGIS will record them the moment KIMMP acts without being asked.</p>
+          <p style={{ fontSize: 12 }}>No autonomous actions in this period. HANUMANAS will record them the moment KIMMP acts without being asked.</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

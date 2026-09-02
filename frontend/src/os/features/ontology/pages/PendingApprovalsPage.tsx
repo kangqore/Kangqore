@@ -11,7 +11,7 @@ import { actionEngineService, type PendingApproval } from '../actionEngineServic
 const ACTOR_CFG = {
   HUMAN: { color: '#579bfc', Icon: Check },
   KIMMP: { color: '#a855f7', Icon: Robot },
-  AEGIS: { color: '#ef4444', Icon: ShieldCheck },
+  HANUMANAS: { color: '#ef4444', Icon: ShieldCheck },
 } as const
 
 function timeAgo(date: string) {

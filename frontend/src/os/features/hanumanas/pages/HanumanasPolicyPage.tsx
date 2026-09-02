@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { FileText, Shield, AlertTriangle, XCircle, CheckCircle2, Info } from 'lucide-react'
 import { api } from '@lib/api'
 
-// ── Policy metadata (matches backend aegisPolicy.service.ts) ─────────────────
+// ── Policy metadata (matches backend hanumanasPolicy.service.ts) ─────────────────
 
 const POLICY_META: Record<string, {
   action: string; domain: string; verdict: 'DENY' | 'WARN' | 'ALLOW'
@@ -19,7 +19,7 @@ const POLICY_META: Record<string, {
   },
   CRITICAL_BRIEFING_MUST_LOG: {
     action: 'BRIEFING_PRODUCED', domain: 'Audit Ledger', verdict: 'ALLOW',
-    description: 'CRITICAL-priority briefings are permitted but every one must be logged to the AEGIS audit ledger. Ensures full executive briefing traceability.',
+    description: 'CRITICAL-priority briefings are permitted but every one must be logged to the HANUMANAS audit ledger. Ensures full executive briefing traceability.',
   },
   RESTRICTED_ASSET_ADMIN_ONLY: {
     action: 'ASSET_ACCESS', domain: 'Intelligence Registry', verdict: 'DENY',
@@ -50,12 +50,12 @@ const VERDICT_CFG: Record<string, { label: string; color: string }> = {
 
 interface PolicyDef { id: string; name: string; severity: string }
 
-export function AegisPolicyPage() {
+export function HanumanasPolicyPage() {
   const [filter, setFilter] = useState<'all' | 'DENY' | 'WARN' | 'CRITICAL' | 'HIGH'>('all')
 
   const { data, isLoading } = useQuery({
-    queryKey: ['aegis-policy'],
-    queryFn:  () => api.get('/admin/aegis/policy/rules').then(r => r.data),
+    queryKey: ['hanumanas-policy'],
+    queryFn:  () => api.get('/admin/hanumanas/policy/rules').then(r => r.data),
     staleTime: 300_000,
   })
 
@@ -83,7 +83,7 @@ export function AegisPolicyPage() {
           <p className="text-sm font-semibold bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent mb-0.5">Policy Engine</p>
           <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
             Governance rules evaluated <strong className="text-[var(--os-text-1)]">at runtime</strong> before any sensitive action proceeds.
-            DENY policies block immediately and log a violation. WARN policies pass but raise a flag to the AEGIS audit ledger.
+            DENY policies block immediately and log a violation. WARN policies pass but raise a flag to the HANUMANAS audit ledger.
           </p>
         </div>
       </div>

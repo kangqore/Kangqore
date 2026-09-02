@@ -2,23 +2,23 @@ import { useLocation, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { Shield, List, Zap, BookOpen, ShieldOff, ArrowUpRight, FileText, Bot, ClipboardCheck, Radio, ShieldAlert, Wallet, ShieldCheck } from 'lucide-react'
 import { cn } from '@design-system/cn'
 import { AnimatePresence, motion } from 'framer-motion'
-import { AegisOverviewPage }       from './pages/AegisOverviewPage'
-import { AegisAuditPage }          from './pages/AegisAuditPage'
-import { AegisAutonomyPage }       from './pages/AegisAutonomyPage'
-import { AegisAssetsPage }         from './pages/AegisAssetsPage'
-import { AegisShieldPage }         from './pages/AegisShieldPage'
-import { AegisEgressPage }         from './pages/AegisEgressPage'
-import { AegisPolicyPage }         from './pages/AegisPolicyPage'
-import { AegisAgentsPage }         from './pages/AegisAgentsPage'
-import { AegisCompliancePage }     from './pages/AegisCompliancePage'
-import { AegisLiveFeedPage }       from './pages/AegisLiveFeedPage'
+import { HanumanasOverviewPage }       from './pages/HanumanasOverviewPage'
+import { HanumanasAuditPage }          from './pages/HanumanasAuditPage'
+import { HanumanasAutonomyPage }       from './pages/HanumanasAutonomyPage'
+import { HanumanasAssetsPage }         from './pages/HanumanasAssetsPage'
+import { HanumanasShieldPage }         from './pages/HanumanasShieldPage'
+import { HanumanasEgressPage }         from './pages/HanumanasEgressPage'
+import { HanumanasPolicyPage }         from './pages/HanumanasPolicyPage'
+import { HanumanasAgentsPage }         from './pages/HanumanasAgentsPage'
+import { HanumanasCompliancePage }     from './pages/HanumanasCompliancePage'
+import { HanumanasLiveFeedPage }       from './pages/HanumanasLiveFeedPage'
 import { SecurityFindingsPage }    from './pages/SecurityFindingsPage'
 import { AiSecurityViewPage }      from './pages/AiSecurityViewPage'
-import { AegisPermissionsPage }    from './pages/AegisPermissionsPage'
-import { AegisBudgetPage }         from './pages/AegisBudgetPage'
+import { HanumanasPermissionsPage }    from './pages/HanumanasPermissionsPage'
+import { HanumanasBudgetPage }         from './pages/HanumanasBudgetPage'
 import { EnterpriseTrustView }     from './pages/EnterpriseTrustView'
 
-const BASE = '/kangqore-view/admin/aegis'
+const BASE = '/kangqore-view/admin/hanumanas'
 
 const TABS = [
   { path: '',             end: true,  label: 'Overview',    icon: Shield         },
@@ -37,7 +37,7 @@ const TABS = [
   { path: 'enforcement',  end: false, label: 'Enforcement', icon: Wallet         },
 ]
 
-export function AegisModule() {
+export function HanumanasModule() {
   const { pathname } = useLocation()
 
   return (
@@ -45,7 +45,7 @@ export function AegisModule() {
       <div className="mb-6 -mt-2">
         <div className="flex items-center gap-2 mb-4">
           <Shield className="w-4 h-4 text-[#e2445c]" />
-          <h1 className="text-sm font-bold text-[var(--os-text-1)] uppercase tracking-widest">AEGIS</h1>
+          <h1 className="text-sm font-bold text-[var(--os-text-1)] uppercase tracking-widest">HANUMANAS</h1>
           <span className="text-[10px] text-[var(--os-text-2)] font-mono ml-1 hidden sm:block">Autonomous Executive Governance & Intelligence Shield</span>
         </div>
         <div className="flex items-center gap-0.5 border-b border-[var(--os-border)] overflow-x-auto scrollbar-none">
@@ -77,22 +77,22 @@ export function AegisModule() {
           transition={{ duration: 0.15, ease: 'easeOut' }}
         >
           <Routes>
-            <Route index element={<AegisOverviewPage />} />
+            <Route index element={<HanumanasOverviewPage />} />
             <Route path="trust" element={<EnterpriseTrustView />} />
-            <Route path="live" element={<AegisLiveFeedPage />} />
-            <Route path="agents"          element={<AegisAgentsPage />}      />
-            <Route path="compliance"      element={<AegisCompliancePage />}  />
-            <Route path="audit"           element={<AegisAuditPage />}       />
-            <Route path="autonomy"        element={<AegisAutonomyPage />}    />
-            <Route path="assets"          element={<AegisAssetsPage />}      />
-            <Route path="egress"          element={<AegisEgressPage />}      />
-            <Route path="shield"          element={<AegisShieldPage />}      />
-            <Route path="policy"          element={<AegisPolicyPage />}         />
-            <Route path="permissions"     element={<AegisPermissionsPage />}    />
-            <Route path="live"            element={<AegisLiveFeedPage />}       />
+            <Route path="live" element={<HanumanasLiveFeedPage />} />
+            <Route path="agents"          element={<HanumanasAgentsPage />}      />
+            <Route path="compliance"      element={<HanumanasCompliancePage />}  />
+            <Route path="audit"           element={<HanumanasAuditPage />}       />
+            <Route path="autonomy"        element={<HanumanasAutonomyPage />}    />
+            <Route path="assets"          element={<HanumanasAssetsPage />}      />
+            <Route path="egress"          element={<HanumanasEgressPage />}      />
+            <Route path="shield"          element={<HanumanasShieldPage />}      />
+            <Route path="policy"          element={<HanumanasPolicyPage />}         />
+            <Route path="permissions"     element={<HanumanasPermissionsPage />}    />
+            <Route path="live"            element={<HanumanasLiveFeedPage />}       />
             <Route path="findings"        element={<SecurityFindingsPage />}    />
             <Route path="ai-security-view" element={<AiSecurityViewPage />}     />
-            <Route path="enforcement"     element={<AegisBudgetPage />}          />
+            <Route path="enforcement"     element={<HanumanasBudgetPage />}          />
             <Route path="*"               element={<Navigate to={BASE} replace />} />
           </Routes>
         </motion.div>

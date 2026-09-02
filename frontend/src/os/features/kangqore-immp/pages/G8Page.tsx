@@ -344,7 +344,7 @@ function EnterpriseRiskGrid({ metrics }: { metrics: Record<string, unknown> }) {
       label: 'Cyber Risk',
       color: GREEN,
       value: 'Monitored',
-      sub:   'AEGIS active',
+      sub:   'HANUMANAS active',
     },
   ]
 
@@ -595,7 +595,7 @@ function OisTrendChart({ history }: { history: SnapshotRecord[] }) {
 
 // ─── Trust Panel ───────────────────────────────────────────────────────────────
 function TrustPanel({ metrics }: { metrics: Record<string, unknown> }) {
-  const aegis    = Number(metrics.aegisEventsLast30Days ?? 0)
+  const hanumanas    = Number(metrics.hanumanasEventsLast30Days ?? 0)
   const overrides= Number(metrics.emergencyOverrides    ?? 0)
   const evals    = Number(metrics.evaluations           ?? 0)
   const safeAvg  = metrics.avgSafeScore != null ? Number(metrics.avgSafeScore) : null
@@ -618,7 +618,7 @@ function TrustPanel({ metrics }: { metrics: Record<string, unknown> }) {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
         {[
-          { label: 'Audit Events (30d)', value: aegis.toLocaleString(),   color: aegis > 100 ? GREEN : AMBER },
+          { label: 'Audit Events (30d)', value: hanumanas.toLocaleString(),   color: hanumanas > 100 ? GREEN : AMBER },
           { label: 'Emergency Overrides',value: overrides.toString(),      color: overrides > 0 ? AMBER : GREEN },
           { label: 'AI Evaluations',     value: evals.toLocaleString(),   color: evals > 0 ? GREEN : TEXT2 },
           { label: 'Safety Score',        value: safeAvg != null ? `${safeAvg}/5` : '—', color: safeAvg != null && safeAvg >= 4 ? GREEN : AMBER },
@@ -1763,7 +1763,7 @@ export function G8Page() {
       color:    GREEN,
       trendDir: trend(scoreData.trustScore, history[0]?.trustScore ?? null),
       metrics: [
-        { label: 'Audit Events (30d)',       value: fmt(pillars.trust.metrics.aegisEventsLast30Days) },
+        { label: 'Audit Events (30d)',       value: fmt(pillars.trust.metrics.hanumanasEventsLast30Days) },
         { label: 'Emergency Overrides',      value: fmt(pillars.trust.metrics.emergencyOverrides) },
         { label: 'AI Evaluations',           value: fmt(pillars.trust.metrics.evaluations) },
         { label: 'Avg Safety Score',         value: pillars.trust.metrics.avgSafeScore != null ? `${pillars.trust.metrics.avgSafeScore}/5` : '—' },

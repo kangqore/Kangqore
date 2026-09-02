@@ -19,7 +19,7 @@ const CONTENT = [
   { title: 'Kangqore OS vs Monday.com: Feature Comparison',         type: 'Blog Post',   status: 'Published', author: 'Jamie Walsh',  date: '2026-06-14' },
   { title: 'Agentic AI in Enterprise: 2026 Readiness Guide',        type: 'Whitepaper',  status: 'In Review', author: 'Priya Kapoor', date: '2026-07-01' },
   { title: '5 Signs Your Ops Stack is Holding You Back',            type: 'Blog Post',   status: 'Draft',     author: 'Jamie Walsh',  date: '—' },
-  { title: 'Kangqore & AEGIS: How We Secure Agentic Workflows',     type: 'Case Study',  status: 'Scheduled', author: 'Priya Kapoor', date: '2026-07-08' },
+  { title: 'Kangqore & HANUMANAS: How We Secure Agentic Workflows',     type: 'Case Study',  status: 'Scheduled', author: 'Priya Kapoor', date: '2026-07-08' },
   { title: 'Q2 Social Campaign: LinkedIn Carousel Series',          type: 'Social Post', status: 'Published', author: 'Aisha Patel',  date: '2026-06-18' },
 ]
 

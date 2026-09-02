@@ -46,7 +46,7 @@ export default function DeveloperPortalPage() {
           {
             name: 'executeWorkflowStep',
             displayName: 'Execute Workflow Step',
-            description: 'Executes app workflow within AEGIS sandbox',
+            description: 'Executes app workflow within HANUMANAS sandbox',
             parameters: [{ name: 'stepName', type: 'string', required: true }]
           }
         ]
@@ -63,7 +63,7 @@ const client = new KangqoreClient({
 // Query enterprise ontology object
 const item = await client.getObject('item-9921');
 
-// Execute governed action inheriting AEGIS policy & audit
+// Execute governed action inheriting HANUMANAS policy & audit
 const result = await client.executeAction('createWorkItem', {
   title: 'Audit SLA Compliance',
   priority: 'HIGH'
@@ -93,7 +93,7 @@ res = client.run_agent("agent-copilot", "Reallocate resources for delayed projec
             Kangqore View Developer Platform
           </h1>
           <p className="text-lg text-slate-400">
-            Build AI-native, governed enterprise applications in a day. Harness native Enterprise Ontology, KIMMP Intelligence, and inherited AEGIS security.
+            Build AI-native, governed enterprise applications in a day. Harness native Enterprise Ontology, KIMMP Intelligence, and inherited HANUMANAS security.
           </p>
         </div>
 
@@ -142,7 +142,7 @@ res = client.run_agent("agent-copilot", "Reallocate resources for delayed projec
               <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                 <Shield className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-white">Inherited AEGIS Governance</h3>
+              <h3 className="text-xl font-bold text-white">Inherited HANUMANAS Governance</h3>
               <p className="text-sm text-slate-400">
                 Zero custom auth code needed. Apps automatically inherit tenant isolation, RBAC/ABAC policy engine, audit logging, and cost guardrails.
               </p>
@@ -288,7 +288,7 @@ npx kangqore-app init my-custom-app
 # 2. Validate manifest schema
 npx kangqore-app validate
 
-# 3. Test actions in AEGIS policy sandbox
+# 3. Test actions in HANUMANAS policy sandbox
 npx kangqore-app test
 
 # 4. Publish to Kangqore View Marketplace

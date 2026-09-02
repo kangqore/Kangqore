@@ -46,7 +46,7 @@ export interface PermissionSet {
     canEdit: boolean;
     canSimulate: boolean;
     canExecute: boolean;
-    policies: string[]; // Ref to AEGIS Policies
+    policies: string[]; // Ref to HANUMANAS Policies
 }
 
 export interface ActivityEvent {

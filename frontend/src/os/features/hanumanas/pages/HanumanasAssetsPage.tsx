@@ -32,7 +32,7 @@ function relTime(iso: string) {
   return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' })
 }
 
-export function AegisAssetsPage() {
+export function HanumanasAssetsPage() {
   const [system, setSystem] = useState('')
   const [page, setPage]     = useState(0)
   const [search, setSearch] = useState('')
@@ -40,11 +40,11 @@ export function AegisAssetsPage() {
   const PAGE_SIZE = 50
 
   const { data, isLoading } = useQuery({
-    queryKey: ['aegis-assets', system, page],
+    queryKey: ['hanumanas-assets', system, page],
     queryFn: () => {
       const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(page * PAGE_SIZE) })
       if (system) params.set('system', system)
-      return api.get(`/admin/aegis/assets?${params}`).then(r => r.data)
+      return api.get(`/admin/hanumanas/assets?${params}`).then(r => r.data)
     },
     staleTime: 30_000,
   })

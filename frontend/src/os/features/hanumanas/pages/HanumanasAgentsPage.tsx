@@ -77,25 +77,25 @@ function RunRow({ run }: { run: any }) {
   )
 }
 
-export function AegisAgentsPage() {
+export function HanumanasAgentsPage() {
   const [engineFilter, setEngineFilter] = useState('')
   const [verdictFilter, setVerdictFilter] = useState('')
   const [page, setPage] = useState(0)
   const PAGE_SIZE = 30
 
   const { data: registryData } = useQuery({
-    queryKey: ['aegis-agent-registry'],
-    queryFn:  () => api.get('/admin/aegis/agents').then(r => r.data),
+    queryKey: ['hanumanas-agent-registry'],
+    queryFn:  () => api.get('/admin/hanumanas/agents').then(r => r.data),
     staleTime: 300_000,
   })
 
   const { data: runsData, isLoading, refetch } = useQuery({
-    queryKey: ['aegis-agent-runs', engineFilter, verdictFilter, page],
+    queryKey: ['hanumanas-agent-runs', engineFilter, verdictFilter, page],
     queryFn:  () => {
       const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(page * PAGE_SIZE) })
       if (engineFilter)  params.set('engine',  engineFilter)
       if (verdictFilter) params.set('verdict', verdictFilter)
-      return api.get(`/admin/aegis/agents/runs?${params}`).then(r => r.data)
+      return api.get(`/admin/hanumanas/agents/runs?${params}`).then(r => r.data)
     },
     staleTime: 15_000,
     refetchInterval: 60_000,
@@ -115,7 +115,7 @@ export function AegisAgentsPage() {
       <div className="bg-violet-900/20 border border-violet-500/20 rounded-2xl p-4 flex items-start gap-3">
         <Bot className="w-4 h-4 text-violet-400 mt-0.5 flex-shrink-0" />
         <div className="flex-1">
-          <p className="text-sm font-semibold text-violet-300 mb-0.5">AEGIS Agent Corps</p>
+          <p className="text-sm font-semibold text-violet-300 mb-0.5">HANUMANAS Agent Corps</p>
           <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
             {registryData?.total ?? 80} agents across {engines.length} engines — continuously monitoring KIMMP governance.
             Phase 1 (Governance Ops) is fully active. Phases 2–4 run with live ledger data.
@@ -191,7 +191,7 @@ export function AegisAgentsPage() {
         <div className="text-center py-16 space-y-2">
           <Bot className="w-8 h-8 text-[var(--os-text-2)] mx-auto" />
           <p className="text-[var(--os-text-2)] text-sm">No agent runs yet.</p>
-          <p className="text-[var(--os-text-2)] text-xs">The AEGIS scheduler fires within 5s of server boot.</p>
+          <p className="text-[var(--os-text-2)] text-xs">The HANUMANAS scheduler fires within 5s of server boot.</p>
         </div>
       ) : (
         <div className="space-y-2">

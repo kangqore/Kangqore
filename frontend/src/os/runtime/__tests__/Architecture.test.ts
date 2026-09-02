@@ -101,7 +101,7 @@ await cert('CONSTITUTIONAL_LAW_2 is declared and exported from wee/types', async
 await cert('No WEE adapter imports business intelligence services', () => {
   const adapterDir = path.join(ROOT, 'frontend/src/os/runtime/wee/adapters')
   const files = readDir(adapterDir)
-  const forbidden = ['MissionDispatcher', 'AegisShield', 'KIMMP', 'IMMP', 'kangqore-immp', 'KeosKernel']
+  const forbidden = ['MissionDispatcher', 'HanumanasShield', 'KIMMP', 'IMMP', 'kangqore-immp', 'KeosKernel']
   const violations: string[] = []
   for (const f of files) {
     const src = readFile(f)
@@ -369,7 +369,7 @@ console.log('\nLaw V · Boot Lifecycle Completeness')
 await cert('WaandaBootstrap status() returns only live-reported subsystems', () => {
   const src = readFile(path.join(ROOT, 'backend/src/waanda/WaandaBootstrap.ts'))
   // The hardcoded strings were removed — verify they are gone
-  const forbidden = ["aegis:      'OPERATIONAL'", "kore:       'OPERATIONAL'", "keos:       'OPERATIONAL'", "cognitive:  'OPERATIONAL'"]
+  const forbidden = ["hanumanas:      'OPERATIONAL'", "kore:       'OPERATIONAL'", "keos:       'OPERATIONAL'", "cognitive:  'OPERATIONAL'"]
   for (const pattern of forbidden) {
     assert(!src.includes(pattern),
       `Hardcoded "${pattern}" still present in WaandaBootstrap.status()`)
@@ -378,7 +378,7 @@ await cert('WaandaBootstrap status() returns only live-reported subsystems', () 
 
 await cert('All 7 boot phases call reportSubsystem()', () => {
   const src = readFile(path.join(ROOT, 'backend/src/waanda/WaandaBootstrap.ts'))
-  const expectedSubsystems = ['aegis', 'kore', 'keos', 'domains', 'cognitive', 'kimmp', 'infrastructure']
+  const expectedSubsystems = ['hanumanas', 'kore', 'keos', 'domains', 'cognitive', 'kimmp', 'infrastructure']
   const missing = expectedSubsystems.filter(s => !src.includes(`reportSubsystem('${s}'`))
   assert(missing.length === 0, `Boot phases missing reportSubsystem(): ${missing.join(', ')}`)
 })

@@ -109,9 +109,9 @@ export function ObservePage() {
     staleTime:     20_000,
   })
 
-  const aegis = useQuery({
-    queryKey:      ['waanda-aegis-summary'],
-    queryFn:       () => api.get('/admin/aegis/agents/summary').then(r => r.data),
+  const hanumanas = useQuery({
+    queryKey:      ['waanda-hanumanas-summary'],
+    queryFn:       () => api.get('/admin/hanumanas/agents/summary').then(r => r.data),
     refetchInterval: 30_000,
     staleTime:     20_000,
   })
@@ -130,28 +130,28 @@ export function ObservePage() {
     const refresh = () => {
       signals.refetch()
       sessions.refetch()
-      aegis.refetch()
+      hanumanas.refetch()
     }
-    socket.on('aegis:verdict', refresh)
+    socket.on('hanumanas:verdict', refresh)
     socket.on('kimmp:signal',  refresh)
     return () => {
-      socket.off('aegis:verdict', refresh)
+      socket.off('hanumanas:verdict', refresh)
       socket.off('kimmp:signal',  refresh)
     }
   }, [])
 
   const signalList: any[] = signals.data?.data ?? signals.data?.signals ?? []
   const sessionList: any[] = sessions.data?.data ?? []
-  const aegisData: any = aegis.data
+  const hanumanasData: any = hanumanas.data
   const intel: any     = intelligence.data
 
-  const verdictLabel   = aegisData?.overallVerdict ?? 'LOADING'
-  const critical24h    = aegisData?.critical24h    ?? 0
-  const warn24h        = aegisData?.warn24h        ?? 0
+  const verdictLabel   = hanumanasData?.overallVerdict ?? 'LOADING'
+  const critical24h    = hanumanasData?.critical24h    ?? 0
+  const warn24h        = hanumanasData?.warn24h        ?? 0
   const oisScore       = intel?.ois  ?? 0
   const coigDelta      = intel?.coig ?? 0
   const oisGrade       = intel?.grade ?? '—'
-  const activeAgents   = aegisData?.activeAgents ?? aegisData?.agentCount ?? aegisData?.total ?? 0
+  const activeAgents   = hanumanasData?.activeAgents ?? hanumanasData?.agentCount ?? hanumanasData?.total ?? 0
   const signalVelocity = signalList.filter((s: any) => {
     const d = s.detectedAt ?? s.createdAt
     if (!d) return false
@@ -207,7 +207,7 @@ export function ObservePage() {
                 {activeAgents}
               </span>
             </div>
-            <div className="text-[11px] text-slate-400">AEGIS agents running</div>
+            <div className="text-[11px] text-slate-400">HANUMANAS agents running</div>
           </div>
         </div>
       </div>
@@ -218,7 +218,7 @@ export function ObservePage() {
           <div>
             <div className={`${S.label} flex items-center gap-2 mb-2`}>
               <ShieldAlert className="w-4 h-4 text-blue-500" />
-              Governance Pulse · AEGIS
+              Governance Pulse · HANUMANAS
             </div>
             <div className="flex items-center gap-3 mt-1">
               <span

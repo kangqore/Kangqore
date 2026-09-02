@@ -49,7 +49,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
         {[
           { label: 'Trust Score',  value: `${scorePct}%`, col: scoreCol  },
           { label: 'KPI Breaches', value: total,          col: total > 0 ? 'var(--os-danger)' : 'var(--os-success)' },
-          { label: 'AEGIS',        value: verdict,        col: verdictCol },
+          { label: 'HANUMANAS',        value: verdict,        col: verdictCol },
           { label: 'TC Engine',    value: tcVerdict,      col: tcCol      },
         ].map(({ label, value, col }) => (
           <div key={label} style={{
@@ -100,7 +100,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
       {/* Framework coverage rows */}
       <div>
         <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 5 }}>
-          Framework Coverage · AEGIS Monitored
+          Framework Coverage · HANUMANAS Monitored
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {FRAMEWORKS.map(fw => (

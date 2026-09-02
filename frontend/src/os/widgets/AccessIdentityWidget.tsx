@@ -11,7 +11,7 @@ const verdictCol: Record<string, string> = {
 
 const Core: React.FC<WidgetProps> = ({ viewModel }) => {
   const shieldVerdict: string  = viewModel.shieldVerdict   ?? 'NO_DATA'
-  const shieldHealth           = viewModel.shieldHealthScore ?? viewModel.aegisHealth ?? null
+  const shieldHealth           = viewModel.shieldHealthScore ?? viewModel.hanumanasHealth ?? null
   const critical24h: number    = viewModel.critical24h     ?? viewModel.totalCritical ?? 0
   const warn24h: number        = viewModel.warn24h         ?? viewModel.totalWarns    ?? 0
   const autoCritical: number   = viewModel.autonomyCritical ?? 0
@@ -48,7 +48,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
         background: (shieldVerdict === 'CRITICAL' || shieldVerdict === 'BLOCK') ? 'var(--os-danger-dim)' : 'var(--os-surface-3)',
         border: `1px solid ${svCol}33`,
       }}>
-        <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>AEGIS Shield</span>
+        <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>HANUMANAS Shield</span>
         <span style={{ fontSize: 11, fontWeight: 700, color: svCol }}>{shieldVerdict}</span>
       </div>
 

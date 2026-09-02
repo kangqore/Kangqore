@@ -20,7 +20,7 @@ const TEMPLATES: PlaybookTemplate[] = [
     id: 'secp-002', name: 'Access Revocation — Offboarding', category: 'Access', stepCount: 4,
     steps: [
       { id: 's1', label: 'Disable Identity',         instructions: 'Disable AD/Okta account immediately. Revoke all active SSO sessions and MFA devices.', assignee: 'Security', sla: '30m', status: 'PENDING' },
-      { id: 's2', label: 'Revoke Cloud & SaaS Access',instructions: 'Remove from AWS IAM, GitHub orgs, all SaaS tools. Check KIMMP access registry for hidden permissions.', assignee: 'Security', sla: '2h', status: 'PENDING', kimmHint: 'AEGIS found 2 shadow admin roles not in the primary access inventory. Review registry before closing.' },
+      { id: 's2', label: 'Revoke Cloud & SaaS Access',instructions: 'Remove from AWS IAM, GitHub orgs, all SaaS tools. Check KIMMP access registry for hidden permissions.', assignee: 'Security', sla: '2h', status: 'PENDING', kimmHint: 'HANUMANAS found 2 shadow admin roles not in the primary access inventory. Review registry before closing.' },
       { id: 's3', label: 'Audit & Evidence',         instructions: 'Export last 90 days of user activity logs. Store in evidence vault. Note any anomalous access.', assignee: 'Security', sla: '4h', status: 'PENDING' },
       { id: 's4', label: 'Certificate & Key Rotation',instructions: 'Rotate any service accounts, API keys, or certificates the user had access to.', assignee: 'Security Analyst', sla: '24h', status: 'PENDING' },
     ],
@@ -36,7 +36,7 @@ export function SecurityPlaybooks() {
         </div>
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Security Playbooks</h1>
-          <p className="text-[var(--os-text-2)] mt-1 text-sm">Enforced incident response and access management runbooks — GDPR-compliant, AEGIS-integrated.</p>
+          <p className="text-[var(--os-text-2)] mt-1 text-sm">Enforced incident response and access management runbooks — GDPR-compliant, HANUMANAS-integrated.</p>
         </div>
       </div>
       <SharedPlaybooks config={cfg} templates={TEMPLATES} />

@@ -18,8 +18,8 @@ interface Agent {
 const AGENTS: Agent[] = [
   { name: 'KIMMP',                 role: 'AI Brain / OS Orchestrator',      model: 'claude-sonnet-4-6', owner: 'Rohan Gupta',  tasksDay: 1840, latency: '0.9s', status: 'Active' },
   { name: 'WAANDA',                role: 'Client-facing AI Layer',           model: 'claude-sonnet-4-6', owner: 'Rohan Gupta',  tasksDay: 640,  latency: '1.1s', status: 'Active' },
-  { name: 'AEGIS — Audit Agent',   role: 'Governance & Audit Trail',         model: 'claude-sonnet-4-6', owner: 'Priya Sharma', tasksDay: 380,  latency: '0.7s', status: 'Active' },
-  { name: 'AEGIS — Shield Agent',  role: 'Access Control & Anomaly Detection',model: 'claude-sonnet-4-6',owner: 'Priya Sharma', tasksDay: 2100, latency: '0.4s', status: 'Active' },
+  { name: 'HANUMANAS — Audit Agent',   role: 'Governance & Audit Trail',         model: 'claude-sonnet-4-6', owner: 'Priya Sharma', tasksDay: 380,  latency: '0.7s', status: 'Active' },
+  { name: 'HANUMANAS — Shield Agent',  role: 'Access Control & Anomaly Detection',model: 'claude-sonnet-4-6',owner: 'Priya Sharma', tasksDay: 2100, latency: '0.4s', status: 'Active' },
   { name: 'Scout',                 role: 'Web Intelligence & Research',      model: 'claude-sonnet-4-6', owner: 'Rohan Gupta',  tasksDay: 184,  latency: '2.4s', status: 'Active' },
   { name: 'Content Agent',         role: 'Marketing Content Generation',     model: 'claude-sonnet-4-6', owner: 'Priya Sharma', tasksDay: 48,   latency: '3.2s', status: 'Active' },
   { name: 'Support Triage Agent',  role: 'Ticket Classification & Routing',  model: 'claude-sonnet-4-6', owner: 'Rohan Gupta',  tasksDay: 312,  latency: '0.6s', status: 'Active' },
@@ -46,7 +46,7 @@ export function AIAgentRegistry() {
         </div>
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Agent Registry</h1>
-          <p className="text-[var(--os-text-2)] mt-1 text-sm">All KIMMP, WAANDA, AEGIS and operational agents — models, owners and live metrics.</p>
+          <p className="text-[var(--os-text-2)] mt-1 text-sm">All KIMMP, WAANDA, HANUMANAS and operational agents — models, owners and live metrics.</p>
         </div>
       </div>
 
@@ -68,7 +68,7 @@ export function AIAgentRegistry() {
         <Sparkles size={18} style={{ color: ACCENT }} className="mt-0.5 shrink-0" />
         <p className="text-sm text-[var(--os-text-1)]">
           <span className="font-semibold" style={{ color: ACCENT }}>KIMMP: </span>
-          AEGIS Shield is processing 2,100 tasks/day — the highest-volume agent. Monitor for latency spikes during
+          HANUMANAS Shield is processing 2,100 tasks/day — the highest-volume agent. Monitor for latency spikes during
           peak authentication windows. Legacy Summariser should be formally deprecated and removed from the registry;
           it is still receiving 12 tasks/day which suggests a missed migration. Code Review Agent at 4.1s latency is
           above the 3s target — profile the prompt and consider streaming the response.

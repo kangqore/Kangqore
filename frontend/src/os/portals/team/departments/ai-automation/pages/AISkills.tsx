@@ -29,7 +29,7 @@ const MEMBERS: SkillMember[] = [
       { memberId: 'ai2', name: 'AI Governance',      level: 'INTERMEDIATE' },
       { memberId: 'ai2', name: 'ML Ops',             level: 'INTERMEDIATE' },
     ],
-    kimmLine: 'Strong prompt engineering skills complementing Rohan. AI Governance is critical given the AEGIS programme scale — develop towards Expert level. The Churn model conditional approval is directly linked to Priya\'s explainability work; prioritise the SHAP analysis to unblock governance approval.',
+    kimmLine: 'Strong prompt engineering skills complementing Rohan. AI Governance is critical given the HANUMANAS programme scale — develop towards Expert level. The Churn model conditional approval is directly linked to Priya\'s explainability work; prioritise the SHAP analysis to unblock governance approval.',
   },
 ]
 

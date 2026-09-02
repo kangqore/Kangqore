@@ -81,7 +81,7 @@ const signals: Signal[] = [
     level: 'L2',
     domain: 'Delivery',
     entity: 'Project Meridian',
-    description: 'Defect rate increased 22% in Sprint 14 vs Sprint 13. 3 critical bugs open against the AEGIS integration layer.',
+    description: 'Defect rate increased 22% in Sprint 14 vs Sprint 13. 3 critical bugs open against the HANUMANAS integration layer.',
     timestamp: '45m ago',
     weight: 6.1,
   },

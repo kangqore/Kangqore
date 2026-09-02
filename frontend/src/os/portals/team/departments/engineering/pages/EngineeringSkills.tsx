@@ -32,7 +32,7 @@ const MEMBERS: SkillMember[] = [
       { memberId: 'a2', name: 'DevOps / CI-CD',     level: 'INTERMEDIATE' },
       { memberId: 'a2', name: 'AI / ML Eng',        level: 'INTERMEDIATE' },
     ],
-    kimmLine: 'Cloud architecture expertise is critical for AEGIS scale-out. KIMMP integration work qualifies as ML exposure — formalise with a certification.',
+    kimmLine: 'Cloud architecture expertise is critical for HANUMANAS scale-out. KIMMP integration work qualifies as ML exposure — formalise with a certification.',
   },
   {
     id: 'a3', name: 'Aryan M', initials: 'AM', color: '#F59E0B', role: 'Frontend Engineer',

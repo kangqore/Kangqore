@@ -63,7 +63,7 @@ export interface ActionExecution {
   objectId: string | null
   object?: { id: string; externalId: string | null; type: { displayName: string; icon: string | null; color: string | null } } | null
   actorId: string | null
-  actorType: 'HUMAN' | 'KIMMP' | 'AEGIS'
+  actorType: 'HUMAN' | 'KIMMP' | 'HANUMANAS'
   params: Record<string, any>
   effectsApplied: any[]
   status: 'SUCCESS' | 'FAILED' | 'BLOCKED' | 'PENDING_APPROVAL'
@@ -84,7 +84,7 @@ export interface PendingApproval {
   objectId: string | null
   object?: { id: string; externalId: string | null; type: { displayName: string; icon: string | null; color: string | null } } | null
   actorId: string | null
-  actorType: 'HUMAN' | 'KIMMP' | 'AEGIS'
+  actorType: 'HUMAN' | 'KIMMP' | 'HANUMANAS'
   params: Record<string, any>
   policyId: string | null
   policyName: string | null
@@ -147,7 +147,7 @@ export const actionEngineService = {
   validate(actionId: string, params: Record<string, any>, objectId?: string): Promise<PreflightResult> {
     return api.post(`/admin/ontology/actions/${actionId}/validate`, { params, objectId }).then(r => r.data)
   },
-  execute(actionId: string, params: Record<string, any>, objectId?: string, actorType: 'HUMAN' | 'KIMMP' | 'AEGIS' = 'HUMAN'): Promise<ActionExecution> {
+  execute(actionId: string, params: Record<string, any>, objectId?: string, actorType: 'HUMAN' | 'KIMMP' | 'HANUMANAS' = 'HUMAN'): Promise<ActionExecution> {
     return api.post(`/admin/ontology/actions/${actionId}/execute`, { params, objectId, actorType }).then(r => r.data.execution)
   },
 

@@ -156,7 +156,7 @@ export interface WaandaCognitiveState {
     inquiryType: string | null
     createdAt: string
   }>
-  aegisAgentSummary: {
+  hanumanasAgentSummary: {
     overallVerdict: string
     healthScore: number | null
     critical24h: number
@@ -164,8 +164,8 @@ export interface WaandaCognitiveState {
     engines: Array<{ engine: string; latest: { verdict: string; raisedAt: string; agentId: string; summary: string | null } | null }>
     lastChecked: string
   } | null
-  aegisAudit: Array<{ id: string; eventType: string; system: string; description: string; raisedAt: string; verdict: string }>
-  aegisAutonomy: Array<{ id: string; eventType: string; system: string; description: string; raisedAt: string; verdict: string }>
+  hanumanasAudit: Array<{ id: string; eventType: string; system: string; description: string; raisedAt: string; verdict: string }>
+  hanumanasAutonomy: Array<{ id: string; eventType: string; system: string; description: string; raisedAt: string; verdict: string }>
   kimmpDecisions: Array<{
     id: string
     question: string
@@ -177,7 +177,7 @@ export interface WaandaCognitiveState {
     createdAt: string
     resolvedAt: string | null
   }>
-  aegisPolicies: Array<{
+  hanumanasPolicies: Array<{
     id: string
     name: string
     description: string | null
@@ -299,11 +299,11 @@ export const EMPTY_WAANDA_STATE: WaandaCognitiveState = {
   gate8History: [],
   financialKpis: null,
   recentLeads: [],
-  aegisAgentSummary: null,
-  aegisAudit: [],
-  aegisAutonomy: [],
+  hanumanasAgentSummary: null,
+  hanumanasAudit: [],
+  hanumanasAutonomy: [],
   kimmpDecisions: [],
-  aegisPolicies: [],
+  hanumanasPolicies: [],
   kimmpMemories: [],
   twinScenarios: [],
   lastSynced: null,

@@ -44,7 +44,7 @@ function statusColor(s: number) {
 function DataFlowMap() {
   const nodes = [
     { id: 'kimmp',   label: 'KIMMP Engine', sub: 'Reasoning + Signals', icon: Cpu,      color: '#7c3aed' },
-    { id: 'aegis',   label: 'AEGIS Shield', sub: 'Policy enforcement',  icon: Shield,   color: '#f43f5e' },
+    { id: 'hanumanas',   label: 'HANUMANAS Shield', sub: 'Policy enforcement',  icon: Shield,   color: '#f43f5e' },
     { id: 'egress',  label: 'Egress Log',   sub: 'Permanent audit',      icon: Database, color: '#f59e0b' },
     { id: 'ext',     label: 'External',     sub: 'API / UI / Export',    icon: Globe,    color: '#2564ea' },
   ]
@@ -72,7 +72,7 @@ function DataFlowMap() {
         ))}
       </div>
       <p style={{ fontSize: 10, color: '#6b7280', marginTop: 10 }}>
-        Every intelligence exit passes through AEGIS Shield → is logged to Egress Ledger → reaches external consumers. No data leaves without being recorded.
+        Every intelligence exit passes through HANUMANAS Shield → is logged to Egress Ledger → reaches external consumers. No data leaves without being recorded.
       </p>
     </div>
   )
@@ -82,8 +82,8 @@ function DataFlowMap() {
 function ExportControlRules() {
   const qc = useQueryClient()
   const { data, isLoading } = useQuery<any>({
-    queryKey: ['aegis-export-rules'],
-    queryFn:  () => api.get('/admin/kangqore-immp/aegis/export-control-rules').then(r => r.data),
+    queryKey: ['hanumanas-export-rules'],
+    queryFn:  () => api.get('/admin/kangqore-immp/hanumanas/export-control-rules').then(r => r.data),
     staleTime: 60_000,
   })
 
@@ -101,7 +101,7 @@ function ExportControlRules() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderBottom: '1px solid var(--os-border)' }}>
         <Shield size={13} style={{ color: '#f43f5e' }} />
         <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--os-text-1)' }}>Export Control Rules</span>
-        <span style={{ fontSize: 9, color: '#6b7280', marginLeft: 'auto' }}>AEGIS-enforced</span>
+        <span style={{ fontSize: 9, color: '#6b7280', marginLeft: 'auto' }}>HANUMANAS-enforced</span>
       </div>
       {isLoading ? (
         <div style={{ padding: '16px', fontSize: 11, color: '#6b7280' }}>Loading rules…</div>
@@ -137,7 +137,7 @@ function ExportControlRules() {
   )
 }
 
-export function AegisEgressPage() {
+export function HanumanasEgressPage() {
   const [page, setPage]           = useState(0)
   const [timeRange, setTimeRange] = useState<TimeRange>('7d')
   const [search, setSearch]       = useState('')
@@ -145,12 +145,12 @@ export function AegisEgressPage() {
   const PAGE_SIZE = 50
 
   const { data, isLoading } = useQuery({
-    queryKey: ['aegis-egress', page, timeRange],
+    queryKey: ['hanumanas-egress', page, timeRange],
     queryFn: () => {
       const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(page * PAGE_SIZE) })
       const cutoff = timeRangeCutoff(timeRange)
       if (cutoff) params.set('from', cutoff.toISOString())
-      return api.get(`/admin/aegis/egress?${params}`).then(r => r.data)
+      return api.get(`/admin/hanumanas/egress?${params}`).then(r => r.data)
     },
     staleTime: 15_000,
     refetchInterval: 60_000,

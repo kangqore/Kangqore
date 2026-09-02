@@ -17,7 +17,7 @@ interface Task {
 const tasks: Task[] = [
   { id: 1,  title: 'Wire MessageThread into CRDetail drawer',         project: 'Client Portal',   priority: 'HIGH',   status: 'DONE',        due: 'Today',    dueGroup: 'today'  },
   { id: 2,  title: 'Confirm entity graph design freeze — Ops Centre', project: 'Ops Centre',      priority: 'HIGH',   status: 'IN_PROGRESS', due: 'Today',    dueGroup: 'today'  },
-  { id: 3,  title: 'Review AEGIS Phase 2 agent stubs',               project: 'AEGIS',           priority: 'MEDIUM', status: 'IN_PROGRESS', due: 'Today',    dueGroup: 'today'  },
+  { id: 3,  title: 'Review HANUMANAS Phase 2 agent stubs',               project: 'HANUMANAS',           priority: 'MEDIUM', status: 'IN_PROGRESS', due: 'Today',    dueGroup: 'today'  },
   { id: 4,  title: 'Deploy TEAM/EXECUTIVE roles to staging',         project: 'Auth',            priority: 'HIGH',   status: 'TODO',        due: 'Tomorrow', dueGroup: 'week'   },
   { id: 5,  title: 'Build Ops Centre — Change Log page',             project: 'Ops Centre',      priority: 'HIGH',   status: 'TODO',        due: 'This week', dueGroup: 'week'  },
   { id: 6,  title: 'Write SOC 2 Type I control mapping section',     project: 'Compliance',      priority: 'MEDIUM', status: 'TODO',        due: 'This week', dueGroup: 'week'  },

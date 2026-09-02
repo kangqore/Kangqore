@@ -52,14 +52,14 @@ export function SecurityFindingsPage() {
       const params: Record<string, string> = {}
       if (severityFilter !== 'ALL') params.severity = severityFilter
       if (statusFilter   !== 'ALL') params.status   = statusFilter
-      return api.get('/admin/kangqore-immp/aegis/security-findings', { params }).then(r => r.data)
+      return api.get('/admin/kangqore-immp/hanumanas/security-findings', { params }).then(r => r.data)
     },
     staleTime: 30_000,
   })
 
   const resolve = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) =>
-      api.patch(`/admin/kangqore-immp/aegis/security-findings/${id}`, { status }),
+      api.patch(`/admin/kangqore-immp/hanumanas/security-findings/${id}`, { status }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['security-findings'] }),
   })
 
@@ -233,7 +233,7 @@ function CreateFindingForm({ qc, onClose }: { qc: ReturnType<typeof useQueryClie
   })
 
   const create = useMutation({
-    mutationFn: () => api.post('/admin/kangqore-immp/aegis/security-findings', {
+    mutationFn: () => api.post('/admin/kangqore-immp/hanumanas/security-findings', {
       title: form.title.trim(), severity: form.severity,
       description: form.description.trim(),
       affectedArea: form.affectedArea || null, cveRef: form.cveRef || null,

@@ -11,7 +11,7 @@ import { gatewayService, type LlmCallLog } from '../gatewayService'
 // S308-S310 — KIMMP Intelligence Gateway dashboard. Every LLM call — Claude,
 // Krisnam, Gen2, OpenAI, Gemini fallback — is logged in one table via
 // passive instrumentation of the existing kimmpLLMRouter / withKrisnam /
-// AEGIS callLLM chokepoints (see backend commit for the full breakdown).
+// HANUMANAS callLLM chokepoints (see backend commit for the full breakdown).
 // S315 adds the Tool Calls tab — OntologyActions Claude invoked via S313/S314's
 // tool-calling bridge, cross-linked to their ActionExecution rows.
 // S318 adds the Index Health tab — pgvector coverage/size + index-vs-legacy
@@ -172,7 +172,7 @@ function CallLogTab() {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        {['KIMMP', 'AEGIS', 'HUMAN'].map(a => (
+        {['KIMMP', 'HANUMANAS', 'HUMAN'].map(a => (
           <button key={a} onClick={() => setFilters(f => ({ ...f, actorType: f.actorType === a ? undefined : a }))}
             className={`px-2.5 py-1 rounded-2xl text-[10px] font-semibold border ${filters.actorType === a ? 'bg-[var(--os-accent)] text-white border-transparent' : 'border-[var(--os-border)] text-[var(--os-text-2)]'}`}>
             {a}

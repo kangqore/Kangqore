@@ -16,7 +16,7 @@ const SERVICES: ServiceHealth[] = [
   { name: 'Auth Service',      status: 'UP',       uptime: '99.99%', latency: '88ms',  errorRate: '0.02%', lastCheck: '30s ago' },
   { name: 'Database (prod)',   status: 'UP',       uptime: '99.94%', latency: '24ms',  errorRate: '0.00%', lastCheck: '30s ago' },
   { name: 'KIMMP Engine',      status: 'UP',       uptime: '99.91%', latency: '310ms', errorRate: '0.11%', lastCheck: '30s ago' },
-  { name: 'AEGIS Audit Log',   status: 'UP',       uptime: '100%',   latency: '18ms',  errorRate: '0.00%', lastCheck: '30s ago' },
+  { name: 'HANUMANAS Audit Log',   status: 'UP',       uptime: '100%',   latency: '18ms',  errorRate: '0.00%', lastCheck: '30s ago' },
   { name: 'File Storage (S3)', status: 'UP',       uptime: '99.99%', latency: '220ms', errorRate: '0.01%', lastCheck: '30s ago' },
   { name: 'Email Service',     status: 'DEGRADED', uptime: '98.4%',  latency: '1.2s',  errorRate: '3.20%', lastCheck: '30s ago' },
   { name: 'TTS (macOS say)',   status: 'UP',       uptime: '99.82%', latency: '640ms', errorRate: '0.18%', lastCheck: '30s ago' },

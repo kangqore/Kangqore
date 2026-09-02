@@ -9,7 +9,7 @@ import {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type FlightSource = 'KIMMP' | 'AEGIS' | 'QEF' | 'RGS' | 'WORKFLOW' | 'INCIDENT'
+type FlightSource = 'KIMMP' | 'HANUMANAS' | 'QEF' | 'RGS' | 'WORKFLOW' | 'INCIDENT'
 
 interface FlightEvent {
   id:        string
@@ -48,7 +48,7 @@ const ORANGE  = '#f97316'
 
 const SOURCE_META: Record<FlightSource, { label: string; color: string; icon: any; description: string }> = {
   KIMMP:    { label: 'WAANDA',    color: PURPLE, icon: Brain,        description: 'Goals · Decisions · Memory' },
-  AEGIS:    { label: 'AEGIS',     color: BLUE,   icon: Shield,       description: 'Governance · Audit · Access' },
+  HANUMANAS:    { label: 'HANUMANAS',     color: BLUE,   icon: Shield,       description: 'Governance · Audit · Access' },
   QEF:      { label: 'QEF',       color: GREEN,  icon: CheckCircle2, description: 'Quality · Certificates' },
   RGS:      { label: 'RGS',       color: AMBER,  icon: Zap,          description: 'Release · Deployment · Rollback' },
   WORKFLOW: { label: 'Workflows', color: CYAN,   icon: Activity,     description: 'Automated workflows' },
@@ -273,7 +273,7 @@ export function FlightRecorderPage() {
   const reversedEvents = [...events].reverse()
   const replayingId = isReplaying && replayIdx >= 0 ? reversedEvents[replayIdx]?.id : null
 
-  const allSources: FlightSource[] = ['KIMMP', 'AEGIS', 'QEF', 'RGS', 'WORKFLOW', 'INCIDENT']
+  const allSources: FlightSource[] = ['KIMMP', 'HANUMANAS', 'QEF', 'RGS', 'WORKFLOW', 'INCIDENT']
 
   return (
     <div style={{ maxWidth: 860, margin: '0 auto' }}>
@@ -375,7 +375,7 @@ export function FlightRecorderPage() {
         <div style={{ background: CARD, border: `1px dashed ${BORDER}`, borderRadius: 14, padding: '48px', textAlign: 'center' }}>
           <GitBranch style={{ width: 32, height: 32, color: SLATE, margin: '0 auto 12px' }} />
           <div style={{ fontSize: 14, fontWeight: 700, color: TEXT1, marginBottom: 4 }}>No events recorded yet</div>
-          <div style={{ fontSize: 12, color: TEXT2 }}>Platform events will appear here as WAANDA, AEGIS, QEF, and other systems operate.</div>
+          <div style={{ fontSize: 12, color: TEXT2 }}>Platform events will appear here as WAANDA, HANUMANAS, QEF, and other systems operate.</div>
         </div>
       ) : (
         <div

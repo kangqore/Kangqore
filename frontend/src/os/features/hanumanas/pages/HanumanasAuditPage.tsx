@@ -29,7 +29,7 @@ const EVENT_CFG: Record<string, {
       { label: 'Priority',   value: r.priority },
     ],
     explainer: r =>
-      `KIMMP was activated by ${r.actor === 'AEGIS_SCHEDULER' ? 'the AEGIS background scheduler' : `actor "${r.actor}"`} ` +
+      `KIMMP was activated by ${r.actor === 'HANUMANAS_SCHEDULER' ? 'the HANUMANAS background scheduler' : `actor "${r.actor}"`} ` +
       `via the "${r.trigger ?? 'unknown'}" trigger on the ${r.system ?? 'KIMMP'} system. ` +
       (r.agentsRun?.length ? `${r.agentsRun.length} agent(s) ran in this activation cycle. ` : '') +
       (r.confidence != null ? `WAANDA confidence: ${r.confidence}%. ` : '') +
@@ -72,12 +72,12 @@ const EVENT_CFG: Record<string, {
       const meta = (r.metadata ?? {}) as Record<string, string>
       const reason = meta.reason ?? (r.actor === 'anonymous' ? 'no-token' : 'non-admin')
       const explanations: Record<string, string> = {
-        'no-token':   'No bearer token was present in the request. The caller hit a protected AEGIS or KIMMP endpoint without logging in first. This is normal for background refetch calls made before the auth token is set in the browser.',
+        'no-token':   'No bearer token was present in the request. The caller hit a protected HANUMANAS or KIMMP endpoint without logging in first. This is normal for background refetch calls made before the auth token is set in the browser.',
         'invalid-token': 'A bearer token was sent but could not be verified — it may be expired, malformed, or revoked. The session likely needs to be refreshed.',
-        'non-admin':  `A valid token was sent but the user's role (${r.userRole ?? 'CLIENT'}) is not ADMIN. Only ADMIN users may access KIMMP and AEGIS routes.`,
+        'non-admin':  `A valid token was sent but the user's role (${r.userRole ?? 'CLIENT'}) is not ADMIN. Only ADMIN users may access KIMMP and HANUMANAS routes.`,
       }
       return (
-        `A request to ${r.method ?? ''} ${r.endpoint ?? 'a protected endpoint'} was blocked by the AEGIS Access Shield. ` +
+        `A request to ${r.method ?? ''} ${r.endpoint ?? 'a protected endpoint'} was blocked by the HANUMANAS Access Shield. ` +
         (explanations[reason] ?? `Reason: ${reason}.`) +
         (r.userId ? ` User ID: ${r.userId}.` : '') +
         ((r.metadata as any)?.ip ? ` Originating IP: ${(r.metadata as any).ip}.` : '')
@@ -97,7 +97,7 @@ const EVENT_CFG: Record<string, {
       { label: 'Actor',      value: r.actor },
     ],
     explainer: r =>
-      `A new knowledge asset of type "${r.assetType ?? 'unknown'}" was registered in the AEGIS Intelligence Registry. ` +
+      `A new knowledge asset of type "${r.assetType ?? 'unknown'}" was registered in the HANUMANAS Intelligence Registry. ` +
       `Asset ID: ${r.assetId ?? '—'}. ` +
       `Source: ${r.assetSource ?? 'unspecified'}. ` +
       `Registered by: ${r.actor}. ` +
@@ -138,7 +138,7 @@ const EVENT_CFG: Record<string, {
       { label: 'Detail',     value: (r.metadata as any)?.detail },
     ],
     explainer: r =>
-      `An AEGIS Policy Engine rule was triggered. ` +
+      `An HANUMANAS Policy Engine rule was triggered. ` +
       `Policy: "${r.trigger ?? 'unknown'}". ` +
       `Severity: ${r.priority ?? 'UNKNOWN'}. ` +
       ((r.metadata as any)?.detail ? `Detail: ${(r.metadata as any).detail}. ` : '') +
@@ -156,7 +156,7 @@ const FALLBACK_CFG = {
     { label: 'Actor',  value: r.actor },
     { label: 'Trigger',value: r.trigger },
   ],
-  explainer: (r: AuditRow) => `Unclassified AEGIS event of type "${r.eventType}". Check the raw metadata for details.`,
+  explainer: (r: AuditRow) => `Unclassified HANUMANAS event of type "${r.eventType}". Check the raw metadata for details.`,
 }
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -365,19 +365,19 @@ const FILTER_OPTIONS: { value: FilterType; label: string; color: string }[] = [
   { value: 'POLICY_VIOLATION',label:'Policy Violation', color: '#ec4899' },
 ]
 
-export function AegisAuditPage() {
+export function HanumanasAuditPage() {
   const [eventType, setEventType] = useState<FilterType>('')
   const [system,    setSystem]    = useState('')
   const [page,      setPage]      = useState(0)
   const PAGE_SIZE = 40
 
   const { data, isLoading } = useQuery({
-    queryKey: ['aegis-audit', eventType, system, page],
+    queryKey: ['hanumanas-audit', eventType, system, page],
     queryFn: () => {
       const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(page * PAGE_SIZE) })
       if (eventType) params.set('eventType', eventType)
       if (system)    params.set('system', system)
-      return api.get(`/admin/aegis/audit?${params}`).then(r => r.data)
+      return api.get(`/admin/hanumanas/audit?${params}`).then(r => r.data)
     },
     staleTime: 15_000,
   })
@@ -482,7 +482,7 @@ export function AegisAuditPage() {
         </div>
       ) : rows.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--os-text-2)', fontSize: 13 }}>
-          No audit records match this filter. AEGIS is watching.
+          No audit records match this filter. HANUMANAS is watching.
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>

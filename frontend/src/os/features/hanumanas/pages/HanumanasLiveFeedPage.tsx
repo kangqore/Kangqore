@@ -6,7 +6,7 @@ import { getSocket } from '@lib/socket'
 import { cn } from '@design-system/cn'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-interface AegisEvent {
+interface HanumanasEvent {
   id:         string
   eventType:  string
   system?:    string
@@ -38,7 +38,7 @@ const EVENT_META: Record<string, { label: string; color: string; bg: string; ico
 const DEFAULT_META = { label: 'EVENT', color: '#8b8b8b', bg: '#8b8b8b14', icon: Eye, dot: 'bg-[#8b8b8b]' }
 
 // ── Event row ─────────────────────────────────────────────────────────────────
-function EventRow({ event, isNew }: { event: AegisEvent; isNew: boolean }) {
+function EventRow({ event, isNew }: { event: HanumanasEvent; isNew: boolean }) {
   const meta   = EVENT_META[event.eventType] ?? DEFAULT_META
   const Icon   = meta.icon
   const label  = event.trigger ?? event.endpoint ?? event.assetType ?? event.system ?? '—'
@@ -92,8 +92,8 @@ function EventRow({ event, isNew }: { event: AegisEvent; isNew: boolean }) {
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
-export function AegisLiveFeedPage() {
-  const [events, setEvents]   = useState<AegisEvent[]>([])
+export function HanumanasLiveFeedPage() {
+  const [events, setEvents]   = useState<HanumanasEvent[]>([])
   const [newIds, setNewIds]   = useState<Set<string>>(new Set())
   const [filter, setFilter]   = useState<string>('')
   const [paused, setPaused]   = useState(false)
@@ -104,14 +104,14 @@ export function AegisLiveFeedPage() {
 
   // Load initial events from ledger
   const { data: seed } = useQuery({
-    queryKey: ['aegis-live-seed'],
-    queryFn: () => api.get('/admin/aegis/audit?limit=100').then(r => r.data),
+    queryKey: ['hanumanas-live-seed'],
+    queryFn: () => api.get('/admin/hanumanas/audit?limit=100').then(r => r.data),
     staleTime: Infinity,
   })
 
   useEffect(() => {
     if (seed?.rows) {
-      setEvents((seed.rows as AegisEvent[]).slice().reverse())
+      setEvents((seed.rows as HanumanasEvent[]).slice().reverse())
     }
   }, [seed])
 
@@ -119,7 +119,7 @@ export function AegisLiveFeedPage() {
   useEffect(() => {
     const socket = getSocket()
 
-    const onEvent = (data: AegisEvent) => {
+    const onEvent = (data: HanumanasEvent) => {
       if (pausedRef.current) return
       setEvents(prev => {
         const next = [...prev, { ...data, _live: true }]
@@ -134,8 +134,8 @@ export function AegisLiveFeedPage() {
       })
     }
 
-    socket.on('aegis:event', onEvent)
-    return () => { socket.off('aegis:event', onEvent) }
+    socket.on('hanumanas:event', onEvent)
+    return () => { socket.off('hanumanas:event', onEvent) }
   }, [])
 
   // Auto-scroll to bottom when new events arrive
@@ -237,7 +237,7 @@ export function AegisLiveFeedPage() {
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <Shield className="w-8 h-8 text-[var(--os-text-2)]" />
             <p className="text-[11px] text-[var(--os-text-2)] text-center">
-              {filter ? `No ${filter} events yet.` : 'Waiting for KIMMP activity. AEGIS is watching.'}
+              {filter ? `No ${filter} events yet.` : 'Waiting for KIMMP activity. HANUMANAS is watching.'}
             </p>
           </div>
         ) : (

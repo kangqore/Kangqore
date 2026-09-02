@@ -125,7 +125,7 @@ const AgentMarketplacePage = () => {
           </div>
           <p className="text-gray-500 dark:text-gray-400 max-w-3xl mb-8">
             Actions any Agent Studio agent can be given, each opted in explicitly and executed under the
-            same AEGIS audit trail as everything else on the platform — see{' '}
+            same HANUMANAS audit trail as everything else on the platform — see{' '}
             <Link to="/trust" className="text-brand-blue hover:underline">Trust &amp; Governance</Link>.
           </p>
           {data && (

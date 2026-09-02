@@ -16,14 +16,14 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
   const sovereignVerdict: string= viewModel.sovereignVerdict ?? 'NO_DATA'
   const wirVerdict: string      = viewModel.wirVerdict       ?? 'NO_DATA'
   const wirSummary: string      = viewModel.wirSummary       ?? ''
-  const aegisHealth             = viewModel.aegisHealthScore ?? null
+  const hanumanasHealth             = viewModel.hanumanasHealthScore ?? null
   const critical24h: number     = viewModel.critical24h      ?? 0
   const denied: number          = viewModel.deniedEventCount ?? 0
   const subsystems              = (viewModel.subsystems as any) ?? {}
   const subEntries              = Object.entries(subsystems)
   const operational             = subEntries.filter(([, v]) => v === 'OPERATIONAL').length
 
-  const healthCol = (aegisHealth ?? 100) >= 80 ? 'var(--os-success)' : (aegisHealth ?? 100) >= 60 ? 'var(--os-warning)' : 'var(--os-danger)'
+  const healthCol = (hanumanasHealth ?? 100) >= 80 ? 'var(--os-success)' : (hanumanasHealth ?? 100) >= 60 ? 'var(--os-warning)' : 'var(--os-danger)'
 
   const engines = [
     { label: 'ACCESS_SENTINEL', verdict: shieldVerdict  },
@@ -36,7 +36,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <div style={{ display: 'flex', gap: 6 }}>
         {[
-          { label: 'AEGIS Health',  value: aegisHealth !== null ? `${aegisHealth}%` : '—', col: healthCol },
+          { label: 'HANUMANAS Health',  value: hanumanasHealth !== null ? `${hanumanasHealth}%` : '—', col: healthCol },
           { label: 'Critical 24h', value: critical24h, col: critical24h > 0 ? 'var(--os-danger)'  : 'var(--os-success)' },
           { label: 'Denied Events',value: denied,      col: denied > 0      ? 'var(--os-warning)' : 'var(--os-text-4)'  },
           { label: 'Subsystems',   value: `${operational}/${subEntries.length}`, col: operational < subEntries.length ? 'var(--os-warning)' : 'var(--os-success)' },
@@ -52,7 +52,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>AEGIS Security Engines</div>
+        <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>HANUMANAS Security Engines</div>
         {engines.map(({ label, verdict, summary }) => {
           const col   = verdictCol[verdict] ?? 'var(--os-text-4)'
           const isBad = verdict === 'CRITICAL' || verdict === 'BLOCK'

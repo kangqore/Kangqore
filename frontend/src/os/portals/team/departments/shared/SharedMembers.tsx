@@ -3,7 +3,7 @@ import { Users, Search } from 'lucide-react'
 
 const members = [
   { name: 'Arjun Sharma',   role: 'Lead Engineer',     dept: 'IT',           status: 'online',  project: 'Ops Centre — Entity Graph',      avatar: 'AS', alloc: 90 },
-  { name: 'Priya Nair',     role: 'Backend Engineer',  dept: 'IT',           status: 'online',  project: 'AEGIS Phase 2',                  avatar: 'PN', alloc: 85 },
+  { name: 'Priya Nair',     role: 'Backend Engineer',  dept: 'IT',           status: 'online',  project: 'HANUMANAS Phase 2',                  avatar: 'PN', alloc: 85 },
   { name: 'Kavya Reddy',    role: 'Product Designer',  dept: 'HR',           status: 'away',    project: 'BIDS™ Rail edition wireframes',  avatar: 'KR', alloc: 70 },
   { name: 'Rohan Mehta',    role: 'DevOps Engineer',   dept: 'Security',     status: 'online',  project: 'SOC 2 control mapping',          avatar: 'RM', alloc: 80 },
   { name: 'Sneha Gupta',    role: 'Frontend Engineer', dept: 'IT',           status: 'offline', project: 'Last seen 2h ago',               avatar: 'SG', alloc: 60 },

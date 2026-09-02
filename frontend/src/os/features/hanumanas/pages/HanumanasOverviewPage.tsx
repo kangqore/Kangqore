@@ -70,40 +70,40 @@ function VerdictIcon({ verdict }: { verdict: string }) {
   return <Info className="w-3.5 h-3.5 text-blue-400" />
 }
 
-export function AegisOverviewPage() {
+export function HanumanasOverviewPage() {
   const qc = useQueryClient()
   const [toggling, setToggling] = useState(false)
 
   const { data: config } = useQuery({
-    queryKey: ['aegis-config'],
-    queryFn:  () => api.get('/admin/aegis/config').then(r => r.data),
+    queryKey: ['hanumanas-config'],
+    queryFn:  () => api.get('/admin/hanumanas/config').then(r => r.data),
     staleTime: 10_000,
   })
 
   const toggleMutation = useMutation({
-    mutationFn: () => api.post('/admin/aegis/config/toggle').then(r => r.data),
+    mutationFn: () => api.post('/admin/hanumanas/config/toggle').then(r => r.data),
     onMutate:   () => setToggling(true),
-    onSettled:  () => { setToggling(false); qc.invalidateQueries({ queryKey: ['aegis-config'] }) },
+    onSettled:  () => { setToggling(false); qc.invalidateQueries({ queryKey: ['hanumanas-config'] }) },
   })
 
-  const aegisOn: boolean = config?.enabled ?? true
+  const hanumanasOn: boolean = config?.enabled ?? true
 
   const { data: stats, isLoading } = useQuery({
-    queryKey: ['aegis-stats'],
-    queryFn:  () => api.get('/admin/aegis/stats').then(r => r.data),
+    queryKey: ['hanumanas-stats'],
+    queryFn:  () => api.get('/admin/hanumanas/stats').then(r => r.data),
     staleTime: 30_000,
     refetchInterval: 60_000,
   })
 
   const { data: health } = useQuery({
-    queryKey: ['aegis-health'],
-    queryFn:  () => api.get('/admin/aegis/health').then(r => r.data),
+    queryKey: ['hanumanas-health'],
+    queryFn:  () => api.get('/admin/hanumanas/health').then(r => r.data),
     staleTime: 120_000,
   })
 
   const { data: agentSummary } = useQuery({
-    queryKey: ['aegis-agents-summary'],
-    queryFn:  () => api.get('/admin/aegis/agents/summary').then(r => r.data),
+    queryKey: ['hanumanas-agents-summary'],
+    queryFn:  () => api.get('/admin/hanumanas/agents/summary').then(r => r.data),
     staleTime: 30_000,
     refetchInterval: 60_000,
   })
@@ -127,22 +127,22 @@ export function AegisOverviewPage() {
         <p className="text-[var(--os-text-2)] text-sm">Every KIMMP action — admin-triggered or autonomous — is permanently recorded here.</p>
       </div>
 
-      {/* ── AEGIS on/off switch ─────────────────────────────────────────────── */}
+      {/* ── HANUMANAS on/off switch ─────────────────────────────────────────────── */}
       <div className={`flex items-center justify-between gap-4 rounded-2xl border px-5 py-4 transition-all duration-300 ${
-        aegisOn
+        hanumanasOn
           ? 'bg-emerald-500/5 border-emerald-500/20'
           : 'bg-amber-500/8 border-amber-400/30'
       }`}>
         <div className="flex items-center gap-3">
-          {aegisOn
+          {hanumanasOn
             ? <Shield className="w-5 h-5 text-emerald-400 flex-shrink-0" />
             : <PowerOff className="w-5 h-5 text-amber-400 flex-shrink-0" />}
           <div>
-            <p className={`text-sm font-semibold ${aegisOn ? 'text-emerald-300' : 'text-amber-300'}`}>
-              AEGIS is {aegisOn ? 'ACTIVE' : 'BYPASSED'}
+            <p className={`text-sm font-semibold ${hanumanasOn ? 'text-emerald-300' : 'text-amber-300'}`}>
+              HANUMANAS is {hanumanasOn ? 'ACTIVE' : 'BYPASSED'}
             </p>
             <p className="text-xs text-[var(--os-text-2)] mt-0.5">
-              {aegisOn
+              {hanumanasOn
                 ? 'Access shield and audit logging are fully enforced. All KIMMP routes are protected.'
                 : 'Build mode — shield and logging are off. All routes pass through without auth checks or audit entries.'}
               {config?.toggledAt && (
@@ -158,14 +158,14 @@ export function AegisOverviewPage() {
         <button
           onClick={() => toggleMutation.mutate()}
           disabled={toggling}
-          title={aegisOn ? 'Turn off AEGIS (build mode)' : 'Activate AEGIS'}
+          title={hanumanasOn ? 'Turn off HANUMANAS (build mode)' : 'Activate HANUMANAS'}
           style={{ flexShrink: 0 }}
           className={`relative inline-flex h-7 w-12 items-center rounded-full border transition-colors duration-200 focus:outline-none ${
             toggling ? 'opacity-50 cursor-wait' : 'cursor-pointer'
-          } ${aegisOn ? 'bg-emerald-500 border-emerald-400' : 'bg-[var(--os-surface-0)] border-amber-400/40'}`}
+          } ${hanumanasOn ? 'bg-emerald-500 border-emerald-400' : 'bg-[var(--os-surface-0)] border-amber-400/40'}`}
         >
           <span className={`inline-block h-5 w-5 transform rounded-full shadow transition-transform duration-200 ${
-            aegisOn ? 'translate-x-6 bg-white' : 'translate-x-1 bg-amber-400'
+            hanumanasOn ? 'translate-x-6 bg-white' : 'translate-x-1 bg-amber-400'
           }`} />
         </button>
       </div>
@@ -205,7 +205,7 @@ export function AegisOverviewPage() {
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-[var(--os-text-1)]">Agent Corps — 80 Agents</h3>
-                <p className="text-xs text-[var(--os-text-2)]">Live health status across 10 AEGIS engines</p>
+                <p className="text-xs text-[var(--os-text-2)]">Live health status across 10 HANUMANAS engines</p>
               </div>
             </div>
             <div className="flex items-center gap-3 flex-shrink-0">
@@ -330,7 +330,7 @@ export function AegisOverviewPage() {
         <div className="flex items-center gap-2 mb-2">
           <Shield className={`w-4 h-4 ${overallVerdict === 'CRITICAL' ? 'text-rose-400' : overallVerdict === 'WARN' ? 'text-amber-400' : 'text-violet-400'}`} />
           <span className={`text-sm font-semibold ${overallVerdict === 'CRITICAL' ? 'text-rose-300' : overallVerdict === 'WARN' ? 'text-amber-300' : 'text-violet-300'}`}>
-            AEGIS Active — Shield: {overallVerdict} — Master: ADMIN
+            HANUMANAS Active — Shield: {overallVerdict} — Master: ADMIN
           </span>
         </div>
         <p className="text-xs text-[var(--os-text-2)] leading-relaxed">

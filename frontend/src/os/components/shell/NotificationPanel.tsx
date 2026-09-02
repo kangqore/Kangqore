@@ -43,7 +43,7 @@ const MOCK_NOTIFICATIONS: NotificationItem[] = [
   { id: '1', type: 'success', title: 'Project delivered',    body: 'Alpha CRM phase 2 marked complete.',       time: '2m ago',  createdAt: new Date(Date.now() - 2*60000).toISOString(),   read: false, source: 'WAANDA'  },
   { id: '2', type: 'warning', title: 'Budget threshold hit', body: 'Q2 Marketing spend at 90% of allocation.', time: '18m ago', createdAt: new Date(Date.now() - 18*60000).toISOString(),  read: false, source: 'Finance' },
   { id: '3', type: 'info',    title: 'New lead assigned',    body: 'TechNova Inc. assigned to you via eQORE.', time: '1h ago',  createdAt: new Date(Date.now() - 3600000).toISOString(),   read: false, source: 'WAANDA'   },
-  { id: '4', type: 'danger',  title: 'Risk escalated',       body: 'Sprint 14 scope risk moved to HIGH.',      time: '3h ago',  createdAt: new Date(Date.now() - 3*3600000).toISOString(), read: true,  source: 'AEGIS'   },
+  { id: '4', type: 'danger',  title: 'Risk escalated',       body: 'Sprint 14 scope risk moved to HIGH.',      time: '3h ago',  createdAt: new Date(Date.now() - 3*3600000).toISOString(), read: true,  source: 'HANUMANAS'   },
   { id: '5', type: 'info',    title: 'Meeting in 30 min',    body: 'Quarterly review with Nexus Partners.',    time: '5h ago',  createdAt: new Date(Date.now() - 5*3600000).toISOString(), read: true,  source: 'System'  },
 ]
 
@@ -52,7 +52,7 @@ function mapNotification(db: DbNotification): NotificationItem {
     SUCCESS: 'success', WARNING: 'warning', ERROR: 'danger', INFO: 'info',
   }
   const title = db.title ?? ''
-  const source = title.startsWith('AEGIS') ? 'AEGIS'
+  const source = title.startsWith('HANUMANAS') ? 'HANUMANAS'
     : title.startsWith('WAANDA') || title.startsWith('WAANDA') ? 'WAANDA'
     : db.type === 'SUCCESS' ? 'System'
     : db.type === 'WARNING' ? 'System'
@@ -79,7 +79,7 @@ const TYPE_CONFIG = {
 }
 
 const SOURCE_ICON: Record<string, React.ElementType> = {
-  AEGIS:   Shield,
+  HANUMANAS:   Shield,
   KIMMP:   Brain,
   WAANDA:  Brain,
   Finance: Zap,
@@ -303,7 +303,7 @@ export function NotificationPanel() {
             <div className="flex flex-col items-center justify-center h-48 gap-3 text-center px-8">
               <BellOff className="w-8 h-8 text-slate-800" />
               <p className="text-xs font-semibold text-slate-600">No notifications</p>
-              <p className="text-[10px] text-slate-700 leading-relaxed">You're all caught up. Activity from AEGIS, KIMMP, and the OS will appear here.</p>
+              <p className="text-[10px] text-slate-700 leading-relaxed">You're all caught up. Activity from HANUMANAS, KIMMP, and the OS will appear here.</p>
             </div>
           ) : (
             <AnimatePresence initial={false}>

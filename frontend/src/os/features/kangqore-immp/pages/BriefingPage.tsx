@@ -411,23 +411,23 @@ function OpsSnapshot({ openP1P2Issues, atRiskDeliverables, changesPendingCAB, is
   )
 }
 
-// ── AEGIS Posture ─────────────────────────────────────────────────────────────
+// ── HANUMANAS Posture ─────────────────────────────────────────────────────────────
 
-interface AegisPostureProps {
+interface HanumanasPostureProps {
   healthScore:    number | null
   critical24h:    number
   warn24h:        number
   overallVerdict: string
 }
 
-function AegisPosture({ healthScore, critical24h, warn24h, overallVerdict }: AegisPostureProps) {
+function HanumanasPosture({ healthScore, critical24h, warn24h, overallVerdict }: HanumanasPostureProps) {
   const score   = healthScore ?? (overallVerdict === 'PASS' ? 88 : overallVerdict === 'WARN' ? 70 : 55)
   const scoreColor = score >= 80 ? '#00c875' : score >= 60 ? '#fdab3d' : '#e2445c'
   const verdictColor = overallVerdict === 'PASS' ? '#00c875' : overallVerdict === 'WARN' ? '#fdab3d' : '#e2445c'
   const rows = [
     { label: 'Compliance score', value: `${score}%`,       sub: critical24h > 0 ? `${critical24h} critical control${critical24h !== 1 ? 's' : ''} failing` : warn24h > 0 ? `${warn24h} warning${warn24h !== 1 ? 's' : ''} active` : 'All controls passing', color: scoreColor  },
     { label: 'Shield posture',   value: overallVerdict,    sub: `${critical24h} critical, ${warn24h} warn in 24h`,   color: verdictColor },
-    { label: 'AEGIS corps',      value: '80',              sub: 'agents active',                                      color: '#00c875'    },
+    { label: 'HANUMANAS corps',      value: '80',              sub: 'agents active',                                      color: '#00c875'    },
     { label: 'Audit readiness',  value: score >= 80 ? 'Ready' : score >= 60 ? 'At Risk' : 'Not Ready', sub: 'SOC 2 / ISO 27001 posture', color: scoreColor },
   ]
   return (
@@ -435,7 +435,7 @@ function AegisPosture({ healthScore, critical24h, warn24h, overallVerdict }: Aeg
       <div className="mb-6">
         <p className="text-[12px] font-black uppercase tracking-widest flex items-center gap-3 text-slate-400">
           <Shield style={{ width: 16, height: 16, color: '#7f53f9' }} />
-          AEGIS Posture
+          HANUMANAS Posture
         </p>
       </div>
       <div className="space-y-2">
@@ -588,9 +588,9 @@ export function BriefingPage() {
     refetchInterval: 120_000,
   })
 
-  const { data: aegisData } = useQuery({
-    queryKey:        ['aegis-summary'],
-    queryFn:         () => api.get('/admin/aegis/agents/summary').then(r => r.data),
+  const { data: hanumanasData } = useQuery({
+    queryKey:        ['hanumanas-summary'],
+    queryFn:         () => api.get('/admin/hanumanas/agents/summary').then(r => r.data),
     enabled:         !isDemo(),
     staleTime:       120_000,
     refetchInterval: 120_000,
@@ -669,7 +669,7 @@ export function BriefingPage() {
         <ActionPanel approvals={approvals} criticalAlerts={criticalAlerts} />
       </div>
 
-      {/* Ops + AEGIS + Pyramid */}
+      {/* Ops + HANUMANAS + Pyramid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <OpsSnapshot
           openP1P2Issues={opsSnap.openP1P2Issues}
@@ -677,11 +677,11 @@ export function BriefingPage() {
           changesPendingCAB={opsSnap.changesPendingCAB}
           issuesResolvedToday={opsSnap.issuesResolvedToday}
         />
-        <AegisPosture
-          healthScore={aegisData?.healthScore ?? null}
-          critical24h={aegisData?.critical24h ?? 0}
-          warn24h={aegisData?.warn24h ?? 0}
-          overallVerdict={aegisData?.overallVerdict ?? 'PASS'}
+        <HanumanasPosture
+          healthScore={hanumanasData?.healthScore ?? null}
+          critical24h={hanumanasData?.critical24h ?? 0}
+          warn24h={hanumanasData?.warn24h ?? 0}
+          overallVerdict={hanumanasData?.overallVerdict ?? 'PASS'}
         />
         <SignalPyramid counts={signalCounts} />
       </div>

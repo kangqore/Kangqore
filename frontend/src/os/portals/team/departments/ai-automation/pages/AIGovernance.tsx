@@ -18,7 +18,7 @@ interface AIAsset {
 
 const ASSETS: AIAsset[] = [
   { name: 'KIMMP / WAANDA',           useCase: 'OS Orchestration & Client AI',     risk: 'High',   approval: 'Approved',    biasReview: true,  explainability: 72, lastAudit: '2026-05-01' },
-  { name: 'AEGIS — Shield Agent',     useCase: 'Access Control & Anomaly Detection',risk: 'High',   approval: 'Approved',    biasReview: true,  explainability: 84, lastAudit: '2026-05-15' },
+  { name: 'HANUMANAS — Shield Agent',     useCase: 'Access Control & Anomaly Detection',risk: 'High',   approval: 'Approved',    biasReview: true,  explainability: 84, lastAudit: '2026-05-15' },
   { name: 'Churn Prediction Model',   useCase: 'Customer Risk Scoring',             risk: 'High',   approval: 'Conditional', biasReview: true,  explainability: 61, lastAudit: '2026-04-20' },
   { name: 'Support Triage Agent',     useCase: 'Ticket Classification',             risk: 'Medium', approval: 'Approved',    biasReview: false, explainability: 89, lastAudit: '2026-06-01' },
   { name: 'Sales Close Probability',  useCase: 'Deal Scoring',                      risk: 'Medium', approval: 'Approved',    biasReview: false, explainability: 78, lastAudit: '2026-05-10' },

@@ -29,7 +29,7 @@ const ADRS: ADR[] = [
 const COMPONENTS: SystemComponent[] = [
   { name: 'Kangqore OS Frontend', stack: ['React 19', 'TypeScript', 'Vite 8', 'Tailwind CSS'] },
   { name: 'KIMMP Core',           stack: ['Node.js', 'SSE', 'Claude API', 'Redis'] },
-  { name: 'AEGIS Service',        stack: ['Node.js', 'Prisma', 'PostgreSQL'] },
+  { name: 'HANUMANAS Service',        stack: ['Node.js', 'Prisma', 'PostgreSQL'] },
   { name: 'API Gateway',          stack: ['Express', 'JWT', 'Rate Limiting', 'CORS'] },
   { name: 'Auth Service',         stack: ['OAuth2', 'Okta', 'Session Tokens'] },
   { name: 'Notification Service', stack: ['WebSockets', 'Push API', 'Email'] },

@@ -26,7 +26,7 @@ const APPS = [
     downloads: 14200,
     governanceScore: 100,
     certifiedBadge: true,
-    features: ['Ontology Auto-mapping', 'AEGIS RBAC Sync', 'Real-time Webhook Triggers'],
+    features: ['Ontology Auto-mapping', 'HANUMANAS RBAC Sync', 'Real-time Webhook Triggers'],
   },
   {
     appId: 'app-jira-agile',
@@ -47,12 +47,12 @@ const APPS = [
     version: '1.8.0',
     category: 'AI_NATIVE',
     publisher: 'Kangqore AI Labs',
-    description: 'Build, benchmark, and deploy custom autonomous AI agent personas with AEGIS budget limits and tool registries.',
+    description: 'Build, benchmark, and deploy custom autonomous AI agent personas with HANUMANAS budget limits and tool registries.',
     rating: 5.0,
     downloads: 24500,
     governanceScore: 100,
     certifiedBadge: true,
-    features: ['Custom Persona Prompt Registry', 'AEGIS Budget Guardrails', 'Multi-Agent Debate Framework'],
+    features: ['Custom Persona Prompt Registry', 'HANUMANAS Budget Guardrails', 'Multi-Agent Debate Framework'],
   },
   {
     appId: 'app-servicenow-itsm',
@@ -129,7 +129,7 @@ export default function AppMarketplacePage() {
             AI-Native & Governed Integration Apps
           </h1>
           <p className="text-lg text-slate-400">
-            Marketplace applications automatically inherit Identity, AEGIS Security Policy, Audit Logging, Billing, and Observability.
+            Marketplace applications automatically inherit Identity, HANUMANAS Security Policy, Audit Logging, Billing, and Observability.
           </p>
         </div>
 
@@ -249,7 +249,7 @@ export default function AppMarketplacePage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-bold text-white">{installingApp.name}</h3>
-                  <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono">AEGIS Verified</span>
+                  <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono">HANUMANAS Verified</span>
                 </div>
                 <p className="text-xs text-slate-400">Review governance inheritance before enabling in your tenant.</p>
               </div>
@@ -261,7 +261,7 @@ export default function AppMarketplacePage() {
                 </div>
                 <ul className="space-y-1 pl-6 list-disc text-slate-400">
                   <li>Tenant Data Isolation enforced</li>
-                  <li>RBAC / AEGIS Policy Engine enforced</li>
+                  <li>RBAC / HANUMANAS Policy Engine enforced</li>
                   <li>Full Audit Log tracing enabled</li>
                   <li>Cost & Credit tracking active</li>
                 </ul>

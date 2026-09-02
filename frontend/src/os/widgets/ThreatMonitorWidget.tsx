@@ -61,7 +61,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
               padding: '5px 10px', borderRadius: 5,
               background: 'var(--os-danger-dim)', border: '1px solid var(--os-danger)33',
             }}>
-              <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>AEGIS Autonomy Flags</span>
+              <span style={{ fontSize: 11, color: 'var(--os-text-2)' }}>HANUMANAS Autonomy Flags</span>
               <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-danger)' }}>{autoCritical} critical</span>
             </div>
           )}

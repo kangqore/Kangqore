@@ -176,7 +176,7 @@ export function CustomerZeroCaseStudyPage() {
             "Build it, sell it" is not a strategy.
           </p>
           <p style={{ fontSize: 12, color: T3, margin: '0 0 12px', lineHeight: 1.7 }}>
-            Kangqore had built a 14-module enterprise operating system with a full AI layer (KIMMP), governance framework (AEGIS), and revenue engine. The problem: we had never run it internally at scale.
+            Kangqore had built a 14-module enterprise operating system with a full AI layer (KIMMP), governance framework (HANUMANAS), and revenue engine. The problem: we had never run it internally at scale.
           </p>
           <p style={{ fontSize: 12, color: T3, margin: 0, lineHeight: 1.7 }}>
             No enterprise buyer trusts a platform the vendor doesn't eat. We needed a Customer Zero proof before we could credibly walk into HDFC or Birla and pitch OIS transformation.
@@ -193,7 +193,7 @@ export function CustomerZeroCaseStudyPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <PhaseStep num="1" label="Blueprint™ Generated & Activated" detail="Kangqore OS v1.0 blueprint created from live DB. Status flipped to ACTIVE on 2026-07-17." done={true} />
             <PhaseStep num="2" label="OIS™ Day 0 Baseline Locked"         detail="78.9 OIS snapshot locked on 2026-07-16. 9 pillars measured across 14 modules." done={true} />
-            <PhaseStep num="3" label="AEGIS Governance Deployed"           detail="80 agents across 10 engines. GovernanceOps fully live. Autonomy log recording." done={true} />
+            <PhaseStep num="3" label="HANUMANAS Governance Deployed"           detail="80 agents across 10 engines. GovernanceOps fully live. Autonomy log recording." done={true} />
             <PhaseStep num="4" label="Revenue Intelligence Live"           detail="₹3.25Cr pipeline waterfall. HDFC/Bajaj/Birla tracked. Proposal Builder operational." done={true} />
           </div>
         </div>
@@ -218,9 +218,9 @@ export function CustomerZeroCaseStudyPage() {
             link={`${BASE}/revenue-pipeline`} linkLabel="Revenue Intel"
           />
           <WinCard
-            icon={ShieldCheck} color={TEAL} title="AEGIS Governance"
+            icon={ShieldCheck} color={TEAL} title="HANUMANAS Governance"
             desc="80 agents, 10 engines. Every action logged. Autonomy events tracked. Compliance-grade audit trail from Day 1."
-            link={`${BASE}/ai-governance`} linkLabel="AEGIS"
+            link={`${BASE}/ai-governance`} linkLabel="HANUMANAS"
           />
           <WinCard
             icon={Zap} color={BLUE} title="WAANDA Automation"

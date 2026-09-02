@@ -29,7 +29,7 @@ const CONTROLS: ComplianceControl[] = [
     description: 'Logical access controls are implemented to restrict access to information assets to authorised individuals only.',
     status: 'PASS',
     lastChecked: '2026-06-21',
-    evidence: 'AEGIS Access Sentinel active. All API endpoints require JWT. Role-based access enforced on 100% of admin routes.',
+    evidence: 'HANUMANAS Access Sentinel active. All API endpoints require JWT. Role-based access enforced on 100% of admin routes.',
   },
   {
     id: 'CC6.2',
@@ -83,7 +83,7 @@ const CONTROLS: ComplianceControl[] = [
     description: 'System monitoring detects and responds to anomalies in a timely manner.',
     status: 'PASS',
     lastChecked: '2026-06-21',
-    evidence: 'AEGIS monitoring 80-agent corps in real time. KIMMP Correlation Engine active. Anomaly detection running continuously.',
+    evidence: 'HANUMANAS monitoring 80-agent corps in real time. KIMMP Correlation Engine active. Anomaly detection running continuously.',
   },
   {
     id: 'CC7.2',
@@ -228,7 +228,7 @@ const CONTROLS: ComplianceControl[] = [
     description: 'The network is monitored to detect potential cybersecurity events.',
     status: 'PASS',
     lastChecked: '2026-06-21',
-    evidence: 'AEGIS Egress Control + Intelligence Egress active. All outbound KIMMP traffic logged and monitored.',
+    evidence: 'HANUMANAS Egress Control + Intelligence Egress active. All outbound KIMMP traffic logged and monitored.',
   },
   {
     id: 'RS.RP-1',
@@ -433,7 +433,7 @@ const FRAMEWORK_COLOR: Record<Framework, string> = {
   'NIST CSF': '#00c875',
 }
 
-// ── Live AEGIS engine mapping per control ─────────────────────────────────────
+// ── Live HANUMANAS engine mapping per control ─────────────────────────────────────
 
 const ENGINE_FOR_CONTROL: Record<string, string> = {
   // SOC 2 — CC6 Logical Access → Access Sentinel
@@ -466,7 +466,7 @@ const ENGINE_FOR_CONTROL: Record<string, string> = {
   'DE.AE': 'RISK_INTELLIGENCE',     'RS.RP': 'RISK_INTELLIGENCE', 'RC.RP': 'GOVERNANCE_OPS',
 }
 
-function aegisVerdictToStatus(verdict: string | undefined): ControlStatus | null {
+function hanumanasVerdictToStatus(verdict: string | undefined): ControlStatus | null {
   if (!verdict) return null
   if (verdict === 'CRITICAL') return 'FAIL'
   if (verdict === 'WARN')     return 'WARN'
@@ -536,7 +536,7 @@ function ControlRow({ control, liveStatus, liveCheckedAt, engineId }: {
               <Clock className="w-2.5 h-2.5 text-[var(--os-text-2)]" />
               <span className="text-[10px] text-[var(--os-text-2)]">
                 {liveCheckedAt
-                  ? <>AEGIS {engineId} · {new Date(liveCheckedAt).toLocaleString()}</>
+                  ? <>HANUMANAS {engineId} · {new Date(liveCheckedAt).toLocaleString()}</>
                   : <>Last checked {control.lastChecked}</>
                 }
               </span>
@@ -595,7 +595,7 @@ function BreachReadinessScore() {
 
       <div className="grid grid-cols-3 gap-3 text-center">
         {([
-          { label: 'Detection',  score: 88, note: 'AEGIS + Ops Centre active' },
+          { label: 'Detection',  score: 88, note: 'HANUMANAS + Ops Centre active' },
           { label: 'Response',   score: 74, note: 'IRP documented; DR test overdue' },
           { label: 'Recovery',   score: 58, note: 'RPO/RTO untested since H1 2025' },
         ] as const).map(d => (
@@ -639,7 +639,7 @@ function GovernanceTestSuite() {
   async function runTests() {
     setRunning(true); setError(null)
     try {
-      const res = await api.get('/admin/aegis/compliance/run')
+      const res = await api.get('/admin/hanumanas/compliance/run')
       setResult(res.data)
     } catch (e: any) {
       setError(e?.response?.data?.error ?? e.message)
@@ -745,14 +745,14 @@ function GovernanceTestSuite() {
   )
 }
 
-export function AegisCompliancePage() {
+export function HanumanasCompliancePage() {
   const [frameworkFilter, setFrameworkFilter] = useState<Framework | 'all'>('all')
   const [statusFilter, setStatusFilter] = useState<ControlStatus | 'issues'>('issues')
 
-  // Live AEGIS engine verdicts
+  // Live HANUMANAS engine verdicts
   const { data: agentSummary } = useQuery({
-    queryKey: ['aegis-agents-summary'],
-    queryFn: () => api.get('/admin/aegis/agents/summary').then(r => r.data),
+    queryKey: ['hanumanas-agents-summary'],
+    queryFn: () => api.get('/admin/hanumanas/agents/summary').then(r => r.data),
     staleTime: 60_000,
     refetchInterval: 120_000,
   })
@@ -769,7 +769,7 @@ export function AegisCompliancePage() {
   function resolveControl(c: ComplianceControl) {
     const engineId = ENGINE_FOR_CONTROL[c.id]
     const live = engineId ? engineVerdicts[engineId] : undefined
-    const liveStatus = live ? aegisVerdictToStatus(live.verdict) : null
+    const liveStatus = live ? hanumanasVerdictToStatus(live.verdict) : null
     return { liveStatus, liveCheckedAt: live?.raisedAt, engineId }
   }
 
@@ -818,7 +818,7 @@ export function AegisCompliancePage() {
           <p className="text-[9px] text-[var(--os-text-2)] mt-1">{total} controls across 3 frameworks</p>
           {liveCount > 0 && (
             <p className="text-[9px] text-green-400 mt-0.5 flex items-center gap-1">
-              <Radio className="w-2.5 h-2.5" /> {liveCount} backed by live AEGIS data
+              <Radio className="w-2.5 h-2.5" /> {liveCount} backed by live HANUMANAS data
             </p>
           )}
         </div>
@@ -954,13 +954,13 @@ function LiveSoc2Controls() {
 
   const { data, isLoading } = useQuery<{ framework: string; controls: LiveControl[] }>({
     queryKey: ['live-compliance-controls', framework],
-    queryFn:  () => api.get(`/admin/kangqore-immp/aegis/compliance-controls?framework=${framework}`).then(r => r.data),
+    queryFn:  () => api.get(`/admin/kangqore-immp/hanumanas/compliance-controls?framework=${framework}`).then(r => r.data),
     staleTime: 60_000,
   })
 
   const update = useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: Record<string, string> }) =>
-      api.patch(`/admin/kangqore-immp/aegis/compliance-controls/${id}`, payload),
+      api.patch(`/admin/kangqore-immp/hanumanas/compliance-controls/${id}`, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['live-compliance-controls'] })
       setEditingId(null)

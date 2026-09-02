@@ -28,7 +28,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
   const critical24h: number      = viewModel.critical24h ?? 0
   const warn24h: number          = viewModel.warn24h ?? 0
   const deniedCount: number      = viewModel.deniedEventCount ?? 0
-  const aegisHealth: number | null = viewModel.aegisHealthScore ?? null
+  const hanumanasHealth: number | null = viewModel.hanumanasHealthScore ?? null
   const shieldEvents: any[]      = Array.isArray(viewModel.recentShieldEvents) ? viewModel.recentShieldEvents : []
 
   const shieldCol    = VERDICT_COL[shieldVerdict]    ?? 'var(--os-text-4)'
@@ -36,13 +36,13 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
   const sovereignCol = VERDICT_COL[sovereignVerdict] ?? 'var(--os-text-4)'
   const statusOk     = viewModel.bootStatus === 'OPERATIONAL'
 
-  let aegisValue: string | number = statusOk ? 'OK' : 'N/A'
-  if (aegisHealth !== null) aegisValue = `${aegisHealth}%`
-  let aegisCol = 'var(--os-text-4)'
-  if (aegisHealth !== null) {
-    if (aegisHealth >= 80) aegisCol = 'var(--os-success)'
-    else if (aegisHealth >= 60) aegisCol = 'var(--os-warning)'
-    else aegisCol = 'var(--os-danger)'
+  let hanumanasValue: string | number = statusOk ? 'OK' : 'N/A'
+  if (hanumanasHealth !== null) hanumanasValue = `${hanumanasHealth}%`
+  let hanumanasCol = 'var(--os-text-4)'
+  if (hanumanasHealth !== null) {
+    if (hanumanasHealth >= 80) hanumanasCol = 'var(--os-success)'
+    else if (hanumanasHealth >= 60) hanumanasCol = 'var(--os-warning)'
+    else hanumanasCol = 'var(--os-danger)'
   }
 
   return (
@@ -74,7 +74,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
           { label: 'Critical 24h', value: critical24h, col: critical24h > 0 ? 'var(--os-danger)' : 'var(--os-text-1)' },
           { label: 'Warns 24h',   value: warn24h,     col: warn24h > 0 ? 'var(--os-warning)' : 'var(--os-text-1)'  },
           { label: 'Denied',      value: deniedCount,  col: deniedCount > 0 ? 'var(--os-danger)' : 'var(--os-text-1)' },
-          { label: 'AEGIS',       value: aegisValue,  col: aegisCol },
+          { label: 'HANUMANAS',       value: hanumanasValue,  col: hanumanasCol },
         ].map(({ label, value, col }) => (
           <div key={label} style={{
             flex: 1, padding: '6px 4px', borderRadius: 6, textAlign: 'center',

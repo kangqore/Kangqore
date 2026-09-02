@@ -2,7 +2,7 @@ import { Kanban, Brain, AlertTriangle } from 'lucide-react'
 
 const TICKETS = [
   { id: 'KIMMP-438', title: 'Context window caching layer',          points: 5, assignee: 'AR', status: 'Done'        },
-  { id: 'KIMMP-435', title: 'AEGIS audit log pagination',            points: 3, assignee: 'PM', status: 'Done'        },
+  { id: 'KIMMP-435', title: 'HANUMANAS audit log pagination',            points: 3, assignee: 'PM', status: 'Done'        },
   { id: 'KIMMP-433', title: 'Roadmap drag-and-drop reorder',         points: 3, assignee: 'OS', status: 'Done'        },
   { id: 'KIMMP-440', title: 'Sprint velocity chart component',       points: 2, assignee: 'AR', status: 'Done'        },
   { id: 'KIMMP-441', title: 'Feature backlog search & filter',       points: 3, assignee: 'PM', status: 'Done'        },

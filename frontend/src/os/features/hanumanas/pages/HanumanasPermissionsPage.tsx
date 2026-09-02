@@ -12,7 +12,7 @@ interface PermissionScope {
   createdAt: string
 }
 
-const WORKSPACES = ['AEGIS', 'KIMMP', 'WAANDA', 'CRM', 'FINANCE', 'PROJECTS', 'DELIVERY', 'GOVERNANCE', 'HR', 'COMMUNITIES']
+const WORKSPACES = ['HANUMANAS', 'KIMMP', 'WAANDA', 'CRM', 'FINANCE', 'PROJECTS', 'DELIVERY', 'GOVERNANCE', 'HR', 'COMMUNITIES']
 const ACTIONS    = ['READ', 'WRITE', 'ADMIN'] as const
 
 const ACTION_CHIP: Record<string, string> = {
@@ -21,7 +21,7 @@ const ACTION_CHIP: Record<string, string> = {
   ADMIN: 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400',
 }
 
-export function AegisPermissionsPage() {
+export function HanumanasPermissionsPage() {
   const [scopes, setScopes]   = useState<PermissionScope[]>([])
   const [loading, setLoading] = useState(false)
   const [filter, setFilter]   = useState('')
@@ -29,7 +29,7 @@ export function AegisPermissionsPage() {
 
   // Grant form
   const [gUserId,    setGUserId]    = useState('')
-  const [gWorkspace, setGWorkspace] = useState('AEGIS')
+  const [gWorkspace, setGWorkspace] = useState('HANUMANAS')
   const [gFeature,   setGFeature]   = useState('')
   const [gAction,    setGAction]    = useState<'READ' | 'WRITE' | 'ADMIN'>('READ')
   const [granting,   setGranting]   = useState(false)

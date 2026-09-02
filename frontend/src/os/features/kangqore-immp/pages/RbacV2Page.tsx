@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@lib/api'
 
-const DEPTS = ['Projects', 'Finance', 'CRM', 'WAANDA', 'AEGIS', 'Analytics', 'Workflows', 'Signals']
+const DEPTS = ['Projects', 'Finance', 'CRM', 'WAANDA', 'HANUMANAS', 'Analytics', 'Workflows', 'Signals']
 const ALL_PERMS = [
   'projects:read', 'projects:write', 'finance:read', 'finance:write',
   'crm:read', 'crm:write', 'waanda:use', 'waanda:admin',
-  'aegis:view', 'aegis:admin', 'reports:read', 'analytics:read',
+  'hanumanas:view', 'hanumanas:admin', 'reports:read', 'analytics:read',
   'analytics:export', 'admin:none', 'admin:full',
 ]
 
@@ -48,7 +48,7 @@ export function RbacV2Page() {
       <div style={{ marginBottom: 28 }}>
         <div style={{ fontSize: 11, color: '#00ddaa', fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>S187 · Access Control</div>
         <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: '#fff' }}>Advanced RBAC v2</h1>
-        <p style={{ margin: '6px 0 0', color: '#8899aa', fontSize: 13 }}>Custom role builder · permission groups · field-level access · department-scoped views · AEGIS-enforced policy mapping</p>
+        <p style={{ margin: '6px 0 0', color: '#8899aa', fontSize: 13 }}>Custom role builder · permission groups · field-level access · department-scoped views · HANUMANAS-enforced policy mapping</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>

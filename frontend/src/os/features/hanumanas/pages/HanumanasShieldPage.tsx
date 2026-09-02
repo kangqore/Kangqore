@@ -40,7 +40,7 @@ function ThreatSeverityMatrix({ allRows }: { allRows: any[] }) {
     if (!r.userId || r.userId === '—') counts.HIGH++
     else if (ep.includes('/admin') && role !== 'ADMIN') counts.CRITICAL++
     else if (ep.includes('/kimmp') || ep.includes('/waanda')) counts.HIGH++
-    else if (ep.includes('/aegis')) counts.MEDIUM++
+    else if (ep.includes('/hanumanas')) counts.MEDIUM++
     else counts.LOW++
   })
   const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1
@@ -69,8 +69,8 @@ function ThreatSeverityMatrix({ allRows }: { allRows: any[] }) {
 // ── IP reputation panel ───────────────────────────────────────────────────────
 function IpReputationPanel() {
   const { data, isLoading } = useQuery<any>({
-    queryKey: ['aegis-threat-feed'],
-    queryFn:  () => api.get('/admin/kangqore-immp/aegis/threat-feed?limit=100').then(r => r.data),
+    queryKey: ['hanumanas-threat-feed'],
+    queryFn:  () => api.get('/admin/kangqore-immp/hanumanas/threat-feed?limit=100').then(r => r.data),
     staleTime: 30_000,
   })
 
@@ -113,7 +113,7 @@ function IpReputationPanel() {
   )
 }
 
-export function AegisShieldPage() {
+export function HanumanasShieldPage() {
   const [page, setPage]         = useState(0)
   const [search, setSearch]     = useState('')
   const [timeRange, setTimeRange] = useState<TimeRange>('7d')
@@ -121,12 +121,12 @@ export function AegisShieldPage() {
   const PAGE_SIZE = 50
 
   const { data, isLoading } = useQuery({
-    queryKey: ['aegis-shield', page, timeRange],
+    queryKey: ['hanumanas-shield', page, timeRange],
     queryFn: () => {
       const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(page * PAGE_SIZE) })
       const cutoff = timeRangeCutoff(timeRange)
       if (cutoff) params.set('from', cutoff.toISOString())
-      return api.get(`/admin/aegis/shield?${params}`).then(r => r.data)
+      return api.get(`/admin/hanumanas/shield?${params}`).then(r => r.data)
     },
     staleTime: 15_000,
     refetchInterval: 60_000,
@@ -164,7 +164,7 @@ export function AegisShieldPage() {
           <p className="text-sm font-semibold text-rose-300 mb-0.5">Access Shield Log</p>
           <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
             Every attempt by a <strong className="text-[var(--os-text-1)]">non-ADMIN or unauthenticated</strong> caller to reach KIMMP/WAANDA endpoints.
-            AEGIS blocked and logged all of these. None got through.
+            HANUMANAS blocked and logged all of these. None got through.
           </p>
         </div>
       </div>

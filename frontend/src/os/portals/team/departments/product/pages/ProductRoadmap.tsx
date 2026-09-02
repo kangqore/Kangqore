@@ -2,7 +2,7 @@ import { Compass, Brain } from 'lucide-react'
 
 const NOW = [
   { title: 'KIMMP v3 Context Engine',   priority: 'High',   pct: 60 },
-  { title: 'AEGIS Audit Dashboard',     priority: 'High',   pct: 40 },
+  { title: 'HANUMANAS Audit Dashboard',     priority: 'High',   pct: 40 },
   { title: 'Ops Centre Live Boards',    priority: 'Medium', pct: 80 },
   { title: 'Client Portal Refresh',     priority: 'Medium', pct: 25 },
 ]
@@ -25,7 +25,7 @@ const LATER = [
 ]
 
 const SHIPPED = [
-  { title: 'AEGIS Phase 1',           shipped: '2026-05-01' },
+  { title: 'HANUMANAS Phase 1',           shipped: '2026-05-01' },
   { title: 'Client Portal v2',        shipped: '2026-05-01' },
   { title: 'Ops Centre Boards',       shipped: '2026-06-01' },
   { title: 'Approval Workflows',      shipped: '2026-06-01' },

@@ -3,7 +3,7 @@ import { Gauge, Info } from '@phosphor-icons/react'
 import { agentStudioService } from '../agentStudioService'
 
 // S324 — Agent Performance + Audit. Full per-row granularity only for
-// KimmpAgent rows run through S321's runtime; the 38 KIMMP + 80 AEGIS
+// KimmpAgent rows run through S321's runtime; the 38 KIMMP + 80 HANUMANAS
 // hardcoded agents aren't individually attributable in LlmCallLog today
 // (see the reality-check on the backend route) — shown as honest aggregate
 // buckets below rather than faked per-agent rows.
@@ -59,7 +59,7 @@ export function AgentPerformancePage() {
           <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--os-text-2)]">Legacy hardcoded agents — aggregate only</p>
         </div>
         <p className="text-[10px] text-[var(--os-text-2)] mb-2 max-w-xl">
-          The 38 KIMMP orchestrator agents all log under one <code className="font-mono">agentRole</code> ("orchestrator"), and AEGIS's ~40 shared <code className="font-mono">callLLM()</code> callers set no per-agent role at all — so today these can only be shown as aggregate buckets, not broken out per individual agent. Migrating those 118 existing call sites to per-agent attribution is future scope.
+          The 38 KIMMP orchestrator agents all log under one <code className="font-mono">agentRole</code> ("orchestrator"), and HANUMANAS's ~40 shared <code className="font-mono">callLLM()</code> callers set no per-agent role at all — so today these can only be shown as aggregate buckets, not broken out per individual agent. Migrating those 118 existing call sites to per-agent attribution is future scope.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {legacy.map(b => (

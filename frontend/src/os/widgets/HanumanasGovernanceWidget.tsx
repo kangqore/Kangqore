@@ -33,7 +33,7 @@ function fmtAge(iso: string | null): string {
 const Core: React.FC<WidgetProps> = ({ viewModel }) => {
   const rawEngines      = viewModel.engineSummaries ?? viewModel.engines
   const engines: any[]  = Array.isArray(rawEngines) ? rawEngines : []
-  const healthScore     = viewModel.aegisHealth ?? viewModel.shieldHealthScore ?? null
+  const healthScore     = viewModel.hanumanasHealth ?? viewModel.shieldHealthScore ?? null
   const shieldVerdict   = viewModel.shieldVerdict ?? 'UNKNOWN'
   const critical24h     = viewModel.totalCritical ?? viewModel.critical24h ?? 0
   const warn24h         = viewModel.totalWarns   ?? viewModel.warn24h ?? 0
@@ -51,7 +51,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
       {/* Hero row */}
       <div style={{ display: 'flex', gap: 6 }}>
         {[
-          { label: 'AEGIS Shield',  value: shieldVerdict, col: verdictCol },
+          { label: 'HANUMANAS Shield',  value: shieldVerdict, col: verdictCol },
           { label: 'Health Score',  value: healthScore !== null ? `${healthScore}%` : '—', col: healthCol },
           { label: 'Critical 24h',  value: critical24h, col: critical24h > 0 ? 'var(--os-danger)' : 'var(--os-text-1)' },
           { label: 'Warns 24h',     value: warn24h,     col: warn24h > 0 ? 'var(--os-warning)' : 'var(--os-text-1)' },
@@ -158,4 +158,4 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
   )
 }
 
-export const AegisGovernanceWidget = withWidgetContext(Core)
+export const HanumanasGovernanceWidget = withWidgetContext(Core)

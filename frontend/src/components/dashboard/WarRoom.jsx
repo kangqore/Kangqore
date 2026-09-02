@@ -110,7 +110,7 @@ export const WarRoom = () => {
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4 text-blue-400">
                   <CheckCircle2 className="w-6 h-6" />
-                  <h3 className="font-semibold tracking-wide uppercase">AEGIS Governed Action</h3>
+                  <h3 className="font-semibold tracking-wide uppercase">HANUMANAS Governed Action</h3>
                 </div>
                 <p className="text-xl font-medium leading-relaxed text-neutral-200">
                   {recommendation}

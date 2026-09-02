@@ -11,7 +11,7 @@ export function CustomerTwentyNinePage() {
       size:            '250–500 employees',
       oisBaseline:     63.2,
       oisTarget:       77.0,
-      modules:         ['WAANDA', 'AEGIS', 'Finance', 'OIS', 'Trade-Compliance'],
+      modules:         ['WAANDA', 'HANUMANAS', 'Finance', 'OIS', 'Trade-Compliance'],
       accentColor:     '#f59e0b',
       verticalEdition: 'fintech',
       personaName:     'FINX',

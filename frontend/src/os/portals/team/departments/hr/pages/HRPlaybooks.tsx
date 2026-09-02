@@ -21,7 +21,7 @@ const TEMPLATES: PlaybookTemplate[] = [
     steps: [
       { id: 's1', label: 'Resignation Confirmation',instructions: 'Countersign resignation letter, confirm last working day, communicate to payroll.', assignee: 'HRBP', sla: '24h of receipt', status: 'PENDING' },
       { id: 's2', label: 'Knowledge Transfer',       instructions: 'Employee completes handover doc, schedules knowledge transfer with team.', assignee: 'Line Manager', sla: 'Week 1 of notice', status: 'PENDING' },
-      { id: 's3', label: 'IT & Access Revocation',  instructions: 'Raise security offboarding ticket. All access revoked by 17:00 on last day.', assignee: 'HR Admin', sla: 'Last day', status: 'PENDING', kimmHint: 'AEGIS offboarding checklist has 14 access points for this role. Ensure all are covered.' },
+      { id: 's3', label: 'IT & Access Revocation',  instructions: 'Raise security offboarding ticket. All access revoked by 17:00 on last day.', assignee: 'HR Admin', sla: 'Last day', status: 'PENDING', kimmHint: 'HANUMANAS offboarding checklist has 14 access points for this role. Ensure all are covered.' },
       { id: 's4', label: 'Exit Interview',           instructions: 'Conduct exit interview (HRBP). Log feedback themes in HR system.', assignee: 'HRBP', sla: 'Week before leave', status: 'PENDING' },
       { id: 's5', label: 'Payroll & Reference',     instructions: 'Process final payroll, provide P45, set up reference process.', assignee: 'HR Admin', sla: 'Last day', status: 'PENDING' },
     ],

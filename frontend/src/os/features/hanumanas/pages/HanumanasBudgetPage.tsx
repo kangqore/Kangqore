@@ -26,27 +26,27 @@ interface TenantUsage {
   windowHours: number; overBudget: boolean; hardDeny: boolean; since: string
 }
 
-export function AegisBudgetPage() {
+export function HanumanasBudgetPage() {
   const qc = useQueryClient()
   const [showAdd, setShowAdd] = useState(false)
   const [selectedTenant, setSelectedTenant] = useState<string | null>(null)
   const [form, setForm] = useState({ tenantId: '', callLimit: '500', windowHours: '24', hardDeny: true })
 
   const { data: budget, isLoading, refetch } = useQuery<BudgetConfig>({
-    queryKey: ['aegis-budget'],
-    queryFn: () => api.get('/api/admin/aegis/budget').then(r => r.data),
+    queryKey: ['hanumanas-budget'],
+    queryFn: () => api.get('/api/admin/hanumanas/budget').then(r => r.data),
     staleTime: 30_000,
   })
 
   const { data: usage } = useQuery<TenantUsage>({
-    queryKey: ['aegis-budget-usage', selectedTenant],
-    queryFn:  () => api.get(`/api/admin/aegis/budget/${selectedTenant}/usage`).then(r => r.data),
+    queryKey: ['hanumanas-budget-usage', selectedTenant],
+    queryFn:  () => api.get(`/api/admin/hanumanas/budget/${selectedTenant}/usage`).then(r => r.data),
     enabled:  !!selectedTenant,
     staleTime: 10_000,
   })
 
   const addMut = useMutation({
-    mutationFn: () => api.post('/api/admin/aegis/budget', {
+    mutationFn: () => api.post('/api/admin/hanumanas/budget', {
       tenantId:    form.tenantId.trim(),
       callLimit:   parseInt(form.callLimit),
       windowHours: parseInt(form.windowHours),
@@ -55,7 +55,7 @@ export function AegisBudgetPage() {
     onSuccess: () => {
       setShowAdd(false)
       setForm({ tenantId: '', callLimit: '500', windowHours: '24', hardDeny: true })
-      qc.invalidateQueries({ queryKey: ['aegis-budget'] })
+      qc.invalidateQueries({ queryKey: ['hanumanas-budget'] })
     },
   })
 
@@ -70,7 +70,7 @@ export function AegisBudgetPage() {
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <p className="text-base font-bold" style={{ color: T1 }}>AEGIS Phase 3 — Budget Enforcement</p>
+              <p className="text-base font-bold" style={{ color: T1 }}>HANUMANAS Phase 3 — Budget Enforcement</p>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold"
                 style={{ background: 'rgba(226,68,92,0.1)', color: CRIMSON }}>S112</span>
             </div>
@@ -87,7 +87,7 @@ export function AegisBudgetPage() {
           <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
             <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Egress Size Limit</p>
             <p className="text-2xl font-black" style={{ color: BLUE }}>{budget.global.egressSizeLimitKb} KB</p>
-            <p className="text-[11px] mt-1" style={{ color: T2 }}>Responses exceeding this are hard-denied at the AEGIS egress layer</p>
+            <p className="text-[11px] mt-1" style={{ color: T2 }}>Responses exceeding this are hard-denied at the HANUMANAS egress layer</p>
             <div className="flex items-center gap-1.5 mt-2">
               <Lock className="w-3 h-3" style={{ color: CRIMSON }} />
               <span className="text-[10px] font-bold" style={{ color: CRIMSON }}>Hard Deny Active</span>

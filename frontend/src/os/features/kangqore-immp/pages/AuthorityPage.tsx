@@ -17,7 +17,7 @@ import { cn } from '@design-system/cn'
 
 type HealthStatus = 'OPTIMAL' | 'DEGRADED' | 'PAUSED' | 'UNKNOWN'
 type DirectiveType = 'ALIGN' | 'PAUSE' | 'RESUME' | 'FOCUS' | 'OVERRIDE' | 'REPORT' | 'CONFIGURE'
-type SubsystemName = 'KIMMP' | 'AEGIS' | 'KEOS' | 'KORE' | 'EQORE' | 'ALIS' | 'VIS'
+type SubsystemName = 'KIMMP' | 'HANUMANAS' | 'KEOS' | 'KORE' | 'EQORE' | 'ALIS' | 'VIS'
 
 // Matches backend SubsystemReport shape exactly
 interface SubsystemReport {
@@ -79,7 +79,7 @@ function HealthDot({ status, size = 'md' }: { status: HealthStatus; size?: 'sm' 
 
 const SUBSYSTEM_ICON: Record<SubsystemName, React.ElementType> = {
   KIMMP: Crown,
-  AEGIS: Activity,
+  HANUMANAS: Activity,
   KEOS:  Zap,
   KORE:  Settings2,
   EQORE: Radio,
@@ -89,7 +89,7 @@ const SUBSYSTEM_ICON: Record<SubsystemName, React.ElementType> = {
 
 const SUBSYSTEM_DESC: Record<SubsystemName, string> = {
   KIMMP: 'Cognitive runtime · Loop + cognition pipeline',
-  AEGIS: 'Governance shield · 80 agents · threat detection',
+  HANUMANAS: 'Governance shield · 80 agents · threat detection',
   KEOS:  'Mission kernel · capability registry · execution',
   KORE:  'Digital twin manager · entity snapshots',
   EQORE: 'Conversation orchestration · 6-agent lead engine',
@@ -156,7 +156,7 @@ function SubsystemCard({ system, intel }: { system: SubsystemReport; intel?: Sub
 // ── Issue Directive panel ─────────────────────────────────────────────────────
 
 const DIRECTIVE_TYPES: DirectiveType[] = ['ALIGN', 'PAUSE', 'RESUME', 'FOCUS', 'OVERRIDE', 'REPORT', 'CONFIGURE']
-const SUBSYSTEM_NAMES: SubsystemName[] = ['KIMMP', 'AEGIS', 'KEOS', 'KORE', 'EQORE', 'ALIS', 'VIS']
+const SUBSYSTEM_NAMES: SubsystemName[] = ['KIMMP', 'HANUMANAS', 'KEOS', 'KORE', 'EQORE', 'ALIS', 'VIS']
 
 function DirectivePanel() {
   const qc = useQueryClient()

@@ -8,7 +8,7 @@ const FAQ_CATEGORIES = [
   { id: 'all', label: 'All Questions' },
   { id: 'architecture', label: 'Architecture & Krisnam' },
   { id: 'view', label: 'Kangqore View OS' },
-  { id: 'governance', label: 'Security & AEGIS' },
+  { id: 'governance', label: 'Security & HANUMANAS' },
   { id: 'services', label: 'Departments & Delivery' },
 ];
 
@@ -16,12 +16,12 @@ const FAQS_DATA = [
   {
     category: 'architecture',
     q: 'What is Krisnam, and how does it power the Kangqore ecosystem?',
-    a: 'Krisnam is our proprietary foundational Large Language Model and reasoning engine. While AEGIS provides immutable policy governance and NOLAN structures semantic enterprise data, Krisnam is the cognitive brain. It reasons over enterprise graphs, translates high-level strategic intents into deterministic workflows, and drives autonomous action pipelines across Kangqore View.'
+    a: 'Krisnam is our proprietary foundational Large Language Model and reasoning engine. While HANUMANAS provides immutable policy governance and NOLAN structures semantic enterprise data, Krisnam is the cognitive brain. It reasons over enterprise graphs, translates high-level strategic intents into deterministic workflows, and drives autonomous action pipelines across Kangqore View.'
   },
   {
     category: 'architecture',
     q: 'How does KIMMP / WAANDA orchestrate autonomous missions?',
-    a: 'KIMMP (Kangqore Intelligent Mission & Management Platform) acts as the cognitive routing architecture powered by Krisnam. When executives or operators state high-level goals, KIMMP decomposes them into governed functions, validates every operation against AEGIS compliance policies, and orchestrates real-time execution across systems.'
+    a: 'KIMMP (Kangqore Intelligent Mission & Management Platform) acts as the cognitive routing architecture powered by Krisnam. When executives or operators state high-level goals, KIMMP decomposes them into governed functions, validates every operation against HANUMANAS compliance policies, and orchestrates real-time execution across systems.'
   },
   {
     category: 'view',
@@ -35,8 +35,8 @@ const FAQS_DATA = [
   },
   {
     category: 'governance',
-    q: 'What is AEGIS, and how does it guarantee enterprise safety?',
-    a: 'AEGIS is Kangqore’s deterministic policy and governance enforcement engine. It operates at the architectural boundary between the LLM and the enterprise ActionEngine. Every autonomous action, pipeline execution, or resource change proposed by Krisnam must pass cryptographic AEGIS policy verification before execution.'
+    q: 'What is HANUMANAS, and how does it guarantee enterprise safety?',
+    a: 'HANUMANAS is Kangqore’s deterministic policy and governance enforcement engine. It operates at the architectural boundary between the LLM and the enterprise ActionEngine. Every autonomous action, pipeline execution, or resource change proposed by Krisnam must pass cryptographic HANUMANAS policy verification before execution.'
   },
   {
     category: 'governance',
@@ -96,7 +96,7 @@ export default function FAQPage() {
       <SEO
         title="Frequently Asked Questions — Kangqore FAQs"
         description="Find clear answers to common questions about Kangqore's enterprise OS, AI architecture, Krisnam reasoning engine, governance models, and delivery."
-        keywords="Kangqore FAQs, enterprise AI questions, Krisnam LLM, AEGIS governance, Kangqore View, enterprise IT FAQs"
+        keywords="Kangqore FAQs, enterprise AI questions, Krisnam LLM, HANUMANAS governance, Kangqore View, enterprise IT FAQs"
         url="/kangqore-faqs"
       />
       <Helmet>
@@ -120,7 +120,7 @@ export default function FAQPage() {
             Frequently Asked Questions
           </h1>
           <p className="max-w-2xl mx-auto text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
-            Clear, unhedged answers about the Kangqore View operating system, Krisnam AI reasoning engine, AEGIS governance, and our 62 service offerings.
+            Clear, unhedged answers about the Kangqore View operating system, Krisnam AI reasoning engine, HANUMANAS governance, and our 62 service offerings.
           </p>
 
           {/* Search Bar */}

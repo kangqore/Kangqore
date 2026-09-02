@@ -60,7 +60,7 @@ const HC_WORKFLOWS = [
   { id: 'assessment', name: 'Clinical Assessment',       icon: Activity,   color: ROSE, eta: '1 day',    agents: ['DIAGNOSTICS', 'RESEARCH'],  steps: ['Patient check-in → EHR pull', 'KIMMP care pathway assigned', 'Assessment recorded + risk scored', 'Care team briefed on KIMMP flags', 'Treatment plan generated'] },
   { id: 'treatment',  name: 'Treatment Management',      icon: Heart,      color: TEAL, eta: 'Ongoing',   agents: ['COACH', 'DIAGNOSTICS'],     steps: ['Treatment plan → task queue', 'Daily adherence tracking', 'Readmission risk flagged at discharge −2d', 'Outcome gate: target metrics hit?', 'Discharge + follow-up scheduled'] },
   { id: 'discharge',  name: 'Discharge & Follow-up',     icon: CheckCircle2, color: AMB, eta: '2–3 days', agents: ['EXECUTION', 'COACH'],       steps: ['Discharge summary generated (KIMMP)', 'Follow-up appointment set', 'Patient education materials sent', '7-day check-in trigger', 'NPS survey dispatch + response tracking'] },
-  { id: 'compliance', name: 'HIPAA Compliance Audit',    icon: Shield,     color: PURP, eta: 'Continuous', agents: ['AEGIS', 'DIAGNOSTICS'],    steps: ['Ontology PII markers active', 'Access log to AEGIS Shield', 'Anomalous data access → HIGH signal', 'Monthly privacy audit report', 'KIMMP policy violation → block + alert'] },
+  { id: 'compliance', name: 'HIPAA Compliance Audit',    icon: Shield,     color: PURP, eta: 'Continuous', agents: ['HANUMANAS', 'DIAGNOSTICS'],    steps: ['Ontology PII markers active', 'Access log to HANUMANAS Shield', 'Anomalous data access → HIGH signal', 'Monthly privacy audit report', 'KIMMP policy violation → block + alert'] },
 ]
 
 const HC_STATS = [
@@ -122,8 +122,8 @@ const BFSI_PILLARS = [
 
 const BFSI_WORKFLOWS = [
   { id: 'loan',     name: 'Loan Origination Lifecycle',   icon: FileText, color: BLUE, eta: '3–7 days',  agents: ['EXECUTION', 'DIAGNOSTICS'], steps: ['Application received → KIMMP credit score pull', 'Bureau data fetch + risk categorisation', 'Underwriting decision queue (WAANDA-assisted)', 'Approval gate → term sheet generation', 'Disbursement → repayment schedule activated'] },
-  { id: 'npa',      name: 'NPA Risk Monitoring',          icon: AlertTriangle, color: RED, eta: 'Daily', agents: ['DIAGNOSTICS', 'COACH'],     steps: ['Daily EMI payment check → KIMMP scoring', '30d overdue → MEDIUM signal + collections queue', '90d overdue → HIGH signal + provisioning trigger', 'NPA reclassification → AEGIS compliance log', 'Recovery workflow: legal → settlement → write-off'] },
-  { id: 'aml',      name: 'AML Transaction Screening',    icon: Shield,   color: PURP, eta: 'Real-time', agents: ['AEGIS', 'DIAGNOSTICS'],    steps: ['Transaction ingested → rule engine scoring', 'Threshold breach → CRITICAL KIMMP signal', 'Case file auto-created in AEGIS', 'SAR (Suspicious Activity Report) draft', 'Regulator escalation + audit trail locked'] },
+  { id: 'npa',      name: 'NPA Risk Monitoring',          icon: AlertTriangle, color: RED, eta: 'Daily', agents: ['DIAGNOSTICS', 'COACH'],     steps: ['Daily EMI payment check → KIMMP scoring', '30d overdue → MEDIUM signal + collections queue', '90d overdue → HIGH signal + provisioning trigger', 'NPA reclassification → HANUMANAS compliance log', 'Recovery workflow: legal → settlement → write-off'] },
+  { id: 'aml',      name: 'AML Transaction Screening',    icon: Shield,   color: PURP, eta: 'Real-time', agents: ['HANUMANAS', 'DIAGNOSTICS'],    steps: ['Transaction ingested → rule engine scoring', 'Threshold breach → CRITICAL KIMMP signal', 'Case file auto-created in HANUMANAS', 'SAR (Suspicious Activity Report) draft', 'Regulator escalation + audit trail locked'] },
   { id: 'kyc',      name: 'KYC Onboarding Workflow',      icon: Users,    color: TEAL, eta: '1–2 days',  agents: ['EXECUTION', 'RESEARCH'],   steps: ['Identity documents received', 'OCR + data validation (KIMMP)', 'PEP / sanctions screening', 'Risk rating assigned (LOW/MEDIUM/HIGH)', 'Account activated or EDD triggered'] },
 ]
 
@@ -180,17 +180,17 @@ const LOGI_KPIS = [
 
 // ── Government Edition ────────────────────────────────────────────────────────
 const GOV_PILLARS = [
-  { id: 'procurement', label: 'Procurement Intelligence',    bids: 'P3',  desc: 'RFP→Tender→Evaluation→Award→Contract lifecycle, KIMMP bid scoring, transparency audit trail to AEGIS.', coverage: 84 },
+  { id: 'procurement', label: 'Procurement Intelligence',    bids: 'P3',  desc: 'RFP→Tender→Evaluation→Award→Contract lifecycle, KIMMP bid scoring, transparency audit trail to HANUMANAS.', coverage: 84 },
   { id: 'service',     label: 'Public Service Delivery',     bids: 'P5',  desc: 'Citizen service request tracking, SLA compliance, multi-channel intake (portal/walk-in/call), WAANDA triage.', coverage: 80 },
   { id: 'budget',      label: 'Budget & Fund Management',    bids: 'P11', desc: 'Scheme-wise expenditure tracking, utilisation vs allocation, lapse detection, KIMMP underspend signals.', coverage: 78 },
-  { id: 'compliance',  label: 'Regulatory & Audit',          bids: 'P14', desc: 'Every decision logged to AEGIS compliance. CAG-ready audit trail. Policy violation → CRITICAL signal.', coverage: 90 },
+  { id: 'compliance',  label: 'Regulatory & Audit',          bids: 'P14', desc: 'Every decision logged to HANUMANAS compliance. CAG-ready audit trail. Policy violation → CRITICAL signal.', coverage: 90 },
 ]
 
 const GOV_WORKFLOWS = [
-  { id: 'procurement', name: 'Procurement Lifecycle',        icon: FileText, color: BLUE, eta: '30–90d',    agents: ['EXECUTION', 'DIAGNOSTICS', 'COACH'], steps: ['RFP published → KIMMP market intelligence pull', 'Tender evaluation: WAANDA scoring matrix', 'L1 determination + policy compliance check', 'Award decision → AEGIS audit log entry', 'Contract execution → milestone tracking'] },
+  { id: 'procurement', name: 'Procurement Lifecycle',        icon: FileText, color: BLUE, eta: '30–90d',    agents: ['EXECUTION', 'DIAGNOSTICS', 'COACH'], steps: ['RFP published → KIMMP market intelligence pull', 'Tender evaluation: WAANDA scoring matrix', 'L1 determination + policy compliance check', 'Award decision → HANUMANAS audit log entry', 'Contract execution → milestone tracking'] },
   { id: 'service',     name: 'Citizen Service Request',      icon: Users,    color: TEAL, eta: '1–5 days',  agents: ['EXECUTION', 'COACH'],               steps: ['Request ingested (portal/offline)', 'KIMMP category + priority assignment', 'Department routing + officer assignment', 'SLA clock starts → KIMMP tracking', 'Resolution → citizen notification + satisfaction survey'] },
-  { id: 'budget',      name: 'Fund Utilisation Monitoring',  icon: TrendingUp, color: AMB, eta: 'Monthly',  agents: ['DIAGNOSTICS', 'RESEARCH'],           steps: ['Monthly expenditure data pull', 'Utilisation vs allocation per scheme', 'Underspend > 30% → MEDIUM signal', 'Q3 lapse risk → WAANDA reallocation recommendation', 'Annual CAG audit data export from AEGIS'] },
-  { id: 'audit',       name: 'AEGIS Compliance Audit',       icon: Shield,   color: PURP, eta: 'Continuous', agents: ['AEGIS', 'DIAGNOSTICS'],             steps: ['Every decision auto-logged to AEGIS AuditLog', 'Policy violation scan (daily)', 'CRITICAL finding → immediate escalation', 'Monthly compliance score computed', 'CAG-ready PDF export with decision provenance'] },
+  { id: 'budget',      name: 'Fund Utilisation Monitoring',  icon: TrendingUp, color: AMB, eta: 'Monthly',  agents: ['DIAGNOSTICS', 'RESEARCH'],           steps: ['Monthly expenditure data pull', 'Utilisation vs allocation per scheme', 'Underspend > 30% → MEDIUM signal', 'Q3 lapse risk → WAANDA reallocation recommendation', 'Annual CAG audit data export from HANUMANAS'] },
+  { id: 'audit',       name: 'HANUMANAS Compliance Audit',       icon: Shield,   color: PURP, eta: 'Continuous', agents: ['HANUMANAS', 'DIAGNOSTICS'],             steps: ['Every decision auto-logged to HANUMANAS AuditLog', 'Policy violation scan (daily)', 'CRITICAL finding → immediate escalation', 'Monthly compliance score computed', 'CAG-ready PDF export with decision provenance'] },
 ]
 
 const GOV_STATS = [
@@ -207,7 +207,7 @@ const GOV_KPIS = [
   { label: 'Fund Utilisation Rate',          target: '≥ 80%',   kimmpSignal: 'Utilisation < 60% at Q3 → underspend signal + reallocation trigger' },
   { label: 'Procurement Cycle Time',         target: '< 45d',   kimmpSignal: 'Cycle > 60d → MEDIUM signal to procurement head' },
   { label: 'Citizen Satisfaction (NPS)',     target: '≥ 60',    kimmpSignal: 'NPS < 50 → service design review signal' },
-  { label: 'Policy Compliance Rate',         target: '100%',    kimmpSignal: 'Any violation → CRITICAL AEGIS alert + immediate escalation' },
+  { label: 'Policy Compliance Rate',         target: '100%',    kimmpSignal: 'Any violation → CRITICAL HANUMANAS alert + immediate escalation' },
   { label: 'Audit Findings Resolved',        target: '≥ 90%',   kimmpSignal: 'Unresolved CAG findings → WAANDA escalation decision' },
 ]
 
@@ -408,7 +408,7 @@ export function IndustryPackPage() {
           <div style={{ background: RED + '05', border: `1px solid ${RED}25`, borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
             <AlertTriangle size={14} style={{ color: RED, flexShrink: 0 }} />
             <p style={{ fontSize: 11, color: T2 }}>
-              HIPAA compliance markers are automatically applied to all patient-related ontology types. KIMMP signal metadata strips PHI before transit. AEGIS Shield enforces access controls and generates audit logs.
+              HIPAA compliance markers are automatically applied to all patient-related ontology types. KIMMP signal metadata strips PHI before transit. HANUMANAS Shield enforces access controls and generates audit logs.
             </p>
           </div>
 
@@ -589,7 +589,7 @@ export function IndustryPackPage() {
           <GenericPackView
             icon={Shield} label="Government Edition" color="#6366f1" sprint="S73"
             pillars={GOV_PILLARS} workflows={GOV_WORKFLOWS} stats={GOV_STATS} kpis={GOV_KPIS}
-            pillarsLabel="4 pillars · AEGIS full audit trail on every decision"
+            pillarsLabel="4 pillars · HANUMANAS full audit trail on every decision"
             workflowsLabel="4 core templates · click to expand"
             kpisLabel="Public service KPI framework"
           />

@@ -19,7 +19,7 @@ interface Criterion { id: string; label: string; passed: boolean }
 interface Gate9     { criteria: Criterion[]; passed: number; total: number; score: number; alreadyDeclared: boolean; declaration?: any }
 
 const CHAPTER9_TRACKS = [
-  { id: 'T1', title: 'Vertical SaaS Licensing', icon: Globe2, color: BLUE, description: 'Package Kangqore OS as a vertical SaaS for specific industries. Each vertical gets a pre-configured Blueprint with industry pack, AEGIS profile, and branded WAANDA persona.', status: 'planned' },
+  { id: 'T1', title: 'Vertical SaaS Licensing', icon: Globe2, color: BLUE, description: 'Package Kangqore OS as a vertical SaaS for specific industries. Each vertical gets a pre-configured Blueprint with industry pack, HANUMANAS profile, and branded WAANDA persona.', status: 'planned' },
   { id: 'T2', title: 'OEM / White-label', icon: Shield, color: TEAL, description: 'Partner organisations deploy Kangqore under their own brand. Blueprint Marketplace is the distribution layer. Commission structure already live.', status: 'planned' },
   { id: 'T3', title: 'International GTM', icon: Globe2, color: GRN, description: 'UK/EU/India regions are technically ready. Chapter 9 is the commercial launch: regional pricing, GDPR/DPA compliance already done.', status: 'ready' },
   { id: 'T4', title: 'Gen4 Foundation Training', icon: Brain, color: PURP, description: 'When corpus reaches 5,000 records, begin Gen4 fine-tuning on Llama 3.1 8B. Replaces Gen1 Claude dependency for 80%+ of KIMMP reasoning.', status: 'pending-threshold' },

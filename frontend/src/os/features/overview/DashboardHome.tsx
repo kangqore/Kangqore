@@ -1144,12 +1144,12 @@ function WaandaRightPanel({ navigate }: { navigate: (p: string) => void }) {
   )
 }
 
-// ─── AEGIS Wide Card (Bottom full-width) ─────────────────────────────────────
+// ─── HANUMANAS Wide Card (Bottom full-width) ─────────────────────────────────────
 
-function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
+function HanumanasWideCard({ navigate }: { navigate: (p: string) => void }) {
   const { data, isLoading } = useQuery({
-    queryKey: ['aegis-summary'],
-    queryFn:  () => api.get('/admin/aegis/agents/summary').then(r => r.data),
+    queryKey: ['hanumanas-summary'],
+    queryFn:  () => api.get('/admin/hanumanas/agents/summary').then(r => r.data),
     staleTime: 60_000,
     refetchInterval: 120_000,
   })
@@ -1173,10 +1173,10 @@ function AegisWideCard({ navigate }: { navigate: (p: string) => void }) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, position: 'relative', zIndex: 1 }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--os-text-1)', margin: 0, display: 'flex', alignItems: 'center', gap: 7, letterSpacing: '-0.02em' }}>
           <Shield style={{ width: 16, height: 16, color: vs.color }} fill="none" strokeWidth={2.5} />
-          AEGIS Shield
+          HANUMANAS Shield
         </h3>
         <button
-          onClick={() => navigate('/kangqore-view/admin/aegis')}
+          onClick={() => navigate('/kangqore-view/admin/hanumanas')}
           style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-2)', background: 'var(--os-surface-1)', border: '1px solid var(--os-border)', borderRadius: 20, padding: '4px 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, transition: 'all 0.2s' }}
           className="hover:bg-black/5"
         >
@@ -1269,7 +1269,7 @@ const MODULES = [
   { label: 'Leads',     icon: Zap,             color: '#d97706', gradient: 'linear-gradient(135deg, #fef3c7 0%, #d97706 100%)',  path: '/kangqore-view/admin/leads'       },
   { label: 'Projects',  icon: LayoutDashboard, color: '#059669', gradient: 'linear-gradient(135deg, #d1fae5 0%, #059669 100%)',  path: '/kangqore-view/admin/projects'    },
   { label: 'BIDS™',    icon: Crosshair,        color: '#2563eb', gradient: 'linear-gradient(135deg, #dbeafe 0%, #2563eb 100%)',  path: '/kangqore-view/admin/bids'        },
-  { label: 'AEGIS',    icon: Shield,           color: '#e11d48', gradient: 'linear-gradient(135deg, #ffe4e6 0%, #e11d48 100%)',  path: '/kangqore-view/admin/aegis'       },
+  { label: 'HANUMANAS',    icon: Shield,           color: '#e11d48', gradient: 'linear-gradient(135deg, #ffe4e6 0%, #e11d48 100%)',  path: '/kangqore-view/admin/hanumanas'       },
   { label: 'Finance',  icon: DollarSign,       color: '#7c3aed', gradient: 'linear-gradient(135deg, #ede9fe 0%, #7c3aed 100%)',  path: '/kangqore-view/admin/finance'     },
   { label: 'Clients',  icon: Briefcase,        color: '#0284c7', gradient: 'linear-gradient(135deg, #e0f2fe 0%, #0284c7 100%)',  path: '/kangqore-view/admin/clients'     },
   { label: 'Schedule', icon: Calendar,         color: '#ea580c', gradient: 'linear-gradient(135deg, #ffedd5 0%, #ea580c 100%)',  path: '/kangqore-view/admin/scheduling'  },
@@ -1469,7 +1469,7 @@ function ActivityFeed({ navigate }: { navigate: (p: string) => void }) {
       )}
       {!isLoading && grouped.length > 0 && (
         <button
-          onClick={() => navigate('/kangqore-view/admin/aegis')}
+          onClick={() => navigate('/kangqore-view/admin/hanumanas')}
           style={{ width: '100%', marginTop: 16, padding: '10px 0', borderRadius: 10, background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', color: 'var(--os-text-2)', fontSize: 11, fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}
           className="hover:bg-slate-50 dark:hover:bg-slate-800"
         >
@@ -1766,10 +1766,10 @@ export function DashboardHome() {
         </div>
       </div>
 
-      {/* 4. Bottom row: AEGIS full-width + Module Grid */}
+      {/* 4. Bottom row: HANUMANAS full-width + Module Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
         <div className="lg:col-span-7 col-span-1 w-full">
-          <AegisWideCard navigate={navigate} />
+          <HanumanasWideCard navigate={navigate} />
         </div>
         <div className="lg:col-span-5 col-span-1 w-full">
           <ModuleGrid navigate={navigate} />

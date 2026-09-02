@@ -50,24 +50,24 @@ export const PlatformCognitiveAdapter: CognitiveStateAdapter = {
     const readyDomainCount   = domains.filter(d => d.ready).length
     const notReadyDomainCount = domains.length - readyDomainCount
 
-    // ── AEGIS security engines ─────────────────────────────────────────────────
-    const aegis = state.aegisAgentSummary
-    const getEngine = (name: string) => aegis?.engines.find(e => e.engine === name) ?? null
+    // ── HANUMANAS security engines ─────────────────────────────────────────────────
+    const hanumanas = state.hanumanasAgentSummary
+    const getEngine = (name: string) => hanumanas?.engines.find(e => e.engine === name) ?? null
 
     const accessSentinel  = getEngine('ACCESS_SENTINEL')
     const egressControl   = getEngine('EGRESS_CONTROL')
     const sovereignty     = getEngine('SOVEREIGNTY')
     const wirEngine       = getEngine('INTELLIGENCE_REGISTRY')
 
-    const shieldVerdict    = accessSentinel?.latest?.verdict ?? aegis?.overallVerdict ?? 'UNKNOWN'
+    const shieldVerdict    = accessSentinel?.latest?.verdict ?? hanumanas?.overallVerdict ?? 'UNKNOWN'
     const shieldSummary    = accessSentinel?.latest?.summary ?? null
     const shieldLastEvent  = accessSentinel?.latest?.raisedAt ?? null
     const egressVerdict    = egressControl?.latest?.verdict ?? 'NO_DATA'
     const sovereignVerdict = sovereignty?.latest?.verdict ?? 'NO_DATA'
-    const critical24h      = aegis?.critical24h ?? 0
-    const warn24h          = aegis?.warn24h ?? 0
+    const critical24h      = hanumanas?.critical24h ?? 0
+    const warn24h          = hanumanas?.warn24h ?? 0
 
-    const auditEvents    = state.aegisAudit ?? []
+    const auditEvents    = state.hanumanasAudit ?? []
     const deniedEvents   = auditEvents.filter(e =>
       e.verdict === 'CRITICAL' || (e.eventType ?? '').includes('DENY') || (e.eventType ?? '').includes('BLOCK')
     )
@@ -142,7 +142,7 @@ export const PlatformCognitiveAdapter: CognitiveStateAdapter = {
       warn24h,
       deniedEventCount:    deniedEvents.length,
       recentShieldEvents,
-      aegisHealthScore:    aegis?.healthScore ?? null,
+      hanumanasHealthScore:    hanumanas?.healthScore ?? null,
 
       // WIR / model registry
       wirVerdict,

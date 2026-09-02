@@ -4,7 +4,7 @@ const RELEASES = [
   { version: 'v2.4.1', date: '2026-06-12', type: 'Patch', notes: 'KIMMP context fixes + performance improvements', highlights: ['KIMMP context window caching', 'API response time −18%', 'Memory leak in Ops Centre fixed'] },
   { version: 'v2.4.0', date: '2026-06-01', type: 'Minor', notes: 'Ops Centre Live Boards, Approval Workflows',     highlights: ['Ops Centre real-time boards', 'Approval workflow engine', 'Bulk action support'] },
   { version: 'v2.3.2', date: '2026-05-20', type: 'Patch', notes: 'Security patches',                               highlights: ['CVE-2026-1182 patched', 'Session token rotation', 'Rate limiting on auth endpoints'] },
-  { version: 'v2.3.0', date: '2026-05-01', type: 'Minor', notes: 'AEGIS Phase 1, Client Portal v2',               highlights: ['AEGIS audit trail live', '80-agent corp deployed', 'Client Portal redesign', 'NPS widget added'] },
+  { version: 'v2.3.0', date: '2026-05-01', type: 'Minor', notes: 'HANUMANAS Phase 1, Client Portal v2',               highlights: ['HANUMANAS audit trail live', '80-agent corp deployed', 'Client Portal redesign', 'NPS widget added'] },
 ]
 
 const UPCOMING = {

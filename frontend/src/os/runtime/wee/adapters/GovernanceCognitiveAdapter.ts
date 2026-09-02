@@ -1,6 +1,6 @@
 // Governance Cognitive Adapter — Generation III Runtime
 // Projects WAANDA's cognitive state into the Governance workspace experience.
-// Includes AEGIS agent corps summary, audit ledger, and autonomy boundary data.
+// Includes HANUMANAS agent corps summary, audit ledger, and autonomy boundary data.
 
 import { CognitiveStateAdapter, ExperienceContract, ProjectionPolicy, WaandaCognitiveState } from '../types'
 
@@ -21,12 +21,12 @@ export const GovernanceCognitiveAdapter: CognitiveStateAdapter = {
 
     const domainIntelligence = state.domains.map(d => ({ id: d.id, name: d.name, ready: d.ready, kpis: d.kpis ?? [] }))
 
-    const aegis             = state.aegisAgentSummary
-    const shieldVerdict     = aegis?.overallVerdict ?? 'UNKNOWN'
-    const shieldHealthScore = aegis?.healthScore    ?? null
-    const critical24h       = aegis?.critical24h    ?? 0
-    const warn24h           = aegis?.warn24h         ?? 0
-    const engines           = (aegis?.engines ?? []).map(e => ({
+    const hanumanas             = state.hanumanasAgentSummary
+    const shieldVerdict     = hanumanas?.overallVerdict ?? 'UNKNOWN'
+    const shieldHealthScore = hanumanas?.healthScore    ?? null
+    const critical24h       = hanumanas?.critical24h    ?? 0
+    const warn24h           = hanumanas?.warn24h         ?? 0
+    const engines           = (hanumanas?.engines ?? []).map(e => ({
       engine:  e.engine,
       verdict: e.latest?.verdict ?? 'NO_DATA',
       agentId: e.latest?.agentId ?? null,
@@ -34,9 +34,9 @@ export const GovernanceCognitiveAdapter: CognitiveStateAdapter = {
       raisedAt: e.latest?.raisedAt ?? null,
     }))
 
-    const autonomyEvents   = state.aegisAutonomy.slice(0, 6)
+    const autonomyEvents   = state.hanumanasAutonomy.slice(0, 6)
     const autonomyCritical = autonomyEvents.filter(e => e.verdict === 'CRITICAL' || e.verdict === 'BLOCK').length
-    const auditTrail       = state.aegisAudit.slice(0, 10)
+    const auditTrail       = state.hanumanasAudit.slice(0, 10)
 
     const pendingDecisions = state.pendingDecisions
     const l3PlusDecisions  = pendingDecisions.filter(d => d.level >= 3)
@@ -74,8 +74,8 @@ export const GovernanceCognitiveAdapter: CognitiveStateAdapter = {
     const openKimmpDecisions     = kimmpDecisions.filter(d => !d.selected && !d.outcome)
     const resolvedKimmpDecisions = kimmpDecisions.filter(d => d.selected || d.outcome)
 
-    // AEGIS policy registry
-    const kimmpPolicies    = state.aegisPolicies ?? []
+    // HANUMANAS policy registry
+    const kimmpPolicies    = state.hanumanasPolicies ?? []
 
     return {
       waandaPhase:        state.phase,
@@ -94,7 +94,7 @@ export const GovernanceCognitiveAdapter: CognitiveStateAdapter = {
       l3PlusCount:        l3PlusDecisions.length,
       shieldVerdict,
       shieldHealthScore,
-      aegisHealth:        shieldHealthScore,
+      hanumanasHealth:        shieldHealthScore,
       critical24h,
       warn24h,
       totalCritical:      critical24h,
