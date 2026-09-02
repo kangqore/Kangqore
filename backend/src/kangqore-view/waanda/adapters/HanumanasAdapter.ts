@@ -2,7 +2,7 @@ import {
   WaandaSubsystem, WaandaDirective, DirectiveResult,
   SubsystemHealth, SubsystemIntelligence,
 } from '../WaandaDirective'
-import { HanumanasScheduler } from '../../esf/hanumanas'
+import { HanumanasScheduler, HANUMANAS } from '../../esf/hanumanas'
 import logger             from '../../../utils/logger'
 
 // Track last known verdict counts (updated by the scheduler on each run)
@@ -16,11 +16,11 @@ export function updateHanumanasVerdicts(counts: { clear: number; warn: number; c
 }
 
 export const HanumanasAdapter: WaandaSubsystem = {
-  name: 'HANUMANAS',
+  name: HANUMANAS.name,
 
   getHealth(): SubsystemHealth {
     return {
-      subsystem:  'HANUMANAS',
+      subsystem:  HANUMANAS.name,
       status:     _paused ? 'PAUSED' : 'OPTIMAL',
       lastActive: _lastRunAt,
       metrics: {
@@ -34,7 +34,7 @@ export const HanumanasAdapter: WaandaSubsystem = {
   getIntelligence(): SubsystemIntelligence {
     const { clear, warn, critical } = _lastVerdicts
     return {
-      subsystem:  'HANUMANAS',
+      subsystem:  HANUMANAS.name,
       summary:    `${_paused ? 'PAUSED' : 'Running'} — last cycle: ${clear} clear, ${warn} warn, ${critical} critical`,
       topSignal:  critical > 0 ? `${critical} CRITICAL verdict(s) in last HANUMANAS cycle` : undefined,
       health:     _paused ? 'PAUSED' : critical > 0 ? 'DEGRADED' : 'OPTIMAL',
@@ -87,5 +87,5 @@ export const HanumanasAdapter: WaandaSubsystem = {
 }
 
 function ok(d: WaandaDirective, detail: string): DirectiveResult {
-  return { directiveId: d.id, subsystem: 'HANUMANAS', accepted: true, detail, resolvedAt: new Date() }
+  return { directiveId: d.id, subsystem: HANUMANAS.name, accepted: true, detail, resolvedAt: new Date() }
 }

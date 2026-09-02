@@ -21,6 +21,7 @@ import crypto from 'crypto'
 import logger from '../../../utils/logger'
 import { logCall, scanPii, inferCallerModule } from '../gateway/KimmpGatewayCore'
 import { PromptRegistry } from '../wir/promptRegistry.service'
+import { HANUMANAS } from '../../esf/hanumanas/identity'
 
 const KRISNAM_URL   = process.env.KRISNAM_URL   || 'http://127.0.0.1:11435'
 const KRISNAM_MODEL = process.env.KRISNAM_MODEL || ''
@@ -170,7 +171,7 @@ function logGatewayCall(
   err?: Error,
   promptMeta?: { promptName?: string; promptVersion: number | null },
 ) {
-  if (callerInfo.actorType === 'HANUMANAS') return
+  if (callerInfo.actorType === HANUMANAS.name) return
   const systemText = flattenContent(params.system) ?? ''
   const userText = (params.messages ?? []).map((m: any) => flattenContent(m.content) ?? '').join('\n')
   const provider = res?.id?.toString().startsWith('krisnam_') ? 'krisnam' : 'claude'

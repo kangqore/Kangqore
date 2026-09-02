@@ -1,3 +1,4 @@
+export { HANUMANAS, type HanumanasName } from './identity'
 export { HanumanasLedger }             from './hanumanasLedger.service'
 export { hanumanasShield, hanumanasAccessLogger } from './hanumanasMiddleware'
 export { hanumanasRouter }             from './hanumanasRoutes'

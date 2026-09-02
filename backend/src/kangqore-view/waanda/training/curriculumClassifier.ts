@@ -1,4 +1,5 @@
 // ---------------------------------------------------------------------------
+import { HANUMANAS } from '../../esf/hanumanas/identity';
 // WAANDA Curriculum Classifier
 //
 // Every training example belongs to a curriculum domain. This classifier
@@ -93,7 +94,7 @@ export function classifyCurriculum(params: ClassifyParams): Curriculum {
   // Exact system match
   if (system) {
     const sys = system.replace(/^HANUMANAS:/, 'HANUMANAS_')
-    if (sys.startsWith('HANUMANAS')) return 'GOVERNANCE'
+    if (sys.startsWith(HANUMANAS.name)) return 'GOVERNANCE'
     if (SYSTEM_MAP[system]) return SYSTEM_MAP[system]
   }
 

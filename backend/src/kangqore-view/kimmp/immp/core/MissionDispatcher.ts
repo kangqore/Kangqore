@@ -1,5 +1,6 @@
 import { KeosKernel, MissionRequest } from '../../../kernel/KeosKernel';
 import { HanumanasShield } from '../../../esf/hanumanas/HanumanasShield';
+import { HANUMANAS } from '../../../esf/hanumanas/identity';
 import { KeosEventBus } from '../../../kernel/KeosEventBus';
 import { CapabilityRegistry } from '../../../kernel/CapabilityRegistry';
 import { ActionEngine } from '../../../automation/ActionEngine';
@@ -89,7 +90,7 @@ export class MissionDispatcher {
         if (!actionId) return;
         return ActionEngine.execute({
           actionId, params: { goal: request.goal, riskScore: hanumanasResult.riskScore, reason: hanumanasResult.reason },
-          actorId: actor, actorType: 'HANUMANAS', sourceModule: 'MissionDispatcher',
+          actorId: actor, actorType: HANUMANAS.name, sourceModule: 'MissionDispatcher',
           reasoning: `DENY: ${hanumanasResult.reason}`,
         });
       }).catch(() => {});

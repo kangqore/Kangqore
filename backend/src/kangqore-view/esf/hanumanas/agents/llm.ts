@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { withKrisnam } from '../../../../kangqore-immp/llm/krisnamAnthropic'
 import { logCall, scanPii } from '../../../kimmp/gateway/KimmpGatewayCore'
 import { PromptRegistry } from '../../../../kangqore-immp/wir/promptRegistry.service'
+import { HANUMANAS } from '../identity'
 
 const client = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || '' }))
 
@@ -39,7 +40,7 @@ export async function callLLM(
     const text = res.content[0]?.type === 'text' ? res.content[0].text : ''
     const provider = res.id?.toString().startsWith('krisnam_') ? 'krisnam' : 'claude'
     scanPii(resolvedSystem + '\n' + user).then(scan => logCall({
-      actorType: 'HANUMANAS', model: res.model, provider,
+      actorType: HANUMANAS.name, model: res.model, provider,
       promptTokens: res.usage?.input_tokens ?? 0,
       completionTokens: res.usage?.output_tokens ?? 0,
       latencyMs: Date.now() - start,
@@ -52,7 +53,7 @@ export async function callLLM(
     return text
   } catch (err) {
     logCall({
-      actorType: 'HANUMANAS', model: 'claude-haiku-4-5-20251001', provider: 'none',
+      actorType: HANUMANAS.name, model: 'claude-haiku-4-5-20251001', provider: 'none',
       prompt: resolvedSystem + '\n' + user, response: '',
       sourceModule: 'kangqore-view/esf/hanumanas/agents/llm.ts',
       promptName: promptName ?? null, promptVersion,

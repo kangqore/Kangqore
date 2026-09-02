@@ -23,6 +23,7 @@ import type { HanumanasAgentResult }    from './agents/types'
 import type { HanumanasAction }         from './hanumanasActionProposer'
 import { SignalLedger }             from '../../../kangqore-immp/signals/signalLedger.service'
 import { prisma }                   from '../../../lib/prisma'
+import { HANUMANAS }                from './identity'
 
 const anthropic    = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
 const TIMEOUT_MS   = 25_000
@@ -107,7 +108,7 @@ export async function runHanumanasDebatePhase(
       anthropic.messages.create({
         model:       'claude-sonnet-5',
         max_tokens:  500,
-        system:      `You are HANUMANAS (Autonomous Executive Governance Intelligence Shield). You have received a Sceptic and a Threat Analyst interpretation of concurrent CRITICAL security findings from ${criticalResults.length} agents across ${engines.size} engines. Weigh both arguments against the raw evidence and produce a calibrated governance verdict.
+        system:      `You are ${HANUMANAS.name} (${HANUMANAS.descriptor}). You have received a Sceptic and a Threat Analyst interpretation of concurrent CRITICAL security findings from ${criticalResults.length} agents across ${engines.size} engines. Weigh both arguments against the raw evidence and produce a calibrated governance verdict.
 
 Return JSON only (no prose, no markdown):
 {

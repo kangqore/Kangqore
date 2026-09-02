@@ -18,6 +18,7 @@ import { redisConnection }     from '../../../lib/redis'
 import { ActionEngine }        from '../../automation/ActionEngine'
 import type { HanumanasAction }    from './hanumanasActionProposer'
 import type { HanumanasAgentResult } from './agents/types'
+import { HANUMANAS } from './identity'
 
 // S298 — governance actions (not routine telemetry like EMIT_SOCKET/CREATE_NOTIFICATION)
 // also write a parallel ActionExecution row so the unified Action log genuinely
@@ -33,7 +34,7 @@ async function recordGovernanceAction(actionType: string, level: number, params:
     actionId,
     params: { ...params, hanumanasActionType: actionType, level, outcome },
     actorId: result.agentId,
-    actorType: 'HANUMANAS',
+    actorType: HANUMANAS.name,
     agentsMixed: [result.agentId],
     sourceModule: result.engine,
     reasoning: result.summary,
@@ -190,7 +191,7 @@ async function execTriggerKimmpSystem(action: HanumanasAction, result: Hanumanas
   const { KimmpSystemDispatcher } = await import('../../../kangqore-immp/agents/systemDispatcher')
   await KimmpSystemDispatcher.run(system as any, {
     trigger: 'hanumanas.summons',
-    userId:  'HANUMANAS',
+    userId:  HANUMANAS.name,
     params:  { agentId: result.agentId, verdict: result.verdict, summary: result.summary },
   }).catch(() => {})
 }
@@ -228,7 +229,7 @@ async function createRollbackCheckpoint(action: HanumanasAction, result: Hanuman
       priority: 'critical',
       title:    `HANUMANAS Rollback Checkpoint — ${action.type}`,
       summary:  `Pre-L3 snapshot before ${action.type} on ${result.agentId} (${result.verdict}). Checkpoint captures agent state for recovery if action is rejected.`,
-      module:   'HANUMANAS',
+      module:   HANUMANAS.name,
       confidence: 100,
       metadata: {
         actionType:  action.type,
@@ -334,10 +335,10 @@ export const HanumanasActionExecutor = {
           // WAANDA is the supreme authority — HANUMANAS escalates, WAANDA decides and issues the directive
           const { WaandaAuthority } = await import('../../waanda/WaandaAuthority')
           await WaandaAuthority.receiveEscalation({
-            from:    'HANUMANAS',
+            from:    HANUMANAS.name,
             threat:  (pending.params as any).reason ?? 'HANUMANAS L3 governance action triggered',
             tier:    'CRITICAL',
-            source:  (pending.params as any).source ?? pending.agentId ?? 'HANUMANAS',
+            source:  (pending.params as any).source ?? pending.agentId ?? HANUMANAS.name,
             action:  'PAUSE_KIMMP_LOOP',
             context: { pendingId, agentId: pending.agentId, engine: pending.engine, params: pending.params },
           })
@@ -377,7 +378,7 @@ export const HanumanasActionExecutor = {
 
       // S298 — L3 approved actions are the most severe governance events; always mirror them
       recordGovernanceAction(pending.actionType, 3, pending.params as Record<string, unknown>, {
-        agentId: pending.agentId ?? 'hanumanas', engine: pending.engine ?? 'HANUMANAS', summary: `L3 action approved by ADMIN ${adminUserId}`,
+        agentId: pending.agentId ?? HANUMANAS.channel, engine: pending.engine ?? HANUMANAS.name, summary: `L3 action approved by ADMIN ${adminUserId}`,
       }, outcome).catch(() => {})
 
       emitToAdmins('hanumanas:action:executed', { id: pendingId, actionType: pending.actionType, outcome })

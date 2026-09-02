@@ -11,6 +11,7 @@
 
 import { Request, Response, NextFunction } from 'express'
 import { HanumanasLedger } from './hanumanasLedger.service'
+import { HANUMANAS } from './identity'
 
 // Routes that constitute intelligence egress (KIMMP intelligence leaving the system)
 const EGRESS_PATTERNS: RegExp[] = [
@@ -66,7 +67,7 @@ export function hanumanasEgressMonitor(req: Request, res: Response, next: NextFu
 
       return originalJson({
         error:    'HANUMANAS: Egress size limit exceeded. Response blocked.',
-        shield:   'HANUMANAS',
+        shield:   HANUMANAS.name,
         limitKb:  EGRESS_LIMIT_BYTES / 1024,
         sizeKb:   +(payloadSize / 1024).toFixed(1),
         domain:   'EGRESS_CONTROL',

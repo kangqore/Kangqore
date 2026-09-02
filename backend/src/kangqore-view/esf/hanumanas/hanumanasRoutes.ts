@@ -15,6 +15,7 @@ import { hanumanasConfig }                  from './hanumanasConfig'
 import { verifyAccessToken }            from '../../kernel/auth/TokenService'
 import { prisma }                       from '../../../lib/prisma'
 import { runComplianceTests }           from './compliance/hanumanasComplianceTestSuite'
+import { HANUMANAS }                    from './identity'
 
 export const hanumanasRouter = Router()
 
@@ -45,8 +46,8 @@ hanumanasRouter.post('/config/toggle', (req: Request, res: Response) => {
 
 hanumanasRouter.get('/health', (_req: Request, res: Response) => {
   res.json({
-    shield:    'HANUMANAS',
-    fullName:  'Kangqore Autonomous Executive Governance & Intelligence Shield',
+    shield: HANUMANAS.name,
+    fullName:  HANUMANAS.fullName,
     status:    'ACTIVE',
     governs:   'KIMMP/WAANDA',
     master:    'ADMIN',
@@ -71,7 +72,7 @@ hanumanasRouter.get('/stats', async (_req: Request, res: Response) => {
     HanumanasSovereignty.ownershipSummary(),
   ])
   res.json({
-    shield:           'HANUMANAS',
+    shield: HANUMANAS.name,
     ledger:           ledgerStats,
     sovereignty:      ownershipSummary,
     policies:         HanumanasPolicyEngine.listPolicies().length,
@@ -91,7 +92,7 @@ hanumanasRouter.get('/audit', async (req: Request, res: Response) => {
     from:      from   ? new Date(from as string) : undefined,
     to:        to     ? new Date(to   as string) : undefined,
   })
-  res.json({ shield: 'HANUMANAS', domain: 'AUDIT', ...result })
+  res.json({ shield: HANUMANAS.name, domain: 'AUDIT', ...result })
 })
 
 // ── Autonomy Boundary Monitor ─────────────────────────────────────────────────
@@ -104,7 +105,7 @@ hanumanasRouter.get('/autonomy', async (req: Request, res: Response) => {
     limit:      limit  ? Number(limit)  : 50,
     offset:     offset ? Number(offset) : 0,
   })
-  res.json({ shield: 'HANUMANAS', domain: 'AUTONOMY_BOUNDARY', ...result })
+  res.json({ shield: HANUMANAS.name, domain: 'AUTONOMY_BOUNDARY', ...result })
 })
 
 // ── Access Sentinel ───────────────────────────────────────────────────────────
@@ -116,7 +117,7 @@ hanumanasRouter.get('/shield', async (req: Request, res: Response) => {
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
   })
-  res.json({ shield: 'HANUMANAS', domain: 'ACCESS_SENTINEL', ...result })
+  res.json({ shield: HANUMANAS.name, domain: 'ACCESS_SENTINEL', ...result })
 })
 
 // ── Intelligence Registry ─────────────────────────────────────────────────────
@@ -129,7 +130,7 @@ hanumanasRouter.get('/assets', async (req: Request, res: Response) => {
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
   })
-  res.json({ shield: 'HANUMANAS', domain: 'INTELLIGENCE_REGISTRY', ...result })
+  res.json({ shield: HANUMANAS.name, domain: 'INTELLIGENCE_REGISTRY', ...result })
 })
 
 // ── Intelligence Egress Control ───────────────────────────────────────────────
@@ -141,7 +142,7 @@ hanumanasRouter.get('/egress', async (req: Request, res: Response) => {
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
   })
-  res.json({ shield: 'HANUMANAS', domain: 'EGRESS_CONTROL', ...result })
+  res.json({ shield: HANUMANAS.name, domain: 'EGRESS_CONTROL', ...result })
 })
 
 // ── Sovereignty Engine ────────────────────────────────────────────────────────
@@ -149,7 +150,7 @@ hanumanasRouter.get('/egress', async (req: Request, res: Response) => {
 hanumanasRouter.get('/sovereignty', async (_req: Request, res: Response) => {
   const summary = await HanumanasSovereignty.ownershipSummary()
   res.json({
-    shield:  'HANUMANAS',
+    shield: HANUMANAS.name,
     domain:  'SOVEREIGNTY',
     master:  'ADMIN',
     ...summary,
@@ -160,7 +161,7 @@ hanumanasRouter.get('/sovereignty', async (_req: Request, res: Response) => {
 
 hanumanasRouter.get('/policy/rules', (_req: Request, res: Response) => {
   res.json({
-    shield:   'HANUMANAS',
+    shield: HANUMANAS.name,
     domain:   'POLICY_ENGINE',
     policies: HanumanasPolicyEngine.listPolicies(),
   })
@@ -170,7 +171,7 @@ hanumanasRouter.get('/policy/rules', (_req: Request, res: Response) => {
 
 hanumanasRouter.get('/agents', (_req: Request, res: Response) => {
   res.json({
-    shield:  'HANUMANAS',
+    shield: HANUMANAS.name,
     domain:  'AGENT_REGISTRY',
     ...HanumanasEngineDispatcher.registryStats(),
     agents:  HanumanasEngineDispatcher.listAgents(),
@@ -218,7 +219,7 @@ hanumanasRouter.get('/agents/summary', async (_req: Request, res: Response) => {
   const overallVerdict = hasCritical ? 'CRITICAL' : hasWarn ? 'WARN' : 'PASS'
 
   res.json({
-    shield:         'HANUMANAS',
+    shield: HANUMANAS.name,
     domain:         'AGENT_CORPS_SUMMARY',
     overallVerdict,
     healthScore,
@@ -249,7 +250,7 @@ hanumanasRouter.get('/agents/runs', async (req: Request, res: Response) => {
     (prisma as any).hanumanasAgentRun.count({ where }),
   ])
 
-  res.json({ shield: 'HANUMANAS', domain: 'AGENT_RUNS', rows, total })
+  res.json({ shield: HANUMANAS.name, domain: 'AGENT_RUNS', rows, total })
 })
 
 // ── On-demand engine run ─────────────────────────────────────────────────────
@@ -260,7 +261,7 @@ hanumanasRouter.post('/engines/:engine/run', async (req: Request, res: Response)
     engine.toUpperCase(),
     { userId: (req as any).user?.id ?? 'ADMIN' },
   )
-  res.json({ shield: 'HANUMANAS', engine: engine.toUpperCase(), ran: results.length, results })
+  res.json({ shield: HANUMANAS.name, engine: engine.toUpperCase(), ran: results.length, results })
 })
 
 // ── On-demand single agent run ────────────────────────────────────────────────
@@ -272,7 +273,7 @@ hanumanasRouter.post('/agents/:agentId/run', async (req: Request, res: Response)
     { userId: (req as any).user?.id ?? 'ADMIN' },
   )
   if (!result) return res.status(404).json({ error: `Agent '${agentId}' not found` })
-  res.json({ shield: 'HANUMANAS', result })
+  res.json({ shield: HANUMANAS.name, result })
 })
 
 // ── Phase 2: Pending L3 Actions ───────────────────────────────────────────────
@@ -282,19 +283,19 @@ hanumanasRouter.get('/actions/pending', async (_req: Request, res: Response) => 
     where:   { status: 'PENDING' },
     orderBy: { requestedAt: 'desc' },
   })
-  res.json({ shield: 'HANUMANAS', domain: 'PENDING_ACTIONS', rows, total: rows.length })
+  res.json({ shield: HANUMANAS.name, domain: 'PENDING_ACTIONS', rows, total: rows.length })
 })
 
 hanumanasRouter.post('/actions/:id/approve', async (req: Request, res: Response) => {
   const adminUserId = (req as any).user?.id ?? 'ADMIN'
   const result = await HanumanasActionExecutor.approveAndExecute(req.params.id, adminUserId)
-  res.json({ shield: 'HANUMANAS', ...result })
+  res.json({ shield: HANUMANAS.name, ...result })
 })
 
 hanumanasRouter.post('/actions/:id/reject', async (req: Request, res: Response) => {
   const adminUserId = (req as any).user?.id ?? 'ADMIN'
   await HanumanasActionExecutor.rejectPending(req.params.id, adminUserId)
-  res.json({ shield: 'HANUMANAS', rejected: true })
+  res.json({ shield: HANUMANAS.name, rejected: true })
 })
 
 hanumanasRouter.get('/actions/log', async (req: Request, res: Response) => {
@@ -313,7 +314,7 @@ hanumanasRouter.get('/actions/log', async (req: Request, res: Response) => {
     (prisma as any).hanumanasActionLog.count({ where }),
   ])
 
-  res.json({ shield: 'HANUMANAS', domain: 'ACTION_LOG', rows, total })
+  res.json({ shield: HANUMANAS.name, domain: 'ACTION_LOG', rows, total })
 })
 
 // ── S112: Phase 3 — Per-tenant Budget Enforcement ────────────────────────────
@@ -324,7 +325,7 @@ hanumanasRouter.get('/budget', async (_req: Request, res: Response) => {
   // Returns global + per-tenant enforcement config
   const budgets = HanumanasBudget.listConfigs()
   res.json({
-    shield:    'HANUMANAS',
+    shield: HANUMANAS.name,
     domain:    'BUDGET_ENFORCEMENT',
     global:    { egressSizeLimitKb: Number(process.env.HANUMANAS_EGRESS_LIMIT_KB ?? 512), hardDeny: true },
     tenants:   budgets,
@@ -339,7 +340,7 @@ hanumanasRouter.post('/budget', async (req: Request, res: Response) => {
   // Emit KIMMP signal for audit
   await prisma.kimmpSignal.create({
     data: {
-      sourceModule: 'HANUMANAS',
+      sourceModule: HANUMANAS.name,
       signalType: 'HANUMANAS_BUDGET_SET',
       signalCategory: 'SYSTEM',
       signalValue: `HANUMANAS Budget Set — ${tenantId}`,
@@ -348,7 +349,7 @@ hanumanasRouter.post('/budget', async (req: Request, res: Response) => {
       metadata: { summary: `callLimit=${config.callLimit}/day, hardDeny=${config.hardDeny}` }
     },
   }).catch(() => {})
-  res.json({ shield: 'HANUMANAS', domain: 'BUDGET_ENFORCEMENT', tenantId, config })
+  res.json({ shield: HANUMANAS.name, domain: 'BUDGET_ENFORCEMENT', tenantId, config })
 })
 
 hanumanasRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) => {
@@ -366,7 +367,7 @@ hanumanasRouter.get('/budget/:tenantId/usage', async (req: Request, res: Respons
   }
 
   res.json({
-    shield: 'HANUMANAS', domain: 'BUDGET_ENFORCEMENT',
+    shield: HANUMANAS.name, domain: 'BUDGET_ENFORCEMENT',
     tenantId, callCount: usage.callCount, budget: usage.budget,
     windowHours: usage.windowHours,
     overBudget: usage.overBudget, hardDeny: usage.hardDeny,

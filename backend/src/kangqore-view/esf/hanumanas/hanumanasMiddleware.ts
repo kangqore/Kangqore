@@ -11,6 +11,7 @@ import { HanumanasLedger } from './hanumanasLedger.service'
 import { HanumanasEventEmitter } from './hanumanasEventEmitter'
 import { hanumanasStorage, generateCorrelationId, HanumanasRequestContext } from './HanumanasContext'
 import { hanumanasConfig } from './hanumanasConfig'
+import { HANUMANAS } from './identity'
 
 export function hanumanasShield(req: Request, res: Response, next: NextFunction): void {
   // Build-mode bypass — shield is off, let everything through
@@ -38,7 +39,7 @@ export function hanumanasShield(req: Request, res: Response, next: NextFunction)
 
       res.status(401).json({
         error:         'HANUMANAS: No bearer token. KIMMP endpoints require ADMIN authentication.',
-        shield:        'HANUMANAS',
+        shield: HANUMANAS.name,
         correlationId,
       })
       return
@@ -57,7 +58,7 @@ export function hanumanasShield(req: Request, res: Response, next: NextFunction)
 
       res.status(401).json({
         error:         'HANUMANAS: Invalid or expired token.',
-        shield:        'HANUMANAS',
+        shield: HANUMANAS.name,
         correlationId,
       })
       return
@@ -79,7 +80,7 @@ export function hanumanasShield(req: Request, res: Response, next: NextFunction)
 
       res.status(403).json({
         error:         'HANUMANAS: ADMIN sovereignty enforced. Only ADMIN may access KIMMP.',
-        shield:        'HANUMANAS',
+        shield: HANUMANAS.name,
         role:          (payload as any).role,
         correlationId,
       })

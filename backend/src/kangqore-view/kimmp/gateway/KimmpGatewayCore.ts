@@ -7,6 +7,7 @@
 
 import { prisma } from '../../../lib/prisma'
 import { emitToAdmins } from '../../../socket'
+import { HANUMANAS } from '../../esf/hanumanas/identity'
 
 const TRUNCATE = 2000
 
@@ -218,7 +219,7 @@ export function inferCallerModule(): { sourceModule: string; actorType: string }
       if (!match) continue
       const path = match[1]
       if (path.includes('kimmpGatewayCore') || path.includes('krisnamAnthropic')) continue
-      const actorType = path.includes('esf/hanumanas') ? 'HANUMANAS'
+      const actorType = path.includes('esf/hanumanas') ? HANUMANAS.name
         : path.includes('eqore') ? 'EQORE'
         : path.includes('kangqore-immp') ? 'KIMMP'
         : 'SYSTEM'

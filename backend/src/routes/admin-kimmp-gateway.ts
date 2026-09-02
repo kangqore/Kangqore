@@ -8,6 +8,7 @@ import { checkBudget } from '../kangqore-view/kimmp/gateway/KimmpGatewayCore'
 import { PgvectorIndex } from '../kangqore-view/kimmp/knowledge/PgvectorIndex'
 import { embedQuery, isEmbeddingsConfigured } from '../kangqore-view/kimmp/knowledge/EmbeddingsService'
 import { KimmpOperationalWebhookService } from '../kangqore-view/kimmp/gateway/KimmpOperationalWebhook'
+import { HANUMANAS } from '../kangqore-view/esf/hanumanas/identity'
 
 const router = Router()
 const guard = [authenticate, authorize(['ADMIN'])] as const
@@ -452,7 +453,7 @@ router.get('/agents/performance', ...guard, async (_req, res) => {
     const legacyBuckets = await Promise.all([
       bucket('KIMMP Orchestrator — 38 hardcoded agents (aggregate)', { agentRole: 'orchestrator' }),
       bucket('KIMMP Speak — system voice synthesis', { agentRole: 'KIMMP_SPEAK' }),
-      bucket('HANUMANAS Engine — 80 hardcoded agents (aggregate)', { actorType: 'HANUMANAS' }),
+      bucket(`${HANUMANAS.name} Engine — 80 hardcoded agents (aggregate)`, { actorType: HANUMANAS.name }),
     ])
 
     res.json({ agents, legacyBuckets })

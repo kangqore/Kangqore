@@ -1,4 +1,5 @@
 // ---------------------------------------------------------------------------
+import { HANUMANAS } from '../esf/hanumanas/identity';
 // WaandaAuthority — Supreme Authority Registry
 //
 // Singleton that holds the registry of all Kangqore subsystems under
@@ -176,7 +177,7 @@ export const WaandaAuthority = {
           escalationTier: escalation.tier,
         }, `HANUMANAS escalation: ${escalation.threat}`)
 
-        await this.issueDirective('HANUMANAS', 'REPORT', {
+        await this.issueDirective(HANUMANAS.name, 'REPORT', {
           investigate: escalation.source,
           context:     escalation.context,
         }, 'Post-escalation investigation')

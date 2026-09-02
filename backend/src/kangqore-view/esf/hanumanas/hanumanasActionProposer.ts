@@ -13,6 +13,7 @@ import { callLLM }                       from './agents/llm'
 import { getAgentTrajectory }            from './hanumanasMemory'
 import { WaandaTrainingPipeline }        from '../../waanda/training/trainingPipeline.service'
 import type { HanumanasAgentResult }         from './agents/types'
+import { HANUMANAS }                    from './identity'
 
 export type HanumanasActionType =
   // L0 — auto-execute, silent
@@ -172,7 +173,7 @@ const CONSECUTIVE_WARN_ACTION: HanumanasAction = {
 
 // ── LLM prompt ─────────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You are HANUMANAS, the Autonomous Executive Governance Intelligence Shield for Kangqore OS.
+const SYSTEM_PROMPT = `You are ${HANUMANAS.name}, the ${HANUMANAS.descriptor} for Kangqore OS.
 Your job is to decide what governance actions to take when a security or governance agent fires a verdict.
 
 Available actions (you may choose 1–5):
