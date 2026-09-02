@@ -17,7 +17,7 @@ export const HanumanasEventEmitter = {
   async init(): Promise<void> {
     const bus = await getEventBus()
 
-    bus.subscribe<HanumanasAgentResult>('aegis.critical', async (result) => {
+    bus.subscribe<HanumanasAgentResult>('hanumanas.critical', async (result) => {
       try {
         // Lazy import avoids circular dep at module load time
         const { HanumanasEngineDispatcher } = await import('./hanumanasEngineDispatcher')
@@ -30,14 +30,14 @@ export const HanumanasEventEmitter = {
       }
     })
 
-    console.log('[HANUMANAS] EventEmitter initialised — cascading on aegis.critical')
+    console.log('[HANUMANAS] EventEmitter initialised — cascading on hanumanas.critical')
   },
 
   /** Fire event.CRITICAL_ACTIVATION after a CRITICAL verdict (called from dispatcher). */
   async onCritical(result: HanumanasAgentResult): Promise<void> {
     try {
       const bus = await getEventBus()
-      await bus.publish('aegis.critical', result)
+      await bus.publish('hanumanas.critical', result)
     } catch { /* non-blocking */ }
   },
 

@@ -63,7 +63,7 @@ export async function runInvestigationAgent(ctx: AgentContext): Promise<Hanumana
   if ((activeWarnings as any[]).length >= 2 && narrative) {
     import('../../../../../../kangqore-immp/agents/systemDispatcher').then(({ KimmpSystemDispatcher }) => {
       KimmpSystemDispatcher.run('SENTINEL', {
-        trigger: 'aegis.investigation.summons',
+        trigger: 'hanumanas.investigation.summons',
         input:   `HANUMANAS investigation completed. Threat summary: ${narrative.slice(0, 400)}`,
         userId:  ctx.userId ?? 'HANUMANAS',
         params:  { agentId: 'govops.investigation', activeWarnings: (activeWarnings as any[]).length },

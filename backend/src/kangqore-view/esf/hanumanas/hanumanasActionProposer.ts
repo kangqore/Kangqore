@@ -88,7 +88,7 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'HIGH' },           description: 'Unapproved actor detected — admin notification' },
   ],
   'sentinel.trust-score:WARN': [
-    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'aegis:trust-score-warn' }, description: 'Broadcast trust score warning to admin dashboard' },
+    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'hanumanas:trust-score-warn' }, description: 'Broadcast trust score warning to admin dashboard' },
   ],
 
   // ── GOVERNANCE_OPS ─────────────────────────────────────────────────────────
@@ -102,7 +102,7 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'HIGH' },           description: 'Escalation notification' },
   ],
   'govops.engine-health:CRITICAL': [
-    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'aegis:engine-silent' }, description: 'Alert dashboard — engine silent' },
+    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'hanumanas:engine-silent' }, description: 'Alert dashboard — engine silent' },
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'HIGH' },           description: 'Engine health critical — admin alert' },
   ],
 
@@ -121,7 +121,7 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
   // ── AUTONOMY_BOUNDARY ──────────────────────────────────────────────────────
 
   'autonomy.runaway-detector:CRITICAL': [
-    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'aegis:runaway-detected' }, description: 'Broadcast runaway detection to admin dashboard' },
+    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'hanumanas:runaway-detected' }, description: 'Broadcast runaway detection to admin dashboard' },
     { type: 'PAUSE_KIMMP_LOOP',      level: 3, params: { reason: 'runaway-detection' }, description: 'Pause KIMMP LoopScheduler (requires ADMIN approval)' },
   ],
   'autonomy.self-initiation:CRITICAL': [
@@ -147,7 +147,7 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
     { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'HANUMANAS Executive Alert: Critical Risk Level' }, description: 'Email admin — critical risk brief' },
   ],
   'risk.assessment:CRITICAL': [
-    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'aegis:risk-critical' }, description: 'Broadcast critical risk score to admin dashboard' },
+    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'hanumanas:risk-critical' }, description: 'Broadcast critical risk score to admin dashboard' },
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'HIGH' },           description: 'Risk score critical — admin alert' },
   ],
   'risk.anomaly-detection:CRITICAL': [
@@ -158,7 +158,7 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
   // ── TRUST_COMPLIANCE ───────────────────────────────────────────────────────
 
   'compliance.trust-scoring:WARN': [
-    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'aegis:trust-warn' }, description: 'Broadcast trust score drop to admin dashboard' },
+    { type: 'EMIT_SOCKET',           level: 0, params: { event: 'hanumanas:trust-warn' }, description: 'Broadcast trust score drop to admin dashboard' },
   ],
 }
 

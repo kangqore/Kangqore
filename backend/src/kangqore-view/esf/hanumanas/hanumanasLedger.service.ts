@@ -85,7 +85,7 @@ export class HanumanasLedger {
 
       const row = await (prisma as any).hanumanasAuditLog.create({ data: rowData })
       // Broadcast every governance event to admin sockets for live feed
-      emitToAdmins('aegis:event', {
+      emitToAdmins('hanumanas:event', {
         ...row,
         createdAt: row.createdAt?.toISOString?.() ?? new Date().toISOString(),
       })

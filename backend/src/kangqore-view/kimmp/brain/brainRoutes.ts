@@ -38,7 +38,7 @@ brainRoutes.get('/telemetry', async (_req, res) => {
     
     const pillars = [
       { id: '../../waanda', name: 'WAANDA Executive AI', group: 'identity', status: 'OPTIMAL', load: '14%', latency: '42ms', throughput: '1.2k ops/s' },
-      { id: 'aegis', name: 'HANUMANAS Security & Governance', group: 'identity', status: 'SHIELD_ACTIVE', load: '8%', latency: '12ms', throughput: '850 ops/s' },
+      { id: 'hanumanas', name: 'HANUMANAS Security & Governance', group: 'identity', status: 'SHIELD_ACTIVE', load: '8%', latency: '12ms', throughput: '850 ops/s' },
       { id: 'eqore', name: 'EQORE Conversational Lead Orchestration', group: 'identity', status: 'SYNCHRONIZED', load: '11%', latency: '35ms', throughput: '620 ops/s' },
       { id: 'alis', name: 'ALIS Advanced Lead Intelligence System', group: 'identity', status: 'EVOLVING', load: '18%', latency: '58ms', throughput: '2.1k ops/s' },
       { id: 'vis', name: 'KANGQORE VIS Computer Vision', group: 'architecture', status: 'STREAMING', load: '22%', latency: '18ms', throughput: '4.5k fps' },

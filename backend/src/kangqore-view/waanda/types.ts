@@ -51,7 +51,7 @@ export const COGNITIVE_STAGE_MAP: Record<string, CognitiveStage> = {
   'kimmp':         'ACT',
   'mission':       'ACT',
   'keos':          'ACT',
-  'aegis':         'ACT',
+  'hanumanas':         'ACT',
   'capabilities':  'ACT',
   'automation':    'ACT',
   'kernel':        'ACT',

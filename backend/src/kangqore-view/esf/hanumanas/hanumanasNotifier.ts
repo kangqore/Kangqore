@@ -45,12 +45,12 @@ export async function notifyHanumanasVerdict(result: HanumanasAgentResult): Prom
   const title       = `HANUMANAS ${result.verdict} — ${engineLabel}`
   const message     = result.summary.slice(0, 160)
   const type        = VERDICT_TYPE[result.verdict]
-  const link        = '/kangqore-view/admin/aegis/agents'
+  const link        = '/kangqore-view/admin/hanumanas/agents'
 
   await createNotification({ userId: adminId, title, message, type, link }).catch(() => {})
 
   // Real-time push to admin dashboard (Phase 2)
-  emitToAdmins('aegis:verdict', {
+  emitToAdmins('hanumanas:verdict', {
     agentId:  result.agentId,
     engine:   result.engine,
     verdict:  result.verdict,

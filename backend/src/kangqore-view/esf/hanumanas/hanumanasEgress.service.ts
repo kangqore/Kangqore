@@ -20,9 +20,9 @@ const EGRESS_PATTERNS: RegExp[] = [
   /\/kangqore-immp\/history/,
   /\/kangqore-immp\/synthesis/,
   /\/kangqore-immp\/memory/,
-  /\/aegis\/audit/,
-  /\/aegis\/autonomy/,
-  /\/aegis\/assets/,
+  /\/(aegis|hanumanas)\/audit/,
+  /\/(aegis|hanumanas)\/autonomy/,
+  /\/(aegis|hanumanas)\/assets/,
 ]
 
 function classifyRoute(path: string): string | undefined {

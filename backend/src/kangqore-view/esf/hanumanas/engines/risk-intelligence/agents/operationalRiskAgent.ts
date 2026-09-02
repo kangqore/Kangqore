@@ -49,7 +49,7 @@ export async function runOperationalRiskAgent(ctx: AgentContext): Promise<Hanuma
     ],
     actions: schedulerDown
       ? ['CRITICAL: HANUMANAS scheduler is down — restart HanumanasScheduler.start() in backend/src/index.ts']
-      : silentEngines.map(e => `Engine ${e.engine} is silent — trigger on-demand run via POST /admin/aegis/engines/${e.engine}/run`),
+      : silentEngines.map(e => `Engine ${e.engine} is silent — trigger on-demand run via POST /admin/hanumanas/engines/${e.engine}/run`),
     metadata: { schedulerDown, recentRuns, silentEngines: silentEngines.length, engineStatus },
     durationMs: Date.now() - start,
     raisedAt:   new Date().toISOString(),

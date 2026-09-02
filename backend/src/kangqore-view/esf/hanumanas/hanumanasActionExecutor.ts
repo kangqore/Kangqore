@@ -80,7 +80,7 @@ async function logAction(
 // ---------------------------------------------------------------------------
 
 async function execEmitSocket(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
-  const event = (action.params.event as string) ?? 'aegis:verdict'
+  const event = (action.params.event as string) ?? 'hanumanas:verdict'
   emitToAdmins(event, {
     agentId: result.agentId,
     engine:  result.engine,
@@ -114,11 +114,11 @@ async function execCreateNotification(action: HanumanasAction, result: Hanumanas
     title:   `HANUMANAS ${result.verdict} — ${result.agentId}`,
     message: result.summary.slice(0, 160),
     type:    result.verdict === 'CRITICAL' ? 'ERROR' : 'WARNING',
-    link:    '/kangqore-view/admin/aegis/agents',
+    link:    '/kangqore-view/admin/hanumanas/agents',
   }).catch(() => {})
 
   // Also push real-time socket event
-  emitToAdmins('aegis:verdict', {
+  emitToAdmins('hanumanas:verdict', {
     agentId:  result.agentId,
     engine:   result.engine,
     verdict:  result.verdict,
@@ -150,7 +150,7 @@ async function execSendAlertEmail(action: HanumanasAction, result: HanumanasAgen
     `<h3>Findings</h3><ul>${result.findings.map(f => `<li>${f}</li>`).join('')}</ul>`,
     result.actions.length ? `<h3>Recommended Actions</h3><ul>${result.actions.map(a => `<li>${a}</li>`).join('')}</ul>` : '',
     `<p><em>Raised at: ${result.raisedAt}</em></p>`,
-    `<p><a href="https://kangqore.com/kangqore-view/admin/aegis/agents">View in HANUMANAS Dashboard →</a></p>`,
+    `<p><a href="https://kangqore.com/kangqore-view/admin/hanumanas/agents">View in HANUMANAS Dashboard →</a></p>`,
   ].join('\n')
   await emailService.sendEmail({ to: admin.email, subject, html: body }).catch(() => {})
 }
@@ -159,8 +159,8 @@ async function execFlagActor(action: HanumanasAction, result: HanumanasAgentResu
   // Extract actor from the result metadata if available
   const actor = (result.metadata?.actor as string) ?? (action.params.source as string) ?? 'unknown'
   // Set in Redis with 24h TTL — sentinel middleware can check this set
-  await (redisConnection as any).sadd('aegis:flagged-actors', actor)
-  await (redisConnection as any).expire('aegis:flagged-actors', 86400)
+  await (redisConnection as any).sadd('hanumanas:flagged-actors', actor)
+  await (redisConnection as any).expire('hanumanas:flagged-actors', 86400)
   // Log to ledger
   await HanumanasLedger.logPolicyViolation({
     policy:   'HANUMANAS_FLAG_ACTOR',
@@ -174,7 +174,7 @@ async function execFlagActor(action: HanumanasAction, result: HanumanasAgentResu
 
 async function execEmitToWaanda(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   const { KeosEventBus } = await import('../../kernel/KeosEventBus')
-  KeosEventBus.publish('aegis.governance', {
+  KeosEventBus.publish('hanumanas.governance', {
     agentId:  result.agentId,
     engine:   result.engine,
     verdict:  result.verdict,
@@ -189,7 +189,7 @@ async function execTriggerKimmpSystem(action: HanumanasAction, result: Hanumanas
   const system = (action.params.system as string) ?? 'SENTINEL'
   const { KimmpSystemDispatcher } = await import('../../../kangqore-immp/agents/systemDispatcher')
   await KimmpSystemDispatcher.run(system as any, {
-    trigger: 'aegis.summons',
+    trigger: 'hanumanas.summons',
     userId:  'HANUMANAS',
     params:  { agentId: result.agentId, verdict: result.verdict, summary: result.summary },
   }).catch(() => {})
@@ -262,7 +262,7 @@ async function execQueueL3(action: HanumanasAction, result: HanumanasAgentResult
   }).catch(() => null)
 
   if (pending) {
-    emitToAdmins('aegis:action:pending', {
+    emitToAdmins('hanumanas:action:pending', {
       id:          pending.id,
       actionType:  action.type,
       agentId:     result.agentId,
@@ -279,7 +279,7 @@ async function execQueueL3(action: HanumanasAction, result: HanumanasAgentResult
         title:   `HANUMANAS: Action Requires Approval`,
         message: `${action.description} — from ${result.agentId} (${result.verdict})`,
         type:    'WARNING',
-        link:    '/kangqore-view/admin/aegis/actions',
+        link:    '/kangqore-view/admin/hanumanas/actions',
       }).catch(() => {})
     }
   }
@@ -346,13 +346,13 @@ export const HanumanasActionExecutor = {
         }
         case 'BLOCK_ACTOR': {
           const actor = (pending.params as any).actor ?? 'unknown'
-          await (redisConnection as any).sadd('aegis:blocked-actors', actor)
+          await (redisConnection as any).sadd('hanumanas:blocked-actors', actor)
           outcome = { blocked: actor }
           break
         }
         case 'QUARANTINE_ASSET': {
-          await (redisConnection as any).set('aegis:egress-quarantine', '1', 'EX', 3600)
-          emitToAdmins('aegis:egress-quarantined', { source: (pending.params as any).source, by: adminUserId })
+          await (redisConnection as any).set('hanumanas:egress-quarantine', '1', 'EX', 3600)
+          emitToAdmins('hanumanas:egress-quarantined', { source: (pending.params as any).source, by: adminUserId })
           outcome = { quarantined: true, expiresInSeconds: 3600 }
           break
         }
@@ -377,10 +377,10 @@ export const HanumanasActionExecutor = {
 
       // S298 — L3 approved actions are the most severe governance events; always mirror them
       recordGovernanceAction(pending.actionType, 3, pending.params as Record<string, unknown>, {
-        agentId: pending.agentId ?? 'aegis', engine: pending.engine ?? 'HANUMANAS', summary: `L3 action approved by ADMIN ${adminUserId}`,
+        agentId: pending.agentId ?? 'hanumanas', engine: pending.engine ?? 'HANUMANAS', summary: `L3 action approved by ADMIN ${adminUserId}`,
       }, outcome).catch(() => {})
 
-      emitToAdmins('aegis:action:executed', { id: pendingId, actionType: pending.actionType, outcome })
+      emitToAdmins('hanumanas:action:executed', { id: pendingId, actionType: pending.actionType, outcome })
       return { success: true, message: `${pending.actionType} executed successfully` }
 
     } catch (err: any) {
@@ -397,6 +397,6 @@ export const HanumanasActionExecutor = {
       where: { id: pendingId },
       data:  { status: 'REJECTED', resolvedAt: new Date(), resolvedBy: adminUserId },
     }).catch(() => {})
-    emitToAdmins('aegis:action:rejected', { id: pendingId })
+    emitToAdmins('hanumanas:action:rejected', { id: pendingId })
   },
 }

@@ -57,7 +57,7 @@ export const HanumanasBudget = {
       await (prisma as any).hanumanasActionLog.create({
         data: {
           actionType: 'LOG_AUDIT_ENTRY', level: 0,
-          agentId: 'aegis.budget-enforcer', engine: 'AUTONOMY_BOUNDARY',
+          agentId: 'hanumanas.budget-enforcer', engine: 'AUTONOMY_BOUNDARY',
           params: { tenantId, callCount: usage.callCount, limit: usage.budget },
           result: { blocked: true }, status: 'SUCCESS',
         },

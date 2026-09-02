@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // HANUMANAS Routes — ADMIN sovereignty dashboard API
 //
-// Mounted at /api/admin/aegis (protected by hanumanasShield upstream).
+// Mounted at /api/admin/hanumanas (and /api/admin/aegis, dual-mounted one release) (protected by hanumanasShield upstream).
 // ---------------------------------------------------------------------------
 
 import { Router, Request, Response } from 'express'
@@ -358,7 +358,7 @@ hanumanasRouter.get('/budget/:tenantId/usage', async (req: Request, res: Respons
     await (prisma as any).hanumanasActionLog.create({
       data: {
         actionType: 'LOG_AUDIT_ENTRY', level: 0,
-        agentId: 'aegis.budget-enforcer', engine: 'AUTONOMY_BOUNDARY',
+        agentId: 'hanumanas.budget-enforcer', engine: 'AUTONOMY_BOUNDARY',
         params: { tenantId, callCount: usage.callCount, limit: usage.budget },
         result: { blocked: true }, status: 'SUCCESS',
       },

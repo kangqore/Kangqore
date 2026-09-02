@@ -185,7 +185,7 @@ export const WaandaAuthority = {
       // Emit WebSocket event so CEO sees it
       try {
         const { emitToAdmins } = await import('../../socket')
-        emitToAdmins('kimmp:aegis-escalation', {
+        emitToAdmins('kimmp:hanumanas-escalation', {
           threat:   escalation.threat,
           tier:     escalation.tier,
           from:     escalation.from,

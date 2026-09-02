@@ -3,7 +3,7 @@
 // 12 adversarial tests covering the Phase 1 governance kill zone.
 // Each test is self-contained, creates and cleans up its own fixtures,
 // and reports PASS / FAIL with a machine-readable reason.
-// Run via: GET /api/admin/aegis/compliance/run
+// Run via: GET /api/admin/hanumanas/compliance/run
 
 import { prisma } from '../../../../lib/prisma'
 import { OntologyGateway, SYSTEM_ACTOR, GatewayActor } from '../../../eof/OntologyGateway'

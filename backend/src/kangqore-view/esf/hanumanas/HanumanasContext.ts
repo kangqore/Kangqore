@@ -23,7 +23,7 @@ import { AsyncLocalStorage } from 'node:async_hooks'
 export interface HanumanasRequestContext {
   correlationId: string
   requesterId:   string
-  httpSurface:   'aegis' | 'kimmp' | 'unknown'
+  httpSurface:   'hanumanas' | 'kimmp' | 'unknown'
 }
 
 export const hanumanasStorage = new AsyncLocalStorage<HanumanasRequestContext>()

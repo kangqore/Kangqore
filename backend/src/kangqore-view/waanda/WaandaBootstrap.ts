@@ -189,7 +189,7 @@ export const WAANDA = {
   async _bootHanumanas(): Promise<void> {
     HanumanasScheduler.start()
     await HanumanasEventEmitter.init()
-    this.reportSubsystem('aegis', {
+    this.reportSubsystem('hanumanas', {
       status:  'OPERATIONAL',
       details: { agents: 80, engines: 10, schedulerStarted: true },
     })

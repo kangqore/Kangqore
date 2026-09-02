@@ -3,7 +3,7 @@
 //
 // Phase 2 additions:
 //   - After every CRITICAL verdict: propose actions → execute them
-//   - After every CRITICAL verdict (unless fromEvent): publish to aegis.critical
+//   - After every CRITICAL verdict (unless fromEvent): publish to hanumanas.critical
 //     bus so HanumanasEventEmitter cascades event.CRITICAL_ACTIVATION agents
 //   - Consecutive WARN tracking: 3+ WARNs from same agent → L1 notification
 // ---------------------------------------------------------------------------
@@ -127,7 +127,7 @@ async function runOne(
               }, {
                 type:        'EMIT_SOCKET',
                 level:       0,
-                params:      { event: 'aegis:critical-resolved', agentId: result.agentId, resolvedTo: recheckResult.verdict },
+                params:      { event: 'hanumanas:critical-resolved', agentId: result.agentId, resolvedTo: recheckResult.verdict },
                 description: 'Broadcast threat resolution to admin dashboard',
               }], recheckResult).catch(() => {})
             }
@@ -181,7 +181,7 @@ export const HanumanasEngineDispatcher = {
     if (criticals.length >= 3 && engines.size >= 2 && !ctx?.fromEvent) {
       runHanumanasDebatePhase(criticals).then(debate => {
         if (!debate.debateRan) return
-        emitToAdmins('aegis:debate:verdict', {
+        emitToAdmins('hanumanas:debate:verdict', {
           unifiedVerdict:   debate.unifiedVerdict,
           arbitration:      debate.arbitration,
           agentCount:       criticals.length,

@@ -10,7 +10,7 @@ export class PolicyBuilder {
       metadata: {
         confidence: 'HIGH',
         freshness: 'LIVE',
-        sourceReference: `aegis_policy_registry`
+        sourceReference: `hanumanas_policy_registry`
       },
       activePolicies: ['DATA_PRIVACY_STRICT', 'NO_EXTERNAL_SHARING']
     };

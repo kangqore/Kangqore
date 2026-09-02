@@ -149,7 +149,7 @@ DEFER    = likely noise — log only, no action required.`,
           recommendedAction = {
             type:        parsed.recommendedActionType,
             level:       Number(parsed.recommendedLevel ?? 1) as HanumanasAction['level'],
-            params:      { source: 'aegis.debate', agentCount: criticalResults.length, engines: [...engines] },
+            params:      { source: 'hanumanas.debate', agentCount: criticalResults.length, engines: [...engines] },
             description: `HANUMANAS debate verdict: ${unifiedVerdict} — ${arbitration.slice(0, 100)}`,
           }
         }
@@ -164,7 +164,7 @@ DEFER    = likely noise — log only, no action required.`,
     if (arbitration) {
       SignalLedger.record({
         sourceModule:   'kimmp.sentinel',
-        signalType:     'aegis.debate.verdict',
+        signalType:     'hanumanas.debate.verdict',
         signalCategory: unifiedVerdict === 'ESCALATE' ? 'RISK' : 'SYSTEM',
         signalValue:    `HANUMANAS debate [${unifiedVerdict}]: ${arbitration.slice(0, 250)}`,
         severity:       unifiedVerdict === 'ESCALATE' ? 'CRITICAL' : 'MODERATE',

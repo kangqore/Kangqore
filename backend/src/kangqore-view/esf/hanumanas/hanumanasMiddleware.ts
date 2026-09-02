@@ -21,7 +21,7 @@ export function hanumanasShield(req: Request, res: Response, next: NextFunction)
     return next()
   }
   const correlationId = generateCorrelationId()
-  const ctx: HanumanasRequestContext = { correlationId, requesterId: 'anonymous', httpSurface: 'aegis' }
+  const ctx: HanumanasRequestContext = { correlationId, requesterId: 'anonymous', httpSurface: 'hanumanas' }
   ;(req as any).hanumanasCorrelationId = correlationId
   res.setHeader('X-Hanumanas-Correlation', correlationId)
 

@@ -728,7 +728,7 @@ export async function importBlueprint(
       'Create the first project at /admin/pmo/projects',
       'Review WAANDA agent settings at /admin/kangqore-immp/agents',
       'Set COIG north-star baseline at /admin/gate8',
-      'Verify policy approvals at /admin/aegis/policy/rules',
+      'Verify policy approvals at /admin/hanumanas/policy/rules',
     ],
   }
 }

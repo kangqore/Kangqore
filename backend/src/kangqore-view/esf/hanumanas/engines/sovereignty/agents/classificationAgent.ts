@@ -35,7 +35,7 @@ export async function runClassificationAgent(ctx: AgentContext): Promise<Hanuman
       ...(restricted > 0 && recentEgress === 0 ? ['RESTRICTED assets present but no egress monitoring in 24h'] : []),
     ],
     actions:   restricted > 0 && recentEgress === 0
-      ? ['Verify hanumanasEgressMonitor is active on KIMMP routes', 'Check /api/admin/aegis/egress for recent events']
+      ? ['Verify hanumanasEgressMonitor is active on KIMMP routes', 'Check /api/admin/hanumanas/egress for recent events']
       : [],
     metadata:  { total, restricted, byClassification: byClass, recentEgress },
     durationMs: Date.now() - start,

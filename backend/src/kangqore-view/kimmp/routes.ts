@@ -3603,9 +3603,9 @@ kangqoreImmpRoutes.post('/customers/blueprint-clone', requireAuth, requireRole([
 // S65 — HANUMANAS Depth P2: policy enforcement + KIMMP signal bridge
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// POST /admin/kangqore-immp/aegis/policy-violation
+// POST /admin/kangqore-immp/hanumanas/policy-violation
 // Called by HANUMANAS when a policy is violated — generates a KIMMP signal + HANUMANAS evidence
-kangqoreImmpRoutes.post('/aegis/policy-violation', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.post('/hanumanas/policy-violation', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { policyId, policyName, severity, violatorId, violatorRole, endpoint, detail } = req.body
     if (!policyId || !severity) return res.status(400).json({ error: 'policyId and severity required' })
@@ -3625,9 +3625,9 @@ kangqoreImmpRoutes.post('/aegis/policy-violation', requireAuth, requireRole(['AD
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/aegis/threat-feed
+// GET /admin/kangqore-immp/hanumanas/threat-feed
 // Aggregates shield + egress data into IP reputation + threat severity matrix
-kangqoreImmpRoutes.get('/aegis/threat-feed', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.get('/hanumanas/threat-feed', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { limit = 50 } = req.query
 
@@ -3661,8 +3661,8 @@ kangqoreImmpRoutes.get('/aegis/threat-feed', requireAuth, requireRole(['ADMIN'])
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/aegis/export-control-rules
-kangqoreImmpRoutes.get('/aegis/export-control-rules', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+// GET /admin/kangqore-immp/hanumanas/export-control-rules
+kangqoreImmpRoutes.get('/hanumanas/export-control-rules', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
     // Export control rules are stored in OrgIntegrationConfig or a dedicated table
     // For now return the policy scaffold
@@ -4038,8 +4038,8 @@ kangqoreImmpRoutes.post('/customers/churn-alerts', requireAuth, requireRole(['AD
 // S70 — Enterprise Security: SOC2 Controls · RBAC Scopes · Security Findings
 // ════════════════════════════════════════════════════════════════════════════
 
-// GET /admin/kangqore-immp/aegis/compliance-controls?framework=SOC2|ISO27001
-kangqoreImmpRoutes.get('/aegis/compliance-controls', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// GET /admin/kangqore-immp/hanumanas/compliance-controls?framework=SOC2|ISO27001
+kangqoreImmpRoutes.get('/hanumanas/compliance-controls', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const framework = req.query.framework === 'ISO27001' ? 'ISO27001' : 'SOC2'
     await ensureFrameworkSeeded(framework)
@@ -4049,8 +4049,8 @@ kangqoreImmpRoutes.get('/aegis/compliance-controls', requireAuth, requireRole(['
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// PATCH /admin/kangqore-immp/aegis/compliance-controls/:id
-kangqoreImmpRoutes.patch('/aegis/compliance-controls/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// PATCH /admin/kangqore-immp/hanumanas/compliance-controls/:id
+kangqoreImmpRoutes.patch('/hanumanas/compliance-controls/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { status, evidenceUrl, evidenceNote, lastTestedAt, ownerId } = req.body
     const control = await (prisma as any).complianceControl.update({
@@ -4061,8 +4061,8 @@ kangqoreImmpRoutes.patch('/aegis/compliance-controls/:id', requireAuth, requireR
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/aegis/permission-scopes
-kangqoreImmpRoutes.get('/aegis/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// GET /admin/kangqore-immp/hanumanas/permission-scopes
+kangqoreImmpRoutes.get('/hanumanas/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { userId } = req.query
     const scopes = await (prisma as any).permissionScope.findMany({
@@ -4073,8 +4073,8 @@ kangqoreImmpRoutes.get('/aegis/permission-scopes', requireAuth, requireRole(['AD
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// POST /admin/kangqore-immp/aegis/permission-scopes
-kangqoreImmpRoutes.post('/aegis/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// POST /admin/kangqore-immp/hanumanas/permission-scopes
+kangqoreImmpRoutes.post('/hanumanas/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const grantedBy = (req as any).user?.id ?? 'system'
     const { userId, workspace, feature, action } = req.body
@@ -4088,16 +4088,16 @@ kangqoreImmpRoutes.post('/aegis/permission-scopes', requireAuth, requireRole(['A
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// DELETE /admin/kangqore-immp/aegis/permission-scopes/:id
-kangqoreImmpRoutes.delete('/aegis/permission-scopes/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// DELETE /admin/kangqore-immp/hanumanas/permission-scopes/:id
+kangqoreImmpRoutes.delete('/hanumanas/permission-scopes/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     await (prisma as any).permissionScope.delete({ where: { id: req.params.id } })
     res.status(204).send()
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/aegis/security-findings
-kangqoreImmpRoutes.get('/aegis/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// GET /admin/kangqore-immp/hanumanas/security-findings
+kangqoreImmpRoutes.get('/hanumanas/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { severity, status } = req.query
     const findings = await (prisma as any).securityFinding.findMany({
@@ -4109,8 +4109,8 @@ kangqoreImmpRoutes.get('/aegis/security-findings', requireAuth, requireRole(['AD
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// POST /admin/kangqore-immp/aegis/security-findings
-kangqoreImmpRoutes.post('/aegis/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// POST /admin/kangqore-immp/hanumanas/security-findings
+kangqoreImmpRoutes.post('/hanumanas/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const userId = (req as any).user?.id ?? 'system'
     const { title, severity, description, cveRef, affectedArea } = req.body
@@ -4132,8 +4132,8 @@ kangqoreImmpRoutes.post('/aegis/security-findings', requireAuth, requireRole(['A
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// PATCH /admin/kangqore-immp/aegis/security-findings/:id
-kangqoreImmpRoutes.patch('/aegis/security-findings/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// PATCH /admin/kangqore-immp/hanumanas/security-findings/:id
+kangqoreImmpRoutes.patch('/hanumanas/security-findings/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const userId = (req as any).user?.id ?? 'system'
     const { status, affectedArea } = req.body
@@ -7739,7 +7739,7 @@ kangqoreImmpRoutes.post('/enterprise/sla/commitments', requireAuth, requireRole(
 
 // ─── S187: Advanced RBAC v2 ──────────────────────────────────────────────────
 
-const DEFAULT_PERMISSIONS = ['projects:read','projects:write','finance:read','crm:read','waanda:use','aegis:view','reports:read','analytics:read','admin:none']
+const DEFAULT_PERMISSIONS = ['projects:read','projects:write','finance:read','crm:read','waanda:use','hanumanas:view','reports:read','analytics:read','admin:none']
 
 kangqoreImmpRoutes.get('/enterprise/rbac/roles', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {

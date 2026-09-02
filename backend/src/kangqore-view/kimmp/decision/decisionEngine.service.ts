@@ -221,7 +221,7 @@ export class DecisionEngine {
     });
 
     const approvalRequired = policy.effect === 'REQUIRE_APPROVAL' || true;
-    const approvalToken = `token-aegis-dec-${Date.now().toString(36)}`;
+    const approvalToken = `token-hanumanas-dec-${Date.now().toString(36)}`;
 
     const llmPrompt = `Analyze executive decision scenario: "${input.decisionContext}".
 Formulate prescriptive action plan, confidence %, expected primary impact, alternative trade-offs, and risk level.`;
@@ -303,7 +303,7 @@ Formulate prescriptive action plan, confidence %, expected primary impact, alter
 
   /** Approves decision and dispatches the execution plan via ActionEngine */
   static async approveAndExecute(decisionId: string, approvalToken: string, actorId: string) {
-    if (!approvalToken || !approvalToken.startsWith('token-aegis-')) {
+    if (!approvalToken || !(approvalToken.startsWith('token-hanumanas-') || approvalToken.startsWith('token-aegis-'))) {
       throw new Error('Invalid or missing cryptographic HANUMANAS approval token.');
     }
 
