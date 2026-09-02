@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.'
 
 interface ControlCheck {
   name:     string
@@ -24,7 +24,7 @@ export async function runControlValidationAgent(ctx: AgentContext): Promise<Hanu
   ])
 
   const controls: ControlCheck[] = [
-    { name: 'AEGIS Scheduler',        active: recentAgentRun > 0,  evidence: `${recentAgentRun} agent runs in last 2h` },
+    { name: 'HANUMANAS Scheduler',        active: recentAgentRun > 0,  evidence: `${recentAgentRun} agent runs in last 2h` },
     { name: 'HanumanasShield Middleware', active: shieldEvents > 0 || activations > 0, evidence: `${shieldEvents} access denied + ${activations} activations (7d)` },
     { name: 'Egress Monitor',         active: egressEvents >= 0,   evidence: `${egressEvents} EGRESS events (7d) — monitoring active` },
     { name: 'Policy Engine',          active: true,                evidence: `${policyViolations} violations logged (7d) — engine responding` },

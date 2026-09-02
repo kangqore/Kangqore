@@ -2,7 +2,7 @@ import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS. Write executive governance reports — clear, structured, actionable.'
+const SYSTEM = 'You are HANUMANAS. Write executive governance reports — clear, structured, actionable.'
 
 export async function runReportingAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
@@ -20,7 +20,7 @@ export async function runReportingAgent(ctx: AgentContext): Promise<HanumanasAge
   ])
 
   const dataBlock = [
-    `AEGIS Daily Report — ${new Date().toISOString().slice(0, 10)}`,
+    `HANUMANAS Daily Report — ${new Date().toISOString().slice(0, 10)}`,
     `Agent runs: ${totalRuns} (CRITICAL:${critical} WARN:${warn} PASS:${pass})`,
     `Policy violations: ${violations}  Access blocked: ${denied}`,
     `Autonomous KIMMP actions: ${autonomous}  New assets: ${assets}`,

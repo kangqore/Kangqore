@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }        from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 export async function runAuthorizationAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()

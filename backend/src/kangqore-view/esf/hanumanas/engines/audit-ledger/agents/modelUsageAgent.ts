@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
 export async function runModelUsageAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
@@ -21,7 +21,7 @@ export async function runModelUsageAgent(ctx: AgentContext): Promise<HanumanasAg
   )
   const total = Object.values(bySystem).reduce((s, c) => s + c, 0)
 
-  const llmSummary = await callLLM(SYSTEM, `AEGIS Model Usage (7d): ${total} KIMMP activations across ${Object.keys(bySystem).length} systems. Breakdown: ${Object.entries(bySystem).map(([sys, cnt]) => `${sys}=${cnt}`).join(', ')}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
+  const llmSummary = await callLLM(SYSTEM, `HANUMANAS Model Usage (7d): ${total} KIMMP activations across ${Object.keys(bySystem).length} systems. Breakdown: ${Object.entries(bySystem).map(([sys, cnt]) => `${sys}=${cnt}`).join(', ')}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'audit.model-usage',

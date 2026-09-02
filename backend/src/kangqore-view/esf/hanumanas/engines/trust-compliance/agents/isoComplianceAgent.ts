@@ -2,9 +2,9 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.'
 
-// ISO 27001 (InfoSec) + ISO 42001 (AI Governance) control domains mapped to AEGIS events
+// ISO 27001 (InfoSec) + ISO 42001 (AI Governance) control domains mapped to HANUMANAS events
 const CONTROLS = [
   { name: 'A.8  Asset Management',     eventType: 'KNOWLEDGE_ASSET', label: 'Intelligence asset registration' },
   { name: 'A.9  Access Control',       eventType: 'ACCESS_DENIED',   label: 'Access control enforcement' },
@@ -36,7 +36,7 @@ export async function runIsoComplianceAgent(ctx: AgentContext): Promise<Hanumana
     verdict:  gaps.length > 0 ? 'WARN' : 'PASS',
     summary:  `ISO 27001/42001 compliance: ${covered}/${CONTROLS.length} controls evidenced (30d). Coverage score: ${score}%.${gaps.length > 0 ? ` Gaps: ${gaps.map(g => g.name).join(', ')}.` : ''}`,
     findings: controlResults.map(c => `${c.name}: ${c.covered ? `✓ ${c.count} events` : '✗ NO EVIDENCE'} (${c.label})`),
-    actions:  gaps.map(g => `Generate evidence for ISO control "${g.name}" — enable AEGIS ${g.eventType} logging`),
+    actions:  gaps.map(g => `Generate evidence for ISO control "${g.name}" — enable HANUMANAS ${g.eventType} logging`),
     metadata: { framework: 'ISO 27001/42001', covered, total: CONTROLS.length, score, gaps: gaps.map(g => g.name) },
     durationMs: Date.now() - start,
     raisedAt:   new Date().toISOString(),

@@ -3,7 +3,7 @@ import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 import { LogicToolRegistry } from '../../../../../../kangqore-immp/tools/logicToolRegistry'
 
-const SYSTEM = 'You are AEGIS. Forecast the governance risk level for the next 24 hours based on 7-day trends.'
+const SYSTEM = 'You are HANUMANAS. Forecast the governance risk level for the next 24 hours based on 7-day trends.'
 
 export async function runThreatForecastAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
@@ -36,7 +36,7 @@ export async function runThreatForecastAgent(ctx: AgentContext): Promise<Hanuman
 
   const narrative = await callLLM(
     SYSTEM,
-    `AEGIS 7-day governance trend:\n${trendBlock}\n\nWrite 2 sentences: forecast the next-24h risk level (LOW/MEDIUM/HIGH/CRITICAL) and the primary risk driver.`,
+    `HANUMANAS 7-day governance trend:\n${trendBlock}\n\nWrite 2 sentences: forecast the next-24h risk level (LOW/MEDIUM/HIGH/CRITICAL) and the primary risk driver.`,
     280,
   )
 

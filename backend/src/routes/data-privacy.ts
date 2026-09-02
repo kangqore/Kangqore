@@ -35,7 +35,7 @@ dataPrivacyRouter.get('/export', async (req: Request, res: Response) => {
   res.json(payload)
 })
 
-// GET /audit-log — paginated AEGIS audit log for the current user
+// GET /audit-log — paginated HANUMANAS audit log for the current user
 dataPrivacyRouter.get('/audit-log', async (req: Request, res: Response) => {
   const userId = (req.user as any)?.userId
   if (!userId) { res.status(401).json({ error: 'Unauthorized' }); return }

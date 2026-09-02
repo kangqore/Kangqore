@@ -1,16 +1,16 @@
 // ---------------------------------------------------------------------------
-// AEGIS Debate Phase — cross-engine adversarial governance reasoning.
+// HANUMANAS Debate Phase — cross-engine adversarial governance reasoning.
 //
 // When 3+ agents across different engines return CRITICAL in the same trigger
-// batch, AEGIS runs a structured debate before issuing a consolidated verdict:
+// batch, HANUMANAS runs a structured debate before issuing a consolidated verdict:
 //
 //   Sceptic Agent  → argues the least alarming interpretation (false positives,
 //                    transient spikes, monitoring noise)
 //   Threat Agent   → argues the most severe interpretation (coordinated attack,
 //                    sophisticated adversary, cascading failure)
-//   Arbiter        → AEGIS synthesizes a unified verdict and recommended action
+//   Arbiter        → HANUMANAS synthesizes a unified verdict and recommended action
 //
-// This prevents AEGIS from over-reacting to correlated noise and ensures that
+// This prevents HANUMANAS from over-reacting to correlated noise and ensures that
 // genuinely coordinated threats receive a calibrated, consolidated response
 // rather than N independent action pipelines firing simultaneously.
 //
@@ -67,7 +67,7 @@ export async function runHanumanasDebatePhase(
   if (engines.size < 2) return NULL_RESULT  // All from same engine — not cross-engine
 
   const context = buildContext(criticalResults)
-  console.log(`[AEGIS:DEBATE] ${criticalResults.length} CRITICALs across ${engines.size} engines — initiating debate`)
+  console.log(`[HANUMANAS:DEBATE] ${criticalResults.length} CRITICALs across ${engines.size} engines — initiating debate`)
 
   try {
     const [scepticRaw, threatRaw] = await Promise.all([
@@ -76,7 +76,7 @@ export async function runHanumanasDebatePhase(
           model:       'claude-haiku-4-5-20251001',
           max_tokens:  350,
           temperature: 0.7,
-          system:      'You are the Sceptic in an AEGIS security governance debate. Your role is to argue the LEAST alarming interpretation of concurrent agent findings. Identify false positives, monitoring noise, correlated but unrelated events, or transient spikes that do not represent a genuine coordinated threat. Be persuasive but honest — do not fabricate. Respond in 3-4 sentences.',
+          system:      'You are the Sceptic in an HANUMANAS security governance debate. Your role is to argue the LEAST alarming interpretation of concurrent agent findings. Identify false positives, monitoring noise, correlated but unrelated events, or transient spikes that do not represent a genuine coordinated threat. Be persuasive but honest — do not fabricate. Respond in 3-4 sentences.',
           messages:    [{ role: 'user', content: `Argue the least alarming interpretation of these concurrent CRITICAL findings:\n\n${context}` }],
         }),
         TIMEOUT_MS,
@@ -87,7 +87,7 @@ export async function runHanumanasDebatePhase(
           model:       'claude-haiku-4-5-20251001',
           max_tokens:  350,
           temperature: 0.7,
-          system:      'You are the Threat Analyst in an AEGIS security governance debate. Your role is to argue the MOST severe interpretation of concurrent agent findings. Surface coordinated attack patterns, sophisticated adversary behaviour, cascading failures, or evidence of intent. Be persuasive but grounded — do not fabricate. Respond in 3-4 sentences.',
+          system:      'You are the Threat Analyst in an HANUMANAS security governance debate. Your role is to argue the MOST severe interpretation of concurrent agent findings. Surface coordinated attack patterns, sophisticated adversary behaviour, cascading failures, or evidence of intent. Be persuasive but grounded — do not fabricate. Respond in 3-4 sentences.',
           messages:    [{ role: 'user', content: `Argue the most severe interpretation of these concurrent CRITICAL findings:\n\n${context}` }],
         }),
         TIMEOUT_MS,
@@ -99,7 +99,7 @@ export async function runHanumanasDebatePhase(
     const threatCase  = threatRaw?.content[0]?.type === 'text'  ? threatRaw.content[0].text.trim()  : ''
 
     if (!scepticCase || !threatCase) {
-      console.warn('[AEGIS:DEBATE] One or both advocates timed out — aborting debate')
+      console.warn('[HANUMANAS:DEBATE] One or both advocates timed out — aborting debate')
       return NULL_RESULT
     }
 
@@ -107,7 +107,7 @@ export async function runHanumanasDebatePhase(
       anthropic.messages.create({
         model:       'claude-sonnet-5',
         max_tokens:  500,
-        system:      `You are AEGIS (Autonomous Executive Governance Intelligence Shield). You have received a Sceptic and a Threat Analyst interpretation of concurrent CRITICAL security findings from ${criticalResults.length} agents across ${engines.size} engines. Weigh both arguments against the raw evidence and produce a calibrated governance verdict.
+        system:      `You are HANUMANAS (Autonomous Executive Governance Intelligence Shield). You have received a Sceptic and a Threat Analyst interpretation of concurrent CRITICAL security findings from ${criticalResults.length} agents across ${engines.size} engines. Weigh both arguments against the raw evidence and produce a calibrated governance verdict.
 
 Return JSON only (no prose, no markdown):
 {
@@ -150,7 +150,7 @@ DEFER    = likely noise — log only, no action required.`,
             type:        parsed.recommendedActionType,
             level:       Number(parsed.recommendedLevel ?? 1) as HanumanasAction['level'],
             params:      { source: 'aegis.debate', agentCount: criticalResults.length, engines: [...engines] },
-            description: `AEGIS debate verdict: ${unifiedVerdict} — ${arbitration.slice(0, 100)}`,
+            description: `HANUMANAS debate verdict: ${unifiedVerdict} — ${arbitration.slice(0, 100)}`,
           }
         }
       } catch {
@@ -158,7 +158,7 @@ DEFER    = likely noise — log only, no action required.`,
       }
     }
 
-    console.log(`[AEGIS:DEBATE] Verdict: ${unifiedVerdict} | engines: ${[...engines].join(', ')}`)
+    console.log(`[HANUMANAS:DEBATE] Verdict: ${unifiedVerdict} | engines: ${[...engines].join(', ')}`)
 
     // Emit debate outcome as a governance signal to KIMMP
     if (arbitration) {
@@ -166,7 +166,7 @@ DEFER    = likely noise — log only, no action required.`,
         sourceModule:   'kimmp.sentinel',
         signalType:     'aegis.debate.verdict',
         signalCategory: unifiedVerdict === 'ESCALATE' ? 'RISK' : 'SYSTEM',
-        signalValue:    `AEGIS debate [${unifiedVerdict}]: ${arbitration.slice(0, 250)}`,
+        signalValue:    `HANUMANAS debate [${unifiedVerdict}]: ${arbitration.slice(0, 250)}`,
         severity:       unifiedVerdict === 'ESCALATE' ? 'CRITICAL' : 'MODERATE',
         confidence:     0.9,
         metadata:       {
@@ -196,7 +196,7 @@ DEFER    = likely noise — log only, no action required.`,
     return { scepticCase, threatCase, arbitration, unifiedVerdict, recommendedAction, debateRan: true }
 
   } catch (err: any) {
-    console.warn(`[AEGIS:DEBATE] Debate phase failed: ${err.message}`)
+    console.warn(`[HANUMANAS:DEBATE] Debate phase failed: ${err.message}`)
     return NULL_RESULT
   }
 }

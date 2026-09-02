@@ -1,12 +1,12 @@
 // ---------------------------------------------------------------------------
 // Platform Flight Recorder — chronological event replay from all platform sources.
-// Aggregates: AEGIS, QEF Certs, KIMMP Goals/Decisions/Memories, Workflows,
+// Aggregates: HANUMANAS, QEF Certs, KIMMP Goals/Decisions/Memories, Workflows,
 // Incidents, and RGS Deployments into a unified timeline.
 // ---------------------------------------------------------------------------
 
 import { prisma } from '../../lib/prisma'
 
-export type FlightSource = 'KIMMP' | 'AEGIS' | 'QEF' | 'RGS' | 'WORKFLOW' | 'INCIDENT'
+export type FlightSource = 'KIMMP' | 'HANUMANAS' | 'QEF' | 'RGS' | 'WORKFLOW' | 'INCIDENT'
 
 export interface FlightEvent {
   id:        string
@@ -105,7 +105,7 @@ export async function getFlightEvents(opts: FlightRecorderOpts = {}): Promise<{ 
       id:        r.id,
       timestamp: new Date(r.createdAt),
       type:      r.eventType,
-      source:    'AEGIS',
+      source:    'HANUMANAS',
       title:     formatAegisTitle(r),
       actor:     r.actor,
       severity:  r.priority,

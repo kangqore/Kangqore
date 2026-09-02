@@ -111,7 +111,7 @@ async function scoreRisk(): Promise<{ score: number; meta: Record<string, any> }
     const since72h = new Date(Date.now() - 72 * 3600_000)
     // Scout signals use severity to mean "importance of the intelligence finding" — not business risk.
     // Operational and meta signals are also excluded:
-    //   - SYSTEM_DISPATCH / LOOP_CASCADE_COMPLETED: AEGIS/loop lifecycle events
+    //   - SYSTEM_DISPATCH / LOOP_CASCADE_COMPLETED: HANUMANAS/loop lifecycle events
     //   - TWIN_DIMENSION_CRITICAL: twin self-assessment (feedback loop if counted)
     //   - PROACTIVE_ALERT: already counted separately via activeAlerts
     const EXCLUDED_MODULES = ['scout']

@@ -1,4 +1,4 @@
-// AEGIS Compliance Test Suite — Phase 1 Exit Condition
+// HANUMANAS Compliance Test Suite — Phase 1 Exit Condition
 //
 // 12 adversarial tests covering the Phase 1 governance kill zone.
 // Each test is self-contained, creates and cleans up its own fixtures,
@@ -46,7 +46,7 @@ async function run(id: string, name: string, category: string, fn: TestFn): Prom
 async function seedType(): Promise<string> {
   const t = await prisma.ontologyObjectType.upsert({
     where: { name: '__HanumanasTest__' },
-    create: { name: '__HanumanasTest__', displayName: 'AEGIS Test', icon: 'Shield', color: '#ef4444' },
+    create: { name: '__HanumanasTest__', displayName: 'HANUMANAS Test', icon: 'Shield', color: '#ef4444' },
     update: {},
   })
   return t.id

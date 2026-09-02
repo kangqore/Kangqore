@@ -3,7 +3,7 @@ import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const EVENT_TYPES = ['ACTIVATION', 'AUTONOMOUS', 'ACCESS_DENIED', 'KNOWLEDGE_ASSET', 'EGRESS', 'POLICY_VIOLATION'] as const
-const SYSTEM = 'You are AEGIS. Write concise compliance evidence summaries — what is covered and what gaps exist.'
+const SYSTEM = 'You are HANUMANAS. Write concise compliance evidence summaries — what is covered and what gaps exist.'
 
 export async function runComplianceEvidenceAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
@@ -23,7 +23,7 @@ export async function runComplianceEvidenceAgent(ctx: AgentContext): Promise<Han
 
   const report = await callLLM(
     SYSTEM,
-    `AEGIS 7-day audit evidence coverage:\n${coverageBlock}\n\n${coveredCount}/6 event types covered.\n\nWrite 2 sentences: overall evidence posture and what auditors would flag.`,
+    `HANUMANAS 7-day audit evidence coverage:\n${coverageBlock}\n\n${coveredCount}/6 event types covered.\n\nWrite 2 sentences: overall evidence posture and what auditors would flag.`,
     280,
   )
 

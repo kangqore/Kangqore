@@ -39,7 +39,7 @@ export class TemporalNavigationService {
     // Mocking the Krisnam simulation for the semantic response
     let rawProjectedRiskScore = 0.84 // E.g., Krisnam hallucinates a very high risk score
     
-    // AEGIS Determinism Leash: Clamp the Krisnam prediction to historical physics
+    // HANUMANAS Determinism Leash: Clamp the Krisnam prediction to historical physics
     const riskCheck = await hanumanasDeterminism.verifyPrediction(objectId, 'riskScore', rawProjectedRiskScore)
 
     const simulatedData = {

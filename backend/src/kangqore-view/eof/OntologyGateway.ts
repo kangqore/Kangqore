@@ -1,4 +1,4 @@
-// AEGIS Authorization Engine — Universal Ontology Gateway
+// HANUMANAS Authorization Engine — Universal Ontology Gateway
 //
 // Every read and every write to OntologyObject / OntologyRelationship must
 // pass through here. There is no alternate write path.
@@ -16,7 +16,7 @@ import { CdcService } from '../../lib/cdc/cdcService'
 
 export interface GatewayActor {
   id: string
-  type: 'HUMAN' | 'KIMMP' | 'AEGIS' | 'API' | 'SYSTEM'
+  type: 'HUMAN' | 'KIMMP' | 'HANUMANAS' | 'AEGIS' | 'API' | 'SYSTEM'
   clearances: string[]  // data-marking labels this actor can read/write
 }
 

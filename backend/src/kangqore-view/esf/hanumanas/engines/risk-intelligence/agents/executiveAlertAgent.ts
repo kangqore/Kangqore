@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS. Write a concise executive risk brief for the ADMIN. Be direct and action-oriented.'
+const SYSTEM = 'You are HANUMANAS. Write a concise executive risk brief for the ADMIN. Be direct and action-oriented.'
 
 export async function runExecutiveAlertAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
@@ -33,7 +33,7 @@ export async function runExecutiveAlertAgent(ctx: AgentContext): Promise<Hanuman
   const narrative = criticalRuns > 0 || violations > 0
     ? await callLLM(
         SYSTEM,
-        `AEGIS 6-hour executive brief:\n- Risk level: ${riskLevel}\n- CRITICAL findings: ${criticalRuns}\n- WARN findings: ${warnRuns}\n- Policy violations: ${violations}\n- Access denials: ${denied}\n- Autonomous actions: ${autonomous}/${activations} (${autonomyPct}%)\n\nTop CRITICAL findings:\n${topFindings || 'none'}\n\nWrite a 2-sentence executive brief: current risk status and the single most important action for ADMIN.`,
+        `HANUMANAS 6-hour executive brief:\n- Risk level: ${riskLevel}\n- CRITICAL findings: ${criticalRuns}\n- WARN findings: ${warnRuns}\n- Policy violations: ${violations}\n- Access denials: ${denied}\n- Autonomous actions: ${autonomous}/${activations} (${autonomyPct}%)\n\nTop CRITICAL findings:\n${topFindings || 'none'}\n\nWrite a 2-sentence executive brief: current risk status and the single most important action for ADMIN.`,
         300,
       )
     : null
@@ -55,7 +55,7 @@ export async function runExecutiveAlertAgent(ctx: AgentContext): Promise<Hanuman
       ...criticalFindings.map(f => `[${f.engine}] ${f.summary.slice(0, 120)}`),
     ],
     actions: criticalRuns > 0
-      ? [`${riskLevel} risk — ${criticalRuns} CRITICAL findings require ADMIN review. Check AEGIS Agents tab immediately.`]
+      ? [`${riskLevel} risk — ${criticalRuns} CRITICAL findings require ADMIN review. Check HANUMANAS Agents tab immediately.`]
       : [],
     metadata: { riskLevel, criticalRuns, warnRuns, violations, denied, autonomous, activations, autonomyPct },
     durationMs: Date.now() - start,

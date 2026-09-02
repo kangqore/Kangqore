@@ -191,7 +191,7 @@ import koreRoutes from './kangqore-view/kore/api/kore.routes'; // NEW KEOS Layer
 
 // SECURITY: do not re-mount kangqoreImmpRoutes here. It is already mounted below
 // at /api/admin/kangqore-immp behind hanumanasAccessLogger + hanumanasEgressMonitor; a second,
-// unwrapped mount would let every KIMMP route bypass AEGIS governance logging entirely.
+// unwrapped mount would let every KIMMP route bypass HANUMANAS governance logging entirely.
 app.use('/api/kangqore/urgi', authenticate, urgiRoutes);
 app.use('/api/kangqore/kore', koreRoutes); // Mount KEOS KORE APIs
 
@@ -268,7 +268,7 @@ app.use('/api/admin/briefing', briefingRouter);
 // WAANDA — Enterprise Cognitive OS boot manifest + domain registry + mission execution
 app.use('/api/admin/kangqore-view/waanda', authenticate, authorize(['ADMIN']), waandaRouter);
 
-// AEGIS — Autonomous Executive Governance & Intelligence Shield
+// HANUMANAS — Autonomous Executive Governance & Intelligence Shield
 // Sits above KIMMP: sovereign audit dashboard for ADMIN only.
 app.use('/api/admin/aegis', hanumanasShield, hanumanasRouter);
 

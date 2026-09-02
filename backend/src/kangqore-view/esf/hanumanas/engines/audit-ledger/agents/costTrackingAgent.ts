@@ -3,7 +3,7 @@ import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 import { LogicToolRegistry } from '../../../../../../kangqore-immp/tools/logicToolRegistry'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
 export async function runCostTrackingAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
@@ -26,7 +26,7 @@ export async function runCostTrackingAgent(ctx: AgentContext): Promise<Hanumanas
   const autonomousRate7d = Number(utilizationResult.result)
   const verdict = autonomousRate7d > 80 ? 'WARN' : 'PASS'
 
-  const llmSummary = await callLLM(SYSTEM, `AEGIS Cost Tracking (7d): ${total7d} KIMMP activations — ${autonomous7d} autonomous (${autonomousRate7d}%), ${admin7d} ADMIN-triggered. Last 24h: ${total24h} activations (${autonomous24h} autonomous).\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
+  const llmSummary = await callLLM(SYSTEM, `HANUMANAS Cost Tracking (7d): ${total7d} KIMMP activations — ${autonomous7d} autonomous (${autonomousRate7d}%), ${admin7d} ADMIN-triggered. Last 24h: ${total24h} activations (${autonomous24h} autonomous).\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'audit.cost-tracking',

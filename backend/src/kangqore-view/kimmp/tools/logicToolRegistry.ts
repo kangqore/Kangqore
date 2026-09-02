@@ -600,7 +600,7 @@ export class LogicToolRegistry {
     if (result instanceof Promise) {
       throw new Error(`Tool "${name}" is asynchronous. Use auditedExecutor instead.`);
     }
-    // Fire-and-forget AEGIS audit log (never blocks the response path)
+    // Fire-and-forget HANUMANAS audit log (never blocks the response path)
     LogicToolRegistry._audit(name, input, result).catch(() => {})
     return result
   }

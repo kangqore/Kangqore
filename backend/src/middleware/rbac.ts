@@ -180,9 +180,9 @@ export const requireOwnResourceOrAdmin = (userIdParam: string = 'userId') => {
 /**
  * Fine-grained permission check against PermissionScope table.
  * ADMIN role always passes. All other roles need an explicit grant.
- * Every check (pass or deny) is written to the AEGIS audit log.
+ * Every check (pass or deny) is written to the HANUMANAS audit log.
  *
- * Usage: router.get('/secret', requireAuth, requirePermission('AEGIS', 'shield', 'READ'), handler)
+ * Usage: router.get('/secret', requireAuth, requirePermission('HANUMANAS', 'shield', 'READ'), handler)
  */
 export const requirePermission = (workspace: string, feature: string, action: 'READ' | 'WRITE' | 'ADMIN') => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {

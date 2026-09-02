@@ -3,7 +3,7 @@ import { callLLM }        from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 import { LogicToolRegistry } from '../../../../../../kangqore-immp/tools/logicToolRegistry'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 export async function runTrustScoreAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()

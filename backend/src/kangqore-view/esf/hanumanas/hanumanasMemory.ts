@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Memory — per-agent historical context for governance decisions.
+// HANUMANAS Memory — per-agent historical context for governance decisions.
 //
 // Before an agent fires actions, it can read its own recent verdict trajectory
 // to inform the LLM decision layer. This prevents amnesia: the LLM knows if

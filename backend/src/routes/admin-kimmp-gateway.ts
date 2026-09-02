@@ -401,10 +401,10 @@ router.get('/pgvector/benchmark', ...guard, async (_req, res) => {
 // ─── Agent Performance + Audit (S324) ─────────────────────────────────────────
 // Full per-row granularity only for KimmpAgent rows run through S321's
 // runtime (agentRole = agent.name, sourceModule = 'AGENT_STUDIO', set by
-// kimmpAgentRuntime.service.ts). The 38 KIMMP + 80 AEGIS hardcoded agents
+// kimmpAgentRuntime.service.ts). The 38 KIMMP + 80 HANUMANAS hardcoded agents
 // are NOT individually attributable in LlmCallLog today: every one of the 38
 // orchestrator agent functions tags agentType:'orchestrator' uniformly (see
-// kimmpOrchestrator.service.ts's haiku/sonnet/opus wrappers), and AEGIS's
+// kimmpOrchestrator.service.ts's haiku/sonnet/opus wrappers), and HANUMANAS's
 // shared callLLM() helper sets no agentRole at all, only a constant
 // sourceModule. Shown here as three honest aggregate buckets rather than
 // faking per-agent rows the data can't support — full migration of the
@@ -452,7 +452,7 @@ router.get('/agents/performance', ...guard, async (_req, res) => {
     const legacyBuckets = await Promise.all([
       bucket('KIMMP Orchestrator — 38 hardcoded agents (aggregate)', { agentRole: 'orchestrator' }),
       bucket('KIMMP Speak — system voice synthesis', { agentRole: 'KIMMP_SPEAK' }),
-      bucket('AEGIS Engine — 80 hardcoded agents (aggregate)', { actorType: 'AEGIS' }),
+      bucket('HANUMANAS Engine — 80 hardcoded agents (aggregate)', { actorType: 'HANUMANAS' }),
     ])
 
     res.json({ agents, legacyBuckets })

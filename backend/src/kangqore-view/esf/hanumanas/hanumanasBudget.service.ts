@@ -1,4 +1,4 @@
-// AEGIS Per-Tenant Budget Enforcement — extracted from hanumanasRoutes.ts (S112) so
+// HANUMANAS Per-Tenant Budget Enforcement — extracted from hanumanasRoutes.ts (S112) so
 // it can be called as a pre-validation gate from the Action Engine (S298)
 // instead of only being checkable on demand via GET /budget/:tenantId/usage.
 

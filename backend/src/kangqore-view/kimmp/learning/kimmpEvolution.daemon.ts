@@ -5,7 +5,7 @@ import { critiqueDecision } from './adversarialCritic.service'
 /**
  * KimmpEvolutionDaemon
  * An autonomous background loop that scans the entire Kangqore Ecosystem 
- * (Kangqore View, Eqore, HCIP, ALIS, AEGIS, VIS) for decisions that FAILED or 
+ * (Kangqore View, Eqore, HCIP, ALIS, HANUMANAS, VIS) for decisions that FAILED or 
  * resulted in poor outcomes. It then autonomously synthesises a corrective 
  * pattern using the Adversarial Critic and caches it in the Reflex system 
  * so the system immediately evolves.

@@ -31,7 +31,7 @@ export class CodeOverlordService {
   /**
    * Activate The Godfather Protocol
    * This is a "God Mode" override. When activated by C.O.D.E., it bypasses 
-   * AEGIS and instantly manipulates the neural routing across the ecosystem.
+   * HANUMANAS and instantly manipulates the neural routing across the ecosystem.
    */
   public engageGodfatherProtocol(directive: string, haltOrigins: SubsystemType[] = [], redirects: { from: SubsystemType, to: SubsystemType }[] = []) {
     this.protocol.active = true

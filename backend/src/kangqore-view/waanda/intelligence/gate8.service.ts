@@ -1105,7 +1105,7 @@ export async function computeRecommendations(): Promise<Recommendation[]> {
       id: 'trust-audit',
       pillar: 'Trust Intelligence',
       metric: 'Audit Coverage',
-      action: 'Run AEGIS governance agents and trigger KIMMP orchestrations — each operation is automatically logged, raising audit coverage from LOW to FAIR (+5 Trust points)',
+      action: 'Run HANUMANAS governance agents and trigger KIMMP orchestrations — each operation is automatically logged, raising audit coverage from LOW to FAIR (+5 Trust points)',
       currentValue: tm.auditCoverage as string,
       targetValue: 'FAIR or better',
       pillarImpact: 5,

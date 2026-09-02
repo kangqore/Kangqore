@@ -754,7 +754,7 @@ export function opus(system: string, user: string, maxTokens = 1200, meta: Route
   return routedCall('claude-opus-4-8', system, user, maxTokens, meta, options)
 }
 
-// Convenience: call with the full Logic Tool Registry pre-loaded + AEGIS auditing
+// Convenience: call with the full Logic Tool Registry pre-loaded + HANUMANAS auditing
 export function sonnetWithTools(
   system: string,
   user: string,

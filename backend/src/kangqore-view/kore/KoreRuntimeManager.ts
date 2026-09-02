@@ -89,7 +89,7 @@ class TransactionEngine {
   static async execute(transaction: TwinTransaction): Promise<boolean> {
     console.log(`[KORE Runtime] Executing Transaction ${transaction.transactionId}`);
     
-    // 1. AEGIS Validation Phase — real policy evaluation per proposal
+    // 1. HANUMANAS Validation Phase — real policy evaluation per proposal
     for (const proposal of transaction.proposals) {
       const missionId = `KORE_TX_${transaction.transactionId}_${proposal.twinId}`;
       const mission: MissionRequest = {
@@ -102,7 +102,7 @@ class TransactionEngine {
       const hanumanasResult = await HanumanasShield.evaluatePolicy(mission);
 
       if (hanumanasResult.action === 'DENY') {
-        console.error(`[KORE Transaction] Rolled back: AEGIS denied ${proposal.twinId} — ${hanumanasResult.reason}`);
+        console.error(`[KORE Transaction] Rolled back: HANUMANAS denied ${proposal.twinId} — ${hanumanasResult.reason}`);
         transaction.status = 'ROLLED_BACK';
         void HanumanasShield.writeToLedger(missionId, proposal.proposedBy, 'KORE_MUTATION_DENIED', 'BLOCKED', {
           riskScore:        hanumanasResult.riskScore,

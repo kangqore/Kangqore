@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Intelligence Egress Control
+// HANUMANAS Intelligence Egress Control
 //
 // Tracks every time KIMMP intelligence leaves the system — a briefing read,
 // an API response containing sensitive intelligence, a report downloaded.
@@ -36,10 +36,10 @@ function classifyRoute(path: string): string | undefined {
 }
 
 // S112 Phase 3: hard-deny egress beyond payload size limit (default 512 KB)
-const EGRESS_LIMIT_BYTES = Number(process.env.AEGIS_EGRESS_LIMIT_KB ?? 512) * 1024
+const EGRESS_LIMIT_BYTES = Number(process.env.HANUMANAS_EGRESS_LIMIT_KB ?? process.env.AEGIS_EGRESS_LIMIT_KB ?? 512) * 1024
 
 // Express middleware — intercepts KIMMP intelligence responses and logs egress
-// Phase 3 upgrade: hard-deny if payload exceeds AEGIS_EGRESS_LIMIT_KB.
+// Phase 3 upgrade: hard-deny if payload exceeds HANUMANAS_EGRESS_LIMIT_KB.
 export function hanumanasEgressMonitor(req: Request, res: Response, next: NextFunction): void {
   const isEgress = EGRESS_PATTERNS.some(p => p.test(req.path))
   if (!isEgress) { next(); return }
@@ -65,8 +65,8 @@ export function hanumanasEgressMonitor(req: Request, res: Response, next: NextFu
       }).catch(() => {})
 
       return originalJson({
-        error:    'AEGIS: Egress size limit exceeded. Response blocked.',
-        shield:   'AEGIS',
+        error:    'HANUMANAS: Egress size limit exceeded. Response blocked.',
+        shield:   'HANUMANAS',
         limitKb:  EGRESS_LIMIT_BYTES / 1024,
         sizeKb:   +(payloadSize / 1024).toFixed(1),
         domain:   'EGRESS_CONTROL',

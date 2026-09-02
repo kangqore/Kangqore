@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS. Summarise the audit evidence package for an external compliance review.'
+const SYSTEM = 'You are HANUMANAS. Summarise the audit evidence package for an external compliance review.'
 
 const EVENT_TYPES = ['ACTIVATION', 'AUTONOMOUS', 'POLICY_VIOLATION', 'ACCESS_DENIED', 'KNOWLEDGE_ASSET', 'EGRESS'] as const
 
@@ -24,7 +24,7 @@ export async function runEvidenceCollectionAgent(ctx: AgentContext): Promise<Han
   const summaryBlock = counts.map(c => `${c.type}: ${c.count} events`).join(', ')
   const narrative    = await callLLM(
     SYSTEM,
-    `30-day AEGIS audit evidence: ${summaryBlock}. Total events: ${total}. Coverage: ${covered}/${EVENT_TYPES.length} event types.\n\nWrite 2 sentences suitable for an external compliance auditor describing the completeness of this evidence package.`,
+    `30-day HANUMANAS audit evidence: ${summaryBlock}. Total events: ${total}. Coverage: ${covered}/${EVENT_TYPES.length} event types.\n\nWrite 2 sentences suitable for an external compliance auditor describing the completeness of this evidence package.`,
     300,
   )
 

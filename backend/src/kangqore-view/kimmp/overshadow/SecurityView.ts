@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // AI Security View — Overshadow Roadmap P4.2.
 //
-// Not a SIEM/SOAR competitor — explicitly. This extends AEGIS's existing
+// Not a SIEM/SOAR competitor — explicitly. This extends HANUMANAS's existing
 // audit/risk domain into a security-team-facing view of two things that
 // already exist but weren't surfaced together anywhere: AI-touched security
 // events (AegisAuditLog rows the platform was already writing) and AI-
@@ -48,7 +48,7 @@ export async function getAiSecurityView() {
       id: r.id, agentName: r.agent?.name ?? null, tool: r.tool, action: r.action,
       description: r.description, level: r.level, requestedAt: r.requestedAt, expiresAt: r.expiresAt,
     })),
-    disclaimer: 'Not a SIEM/SOAR replacement — a live view of AEGIS audit events already being written (policy violations, access denials, egress) and the real agent-action approval queue, brought together for a security team instead of scattered across admin panels.',
+    disclaimer: 'Not a SIEM/SOAR replacement — a live view of HANUMANAS audit events already being written (policy violations, access denials, egress) and the real agent-action approval queue, brought together for a security team instead of scattered across admin panels.',
     computedAt: new Date().toISOString(),
   }
 }

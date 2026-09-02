@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS Risk Intelligence. Analyse KIMMP behavioural patterns and identify any concerning signatures.'
+const SYSTEM = 'You are HANUMANAS Risk Intelligence. Analyse KIMMP behavioural patterns and identify any concerning signatures.'
 
 export async function runBehaviorAnalysisAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()

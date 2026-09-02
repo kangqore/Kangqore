@@ -311,7 +311,7 @@ export class SystemRAG {
       tags:    [trigger, system.toLowerCase(), 'auto'],
     }).catch(err => { logger.warn(`[KIMMP:RAG] autoIndex failed: ${err.message}`); return null })
 
-    // AEGIS: register every ingested briefing as a KIMMP-owned intelligence asset
+    // HANUMANAS: register every ingested briefing as a KIMMP-owned intelligence asset
     if (result?.id) {
       HanumanasLedger.logKnowledgeAsset({
         system,

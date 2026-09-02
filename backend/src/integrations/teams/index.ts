@@ -9,7 +9,7 @@ export const TeamsAdapter: IntegrationAdapter = {
       const res = await fetch(config.webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ '@type': 'MessageCard', '@context': 'http://schema.org/extensions', text: 'Kangqore OS — AEGIS connection test ✓' }),
+        body: JSON.stringify({ '@type': 'MessageCard', '@context': 'http://schema.org/extensions', text: 'Kangqore OS — HANUMANAS connection test ✓' }),
       })
       return res.ok ? { ok: true, message: 'Teams webhook connected' } : { ok: false, message: `HTTP ${res.status}` }
     } catch (e: any) {

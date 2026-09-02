@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Agent Types — the contract every agent fulfils.
+// HANUMANAS Agent Types — the contract every agent fulfils.
 // ---------------------------------------------------------------------------
 
 export type HanumanasVerdict = 'PASS' | 'WARN' | 'CRITICAL' | 'INFO'

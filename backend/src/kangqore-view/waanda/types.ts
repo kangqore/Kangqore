@@ -47,7 +47,7 @@ export const COGNITIVE_STAGE_MAP: Record<string, CognitiveStage> = {
   'planner':       'DECIDE',
   'decision':      'DECIDE',
 
-  // ACT — WAANDA executes governed by AEGIS
+  // ACT — WAANDA executes governed by HANUMANAS
   'kimmp':         'ACT',
   'mission':       'ACT',
   'keos':          'ACT',

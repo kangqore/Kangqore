@@ -14,7 +14,7 @@ interface BoundsCheckResult {
 }
 
 /**
- * AEGIS Determinism Engine
+ * HANUMANAS Determinism Engine
  * Puts a strict mathematical leash on the Krisnam LLM.
  * Intercepts stochastic predictions and clamps them to the physical realities of the enterprise ontology.
  */
@@ -54,7 +54,7 @@ export class HanumanasDeterminismEngine {
     // If no history exists, we cannot deterministically bound it. 
     // Fallback to accepting the prediction but logging a warning.
     if (values.length < 2) {
-      logger.warn(`[AEGIS DETERMINISM] Insufficient historical data for ${objectId}.${propertyName}. Allowing Krisnam prediction unguarded.`)
+      logger.warn(`[HANUMANAS DETERMINISM] Insufficient historical data for ${objectId}.${propertyName}. Allowing Krisnam prediction unguarded.`)
       return {
         isHallucination: false,
         originalValue: predictedValue,
@@ -76,7 +76,7 @@ export class HanumanasDeterminismEngine {
     let clampedValue = predictedValue
 
     if (isHallucination) {
-      logger.warn(`[AEGIS DETERMINISM] HALLUCINATION DETECTED! Krisnam predicted ${predictedValue} for ${objectId}.${propertyName} (Variance: ${zScore.toFixed(2)}σ). Clamping to mathematical bounds.`)
+      logger.warn(`[HANUMANAS DETERMINISM] HALLUCINATION DETECTED! Krisnam predicted ${predictedValue} for ${objectId}.${propertyName} (Variance: ${zScore.toFixed(2)}σ). Clamping to mathematical bounds.`)
       clampedValue = Math.max(lowerLimit, Math.min(predictedValue, upperLimit))
     }
 

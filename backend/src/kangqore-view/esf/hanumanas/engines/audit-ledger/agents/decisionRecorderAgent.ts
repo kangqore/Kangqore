@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
 export async function runDecisionRecorderAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
@@ -20,7 +20,7 @@ export async function runDecisionRecorderAgent(ctx: AgentContext): Promise<Hanum
   const completeness = total > 0 ? Math.round(((total * 4 - totalGaps) / (total * 4)) * 100) : 100
   const verdict    = completeness < 80 ? 'WARN' : 'PASS'
 
-  const llmSummary = await callLLM(SYSTEM, `AEGIS Decision Recorder (24h): ${total} KIMMP ACTIVATION events. Record completeness: ${completeness}% (missing trigger: ${missTrigger}, system: ${missSystem}, priority: ${missPriority}, confidence: ${missConfidence}).\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
+  const llmSummary = await callLLM(SYSTEM, `HANUMANAS Decision Recorder (24h): ${total} KIMMP ACTIVATION events. Record completeness: ${completeness}% (missing trigger: ${missTrigger}, system: ${missSystem}, priority: ${missPriority}, confidence: ${missConfidence}).\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'audit.decision-recorder',

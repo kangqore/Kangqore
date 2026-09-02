@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Routes — ADMIN sovereignty dashboard API
+// HANUMANAS Routes — ADMIN sovereignty dashboard API
 //
 // Mounted at /api/admin/aegis (protected by hanumanasShield upstream).
 // ---------------------------------------------------------------------------
@@ -29,23 +29,23 @@ hanumanasRouter.get('/config', (_req: Request, res: Response) => {
 hanumanasRouter.post('/config/toggle', (req: Request, res: Response) => {
   const auth = req.headers.authorization
   if (!auth?.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Auth required to toggle AEGIS' })
+    res.status(401).json({ error: 'Auth required to toggle HANUMANAS' })
     return
   }
   const payload = verifyAccessToken(auth.substring(7)) as any
   if (!payload || payload.role !== 'ADMIN') {
-    res.status(403).json({ error: 'Only ADMIN may toggle AEGIS' })
+    res.status(403).json({ error: 'Only ADMIN may toggle HANUMANAS' })
     return
   }
   const enabled = hanumanasConfig.toggle(payload.userId)
-  res.json({ ...hanumanasConfig.snapshot(), message: enabled ? 'AEGIS activated' : 'AEGIS bypassed — build mode on' })
+  res.json({ ...hanumanasConfig.snapshot(), message: enabled ? 'HANUMANAS activated' : 'HANUMANAS bypassed — build mode on' })
 })
 
 // ── Health ────────────────────────────────────────────────────────────────────
 
 hanumanasRouter.get('/health', (_req: Request, res: Response) => {
   res.json({
-    shield:    'AEGIS',
+    shield:    'HANUMANAS',
     fullName:  'Kangqore Autonomous Executive Governance & Intelligence Shield',
     status:    'ACTIVE',
     governs:   'KIMMP/WAANDA',
@@ -71,7 +71,7 @@ hanumanasRouter.get('/stats', async (_req: Request, res: Response) => {
     HanumanasSovereignty.ownershipSummary(),
   ])
   res.json({
-    shield:           'AEGIS',
+    shield:           'HANUMANAS',
     ledger:           ledgerStats,
     sovereignty:      ownershipSummary,
     policies:         HanumanasPolicyEngine.listPolicies().length,
@@ -91,7 +91,7 @@ hanumanasRouter.get('/audit', async (req: Request, res: Response) => {
     from:      from   ? new Date(from as string) : undefined,
     to:        to     ? new Date(to   as string) : undefined,
   })
-  res.json({ shield: 'AEGIS', domain: 'AUDIT', ...result })
+  res.json({ shield: 'HANUMANAS', domain: 'AUDIT', ...result })
 })
 
 // ── Autonomy Boundary Monitor ─────────────────────────────────────────────────
@@ -104,7 +104,7 @@ hanumanasRouter.get('/autonomy', async (req: Request, res: Response) => {
     limit:      limit  ? Number(limit)  : 50,
     offset:     offset ? Number(offset) : 0,
   })
-  res.json({ shield: 'AEGIS', domain: 'AUTONOMY_BOUNDARY', ...result })
+  res.json({ shield: 'HANUMANAS', domain: 'AUTONOMY_BOUNDARY', ...result })
 })
 
 // ── Access Sentinel ───────────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ hanumanasRouter.get('/shield', async (req: Request, res: Response) => {
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
   })
-  res.json({ shield: 'AEGIS', domain: 'ACCESS_SENTINEL', ...result })
+  res.json({ shield: 'HANUMANAS', domain: 'ACCESS_SENTINEL', ...result })
 })
 
 // ── Intelligence Registry ─────────────────────────────────────────────────────
@@ -129,7 +129,7 @@ hanumanasRouter.get('/assets', async (req: Request, res: Response) => {
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
   })
-  res.json({ shield: 'AEGIS', domain: 'INTELLIGENCE_REGISTRY', ...result })
+  res.json({ shield: 'HANUMANAS', domain: 'INTELLIGENCE_REGISTRY', ...result })
 })
 
 // ── Intelligence Egress Control ───────────────────────────────────────────────
@@ -141,7 +141,7 @@ hanumanasRouter.get('/egress', async (req: Request, res: Response) => {
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
   })
-  res.json({ shield: 'AEGIS', domain: 'EGRESS_CONTROL', ...result })
+  res.json({ shield: 'HANUMANAS', domain: 'EGRESS_CONTROL', ...result })
 })
 
 // ── Sovereignty Engine ────────────────────────────────────────────────────────
@@ -149,7 +149,7 @@ hanumanasRouter.get('/egress', async (req: Request, res: Response) => {
 hanumanasRouter.get('/sovereignty', async (_req: Request, res: Response) => {
   const summary = await HanumanasSovereignty.ownershipSummary()
   res.json({
-    shield:  'AEGIS',
+    shield:  'HANUMANAS',
     domain:  'SOVEREIGNTY',
     master:  'ADMIN',
     ...summary,
@@ -160,7 +160,7 @@ hanumanasRouter.get('/sovereignty', async (_req: Request, res: Response) => {
 
 hanumanasRouter.get('/policy/rules', (_req: Request, res: Response) => {
   res.json({
-    shield:   'AEGIS',
+    shield:   'HANUMANAS',
     domain:   'POLICY_ENGINE',
     policies: HanumanasPolicyEngine.listPolicies(),
   })
@@ -170,7 +170,7 @@ hanumanasRouter.get('/policy/rules', (_req: Request, res: Response) => {
 
 hanumanasRouter.get('/agents', (_req: Request, res: Response) => {
   res.json({
-    shield:  'AEGIS',
+    shield:  'HANUMANAS',
     domain:  'AGENT_REGISTRY',
     ...HanumanasEngineDispatcher.registryStats(),
     agents:  HanumanasEngineDispatcher.listAgents(),
@@ -218,7 +218,7 @@ hanumanasRouter.get('/agents/summary', async (_req: Request, res: Response) => {
   const overallVerdict = hasCritical ? 'CRITICAL' : hasWarn ? 'WARN' : 'PASS'
 
   res.json({
-    shield:         'AEGIS',
+    shield:         'HANUMANAS',
     domain:         'AGENT_CORPS_SUMMARY',
     overallVerdict,
     healthScore,
@@ -249,7 +249,7 @@ hanumanasRouter.get('/agents/runs', async (req: Request, res: Response) => {
     (prisma as any).hanumanasAgentRun.count({ where }),
   ])
 
-  res.json({ shield: 'AEGIS', domain: 'AGENT_RUNS', rows, total })
+  res.json({ shield: 'HANUMANAS', domain: 'AGENT_RUNS', rows, total })
 })
 
 // ── On-demand engine run ─────────────────────────────────────────────────────
@@ -260,7 +260,7 @@ hanumanasRouter.post('/engines/:engine/run', async (req: Request, res: Response)
     engine.toUpperCase(),
     { userId: (req as any).user?.id ?? 'ADMIN' },
   )
-  res.json({ shield: 'AEGIS', engine: engine.toUpperCase(), ran: results.length, results })
+  res.json({ shield: 'HANUMANAS', engine: engine.toUpperCase(), ran: results.length, results })
 })
 
 // ── On-demand single agent run ────────────────────────────────────────────────
@@ -272,7 +272,7 @@ hanumanasRouter.post('/agents/:agentId/run', async (req: Request, res: Response)
     { userId: (req as any).user?.id ?? 'ADMIN' },
   )
   if (!result) return res.status(404).json({ error: `Agent '${agentId}' not found` })
-  res.json({ shield: 'AEGIS', result })
+  res.json({ shield: 'HANUMANAS', result })
 })
 
 // ── Phase 2: Pending L3 Actions ───────────────────────────────────────────────
@@ -282,19 +282,19 @@ hanumanasRouter.get('/actions/pending', async (_req: Request, res: Response) => 
     where:   { status: 'PENDING' },
     orderBy: { requestedAt: 'desc' },
   })
-  res.json({ shield: 'AEGIS', domain: 'PENDING_ACTIONS', rows, total: rows.length })
+  res.json({ shield: 'HANUMANAS', domain: 'PENDING_ACTIONS', rows, total: rows.length })
 })
 
 hanumanasRouter.post('/actions/:id/approve', async (req: Request, res: Response) => {
   const adminUserId = (req as any).user?.id ?? 'ADMIN'
   const result = await HanumanasActionExecutor.approveAndExecute(req.params.id, adminUserId)
-  res.json({ shield: 'AEGIS', ...result })
+  res.json({ shield: 'HANUMANAS', ...result })
 })
 
 hanumanasRouter.post('/actions/:id/reject', async (req: Request, res: Response) => {
   const adminUserId = (req as any).user?.id ?? 'ADMIN'
   await HanumanasActionExecutor.rejectPending(req.params.id, adminUserId)
-  res.json({ shield: 'AEGIS', rejected: true })
+  res.json({ shield: 'HANUMANAS', rejected: true })
 })
 
 hanumanasRouter.get('/actions/log', async (req: Request, res: Response) => {
@@ -313,7 +313,7 @@ hanumanasRouter.get('/actions/log', async (req: Request, res: Response) => {
     (prisma as any).hanumanasActionLog.count({ where }),
   ])
 
-  res.json({ shield: 'AEGIS', domain: 'ACTION_LOG', rows, total })
+  res.json({ shield: 'HANUMANAS', domain: 'ACTION_LOG', rows, total })
 })
 
 // ── S112: Phase 3 — Per-tenant Budget Enforcement ────────────────────────────
@@ -324,9 +324,9 @@ hanumanasRouter.get('/budget', async (_req: Request, res: Response) => {
   // Returns global + per-tenant enforcement config
   const budgets = HanumanasBudget.listConfigs()
   res.json({
-    shield:    'AEGIS',
+    shield:    'HANUMANAS',
     domain:    'BUDGET_ENFORCEMENT',
-    global:    { egressSizeLimitKb: Number(process.env.AEGIS_EGRESS_LIMIT_KB ?? 512), hardDeny: true },
+    global:    { egressSizeLimitKb: Number(process.env.HANUMANAS_EGRESS_LIMIT_KB ?? process.env.AEGIS_EGRESS_LIMIT_KB ?? 512), hardDeny: true },
     tenants:   budgets,
     totalTenants: budgets.length,
   })
@@ -339,16 +339,16 @@ hanumanasRouter.post('/budget', async (req: Request, res: Response) => {
   // Emit KIMMP signal for audit
   await prisma.kimmpSignal.create({
     data: {
-      sourceModule: 'AEGIS',
-      signalType: 'AEGIS_BUDGET_SET',
+      sourceModule: 'HANUMANAS',
+      signalType: 'HANUMANAS_BUDGET_SET',
       signalCategory: 'SYSTEM',
-      signalValue: `AEGIS Budget Set — ${tenantId}`,
+      signalValue: `HANUMANAS Budget Set — ${tenantId}`,
       severity: 'LOW',
       confidence: 100,
       metadata: { summary: `callLimit=${config.callLimit}/day, hardDeny=${config.hardDeny}` }
     },
   }).catch(() => {})
-  res.json({ shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT', tenantId, config })
+  res.json({ shield: 'HANUMANAS', domain: 'BUDGET_ENFORCEMENT', tenantId, config })
 })
 
 hanumanasRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) => {
@@ -366,7 +366,7 @@ hanumanasRouter.get('/budget/:tenantId/usage', async (req: Request, res: Respons
   }
 
   res.json({
-    shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT',
+    shield: 'HANUMANAS', domain: 'BUDGET_ENFORCEMENT',
     tenantId, callCount: usage.callCount, budget: usage.budget,
     windowHours: usage.windowHours,
     overBudget: usage.overBudget, hardDeny: usage.hardDeny,

@@ -3,7 +3,7 @@
 //   1. Ontology (NOLAN: ROBERT + ALFRED)
 //   2. Live Telemetry (Signal Ledger & Traces)
 //   3. Historical Outcomes & Learning Examples
-//   4. AEGIS Policies & Constraints
+//   4. HANUMANAS Policies & Constraints
 //   5. Krisnam Mainstream LLM Models
 //   6. Business Objectives & Goals
 //   7. Human Preferences & Executive Rules
@@ -304,7 +304,7 @@ Formulate prescriptive action plan, confidence %, expected primary impact, alter
   /** Approves decision and dispatches the execution plan via ActionEngine */
   static async approveAndExecute(decisionId: string, approvalToken: string, actorId: string) {
     if (!approvalToken || !approvalToken.startsWith('token-aegis-')) {
-      throw new Error('Invalid or missing cryptographic AEGIS approval token.');
+      throw new Error('Invalid or missing cryptographic HANUMANAS approval token.');
     }
 
     // The action id here was hardcoded to a row that does not exist, so

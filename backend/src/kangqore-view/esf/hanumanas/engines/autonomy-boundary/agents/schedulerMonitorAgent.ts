@@ -4,7 +4,7 @@ import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const VALID_ACTORS = new Set(['SCHEDULER', 'ADMIN', 'KIMMP'])
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 export async function runSchedulerMonitorAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()

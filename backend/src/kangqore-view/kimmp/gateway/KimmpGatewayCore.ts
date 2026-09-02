@@ -218,7 +218,7 @@ export function inferCallerModule(): { sourceModule: string; actorType: string }
       if (!match) continue
       const path = match[1]
       if (path.includes('kimmpGatewayCore') || path.includes('krisnamAnthropic')) continue
-      const actorType = path.includes('esf/hanumanas') ? 'AEGIS'
+      const actorType = path.includes('esf/hanumanas') ? 'HANUMANAS'
         : path.includes('eqore') ? 'EQORE'
         : path.includes('kangqore-immp') ? 'KIMMP'
         : 'SYSTEM'

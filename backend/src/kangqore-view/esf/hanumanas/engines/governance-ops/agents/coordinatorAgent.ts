@@ -2,7 +2,7 @@ import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, the governance AI for Kangqore. Provide executive-level governance summaries — direct, no fluff.'
+const SYSTEM = 'You are HANUMANAS, the governance AI for Kangqore. Provide executive-level governance summaries — direct, no fluff.'
 
 export async function runCoordinatorAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
@@ -20,7 +20,7 @@ export async function runCoordinatorAgent(ctx: AgentContext): Promise<HanumanasA
 
   const summary = await callLLM(
     SYSTEM,
-    `AEGIS 24h snapshot: ${totalRuns} agent runs (CRITICAL:${criticalRuns} WARN:${warnRuns} PASS:${passRuns}), ` +
+    `HANUMANAS 24h snapshot: ${totalRuns} agent runs (CRITICAL:${criticalRuns} WARN:${warnRuns} PASS:${passRuns}), ` +
     `${violations} policy violations, ${autonomous} autonomous KIMMP actions, ${assets} new assets.\n\n` +
     `Write 2 sentences: governance health status and whether ADMIN action is required.`,
     300,
@@ -34,7 +34,7 @@ export async function runCoordinatorAgent(ctx: AgentContext): Promise<HanumanasA
     agentId:   'govops.coordinator',
     engine:    'GOVERNANCE_OPS',
     verdict,
-    summary:   summary || `AEGIS 24h: ${totalRuns} runs, ${criticalRuns} CRITICAL, ${violations} violations.`,
+    summary:   summary || `HANUMANAS 24h: ${totalRuns} runs, ${criticalRuns} CRITICAL, ${violations} violations.`,
     findings: [
       `Agent runs (24h): ${totalRuns}`,
       `CRITICAL findings: ${criticalRuns}`,

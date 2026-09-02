@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Request Context — AsyncLocalStorage correlation bridge
+// HANUMANAS Request Context — AsyncLocalStorage correlation bridge
 //
 // Solves the three-surface incoherence: HTTP middleware, MissionDispatcher, and
 // KoreRuntimeManager all call HanumanasShield / HanumanasLedger independently with no

@@ -2,7 +2,7 @@ import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS. Analyse governance trends factually — be specific about direction and velocity of change.'
+const SYSTEM = 'You are HANUMANAS. Analyse governance trends factually — be specific about direction and velocity of change.'
 
 export async function runAnalyticsAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
@@ -24,7 +24,7 @@ export async function runAnalyticsAgent(ctx: AgentContext): Promise<HanumanasAge
 
   const narrative = await callLLM(
     SYSTEM,
-    `AEGIS 7-day trend: ${trendBlock}\n\nWrite 2 sentences: trend direction and whether governance is improving, stable, or deteriorating.`,
+    `HANUMANAS 7-day trend: ${trendBlock}\n\nWrite 2 sentences: trend direction and whether governance is improving, stable, or deteriorating.`,
     300,
   )
 
@@ -34,7 +34,7 @@ export async function runAnalyticsAgent(ctx: AgentContext): Promise<HanumanasAge
     verdict:   'INFO',
     summary:   narrative || `7-day governance trend: ${trendBlock}`,
     findings:  days.map(d => `${d.date}: ${d.pass} PASS  ${d.warn} WARN  ${d.critical} CRITICAL`),
-    actions:   totalCritical > 10 ? ['Consider increasing AEGIS scheduler frequency'] : [],
+    actions:   totalCritical > 10 ? ['Consider increasing HANUMANAS scheduler frequency'] : [],
     metadata:  { days, totalCritical },
     durationMs: Date.now() - start,
     raisedAt:  new Date().toISOString(),

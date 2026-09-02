@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Scheduler — fires schedule.1h / schedule.6h / schedule.24h cadences.
+// HANUMANAS Scheduler — fires schedule.1h / schedule.6h / schedule.24h cadences.
 //
 // Called from WaandaBootstrap Phase 2 (_bootHanumanas) — not from index.ts directly.
 // ---------------------------------------------------------------------------
@@ -12,11 +12,11 @@ let intervalMs = 60 * 60_000  // default: 1h
 const _intervals: ReturnType<typeof setInterval>[] = []
 
 function run(trigger: 'schedule.1h' | 'schedule.6h' | 'schedule.24h'): void {
-  HanumanasEngineDispatcher.runTrigger(trigger, { userId: 'AEGIS_SCHEDULER' })
+  HanumanasEngineDispatcher.runTrigger(trigger, { userId: 'HANUMANAS_SCHEDULER' })
     .then(results => {
       const critical = results.filter(r => r.verdict === 'CRITICAL').length
       const warn     = results.filter(r => r.verdict === 'WARN').length
-      console.log(`[AEGIS] ${trigger}: ${results.length} agents | CRITICAL:${critical} WARN:${warn}`)
+      console.log(`[HANUMANAS] ${trigger}: ${results.length} agents | CRITICAL:${critical} WARN:${warn}`)
       // Forward verdicts to HanumanasAdapter for WAANDA health reporting
       import('./hanumanasScheduler').then(() => {}).catch(() => {})
       try {
@@ -24,7 +24,7 @@ function run(trigger: 'schedule.1h' | 'schedule.6h' | 'schedule.24h'): void {
         updateHanumanasVerdicts({ clear: results.length - critical - warn, warn, critical })
       } catch {}
     })
-    .catch(err => console.error(`[AEGIS] ${trigger} scheduler error:`, err))
+    .catch(err => console.error(`[HANUMANAS] ${trigger} scheduler error:`, err))
 }
 
 export const HanumanasScheduler = {
@@ -42,20 +42,20 @@ export const HanumanasScheduler = {
     setTimeout(() => run('schedule.6h'),  15_000)
     setTimeout(() => run('schedule.24h'), 25_000)
 
-    console.log('[AEGIS] Scheduler started — all 80 agents on 1h cadence')
+    console.log('[HANUMANAS] Scheduler started — all 80 agents on 1h cadence')
   },
 
   stop(): void {
     _intervals.forEach(id => clearInterval(id))
     _intervals.length = 0
     started = false
-    console.log('[AEGIS] Scheduler stopped by WAANDA directive')
+    console.log('[HANUMANAS] Scheduler stopped by WAANDA directive')
   },
 
   configure(options: { intervalMs?: number }): void {
     if (options.intervalMs) {
       intervalMs = options.intervalMs
-      console.log(`[AEGIS] Scheduler interval updated to ${intervalMs}ms by WAANDA directive`)
+      console.log(`[HANUMANAS] Scheduler interval updated to ${intervalMs}ms by WAANDA directive`)
     }
   },
 }

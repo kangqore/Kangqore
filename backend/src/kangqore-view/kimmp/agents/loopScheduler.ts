@@ -66,7 +66,7 @@ export class LoopScheduler {
     return this.started
   }
 
-  // Paused by WAANDA authority directive (AEGIS escalates to WAANDA, WAANDA decides)
+  // Paused by WAANDA authority directive (HANUMANAS escalates to WAANDA, WAANDA decides)
   static pause(): void {
     if (this.timer) { clearInterval(this.timer); this.timer = null }
     this._paused = true

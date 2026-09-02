@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Event Emitter — activates the dormant event-trigger system.
+// HANUMANAS Event Emitter — activates the dormant event-trigger system.
 //
 // Phase 1 defined event triggers (event.CRITICAL_ACTIVATION, event.ACCESS_DENIED,
 // event.POLICY_VIOLATION) in AgentTrigger but never fired them. This module
@@ -26,11 +26,11 @@ export const HanumanasEventEmitter = {
           metadata:  { triggeredBy: result.agentId, engine: result.engine, verdict: result.verdict },
         })
       } catch (err: any) {
-        console.error('[AEGIS:EMITTER] cascade error:', err?.message)
+        console.error('[HANUMANAS:EMITTER] cascade error:', err?.message)
       }
     })
 
-    console.log('[AEGIS] EventEmitter initialised — cascading on aegis.critical')
+    console.log('[HANUMANAS] EventEmitter initialised — cascading on aegis.critical')
   },
 
   /** Fire event.CRITICAL_ACTIVATION after a CRITICAL verdict (called from dispatcher). */

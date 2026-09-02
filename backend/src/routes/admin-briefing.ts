@@ -140,17 +140,17 @@ briefingRouter.get(
           where: { createdAt: { gte: today, lt: todayEnd } },
         }).catch(() => 0),
 
-        // Compliance: AEGIS critical runs last 24h
+        // Compliance: HANUMANAS critical runs last 24h
         (prisma as any).hanumanasAgentRun.count({
           where: { verdict: 'CRITICAL', raisedAt: { gte: new Date(Date.now() - 86_400_000) } },
         }).catch(() => 0),
 
-        // Compliance: AEGIS warn runs last 24h
+        // Compliance: HANUMANAS warn runs last 24h
         (prisma as any).hanumanasAgentRun.count({
           where: { verdict: 'WARN', raisedAt: { gte: new Date(Date.now() - 86_400_000) } },
         }).catch(() => 0),
 
-        // Compliance: latest AEGIS health score from govops.reporting
+        // Compliance: latest HANUMANAS health score from govops.reporting
         (prisma as any).hanumanasAgentRun.findFirst({
           where:   { agentId: 'govops.reporting' },
           orderBy: { raisedAt: 'desc' },
@@ -252,10 +252,10 @@ briefingRouter.get(
         : 'PASS'
       const complianceSignal =
         complianceStatus === 'FAIL'
-          ? `AEGIS: CRITICAL posture. ${aegisCritical24h} critical control${aegisCritical24h !== 1 ? 's' : ''} failed in 24h. ${openCriticalRiskCount} critical risk${openCriticalRiskCount !== 1 ? 's' : ''} open.`
+          ? `HANUMANAS: CRITICAL posture. ${aegisCritical24h} critical control${aegisCritical24h !== 1 ? 's' : ''} failed in 24h. ${openCriticalRiskCount} critical risk${openCriticalRiskCount !== 1 ? 's' : ''} open.`
           : complianceStatus === 'WARN'
-          ? `AEGIS score ${complianceScoreNum}%. ${aegisWarn24h} warn${aegisWarn24h !== 1 ? 's' : ''} in 24h. ${openCriticalRiskCount + openHighRiskCount} risk${openCriticalRiskCount + openHighRiskCount !== 1 ? 's' : ''} open.`
-          : `AEGIS posture PASS. Score ${complianceScoreNum}%. All controls current.`
+          ? `HANUMANAS score ${complianceScoreNum}%. ${aegisWarn24h} warn${aegisWarn24h !== 1 ? 's' : ''} in 24h. ${openCriticalRiskCount + openHighRiskCount} risk${openCriticalRiskCount + openHighRiskCount !== 1 ? 's' : ''} open.`
+          : `HANUMANAS posture PASS. Score ${complianceScoreNum}%. All controls current.`
       const complianceTrend = complianceStatus === 'FAIL' ? -8 : complianceStatus === 'WARN' ? -2 : 3
 
       // ── Assemble ──────────────────────────────────────────────────────────

@@ -39,7 +39,7 @@ export async function getLiveComplianceSignals(): Promise<LiveSignal[]> {
       key: 'audit_logging',
       label: 'Audit logging & monitoring',
       satisfied: stats.totalActivations > 0,
-      detail: `${stats.totalActivations.toLocaleString()} activations logged, ${stats.totalDenied.toLocaleString()} access denials recorded in the AEGIS ledger.`,
+      detail: `${stats.totalActivations.toLocaleString()} activations logged, ${stats.totalDenied.toLocaleString()} access denials recorded in the HANUMANAS ledger.`,
     },
     {
       key: 'access_control_segregation',

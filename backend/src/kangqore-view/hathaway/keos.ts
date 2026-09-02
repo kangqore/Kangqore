@@ -14,7 +14,7 @@
 // Sits alongside its siblings in the Kangqore subsystem set:
 //   HATHAWAY (KEOS)  — the shell you operate in            ← this file
 //   NOLAN            — the ontology (ROBERT + ALFRED)
-//   AEGIS            — governance, audit, policy
+//   HANUMANAS            — governance, audit, policy
 //   KIMMP / WAANDA   — the intelligence within the shell
 
 export const HATHAWAY = 'HATHAWAY' as const

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Engine Dispatcher — routes triggers → agents → HanumanasAgentRun.
+// HANUMANAS Engine Dispatcher — routes triggers → agents → HanumanasAgentRun.
 //
 // Phase 2 additions:
 //   - After every CRITICAL verdict: propose actions → execute them
@@ -109,7 +109,7 @@ async function runOne(
               HanumanasActionExecutor.execute([{
                 type:        'SEND_ALERT_EMAIL',
                 level:       2,
-                params:      { subject: `AEGIS ESCALATION: ${result.agentId} still CRITICAL after 60s` },
+                params:      { subject: `HANUMANAS ESCALATION: ${result.agentId} still CRITICAL after 60s` },
                 description: `${result.agentId} returned CRITICAL on re-evaluation — threat unresolved`,
               }, {
                 type:        'CREATE_NOTIFICATION',
@@ -159,7 +159,7 @@ async function runOne(
 
     return result
   } catch (err) {
-    console.error(`[AEGIS] agent ${agent.id} threw:`, err)
+    console.error(`[HANUMANAS] agent ${agent.id} threw:`, err)
     return null
   }
 }

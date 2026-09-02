@@ -218,7 +218,7 @@ export class WaandaTrainingPipeline {
     }
   }
 
-  // ── Capture an AEGIS governance decision ────────────────────────────────────
+  // ── Capture an HANUMANAS governance decision ────────────────────────────────────
   // Called from aegisActionProposer.ts after the LLM chooses governance actions.
   // Teaches Gen 2 WAANDA: "given this security finding, here is the right action."
 
@@ -232,7 +232,7 @@ export class WaandaTrainingPipeline {
   }): void {
     WaandaTrainingPipeline.write({
       exampleType:  'REASON',
-      system:       `AEGIS:${params.engine}`,
+      system:       `HANUMANAS:${params.engine}`,
       trigger:      params.verdict,
       systemPrompt: params.systemPrompt,
       userPrompt:   params.userPrompt,

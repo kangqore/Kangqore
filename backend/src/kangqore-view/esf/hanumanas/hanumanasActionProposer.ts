@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Action Proposer — maps agent result → HanumanasAction[].
+// HANUMANAS Action Proposer — maps agent result → HanumanasAction[].
 //
 // Phase 3 upgrade: LLM first, hardcoded map as fallback.
 //   - LLM receives full HanumanasAgentResult + available tool descriptions
@@ -48,7 +48,7 @@ const TOOL_DESCRIPTIONS: Record<HanumanasActionType, { level: 0|1|2|3; descripti
   EMIT_SOCKET:          { level: 0, description: 'Broadcast a real-time event to the admin dashboard. Silent — no notification created.' },
   EMIT_SIGNAL:          { level: 0, description: 'Emit a governance signal to KIMMP for situational awareness. Silent.' },
   LOG_AUDIT_ENTRY:      { level: 0, description: 'Write a structured audit log entry. Silent.' },
-  EMIT_TO_WAANDA:       { level: 0, description: 'Publish a governance event to the WAANDA cognitive bus so KIMMP can incorporate AEGIS state in its next synthesis.' },
+  EMIT_TO_WAANDA:       { level: 0, description: 'Publish a governance event to the WAANDA cognitive bus so KIMMP can incorporate HANUMANAS state in its next synthesis.' },
   CREATE_NOTIFICATION:  { level: 1, description: 'Create an in-app priority notification for admin. Use for WARN and most CRITICALs.' },
   RUN_INVESTIGATION:    { level: 1, description: 'Immediately trigger govops.investigation to analyse the incident in depth.' },
   TRIGGER_CASCADE:      { level: 1, description: 'Fire all event.CRITICAL_ACTIVATION agents to assess cross-engine impact.' },
@@ -77,7 +77,7 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
   ],
   'sentinel.authentication:CRITICAL': [
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'HIGH' },           description: 'Auth failure rate critical — admin alert' },
-    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'AEGIS: Critical Authentication Failure Rate' }, description: 'Email admin — auth failures spike' },
+    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'HANUMANAS: Critical Authentication Failure Rate' }, description: 'Email admin — auth failures spike' },
   ],
   'sentinel.session-guardian:CRITICAL': [
     { type: 'FLAG_ACTOR',            level: 2, params: { source: 'session-guardian' }, description: 'Flag burst-denial actor' },
@@ -98,7 +98,7 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
     { type: 'TRIGGER_CASCADE',       level: 1, params: { trigger: 'event.CRITICAL_ACTIVATION' }, description: 'Cascade to all event.CRITICAL_ACTIVATION agents' },
   ],
   'govops.escalation:CRITICAL': [
-    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'AEGIS: Unresolved Warnings Escalated to Critical' }, description: 'Email admin — stale WARNs escalated' },
+    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'HANUMANAS: Unresolved Warnings Escalated to Critical' }, description: 'Email admin — stale WARNs escalated' },
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'HIGH' },           description: 'Escalation notification' },
   ],
   'govops.engine-health:CRITICAL': [
@@ -110,11 +110,11 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
 
   'egress.leak-detection:CRITICAL': [
     { type: 'RUN_INVESTIGATION',     level: 1, params: { agentId: 'govops.investigation' }, description: 'Auto-trigger investigation for RESTRICTED leak' },
-    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'AEGIS CRITICAL: Intelligence Leak Detected' }, description: 'Email admin — restricted asset leaked' },
+    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'HANUMANAS CRITICAL: Intelligence Leak Detected' }, description: 'Email admin — restricted asset leaked' },
     { type: 'QUARANTINE_ASSET',      level: 3, params: { source: 'leak-detection' },   description: 'Freeze restricted asset egress (requires approval)' },
   ],
   'egress.external-share-auditor:CRITICAL': [
-    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'AEGIS: Unauthorized Egress Actor Detected' }, description: 'Email admin — unauthorized egress' },
+    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'HANUMANAS: Unauthorized Egress Actor Detected' }, description: 'Email admin — unauthorized egress' },
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'HIGH' },           description: 'Unauthorized egress actor — admin notification' },
   ],
 
@@ -137,14 +137,14 @@ const ACTION_MAP: Record<string, HanumanasAction[]> = {
   ],
   'policy.evaluator:CRITICAL': [
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'HIGH' },           description: 'Policy violations spike — admin notification' },
-    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'AEGIS: Policy Violation Spike' }, description: 'Email admin — violations threshold exceeded' },
+    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'HANUMANAS: Policy Violation Spike' }, description: 'Email admin — violations threshold exceeded' },
   ],
 
   // ── RISK_INTELLIGENCE ──────────────────────────────────────────────────────
 
   'risk.executive-alert:CRITICAL': [
     { type: 'CREATE_NOTIFICATION',   level: 1, params: { priority: 'CRITICAL' },       description: 'Critical executive alert — admin notification' },
-    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'AEGIS Executive Alert: Critical Risk Level' }, description: 'Email admin — critical risk brief' },
+    { type: 'SEND_ALERT_EMAIL',      level: 2, params: { subject: 'HANUMANAS Executive Alert: Critical Risk Level' }, description: 'Email admin — critical risk brief' },
   ],
   'risk.assessment:CRITICAL': [
     { type: 'EMIT_SOCKET',           level: 0, params: { event: 'aegis:risk-critical' }, description: 'Broadcast critical risk score to admin dashboard' },
@@ -172,7 +172,7 @@ const CONSECUTIVE_WARN_ACTION: HanumanasAction = {
 
 // ── LLM prompt ─────────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You are AEGIS, the Autonomous Executive Governance Intelligence Shield for Kangqore OS.
+const SYSTEM_PROMPT = `You are HANUMANAS, the Autonomous Executive Governance Intelligence Shield for Kangqore OS.
 Your job is to decide what governance actions to take when a security or governance agent fires a verdict.
 
 Available actions (you may choose 1–5):

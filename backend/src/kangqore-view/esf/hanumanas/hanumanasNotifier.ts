@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------------
-// AEGIS Notifier — pushes CRITICAL/WARN agent verdicts into the OS notification
-// system so the ADMIN sees them in the Topbar bell without polling AEGIS directly.
+// HANUMANAS Notifier — pushes CRITICAL/WARN agent verdicts into the OS notification
+// system so the ADMIN sees them in the Topbar bell without polling HANUMANAS directly.
 // ---------------------------------------------------------------------------
 
 import { prisma }              from '../../../lib/prisma'
@@ -42,7 +42,7 @@ export async function notifyHanumanasVerdict(result: HanumanasAgentResult): Prom
   if (!adminId) return
 
   const engineLabel = ENGINE_LABEL[result.engine] ?? result.engine
-  const title       = `AEGIS ${result.verdict} — ${engineLabel}`
+  const title       = `HANUMANAS ${result.verdict} — ${engineLabel}`
   const message     = result.summary.slice(0, 160)
   const type        = VERDICT_TYPE[result.verdict]
   const link        = '/kangqore-view/admin/aegis/agents'

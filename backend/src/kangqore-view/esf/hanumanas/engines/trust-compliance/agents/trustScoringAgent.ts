@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.'
 
 export async function runTrustScoringAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
@@ -19,7 +19,7 @@ export async function runTrustScoringAgent(ctx: AgentContext): Promise<Hanumanas
 
   // Trust score: real operational incidents drive the score down.
   // CRITICAL/WARN agent runs are monitoring signals — capped so normal
-  // AEGIS surveillance activity doesn't floor the score.
+  // HANUMANAS surveillance activity doesn't floor the score.
   // POLICY_VIOLATION audit events (real system violations) carry full weight.
   const denialRate       = (activations + denied) > 0 ? denied / (activations + denied) : 0
   const violationPenalty = Math.min(violations * 4,  20) // real system violations

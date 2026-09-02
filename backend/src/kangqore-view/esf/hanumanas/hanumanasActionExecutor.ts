@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Action Executor — governance-gated execution of proposed actions.
+// HANUMANAS Action Executor — governance-gated execution of proposed actions.
 //
 // L0: auto-execute, silent (log only)
 // L1: auto-execute + in-app notification
@@ -33,7 +33,7 @@ async function recordGovernanceAction(actionType: string, level: number, params:
     actionId,
     params: { ...params, hanumanasActionType: actionType, level, outcome },
     actorId: result.agentId,
-    actorType: 'AEGIS',
+    actorType: 'HANUMANAS',
     agentsMixed: [result.agentId],
     sourceModule: result.engine,
     reasoning: result.summary,
@@ -71,7 +71,7 @@ async function logAction(
     },
   }).catch(() => {})
 
-  // S298 — fire-and-forget; a failure here must never affect AEGIS's own logging
+  // S298 — fire-and-forget; a failure here must never affect HANUMANAS's own logging
   recordGovernanceAction(action.type, action.level, action.params, result, outcome).catch(() => {})
 }
 
@@ -96,7 +96,7 @@ async function execEmitSignal(action: HanumanasAction, result: HanumanasAgentRes
   const { SignalLedger } = await import('../../../kangqore-immp/signals/signalLedger.service')
   await SignalLedger.record({
     sourceModule:    'kimmp.sentinel',
-    signalType:      `AEGIS_${result.verdict}`,
+    signalType:      `HANUMANAS_${result.verdict}`,
     signalCategory:  (action.params.category as any) ?? 'RISK',
     signalValue:     result.summary.slice(0, 160),
     severity:        (action.params.severity as any) ?? result.verdict,
@@ -111,7 +111,7 @@ async function execCreateNotification(action: HanumanasAction, result: Hanumanas
   const priority = (action.params.priority as string) ?? 'NORMAL'
   await createNotification({
     userId:  admin.id,
-    title:   `AEGIS ${result.verdict} — ${result.agentId}`,
+    title:   `HANUMANAS ${result.verdict} — ${result.agentId}`,
     message: result.summary.slice(0, 160),
     type:    result.verdict === 'CRITICAL' ? 'ERROR' : 'WARNING',
     link:    '/kangqore-view/admin/aegis/agents',
@@ -141,7 +141,7 @@ async function execRunInvestigation(_action: HanumanasAction, result: HanumanasA
 async function execSendAlertEmail(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   const admin = await getAdmin()
   if (!admin) return
-  const subject = (action.params.subject as string) ?? `AEGIS Alert: ${result.verdict} — ${result.agentId}`
+  const subject = (action.params.subject as string) ?? `HANUMANAS Alert: ${result.verdict} — ${result.agentId}`
   const body = [
     `<h2>${subject}</h2>`,
     `<p><strong>Agent:</strong> ${result.agentId} (${result.engine})</p>`,
@@ -150,7 +150,7 @@ async function execSendAlertEmail(action: HanumanasAction, result: HanumanasAgen
     `<h3>Findings</h3><ul>${result.findings.map(f => `<li>${f}</li>`).join('')}</ul>`,
     result.actions.length ? `<h3>Recommended Actions</h3><ul>${result.actions.map(a => `<li>${a}</li>`).join('')}</ul>` : '',
     `<p><em>Raised at: ${result.raisedAt}</em></p>`,
-    `<p><a href="https://kangqore.com/kangqore-view/admin/aegis/agents">View in AEGIS Dashboard →</a></p>`,
+    `<p><a href="https://kangqore.com/kangqore-view/admin/aegis/agents">View in HANUMANAS Dashboard →</a></p>`,
   ].join('\n')
   await emailService.sendEmail({ to: admin.email, subject, html: body }).catch(() => {})
 }
@@ -163,7 +163,7 @@ async function execFlagActor(action: HanumanasAction, result: HanumanasAgentResu
   await (redisConnection as any).expire('aegis:flagged-actors', 86400)
   // Log to ledger
   await HanumanasLedger.logPolicyViolation({
-    policy:   'AEGIS_FLAG_ACTOR',
+    policy:   'HANUMANAS_FLAG_ACTOR',
     system:   result.engine,
     actor,
     detail:   `Flagged by ${result.agentId} (${result.verdict})`,
@@ -190,7 +190,7 @@ async function execTriggerKimmpSystem(action: HanumanasAction, result: Hanumanas
   const { KimmpSystemDispatcher } = await import('../../../kangqore-immp/agents/systemDispatcher')
   await KimmpSystemDispatcher.run(system as any, {
     trigger: 'aegis.summons',
-    userId:  'AEGIS',
+    userId:  'HANUMANAS',
     params:  { agentId: result.agentId, verdict: result.verdict, summary: result.summary },
   }).catch(() => {})
 }
@@ -211,7 +211,7 @@ async function execRevokeSession(action: HanumanasAction, result: HanumanasAgent
   const { deleteAllUserSessions } = await import('../../kernel/auth/SessionService')
   await deleteAllUserSessions(userId).catch(() => {})
   await HanumanasLedger.logPolicyViolation({
-    policy:   'AEGIS_SESSION_REVOKE',
+    policy:   'HANUMANAS_SESSION_REVOKE',
     system:   result.engine,
     actor:    userId,
     detail:   `Sessions revoked by ${result.agentId} (${result.verdict})`,
@@ -224,11 +224,11 @@ async function execRevokeSession(action: HanumanasAction, result: HanumanasAgent
 async function createRollbackCheckpoint(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   await (prisma as any).kimmpSignal.create({
     data: {
-      type:     'AEGIS_ROLLBACK_CHECKPOINT',
+      type:     'HANUMANAS_ROLLBACK_CHECKPOINT',
       priority: 'critical',
-      title:    `AEGIS Rollback Checkpoint — ${action.type}`,
+      title:    `HANUMANAS Rollback Checkpoint — ${action.type}`,
       summary:  `Pre-L3 snapshot before ${action.type} on ${result.agentId} (${result.verdict}). Checkpoint captures agent state for recovery if action is rejected.`,
-      module:   'AEGIS',
+      module:   'HANUMANAS',
       confidence: 100,
       metadata: {
         actionType:  action.type,
@@ -276,7 +276,7 @@ async function execQueueL3(action: HanumanasAction, result: HanumanasAgentResult
     if (admin) {
       await createNotification({
         userId:  admin.id,
-        title:   `AEGIS: Action Requires Approval`,
+        title:   `HANUMANAS: Action Requires Approval`,
         message: `${action.description} — from ${result.agentId} (${result.verdict})`,
         type:    'WARNING',
         link:    '/kangqore-view/admin/aegis/actions',
@@ -331,13 +331,13 @@ export const HanumanasActionExecutor = {
     try {
       switch (pending.actionType) {
         case 'PAUSE_KIMMP_LOOP': {
-          // WAANDA is the supreme authority — AEGIS escalates, WAANDA decides and issues the directive
+          // WAANDA is the supreme authority — HANUMANAS escalates, WAANDA decides and issues the directive
           const { WaandaAuthority } = await import('../../waanda/WaandaAuthority')
           await WaandaAuthority.receiveEscalation({
-            from:    'AEGIS',
-            threat:  (pending.params as any).reason ?? 'AEGIS L3 governance action triggered',
+            from:    'HANUMANAS',
+            threat:  (pending.params as any).reason ?? 'HANUMANAS L3 governance action triggered',
             tier:    'CRITICAL',
-            source:  (pending.params as any).source ?? pending.agentId ?? 'AEGIS',
+            source:  (pending.params as any).source ?? pending.agentId ?? 'HANUMANAS',
             action:  'PAUSE_KIMMP_LOOP',
             context: { pendingId, agentId: pending.agentId, engine: pending.engine, params: pending.params },
           })
@@ -377,7 +377,7 @@ export const HanumanasActionExecutor = {
 
       // S298 — L3 approved actions are the most severe governance events; always mirror them
       recordGovernanceAction(pending.actionType, 3, pending.params as Record<string, unknown>, {
-        agentId: pending.agentId ?? 'aegis', engine: pending.engine ?? 'AEGIS', summary: `L3 action approved by ADMIN ${adminUserId}`,
+        agentId: pending.agentId ?? 'aegis', engine: pending.engine ?? 'HANUMANAS', summary: `L3 action approved by ADMIN ${adminUserId}`,
       }, outcome).catch(() => {})
 
       emitToAdmins('aegis:action:executed', { id: pendingId, actionType: pending.actionType, outcome })

@@ -7,7 +7,7 @@
 // The six inherited layers, in evaluation order:
 //   identity      → resolve app + installation, reject unknown/suspended
 //   permissions   → action & object-type allowlists derived from the manifest
-//   governance    → AEGIS policy evaluation (DENY / REQUIRE_APPROVAL / ALLOW)
+//   governance    → HANUMANAS policy evaluation (DENY / REQUIRE_APPROVAL / ALLOW)
 //   billing       → credit envelope debited per call, exhaustion blocks
 //   audit         → AppAuditEvent row written on every outcome, including denials
 //   observability → duration + outcome counters surfaced to the ops console
@@ -256,7 +256,7 @@ export const GovernanceKernel = {
       }
     }
 
-    // ── 3. GOVERNANCE (AEGIS policy) ─────────────────────────────────────────
+    // ── 3. GOVERNANCE (HANUMANAS policy) ─────────────────────────────────────────
     const policyResult = await checkPolicy({
       trigger: `APP_ACTION:${ctx.appId}:${ctx.actionName ?? '*'}`,
       params: ctx.params ?? {},
@@ -282,7 +282,7 @@ export const GovernanceKernel = {
       return {
         outcome: 'DENIED',
         allowed: false,
-        reason: `AEGIS policy denied execution: ${policyResult.reason}`,
+        reason: `HANUMANAS policy denied execution: ${policyResult.reason}`,
         auditId,
         installationId: installation.id,
         policy: {

@@ -11,7 +11,7 @@
 //   OPERATIONS   — project delivery, workflow, tasks, resource
 //   FINANCE      — budget, forecast, spend, P&L
 //   GOVERNANCE   — audit, access control, policy, compliance
-//   SECURITY     — threat, vulnerability, AEGIS, risk
+//   SECURITY     — threat, vulnerability, HANUMANAS, risk
 //   EXECUTIVE    — cross-system synthesis, strategic decisions, COIG
 //   CONCIERGE    — visitor Q&A that doesn't map to a clear domain
 //   PLATFORM     — infrastructure, training, benchmarks, system health
@@ -92,8 +92,8 @@ export function classifyCurriculum(params: ClassifyParams): Curriculum {
 
   // Exact system match
   if (system) {
-    const sys = system.replace(/^AEGIS:/, 'AEGIS_')
-    if (sys.startsWith('AEGIS')) return 'GOVERNANCE'
+    const sys = system.replace(/^HANUMANAS:/, 'HANUMANAS_')
+    if (sys.startsWith('HANUMANAS') || sys.startsWith('AEGIS')) return 'GOVERNANCE'
     if (SYSTEM_MAP[system]) return SYSTEM_MAP[system]
   }
 

@@ -389,7 +389,7 @@ export class KimmpSystemDispatcher {
       recommendations: speech.recommendations,
     }).catch(() => {})
 
-    // AEGIS: record every activation — fire and forget
+    // HANUMANAS: record every activation — fire and forget
     HanumanasLedger.logActivation({
       system:     system,
       trigger:    ctx.trigger ?? 'manual',
@@ -453,7 +453,7 @@ export class KimmpSystemDispatcher {
       `=== ${r.persona} [${r.model}] ===\nPriority: ${r.priority}\nSummary: ${r.summary}\nFindings: ${r.keyFindings.join('; ')}\nRecommendations: ${r.recommendations.join('; ')}\nAlerts: ${r.alerts.join('; ') || 'none'}\nLoop signal passed: ${r.loopSignal ?? 'none'}`
     ).join('\n\n')
 
-    // Sprint 6B — KIMMP → AEGIS: read current AEGIS governance state so the
+    // Sprint 6B — KIMMP → HANUMANAS: read current HANUMANAS governance state so the
     // synthesis is aware of active threats before it governs.
     let hanumanasStateBlock = ''
     try {
@@ -466,7 +466,7 @@ export class KimmpSystemDispatcher {
         LIMIT 5
       `.catch(() => [])
       if (hanumanasCriticals.length > 0) {
-        hanumanasStateBlock = `\n\n━━ AEGIS GOVERNANCE STATE (last 2h) ━━\n` +
+        hanumanasStateBlock = `\n\n━━ HANUMANAS GOVERNANCE STATE (last 2h) ━━\n` +
           hanumanasCriticals.map((r: any) => `• ${r.agent_id}: ${(r.summary ?? '').slice(0, 100)}`).join('\n')
       }
     } catch { /* never block synthesis */ }
@@ -536,7 +536,7 @@ export class KimmpSystemDispatcher {
 
     logger.info(`[KIMMP:LOOPS] Complete — ${results.length} systems, ${activeLoops} loops, ${Date.now() - start}ms`)
 
-    // AEGIS: mark this loop activation as AUTONOMOUS if scheduler-triggered
+    // HANUMANAS: mark this loop activation as AUTONOMOUS if scheduler-triggered
     const isAutonomous = (ctx.trigger ?? '').startsWith('schedule.')
     HanumanasLedger.logActivation({
       system:     'KIMMP',

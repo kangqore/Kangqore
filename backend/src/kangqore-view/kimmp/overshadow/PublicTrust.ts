@@ -81,7 +81,7 @@ export async function computeCapabilityScorecard(): Promise<{
   }
 }
 
-// ── Governance Summary (AEGIS audit trail + PII policy + budget model,
+// ── Governance Summary (HANUMANAS audit trail + PII policy + budget model,
 // aggregate-only) ────────────────────────────────────────────────────────────
 
 const PII_CATEGORY_LABELS: Record<string, string> = {

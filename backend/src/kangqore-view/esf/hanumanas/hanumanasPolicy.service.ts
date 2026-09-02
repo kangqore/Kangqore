@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Policy Engine
+// HANUMANAS Policy Engine
 //
 // Defines and evaluates the governance rules that protect the ADMIN's
 // sovereignty over KIMMP/WAANDA. Policies are checked before any sensitive
@@ -64,7 +64,7 @@ const POLICIES: Policy[] = [
   },
   {
     id:       'CRITICAL_BRIEFING_MUST_LOG',
-    name:     'CRITICAL priority briefings must be logged to the AEGIS audit ledger',
+    name:     'CRITICAL priority briefings must be logged to the HANUMANAS audit ledger',
     severity: 'HIGH',
     evaluate: (ctx) => {
       if (ctx.action === 'BRIEFING_PRODUCED' && ctx.metadata?.priority === 'CRITICAL') {
@@ -122,13 +122,13 @@ export class HanumanasPolicyEngine {
       })
 
       if (verdict === 'DENY') {
-        logger.warn(`[AEGIS:POLICY] DENY — ${policy.id}: ${policy.name} | action=${action} role=${ctx.role ?? 'none'}`)
+        logger.warn(`[HANUMANAS:POLICY] DENY — ${policy.id}: ${policy.name} | action=${action} role=${ctx.role ?? 'none'}`)
         HanumanasEventEmitter.firePolicyViolation({
           userId:   ctx.userId,
           metadata: { policy: policy.id, action, role: ctx.role, severity: policy.severity },
         })
       } else if (verdict === 'WARN') {
-        logger.info(`[AEGIS:POLICY] WARN — ${policy.id}: ${policy.name} | action=${action}`)
+        logger.info(`[HANUMANAS:POLICY] WARN — ${policy.id}: ${policy.name} | action=${action}`)
       }
     }
 

@@ -3,7 +3,7 @@ import { callLLM }           from '../../../agents/llm'
 import { prisma }            from '../../../../../../lib/prisma'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS. Analyse intelligence asset lifecycle states — retention, expiry, and sovereignty health.'
+const SYSTEM = 'You are HANUMANAS. Analyse intelligence asset lifecycle states — retention, expiry, and sovereignty health.'
 
 export async function runLifecycleAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start    = Date.now()

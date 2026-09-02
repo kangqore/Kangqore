@@ -43,11 +43,11 @@ export function bootPerceptronNetwork() {
     }
   })
 
-  // 2. AEGIS (Governance Node)
-  synapseMesh.registerNode('AEGIS', async (signal: SynapseSignal) => {
-    logger.info(`[Perceptron:AEGIS] Auditing signal from ${signal.origin} for policy violations...`)
+  // 2. HANUMANAS (Governance Node)
+  synapseMesh.registerNode('HANUMANAS', async (signal: SynapseSignal) => {
+    logger.info(`[Perceptron:HANUMANAS] Auditing signal from ${signal.origin} for policy violations...`)
     if (signal.signalType === 'POLICY_OVERRIDE') {
-      logger.warn(`[Perceptron:AEGIS] Processing Policy Override requested by ${signal.origin}.`)
+      logger.warn(`[Perceptron:HANUMANAS] Processing Policy Override requested by ${signal.origin}.`)
     }
   })
 

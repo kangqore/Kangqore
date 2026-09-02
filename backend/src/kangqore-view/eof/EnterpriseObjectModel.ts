@@ -18,7 +18,7 @@
 //   CORE          identity, title, description
 //   ENTERPRISE    owner, budget, SLA, compliance — the operating facts
 //   INTELLIGENCE  predicted risk, next best action, root cause — what KIMMP infers
-//   GOVERNANCE    policy, approval state, classification, evidence — what AEGIS enforces
+//   GOVERNANCE    policy, approval state, classification, evidence — what HANUMANAS enforces
 //
 // The last two are what make a board an enterprise decision surface instead of
 // a work table.
@@ -62,7 +62,7 @@ export const STATE_COLORS: Record<string, string> = {
 
 // ── Responsibility model (§9) ─────────────────────────────────────────────────
 // One assignee cannot express "owned by a PM, executed by an AI agent, approved
-// by the CFO, governed by AEGIS". Ownership is plural.
+// by the CFO, governed by HANUMANAS". Ownership is plural.
 
 export const RESPONSIBILITY_ROLES = [
   'owner', 'responsible', 'approver', 'reviewer',
@@ -118,7 +118,7 @@ const INTELLIGENCE: ObjectSchema = {
 }
 
 // ── Governance columns (§6) ──────────────────────────────────────────────────
-// These are what AEGIS reads. They are on every object because governance that
+// These are what HANUMANAS reads. They are on every object because governance that
 // applies to only some objects is not governance.
 
 const GOVERNANCE: ObjectSchema = {

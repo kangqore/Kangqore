@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
 const EVENT_TYPES = ['ACTIVATION', 'AUTONOMOUS', 'ACCESS_DENIED', 'KNOWLEDGE_ASSET', 'EGRESS', 'POLICY_VIOLATION'] as const
 
@@ -25,7 +25,7 @@ export async function runLoggerAgent(ctx: AgentContext): Promise<HanumanasAgentR
 
   const verdict = uncovered.length > 2 ? 'WARN' : uncovered.length > 0 ? 'WARN' : 'PASS'
 
-  const llmSummary = await callLLM(SYSTEM, `AEGIS Audit Logger (7d): ${total7d} total events, ${total24h} in 24h. Event type coverage: ${coverage.map(c => `${c.type}=${c.count}`).join(', ')}. Uncovered types (zero entries): ${uncovered.length > 0 ? uncovered.map(c => c.type).join(', ') : 'none'}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
+  const llmSummary = await callLLM(SYSTEM, `HANUMANAS Audit Logger (7d): ${total7d} total events, ${total24h} in 24h. Event type coverage: ${coverage.map(c => `${c.type}=${c.count}`).join(', ')}. Uncovered types (zero entries): ${uncovered.length > 0 ? uncovered.map(c => c.type).join(', ') : 'none'}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'audit.logger',
@@ -33,7 +33,7 @@ export async function runLoggerAgent(ctx: AgentContext): Promise<HanumanasAgentR
     verdict,
     summary:   uncovered.length > 0
       ? `${uncovered.length} event types have zero ledger entries in 7 days. Logging gaps detected.`
-      : `All 6 AEGIS event types are actively logged. ${total7d} events in 7d, ${total24h} in 24h.`,
+      : `All 6 HANUMANAS event types are actively logged. ${total7d} events in 7d, ${total24h} in 24h.`,
     findings: [
       `Total events (7d): ${total7d}`,
       `Total events (24h): ${total24h}`,

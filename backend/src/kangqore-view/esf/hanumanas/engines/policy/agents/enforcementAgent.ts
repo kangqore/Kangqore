@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess policy compliance and enforcement. Flag violations, exceptions, and decisions requiring ADMIN review. Write 2 sentences, direct.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess policy compliance and enforcement. Flag violations, exceptions, and decisions requiring ADMIN review. Write 2 sentences, direct.'
 
 const ENFORCEMENT_WARN_THRESHOLD = 0.95  // below 95% = degraded enforcement
 
@@ -40,7 +40,7 @@ export async function runEnforcementAgent(ctx: AgentContext): Promise<HanumanasA
       `Enforcement status: ${criticalRuns > 0 ? 'CRITICAL' : degraded ? 'DEGRADED' : 'HEALTHY'}`,
     ],
     actions:  criticalRuns > 0
-      ? ['CRITICAL: Multiple policy enforcement failures — review AEGIS agent findings immediately']
+      ? ['CRITICAL: Multiple policy enforcement failures — review HANUMANAS agent findings immediately']
       : degraded ? ['Enforcement rate below 95% — review policy violation sources'] : [],
     metadata: { activations, violations, enforcementRate, criticalRuns, degraded },
     durationMs: Date.now() - start,

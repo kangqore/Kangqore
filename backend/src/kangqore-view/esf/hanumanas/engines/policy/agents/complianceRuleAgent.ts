@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS. Evaluate whether active governance policies are achieving their goals based on recent violation trends.'
+const SYSTEM = 'You are HANUMANAS. Evaluate whether active governance policies are achieving their goals based on recent violation trends.'
 
 export async function runComplianceRuleAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
@@ -18,7 +18,7 @@ export async function runComplianceRuleAgent(ctx: AgentContext): Promise<Hanuman
 
   const narrative = await callLLM(
     SYSTEM,
-    `AEGIS governance data (7 days):
+    `HANUMANAS governance data (7 days):
 - Policy violations (7d): ${violations7d}
 - Policy violations (24h): ${violations24h}
 - PASS agent verdicts (7d): ${agentRuns}

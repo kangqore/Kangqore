@@ -21,7 +21,7 @@ if (!command || command === '--help' || command === '-h') {
   Usage:
     npx kangqore-app init <app-name>     Initialize new Kangqore App project
     npx kangqore-app validate            Validate kangqore.manifest.json schema
-    npx kangqore-app test                Run local action & AEGIS policy sandbox tests
+    npx kangqore-app test                Run local action & HANUMANAS policy sandbox tests
     npx kangqore-app publish             Publish app to Kangqore View Marketplace
   \`);
   process.exit(0);
@@ -104,7 +104,7 @@ export class KangqoreClient {
   }
 
   public async runAgent(agentId: string, prompt: string) {
-    return { agentId, status: 'COMPLETED', response: 'Task executed with AEGIS governance.' };
+    return { agentId, status: 'COMPLETED', response: 'Task executed with HANUMANAS governance.' };
   }
 }
 `
@@ -135,6 +135,6 @@ class KangqoreClient:
         return {"object_type": object_type, "items": [], "total": 0}
 
     def run_agent(self, agent_id: str, prompt: str) -> Dict[str, Any]:
-        return {"agent_id": agent_id, "status": "COMPLETED", "response": "Executed under AEGIS policy."}
+        return {"agent_id": agent_id, "status": "COMPLETED", "response": "Executed under HANUMANAS policy."}
 `
 }

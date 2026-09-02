@@ -36,7 +36,7 @@ const TASK_LIBRARY: Record<AgentRole, TaskDefinition[]> = {
     { task: 'Running BIDS health scan: Core API', durationMs: 4000, successLog: '>> AG-991: Core API p95 latency: 142ms — within threshold.' },
     { task: 'Checking KIMMP loop integrity (last 24h)', durationMs: 5000, successLog: '>> AG-991: 0 failed loops. 18 completed. System nominal.' },
     { task: 'Auditing Knowledge Graph edge consistency', durationMs: 6000, successLog: '>> AG-991: 2 orphaned edges detected — quarantined for review.' },
-    { task: 'Validating AEGIS firewall rules (inbound)', durationMs: 4500, successLog: '>> AG-991: 847 requests scanned. 3 anomalies flagged.' },
+    { task: 'Validating HANUMANAS firewall rules (inbound)', durationMs: 4500, successLog: '>> AG-991: 847 requests scanned. 3 anomalies flagged.' },
     { task: 'Measuring eQORE session token expiry rates', durationMs: 5000, successLog: '>> AG-991: Token refresh rate normal. 0 auth errors in last hour.' },
     { task: 'Profiling Redis cache hit/miss ratio', durationMs: 4000, successLog: '>> AG-991: Cache hit ratio: 91.3% — optimal.' },
     { task: 'Scanning Prisma query performance (slow queries)', durationMs: 7000, successLog: '>> AG-991: 1 slow query identified (>500ms) — flagged for index review.' },

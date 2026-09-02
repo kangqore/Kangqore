@@ -3,7 +3,7 @@
 // DecisionEngine produces an outcome-risk assessment — exposure, ranked threats,
 // recommended actions. On its own that is a report. This turns it into a
 // mission, so "Execute recovery plan?" runs through the machinery Phase 6
-// already built: AEGIS policy, human approval, ActionEngine execution, and a
+// already built: HANUMANAS policy, human approval, ActionEngine execution, and a
 // verification pass that re-measures whether the risk actually fell.
 //
 // The reason to route through AgentMissionEngine rather than executing directly:

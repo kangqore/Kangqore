@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.'
 
 const ENGINES = [
   'GOVERNANCE_OPS','SOVEREIGNTY','AUDIT_LEDGER','AUTONOMY_BOUNDARY',
@@ -39,16 +39,16 @@ export async function runOperationalRiskAgent(ctx: AgentContext): Promise<Hanuma
     engine:   'RISK_INTELLIGENCE',
     verdict,
     summary:  schedulerDown
-      ? `CRITICAL: AEGIS scheduler appears silent — no agent runs in last 2h. Governance monitoring compromised.`
+      ? `CRITICAL: HANUMANAS scheduler appears silent — no agent runs in last 2h. Governance monitoring compromised.`
       : silentEngines.length > 0
         ? `Operational risk: ${silentEngines.length} engine(s) have not run in 24h: ${silentEngines.map(e => e.engine).join(', ')}.`
-        : `Operational health: AEGIS scheduler active (${recentRuns} runs/2h). All 10 engines ran in last 24h.`,
+        : `Operational health: HANUMANAS scheduler active (${recentRuns} runs/2h). All 10 engines ran in last 24h.`,
     findings: [
-      `AEGIS scheduler: ${schedulerDown ? 'SILENT (>2h)' : `Active (${recentRuns} runs in 2h)`}`,
+      `HANUMANAS scheduler: ${schedulerDown ? 'SILENT (>2h)' : `Active (${recentRuns} runs in 2h)`}`,
       ...engineStatus.map(e => `${e.engine}: ${e.silent ? '✗ SILENT (>24h)' : `✓ ran at ${e.lastRun?.toISOString().slice(0, 16)}`}`),
     ],
     actions: schedulerDown
-      ? ['CRITICAL: AEGIS scheduler is down — restart HanumanasScheduler.start() in backend/src/index.ts']
+      ? ['CRITICAL: HANUMANAS scheduler is down — restart HanumanasScheduler.start() in backend/src/index.ts']
       : silentEngines.map(e => `Engine ${e.engine} is silent — trigger on-demand run via POST /admin/aegis/engines/${e.engine}/run`),
     metadata: { schedulerDown, recentRuns, silentEngines: silentEngines.length, engineStatus },
     durationMs: Date.now() - start,

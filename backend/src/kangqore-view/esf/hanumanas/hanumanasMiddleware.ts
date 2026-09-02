@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Access Shield — blocks any non-ADMIN role from reaching KIMMP endpoints.
+// HANUMANAS Access Shield — blocks any non-ADMIN role from reaching KIMMP endpoints.
 //
 // Every denied attempt is logged to the HanumanasAuditLog (ACCESS_DENIED domain).
 // Every allowed attempt is also counted so the ADMIN can see access patterns.
@@ -37,8 +37,8 @@ export function hanumanasShield(req: Request, res: Response, next: NextFunction)
       }).catch(() => {})
 
       res.status(401).json({
-        error:         'AEGIS: No bearer token. KIMMP endpoints require ADMIN authentication.',
-        shield:        'AEGIS',
+        error:         'HANUMANAS: No bearer token. KIMMP endpoints require ADMIN authentication.',
+        shield:        'HANUMANAS',
         correlationId,
       })
       return
@@ -56,8 +56,8 @@ export function hanumanasShield(req: Request, res: Response, next: NextFunction)
       HanumanasEventEmitter.fireAccessDenied({ metadata: { endpoint: req.path, reason: 'invalid-token' } })
 
       res.status(401).json({
-        error:         'AEGIS: Invalid or expired token.',
-        shield:        'AEGIS',
+        error:         'HANUMANAS: Invalid or expired token.',
+        shield:        'HANUMANAS',
         correlationId,
       })
       return
@@ -78,8 +78,8 @@ export function hanumanasShield(req: Request, res: Response, next: NextFunction)
       })
 
       res.status(403).json({
-        error:         'AEGIS: ADMIN sovereignty enforced. Only ADMIN may access KIMMP.',
-        shield:        'AEGIS',
+        error:         'HANUMANAS: ADMIN sovereignty enforced. Only ADMIN may access KIMMP.',
+        shield:        'HANUMANAS',
         role:          (payload as any).role,
         correlationId,
       })
@@ -96,13 +96,13 @@ export function hanumanasShield(req: Request, res: Response, next: NextFunction)
 // ---------------------------------------------------------------------------
 // hanumanasAccessLogger — log-only variant for KIMMP routes.
 //
-// Logs ACCESS_DENIED to AEGIS when a request carries no valid ADMIN token,
+// Logs ACCESS_DENIED to HANUMANAS when a request carries no valid ADMIN token,
 // then always calls next() so downstream requireAuth handles the actual block.
-// This gives AEGIS full visibility into KIMMP auth failures without changing
+// This gives HANUMANAS full visibility into KIMMP auth failures without changing
 // KIMMP's own error format or auth flow.
 // ---------------------------------------------------------------------------
 export function hanumanasAccessLogger(req: Request, res: Response, next: NextFunction): void {
-  // Build-mode bypass — skip logging when AEGIS is off
+  // Build-mode bypass — skip logging when HANUMANAS is off
   if (!hanumanasConfig.enabled) return next()
 
   const correlationId = generateCorrelationId()

@@ -70,7 +70,7 @@ export function buildBlueprintSpec(opts: BlueprintOptions): Record<string, unkno
       },
     },
     coig: { northStar: true, dimensions: ['velocity', 'depth', 'breadth', 'quality'] },
-    governance: { approvalLevels: { DECISION: 'KIMMP', POLICY: 'AEGIS' }, auditRetentionDays: 365 },
+    governance: { approvalLevels: { DECISION: 'KIMMP', POLICY: 'HANUMANAS' }, auditRetentionDays: 365 },
   }
 }
 

@@ -291,7 +291,7 @@ export async function evaluateRelease(input: {
     include: { environment: true },
   })
 
-  // AEGIS audit — every decision is logged regardless of verdict
+  // HANUMANAS audit — every decision is logged regardless of verdict
   await HanumanasLedger.logDeployment({
     eventType:   verdict === 'BLOCK' ? 'DEPLOYMENT_BLOCKED' : 'DEPLOYMENT_AUTHORIZED',
     decisionId,

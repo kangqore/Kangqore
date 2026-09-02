@@ -3,7 +3,7 @@
 // KimmpAgent has the right columns (name, role, tools, model, systemPrompt)
 // and is already populated by the pack-install flow (packRegistry.service.ts,
 // blueprintService.ts) — but until now nothing ever read a row back out at
-// call time. Every real agent (38 KIMMP + 80 AEGIS) is a hardcoded TS
+// call time. Every real agent (38 KIMMP + 80 HANUMANAS) is a hardcoded TS
 // function with its own bespoke domain logic (queries leads/projects/
 // invoices, etc.) baked in alongside the LLM call — this doesn't replace
 // those, it ships alongside them as a second, generic execution path for

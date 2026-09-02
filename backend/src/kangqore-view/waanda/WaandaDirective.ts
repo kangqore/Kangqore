@@ -18,7 +18,7 @@ import { randomUUID } from 'crypto'
 
 export type SubsystemName =
   | 'KIMMP'
-  | 'AEGIS'
+  | 'HANUMANAS'
   | 'KEOS'
   | 'KORE'
   | 'EQORE'

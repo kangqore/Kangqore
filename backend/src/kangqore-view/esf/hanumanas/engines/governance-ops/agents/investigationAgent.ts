@@ -2,7 +2,7 @@ import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS. Write concise governance investigation reports — what happened, what it means, what the ADMIN must do.'
+const SYSTEM = 'You are HANUMANAS. Write concise governance investigation reports — what happened, what it means, what the ADMIN must do.'
 
 export async function runInvestigationAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
@@ -33,7 +33,7 @@ export async function runInvestigationAgent(ctx: AgentContext): Promise<Hanumana
 
   const narrative = await callLLM(
     SYSTEM,
-    `AEGIS event triggered: ${ctx.trigger}\n\nContext:\n${contextBlock}\n\n` +
+    `HANUMANAS event triggered: ${ctx.trigger}\n\nContext:\n${contextBlock}\n\n` +
     `Write 3 sentences: what triggered this, what the context reveals, immediate ADMIN action required.`,
     400,
   )
@@ -58,14 +58,14 @@ export async function runInvestigationAgent(ctx: AgentContext): Promise<Hanumana
     raisedAt:  new Date().toISOString(),
   }
 
-  // Sprint 6A — AEGIS → KIMMP: if investigation confirms multiple active threats,
+  // Sprint 6A — HANUMANAS → KIMMP: if investigation confirms multiple active threats,
   // summon KIMMP SENTINEL so the cognitive OS re-evaluates from the security lens.
   if ((activeWarnings as any[]).length >= 2 && narrative) {
     import('../../../../../../kangqore-immp/agents/systemDispatcher').then(({ KimmpSystemDispatcher }) => {
       KimmpSystemDispatcher.run('SENTINEL', {
         trigger: 'aegis.investigation.summons',
-        input:   `AEGIS investigation completed. Threat summary: ${narrative.slice(0, 400)}`,
-        userId:  ctx.userId ?? 'AEGIS',
+        input:   `HANUMANAS investigation completed. Threat summary: ${narrative.slice(0, 400)}`,
+        userId:  ctx.userId ?? 'HANUMANAS',
         params:  { agentId: 'govops.investigation', activeWarnings: (activeWarnings as any[]).length },
       }).catch(() => {})
     }).catch(() => {})

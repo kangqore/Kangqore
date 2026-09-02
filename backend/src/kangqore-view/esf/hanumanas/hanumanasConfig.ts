@@ -1,9 +1,9 @@
-// In-memory AEGIS on/off switch.
-// Default: on (unless AEGIS_ENABLED=false in env).
+// In-memory HANUMANAS on/off switch.
+// Default: on (unless HANUMANAS_ENABLED=false in env).
 // Resets on process restart — intentional for build-phase use.
 
 const _state = {
-  enabled: process.env.AEGIS_ENABLED !== 'false',
+  enabled: (process.env.HANUMANAS_ENABLED ?? process.env.AEGIS_ENABLED) !== 'false',
   toggledAt: null as string | null,
   toggledBy: null as string | null,
 }

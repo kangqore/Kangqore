@@ -16,11 +16,11 @@ export function updateHanumanasVerdicts(counts: { clear: number; warn: number; c
 }
 
 export const HanumanasAdapter: WaandaSubsystem = {
-  name: 'AEGIS',
+  name: 'HANUMANAS',
 
   getHealth(): SubsystemHealth {
     return {
-      subsystem:  'AEGIS',
+      subsystem:  'HANUMANAS',
       status:     _paused ? 'PAUSED' : 'OPTIMAL',
       lastActive: _lastRunAt,
       metrics: {
@@ -34,9 +34,9 @@ export const HanumanasAdapter: WaandaSubsystem = {
   getIntelligence(): SubsystemIntelligence {
     const { clear, warn, critical } = _lastVerdicts
     return {
-      subsystem:  'AEGIS',
+      subsystem:  'HANUMANAS',
       summary:    `${_paused ? 'PAUSED' : 'Running'} — last cycle: ${clear} clear, ${warn} warn, ${critical} critical`,
-      topSignal:  critical > 0 ? `${critical} CRITICAL verdict(s) in last AEGIS cycle` : undefined,
+      topSignal:  critical > 0 ? `${critical} CRITICAL verdict(s) in last HANUMANAS cycle` : undefined,
       health:     _paused ? 'PAUSED' : critical > 0 ? 'DEGRADED' : 'OPTIMAL',
       lastActive: _lastRunAt,
       metrics:    { clear, warn, critical },
@@ -44,31 +44,31 @@ export const HanumanasAdapter: WaandaSubsystem = {
   },
 
   async receiveDirective(directive: WaandaDirective): Promise<DirectiveResult> {
-    logger.info(`[AEGIS:ADAPTER] Received directive: ${directive.type} — ${directive.reason ?? ''}`)
+    logger.info(`[HANUMANAS:ADAPTER] Received directive: ${directive.type} — ${directive.reason ?? ''}`)
 
     switch (directive.type) {
       case 'PAUSE':
         HanumanasScheduler.stop()
         _paused = true
-        return ok(directive, 'AEGIS scheduler suspended by WAANDA directive')
+        return ok(directive, 'HANUMANAS scheduler suspended by WAANDA directive')
 
       case 'RESUME':
         HanumanasScheduler.start()
         _paused = false
-        return ok(directive, 'AEGIS scheduler resumed by WAANDA directive')
+        return ok(directive, 'HANUMANAS scheduler resumed by WAANDA directive')
 
       case 'CONFIGURE': {
-        // AEGIS configuration override (e.g., interval, thresholds)
+        // HANUMANAS configuration override (e.g., interval, thresholds)
         const interval = directive.payload.intervalMs as number | undefined
         if (interval) {
           HanumanasScheduler.configure({ intervalMs: interval })
         }
-        return ok(directive, `AEGIS configured: ${JSON.stringify(directive.payload)}`)
+        return ok(directive, `HANUMANAS configured: ${JSON.stringify(directive.payload)}`)
       }
 
       case 'REPORT':
         return ok(directive,
-          `AEGIS state: ${_paused ? 'PAUSED' : 'RUNNING'} | ` +
+          `HANUMANAS state: ${_paused ? 'PAUSED' : 'RUNNING'} | ` +
           `Last verdicts: clear=${_lastVerdicts.clear} warn=${_lastVerdicts.warn} critical=${_lastVerdicts.critical}`
         )
 
@@ -87,5 +87,5 @@ export const HanumanasAdapter: WaandaSubsystem = {
 }
 
 function ok(d: WaandaDirective, detail: string): DirectiveResult {
-  return { directiveId: d.id, subsystem: 'AEGIS', accepted: true, detail, resolvedAt: new Date() }
+  return { directiveId: d.id, subsystem: 'HANUMANAS', accepted: true, detail, resolvedAt: new Date() }
 }

@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Provide executive governance summaries — direct, no fluff, 2 sentences.'
+const SYSTEM = 'You are HANUMANAS, Kangqore\'s governance AI. Provide executive governance summaries — direct, no fluff, 2 sentences.'
 
 const ENGINES = [
   'SOVEREIGNTY', 'AUDIT_LEDGER', 'AUTONOMY_BOUNDARY', 'ACCESS_SENTINEL',
@@ -41,7 +41,7 @@ export async function runEngineHealthAgent(ctx: AgentContext): Promise<Hanumanas
 
   const verdict = criticalEngines.length > 0 ? 'CRITICAL' : staleEngines.length > 0 ? 'WARN' : 'PASS'
 
-  const llmSummary = await callLLM(SYSTEM, `AEGIS Engine Health: ${healthyEngines.length}/${ENGINES.length} engines healthy. Stale (>${WARN_HOURS}h): ${staleEngines.length > 0 ? staleEngines.join(', ') : 'none'}. Critical (>${CRITICAL_HOURS}h): ${criticalEngines.length > 0 ? criticalEngines.join(', ') : 'none'}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
+  const llmSummary = await callLLM(SYSTEM, `HANUMANAS Engine Health: ${healthyEngines.length}/${ENGINES.length} engines healthy. Stale (>${WARN_HOURS}h): ${staleEngines.length > 0 ? staleEngines.join(', ') : 'none'}. Critical (>${CRITICAL_HOURS}h): ${criticalEngines.length > 0 ? criticalEngines.join(', ') : 'none'}.\n\nWrite 2 sentences: current status and whether ADMIN action is needed.`, 300)
 
   return {
     agentId:   'govops.engine-health',
@@ -51,7 +51,7 @@ export async function runEngineHealthAgent(ctx: AgentContext): Promise<Hanumanas
       ? `${criticalEngines.length} engines have not run in ${CRITICAL_HOURS}h — immediate investigation required.`
       : staleEngines.length > 0
         ? `${staleEngines.length} engines are stale (>${WARN_HOURS}h). ${healthyEngines.length}/${ENGINES.length} healthy.`
-        : `All ${ENGINES.length} AEGIS engines are healthy and running on schedule.`,
+        : `All ${ENGINES.length} HANUMANAS engines are healthy and running on schedule.`,
     findings: [
       `${healthyEngines.length}/${ENGINES.length} engines healthy`,
       ...staleEngines.map(e    => `${e}: no run in ${WARN_HOURS}h+ — WARN`),

@@ -6,7 +6,7 @@ import { ActionEngine } from '../../../automation/ActionEngine';
 
 // S298 — "AI Through Actions": every mission this dispatcher runs also writes
 // an ActionExecution row (actorType KIMMP) through the same engine humans and
-// AEGIS write to, so "what did KIMMP do to Client X this week?" is one filtered
+// HANUMANAS write to, so "what did KIMMP do to Client X this week?" is one filtered
 // Action log query. Best-effort and fire-and-forget — must never affect the
 // mission itself if the write fails (e.g. system Actions not yet seeded).
 function mapMissionToSystemAction(request: MissionRequest): string {
@@ -33,7 +33,7 @@ async function recordMissionAsAction(request: MissionRequest, missionId: string,
 }
 
 // Any KIMMP module that needs governed execution passes its own executor here.
-// The pipeline (Auth → Capability → AEGIS → Approval → Execute → Ledger → Event)
+// The pipeline (Auth → Capability → HANUMANAS → Approval → Execute → Ledger → Event)
 // is always the same. Only the execution logic in Step 6 varies by caller.
 export type MissionExecutor = (request: MissionRequest) => Promise<{ id: string; result?: any; [key: string]: any }>;
 
@@ -64,7 +64,7 @@ export class MissionDispatcher {
     // 1. Authentication
     console.log(`[KIMMP Runtime] 1. Auth: actor='${actor}'`);
 
-    // 2. Capability Resolution — resolve before AEGIS so policy can evaluate against it.
+    // 2. Capability Resolution — resolve before HANUMANAS so policy can evaluate against it.
     console.log(`[KIMMP Runtime] 2. Capability Resolution`);
     let capabilityId: string | undefined;
     if (request.requiredCapability) {
@@ -74,8 +74,8 @@ export class MissionDispatcher {
       }
     }
 
-    // 3 & 4. Policy & Risk Evaluation (AEGIS)
-    console.log(`[KIMMP Runtime] 3+4. AEGIS Policy & Risk Evaluation`);
+    // 3 & 4. Policy & Risk Evaluation (HANUMANAS)
+    console.log(`[KIMMP Runtime] 3+4. HANUMANAS Policy & Risk Evaluation`);
     const hanumanasResult = await HanumanasShield.evaluatePolicy(request, capabilityId);
 
     if (hanumanasResult.action === 'DENY') {
@@ -84,16 +84,16 @@ export class MissionDispatcher {
         policyEvaluated: hanumanasResult.policiesEvaluated,
         riskScore: hanumanasResult.riskScore,
       });
-      // S298 — an AEGIS DENY is a governance block; mirror it into the unified Action log
+      // S298 — an HANUMANAS DENY is a governance block; mirror it into the unified Action log
       ActionEngine.getSystemActionId('GOVERNANCE_BLOCK').then(actionId => {
         if (!actionId) return;
         return ActionEngine.execute({
           actionId, params: { goal: request.goal, riskScore: hanumanasResult.riskScore, reason: hanumanasResult.reason },
-          actorId: actor, actorType: 'AEGIS', sourceModule: 'MissionDispatcher',
+          actorId: actor, actorType: 'HANUMANAS', sourceModule: 'MissionDispatcher',
           reasoning: `DENY: ${hanumanasResult.reason}`,
         });
       }).catch(() => {});
-      throw new Error(`AEGIS BLOCKED MISSION: ${hanumanasResult.reason}`);
+      throw new Error(`HANUMANAS BLOCKED MISSION: ${hanumanasResult.reason}`);
     }
 
     // 5. Human Approval (if required by risk score)
@@ -137,7 +137,7 @@ export class MissionDispatcher {
     const missionId = executionResult.id || ('mission-' + Date.now());
 
     // 7. Ledger (Success)
-    console.log(`[KIMMP Runtime] 7. AEGIS Ledger`);
+    console.log(`[KIMMP Runtime] 7. HANUMANAS Ledger`);
     await HanumanasShield.writeToLedger(missionId, actor, 'EXECUTE_MISSION', 'EXECUTED', {
       capabilityId,
       policyEvaluated: hanumanasResult.policiesEvaluated,

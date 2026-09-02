@@ -327,7 +327,7 @@ const ONBOARDING_WORKFLOW_PACK: PackDefinition = {
         { id: 'step-3', name: 'Schedule kick-off meeting', type: 'EMIT_EVENT', config: { eventType: 'MEETING', description: 'Schedule 90-minute kick-off call within 5 business days' }, onSuccess: 'step-4' },
         { id: 'step-4', name: 'Send welcome pack', type: 'NOTIFY_ADMINS', config: { message: 'Send welcome pack and portal access to client', channel: 'email' }, onSuccess: 'step-5' },
         { id: 'step-5', name: 'Create 30-day milestone', type: 'EMIT_EVENT', config: { eventType: 'PROPOSAL', description: 'Set 30-day success milestone review' }, onSuccess: 'step-6' },
-        { id: 'step-6', name: 'Mark onboarding started', type: 'EMIT_EVENT', config: { eventType: 'MEETING', description: 'Log onboarding initiation in AEGIS audit trail' } },
+        { id: 'step-6', name: 'Mark onboarding started', type: 'EMIT_EVENT', config: { eventType: 'MEETING', description: 'Log onboarding initiation in HANUMANAS audit trail' } },
       ],
     },
     {
@@ -562,7 +562,7 @@ const BASE_AGENTS_PACK: PackDefinition = {
       maxLevel:     2,
       tools:        ['READ_ONTOLOGY', 'CREATE_RISK', 'NOTIFY_ADMINS', 'DRAFT_REPORT'],
       model:        'claude-sonnet-4-6',
-      systemPrompt: 'You are Risk Watchdog, Kangqore\'s risk and compliance agent. Scan the risk register for items that are overdue, escalating in severity, or lacking a control measure. Propose new control measures, alert on regulatory deadlines, and produce concise risk briefings for AEGIS audit. All DENY-level actions require explicit admin approval.',
+      systemPrompt: 'You are Risk Watchdog, Kangqore\'s risk and compliance agent. Scan the risk register for items that are overdue, escalating in severity, or lacking a control measure. Propose new control measures, alert on regulatory deadlines, and produce concise risk briefings for HANUMANAS audit. All DENY-level actions require explicit admin approval.',
     },
     {
       name:         'Finance Sentinel',

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Sovereignty Engine
+// HANUMANAS Sovereignty Engine
 //
 // Stamps ADMIN ownership on every intelligence asset KIMMP produces.
 // Every briefing, synthesis, signal, and RAG document is ADMIN property.
@@ -70,7 +70,7 @@ export class HanumanasSovereignty {
       retainUntil,
     }
 
-    // Log to AEGIS ledger as KNOWLEDGE_ASSET
+    // Log to HANUMANAS ledger as KNOWLEDGE_ASSET
     HanumanasLedger.logKnowledgeAsset({
       system:      params.system,
       assetId:     params.assetId,
@@ -79,7 +79,7 @@ export class HanumanasSovereignty {
       metadata:    { classification, retainUntil, owner: 'C.O.D.E. (Mahesh Kumar)' },
     }).catch(() => {})
 
-    logger.debug(`[AEGIS:SOVEREIGNTY] Stamped ${params.assetType}:${params.assetId} → ${classification} (retain ${retainDays}d)`)
+    logger.debug(`[HANUMANAS:SOVEREIGNTY] Stamped ${params.assetType}:${params.assetId} → ${classification} (retain ${retainDays}d)`)
 
     return stamp
   }

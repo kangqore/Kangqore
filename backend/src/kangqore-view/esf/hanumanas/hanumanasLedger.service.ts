@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// AEGIS Ledger — immutable audit service for all four governance domains.
+// HANUMANAS Ledger — immutable audit service for all four governance domains.
 //
 // All methods are best-effort: they never throw so a ledger write failure
 // never blocks the operation being recorded.
@@ -91,7 +91,7 @@ export class HanumanasLedger {
       })
       return row.id as string
     } catch (err) {
-      logger.warn('[AEGIS] Ledger write failed: ' + (err as Error).message)
+      logger.warn('[HANUMANAS] Ledger write failed: ' + (err as Error).message)
       return null
     }
   }
@@ -248,7 +248,7 @@ export class HanumanasLedger {
       ])
       return { rows, total }
     } catch (err) {
-      logger.warn('[AEGIS] Ledger query failed: ' + (err as Error).message)
+      logger.warn('[HANUMANAS] Ledger query failed: ' + (err as Error).message)
       return { rows: [], total: 0 }
     }
   }

@@ -68,7 +68,7 @@ export class WAOE {
     const compiled = await KimmpWorkflowCompiler.compile(plan, ctx, req.userId)
 
     // D4: Execute — routed through the KIMMP Runtime governance pipeline.
-    // MissionDispatcher applies Auth → Capability → AEGIS → Approval → Ledger → EventBus.
+    // MissionDispatcher applies Auth → Capability → HANUMANAS → Approval → Ledger → EventBus.
     // WAOE supplies its own executor (KimmpExecutionEngine) so DAG semantics are preserved.
     const runtimeResult = await MissionDispatcher.dispatch(
       {

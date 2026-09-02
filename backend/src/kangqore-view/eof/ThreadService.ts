@@ -39,7 +39,7 @@ export interface PostInput {
   objectId: string
   body: string
   parentId?: string
-  authorType?: 'HUMAN' | 'KIMMP' | 'AEGIS' | 'AUTOMATION'
+  authorType?: 'HUMAN' | 'KIMMP' | 'HANUMANAS' | 'AEGIS' | 'AUTOMATION'
   authorId?: string
   sourceModule?: string
   evidence?: any[]
@@ -115,7 +115,7 @@ export const ThreadService = {
 
   /** An agent's post. Same thread, same accountability, marked as non-human. */
   postAsAgent(objectId: string, body: string, opts: {
-    module: string; evidence?: any[]; authorType?: 'KIMMP' | 'AEGIS' | 'AUTOMATION'
+    module: string; evidence?: any[]; authorType?: 'KIMMP' | 'HANUMANAS' | 'AEGIS' | 'AUTOMATION'
   }) {
     return this.post({
       objectId, body,

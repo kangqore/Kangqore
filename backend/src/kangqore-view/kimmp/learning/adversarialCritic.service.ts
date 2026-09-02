@@ -15,10 +15,10 @@ export interface CriticismResult {
 /**
  * The Adversarial Critic (Reward Model)
  * Evaluates Krisnam logic or KIMMP routing decisions for factual accuracy, 
- * logic gaps, and AEGIS compliance across the entire ecosystem.
+ * logic gaps, and HANUMANAS compliance across the entire ecosystem.
  */
 export async function critiqueDecision(
-  system: 'KANGQORE' | 'EQORE' | 'HCIP' | 'ALIS' | 'AEGIS' | 'VIS' | 'KIMMP',
+  system: 'KANGQORE' | 'EQORE' | 'HCIP' | 'ALIS' | 'HANUMANAS' | 'VIS' | 'KIMMP',
   context: string,
   proposedActionOrReasoning: string
 ): Promise<CriticismResult> {

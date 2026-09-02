@@ -2,7 +2,7 @@ import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
 import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
-const SYSTEM = 'You are AEGIS. Assess this AI governance system\'s readiness for an external audit and produce a concise readiness brief.'
+const SYSTEM = 'You are HANUMANAS. Assess this AI governance system\'s readiness for an external audit and produce a concise readiness brief.'
 
 const EVENT_TYPES = ['ACTIVATION','AUTONOMOUS','POLICY_VIOLATION','ACCESS_DENIED','KNOWLEDGE_ASSET','EGRESS'] as const
 
@@ -32,7 +32,7 @@ export async function runAuditReadinessAgent(ctx: AgentContext): Promise<Hanuman
   const summaryBlock = EVENT_TYPES.map(et => `${et}: ${counts[et]}`).join(', ')
   const narrative = await callLLM(
     SYSTEM,
-    `AEGIS 30-day audit evidence: ${summaryBlock}. Readiness score: ${readinessScore}/100. Recent CRITICAL findings (7d): ${recentCritical}. Event type coverage: ${covered}/6.\n\nWrite 2-3 sentences: readiness assessment and top gap for an external auditor.`,
+    `HANUMANAS 30-day audit evidence: ${summaryBlock}. Readiness score: ${readinessScore}/100. Recent CRITICAL findings (7d): ${recentCritical}. Event type coverage: ${covered}/6.\n\nWrite 2-3 sentences: readiness assessment and top gap for an external auditor.`,
     350,
   )
 
