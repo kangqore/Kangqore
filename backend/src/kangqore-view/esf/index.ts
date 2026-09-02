@@ -1,6 +1,6 @@
 // Enterprise Security Framework (ESF) — Barrel Export
 export * from './PolicyEngine';
-export * from './aegis';
+export * from './hanumanas';
 
 // Scenario simulation components
 export * from './core/ScenarioBuilder';

@@ -13,7 +13,7 @@
 // ---------------------------------------------------------------------------
 
 import { prisma } from '../../../lib/prisma'
-import { AegisLedger } from '../../esf/aegis/aegisLedger.service'
+import { AegisLedger } from '../../esf/hanumanas/hanumanasLedger.service'
 
 export interface LiveSignal {
   key:     string

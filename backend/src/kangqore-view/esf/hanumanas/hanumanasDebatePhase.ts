@@ -20,7 +20,7 @@
 import Anthropic                    from '@anthropic-ai/sdk'
 import { withKrisnam } from '../../../kangqore-immp/llm/krisnamAnthropic'
 import type { AegisAgentResult }    from './agents/types'
-import type { AegisAction }         from './aegisActionProposer'
+import type { AegisAction }         from './hanumanasActionProposer'
 import { SignalLedger }             from '../../../kangqore-immp/signals/signalLedger.service'
 import { prisma }                   from '../../../lib/prisma'
 

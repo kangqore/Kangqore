@@ -13,7 +13,7 @@
 // ---------------------------------------------------------------------------
 
 import logger from '../../../utils/logger'
-import { AegisEventEmitter } from './aegisEventEmitter'
+import { AegisEventEmitter } from './hanumanasEventEmitter'
 
 export type PolicyVerdict = 'ALLOW' | 'WARN' | 'DENY'
 

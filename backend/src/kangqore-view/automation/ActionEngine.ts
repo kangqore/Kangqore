@@ -8,7 +8,7 @@ import axios from 'axios'
 import { prisma } from '../../lib/prisma'
 import { checkPolicy } from '../esf/PolicyEngine'
 import { CardinalityEngine } from '../eof/CardinalityEngine'
-import { AegisBudget } from '../esf/aegis/aegisBudget.service'
+import { AegisBudget } from '../esf/hanumanas/hanumanasBudget.service'
 import { getIO } from '../../socket'
 import { dispatchToConnectors } from './connectors/registry'
 

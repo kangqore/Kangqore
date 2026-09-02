@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------
 
 import { Request, Response, NextFunction } from 'express'
-import { AegisLedger } from './aegisLedger.service'
+import { AegisLedger } from './hanumanasLedger.service'
 
 // Routes that constitute intelligence egress (KIMMP intelligence leaving the system)
 const EGRESS_PATTERNS: RegExp[] = [

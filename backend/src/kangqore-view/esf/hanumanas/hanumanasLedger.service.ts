@@ -8,7 +8,7 @@
 import { prisma }        from '../../../lib/prisma'
 import logger             from '../../../utils/logger'
 import { emitToAdmins }  from '../../../socket'
-import { getCorrelationId } from './AegisContext'
+import { getCorrelationId } from './HanumanasContext'
 
 export type AegisEventType =
   | 'ACTIVATION'

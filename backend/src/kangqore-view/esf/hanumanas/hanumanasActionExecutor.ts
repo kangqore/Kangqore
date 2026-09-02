@@ -13,10 +13,10 @@ import { prisma }              from '../../../lib/prisma'
 import { emitToAdmins }        from '../../../socket'
 import { createNotification }  from '../../awareness/notifications/NotificationService'
 import { emailService }        from '../../eaf/channels/EmailService'
-import { AegisLedger }         from './aegisLedger.service'
+import { AegisLedger }         from './hanumanasLedger.service'
 import { redisConnection }     from '../../../lib/redis'
 import { ActionEngine }        from '../../automation/ActionEngine'
-import type { AegisAction }    from './aegisActionProposer'
+import type { AegisAction }    from './hanumanasActionProposer'
 import type { AegisAgentResult } from './agents/types'
 
 // S298 — governance actions (not routine telemetry like EMIT_SOCKET/CREATE_NOTIFICATION)
@@ -130,7 +130,7 @@ async function execCreateNotification(action: AegisAction, result: AegisAgentRes
 
 async function execRunInvestigation(_action: AegisAction, result: AegisAgentResult): Promise<void> {
   // Lazy import to avoid circular at load time
-  const { AegisEngineDispatcher } = await import('./aegisEngineDispatcher')
+  const { AegisEngineDispatcher } = await import('./hanumanasEngineDispatcher')
   await AegisEngineDispatcher.runAgent('govops.investigation', {
     trigger:   'event.CRITICAL_ACTIVATION',
     fromEvent: true,

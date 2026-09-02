@@ -124,7 +124,7 @@ Kangqore/
 │       ├── routes/       REST API routes
 │       ├── services/     Business logic
 │       ├── kangqore-immp/    KIMMP AI runtime
-│       ├── kangqore-view/    Kangqore OS — incl. esf/aegis (AEGIS governance layer)
+│       ├── kangqore-view/    Kangqore OS — incl. esf/hanumanas (AEGIS governance layer)
 │       └── waanda/       WAANDA bootstrap + router
 ├── frontend/             React app (Vite)
 │   └── src/

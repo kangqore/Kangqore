@@ -1,6 +1,6 @@
 import logger from '../../../utils/logger'
 import { OntologyTimeSeriesService } from '../../eof/OntologyTimeSeries'
-import { aegisDeterminism } from '../../esf/aegis/aegisDeterminism.service'
+import { aegisDeterminism } from '../../esf/hanumanas/hanumanasDeterminism.service'
 
 /**
  * TemporalNavigationService

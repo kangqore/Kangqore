@@ -20,7 +20,7 @@ export const AegisEventEmitter = {
     bus.subscribe<AegisAgentResult>('aegis.critical', async (result) => {
       try {
         // Lazy import avoids circular dep at module load time
-        const { AegisEngineDispatcher } = await import('./aegisEngineDispatcher')
+        const { AegisEngineDispatcher } = await import('./hanumanasEngineDispatcher')
         await AegisEngineDispatcher.runTrigger('event.CRITICAL_ACTIVATION', {
           fromEvent: true,
           metadata:  { triggeredBy: result.agentId, engine: result.engine, verdict: result.verdict },
@@ -44,7 +44,7 @@ export const AegisEventEmitter = {
   /** Fire event.ACCESS_DENIED trigger (called from aegisShield deny path). */
   async fireAccessDenied(ctx: Partial<AgentContext>): Promise<void> {
     try {
-      const { AegisEngineDispatcher } = await import('./aegisEngineDispatcher')
+      const { AegisEngineDispatcher } = await import('./hanumanasEngineDispatcher')
       await AegisEngineDispatcher.runTrigger('event.ACCESS_DENIED', {
         fromEvent: true,
         ...ctx,
@@ -55,7 +55,7 @@ export const AegisEventEmitter = {
   /** Fire event.POLICY_VIOLATION trigger (called from policy evaluation path). */
   async firePolicyViolation(ctx: Partial<AgentContext>): Promise<void> {
     try {
-      const { AegisEngineDispatcher } = await import('./aegisEngineDispatcher')
+      const { AegisEngineDispatcher } = await import('./hanumanasEngineDispatcher')
       await AegisEngineDispatcher.runTrigger('event.POLICY_VIOLATION', {
         fromEvent: true,
         ...ctx,

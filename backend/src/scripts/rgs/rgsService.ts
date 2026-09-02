@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import * as crypto from 'crypto'
-import { AegisLedger } from '../../kangqore-view/esf/aegis/aegisLedger.service'
+import { AegisLedger } from '../../kangqore-view/esf/hanumanas/hanumanasLedger.service'
 
 const prisma = new PrismaClient()
 

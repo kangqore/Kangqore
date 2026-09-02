@@ -4,7 +4,7 @@
 // Called from WaandaBootstrap Phase 2 (_bootAegis) — not from index.ts directly.
 // ---------------------------------------------------------------------------
 
-import { AegisEngineDispatcher } from './aegisEngineDispatcher'
+import { AegisEngineDispatcher } from './hanumanasEngineDispatcher'
 
 let started    = false
 let intervalMs = 60 * 60_000  // default: 1h
@@ -18,7 +18,7 @@ function run(trigger: 'schedule.1h' | 'schedule.6h' | 'schedule.24h'): void {
       const warn     = results.filter(r => r.verdict === 'WARN').length
       console.log(`[AEGIS] ${trigger}: ${results.length} agents | CRITICAL:${critical} WARN:${warn}`)
       // Forward verdicts to AegisAdapter for WAANDA health reporting
-      import('./aegisScheduler').then(() => {}).catch(() => {})
+      import('./hanumanasScheduler').then(() => {}).catch(() => {})
       try {
         const { updateAegisVerdicts } = require('../../waanda/adapters/AegisAdapter')
         updateAegisVerdicts({ clear: results.length - critical - warn, warn, critical })

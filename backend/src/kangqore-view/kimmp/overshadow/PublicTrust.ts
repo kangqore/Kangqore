@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------
 
 import { prisma } from '../../../lib/prisma'
-import { AegisLedger } from '../../esf/aegis/aegisLedger.service'
+import { AegisLedger } from '../../esf/hanumanas/hanumanasLedger.service'
 
 // ── Live Capability Scorecard (same computation the admin AIP Parity page
 // uses — this data was already safe to expose: counts and percentages, no

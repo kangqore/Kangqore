@@ -58,7 +58,7 @@ import './eqore/queue/nurture.worker';     // instantiates EqoreNurtureWorker  â
 import { alisRouter } from './kangqore-alis';
 import { kangqoreImmpRoutes } from './kangqore-immp';
 import { urgiRoutes } from './kangqore-immp/relationship-intelligence/api/urgi.routes';
-import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor } from './kangqore-view/esf/aegis';
+import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor } from './kangqore-view/esf/hanumanas';
 import { waandaRouter } from './kangqore-view/waanda/waandaRoutes';
 import { waandaTrainingRouter } from './kangqore-view/waanda/training';
 import { dataPrivacyRouter } from './routes/data-privacy';

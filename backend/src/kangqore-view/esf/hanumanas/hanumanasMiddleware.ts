@@ -7,10 +7,10 @@
 
 import { Request, Response, NextFunction } from 'express'
 import { verifyAccessToken } from '../../kernel/auth/TokenService'
-import { AegisLedger } from './aegisLedger.service'
-import { AegisEventEmitter } from './aegisEventEmitter'
-import { aegisStorage, generateCorrelationId, AegisRequestContext } from './AegisContext'
-import { aegisConfig } from './aegisConfig'
+import { AegisLedger } from './hanumanasLedger.service'
+import { AegisEventEmitter } from './hanumanasEventEmitter'
+import { aegisStorage, generateCorrelationId, AegisRequestContext } from './HanumanasContext'
+import { aegisConfig } from './hanumanasConfig'
 
 export function aegisShield(req: Request, res: Response, next: NextFunction): void {
   // Build-mode bypass — shield is off, let everything through

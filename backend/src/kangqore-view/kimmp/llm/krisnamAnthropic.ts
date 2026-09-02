@@ -154,7 +154,7 @@ async function createViaKrisnam(params: any): Promise<Anthropic.Message> {
 
 // ── S308 passive gateway logging ─────────────────────────────────────────────
 // Covers every one of the 29 files that call withKrisnam(new Anthropic(...))
-// directly, PLUS AEGIS's shared callLLM() helper (kangqore-view/esf/aegis/agents/llm.ts)
+// directly, PLUS AEGIS's shared callLLM() helper (kangqore-view/esf/hanumanas/agents/llm.ts)
 // which itself wraps its client the same way — ~70 files logged from this one
 // instrumentation point, no per-file changes needed. AEGIS calls are skipped
 // here (see actorType check below) because callLLM() logs them itself with

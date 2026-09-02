@@ -1,5 +1,5 @@
 import { KeosKernel, MissionRequest } from '../../../kernel/KeosKernel';
-import { AegisShield } from '../../../esf/aegis/AegisShield';
+import { AegisShield } from '../../../esf/hanumanas/HanumanasShield';
 import { KeosEventBus } from '../../../kernel/KeosEventBus';
 import { CapabilityRegistry } from '../../../kernel/CapabilityRegistry';
 import { ActionEngine } from '../../../automation/ActionEngine';

@@ -1,5 +1,5 @@
 import { prisma } from '../../../lib/prisma'
-import { callLLM } from '../../esf/aegis/agents/llm'
+import { callLLM } from '../../esf/hanumanas/agents/llm'
 
 const SYSTEM = `You are KIMMP's INCIDENT_RESPONDER — Kangqore's ITIL triage AI.
 When a new incident is reported: (1) confirm the priority is correct, (2) identify the most likely root cause, (3) recommend immediate containment steps, (4) draft a professional initial response.

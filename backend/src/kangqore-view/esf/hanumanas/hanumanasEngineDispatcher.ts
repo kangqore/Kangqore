@@ -10,11 +10,11 @@
 
 import './agents/registerAllAgents' // side-effect: registers all 80 agents
 import { prisma }                from '../../../lib/prisma'
-import { notifyAegisVerdict }    from './aegisNotifier'
-import { AegisActionProposer }   from './aegisActionProposer'
-import { AegisActionExecutor }   from './aegisActionExecutor'
-import { AegisEventEmitter }     from './aegisEventEmitter'
-import { runAegisDebatePhase }   from './aegisDebatePhase'
+import { notifyAegisVerdict }    from './hanumanasNotifier'
+import { AegisActionProposer }   from './hanumanasActionProposer'
+import { AegisActionExecutor }   from './hanumanasActionExecutor'
+import { AegisEventEmitter }     from './hanumanasEventEmitter'
+import { runAegisDebatePhase }   from './hanumanasDebatePhase'
 import { emitToAdmins }          from '../../../socket'
 import {
   agentsForTrigger,

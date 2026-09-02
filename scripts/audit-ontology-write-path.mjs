@@ -29,7 +29,7 @@ const SRC = join(ROOT, 'backend/src')
 // through OntologyGateway — usually it can.
 const ALLOWLIST = new Map([
   ['kangqore-view/eof/OntologyGateway.ts', 'the gateway itself'],
-  ['kangqore-view/esf/aegis/compliance/aegisComplianceTestSuite.ts', 'compliance suite: constructs fixtures to prove the gateway blocks them'],
+  ['kangqore-view/esf/hanumanas/compliance/hanumanasComplianceTestSuite.ts', 'compliance suite: constructs fixtures to prove the gateway blocks them'],
   ['kangqore-view/eof/scripts/slice0-foundations-e2e.ts', 'probe: creates and tears down its own throwaway type, and asserts gateway behaviour'],
   ['kangqore-view/eof/scripts/enterprise-model-e2e.ts', 'probe: seeds and tears down its own fixture objects'],
   ['kangqore-view/eof/scripts/board-layer-e2e.ts', 'probe: seeds and tears down its own boards and objects'],

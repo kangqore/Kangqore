@@ -1,4 +1,4 @@
-import { AegisSovereignty } from '../../../aegisSovereignty.service'
+import { AegisSovereignty } from '../../../hanumanasSovereignty.service'
 import { prisma }            from '../../../../../../lib/prisma'
 import { callLLM }           from '../../../agents/llm'
 import { AegisAgentResult, AgentContext } from '../../../agents/types'

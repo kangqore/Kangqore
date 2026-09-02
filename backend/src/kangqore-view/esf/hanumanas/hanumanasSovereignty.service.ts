@@ -7,7 +7,7 @@
 // when, by which system, and who owns it.
 // ---------------------------------------------------------------------------
 
-import { AegisLedger } from './aegisLedger.service'
+import { AegisLedger } from './hanumanasLedger.service'
 import logger from '../../../utils/logger'
 
 export type ClassificationLevel = 'PUBLIC' | 'INTERNAL' | 'CONFIDENTIAL' | 'RESTRICTED'
