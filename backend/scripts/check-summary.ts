@@ -12,16 +12,16 @@ async function main() {
 
   const [engineLatest, critical24h, warn24h, reportRun] = await Promise.all([
     Promise.all(allEngines.map(async engine => {
-      const row = await (prisma as any).aegisAgentRun.findFirst({
+      const row = await (prisma as any).hanumanasAgentRun.findFirst({
         where:   { engine, raisedAt: { gte: since7d } },
         orderBy: { raisedAt: 'desc' },
         select:  { verdict: true, raisedAt: true, agentId: true, summary: true },
       }).catch(() => null);
       return { engine, latest: row ?? null };
     })),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: since24h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: since24h } } }).catch(() => 0),
-    (prisma as any).aegisAgentRun.findFirst({
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'CRITICAL', raisedAt: { gte: since24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.count({ where: { verdict: 'WARN',     raisedAt: { gte: since24h } } }).catch(() => 0),
+    (prisma as any).hanumanasAgentRun.findFirst({
       where:   { agentId: 'govops.reporting' },
       orderBy: { raisedAt: 'desc' },
       select:  { metadata: true, verdict: true, raisedAt: true },

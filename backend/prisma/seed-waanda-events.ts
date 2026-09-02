@@ -172,15 +172,15 @@ const events: Array<{
   },
   {
     id: 'ev-013', type: 'alert', color: '#e2445c', ts: h(30), announced: true,
-    title: 'AEGIS: Access review overdue — CC6.3', value: 'SOC2 at risk', sub: 'Compliance · 14d overdue',
+    title: 'HANUMANAS: Access review overdue — CC6.3', value: 'SOC2 at risk', sub: 'Compliance · 14d overdue',
     raw: {
       severity: 'P1', slaTarget: 'SOC 2 CC6.3 — quarterly access review', breachedAt: '2026-06-07T00:00:00Z',
-      overdueBy: '14 days', client: 'Compliance / AEGIS', contract: 'SOC2-CC6.3 + ISO A.9.4.1 + NIST PR.AC-1',
+      overdueBy: '14 days', client: 'Compliance / HANUMANAS', contract: 'SOC2-CC6.3 + ISO A.9.4.1 + NIST PR.AC-1',
       owner: 'GovernanceOps Agent', escalatedTo: 'CISO',
       resolutionSteps: [
         'Run GovernanceOps access review agent immediately (auto-queued)',
         'Revoke 3 dormant accounts flagged by KIMMP (>90 days inactive)',
-        'Document review completion in AEGIS audit log with timestamp',
+        'Document review completion in HANUMANAS audit log with timestamp',
         'Generate SOC 2 evidence package and upload to auditor portal',
       ],
       relatedIssue: 'ISS-005', kimmpActive: true,
@@ -205,13 +205,13 @@ const events: Array<{
   // ── AGENTS ───────────────────────────────────────────────────────────────────
   {
     id: 'ev-015', type: 'agent', color: '#9747ff', ts: m(20), announced: false,
-    title: 'GovernanceOps ran quarterly access review', value: '47 users audited', sub: 'AEGIS · automated',
+    title: 'GovernanceOps ran quarterly access review', value: '47 users audited', sub: 'HANUMANAS · automated',
     raw: {
       agent: 'GovernanceOps', engine: 'Compliance Engine', trigger: 'scheduled',
       startedAt: '2026-06-22T09:45:00Z', completedAt: '2026-06-22T09:47:34Z', duration: '2m 34s',
       result: 'success', actionsPerformed: 47,
       entitiesAffected: ['Active Users (47)', 'Access Groups (12)', 'Admin Permissions (8)'],
-      findings: '3 dormant accounts flagged for deactivation (>90 days inactive). 1 user retaining elevated permissions beyond role change date. Access review log exported to AEGIS audit trail.',
+      findings: '3 dormant accounts flagged for deactivation (>90 days inactive). 1 user retaining elevated permissions beyond role change date. Access review log exported to HANUMANAS audit trail.',
       nextScheduledRun: '2026-07-01', approvalRequired: false, logsAvailable: true,
     },
   },
@@ -383,9 +383,9 @@ const events: Array<{
   },
   {
     id: 'ev-030', type: 'system', color: '#579bfc', ts: h(24), announced: false,
-    title: 'AEGIS Compliance Monitor baseline set — 73%', value: '73%', sub: 'SOC2 · ISO27001 · NIST',
+    title: 'HANUMANAS Compliance Monitor baseline set — 73%', value: '73%', sub: 'SOC2 · ISO27001 · NIST',
     raw: {
-      component: 'AEGIS Compliance Monitor', status: 'complete', duration: '—',
+      component: 'HANUMANAS Compliance Monitor', status: 'complete', duration: '—',
       operation: 'Baseline assessment — 20 controls across SOC 2, ISO 27001, NIST CSF',
       trigger: 'Enterprise expansion plan — Sprint 0', schemaVersion: null,
       impactScope: 'SOC 2 (8 controls), ISO 27001 (8 controls), NIST CSF (4 functions)',
@@ -433,15 +433,15 @@ const events: Array<{
   // ── RECENT ───────────────────────────────────────────────────────────────────
   {
     id: 'ev-034', type: 'signal', color: '#e2445c', ts: m(38), announced: true,
-    title: 'KIMMP detected unusual login pattern — 2 accounts', value: '2 accounts', sub: 'Security · AEGIS flagged',
+    title: 'KIMMP detected unusual login pattern — 2 accounts', value: '2 accounts', sub: 'Security · HANUMANAS flagged',
     raw: {
-      module: 'AEGIS Security Intelligence', entity: 'Authentication', confidence: 73,
+      module: 'HANUMANAS Security Intelligence', entity: 'Authentication', confidence: 73,
       trend: 'stable', delta: '2 anomalous sessions', baseline: 'Normal: single-device, business hours only',
       current: 'Off-hours logins from 2 unrecognised devices',
       trigger: 'Two admin accounts authenticated from unrecognised devices at 02:17 and 02:34 UTC. Different IP ranges. MFA was not challenged on either.',
-      recommendation: 'Force re-authentication on both accounts immediately. Review AEGIS audit log for all actions taken during the suspicious sessions. Enable geo-blocking for off-hours access.',
+      recommendation: 'Force re-authentication on both accounts immediately. Review HANUMANAS audit log for all actions taken during the suspicious sessions. Enable geo-blocking for off-hours access.',
       affectedEntities: ['Admin Account A', 'Admin Account B'],
-      kimmpCorrelation: 'AEGIS-CC6.3', urgency: 'high', correlationStrength: 73,
+      kimmpCorrelation: 'HANUMANAS-CC6.3', urgency: 'high', correlationStrength: 73,
     },
   },
   {

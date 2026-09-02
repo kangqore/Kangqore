@@ -57,9 +57,9 @@ briefingRouter.get(
         closedTodayIssues,
         totalSignals,
         todayDispatches,
-        aegisCritical24h,
-        aegisWarn24h,
-        aegisHealthReport,
+        hanumanasCritical24h,
+        hanumanasWarn24h,
+        hanumanasHealthReport,
       ] = await Promise.all([
         // Revenue: projects with health < 60 (proxy for at-risk client relationships)
         prisma.project.count({
@@ -174,8 +174,8 @@ briefingRouter.get(
       ).length
       const openHighRiskCount     = openHighRisks.filter(r => (r.severity ?? '').toUpperCase() === 'HIGH').length
       const openCriticalRiskCount = openHighRisks.filter(r => (r.severity ?? '').toUpperCase() === 'CRITICAL').length
-      const aegisHealthScore: number | null = (aegisHealthReport?.metadata as any)?.healthScore ?? null
-      const aegisVerdict: string = aegisCritical24h > 0 ? 'CRITICAL' : aegisWarn24h > 0 ? 'WARN' : 'PASS'
+      const hanumanasHealthScore: number | null = (hanumanasHealthReport?.metadata as any)?.healthScore ?? null
+      const hanumanasVerdict: string = hanumanasCritical24h > 0 ? 'CRITICAL' : hanumanasWarn24h > 0 ? 'WARN' : 'PASS'
 
       // ── Domain health computation ────────────────────────────────────────
 
@@ -245,16 +245,16 @@ briefingRouter.get(
       const operationsTrend = operationsStatus === 'FAIL' ? -10 : operationsStatus === 'WARN' ? -4 : 2
 
       // Compliance
-      const complianceScoreNum = aegisHealthScore ?? (aegisVerdict === 'PASS' ? 88 : aegisVerdict === 'WARN' ? 70 : 55)
+      const complianceScoreNum = hanumanasHealthScore ?? (hanumanasVerdict === 'PASS' ? 88 : hanumanasVerdict === 'WARN' ? 70 : 55)
       const complianceStatus: RAG =
-        aegisVerdict === 'CRITICAL' || openCriticalRiskCount >= 2 ? 'FAIL'
-        : aegisVerdict === 'WARN'    || openCriticalRiskCount >= 1 ? 'WARN'
+        hanumanasVerdict === 'CRITICAL' || openCriticalRiskCount >= 2 ? 'FAIL'
+        : hanumanasVerdict === 'WARN'    || openCriticalRiskCount >= 1 ? 'WARN'
         : 'PASS'
       const complianceSignal =
         complianceStatus === 'FAIL'
-          ? `HANUMANAS: CRITICAL posture. ${aegisCritical24h} critical control${aegisCritical24h !== 1 ? 's' : ''} failed in 24h. ${openCriticalRiskCount} critical risk${openCriticalRiskCount !== 1 ? 's' : ''} open.`
+          ? `HANUMANAS: CRITICAL posture. ${hanumanasCritical24h} critical control${hanumanasCritical24h !== 1 ? 's' : ''} failed in 24h. ${openCriticalRiskCount} critical risk${openCriticalRiskCount !== 1 ? 's' : ''} open.`
           : complianceStatus === 'WARN'
-          ? `HANUMANAS score ${complianceScoreNum}%. ${aegisWarn24h} warn${aegisWarn24h !== 1 ? 's' : ''} in 24h. ${openCriticalRiskCount + openHighRiskCount} risk${openCriticalRiskCount + openHighRiskCount !== 1 ? 's' : ''} open.`
+          ? `HANUMANAS score ${complianceScoreNum}%. ${hanumanasWarn24h} warn${hanumanasWarn24h !== 1 ? 's' : ''} in 24h. ${openCriticalRiskCount + openHighRiskCount} risk${openCriticalRiskCount + openHighRiskCount !== 1 ? 's' : ''} open.`
           : `HANUMANAS posture PASS. Score ${complianceScoreNum}%. All controls current.`
       const complianceTrend = complianceStatus === 'FAIL' ? -8 : complianceStatus === 'WARN' ? -2 : 3
 

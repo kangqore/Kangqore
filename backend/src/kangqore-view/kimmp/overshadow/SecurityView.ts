@@ -4,7 +4,7 @@
 // Not a SIEM/SOAR competitor — explicitly. This extends HANUMANAS's existing
 // audit/risk domain into a security-team-facing view of two things that
 // already exist but weren't surfaced together anywhere: AI-touched security
-// events (AegisAuditLog rows the platform was already writing) and AI-
+// events (HanumanasAuditLog rows the platform was already writing) and AI-
 // initiated actions waiting on a human reviewer (KimmpApprovalRequest, the
 // same queue the CommandCenter widget reads, given its own dedicated view).
 // Nothing here is a new detection engine — it's a lens on data that was

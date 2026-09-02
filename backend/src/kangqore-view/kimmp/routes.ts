@@ -5694,7 +5694,7 @@ const VERTICAL_EDITIONS_SEED = [
     displayName: 'HealthTech Edition',
     personaName: 'ARIA',
     personaColor: '#10b981',
-    aegisProfile: '{"hipaaEnabled":true,"clinicalOpsGovernance":true,"patientDataAudit":true}',
+    hanumanasProfile: '{"hipaaEnabled":true,"clinicalOpsGovernance":true,"patientDataAudit":true}',
     complianceFlags: ['HIPAA'],
     description: 'Clinical operations, patient analytics, and HIPAA-aligned HANUMANAS governance for healthcare organisations.',
     planTiers: {
@@ -5708,7 +5708,7 @@ const VERTICAL_EDITIONS_SEED = [
     displayName: 'LegalTech Edition',
     personaName: 'LEX',
     personaColor: '#3b82f6',
-    aegisProfile: '{"jurisdictionAware":true,"matterGovernance":true,"contractAudit":true}',
+    hanumanasProfile: '{"jurisdictionAware":true,"matterGovernance":true,"contractAudit":true}',
     complianceFlags: ['GDPR', 'BAR_ASSOCIATION'],
     description: 'Contract lifecycle management, matter tracking, and jurisdiction-aware regulatory compliance for law firms.',
     planTiers: {
@@ -5722,7 +5722,7 @@ const VERTICAL_EDITIONS_SEED = [
     displayName: 'FinTech Edition',
     personaName: 'FINX',
     personaColor: '#f59e0b',
-    aegisProfile: '{"soxEnabled":true,"pciEnabled":true,"tradeGovernance":true,"riskMonitoring":true}',
+    hanumanasProfile: '{"soxEnabled":true,"pciEnabled":true,"tradeGovernance":true,"riskMonitoring":true}',
     complianceFlags: ['SOX', 'PCI'],
     description: 'Portfolio operations, trade compliance, and SOX/PCI-enforced HANUMANAS governance for financial services.',
     planTiers: {
@@ -5792,7 +5792,7 @@ kangqoreImmpRoutes.get('/vertical-editions/:slug/blueprint-seed', requireAuth, r
       personaColor: edition.personaColor,
       complianceFlags: edition.complianceFlags,
       suggestedModules: SEED_MODULES[req.params.slug] ?? ['WAANDA', 'HANUMANAS', 'KIMMP', 'OIS'],
-      aegisProfile: edition.aegisProfile,
+      hanumanasProfile: edition.hanumanasProfile,
     })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })

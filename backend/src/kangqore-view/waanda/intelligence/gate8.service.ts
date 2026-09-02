@@ -558,7 +558,7 @@ async function computeAdoptionScore(): Promise<{ score: number; metrics: Record<
 async function computeTrustScore(): Promise<{ score: number; metrics: Record<string, unknown> }> {
   const since = new Date(Date.now() - THIRTY_DAYS_MS)
 
-  const [aegisCount, overrideCount, evalStats] = await Promise.all([
+  const [hanumanasCount, overrideCount, evalStats] = await Promise.all([
     (prisma as any).hanumanasAuditLog.count({ where: { createdAt: { gte: since } } }).catch(() => 0),
     (prisma as any).deploymentDecision.count({ where: { emergencyOverride: true, evaluatedAt: { gte: since } } }).catch(() => 0),
     (prisma as any).aIEvaluation.findMany({
@@ -567,7 +567,7 @@ async function computeTrustScore(): Promise<{ score: number; metrics: Record<str
     }).catch(() => [] as any[]),
   ])
 
-  const auditBonus = aegisCount > 200 ? 15 : aegisCount > 100 ? 10 : aegisCount > 50 ? 5 : 0
+  const auditBonus = hanumanasCount > 200 ? 15 : hanumanasCount > 100 ? 10 : hanumanasCount > 50 ? 5 : 0
   const overridePenalty = overrideCount * 5
 
   const avgSafe     = evalStats.length > 0
@@ -592,12 +592,12 @@ async function computeTrustScore(): Promise<{ score: number; metrics: Record<str
   return {
     score,
     metrics: {
-      aegisEventsLast30Days: aegisCount,
+      hanumanasEventsLast30Days: hanumanasCount,
       emergencyOverrides:    overrideCount,
       evaluations:           evalStats.length,
       avgSafeScore:    avgSafe     != null ? Math.round(avgSafe     * 100) / 100 : null,
       avgGroundedScore:avgGrounded != null ? Math.round(avgGrounded * 100) / 100 : null,
-      auditCoverage:   aegisCount > 200 ? 'EXCELLENT' : aegisCount > 100 ? 'GOOD' : aegisCount > 50 ? 'FAIR' : 'LOW',
+      auditCoverage:   hanumanasCount > 200 ? 'EXCELLENT' : hanumanasCount > 100 ? 'GOOD' : hanumanasCount > 50 ? 'FAIR' : 'LOW',
     },
   }
 }
@@ -1099,8 +1099,8 @@ export async function computeRecommendations(): Promise<Recommendation[]> {
 
   // ── Trust Intelligence ────────────────────────────────────────────────────
   const tm = current.pillars.trust.metrics
-  const aegis = tm.aegisEventsLast30Days as number ?? 0
-  if (aegis < 50) {
+  const hanumanas = tm.hanumanasEventsLast30Days as number ?? 0
+  if (hanumanas < 50) {
     recs.push({
       id: 'trust-audit',
       pillar: 'Trust Intelligence',

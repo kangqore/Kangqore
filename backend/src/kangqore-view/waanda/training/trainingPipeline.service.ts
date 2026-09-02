@@ -219,7 +219,7 @@ export class WaandaTrainingPipeline {
   }
 
   // ── Capture an HANUMANAS governance decision ────────────────────────────────────
-  // Called from aegisActionProposer.ts after the LLM chooses governance actions.
+  // Called from hanumanasActionProposer.ts after the LLM chooses governance actions.
   // Teaches Gen 2 WAANDA: "given this security finding, here is the right action."
 
   static captureGovernanceDecision(params: {
@@ -227,7 +227,7 @@ export class WaandaTrainingPipeline {
     engine:       string
     verdict:      string
     systemPrompt: string
-    userPrompt:   string   // the serialized AegisAgentResult
+    userPrompt:   string   // the serialized HanumanasAgentResult
     completion:   string   // the raw JSON action array from LLM
   }): void {
     WaandaTrainingPipeline.write({

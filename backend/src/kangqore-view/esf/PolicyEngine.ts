@@ -257,7 +257,7 @@ export async function seedDefaultPolicies() {
     },
     {
       name:        'Audit all KIMMP external writes',
-      description: 'Every external system write is logged to AegisAuditLog automatically',
+      description: 'Every external system write is logged to HanumanasAuditLog automatically',
       trigger:     '*',
       condition:   {},
       effect:      'NOTIFY',

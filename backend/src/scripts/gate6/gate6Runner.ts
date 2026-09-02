@@ -171,10 +171,10 @@ const securityChecks: CheckFn[] = [
   async function checkAuditLogExists() {
     const count = await dbCount('hanumanasAuditLog')
     return count > 0
-      ? pass('security', 'audit_log_populated', `AegisAuditLog has ${count} events`)
+      ? pass('security', 'audit_log_populated', `HanumanasAuditLog has ${count} events`)
       : count === 0
-        ? pending('security', 'audit_log_populated', 'AegisAuditLog is empty — no recorded events yet')
-        : fail('security', 'audit_log_populated', 'AegisAuditLog model not found')
+        ? pending('security', 'audit_log_populated', 'HanumanasAuditLog is empty — no recorded events yet')
+        : fail('security', 'audit_log_populated', 'HanumanasAuditLog model not found')
   },
 
   async function checkSessionModel() {
@@ -190,16 +190,16 @@ const securityChecks: CheckFn[] = [
 const complianceChecks: CheckFn[] = [
 
   async function checkAuditLogCapturesAccess() {
-    // If AegisAuditLog has DATA_ACCESS events, GDPR data access logging is in place
+    // If HanumanasAuditLog has DATA_ACCESS events, GDPR data access logging is in place
     try {
       const count = await (prisma as any).hanumanasAuditLog.count({
         where: { action: { in: ['DATA_ACCESS', 'DATA_EXPORT', 'DATA_VIEW', 'READ'] } },
       })
       return count > 0
         ? pass('compliance', 'gdpr_data_access_logging', `${count} data access events logged`)
-        : pending('compliance', 'gdpr_data_access_logging', 'No DATA_ACCESS events in AegisAuditLog yet — add audit hooks')
+        : pending('compliance', 'gdpr_data_access_logging', 'No DATA_ACCESS events in HanumanasAuditLog yet — add audit hooks')
     } catch {
-      return pending('compliance', 'gdpr_data_access_logging', 'AegisAuditLog query failed — review model')
+      return pending('compliance', 'gdpr_data_access_logging', 'HanumanasAuditLog query failed — review model')
     }
   },
 
@@ -349,7 +349,7 @@ const governanceChecks: CheckFn[] = [
       : pending('governance', 'policy_engine', 'No policy engine found — implement KimmpPolicy model + policyEngine.service.ts')
   },
 
-  async function checkAegisAuditCoverage() {
+  async function checkHanumanasAuditCoverage() {
     // HANUMANAS audit should cover key event types
     try {
       const eventTypes = await (prisma as any).hanumanasAuditLog.groupBy({ by: ['action'], _count: true })
@@ -360,7 +360,7 @@ const governanceChecks: CheckFn[] = [
           ? pending('governance', 'aegis_audit_coverage', `Only ${count} event types — expand HANUMANAS coverage to 10+ types`)
           : pending('governance', 'aegis_audit_coverage', 'No audit events recorded yet')
     } catch {
-      return pending('governance', 'aegis_audit_coverage', 'AegisAuditLog groupBy failed')
+      return pending('governance', 'aegis_audit_coverage', 'HanumanasAuditLog groupBy failed')
     }
   },
 
@@ -380,8 +380,8 @@ const governanceChecks: CheckFn[] = [
       : pending('governance', 'explainability_routes', 'No explainability routes — add /explain-decision endpoint')
   },
 
-  async function checkAegisIntelligenceRegistry() {
-    const count = await dbCount('aegisIntelligenceEntry')
+  async function checkHanumanasIntelligenceRegistry() {
+    const count = await dbCount('hanumanasIntelligenceEntry')
     if (count >= 0) return pass('governance', 'intelligence_registry', `HANUMANAS intelligence registry active (${count} entries)`)
     return pending('governance', 'intelligence_registry', 'HANUMANAS intelligence registry not found')
   },

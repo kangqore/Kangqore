@@ -39,7 +39,7 @@ export async function getFlightEvents(opts: FlightRecorderOpts = {}): Promise<{ 
     return Object.keys(w).length ? { [field]: w } : {}
   }
 
-  const [aegisRows, certRows, goalRows, decisionRows, memoryRows, workflowRows, incidentRows, deployRows] =
+  const [hanumanasRows, certRows, goalRows, decisionRows, memoryRows, workflowRows, incidentRows, deployRows] =
     await Promise.all([
       (prisma as any).hanumanasAuditLog.findMany({
         where:   timeWhere(),
@@ -100,13 +100,13 @@ export async function getFlightEvents(opts: FlightRecorderOpts = {}): Promise<{ 
 
   const events: FlightEvent[] = []
 
-  for (const r of aegisRows as any[]) {
+  for (const r of hanumanasRows as any[]) {
     events.push({
       id:        r.id,
       timestamp: new Date(r.createdAt),
       type:      r.eventType,
       source:    'HANUMANAS',
-      title:     formatAegisTitle(r),
+      title:     formatHanumanasTitle(r),
       actor:     r.actor,
       severity:  r.priority,
       metadata:  r.metadata as Record<string, unknown>,
@@ -222,7 +222,7 @@ export async function getFlightEvents(opts: FlightRecorderOpts = {}): Promise<{ 
   return { events: paginated, total }
 }
 
-function formatAegisTitle(r: { eventType: string; system?: string; trigger?: string; endpoint?: string }): string {
+function formatHanumanasTitle(r: { eventType: string; system?: string; trigger?: string; endpoint?: string }): string {
   switch (r.eventType) {
     case 'ACTIVATION':                   return `KIMMP Activated — ${r.system ?? r.trigger ?? ''}`
     case 'AUTONOMOUS':                   return `Autonomous Action — ${r.system ?? r.trigger ?? ''}`

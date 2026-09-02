@@ -5,7 +5,7 @@
 // non-PII data ONLY — counts, percentages, category labels. Never proxy raw
 // rows from HanumanasAuditLog, LlmCallLog, or KimmpBenchmarkResult.issues to the
 // public internet. The admin-gated equivalents (kangqore-immp `/aip-parity`,
-// aegis `/audit`, kimmp-gateway `/pii-incidents`) remain the source of truth
+// hanumanas `/audit`, kimmp-gateway `/pii-incidents`) remain the source of truth
 // for anything with row-level detail.
 // ---------------------------------------------------------------------------
 
