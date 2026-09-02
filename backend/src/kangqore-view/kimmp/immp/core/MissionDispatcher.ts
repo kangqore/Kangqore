@@ -1,5 +1,5 @@
 import { KeosKernel, MissionRequest } from '../../../kernel/KeosKernel';
-import { AegisShield } from '../../../esf/hanumanas/HanumanasShield';
+import { HanumanasShield } from '../../../esf/hanumanas/HanumanasShield';
 import { KeosEventBus } from '../../../kernel/KeosEventBus';
 import { CapabilityRegistry } from '../../../kernel/CapabilityRegistry';
 import { ActionEngine } from '../../../automation/ActionEngine';
@@ -17,13 +17,13 @@ function mapMissionToSystemAction(request: MissionRequest): string {
   return 'RUN_AGENT';
 }
 
-async function recordMissionAsAction(request: MissionRequest, missionId: string, aegisResult: { riskScore: number; policiesEvaluated: any[] }, executionResult: any): Promise<void> {
+async function recordMissionAsAction(request: MissionRequest, missionId: string, hanumanasResult: { riskScore: number; policiesEvaluated: any[] }, executionResult: any): Promise<void> {
   const actionName = mapMissionToSystemAction(request);
   const actionId = await ActionEngine.getSystemActionId(actionName);
   if (!actionId) return; // system Actions not seeded yet — audit-only write, safe to skip
   await ActionEngine.execute({
     actionId,
-    params: { goal: request.goal, missionId, riskScore: aegisResult.riskScore },
+    params: { goal: request.goal, missionId, riskScore: hanumanasResult.riskScore },
     objectId: request.context?.objectId ?? null,
     actorId: request.requester,
     actorType: 'KIMMP',
@@ -76,39 +76,39 @@ export class MissionDispatcher {
 
     // 3 & 4. Policy & Risk Evaluation (AEGIS)
     console.log(`[KIMMP Runtime] 3+4. AEGIS Policy & Risk Evaluation`);
-    const aegisResult = await AegisShield.evaluatePolicy(request, capabilityId);
+    const hanumanasResult = await HanumanasShield.evaluatePolicy(request, capabilityId);
 
-    if (aegisResult.action === 'DENY') {
-      await AegisShield.writeToLedger(request.id || 'N/A', actor, 'DISPATCH_MISSION', 'BLOCKED', {
+    if (hanumanasResult.action === 'DENY') {
+      await HanumanasShield.writeToLedger(request.id || 'N/A', actor, 'DISPATCH_MISSION', 'BLOCKED', {
         capabilityId,
-        policyEvaluated: aegisResult.policiesEvaluated,
-        riskScore: aegisResult.riskScore,
+        policyEvaluated: hanumanasResult.policiesEvaluated,
+        riskScore: hanumanasResult.riskScore,
       });
       // S298 — an AEGIS DENY is a governance block; mirror it into the unified Action log
       ActionEngine.getSystemActionId('GOVERNANCE_BLOCK').then(actionId => {
         if (!actionId) return;
         return ActionEngine.execute({
-          actionId, params: { goal: request.goal, riskScore: aegisResult.riskScore, reason: aegisResult.reason },
+          actionId, params: { goal: request.goal, riskScore: hanumanasResult.riskScore, reason: hanumanasResult.reason },
           actorId: actor, actorType: 'AEGIS', sourceModule: 'MissionDispatcher',
-          reasoning: `DENY: ${aegisResult.reason}`,
+          reasoning: `DENY: ${hanumanasResult.reason}`,
         });
       }).catch(() => {});
-      throw new Error(`AEGIS BLOCKED MISSION: ${aegisResult.reason}`);
+      throw new Error(`AEGIS BLOCKED MISSION: ${hanumanasResult.reason}`);
     }
 
     // 5. Human Approval (if required by risk score)
-    if (aegisResult.action === 'REQUIRE_APPROVAL') {
-      console.log(`[KIMMP Runtime] 5. Human Approval Required (risk=${aegisResult.riskScore})`);
-      await AegisShield.writeToLedger(request.id || 'N/A', actor, 'DISPATCH_MISSION', 'PENDING_APPROVAL', {
+    if (hanumanasResult.action === 'REQUIRE_APPROVAL') {
+      console.log(`[KIMMP Runtime] 5. Human Approval Required (risk=${hanumanasResult.riskScore})`);
+      await HanumanasShield.writeToLedger(request.id || 'N/A', actor, 'DISPATCH_MISSION', 'PENDING_APPROVAL', {
         capabilityId,
-        policyEvaluated: aegisResult.policiesEvaluated,
-        riskScore: aegisResult.riskScore,
+        policyEvaluated: hanumanasResult.policiesEvaluated,
+        riskScore: hanumanasResult.riskScore,
       });
       return {
         id:           'pending-' + Date.now(),
         currentState: 'PendingApproval',
         goal:         request.goal,
-        reason:       aegisResult.reason,
+        reason:       hanumanasResult.reason,
       };
     }
 
@@ -127,7 +127,7 @@ export class MissionDispatcher {
         executionResult = await KeosKernel.executeMission(request);
       }
     } catch (error: any) {
-      await AegisShield.writeToLedger(executionResult?.id || 'N/A', actor, 'EXECUTE_MISSION', 'FAILED', {
+      await HanumanasShield.writeToLedger(executionResult?.id || 'N/A', actor, 'EXECUTE_MISSION', 'FAILED', {
         capabilityId,
         executionDetails: { error: error.message },
       });
@@ -138,10 +138,10 @@ export class MissionDispatcher {
 
     // 7. Ledger (Success)
     console.log(`[KIMMP Runtime] 7. AEGIS Ledger`);
-    await AegisShield.writeToLedger(missionId, actor, 'EXECUTE_MISSION', 'EXECUTED', {
+    await HanumanasShield.writeToLedger(missionId, actor, 'EXECUTE_MISSION', 'EXECUTED', {
       capabilityId,
-      policyEvaluated: aegisResult.policiesEvaluated,
-      riskScore: aegisResult.riskScore,
+      policyEvaluated: hanumanasResult.policiesEvaluated,
+      riskScore: hanumanasResult.riskScore,
       executionDetails: { result: executionResult.result },
     });
 
@@ -155,7 +155,7 @@ export class MissionDispatcher {
     });
 
     // S298 — unified Action audit trail (fire-and-forget; never blocks the mission)
-    recordMissionAsAction(request, missionId, aegisResult, executionResult).catch(() => {});
+    recordMissionAsAction(request, missionId, hanumanasResult, executionResult).catch(() => {});
 
     // Notify WAANDA that KEOS ran a mission (keeps lastActive timestamp real)
     import('../../../waanda/adapters/KeosAdapter').then(({ notifyKeosMissionRun }) => notifyKeosMissionRun()).catch(() => {})

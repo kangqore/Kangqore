@@ -1,6 +1,6 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.'
 
@@ -10,7 +10,7 @@ const ENGINES = [
   'POLICY','TRUST_COMPLIANCE','RISK_INTELLIGENCE',
 ]
 
-export async function runOperationalRiskAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runOperationalRiskAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last2h = new Date(Date.now() - 2  * 3_600_000)
   const last24h = new Date(Date.now() - 86_400_000)
@@ -48,7 +48,7 @@ export async function runOperationalRiskAgent(ctx: AgentContext): Promise<AegisA
       ...engineStatus.map(e => `${e.engine}: ${e.silent ? '✗ SILENT (>24h)' : `✓ ran at ${e.lastRun?.toISOString().slice(0, 16)}`}`),
     ],
     actions: schedulerDown
-      ? ['CRITICAL: AEGIS scheduler is down — restart AegisScheduler.start() in backend/src/index.ts']
+      ? ['CRITICAL: AEGIS scheduler is down — restart HanumanasScheduler.start() in backend/src/index.ts']
       : silentEngines.map(e => `Engine ${e.engine} is silent — trigger on-demand run via POST /admin/aegis/engines/${e.engine}/run`),
     metadata: { schedulerDown, recentRuns, silentEngines: silentEngines.length, engineStatus },
     durationMs: Date.now() - start,

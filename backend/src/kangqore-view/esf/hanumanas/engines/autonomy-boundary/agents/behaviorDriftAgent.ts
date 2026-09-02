@@ -1,10 +1,10 @@
 import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS. Analyse autonomous AI behaviour patterns for drift or instability — be precise and action-oriented.'
 
-export async function runBehaviorDriftAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runBehaviorDriftAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
 
   const days: Array<{ date: string; autonomous: number; total: number }> = []

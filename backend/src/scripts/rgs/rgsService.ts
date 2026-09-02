@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import * as crypto from 'crypto'
-import { AegisLedger } from '../../kangqore-view/esf/hanumanas/hanumanasLedger.service'
+import { HanumanasLedger } from '../../kangqore-view/esf/hanumanas/hanumanasLedger.service'
 
 const prisma = new PrismaClient()
 
@@ -292,7 +292,7 @@ export async function evaluateRelease(input: {
   })
 
   // AEGIS audit — every decision is logged regardless of verdict
-  await AegisLedger.logDeployment({
+  await HanumanasLedger.logDeployment({
     eventType:   verdict === 'BLOCK' ? 'DEPLOYMENT_BLOCKED' : 'DEPLOYMENT_AUTHORIZED',
     decisionId,
     certId:      input.certId,
@@ -340,7 +340,7 @@ export async function recordDeployment(input: {
     include: { environment: true, decision: true },
   })
 
-  await AegisLedger.logDeployment({
+  await HanumanasLedger.logDeployment({
     eventType:   'DEPLOYMENT_AUTHORIZED',
     decisionId:  input.decisionId,
     deployId,
@@ -364,7 +364,7 @@ export async function recordOutcome(input: {
     include: { environment: true, decision: true },
   })
 
-  await AegisLedger.logDeployment({
+  await HanumanasLedger.logDeployment({
     eventType:   'DEPLOYMENT_COMPLETED',
     decisionId:  record.decision.decisionId,
     deployId:    input.deployId,
@@ -467,7 +467,7 @@ export async function recordRollback(input: {
     include: { environment: true, decision: true },
   })
 
-  await AegisLedger.logDeployment({
+  await HanumanasLedger.logDeployment({
     eventType:   'DEPLOYMENT_ROLLBACK_INITIATED',
     decisionId:  rollbackDecision.decisionId,
     deployId,
@@ -532,7 +532,7 @@ export async function emergencyOverride(input: {
     include: { environment: true },
   })
 
-  await AegisLedger.logDeployment({
+  await HanumanasLedger.logDeployment({
     eventType:   'DEPLOYMENT_EMERGENCY_OVERRIDE',
     decisionId:  newDecisionId,
     certId:      original.certId,

@@ -27,7 +27,7 @@ import {
   EmbeddingsUnavailable,
 } from '../knowledge/EmbeddingsService'
 import { SystemType } from './agentRegistry'
-import { AegisLedger } from '../../esf/hanumanas/hanumanasLedger.service'
+import { HanumanasLedger } from '../../esf/hanumanas/hanumanasLedger.service'
 import { PgvectorIndex } from '../knowledge/PgvectorIndex'
 import { KimmpFlags } from '../core/flags'
 
@@ -313,7 +313,7 @@ export class SystemRAG {
 
     // AEGIS: register every ingested briefing as a KIMMP-owned intelligence asset
     if (result?.id) {
-      AegisLedger.logKnowledgeAsset({
+      HanumanasLedger.logKnowledgeAsset({
         system,
         assetId:     result.id,
         assetType:   docType,

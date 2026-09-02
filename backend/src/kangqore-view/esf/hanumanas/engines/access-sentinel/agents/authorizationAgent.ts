@@ -1,10 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }        from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
-export async function runAuthorizationAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runAuthorizationAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 

@@ -40,7 +40,7 @@ import { SignalLedger } from '../signals/signalLedger.service'
 import { detectContradictions } from './contradictionDetector'
 import { crossIndexBriefings } from './crossSystemFlow'
 import { runDebatePhase } from './debatePhase'
-import { AegisLedger } from '../../esf/hanumanas/hanumanasLedger.service'
+import { HanumanasLedger } from '../../esf/hanumanas/hanumanasLedger.service'
 import { WaandaTrainingPipeline, LocalReasonService } from '../../waanda/training'
 import { sonnetWithTools, textOf } from '../llm/kimmpLLMRouter'
 import { SemanticMapper, ExternalRef } from '../../eof/SemanticMapper'
@@ -390,7 +390,7 @@ export class KimmpSystemDispatcher {
     }).catch(() => {})
 
     // AEGIS: record every activation — fire and forget
-    AegisLedger.logActivation({
+    HanumanasLedger.logActivation({
       system:     system,
       trigger:    ctx.trigger ?? 'manual',
       actor:      ctx.userId ?? 'ADMIN',
@@ -455,9 +455,9 @@ export class KimmpSystemDispatcher {
 
     // Sprint 6B — KIMMP → AEGIS: read current AEGIS governance state so the
     // synthesis is aware of active threats before it governs.
-    let aegisStateBlock = ''
+    let hanumanasStateBlock = ''
     try {
-      const aegisCriticals = await (await import('../../../lib/prisma')).prisma.$queryRaw<any[]>`
+      const hanumanasCriticals = await (await import('../../../lib/prisma')).prisma.$queryRaw<any[]>`
         SELECT agent_id, summary, raised_at
         FROM aegis_agent_runs
         WHERE verdict = 'CRITICAL'
@@ -465,13 +465,13 @@ export class KimmpSystemDispatcher {
         ORDER BY raised_at DESC
         LIMIT 5
       `.catch(() => [])
-      if (aegisCriticals.length > 0) {
-        aegisStateBlock = `\n\n━━ AEGIS GOVERNANCE STATE (last 2h) ━━\n` +
-          aegisCriticals.map((r: any) => `• ${r.agent_id}: ${(r.summary ?? '').slice(0, 100)}`).join('\n')
+      if (hanumanasCriticals.length > 0) {
+        hanumanasStateBlock = `\n\n━━ AEGIS GOVERNANCE STATE (last 2h) ━━\n` +
+          hanumanasCriticals.map((r: any) => `• ${r.agent_id}: ${(r.summary ?? '').slice(0, 100)}`).join('\n')
       }
     } catch { /* never block synthesis */ }
 
-    const synthesisUserPrompt = `A full LOOPS cascade has completed. All 4 systems have spoken.\n\n${allContext}${aegisStateBlock}\n\nAs KIMMP, provide your governing synthesis: HEADLINE, CROSS-SYSTEM PATTERN, TOP 3 ACTIONS for the operator. Be specific. Plain text.`
+    const synthesisUserPrompt = `A full LOOPS cascade has completed. All 4 systems have spoken.\n\n${allContext}${hanumanasStateBlock}\n\nAs KIMMP, provide your governing synthesis: HEADLINE, CROSS-SYSTEM PATTERN, TOP 3 ACTIONS for the operator. Be specific. Plain text.`
     let kimmSynthesis = allContext
     if (process.env.ANTHROPIC_API_KEY) {
       try {
@@ -538,7 +538,7 @@ export class KimmpSystemDispatcher {
 
     // AEGIS: mark this loop activation as AUTONOMOUS if scheduler-triggered
     const isAutonomous = (ctx.trigger ?? '').startsWith('schedule.')
-    AegisLedger.logActivation({
+    HanumanasLedger.logActivation({
       system:     'KIMMP',
       trigger:    ctx.trigger ?? 'loops.manual',
       actor:      ctx.userId ?? 'SCHEDULER',

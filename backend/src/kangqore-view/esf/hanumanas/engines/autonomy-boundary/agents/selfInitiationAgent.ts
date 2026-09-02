@@ -1,6 +1,6 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
@@ -8,7 +8,7 @@ const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy 
 const APPROVED_AUTONOMOUS_ACTORS  = new Set(['SCHEDULER', 'KIMMP'])
 const APPROVED_AUTONOMOUS_TRIGGERS = /^schedule\.|^event\./
 
-export async function runSelfInitiationAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runSelfInitiationAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
   const last24h = new Date(Date.now() - 86_400_000)
 

@@ -18,7 +18,7 @@ interface BoundsCheckResult {
  * Puts a strict mathematical leash on the Krisnam LLM.
  * Intercepts stochastic predictions and clamps them to the physical realities of the enterprise ontology.
  */
-export class AegisDeterminismEngine {
+export class HanumanasDeterminismEngine {
 
   /**
    * Calculates Mean and Standard Deviation (σ)
@@ -90,4 +90,4 @@ export class AegisDeterminismEngine {
   }
 }
 
-export const aegisDeterminism = new AegisDeterminismEngine()
+export const hanumanasDeterminism = new HanumanasDeterminismEngine()

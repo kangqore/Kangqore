@@ -1,11 +1,11 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.'
 
 // Predictive signals: conditions that precede policy violations
-export async function runViolationPredictorAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runViolationPredictorAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last6h = new Date(Date.now() - 6 * 3_600_000)
   const last1h = new Date(Date.now() - 3_600_000)

@@ -8,7 +8,7 @@ import axios from 'axios'
 import { prisma } from '../../lib/prisma'
 import { checkPolicy } from '../esf/PolicyEngine'
 import { CardinalityEngine } from '../eof/CardinalityEngine'
-import { AegisBudget } from '../esf/hanumanas/hanumanasBudget.service'
+import { HanumanasBudget } from '../esf/hanumanas/hanumanasBudget.service'
 import { getIO } from '../../socket'
 import { dispatchToConnectors } from './connectors/registry'
 
@@ -261,7 +261,7 @@ export interface ExecuteInput {
 // never budget-limited (a person clicking a button isn't "spend").
 async function checkBudgetGate(actorType: string, actorId?: string | null): Promise<{ blocked: boolean; message?: string }> {
   if (actorType === 'HUMAN') return { blocked: false }
-  return AegisBudget.gate(actorId ?? actorType.toLowerCase())
+  return HanumanasBudget.gate(actorId ?? actorType.toLowerCase())
 }
 
 export const ActionEngine = {
@@ -284,7 +284,7 @@ export const ActionEngine = {
     else if (policy.effect === 'NOTIFY') errors.push({ severity: 'WARN', message: `Policy "${policy.policyName}" will log this execution for audit` })
 
     if (actorType !== 'HUMAN') {
-      const usage = await AegisBudget.checkUsage(actorId ?? actorType.toLowerCase())
+      const usage = await HanumanasBudget.checkUsage(actorId ?? actorType.toLowerCase())
       if (usage.overBudget && usage.hardDeny) errors.push({ severity: 'BLOCK', message: `Budget exceeded: ${usage.callCount}/${usage.budget} calls in ${usage.windowHours}h` })
     }
 
@@ -543,7 +543,7 @@ export const ActionEngine = {
   },
 
   // ─── S298 — Seed system Actions for KIMMP task types ─────────────────────────
-  // MissionDispatcher and AegisActionExecutor resolve these by name to route
+  // MissionDispatcher and HanumanasActionExecutor resolve these by name to route
   // KIMMP/AEGIS execution through this same engine instead of a separate path.
 
   SYSTEM_TYPE: { name: 'System', displayName: 'System', icon: 'Cpu', color: '#64748b', description: 'Non-business-object execution surface for KIMMP and AEGIS system actions' },
@@ -574,7 +574,7 @@ export const ActionEngine = {
     return results
   },
 
-  /** Resolve a seeded system Action's id by name — used by MissionDispatcher/AegisActionExecutor. */
+  /** Resolve a seeded system Action's id by name — used by MissionDispatcher/HanumanasActionExecutor. */
   async getSystemActionId(name: string): Promise<string | null> {
     const type = await prisma.ontologyObjectType.findUnique({ where: { name: ActionEngine.SYSTEM_TYPE.name } })
     if (!type) return null

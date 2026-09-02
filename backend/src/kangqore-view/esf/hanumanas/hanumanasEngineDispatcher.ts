@@ -1,20 +1,20 @@
 // ---------------------------------------------------------------------------
-// AEGIS Engine Dispatcher — routes triggers → agents → AegisAgentRun.
+// AEGIS Engine Dispatcher — routes triggers → agents → HanumanasAgentRun.
 //
 // Phase 2 additions:
 //   - After every CRITICAL verdict: propose actions → execute them
 //   - After every CRITICAL verdict (unless fromEvent): publish to aegis.critical
-//     bus so AegisEventEmitter cascades event.CRITICAL_ACTIVATION agents
+//     bus so HanumanasEventEmitter cascades event.CRITICAL_ACTIVATION agents
 //   - Consecutive WARN tracking: 3+ WARNs from same agent → L1 notification
 // ---------------------------------------------------------------------------
 
 import './agents/registerAllAgents' // side-effect: registers all 80 agents
 import { prisma }                from '../../../lib/prisma'
-import { notifyAegisVerdict }    from './hanumanasNotifier'
-import { AegisActionProposer }   from './hanumanasActionProposer'
-import { AegisActionExecutor }   from './hanumanasActionExecutor'
-import { AegisEventEmitter }     from './hanumanasEventEmitter'
-import { runAegisDebatePhase }   from './hanumanasDebatePhase'
+import { notifyHanumanasVerdict }    from './hanumanasNotifier'
+import { HanumanasActionProposer }   from './hanumanasActionProposer'
+import { HanumanasActionExecutor }   from './hanumanasActionExecutor'
+import { HanumanasEventEmitter }     from './hanumanasEventEmitter'
+import { runHanumanasDebatePhase }   from './hanumanasDebatePhase'
 import { emitToAdmins }          from '../../../socket'
 import {
   agentsForTrigger,
@@ -23,7 +23,7 @@ import {
   allAgents,
   registryStats,
 } from './agents/agentRegistry'
-import type { AegisAgentResult, AgentContext } from './agents/types'
+import type { HanumanasAgentResult, AgentContext } from './agents/types'
 
 // Track consecutive WARN counts per agentId (in-memory, resets on restart)
 const warnStreak: Map<string, number> = new Map()
@@ -35,7 +35,7 @@ const recheckPending: Set<string> = new Set()
 // Persist a completed agent run to the database
 // ---------------------------------------------------------------------------
 
-async function persistRun(result: AegisAgentResult): Promise<void> {
+async function persistRun(result: HanumanasAgentResult): Promise<void> {
   await (prisma as any).aegisAgentRun.create({
     data: {
       agentId:    result.agentId,
@@ -63,7 +63,7 @@ async function persistRun(result: AegisAgentResult): Promise<void> {
 async function runOne(
   agent: ReturnType<typeof getAgent>,
   ctx:   AgentContext,
-): Promise<AegisAgentResult | null> {
+): Promise<HanumanasAgentResult | null> {
   if (!agent) return null
   const start = Date.now()
   try {
@@ -72,7 +72,7 @@ async function runOne(
     result.raisedAt   = new Date().toISOString()
 
     // Persist + legacy notification (fire & forget)
-    await Promise.all([persistRun(result), notifyAegisVerdict(result)])
+    await Promise.all([persistRun(result), notifyHanumanasVerdict(result)])
 
     // ── Phase 2: action layer ────────────────────────────────────────────────
 
@@ -81,16 +81,16 @@ async function runOne(
       warnStreak.delete(result.agentId)
 
       // Propose + execute actions (LLM first, fallback to hardcoded map)
-      AegisActionProposer.propose(result).then(actions => {
+      HanumanasActionProposer.propose(result).then(actions => {
         if (actions.length > 0) {
-          AegisActionExecutor.execute(actions, result).catch(() => {})
+          HanumanasActionExecutor.execute(actions, result).catch(() => {})
         }
       }).catch(() => {})
 
       // Cascade: publish to EventBus so event.CRITICAL_ACTIVATION agents fire
       // Skip if this run was itself triggered by an event (anti-loop guard)
       if (!ctx.fromEvent) {
-        AegisEventEmitter.onCritical(result).catch(() => {})
+        HanumanasEventEmitter.onCritical(result).catch(() => {})
       }
 
       // Sprint 3 — Observe → Re-evaluate loop.
@@ -106,7 +106,7 @@ async function runOne(
             if (!recheckResult) return
             if (recheckResult.verdict === 'CRITICAL') {
               // Still CRITICAL — explicit L2 escalation beyond the normal action pipeline
-              AegisActionExecutor.execute([{
+              HanumanasActionExecutor.execute([{
                 type:        'SEND_ALERT_EMAIL',
                 level:       2,
                 params:      { subject: `AEGIS ESCALATION: ${result.agentId} still CRITICAL after 60s` },
@@ -119,7 +119,7 @@ async function runOne(
               }], recheckResult).catch(() => {})
             } else {
               // Threat resolved — log the resolution
-              AegisActionExecutor.execute([{
+              HanumanasActionExecutor.execute([{
                 type:        'LOG_AUDIT_ENTRY',
                 level:       0,
                 params:      { resolution: 'CRITICAL_RESOLVED', previousVerdict: 'CRITICAL', newVerdict: recheckResult.verdict },
@@ -140,16 +140,16 @@ async function runOne(
       warnStreak.set(result.agentId, streak)
 
       // Propose WARN-level actions (LLM first, fallback to hardcoded map)
-      AegisActionProposer.propose(result).then(actions => {
+      HanumanasActionProposer.propose(result).then(actions => {
         if (actions.length > 0) {
-          AegisActionExecutor.execute(actions, result).catch(() => {})
+          HanumanasActionExecutor.execute(actions, result).catch(() => {})
         }
       }).catch(() => {})
 
       // 3+ consecutive WARNs → escalate with a notification
       if (streak >= 3) {
         warnStreak.set(result.agentId, 0) // reset after escalation
-        AegisActionExecutor.execute([AegisActionProposer.consecutiveWarnAction()], result).catch(() => {})
+        HanumanasActionExecutor.execute([HanumanasActionProposer.consecutiveWarnAction()], result).catch(() => {})
       }
 
     } else {
@@ -168,18 +168,18 @@ async function runOne(
 // Public API
 // ---------------------------------------------------------------------------
 
-export const AegisEngineDispatcher = {
+export const HanumanasEngineDispatcher = {
   /** Run all agents registered for a given trigger (e.g. 'schedule.1h'). */
-  async runTrigger(trigger: string, ctx?: Partial<AgentContext>): Promise<AegisAgentResult[]> {
+  async runTrigger(trigger: string, ctx?: Partial<AgentContext>): Promise<HanumanasAgentResult[]> {
     const agents  = agentsForTrigger(trigger)
     const context: AgentContext = { trigger, ...ctx }
-    const results = (await Promise.all(agents.map(a => runOne(a, context)))).filter(Boolean) as AegisAgentResult[]
+    const results = (await Promise.all(agents.map(a => runOne(a, context)))).filter(Boolean) as HanumanasAgentResult[]
 
     // Sprint 4 — Cross-agent debate: 3+ CRITICALs from different engines
     const criticals = results.filter(r => r.verdict === 'CRITICAL')
     const engines   = new Set(criticals.map(r => r.engine))
     if (criticals.length >= 3 && engines.size >= 2 && !ctx?.fromEvent) {
-      runAegisDebatePhase(criticals).then(debate => {
+      runHanumanasDebatePhase(criticals).then(debate => {
         if (!debate.debateRan) return
         emitToAdmins('aegis:debate:verdict', {
           unifiedVerdict:   debate.unifiedVerdict,
@@ -189,7 +189,7 @@ export const AegisEngineDispatcher = {
           debatedAt:        new Date().toISOString(),
         })
         if (debate.recommendedAction) {
-          AegisActionExecutor.execute([debate.recommendedAction], criticals[0]).catch(() => {})
+          HanumanasActionExecutor.execute([debate.recommendedAction], criticals[0]).catch(() => {})
         }
       }).catch(() => {})
     }
@@ -198,15 +198,15 @@ export const AegisEngineDispatcher = {
   },
 
   /** Run all agents registered to a specific engine. */
-  async runEngine(engine: string, ctx?: Partial<AgentContext>): Promise<AegisAgentResult[]> {
+  async runEngine(engine: string, ctx?: Partial<AgentContext>): Promise<HanumanasAgentResult[]> {
     const agents  = agentsForEngine(engine)
     const context: AgentContext = { trigger: 'on-demand', ...ctx }
     const results = await Promise.all(agents.map(a => runOne(a, context)))
-    return results.filter(Boolean) as AegisAgentResult[]
+    return results.filter(Boolean) as HanumanasAgentResult[]
   },
 
   /** Run a single agent by its ID. */
-  async runAgent(agentId: string, ctx?: Partial<AgentContext>): Promise<AegisAgentResult | null> {
+  async runAgent(agentId: string, ctx?: Partial<AgentContext>): Promise<HanumanasAgentResult | null> {
     const agent   = getAgent(agentId)
     const context: AgentContext = { trigger: 'on-demand', ...ctx }
     return runOne(agent, context)

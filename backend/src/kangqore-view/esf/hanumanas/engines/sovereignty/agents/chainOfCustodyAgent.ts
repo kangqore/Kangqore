@@ -1,10 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess intelligence sovereignty — ownership, custody, attribution, and approval chains for all knowledge assets. Flag any unapproved actors or breaches. Write 2 sentences.'
 
-export async function runChainOfCustodyAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runChainOfCustodyAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
 
   const assets: Array<{ assetId: string | null; assetSource: string | null; dispatchId: string | null }> =

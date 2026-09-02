@@ -1,6 +1,6 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Provide executive governance summaries — direct, no fluff, 2 sentences.'
 
@@ -12,7 +12,7 @@ const ENGINES = [
 const WARN_HOURS     = 12
 const CRITICAL_HOURS = 24
 
-export async function runEngineHealthAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runEngineHealthAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
   const now   = Date.now()
 

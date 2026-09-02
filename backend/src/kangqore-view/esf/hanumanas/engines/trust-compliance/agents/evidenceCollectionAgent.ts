@@ -1,12 +1,12 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS. Summarise the audit evidence package for an external compliance review.'
 
 const EVENT_TYPES = ['ACTIVATION', 'AUTONOMOUS', 'POLICY_VIOLATION', 'ACCESS_DENIED', 'KNOWLEDGE_ASSET', 'EGRESS'] as const
 
-export async function runEvidenceCollectionAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runEvidenceCollectionAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
   const last30d = new Date(Date.now() - 30 * 86_400_000)
 

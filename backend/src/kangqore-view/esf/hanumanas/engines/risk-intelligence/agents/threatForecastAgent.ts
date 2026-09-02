@@ -1,11 +1,11 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 import { LogicToolRegistry } from '../../../../../../kangqore-immp/tools/logicToolRegistry'
 
 const SYSTEM = 'You are AEGIS. Forecast the governance risk level for the next 24 hours based on 7-day trends.'
 
-export async function runThreatForecastAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runThreatForecastAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const days: Array<{ date: string; critical: number; warn: number; violations: number; denied: number }> = []
 

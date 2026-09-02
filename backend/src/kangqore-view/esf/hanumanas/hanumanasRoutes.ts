@@ -1,32 +1,32 @@
 // ---------------------------------------------------------------------------
 // AEGIS Routes — ADMIN sovereignty dashboard API
 //
-// Mounted at /api/admin/aegis (protected by aegisShield upstream).
+// Mounted at /api/admin/aegis (protected by hanumanasShield upstream).
 // ---------------------------------------------------------------------------
 
 import { Router, Request, Response } from 'express'
-import { AegisLedger, AegisEventType }  from './hanumanasLedger.service'
-import { AegisSovereignty }             from './hanumanasSovereignty.service'
-import { AegisPolicyEngine }            from './hanumanasPolicy.service'
-import { AegisEngineDispatcher }        from './hanumanasEngineDispatcher'
-import { AegisActionExecutor }          from './hanumanasActionExecutor'
-import { AegisBudget }                  from './hanumanasBudget.service'
-import { aegisConfig }                  from './hanumanasConfig'
+import { HanumanasLedger, HanumanasEventType }  from './hanumanasLedger.service'
+import { HanumanasSovereignty }             from './hanumanasSovereignty.service'
+import { HanumanasPolicyEngine }            from './hanumanasPolicy.service'
+import { HanumanasEngineDispatcher }        from './hanumanasEngineDispatcher'
+import { HanumanasActionExecutor }          from './hanumanasActionExecutor'
+import { HanumanasBudget }                  from './hanumanasBudget.service'
+import { hanumanasConfig }                  from './hanumanasConfig'
 import { verifyAccessToken }            from '../../kernel/auth/TokenService'
 import { prisma }                       from '../../../lib/prisma'
 import { runComplianceTests }           from './compliance/hanumanasComplianceTestSuite'
 
-export const aegisRouter = Router()
+export const hanumanasRouter = Router()
 
 // ── Config / on-off switch ─────────────────────────────────────────────────────
 // These routes self-protect with inline auth so they stay safe even when the
 // shield is bypassed (build mode).
 
-aegisRouter.get('/config', (_req: Request, res: Response) => {
-  res.json(aegisConfig.snapshot())
+hanumanasRouter.get('/config', (_req: Request, res: Response) => {
+  res.json(hanumanasConfig.snapshot())
 })
 
-aegisRouter.post('/config/toggle', (req: Request, res: Response) => {
+hanumanasRouter.post('/config/toggle', (req: Request, res: Response) => {
   const auth = req.headers.authorization
   if (!auth?.startsWith('Bearer ')) {
     res.status(401).json({ error: 'Auth required to toggle AEGIS' })
@@ -37,13 +37,13 @@ aegisRouter.post('/config/toggle', (req: Request, res: Response) => {
     res.status(403).json({ error: 'Only ADMIN may toggle AEGIS' })
     return
   }
-  const enabled = aegisConfig.toggle(payload.userId)
-  res.json({ ...aegisConfig.snapshot(), message: enabled ? 'AEGIS activated' : 'AEGIS bypassed — build mode on' })
+  const enabled = hanumanasConfig.toggle(payload.userId)
+  res.json({ ...hanumanasConfig.snapshot(), message: enabled ? 'AEGIS activated' : 'AEGIS bypassed — build mode on' })
 })
 
 // ── Health ────────────────────────────────────────────────────────────────────
 
-aegisRouter.get('/health', (_req: Request, res: Response) => {
+hanumanasRouter.get('/health', (_req: Request, res: Response) => {
   res.json({
     shield:    'AEGIS',
     fullName:  'Kangqore Autonomous Executive Governance & Intelligence Shield',
@@ -65,26 +65,26 @@ aegisRouter.get('/health', (_req: Request, res: Response) => {
 
 // ── Stats — all domains ───────────────────────────────────────────────────────
 
-aegisRouter.get('/stats', async (_req: Request, res: Response) => {
+hanumanasRouter.get('/stats', async (_req: Request, res: Response) => {
   const [ledgerStats, ownershipSummary] = await Promise.all([
-    AegisLedger.stats(),
-    AegisSovereignty.ownershipSummary(),
+    HanumanasLedger.stats(),
+    HanumanasSovereignty.ownershipSummary(),
   ])
   res.json({
     shield:           'AEGIS',
     ledger:           ledgerStats,
     sovereignty:      ownershipSummary,
-    policies:         AegisPolicyEngine.listPolicies().length,
+    policies:         HanumanasPolicyEngine.listPolicies().length,
     timestamp:        new Date().toISOString(),
   })
 })
 
 // ── Executive Audit Ledger ────────────────────────────────────────────────────
 
-aegisRouter.get('/audit', async (req: Request, res: Response) => {
+hanumanasRouter.get('/audit', async (req: Request, res: Response) => {
   const { eventType, system, limit, offset, from, to } = req.query
-  const result = await AegisLedger.query({
-    eventType: eventType as AegisEventType | undefined,
+  const result = await HanumanasLedger.query({
+    eventType: eventType as HanumanasEventType | undefined,
     system:    system as string | undefined,
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
@@ -96,9 +96,9 @@ aegisRouter.get('/audit', async (req: Request, res: Response) => {
 
 // ── Autonomy Boundary Monitor ─────────────────────────────────────────────────
 
-aegisRouter.get('/autonomy', async (req: Request, res: Response) => {
+hanumanasRouter.get('/autonomy', async (req: Request, res: Response) => {
   const { system, limit, offset } = req.query
-  const result = await AegisLedger.query({
+  const result = await HanumanasLedger.query({
     autonomous: true,
     system:     system as string | undefined,
     limit:      limit  ? Number(limit)  : 50,
@@ -109,9 +109,9 @@ aegisRouter.get('/autonomy', async (req: Request, res: Response) => {
 
 // ── Access Sentinel ───────────────────────────────────────────────────────────
 
-aegisRouter.get('/shield', async (req: Request, res: Response) => {
+hanumanasRouter.get('/shield', async (req: Request, res: Response) => {
   const { limit, offset } = req.query
-  const result = await AegisLedger.query({
+  const result = await HanumanasLedger.query({
     eventType: 'ACCESS_DENIED',
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
@@ -121,9 +121,9 @@ aegisRouter.get('/shield', async (req: Request, res: Response) => {
 
 // ── Intelligence Registry ─────────────────────────────────────────────────────
 
-aegisRouter.get('/assets', async (req: Request, res: Response) => {
+hanumanasRouter.get('/assets', async (req: Request, res: Response) => {
   const { system, limit, offset } = req.query
-  const result = await AegisLedger.query({
+  const result = await HanumanasLedger.query({
     eventType: 'KNOWLEDGE_ASSET',
     system:    system as string | undefined,
     limit:     limit  ? Number(limit)  : 50,
@@ -134,9 +134,9 @@ aegisRouter.get('/assets', async (req: Request, res: Response) => {
 
 // ── Intelligence Egress Control ───────────────────────────────────────────────
 
-aegisRouter.get('/egress', async (req: Request, res: Response) => {
+hanumanasRouter.get('/egress', async (req: Request, res: Response) => {
   const { limit, offset } = req.query
-  const result = await AegisLedger.query({
+  const result = await HanumanasLedger.query({
     eventType: 'EGRESS',
     limit:     limit  ? Number(limit)  : 50,
     offset:    offset ? Number(offset) : 0,
@@ -146,8 +146,8 @@ aegisRouter.get('/egress', async (req: Request, res: Response) => {
 
 // ── Sovereignty Engine ────────────────────────────────────────────────────────
 
-aegisRouter.get('/sovereignty', async (_req: Request, res: Response) => {
-  const summary = await AegisSovereignty.ownershipSummary()
+hanumanasRouter.get('/sovereignty', async (_req: Request, res: Response) => {
+  const summary = await HanumanasSovereignty.ownershipSummary()
   res.json({
     shield:  'AEGIS',
     domain:  'SOVEREIGNTY',
@@ -158,28 +158,28 @@ aegisRouter.get('/sovereignty', async (_req: Request, res: Response) => {
 
 // ── Policy Engine ─────────────────────────────────────────────────────────────
 
-aegisRouter.get('/policy/rules', (_req: Request, res: Response) => {
+hanumanasRouter.get('/policy/rules', (_req: Request, res: Response) => {
   res.json({
     shield:   'AEGIS',
     domain:   'POLICY_ENGINE',
-    policies: AegisPolicyEngine.listPolicies(),
+    policies: HanumanasPolicyEngine.listPolicies(),
   })
 })
 
 // ── Agent Registry ────────────────────────────────────────────────────────────
 
-aegisRouter.get('/agents', (_req: Request, res: Response) => {
+hanumanasRouter.get('/agents', (_req: Request, res: Response) => {
   res.json({
     shield:  'AEGIS',
     domain:  'AGENT_REGISTRY',
-    ...AegisEngineDispatcher.registryStats(),
-    agents:  AegisEngineDispatcher.listAgents(),
+    ...HanumanasEngineDispatcher.registryStats(),
+    agents:  HanumanasEngineDispatcher.listAgents(),
   })
 })
 
 // ── Agent Corps Summary — latest verdict per engine + health score ────────────
 
-aegisRouter.get('/agents/summary', async (_req: Request, res: Response) => {
+hanumanasRouter.get('/agents/summary', async (_req: Request, res: Response) => {
   const since24h = new Date(Date.now() - 86_400_000)
 
   // Latest run per engine (last 7 days)
@@ -231,7 +231,7 @@ aegisRouter.get('/agents/summary', async (_req: Request, res: Response) => {
 
 // ── Agent Runs — queryable history ───────────────────────────────────────────
 
-aegisRouter.get('/agents/runs', async (req: Request, res: Response) => {
+hanumanasRouter.get('/agents/runs', async (req: Request, res: Response) => {
   const { engine, verdict, agentId, limit, offset } = req.query
 
   const where: Record<string, unknown> = {}
@@ -254,9 +254,9 @@ aegisRouter.get('/agents/runs', async (req: Request, res: Response) => {
 
 // ── On-demand engine run ─────────────────────────────────────────────────────
 
-aegisRouter.post('/engines/:engine/run', async (req: Request, res: Response) => {
+hanumanasRouter.post('/engines/:engine/run', async (req: Request, res: Response) => {
   const { engine } = req.params
-  const results = await AegisEngineDispatcher.runEngine(
+  const results = await HanumanasEngineDispatcher.runEngine(
     engine.toUpperCase(),
     { userId: (req as any).user?.id ?? 'ADMIN' },
   )
@@ -265,9 +265,9 @@ aegisRouter.post('/engines/:engine/run', async (req: Request, res: Response) => 
 
 // ── On-demand single agent run ────────────────────────────────────────────────
 
-aegisRouter.post('/agents/:agentId/run', async (req: Request, res: Response) => {
+hanumanasRouter.post('/agents/:agentId/run', async (req: Request, res: Response) => {
   const { agentId } = req.params
-  const result = await AegisEngineDispatcher.runAgent(
+  const result = await HanumanasEngineDispatcher.runAgent(
     agentId,
     { userId: (req as any).user?.id ?? 'ADMIN' },
   )
@@ -277,7 +277,7 @@ aegisRouter.post('/agents/:agentId/run', async (req: Request, res: Response) => 
 
 // ── Phase 2: Pending L3 Actions ───────────────────────────────────────────────
 
-aegisRouter.get('/actions/pending', async (_req: Request, res: Response) => {
+hanumanasRouter.get('/actions/pending', async (_req: Request, res: Response) => {
   const rows = await (prisma as any).aegisPendingAction.findMany({
     where:   { status: 'PENDING' },
     orderBy: { requestedAt: 'desc' },
@@ -285,19 +285,19 @@ aegisRouter.get('/actions/pending', async (_req: Request, res: Response) => {
   res.json({ shield: 'AEGIS', domain: 'PENDING_ACTIONS', rows, total: rows.length })
 })
 
-aegisRouter.post('/actions/:id/approve', async (req: Request, res: Response) => {
+hanumanasRouter.post('/actions/:id/approve', async (req: Request, res: Response) => {
   const adminUserId = (req as any).user?.id ?? 'ADMIN'
-  const result = await AegisActionExecutor.approveAndExecute(req.params.id, adminUserId)
+  const result = await HanumanasActionExecutor.approveAndExecute(req.params.id, adminUserId)
   res.json({ shield: 'AEGIS', ...result })
 })
 
-aegisRouter.post('/actions/:id/reject', async (req: Request, res: Response) => {
+hanumanasRouter.post('/actions/:id/reject', async (req: Request, res: Response) => {
   const adminUserId = (req as any).user?.id ?? 'ADMIN'
-  await AegisActionExecutor.rejectPending(req.params.id, adminUserId)
+  await HanumanasActionExecutor.rejectPending(req.params.id, adminUserId)
   res.json({ shield: 'AEGIS', rejected: true })
 })
 
-aegisRouter.get('/actions/log', async (req: Request, res: Response) => {
+hanumanasRouter.get('/actions/log', async (req: Request, res: Response) => {
   const { agentId, status, limit, offset } = req.query
   const where: Record<string, unknown> = {}
   if (agentId) where.agentId = agentId
@@ -317,12 +317,12 @@ aegisRouter.get('/actions/log', async (req: Request, res: Response) => {
 })
 
 // ── S112: Phase 3 — Per-tenant Budget Enforcement ────────────────────────────
-// S298 — the in-memory store + usage check now live in aegisBudget.service.ts
+// S298 — the in-memory store + usage check now live in hanumanasBudget.service.ts
 // so the Action Engine can gate on the same budget as this dashboard reads.
 
-aegisRouter.get('/budget', async (_req: Request, res: Response) => {
+hanumanasRouter.get('/budget', async (_req: Request, res: Response) => {
   // Returns global + per-tenant enforcement config
-  const budgets = AegisBudget.listConfigs()
+  const budgets = HanumanasBudget.listConfigs()
   res.json({
     shield:    'AEGIS',
     domain:    'BUDGET_ENFORCEMENT',
@@ -332,10 +332,10 @@ aegisRouter.get('/budget', async (_req: Request, res: Response) => {
   })
 })
 
-aegisRouter.post('/budget', async (req: Request, res: Response) => {
+hanumanasRouter.post('/budget', async (req: Request, res: Response) => {
   const { tenantId, callLimit, windowHours, hardDeny } = req.body
   if (!tenantId) return res.status(400).json({ error: 'tenantId required' })
-  const config = AegisBudget.setBudget(tenantId, { callLimit, windowHours, hardDeny })
+  const config = HanumanasBudget.setBudget(tenantId, { callLimit, windowHours, hardDeny })
   // Emit KIMMP signal for audit
   await prisma.kimmpSignal.create({
     data: {
@@ -351,9 +351,9 @@ aegisRouter.post('/budget', async (req: Request, res: Response) => {
   res.json({ shield: 'AEGIS', domain: 'BUDGET_ENFORCEMENT', tenantId, config })
 })
 
-aegisRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) => {
+hanumanasRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) => {
   const { tenantId } = req.params
-  const usage = await AegisBudget.checkUsage(tenantId)
+  const usage = await HanumanasBudget.checkUsage(tenantId)
   if (usage.overBudget && usage.hardDeny) {
     await (prisma as any).aegisActionLog.create({
       data: {
@@ -378,7 +378,7 @@ aegisRouter.get('/budget/:tenantId/usage', async (req: Request, res: Response) =
 // Runs 12 adversarial governance tests and returns a scored report.
 // Each test is self-contained and cleans up its own fixtures.
 
-aegisRouter.get('/compliance/run', async (req: Request, res: Response) => {
+hanumanasRouter.get('/compliance/run', async (req: Request, res: Response) => {
   const auth = req.headers.authorization
   if (!auth?.startsWith('Bearer ')) return res.status(401).json({ error: 'Auth required' })
   const payload = verifyAccessToken(auth.substring(7)) as any

@@ -2,17 +2,17 @@
 // AEGIS Request Context — AsyncLocalStorage correlation bridge
 //
 // Solves the three-surface incoherence: HTTP middleware, MissionDispatcher, and
-// KoreRuntimeManager all call AegisShield / AegisLedger independently with no
+// KoreRuntimeManager all call HanumanasShield / HanumanasLedger independently with no
 // shared identifier. Any code that runs in the async continuation of an HTTP
 // request can now call getCorrelationId() and get the same ID that was stamped
 // at the HTTP boundary — without any signature changes to downstream callers.
 //
 // Flow for a KIMMP mutation:
-//   aegisAccessLogger   → aegisStorage.run(ctx, next)     ← ID born here
-//   aegisEgressMonitor  →                                  ← same context
+//   hanumanasAccessLogger   → hanumanasStorage.run(ctx, next)     ← ID born here
+//   hanumanasEgressMonitor  →                                  ← same context
 //   kangqoreImmpRoutes  →                                  ← same context
-//   MissionDispatcher   → AegisShield.writeToLedger(...)  ← ID read here
-//   KoreRuntimeManager  → AegisShield.writeToLedger(...)  ← ID read here
+//   MissionDispatcher   → HanumanasShield.writeToLedger(...)  ← ID read here
+//   KoreRuntimeManager  → HanumanasShield.writeToLedger(...)  ← ID read here
 //
 // Background jobs (no HTTP origin) call getCorrelationId() → undefined.
 // Their ledger entries are written without a correlationId — correct behavior.
@@ -20,20 +20,20 @@
 
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-export interface AegisRequestContext {
+export interface HanumanasRequestContext {
   correlationId: string
   requesterId:   string
   httpSurface:   'aegis' | 'kimmp' | 'unknown'
 }
 
-export const aegisStorage = new AsyncLocalStorage<AegisRequestContext>()
+export const hanumanasStorage = new AsyncLocalStorage<HanumanasRequestContext>()
 
-export function getAegisContext(): AegisRequestContext | undefined {
-  return aegisStorage.getStore()
+export function getHanumanasContext(): HanumanasRequestContext | undefined {
+  return hanumanasStorage.getStore()
 }
 
 export function getCorrelationId(): string | undefined {
-  return aegisStorage.getStore()?.correlationId
+  return hanumanasStorage.getStore()?.correlationId
 }
 
 // Generates a correlation ID that is short, human-readable in logs, and unique

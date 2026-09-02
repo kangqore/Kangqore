@@ -1,10 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess intelligence sovereignty — ownership, custody, attribution, and approval chains for all knowledge assets. Flag any unapproved actors or breaches. Write 2 sentences.'
 
-export async function runCustodyAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runCustodyAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
 
   // Check completeness of custody metadata on KNOWLEDGE_ASSET events
@@ -33,7 +33,7 @@ export async function runCustodyAgent(ctx: AgentContext): Promise<AegisAgentResu
     ],
     actions: [
       ...(missingAssetId   > 0 ? ['Fix assetId registration in KIMMP SystemRAG.autoIndexBriefing()'] : []),
-      ...(missingAssetType > 0 ? ['Pass docType when calling AegisLedger.logKnowledgeAsset()'] : []),
+      ...(missingAssetType > 0 ? ['Pass docType when calling HanumanasLedger.logKnowledgeAsset()'] : []),
       ...(missingSource    > 0 ? ['Ensure assetSource is set to dispatch:${dispatchId} on every ingest'] : []),
     ],
     metadata:  { total, missingAssetId, missingAssetType, missingSource, totalGaps },

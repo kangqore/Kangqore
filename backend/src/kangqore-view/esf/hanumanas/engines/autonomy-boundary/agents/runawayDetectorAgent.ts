@@ -1,12 +1,12 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess KIMMP autonomy boundary — whether autonomous AI behaviour is within acceptable limits. Write 2 sentences, direct and specific.'
 
 const RUNAWAY_THRESHOLD = 20 // > 20 autonomous events in any 1h window is suspicious
 
-export async function runRunawayDetectorAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runRunawayDetectorAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start    = Date.now()
   const last6h   = new Date(Date.now() - 6 * 3_600_000)
 

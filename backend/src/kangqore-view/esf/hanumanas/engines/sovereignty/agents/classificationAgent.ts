@@ -1,13 +1,13 @@
-import { AegisSovereignty } from '../../../hanumanasSovereignty.service'
+import { HanumanasSovereignty } from '../../../hanumanasSovereignty.service'
 import { prisma }            from '../../../../../../lib/prisma'
 import { callLLM }           from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess intelligence sovereignty — ownership, custody, attribution, and approval chains for all knowledge assets. Flag any unapproved actors or breaches. Write 2 sentences.'
 
-export async function runClassificationAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runClassificationAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
-  const summary = await AegisSovereignty.ownershipSummary()
+  const summary = await HanumanasSovereignty.ownershipSummary()
 
   const restricted  = summary.restrictedAssets ?? 0
   const total       = summary.totalAssets ?? 0
@@ -35,7 +35,7 @@ export async function runClassificationAgent(ctx: AgentContext): Promise<AegisAg
       ...(restricted > 0 && recentEgress === 0 ? ['RESTRICTED assets present but no egress monitoring in 24h'] : []),
     ],
     actions:   restricted > 0 && recentEgress === 0
-      ? ['Verify aegisEgressMonitor is active on KIMMP routes', 'Check /api/admin/aegis/egress for recent events']
+      ? ['Verify hanumanasEgressMonitor is active on KIMMP routes', 'Check /api/admin/aegis/egress for recent events']
       : [],
     metadata:  { total, restricted, byClassification: byClass, recentEgress },
     durationMs: Date.now() - start,

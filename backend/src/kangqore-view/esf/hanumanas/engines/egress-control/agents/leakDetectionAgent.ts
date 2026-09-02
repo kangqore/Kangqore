@@ -1,10 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess data egress and export patterns — flag any unauthorised or anomalous data movement. Write 2 sentences, direct ADMIN status.'
 
-export async function runLeakDetectionAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runLeakDetectionAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last1h = new Date(Date.now() - 3_600_000)
 

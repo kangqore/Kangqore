@@ -1,13 +1,13 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }        from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess access control and authentication integrity. Write 2 sentences — direct verdict on whether access patterns are secure and if ADMIN action is needed.'
 
 const BRUTE_FORCE_THRESHOLD = 10  // denials per 10-minute window = brute force
 const WINDOW_MS             = 10 * 60_000
 
-export async function runThreatDetectionAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runThreatDetectionAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last1h = new Date(Date.now() - 3_600_000)
 

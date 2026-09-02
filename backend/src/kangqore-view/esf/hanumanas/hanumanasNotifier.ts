@@ -6,7 +6,7 @@
 import { prisma }              from '../../../lib/prisma'
 import { createNotification }  from '../../awareness/notifications/NotificationService'
 import { emitToAdmins }        from '../../../socket'
-import type { AegisAgentResult } from './agents/types'
+import type { HanumanasAgentResult } from './agents/types'
 
 let cachedAdminId: string | null = null
 
@@ -35,7 +35,7 @@ const ENGINE_LABEL: Record<string, string> = {
   RISK_INTELLIGENCE:     'Risk Intelligence',
 }
 
-export async function notifyAegisVerdict(result: AegisAgentResult): Promise<void> {
+export async function notifyHanumanasVerdict(result: HanumanasAgentResult): Promise<void> {
   if (result.verdict !== 'CRITICAL' && result.verdict !== 'WARN') return
 
   const adminId = await getAdminUserId()

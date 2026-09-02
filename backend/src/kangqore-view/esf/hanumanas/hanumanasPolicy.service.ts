@@ -13,7 +13,7 @@
 // ---------------------------------------------------------------------------
 
 import logger from '../../../utils/logger'
-import { AegisEventEmitter } from './hanumanasEventEmitter'
+import { HanumanasEventEmitter } from './hanumanasEventEmitter'
 
 export type PolicyVerdict = 'ALLOW' | 'WARN' | 'DENY'
 
@@ -105,7 +105,7 @@ const POLICIES: Policy[] = [
   },
 ]
 
-export class AegisPolicyEngine {
+export class HanumanasPolicyEngine {
   static evaluate(action: string, ctx: PolicyContext): PolicyResult[] {
     const results: PolicyResult[] = []
     const fullCtx = { ...ctx, action }
@@ -123,7 +123,7 @@ export class AegisPolicyEngine {
 
       if (verdict === 'DENY') {
         logger.warn(`[AEGIS:POLICY] DENY — ${policy.id}: ${policy.name} | action=${action} role=${ctx.role ?? 'none'}`)
-        AegisEventEmitter.firePolicyViolation({
+        HanumanasEventEmitter.firePolicyViolation({
           userId:   ctx.userId,
           metadata: { policy: policy.id, action, role: ctx.role, severity: policy.severity },
         })
@@ -137,7 +137,7 @@ export class AegisPolicyEngine {
 
   // Returns true if the action is DENIED by any policy
   static isDenied(action: string, ctx: PolicyContext): boolean {
-    return AegisPolicyEngine.evaluate(action, ctx).some(r => r.verdict === 'DENY')
+    return HanumanasPolicyEngine.evaluate(action, ctx).some(r => r.verdict === 'DENY')
   }
 
   // Returns the full policy ruleset for the ADMIN dashboard

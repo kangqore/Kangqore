@@ -1,6 +1,6 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess intelligence sovereignty — ownership, custody, attribution, and approval chains for all knowledge assets. Flag any unapproved actors or breaches. Write 2 sentences.'
 
@@ -8,7 +8,7 @@ const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess intelligence so
 // registration — only truly unknown actors constitute a sovereignty breach.
 const APPROVED_ACTORS = ['ADMIN', 'KIMMP', 'SYSTEM', 'SCHEDULER']
 
-export async function runOwnershipAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runOwnershipAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
   const last24h = new Date(Date.now() - 86_400_000)
 

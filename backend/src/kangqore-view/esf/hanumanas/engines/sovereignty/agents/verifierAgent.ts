@@ -1,10 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess intelligence sovereignty — ownership, custody, attribution, and approval chains for all knowledge assets. Flag any unapproved actors or breaches. Write 2 sentences.'
 
-export async function runVerifierAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runVerifierAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
 
   // Check for duplicate assetIds (re-ingested without deduplication)
@@ -44,7 +44,7 @@ export async function runVerifierAgent(ctx: AgentContext): Promise<AegisAgentRes
     ],
     actions: [
       ...(duplicates > 0 ? ['Review KIMMP SystemRAG deduplication logic — check contentHash'] : []),
-      ...(orphaned   > 2 ? ['Ensure system is passed to AegisLedger.logKnowledgeAsset()']    : []),
+      ...(orphaned   > 2 ? ['Ensure system is passed to HanumanasLedger.logKnowledgeAsset()']    : []),
     ],
     metadata:  { total, withAssetId, withSystem, duplicates, orphaned },
     durationMs: Date.now() - start,

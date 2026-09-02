@@ -1,6 +1,6 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess policy compliance and enforcement. Flag violations, exceptions, and decisions requiring ADMIN review. Write 2 sentences, direct.'
 
@@ -8,7 +8,7 @@ const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess policy complian
 const SENSITIVE_TRIGGERS = /^event\.(KNOWLEDGE_ASSET|EGRESS|CRITICAL_ACTIVATION)/
 const ADMIN_ACTORS       = new Set(['ADMIN', 'SCHEDULER'])
 
-export async function runApprovalGatekeeperAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runApprovalGatekeeperAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 

@@ -1,6 +1,6 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess regulatory compliance posture — ISO 27001, SOC 2, GDPR, DPDP Act. Write 2 sentences: compliance status and whether ADMIN action is required.'
 
@@ -14,7 +14,7 @@ const CONTROLS = [
   { name: '42001 AI Accountability',   eventType: 'AUTONOMOUS',      label: 'Autonomous AI action logging' },
 ] as const
 
-export async function runIsoComplianceAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runIsoComplianceAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last30d = new Date(Date.now() - 30 * 86_400_000)
 

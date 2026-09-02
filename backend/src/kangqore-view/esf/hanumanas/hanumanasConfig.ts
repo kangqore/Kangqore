@@ -8,7 +8,7 @@ const _state = {
   toggledBy: null as string | null,
 }
 
-export const aegisConfig = {
+export const hanumanasConfig = {
   get enabled()   { return _state.enabled },
   get toggledAt() { return _state.toggledAt },
   get toggledBy() { return _state.toggledBy },

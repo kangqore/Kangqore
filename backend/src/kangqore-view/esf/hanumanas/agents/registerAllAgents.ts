@@ -6,7 +6,7 @@
 // Phase 3:  Access Sentinel, Intelligence Registry, Egress Control — 24 agents  ✓ COMPLETE
 // Phase 4:  Policy, Trust & Compliance, Risk Intelligence — 24 agents  ✓ COMPLETE
 //
-// Import this file once (from aegisEngineDispatcher.ts) for the side effects.
+// Import this file once (from hanumanasEngineDispatcher.ts) for the side effects.
 // ---------------------------------------------------------------------------
 
 import { registerAgent }   from './agentRegistry'

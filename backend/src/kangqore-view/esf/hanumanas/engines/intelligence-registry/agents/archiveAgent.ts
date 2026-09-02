@@ -1,12 +1,12 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess knowledge asset registry health — coverage, metadata quality, retention. Write 2 sentences, direct ADMIN status.'
 
 const ARCHIVE_THRESHOLD_DAYS = 180
 
-export async function runArchiveAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runArchiveAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start       = Date.now()
   const archiveCutoff = new Date(Date.now() - ARCHIVE_THRESHOLD_DAYS * 86_400_000)
 

@@ -1,10 +1,10 @@
 // ---------------------------------------------------------------------------
 // AEGIS Scheduler — fires schedule.1h / schedule.6h / schedule.24h cadences.
 //
-// Called from WaandaBootstrap Phase 2 (_bootAegis) — not from index.ts directly.
+// Called from WaandaBootstrap Phase 2 (_bootHanumanas) — not from index.ts directly.
 // ---------------------------------------------------------------------------
 
-import { AegisEngineDispatcher } from './hanumanasEngineDispatcher'
+import { HanumanasEngineDispatcher } from './hanumanasEngineDispatcher'
 
 let started    = false
 let intervalMs = 60 * 60_000  // default: 1h
@@ -12,22 +12,22 @@ let intervalMs = 60 * 60_000  // default: 1h
 const _intervals: ReturnType<typeof setInterval>[] = []
 
 function run(trigger: 'schedule.1h' | 'schedule.6h' | 'schedule.24h'): void {
-  AegisEngineDispatcher.runTrigger(trigger, { userId: 'AEGIS_SCHEDULER' })
+  HanumanasEngineDispatcher.runTrigger(trigger, { userId: 'AEGIS_SCHEDULER' })
     .then(results => {
       const critical = results.filter(r => r.verdict === 'CRITICAL').length
       const warn     = results.filter(r => r.verdict === 'WARN').length
       console.log(`[AEGIS] ${trigger}: ${results.length} agents | CRITICAL:${critical} WARN:${warn}`)
-      // Forward verdicts to AegisAdapter for WAANDA health reporting
+      // Forward verdicts to HanumanasAdapter for WAANDA health reporting
       import('./hanumanasScheduler').then(() => {}).catch(() => {})
       try {
-        const { updateAegisVerdicts } = require('../../waanda/adapters/AegisAdapter')
-        updateAegisVerdicts({ clear: results.length - critical - warn, warn, critical })
+        const { updateHanumanasVerdicts } = require('../../waanda/adapters/HanumanasAdapter')
+        updateHanumanasVerdicts({ clear: results.length - critical - warn, warn, critical })
       } catch {}
     })
     .catch(err => console.error(`[AEGIS] ${trigger} scheduler error:`, err))
 }
 
-export const AegisScheduler = {
+export const HanumanasScheduler = {
   start(): void {
     if (started) return
     started = true

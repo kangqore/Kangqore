@@ -13,11 +13,11 @@ import { prisma }              from '../../../lib/prisma'
 import { emitToAdmins }        from '../../../socket'
 import { createNotification }  from '../../awareness/notifications/NotificationService'
 import { emailService }        from '../../eaf/channels/EmailService'
-import { AegisLedger }         from './hanumanasLedger.service'
+import { HanumanasLedger }         from './hanumanasLedger.service'
 import { redisConnection }     from '../../../lib/redis'
 import { ActionEngine }        from '../../automation/ActionEngine'
-import type { AegisAction }    from './hanumanasActionProposer'
-import type { AegisAgentResult } from './agents/types'
+import type { HanumanasAction }    from './hanumanasActionProposer'
+import type { HanumanasAgentResult } from './agents/types'
 
 // S298 — governance actions (not routine telemetry like EMIT_SOCKET/CREATE_NOTIFICATION)
 // also write a parallel ActionExecution row so the unified Action log genuinely
@@ -31,7 +31,7 @@ async function recordGovernanceAction(actionType: string, level: number, params:
   if (!actionId) return
   await ActionEngine.execute({
     actionId,
-    params: { ...params, aegisActionType: actionType, level, outcome },
+    params: { ...params, hanumanasActionType: actionType, level, outcome },
     actorId: result.agentId,
     actorType: 'AEGIS',
     agentsMixed: [result.agentId],
@@ -54,8 +54,8 @@ async function getAdmin(): Promise<{ id: string; email: string } | null> {
 }
 
 async function logAction(
-  action:  AegisAction,
-  result:  AegisAgentResult,
+  action:  HanumanasAction,
+  result:  HanumanasAgentResult,
   status:  'SUCCESS' | 'FAILED',
   outcome: unknown = null,
 ): Promise<void> {
@@ -79,7 +79,7 @@ async function logAction(
 // Individual action handlers
 // ---------------------------------------------------------------------------
 
-async function execEmitSocket(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execEmitSocket(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   const event = (action.params.event as string) ?? 'aegis:verdict'
   emitToAdmins(event, {
     agentId: result.agentId,
@@ -91,7 +91,7 @@ async function execEmitSocket(action: AegisAction, result: AegisAgentResult): Pr
   })
 }
 
-async function execEmitSignal(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execEmitSignal(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   // Fire-and-forget import to avoid circular dep at module load time
   const { SignalLedger } = await import('../../../kangqore-immp/signals/signalLedger.service')
   await SignalLedger.record({
@@ -105,7 +105,7 @@ async function execEmitSignal(action: AegisAction, result: AegisAgentResult): Pr
   }).catch(() => {})
 }
 
-async function execCreateNotification(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execCreateNotification(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   const admin = await getAdmin()
   if (!admin) return
   const priority = (action.params.priority as string) ?? 'NORMAL'
@@ -128,17 +128,17 @@ async function execCreateNotification(action: AegisAction, result: AegisAgentRes
   })
 }
 
-async function execRunInvestigation(_action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execRunInvestigation(_action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   // Lazy import to avoid circular at load time
-  const { AegisEngineDispatcher } = await import('./hanumanasEngineDispatcher')
-  await AegisEngineDispatcher.runAgent('govops.investigation', {
+  const { HanumanasEngineDispatcher } = await import('./hanumanasEngineDispatcher')
+  await HanumanasEngineDispatcher.runAgent('govops.investigation', {
     trigger:   'event.CRITICAL_ACTIVATION',
     fromEvent: true,
     metadata:  { triggeredBy: result.agentId, verdict: result.verdict, summary: result.summary },
   }).catch(() => {})
 }
 
-async function execSendAlertEmail(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execSendAlertEmail(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   const admin = await getAdmin()
   if (!admin) return
   const subject = (action.params.subject as string) ?? `AEGIS Alert: ${result.verdict} — ${result.agentId}`
@@ -155,14 +155,14 @@ async function execSendAlertEmail(action: AegisAction, result: AegisAgentResult)
   await emailService.sendEmail({ to: admin.email, subject, html: body }).catch(() => {})
 }
 
-async function execFlagActor(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execFlagActor(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   // Extract actor from the result metadata if available
   const actor = (result.metadata?.actor as string) ?? (action.params.source as string) ?? 'unknown'
   // Set in Redis with 24h TTL — sentinel middleware can check this set
   await (redisConnection as any).sadd('aegis:flagged-actors', actor)
   await (redisConnection as any).expire('aegis:flagged-actors', 86400)
   // Log to ledger
-  await AegisLedger.logPolicyViolation({
+  await HanumanasLedger.logPolicyViolation({
     policy:   'AEGIS_FLAG_ACTOR',
     system:   result.engine,
     actor,
@@ -172,7 +172,7 @@ async function execFlagActor(action: AegisAction, result: AegisAgentResult): Pro
   }).catch(() => {})
 }
 
-async function execEmitToWaanda(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execEmitToWaanda(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   const { KeosEventBus } = await import('../../kernel/KeosEventBus')
   KeosEventBus.publish('aegis.governance', {
     agentId:  result.agentId,
@@ -185,7 +185,7 @@ async function execEmitToWaanda(action: AegisAction, result: AegisAgentResult): 
   })
 }
 
-async function execTriggerKimmpSystem(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execTriggerKimmpSystem(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   const system = (action.params.system as string) ?? 'SENTINEL'
   const { KimmpSystemDispatcher } = await import('../../../kangqore-immp/agents/systemDispatcher')
   await KimmpSystemDispatcher.run(system as any, {
@@ -195,7 +195,7 @@ async function execTriggerKimmpSystem(action: AegisAction, result: AegisAgentRes
   }).catch(() => {})
 }
 
-async function execPatchLeadRiskScore(action: AegisAction, _result: AegisAgentResult): Promise<void> {
+async function execPatchLeadRiskScore(action: HanumanasAction, _result: HanumanasAgentResult): Promise<void> {
   const leadId = action.params.leadId as string
   const delta  = (action.params.delta as number) ?? 0
   if (!leadId) return
@@ -205,12 +205,12 @@ async function execPatchLeadRiskScore(action: AegisAction, _result: AegisAgentRe
   }).catch(() => {})
 }
 
-async function execRevokeSession(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execRevokeSession(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   const userId = (action.params.userId as string) ?? (result.metadata?.userId as string)
   if (!userId) return
   const { deleteAllUserSessions } = await import('../../kernel/auth/SessionService')
   await deleteAllUserSessions(userId).catch(() => {})
-  await AegisLedger.logPolicyViolation({
+  await HanumanasLedger.logPolicyViolation({
     policy:   'AEGIS_SESSION_REVOKE',
     system:   result.engine,
     actor:    userId,
@@ -221,7 +221,7 @@ async function execRevokeSession(action: AegisAction, result: AegisAgentResult):
 }
 
 // S112: Rollback checkpoint — snapshot agent state before any L3 action
-async function createRollbackCheckpoint(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function createRollbackCheckpoint(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   await (prisma as any).kimmpSignal.create({
     data: {
       type:     'AEGIS_ROLLBACK_CHECKPOINT',
@@ -244,7 +244,7 @@ async function createRollbackCheckpoint(action: AegisAction, result: AegisAgentR
 }
 
 // L3: write to pending table, notify admin via socket — await human approval
-async function execQueueL3(action: AegisAction, result: AegisAgentResult): Promise<void> {
+async function execQueueL3(action: HanumanasAction, result: HanumanasAgentResult): Promise<void> {
   // Phase 3: create rollback checkpoint before queuing the L3 action
   await createRollbackCheckpoint(action, result)
 
@@ -289,8 +289,8 @@ async function execQueueL3(action: AegisAction, result: AegisAgentResult): Promi
 // Public API
 // ---------------------------------------------------------------------------
 
-export const AegisActionExecutor = {
-  async execute(actions: AegisAction[], result: AegisAgentResult): Promise<void> {
+export const HanumanasActionExecutor = {
+  async execute(actions: HanumanasAction[], result: HanumanasAgentResult): Promise<void> {
     for (const action of actions) {
       try {
         if (action.level === 3) {

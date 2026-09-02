@@ -2,18 +2,18 @@ import { prisma } from '../../../lib/prisma';
 import { MissionRequest } from '../../kernel/KeosKernel';
 import { getCorrelationId } from './HanumanasContext';
 
-export interface AegisEvaluationResult {
+export interface HanumanasEvaluationResult {
   action: 'ALLOW' | 'DENY' | 'REQUIRE_APPROVAL';
   riskScore: number;
   policiesEvaluated: any[];
   reason: string;
 }
 
-export class AegisShield {
+export class HanumanasShield {
   /**
    * Evaluates the mission against all active policies.
    */
-  static async evaluatePolicy(mission: MissionRequest, capabilityId?: string): Promise<AegisEvaluationResult> {
+  static async evaluatePolicy(mission: MissionRequest, capabilityId?: string): Promise<HanumanasEvaluationResult> {
     const policies = await prisma.aegisPolicy.findMany({
       where: { isActive: true },
       orderBy: { priority: 'asc' }

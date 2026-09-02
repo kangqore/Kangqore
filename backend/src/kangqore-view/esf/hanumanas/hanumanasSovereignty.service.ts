@@ -7,7 +7,7 @@
 // when, by which system, and who owns it.
 // ---------------------------------------------------------------------------
 
-import { AegisLedger } from './hanumanasLedger.service'
+import { HanumanasLedger } from './hanumanasLedger.service'
 import logger from '../../../utils/logger'
 
 export type ClassificationLevel = 'PUBLIC' | 'INTERNAL' | 'CONFIDENTIAL' | 'RESTRICTED'
@@ -45,7 +45,7 @@ const RETENTION_DAYS: Record<ClassificationLevel, number> = {
   RESTRICTED:   730,
 }
 
-export class AegisSovereignty {
+export class HanumanasSovereignty {
   static classify(assetType: string): ClassificationLevel {
     return CLASSIFICATION_MAP[assetType] ?? 'CONFIDENTIAL'
   }
@@ -56,7 +56,7 @@ export class AegisSovereignty {
     assetType: string
     source?:   string
   }): SovereigntyStamp {
-    const classification = AegisSovereignty.classify(params.assetType)
+    const classification = HanumanasSovereignty.classify(params.assetType)
     const retainDays     = RETENTION_DAYS[classification]
     const retainUntil    = new Date(Date.now() + retainDays * 86_400_000).toISOString()
 
@@ -71,7 +71,7 @@ export class AegisSovereignty {
     }
 
     // Log to AEGIS ledger as KNOWLEDGE_ASSET
-    AegisLedger.logKnowledgeAsset({
+    HanumanasLedger.logKnowledgeAsset({
       system:      params.system,
       assetId:     params.assetId,
       assetType:   params.assetType,
@@ -92,7 +92,7 @@ export class AegisSovereignty {
     restrictedAssets:    number
   }> {
     try {
-      const { rows, total } = await AegisLedger.query({ eventType: 'KNOWLEDGE_ASSET', limit: 1000 })
+      const { rows, total } = await HanumanasLedger.query({ eventType: 'KNOWLEDGE_ASSET', limit: 1000 })
 
       const bySystem: Record<string, number> = {}
       const byClass: Record<string, number>  = {}

@@ -29,7 +29,7 @@ import { runGate35 } from '../scripts/gate35/gate35Runner';
 import { runGate6 }  from '../scripts/gate6/gate6Runner';
 import { issueCertificate, approveCertificate, latestCertificate, listCertificates, revokeCertificate, computeCertificateDiff } from '../scripts/qef/qefCertificateService';
 import { evaluateRelease, recordDeployment, recordOutcome, recordRollback, emergencyOverride, preflightCheck, listDecisions, listDeployments, listEnvironments } from '../scripts/rgs/rgsService';
-import { AegisLedger } from '../kangqore-view/esf/hanumanas/hanumanasLedger.service';
+import { HanumanasLedger } from '../kangqore-view/esf/hanumanas/hanumanasLedger.service';
 import { getFlightEvents } from '../scripts/flightRecorder/flightRecorderService';
 import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../kangqore-view/waanda/intelligence/gate8.service';
 import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent, computeCoigWeekReport, computeOnboardingChecklist, listDeploymentHealth, computeRenewalRisk, generateQBR } from '../kangqore-view/waanda/intelligence/enterpriseService';
@@ -2728,7 +2728,7 @@ router.post('/release/incidents', authenticate, authorize(['ADMIN']), async (req
 
     // AEGIS — policy violation (P0/P1 active incidents block deployments)
     if (priority === 'P1-CRITICAL' || priority === 'P2-HIGH') {
-      await AegisLedger.logPolicyViolation({
+      await HanumanasLedger.logPolicyViolation({
         policy:   'INCIDENT_DECLARED',
         actor:    adminId,
         system:   'RGS',

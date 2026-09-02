@@ -2,7 +2,7 @@
 // AEGIS Agent Types — the contract every agent fulfils.
 // ---------------------------------------------------------------------------
 
-export type AegisVerdict = 'PASS' | 'WARN' | 'CRITICAL' | 'INFO'
+export type HanumanasVerdict = 'PASS' | 'WARN' | 'CRITICAL' | 'INFO'
 
 export type AgentTrigger =
   | 'schedule.1h'
@@ -16,10 +16,10 @@ export type AgentTrigger =
   | 'event.EGRESS'
   | 'on-demand'
 
-export interface AegisAgentResult {
+export interface HanumanasAgentResult {
   agentId:    string                       // e.g. 'govops.engine-health'
   engine:     string                       // e.g. 'GOVERNANCE_OPS'
-  verdict:    AegisVerdict
+  verdict:    HanumanasVerdict
   summary:    string                       // 1-3 sentences for ADMIN
   findings:   string[]                     // bullet list of what was found
   actions:    string[]                     // recommended ADMIN actions
@@ -36,7 +36,7 @@ export interface AgentContext {
   isRecheck?:  boolean   // true when this is a Sprint 3 60s re-evaluation run — prevents stacking
 }
 
-export interface AegisAgentDef {
+export interface HanumanasAgentDef {
   id:          string                      // 'govops.engine-health'
   name:        string                      // 'Engine Health Agent'
   engine:      string                      // 'GOVERNANCE_OPS'
@@ -44,5 +44,5 @@ export interface AegisAgentDef {
   triggers:    (AgentTrigger | string)[]
   usesLLM:     boolean
   phase:       number                      // build phase where this is fully implemented
-  run:         (ctx: AgentContext) => Promise<AegisAgentResult>
+  run:         (ctx: AgentContext) => Promise<HanumanasAgentResult>
 }

@@ -13,7 +13,7 @@
 // ---------------------------------------------------------------------------
 
 import { prisma } from '../../../lib/prisma'
-import { AegisLedger } from '../../esf/hanumanas/hanumanasLedger.service'
+import { HanumanasLedger } from '../../esf/hanumanas/hanumanasLedger.service'
 
 export interface LiveSignal {
   key:     string
@@ -28,7 +28,7 @@ export interface LiveSignal {
 // being auto-marked satisfied on a shaky inference.
 export async function getLiveComplianceSignals(): Promise<LiveSignal[]> {
   const [stats, piiConfig, roleRows, benchmarkCount] = await Promise.all([
-    AegisLedger.stats(),
+    HanumanasLedger.stats(),
     (prisma as any).piiScanConfig.findFirst({ where: { active: true } }),
     prisma.user.groupBy({ by: ['role'], _count: { _all: true } }),
     (prisma as any).kimmpBenchmarkRun.count(),

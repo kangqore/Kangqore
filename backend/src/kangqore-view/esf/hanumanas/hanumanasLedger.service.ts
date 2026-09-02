@@ -10,7 +10,7 @@ import logger             from '../../../utils/logger'
 import { emitToAdmins }  from '../../../socket'
 import { getCorrelationId } from './HanumanasContext'
 
-export type AegisEventType =
+export type HanumanasEventType =
   | 'ACTIVATION'
   | 'AUTONOMOUS'
   | 'ACCESS_DENIED'
@@ -54,9 +54,9 @@ export interface KnowledgeAssetInput {
   metadata?: Record<string, unknown>
 }
 
-export class AegisLedger {
+export class HanumanasLedger {
   private static async write(data: {
-    eventType: AegisEventType
+    eventType: HanumanasEventType
     system?: string
     trigger?: string
     actor: string
@@ -97,7 +97,7 @@ export class AegisLedger {
   }
 
   static async logActivation(input: ActivationInput): Promise<string | null> {
-    return AegisLedger.write({
+    return HanumanasLedger.write({
       eventType:  input.autonomous ? 'AUTONOMOUS' : 'ACTIVATION',
       system:     input.system,
       trigger:    input.trigger,
@@ -114,7 +114,7 @@ export class AegisLedger {
   }
 
   static async logAccessDenied(input: AccessDeniedInput): Promise<string | null> {
-    return AegisLedger.write({
+    return HanumanasLedger.write({
       eventType: 'ACCESS_DENIED',
       actor:     input.userId ?? 'anonymous',
       endpoint:  input.endpoint,
@@ -135,7 +135,7 @@ export class AegisLedger {
     payloadSize?: number
     responseStatus?: number
   }): Promise<string | null> {
-    return AegisLedger.write({
+    return HanumanasLedger.write({
       eventType: 'EGRESS',
       actor:     input.userId ?? 'ADMIN',
       endpoint:  input.endpoint,
@@ -155,7 +155,7 @@ export class AegisLedger {
     severity: string
     metadata?: Record<string, unknown>
   }): Promise<string | null> {
-    return AegisLedger.write({
+    return HanumanasLedger.write({
       eventType: 'POLICY_VIOLATION',
       system:    input.system,
       actor:     input.actor ?? 'UNKNOWN',
@@ -181,7 +181,7 @@ export class AegisLedger {
     const priority = input.eventType === 'DEPLOYMENT_BLOCKED' || input.eventType === 'DEPLOYMENT_EMERGENCY_OVERRIDE'
       ? 'HIGH'
       : 'NORMAL'
-    return AegisLedger.write({
+    return HanumanasLedger.write({
       eventType: input.eventType,
       system:    'RGS',
       trigger:   input.decisionId,
@@ -202,7 +202,7 @@ export class AegisLedger {
   }
 
   static async logKnowledgeAsset(input: KnowledgeAssetInput): Promise<string | null> {
-    return AegisLedger.write({
+    return HanumanasLedger.write({
       eventType:   'KNOWLEDGE_ASSET',
       system:      input.system,
       actor:       'KIMMP',
@@ -215,7 +215,7 @@ export class AegisLedger {
   }
 
   static async query(opts: {
-    eventType?: AegisEventType
+    eventType?: HanumanasEventType
     autonomous?: boolean
     system?: string
     limit?: number

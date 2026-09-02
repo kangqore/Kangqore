@@ -45,8 +45,8 @@ async function run(id: string, name: string, category: string, fn: TestFn): Prom
 
 async function seedType(): Promise<string> {
   const t = await prisma.ontologyObjectType.upsert({
-    where: { name: '__AegisTest__' },
-    create: { name: '__AegisTest__', displayName: 'AEGIS Test', icon: 'Shield', color: '#ef4444' },
+    where: { name: '__HanumanasTest__' },
+    create: { name: '__HanumanasTest__', displayName: 'AEGIS Test', icon: 'Shield', color: '#ef4444' },
     update: {},
   })
   return t.id
@@ -54,11 +54,11 @@ async function seedType(): Promise<string> {
 
 async function cleanup(typeId: string) {
   await prisma.ontologyRelationship.deleteMany({
-    where: { OR: [{ sourceType: '__AegisTest__' }, { targetType: '__AegisTest__' }] },
+    where: { OR: [{ sourceType: '__HanumanasTest__' }, { targetType: '__HanumanasTest__' }] },
   }).catch(() => {})
   await prisma.ontologyObject.deleteMany({ where: { typeId } }).catch(() => {})
   await (prisma as any).ontologyCardinalityRule.deleteMany({
-    where: { OR: [{ sourceType: '__AegisTest__' }, { targetType: '__AegisTest__' }] },
+    where: { OR: [{ sourceType: '__HanumanasTest__' }, { targetType: '__HanumanasTest__' }] },
   }).catch(() => {})
 }
 
@@ -133,7 +133,7 @@ export async function runComplianceTests(): Promise<ComplianceSuiteResult> {
       let policyId: string | null = null
       if (!existing) {
         const p = await prisma.kimmpPolicy.create({
-          data: { name: '__AegisTest_RequireApproval__', trigger: 'CREATE_OBJECT', effect: 'REQUIRE_APPROVAL', condition: { field: 'typeId', operator: 'eq', value: typeId }, priority: 999 },
+          data: { name: '__HanumanasTest_RequireApproval__', trigger: 'CREATE_OBJECT', effect: 'REQUIRE_APPROVAL', condition: { field: 'typeId', operator: 'eq', value: typeId }, priority: 999 },
         })
         policyId = p.id
       }
@@ -174,16 +174,16 @@ export async function runComplianceTests(): Promise<ComplianceSuiteResult> {
 
     // 7 — Cardinality ONE_TO_ONE: second edge on same source fails
     run('T07', 'Cardinality — ONE_TO_ONE blocks second edge', 'cardinality', async () => {
-      await CardinalityEngine.createRule('__AegisTest__', '__AegisTest__', 'MANAGES', 'ONE_TO_ONE')
+      await CardinalityEngine.createRule('__HanumanasTest__', '__HanumanasTest__', 'MANAGES', 'ONE_TO_ONE')
       const [a, b, c] = await Promise.all([
         prisma.ontologyObject.create({ data: { typeId, properties: { name: 'A' } } }),
         prisma.ontologyObject.create({ data: { typeId, properties: { name: 'B' } } }),
         prisma.ontologyObject.create({ data: { typeId, properties: { name: 'C' } } }),
       ])
       // First edge — should succeed
-      await prisma.ontologyRelationship.create({ data: { sourceId: a.id, targetId: b.id, sourceType: '__AegisTest__', targetType: '__AegisTest__', relationshipType: 'MANAGES' } })
+      await prisma.ontologyRelationship.create({ data: { sourceId: a.id, targetId: b.id, sourceType: '__HanumanasTest__', targetType: '__HanumanasTest__', relationshipType: 'MANAGES' } })
       // Second edge from same source — should violate ONE_TO_ONE
-      const check = await CardinalityEngine.check('__AegisTest__', '__AegisTest__', 'MANAGES', a.id, c.id)
+      const check = await CardinalityEngine.check('__HanumanasTest__', '__HanumanasTest__', 'MANAGES', a.id, c.id)
       await prisma.ontologyObject.deleteMany({ where: { id: { in: [a.id, b.id, c.id] } } }).catch(() => {})
       return {
         passed: !check.valid,
@@ -193,18 +193,18 @@ export async function runComplianceTests(): Promise<ComplianceSuiteResult> {
 
     // 8 — Cardinality MANY_TO_ONE: two sources can share target but source can only have one
     run('T08', 'Cardinality — MANY_TO_ONE allows shared target, blocks double outgoing', 'cardinality', async () => {
-      await CardinalityEngine.createRule('__AegisTest__', '__AegisTest__', 'REPORTS_TO', 'MANY_TO_ONE')
+      await CardinalityEngine.createRule('__HanumanasTest__', '__HanumanasTest__', 'REPORTS_TO', 'MANY_TO_ONE')
       const [a, b, c] = await Promise.all([
         prisma.ontologyObject.create({ data: { typeId, properties: { name: 'E1' } } }),
         prisma.ontologyObject.create({ data: { typeId, properties: { name: 'E2' } } }),
         prisma.ontologyObject.create({ data: { typeId, properties: { name: 'MGR' } } }),
       ])
       // Both A and B → C should be allowed (many sources, one target)
-      await prisma.ontologyRelationship.create({ data: { sourceId: a.id, targetId: c.id, sourceType: '__AegisTest__', targetType: '__AegisTest__', relationshipType: 'REPORTS_TO' } })
-      const multiSource = await CardinalityEngine.check('__AegisTest__', '__AegisTest__', 'REPORTS_TO', b.id, c.id)
+      await prisma.ontologyRelationship.create({ data: { sourceId: a.id, targetId: c.id, sourceType: '__HanumanasTest__', targetType: '__HanumanasTest__', relationshipType: 'REPORTS_TO' } })
+      const multiSource = await CardinalityEngine.check('__HanumanasTest__', '__HanumanasTest__', 'REPORTS_TO', b.id, c.id)
       // A → C already exists; trying A → B should fail
       const d = await prisma.ontologyObject.create({ data: { typeId, properties: { name: 'MGR2' } } })
-      const doubleOutgoing = await CardinalityEngine.check('__AegisTest__', '__AegisTest__', 'REPORTS_TO', a.id, d.id)
+      const doubleOutgoing = await CardinalityEngine.check('__HanumanasTest__', '__HanumanasTest__', 'REPORTS_TO', a.id, d.id)
       await prisma.ontologyObject.deleteMany({ where: { id: { in: [a.id, b.id, c.id, d.id] } } }).catch(() => {})
       return {
         passed: multiSource.valid && !doubleOutgoing.valid,
@@ -217,7 +217,7 @@ export async function runComplianceTests(): Promise<ComplianceSuiteResult> {
     // 9 — Policy DENY: action matching DENY policy is blocked
     run('T09', 'Policy gate — DENY effect blocks execution', 'policy', async () => {
       const p = await prisma.kimmpPolicy.create({
-        data: { name: '__AegisTest_Deny__', trigger: 'DELETE_RECORD', effect: 'DENY', condition: { field: '*', operator: 'exists', value: null }, priority: 999 },
+        data: { name: '__HanumanasTest_Deny__', trigger: 'DELETE_RECORD', effect: 'DENY', condition: { field: '*', operator: 'exists', value: null }, priority: 999 },
       })
       const result = await checkPolicy({ trigger: 'DELETE_RECORD', params: {}, actorId: 'any' })
       await prisma.kimmpPolicy.delete({ where: { id: p.id } }).catch(() => {})
@@ -236,7 +236,7 @@ export async function runComplianceTests(): Promise<ComplianceSuiteResult> {
       const action = await prisma.ontologyAction.create({
         data: {
           typeId: systemType.id,
-          name: '__AegisTest_ParamCheck__',
+          name: '__HanumanasTest_ParamCheck__',
           displayName: 'Param Check Test',
           parameters: [{ name: 'requiredField', type: 'string', required: true }] as any,
         },
@@ -253,7 +253,7 @@ export async function runComplianceTests(): Promise<ComplianceSuiteResult> {
 
     // 11 — SYSTEM actor bypasses policy but not cardinality
     run('T11', 'SYSTEM actor — bypasses policy, cardinality still enforced', 'cardinality', async () => {
-      await CardinalityEngine.createRule('__AegisTest__', '__AegisTest__', 'OWNS', 'ONE_TO_ONE')
+      await CardinalityEngine.createRule('__HanumanasTest__', '__HanumanasTest__', 'OWNS', 'ONE_TO_ONE')
       const [x, y, z] = await Promise.all([
         prisma.ontologyObject.create({ data: { typeId, properties: { name: 'X' } } }),
         prisma.ontologyObject.create({ data: { typeId, properties: { name: 'Y' } } }),
@@ -262,13 +262,13 @@ export async function runComplianceTests(): Promise<ComplianceSuiteResult> {
       // SYSTEM creates first edge — should succeed (no policy check for SYSTEM)
       const first = await OntologyGateway.createRelationship(SYSTEM_ACTOR, {
         sourceId: x.id, targetId: y.id,
-        sourceType: '__AegisTest__', targetType: '__AegisTest__',
+        sourceType: '__HanumanasTest__', targetType: '__HanumanasTest__',
         relationshipType: 'OWNS',
       })
       // SYSTEM tries second edge from X — cardinality must still block it
       const second = await OntologyGateway.createRelationship(SYSTEM_ACTOR, {
         sourceId: x.id, targetId: z.id,
-        sourceType: '__AegisTest__', targetType: '__AegisTest__',
+        sourceType: '__HanumanasTest__', targetType: '__HanumanasTest__',
         relationshipType: 'OWNS',
       })
       await prisma.ontologyObject.deleteMany({ where: { id: { in: [x.id, y.id, z.id] } } }).catch(() => {})

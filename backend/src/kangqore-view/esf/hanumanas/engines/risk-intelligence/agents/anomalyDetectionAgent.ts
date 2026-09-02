@@ -1,12 +1,12 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess risk levels and threat intelligence. Write 2 sentences: current risk posture and urgency of ADMIN escalation.'
 
 const EVENT_TYPES = ['ACTIVATION', 'AUTONOMOUS', 'POLICY_VIOLATION', 'ACCESS_DENIED', 'EGRESS'] as const
 
-export async function runAnomalyDetectionAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runAnomalyDetectionAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const now    = Date.now()
   const last1h = new Date(now - 3_600_000)

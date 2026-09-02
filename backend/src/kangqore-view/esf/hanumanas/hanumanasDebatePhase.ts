@@ -19,24 +19,24 @@
 
 import Anthropic                    from '@anthropic-ai/sdk'
 import { withKrisnam } from '../../../kangqore-immp/llm/krisnamAnthropic'
-import type { AegisAgentResult }    from './agents/types'
-import type { AegisAction }         from './hanumanasActionProposer'
+import type { HanumanasAgentResult }    from './agents/types'
+import type { HanumanasAction }         from './hanumanasActionProposer'
 import { SignalLedger }             from '../../../kangqore-immp/signals/signalLedger.service'
 import { prisma }                   from '../../../lib/prisma'
 
 const anthropic    = withKrisnam(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }))
 const TIMEOUT_MS   = 25_000
 
-export interface AegisDebateResult {
+export interface HanumanasDebateResult {
   scepticCase:      string
   threatCase:       string
   arbitration:      string
   unifiedVerdict:   'ESCALATE' | 'MONITOR' | 'DEFER'
-  recommendedAction: AegisAction | null
+  recommendedAction: HanumanasAction | null
   debateRan:        boolean
 }
 
-const NULL_RESULT: AegisDebateResult = {
+const NULL_RESULT: HanumanasDebateResult = {
   scepticCase:      '',
   threatCase:       '',
   arbitration:      '',
@@ -52,15 +52,15 @@ function callWithTimeout<T>(promise: Promise<T>, ms: number, fallback: T): Promi
   ])
 }
 
-function buildContext(criticalResults: AegisAgentResult[]): string {
+function buildContext(criticalResults: HanumanasAgentResult[]): string {
   return criticalResults.map(r =>
     `${r.agentId} [${r.engine}]:\n${r.summary}\nFindings: ${r.findings.join('; ')}`
   ).join('\n\n---\n\n')
 }
 
-export async function runAegisDebatePhase(
-  criticalResults: AegisAgentResult[],
-): Promise<AegisDebateResult> {
+export async function runHanumanasDebatePhase(
+  criticalResults: HanumanasAgentResult[],
+): Promise<HanumanasDebateResult> {
   if (!process.env.ANTHROPIC_API_KEY || criticalResults.length < 3) return NULL_RESULT
 
   const engines = new Set(criticalResults.map(r => r.engine))
@@ -134,8 +134,8 @@ DEFER    = likely noise — log only, no action required.`,
       : null
 
     let arbitration      = ''
-    let unifiedVerdict: AegisDebateResult['unifiedVerdict'] = 'MONITOR'
-    let recommendedAction: AegisAction | null = null
+    let unifiedVerdict: HanumanasDebateResult['unifiedVerdict'] = 'MONITOR'
+    let recommendedAction: HanumanasAction | null = null
 
     if (arbiterText) {
       try {
@@ -143,12 +143,12 @@ DEFER    = likely noise — log only, no action required.`,
         arbitration        = parsed.arbitration ?? ''
         const rawVerdict   = parsed.unifiedVerdict
         if (['ESCALATE', 'MONITOR', 'DEFER'].includes(rawVerdict)) {
-          unifiedVerdict = rawVerdict as AegisDebateResult['unifiedVerdict']
+          unifiedVerdict = rawVerdict as HanumanasDebateResult['unifiedVerdict']
         }
         if (parsed.recommendedActionType && parsed.recommendedActionType !== 'null') {
           recommendedAction = {
             type:        parsed.recommendedActionType,
-            level:       Number(parsed.recommendedLevel ?? 1) as AegisAction['level'],
+            level:       Number(parsed.recommendedLevel ?? 1) as HanumanasAction['level'],
             params:      { source: 'aegis.debate', agentCount: criticalResults.length, engines: [...engines] },
             description: `AEGIS debate verdict: ${unifiedVerdict} — ${arbitration.slice(0, 100)}`,
           }

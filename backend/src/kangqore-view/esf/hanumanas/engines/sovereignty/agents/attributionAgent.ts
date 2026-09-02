@@ -1,10 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Assess intelligence sovereignty — ownership, custody, attribution, and approval chains for all knowledge assets. Flag any unapproved actors or breaches. Write 2 sentences.'
 
-export async function runAttributionAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runAttributionAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
 
   const [total, missSystem, missAssetType, missActor, missSource] = await Promise.all([
@@ -33,7 +33,7 @@ export async function runAttributionAgent(ctx: AgentContext): Promise<AegisAgent
       `Missing assetSource: ${missSource}`,
     ],
     actions:   totalGaps > 0
-      ? ['Review AegisLedger.logKnowledgeAsset() call sites — ensure all fields are populated']
+      ? ['Review HanumanasLedger.logKnowledgeAsset() call sites — ensure all fields are populated']
       : [],
     metadata:  { total, missSystem, missAssetType, missActor, missSource, totalGaps, coverage },
     durationMs: Date.now() - start,

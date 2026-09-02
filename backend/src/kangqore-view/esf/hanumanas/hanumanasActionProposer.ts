@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------------------
-// AEGIS Action Proposer — maps agent result → AegisAction[].
+// AEGIS Action Proposer — maps agent result → HanumanasAction[].
 //
 // Phase 3 upgrade: LLM first, hardcoded map as fallback.
-//   - LLM receives full AegisAgentResult + available tool descriptions
+//   - LLM receives full HanumanasAgentResult + available tool descriptions
 //   - LLM returns JSON: [{ type, level, params, description }]
 //   - If ANTHROPIC_API_KEY absent, LLM parse fails, or action types invalid →
 //     falls back to ACTION_MAP (guarantees Phase 2 behavior is preserved)
@@ -12,9 +12,9 @@
 import { callLLM }                       from './agents/llm'
 import { getAgentTrajectory }            from './hanumanasMemory'
 import { WaandaTrainingPipeline }        from '../../waanda/training/trainingPipeline.service'
-import type { AegisAgentResult }         from './agents/types'
+import type { HanumanasAgentResult }         from './agents/types'
 
-export type AegisActionType =
+export type HanumanasActionType =
   // L0 — auto-execute, silent
   | 'EMIT_SOCKET'
   | 'EMIT_SIGNAL'
@@ -35,8 +35,8 @@ export type AegisActionType =
   | 'BLOCK_ACTOR'
   | 'QUARANTINE_ASSET'
 
-export interface AegisAction {
-  type:        AegisActionType
+export interface HanumanasAction {
+  type:        HanumanasActionType
   level:       0 | 1 | 2 | 3
   params:      Record<string, unknown>
   description: string
@@ -44,7 +44,7 @@ export interface AegisAction {
 
 // ── Action type registry — what the LLM can choose from ────────────────────
 
-const TOOL_DESCRIPTIONS: Record<AegisActionType, { level: 0|1|2|3; description: string }> = {
+const TOOL_DESCRIPTIONS: Record<HanumanasActionType, { level: 0|1|2|3; description: string }> = {
   EMIT_SOCKET:          { level: 0, description: 'Broadcast a real-time event to the admin dashboard. Silent — no notification created.' },
   EMIT_SIGNAL:          { level: 0, description: 'Emit a governance signal to KIMMP for situational awareness. Silent.' },
   LOG_AUDIT_ENTRY:      { level: 0, description: 'Write a structured audit log entry. Silent.' },
@@ -67,7 +67,7 @@ const VALID_LEVELS = new Set<number>([0, 1, 2, 3])
 
 // ── Hardcoded fallback map (Phase 2 behavior, preserved exactly) ────────────
 
-const ACTION_MAP: Record<string, AegisAction[]> = {
+const ACTION_MAP: Record<string, HanumanasAction[]> = {
 
   // ── ACCESS_SENTINEL ────────────────────────────────────────────────────────
 
@@ -163,7 +163,7 @@ const ACTION_MAP: Record<string, AegisAction[]> = {
 }
 
 // Consecutive-WARN escalation: any agent with 3+ consecutive WARNs
-const CONSECUTIVE_WARN_ACTION: AegisAction = {
+const CONSECUTIVE_WARN_ACTION: HanumanasAction = {
   type:        'CREATE_NOTIFICATION',
   level:       1,
   params:      { priority: 'HIGH' },
@@ -192,7 +192,7 @@ Return ONLY a JSON array — no prose, no markdown fences, no explanation:
 
 // ── Validation ─────────────────────────────────────────────────────────────
 
-function validateActions(raw: unknown): AegisAction[] | null {
+function validateActions(raw: unknown): HanumanasAction[] | null {
   if (!Array.isArray(raw) || raw.length === 0 || raw.length > 5) return null
   for (const item of raw) {
     if (typeof item !== 'object' || item === null) return null
@@ -201,12 +201,12 @@ function validateActions(raw: unknown): AegisAction[] | null {
     if (typeof item.description !== 'string' || !item.description) return null
     if (typeof item.params !== 'object' || item.params === null) return null
   }
-  return raw as AegisAction[]
+  return raw as HanumanasAction[]
 }
 
 // ── LLM decision call ───────────────────────────────────────────────────────
 
-async function proposeLLM(result: AegisAgentResult): Promise<AegisAction[] | null> {
+async function proposeLLM(result: HanumanasAgentResult): Promise<HanumanasAction[] | null> {
   // Sprint 5 — inject agent's recent verdict trajectory so LLM can distinguish
   // "first-ever CRITICAL" from "CRITICAL for the fifth hour in a row"
   const trajectory = await getAgentTrajectory(result.agentId)
@@ -249,13 +249,13 @@ async function proposeLLM(result: AegisAgentResult): Promise<AegisAction[] | nul
 
 // ── Public API ──────────────────────────────────────────────────────────────
 
-export class AegisActionProposer {
+export class HanumanasActionProposer {
   /**
    * Propose governance actions for a completed agent run.
    * Tries LLM first (covers all 80 agents); falls back to ACTION_MAP
    * (covers 20 explicitly mapped agents). Returns [] if neither applies.
    */
-  static async propose(result: AegisAgentResult): Promise<AegisAction[]> {
+  static async propose(result: HanumanasAgentResult): Promise<HanumanasAction[]> {
     // LLM path — fires for every agent when credits are available
     const llmActions = await proposeLLM(result)
     if (llmActions !== null) return llmActions
@@ -265,7 +265,7 @@ export class AegisActionProposer {
     return ACTION_MAP[key] ?? []
   }
 
-  static consecutiveWarnAction(): AegisAction {
+  static consecutiveWarnAction(): HanumanasAction {
     return CONSECUTIVE_WARN_ACTION
   }
 }

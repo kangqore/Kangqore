@@ -1,24 +1,24 @@
-import { AegisAgentDef } from './types'
+import { HanumanasAgentDef } from './types'
 
-const registry = new Map<string, AegisAgentDef>()
+const registry = new Map<string, HanumanasAgentDef>()
 
-export function registerAgent(def: AegisAgentDef): void {
+export function registerAgent(def: HanumanasAgentDef): void {
   registry.set(def.id, def)
 }
 
-export function getAgent(id: string): AegisAgentDef | undefined {
+export function getAgent(id: string): HanumanasAgentDef | undefined {
   return registry.get(id)
 }
 
-export function agentsForTrigger(trigger: string): AegisAgentDef[] {
+export function agentsForTrigger(trigger: string): HanumanasAgentDef[] {
   return [...registry.values()].filter(a => a.triggers.includes(trigger as any))
 }
 
-export function agentsForEngine(engine: string): AegisAgentDef[] {
+export function agentsForEngine(engine: string): HanumanasAgentDef[] {
   return [...registry.values()].filter(a => a.engine === engine)
 }
 
-export function allAgents(): AegisAgentDef[] {
+export function allAgents(): HanumanasAgentDef[] {
   return [...registry.values()]
 }
 

@@ -8,7 +8,7 @@
 // ─── Boot Sequence ───────────────────────────────────────────────────────────
 //   0.  Authority Layer      — WaandaAuthority init (supreme authority registry)
 //   1.  Memory Layer         — PostgresMemoryProvider warm-up
-//   2.  AEGIS Governance     — 80 agents + event cascade → AegisAdapter registered
+//   2.  AEGIS Governance     — 80 agents + event cascade → HanumanasAdapter registered
 //   3.  KORE Runtime         — twin runtime + language registries → KoreAdapter registered
 //   4.  KEOS Runtime         — mission kernel + capability registry warm-up → KeosAdapter registered
 //   5.  Enterprise Domains   — self-registration via domains/index.ts
@@ -33,7 +33,7 @@ import { CapabilityRegistry } from '../kernel/CapabilityRegistry'
 import { WaandaAuthority }  from './WaandaAuthority'
 
 // AEGIS — governance shield
-import { AegisScheduler, AegisEventEmitter } from '../esf/hanumanas'
+import { HanumanasScheduler, HanumanasEventEmitter } from '../esf/hanumanas'
 
 // Cognitive Library — scheduler agents (kangqore-immp = 117 cognitive components)
 import { ScoutScheduler }        from '../../kangqore-immp/scout/scoutScheduler'
@@ -92,7 +92,7 @@ export const WAANDA = {
 
     // Infrastructure layer
     await this._run('Phase 1  · Memory Layer',       () => this._bootMemory())
-    await this._run('Phase 2  · AEGIS Governance',   () => this._bootAegis())
+    await this._run('Phase 2  · AEGIS Governance',   () => this._bootHanumanas())
     await this._run('Phase 3  · KORE Runtime',       () => this._bootKore())
     await this._run('Phase 4  · KEOS Runtime',       () => this._bootKeos())
 
@@ -186,16 +186,16 @@ export const WAANDA = {
     CognitiveMemoryManager.getProvider()
   },
 
-  async _bootAegis(): Promise<void> {
-    AegisScheduler.start()
-    await AegisEventEmitter.init()
+  async _bootHanumanas(): Promise<void> {
+    HanumanasScheduler.start()
+    await HanumanasEventEmitter.init()
     this.reportSubsystem('aegis', {
       status:  'OPERATIONAL',
       details: { agents: 80, engines: 10, schedulerStarted: true },
     })
     // Register AEGIS under WAANDA authority
-    const { AegisAdapter } = await import('./adapters/AegisAdapter')
-    WaandaAuthority.register(AegisAdapter)
+    const { HanumanasAdapter } = await import('./adapters/HanumanasAdapter')
+    WaandaAuthority.register(HanumanasAdapter)
   },
 
   async _bootKore(): Promise<void> {

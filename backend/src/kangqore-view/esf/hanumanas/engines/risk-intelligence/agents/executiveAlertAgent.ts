@@ -1,10 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS. Write a concise executive risk brief for the ADMIN. Be direct and action-oriented.'
 
-export async function runExecutiveAlertAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runExecutiveAlertAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last6h = new Date(Date.now() - 6 * 3_600_000)
 

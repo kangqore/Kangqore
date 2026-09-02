@@ -7,7 +7,7 @@ import {
   TwinTransaction,
   KoreQuery
 } from './types';
-import { AegisShield } from '../esf/hanumanas/HanumanasShield';
+import { HanumanasShield } from '../esf/hanumanas/HanumanasShield';
 import { MissionRequest } from '../kernel/KeosKernel';
 
 class IdentityEngine {
@@ -99,26 +99,26 @@ class TransactionEngine {
         requester:   proposal.proposedBy,
       };
 
-      const aegisResult = await AegisShield.evaluatePolicy(mission);
+      const hanumanasResult = await HanumanasShield.evaluatePolicy(mission);
 
-      if (aegisResult.action === 'DENY') {
-        console.error(`[KORE Transaction] Rolled back: AEGIS denied ${proposal.twinId} — ${aegisResult.reason}`);
+      if (hanumanasResult.action === 'DENY') {
+        console.error(`[KORE Transaction] Rolled back: AEGIS denied ${proposal.twinId} — ${hanumanasResult.reason}`);
         transaction.status = 'ROLLED_BACK';
-        void AegisShield.writeToLedger(missionId, proposal.proposedBy, 'KORE_MUTATION_DENIED', 'BLOCKED', {
-          riskScore:        aegisResult.riskScore,
-          policyEvaluated:  aegisResult.policiesEvaluated,
-          executionDetails: { twinId: proposal.twinId, reason: aegisResult.reason },
+        void HanumanasShield.writeToLedger(missionId, proposal.proposedBy, 'KORE_MUTATION_DENIED', 'BLOCKED', {
+          riskScore:        hanumanasResult.riskScore,
+          policyEvaluated:  hanumanasResult.policiesEvaluated,
+          executionDetails: { twinId: proposal.twinId, reason: hanumanasResult.reason },
         });
         return false;
       }
 
-      if (aegisResult.action === 'REQUIRE_APPROVAL') {
-        console.warn(`[KORE Transaction] Held for approval: ${proposal.twinId} — ${aegisResult.reason}`);
+      if (hanumanasResult.action === 'REQUIRE_APPROVAL') {
+        console.warn(`[KORE Transaction] Held for approval: ${proposal.twinId} — ${hanumanasResult.reason}`);
         transaction.status = 'PENDING';
-        void AegisShield.writeToLedger(missionId, proposal.proposedBy, 'KORE_MUTATION_PENDING_APPROVAL', 'PENDING', {
-          riskScore:        aegisResult.riskScore,
-          policyEvaluated:  aegisResult.policiesEvaluated,
-          executionDetails: { twinId: proposal.twinId, reason: aegisResult.reason },
+        void HanumanasShield.writeToLedger(missionId, proposal.proposedBy, 'KORE_MUTATION_PENDING_APPROVAL', 'PENDING', {
+          riskScore:        hanumanasResult.riskScore,
+          policyEvaluated:  hanumanasResult.policiesEvaluated,
+          executionDetails: { twinId: proposal.twinId, reason: hanumanasResult.reason },
         });
         return false;
       }
@@ -132,7 +132,7 @@ class TransactionEngine {
       const newTwin = CommitEngine.apply(currentTwin, proposal);
       TwinRegistry.register(newTwin);
 
-      void AegisShield.writeToLedger(
+      void HanumanasShield.writeToLedger(
         `KORE_TX_${transaction.transactionId}_${proposal.twinId}`,
         proposal.proposedBy,
         'KORE_MUTATION_COMMITTED',

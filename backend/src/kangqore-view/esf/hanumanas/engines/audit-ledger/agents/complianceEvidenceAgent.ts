@@ -1,11 +1,11 @@
 import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const EVENT_TYPES = ['ACTIVATION', 'AUTONOMOUS', 'ACCESS_DENIED', 'KNOWLEDGE_ASSET', 'EGRESS', 'POLICY_VIOLATION'] as const
 const SYSTEM = 'You are AEGIS. Write concise compliance evidence summaries — what is covered and what gaps exist.'
 
-export async function runComplianceEvidenceAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runComplianceEvidenceAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start  = Date.now()
   const last7d = new Date(Date.now() - 7 * 86_400_000)
 

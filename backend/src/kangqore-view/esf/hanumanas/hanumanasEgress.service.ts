@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------
 
 import { Request, Response, NextFunction } from 'express'
-import { AegisLedger } from './hanumanasLedger.service'
+import { HanumanasLedger } from './hanumanasLedger.service'
 
 // Routes that constitute intelligence egress (KIMMP intelligence leaving the system)
 const EGRESS_PATTERNS: RegExp[] = [
@@ -40,7 +40,7 @@ const EGRESS_LIMIT_BYTES = Number(process.env.AEGIS_EGRESS_LIMIT_KB ?? 512) * 10
 
 // Express middleware — intercepts KIMMP intelligence responses and logs egress
 // Phase 3 upgrade: hard-deny if payload exceeds AEGIS_EGRESS_LIMIT_KB.
-export function aegisEgressMonitor(req: Request, res: Response, next: NextFunction): void {
+export function hanumanasEgressMonitor(req: Request, res: Response, next: NextFunction): void {
   const isEgress = EGRESS_PATTERNS.some(p => p.test(req.path))
   if (!isEgress) { next(); return }
 
@@ -53,7 +53,7 @@ export function aegisEgressMonitor(req: Request, res: Response, next: NextFuncti
 
     // Phase 3 hard-deny: block oversized responses
     if (payloadSize > EGRESS_LIMIT_BYTES) {
-      AegisLedger.logEgress({
+      HanumanasLedger.logEgress({
         endpoint:       req.path,
         method:         req.method,
         userId:         user?.userId,
@@ -73,7 +73,7 @@ export function aegisEgressMonitor(req: Request, res: Response, next: NextFuncti
       })
     }
 
-    AegisLedger.logEgress({
+    HanumanasLedger.logEgress({
       endpoint:        req.path,
       method:          req.method,
       userId:          user?.userId,

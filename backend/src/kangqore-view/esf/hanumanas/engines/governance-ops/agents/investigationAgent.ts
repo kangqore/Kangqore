@@ -1,10 +1,10 @@
 import { prisma }   from '../../../../../../lib/prisma'
 import { callLLM }  from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS. Write concise governance investigation reports — what happened, what it means, what the ADMIN must do.'
 
-export async function runInvestigationAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runInvestigationAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start = Date.now()
 
   const [recentEvents, activeWarnings] = await Promise.all([
@@ -38,7 +38,7 @@ export async function runInvestigationAgent(ctx: AgentContext): Promise<AegisAge
     400,
   )
 
-  const result: AegisAgentResult = {
+  const result: HanumanasAgentResult = {
     agentId:   'govops.investigation',
     engine:    'GOVERNANCE_OPS',
     verdict:   'CRITICAL',

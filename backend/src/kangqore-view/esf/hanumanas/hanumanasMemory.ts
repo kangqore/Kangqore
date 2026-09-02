@@ -82,7 +82,7 @@ export async function getAgentTrajectory(agentId: string): Promise<string> {
 /**
  * Records a (verdict, action, recheck-outcome) tuple for the learning loop.
  * Called by the Sprint 3 re-evaluate logic after the 60s recheck completes.
- * Stored in AegisActionLog with actionType = 'OUTCOME_RECORD'.
+ * Stored in HanumanasActionLog with actionType = 'OUTCOME_RECORD'.
  */
 export async function recordOutcome(tuple: AgentOutcomeTuple): Promise<void> {
   await (prisma as any).aegisActionLog.create({

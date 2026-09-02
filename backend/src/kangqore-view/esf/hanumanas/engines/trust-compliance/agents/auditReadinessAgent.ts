@@ -1,12 +1,12 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS. Assess this AI governance system\'s readiness for an external audit and produce a concise readiness brief.'
 
 const EVENT_TYPES = ['ACTIVATION','AUTONOMOUS','POLICY_VIOLATION','ACCESS_DENIED','KNOWLEDGE_ASSET','EGRESS'] as const
 
-export async function runAuditReadinessAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runAuditReadinessAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
   const last30d = new Date(Date.now() - 30 * 86_400_000)
 

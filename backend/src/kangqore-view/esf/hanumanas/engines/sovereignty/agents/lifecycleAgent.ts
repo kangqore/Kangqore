@@ -1,11 +1,11 @@
-import { AegisSovereignty } from '../../../hanumanasSovereignty.service'
+import { HanumanasSovereignty } from '../../../hanumanasSovereignty.service'
 import { callLLM }           from '../../../agents/llm'
 import { prisma }            from '../../../../../../lib/prisma'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS. Analyse intelligence asset lifecycle states — retention, expiry, and sovereignty health.'
 
-export async function runLifecycleAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runLifecycleAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start    = Date.now()
   const now      = new Date()
   const day90    = new Date(now.getTime() - 90  * 86_400_000)
@@ -20,7 +20,7 @@ export async function runLifecycleAgent(ctx: AgentContext): Promise<AegisAgentRe
     (prisma as any).aegisAuditLog.count({ where: { eventType: 'KNOWLEDGE_ASSET', createdAt: { lte: day365 } } }).catch(() => 0),
   ])
 
-  const summary = await AegisSovereignty.ownershipSummary()
+  const summary = await HanumanasSovereignty.ownershipSummary()
   const restricted = summary.restrictedAssets ?? 0
 
   const stale    = age365 // assets > 1 year — approaching RESTRICTED 730d limit for some types

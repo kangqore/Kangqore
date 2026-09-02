@@ -1,10 +1,10 @@
 import { prisma }          from '../../../../../../lib/prisma'
 import { callLLM }         from '../../../agents/llm'
-import { AegisAgentResult, AgentContext } from '../../../agents/types'
+import { HanumanasAgentResult, AgentContext } from '../../../agents/types'
 
 const SYSTEM = 'You are AEGIS, Kangqore\'s governance AI. Audit AI decision records, cost tracking, and execution ledger. Write 2 sentences — direct status for ADMIN.'
 
-export async function runOutcomeRecorderAgent(ctx: AgentContext): Promise<AegisAgentResult> {
+export async function runOutcomeRecorderAgent(ctx: AgentContext): Promise<HanumanasAgentResult> {
   const start   = Date.now()
   const last24h = new Date(Date.now() - 86_400_000)
 
@@ -33,7 +33,7 @@ export async function runOutcomeRecorderAgent(ctx: AgentContext): Promise<AegisA
       `Outcome completeness: ${outcomeRate}%`,
     ],
     actions:   outcomeRate < 70
-      ? ['Review AegisLedger.logActivation() call — pass priority, confidence, dispatchId on every dispatch']
+      ? ['Review HanumanasLedger.logActivation() call — pass priority, confidence, dispatchId on every dispatch']
       : [],
     metadata:  { total, withPriority, withConfidence, withDispatchId, outcomeRate },
     durationMs: Date.now() - start,

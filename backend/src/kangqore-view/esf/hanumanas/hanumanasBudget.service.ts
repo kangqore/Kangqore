@@ -1,4 +1,4 @@
-// AEGIS Per-Tenant Budget Enforcement — extracted from aegisRoutes.ts (S112) so
+// AEGIS Per-Tenant Budget Enforcement — extracted from hanumanasRoutes.ts (S112) so
 // it can be called as a pre-validation gate from the Action Engine (S298)
 // instead of only being checkable on demand via GET /budget/:tenantId/usage.
 
@@ -14,7 +14,7 @@ export interface TenantBudgetConfig {
 // unchanged from the original S112 implementation.
 const tenantBudgets: Record<string, TenantBudgetConfig> = {}
 
-export const AegisBudget = {
+export const HanumanasBudget = {
   setBudget(tenantId: string, cfg: Partial<TenantBudgetConfig>): TenantBudgetConfig {
     tenantBudgets[tenantId] = {
       callLimit:   cfg.callLimit   ?? 500,
