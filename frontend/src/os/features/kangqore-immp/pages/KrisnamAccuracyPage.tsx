@@ -16,9 +16,9 @@ const RED  = '#ef4444'
 
 interface TenantAccuracy {
   tenantId:             string
-  gen2AccuracyPct:      number | null
-  gen1AccuracyPct:      number | null
-  gen2SampleSize:       number
+  candidateAccuracyPct:      number | null
+  baselineAccuracyPct:      number | null
+  candidateSampleSize:       number
   qualifiesForLiveRouting: boolean
 }
 
@@ -42,28 +42,28 @@ function AccuracyBar({ pct, color, label }: { pct: number | null; color: string;
   )
 }
 
-export function Gen2AccuracyPage() {
+export function KrisnamAccuracyPage() {
   const qc = useQueryClient()
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState({ tenantId: '', provider: 'gen2', isAccurate: true, ratingComment: '' })
+  const [form, setForm] = useState({ tenantId: "", arm: "candidate", isAccurate: true, ratingComment: "" })
 
   const { data, isLoading } = useQuery<AccuracySummary>({
-    queryKey: ['gen2-accuracy'],
-    queryFn:  () => api.get('/admin/kangqore-immp/gen2/accuracy').then(r => r.data),
+    queryKey: ["krisnam-accuracy"],
+    queryFn:  () => api.get('/admin/kangqore-immp/krisnam/accuracy').then(r => r.data),
     staleTime: 30_000,
   })
 
   const submit = useMutation({
-    mutationFn: () => api.post('/admin/kangqore-immp/gen2/accuracy', {
+    mutationFn: () => api.post('/admin/kangqore-immp/krisnam/accuracy', {
       tenantId:      form.tenantId.trim(),
-      provider:      form.provider,
+      arm:           form.arm,
       isAccurate:    form.isAccurate,
       ratingComment: form.ratingComment.trim() || undefined,
     }),
     onSuccess: () => {
       setShowForm(false)
-      setForm({ tenantId: '', provider: 'gen2', isAccurate: true, ratingComment: '' })
-      qc.invalidateQueries({ queryKey: ['gen2-accuracy'] })
+      setForm({ tenantId: "", arm: "candidate", isAccurate: true, ratingComment: "" })
+      qc.invalidateQueries({ queryKey: ["krisnam-accuracy"] })
     },
   })
 
@@ -83,12 +83,12 @@ export function Gen2AccuracyPage() {
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-base font-bold" style={{ color: T1 }}>Gen2 A/B Accuracy Tracker</p>
+                <p className="text-base font-bold" style={{ color: T1 }}>Krisnam A/B Accuracy Tracker</p>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold"
                   style={{ background: 'rgba(87,155,252,0.1)', color: BLUE }}>S117 · PER-TENANT</span>
               </div>
               <p className="text-xs" style={{ color: T2 }}>
-                Track Gen1 vs Gen2 response accuracy per tenant. Tenants with Gen2 accuracy ≥ 80% (10+ samples) qualify for live routing.
+                Track baseline vs candidate response accuracy per tenant. Tenants with candidate accuracy ≥ 80% (10+ samples) qualify for live routing.
               </p>
             </div>
           </div>
@@ -114,11 +114,11 @@ export function Gen2AccuracyPage() {
             </div>
             <div>
               <p className="text-[10px] font-semibold mb-1" style={{ color: T2 }}>Provider</p>
-              <select value={form.provider} onChange={e => setForm(f => ({ ...f, provider: e.target.value }))}
+              <select value={form.arm} onChange={e => setForm(f => ({ ...f, arm: e.target.value }))}
                 className="w-full px-3 py-2 text-xs rounded-2xl border focus:outline-none"
                 style={{ borderColor: BDR, background: SURF, color: T1 }}>
-                <option value="gen1">Gen1 (Claude)</option>
-                <option value="gen2">Gen2 (fine-tuned)</option>
+                <option value="baseline">Baseline (Claude)</option>
+                <option value="candidate">Candidate (Krisnam)</option>
                 <option value="krisnam">Krisnam</option>
               </select>
             </div>
@@ -171,7 +171,7 @@ export function Gen2AccuracyPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {tenants.sort((a, b) => (b.gen2AccuracyPct ?? 0) - (a.gen2AccuracyPct ?? 0)).map(t => (
+          {tenants.sort((a, b) => (b.candidateAccuracyPct ?? 0) - (a.candidateAccuracyPct ?? 0)).map(t => (
             <div key={t.tenantId} className="rounded-2xl border p-4" style={{ background: CARD, borderColor: BDR }}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="flex-1 min-w-0">
@@ -184,21 +184,21 @@ export function Gen2AccuracyPage() {
                       </span>
                     )}
                   </div>
-                  <p className="text-[10px] mt-0.5" style={{ color: T2 }}>{t.gen2SampleSize} Gen2 samples</p>
+                  <p className="text-[10px] mt-0.5" style={{ color: T2 }}>{t.candidateSampleSize} candidate samples</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  {t.gen2AccuracyPct != null && t.gen2AccuracyPct >= 80
+                  {t.candidateAccuracyPct != null && t.candidateAccuracyPct >= 80
                     ? <CheckCircle2 className="w-4 h-4" style={{ color: GRN }} />
-                    : <XCircle className="w-4 h-4" style={{ color: t.gen2SampleSize >= 10 ? RED : AMB }} />}
+                    : <XCircle className="w-4 h-4" style={{ color: t.candidateSampleSize >= 10 ? RED : AMB }} />}
                 </div>
               </div>
               <div className="space-y-2">
-                <AccuracyBar pct={t.gen2AccuracyPct} color={BLUE} label="Gen2" />
-                <AccuracyBar pct={t.gen1AccuracyPct} color={PURP} label="Gen1" />
+                <AccuracyBar pct={t.candidateAccuracyPct} color={BLUE} label="Candidate" />
+                <AccuracyBar pct={t.baselineAccuracyPct} color={PURP} label="Baseline" />
               </div>
-              {t.gen2SampleSize < 10 && (
+              {t.candidateSampleSize < 10 && (
                 <p className="text-[9px] mt-2" style={{ color: AMB }}>
-                  Need {10 - t.gen2SampleSize} more Gen2 ratings to qualify for live routing
+                  Need {10 - t.candidateSampleSize} more candidate ratings to qualify for live routing
                 </p>
               )}
             </div>

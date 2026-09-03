@@ -67,7 +67,7 @@ const JOB_STATUS_CFG: Record<string, { color: string; bg: string }> = {
 
 type Tab = 'annotate' | 'jobs' | 'export' | 'health' | 'autonomy' | 'diff'
 
-export function WaandaGen2Page() {
+export function KrisnamModelPage() {
   const [tab, setTab] = useState<Tab>('annotate')
   const qc = useQueryClient()
 
@@ -83,12 +83,12 @@ export function WaandaGen2Page() {
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <p className="text-base font-bold" style={{ color: T1 }}>WAANDA Gen 2 Preparation</p>
+              <p className="text-base font-bold" style={{ color: T1 }}>Krisnam 0.1.1 Preparation</p>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold"
                 style={{ background: 'rgba(124,58,237,0.1)', color: PURP }}>GEN 1 → GEN 2</span>
             </div>
             <p className="text-xs" style={{ color: T2 }}>
-              Every KIMMP decision, signal, and action is automatically stored as a training example. Rate outputs here to build the high-quality corpus that will fine-tune WAANDA Gen 2. Target: 1,000 approved examples.
+              Every KIMMP decision, signal, and action is automatically stored as a training example. Rate outputs here to build the high-quality corpus that will fine-tune Krisnam 0.1.1. Target: 1,000 approved examples.
             </p>
           </div>
         </div>
@@ -96,7 +96,7 @@ export function WaandaGen2Page() {
 
       {/* Tab bar */}
       <div className="flex gap-1 p-1 rounded-2xl border" style={{ background: SURF, borderColor: BDR, width: 'fit-content' }}>
-        {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL'], ['health', 'Gen 2 Health'], ['autonomy', 'Autonomy'], ['diff', 'Quality Diff']] as const).map(([id, label]) => (
+        {([['annotate', 'Annotate'], ['jobs', 'Fine-tune Jobs'], ['export', 'Export JSONL'], ['health', 'Krisnam Health'], ['autonomy', 'Autonomy'], ['diff', 'Quality Diff']] as const).map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)}
             className="px-4 py-1.5 rounded-2xl text-xs font-bold transition-colors"
             style={tab === id ? { background: PURP, color: '#fff' } : { color: T2 }}>
@@ -108,7 +108,7 @@ export function WaandaGen2Page() {
       {tab === 'annotate' && <AnnotateTab qc={qc} />}
       {tab === 'jobs'     && <JobsTab qc={qc} />}
       {tab === 'export'   && <ExportTab />}
-      {tab === 'health'   && <Gen2HealthTab qc={qc} />}
+      {tab === 'health'   && <KrisnamHealthTab qc={qc} />}
       {tab === 'autonomy' && <AutonomyTab qc={qc} />}
       {tab === 'diff'     && <QualityDiffTab />}
     </div>
@@ -174,7 +174,7 @@ function AnnotateTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
       {stats && (
         <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
           <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-bold" style={{ color: T1 }}>Progress to Gen 2 graduation</p>
+            <p className="text-xs font-bold" style={{ color: T1 }}>Progress to Krisnam graduation</p>
             <p className="text-xs font-bold" style={{ color: PURP }}>{stats.q10} / 1,000 approved</p>
           </div>
           <div className="h-2 rounded-full overflow-hidden" style={{ background: SURF }}>
@@ -436,7 +436,7 @@ function JobsTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
                   {isAutoRegistered && (
                     <span className="px-1.5 py-0.5 rounded text-[10px] font-bold"
                       style={{ background: 'rgba(16,185,129,0.12)', color: GRN }}>
-                      Auto-registered as active Gen2 model
+                      Auto-registered as active Krisnam model
                     </span>
                   )}
                 </div>
@@ -567,9 +567,9 @@ function ExportTab() {
   )
 }
 
-// ── Gen 2 Health tab ─────────────────────────────────────────────────────────
+// ── Krisnam Health tab ─────────────────────────────────────────────────────────
 
-function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
+function KrisnamHealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   const { data: statsData, isLoading: statsLoading, refetch: refetchStats } = useQuery<any>({
     queryKey: ['router-stats'],
     queryFn:  () => api.get('/admin/kangqore-immp/learning/router-stats').then(r => r.data),
@@ -577,13 +577,13 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   })
 
   const { data: modelsData, isLoading: modelsLoading, refetch: refetchModels } = useQuery<any>({
-    queryKey: ['gen2-models'],
-    queryFn:  () => api.get('/admin/kangqore-immp/learning/gen2-models').then(r => r.data),
+    queryKey: ["krisnam-models"],
+    queryFn:  () => api.get('/admin/kangqore-immp/learning/krisnam-models').then(r => r.data),
     staleTime: 15_000,
   })
 
   const { data: cbData, refetch: refetchCb } = useQuery<any>({
-    queryKey: ['gen2-circuit-breaker'],
+    queryKey: ["krisnam-circuit-breaker"],
     queryFn:  () => api.get('/admin/kangqore-immp/learning/circuit-breaker').then(r => r.data),
     refetchInterval: 30_000,
   })
@@ -596,9 +596,9 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 
   const deployMut = useMutation({
     mutationFn: ({ id, deploy }: { id: string; deploy: boolean }) =>
-      api.patch(`/admin/kangqore-immp/learning/gen2-models/${id}/deploy`, { deploy }),
+      api.patch(`/admin/kangqore-immp/learning/krisnam-models/${id}/deploy`, { deploy }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['gen2-models'] })
+      qc.invalidateQueries({ queryKey: ["krisnam-models"] })
       qc.invalidateQueries({ queryKey: ['router-stats'] })
     },
   })
@@ -622,8 +622,8 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   const approved = corpusStats?.approved ?? 0
   const threshold = corpusStats?.graduationThreshold ?? 1000
   const readyToGraduate = approved >= threshold
-  const gen2CB = cbData?.gen2
-  const gen2CBHealth = gen2CB?.health ?? 'offline'
+  const krisnamCanaryCB = cbData?.krisnamCanary
+  const krisnamCanaryCBHealth = krisnamCanaryCB?.health ?? 'offline'
 
   const routerStats = statsData
   const models: any[] = modelsData?.models ?? []
@@ -645,7 +645,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
       <div className="rounded-2xl p-4 border grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ background: CARD, borderColor: BDR }}>
         {/* Graduate button */}
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Gen2 Graduation</p>
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Krisnam Canary Graduation</p>
           <p className="text-[11px] mb-3" style={{ color: T2 }}>
             {approved}/{threshold} approved examples
             {readyToGraduate ? ' — ready to graduate' : ` — ${threshold - approved} remaining`}
@@ -655,13 +655,13 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
             disabled={!readyToGraduate || graduateMut.isPending}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all"
             style={{ background: readyToGraduate ? 'rgba(16,185,129,0.15)' : 'rgba(100,100,100,0.1)', color: readyToGraduate ? GRN : T2, cursor: readyToGraduate ? 'pointer' : 'not-allowed' }}
-            title={readyToGraduate ? 'Set Gen2 to 25% traffic' : `Need ${threshold} approved examples`}
+            title={readyToGraduate ? 'Set Krisnam canary to 25% traffic' : `Need ${threshold} approved examples`}
           >
             <Rocket className="w-3 h-3" />
             {graduateMut.isPending ? 'Graduating…' : 'Graduate → 25% Traffic'}
           </button>
           {graduateMut.isSuccess && (
-            <p className="text-[11px] mt-1" style={{ color: GRN }}>Graduated — Gen2 now at 25% traffic</p>
+            <p className="text-[11px] mt-1" style={{ color: GRN }}>Graduated — Krisnam canary now at 25% traffic</p>
           )}
           {graduateMut.isError && (
             <p className="text-[11px] mt-1" style={{ color: RED }}>{(graduateMut.error as any)?.response?.data?.error ?? 'Graduation failed'}</p>
@@ -670,18 +670,18 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 
         {/* Circuit breaker status */}
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Gen2 Circuit Breaker</p>
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: T2 }}>Krisnam Canary Circuit Breaker</p>
           <div className="flex items-center gap-2 mb-3">
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: gen2CBHealth === 'healthy' ? GRN : gen2CBHealth === 'degraded' ? AMB : RED }} />
-            <span className="text-xs font-bold capitalize" style={{ color: gen2CBHealth === 'healthy' ? GRN : gen2CBHealth === 'degraded' ? AMB : RED }}>
-              {gen2CBHealth}
+            <span className="w-2.5 h-2.5 rounded-full" style={{ background: krisnamCanaryCBHealth === 'healthy' ? GRN : krisnamCanaryCBHealth === 'degraded' ? AMB : RED }} />
+            <span className="text-xs font-bold capitalize" style={{ color: krisnamCanaryCBHealth === 'healthy' ? GRN : krisnamCanaryCBHealth === 'degraded' ? AMB : RED }}>
+              {krisnamCanaryCBHealth}
             </span>
-            {gen2CB?.failures > 0 && (
-              <span className="text-[11px]" style={{ color: AMB }}>{gen2CB.failures} failure{gen2CB.failures !== 1 ? 's' : ''}</span>
+            {krisnamCanaryCB?.failures > 0 && (
+              <span className="text-[11px]" style={{ color: AMB }}>{krisnamCanaryCB.failures} failure{krisnamCanaryCB.failures !== 1 ? 's' : ''}</span>
             )}
           </div>
           <button
-            onClick={() => { if (confirm('Trip circuit and revert all Gen2 traffic to 0%?')) circuitTripMut.mutate('>5% error rate — manual trip') }}
+            onClick={() => { if (confirm('Trip circuit and revert all Krisnam canary traffic to 0%?')) circuitTripMut.mutate('>5% error rate — manual trip') }}
             disabled={circuitTripMut.isPending}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all"
             style={{ background: 'rgba(239,68,68,0.1)', color: RED }}
@@ -690,7 +690,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
             {circuitTripMut.isPending ? 'Tripping…' : 'Emergency Revert → 0%'}
           </button>
           {circuitTripMut.isSuccess && (
-            <p className="text-[11px] mt-1" style={{ color: AMB }}>Circuit tripped — Gen2 at 0%</p>
+            <p className="text-[11px] mt-1" style={{ color: AMB }}>Circuit tripped — Krisnam canary at 0%</p>
           )}
         </div>
       </div>
@@ -754,7 +754,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           <p className="text-xs font-bold mb-1" style={{ color: T1 }}>Live Router Stats</p>
           <p className="text-[11px]" style={{ color: T2 }}>
             {routerStats
-              ? `${routerStats.callsTotal} total calls · Krisnam ${routerStats.callsKrisnam ?? 0} · Gen2 ${routerStats.callsGen2 ?? 0} (${((routerStats.gen2Ratio ?? 0) * 100).toFixed(1)}%) · Autonomy ${((routerStats.autonomyRatio ?? 0) * 100).toFixed(1)}%`
+              ? `${routerStats.callsTotal} total calls · Krisnam ${routerStats.callsKrisnam ?? 0} · Canary ${routerStats.callsKrisnamCanary ?? 0} (${((routerStats.krisnamCanaryRatio ?? 0) * 100).toFixed(1)}%) · Autonomy ${((routerStats.autonomyRatio ?? 0) * 100).toFixed(1)}%`
               : 'Loading…'}
           </p>
         </div>
@@ -810,13 +810,13 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         </div>
       )}
 
-      {/* Deployed Gen2 model banner */}
+      {/* Deployed Krisnam model banner */}
       {deployedModel ? (
         <div className="rounded-2xl p-4 border flex items-center gap-3"
           style={{ background: 'rgba(16,185,129,0.06)', borderColor: 'rgba(16,185,129,0.2)' }}>
           <CheckCircle className="w-5 h-5 flex-shrink-0" style={{ color: GRN }} />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold" style={{ color: GRN }}>Gen 2 Active — {deployedModel.name}</p>
+            <p className="text-sm font-bold" style={{ color: GRN }}>Krisnam Active — {deployedModel.name}</p>
             <p className="text-[11px]" style={{ color: T2 }}>
               {deployedModel.providerModelId} · {deployedModel.provider}
               {deployedModel.benchmarkAccuracy ? ` · Accuracy ${(deployedModel.benchmarkAccuracy * 100).toFixed(1)}%` : ''}
@@ -836,8 +836,8 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           style={{ background: 'rgba(245,158,11,0.05)', borderColor: 'rgba(245,158,11,0.2)' }}>
           <AlertCircle className="w-5 h-5 flex-shrink-0" style={{ color: AMB }} />
           <div>
-            <p className="text-sm font-bold" style={{ color: AMB }}>No Gen 2 model deployed</p>
-            <p className="text-[11px]" style={{ color: T2 }}>All inference routing through Claude Gen 1 and fallbacks.</p>
+            <p className="text-sm font-bold" style={{ color: AMB }}>No Krisnam model deployed</p>
+            <p className="text-[11px]" style={{ color: T2 }}>All inference routing through the Claude baseline and fallbacks.</p>
           </div>
         </div>
       )}
@@ -850,7 +850,7 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         ) : models.length === 0 ? (
           <div className="rounded-2xl p-5 border text-center" style={{ background: CARD, borderColor: BDR }}>
             <Cpu className="w-8 h-8 mx-auto mb-2 opacity-30" />
-            <p className="text-sm font-medium" style={{ color: T2 }}>No Gen 2 models registered</p>
+            <p className="text-sm font-medium" style={{ color: T2 }}>No Krisnam models registered</p>
             <p className="text-[11px] mt-1" style={{ color: T2 }}>
               Run MLX-LM fine-tune, then use POST /krisnam/register-model to register the deployed weights path.
             </p>
@@ -933,12 +933,12 @@ function Gen2HealthTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 // ── Autonomy Tab (S68) ────────────────────────────────────────────────────────
 
 interface AutonomyConfig {
-  id: string; gen2TrafficPct: number; enabledAt: string | null; updatedBy: string | null; updatedAt: string
+  id: string; krisnamCanaryPct: number; enabledAt: string | null; updatedBy: string | null; updatedAt: string
 }
 
 interface AutonomyStats {
   deployedModel: string | null; humanOverrideRate: number
-  gen1TrafficPct: number; gen2TrafficPct: number
+  baselineTrafficPct: number; krisnamCanaryPct: number
 }
 
 function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
@@ -951,7 +951,7 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   })
 
   useEffect(() => {
-    if (config && slider === null) setSlider(config.gen2TrafficPct)
+    if (config && slider === null) setSlider(config.krisnamCanaryPct)
   }, [config]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const { data: stats } = useQuery<AutonomyStats>({
@@ -961,14 +961,14 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   })
 
   const update = useMutation({
-    mutationFn: (pct: number) => api.patch('/admin/kangqore-immp/learning/autonomy-config', { gen2TrafficPct: pct }),
+    mutationFn: (pct: number) => api.patch('/admin/kangqore-immp/learning/autonomy-config', { krisnamCanaryPct: pct }),
     onSuccess:  () => {
       qc.invalidateQueries({ queryKey: ['autonomy-config'] })
       qc.invalidateQueries({ queryKey: ['autonomy-stats'] })
     },
   })
 
-  const pct         = slider ?? config?.gen2TrafficPct ?? 0
+  const pct         = slider ?? config?.krisnamCanaryPct ?? 0
   const isDeplyed   = !!stats?.deployedModel
   const graduated   = pct >= 75
 
@@ -981,8 +981,8 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
         <div className="rounded-2xl p-4 flex items-center gap-3" style={{ background: 'rgba(16,185,129,0.08)', border: `1px solid rgba(16,185,129,0.2)` }}>
           <Rocket className="w-5 h-5 flex-shrink-0" style={{ color: GRN }} />
           <div>
-            <p className="text-xs font-bold" style={{ color: GRN }}>Gen 2 Graduation Active</p>
-            <p className="text-[11px] mt-0.5" style={{ color: T2 }}>≥75% traffic routing to Gen 2. Monitor quality delta before graduating to 100%.</p>
+            <p className="text-xs font-bold" style={{ color: GRN }}>Krisnam Graduation Active</p>
+            <p className="text-[11px] mt-0.5" style={{ color: T2 }}>≥75% traffic routing to Krisnam. Monitor quality delta before graduating to 100%.</p>
           </div>
         </div>
       )}
@@ -997,18 +997,18 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
 
           {/* SVG donut */}
           <div className="flex items-center gap-6">
-            <DonutChart gen2Pct={pct} />
+            <DonutChart krisnamCanaryPct={pct} />
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: PURP }} />
-                <span className="text-xs font-bold" style={{ color: T1 }}>Gen 2 — {pct}%</span>
+                <span className="text-xs font-bold" style={{ color: T1 }}>Krisnam — {pct}%</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: BLUE }} />
-                <span className="text-xs font-bold" style={{ color: T1 }}>Gen 1 — {100 - pct}%</span>
+                <span className="text-xs font-bold" style={{ color: T1 }}>Baseline — {100 - pct}%</span>
               </div>
               {!isDeplyed && (
-                <p className="text-[10px] mt-2" style={{ color: RED }}>No Gen 2 model deployed</p>
+                <p className="text-[10px] mt-2" style={{ color: RED }}>No Krisnam model deployed</p>
               )}
             </div>
           </div>
@@ -1016,7 +1016,7 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           {/* Slider */}
           <div className="mt-5 space-y-2">
             <div className="flex items-center justify-between">
-              <p className="text-[10px] font-semibold" style={{ color: T2 }}>Gen 2 traffic %</p>
+              <p className="text-[10px] font-semibold" style={{ color: T2 }}>Krisnam canary traffic %</p>
               <span className="text-sm font-black" style={{ color: PURP }}>{pct}%</span>
             </div>
             <input type="range" min={0} max={100} step={5} value={pct}
@@ -1034,7 +1034,7 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
           </div>
 
           <button
-            disabled={update.isPending || slider === null || slider === config?.gen2TrafficPct}
+            disabled={update.isPending || slider === null || slider === config?.krisnamCanaryPct}
             onClick={() => slider !== null && update.mutate(slider)}
             className="mt-4 flex items-center gap-2 w-full justify-center px-4 py-2 rounded-2xl text-xs font-bold disabled:opacity-40"
             style={{ background: PURP, color: '#fff' }}>
@@ -1054,8 +1054,8 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
             <div className="space-y-3">
               <StatRow label="Deployed Model" value={stats.deployedModel ?? 'None'} color={stats.deployedModel ? GRN : RED} />
               <StatRow label="Human Override Rate"   value={`${(stats.humanOverrideRate * 100).toFixed(1)}%`} color={stats.humanOverrideRate > 0.1 ? AMB : GRN} />
-              <StatRow label="Gen 1 Traffic"         value={`${stats.gen1TrafficPct}%`} color={BLUE}  />
-              <StatRow label="Gen 2 Traffic"         value={`${stats.gen2TrafficPct}%`} color={PURP}  />
+              <StatRow label="Baseline Traffic"         value={`${stats.baselineTrafficPct}%`} color={BLUE}  />
+              <StatRow label="Krisnam Canary Traffic"         value={`${stats.krisnamCanaryPct}%`} color={PURP}  />
             </div>
           ) : (
             <div className="py-8 text-center">
@@ -1078,18 +1078,18 @@ function AutonomyTab({ qc }: { qc: ReturnType<typeof useQueryClient> }) {
   )
 }
 
-function DonutChart({ gen2Pct }: { gen2Pct: number }) {
+function DonutChart({ krisnamCanaryPct }: { krisnamCanaryPct: number }) {
   const R = 36; const CX = 44; const CY = 44
   const circumference = 2 * Math.PI * R
-  const gen2Arc = (gen2Pct / 100) * circumference
+  const canaryArc = (krisnamCanaryPct / 100) * circumference
   return (
     <svg width={88} height={88} viewBox={`0 0 88 88`}>
       <circle cx={CX} cy={CY} r={R} fill="none" stroke={BLUE}     strokeWidth={12} />
       <circle cx={CX} cy={CY} r={R} fill="none" stroke={PURP}     strokeWidth={12}
-        strokeDasharray={`${gen2Arc} ${circumference - gen2Arc}`}
+        strokeDasharray={`${canaryArc} ${circumference - canaryArc}`}
         strokeDashoffset={circumference / 4} strokeLinecap="round" />
       <text x={CX} y={CY + 2} textAnchor="middle" dominantBaseline="middle"
-        fontSize="13" fontWeight="900" fill={PURP}>{gen2Pct}%</text>
+        fontSize="13" fontWeight="900" fill={PURP}>{krisnamCanaryPct}%</text>
     </svg>
   )
 }
@@ -1107,10 +1107,10 @@ function StatRow({ label, value, color }: { label: string; value: string; color:
 
 interface DiffResult {
   prompt: string
-  gen1: { response: string; latencyMs: number; model: string; provider: string }
-  gen2: { response: string; latencyMs: number; model: string; provider: string }
+  baseline: { response: string; latencyMs: number; model: string; provider: string }
+  candidate: { response: string; latencyMs: number; model: string; provider: string }
   speedupRatio: string | null
-  qualityMetrics: { gen1Length: number; gen2Length: number; lengthRatio: string | null }
+  qualityMetrics: { baselineLength: number; candidateLength: number; lengthRatio: string | null }
   totalMs: number
 }
 
@@ -1137,7 +1137,7 @@ function QualityDiffTab() {
     }
   }
 
-  const isGen2Faster = result && result.gen2.latencyMs > 0 && result.gen2.latencyMs < result.gen1.latencyMs
+  const isCandidateFaster = result && result.candidate.latencyMs > 0 && result.candidate.latencyMs < result.baseline.latencyMs
 
   return (
     <div className="space-y-4">
@@ -1145,10 +1145,10 @@ function QualityDiffTab() {
       <div className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
         <div className="flex items-center gap-2 mb-1">
           <GitMerge className="w-4 h-4" style={{ color: PURP }} />
-          <p className="text-sm font-bold" style={{ color: T1 }}>Gen 1 vs Gen 2 Quality Diff</p>
+          <p className="text-sm font-bold" style={{ color: T1 }}>Baseline vs Krisnam Quality Diff</p>
         </div>
         <p className="text-xs" style={{ color: T2 }}>
-          Run the same prompt through Gen 1 (Claude) and Gen 2 / Krisnam in parallel. Compare response quality, latency, and output length to validate Gen 2 readiness.
+          Run the same prompt through the baseline (Claude) and Krisnam in parallel. Compare response quality, latency, and output length to validate Krisnam readiness.
         </p>
       </div>
 
@@ -1173,7 +1173,7 @@ function QualityDiffTab() {
           className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold disabled:opacity-40"
           style={{ background: PURP, color: '#fff' }}>
           <Cpu className="w-4 h-4" />
-          {running ? 'Running comparison…' : 'Run Gen 1 vs Gen 2'}
+          {running ? 'Running comparison…' : 'Run Baseline vs Krisnam'}
         </button>
       </div>
 
@@ -1183,9 +1183,9 @@ function QualityDiffTab() {
           {/* Summary metrics */}
           <div className="grid grid-cols-4 gap-3">
             {[
-              { label: 'Gen 1 latency', value: `${result.gen1.latencyMs}ms`, color: BLUE },
-              { label: 'Gen 2 latency', value: result.gen2.latencyMs > 0 ? `${result.gen2.latencyMs}ms` : 'N/A', color: result.gen2.provider === 'gen1' ? AMB : TEAL },
-              { label: 'Speed ratio', value: result.speedupRatio ? `${result.speedupRatio}×` : '—', color: isGen2Faster ? GRN : RED },
+              { label: "Baseline latency", value: `${result.baseline.latencyMs}ms`, color: BLUE },
+              { label: "Krisnam latency", value: result.candidate.latencyMs > 0 ? `${result.candidate.latencyMs}ms` : 'N/A', color: result.candidate.provider === "baseline" ? AMB : TEAL },
+              { label: 'Speed ratio', value: result.speedupRatio ? `${result.speedupRatio}×` : '—', color: isCandidateFaster ? GRN : RED },
               { label: 'Total time', value: `${result.totalMs}ms`, color: T2 },
             ].map(s => (
               <div key={s.label} className="rounded-2xl p-4 border" style={{ background: CARD, borderColor: BDR }}>
@@ -1198,8 +1198,8 @@ function QualityDiffTab() {
           {/* Side-by-side responses */}
           <div className="grid grid-cols-2 gap-4">
             {[
-              { key: 'gen1', label: 'Gen 1 · Claude', data: result.gen1, accent: BLUE },
-              { key: 'gen2', label: `Gen 2 · ${result.gen2.provider === 'gen1' ? 'Claude (Krisnam offline)' : 'Krisnam'}`, data: result.gen2, accent: result.gen2.provider === 'gen1' ? AMB : PURP },
+              { key: "baseline", label: "Baseline · Claude", data: result.baseline, accent: BLUE },
+              { key: "candidate", label: `Krisnam · ${result.candidate.provider === "baseline" ? 'Claude (Krisnam offline)' : 'Krisnam'}`, data: result.candidate, accent: result.candidate.provider === "baseline" ? AMB : PURP },
             ].map(({ key, label, data, accent }) => (
               <div key={key} className="rounded-2xl border overflow-hidden" style={{ background: CARD, borderColor: BDR }}>
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: BDR, background: SURF }}>
@@ -1217,7 +1217,7 @@ function QualityDiffTab() {
                   <div className="h-1.5 rounded-full overflow-hidden" style={{ background: SURF }}>
                     <div className="h-full rounded-full" style={{
                       background: accent,
-                      width: `${Math.min(100, (data.response.length / Math.max(result.gen1.response.length, result.gen2.response.length, 1)) * 100)}%`,
+                      width: `${Math.min(100, (data.response.length / Math.max(result.baseline.response.length, result.candidate.response.length, 1)) * 100)}%`,
                     }} />
                   </div>
                 </div>
@@ -1228,10 +1228,10 @@ function QualityDiffTab() {
           {/* Model info */}
           <div className="rounded-2xl p-3 border" style={{ background: SURF, borderColor: BDR }}>
             <p className="text-[10px]" style={{ color: T2 }}>
-              Gen 1: <span className="font-mono" style={{ color: T1 }}>{result.gen1.model}</span> ·
-              Gen 2: <span className="font-mono" style={{ color: T1 }}>{result.gen2.model}</span> ·
-              {result.gen2.provider !== 'gen1'
-                ? <span style={{ color: GRN }}> Krisnam active — local inference serving Gen 2 slot</span>
+              Baseline: <span className="font-mono" style={{ color: T1 }}>{result.baseline.model}</span> ·
+              Krisnam: <span className="font-mono" style={{ color: T1 }}>{result.candidate.model}</span> ·
+              {result.candidate.provider !== "baseline"
+                ? <span style={{ color: GRN }}> Krisnam active — local inference serving the Krisnam slot</span>
                 : <span style={{ color: AMB }}> Krisnam offline — both slots served by Claude</span>
               }
             </p>

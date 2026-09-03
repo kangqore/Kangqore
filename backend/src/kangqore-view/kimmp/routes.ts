@@ -181,12 +181,12 @@ kangqoreImmpRoutes.post('/krisnam/infer', requireAuth, requireRole(['ADMIN']), a
     if (!response.ok) throw new Error(`Krisnam ${response.status}`)
     const data = (await response.json()) as { choices?: { message?: { content?: string } }[] }
     const text  = data.choices?.[0]?.message?.content ?? ''
-    res.json({ gen2: text, gen2Available: true, latencyMs: Date.now() - t0, model: KRISNAM_MODEL })
+    res.json({ krisnam: text, krisnamAvailable: true, latencyMs: Date.now() - t0, model: KRISNAM_MODEL })
   } catch (err: any) {
     logger.warn('[Krisnam] local inference offline:', err.message)
     res.json({
-      gen2:          null,
-      gen2Available: false,
+      krisnam:       null,
+      krisnamAvailable: false,
       latencyMs:     Date.now() - t0,
       error:         `Krisnam offline — restart: cd ~/.kimmp-venv && mlx_lm.server --model ${process.env.KRISNAM_MODEL || 'mlx-community/Llama-3.2-3B-Instruct-4bit'} --port 11435`,
     })
@@ -194,7 +194,7 @@ kangqoreImmpRoutes.post('/krisnam/infer', requireAuth, requireRole(['ADMIN']), a
 })
 
 // POST /admin/kangqore-immp/krisnam/register-model
-// Register a fine-tuned Krisnam model into Gen2Model registry after training.
+// Register a fine-tuned Krisnam model into the Krisnam model registry after training.
 kangqoreImmpRoutes.post('/krisnam/register-model', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const userId = (req as any).user?.id ?? 'system'
@@ -202,9 +202,9 @@ kangqoreImmpRoutes.post('/krisnam/register-model', requireAuth, requireRole(['AD
     if (!name || !modelPath) return res.status(400).json({ error: 'name and modelPath required' })
 
     // Undeploy any currently deployed model first
-    await (prisma as any).gen2Model.updateMany({ where: { isDeployed: true }, data: { isDeployed: false } })
+    await (prisma as any).krisnamModel.updateMany({ where: { isDeployed: true }, data: { isDeployed: false } })
 
-    const model = await (prisma as any).gen2Model.create({
+    const model = await (prisma as any).krisnamModel.create({
       data: {
         name,
         provider:        'krisnam',
@@ -222,7 +222,7 @@ kangqoreImmpRoutes.post('/krisnam/register-model', requireAuth, requireRole(['AD
     // Fire KIMMP signal
     await (prisma as any).kimmpSignal.create({
       data: {
-        type:        'GEN2_KRISNAM_DEPLOYED',
+        type:        'KRISNAM_DEPLOYED',
         source:      'SYSTEM',
         priority:    'HIGH',
         title:       `Krisnam model deployed: ${name}`,
@@ -3066,7 +3066,7 @@ kangqoreImmpRoutes.patch('/marketplace/:id/status', requireAuth, requireRole(['A
 })
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// S61 — WAANDA Gen 2: Anthropic fine-tuning + Gen2 model registry + A/B routing
+// S61 — Krisnam 0.1.1: fine-tuning + Krisnam model registry + A/B routing
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // POST /admin/kangqore-immp/learning/finetune-jobs/:id/submit
@@ -3190,7 +3190,7 @@ kangqoreImmpRoutes.get('/learning/finetune-jobs/:id/status', requireAuth, requir
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// ── S114 — Gen2 Fine-Tune Polling + Auto-Register ─────────────────────────────
+// ── S114 — Krisnam Fine-Tune Polling + Auto-Register ─────────────────────────────
 // GET /admin/kangqore-immp/learning/finetune-jobs/:id/poll
 kangqoreImmpRoutes.get('/learning/finetune-jobs/:id/poll', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
@@ -3221,12 +3221,12 @@ kangqoreImmpRoutes.get('/learning/finetune-jobs/:id/poll', requireAuth, requireR
     if (newStatus === 'COMPLETED' || newStatus === 'FAILED') updateData.completedAt = new Date()
     const updated = await (prisma as any).finetuneJob.update({ where: { id: req.params.id }, data: updateData })
 
-    // Auto-register Gen2Model when job succeeds for the first time
+    // Auto-register the Krisnam model when job succeeds for the first time
     if (newStatus === 'COMPLETED' && fineTunedModelId && !job.completedAt) {
-      await (prisma as any).gen2Model.updateMany({ where: { isDeployed: true }, data: { isDeployed: false, deployedAt: null } })
-      await (prisma as any).gen2Model.create({
+      await (prisma as any).krisnamModel.updateMany({ where: { isDeployed: true }, data: { isDeployed: false, deployedAt: null } })
+      await (prisma as any).krisnamModel.create({
         data: {
-          name: `WAANDA Gen2 — ${job.baseModel} fine-tune`,
+          name: `Krisnam 0.1.1 — ${job.baseModel} fine-tune`,
           provider: 'ANTHROPIC', baseModel: job.baseModel,
           providerModelId: fineTunedModelId, finetuneJobId: job.id,
           isDeployed: true, deployedAt: new Date(),
@@ -3236,10 +3236,10 @@ kangqoreImmpRoutes.get('/learning/finetune-jobs/:id/poll', requireAuth, requireR
       })
       await (prisma as any).kimmpSignal.create({
         data: {
-          type: 'GEN2_MODEL_DEPLOYED', priority: 'high',
-          title: `WAANDA Gen2 model deployed: ${fineTunedModelId}`,
-          summary: `Fine-tune job ${job.id} succeeded. Model ${fineTunedModelId} auto-registered as active Gen2 deployment.`,
-          module: 'Gen2', confidence: 99,
+          type: 'KRISNAM_MODEL_DEPLOYED', priority: 'high',
+          title: `Krisnam model deployed: ${fineTunedModelId}`,
+          summary: `Fine-tune job ${job.id} succeeded. Model ${fineTunedModelId} auto-registered as the active Krisnam deployment.`,
+          module: 'Krisnam', confidence: 99,
           metadata: { providerJobId: job.providerJobId, modelId: fineTunedModelId, baseModel: job.baseModel } as any,
         },
       }).catch(() => {})
@@ -3249,36 +3249,36 @@ kangqoreImmpRoutes.get('/learning/finetune-jobs/:id/poll', requireAuth, requireR
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/learning/gen2-models
-kangqoreImmpRoutes.get('/learning/gen2-models', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+// GET /admin/kangqore-immp/learning/krisnam-models
+kangqoreImmpRoutes.get('/learning/krisnam-models', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
-    const models = await (prisma as any).gen2Model.findMany({ orderBy: { createdAt: 'desc' } })
+    const models = await (prisma as any).krisnamModel.findMany({ orderBy: { createdAt: 'desc' } })
     const deployed = models.find((m: any) => m.isDeployed) ?? null
     res.json({ models, deployed })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// POST /admin/kangqore-immp/learning/gen2-models
-kangqoreImmpRoutes.post('/learning/gen2-models', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// POST /admin/kangqore-immp/learning/krisnam-models
+kangqoreImmpRoutes.post('/learning/krisnam-models', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { name, provider, baseModel, providerModelId, finetuneJobId, benchmarkAccuracy, trainingExamples, notes } = req.body
     if (!name || !provider || !baseModel || !providerModelId) return res.status(400).json({ error: 'name, provider, baseModel, providerModelId required' })
-    const model = await (prisma as any).gen2Model.create({
+    const model = await (prisma as any).krisnamModel.create({
       data: { name, provider, baseModel, providerModelId, finetuneJobId, benchmarkAccuracy: benchmarkAccuracy ? parseFloat(benchmarkAccuracy) : undefined, trainingExamples: trainingExamples ? parseInt(trainingExamples) : 0, notes, createdBy: req.user!.userId },
     })
     res.json({ model })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// PATCH /admin/kangqore-immp/learning/gen2-models/:id/deploy
+// PATCH /admin/kangqore-immp/learning/krisnam-models/:id/deploy
 // Toggle deploy — undeploys all others first
-kangqoreImmpRoutes.patch('/learning/gen2-models/:id/deploy', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.patch('/learning/krisnam-models/:id/deploy', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { deploy } = req.body // boolean
     if (deploy) {
-      await (prisma as any).gen2Model.updateMany({ data: { isDeployed: false, deployedAt: null } })
+      await (prisma as any).krisnamModel.updateMany({ data: { isDeployed: false, deployedAt: null } })
     }
-    const model = await (prisma as any).gen2Model.update({
+    const model = await (prisma as any).krisnamModel.update({
       where: { id: req.params.id },
       data: { isDeployed: !!deploy, deployedAt: deploy ? new Date() : null },
     })
@@ -3291,24 +3291,24 @@ kangqoreImmpRoutes.get('/learning/router-stats', requireAuth, requireRole(['ADMI
   try {
     const { getRouterStats } = await import('./llm/kimmpLLMRouter')
     const stats = await getRouterStats()
-    const deployedGen2 = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true }, select: { name: true, providerModelId: true, benchmarkAccuracy: true } }).catch(() => null)
-    res.json({ ...stats, deployedGen2 })
+    const deployedKrisnam = await (prisma as any).krisnamModel.findFirst({ where: { isDeployed: true }, select: { name: true, providerModelId: true, benchmarkAccuracy: true } }).catch(() => null)
+    res.json({ ...stats, deployedKrisnam })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// ── S86 — Gen2 Graduation ─────────────────────────────────────────────────────
+// ── S86 — Krisnam Canary Graduation ─────────────────────────────────────────────────────
 
-// GET /admin/kangqore-immp/learning/circuit-breaker — gen2 CB status
+// GET /admin/kangqore-immp/learning/circuit-breaker — Krisnam canary CB status
 kangqoreImmpRoutes.get('/learning/circuit-breaker', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
     const { getCircuitBreakerStatus } = await import('./llm/kimmpLLMRouter')
     const status = getCircuitBreakerStatus()
-    res.json({ gen2: status.gen2 ?? null, allProviders: status })
+    res.json({ krisnamCanary: status.krisnamCanary ?? null, allProviders: status })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
 // POST /admin/kangqore-immp/learning/graduate
-// Sets gen2TrafficPct to 25 if approved count >= 1000; emits KIMMP signal
+// Sets krisnamCanaryPct to 25 if approved count >= 1000; emits KIMMP signal
 kangqoreImmpRoutes.post('/learning/graduate', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const GRADUATION = 1_000
@@ -3323,32 +3323,32 @@ kangqoreImmpRoutes.post('/learning/graduate', requireAuth, requireRole(['ADMIN']
     if (config) {
       config = await (prisma as any).autonomyConfig.update({
         where: { id: config.id },
-        data: { gen2TrafficPct: 25, updatedBy: userId, enabledAt: new Date() },
+        data: { krisnamCanaryPct: 25, updatedBy: userId, enabledAt: new Date() },
       })
     } else {
       config = await (prisma as any).autonomyConfig.create({
-        data: { gen2TrafficPct: 25, updatedBy: userId, enabledAt: new Date() },
+        data: { krisnamCanaryPct: 25, updatedBy: userId, enabledAt: new Date() },
       })
     }
 
     // Emit KIMMP signal
     await (prisma as any).kimmpSignal.create({
       data: {
-        type: 'GEN2_GRADUATED',
+        type: 'KRISNAM_GRADUATED',
         priority: 'high',
-        title: 'Gen2 Model Graduated — 25% Traffic Live',
-        summary: `Training corpus reached ${approved} approved examples. Gen2 fine-tuned model now receives 25% of inference traffic. Monitor error rate; auto-revert triggers at >5% errors.`,
-        module: 'Gen2',
+        title: 'Krisnam Canary Graduated — 25% Traffic Live',
+        summary: `Training corpus reached ${approved} approved examples. the Krisnam fine-tuned model now receives 25% of inference traffic. Monitor error rate; auto-revert triggers at >5% errors.`,
+        module: 'Krisnam',
         confidence: 100,
       },
     }).catch(() => {})
 
-    res.json({ ok: true, gen2TrafficPct: 25, approved, config })
+    res.json({ ok: true, krisnamCanaryPct: 25, approved, config })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
 // POST /admin/kangqore-immp/learning/circuit-trip
-// Emergency revert — set gen2TrafficPct to 0 and emit circuit-trip signal
+// Emergency revert — set krisnamCanaryPct to 0 and emit circuit-trip signal
 kangqoreImmpRoutes.post('/learning/circuit-trip', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { reason = 'Manual circuit trip' } = req.body
@@ -3357,35 +3357,35 @@ kangqoreImmpRoutes.post('/learning/circuit-trip', requireAuth, requireRole(['ADM
     if (config) {
       config = await (prisma as any).autonomyConfig.update({
         where: { id: config.id },
-        data: { gen2TrafficPct: 0, updatedBy: userId, enabledAt: null },
+        data: { krisnamCanaryPct: 0, updatedBy: userId, enabledAt: null },
       })
     } else {
       config = await (prisma as any).autonomyConfig.create({
-        data: { gen2TrafficPct: 0, updatedBy: userId },
+        data: { krisnamCanaryPct: 0, updatedBy: userId },
       })
     }
 
     await (prisma as any).kimmpSignal.create({
       data: {
-        type: 'GEN2_CIRCUIT_TRIP',
+        type: 'KRISNAM_CANARY_CIRCUIT_TRIP',
         priority: 'critical',
-        title: 'Gen2 Circuit Tripped — Reverted to Gen1',
-        summary: `${reason} · Gen2 traffic set to 0%. All inference routing through Gen1 fallbacks.`,
-        module: 'Gen2',
+        title: 'Krisnam Canary Circuit Tripped — Reverted to Baseline',
+        summary: `${reason} · Krisnam canary traffic set to 0%. All inference routing through baseline fallbacks.`,
+        module: 'Krisnam',
         confidence: 100,
       },
     }).catch(() => {})
 
-    res.json({ ok: true, gen2TrafficPct: 0, reason })
+    res.json({ ok: true, krisnamCanaryPct: 0, reason })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
 // ══════════════════════════════════════════════════════════════════════════════
-// S110 — Krisnam Gen2 Quality Diff Dashboard
+// S110 — Krisnam Quality Diff Dashboard
 // ══════════════════════════════════════════════════════════════════════════════
 
 // POST /admin/kangqore-immp/learning/quality-diff
-// Side-by-side Gen1 (Claude) vs Gen2 (Krisnam) response comparison.
+// Side-by-side baseline (Claude) vs candidate (Krisnam) response comparison.
 kangqoreImmpRoutes.post('/learning/quality-diff', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { prompt, context } = req.body
@@ -3396,19 +3396,19 @@ kangqoreImmpRoutes.post('/learning/quality-diff', requireAuth, requireRole(['ADM
       ? `You are KIMMP, Kangqore's intelligence engine. Context: ${context}`
       : 'You are KIMMP, Kangqore\'s intelligence engine. Respond concisely and analytically.'
 
-    // Run Gen1 (Claude) and Krisnam in parallel where possible
+    // Run baseline (Claude) and candidate (Krisnam) in parallel where possible
     const t0 = Date.now()
 
-    // Gen1: force Claude by calling with a route meta that skips Krisnam
+    // Baseline: force Claude by calling with a route meta that skips Krisnam
     // We call routedCall twice — the router will naturally pick the available path.
-    // To get a reliable Gen1 baseline we use the Anthropic SDK directly via haiku.
+    // To get a reliable baseline we use the Anthropic SDK directly via haiku.
     const { haiku, textOf } = await import('./llm/kimmpLLMRouter')
 
-    const [gen1Result, gen2Result] = await Promise.allSettled([
+    const [baselineResult, candidateResult] = await Promise.allSettled([
       (async () => {
         const t = Date.now()
         const r = await haiku(SYSTEM, prompt, 800)
-        return { response: textOf(r), latencyMs: Date.now() - t, model: r.model ?? 'claude-haiku', provider: 'gen1' }
+        return { response: textOf(r), latencyMs: Date.now() - t, model: r.model ?? 'claude-haiku', provider: 'baseline' }
       })(),
       (async () => {
         const t = Date.now()
@@ -3422,18 +3422,18 @@ kangqoreImmpRoutes.post('/learning/quality-diff', requireAuth, requireRole(['ADM
       })(),
     ])
 
-    const gen1 = gen1Result.status === 'fulfilled' ? gen1Result.value : { response: 'Gen1 call failed', latencyMs: 0, model: 'claude-haiku', provider: 'gen1' }
-    const gen2 = gen2Result.status === 'fulfilled' ? gen2Result.value : { response: 'Krisnam not available — Gen1 fallback used', latencyMs: 0, model: 'N/A', provider: 'gen1' }
+    const baseline = baselineResult.status === 'fulfilled' ? baselineResult.value : { response: 'Baseline call failed', latencyMs: 0, model: 'claude-haiku', provider: 'baseline' }
+    const candidate = candidateResult.status === 'fulfilled' ? candidateResult.value : { response: 'Krisnam not available — baseline fallback used', latencyMs: 0, model: 'N/A', provider: 'baseline' }
 
     res.json({
       prompt,
-      gen1,
-      gen2,
-      speedupRatio: gen1.latencyMs > 0 && gen2.latencyMs > 0 ? (gen1.latencyMs / gen2.latencyMs).toFixed(2) : null,
+      baseline,
+      candidate,
+      speedupRatio: baseline.latencyMs > 0 && candidate.latencyMs > 0 ? (baseline.latencyMs / candidate.latencyMs).toFixed(2) : null,
       qualityMetrics: {
-        gen1Length: gen1.response.length,
-        gen2Length: gen2.response.length,
-        lengthRatio: gen1.response.length > 0 ? (gen2.response.length / gen1.response.length).toFixed(2) : null,
+        baselineLength: baseline.response.length,
+        candidateLength: candidate.response.length,
+        lengthRatio: baseline.response.length > 0 ? (candidate.response.length / baseline.response.length).toFixed(2) : null,
       },
       totalMs: Date.now() - t0,
     })
@@ -3840,7 +3840,7 @@ kangqoreImmpRoutes.post('/tenants/:id/provision', requireAuth, requireRole(['ADM
 kangqoreImmpRoutes.get('/learning/autonomy-config', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
     let config = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' } })
-    if (!config) config = await (prisma as any).autonomyConfig.create({ data: { gen2TrafficPct: 0 } })
+    if (!config) config = await (prisma as any).autonomyConfig.create({ data: { krisnamCanaryPct: 0 } })
     res.json(config)
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
@@ -3849,19 +3849,19 @@ kangqoreImmpRoutes.get('/learning/autonomy-config', requireAuth, requireRole(['A
 kangqoreImmpRoutes.patch('/learning/autonomy-config', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const userId = (req as any).user?.id ?? 'system'
-    const { gen2TrafficPct } = req.body
-    if (gen2TrafficPct === undefined || gen2TrafficPct < 0 || gen2TrafficPct > 100) {
-      return res.status(400).json({ error: 'gen2TrafficPct must be 0–100' })
+    const { krisnamCanaryPct } = req.body
+    if (krisnamCanaryPct === undefined || krisnamCanaryPct < 0 || krisnamCanaryPct > 100) {
+      return res.status(400).json({ error: 'krisnamCanaryPct must be 0–100' })
     }
     let config = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' } })
     if (config) {
       config = await (prisma as any).autonomyConfig.update({
         where: { id: config.id },
-        data: { gen2TrafficPct, updatedBy: userId, enabledAt: gen2TrafficPct > 0 ? new Date() : null },
+        data: { krisnamCanaryPct, updatedBy: userId, enabledAt: krisnamCanaryPct > 0 ? new Date() : null },
       })
     } else {
       config = await (prisma as any).autonomyConfig.create({
-        data: { gen2TrafficPct, updatedBy: userId, enabledAt: gen2TrafficPct > 0 ? new Date() : null },
+        data: { krisnamCanaryPct, updatedBy: userId, enabledAt: krisnamCanaryPct > 0 ? new Date() : null },
       })
     }
     res.json(config)
@@ -3872,16 +3872,16 @@ kangqoreImmpRoutes.patch('/learning/autonomy-config', requireAuth, requireRole([
 kangqoreImmpRoutes.get('/learning/autonomy-stats', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
     const config   = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' } })
-    const deployed = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true } })
+    const deployed = await (prisma as any).krisnamModel.findFirst({ where: { isDeployed: true } })
     const overrides = await (prisma as any).kimmpSignal.count({ where: { type: 'HUMAN_OVERRIDE' } })
     const totalDecisions = await (prisma as any).kimmpStrategicDecision.count()
-    const gen2TrafficPct = config?.gen2TrafficPct ?? 0
+    const krisnamCanaryPct = config?.krisnamCanaryPct ?? 0
     res.json({
-      gen2TrafficPct,
+      krisnamCanaryPct,
       deployedModel: deployed ? { id: deployed.id, name: deployed.name, benchmarkAccuracy: deployed.benchmarkAccuracy } : null,
       humanOverrideRate: totalDecisions > 0 ? Math.round((overrides / totalDecisions) * 100) : 0,
-      gen1TrafficPct: 100 - gen2TrafficPct,
-      autonomyEnabled: gen2TrafficPct > 0,
+      baselineTrafficPct: 100 - krisnamCanaryPct,
+      autonomyEnabled: krisnamCanaryPct > 0,
     })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
@@ -4279,7 +4279,7 @@ kangqoreImmpRoutes.post('/gen3/plans', requireAuth, requireRole(['ADMIN']), asyn
       return res.status(429).json({ error: `Concurrency limit reached (${activeCount}/${maxConcurrent} active plans). Wait for a plan to complete.` })
     }
 
-    const deployedModel = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true } })
+    const deployedModel = await (prisma as any).krisnamModel.findFirst({ where: { isDeployed: true } })
     const subtasks = [
       { id: '1', label: 'Understand objective', status: 'PENDING', agentRole: 'RESEARCH',    steps: ['Parse goal semantics', 'Retrieve relevant memory', 'Identify constraints'] },
       { id: '2', label: 'Gather evidence',       status: 'PENDING', agentRole: 'DIAGNOSTICS', steps: ['Signal analysis', 'CRM context pull', 'OIS baseline check'] },
@@ -4289,7 +4289,7 @@ kangqoreImmpRoutes.post('/gen3/plans', requireAuth, requireRole(['ADMIN']), asyn
       { id: '6', label: 'Capture learning',      status: 'PENDING', agentRole: 'COACH',       steps: ['Record outcome', 'Update KimmpMemory', 'Adjust future priors'] },
     ]
     const plan = await (prisma as any).planDecompositionTree.create({
-      data: { goal, subtasks, status: 'PENDING', gen2ModelId: deployedModel?.id ?? null, createdBy: (req as any).user?.id },
+      data: { goal, subtasks, status: 'PENDING', krisnamModelId: deployedModel?.id ?? null, createdBy: (req as any).user?.id },
     })
 
     // Auto-execute — no human gate required (S80)
@@ -4340,7 +4340,7 @@ kangqoreImmpRoutes.get('/gen3/status', requireAuth, requireRole(['ADMIN']), asyn
       (prisma as any).planDecompositionTree.count({ where: { status: 'ACTIVE' } }),
       (prisma as any).planDecompositionTree.count({ where: { status: 'DONE' } }),
       (prisma as any).planDecompositionTree.count({ where: { status: 'FAILED' } }),
-      (prisma as any).gen2Model.findFirst({ where: { isDeployed: true }, select: { providerModelId: true, benchmarkAccuracy: true } }),
+      (prisma as any).krisnamModel.findFirst({ where: { isDeployed: true }, select: { providerModelId: true, benchmarkAccuracy: true } }),
     ])
     res.json({ total, active, done, failed, gen3Active: !!deployedModel, deployedModel })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
@@ -4882,55 +4882,55 @@ kangqoreImmpRoutes.post('/gen3/dispatch-project-task', requireAuth, requireRole(
 })
 
 // ══════════════════════════════════════════════════════════════════════════
-// S117 — Gen2 Live A/B Routing + Per-Tenant Accuracy
+// S117 — Krisnam Live A/B Routing + Per-Tenant Accuracy
 // ══════════════════════════════════════════════════════════════════════════
 
-kangqoreImmpRoutes.post('/gen2/accuracy', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.post('/krisnam/accuracy', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
-    const { tenantId, provider, responseId, isAccurate, ratingComment } = req.body ?? {}
+    const { tenantId, arm, responseId, isAccurate, ratingComment } = req.body ?? {}
     if (!tenantId || typeof isAccurate !== 'boolean') return res.status(400).json({ error: 'tenantId and isAccurate required' })
-    const record = await (prisma as any).gen2AccuracyRecord.create({
-      data: { tenantId, provider: provider ?? 'gen1', responseId: responseId ?? null, isAccurate, ratingComment: ratingComment ?? null },
+    const record = await (prisma as any).krisnamAccuracyRecord.create({
+      data: { tenantId, arm: arm ?? 'baseline', responseId: responseId ?? null, isAccurate, ratingComment: ratingComment ?? null },
     })
     res.status(201).json(record)
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-kangqoreImmpRoutes.get('/gen2/accuracy', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+kangqoreImmpRoutes.get('/krisnam/accuracy', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
-    const allRecords = await (prisma as any).gen2AccuracyRecord.findMany({ orderBy: { createdAt: 'desc' }, take: 2000 })
-    const byTenant: Record<string, { gen2: number; gen2ok: number; gen1: number; gen1ok: number }> = {}
+    const allRecords = await (prisma as any).krisnamAccuracyRecord.findMany({ orderBy: { createdAt: 'desc' }, take: 2000 })
+    const byTenant: Record<string, { candidate: number; candidateOk: number; baseline: number; baselineOk: number }> = {}
     for (const r of allRecords) {
-      if (!byTenant[r.tenantId]) byTenant[r.tenantId] = { gen2: 0, gen2ok: 0, gen1: 0, gen1ok: 0 }
-      if (r.provider === 'gen1') { byTenant[r.tenantId].gen1++; if (r.isAccurate) byTenant[r.tenantId].gen1ok++ }
-      else { byTenant[r.tenantId].gen2++; if (r.isAccurate) byTenant[r.tenantId].gen2ok++ }
+      if (!byTenant[r.tenantId]) byTenant[r.tenantId] = { candidate: 0, candidateOk: 0, baseline: 0, baselineOk: 0 }
+      if (r.arm === 'baseline') { byTenant[r.tenantId].baseline++; if (r.isAccurate) byTenant[r.tenantId].baselineOk++ }
+      else { byTenant[r.tenantId].candidate++; if (r.isAccurate) byTenant[r.tenantId].candidateOk++ }
     }
     const tenants = Object.entries(byTenant).map(([tenantId, c]) => ({
       tenantId,
-      gen2AccuracyPct: c.gen2 > 0 ? Math.round((c.gen2ok / c.gen2) * 100) : null,
-      gen1AccuracyPct: c.gen1 > 0 ? Math.round((c.gen1ok / c.gen1) * 100) : null,
-      gen2SampleSize: c.gen2,
-      qualifiesForLiveRouting: c.gen2 >= 10 && c.gen2 > 0 && Math.round((c.gen2ok / c.gen2) * 100) >= 80,
+      candidateAccuracyPct: c.candidate > 0 ? Math.round((c.candidateOk / c.candidate) * 100) : null,
+      baselineAccuracyPct: c.baseline > 0 ? Math.round((c.baselineOk / c.baseline) * 100) : null,
+      candidateSampleSize: c.candidate,
+      qualifiesForLiveRouting: c.candidate >= 10 && c.candidate > 0 && Math.round((c.candidateOk / c.candidate) * 100) >= 80,
     }))
     res.json({ tenants, totalRecords: allRecords.length })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-kangqoreImmpRoutes.get('/gen2/accuracy/:tenantId', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.get('/krisnam/accuracy/:tenantId', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
-    const records = await (prisma as any).gen2AccuracyRecord.findMany({
+    const records = await (prisma as any).krisnamAccuracyRecord.findMany({
       where: { tenantId: req.params.tenantId },
       orderBy: { createdAt: 'desc' }, take: 200,
     })
     const total = records.length
-    const gen2Records = records.filter((r: any) => r.provider !== 'gen1')
-    const gen2Accurate = gen2Records.filter((r: any) => r.isAccurate).length
-    const gen1Records = records.filter((r: any) => r.provider === 'gen1')
-    const gen1Accurate = gen1Records.filter((r: any) => r.isAccurate).length
-    const gen2AccuracyPct = gen2Records.length > 0 ? Math.round((gen2Accurate / gen2Records.length) * 100) : null
-    const gen1AccuracyPct = gen1Records.length > 0 ? Math.round((gen1Accurate / gen1Records.length) * 100) : null
-    const qualifiesForLiveRouting = gen2AccuracyPct !== null && gen2AccuracyPct >= 80 && gen2Records.length >= 10
-    res.json({ tenantId: req.params.tenantId, total, gen2AccuracyPct, gen1AccuracyPct, qualifiesForLiveRouting, gen2SampleSize: gen2Records.length, gen1SampleSize: gen1Records.length })
+    const candidateRecords = records.filter((r: any) => r.arm !== 'baseline')
+    const candidateAccurate = candidateRecords.filter((r: any) => r.isAccurate).length
+    const baselineRecords = records.filter((r: any) => r.arm === 'baseline')
+    const baselineAccurate = baselineRecords.filter((r: any) => r.isAccurate).length
+    const candidateAccuracyPct = candidateRecords.length > 0 ? Math.round((candidateAccurate / candidateRecords.length) * 100) : null
+    const baselineAccuracyPct = baselineRecords.length > 0 ? Math.round((baselineAccurate / baselineRecords.length) * 100) : null
+    const qualifiesForLiveRouting = candidateAccuracyPct !== null && candidateAccuracyPct >= 80 && candidateRecords.length >= 10
+    res.json({ tenantId: req.params.tenantId, total, candidateAccuracyPct, baselineAccuracyPct, qualifiesForLiveRouting, candidateSampleSize: candidateRecords.length, baselineSampleSize: baselineRecords.length })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
@@ -5583,7 +5583,7 @@ kangqoreImmpRoutes.get('/gen4/training-data-stats', requireAuth, requireRole(['A
     const [decisions, signals, qualityDiffs, coigRecords] = await Promise.all([
       (prisma as any).kimmpStrategicDecision.count().catch(() => 0),
       (prisma as any).kIMMPSignal.count().catch(() => 0),
-      (prisma as any).gen2AccuracyRecord.count().catch(() => 0),
+      (prisma as any).krisnamAccuracyRecord.count().catch(() => 0),
       (prisma as any).oISSnapshot.count().catch(() => 0),
     ])
     const totalRecords = decisions + signals + qualityDiffs + coigRecords
@@ -5593,7 +5593,7 @@ kangqoreImmpRoutes.get('/gen4/training-data-stats', requireAuth, requireRole(['A
       categories: [
         { name: 'Strategic Decisions', count: decisions, description: 'KIMMP reasoning traces with evidence + options' },
         { name: 'Intelligence Signals', count: signals, description: 'Live KIMMP signals across all modules' },
-        { name: 'Gen2 Quality Diffs', count: qualityDiffs, description: 'Side-by-side Gen1 vs Gen2 comparison pairs' },
+        { name: 'Krisnam Quality Diffs', count: qualityDiffs, description: 'Side-by-side baseline vs candidate comparison pairs' },
         { name: 'OIS Snapshots (COIG)', count: coigRecords, description: 'Customer outcome intelligence records' },
       ],
       totalRecords, estimatedTokens, readinessScore,
@@ -5606,7 +5606,7 @@ kangqoreImmpRoutes.get('/gen4/capability-comparison', requireAuth, requireRole([
   res.json({
     generations: [
       { gen: 1, name: 'WAANDA Gen1 (Claude)', reasoningDepth: 85, domainSpecificity: 60, latencyMs: 2200, autonomyLevel: 40, costPerInference: 'High (API)', status: 'live' },
-      { gen: 2, name: 'Krisnam Gen2 (Fine-tuned)', reasoningDepth: 72, domainSpecificity: 78, latencyMs: 380,  autonomyLevel: 55, costPerInference: 'Medium (local)', status: 'live' },
+      { gen: 2, name: 'Krisnam 0.1.1 (Fine-tuned)', reasoningDepth: 72, domainSpecificity: 78, latencyMs: 380,  autonomyLevel: 55, costPerInference: 'Medium (local)', status: 'live' },
       { gen: 3, name: 'Gen3 Multi-Agent', reasoningDepth: 91, domainSpecificity: 82, latencyMs: 4100, autonomyLevel: 70, costPerInference: 'Medium (per-agent)', status: 'live' },
       { gen: 4, name: 'WAANDA Foundation Model', reasoningDepth: 95, domainSpecificity: 97, latencyMs: 120,  autonomyLevel: 90, costPerInference: 'Low (self-hosted)', status: 'roadmap' },
     ],

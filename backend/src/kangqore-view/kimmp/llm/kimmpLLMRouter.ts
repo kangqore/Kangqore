@@ -67,7 +67,7 @@ const _cb: Record<string, CircuitBreaker> = {
   openai:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
   gemini:   { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
   krisnam:  { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
-  gen2:     { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
+  krisnamCanary: { state: 'closed', failures: 0, lastFailureAt: 0, lastProbeAt: 0 },
 }
 
 // Providers in manual maintenance mode (skip entirely)
@@ -157,7 +157,7 @@ function cbFailure(provider: string) {
 
 // ─── In-memory call counters ──────────────────────────────────────────────────
 
-const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, krisnam: 0, gen2: 0 }
+const _counts: Record<string, number> = { claude: 0, openai: 0, gemini: 0, krisnam: 0, krisnamCanary: 0 }
 
 // Ground truth for "who answered the last call" — the HUD's LLM ENGINE panel
 // must show this, NOT a guess derived from circuit-breaker health. Breaker
@@ -168,38 +168,38 @@ let _lastServedBy: string | null = null
 let _lastServedAt = 0
 function markServed(provider: string) { _lastServedBy = provider; _lastServedAt = Date.now() }
 
-// Cached deployed Gen2 model — refreshed every 5 minutes
-let _gen2ModelId: string | null = null
-let _gen2CheckedAt = 0
+// Cached deployed Krisnam canary (fine-tuned) model — refreshed every 5 minutes
+let _krisnamCanaryModelId: string | null = null
+let _krisnamCanaryCheckedAt = 0
 
-async function _getDeployedGen2(): Promise<string | null> {
+async function _getDeployedKrisnamCanary(): Promise<string | null> {
   const now = Date.now()
-  if (_gen2ModelId !== null && now - _gen2CheckedAt < 5 * 60_000) return _gen2ModelId
+  if (_krisnamCanaryModelId !== null && now - _krisnamCanaryCheckedAt < 5 * 60_000) return _krisnamCanaryModelId
   try {
-    const m = await (prisma as any).gen2Model.findFirst({ where: { isDeployed: true }, select: { providerModelId: true } })
-    _gen2ModelId = m?.providerModelId ?? null
+    const m = await (prisma as any).krisnamModel.findFirst({ where: { isDeployed: true }, select: { providerModelId: true } })
+    _krisnamCanaryModelId = m?.providerModelId ?? null
   } catch {
-    _gen2ModelId = null
+    _krisnamCanaryModelId = null
   }
-  _gen2CheckedAt = now
-  return _gen2ModelId
+  _krisnamCanaryCheckedAt = now
+  return _krisnamCanaryModelId
 }
 
 // Cached A/B traffic split — refreshed every 2 minutes
-let _gen2TrafficPct = 0
+let _krisnamCanaryPct = 0
 let _trafficPctCheckedAt = 0
 
-async function _getGen2TrafficPct(): Promise<number> {
+async function _getKrisnamCanaryPct(): Promise<number> {
   const now = Date.now()
-  if (now - _trafficPctCheckedAt < 2 * 60_000) return _gen2TrafficPct
+  if (now - _trafficPctCheckedAt < 2 * 60_000) return _krisnamCanaryPct
   try {
-    const cfg = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' }, select: { gen2TrafficPct: true } })
-    _gen2TrafficPct = cfg?.gen2TrafficPct ?? 0
+    const cfg = await (prisma as any).autonomyConfig.findFirst({ orderBy: { createdAt: 'desc' }, select: { krisnamCanaryPct: true } })
+    _krisnamCanaryPct = cfg?.krisnamCanaryPct ?? 0
   } catch {
-    _gen2TrafficPct = 0
+    _krisnamCanaryPct = 0
   }
   _trafficPctCheckedAt = now
-  return _gen2TrafficPct
+  return _krisnamCanaryPct
 }
 
 // ─── Provider: Krisnam (local MLX-LM — OpenAI-compatible) ────────────────────
@@ -452,7 +452,7 @@ export interface RouterOptions {
   // Logic Tool support — pass tool definitions and an executor for the tool_use loop
   tools?:        Anthropic.Tool[]
   toolExecutor?: (name: string, input: any) => any
-  // Persona-critical calls: skip the Gen2/Krisnam local slots and go straight to Claude
+  // Persona-critical calls: skip the Krisnam canary + Krisnam local slots and go straight to Claude
   preferClaude?: boolean
   // S308 — set by kimmpGateway.complete(), which already logs this call itself
   // with richer explicit metadata; prevents the passive routedCall() wrapper
@@ -509,27 +509,27 @@ async function _routedCallImpl(
     toolCalls:     _toolCalls,
   })
 
-  // ── 0. Gen2 fine-tuned model — A/B traffic split (AutonomyConfig.gen2TrafficPct) ─
-  // Gen2 is LOCAL_MLX — always call _callKrisnam() (port 11435), never _callClaude().
-  // No ANTHROPIC_KEY dependency: Gen2 must route even when Claude credits are exhausted.
-  const gen2ModelId   = options.preferClaude ? null : await _getDeployedGen2()
-  const gen2TrafficPct = await _getGen2TrafficPct()
-  const routeToGen2   = gen2ModelId && !options.tools?.length && await _krisnamAvailable() && cbAllow('gen2') && (Math.random() * 100 < gen2TrafficPct)
-  if (routeToGen2 && gen2ModelId) {
+  // ── 0. Krisnam canary (fine-tuned) — A/B traffic split (AutonomyConfig.krisnamCanaryPct) ─
+  // The canary is LOCAL_MLX — always call _callKrisnam() (port 11435), never _callClaude().
+  // No ANTHROPIC_KEY dependency: the canary must route even when Claude credits are exhausted.
+  const krisnamCanaryModelId   = options.preferClaude ? null : await _getDeployedKrisnamCanary()
+  const krisnamCanaryPct = await _getKrisnamCanaryPct()
+  const routeToKrisnamCanary   = krisnamCanaryModelId && !options.tools?.length && await _krisnamAvailable() && cbAllow('krisnamCanary') && (Math.random() * 100 < krisnamCanaryPct)
+  if (routeToKrisnamCanary && krisnamCanaryModelId) {
     try {
       const { text, inputTokens, outputTokens } = await _callKrisnam(system, user, maxTokens)
-      _counts.gen2++
-      markServed('gen2')
-      cbSuccess('gen2')
-      _capture(system, user, text, gen2ModelId, 'gen2', meta).catch(() => {})
+      _counts.krisnamCanary++
+      markServed('krisnam')
+      cbSuccess('krisnamCanary')
+      _capture(system, user, text, krisnamCanaryModelId, 'krisnam', meta).catch(() => {})
       return {
         content: [{ type: 'text', text }],
-        model: gen2ModelId,
-        _routerMeta: makeMeta('gen2', gen2ModelId, false, inputTokens, outputTokens),
+        model: krisnamCanaryModelId,
+        _routerMeta: makeMeta('krisnam', krisnamCanaryModelId, false, inputTokens, outputTokens),
       }
     } catch (err) {
-      cbFailure('gen2')
-      logger.warn('[KIMMP Router] Gen2 failed, falling back to Claude:', (err as Error).message)
+      cbFailure('krisnamCanary')
+      logger.warn('[KIMMP Router] Krisnam canary failed, falling back to Claude:', (err as Error).message)
     }
   }
 
@@ -819,7 +819,7 @@ export async function getRouterStats() {
     ratio:     total > 0 ? calls / total : 0,
     health:    providerHealth(name),
     available: [
-      name === 'gen2'    && !!_gen2ModelId,
+      name === 'krisnamCanary'    && !!_krisnamCanaryModelId,
       name === 'claude'  && !!ANTHROPIC_KEY,
       name === 'openai'  && !!OPENAI_KEY,
       name === 'gemini'  && !!GEMINI_KEY,
@@ -833,23 +833,23 @@ export async function getRouterStats() {
     callsOpenAI:       _counts.openai,
     callsGemini:       _counts.gemini,
     callsKrisnam:      _counts.krisnam,
-    callsGen2:         _counts.gen2,
+    callsKrisnamCanary:         _counts.krisnamCanary,
     lastServedBy:      _lastServedBy,
     lastServedAgoMs:   _lastServedBy ? Date.now() - _lastServedAt : null,
-    autonomyRatio:     total > 0 ? (_counts.krisnam + _counts.gen2) / total : 0,
-    gen2Ratio:         total > 0 ? _counts.gen2 / total : 0,
+    autonomyRatio:     total > 0 ? (_counts.krisnam + _counts.krisnamCanary) / total : 0,
+    krisnamCanaryRatio:         total > 0 ? _counts.krisnamCanary / total : 0,
     providers,
     krisnamAvailable:  _krisnamOk ?? false,
     krisnamModel:      KRISNAM_MODEL || null,
     krisnamUrl:        KRISNAM_URL,
-    deployedGen2Model: _gen2ModelId,
+    deployedKrisnamModel: _krisnamCanaryModelId,
     distillationCount,
     totalCorpus,
     distillationCap:   DISTILLATION_CAP,
     circuitBreakers:   getCircuitBreakerStatus(),
     phase: KRISNAM_MODEL ? 'routing' : distillationCount > 500 ? 'pre-graduation' : 'distilling',
     activeProviders: [
-      _gen2ModelId   && 'gen2',
+      _krisnamCanaryModelId   && 'krisnamCanary',
       ANTHROPIC_KEY  && 'claude',
       OPENAI_KEY     && 'openai',
       GEMINI_KEY     && 'gemini',

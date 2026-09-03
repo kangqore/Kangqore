@@ -1077,7 +1077,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
         displayName: 'Run AI Model',
         description: 'Execute an AI model with a structured input and capture the output.',
         parameters: [
-          { name: 'modelId',      type: 'string', required: true,  description: 'Model ID (e.g. krisnam-gen2, claude-sonnet-5)' },
+          { name: 'modelId',      type: 'string', required: true,  description: 'Model ID (e.g. krisnam-0.1.1, claude-sonnet-5)' },
           { name: 'input',        type: 'string', required: true,  description: 'Model input (prompt or structured data)' },
           { name: 'outputFormat', type: 'enum',   required: false, enum: ['TEXT', 'JSON', 'STRUCTURED', 'MARKDOWN'], description: 'Output format' },
           { name: 'maxTokens',    type: 'number', required: false, min: 1, max: 100000, description: 'Max tokens in response' },
@@ -1198,7 +1198,7 @@ export const ACTION_LIBRARY: CategoryDef[] = [
         displayName: 'Create Fine-Tune Job',
         description: 'Submit a fine-tuning job to train a model on custom data.',
         parameters: [
-          { name: 'baseModel',    type: 'string', required: true,  description: 'Base model to fine-tune (e.g. krisnam-gen2)' },
+          { name: 'baseModel',    type: 'string', required: true,  description: 'Base model to fine-tune (e.g. krisnam-0.1.1)' },
           { name: 'datasetId',    type: 'string', required: true,  description: 'Training dataset ID' },
           { name: 'epochs',       type: 'number', required: false, min: 1, max: 10, description: 'Training epochs' },
           { name: 'learningRate', type: 'number', required: false, min: 0.00001, max: 0.1, description: 'Learning rate' },

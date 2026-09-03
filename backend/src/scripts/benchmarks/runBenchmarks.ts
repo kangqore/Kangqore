@@ -23,7 +23,7 @@ export interface BenchmarkOptions {
   token:          string
   trigger:        'nightly' | 'manual' | 'pre-release'
   verbose?:       boolean
-  modelOverride?: string    // e.g. 'claude-opus-4-8' | 'waanda-gen2-v0.1'
+  modelOverride?: string    // e.g. 'claude-opus-4-8' | 'krisnam-0.1.1'
   provider?:      string    // 'anthropic' | 'waanda-native' | 'openai'
   compareWith?:   string    // run a second pass with this model and diff
 }

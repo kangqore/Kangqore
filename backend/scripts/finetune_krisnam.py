@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Krisnam Gen 2 — Fine-Tune Script (Apple Silicon / MLX)
+Krisnam 0.1.1 — Fine-Tune Script (Apple Silicon / MLX)
 =======================================================
 Fine-tunes Llama-3.2-3B-Instruct on Kangqore's REASON phase training data
 to produce a local reasoning model that replaces Claude API calls in REASON phase.
@@ -9,7 +9,7 @@ Runs on Apple M-series chips via MLX (mlx_lm LoRA fine-tuning).
 For NVIDIA GPU (cloud), use --cloud to print the Colab/Unsloth recipe.
 
 Architecture after fine-tune:
-  REASON phase → Krisnam Gen 2  (local, ~50ms latency, no API cost)
+  REASON phase → Krisnam 0.1.1  (local, ~50ms latency, no API cost)
   SPEAK  phase → Claude claude-opus-4-8  (unchanged)
   GOVERN phase → Claude claude-opus-4-8  (unchanged)
 
@@ -39,11 +39,11 @@ HOME = Path.home()
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
-parser = argparse.ArgumentParser(description='Fine-tune Krisnam Gen 2 (Apple Silicon / MLX)')
+parser = argparse.ArgumentParser(description='Fine-tune Krisnam 0.1.1 (Apple Silicon / MLX)')
 parser.add_argument('--data-dir',       type=str, default=str(HOME / 'models' / 'Krisnam' / 'training-exports'),
                     help='WAANDA export directory (matches WAANDA_EXPORT_DIR in .env)')
-parser.add_argument('--mlx-model',      type=str, default=str(HOME / 'models' / 'Krisnam' / 'fused'),
-                    help='MLX base model path (the Gen 1 fused model)')
+parser.add_argument('--mlx-model',      type=str, default=str(HOME / 'models' / 'Krisnam' / 'v0_1_0'),
+                    help='MLX base model path (the Krisnam 0.1.0 base)')
 parser.add_argument('--output-dir',     type=str, default=str(HOME / 'models' / 'Krisnam' / 'finetune'),
                     help='Output directory for adapter + fused model')
 parser.add_argument('--iters',          type=int, default=1000,  help='Training iterations (100 for smoke test, 1000+ for real run)')
@@ -62,7 +62,7 @@ args = parser.parse_args()
 if args.cloud:
     print("""
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Krisnam Gen 2 — Google Colab / Unsloth Fine-Tune Recipe
+Krisnam 0.1.1 — Google Colab / Unsloth Fine-Tune Recipe
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. Export training data from your local backend:

@@ -121,7 +121,7 @@ async function executePlan(planId: string): Promise<void> {
               goal: newGoal,
               subtasks: defaultSubtasks(),
               status: 'PENDING',
-              gen2ModelId: plan.gen2ModelId,
+              krisnamModelId: plan.krisnamModelId,
               createdBy: plan.createdBy,
               replannedAt: new Date(),
             },
