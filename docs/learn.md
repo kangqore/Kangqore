@@ -225,3 +225,25 @@ tell here is a ternary where one branch builds a query and the other builds a
 type filter — the two should never be alternatives.
 **System change:** `board-layer-e2e` §8 covers the filtered branch, and was
 verified to fail (19/1) with the fix reverted before being trusted.
+
+## 2026-09-03 — one rate-limit bucket for the entire installation  (P1)
+
+**Context:** while diagnosing a UI problem, the whole API started returning 429
+to everything — including my own browser session, from a handful of curl calls.
+**Cause:** the global limiter keyed on `req.ip` with no `trust proxy`. Behind
+Docker's published port, and behind any load balancer, every client arrives from
+the same address, so **all users shared one 1000-request/15-minute window**.
+Proven, not assumed: 1000 requests from the host returned 429 to everything while
+a request originating inside the container still returned 200. With the OS home
+costing 24 API calls, that is ~41 page loads across the entire system before
+everyone is locked out, and one polling tab can do it alone.
+**Second-order symptom:** partial page loads. Some panels resolve and some 429,
+differently each time, which reads as flakiness rather than as throttling.
+**Learning:** an IP-keyed limiter is only per-client if the server can actually
+see distinct client IPs. Behind any proxy it silently becomes a global cap — the
+failure is invisible until traffic grows, and then it looks like instability.
+**System change:** two buckets — verified user id for authenticated traffic,
+IP for everything else, anonymous limit unchanged. The key must come from a
+**verified** token; keying on the raw Authorization header would let anyone mint
+unlimited windows, which is worse than the shared bucket. `rate-limit-e2e`
+asserts that specific evasion and was confirmed catching it.
