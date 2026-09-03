@@ -5780,7 +5780,7 @@ function LLMEngineStrip() {
   const localModel = (data.krisnamModel ?? '').split('/').pop() || '—'
   // Platform policy: Claude-first when usable; Krisnam is the resilience layer
   const chain = [
-    ...(data.deployedGen2Model ? [{ key: 'gen2', label: 'GEN2', model: 'fine-tuned' }] : []),
+    ...(data.deployedKrisnamModel ? [{ key: "krisnamCanary", label: "KRISNAM 0.1.1", model: "fine-tuned" }] : []),
     { key: 'claude',  label: 'CLAUDE',  model: 'sonnet-4-6' },
     { key: 'openai',  label: 'OPENAI',  model: 'gpt-4o' },
     { key: 'gemini',  label: 'GEMINI',  model: 'flash' },
@@ -5799,7 +5799,7 @@ function LLMEngineStrip() {
         const p = byName[c.key]
         const isServing = c.key === serving
         const statusText = !p?.available
-          ? (c.key === 'gen2' ? 'NOT DEPLOYED' : 'NO KEY')
+          ? (c.key === "krisnamCanary" ? 'NOT DEPLOYED' : 'NO KEY')
           : isServing ? 'SERVING' : (p.health ?? 'unknown').toUpperCase()
         const dotColor = isServing ? '#22c55e'
           : !p?.available ? '#6b7280'

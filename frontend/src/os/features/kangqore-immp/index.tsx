@@ -66,7 +66,7 @@ import { CustomerNinePage }            from './pages/CustomerNinePage'
 import { CustomerTenPage }             from './pages/CustomerTenPage'
 import { ChurnEarlyWarningPage }       from './pages/ChurnEarlyWarningPage'
 import { CustomerPipelinePage }         from './pages/CustomerPipelinePage'
-import { WaandaGen2Page }               from './pages/WaandaGen2Page'
+import { KrisnamModelPage }             from './pages/KrisnamModelPage'
 import { TenantAdminPage }              from './pages/TenantAdminPage'
 import { ChurnRiskPage }                from './pages/ChurnRiskPage'
 import { RenewalWorkflowPage }          from './pages/RenewalWorkflowPage'
@@ -75,7 +75,7 @@ import { WaandaGen3Page }               from './pages/WaandaGen3Page'
 import { KEOSBillingPage }              from './pages/KEOSBillingPage'
 import { PackActivationPage }           from './pages/PackActivationPage'
 import { RevenueIntelPage }             from './pages/RevenueIntelPage'
-import { Gen2AccuracyPage }             from './pages/Gen2AccuracyPage'
+import { KrisnamAccuracyPage }         from './pages/KrisnamAccuracyPage'
 import { BlueprintMarketplacePage }     from './pages/BlueprintMarketplacePage'
 import { PartnerOrgPage }              from './pages/PartnerOrgPage'
 import { SDKv2Page }                   from './pages/SDKv2Page'
@@ -457,7 +457,7 @@ export function KIMMMModule() {
           <Route path="customers/two"           element={<CustomerTwoPage />}               />
           <Route path="customers/three"         element={<CustomerThreePage />}             />
           <Route path="customers/pipeline"      element={<CustomerPipelinePage />}          />
-          <Route path="waanda-gen2"             element={<WaandaGen2Page />}                />
+          <Route path="krisnam-model"           element={<KrisnamModelPage />}              />
           <Route path="tenants"                 element={<TenantAdminPage />}               />
           <Route path="churn-risk"              element={<ChurnRiskPage />}                 />
           <Route path="renewals"                element={<RenewalWorkflowPage />}           />
@@ -466,7 +466,7 @@ export function KIMMMModule() {
           <Route path="billing-dashboard"       element={<KEOSBillingPage />}               />
           <Route path="pack-activation"         element={<PackActivationPage />}            />
           <Route path="revenue-intel"           element={<RevenueIntelPage />}              />
-          <Route path="gen2-accuracy"           element={<Gen2AccuracyPage />}              />
+          <Route path="krisnam-accuracy"         element={<KrisnamAccuracyPage />}           />
           <Route path="pmo"                     element={<PMOAdminPage />}                  />
           <Route path="coig-north-star"         element={<COIGNorthStarPage />}             />
           <Route path="blueprint-versions"      element={<BlueprintVersionPage />}          />

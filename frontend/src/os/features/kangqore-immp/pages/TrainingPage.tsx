@@ -464,10 +464,10 @@ function CorpusPanel({ stats }: { stats: CorpusStats }) {
 function ScriptPanel() {
   const steps = [
     { n: '1', label: 'Export approved corpus',  cmd: 'curl -o krisnam-corpus.jsonl \\\n  "http://localhost:3000/api/admin/kangqore-immp/learning/export-jsonl?minQuality=0.5"' },
-    { n: '2', label: 'Fine-tune via MLX-LM LoRA', cmd: 'cd ~/.kimmp-venv\nsource bin/activate\nmlx_lm.lora \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --train --data ~/krisnam-corpus.jsonl \\\n  --iters 1000 --batch-size 4 \\\n  --adapter-path ~/.kimmp-models/krisnam-gen2-v1/adapters' },
-    { n: '3', label: 'Fuse adapter → final weights', cmd: 'mlx_lm.fuse \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --adapter-path ~/.kimmp-models/krisnam-gen2-v1/adapters \\\n  --save-path ~/.kimmp-models/krisnam-gen2-v1' },
-    { n: '4', label: 'Start Krisnam server',    cmd: 'mlx_lm.server \\\n  --model ~/.kimmp-models/krisnam-gen2-v1 \\\n  --port 11435' },
-    { n: '5', label: 'Set env + register + restart', cmd: `# In backend .env:\nKRISNAM_URL=http://localhost:11435\nKRISNAM_MODEL=~/.kimmp-models/krisnam-gen2-v1\n\n# Register in KIMMP:\ncurl -X POST http://localhost:3000/api/admin/kangqore-immp/krisnam/register-model \\\n  -H "Content-Type: application/json" \\\n  -d '{"name":"Krisnam Gen2 v1","modelPath":"~/.kimmp-models/krisnam-gen2-v1","trainingExamples":1000}'\n\n# Restart backend:\ndocker compose up -d core-backend` },
+    { n: '2', label: 'Fine-tune via MLX-LM LoRA', cmd: 'cd ~/.kimmp-venv\nsource bin/activate\nmlx_lm.lora \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --train --data ~/krisnam-corpus.jsonl \\\n  --iters 1000 --batch-size 4 \\\n  --adapter-path ~/.kimmp-models/krisnam-0.1.1/adapters' },
+    { n: '3', label: 'Fuse adapter → final weights', cmd: 'mlx_lm.fuse \\\n  --model mlx-community/Llama-3.2-3B-Instruct-4bit \\\n  --adapter-path ~/.kimmp-models/krisnam-0.1.1/adapters \\\n  --save-path ~/.kimmp-models/krisnam-0.1.1' },
+    { n: '4', label: 'Start Krisnam server',    cmd: 'mlx_lm.server \\\n  --model ~/.kimmp-models/krisnam-0.1.1 \\\n  --port 11435' },
+    { n: '5', label: 'Set env + register + restart', cmd: `# In backend .env:\nKRISNAM_URL=http://localhost:11435\nKRISNAM_MODEL=~/.kimmp-models/krisnam-0.1.1\n\n# Register in KIMMP:\ncurl -X POST http://localhost:3000/api/admin/kangqore-immp/krisnam/register-model \\\n  -H "Content-Type: application/json" \\\n  -d '{"name":"Krisnam 0.1.1","modelPath":"~/.kimmp-models/krisnam-0.1.1","trainingExamples":1000}'\n\n# Restart backend:\ndocker compose up -d core-backend` },
   ]
 
   return (
@@ -498,11 +498,11 @@ function ScriptPanel() {
   )
 }
 
-// ── Gen2 live inference panel ─────────────────────────────────────────────────
+// ── Krisnam live inference panel ─────────────────────────────────────────────────
 
 interface InferResult {
-  gen2:          string | null
-  gen2Available: boolean
+  krisnam:       string | null
+  krisnamAvailable: boolean
   latencyMs:     number
   model?:        string
   error?:        string
@@ -514,7 +514,7 @@ const EXAMPLE_PROMPTS = [
   'List 3 leading indicators that a B2B enterprise customer is at churn risk.',
 ]
 
-function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
+function KrisnamInferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
   const [prompt,  setPrompt]  = useState('')
   const [result,  setResult]  = useState<InferResult | null>(null)
   const [loading, setLoading] = useState(false)
@@ -526,7 +526,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
       const res = await api.post('/admin/kangqore-immp/krisnam/infer', { prompt: prompt.trim() })
       setResult(res.data)
     } catch {
-      setResult({ gen2: null, gen2Available: false, latencyMs: 0, error: 'Request failed' })
+      setResult({ krisnam: null, krisnamAvailable: false, latencyMs: 0, error: "Request failed" })
     } finally {
       setLoading(false)
     }
@@ -538,7 +538,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
       <div className="px-6 py-4 border-b border-[var(--os-border)] flex items-center gap-3">
         <GitCompare style={{ width: 16, height: 16, color: '#a78bfa' }} />
         <p className="text-[11px] font-bold text-[var(--os-text-2)] uppercase tracking-wider flex-1">
-          Krisnam Gen2 — Live Inference
+          Krisnam 0.1.1 — Live Inference
         </p>
         {modelAvailable
           ? <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.25)' }}>
@@ -591,7 +591,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
             >
               {loading
                 ? <><RefreshCw style={{ width: 12, height: 12 }} className="animate-spin" /> Running…</>
-                : <><Play style={{ width: 12, height: 12 }} /> Run Gen2</>
+                : <><Play style={{ width: 12, height: 12 }} /> Run Krisnam</>
               }
             </button>
           </div>
@@ -600,16 +600,16 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
         {/* Result */}
         {result && (
           <div className="space-y-3">
-            {result.gen2Available && result.gen2 ? (
+            {result.krisnamAvailable && result.krisnam ? (
               <div className="rounded-2xl p-4 space-y-2" style={{ background: 'rgba(127,83,249,0.06)', border: '1px solid rgba(127,83,249,0.2)' }}>
                 <div className="flex items-center gap-2">
                   <Brain style={{ width: 12, height: 12, color: '#a78bfa' }} />
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[#a78bfa]">Krisnam Gen2</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#a78bfa]">Krisnam 0.1.1</span>
                   <span className="ml-auto inline-flex items-center gap-1 text-[9px] font-bold text-[var(--os-text-4)]">
                     <Clock style={{ width: 9, height: 9 }} /> {result.latencyMs}ms
                   </span>
                 </div>
-                <p className="text-sm text-[var(--os-text-1)] leading-relaxed whitespace-pre-wrap font-mono">{result.gen2}</p>
+                <p className="text-sm text-[var(--os-text-1)] leading-relaxed whitespace-pre-wrap font-mono">{result.krisnam}</p>
               </div>
             ) : (
               <div className="rounded-2xl p-4" style={{ background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.2)' }}>
@@ -630,7 +630,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
         {!modelAvailable && !result && (
           <div className="rounded-2xl p-4" style={{ background: 'rgba(251,191,36,0.04)', border: '1px solid rgba(251,191,36,0.15)' }}>
             <p className="text-[10px] font-semibold text-[var(--os-text-3)] leading-relaxed">
-              Krisnam Gen2 is offline. Start it with:<br />
+              Krisnam is offline. Start it with:<br />
               <code className="font-mono text-amber-400">cd ~/.kimmp-venv && mlx_lm.server --model mlx-community/Llama-3.2-3B-Instruct-4bit --port 11435</code>
             </p>
           </div>
@@ -644,7 +644,7 @@ function Gen2InferencePanel({ modelAvailable }: { modelAvailable: boolean }) {
 
 export function TrainingPage() {
   const { data: genStatus, isLoading: loadingStatus } = useQuery<GenStatus>({
-    queryKey:       ['waanda-gen2-status'],
+    queryKey:       ["krisnam-status"],
     queryFn:        () => api.get('/admin/waanda-training/local-model/status').then(r => r.data),
     enabled:        !isDemo(),
     staleTime:      30_000,
@@ -734,8 +734,8 @@ export function TrainingPage() {
       {/* Full corpus stats */}
       {corpusStats && <CorpusPanel stats={corpusStats} />}
 
-      {/* Gen2 live inference */}
-      <Gen2InferencePanel modelAvailable={lm?.available ?? false} />
+      {/* Krisnam live inference */}
+      <KrisnamInferencePanel modelAvailable={lm?.available ?? false} />
 
       {/* Example review */}
       <ExampleReviewPanel />
