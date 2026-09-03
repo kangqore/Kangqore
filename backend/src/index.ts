@@ -564,7 +564,7 @@ app.use(['/api', '/health'], (req, res) => {
 });
 
 // Serve index.html for all non-API routes (client-side routing)
-app.get('*', (req, res) => {
+app.use((req, res) => {
   const clean = req.path.replace(/\/$/, '');
   const routes = loadKnownRoutes();
   const inValidatedNamespace = VALIDATED_NAMESPACES.some(

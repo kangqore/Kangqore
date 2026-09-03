@@ -50,7 +50,7 @@ app.get('/api/health', (req, res) => res.status(200).json({ ok: true }));
 app.use(legacyRedirectsMiddleware);
 
 // Catch-all: anything not redirected returns 200 (simulates SPA fallback)
-app.get('*', (req, res) => res.status(200).send('SPA-fallback'));
+app.use((req, res) => res.status(200).send('SPA-fallback'));
 
 const PORT = 5051;  // avoid clash with real backend on 5050
 const server = app.listen(PORT, '127.0.0.1');

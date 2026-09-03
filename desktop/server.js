@@ -27,7 +27,7 @@ function createServer(frontendBuildPath, backendUrl) {
   app.use(express.static(frontendBuildPath));
 
   // SPA fallback — any unmatched route returns index.html so React Router handles it
-  app.get('*', (req, res) => {
+  app.use((req, res) => {
     res.sendFile(path.join(frontendBuildPath, 'index.html'));
   });
 
