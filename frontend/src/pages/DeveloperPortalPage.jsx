@@ -13,12 +13,19 @@ export default function DeveloperPortalPage() {
   const [generatedApp, setGeneratedApp] = useState(null);
   const [copied, setCopied] = useState(false);
 
+  // preview-only credential strings for the UI mockup — not persisted or sent
+  // anywhere. Uses the CSPRNG so CodeQL's insecure-randomness rule stays quiet.
+  const rand = (n) =>
+    Array.from(crypto.getRandomValues(new Uint8Array(n)), (b) => b.toString(16).padStart(2, '0'))
+      .join('')
+      .slice(0, n);
+
   const handleCreateApp = (e) => {
     e.preventDefault();
     const slug = appName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-    const appId = `app-dev-${slug}-${Math.random().toString(36).substring(2, 6)}`;
-    const apiKey = `kq_dev_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
-    const clientSecret = `sec_${Math.random().toString(36).substring(2, 14)}`;
+    const appId = `app-dev-${slug}-${rand(4)}`;
+    const apiKey = `kq_dev_${Date.now().toString(36)}_${rand(6)}`;
+    const clientSecret = `sec_${rand(12)}`;
 
     setGeneratedApp({
       appId,
