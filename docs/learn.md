@@ -192,3 +192,36 @@ commands; uncommitted files appeared that weren't mine; `main` moved backwards.
 own, stop — a concurrent session is editing the tree. Re-verify `git status`,
 `reflog`, and `origin/main` before trusting any inventory, and branch off
 `origin/main` (a fixed ref) rather than local `main`.
+
+## 2026-09-03 — the working layer nobody could reach  (P1)
+
+**Context:** BoardService — boards as saved queries over the ontology, columns
+derived from each type's schema, per-board ordering, writes through the
+gateway — was complete, persisted, and had a passing 18-assertion probe. It had
+**zero frontend consumers**. The Work OS shipped `WorkViewService` alongside it:
+a second, narrower view layer hardcoded to one shape, and that is the one all
+sixteen screens use. Two systems built to fit each other, never joined.
+**Why it survived:** every gate was green. Probes proved the backend worked, the
+smoke test proved the pages rendered, and neither could see that the pages and
+the backend were not talking about the same thing. "Both halves pass" is not
+"the halves are connected."
+**Learning:** a probe that instantiates a service directly will pass forever on
+code no user can reach. For any new service, assert **who calls it** — a grep for
+consumers is a cheaper and better test than another assertion about its output.
+**System change:** `/work/boards` now consumes it, and its smoke test
+auto-selects a board so the render path is exercised rather than the empty list.
+
+## 2026-09-03 — the filter that replaced the type instead of joining it  (P1)
+
+**Context:** `BoardService.createBoard` built its query from `input.where` when
+one was given — dropping the root-type filter entirely. A board over `Project`
+filtered by status returned **34 rows, 17 of them Contracts, Customers, Goals,
+Cases and Outcomes**. It looked completely plausible.
+**Why:** the same bug fixed in `IntentCompiler.compileBound` hours earlier, in a
+file I did not re-check. Every existing board assertion created boards *without*
+a `where`, so the broken branch had no coverage at all.
+**Learning:** after fixing a bug, grep for the *shape* of it, not the file. The
+tell here is a ternary where one branch builds a query and the other builds a
+type filter — the two should never be alternatives.
+**System change:** `board-layer-e2e` §8 covers the filtered branch, and was
+verified to fail (19/1) with the fix reverted before being trusted.

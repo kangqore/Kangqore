@@ -1,207 +1,9 @@
 {
- "work/items": [
-  {
-   "id": "cmsauac9k006j9fihirumk6eo",
-   "objectId": "cmsauac9k006j9fihirumk6eo",
-   "title": "LinkedUp \u2014 Professional Network App",
-   "description": "Professional networking mobile app: skill-based matching, job discovery, portfolio showcasing, community features.",
-   "type": "Project",
-   "status": "IN_PROGRESS",
-   "priority": "MEDIUM",
-   "progress": 60,
-   "startDate": null,
-   "dueDate": "2026-10-15T00:00:00.000Z",
-   "assigneeId": null,
-   "parentId": null,
-   "predictedRisk": 0,
-   "predictedCompletion": "2026-09-19T16:35:25.377Z",
-   "tags": [],
-   "estimatedHours": null,
-   "createdAt": "2026-08-01T20:44:08.216Z",
-   "updatedAt": "2026-08-31T08:35:25.379Z"
-  },
-  {
-   "id": "cmsauac9j006h9fihyvubrl41",
-   "objectId": "cmsauac9j006h9fihyvubrl41",
-   "title": "Glamer \u2014 Beauty & Wellness App",
-   "description": "Consumer app connecting users to beauty, wellness, and grooming services \u2014 booking, reviews, loyalty rewards.",
-   "type": "Project",
-   "status": "IN_PROGRESS",
-   "priority": "MEDIUM",
-   "progress": 40,
-   "startDate": null,
-   "dueDate": "2026-11-30T00:00:00.000Z",
-   "assigneeId": null,
-   "parentId": null,
-   "predictedRisk": 0,
-   "predictedCompletion": "2026-10-13T20:35:25.376Z",
-   "tags": [],
-   "estimatedHours": null,
-   "createdAt": "2026-08-01T20:44:08.216Z",
-   "updatedAt": "2026-08-31T08:35:25.378Z"
-  }
- ],
- "work/board": {
-  "items": {
-   "DRAFT": [],
-   "QUEUED": [],
-   "READY": [],
-   "IN_PROGRESS": [
+  "work/items": [
     {
-     "id": "cmsauac9k006j9fihirumk6eo",
-     "objectId": "cmsauac9k006j9fihirumk6eo",
-     "title": "LinkedUp \u2014 Professional Network App",
-     "description": "Professional networking mobile app: skill-based matching, job discovery, portfolio showcasing, community features.",
-     "type": "Project",
-     "status": "IN_PROGRESS",
-     "priority": "MEDIUM",
-     "progress": 60,
-     "startDate": null,
-     "dueDate": "2026-10-15T00:00:00.000Z",
-     "assigneeId": null,
-     "parentId": null,
-     "predictedRisk": 0,
-     "predictedCompletion": "2026-09-19T16:35:25.377Z",
-     "tags": [],
-     "estimatedHours": null,
-     "createdAt": "2026-08-01T20:44:08.216Z",
-     "updatedAt": "2026-08-31T08:35:25.379Z"
-    },
-    {
-     "id": "cmsauac9j006h9fihyvubrl41",
-     "objectId": "cmsauac9j006h9fihyvubrl41",
-     "title": "Glamer \u2014 Beauty & Wellness App",
-     "description": "Consumer app connecting users to beauty, wellness, and grooming services \u2014 booking, reviews, loyalty rewards.",
-     "type": "Project",
-     "status": "IN_PROGRESS",
-     "priority": "MEDIUM",
-     "progress": 40,
-     "startDate": null,
-     "dueDate": "2026-11-30T00:00:00.000Z",
-     "assigneeId": null,
-     "parentId": null,
-     "predictedRisk": 0,
-     "predictedCompletion": "2026-10-13T20:35:25.376Z",
-     "tags": [],
-     "estimatedHours": null,
-     "createdAt": "2026-08-01T20:44:08.216Z",
-     "updatedAt": "2026-08-31T08:35:25.378Z"
-    }
-   ],
-   "BLOCKED": [],
-   "AT_RISK": [],
-   "AWAITING_APPROVAL": [],
-   "AWAITING_CUSTOMER": [],
-   "UNDER_REVIEW": [],
-   "ESCALATED": [],
-   "COMPLETED": [
-    {
-     "id": "cmr3chjp1000rk7fsx1dgcvgs",
-     "objectId": "cmr3chjp1000rk7fsx1dgcvgs",
-     "title": "Dr. Priya Rao \u2014 Compliance Review",
-     "description": null,
-     "type": "Project",
-     "status": "COMPLETED",
-     "priority": "MEDIUM",
-     "progress": 0,
-     "startDate": null,
-     "dueDate": null,
-     "assigneeId": null,
-     "parentId": null,
-     "predictedRisk": 0,
-     "predictedCompletion": null,
-     "tags": [],
-     "estimatedHours": null,
-     "createdAt": "2026-07-02T10:11:45.782Z",
-     "updatedAt": "2026-08-31T08:35:25.352Z"
-    }
-   ],
-   "CANCELLED": []
-  },
-  "groups": [
-   {
-    "id": "DRAFT",
-    "label": "Draft",
-    "color": "#94a3b8",
-    "items": []
-   },
-   {
-    "id": "QUEUED",
-    "label": "Queued",
-    "color": "#64748b",
-    "items": []
-   }
-  ],
-  "total": 17,
-  "states": 12
- },
- "work/timeline": {
-  "items": [
-   {
-    "id": "cmsauac9d00679fihugcn8bt5",
-    "objectId": "cmsauac9d00679fihugcn8bt5",
-    "title": "Geeks Mindspace \u2014 Website & Online Presence",
-    "description": "Professional website: library services, event calendar, online catalogue preview, membership enquiry portal.",
-    "type": "Project",
-    "status": "IN_PROGRESS",
-    "priority": "MEDIUM",
-    "progress": 80,
-    "startDate": null,
-    "dueDate": "2026-09-09T20:00:32.520Z",
-    "assigneeId": null,
-    "parentId": null,
-    "predictedRisk": 0,
-    "predictedCompletion": "2026-09-07T14:35:25.366Z",
-    "tags": [],
-    "estimatedHours": null,
-    "createdAt": "2026-08-01T20:44:08.209Z",
-    "updatedAt": "2026-08-31T08:35:25.368Z"
-   },
-   {
-    "id": "cmsauac97005z9fihj3d29bys",
-    "objectId": "cmsauac97005z9fihj3d29bys",
-    "title": "Geeks IT Services \u2014 Website & Brand Refresh",
-    "description": "Full website redesign with modern UI, brand identity system, responsive layout, and CMS integration.",
-    "type": "Project",
-    "status": "IN_PROGRESS",
-    "priority": "MEDIUM",
-    "progress": 60,
-    "startDate": null,
-    "dueDate": "2026-09-28T03:47:41.811Z",
-    "assigneeId": null,
-    "parentId": null,
-    "predictedRisk": 0,
-    "predictedCompletion": "2026-09-19T16:35:25.358Z",
-    "tags": [],
-    "estimatedHours": null,
-    "createdAt": "2026-08-01T20:44:08.204Z",
-    "updatedAt": "2026-08-31T08:35:25.360Z"
-   }
-  ],
-  "from": "2026-08-01T08:42:31.877Z",
-  "to": "2026-11-29T08:42:31.877Z",
-  "undated": 11
- },
- "work/workload": {
-  "buckets": [
-   {
-    "id": "__unassigned__",
-    "assigneeId": null,
-    "name": "Unassigned",
-    "activeItems": 16,
-    "open": 16,
-    "inProgressItems": 16,
-    "blockedItems": 0,
-    "overdue": 1,
-    "blocked": 0,
-    "atRisk": 1,
-    "totalEstimatedHours": 0,
-    "estimatedFrom": 0,
-    "items": [
-     {
       "id": "cmsauac9k006j9fihirumk6eo",
       "objectId": "cmsauac9k006j9fihirumk6eo",
-      "title": "LinkedUp \u2014 Professional Network App",
+      "title": "LinkedUp — Professional Network App",
       "description": "Professional networking mobile app: skill-based matching, job discovery, portfolio showcasing, community features.",
       "type": "Project",
       "status": "IN_PROGRESS",
@@ -217,12 +19,12 @@
       "estimatedHours": null,
       "createdAt": "2026-08-01T20:44:08.216Z",
       "updatedAt": "2026-08-31T08:35:25.379Z"
-     },
-     {
+    },
+    {
       "id": "cmsauac9j006h9fihyvubrl41",
       "objectId": "cmsauac9j006h9fihyvubrl41",
-      "title": "Glamer \u2014 Beauty & Wellness App",
-      "description": "Consumer app connecting users to beauty, wellness, and grooming services \u2014 booking, reviews, loyalty rewards.",
+      "title": "Glamer — Beauty & Wellness App",
+      "description": "Consumer app connecting users to beauty, wellness, and grooming services — booking, reviews, loyalty rewards.",
       "type": "Project",
       "status": "IN_PROGRESS",
       "priority": "MEDIUM",
@@ -237,331 +39,1561 @@
       "estimatedHours": null,
       "createdAt": "2026-08-01T20:44:08.216Z",
       "updatedAt": "2026-08-31T08:35:25.378Z"
-     }
-    ]
-   }
-  ],
-  "totalOpen": 16,
-  "unassigned": 16
- },
- "work/goals": {
-  "goals": [
-   {
-    "id": "cmtfpv9gb0001nj7cx2y1enzb",
-    "objectId": "cmtfpv9gb0001nj7cx2y1enzb",
-    "title": "Deliver committed client work",
-    "description": "Every active project delivers on time and on budget.",
-    "ownerName": null,
-    "type": "GOAL",
-    "status": "IN_PROGRESS",
-    "progress": 0,
-    "horizon": "YEAR",
-    "dueDate": null,
-    "parentId": null,
-    "predictedRisk": null
-   },
-   {
-    "id": "cmtfpv9hb001vnj7c3pgyhxn8",
-    "objectId": "cmtfpv9hb001vnj7c3pgyhxn8",
-    "title": "Protect recurring revenue",
-    "description": "Retain the contracted ARR already on the books.",
-    "ownerName": null,
-    "type": "GOAL",
-    "status": "IN_PROGRESS",
-    "progress": 0,
-    "horizon": "YEAR",
-    "dueDate": null,
-    "parentId": null,
-    "predictedRisk": null
-   }
-  ]
- },
- "work/portfolios": {
-  "portfolios": []
- },
- "work/executive": {
-  "summary": {
-   "total": 17,
-   "done": 1,
-   "inProgress": 16,
-   "blocked": 0,
-   "atRisk": 1,
-   "escalated": 0,
-   "overdue": 1,
-   "completionRate": 6,
-   "scored": 17
-  },
-  "byStatus": {
-   "IN_PROGRESS": 16,
-   "COMPLETED": 1
-  },
-  "byPriority": {
-   "MEDIUM": 17
-  },
-  "byType": {
-   "Project": 17
-  },
-  "atRiskItems": [
-   {
-    "id": "cmsauac9g006b9fihfhnoa0sk",
-    "objectId": "cmsauac9g006b9fihfhnoa0sk",
-    "title": "One 0' Eight \u2014 Website",
-    "description": "Brand website with portfolio showcase, service pages, contact flow, and performance-optimised delivery.",
-    "type": "Project",
-    "status": "IN_PROGRESS",
-    "priority": "MEDIUM",
-    "progress": 85,
-    "startDate": null,
-    "dueDate": "2026-07-31T00:00:00.000Z",
-    "assigneeId": null,
-    "parentId": null,
-    "predictedRisk": 0.55,
-    "predictedCompletion": "2026-09-05T11:24:50.075Z",
-    "tags": [],
-    "estimatedHours": null,
-    "createdAt": "2026-08-01T20:44:08.213Z",
-    "updatedAt": "2026-08-31T08:35:25.372Z"
-   }
-  ],
-  "overdueItems": [
-   {
-    "id": "cmsauac9g006b9fihfhnoa0sk",
-    "objectId": "cmsauac9g006b9fihfhnoa0sk",
-    "title": "One 0' Eight \u2014 Website",
-    "description": "Brand website with portfolio showcase, service pages, contact flow, and performance-optimised delivery.",
-    "type": "Project",
-    "status": "IN_PROGRESS",
-    "priority": "MEDIUM",
-    "progress": 85,
-    "startDate": null,
-    "dueDate": "2026-07-31T00:00:00.000Z",
-    "assigneeId": null,
-    "parentId": null,
-    "predictedRisk": 0.55,
-    "predictedCompletion": "2026-09-05T11:24:50.075Z",
-    "tags": [],
-    "estimatedHours": null,
-    "createdAt": "2026-08-01T20:44:08.213Z",
-    "updatedAt": "2026-08-31T08:35:25.372Z"
-   }
-  ]
- },
- "work/dependency-graph": {
-  "nodes": [
-   {
-    "id": "cmsauac9k006j9fihirumk6eo",
-    "title": "LinkedUp \u2014 Professional Network App",
-    "type": "Project",
-    "status": "IN_PROGRESS",
-    "priority": "MEDIUM",
-    "progress": 60,
-    "blockedBy": []
-   },
-   {
-    "id": "cmsauac9j006h9fihyvubrl41",
-    "title": "Glamer \u2014 Beauty & Wellness App",
-    "type": "Project",
-    "status": "IN_PROGRESS",
-    "priority": "MEDIUM",
-    "progress": 40,
-    "blockedBy": []
-   }
-  ],
-  "edges": [],
-  "edgesOutsideView": 0
- },
- "work/automations": [],
- "templates": {
-  "templates": [
-   {
-    "id": "cmtg9w3m7000zysvkg5g477na",
-    "key": "client-onboarding",
-    "name": "Client Onboarding",
-    "description": "Takes a signed client from contract to steady state. Creates the workstreams and tasks the delivery team actually runs, so progress is measured rather than asserted.",
-    "category": "Commercial",
-    "icon": "UserPlus",
-    "color": "#0ea5e9",
-    "rootTypeName": "Project",
-    "creates": 15,
-    "links": 20,
-    "timesApplied": 1
-   },
-   {
-    "id": "cmtg9w3ma0011ysvk99q3nzr9",
-    "key": "project-delivery",
-    "name": "Project Delivery",
-    "description": "The standard shape of a client engagement: discovery, build, launch, with the evidence needed to close it out.",
-    "category": "Delivery",
-    "icon": "FolderKanban",
-    "color": "#3b82f6",
-    "rootTypeName": "Project",
-    "creates": 13,
-    "links": 17,
-    "timesApplied": 1
-   }
-  ]
- },
- "fields": {
-  "fields": [
-   {
-    "id": "cmtgfcmuj005yynz9lrdo3hj5",
-    "key": "case-classification",
-    "name": "Category",
-    "description": "Classifies incoming work so it can be routed without a human reading every one.",
-    "typeName": "Case",
-    "compute": "GENERATIVE",
-    "kind": "CLASSIFY",
-    "inputs": [
-     "title",
-     "description"
-    ],
-    "relatedTypes": [],
-    "instruction": "Classify this case.",
-    "options": [
-     "BUG",
-     "REQUEST"
-    ],
-    "outputField": "category",
-    "refresh": "MANUAL",
-    "governanceTier": 2,
-    "enabled": false,
-    "isSystem": true,
-    "createdBy": null,
-    "createdAt": "2026-08-30T23:12:20.396Z",
-    "updatedAt": "2026-08-31T08:35:25.389Z",
-    "_count": {
-     "runs": 0
     }
-   },
-   {
-    "id": "cmtgfcmui005xynz9tz2mvvbb",
-    "key": "customer-sentiment",
-    "name": "Sentiment",
-    "description": "Tone of the record and its recent interactions.",
-    "typeName": "Customer",
-    "compute": "GENERATIVE",
-    "kind": "SENTIMENT",
-    "inputs": [
-     "title",
-     "health"
-    ],
-    "relatedTypes": [],
-    "instruction": "Judge the overall sentiment of this customer relationship.",
-    "options": [
-     "POSITIVE",
-     "NEUTRAL"
-    ],
-    "outputField": "sentiment",
-    "refresh": "MANUAL",
-    "governanceTier": 2,
-    "enabled": false,
-    "isSystem": true,
-    "createdBy": null,
-    "createdAt": "2026-08-30T23:12:20.395Z",
-    "updatedAt": "2026-08-31T08:35:25.389Z",
-    "_count": {
-     "runs": 0
-    }
-   }
   ],
-  "tiers": {
-   "0": "Formatting \u2014 no inference",
-   "1": "Descriptive \u2014 restates what is already recorded",
-   "2": "Analytical \u2014 derives a value or label from existing data",
-   "3": "Advisory \u2014 recommends an action; never decides",
-   "4": "Decision support \u2014 informs a decision, and must state its evidence",
-   "5": "External action \u2014 not available as a field; use a governed mission"
-  }
- },
- "ingest/candidates": {
-  "candidates": []
- },
- "dashboards/executive": {
-  "dashboard": {
-   "key": "executive",
-   "name": "Executive",
-   "description": "What is happening, why, what it means in money, and what to do about it.",
-   "columns": 12
-  },
-  "panels": [
-   {
-    "key": "summary",
-    "title": "Work",
-    "question": "WHAT",
-    "render": "stat",
-    "span": 12,
-    "data": {
-     "total": 17,
-     "done": 1,
-     "inProgress": 16,
-     "blocked": 0,
-     "atRisk": 1,
-     "escalated": 0,
-     "overdue": 1,
-     "completionRate": 6,
-     "scored": 17
-    }
-   },
-   {
-    "key": "status",
-    "title": "By state",
-    "question": "WHAT",
-    "render": "breakdown",
-    "span": 6,
-    "data": {
-     "entries": [
-      [
-       "IN_PROGRESS",
-       16
+  "work/board": {
+    "items": {
+      "DRAFT": [],
+      "QUEUED": [],
+      "READY": [],
+      "IN_PROGRESS": [
+        {
+          "id": "cmsauac9k006j9fihirumk6eo",
+          "objectId": "cmsauac9k006j9fihirumk6eo",
+          "title": "LinkedUp — Professional Network App",
+          "description": "Professional networking mobile app: skill-based matching, job discovery, portfolio showcasing, community features.",
+          "type": "Project",
+          "status": "IN_PROGRESS",
+          "priority": "MEDIUM",
+          "progress": 60,
+          "startDate": null,
+          "dueDate": "2026-10-15T00:00:00.000Z",
+          "assigneeId": null,
+          "parentId": null,
+          "predictedRisk": 0,
+          "predictedCompletion": "2026-09-19T16:35:25.377Z",
+          "tags": [],
+          "estimatedHours": null,
+          "createdAt": "2026-08-01T20:44:08.216Z",
+          "updatedAt": "2026-08-31T08:35:25.379Z"
+        },
+        {
+          "id": "cmsauac9j006h9fihyvubrl41",
+          "objectId": "cmsauac9j006h9fihyvubrl41",
+          "title": "Glamer — Beauty & Wellness App",
+          "description": "Consumer app connecting users to beauty, wellness, and grooming services — booking, reviews, loyalty rewards.",
+          "type": "Project",
+          "status": "IN_PROGRESS",
+          "priority": "MEDIUM",
+          "progress": 40,
+          "startDate": null,
+          "dueDate": "2026-11-30T00:00:00.000Z",
+          "assigneeId": null,
+          "parentId": null,
+          "predictedRisk": 0,
+          "predictedCompletion": "2026-10-13T20:35:25.376Z",
+          "tags": [],
+          "estimatedHours": null,
+          "createdAt": "2026-08-01T20:44:08.216Z",
+          "updatedAt": "2026-08-31T08:35:25.378Z"
+        }
       ],
-      [
-       "COMPLETED",
-       1
-      ]
-     ],
-     "total": 17
-    }
-   },
-   {
-    "key": "coverage",
-    "title": "Model coverage",
-    "question": "WHAT",
-    "render": "breakdown",
-    "span": 6,
-    "data": {
-     "declared": 22,
-     "populated": 5,
-     "objects": 33,
-     "byType": [
+      "BLOCKED": [],
+      "AT_RISK": [],
+      "AWAITING_APPROVAL": [],
+      "AWAITING_CUSTOMER": [],
+      "UNDER_REVIEW": [],
+      "ESCALATED": [],
+      "COMPLETED": [
+        {
+          "id": "cmr3chjp1000rk7fsx1dgcvgs",
+          "objectId": "cmr3chjp1000rk7fsx1dgcvgs",
+          "title": "Dr. Priya Rao — Compliance Review",
+          "description": null,
+          "type": "Project",
+          "status": "COMPLETED",
+          "priority": "MEDIUM",
+          "progress": 0,
+          "startDate": null,
+          "dueDate": null,
+          "assigneeId": null,
+          "parentId": null,
+          "predictedRisk": 0,
+          "predictedCompletion": null,
+          "tags": [],
+          "estimatedHours": null,
+          "createdAt": "2026-07-02T10:11:45.782Z",
+          "updatedAt": "2026-08-31T08:35:25.352Z"
+        }
+      ],
+      "CANCELLED": []
+    },
+    "groups": [
       {
-       "name": "Project",
-       "count": 17
+        "id": "DRAFT",
+        "label": "Draft",
+        "color": "#94a3b8",
+        "items": []
       },
       {
-       "name": "Customer",
-       "count": 6
-      },
-      {
-       "name": "Contract",
-       "count": 6
+        "id": "QUEUED",
+        "label": "Queued",
+        "color": "#64748b",
+        "items": []
       }
-     ]
+    ],
+    "total": 17,
+    "states": 12
+  },
+  "work/timeline": {
+    "items": [
+      {
+        "id": "cmsauac9d00679fihugcn8bt5",
+        "objectId": "cmsauac9d00679fihugcn8bt5",
+        "title": "Geeks Mindspace — Website & Online Presence",
+        "description": "Professional website: library services, event calendar, online catalogue preview, membership enquiry portal.",
+        "type": "Project",
+        "status": "IN_PROGRESS",
+        "priority": "MEDIUM",
+        "progress": 80,
+        "startDate": null,
+        "dueDate": "2026-09-09T20:00:32.520Z",
+        "assigneeId": null,
+        "parentId": null,
+        "predictedRisk": 0,
+        "predictedCompletion": "2026-09-07T14:35:25.366Z",
+        "tags": [],
+        "estimatedHours": null,
+        "createdAt": "2026-08-01T20:44:08.209Z",
+        "updatedAt": "2026-08-31T08:35:25.368Z"
+      },
+      {
+        "id": "cmsauac97005z9fihj3d29bys",
+        "objectId": "cmsauac97005z9fihj3d29bys",
+        "title": "Geeks IT Services — Website & Brand Refresh",
+        "description": "Full website redesign with modern UI, brand identity system, responsive layout, and CMS integration.",
+        "type": "Project",
+        "status": "IN_PROGRESS",
+        "priority": "MEDIUM",
+        "progress": 60,
+        "startDate": null,
+        "dueDate": "2026-09-28T03:47:41.811Z",
+        "assigneeId": null,
+        "parentId": null,
+        "predictedRisk": 0,
+        "predictedCompletion": "2026-09-19T16:35:25.358Z",
+        "tags": [],
+        "estimatedHours": null,
+        "createdAt": "2026-08-01T20:44:08.204Z",
+        "updatedAt": "2026-08-31T08:35:25.360Z"
+      }
+    ],
+    "from": "2026-08-01T08:42:31.877Z",
+    "to": "2026-11-29T08:42:31.877Z",
+    "undated": 11
+  },
+  "work/workload": {
+    "buckets": [
+      {
+        "id": "__unassigned__",
+        "assigneeId": null,
+        "name": "Unassigned",
+        "activeItems": 16,
+        "open": 16,
+        "inProgressItems": 16,
+        "blockedItems": 0,
+        "overdue": 1,
+        "blocked": 0,
+        "atRisk": 1,
+        "totalEstimatedHours": 0,
+        "estimatedFrom": 0,
+        "items": [
+          {
+            "id": "cmsauac9k006j9fihirumk6eo",
+            "objectId": "cmsauac9k006j9fihirumk6eo",
+            "title": "LinkedUp — Professional Network App",
+            "description": "Professional networking mobile app: skill-based matching, job discovery, portfolio showcasing, community features.",
+            "type": "Project",
+            "status": "IN_PROGRESS",
+            "priority": "MEDIUM",
+            "progress": 60,
+            "startDate": null,
+            "dueDate": "2026-10-15T00:00:00.000Z",
+            "assigneeId": null,
+            "parentId": null,
+            "predictedRisk": 0,
+            "predictedCompletion": "2026-09-19T16:35:25.377Z",
+            "tags": [],
+            "estimatedHours": null,
+            "createdAt": "2026-08-01T20:44:08.216Z",
+            "updatedAt": "2026-08-31T08:35:25.379Z"
+          },
+          {
+            "id": "cmsauac9j006h9fihyvubrl41",
+            "objectId": "cmsauac9j006h9fihyvubrl41",
+            "title": "Glamer — Beauty & Wellness App",
+            "description": "Consumer app connecting users to beauty, wellness, and grooming services — booking, reviews, loyalty rewards.",
+            "type": "Project",
+            "status": "IN_PROGRESS",
+            "priority": "MEDIUM",
+            "progress": 40,
+            "startDate": null,
+            "dueDate": "2026-11-30T00:00:00.000Z",
+            "assigneeId": null,
+            "parentId": null,
+            "predictedRisk": 0,
+            "predictedCompletion": "2026-10-13T20:35:25.376Z",
+            "tags": [],
+            "estimatedHours": null,
+            "createdAt": "2026-08-01T20:44:08.216Z",
+            "updatedAt": "2026-08-31T08:35:25.378Z"
+          }
+        ]
+      }
+    ],
+    "totalOpen": 16,
+    "unassigned": 16
+  },
+  "work/goals": {
+    "goals": [
+      {
+        "id": "cmtfpv9gb0001nj7cx2y1enzb",
+        "objectId": "cmtfpv9gb0001nj7cx2y1enzb",
+        "title": "Deliver committed client work",
+        "description": "Every active project delivers on time and on budget.",
+        "ownerName": null,
+        "type": "GOAL",
+        "status": "IN_PROGRESS",
+        "progress": 0,
+        "horizon": "YEAR",
+        "dueDate": null,
+        "parentId": null,
+        "predictedRisk": null
+      },
+      {
+        "id": "cmtfpv9hb001vnj7c3pgyhxn8",
+        "objectId": "cmtfpv9hb001vnj7c3pgyhxn8",
+        "title": "Protect recurring revenue",
+        "description": "Retain the contracted ARR already on the books.",
+        "ownerName": null,
+        "type": "GOAL",
+        "status": "IN_PROGRESS",
+        "progress": 0,
+        "horizon": "YEAR",
+        "dueDate": null,
+        "parentId": null,
+        "predictedRisk": null
+      }
+    ]
+  },
+  "work/portfolios": {
+    "portfolios": []
+  },
+  "work/executive": {
+    "summary": {
+      "total": 17,
+      "done": 1,
+      "inProgress": 16,
+      "blocked": 0,
+      "atRisk": 1,
+      "escalated": 0,
+      "overdue": 1,
+      "completionRate": 6,
+      "scored": 17
+    },
+    "byStatus": {
+      "IN_PROGRESS": 16,
+      "COMPLETED": 1
+    },
+    "byPriority": {
+      "MEDIUM": 17
+    },
+    "byType": {
+      "Project": 17
+    },
+    "atRiskItems": [
+      {
+        "id": "cmsauac9g006b9fihfhnoa0sk",
+        "objectId": "cmsauac9g006b9fihfhnoa0sk",
+        "title": "One 0' Eight — Website",
+        "description": "Brand website with portfolio showcase, service pages, contact flow, and performance-optimised delivery.",
+        "type": "Project",
+        "status": "IN_PROGRESS",
+        "priority": "MEDIUM",
+        "progress": 85,
+        "startDate": null,
+        "dueDate": "2026-07-31T00:00:00.000Z",
+        "assigneeId": null,
+        "parentId": null,
+        "predictedRisk": 0.55,
+        "predictedCompletion": "2026-09-05T11:24:50.075Z",
+        "tags": [],
+        "estimatedHours": null,
+        "createdAt": "2026-08-01T20:44:08.213Z",
+        "updatedAt": "2026-08-31T08:35:25.372Z"
+      }
+    ],
+    "overdueItems": [
+      {
+        "id": "cmsauac9g006b9fihfhnoa0sk",
+        "objectId": "cmsauac9g006b9fihfhnoa0sk",
+        "title": "One 0' Eight — Website",
+        "description": "Brand website with portfolio showcase, service pages, contact flow, and performance-optimised delivery.",
+        "type": "Project",
+        "status": "IN_PROGRESS",
+        "priority": "MEDIUM",
+        "progress": 85,
+        "startDate": null,
+        "dueDate": "2026-07-31T00:00:00.000Z",
+        "assigneeId": null,
+        "parentId": null,
+        "predictedRisk": 0.55,
+        "predictedCompletion": "2026-09-05T11:24:50.075Z",
+        "tags": [],
+        "estimatedHours": null,
+        "createdAt": "2026-08-01T20:44:08.213Z",
+        "updatedAt": "2026-08-31T08:35:25.372Z"
+      }
+    ]
+  },
+  "work/dependency-graph": {
+    "nodes": [
+      {
+        "id": "cmsauac9k006j9fihirumk6eo",
+        "title": "LinkedUp — Professional Network App",
+        "type": "Project",
+        "status": "IN_PROGRESS",
+        "priority": "MEDIUM",
+        "progress": 60,
+        "blockedBy": []
+      },
+      {
+        "id": "cmsauac9j006h9fihyvubrl41",
+        "title": "Glamer — Beauty & Wellness App",
+        "type": "Project",
+        "status": "IN_PROGRESS",
+        "priority": "MEDIUM",
+        "progress": 40,
+        "blockedBy": []
+      }
+    ],
+    "edges": [],
+    "edgesOutsideView": 0
+  },
+  "work/automations": [],
+  "templates": {
+    "templates": [
+      {
+        "id": "cmtg9w3m7000zysvkg5g477na",
+        "key": "client-onboarding",
+        "name": "Client Onboarding",
+        "description": "Takes a signed client from contract to steady state. Creates the workstreams and tasks the delivery team actually runs, so progress is measured rather than asserted.",
+        "category": "Commercial",
+        "icon": "UserPlus",
+        "color": "#0ea5e9",
+        "rootTypeName": "Project",
+        "creates": 15,
+        "links": 20,
+        "timesApplied": 1
+      },
+      {
+        "id": "cmtg9w3ma0011ysvk99q3nzr9",
+        "key": "project-delivery",
+        "name": "Project Delivery",
+        "description": "The standard shape of a client engagement: discovery, build, launch, with the evidence needed to close it out.",
+        "category": "Delivery",
+        "icon": "FolderKanban",
+        "color": "#3b82f6",
+        "rootTypeName": "Project",
+        "creates": 13,
+        "links": 17,
+        "timesApplied": 1
+      }
+    ]
+  },
+  "fields": {
+    "fields": [
+      {
+        "id": "cmtgfcmuj005yynz9lrdo3hj5",
+        "key": "case-classification",
+        "name": "Category",
+        "description": "Classifies incoming work so it can be routed without a human reading every one.",
+        "typeName": "Case",
+        "compute": "GENERATIVE",
+        "kind": "CLASSIFY",
+        "inputs": [
+          "title",
+          "description"
+        ],
+        "relatedTypes": [],
+        "instruction": "Classify this case.",
+        "options": [
+          "BUG",
+          "REQUEST"
+        ],
+        "outputField": "category",
+        "refresh": "MANUAL",
+        "governanceTier": 2,
+        "enabled": false,
+        "isSystem": true,
+        "createdBy": null,
+        "createdAt": "2026-08-30T23:12:20.396Z",
+        "updatedAt": "2026-08-31T08:35:25.389Z",
+        "_count": {
+          "runs": 0
+        }
+      },
+      {
+        "id": "cmtgfcmui005xynz9tz2mvvbb",
+        "key": "customer-sentiment",
+        "name": "Sentiment",
+        "description": "Tone of the record and its recent interactions.",
+        "typeName": "Customer",
+        "compute": "GENERATIVE",
+        "kind": "SENTIMENT",
+        "inputs": [
+          "title",
+          "health"
+        ],
+        "relatedTypes": [],
+        "instruction": "Judge the overall sentiment of this customer relationship.",
+        "options": [
+          "POSITIVE",
+          "NEUTRAL"
+        ],
+        "outputField": "sentiment",
+        "refresh": "MANUAL",
+        "governanceTier": 2,
+        "enabled": false,
+        "isSystem": true,
+        "createdBy": null,
+        "createdAt": "2026-08-30T23:12:20.395Z",
+        "updatedAt": "2026-08-31T08:35:25.389Z",
+        "_count": {
+          "runs": 0
+        }
+      }
+    ],
+    "tiers": {
+      "0": "Formatting — no inference",
+      "1": "Descriptive — restates what is already recorded",
+      "2": "Analytical — derives a value or label from existing data",
+      "3": "Advisory — recommends an action; never decides",
+      "4": "Decision support — informs a decision, and must state its evidence",
+      "5": "External action — not available as a field; use a governed mission"
     }
-   }
-  ]
- },
- "assessment/targets": {
-  "targets": [
-   {
-    "id": "cmtfpv9gb0001nj7cx2y1enzb",
-    "title": "Deliver committed client work",
-    "typeName": "EnterpriseGoal"
-   },
-   {
-    "id": "cmtfpv9ge0003nj7ctug3x9vz",
-    "title": "Committed work delivered",
-    "typeName": "Outcome"
-   }
-  ]
- }
+  },
+  "ingest/candidates": {
+    "candidates": []
+  },
+  "dashboards/executive": {
+    "dashboard": {
+      "key": "executive",
+      "name": "Executive",
+      "description": "What is happening, why, what it means in money, and what to do about it.",
+      "columns": 12
+    },
+    "panels": [
+      {
+        "key": "summary",
+        "title": "Work",
+        "question": "WHAT",
+        "render": "stat",
+        "span": 12,
+        "data": {
+          "total": 17,
+          "done": 1,
+          "inProgress": 16,
+          "blocked": 0,
+          "atRisk": 1,
+          "escalated": 0,
+          "overdue": 1,
+          "completionRate": 6,
+          "scored": 17
+        }
+      },
+      {
+        "key": "status",
+        "title": "By state",
+        "question": "WHAT",
+        "render": "breakdown",
+        "span": 6,
+        "data": {
+          "entries": [
+            [
+              "IN_PROGRESS",
+              16
+            ],
+            [
+              "COMPLETED",
+              1
+            ]
+          ],
+          "total": 17
+        }
+      },
+      {
+        "key": "coverage",
+        "title": "Model coverage",
+        "question": "WHAT",
+        "render": "breakdown",
+        "span": 6,
+        "data": {
+          "declared": 22,
+          "populated": 5,
+          "objects": 33,
+          "byType": [
+            {
+              "name": "Project",
+              "count": 17
+            },
+            {
+              "name": "Customer",
+              "count": 6
+            },
+            {
+              "name": "Contract",
+              "count": 6
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "assessment/targets": {
+    "targets": [
+      {
+        "id": "cmtfpv9gb0001nj7cx2y1enzb",
+        "title": "Deliver committed client work",
+        "typeName": "EnterpriseGoal"
+      },
+      {
+        "id": "cmtfpv9ge0003nj7ctug3x9vz",
+        "title": "Committed work delivered",
+        "typeName": "Outcome"
+      }
+    ]
+  },
+  "boards": {
+    "boards": [
+      {
+        "id": "cmtlddq0w01bagbrmkjfy6pj4",
+        "name": "Accounts",
+        "description": "An organisation the enterprise serves.",
+        "icon": "Building2",
+        "color": "#0ea5e9",
+        "workspace": null,
+        "rootTypeName": "Customer",
+        "objectSetId": null,
+        "query": {
+          "op": "eq",
+          "type": "filter",
+          "field": "typeId",
+          "value": "cmtfh6lje0009xicu3082qzek"
+        },
+        "sort": [
+          {
+            "dir": "desc",
+            "field": "updatedAt"
+          }
+        ],
+        "defaultView": "table",
+        "groupByField": "status",
+        "statusField": "status",
+        "ownerId": "cmqf7eg2k00001yiwklnuf6t5",
+        "isPublic": false,
+        "isSystem": false,
+        "isTemplate": false,
+        "templateKey": null,
+        "createdAt": "2026-09-03T10:16:02.816Z",
+        "updatedAt": "2026-09-03T10:16:02.816Z",
+        "_count": {
+          "columns": 36,
+          "groups": 12
+        }
+      },
+      {
+        "id": "cmtgc764200l9w3us0zdz6pyy",
+        "name": "Acme Ltd — client onboarding",
+        "description": "A bounded delivery with its own budget, dates and owner.",
+        "icon": "FolderKanban",
+        "color": "#3b82f6",
+        "workspace": null,
+        "rootTypeName": "Project",
+        "objectSetId": null,
+        "query": {
+          "op": "eq",
+          "type": "filter",
+          "field": "typeId",
+          "value": "cmr3agon302615d09gfha6ni9"
+        },
+        "sort": [
+          {
+            "dir": "desc",
+            "field": "updatedAt"
+          }
+        ],
+        "defaultView": "table",
+        "groupByField": "status",
+        "statusField": "status",
+        "ownerId": "cmqf7eg2k00001yiwklnuf6t5",
+        "isPublic": false,
+        "isSystem": false,
+        "isTemplate": false,
+        "templateKey": null,
+        "createdAt": "2026-08-30T21:44:06.579Z",
+        "updatedAt": "2026-08-30T21:44:06.579Z",
+        "_count": {
+          "columns": 34,
+          "groups": 12
+        }
+      },
+      {
+        "id": "cmtga09no00jgysvkg6l0s4vh",
+        "name": "HTTP smoke — delivery",
+        "description": "A bounded delivery with its own budget, dates and owner.",
+        "icon": "FolderKanban",
+        "color": "#3b82f6",
+        "workspace": null,
+        "rootTypeName": "Project",
+        "objectSetId": null,
+        "query": {
+          "op": "eq",
+          "type": "filter",
+          "field": "typeId",
+          "value": "cmr3agon302615d09gfha6ni9"
+        },
+        "sort": [
+          {
+            "dir": "desc",
+            "field": "updatedAt"
+          }
+        ],
+        "defaultView": "table",
+        "groupByField": "status",
+        "statusField": "status",
+        "ownerId": "cmqf7eg2k00001yiwklnuf6t5",
+        "isPublic": false,
+        "isSystem": false,
+        "isTemplate": false,
+        "templateKey": null,
+        "createdAt": "2026-08-30T20:42:45.349Z",
+        "updatedAt": "2026-08-30T20:42:45.349Z",
+        "_count": {
+          "columns": 34,
+          "groups": 12
+        }
+      }
+    ]
+  },
+  "types": {
+    "types": [
+      {
+        "name": "Action",
+        "displayName": "Action",
+        "icon": "Zap",
+        "color": "#84cc16",
+        "description": "A single governed step executed by a human or an agent.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Asset",
+        "displayName": "Asset",
+        "icon": "Box",
+        "color": "#64748b",
+        "description": "A thing the enterprise owns or operates.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Case",
+        "displayName": "Case",
+        "icon": "Briefcase",
+        "color": "#6366f1",
+        "description": "A unit of service work — a claim, matter, or engagement.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Contract",
+        "displayName": "Contract",
+        "icon": "FileSignature",
+        "color": "#8b5cf6",
+        "description": "A commercial agreement with a customer or vendor.",
+        "instances": 6,
+        "columnCount": 35
+      },
+      {
+        "name": "Customer",
+        "displayName": "Customer",
+        "icon": "Building2",
+        "color": "#0ea5e9",
+        "description": "An organisation the enterprise serves.",
+        "instances": 6,
+        "columnCount": 36
+      },
+      {
+        "name": "Deal",
+        "displayName": "Deal",
+        "icon": "Handshake",
+        "color": "#10b981",
+        "description": "A revenue opportunity in the pipeline.",
+        "instances": 0,
+        "columnCount": 35
+      },
+      {
+        "name": "Employee",
+        "displayName": "Employee",
+        "icon": "User",
+        "color": "#14b8a6",
+        "description": "A person who performs work.",
+        "instances": 0,
+        "columnCount": 35
+      },
+      {
+        "name": "EnterpriseGoal",
+        "displayName": "Enterprise Goal",
+        "icon": "Target",
+        "color": "#7c3aed",
+        "description": "Top-level company goal. The root of the execution chain.",
+        "instances": 2,
+        "columnCount": 34
+      },
+      {
+        "name": "Evidence",
+        "displayName": "Evidence",
+        "icon": "FileCheck",
+        "color": "#64748b",
+        "description": "Proof that an action produced its intended result.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Incident",
+        "displayName": "Incident",
+        "icon": "AlertOctagon",
+        "color": "#ef4444",
+        "description": "An unplanned disruption requiring response.",
+        "instances": 0,
+        "columnCount": 34
+      },
+      {
+        "name": "Initiative",
+        "displayName": "Initiative",
+        "icon": "Rocket",
+        "color": "#6366f1",
+        "description": "A funded body of work advancing an objective.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Opportunity",
+        "displayName": "Opportunity",
+        "icon": "TrendingUp",
+        "color": "#22c55e",
+        "description": "An identified chance to create value, before it becomes a deal.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Outcome",
+        "displayName": "Outcome",
+        "icon": "Trophy",
+        "color": "#f59e0b",
+        "description": "The measured result of work — what the enterprise actually got.",
+        "instances": 2,
+        "columnCount": 35
+      },
+      {
+        "name": "Portfolio",
+        "displayName": "Portfolio",
+        "icon": "Briefcase",
+        "color": "#6366f1",
+        "description": "A funded grouping of programs the business plans and reports on together.",
+        "instances": 0,
+        "columnCount": 35
+      },
+      {
+        "name": "Program",
+        "displayName": "Program",
+        "icon": "Layers",
+        "color": "#0ea5e9",
+        "description": "A coordinated set of projects.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Project",
+        "displayName": "Project",
+        "icon": "FolderKanban",
+        "color": "#3b82f6",
+        "description": "A bounded delivery with its own budget, dates and owner.",
+        "instances": 17,
+        "columnCount": 34
+      },
+      {
+        "name": "Request",
+        "displayName": "Request",
+        "icon": "Inbox",
+        "color": "#0ea5e9",
+        "description": "Something asked for that must be triaged and fulfilled.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Risk",
+        "displayName": "Risk",
+        "icon": "AlertTriangle",
+        "color": "#f97316",
+        "description": "A probability of future loss, distinct from an Incident, which has already happened.",
+        "instances": 0,
+        "columnCount": 37
+      },
+      {
+        "name": "StrategicObjective",
+        "displayName": "Strategic Objective",
+        "icon": "Crosshair",
+        "color": "#8b5cf6",
+        "description": "A measurable objective serving an enterprise goal.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Task",
+        "displayName": "Task",
+        "icon": "CheckSquare",
+        "color": "#22c55e",
+        "description": "A unit of work someone completes.",
+        "instances": 0,
+        "columnCount": 35
+      },
+      {
+        "name": "Vendor",
+        "displayName": "Vendor",
+        "icon": "Truck",
+        "color": "#f59e0b",
+        "description": "An external supplier the enterprise depends on.",
+        "instances": 0,
+        "columnCount": 33
+      },
+      {
+        "name": "Workstream",
+        "displayName": "Workstream",
+        "icon": "GitBranch",
+        "color": "#14b8a6",
+        "description": "A parallel track of delivery inside a project.",
+        "instances": 0,
+        "columnCount": 33
+      }
+    ]
+  },
+  "boards/": {
+    "board": {
+      "id": "cmtlddq0w01bagbrmkjfy6pj4",
+      "name": "Accounts",
+      "description": "An organisation the enterprise serves.",
+      "icon": "Building2",
+      "color": "#0ea5e9",
+      "rootTypeName": "Customer",
+      "defaultView": "table",
+      "groupByField": "status",
+      "statusField": "status"
+    },
+    "columns": [
+      {
+        "id": "title",
+        "header": "Title",
+        "field": "title",
+        "type": "text",
+        "editable": true,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "CORE"
+      },
+      {
+        "id": "status",
+        "header": "Status",
+        "field": "status",
+        "type": "badge",
+        "editable": true,
+        "options": [
+          "DRAFT",
+          "QUEUED",
+          "READY",
+          "IN_PROGRESS",
+          "BLOCKED",
+          "AT_RISK",
+          "AWAITING_APPROVAL",
+          "AWAITING_CUSTOMER",
+          "UNDER_REVIEW",
+          "ESCALATED",
+          "COMPLETED",
+          "CANCELLED"
+        ],
+        "colorMap": {
+          "DRAFT": "#94a3b8",
+          "READY": "#0ea5e9",
+          "QUEUED": "#64748b",
+          "AT_RISK": "#f97316",
+          "BLOCKED": "#ef4444",
+          "CANCELLED": "#6b7280",
+          "COMPLETED": "#10b981",
+          "ESCALATED": "#dc2626",
+          "IN_PROGRESS": "#f59e0b",
+          "UNDER_REVIEW": "#6366f1",
+          "AWAITING_APPROVAL": "#8b5cf6",
+          "AWAITING_CUSTOMER": "#06b6d4"
+        },
+        "columnClass": "CORE"
+      },
+      {
+        "id": "priority",
+        "header": "Priority",
+        "field": "priority",
+        "type": "badge",
+        "editable": true,
+        "options": [
+          "CRITICAL",
+          "HIGH",
+          "MEDIUM",
+          "LOW"
+        ],
+        "colorMap": {
+          "LOW": "#94a3b8",
+          "HIGH": "#f97316",
+          "MEDIUM": "#0ea5e9",
+          "CRITICAL": "#dc2626"
+        },
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "progress",
+        "header": "Progress",
+        "field": "progress",
+        "type": "number",
+        "editable": true,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "tier",
+        "header": "Tier",
+        "field": "tier",
+        "type": "badge",
+        "editable": true,
+        "options": [
+          "STRATEGIC",
+          "ENTERPRISE",
+          "STANDARD",
+          "STARTER"
+        ],
+        "colorMap": {},
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "arr",
+        "header": "ARR",
+        "field": "arr",
+        "type": "number",
+        "editable": true,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "health",
+        "header": "Health",
+        "field": "health",
+        "type": "badge",
+        "editable": true,
+        "options": [
+          "EXCELLENT",
+          "GOOD",
+          "AT_RISK",
+          "CRITICAL"
+        ],
+        "colorMap": {
+          "GOOD": "#22c55e",
+          "AT_RISK": "#f59e0b",
+          "CRITICAL": "#ef4444",
+          "EXCELLENT": "#10b981"
+        },
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "owner",
+        "header": "Owner",
+        "field": "owner",
+        "type": "text",
+        "editable": true,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "approver",
+        "header": "Approver",
+        "field": "approver",
+        "type": "text",
+        "editable": true,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "aiAgent",
+        "header": "AI Agent",
+        "field": "aiAgent",
+        "type": "text",
+        "editable": true,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "startDate",
+        "header": "Start",
+        "field": "startDate",
+        "type": "date",
+        "editable": true,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "dueDate",
+        "header": "Due",
+        "field": "dueDate",
+        "type": "date",
+        "editable": true,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "predictedCompletion",
+        "header": "Predicted",
+        "field": "predictedCompletion",
+        "type": "date",
+        "editable": false,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "INTELLIGENCE"
+      },
+      {
+        "id": "aiConfidence",
+        "header": "Confidence",
+        "field": "aiConfidence",
+        "type": "number",
+        "editable": false,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "INTELLIGENCE"
+      },
+      {
+        "id": "predictedRisk",
+        "header": "Predicted risk",
+        "field": "predictedRisk",
+        "type": "number",
+        "editable": false,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "INTELLIGENCE"
+      },
+      {
+        "id": "nextBestAction",
+        "header": "Next best action",
+        "field": "nextBestAction",
+        "type": "text",
+        "editable": false,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "INTELLIGENCE"
+      },
+      {
+        "id": "rootCause",
+        "header": "Root cause",
+        "field": "rootCause",
+        "type": "text",
+        "editable": false,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "INTELLIGENCE"
+      },
+      {
+        "id": "businessImpact",
+        "header": "Business impact",
+        "field": "businessImpact",
+        "type": "number",
+        "editable": false,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "INTELLIGENCE"
+      },
+      {
+        "id": "approvalRequired",
+        "header": "Approval required",
+        "field": "approvalRequired",
+        "type": "badge",
+        "editable": false,
+        "options": [],
+        "colorMap": {},
+        "columnClass": "GOVERNANCE"
+      },
+      {
+        "id": "approvalState",
+        "header": "Approval",
+        "field": "approvalState",
+        "type": "badge",
+        "editable": false,
+        "options": [
+          "NOT_REQUIRED",
+          "PENDING",
+          "APPROVED",
+          "REJECTED"
+        ],
+        "colorMap": {
+          "PENDING": "#f59e0b",
+          "APPROVED": "#10b981",
+          "REJECTED": "#ef4444",
+          "NOT_REQUIRED": "#94a3b8"
+        },
+        "columnClass": "GOVERNANCE"
+      },
+      {
+        "id": "dataClassification",
+        "header": "Classification",
+        "field": "dataClassification",
+        "type": "badge",
+        "editable": false,
+        "options": [
+          "PUBLIC",
+          "INTERNAL",
+          "CONFIDENTIAL",
+          "RESTRICTED"
+        ],
+        "colorMap": {
+          "PUBLIC": "#10b981",
+          "INTERNAL": "#0ea5e9",
+          "RESTRICTED": "#ef4444",
+          "CONFIDENTIAL": "#f59e0b"
+        },
+        "columnClass": "GOVERNANCE"
+      }
+    ],
+    "hiddenColumns": [
+      {
+        "id": "description",
+        "header": "Description",
+        "columnClass": "CORE"
+      },
+      {
+        "id": "responsible",
+        "header": "Responsible",
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "reviewer",
+        "header": "Reviewer",
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "stakeholder",
+        "header": "Stakeholder",
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "backupOwner",
+        "header": "Backup owner",
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "escalationOwner",
+        "header": "Escalation owner",
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "slaDate",
+        "header": "SLA",
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "expectedCompletion",
+        "header": "Expected",
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "actualCompletion",
+        "header": "Actual",
+        "columnClass": "ENTERPRISE"
+      },
+      {
+        "id": "anomalyScore",
+        "header": "Anomaly",
+        "columnClass": "INTELLIGENCE"
+      },
+      {
+        "id": "policy",
+        "header": "Policy",
+        "columnClass": "GOVERNANCE"
+      },
+      {
+        "id": "permission",
+        "header": "Permission",
+        "columnClass": "GOVERNANCE"
+      },
+      {
+        "id": "auditState",
+        "header": "Audit",
+        "columnClass": "GOVERNANCE"
+      },
+      {
+        "id": "evidence",
+        "header": "Evidence",
+        "columnClass": "GOVERNANCE"
+      },
+      {
+        "id": "complianceStatus",
+        "header": "Compliance",
+        "columnClass": "GOVERNANCE"
+      }
+    ],
+    "groups": [
+      {
+        "id": "DRAFT",
+        "label": "DRAFT",
+        "color": "#94a3b8",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "QUEUED",
+        "label": "QUEUED",
+        "color": "#64748b",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "READY",
+        "label": "READY",
+        "color": "#0ea5e9",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "IN_PROGRESS",
+        "label": "IN PROGRESS",
+        "color": "#f59e0b",
+        "collapsed": false,
+        "items": [
+          {
+            "id": "cmtfpv9hv0035nj7ctzpr7kox",
+            "objectId": "cmtfpv9hv0035nj7ctzpr7kox",
+            "arr": 220000,
+            "tier": "strategic",
+            "title": "GlobeMed Group",
+            "health": "good",
+            "status": "IN_PROGRESS",
+            "industry": "Healthcare",
+            "rootCause": "No progress recorded since it was created.",
+            "aiConfidence": 0.3,
+            "sourceRecord": "ClientCRM:cmr3cajan000avzjwzjp95nlo",
+            "predictedRisk": 0.2,
+            "businessImpact": 220000,
+            "nextBestAction": "Confirm it has an owner and has actually started.",
+            "predictedCompletion": null,
+            "_markings": [],
+            "_position": null,
+            "createdAt": "2026-08-30T11:18:59.539Z",
+            "updatedAt": "2026-09-03T08:04:57.591Z"
+          },
+          {
+            "id": "cmtfpv9ho002pnj7cezokb8y2",
+            "objectId": "cmtfpv9ho002pnj7cezokb8y2",
+            "arr": 65000,
+            "tier": "standard",
+            "title": "Vantage Retail",
+            "health": "good",
+            "status": "IN_PROGRESS",
+            "industry": "Retail & E-commerce",
+            "rootCause": "No progress recorded since it was created.",
+            "aiConfidence": 0.3,
+            "sourceRecord": "ClientCRM:cmr3cajao000dvzjwqocgeqij",
+            "predictedRisk": 0.2,
+            "businessImpact": 65000,
+            "nextBestAction": "Confirm it has an owner and has actually started.",
+            "predictedCompletion": null,
+            "_markings": [],
+            "_position": null,
+            "createdAt": "2026-08-30T11:18:59.532Z",
+            "updatedAt": "2026-09-03T08:04:57.586Z"
+          },
+          {
+            "id": "cmtfpv9hk002hnj7cuqexiet0",
+            "objectId": "cmtfpv9hk002hnj7cuqexiet0",
+            "arr": 140000,
+            "tier": "enterprise",
+            "title": "Meridian Capital",
+            "health": "good",
+            "status": "IN_PROGRESS",
+            "industry": "Financial Services",
+            "rootCause": "No progress recorded since it was created.",
+            "aiConfidence": 0.3,
+            "sourceRecord": "ClientCRM:cmr3cajal0007vzjwhyfz7wb5",
+            "predictedRisk": 0.2,
+            "businessImpact": 140000,
+            "nextBestAction": "Confirm it has an owner and has actually started.",
+            "predictedCompletion": null,
+            "_markings": [],
+            "_position": null,
+            "createdAt": "2026-08-30T11:18:59.529Z",
+            "updatedAt": "2026-09-03T08:04:57.583Z"
+          },
+          {
+            "id": "cmtfpv9hh0029nj7cvxxgnww1",
+            "objectId": "cmtfpv9hh0029nj7cvxxgnww1",
+            "arr": 90000,
+            "tier": "enterprise",
+            "title": "Nexus Partners",
+            "health": "at-risk",
+            "status": "IN_PROGRESS",
+            "industry": "Professional Services",
+            "rootCause": "No progress recorded since it was created.",
+            "aiConfidence": 0.3,
+            "sourceRecord": "ClientCRM:cmr3cajaj0004vzjwzu8ko7m2",
+            "predictedRisk": 0.2,
+            "businessImpact": 90000,
+            "nextBestAction": "Confirm it has an owner and has actually started.",
+            "predictedCompletion": null,
+            "_markings": [],
+            "_position": null,
+            "createdAt": "2026-08-30T11:18:59.525Z",
+            "updatedAt": "2026-09-03T08:04:57.581Z"
+          },
+          {
+            "id": "cmtfpv9hd0021nj7ctn70oojt",
+            "objectId": "cmtfpv9hd0021nj7ctn70oojt",
+            "arr": 180000,
+            "tier": "strategic",
+            "title": "TechNova Inc.",
+            "health": "good",
+            "status": "IN_PROGRESS",
+            "industry": "Technology",
+            "rootCause": "No progress recorded since it was created.",
+            "aiConfidence": 0.3,
+            "sourceRecord": "ClientCRM:cmr3caja00000vzjwl5a3g6ez",
+            "predictedRisk": 0.2,
+            "businessImpact": 180000,
+            "nextBestAction": "Confirm it has an owner and has actually started.",
+            "predictedCompletion": null,
+            "_markings": [],
+            "_position": null,
+            "createdAt": "2026-08-30T11:18:59.522Z",
+            "updatedAt": "2026-09-03T08:04:57.577Z"
+          }
+        ]
+      },
+      {
+        "id": "BLOCKED",
+        "label": "BLOCKED",
+        "color": "#ef4444",
+        "collapsed": false,
+        "items": [
+          {
+            "id": "cmtfpv9hr002xnj7cud4fvuqi",
+            "objectId": "cmtfpv9hr002xnj7cud4fvuqi",
+            "arr": 28000,
+            "tier": "starter",
+            "title": "PulseHR",
+            "health": "critical",
+            "status": "BLOCKED",
+            "industry": "HR Technology",
+            "rootCause": "No progress recorded since it was created.",
+            "aiConfidence": 0.3,
+            "sourceRecord": "ClientCRM:cmr3cajaq000fvzjwgy0yoebm",
+            "predictedRisk": 0.5,
+            "businessImpact": 28000,
+            "nextBestAction": "Confirm it has an owner and has actually started.",
+            "predictedCompletion": null,
+            "_markings": [],
+            "_position": null,
+            "createdAt": "2026-08-30T11:18:59.536Z",
+            "updatedAt": "2026-09-03T08:04:57.588Z"
+          }
+        ]
+      },
+      {
+        "id": "AT_RISK",
+        "label": "AT RISK",
+        "color": "#f97316",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "AWAITING_APPROVAL",
+        "label": "AWAITING APPROVAL",
+        "color": "#8b5cf6",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "AWAITING_CUSTOMER",
+        "label": "AWAITING CUSTOMER",
+        "color": "#06b6d4",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "UNDER_REVIEW",
+        "label": "UNDER REVIEW",
+        "color": "#6366f1",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "ESCALATED",
+        "label": "ESCALATED",
+        "color": "#dc2626",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "COMPLETED",
+        "label": "COMPLETED",
+        "color": "#10b981",
+        "collapsed": false,
+        "items": []
+      },
+      {
+        "id": "CANCELLED",
+        "label": "CANCELLED",
+        "color": "#6b7280",
+        "collapsed": false,
+        "items": []
+      }
+    ],
+    "ungrouped": [],
+    "items": [
+      {
+        "id": "cmtfpv9hv0035nj7ctzpr7kox",
+        "objectId": "cmtfpv9hv0035nj7ctzpr7kox",
+        "arr": 220000,
+        "tier": "strategic",
+        "title": "GlobeMed Group",
+        "health": "good",
+        "status": "IN_PROGRESS",
+        "industry": "Healthcare",
+        "rootCause": "No progress recorded since it was created.",
+        "aiConfidence": 0.3,
+        "sourceRecord": "ClientCRM:cmr3cajan000avzjwzjp95nlo",
+        "predictedRisk": 0.2,
+        "businessImpact": 220000,
+        "nextBestAction": "Confirm it has an owner and has actually started.",
+        "predictedCompletion": null,
+        "_markings": [],
+        "_position": null,
+        "createdAt": "2026-08-30T11:18:59.539Z",
+        "updatedAt": "2026-09-03T08:04:57.591Z"
+      },
+      {
+        "id": "cmtfpv9hr002xnj7cud4fvuqi",
+        "objectId": "cmtfpv9hr002xnj7cud4fvuqi",
+        "arr": 28000,
+        "tier": "starter",
+        "title": "PulseHR",
+        "health": "critical",
+        "status": "BLOCKED",
+        "industry": "HR Technology",
+        "rootCause": "No progress recorded since it was created.",
+        "aiConfidence": 0.3,
+        "sourceRecord": "ClientCRM:cmr3cajaq000fvzjwgy0yoebm",
+        "predictedRisk": 0.5,
+        "businessImpact": 28000,
+        "nextBestAction": "Confirm it has an owner and has actually started.",
+        "predictedCompletion": null,
+        "_markings": [],
+        "_position": null,
+        "createdAt": "2026-08-30T11:18:59.536Z",
+        "updatedAt": "2026-09-03T08:04:57.588Z"
+      },
+      {
+        "id": "cmtfpv9ho002pnj7cezokb8y2",
+        "objectId": "cmtfpv9ho002pnj7cezokb8y2",
+        "arr": 65000,
+        "tier": "standard",
+        "title": "Vantage Retail",
+        "health": "good",
+        "status": "IN_PROGRESS",
+        "industry": "Retail & E-commerce",
+        "rootCause": "No progress recorded since it was created.",
+        "aiConfidence": 0.3,
+        "sourceRecord": "ClientCRM:cmr3cajao000dvzjwqocgeqij",
+        "predictedRisk": 0.2,
+        "businessImpact": 65000,
+        "nextBestAction": "Confirm it has an owner and has actually started.",
+        "predictedCompletion": null,
+        "_markings": [],
+        "_position": null,
+        "createdAt": "2026-08-30T11:18:59.532Z",
+        "updatedAt": "2026-09-03T08:04:57.586Z"
+      },
+      {
+        "id": "cmtfpv9hk002hnj7cuqexiet0",
+        "objectId": "cmtfpv9hk002hnj7cuqexiet0",
+        "arr": 140000,
+        "tier": "enterprise",
+        "title": "Meridian Capital",
+        "health": "good",
+        "status": "IN_PROGRESS",
+        "industry": "Financial Services",
+        "rootCause": "No progress recorded since it was created.",
+        "aiConfidence": 0.3,
+        "sourceRecord": "ClientCRM:cmr3cajal0007vzjwhyfz7wb5",
+        "predictedRisk": 0.2,
+        "businessImpact": 140000,
+        "nextBestAction": "Confirm it has an owner and has actually started.",
+        "predictedCompletion": null,
+        "_markings": [],
+        "_position": null,
+        "createdAt": "2026-08-30T11:18:59.529Z",
+        "updatedAt": "2026-09-03T08:04:57.583Z"
+      },
+      {
+        "id": "cmtfpv9hh0029nj7cvxxgnww1",
+        "objectId": "cmtfpv9hh0029nj7cvxxgnww1",
+        "arr": 90000,
+        "tier": "enterprise",
+        "title": "Nexus Partners",
+        "health": "at-risk",
+        "status": "IN_PROGRESS",
+        "industry": "Professional Services",
+        "rootCause": "No progress recorded since it was created.",
+        "aiConfidence": 0.3,
+        "sourceRecord": "ClientCRM:cmr3cajaj0004vzjwzu8ko7m2",
+        "predictedRisk": 0.2,
+        "businessImpact": 90000,
+        "nextBestAction": "Confirm it has an owner and has actually started.",
+        "predictedCompletion": null,
+        "_markings": [],
+        "_position": null,
+        "createdAt": "2026-08-30T11:18:59.525Z",
+        "updatedAt": "2026-09-03T08:04:57.581Z"
+      },
+      {
+        "id": "cmtfpv9hd0021nj7ctn70oojt",
+        "objectId": "cmtfpv9hd0021nj7ctn70oojt",
+        "arr": 180000,
+        "tier": "strategic",
+        "title": "TechNova Inc.",
+        "health": "good",
+        "status": "IN_PROGRESS",
+        "industry": "Technology",
+        "rootCause": "No progress recorded since it was created.",
+        "aiConfidence": 0.3,
+        "sourceRecord": "ClientCRM:cmr3caja00000vzjwl5a3g6ez",
+        "predictedRisk": 0.2,
+        "businessImpact": 180000,
+        "nextBestAction": "Confirm it has an owner and has actually started.",
+        "predictedCompletion": null,
+        "_markings": [],
+        "_position": null,
+        "createdAt": "2026-08-30T11:18:59.522Z",
+        "updatedAt": "2026-09-03T08:04:57.577Z"
+      }
+    ],
+    "total": 6,
+    "compiled": true
+  }
 }

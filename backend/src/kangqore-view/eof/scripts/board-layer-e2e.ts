@@ -113,6 +113,29 @@ async function main() {
   check('it picked up Customer-specific columns',
     [...bc.columns, ...bc.hiddenColumns].some((c: any) => c.id === 'arr'))
 
+  console.log('\n8. A filtered board still only shows its own type')
+  // Nothing above passed a `where`, which is why this shipped broken: building
+  // the query from the filters REPLACED the type filter instead of joining it.
+  // A Task board filtered by status returned every object in the graph with
+  // that status — Contracts, Customers, Goals — and looked entirely plausible.
+  const bf = await BoardService.createBoard({
+    name: 'Active tasks', rootTypeName: 'Task', ownerId: 'probe',
+    where: { status: ['IN_PROGRESS', 'BLOCKED', 'READY'] },
+  })
+  boards.push(bf.board.id)
+
+  const returned = await prisma.ontologyObject.findMany({
+    where: { id: { in: bf.items.map((i: any) => i.id) } },
+    select: { typeId: true, type: { select: { name: true } } },
+  })
+  const foreign = returned.filter(r => r.typeId !== type.id)
+  check('a filtered board leaks no other type',
+    returned.length > 0 && foreign.length === 0,
+    foreign.length ? `${foreign.length} foreign: ${[...new Set(foreign.map(f => f.type.name))].join(',')}` : 'empty result proves nothing')
+  check('the filter itself still applies',
+    bf.items.every((i: any) => ['IN_PROGRESS', 'BLOCKED', 'READY'].includes(i.status)),
+    JSON.stringify([...new Set(bf.items.map((i: any) => i.status))]))
+
   // ── Cleanup ────────────────────────────────────────────────────────────────
   await prisma.board.deleteMany({ where: { id: { in: boards } } })
   await prisma.ontologyObject.deleteMany({ where: { id: { in: objs } } })
