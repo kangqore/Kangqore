@@ -300,3 +300,33 @@ what the interface author believed it returned.
 **System change:** rewrote the interface and render to the real response shape;
 `marketplace.spec.ts` opens the Revenue tab specifically, and was confirmed
 failing (with the crash's original boundary text) against the pre-fix code.
+
+## 2026-09-03 — a fixed sleep hid a cold-chunk race, and passed anyway on the second try  (P2)
+
+**Context:** `marketplace.spec.ts` (PR #513) failed in CI — 2 failures, both landing
+on `/login` — while passing every time locally and matching `work-os.spec.ts`'s
+own auth-warmup pattern exactly (same `demo-token`, same 1500ms sleep).
+**Cause:** the warmup slept a fixed 1500ms instead of waiting for a real signal.
+Locally and for already-established routes this margin was always enough; in CI,
+loading the marketplace page's chunk for the first time ever (new in this PR,
+~870KB gzipped, no cache) took longer, and the sleep expired before the SPA had
+even mounted the target route — landing on whatever the router's fallback was.
+**A dead end I ruled out first, and should record:** `ProtectedRoute` reads
+`localStorage` synchronously with no network dependency, and the axios 401
+interceptor explicitly skips its logout path when `isDemo()` is true — so
+neither auth guard could have caused this. Reading both before touching the test
+avoided "fixing" the wrong layer.
+**A verification mistake worth naming:** the first attempt to prove the fix
+mattered used `git stash` on a file with no uncommitted diff — the fix was
+already committed on this branch, so nothing was reverted and the "red" run
+silently tested the already-fixed code. Caught by noticing the revert produced
+no failure where one was expected, not by trusting the green result.
+**Learning:** copying a working test's timing constant does not copy its
+reliability — the constant was tuned for chunks that were already warm. Wait on
+an observable signal (a real element appearing), not a duration. And `git stash`
+only ever reverts an UNCOMMITTED diff — on a branch where the target file is
+already committed, it silently no-ops instead of testing the negative case.
+**System change:** `waitForAuthenticatedShell()` polls for the topbar search
+control (`toBeVisible`, 20s) instead of sleeping; per-page assertions replaced
+their own sleeps with the same pattern. Confirmed failing against a genuinely
+reintroduced bug (editing the file directly, not stashing) before trusting green.

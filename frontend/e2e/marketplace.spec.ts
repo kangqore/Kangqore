@@ -50,12 +50,31 @@ async function signIn(page: Page) {
   })
 }
 
+/**
+ * Land inside the authenticated shell and stay there — asserted, not assumed.
+ *
+ * A fixed sleep here (the original 1500ms, copied from work-os.spec.ts) passed
+ * reliably in every local and prior-CI run but failed in CI for this specific
+ * page: the first CI run to ever load it hit a cold, uncached, ~870KB gzipped
+ * bundle, and by 30s — Playwright's default action timeout, already elapsed —
+ * the page had still not left /login. Waiting on a concrete signal (the search
+ * box every authenticated OS route renders) rather than guessing a duration
+ * fixes the slow case without slowing down the fast one.
+ */
+async function waitForAuthenticatedShell(page: Page) {
+  // The topbar's search control is a <button><span>Search...</span></button>,
+  // not an <input> — getByPlaceholder would never match it.
+  await expect(page.getByText('Search...', { exact: true })).toBeVisible({ timeout: 20_000 })
+  expect(page.url(), 'bounced to the login screen — auth did not take').not.toContain('/login')
+}
+
 test.describe('Marketplace (Applications)', () => {
   test.beforeEach(async ({ page }) => {
+    test.setTimeout(60_000)
     await mockApi(page)
     await signIn(page)
     await page.goto('/kangqore-view/admin', { waitUntil: 'domcontentloaded' })
-    await page.waitForTimeout(1500)
+    await waitForAuthenticatedShell(page)
   })
 
   test('/applications renders the marketplace, not a dead route', async ({ page }) => {
@@ -63,12 +82,11 @@ test.describe('Marketplace (Applications)', () => {
     page.on('pageerror', e => crashes.push(e.message))
 
     await page.goto('/kangqore-view/admin/applications', { waitUntil: 'domcontentloaded' })
-    await page.waitForTimeout(2500)
+    await expect(page.getByText('Kangqore Marketplace', { exact: true })).toBeVisible({ timeout: 15_000 })
 
     const body = await page.locator('body').innerText()
     expect(crashes, crashes.join(' | ')).toHaveLength(0)
     expect(body.includes(BOUNDARY), 'error boundary on /applications').toBe(false)
-    expect(body).toContain('Kangqore Marketplace')
   })
 
   test('the Revenue tab renders real numbers instead of throwing', async ({ page }) => {
@@ -76,17 +94,16 @@ test.describe('Marketplace (Applications)', () => {
     page.on('pageerror', e => crashes.push(e.message))
 
     await page.goto('/kangqore-view/admin/applications', { waitUntil: 'domcontentloaded' })
-    await page.waitForTimeout(2000)
     // A locator on visible text ("Revenue") matched a notification-panel item
     // instead of this button — the shell renders other text with that exact
-    // string. A test id makes the target unambiguous.
-    await page.getByTestId('marketplace-revenue-tab').click()
+    // string. A test id makes the target unambiguous. toBeVisible first,
+    // rather than clicking straight away, so a cold chunk load produces a
+    // clear "never appeared" failure instead of a click racing the mount.
+    const revenueTab = page.getByTestId('marketplace-revenue-tab')
+    await expect(revenueTab).toBeVisible({ timeout: 15_000 })
+    await revenueTab.click()
 
-    // Auto-waiting locator rather than a fixed-delay body.innerText() snapshot:
-    // the delayed read intermittently caught the DOM mid-transition (visible in
-    // a saved failure screenshot with the real numbers already painted) and
-    // would have been a flaky assertion, not a real one.
-    await expect(page.getByText('Net Revenue', { exact: true })).toBeVisible({ timeout: 5000 })
+    await expect(page.getByText('Net Revenue', { exact: true })).toBeVisible({ timeout: 5_000 })
 
     const body = await page.locator('body').innerText()
     expect(crashes, `Revenue tab threw: ${crashes.join(' | ')}`).toHaveLength(0)
