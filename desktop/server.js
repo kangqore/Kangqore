@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 function createServer(frontendBuildPath, backendUrl) {
@@ -26,9 +27,17 @@ function createServer(frontendBuildPath, backendUrl) {
   // Serve the built Vite SPA
   app.use(express.static(frontendBuildPath));
 
-  // SPA fallback — any unmatched route returns index.html so React Router handles it
+  const indexPath = path.join(frontendBuildPath, 'index.html');
+  let indexHtml = '';
+  try {
+    indexHtml = fs.readFileSync(indexPath, 'utf8');
+  } catch {
+    // index.html may not exist yet if frontend has not been built
+  }
+
+  // SPA fallback — any unmatched route returns cached index.html so React Router handles it
   app.use((req, res) => {
-    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+    res.type('html').send(indexHtml);
   });
 
   return app;
