@@ -140,3 +140,42 @@ test.describe('Work OS screens', () => {
     expect(r.boundaryHit, `error boundary on cold load: ${r.detail}`).toBe(false)
   })
 })
+
+/**
+ * The marketing scroll-reveal must never run inside the app shell.
+ *
+ * GlobalScrollAnimations hides every h1-h4/p/li/.card with `gsap.set({opacity:0})`
+ * and reveals it on a WINDOW scroll event. The OS lays out as a fixed frame with
+ * an inner scrolling pane, so the window never scrolls and that event never
+ * fires: on the OS home it left 103 of 155 elements invisible — lead names, goal
+ * titles, alert text, activity messages — all fetched successfully, none of them
+ * painted. Which subset was hidden varied per load, because it depends on what
+ * had rendered when the 400ms pass ran, so it read as "never loads in one go".
+ *
+ * Asserting on the marker rather than on opacity catches it before the animation
+ * timing matters, and gives a failure that names the cause.
+ */
+test.describe('app shell is not touched by the marketing scroll reveal', () => {
+  for (const route of ['/kangqore-view/admin', '/kangqore-view/admin/work/boards']) {
+    test(`${route} has no gsap-hidden content`, async ({ page }) => {
+      await mockApi(page)
+      await signIn(page)
+      await page.goto(route, { waitUntil: 'domcontentloaded' })
+      // Longer than the 400ms pass plus its ScrollTrigger.refresh().
+      await page.waitForTimeout(2500)
+
+      const r = await page.evaluate(() => {
+        const tagged = [...document.querySelectorAll('[data-gsap]')]
+        const invisible = [...document.querySelectorAll('p,h1,h2,h3,h4,li,span')].filter(
+          el => el.textContent?.trim() && !el.children.length &&
+                getComputedStyle(el).opacity === '0' &&
+                el.getBoundingClientRect().width > 2)
+        return { tagged: tagged.length, invisible: invisible.length,
+                 sample: invisible.slice(0, 3).map(e => e.textContent!.trim().slice(0, 40)) }
+      })
+
+      expect(r.tagged, `the global scroll reveal claimed ${r.tagged} elements inside the app shell`).toBe(0)
+      expect(r.invisible, `${r.invisible} text elements are rendered at opacity 0: ${r.sample.join(' | ')}`).toBe(0)
+    })
+  }
+})

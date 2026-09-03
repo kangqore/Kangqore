@@ -226,6 +226,29 @@ type filter — the two should never be alternatives.
 **System change:** `board-layer-e2e` §8 covers the filtered branch, and was
 verified to fail (19/1) with the fix reverted before being trusted.
 
+## 2026-09-03 — a marketing scroll animation was hiding the whole app  (P0)
+
+**Context:** the OS home rendered cards with badges, scores, progress bars and
+values, but no lead names, no goal titles, no alert text, no activity messages.
+Reported as "never gets load in one go".
+**Cause:** `GlobalScrollAnimations` is mounted app-wide in `App.jsx` and hides
+every `h1-h4 / p / li / .card` with `gsap.set({opacity:0, y:30})`, revealing each
+on a **window** scroll event. The OS lays out as a fixed frame with an inner
+scrolling pane, so `document.scrollHeight === clientHeight` and that event can
+never fire. 103 of 155 tagged elements stayed invisible **permanently**. Which
+ones varied per load, because the pass runs on a 400ms timer and catches whatever
+had rendered by then — hence the "sometimes different" symptom.
+**Why it hid for so long:** every check was of *data*. The API returned all 8
+leads with names; probes were green; the smoke test asserted no crash and
+`chars > 200`, which a page with two thirds of its text at opacity 0 satisfies
+easily. Nothing asserted that fetched content was actually **painted**.
+**Learning:** "the endpoint returns it" and "the component renders it" still do
+not mean a person can see it. When content is missing, read the computed style of
+the element before questioning the data — the DOM said `opacity: 0` in one query
+and would have saved an hour of theorising about joins and colour tokens.
+**System change:** app-shell routes and any element inside an inner scroll
+container are excluded from the reveal, and `work-os.spec.ts` now asserts zero
+`[data-gsap]` elements in the shell — confirmed failing with the guards removed.
 ## 2026-09-03 — one rate-limit bucket for the entire installation  (P1)
 
 **Context:** while diagnosing a UI problem, the whole API started returning 429
