@@ -270,3 +270,105 @@ IP for everything else, anonymous limit unchanged. The key must come from a
 **verified** token; keying on the raw Authorization header would let anyone mint
 unlimited windows, which is worse than the shared bucket. `rate-limit-e2e`
 asserts that specific evasion and was confirmed catching it.
+
+## 2026-09-03 — "Applications" was a nav entry with no route behind it  (P1)
+
+**Context:** asked to make the existing "Applications" rail item show the
+marketplace. `nav.ts` declared it (`defaultPath: .../applications`), but no
+`<Route path="applications/*">` existed anywhere — clicking it had always gone
+nowhere. Checked before building anything, the same way BoardService turned out
+to have zero consumers earlier today.
+**Fix:** mounted it on the same `MarketplaceModule` already at `marketplace/*`,
+rather than a second copy — one component, two entry points, so the names can't
+drift into two different screens.
+**Found on the way:** the Revenue tab inside that marketplace crashed on every
+real load. Its interface named fields — `totalPlatformFee`, `netRevenue`,
+`refundRate`, `byListing` — the backend (`kimmp/routes.ts:3746`) has never sent;
+it sends `totalRevenue` (already net of fee), `totalRefunds`, `totalInstalls`,
+`listings`. `Cannot read properties of undefined (reading 'toFixed')` every
+time, caught by nothing because the marketplace had 0 real installs, so no one
+had opened that tab with data behind it.
+**Why the frontend build didn't catch it:** `vite build` transpiles TypeScript,
+it does not type-check it (no local `tsc` on this project — noted before in
+`local-dev-tooling-notes`). A bare reference to an undeclared name, or a field
+that was never in the interface's actual source, passes the build silently and
+only throws in the browser at the exact line that evaluates it.
+**Learning:** "the build succeeded" is not evidence a TS file is even
+internally consistent here. When a component reads fields from an API response,
+diff the interface against the ACTUAL handler return statement, not against
+what the interface author believed it returned.
+**System change:** rewrote the interface and render to the real response shape;
+`marketplace.spec.ts` opens the Revenue tab specifically, and was confirmed
+failing (with the crash's original boundary text) against the pre-fix code.
+
+## 2026-09-03 — a fixed sleep hid a cold-chunk race, and passed anyway on the second try  (P2)
+
+**Context:** `marketplace.spec.ts` (PR #513) failed in CI — 2 failures, both landing
+on `/login` — while passing every time locally and matching `work-os.spec.ts`'s
+own auth-warmup pattern exactly (same `demo-token`, same 1500ms sleep).
+**Cause:** the warmup slept a fixed 1500ms instead of waiting for a real signal.
+Locally and for already-established routes this margin was always enough; in CI,
+loading the marketplace page's chunk for the first time ever (new in this PR,
+~870KB gzipped, no cache) took longer, and the sleep expired before the SPA had
+even mounted the target route — landing on whatever the router's fallback was.
+**A dead end I ruled out first, and should record:** `ProtectedRoute` reads
+`localStorage` synchronously with no network dependency, and the axios 401
+interceptor explicitly skips its logout path when `isDemo()` is true — so
+neither auth guard could have caused this. Reading both before touching the test
+avoided "fixing" the wrong layer.
+**A verification mistake worth naming:** the first attempt to prove the fix
+mattered used `git stash` on a file with no uncommitted diff — the fix was
+already committed on this branch, so nothing was reverted and the "red" run
+silently tested the already-fixed code. Caught by noticing the revert produced
+no failure where one was expected, not by trusting the green result.
+**Learning:** copying a working test's timing constant does not copy its
+reliability — the constant was tuned for chunks that were already warm. Wait on
+an observable signal (a real element appearing), not a duration. And `git stash`
+only ever reverts an UNCOMMITTED diff — on a branch where the target file is
+already committed, it silently no-ops instead of testing the negative case.
+**System change:** `waitForAuthenticatedShell()` polls for the topbar search
+control (`toBeVisible`, 20s) instead of sleeping; per-page assertions replaced
+their own sleeps with the same pattern. Confirmed failing against a genuinely
+reintroduced bug (editing the file directly, not stashing) before trusting green.
+
+## 2026-09-03 — a global, unguarded auth effect racing every OS smoke test  (P1)
+
+**Context:** #513's marketplace tests still failed in CI after the sleep→signal
+fix (`waitForAuthenticatedShell`) — landing on `/login`, confirmed by an
+artifact-less run reproduced locally (`npm run build && CI=true
+DISABLE_API_PROXY=true npx playwright test`, matching the workflow exactly,
+since GitHub had uploaded no report to inspect).
+**Cause:** `src/context/AuthContext.jsx` mounts once for the WHOLE app —
+public site and OS both — and independent of any OS route, fires a bare
+`axios.get('/api/auth/me')` with no CI guard. `vite preview` (the production
+server this CI job runs, not `vite dev`) serves its SPA history fallback —
+200 + `index.html` — for any unmocked GET to a non-file path. `response.data`
+is that HTML string; `.user` off a string is `undefined`;
+`localStorage.setItem('user', JSON.stringify(undefined))` stores the literal
+STRING `"undefined"`. The next time `ProtectedRoute`'s synchronous
+localStorage check runs anywhere, `JSON.parse("undefined")` throws, is
+swallowed as "malformed session", and the route bounces to `/login`.
+**Why the previous fix made it MORE likely to reproduce, not less:** this is a
+race against an UNRELATED global effect resolving, not against the target
+page's own load. Waiting longer for a "more robust" signal gave that effect
+more wall-clock time to complete and corrupt localStorage before the next
+check — the opposite of what a "give it more time" fix assumes, and the
+opposite of the theory (cold-chunk loading) the first fix was built on, which
+had never been checked against an actual downloaded artifact.
+**Learning:** when a fix based on a theory doesn't resolve a CI failure,
+download the actual artifact / reproduce the exact recipe locally before
+extending the theory further. `npm run build && CI=true DISABLE_API_PROXY=true
+npx playwright test` reproduced it deterministically in under a minute;
+guessing at a second timing tweak would not have found the real cause. This is
+also the second time in the two fixes for #513 that a plausible-sounding
+timing theory was wrong — worth treating "it's probably just slow CI" as a
+hypothesis to disprove, not a default explanation.
+**Not fixed (deliberately, scope):** `AuthContext.jsx`'s unguarded fetchUser is
+a latent bug independent of this PR — any smoke test with enough dwell time
+before its assertions is exposed to it, not just this one. `work-os.spec.ts`
+and `smoke.spec.ts` are fast enough to mostly avoid the race, not immune to it.
+**System change:** `marketplace.spec.ts`'s `mockApi()` also stubs
+`/api/auth/me` with a valid `{ user }` shape, closing the corruption at its
+source rather than out-waiting it. Confirmed failing without the mock (5/5
+across repeats) and passing with it (8/8 across repeats), both under the exact
+CI recipe run locally — not the dev server.

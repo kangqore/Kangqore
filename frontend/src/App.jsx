@@ -306,6 +306,11 @@ function AppContent() {
             <Route path="settings/*"       element={<SettingsModule />}      />
             <Route path="relay/*"          element={<RelayPage />}           />
             <Route path="marketplace/*"    element={<MarketplaceModule />}   />
+            {/* "Applications" is the marketplace under its rail label — the nav
+                item existed with no route behind it (nav.ts declared it, nothing
+                rendered it). Mounted on the same component rather than a copy,
+                so the two names can never drift into two different screens. */}
+            <Route path="applications/*"   element={<MarketplaceModule />}   />
             <Route path="developer/*"      element={<DeveloperModule />}     />
           </Route>
 

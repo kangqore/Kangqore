@@ -14,6 +14,7 @@ const BLUE = '#579bfc'
 const TEAL = '#14b8a6'
 const AMB  = '#f59e0b'
 const GRN  = '#10b981'
+const RED  = '#ef4444'
 
 interface Listing {
   id:           string
@@ -114,7 +115,7 @@ export function MarketplacePage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => setView('revenue')}
+            <button onClick={() => setView('revenue')} data-testid="marketplace-revenue-tab"
               className="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold"
               style={view === 'revenue' ? { background: AMB, color: '#fff' } : { background: 'rgba(245,158,11,0.1)', color: AMB, border: `1px solid rgba(245,158,11,0.2)` }}>
               <BarChart3 className="w-3.5 h-3.5" /> Revenue
@@ -429,10 +430,21 @@ function SubmitView({ qc, onBack }: { qc: ReturnType<typeof useQueryClient>; onB
 
 // ── Partner Revenue Dashboard ─────────────────────────────────────────────────
 
+// Matches the actual response shape from GET .../marketplace/partner/dashboard
+// (kimmp/routes.ts:3746) exactly. The previous interface named fields —
+// totalPlatformFee, netRevenue, refundRate, byListing — the backend has never
+// sent, so this view threw "Cannot read properties of undefined (reading
+// 'toFixed')" the moment `data` resolved to anything, which nothing caught
+// because there was no traffic to trigger it (13 free listings, 0 installs).
+// totalRevenue here is already net of platform fee — the backend sums
+// `amount - platformFee` per captured charge — so it is presented as such
+// rather than alongside a fabricated "gross" figure the backend never computes.
 interface PartnerDashboard {
-  totalRevenue: number; totalPlatformFee: number; netRevenue: number
-  totalInstalls: number; totalRefunds: number; refundRate: number
-  byListing: Array<{ listingId: string; name: string; installs: number; revenue: number; fee: number }>
+  totalRevenue: number; totalRefunds: number; totalInstalls: number
+  listings: Array<{
+    id: string; name: string; type: string; installCount: number
+    revenue: number; refunds: number; charges: number
+  }>
 }
 
 function RevenueView({ onBack }: { onBack: () => void }) {
@@ -457,49 +469,54 @@ function RevenueView({ onBack }: { onBack: () => void }) {
         <div className="grid grid-cols-3 gap-4">{[1,2,3].map(i => <div key={i} className="h-24 rounded-2xl animate-pulse" style={{ background: SURF }} />)}</div>
       ) : data ? (
         <>
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: 'Gross Revenue',   value: `$${data.totalRevenue.toFixed(2)}`,    icon: DollarSign, color: GRN  },
-              { label: 'Platform Fee',    value: `$${data.totalPlatformFee.toFixed(2)}`, icon: TrendingUp, color: AMB  },
-              { label: 'Net to Partners', value: `$${data.netRevenue.toFixed(2)}`,       icon: BarChart3,  color: TEAL },
-            ].map(s => (
-              <div key={s.label} className="rounded-2xl border p-4" style={{ background: CARD, borderColor: BDR }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <s.icon className="w-4 h-4" style={{ color: s.color }} />
-                  <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: T2 }}>{s.label}</span>
-                </div>
-                <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: 'Total Installs', value: data.totalInstalls,                      color: BLUE },
-              { label: 'Refunds',        value: data.totalRefunds,                        color: RED  },
-              { label: 'Refund Rate',    value: `${(data.refundRate * 100).toFixed(1)}%`, color: T1   },
-            ].map(s => (
-              <div key={s.label} className="rounded-2xl border p-4" style={{ background: CARD, borderColor: BDR }}>
-                <p className="text-[10px] font-semibold uppercase tracking-wider mb-2" style={{ color: T2 }}>{s.label}</p>
-                <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
-              </div>
-            ))}
-          </div>
-
-          {data.byListing.length > 0 && (
-            <div className="rounded-2xl border" style={{ background: CARD, borderColor: BDR }}>
-              <div className="p-4 border-b" style={{ borderColor: BDR }}>
-                <p className="text-xs font-bold" style={{ color: T1 }}>Revenue by Listing</p>
-              </div>
-              <div className="divide-y" style={{ borderColor: BDR }}>
-                {data.byListing.map(row => (
-                  <div key={row.listingId} className="flex items-center gap-4 px-4 py-3">
-                    <p className="text-xs font-medium flex-1" style={{ color: T1 }}>{row.name || row.listingId.slice(0, 8)}</p>
-                    <span className="text-[10px]" style={{ color: T2 }}>{row.installs} installs</span>
-                    <span className="text-xs font-bold" style={{ color: GRN }}>${row.revenue.toFixed(2)}</span>
-                    <span className="text-[10px]" style={{ color: T2 }}>fee: ${row.fee.toFixed(2)}</span>
+          {(() => {
+            // Refunds against everything ever charged — a real ratio derived
+            // from the two real numbers the backend sends, not a third field
+            // it doesn't. 0/0 (no charges yet) reads as 0%, not NaN%.
+            const charged = data.totalRevenue + data.totalRefunds
+            const refundRate = charged > 0 ? data.totalRefunds / charged : 0
+            return (
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { label: 'Net Revenue',    value: `$${data.totalRevenue.toFixed(2)}`, icon: DollarSign, color: GRN  },
+                  { label: 'Total Installs', value: String(data.totalInstalls),          icon: TrendingUp, color: BLUE },
+                  { label: 'Refunds',        value: `$${data.totalRefunds.toFixed(2)} · ${(refundRate * 100).toFixed(1)}%`, icon: BarChart3, color: RED },
+                ].map(s => (
+                  <div key={s.label} className="rounded-2xl border p-4" style={{ background: CARD, borderColor: BDR }}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <s.icon className="w-4 h-4" style={{ color: s.color }} />
+                      <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: T2 }}>{s.label}</span>
+                    </div>
+                    <p className="text-xl font-black" style={{ color: s.color }}>{s.value}</p>
                   </div>
                 ))}
+              </div>
+            )
+          })()}
+
+          {data.listings.length > 0 && (
+            <div className="rounded-2xl border" style={{ background: CARD, borderColor: BDR }}>
+              <div className="p-4 border-b" style={{ borderColor: BDR }}>
+                <p className="text-xs font-bold" style={{ color: T1 }}>Revenue by listing</p>
+              </div>
+              <div className="divide-y" style={{ borderColor: BDR }}>
+                {data.listings
+                  .filter(row => row.charges > 0)
+                  .map(row => (
+                    <div key={row.id} className="flex items-center gap-4 px-4 py-3">
+                      <p className="text-xs font-medium flex-1" style={{ color: T1 }}>{row.name}</p>
+                      <span className="text-[10px]" style={{ color: T2 }}>{row.installCount} installs</span>
+                      <span className="text-xs font-bold" style={{ color: GRN }}>${row.revenue.toFixed(2)}</span>
+                      {row.refunds > 0 && (
+                        <span className="text-[10px]" style={{ color: RED }}>refunded ${row.refunds.toFixed(2)}</span>
+                      )}
+                    </div>
+                  ))}
+                {data.listings.every(row => row.charges === 0) && (
+                  <div className="px-4 py-3 text-xs" style={{ color: T2 }}>
+                    {data.listings.length} listing{data.listings.length === 1 ? '' : 's'} published, none charged yet.
+                  </div>
+                )}
               </div>
             </div>
           )}
