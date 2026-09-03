@@ -1,0 +1,601 @@
+{
+  "marketplace": {
+    "listings": [
+      {
+        "id": "cmskm3gjq00dl6d4io2qhyjyj",
+        "type": "AGENT",
+        "name": "Knowledge Concierge",
+        "slug": "knowledge-concierge",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "productivity",
+        "description": "Answers questions by searching the platform knowledge base — the fastest path from zero to a working agent.",
+        "longDesc": null,
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "role": "Knowledge Assistant",
+          "systemPrompt": "You help users find answers by searching the internal knowledge base and citing what you find. Keep answers short and cite sources.",
+          "suggestedTools": [
+            "search_knowledge_base"
+          ]
+        },
+        "iconEmoji": "📚",
+        "tags": [
+          "starter",
+          "knowledge"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-08T16:52:32.005Z",
+        "createdAt": "2026-08-08T16:52:32.006Z",
+        "updatedAt": "2026-08-08T16:52:32.006Z"
+      },
+      {
+        "id": "cmskm3gju00dm6d4ippvguphv",
+        "type": "AGENT",
+        "name": "Customer Health Monitor",
+        "slug": "customer-health-monitor",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "crm",
+        "description": "Reviews account signals and flags customers at risk, using the same health-score and SLA-breach calculators the CS dashboard runs on.",
+        "longDesc": null,
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "role": "Customer Health Analyst",
+          "systemPrompt": "You assess customer account health using the available calculators and summarize risk in plain language for a CSM.",
+          "suggestedTools": [
+            "client_health_score",
+            "engagement_health_index",
+            "sla_breach_probability"
+          ]
+        },
+        "iconEmoji": "💚",
+        "tags": [
+          "starter",
+          "customer-success"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-08T16:52:32.010Z",
+        "createdAt": "2026-08-08T16:52:32.010Z",
+        "updatedAt": "2026-08-08T16:52:32.010Z"
+      },
+      {
+        "id": "cmskm3gjv00dn6d4idj8nm609",
+        "type": "AGENT",
+        "name": "Deal & Revenue Forecaster",
+        "slug": "revenue-forecaster",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "finance",
+        "description": "Projects ARR trajectory and collection risk from real pipeline and invoice data.",
+        "longDesc": null,
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "role": "Revenue Forecasting Analyst",
+          "systemPrompt": "You project revenue and flag collection risk using the available financial calculators. Show your assumptions.",
+          "suggestedTools": [
+            "arr_projection",
+            "ltv_cac_ratio",
+            "invoice_collection_forecast"
+          ]
+        },
+        "iconEmoji": "📈",
+        "tags": [
+          "starter",
+          "finance"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-08T16:52:32.011Z",
+        "createdAt": "2026-08-08T16:52:32.011Z",
+        "updatedAt": "2026-08-08T16:52:32.011Z"
+      },
+      {
+        "id": "cmskm3gjv00do6d4ianj6gmny",
+        "type": "AGENT",
+        "name": "Project Risk Monitor",
+        "slug": "project-risk-monitor",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "productivity",
+        "description": "Flags at-risk projects using deadline, velocity, and aging signals before a PM has to ask.",
+        "longDesc": null,
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "role": "Project Risk Analyst",
+          "systemPrompt": "You monitor project health and flag deadline or velocity risk early, with a specific reason for each flag.",
+          "suggestedTools": [
+            "project_health_score",
+            "deadline_risk_score",
+            "overdue_aging",
+            "sprint_velocity"
+          ]
+        },
+        "iconEmoji": "🚧",
+        "tags": [
+          "starter",
+          "delivery"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-08T16:52:32.011Z",
+        "createdAt": "2026-08-08T16:52:32.012Z",
+        "updatedAt": "2026-08-08T16:52:32.012Z"
+      },
+      {
+        "id": "cmskm3gjw00dp6d4i3b5qffpf",
+        "type": "AGENT",
+        "name": "Strategic Insight Generator",
+        "slug": "strategic-insight-generator",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "intelligence",
+        "description": "Uses KIMMP’s governed decision and client-analysis actions to turn raw activity into a strategic recommendation — the deepest starter template, built on governed actions rather than read-only calculators.",
+        "longDesc": null,
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "role": "Strategic Insight Analyst",
+          "systemPrompt": "You analyze client activity and produce a strategic recommendation with evidence and confidence, using the governed KIMMP actions available to you.",
+          "suggestedTools": [
+            "ANALYZE_CLIENT",
+            "STRATEGIC_DECISION",
+            "GENERATE_INSIGHT"
+          ]
+        },
+        "iconEmoji": "🧠",
+        "tags": [
+          "starter",
+          "governed-actions"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-08T16:52:32.012Z",
+        "createdAt": "2026-08-08T16:52:32.012Z",
+        "updatedAt": "2026-08-08T16:52:32.012Z"
+      },
+      {
+        "id": "cmslrt6wb007bj5u5tmt0wsmm",
+        "type": "AGENT",
+        "name": "Customer Service Case Handler",
+        "slug": "customer-service-case-handler",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "crm",
+        "description": "Triages and resolves customer support cases directly — logs updates, resolves, and escalates through governed, audited actions instead of a hardcoded workflow.",
+        "longDesc": null,
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "role": "Customer Service Case Handler",
+          "systemPrompt": "You triage customer support cases: log updates, resolve cases with a clear summary, and escalate when priority or entitlement tier warrants it. Always explain your reasoning.",
+          "suggestedTools": [
+            "LOG_CUSTOMER_CASE_UPDATE",
+            "RESOLVE_CUSTOMER_CASE",
+            "ESCALATE_CUSTOMER_CASE",
+            "sla_breach_probability"
+          ]
+        },
+        "iconEmoji": "🎧",
+        "tags": [
+          "starter",
+          "customer-success",
+          "contested-modules"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-09T12:20:16.811Z",
+        "createdAt": "2026-08-09T12:20:16.811Z",
+        "updatedAt": "2026-08-09T12:20:16.811Z"
+      },
+      {
+        "id": "cmslrt6wh007cj5u50ico4rrw",
+        "type": "AGENT",
+        "name": "HR Case Assistant",
+        "slug": "hr-case-assistant",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "hr",
+        "description": "Logs updates on HR cases and answers policy questions — deliberately cannot close or escalate a case on its own; that stays with a human.",
+        "longDesc": null,
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "role": "HR Case Assistant",
+          "systemPrompt": "You help HR teams keep case notes current and answer policy questions by searching the knowledge base. You can log updates to a case, but you cannot close or escalate one — flag those for a human reviewer instead.",
+          "suggestedTools": [
+            "LOG_HR_CASE_UPDATE",
+            "search_knowledge_base"
+          ]
+        },
+        "iconEmoji": "🧑‍💼",
+        "tags": [
+          "starter",
+          "hr",
+          "contested-modules"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-09T12:20:16.817Z",
+        "createdAt": "2026-08-09T12:20:16.818Z",
+        "updatedAt": "2026-08-09T12:20:16.818Z"
+      },
+      {
+        "id": "cmsrrp3rp007ui4r59c7pr77w",
+        "type": "PACK",
+        "name": "Customer Service Management",
+        "slug": "battlecard-csm",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "competitive",
+        "description": "\"CSM is the established customer-service platform — why would we move a support desk off it?\"",
+        "longDesc": "CSM's own reviewers cite developer-expertise requirements, an unintuitive interface, and pricing opacity. Kangqore ships a governed CustomerCase type, three tool-callable actions, a pre-built Object Set, and an Agent Studio template — no developer expertise required, transparent pricing, no separate consumption meter.",
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "verdict": "WON",
+          "response": "CSM's own reviewers cite developer-expertise requirements, an unintuitive interface, and pricing opacity. Kangqore ships a governed CustomerCase type, three tool-callable actions, a pre-built Object Set, and an Agent Studio template — no developer expertise required, transparent pricing, no separate consumption meter.",
+          "objection": "\"CSM is the established customer-service platform — why would we move a support desk off it?\"",
+          "proofLink": "/kangqore-view/admin/kangqore-immp/contested-modules",
+          "serviceNowModule": "CSM",
+          "keyDifferentiators": [
+            "No developer expertise required to configure a case type",
+            "Transparent, non-metered pricing",
+            "AI-callable case actions with governed blast radius"
+          ]
+        },
+        "iconEmoji": "🎧",
+        "tags": [
+          "CSM",
+          "WON"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-13T17:03:43.188Z",
+        "createdAt": "2026-08-13T17:03:43.189Z",
+        "updatedAt": "2026-08-13T17:03:43.189Z"
+      },
+      {
+        "id": "cmsrrp3rr007vi4r53uuj032k",
+        "type": "PACK",
+        "name": "HR Service Delivery",
+        "slug": "battlecard-hrsd",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "competitive",
+        "description": "\"HRSD already handles our employee lifecycle — what does Kangqore add?\"",
+        "longDesc": "HRSD's per-employee pricing scales with total headcount, not HR seat count, and its own reviewers flag data quality as 'not solved by the tool itself.' Kangqore's HrCase type ships with confidentiality built in, a BIDS™ Workforce Intelligence™ diagnostic surfacing the data-quality gap upfront, and a conservative tool-callability split — logging is agent-callable, closing a case stays human-only.",
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "verdict": "WON",
+          "response": "HRSD's per-employee pricing scales with total headcount, not HR seat count, and its own reviewers flag data quality as 'not solved by the tool itself.' Kangqore's HrCase type ships with confidentiality built in, a BIDS™ Workforce Intelligence™ diagnostic surfacing the data-quality gap upfront, and a conservative tool-callability split — logging is agent-callable, closing a case stays human-only.",
+          "objection": "\"HRSD already handles our employee lifecycle — what does Kangqore add?\"",
+          "proofLink": "/kangqore-view/admin/kangqore-immp/contested-modules",
+          "serviceNowModule": "HRSD",
+          "keyDifferentiators": [
+            "Confidentiality modeled into the case type, not bolted on",
+            "BIDS™ diagnostic surfaces data-quality gaps before deployment",
+            "Human-gated close/escalate actions"
+          ]
+        },
+        "iconEmoji": "🧑‍💼",
+        "tags": [
+          "HRSD",
+          "WON"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-13T17:03:43.191Z",
+        "createdAt": "2026-08-13T17:03:43.192Z",
+        "updatedAt": "2026-08-13T17:03:43.192Z"
+      },
+      {
+        "id": "cmsrrp3rw007xi4r5zfn2fic6",
+        "type": "PACK",
+        "name": "App Engine",
+        "slug": "battlecard-app-engine",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "competitive",
+        "description": "\"App Engine has been a Gartner Magic Quadrant Leader for six straight years — Agent Studio has no track record.\"",
+        "longDesc": "That's true, and the honest answer, not a deflection: Agent Studio's own published benchmark discloses insufficientData against App Engine's Forrester-study sample size. What's real: 5 starter templates, 4 governed tool-callable actions, and a public marketplace, versus App Engine's six-year accumulated depth. This is a young catalog, not a parity claim.",
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "verdict": "CONTESTED",
+          "response": "That's true, and the honest answer, not a deflection: Agent Studio's own published benchmark discloses insufficientData against App Engine's Forrester-study sample size. What's real: 5 starter templates, 4 governed tool-callable actions, and a public marketplace, versus App Engine's six-year accumulated depth. This is a young catalog, not a parity claim.",
+          "objection": "\"App Engine has been a Gartner Magic Quadrant Leader for six straight years — Agent Studio has no track record.\"",
+          "proofLink": "/trust/agent-studio-benchmark",
+          "serviceNowModule": "App Engine",
+          "keyDifferentiators": [
+            "Governed, audited action execution by default",
+            "Public benchmark published even when the data is thin",
+            "Growing template/marketplace catalog, honestly small today"
+          ]
+        },
+        "iconEmoji": "⚙️",
+        "tags": [
+          "App Engine",
+          "CONTESTED"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-13T17:03:43.195Z",
+        "createdAt": "2026-08-13T17:03:43.196Z",
+        "updatedAt": "2026-08-13T17:03:43.196Z"
+      },
+      {
+        "id": "cmsrrp3ry007zi4r5ig04mu8w",
+        "type": "PACK",
+        "name": "IT Operations Management",
+        "slug": "battlecard-itom",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "competitive",
+        "description": "\"What does Kangqore do for infrastructure discovery and event correlation that ITOM doesn't?\"",
+        "longDesc": "Nothing built yet — said plainly rather than stretched. ITOM's discovery and correlation engine is out of scope for every phase this roadmap has shipped. The realistic position is the same as ITSM: Kangqore's ontology and governance layer sit above ITOM's existing infrastructure data, not in competition with it.",
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "verdict": "TOGETHER",
+          "response": "Nothing built yet — said plainly rather than stretched. ITOM's discovery and correlation engine is out of scope for every phase this roadmap has shipped. The realistic position is the same as ITSM: Kangqore's ontology and governance layer sit above ITOM's existing infrastructure data, not in competition with it.",
+          "objection": "\"What does Kangqore do for infrastructure discovery and event correlation that ITOM doesn't?\"",
+          "proofLink": "/trust",
+          "serviceNowModule": "ITOM",
+          "keyDifferentiators": [
+            "No built Kangqore ITOM competitor — stated honestly, not hedged"
+          ]
+        },
+        "iconEmoji": "📡",
+        "tags": [
+          "ITOM",
+          "TOGETHER"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-13T17:03:43.198Z",
+        "createdAt": "2026-08-13T17:03:43.198Z",
+        "updatedAt": "2026-08-13T17:03:43.198Z"
+      },
+      {
+        "id": "cmsrrp3ru007wi4r5iry0vnuw",
+        "type": "PACK",
+        "name": "Security Operations",
+        "slug": "battlecard-secops",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "competitive",
+        "description": "\"SecOps has an AI Control Tower now — isn't that the same AI-governance story?\"",
+        "longDesc": "SecOps' own AI Control Tower was retrofitted after four years of AI-agent shipping. HANUMANAS governance — every AI call logged, PII-scanned, budget-checked before it executes — was native from the first agent this platform ever ran. The AI Security View extends that same real audit/approval data into a security-team-facing lens, not a new detection engine bolted on after the fact.",
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "verdict": "WON",
+          "response": "SecOps' own AI Control Tower was retrofitted after four years of AI-agent shipping. HANUMANAS governance — every AI call logged, PII-scanned, budget-checked before it executes — was native from the first agent this platform ever ran. The AI Security View extends that same real audit/approval data into a security-team-facing lens, not a new detection engine bolted on after the fact.",
+          "objection": "\"SecOps has an AI Control Tower now — isn't that the same AI-governance story?\"",
+          "proofLink": "/trust/governance-native-vs-retrofitted",
+          "serviceNowModule": "SecOps",
+          "keyDifferentiators": [
+            "Governance-native since day one, not retrofitted",
+            "AI Security View built on real HANUMANAS audit + pending-approval data",
+            "Sequencing argument published as a whitepaper, not just asserted"
+          ]
+        },
+        "iconEmoji": "🛡️",
+        "tags": [
+          "SecOps",
+          "WON"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-13T17:03:43.193Z",
+        "createdAt": "2026-08-13T17:03:43.194Z",
+        "updatedAt": "2026-08-13T17:03:43.194Z"
+      },
+      {
+        "id": "cmsrrp3rx007yi4r5cus1pp36",
+        "type": "PACK",
+        "name": "IT Service Management",
+        "slug": "battlecard-itsm",
+        "author": "Kangqore",
+        "authorEmail": null,
+        "category": "competitive",
+        "description": "\"We run ITSM for incident/change/problem management — are you asking us to rip it out?\"",
+        "longDesc": "No — this is the one case where the playbook's own recommendation is coexistence, and no Kangqore phase has built a competing capability here. The right pitch is Kangqore's ontology sitting alongside ITSM, not replacing it: import your CMDB via the Migration Accelerator (P7.2) and let HANUMANAS govern the AI layer on top, while ITSM keeps running the ticket queue it already runs well.",
+        "oisImpact": null,
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "manifest": {
+          "verdict": "TOGETHER",
+          "response": "No — this is the one case where the playbook's own recommendation is coexistence, and no Kangqore phase has built a competing capability here. The right pitch is Kangqore's ontology sitting alongside ITSM, not replacing it: import your CMDB via the Migration Accelerator (P7.2) and let HANUMANAS govern the AI layer on top, while ITSM keeps running the ticket queue it already runs well.",
+          "objection": "\"We run ITSM for incident/change/problem management — are you asking us to rip it out?\"",
+          "proofLink": "/kangqore-view/admin/ontology/pipelines",
+          "serviceNowModule": "ITSM",
+          "keyDifferentiators": [
+            "No built Kangqore ITSM competitor — coexistence is the honest pitch",
+            "CMDB import path exists specifically to make coexistence real, not theoretical"
+          ]
+        },
+        "iconEmoji": "🎫",
+        "tags": [
+          "ITSM",
+          "TOGETHER"
+        ],
+        "status": "PUBLISHED",
+        "publishedAt": "2026-08-13T17:03:43.197Z",
+        "createdAt": "2026-08-13T17:03:43.197Z",
+        "updatedAt": "2026-08-13T17:03:43.197Z"
+      }
+    ]
+  },
+  "marketplace/partner/dashboard": {
+    "totalRevenue": 0,
+    "totalRefunds": 0,
+    "totalInstalls": 0,
+    "listings": [
+      {
+        "id": "cmskm3gjq00dl6d4io2qhyjyj",
+        "name": "Knowledge Concierge",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "AGENT",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmskm3gju00dm6d4ippvguphv",
+        "name": "Customer Health Monitor",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "AGENT",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmskm3gjv00dn6d4idj8nm609",
+        "name": "Deal & Revenue Forecaster",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "AGENT",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmskm3gjv00do6d4ianj6gmny",
+        "name": "Project Risk Monitor",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "AGENT",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmskm3gjw00dp6d4i3b5qffpf",
+        "name": "Strategic Insight Generator",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "AGENT",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmslrt6wb007bj5u5tmt0wsmm",
+        "name": "Customer Service Case Handler",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "AGENT",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmslrt6wh007cj5u50ico4rrw",
+        "name": "HR Case Assistant",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "AGENT",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmsrrp3rp007ui4r59c7pr77w",
+        "name": "Customer Service Management",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "PACK",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmsrrp3rr007vi4r53uuj032k",
+        "name": "HR Service Delivery",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "PACK",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmsrrp3rw007xi4r5zfn2fic6",
+        "name": "App Engine",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "PACK",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmsrrp3ry007zi4r5ig04mu8w",
+        "name": "IT Operations Management",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "PACK",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmsrrp3ru007wi4r5iry0vnuw",
+        "name": "Security Operations",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "PACK",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      },
+      {
+        "id": "cmsrrp3rx007yi4r5cus1pp36",
+        "name": "IT Service Management",
+        "installCount": 0,
+        "price": 0,
+        "platformFee": 0.2,
+        "type": "PACK",
+        "revenue": 0,
+        "refunds": 0,
+        "charges": 0
+      }
+    ]
+  }
+}

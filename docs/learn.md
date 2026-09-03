@@ -270,3 +270,33 @@ IP for everything else, anonymous limit unchanged. The key must come from a
 **verified** token; keying on the raw Authorization header would let anyone mint
 unlimited windows, which is worse than the shared bucket. `rate-limit-e2e`
 asserts that specific evasion and was confirmed catching it.
+
+## 2026-09-03 — "Applications" was a nav entry with no route behind it  (P1)
+
+**Context:** asked to make the existing "Applications" rail item show the
+marketplace. `nav.ts` declared it (`defaultPath: .../applications`), but no
+`<Route path="applications/*">` existed anywhere — clicking it had always gone
+nowhere. Checked before building anything, the same way BoardService turned out
+to have zero consumers earlier today.
+**Fix:** mounted it on the same `MarketplaceModule` already at `marketplace/*`,
+rather than a second copy — one component, two entry points, so the names can't
+drift into two different screens.
+**Found on the way:** the Revenue tab inside that marketplace crashed on every
+real load. Its interface named fields — `totalPlatformFee`, `netRevenue`,
+`refundRate`, `byListing` — the backend (`kimmp/routes.ts:3746`) has never sent;
+it sends `totalRevenue` (already net of fee), `totalRefunds`, `totalInstalls`,
+`listings`. `Cannot read properties of undefined (reading 'toFixed')` every
+time, caught by nothing because the marketplace had 0 real installs, so no one
+had opened that tab with data behind it.
+**Why the frontend build didn't catch it:** `vite build` transpiles TypeScript,
+it does not type-check it (no local `tsc` on this project — noted before in
+`local-dev-tooling-notes`). A bare reference to an undeclared name, or a field
+that was never in the interface's actual source, passes the build silently and
+only throws in the browser at the exact line that evaluates it.
+**Learning:** "the build succeeded" is not evidence a TS file is even
+internally consistent here. When a component reads fields from an API response,
+diff the interface against the ACTUAL handler return statement, not against
+what the interface author believed it returned.
+**System change:** rewrote the interface and render to the real response shape;
+`marketplace.spec.ts` opens the Revenue tab specifically, and was confirmed
+failing (with the crash's original boundary text) against the pre-fix code.
