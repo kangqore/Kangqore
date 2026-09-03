@@ -16,6 +16,29 @@ import fixtures from './marketplace.fixtures.json'
  *
  * "Applications" in the rail had no route behind it at all before this; both
  * gaps were found together while wiring one to the other.
+ *
+ * mockApi() also stubs /api/auth/me. Nothing in THIS suite calls it, but
+ * leaving it unmocked is what actually failed CI, and it took a downloaded
+ * artifact plus a from-scratch local repro (build + preview, not dev) to find:
+ *
+ *   src/context/AuthContext.jsx mounts once for the whole app (both the public
+ *   site and the OS) and, independent of any OS route, fires a bare
+ *   `axios.get('/api/auth/me')` with no CI guard. In `vite preview` — the
+ *   production-build server this suite's own CI job runs, not `vite dev` — an
+ *   unmocked GET to a non-file path hits Vite's SPA history fallback and
+ *   returns 200 with index.html, not JSON. `response.data.user` off that HTML
+ *   string is `undefined`; `localStorage.setItem('user',
+ *   JSON.stringify(undefined))` then stores the literal STRING "undefined".
+ *   The next time ProtectedRoute's synchronous localStorage fallback runs,
+ *   `JSON.parse("undefined")` throws, is swallowed as "malformed session", and
+ *   every route — not just this one — bounces to /login.
+ *
+ *   It is a race against that unrelated effect resolving, not against this
+ *   page's own load. Confirmed by instrumenting localStorage across the
+ *   navigation: token and user were intact right after landing on the bare
+ *   OS shell, and gone by the time /applications was checked — with MORE
+ *   dwell time in between making it MORE likely to reproduce, which is the
+ *   opposite of what a "give it more time" fix assumes.
  */
 
 const BOUNDARY = 'Something went wrong'
@@ -37,6 +60,13 @@ async function mockApi(page: Page) {
     await route.fulfill({
       status: 200, contentType: 'application/json',
       body: JSON.stringify((fixtures as any)['marketplace']),
+    })
+  })
+  // See the file header: this closes the actual CI failure at its source.
+  await page.route('**/api/auth/me', async route => {
+    await route.fulfill({
+      status: 200, contentType: 'application/json',
+      body: JSON.stringify({ user: { id: 'demo', email: 'demo@kangqore.com', role: 'ADMIN', name: 'Demo' } }),
     })
   })
 }

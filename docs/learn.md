@@ -330,3 +330,45 @@ already committed, it silently no-ops instead of testing the negative case.
 control (`toBeVisible`, 20s) instead of sleeping; per-page assertions replaced
 their own sleeps with the same pattern. Confirmed failing against a genuinely
 reintroduced bug (editing the file directly, not stashing) before trusting green.
+
+## 2026-09-03 — a global, unguarded auth effect racing every OS smoke test  (P1)
+
+**Context:** #513's marketplace tests still failed in CI after the sleep→signal
+fix (`waitForAuthenticatedShell`) — landing on `/login`, confirmed by an
+artifact-less run reproduced locally (`npm run build && CI=true
+DISABLE_API_PROXY=true npx playwright test`, matching the workflow exactly,
+since GitHub had uploaded no report to inspect).
+**Cause:** `src/context/AuthContext.jsx` mounts once for the WHOLE app —
+public site and OS both — and independent of any OS route, fires a bare
+`axios.get('/api/auth/me')` with no CI guard. `vite preview` (the production
+server this CI job runs, not `vite dev`) serves its SPA history fallback —
+200 + `index.html` — for any unmocked GET to a non-file path. `response.data`
+is that HTML string; `.user` off a string is `undefined`;
+`localStorage.setItem('user', JSON.stringify(undefined))` stores the literal
+STRING `"undefined"`. The next time `ProtectedRoute`'s synchronous
+localStorage check runs anywhere, `JSON.parse("undefined")` throws, is
+swallowed as "malformed session", and the route bounces to `/login`.
+**Why the previous fix made it MORE likely to reproduce, not less:** this is a
+race against an UNRELATED global effect resolving, not against the target
+page's own load. Waiting longer for a "more robust" signal gave that effect
+more wall-clock time to complete and corrupt localStorage before the next
+check — the opposite of what a "give it more time" fix assumes, and the
+opposite of the theory (cold-chunk loading) the first fix was built on, which
+had never been checked against an actual downloaded artifact.
+**Learning:** when a fix based on a theory doesn't resolve a CI failure,
+download the actual artifact / reproduce the exact recipe locally before
+extending the theory further. `npm run build && CI=true DISABLE_API_PROXY=true
+npx playwright test` reproduced it deterministically in under a minute;
+guessing at a second timing tweak would not have found the real cause. This is
+also the second time in the two fixes for #513 that a plausible-sounding
+timing theory was wrong — worth treating "it's probably just slow CI" as a
+hypothesis to disprove, not a default explanation.
+**Not fixed (deliberately, scope):** `AuthContext.jsx`'s unguarded fetchUser is
+a latent bug independent of this PR — any smoke test with enough dwell time
+before its assertions is exposed to it, not just this one. `work-os.spec.ts`
+and `smoke.spec.ts` are fast enough to mostly avoid the race, not immune to it.
+**System change:** `marketplace.spec.ts`'s `mockApi()` also stubs
+`/api/auth/me` with a valid `{ user }` shape, closing the corruption at its
+source rather than out-waiting it. Confirmed failing without the mock (5/5
+across repeats) and passing with it (8/8 across repeats), both under the exact
+CI recipe run locally — not the dev server.
