@@ -190,7 +190,7 @@ function WaandaGreeting({ health, onDismiss }: { health: number; onDismiss: (voi
     [1200, { type: 'status',   text: 'System health',         value: `✓ ${health.toFixed(0)}%` }],
     [1400, { type: 'divider',  text: '' }],
     [1700, { type: 'greeting', text: `Good ${tod}, client.` }],
-    [2100, { type: 'body',     text: `Telemetry segments operational  ·  AEGIS shield active` }],
+    [2100, { type: 'body',     text: `Telemetry segments operational  ·  HANUMANAS shield active` }],
     [2500, { type: 'ready',    text: 'WAANDA online. Standing by for commands.' }],
     [3000, { type: 'prompt',   text: '[ CLICK ANYWHERE TO ACCESS TELEMETRY ]' }],
   ]
@@ -698,7 +698,7 @@ export function ClientWaanda() {
 
   // UAT Checklist items state
   const [checklist, setChecklist] = useState([
-    { id: 1, label: 'AEGIS GUARD CORE INTEGRATION', status: 'PASSED', time: '10:42 UTC' },
+    { id: 1, label: 'HANUMANAS GUARD CORE INTEGRATION', status: 'PASSED', time: '10:42 UTC' },
     { id: 2, label: 'API MONDAY.COM CONNECTOR', status: 'PASSED', time: '12:15 UTC' },
     { id: 3, label: 'TELEMETRY SIGNAL STREAM', status: 'VERIFYING', time: 'Active' },
     { id: 4, label: 'HIPAA COMPLIANCE SCAN', status: 'PASSED', time: '09:00 UTC' },

@@ -67,7 +67,7 @@ const DEFAULT_TYPES = [
   { name: 'Location',   displayName: 'Location',   icon: 'MapPin',        color: '#14b8a6', description: 'Physical offices and data centers' },
 
   // Governance & Intelligence
-  { name: 'Policy',     displayName: 'Policy',     icon: 'Shield',        color: '#84cc16', description: 'Compliance rules and AEGIS constraints' },
+  { name: 'Policy',     displayName: 'Policy',     icon: 'Shield',        color: '#84cc16', description: 'Compliance rules and HANUMANAS constraints' },
   { name: 'Risk',       displayName: 'Risk',       icon: 'Warning',       color: '#ea580c', description: 'Identified enterprise risks and mitigations' },
   { name: 'Decision',   displayName: 'Decision',   icon: 'Scale',         color: '#6366f1', description: 'Strategic choices and board resolutions' },
   { name: 'Outcome',    displayName: 'Outcome',    icon: 'Target',        color: '#22c55e', description: 'Measured business results and OKRs' },

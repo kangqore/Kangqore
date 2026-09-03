@@ -30,13 +30,13 @@ export function ActPage() {
 
   const pending = useQuery({
     queryKey:  ['waanda-pending-actions'],
-    queryFn:   () => api.get('/admin/aegis/actions/pending').then(r => r.data),
+    queryFn:   () => api.get('/admin/hanumanas/actions/pending').then(r => r.data),
     staleTime: 10_000,
   })
 
   const actionLog = useQuery({
     queryKey:  ['waanda-action-log'],
-    queryFn:   () => api.get('/admin/aegis/actions/log').then(r => r.data),
+    queryFn:   () => api.get('/admin/hanumanas/actions/log').then(r => r.data),
     staleTime: 30_000,
   })
 
@@ -47,17 +47,17 @@ export function ActPage() {
       pending.refetch()
       actionLog.refetch()
     }
-    socket.on('aegis:action:pending', refresh)
-    return () => { socket.off('aegis:action:pending', refresh) }
+    socket.on('hanumanas:action:pending', refresh)
+    return () => { socket.off('hanumanas:action:pending', refresh) }
   }, [])
 
   const approve = useMutation({
-    mutationFn: (id: string) => api.post(`/admin/aegis/actions/${id}/approve`),
+    mutationFn: (id: string) => api.post(`/admin/hanumanas/actions/${id}/approve`),
     onSuccess:  () => { qc.invalidateQueries({ queryKey: ['waanda-pending-actions'] }) },
   })
 
   const reject = useMutation({
-    mutationFn: (id: string) => api.post(`/admin/aegis/actions/${id}/reject`),
+    mutationFn: (id: string) => api.post(`/admin/hanumanas/actions/${id}/reject`),
     onSuccess:  () => { qc.invalidateQueries({ queryKey: ['waanda-pending-actions'] }) },
   })
 

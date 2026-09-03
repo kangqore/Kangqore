@@ -1,5 +1,5 @@
 // ─── /trust — Trust & Governance ────────────────────────────────────────────
-// Overshadow Roadmap P1 ("Publish the Proof"): makes AEGIS's governance-native
+// Overshadow Roadmap P1 ("Publish the Proof"): makes HANUMANAS's governance-native
 // posture, the live capability scorecard, and the eval/drift pipeline
 // independently verifiable — not just a claim in a competitive playbook.
 // All three data sections read from /api/public/trust/*, which is aggregate-
@@ -104,7 +104,7 @@ function GovernanceSection() {
     <section className="py-16 lg:py-20 border-t border-gray-100 dark:border-gray-900 bg-[#FAFAFA] dark:bg-gray-950/40">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-4">
-          How AEGIS governs every AI action
+          How HANUMANAS governs every AI action
         </h2>
         <p className="text-lg text-gray-500 dark:text-gray-400 font-light max-w-3xl mb-10">
           Audit, PII detection, and budget enforcement are native to the request path — every AI call
@@ -275,7 +275,7 @@ const TrustGovernancePage = () => {
 
   useSeo({
     title: 'Trust & Governance — Kangqore',
-    description: 'The Kangqore live capability scorecard, AEGIS audit trail, PII policy, and eval/drift pipeline — independently verifiable, computed on every page load.',
+    description: 'The Kangqore live capability scorecard, HANUMANAS audit trail, PII policy, and eval/drift pipeline — independently verifiable, computed on every page load.',
     canonical: pageUrl,
     robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
     lang: 'en',
@@ -303,7 +303,7 @@ const TrustGovernancePage = () => {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tighter text-[#1D1D1F] dark:text-white">Trust &amp; Governance</h1>
           </div>
           <p className="text-lg text-gray-500 dark:text-gray-400 font-light max-w-3xl">
-            AEGIS governs every AI action Kangqore takes — audit, PII detection, and budget enforcement,
+            HANUMANAS governs every AI action Kangqore takes — audit, PII detection, and budget enforcement,
             all native to the request path since the first agent ran. This page doesn&apos;t ask you to take
             that on faith: every number below is a live query against production, not a static claim.
           </p>

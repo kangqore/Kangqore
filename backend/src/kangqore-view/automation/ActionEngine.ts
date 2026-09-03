@@ -1,6 +1,6 @@
 // S295–S297 — Action Engine v2
 // Upgrades OntologyAction from a label into a real execution engine shared by
-// humans, KIMMP, and AEGIS: typed parameter validation, pre-flight validation
+// humans, KIMMP, and HANUMANAS: typed parameter validation, pre-flight validation
 // rules, and declarative write-back effects applied atomically.
 
 import { Prisma } from '@prisma/client'
@@ -8,7 +8,7 @@ import axios from 'axios'
 import { prisma } from '../../lib/prisma'
 import { checkPolicy } from '../esf/PolicyEngine'
 import { CardinalityEngine } from '../eof/CardinalityEngine'
-import { AegisBudget } from '../../kangqore-aegis/aegisBudget.service'
+import { HanumanasBudget } from '../esf/hanumanas/hanumanasBudget.service'
 import { getIO } from '../../socket'
 import { dispatchToConnectors } from './connectors/registry'
 
@@ -249,7 +249,7 @@ export interface ExecuteInput {
   actorId?: string | null
   actorType?: string
   confidence?: number
-  // S298 — KIMMP/AEGIS provenance, folded straight onto the audit row
+  // S298 — KIMMP/HANUMANAS provenance, folded straight onto the audit row
   agentsMixed?: string[]
   sourceModule?: string
   reasoning?: string
@@ -261,7 +261,7 @@ export interface ExecuteInput {
 // never budget-limited (a person clicking a button isn't "spend").
 async function checkBudgetGate(actorType: string, actorId?: string | null): Promise<{ blocked: boolean; message?: string }> {
   if (actorType === 'HUMAN') return { blocked: false }
-  return AegisBudget.gate(actorId ?? actorType.toLowerCase())
+  return HanumanasBudget.gate(actorId ?? actorType.toLowerCase())
 }
 
 export const ActionEngine = {
@@ -284,7 +284,7 @@ export const ActionEngine = {
     else if (policy.effect === 'NOTIFY') errors.push({ severity: 'WARN', message: `Policy "${policy.policyName}" will log this execution for audit` })
 
     if (actorType !== 'HUMAN') {
-      const usage = await AegisBudget.checkUsage(actorId ?? actorType.toLowerCase())
+      const usage = await HanumanasBudget.checkUsage(actorId ?? actorType.toLowerCase())
       if (usage.overBudget && usage.hardDeny) errors.push({ severity: 'BLOCK', message: `Budget exceeded: ${usage.callCount}/${usage.budget} calls in ${usage.windowHours}h` })
     }
 
@@ -377,7 +377,7 @@ export const ActionEngine = {
       return execution
     }
 
-    // S298 — Budget gate (KIMMP/AEGIS only; a human clicking a button isn't "spend").
+    // S298 — Budget gate (KIMMP/HANUMANAS only; a human clicking a button isn't "spend").
     const budget = await checkBudgetGate(actorType, input.actorId)
     if (budget.blocked) {
       const execution = await prisma.actionExecution.create({
@@ -543,17 +543,17 @@ export const ActionEngine = {
   },
 
   // ─── S298 — Seed system Actions for KIMMP task types ─────────────────────────
-  // MissionDispatcher and AegisActionExecutor resolve these by name to route
-  // KIMMP/AEGIS execution through this same engine instead of a separate path.
+  // MissionDispatcher and HanumanasActionExecutor resolve these by name to route
+  // KIMMP/HANUMANAS execution through this same engine instead of a separate path.
 
-  SYSTEM_TYPE: { name: 'System', displayName: 'System', icon: 'Cpu', color: '#64748b', description: 'Non-business-object execution surface for KIMMP and AEGIS system actions' },
+  SYSTEM_TYPE: { name: 'System', displayName: 'System', icon: 'Cpu', color: '#64748b', description: 'Non-business-object execution surface for KIMMP and HANUMANAS system actions' },
   SYSTEM_ACTIONS: [
     { name: 'ANALYZE_CLIENT',      displayName: 'Analyze Client',      description: 'KIMMP client analysis task' },
     { name: 'RUN_AGENT',           displayName: 'Run Agent',           description: 'KIMMP generic agent/mission execution' },
     { name: 'GENERATE_INSIGHT',    displayName: 'Generate Insight',    description: 'KIMMP insight generation task' },
     { name: 'STRATEGIC_DECISION',  displayName: 'Strategic Decision',  description: 'KIMMP Decision Engine strategic decision' },
-    { name: 'GOVERNANCE_BLOCK',    displayName: 'Governance Action',   description: 'AEGIS governance action (pause/block/quarantine/etc.)' },
-    { name: 'BUDGET_DENY',         displayName: 'Budget Enforcement',  description: 'AEGIS per-tenant budget gate' },
+    { name: 'GOVERNANCE_BLOCK',    displayName: 'Governance Action',   description: 'HANUMANAS governance action (pause/block/quarantine/etc.)' },
+    { name: 'BUDGET_DENY',         displayName: 'Budget Enforcement',  description: 'HANUMANAS per-tenant budget gate' },
   ] as Array<{ name: string; displayName: string; description: string }>,
 
   async seedSystemActions(): Promise<Array<{ created: boolean; name: string }>> {
@@ -574,7 +574,7 @@ export const ActionEngine = {
     return results
   },
 
-  /** Resolve a seeded system Action's id by name — used by MissionDispatcher/AegisActionExecutor. */
+  /** Resolve a seeded system Action's id by name — used by MissionDispatcher/HanumanasActionExecutor. */
   async getSystemActionId(name: string): Promise<string | null> {
     const type = await prisma.ontologyObjectType.findUnique({ where: { name: ActionEngine.SYSTEM_TYPE.name } })
     if (!type) return null

@@ -90,7 +90,7 @@ export class WorkflowExecutor {
     );
 
     // 3. Route through the KIMMP Runtime governance pipeline before executing.
-    // MissionDispatcher applies AEGIS policy evaluation and writes to the audit ledger.
+    // MissionDispatcher applies HANUMANAS policy evaluation and writes to the audit ledger.
     // The typed executor runs inside the Runtime's Step 6 as a custom executor.
     let execResult: { action: string; detail?: Record<string, unknown> };
     const runtimeResult = await MissionDispatcher.dispatch(

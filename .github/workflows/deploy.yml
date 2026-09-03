@@ -111,7 +111,7 @@ jobs:
 
     # Ontology single-write-path gate. OntologyGateway declares itself the only
     # write path; this proves it. A direct prisma write skips data markings, the
-    # AEGIS policy gate, cardinality, and CDC emission — all four fail silently.
+    # HANUMANAS policy gate, cardinality, and CDC emission — all four fail silently.
     - name: Audit ontology write path (no gateway bypasses)
       run: npm run audit:ontology-writes
 

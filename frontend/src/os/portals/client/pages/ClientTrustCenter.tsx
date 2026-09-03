@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ShieldCheck, CheckCircle2, Lock, Fingerprint, Database, Key, ScrollText, GitMerge, FileCheck2, Settings2 } from 'lucide-react'
 import { cn } from '@design-system/cn'
-import { ExecutionLedger } from '../../../features/aegis/components/ExecutionLedger'
+import { ExecutionLedger } from '../../../features/hanumanas/components/ExecutionLedger'
 
 export function ClientTrustCenter() {
   return (

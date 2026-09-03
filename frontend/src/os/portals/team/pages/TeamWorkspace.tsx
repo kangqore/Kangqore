@@ -11,13 +11,13 @@ const stats = [
 const myProjects = [
   { name: 'BIDS™ Intelligence Suite',  role: 'Lead Developer',     progress: 72, health: '#10B981', sprint: 'Sprint 12',  deadline: '4 Jul' },
   { name: 'Client Portal Revamp',      role: 'Frontend Engineer',  progress: 58, health: '#F59E0B', sprint: 'Sprint 6',   deadline: '28 Jun' },
-  { name: 'AEGIS Compliance Module',   role: 'Contributor',        progress: 40, health: '#10B981', sprint: 'Sprint 2',   deadline: '15 Jul' },
+  { name: 'HANUMANAS Compliance Module',   role: 'Contributor',        progress: 40, health: '#10B981', sprint: 'Sprint 2',   deadline: '15 Jul' },
   { name: 'Ops Centre Sprint 0',       role: 'Product Engineer',   progress: 85, health: '#10B981', sprint: 'Sprint 0',   deadline: '25 Jun' },
 ]
 
 const teamMembers = [
   { name: 'Arjun Sharma',   role: 'Lead Engineer',    status: 'online',  workingOn: 'Ops Centre — Entity Graph',        avatar: 'AS' },
-  { name: 'Priya Nair',     role: 'Backend Engineer', status: 'online',  workingOn: 'AEGIS agent stubs Phase 2',        avatar: 'PN' },
+  { name: 'Priya Nair',     role: 'Backend Engineer', status: 'online',  workingOn: 'HANUMANAS agent stubs Phase 2',        avatar: 'PN' },
   { name: 'Kavya Reddy',    role: 'Product Designer', status: 'away',    workingOn: 'BIDS™ Rail edition wireframes',    avatar: 'KR' },
   { name: 'Rohan Mehta',    role: 'DevOps',           status: 'online',  workingOn: 'SOC 2 control mapping',            avatar: 'RM' },
   { name: 'Sneha Gupta',    role: 'Frontend',         status: 'offline', workingOn: 'Last seen 2h ago',                 avatar: 'SG' },
@@ -34,7 +34,7 @@ const recentActivity = [
   { action: 'Reviewed PR #218 — ClientChangeRequests messaging thread', time: '2h ago',    actor: 'Arjun' },
   { action: 'Completed deliverable: Sprint 6 backend routes',           time: '5h ago',    actor: 'Priya' },
   { action: 'Merged: TEAM/EXECUTIVE roles + 8-card login',             time: 'Yesterday', actor: 'System' },
-  { action: 'Joined standup — AEGIS Phase 2 planning',                 time: 'Yesterday', actor: 'Team' },
+  { action: 'Joined standup — HANUMANAS Phase 2 planning',                 time: 'Yesterday', actor: 'Team' },
   { action: 'SOC 2 Type I readiness assessment kick-off',              time: '2 days ago', actor: 'Rohan' },
 ]
 

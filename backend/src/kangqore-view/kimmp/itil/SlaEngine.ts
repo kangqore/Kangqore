@@ -32,7 +32,7 @@ export function slaRemainingLabel(deadline: Date | null): string {
   return `${m}m`
 }
 
-// Called by a scheduler — marks incidents whose SLA has breached and fires an AEGIS signal
+// Called by a scheduler — marks incidents whose SLA has breached and fires an HANUMANAS signal
 export async function checkSlaBreaches(): Promise<number> {
   const now = new Date()
 
@@ -53,9 +53,9 @@ export async function checkSlaBreaches(): Promise<number> {
     data:  { slaBreached: true },
   })
 
-  // Fire one AEGIS signal per breach
+  // Fire one HANUMANAS signal per breach
   await Promise.all(breached.map(inc =>
-    (prisma as any).aegisAuditLog.create({
+    (prisma as any).hanumanasAuditLog.create({
       data: {
         eventType: 'SLA_BREACH',
         system:    'ITIL',

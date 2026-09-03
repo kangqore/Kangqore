@@ -15,7 +15,7 @@ interface ExpansionOpp {
 
 const OPPS: ExpansionOpp[] = [
   { account: 'Acme Corp',    currentArr: '£120k', opportunity: 'Add Cognition module',   estValue: '£40k',  stage: 'Qualified',   owner: 'Lena Park'  },
-  { account: 'GlobalMed',   currentArr: '£340k', opportunity: 'AEGIS add-on',           estValue: '£80k',  stage: 'Proposed',    owner: 'Raj Mehta'  },
+  { account: 'GlobalMed',   currentArr: '£340k', opportunity: 'HANUMANAS add-on',           estValue: '£80k',  stage: 'Proposed',    owner: 'Raj Mehta'  },
   { account: 'DataCo',      currentArr: '£210k', opportunity: 'Seat expansion +10',     estValue: '£25k',  stage: 'Negotiating', owner: 'Lena Park'  },
   { account: 'RetailGiant', currentArr: '£180k', opportunity: 'BIDS™ Enterprise',       estValue: '£120k', stage: 'Proposed',    owner: 'Raj Mehta'  },
   { account: 'TechScale',   currentArr: '£60k',  opportunity: 'Foundry add-on',         estValue: '£35k',  stage: 'Identified',  owner: 'Raj Mehta'  },

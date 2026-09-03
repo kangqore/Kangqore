@@ -15,6 +15,7 @@
 
 import { prisma } from '../../lib/prisma'
 import { RESPONSIBILITY_ROLES } from './EnterpriseObjectModel'
+import type { HanumanasName } from '../esf/hanumanas/identity'
 
 /**
  * Reactions are a fixed vocabulary, not free emoji. Each one means something
@@ -39,7 +40,7 @@ export interface PostInput {
   objectId: string
   body: string
   parentId?: string
-  authorType?: 'HUMAN' | 'KIMMP' | 'AEGIS' | 'AUTOMATION'
+  authorType?: 'HUMAN' | 'KIMMP' | HanumanasName | 'AUTOMATION'
   authorId?: string
   sourceModule?: string
   evidence?: any[]
@@ -115,7 +116,7 @@ export const ThreadService = {
 
   /** An agent's post. Same thread, same accountability, marked as non-human. */
   postAsAgent(objectId: string, body: string, opts: {
-    module: string; evidence?: any[]; authorType?: 'KIMMP' | 'AEGIS' | 'AUTOMATION'
+    module: string; evidence?: any[]; authorType?: 'KIMMP' | HanumanasName | 'AUTOMATION'
   }) {
     return this.post({
       objectId, body,

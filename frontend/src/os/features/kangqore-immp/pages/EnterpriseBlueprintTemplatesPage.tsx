@@ -121,7 +121,7 @@ export function EnterpriseBlueprintTemplatesPage() {
 
           <div style={{ background: '#0d1824', border: '1px solid #263250', borderRadius: 12, padding: '18px 20px', fontSize: 12, color: '#8899aa', lineHeight: 1.7 }}>
             <div style={{ fontWeight: 700, color: '#4fc3f7', marginBottom: 8 }}>White-glove deployment</div>
-            <div>Each template deploys a pre-configured Blueprint with proven workflows, WAANDA agents, and AEGIS policies — zero configuration needed from the customer.</div>
+            <div>Each template deploys a pre-configured Blueprint with proven workflows, WAANDA agents, and HANUMANAS policies — zero configuration needed from the customer.</div>
           </div>
         </div>
       </div>

@@ -66,7 +66,7 @@ const SECTION_NAMES: Record<string, string> = {
   // Platform
   domains: 'Business Domain Definitions',
   objects: 'Reality Object Mapping',
-  policies: 'Aegis Active Policies',
+  policies: 'Hanumanas Active Policies',
   kore: 'KORE Subsystem Monitor',
   models: 'Registered AI Models',
   connectors: 'Integration Connectors',
@@ -85,7 +85,7 @@ const SECTION_NAMES: Record<string, string> = {
   sharedApprovals: 'Multi-signature Approvals',
   // Governance
   policyCenter: 'Active Governance Policies',
-  aegisGovernance: 'Aegis Sentinel Logs',
+  hanumanasGovernance: 'Hanumanas Sentinel Logs',
   riskDashboard: 'Risk Management Console',
   complianceCenter: 'Regulatory Compliance Log',
   auditExplorer: 'Tamper-proof Ledger Auditor',

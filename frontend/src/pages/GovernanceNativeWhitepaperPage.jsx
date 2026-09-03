@@ -108,7 +108,7 @@ const GovernanceNativeWhitepaperPage = () => {
             line by product line, acquisition by acquisition.
           </p>
           <p>
-            Kangqore&apos;s governance layer, AEGIS, was not added to an existing AI system — it is the
+            Kangqore&apos;s governance layer, HANUMANAS, was not added to an existing AI system — it is the
             layer every AI call passes through by construction. There has never been a version of the
             Kangqore platform where an AI action could execute without first clearing an audit write, a
             PII scan, and a budget check, because those three checks live in the same code path as the
@@ -124,7 +124,7 @@ const GovernanceNativeWhitepaperPage = () => {
           <p>
             <strong className="text-gray-900 dark:text-white">Audit trail timing.</strong> Every AI-initiated
             action — an activation, an autonomous run, an access denial, a knowledge-asset write — is
-            written to AEGIS&apos;s immutable ledger <em>before</em> the action executes, not sampled or
+            written to HANUMANAS&apos;s immutable ledger <em>before</em> the action executes, not sampled or
             reconstructed from logs after the fact. The write is synchronous with the call.
           </p>
           <p>

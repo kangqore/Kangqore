@@ -12,7 +12,7 @@ export const GovernanceWorkspaceManifest: WorkspaceManifest = {
     metadata: {
         id: 'wksp.governance',
         title: 'Governance Workspace',
-        description: 'Policy center, AEGIS governance, risk dashboard, compliance, audit explorer, all ledgers, access & identity, and data lineage.',
+        description: 'Policy center, HANUMANAS governance, risk dashboard, compliance, audit explorer, all ledgers, access & identity, and data lineage.',
         version: '1.0.0',
         category: 'GOVERNANCE',
         icon: 'shield-check'
@@ -42,7 +42,7 @@ export const GovernanceWorkspaceManifest: WorkspaceManifest = {
                 adaptive: true,
                 widgets: [
                     { id: 'wid.gov.policy',  title: 'Policy Center',    component: 'PolicyCenterWidget',    permissions: ['role.governance', 'role.executive'], priority: 'CRITICAL', refreshPolicy: 'PERIODIC' },
-                    { id: 'wid.gov.aegis',   title: 'AEGIS Governance', component: 'AegisGovernanceWidget', permissions: ['role.governance'], priority: 'CRITICAL', refreshPolicy: 'LIVE' },
+                    { id: 'wid.gov.hanumanas',   title: 'HANUMANAS Governance', component: 'HanumanasGovernanceWidget', permissions: ['role.governance'], priority: 'CRITICAL', refreshPolicy: 'LIVE' },
                     { id: 'wid.gov.waanda',  title: 'Governance WAANDA', component: 'WaandaWidget',         permissions: ['role.governance'], priority: 'HIGH', requiredCapabilities: ['cap.governance.read'] }
                 ]
             },
@@ -90,8 +90,8 @@ export const GovernanceWorkspaceManifest: WorkspaceManifest = {
             }
         },
         policies: [],
-        capabilities: ['cap.governance.read', 'cap.aegis.audit', 'cap.policy.manage', 'cap.identity.read'],
-        subscriptions: ['event.policy.violated', 'event.risk.escalated', 'event.aegis.alert'],
+        capabilities: ['cap.governance.read', 'cap.hanumanas.audit', 'cap.policy.manage', 'cap.identity.read'],
+        subscriptions: ['event.policy.violated', 'event.risk.escalated', 'event.hanumanas.alert'],
         memory: ['activeComplianceFilter', 'lastAuditQuery']
     }
 };

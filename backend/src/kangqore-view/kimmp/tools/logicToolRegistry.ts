@@ -600,13 +600,13 @@ export class LogicToolRegistry {
     if (result instanceof Promise) {
       throw new Error(`Tool "${name}" is asynchronous. Use auditedExecutor instead.`);
     }
-    // Fire-and-forget AEGIS audit log (never blocks the response path)
+    // Fire-and-forget HANUMANAS audit log (never blocks the response path)
     LogicToolRegistry._audit(name, input, result).catch(() => {})
     return result
   }
 
   // Audited executor for use as a toolExecutor callback in routedCall
-  // Logs every call to aegisAuditLog with inputs + outputs for full provenance
+  // Logs every call to hanumanasAuditLog with inputs + outputs for full provenance
   static async auditedExecutor(name: string, input: any): Promise<ToolResult> {
     const fn = TOOL_IMPLS[name]
     if (!fn) throw new Error(`Unknown logic tool: "${name}"`)
@@ -618,7 +618,7 @@ export class LogicToolRegistry {
   private static async _audit(name: string, input: any, result: ToolResult): Promise<void> {
     try {
       const { prisma } = await import('../../../lib/prisma')
-      await (prisma as any).aegisAuditLog.create({
+      await (prisma as any).hanumanasAuditLog.create({
         data: {
           eventType:    'LOGIC_TOOL_CALL',
           actorId:      'WAANDA',

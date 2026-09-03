@@ -32,7 +32,7 @@ const TABS: { id: Tab; label: string; icon: any }[] = [
 const AUTHOR_TONE: Record<string, { color: string; label: string }> = {
   HUMAN:      { color: T1,        label: '' },
   KIMMP:      { color: '#8b5cf6', label: 'KIMMP' },
-  AEGIS:      { color: '#0ea5e9', label: 'AEGIS' },
+  HANUMANAS:      { color: '#0ea5e9', label: 'HANUMANAS' },
   AUTOMATION: { color: '#14b8a6', label: 'Automation' },
 }
 

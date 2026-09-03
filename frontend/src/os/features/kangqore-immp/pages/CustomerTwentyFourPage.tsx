@@ -11,7 +11,7 @@ export function CustomerTwentyFourPage() {
       size:            '600–1,000 employees',
       oisBaseline:     68.7,
       oisTarget:       82.0,
-      modules:         ['WAANDA', 'AEGIS', 'Projects', 'KIMMP', 'OIS', 'Matter-Management'],
+      modules:         ['WAANDA', 'HANUMANAS', 'Projects', 'KIMMP', 'OIS', 'Matter-Management'],
       accentColor:     '#3b82f6',
       verticalEdition: 'legaltech',
       personaName:     'LEX',

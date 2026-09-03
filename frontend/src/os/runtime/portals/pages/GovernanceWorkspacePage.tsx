@@ -264,7 +264,7 @@ export const GovernanceWorkspacePage: React.FC = () => {
           {[
             { label: 'SOC2 Controls', val: 'Active', status: 'PASS', col: 'var(--os-success)' },
             { label: 'Data Privacy', val: 'Compliant', status: 'PASS', col: 'var(--os-success)' },
-            { label: 'AEGIS Shield', val: gate5?.passed ? 'Cleared' : 'Pending', status: gate5?.passed ? 'PASS' : 'WARN', col: gate5?.passed ? 'var(--os-success)' : 'var(--os-warning)' },
+            { label: 'HANUMANAS Shield', val: gate5?.passed ? 'Cleared' : 'Pending', status: gate5?.passed ? 'PASS' : 'WARN', col: gate5?.passed ? 'var(--os-success)' : 'var(--os-warning)' },
             { label: 'Access Control', val: 'Enforced', status: 'PASS', col: 'var(--os-success)' },
             { label: 'Audit Logging', val: 'Live', status: 'PASS', col: 'var(--os-success)' },
             { label: 'Vulnerability Scan', val: 'Pending', status: 'WARN', col: 'var(--os-warning)' },

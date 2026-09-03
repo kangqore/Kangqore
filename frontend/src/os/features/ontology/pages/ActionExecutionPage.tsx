@@ -14,7 +14,7 @@ const STATUS_CFG = {
 const ACTOR_CFG = {
   HUMAN: { label: 'Human', color: '#579bfc', Icon: User },
   KIMMP: { label: 'KIMMP', color: '#a855f7', Icon: Robot },
-  AEGIS: { label: 'AEGIS', color: '#ef4444', Icon: ShieldCheck },
+  HANUMANAS: { label: 'HANUMANAS', color: '#ef4444', Icon: ShieldCheck },
 } as const
 
 function timeAgo(date: string) {
@@ -105,7 +105,7 @@ function MetricsRow() {
   )
 }
 
-// S299 — AI Action Feed: live WebSocket stream of KIMMP/AEGIS ActionExecutions.
+// S299 — AI Action Feed: live WebSocket stream of KIMMP/HANUMANAS ActionExecutions.
 function AiActionFeed() {
   const [events, setEvents] = useState<ActionExecution[]>([])
   const [aiOnly, setAiOnly] = useState(true)
@@ -130,7 +130,7 @@ function AiActionFeed() {
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" title="Live" />
         </p>
         <button onClick={() => setAiOnly(v => !v)} className="text-[10px] font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)]">
-          {aiOnly ? 'Showing KIMMP + AEGIS only' : 'Showing all actors'}
+          {aiOnly ? 'Showing KIMMP + HANUMANAS only' : 'Showing all actors'}
         </button>
       </div>
       {visible.length === 0 ? (
@@ -235,13 +235,13 @@ export function ActionExecutionPage() {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h2 className="text-lg font-black text-[var(--os-text-1)] flex items-center gap-2"><Scroll size={18} /> Action Execution Log</h2>
-          <p className="text-xs text-[var(--os-text-2)] mt-0.5">One audit trail for every write — human, KIMMP, or AEGIS.</p>
+          <p className="text-xs text-[var(--os-text-2)] mt-0.5">One audit trail for every write — human, KIMMP, or HANUMANAS.</p>
         </div>
         <button
           onClick={() => seedSystem.mutate()}
           disabled={seedSystem.isPending || seeded}
           className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-[var(--os-border)] text-xs font-semibold text-[var(--os-text-2)] hover:text-[var(--os-text-1)] disabled:opacity-50 transition-colors"
-          title="Seed the system Actions (ANALYZE_CLIENT, RUN_AGENT, GENERATE_INSIGHT, STRATEGIC_DECISION, GOVERNANCE_BLOCK, BUDGET_DENY) that MissionDispatcher and AEGIS route through"
+          title="Seed the system Actions (ANALYZE_CLIENT, RUN_AGENT, GENERATE_INSIGHT, STRATEGIC_DECISION, GOVERNANCE_BLOCK, BUDGET_DENY) that MissionDispatcher and HANUMANAS route through"
         >
           {seeded ? 'System Actions Seeded' : seedSystem.isPending ? 'Seeding…' : 'Seed System Actions'}
         </button>
@@ -255,7 +255,7 @@ export function ActionExecutionPage() {
           <option value="">All actors</option>
           <option value="HUMAN">Human</option>
           <option value="KIMMP">KIMMP</option>
-          <option value="AEGIS">AEGIS</option>
+          <option value="HANUMANAS">HANUMANAS</option>
         </select>
         <select className="px-3 py-2 rounded-2xl bg-[var(--os-surface-0)] border border-[var(--os-border)] text-xs text-[var(--os-text-1)] outline-none" value={status} onChange={e => { setStatus(e.target.value); setPage(1) }}>
           <option value="">All statuses</option>

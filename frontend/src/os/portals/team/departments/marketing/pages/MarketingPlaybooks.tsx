@@ -28,7 +28,7 @@ const TEMPLATES: PlaybookTemplate[] = [
       { id: 's1', label: 'Assess & Brief',   instructions: 'Classify incident severity (P1/P2/P3). Brief MD and relevant stakeholders within 1 hour. Identify affected audiences and potential media exposure.', assignee: 'Marketing Manager', sla: '1h of incident', status: 'PENDING' },
       { id: 's2', label: 'Draft Response',   instructions: 'Draft holding statement and full response. Align messaging with brand voice. Prepare FAQ document for internal teams. Do not publish without sign-off.', assignee: 'Content Lead', sla: '2h of incident', status: 'PENDING' },
       { id: 's3', label: 'Legal Review',     instructions: 'Submit draft to Legal for review. Confirm no liability admission. Adjust language per Legal guidance. Obtain written approval.', assignee: 'Legal', sla: '3h of incident', status: 'PENDING', kimmHint: 'KIMMP has flagged 3 monitored mentions. Social sentiment is currently neutral — window to control narrative is open.' },
-      { id: 's4', label: 'Publish',          instructions: 'Distribute approved statement across owned channels (website, LinkedIn, press release if required). Notify customer success for client comms. Log incident in AEGIS audit trail.', assignee: 'Marketing Manager', sla: '4h of incident', status: 'PENDING' },
+      { id: 's4', label: 'Publish',          instructions: 'Distribute approved statement across owned channels (website, LinkedIn, press release if required). Notify customer success for client comms. Log incident in HANUMANAS audit trail.', assignee: 'Marketing Manager', sla: '4h of incident', status: 'PENDING' },
     ],
   },
 ]

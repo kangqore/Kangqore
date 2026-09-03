@@ -13,7 +13,7 @@ interface SprintItem {
 
 const ITEMS: SprintItem[] = [
   { id: 'ENG-201', title: 'KIMMP v3 context pipeline',    points: 13, status: 'In Progress', assignee: 'Siddharth R' },
-  { id: 'ENG-202', title: 'AEGIS audit log API',          points: 8,  status: 'Done',        assignee: 'Kavya N' },
+  { id: 'ENG-202', title: 'HANUMANAS audit log API',          points: 8,  status: 'Done',        assignee: 'Kavya N' },
   { id: 'ENG-203', title: 'Live board drag-drop perf',    points: 5,  status: 'Done',        assignee: 'Aryan M' },
   { id: 'ENG-204', title: 'OAuth2 SSO integration',       points: 13, status: 'Blocked',     assignee: 'Siddharth R' },
   { id: 'ENG-205', title: 'Monitoring dashboard',         points: 8,  status: 'In Progress', assignee: 'Kavya N' },
@@ -46,7 +46,7 @@ export function EngineeringSprints() {
         </div>
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Sprint 24</h1>
-          <p className="text-[var(--os-text-2)] mt-1 text-sm">June 16–30, 2026 · Engineering sprint tracker for Kangqore OS, KIMMP & AEGIS.</p>
+          <p className="text-[var(--os-text-2)] mt-1 text-sm">June 16–30, 2026 · Engineering sprint tracker for Kangqore OS, KIMMP & HANUMANAS.</p>
         </div>
       </div>
 

@@ -419,7 +419,7 @@ export const servicesData = {
           title: 'Governance & Safety Guardrails',
           category: 'POLICY FIREWALL',
           managed: ['NeMo Guardrails', 'Azure AI Content Safety', 'Bedrock Guardrails'],
-          selfHosted: ['Llama Guard 3', 'Guardrails AI', 'Proprietary AEGIS policy gates'],
+          selfHosted: ['Llama Guard 3', 'Guardrails AI', 'Proprietary HANUMANAS policy gates'],
           desc: 'Deterministic input/output filtering, PII redaction, prompt injection defense, and cryptographic human-in-the-loop authorization.',
           keyRule: 'No autonomous state mutation executes without passing policy guardrail gates.'
         }

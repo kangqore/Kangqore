@@ -90,7 +90,7 @@ export function ComplianceOverviewPage() {
 
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
         {d && <ReadinessCard title="SOC 2 Type II" accent={BLUE} data={d.soc2} manageTo="/kangqore-view/admin/kangqore-immp/soc2-audit" manageLabel="Manage real audit engagement" />}
-        {d && <ReadinessCard title="ISO 27001:2022" accent={GREEN} data={d.iso27001} manageTo="/kangqore-view/admin/aegis/compliance" manageLabel="Edit checkpoints" />}
+        {d && <ReadinessCard title="ISO 27001:2022" accent={GREEN} data={d.iso27001} manageTo="/kangqore-view/admin/hanumanas/compliance" manageLabel="Edit checkpoints" />}
       </div>
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 22 }}>
         {d && <GateCard flag="🇺🇸" title="FedRAMP Moderate" data={d.fedramp} />}

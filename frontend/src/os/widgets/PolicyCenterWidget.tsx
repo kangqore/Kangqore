@@ -50,7 +50,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
         ))}
       </div>
 
-      {/* AEGIS POLICY engine status */}
+      {/* HANUMANAS POLICY engine status */}
       {(peVerdict === 'WARN' || peVerdict === 'CRITICAL') && (
         <div style={{
           padding: '6px 10px', borderRadius: 6, fontSize: 10,
@@ -58,7 +58,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
           color: 'var(--os-text-2)',
         }}>
           <span style={{ fontSize: 9, fontWeight: 700, color: peCol, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 2 }}>
-            AEGIS Policy Engine · {peVerdict}
+            HANUMANAS Policy Engine · {peVerdict}
           </span>
           {peSummary ? peSummary.slice(0, 80) : 'Policy violations detected — review active rules.'}
         </div>

@@ -42,7 +42,7 @@ const resources = [
       { icon: FileText, label: 'Employee Handbook',                  desc: 'Policies, benefits, leave entitlements',  tag: 'PDF',     updated: 'Jan 2026'   },
       { icon: FileText, label: 'BIDS™ Product Spec v2',             desc: '16 pillars, 5 engines, deliverables',     tag: 'PDF',     updated: '3 weeks ago' },
       { icon: FileText, label: 'KIMMP / WAANDA Identity Doc',       desc: 'Technical vs commercial identity layers', tag: 'Notion',  updated: '1 week ago' },
-      { icon: FileText, label: 'AEGIS Architecture Reference',      desc: '4 domains, 10 engines, 80 agents',        tag: 'Notion',  updated: '2 weeks ago' },
+      { icon: FileText, label: 'HANUMANAS Architecture Reference',      desc: '4 domains, 10 engines, 80 agents',        tag: 'Notion',  updated: '2 weeks ago' },
     ]
   },
 ]

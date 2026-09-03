@@ -5,7 +5,7 @@
 // externalId. ON_CHANGE is implemented as an explicit single-record sync
 // callable from any mutation route — triggerForRecord() — wired into one
 // representative touch point (client health/status updates) rather than
-// every write path in the codebase, the same scoping choice made for AEGIS
+// every write path in the codebase, the same scoping choice made for HANUMANAS
 // governance events in S298.
 
 import { prisma } from '../../lib/prisma'

@@ -71,7 +71,7 @@ export default function DecisionEngineView() {
         approvalGate: {
           requiredRole: 'VP Engineering Required',
           approvalRequired: true,
-          approvalToken: `token-aegis-dec-${Date.now().toString(36)}`,
+          approvalToken: `token-hanumanas-dec-${Date.now().toString(36)}`,
           policyName: 'StrategicResourceReallocationPolicy',
         },
         executionPlan: [
@@ -135,7 +135,7 @@ export default function DecisionEngineView() {
           Prescriptive Decision Matrix & Trade-Off Engine
         </h1>
         <p className="text-sm text-slate-300 max-w-3xl">
-          Ingests 8 enterprise inputs (Ontology, Telemetry, Historical Outcomes, AEGIS Policies, Krisnam LLM, Goals, Constraints, Preferences) and evaluates trade-offs between primary recommendations and alternatives.
+          Ingests 8 enterprise inputs (Ontology, Telemetry, Historical Outcomes, HANUMANAS Policies, Krisnam LLM, Goals, Constraints, Preferences) and evaluates trade-offs between primary recommendations and alternatives.
         </p>
       </div>
 
@@ -146,7 +146,7 @@ export default function DecisionEngineView() {
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">NOLAN Ontology</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Telemetry Bus</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Outcome History</div>
-          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">AEGIS Policies</div>
+          <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">HANUMANAS Policies</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center text-blue-400">Krisnam LLM</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">WorkGoal OKRs</div>
           <div className="p-2 rounded-2xl bg-slate-950 border border-slate-800 text-center">Constraints</div>
@@ -263,11 +263,11 @@ export default function DecisionEngineView() {
               </div>
             </div>
 
-            {/* AEGIS Governance Approval Gate */}
+            {/* HANUMANAS Governance Approval Gate */}
             <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
               <h4 className="text-base font-bold text-white flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                AEGIS Governance & Approval Gate
+                HANUMANAS Governance & Approval Gate
               </h4>
 
               <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">

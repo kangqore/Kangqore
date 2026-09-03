@@ -21,6 +21,7 @@ import crypto from 'crypto'
 import logger from '../../../utils/logger'
 import { logCall, scanPii, inferCallerModule } from '../gateway/KimmpGatewayCore'
 import { PromptRegistry } from '../wir/promptRegistry.service'
+import { HANUMANAS } from '../../esf/hanumanas/identity'
 
 const KRISNAM_URL   = process.env.KRISNAM_URL   || 'http://127.0.0.1:11435'
 const KRISNAM_MODEL = process.env.KRISNAM_MODEL || ''
@@ -154,11 +155,11 @@ async function createViaKrisnam(params: any): Promise<Anthropic.Message> {
 
 // ── S308 passive gateway logging ─────────────────────────────────────────────
 // Covers every one of the 29 files that call withKrisnam(new Anthropic(...))
-// directly, PLUS AEGIS's shared callLLM() helper (kangqore-aegis/agents/llm.ts)
+// directly, PLUS HANUMANAS's shared callLLM() helper (kangqore-view/esf/hanumanas/agents/llm.ts)
 // which itself wraps its client the same way — ~70 files logged from this one
-// instrumentation point, no per-file changes needed. AEGIS calls are skipped
+// instrumentation point, no per-file changes needed. HANUMANAS calls are skipped
 // here (see actorType check below) because callLLM() logs them itself with
-// accurate actorType:'AEGIS' attribution — this avoids double-counting.
+// accurate actorType:'HANUMANAS' attribution — this avoids double-counting.
 // Caller module must be captured SYNCHRONOUSLY, before any await/.then() —
 // once inside a promise continuation the call stack no longer reaches back
 // to the original synchronous caller.
@@ -170,7 +171,7 @@ function logGatewayCall(
   err?: Error,
   promptMeta?: { promptName?: string; promptVersion: number | null },
 ) {
-  if (callerInfo.actorType === 'AEGIS') return
+  if (callerInfo.actorType === HANUMANAS.name) return
   const systemText = flattenContent(params.system) ?? ''
   const userText = (params.messages ?? []).map((m: any) => flattenContent(m.content) ?? '').join('\n')
   const provider = res?.id?.toString().startsWith('krisnam_') ? 'krisnam' : 'claude'

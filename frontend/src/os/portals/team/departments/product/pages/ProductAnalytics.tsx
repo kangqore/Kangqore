@@ -49,7 +49,7 @@ export function ProductAnalytics() {
         kpis={KPIS}
         agents={AGENTS}
         weekTrend={TREND}
-        kimmInsight="Feature adoption up 11% — driven by KIMMP OS and AEGIS dashboard launches. Bug escape rate falling: 2.8% vs 3.3% last quarter. Bottleneck: design handoff on Sprints 22–23 added 6 days to cycle time. Embedding Priya earlier in Engineering planning will close this gap. NPS +52 = strong signal to invest in UX polish sprint."
+        kimmInsight="Feature adoption up 11% — driven by KIMMP OS and HANUMANAS dashboard launches. Bug escape rate falling: 2.8% vs 3.3% last quarter. Bottleneck: design handoff on Sprints 22–23 added 6 days to cycle time. Embedding Priya earlier in Engineering planning will close this gap. NPS +52 = strong signal to invest in UX polish sprint."
       />
     </div>
   )

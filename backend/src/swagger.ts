@@ -1,4 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc'
+import { HANUMANAS } from './kangqore-view/esf/hanumanas/identity'
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -37,7 +38,7 @@ const options: swaggerJsdoc.Options = {
       { name: 'Data Privacy', description: 'GDPR data export, audit log, and deletion requests' },
       { name: 'Developer',    description: 'Programmatic API key management' },
       { name: 'KIMMP',        description: 'AI intelligence and agent dispatch' },
-      { name: 'AEGIS',        description: 'Governance, audit, and access control' },
+      { name: HANUMANAS.name, description: 'Governance, audit, and access control' },
       { name: 'v1/OIS',       description: 'Public v1 — Operational Intelligence Score' },
       { name: 'v1/Signals',   description: 'Public v1 — KIMMP signal ingestion' },
       { name: 'v1/Decisions', description: 'Public v1 — Strategic decision records' },
@@ -47,7 +48,7 @@ const options: swaggerJsdoc.Options = {
   apis: [
     './src/routes/*.ts',
     './src/kangqore-immp/routes.ts',
-    './src/kangqore-aegis/routes.ts',
+    './src/kangqore-view/esf/hanumanas/hanumanasRoutes.ts',
     './src/v1/router.ts',
     // Overshadow Roadmap P6.3 — swagger-jsdoc doesn't follow imports, so
     // v1/router.ts mounting these sub-routers was never enough; their real

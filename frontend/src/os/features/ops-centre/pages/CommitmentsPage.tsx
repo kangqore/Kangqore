@@ -115,7 +115,7 @@ const COMMITMENTS: Commitment[] = [
   {
     id: 'CMT-006',
     title: 'SOC 2 Access Review — 90-day cycle',
-    entity: 'AEGIS',
+    entity: 'HANUMANAS',
     type: 'SLA',
     ragStatus: 'red',
     breachProbability: 100,

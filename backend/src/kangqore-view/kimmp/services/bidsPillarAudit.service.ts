@@ -136,7 +136,7 @@ export async function runBidsPillarAudit(trigger: 'nightly' | 'manual') {
     }).catch(() => [] as { category: string; _count: { id: number } }[]),
 
     // Agent run role keyword list (unique roles from last 30 days)
-    (prisma as any).aegisAgentRun.findMany({
+    (prisma as any).hanumanasAgentRun.findMany({
       select: { agentRole: true },
       distinct: ['agentRole'],
       take: 500,

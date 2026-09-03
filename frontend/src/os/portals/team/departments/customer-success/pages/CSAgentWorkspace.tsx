@@ -27,7 +27,7 @@ function kimmContext(item: WorkspaceItem): string[] {
   if (item.id === 'QBR-012') return [
     'GlobalMed last QBR NPS was +62 — highest of any account in portfolio.',
     'Lead with BIDS™ ROI data: they reported 3.2× ROI in post-QBR survey. They expanded 2× after last year\'s QBR.',
-    'AEGIS flagged 2 compliance items resolved since last QBR — include in deck as proof of responsiveness.',
+    'HANUMANAS flagged 2 compliance items resolved since last QBR — include in deck as proof of responsiveness.',
   ]
   if (item.id === 'EXP-004') return [
     'RetailGiant asked about BIDS™ Enterprise directly in last QBR — high intent signal.',

@@ -123,7 +123,7 @@ export function ExecutiveCommandCenter() {
               type="success"
             />
             <AiActivityItem 
-              title="WAANDA auto-reply blocked by AEGIS (DLP policy P-14)"
+              title="WAANDA auto-reply blocked by HANUMANAS (DLP policy P-14)"
               status="Blocked"
               type="danger"
             />

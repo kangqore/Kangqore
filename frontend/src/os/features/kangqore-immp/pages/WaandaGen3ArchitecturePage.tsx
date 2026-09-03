@@ -22,7 +22,7 @@ const PHASES = [
   },
   {
     id: 'P4', label: 'Enterprise Alignment',
-    desc: 'DPO + Constitutional AI alignment. Bias audits, AEGIS-gated evals, SOC 2 / ISO 27001 compliance reasoning layer.',
+    desc: 'DPO + Constitutional AI alignment. Bias audits, HANUMANAS-gated evals, SOC 2 / ISO 27001 compliance reasoning layer.',
     color: GREEN, status: 'PLANNED',
   },
   {

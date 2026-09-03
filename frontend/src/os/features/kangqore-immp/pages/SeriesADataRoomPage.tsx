@@ -10,7 +10,7 @@ const SECTIONS = [
   },
   {
     title: 'Product & Technology', icon: '🧠', color: PURPLE, status: 'COMPLETE',
-    docs: ['WAANDA Platform Architecture', 'Gen5 Foundation Roadmap', 'WVIS Intelligence Canvas', 'BIDS™ Scoring Framework', 'AEGIS Governance Layer'],
+    docs: ['WAANDA Platform Architecture', 'Gen5 Foundation Roadmap', 'WVIS Intelligence Canvas', 'BIDS™ Scoring Framework', 'HANUMANAS Governance Layer'],
   },
   {
     title: 'Traction & Metrics', icon: '📊', color: GREEN, status: 'COMPLETE',

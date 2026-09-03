@@ -65,7 +65,7 @@ interface ActionSeed {
 
 // Lower-stakes case actions are tool-callable; anything that closes or
 // escalates an HR case stays human-only — the same conservative posture P3
-// used for AEGIS enforcement actions (GOVERNANCE_BLOCK/BUDGET_DENY stayed
+// used for HANUMANAS enforcement actions (GOVERNANCE_BLOCK/BUDGET_DENY stayed
 // off the tool-callable list). A support case being resolved by an agent is
 // a much smaller blast radius than an HR case being closed by one.
 const CUSTOMER_CASE_ACTIONS: ActionSeed[] = [

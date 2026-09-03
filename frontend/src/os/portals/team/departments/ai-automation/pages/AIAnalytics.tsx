@@ -5,7 +5,7 @@ import { DEPT_MAP } from '../../../deptConfigs'
 const cfg = DEPT_MAP['ai-automation']
 
 const KPIS: AnalyticsKPI[] = [
-  { label: 'Active Agents',       value: '80',      subtext: 'KIMMP + WAANDA + AEGIS fleet', color: '#D946EF', trend: 'up',   trendPct: '+4' },
+  { label: 'Active Agents',       value: '80',      subtext: 'KIMMP + WAANDA + HANUMANAS fleet', color: '#D946EF', trend: 'up',   trendPct: '+4' },
   { label: 'Workflows Running',   value: '34',      subtext: 'Active automation workflows',   color: '#E879F9', trend: 'up',   trendPct: '+2' },
   { label: 'LLM Requests/Day',    value: '48k',     subtext: 'Across all models',             color: '#A855F7', trend: 'up',   trendPct: '+6k' },
   { label: 'Tasks Saved/Wk',      value: '1,240',   subtext: 'Automation hours recovered',    color: '#10B981', trend: 'up',   trendPct: '+84' },

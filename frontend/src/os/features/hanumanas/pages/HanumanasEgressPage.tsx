@@ -1,0 +1,343 @@
+import { useState } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { ArrowUpRight, Clock, Search, HardDrive, Shield, AlertTriangle, ArrowRight, Database, Cpu, Globe, ToggleLeft, ToggleRight } from 'lucide-react'
+import { api } from '@lib/api'
+
+type TimeRange = '24h' | '7d' | '30d' | 'all'
+
+const METHOD_COLOR: Record<string, string> = {
+  GET:    '#2564ea',
+  POST:   '#7c3aed',
+  PUT:    '#0d9488',
+  PATCH:  '#f59e0b',
+  DELETE: '#ef4444',
+}
+
+function relTime(iso: string) {
+  const secs = Math.floor((Date.now() - new Date(iso).getTime()) / 1000)
+  if (secs < 60)    return `${secs}s ago`
+  if (secs < 3600)  return `${Math.floor(secs / 60)}m ago`
+  if (secs < 86400) return `${Math.floor(secs / 3600)}h ago`
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+}
+
+function sizeStr(bytes: number) {
+  if (!bytes) return '—'
+  if (bytes >= 1_048_576) return `${(bytes / 1_048_576).toFixed(1)}MB`
+  if (bytes >= 1024)      return `${(bytes / 1024).toFixed(1)}KB`
+  return `${bytes}B`
+}
+
+function timeRangeCutoff(range: TimeRange): Date | null {
+  if (range === 'all') return null
+  const ms = range === '24h' ? 86_400_000 : range === '7d' ? 7 * 86_400_000 : 30 * 86_400_000
+  return new Date(Date.now() - ms)
+}
+
+function statusColor(s: number) {
+  if (s >= 200 && s < 300) return '#10b981'
+  if (s >= 400 && s < 500) return '#f59e0b'
+  return '#ef4444'
+}
+
+// ── Data flow node for the map ────────────────────────────────────────────────
+function DataFlowMap() {
+  const nodes = [
+    { id: 'kimmp',   label: 'KIMMP Engine', sub: 'Reasoning + Signals', icon: Cpu,      color: '#7c3aed' },
+    { id: 'hanumanas',   label: 'HANUMANAS Shield', sub: 'Policy enforcement',  icon: Shield,   color: '#f43f5e' },
+    { id: 'egress',  label: 'Egress Log',   sub: 'Permanent audit',      icon: Database, color: '#f59e0b' },
+    { id: 'ext',     label: 'External',     sub: 'API / UI / Export',    icon: Globe,    color: '#2564ea' },
+  ]
+  return (
+    <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, padding: '14px 16px' }}>
+      <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.09em', color: '#6b7280', marginBottom: 12 }}>Intelligence Data Flow</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 0, overflowX: 'auto' }}>
+        {nodes.map((n, i) => (
+          <div key={n.id} style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: n.color + '12', border: `1px solid ${n.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <n.icon size={18} style={{ color: n.color }} />
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--os-text-1)' }}>{n.label}</div>
+                <div style={{ fontSize: 9, color: '#6b7280' }}>{n.sub}</div>
+              </div>
+            </div>
+            {i < nodes.length - 1 && (
+              <div style={{ display: 'flex', alignItems: 'center', padding: '0 12px', marginBottom: 20 }}>
+                <ArrowRight size={14} style={{ color: '#6b7280' }} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <p style={{ fontSize: 10, color: '#6b7280', marginTop: 10 }}>
+        Every intelligence exit passes through HANUMANAS Shield → is logged to Egress Ledger → reaches external consumers. No data leaves without being recorded.
+      </p>
+    </div>
+  )
+}
+
+// ── Export control rules panel ────────────────────────────────────────────────
+function ExportControlRules() {
+  const qc = useQueryClient()
+  const { data, isLoading } = useQuery<any>({
+    queryKey: ['hanumanas-export-rules'],
+    queryFn:  () => api.get('/admin/kangqore-immp/hanumanas/export-control-rules').then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  const rules: any[] = data?.rules ?? []
+
+  const SEVERITY_COLOR: Record<string, string> = {
+    CRITICAL: '#f43f5e', HIGH: '#ef4444', MEDIUM: '#f59e0b', LOW: '#10b981',
+  }
+  const ACTION_COLOR: Record<string, string> = {
+    BLOCK: '#f43f5e', FLAG: '#f59e0b', LOG: '#2564ea',
+  }
+
+  return (
+    <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderBottom: '1px solid var(--os-border)' }}>
+        <Shield size={13} style={{ color: '#f43f5e' }} />
+        <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--os-text-1)' }}>Export Control Rules</span>
+        <span style={{ fontSize: 9, color: '#6b7280', marginLeft: 'auto' }}>HANUMANAS-enforced</span>
+      </div>
+      {isLoading ? (
+        <div style={{ padding: '16px', fontSize: 11, color: '#6b7280' }}>Loading rules…</div>
+      ) : (
+        <div>
+          {rules.map((rule: any) => (
+            <div key={rule.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderBottom: '1px solid var(--os-border)' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--os-text-1)' }}>{rule.name}</span>
+                  <span style={{ fontSize: 8, fontWeight: 700, padding: '1px 5px', borderRadius: 4,
+                    color: SEVERITY_COLOR[rule.severity] ?? '#6b7280',
+                    background: (SEVERITY_COLOR[rule.severity] ?? '#6b7280') + '15' }}>{rule.severity}</span>
+                  <span style={{ fontSize: 8, fontWeight: 700, padding: '1px 5px', borderRadius: 4,
+                    color: ACTION_COLOR[rule.action] ?? '#6b7280',
+                    background: (ACTION_COLOR[rule.action] ?? '#6b7280') + '15' }}>{rule.action}</span>
+                </div>
+                <p style={{ fontSize: 10, color: '#6b7280' }}>{rule.description}</p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+                {rule.active
+                  ? <ToggleRight size={20} style={{ color: '#10b981' }} />
+                  : <ToggleLeft  size={20} style={{ color: '#6b7280' }} />}
+                <span style={{ fontSize: 10, color: rule.active ? '#10b981' : '#6b7280', fontWeight: 700 }}>
+                  {rule.active ? 'ON' : 'OFF'}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export function HanumanasEgressPage() {
+  const [page, setPage]           = useState(0)
+  const [timeRange, setTimeRange] = useState<TimeRange>('7d')
+  const [search, setSearch]       = useState('')
+  const [methodFilter, setMethodFilter] = useState('')
+  const PAGE_SIZE = 50
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['hanumanas-egress', page, timeRange],
+    queryFn: () => {
+      const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(page * PAGE_SIZE) })
+      const cutoff = timeRangeCutoff(timeRange)
+      if (cutoff) params.set('from', cutoff.toISOString())
+      return api.get(`/admin/hanumanas/egress?${params}`).then(r => r.data)
+    },
+    staleTime: 15_000,
+    refetchInterval: 60_000,
+  })
+
+  const allRows: any[] = data?.rows ?? []
+  const total: number  = data?.total ?? 0
+
+  const rows = allRows.filter(r => {
+    if (methodFilter && r.method !== methodFilter) return false
+    if (search) {
+      const q = search.toLowerCase()
+      return (r.endpoint ?? '').toLowerCase().includes(q) ||
+             (r.assetType ?? '').toLowerCase().includes(q)
+    }
+    return true
+  })
+
+  // Aggregates
+  const totalBytes    = allRows.reduce((s, r) => s + (r.metadata?.payloadSize ?? 0), 0)
+  const successCount  = allRows.filter(r => { const s = r.metadata?.responseStatus ?? 200; return s >= 200 && s < 300 }).length
+  const errCount      = allRows.length - successCount
+  const successRate   = allRows.length > 0 ? Math.round((successCount / allRows.length) * 100) : 100
+  const methods       = [...new Set(allRows.map(r => r.method).filter(Boolean))]
+  const methodCounts: Record<string, number> = {}
+  allRows.forEach(r => { if (r.method) methodCounts[r.method] = (methodCounts[r.method] ?? 0) + 1 })
+
+  // Endpoint frequency
+  const endpointCounts: Record<string, number> = {}
+  allRows.forEach(r => {
+    const ep = (r.endpoint ?? '').split('?')[0]
+    endpointCounts[ep] = (endpointCounts[ep] ?? 0) + 1
+  })
+  const topEndpoints = Object.entries(endpointCounts).sort((a, b) => b[1] - a[1]).slice(0, 5)
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {/* Banner */}
+      <div className="bg-amber-900/20 border border-amber-500/20 rounded-2xl p-4 flex items-start gap-3">
+        <ArrowUpRight className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="text-sm font-semibold text-amber-300 mb-0.5">Intelligence Egress Control</p>
+          <p className="text-xs text-[var(--os-text-2)] leading-relaxed">
+            Every time KIMMP intelligence <strong className="text-[var(--os-text-1)]">leaves the system</strong> — a briefing read, a signal queried, a report accessed.
+            Egress is not blocked (the ADMIN has full access to their intelligence), but every exit is permanently logged.
+          </p>
+        </div>
+      </div>
+
+      {/* Data flow map */}
+      <DataFlowMap />
+
+      {/* Export control rules */}
+      <ExportControlRules />
+
+      {/* KPI strip */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+        {[
+          { label: 'Total Egress Events', value: total,              color: '#f59e0b', bg: '#f59e0b0e' },
+          { label: 'Total Volume',        value: sizeStr(totalBytes),color: '#2564ea', bg: '#2564ea0e' },
+          { label: 'Success Rate',        value: `${successRate}%`,  color: '#10b981', bg: '#10b9810e' },
+          { label: 'Errors',              value: errCount,           color: errCount > 0 ? '#ef4444' : '#6b7280', bg: '#ef44440e' },
+        ].map(k => (
+          <div key={k.label} style={{ background: k.bg, border: `1px solid ${k.color}22`, borderLeft: `3px solid ${k.color}`, borderRadius: 10, padding: '12px 14px' }}>
+            <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6b7280', marginBottom: 4 }}>{k.label}</div>
+            <div style={{ fontSize: 20, fontWeight: 900, color: k.color, fontVariantNumeric: 'tabular-nums' }}>{k.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Top endpoints */}
+      {topEndpoints.length > 0 && (
+        <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, padding: '14px 16px' }}>
+          <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.09em', color: '#6b7280', marginBottom: 12 }}>Top Egress Endpoints</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {topEndpoints.map(([ep, count]) => {
+              const max = topEndpoints[0][1]
+              return (
+                <div key={ep} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ minWidth: 200, fontSize: 10, fontFamily: 'monospace', color: 'var(--os-text-2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ep}</div>
+                  <div style={{ flex: 1, height: 16, background: 'var(--os-border)', borderRadius: 4, overflow: 'hidden' }}>
+                    <div style={{ width: `${(count / max) * 100}%`, height: '100%', background: '#f59e0b', borderRadius: 4 }} />
+                  </div>
+                  <span style={{ minWidth: 28, fontSize: 11, fontWeight: 900, color: '#f59e0b', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{count}</span>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Controls */}
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+        {(['24h', '7d', '30d', 'all'] as TimeRange[]).map(t => (
+          <button key={t} onClick={() => { setTimeRange(t); setPage(0) }} style={{
+            fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 8,
+            background: timeRange === t ? '#f59e0b18' : 'var(--os-surface-3)',
+            color: timeRange === t ? '#f59e0b' : '#6b7280',
+            border: `1px solid ${timeRange === t ? '#f59e0b30' : 'var(--os-border)'}`,
+            cursor: 'pointer',
+          }}>
+            <Clock style={{ width: 9, height: 9, display: 'inline', marginRight: 3 }} />{t}
+          </button>
+        ))}
+        {methods.length > 0 && (
+          <select value={methodFilter} onChange={e => setMethodFilter(e.target.value)} style={{
+            background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', borderRadius: 7, padding: '4px 10px', fontSize: 11, color: 'var(--os-text-1)', outline: 'none',
+          }}>
+            <option value="">All methods</option>
+            {methods.map(m => <option key={m} value={m}>{m} ({methodCounts[m]})</option>)}
+          </select>
+        )}
+        <div style={{ position: 'relative', flex: 1, minWidth: 180 }}>
+          <Search style={{ position: 'absolute', left: 9, top: '50%', transform: 'translateY(-50%)', width: 12, height: 12, color: '#6b7280' }} />
+          <input type="text" placeholder="Search endpoint, asset type…" value={search} onChange={e => setSearch(e.target.value)}
+            style={{ width: '100%', paddingLeft: 28, paddingRight: 10, paddingTop: 6, paddingBottom: 6, background: 'var(--os-surface-0)', border: '1px solid var(--os-border)', borderRadius: 7, fontSize: 11, color: 'var(--os-text-1)', outline: 'none' }}
+          />
+        </div>
+        <span style={{ fontSize: 10, color: '#6b7280', flexShrink: 0 }}>{total} events</span>
+      </div>
+
+      {/* Table */}
+      {isLoading ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {[...Array(8)].map((_, i) => <div key={i} style={{ height: 44, background: 'var(--os-surface-0)', borderRadius: 8 }} className="animate-pulse" />)}
+        </div>
+      ) : rows.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '60px 24px', color: '#6b7280' }}>
+          <ArrowUpRight style={{ width: 28, height: 28, margin: '0 auto 10px', display: 'block', opacity: 0.4 }} />
+          <p style={{ fontSize: 12 }}>No egress events in this period. Intelligence monitoring begins as KIMMP responds to queries.</p>
+        </div>
+      ) : (
+        <div style={{ background: 'var(--os-card)', border: '1px solid var(--os-border)', borderRadius: 12, overflow: 'hidden' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr 70px 90px 70px 60px', background: 'var(--os-surface-0)', borderBottom: '1px solid var(--os-border)', padding: '10px 0' }}>
+            {['When', 'Endpoint', 'Method', 'Asset Type', 'Volume', 'Status'].map((h, i) => (
+              <div key={i} style={{ paddingLeft: i === 0 ? 14 : 0, paddingRight: i === 5 ? 14 : 0, fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--os-text-3)' }}>{h}</div>
+            ))}
+          </div>
+          {rows.map((row: any) => {
+            const size   = row.metadata?.payloadSize ?? 0
+            const status = row.metadata?.responseStatus ?? 200
+            const sCl    = statusColor(status)
+            const mCol   = METHOD_COLOR[row.method] ?? '#6b7280'
+            return (
+              <div key={row.id} style={{ display: 'grid', gridTemplateColumns: '100px 1fr 70px 90px 70px 60px', alignItems: 'center', borderBottom: '1px solid var(--os-border)', minHeight: 44 }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--os-surface-0)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              >
+                <div style={{ paddingLeft: 14 }}>
+                  <div style={{ fontSize: 9, fontWeight: 600, color: 'var(--os-text-3)', fontVariantNumeric: 'tabular-nums' }}>{relTime(row.createdAt)}</div>
+                </div>
+                <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--os-text-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: 8 }}>
+                  {row.endpoint ?? '—'}
+                </div>
+                <div>
+                  {row.method && (
+                    <span style={{ fontSize: 9, fontWeight: 800, fontFamily: 'monospace', padding: '2px 6px', borderRadius: 5, background: mCol + '14', color: mCol, border: `1px solid ${mCol}28` }}>{row.method}</span>
+                  )}
+                </div>
+                <div style={{ fontSize: 9, color: 'var(--os-text-3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.assetType ?? '—'}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: 'var(--os-text-2)', fontVariantNumeric: 'tabular-nums' }}>
+                  <HardDrive style={{ width: 9, height: 9, color: '#6b7280', flexShrink: 0 }} />
+                  {sizeStr(size)}
+                </div>
+                <div style={{ paddingRight: 14 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, fontFamily: 'monospace', color: sCl }}>{status}</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {total > PAGE_SIZE && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
+            style={{ fontSize: 11, color: page === 0 ? '#6b728060' : 'var(--os-text-2)', background: 'none', border: 'none', cursor: page === 0 ? 'default' : 'pointer' }}>
+            ← Prev
+          </button>
+          <span style={{ fontSize: 10, color: '#6b7280', fontVariantNumeric: 'tabular-nums' }}>Page {page + 1} of {Math.ceil(total / PAGE_SIZE)}</span>
+          <button onClick={() => setPage(p => p + 1)} disabled={(page + 1) * PAGE_SIZE >= total}
+            style={{ fontSize: 11, color: (page + 1) * PAGE_SIZE >= total ? '#6b728060' : 'var(--os-text-2)', background: 'none', border: 'none', cursor: (page + 1) * PAGE_SIZE >= total ? 'default' : 'pointer' }}>
+            Next →
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}

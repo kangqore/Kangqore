@@ -1350,7 +1350,7 @@ export function G7Page() {
               ) : (
                 <div style={{ background: `${AMBER}08`, border: `1px solid ${AMBER}30`, borderRadius: 10, padding: '16px 18px' }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: AMBER, marginBottom: 12 }}>
-                    Emergency Override — 2 approvers required · AEGIS logged
+                    Emergency Override — 2 approvers required · HANUMANAS logged
                   </div>
                   <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 10 }}>
                     <div style={{ flex: '1 1 160px' }}>

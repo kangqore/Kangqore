@@ -3,14 +3,14 @@
 //
 // Backs /api/public/trust/*. Every method here returns aggregate, non-tenant,
 // non-PII data ONLY — counts, percentages, category labels. Never proxy raw
-// rows from AegisAuditLog, LlmCallLog, or KimmpBenchmarkResult.issues to the
+// rows from HanumanasAuditLog, LlmCallLog, or KimmpBenchmarkResult.issues to the
 // public internet. The admin-gated equivalents (kangqore-immp `/aip-parity`,
-// aegis `/audit`, kimmp-gateway `/pii-incidents`) remain the source of truth
+// hanumanas `/audit`, kimmp-gateway `/pii-incidents`) remain the source of truth
 // for anything with row-level detail.
 // ---------------------------------------------------------------------------
 
 import { prisma } from '../../../lib/prisma'
-import { AegisLedger } from '../../esf/aegis/aegisLedger.service'
+import { HanumanasLedger } from '../../esf/hanumanas/hanumanasLedger.service'
 
 // ── Live Capability Scorecard (same computation the admin AIP Parity page
 // uses — this data was already safe to expose: counts and percentages, no
@@ -81,7 +81,7 @@ export async function computeCapabilityScorecard(): Promise<{
   }
 }
 
-// ── Governance Summary (AEGIS audit trail + PII policy + budget model,
+// ── Governance Summary (HANUMANAS audit trail + PII policy + budget model,
 // aggregate-only) ────────────────────────────────────────────────────────────
 
 const PII_CATEGORY_LABELS: Record<string, string> = {
@@ -96,7 +96,7 @@ const PII_CATEGORY_LABELS: Record<string, string> = {
 
 export async function computeGovernanceSummary() {
   const [stats, piiConfig, piiIncidentCount, budgetCount] = await Promise.all([
-    AegisLedger.stats(),
+    HanumanasLedger.stats(),
     (prisma as any).piiScanConfig.findFirst({ where: { active: true } }),
     prisma.llmCallLog.count({ where: { piiDetected: true } }),
     (prisma as any).tokenBudget.count(),

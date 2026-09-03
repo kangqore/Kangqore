@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------------
 // Public Trust routes — /api/public/trust/*
-// No auth. Overshadow Roadmap P1 ("Publish the Proof"): makes AEGIS's
+// No auth. Overshadow Roadmap P1 ("Publish the Proof"): makes HANUMANAS's
 // governance-native posture, the AIP-parity capability scorecard, and the
 // eval/drift pipeline independently verifiable by a prospect, analyst, or
 // journalist — not just claims in an internal memory file. Every handler

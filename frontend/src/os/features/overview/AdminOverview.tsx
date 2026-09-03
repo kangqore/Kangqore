@@ -77,7 +77,7 @@ function getModuleDeg(sourceModule: string): number | null {
   if (m.includes('lead')  || m.includes('revenue') || m.includes('conver')) return 30
   if (m.includes('alis')  || m.includes('market')  || m.includes('demand')) return 60
   if (m.includes('vis')   || m.includes('content') || m.includes('gap'))    return 90
-  if (m.includes('aegis') || m.includes('security')|| m.includes('threat')) return 120
+  if (m.includes('hanumanas') || m.includes('security')|| m.includes('threat')) return 120
   if (m.includes('keos')  || m.includes('os')      || m.includes('system')) return 150
   if (m.includes('kore')  || m.includes('cloud')   || m.includes('infra'))  return 180
   if (m.includes('kimmp') || m.includes('agent'))                           return 210
@@ -384,7 +384,7 @@ function WaandaGUI({ confidence, health, analytics, sweep, insights, lastSignal,
     { label:'LEAD',     line2:'INTELLIGENCE', deg:30,  pct: srcPct(['lead','revenue','conversion'],  65), color:C,  desc:'LEAD_SCORE_JUMP', roles:['ADMIN'] },
     { label:'KANGQORE', line2:'ALIS',         deg:60,  pct: srcPct(['alis','market','demand'],        58), color:C,  desc:'DEMAND_SPIKE',    roles:['ADMIN'] },
     { label:'KANGQORE', line2:'VIS',          deg:90,  pct: srcPct(['vis','content','gap'],           44), color:CG, desc:'CONTENT_GAP',     roles:['ADMIN'] },
-    { label:'KANGQORE', line2:'AEGIS',        deg:120, pct: srcPct(['aegis','security','threat'],     89), color:C,  desc:'SECURITY_MESH',   roles:['ADMIN'] },
+    { label:'KANGQORE', line2:'HANUMANAS',        deg:120, pct: srcPct(['hanumanas','security','threat'],     89), color:C,  desc:'SECURITY_MESH',   roles:['ADMIN'] },
     { label:'KEOS',     line2:'',             deg:150, pct: srcPct(['keos','os','system'],            94), color:CG, desc:'CORE_SYS_HEALTH', roles:['ADMIN'] },
     { label:'KORE',     line2:'',             deg:180, pct: srcPct(['kore','cloud','infra'],          98), color:C,  desc:'INFRASTRUCTURE',  roles:['ADMIN'] },
     { label:'KIMMP',    line2:'',             deg:210, pct: srcPct(['kimmp','agent','mesh'],          82), color:CA, desc:'MULTI_AGENT',     roles:['ADMIN'] },
@@ -848,13 +848,13 @@ function WaandaGreeting({ kpis, insights, health, onDismiss, onSpeakDirect }: {
     [460,  { type: 'divider',  text: '' }],
     [660,  { type: 'status',   text: 'Intelligence Mesh',    value: '✓ ONLINE' }],
     [860,  { type: 'status',   text: 'Digital Twin',         value: twin != null ? `✓ ${twin}/100` : '✓ ACTIVE' }],
-    [1060, { type: 'status',   text: 'AEGIS Governance',     value: '✓ OPERATIONAL' }],
+    [1060, { type: 'status',   text: 'HANUMANAS Governance',     value: '✓ OPERATIONAL' }],
     [1260, { type: 'status',   text: 'Signal Monitor',       value: `✓ ${insights.length || 0} TRACKED` }],
     [1260, { type: 'status',   text: 'System Health',        value: `✓ ${health.toFixed(0)}%` }],
     [1500, { type: 'divider',  text: '' }],
     [1900, { type: 'greeting', text: `Good ${tod}, sir.` }],
     [2300, { type: 'body',     text: statusLine }],
-    [2700, { type: 'body',     text: `12 modules online  ·  AEGIS active  ·  All systems nominal` }],
+    [2700, { type: 'body',     text: `12 modules online  ·  HANUMANAS active  ·  All systems nominal` }],
     [3100, { type: 'ready',    text: 'WAANDA online. Standing by for orders.' }],
     [3700, { type: 'prompt',   text: '[ CLICK ANYWHERE OR PRESS ANY KEY TO PROCEED ]' }],
   ]
@@ -6215,13 +6215,13 @@ export function AdminOverview() {
   // No ticker fallbacks — show real data only
   const visits     = useTicker(analytics.total_visits || 91, 0.015)
 
-  // AEGIS registered agent count — real value, animates around it
-  const { data: aegisStats } = useQuery({
-    queryKey: ['aegis-stats-hud'],
-    queryFn: () => api.get('/admin/aegis/agents').then(r => r.data),
+  // HANUMANAS registered agent count — real value, animates around it
+  const { data: hanumanasStats } = useQuery({
+    queryKey: ['hanumanas-stats-hud'],
+    queryFn: () => api.get('/admin/hanumanas/agents').then(r => r.data),
     staleTime: 1000 * 60 * 10,
   })
-  const agents = useTicker(aegisStats?.total ?? 80, 0.02)
+  const agents = useTicker(hanumanasStats?.total ?? 80, 0.02)
 
   // WAANDA Authority health — subsystem dots in right column
   const { data: authorityHealth } = useQuery({
@@ -6284,27 +6284,27 @@ export function AdminOverview() {
     insightCountRef.current = n
   }, [storeInsights.length, addHUDEvent])
 
-  // ── Live HUD Event: AEGIS audit log poll ────────────────────────────────
-  const { data: aegisAudit } = useQuery({
-    queryKey: ['aegis-audit-hud'],
-    queryFn: () => api.get('/admin/aegis/audit?limit=1').then(r => r.data).catch(() => null),
+  // ── Live HUD Event: HANUMANAS audit log poll ────────────────────────────────
+  const { data: hanumanasAudit } = useQuery({
+    queryKey: ['hanumanas-audit-hud'],
+    queryFn: () => api.get('/admin/hanumanas/audit?limit=1').then(r => r.data).catch(() => null),
     refetchInterval: 25_000,
   })
-  const prevAegisId = useRef<string | null>(null)
+  const prevHanumanasId = useRef<string | null>(null)
   useEffect(() => {
-    const latest = aegisAudit?.logs?.[0]
-    if (!latest || latest.id === prevAegisId.current) return
-    prevAegisId.current = latest.id
+    const latest = hanumanasAudit?.logs?.[0]
+    if (!latest || latest.id === prevHanumanasId.current) return
+    prevHanumanasId.current = latest.id
     addHUDEvent({
       type: 'agent',
-      title: (latest.agentId || 'AEGIS').replace(/-/g, ' ').toUpperCase().slice(0, 20),
+      title: (latest.agentId || 'HANUMANAS').replace(/-/g, ' ').toUpperCase().slice(0, 20),
       value: (latest.action || 'COMPLETED').replace(/_/g, ' '),
       sub: (latest.outcome || 'LOGGED').slice(0, 34),
       color: '#00ddaa',
       ts: latest.createdAt ? new Date(latest.createdAt).getTime() : Date.now(),
       raw: { agentId: latest.agentId, action: latest.action, outcome: latest.outcome, metadata: latest.metadata, engine: latest.engine, createdAt: latest.createdAt },
     })
-  }, [aegisAudit, addHUDEvent])
+  }, [hanumanasAudit, addHUDEvent])
 
   // ── Live HUD Event: Proactive insights poll ──────────────────────────────
   const { data: proactiveData } = useQuery({
@@ -6874,7 +6874,7 @@ export function AdminOverview() {
   <SectionLabel text="WAANDA AUTHORITY" color='#818cf8' />
   <div style={{ display:'flex', flexDirection:'column', gap:4, padding:'4px 8px', cursor:'pointer' }}
        onClick={() => navigate('/kangqore-view/admin/kangqore-immp/authority')}>
-    {(['KIMMP','AEGIS','KEOS','KORE','EQORE','ALIS','VIS'] as const).map(name => {
+    {(['KIMMP','HANUMANAS','KEOS','KORE','EQORE','ALIS','VIS'] as const).map(name => {
       const status = authorityHealth?.health?.[name]?.status ?? 'UNKNOWN'
       const dotColor = status === 'OPTIMAL' ? '#22c55e' : status === 'DEGRADED' ? '#f59e0b' : status === 'PAUSED' ? '#6366f1' : '#6b7280'
       return (

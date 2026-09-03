@@ -8,7 +8,7 @@ import { CapabilityBroker } from '../workspace/CapabilityBroker';
 import { RuntimeContainer } from '../core/RuntimeContainer';
 
 /**
- * Handles AEGIS policy evaluation and subsystem initialization for the active workspace.
+ * Handles HANUMANAS policy evaluation and subsystem initialization for the active workspace.
  */
 export class OrchestrationEngine {
     private policyAdapter: PolicyAdapter;
@@ -27,7 +27,7 @@ export class OrchestrationEngine {
     }
 
     public evaluateAccess(userId: string, workspaceManifest: any): boolean {
-        // In a real implementation, this evaluates AEGIS policies
+        // In a real implementation, this evaluates HANUMANAS policies
         // For now, if it requires 'role.employee', return true.
         const requiredPermissions = workspaceManifest.permissions || [];
         if (requiredPermissions.includes('role.employee')) return true;

@@ -70,7 +70,7 @@ function NewPromptWizard({ onClose }: { onClose: () => void }) {
         <code className="block text-[11px] font-mono bg-[var(--os-surface-0)] border border-[var(--os-border)] rounded-2xl px-3 py-2 text-[var(--os-text-1)]">
           {`{ promptName: '${created}' }`}
         </code>
-        <p className="text-[10px] text-[var(--os-text-2)]">Pass it as the 5th arg meta field on <code>sonnet()</code>/<code>haiku()</code>/<code>opus()</code>, or the 4th arg on AEGIS's <code>callLLM()</code> — the caller's existing inline string stays as a safe fallback.</p>
+        <p className="text-[10px] text-[var(--os-text-2)]">Pass it as the 5th arg meta field on <code>sonnet()</code>/<code>haiku()</code>/<code>opus()</code>, or the 4th arg on HANUMANAS's <code>callLLM()</code> — the caller's existing inline string stays as a safe fallback.</p>
         <button onClick={onClose} className="px-3 py-1.5 rounded-2xl bg-[var(--os-accent)] text-white text-[11px] font-semibold">Done</button>
       </div>
     )

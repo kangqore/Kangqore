@@ -64,7 +64,7 @@ export function InnovPatents() {
           <span className="font-semibold" style={{ color: ACCENT }}>KIMMP: </span>
           PAT-006 (BIDS™ Adaptation Layer) is granted — file the international extension (PCT) within 12 months of the
           UK grant date to preserve global rights. PAT-003 (Multi-Agent Governance) is pending in UK/US — the AI
-          governance landscape is moving fast; ensure the claims language covers the AEGIS architecture. PAT-004 (NL
+          governance landscape is moving fast; ensure the claims language covers the HANUMANAS architecture. PAT-004 (NL
           Pipeline Builder) is still in Draft; move to filing before the PoC becomes public-facing or prior art will be established.
         </p>
       </div>

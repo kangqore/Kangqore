@@ -9,6 +9,8 @@
 **Relationship to QEF:** RGS/1.0 depends on QEF/1.0. A valid QEF certificate is a prerequisite for any production deployment decision. RGS does not replace or modify QEF.
 
 > RGS/1.0 is a stable internal governance standard. Changes to the deployment decision model, approval policy, blocker list, API contracts, or provenance schema require a new schema version (RGS/1.1 or RGS/2.0). Bug fixes and documentation clarifications do not require a version bump.
+>
+> **Naming note (2026-09-02):** the governance/security layer was renamed **AEGIS → HANUMANAS**. References to "AEGIS" below (incl. `AegisLedger`, the AEGIS audit layer, `DEPLOYMENT_*` events written "through AEGIS") are retained as the frozen RGS/1.0 text; in code these are now `HanumanasLedger` and the HANUMANAS ledger.
 
 ---
 

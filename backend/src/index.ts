@@ -58,7 +58,7 @@ import './eqore/queue/nurture.worker';     // instantiates EqoreNurtureWorker  �
 import { alisRouter } from './kangqore-alis';
 import { kangqoreImmpRoutes } from './kangqore-immp';
 import { urgiRoutes } from './kangqore-immp/relationship-intelligence/api/urgi.routes';
-import { aegisRouter, aegisShield, aegisAccessLogger, aegisEgressMonitor } from './kangqore-aegis';
+import { hanumanasRouter, hanumanasShield, hanumanasAccessLogger, hanumanasEgressMonitor } from './kangqore-view/esf/hanumanas';
 import { waandaRouter } from './kangqore-view/waanda/waandaRoutes';
 import { waandaTrainingRouter } from './kangqore-view/waanda/training';
 import { dataPrivacyRouter } from './routes/data-privacy';
@@ -190,8 +190,8 @@ app.use('/api/admin/content', contentRoutes);
 import koreRoutes from './kangqore-view/kore/api/kore.routes'; // NEW KEOS Layer
 
 // SECURITY: do not re-mount kangqoreImmpRoutes here. It is already mounted below
-// at /api/admin/kangqore-immp behind aegisAccessLogger + aegisEgressMonitor; a second,
-// unwrapped mount would let every KIMMP route bypass AEGIS governance logging entirely.
+// at /api/admin/kangqore-immp behind hanumanasAccessLogger + hanumanasEgressMonitor; a second,
+// unwrapped mount would let every KIMMP route bypass HANUMANAS governance logging entirely.
 app.use('/api/kangqore/urgi', authenticate, urgiRoutes);
 app.use('/api/kangqore/kore', koreRoutes); // Mount KEOS KORE APIs
 
@@ -268,12 +268,12 @@ app.use('/api/admin/briefing', briefingRouter);
 // WAANDA — Enterprise Cognitive OS boot manifest + domain registry + mission execution
 app.use('/api/admin/kangqore-view/waanda', authenticate, authorize(['ADMIN']), waandaRouter);
 
-// AEGIS — Autonomous Executive Governance & Intelligence Shield
+// HANUMANAS — Autonomous Executive Governance & Intelligence Shield
 // Sits above KIMMP: sovereign audit dashboard for ADMIN only.
-app.use('/api/admin/aegis', aegisShield, aegisRouter);
+app.use('/api/admin/hanumanas', hanumanasShield, hanumanasRouter);
 
 // KIMMP — Human Behavior Intelligence Layer (auth applied per-route inside the router).
-app.use('/api/admin/kangqore-immp', aegisAccessLogger, aegisEgressMonitor, kangqoreImmpRoutes);
+app.use('/api/admin/kangqore-immp', hanumanasAccessLogger, hanumanasEgressMonitor, kangqoreImmpRoutes);
 
 // WAANDA Training Data Pipeline — Gen 1 → Gen 2 data collection (ADMIN only).
 app.use('/api/admin/waanda-training', waandaTrainingRouter);

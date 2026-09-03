@@ -10,8 +10,8 @@ const PAST_STANDUPS = [
   },
   {
     date: 'Today, 9:05 AM', author: 'Priya Nair',
-    did: 'Finished AEGIS Phase 2 stub agents (7/10 complete).',
-    doing: 'Completing remaining 3 AEGIS agent stubs. Writing unit tests.',
+    did: 'Finished HANUMANAS Phase 2 stub agents (7/10 complete).',
+    doing: 'Completing remaining 3 HANUMANAS agent stubs. Writing unit tests.',
     blocked: 'Need backend schema for AuditLog to be finalised.',
   },
   {

@@ -17,7 +17,7 @@ const KPIS: AnalyticsKPI[] = [
 
 const AGENTS: AgentStat[] = [
   { id: 'a1', name: 'Siddharth R', initials: 'SR', color: '#84CC16', resolved: 24, avgHandle: '2.1d', csat: 97, slaBreaches: 0, trendVsLast: 'up',   kimmCoaching: 'Highest velocity and lowest MTTR. KIMMP context pipeline ownership is a force multiplier — protect this focus.' },
-  { id: 'a2', name: 'Kavya N',     initials: 'KN', color: '#10B981', resolved: 21, avgHandle: '2.4d', csat: 95, slaBreaches: 1, trendVsLast: 'up',   kimmCoaching: 'AEGIS audit log delivery was exceptional. One SLA miss on OAuth ticket — dependency on cert renewal, not execution.' },
+  { id: 'a2', name: 'Kavya N',     initials: 'KN', color: '#10B981', resolved: 21, avgHandle: '2.4d', csat: 95, slaBreaches: 1, trendVsLast: 'up',   kimmCoaching: 'HANUMANAS audit log delivery was exceptional. One SLA miss on OAuth ticket — dependency on cert renewal, not execution.' },
   { id: 'a3', name: 'Aryan M',     initials: 'AM', color: '#F59E0B', resolved: 18, avgHandle: '2.8d', csat: 93, slaBreaches: 0, trendVsLast: 'flat', kimmCoaching: 'Frontend performance improvements measurably reduced bundle size. Recommend AI/ML integration exposure to grow skillset.' },
 ]
 

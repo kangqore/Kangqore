@@ -210,10 +210,10 @@ const INITIAL_TOPICS = [
   {
     id: 8,
     title: 'Ask the community: What does your enterprise AI governance policy look like in 2026?',
-    excerpt: 'Specifically looking for: how you handle agent autonomy levels, approval gates, audit logging, and what happens when an agent makes a wrong decision. Sharing our own AEGIS framework for reference.',
+    excerpt: 'Specifically looking for: how you handle agent autonomy levels, approval gates, audit logging, and what happens when an agent makes a wrong decision. Sharing our own HANUMANAS framework for reference.',
     category: 'ask',
     community: 'k/governance',
-    tags: ['ai-governance', 'aegis', 'enterprise-ai', 'compliance'],
+    tags: ['ai-governance', 'hanumanas', 'enterprise-ai', 'compliance'],
     author: { name: 'Ravi Kumar', initials: 'RK', color: '#FB923C' },
     posters: [
       { initials: 'RK', color: '#FB923C' },

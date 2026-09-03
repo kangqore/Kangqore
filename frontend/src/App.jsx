@@ -145,7 +145,7 @@ const IntelligenceModule = React.lazy(() => import('./os/features/intelligence')
 const OutcomeRiskModule  = React.lazy(() => import('./os/features/outcome-risk').then(m => ({ default: m.OutcomeRiskModule })));
 const SettingsModule     = React.lazy(() => import('./os/features/settings').then(m => ({ default: m.SettingsModule })));
 const SchedulingModule   = React.lazy(() => import('./os/features/scheduling').then(m => ({ default: m.SchedulingModule })));
-const AegisModule        = React.lazy(() => import('./os/features/aegis').then(m => ({ default: m.AegisModule })));
+const HanumanasModule        = React.lazy(() => import('./os/features/hanumanas').then(m => ({ default: m.HanumanasModule })));
 const OntologyModule     = React.lazy(() => import('./os/features/ontology').then(m => ({ default: m.OntologyModule })));
 const UrgiStudioModule    = React.lazy(() => import('./os/features/urgi-studio/RelationshipStudio'));
 const BidsModule         = React.lazy(() => import('./os/features/bids').then(m => ({ default: m.BidsModule })));
@@ -300,7 +300,7 @@ function AppContent() {
             <Route path="scheduling/*"     element={<SchedulingModule />}    />
             <Route path="bids/*"           element={<BidsModule />}             />
             <Route path="ops-centre/*"     element={<OpsCentreModule />}        />
-            <Route path="aegis/*"          element={<AegisModule />}            />
+            <Route path="hanumanas/*"          element={<HanumanasModule />}            />
             <Route path="ontology/*"       element={<OntologyModule />}         />
             <Route path="kangqore-urgi/*"    element={<UrgiStudioModule />}       />
             <Route path="settings/*"       element={<SettingsModule />}      />

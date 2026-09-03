@@ -90,7 +90,7 @@ export function ContestedModulesPage() {
       </div>
 
       <div style={{ marginTop: 20 }}>
-        <Link to="/kangqore-view/admin/aegis/ai-security-view" style={{ fontSize: 12.5, fontWeight: 700, color: GREEN, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+        <Link to="/kangqore-view/admin/hanumanas/ai-security-view" style={{ fontSize: 12.5, fontWeight: 700, color: GREEN, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
           See the AI Security View (P4.2 — the SecOps-contest answer) <ArrowRight size={12} />
         </Link>
       </div>

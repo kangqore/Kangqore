@@ -1,4 +1,5 @@
 // ---------------------------------------------------------------------------
+import { HANUMANAS } from '../../esf/hanumanas/identity';
 // WAANDA Curriculum Classifier
 //
 // Every training example belongs to a curriculum domain. This classifier
@@ -11,7 +12,7 @@
 //   OPERATIONS   — project delivery, workflow, tasks, resource
 //   FINANCE      — budget, forecast, spend, P&L
 //   GOVERNANCE   — audit, access control, policy, compliance
-//   SECURITY     — threat, vulnerability, AEGIS, risk
+//   SECURITY     — threat, vulnerability, HANUMANAS, risk
 //   EXECUTIVE    — cross-system synthesis, strategic decisions, COIG
 //   CONCIERGE    — visitor Q&A that doesn't map to a clear domain
 //   PLATFORM     — infrastructure, training, benchmarks, system health
@@ -71,7 +72,7 @@ const KEYWORD_RULES: Array<[RegExp, Curriculum]> = [
   [/pric|revenue|arr|mrr|forecast|budget|spend|p&l|invoice|billing/i,  'FINANCE'],
   [/project|workflow|task|delivery|milestone|resource|capacity/i,       'OPERATIONS'],
   [/audit|compliance|policy|access|permission|gdpr|kyc|regul/i,         'GOVERNANCE'],
-  [/risk|threat|vuln|security|breach|attack|sentinel|aegis/i,           'SECURITY'],
+  [/risk|threat|vuln|security|breach|attack|sentinel|hanumanas/i,           'SECURITY'],
   [/strategy|executive|ceo|board|synthesis|decision|coig|ois/i,         'EXECUTIVE'],
   [/benchmark|train|fine.?tune|model|corpus|platform|infra/i,           'PLATFORM'],
   [/simulation|scenario|twin|projection/i,                               'OPERATIONS'],
@@ -92,8 +93,8 @@ export function classifyCurriculum(params: ClassifyParams): Curriculum {
 
   // Exact system match
   if (system) {
-    const sys = system.replace(/^AEGIS:/, 'AEGIS_')
-    if (sys.startsWith('AEGIS')) return 'GOVERNANCE'
+    const sys = system.replace(/^HANUMANAS:/, 'HANUMANAS_')
+    if (sys.startsWith(HANUMANAS.name)) return 'GOVERNANCE'
     if (SYSTEM_MAP[system]) return SYSTEM_MAP[system]
   }
 

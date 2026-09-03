@@ -37,7 +37,7 @@ export const PERSONA_SOLUTIONS = [
       { label: 'See the live governance scorecard and audit trail', to: '/trust' },
       { label: 'Read the sequencing argument for a technical evaluator', to: '/trust/governance-native-vs-retrofitted' },
     ],
-    honestNote: 'This is a governance and audit story, not a SIEM/SOAR replacement — AEGIS extends risk/audit into a security-facing lens on data the platform already writes, it does not compete with detection engines.',
+    honestNote: 'This is a governance and audit story, not a SIEM/SOAR replacement — HANUMANAS extends risk/audit into a security-facing lens on data the platform already writes, it does not compete with detection engines.',
   },
   {
     slug: 'chro',
@@ -71,6 +71,6 @@ export const PERSONA_SOLUTIONS = [
       { label: 'Browse the Customer Service Case Handler template', to: '/marketplace' },
       { label: 'See the live governance and audit trail', to: '/trust' },
     ],
-    honestNote: 'The customer-case capability ships with three governed, tool-callable actions — log, resolve, escalate — every one of them audited the same way any other AEGIS-governed action is.',
+    honestNote: 'The customer-case capability ships with three governed, tool-callable actions — log, resolve, escalate — every one of them audited the same way any other HANUMANAS-governed action is.',
   },
 ];

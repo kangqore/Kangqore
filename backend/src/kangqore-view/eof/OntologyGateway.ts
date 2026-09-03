@@ -1,4 +1,4 @@
-// AEGIS Authorization Engine — Universal Ontology Gateway
+// HANUMANAS Authorization Engine — Universal Ontology Gateway
 //
 // Every read and every write to OntologyObject / OntologyRelationship must
 // pass through here. There is no alternate write path.
@@ -11,12 +11,13 @@
 
 import { prisma } from '../../lib/prisma'
 import { checkPolicy } from '../esf/PolicyEngine'
+import type { HanumanasName } from '../esf/hanumanas/identity'
 import { CardinalityEngine } from './CardinalityEngine'
 import { CdcService } from '../../lib/cdc/cdcService'
 
 export interface GatewayActor {
   id: string
-  type: 'HUMAN' | 'KIMMP' | 'AEGIS' | 'API' | 'SYSTEM'
+  type: 'HUMAN' | 'KIMMP' | HanumanasName | 'API' | 'SYSTEM'
   clearances: string[]  // data-marking labels this actor can read/write
 }
 

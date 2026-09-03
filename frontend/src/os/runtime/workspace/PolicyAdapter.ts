@@ -2,7 +2,7 @@
 // Generation III Runtime
 
 /**
- * Adapts AEGIS policies to the UI.
+ * Adapts HANUMANAS policies to the UI.
  * Determines if a user has permission to view, edit, simulate, or execute.
  */
 export class PolicyAdapter {

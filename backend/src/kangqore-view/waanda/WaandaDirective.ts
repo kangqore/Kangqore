@@ -1,3 +1,4 @@
+import type { HanumanasName } from '../esf/hanumanas/identity';
 // ---------------------------------------------------------------------------
 // WaandaDirective — The contract between WAANDA (Supreme Brain) and its subsystems.
 //
@@ -18,7 +19,7 @@ import { randomUUID } from 'crypto'
 
 export type SubsystemName =
   | 'KIMMP'
-  | 'AEGIS'
+  | HanumanasName
   | 'KEOS'
   | 'KORE'
   | 'EQORE'

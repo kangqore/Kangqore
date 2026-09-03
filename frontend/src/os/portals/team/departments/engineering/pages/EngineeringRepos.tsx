@@ -22,7 +22,7 @@ interface PR {
 const REPOS: Repo[] = [
   { name: 'kangqore-os',     tag: 'main', openPRs: 4, lastPush: '2h ago',  coverage: 94 },
   { name: 'kimmp-core',      openPRs: 2,  lastPush: '4h ago',  coverage: 89 },
-  { name: 'aegis-service',   openPRs: 1,  lastPush: '1d ago',  coverage: 91 },
+  { name: 'hanumanas-service',   openPRs: 1,  lastPush: '1d ago',  coverage: 91 },
   { name: 'kangqore-api',    openPRs: 3,  lastPush: '30m ago', coverage: 87 },
   { name: 'kangqore-mobile', tag: 'WIP',  openPRs: 2, lastPush: '3d ago',  coverage: 71 },
 ]
@@ -30,7 +30,7 @@ const REPOS: Repo[] = [
 const OPEN_PRS: PR[] = [
   { id: '#142', title: 'feat: KIMMP streaming context window',  author: 'Siddharth R', size: 'L', days: 1, repo: 'kimmp-core' },
   { id: '#291', title: 'fix: drag-drop flickering on Live Board',author: 'Aryan M',     size: 'S', days: 0, repo: 'kangqore-os' },
-  { id: '#290', title: 'feat: AEGIS audit log pagination',       author: 'Kavya N',     size: 'M', days: 2, repo: 'aegis-service' },
+  { id: '#290', title: 'feat: HANUMANAS audit log pagination',       author: 'Kavya N',     size: 'M', days: 2, repo: 'hanumanas-service' },
   { id: '#189', title: 'chore: upgrade Prisma to v6',            author: 'Siddharth R', size: 'M', days: 3, repo: 'kangqore-api' },
   { id: '#047', title: 'feat: mobile auth endpoints v1',         author: 'Aryan M',     size: 'M', days: 2, repo: 'kangqore-mobile' },
 ]

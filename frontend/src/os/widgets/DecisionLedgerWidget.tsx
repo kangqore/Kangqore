@@ -19,7 +19,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel, onAction }) => {
   const resolvedCount: number = viewModel.resolvedKimmpCount ?? kimmpDecisions.filter(d =>  d.selected ||  d.outcome).length
   const auditCount: number    = viewModel.auditCount         ?? 0
 
-  // L3+ pending actions (AEGIS boundary) for the ledger header
+  // L3+ pending actions (HANUMANAS boundary) for the ledger header
   const l3plus: any[]         = Array.isArray(viewModel.l3PlusDecisions) ? viewModel.l3PlusDecisions : []
 
   return (
@@ -140,11 +140,11 @@ const Core: React.FC<WidgetProps> = ({ viewModel, onAction }) => {
         </div>
       )}
 
-      {/* L3+ AEGIS boundary decisions */}
+      {/* L3+ HANUMANAS boundary decisions */}
       {l3plus.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--os-warning)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-            AEGIS Boundary · L3+ Required
+            HANUMANAS Boundary · L3+ Required
           </div>
           {l3plus.slice(0, 2).map((d: any) => (
             <div key={d.id} style={{

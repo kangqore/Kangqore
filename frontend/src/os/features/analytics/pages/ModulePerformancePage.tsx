@@ -86,7 +86,7 @@ const PILLAR_META: Array<{
   },
   {
     key: 'trust',      label: 'Trust & Governance',    weight: 0.08, icon: Scale,
-    modules: ['AEGIS', 'Ontology', 'Compliance'],
+    modules: ['HANUMANAS', 'Ontology', 'Compliance'],
     scoreKey: 'trustScore',
     description: 'Compliance posture, policy adherence, egress hygiene, audit trail density.',
   },

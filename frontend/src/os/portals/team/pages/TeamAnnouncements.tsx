@@ -62,8 +62,8 @@ const announcements: Announcement[] = [
   },
   {
     id: 5,
-    title: 'AEGIS Phase 1 complete — 80 agents live',
-    body: 'Phase 1 of AEGIS is complete. 80 governance agents are active across 10 engines. GovernanceOps is fully live. Phases 2–4 stubs are active. Phase 2 scheduling begins after Ops Centre Sprint 0 ships.',
+    title: 'HANUMANAS Phase 1 complete — 80 agents live',
+    body: 'Phase 1 of HANUMANAS is complete. 80 governance agents are active across 10 engines. GovernanceOps is fully live. Phases 2–4 stubs are active. Phase 2 scheduling begins after Ops Centre Sprint 0 ships.',
     author: 'C.O.D.E.',
     date: '10 Jun 2026',
     pinned: false,

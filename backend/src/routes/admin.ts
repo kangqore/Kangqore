@@ -29,7 +29,7 @@ import { runGate35 } from '../scripts/gate35/gate35Runner';
 import { runGate6 }  from '../scripts/gate6/gate6Runner';
 import { issueCertificate, approveCertificate, latestCertificate, listCertificates, revokeCertificate, computeCertificateDiff } from '../scripts/qef/qefCertificateService';
 import { evaluateRelease, recordDeployment, recordOutcome, recordRollback, emergencyOverride, preflightCheck, listDecisions, listDeployments, listEnvironments } from '../scripts/rgs/rgsService';
-import { AegisLedger } from '../kangqore-aegis/aegisLedger.service';
+import { HanumanasLedger } from '../kangqore-view/esf/hanumanas/hanumanasLedger.service';
 import { getFlightEvents } from '../scripts/flightRecorder/flightRecorderService';
 import { computeGate8, createGate8Snapshot, getGate8History, computeForecast, computeRecommendations } from '../kangqore-view/waanda/intelligence/gate8.service';
 import { computeEMI, computeCOIG, computePulse, computeAndSaveDNA, getDNA, getActiveDefinition, upsertDefinition, computeCustomerZeroReport, computePlatformActivity, generateOperatingPulse, invalidatePulseCache, logAdoptionEvent, computeCoigWeekReport, computeOnboardingChecklist, listDeploymentHealth, computeRenewalRisk, generateQBR } from '../kangqore-view/waanda/intelligence/enterpriseService';
@@ -1519,7 +1519,7 @@ router.get('/eqore/leads', authenticate, authorize(['ADMIN']), async (req: Authe
           companyName: 'Birla Digital Labs', name: 'Aditya Birla', role: 'Chief Digital Officer',
           email: 'aditya@birladigitallabs.in', phone: '+91 98765 43210',
           leadScore: 95, buyingStage: 'negotiation', projectedValue: 2500000, pipelineWeight: 78,
-          urgency: 'HIGH', leadCategory: 'Enterprise', primaryIntent: 'Enterprise OS deployment — WAANDA + AEGIS full stack',
+          urgency: 'HIGH', leadCategory: 'Enterprise', primaryIntent: 'Enterprise OS deployment — WAANDA + HANUMANAS full stack',
           valueTier: 'ENTERPRISE', assignedOwnerName: 'Mahesh Kumar',
           problemStatement: 'Siloed operations across 6 BUs, no unified intelligence layer. Need OS-level visibility.',
           recommendedAction: 'Activate Blueprint Wizard — PS Pack configured for financial services arm.',
@@ -2726,9 +2726,9 @@ router.post('/release/incidents', authenticate, authorize(['ADMIN']), async (req
       select: { id: true, number: true, title: true, priority: true, status: true, createdAt: true },
     })
 
-    // AEGIS — policy violation (P0/P1 active incidents block deployments)
+    // HANUMANAS — policy violation (P0/P1 active incidents block deployments)
     if (priority === 'P1-CRITICAL' || priority === 'P2-HIGH') {
-      await AegisLedger.logPolicyViolation({
+      await HanumanasLedger.logPolicyViolation({
         policy:   'INCIDENT_DECLARED',
         actor:    adminId,
         system:   'RGS',

@@ -1,4 +1,5 @@
 // ---------------------------------------------------------------------------
+import { HANUMANAS } from '../esf/hanumanas/identity';
 // KIMMP — route registry
 //
 // PR 1 is a passive, read-only intelligence layer: it analyzes text on demand
@@ -3600,23 +3601,23 @@ kangqoreImmpRoutes.post('/customers/blueprint-clone', requireAuth, requireRole([
 })
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// S65 — AEGIS Depth P2: policy enforcement + KIMMP signal bridge
+// S65 — HANUMANAS Depth P2: policy enforcement + KIMMP signal bridge
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// POST /admin/kangqore-immp/aegis/policy-violation
-// Called by AEGIS when a policy is violated — generates a KIMMP signal + AEGIS evidence
-kangqoreImmpRoutes.post('/aegis/policy-violation', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// POST /admin/kangqore-immp/hanumanas/policy-violation
+// Called by HANUMANAS when a policy is violated — generates a KIMMP signal + HANUMANAS evidence
+kangqoreImmpRoutes.post('/hanumanas/policy-violation', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { policyId, policyName, severity, violatorId, violatorRole, endpoint, detail } = req.body
     if (!policyId || !severity) return res.status(400).json({ error: 'policyId and severity required' })
 
     const signal = await (prisma as any).kimmpSignal.create({
       data: {
-        signalType:  'AEGIS_POLICY_VIOLATION',
+        signalType:  'HANUMANAS_POLICY_VIOLATION',
         severity:    severity.toUpperCase(),
         signalValue: `Policy violated: ${policyName ?? policyId}`,
-        source:      'AEGIS',
-        agentSystem: 'AEGIS_SHIELD',
+        source:      HANUMANAS.name,
+        agentSystem: 'HANUMANAS_SHIELD',
         metadata:    { policyId, policyName, violatorId, violatorRole, endpoint, detail },
         status:      'ACTIVE',
       },
@@ -3625,14 +3626,14 @@ kangqoreImmpRoutes.post('/aegis/policy-violation', requireAuth, requireRole(['AD
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/aegis/threat-feed
+// GET /admin/kangqore-immp/hanumanas/threat-feed
 // Aggregates shield + egress data into IP reputation + threat severity matrix
-kangqoreImmpRoutes.get('/aegis/threat-feed', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+kangqoreImmpRoutes.get('/hanumanas/threat-feed', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { limit = 50 } = req.query
 
-    // Pull from AEGIS shield log (blocked requests) if model exists
-    const shieldRows = await (prisma as any).aegisShieldLog?.findMany?.({
+    // Pull from HANUMANAS shield log (blocked requests) if model exists
+    const shieldRows = await (prisma as any).hanumanasShieldLog?.findMany?.({
       orderBy: { createdAt: 'desc' },
       take:    parseInt(String(limit)),
       select:  { id: true, ipAddress: true, endpoint: true, method: true, userId: true, userRole: true, reason: true, createdAt: true },
@@ -3661,15 +3662,15 @@ kangqoreImmpRoutes.get('/aegis/threat-feed', requireAuth, requireRole(['ADMIN'])
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/aegis/export-control-rules
-kangqoreImmpRoutes.get('/aegis/export-control-rules', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
+// GET /admin/kangqore-immp/hanumanas/export-control-rules
+kangqoreImmpRoutes.get('/hanumanas/export-control-rules', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
     // Export control rules are stored in OrgIntegrationConfig or a dedicated table
     // For now return the policy scaffold
     const rules = [
       { id: 'block-pii-export',  name: 'Block PII Export',      active: true,  description: 'Prevent export of fields matching PII patterns (email, phone, ssn)', severity: 'CRITICAL', action: 'BLOCK' },
       { id: 'allowlist-dest',    name: 'Allowlist Destinations', active: true,  description: 'Only allow egress to approved API endpoints', severity: 'HIGH',     action: 'BLOCK' },
-      { id: 'log-all-egress',    name: 'Log All Egress',         active: true,  description: 'Capture every outbound API call in AEGIS egress log', severity: 'LOW',      action: 'LOG'   },
+      { id: 'log-all-egress',    name: 'Log All Egress',         active: true,  description: 'Capture every outbound API call in HANUMANAS egress log', severity: 'LOW',      action: 'LOG'   },
       { id: 'rate-limit-export', name: 'Rate-limit Bulk Export', active: false, description: 'Flag any single request exporting >1000 records', severity: 'HIGH',     action: 'FLAG'  },
     ]
     res.json({ rules })
@@ -3772,7 +3773,7 @@ kangqoreImmpRoutes.post('/tenants', requireAuth, requireRole(['ADMIN']), async (
         planTier: planTier ?? 'STARTER',
         maxUsers: maxUsers ?? 10, maxAgents: maxAgents ?? 20,
         blueprintId, blueprintVersion,
-        enabledModules: enabledModules ?? ['KIMMP', 'WAANDA', 'AEGIS', 'KEOS'],
+        enabledModules: enabledModules ?? ['KIMMP', 'WAANDA', HANUMANAS.name, 'KEOS'],
         disabledModules: [],
         provisionedBy: userId,
       }
@@ -3811,7 +3812,7 @@ kangqoreImmpRoutes.post('/tenants/:id/provision', requireAuth, requireRole(['ADM
     // Provisioning checklist: run seed steps
     const steps = [
       'org_created', 'blueprint_bound', 'departments_seeded', 'kimmp_init',
-      'ois_baseline_set', 'waanda_cycle_activated', 'aegis_policies_applied',
+      'ois_baseline_set', 'waanda_cycle_activated', 'hanumanas_policies_applied',
       'keos_workspaces_initialised', 'admin_user_invited', 'go_live_signal_fired',
     ]
     // Fire a go-live KimmpSignal
@@ -4038,8 +4039,8 @@ kangqoreImmpRoutes.post('/customers/churn-alerts', requireAuth, requireRole(['AD
 // S70 — Enterprise Security: SOC2 Controls · RBAC Scopes · Security Findings
 // ════════════════════════════════════════════════════════════════════════════
 
-// GET /admin/kangqore-immp/aegis/compliance-controls?framework=SOC2|ISO27001
-kangqoreImmpRoutes.get('/aegis/compliance-controls', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// GET /admin/kangqore-immp/hanumanas/compliance-controls?framework=SOC2|ISO27001
+kangqoreImmpRoutes.get('/hanumanas/compliance-controls', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const framework = req.query.framework === 'ISO27001' ? 'ISO27001' : 'SOC2'
     await ensureFrameworkSeeded(framework)
@@ -4049,8 +4050,8 @@ kangqoreImmpRoutes.get('/aegis/compliance-controls', requireAuth, requireRole(['
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// PATCH /admin/kangqore-immp/aegis/compliance-controls/:id
-kangqoreImmpRoutes.patch('/aegis/compliance-controls/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// PATCH /admin/kangqore-immp/hanumanas/compliance-controls/:id
+kangqoreImmpRoutes.patch('/hanumanas/compliance-controls/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { status, evidenceUrl, evidenceNote, lastTestedAt, ownerId } = req.body
     const control = await (prisma as any).complianceControl.update({
@@ -4061,8 +4062,8 @@ kangqoreImmpRoutes.patch('/aegis/compliance-controls/:id', requireAuth, requireR
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/aegis/permission-scopes
-kangqoreImmpRoutes.get('/aegis/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// GET /admin/kangqore-immp/hanumanas/permission-scopes
+kangqoreImmpRoutes.get('/hanumanas/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { userId } = req.query
     const scopes = await (prisma as any).permissionScope.findMany({
@@ -4073,8 +4074,8 @@ kangqoreImmpRoutes.get('/aegis/permission-scopes', requireAuth, requireRole(['AD
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// POST /admin/kangqore-immp/aegis/permission-scopes
-kangqoreImmpRoutes.post('/aegis/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// POST /admin/kangqore-immp/hanumanas/permission-scopes
+kangqoreImmpRoutes.post('/hanumanas/permission-scopes', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const grantedBy = (req as any).user?.id ?? 'system'
     const { userId, workspace, feature, action } = req.body
@@ -4088,16 +4089,16 @@ kangqoreImmpRoutes.post('/aegis/permission-scopes', requireAuth, requireRole(['A
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// DELETE /admin/kangqore-immp/aegis/permission-scopes/:id
-kangqoreImmpRoutes.delete('/aegis/permission-scopes/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// DELETE /admin/kangqore-immp/hanumanas/permission-scopes/:id
+kangqoreImmpRoutes.delete('/hanumanas/permission-scopes/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     await (prisma as any).permissionScope.delete({ where: { id: req.params.id } })
     res.status(204).send()
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// GET /admin/kangqore-immp/aegis/security-findings
-kangqoreImmpRoutes.get('/aegis/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// GET /admin/kangqore-immp/hanumanas/security-findings
+kangqoreImmpRoutes.get('/hanumanas/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const { severity, status } = req.query
     const findings = await (prisma as any).securityFinding.findMany({
@@ -4109,8 +4110,8 @@ kangqoreImmpRoutes.get('/aegis/security-findings', requireAuth, requireRole(['AD
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// POST /admin/kangqore-immp/aegis/security-findings
-kangqoreImmpRoutes.post('/aegis/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// POST /admin/kangqore-immp/hanumanas/security-findings
+kangqoreImmpRoutes.post('/hanumanas/security-findings', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const userId = (req as any).user?.id ?? 'system'
     const { title, severity, description, cveRef, affectedArea } = req.body
@@ -4121,7 +4122,7 @@ kangqoreImmpRoutes.post('/aegis/security-findings', requireAuth, requireRole(['A
     if (severity === 'CRITICAL' || severity === 'HIGH') {
       await (prisma as any).kimmpSignal.create({
         data: {
-          type: 'SECURITY_FINDING', source: 'AEGIS', priority: severity === 'CRITICAL' ? 'CRITICAL' : 'HIGH',
+          type: 'SECURITY_FINDING', source: HANUMANAS.name, priority: severity === 'CRITICAL' ? 'CRITICAL' : 'HIGH',
           title: `Security finding: ${title}`,
           description: `Severity: ${severity}${cveRef ? ` | CVE: ${cveRef}` : ''}. ${description.slice(0, 200)}`,
           status: 'ACTIVE', createdBy: userId,
@@ -4132,8 +4133,8 @@ kangqoreImmpRoutes.post('/aegis/security-findings', requireAuth, requireRole(['A
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
 
-// PATCH /admin/kangqore-immp/aegis/security-findings/:id
-kangqoreImmpRoutes.patch('/aegis/security-findings/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
+// PATCH /admin/kangqore-immp/hanumanas/security-findings/:id
+kangqoreImmpRoutes.patch('/hanumanas/security-findings/:id', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
     const userId = (req as any).user?.id ?? 'system'
     const { status, affectedArea } = req.body
@@ -5241,7 +5242,7 @@ kangqoreImmpRoutes.post('/partner-orgs/:id/publish-pack', requireAuth, requireRo
 })
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// S123 — SOC2 Type II: audit period + AEGIS evidence collection
+// S123 — SOC2 Type II: audit period + HANUMANAS evidence collection
 // ═══════════════════════════════════════════════════════════════════════════════
 
 kangqoreImmpRoutes.get('/soc2/periods', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
@@ -5271,15 +5272,15 @@ kangqoreImmpRoutes.post('/soc2/periods/:id/collect-evidence', requireAuth, requi
     if (!period) return res.status(404).json({ error: 'Audit period not found' })
 
     const controls = [
-      { controlId: 'CC6.1', controlName: 'Logical Access Controls',      evidenceType: 'ACCESS_CONTROL', sourceTable: 'aegis_audit_logs' },
+      { controlId: 'CC6.1', controlName: 'Logical Access Controls',      evidenceType: 'ACCESS_CONTROL', sourceTable: 'hanumanas_audit_logs' },
       { controlId: 'CC6.2', controlName: 'User Authentication',           evidenceType: 'ACCESS_CONTROL', sourceTable: 'users' },
       { controlId: 'CC6.3', controlName: 'Access Revocation',             evidenceType: 'ACCESS_CONTROL', sourceTable: 'programmatic_api_keys' },
       { controlId: 'CC7.1', controlName: 'Vulnerability Management',      evidenceType: 'INCIDENT',        sourceTable: 'security_findings' },
       { controlId: 'CC7.2', controlName: 'Security Incident Response',    evidenceType: 'INCIDENT',        sourceTable: 'security_findings' },
-      { controlId: 'CC8.1', controlName: 'Change Management',             evidenceType: 'AUDIT_LOG',       sourceTable: 'aegis_audit_logs' },
+      { controlId: 'CC8.1', controlName: 'Change Management',             evidenceType: 'AUDIT_LOG',       sourceTable: 'hanumanas_audit_logs' },
       { controlId: 'A1.1',  controlName: 'System Availability Monitoring',evidenceType: 'AUDIT_LOG',       sourceTable: 'kimmp_signals' },
-      { controlId: 'A1.2',  controlName: 'Incident Recovery',             evidenceType: 'POLICY',          sourceTable: 'aegis_policies' },
-      { controlId: 'C1.1',  controlName: 'Confidentiality Classification',evidenceType: 'ENCRYPTION',      sourceTable: 'aegis_autonomy_logs' },
+      { controlId: 'A1.2',  controlName: 'Incident Recovery',             evidenceType: 'POLICY',          sourceTable: 'hanumanas_policies' },
+      { controlId: 'C1.1',  controlName: 'Confidentiality Classification',evidenceType: 'ENCRYPTION',      sourceTable: 'hanumanas_autonomy_logs' },
       { controlId: 'PI1.1', controlName: 'Processing Integrity',          evidenceType: 'AUDIT_LOG',       sourceTable: 'waanda_fm_training_examples' },
     ]
 
@@ -5294,7 +5295,7 @@ kangqoreImmpRoutes.post('/soc2/periods/:id/collect-evidence', requireAuth, requi
     ])
 
     const countMap: Record<string, number> = {
-      'aegis_audit_logs': auditCount, 'kimmp_signals': signalCount,
+      'hanumanas_audit_logs': auditCount, 'kimmp_signals': signalCount,
       'security_findings': findingCount, 'programmatic_api_keys': keyCount,
     }
 
@@ -5636,7 +5637,7 @@ async function buildGate9Criteria() {
     { id: 'C5', label: 'Multi-region configured',        passed: regionCount >= 4 },
     { id: 'C6', label: 'GDPR DPA tooling live',          passed: gdprRequests >= 0 }, // tool exists even if 0 requests
     { id: 'C7', label: 'Gen4 architecture documented',   passed: true },
-    { id: 'C8', label: 'AEGIS Phase 3 enforcing',        passed: true },
+    { id: 'C8', label: 'HANUMANAS Phase 3 enforcing',        passed: true },
   ]
   const passed = criteria.filter(c => c.passed).length
   const score = Math.round((passed / criteria.length) * 100)
@@ -5676,7 +5677,7 @@ kangqoreImmpRoutes.get('/platform/chapter-9-brief', requireAuth, requireRole(['A
     title: 'Chapter 9 — Market Expansion & Ecosystem Scale',
     description: 'Platform v1.0 is declared. The next chapter is commercialisation at scale: vertical SaaS licensing, OEM/white-label deployments, and international GTM across 3 regions.',
     tracks: [
-      { id: 'T1', title: 'Vertical SaaS Licensing', description: 'Package Kangqore OS as a vertical SaaS for specific industries (HealthTech, LegalTech, FinTech). Each vertical gets a pre-configured Blueprint with industry pack, AEGIS profile, and branded WAANDA persona.', status: 'planned' },
+      { id: 'T1', title: 'Vertical SaaS Licensing', description: 'Package Kangqore OS as a vertical SaaS for specific industries (HealthTech, LegalTech, FinTech). Each vertical gets a pre-configured Blueprint with industry pack, HANUMANAS profile, and branded WAANDA persona.', status: 'planned' },
       { id: 'T2', title: 'OEM / White-label', description: 'Partner organisations can deploy Kangqore under their own brand. Blueprint Marketplace as the distribution layer. Commission structure already live.', status: 'planned' },
       { id: 'T3', title: 'International GTM', description: 'UK/EU/India regions are technically ready. Chapter 9 is the commercial launch into those markets: local sales teams, regional pricing, GDPR/DPA compliance already done.', status: 'ready' },
       { id: 'T4', title: 'Gen4 Training', description: 'When corpus reaches 5,000 records, begin Gen4 fine-tuning on Llama 3.1 8B. Target: replace Gen1 Claude dependency for 80%+ of KIMMP reasoning tasks.', status: 'pending-threshold' },
@@ -5694,13 +5695,13 @@ const VERTICAL_EDITIONS_SEED = [
     displayName: 'HealthTech Edition',
     personaName: 'ARIA',
     personaColor: '#10b981',
-    aegisProfile: '{"hipaaEnabled":true,"clinicalOpsGovernance":true,"patientDataAudit":true}',
+    hanumanasProfile: '{"hipaaEnabled":true,"clinicalOpsGovernance":true,"patientDataAudit":true}',
     complianceFlags: ['HIPAA'],
-    description: 'Clinical operations, patient analytics, and HIPAA-aligned AEGIS governance for healthcare organisations.',
+    description: 'Clinical operations, patient analytics, and HIPAA-aligned HANUMANAS governance for healthcare organisations.',
     planTiers: {
-      STARTER:    { priceGBP: 299,  features: ['Clinical OIS baseline', 'ARIA WAANDA persona', 'Patient analytics pack', 'HIPAA AEGIS profile'] },
-      PRO:        { priceGBP: 799,  features: ['+ Multi-department OIS', 'Advanced AEGIS audit trail', 'Clinical WVIS nodes', 'HIPAA evidence export'] },
-      ENTERPRISE: { priceGBP: 1999, features: ['+ AEGIS Phase 3 enforcement', 'Custom clinical workflows', 'SOC2 + HIPAA compliance export', 'Priority SLA'] },
+      STARTER:    { priceGBP: 299,  features: ['Clinical OIS baseline', 'ARIA WAANDA persona', 'Patient analytics pack', 'HIPAA HANUMANAS profile'] },
+      PRO:        { priceGBP: 799,  features: ['+ Multi-department OIS', 'Advanced HANUMANAS audit trail', 'Clinical WVIS nodes', 'HIPAA evidence export'] },
+      ENTERPRISE: { priceGBP: 1999, features: ['+ HANUMANAS Phase 3 enforcement', 'Custom clinical workflows', 'SOC2 + HIPAA compliance export', 'Priority SLA'] },
     },
   },
   {
@@ -5708,13 +5709,13 @@ const VERTICAL_EDITIONS_SEED = [
     displayName: 'LegalTech Edition',
     personaName: 'LEX',
     personaColor: '#3b82f6',
-    aegisProfile: '{"jurisdictionAware":true,"matterGovernance":true,"contractAudit":true}',
+    hanumanasProfile: '{"jurisdictionAware":true,"matterGovernance":true,"contractAudit":true}',
     complianceFlags: ['GDPR', 'BAR_ASSOCIATION'],
     description: 'Contract lifecycle management, matter tracking, and jurisdiction-aware regulatory compliance for law firms.',
     planTiers: {
-      STARTER:    { priceGBP: 349,  features: ['Matter OIS baseline', 'LEX WAANDA persona', 'Contract tracking pack', 'Jurisdiction AEGIS flags'] },
+      STARTER:    { priceGBP: 349,  features: ['Matter OIS baseline', 'LEX WAANDA persona', 'Contract tracking pack', 'Jurisdiction HANUMANAS flags'] },
       PRO:        { priceGBP: 899,  features: ['+ Regulatory WVIS nodes', 'Advanced matter analytics', 'GDPR DPA auto-generation', 'Bar association audit'] },
-      ENTERPRISE: { priceGBP: 2199, features: ['+ Full firm governance', 'Custom regulatory workflows', 'SOC2 + compliance export', 'Multi-jurisdiction AEGIS'] },
+      ENTERPRISE: { priceGBP: 2199, features: ['+ Full firm governance', 'Custom regulatory workflows', 'SOC2 + compliance export', 'Multi-jurisdiction HANUMANAS'] },
     },
   },
   {
@@ -5722,13 +5723,13 @@ const VERTICAL_EDITIONS_SEED = [
     displayName: 'FinTech Edition',
     personaName: 'FINX',
     personaColor: '#f59e0b',
-    aegisProfile: '{"soxEnabled":true,"pciEnabled":true,"tradeGovernance":true,"riskMonitoring":true}',
+    hanumanasProfile: '{"soxEnabled":true,"pciEnabled":true,"tradeGovernance":true,"riskMonitoring":true}',
     complianceFlags: ['SOX', 'PCI'],
-    description: 'Portfolio operations, trade compliance, and SOX/PCI-enforced AEGIS governance for financial services.',
+    description: 'Portfolio operations, trade compliance, and SOX/PCI-enforced HANUMANAS governance for financial services.',
     planTiers: {
-      STARTER:    { priceGBP: 399,  features: ['Portfolio OIS baseline', 'FINX WAANDA persona', 'Trade compliance pack', 'SOX/PCI AEGIS profile'] },
+      STARTER:    { priceGBP: 399,  features: ['Portfolio OIS baseline', 'FINX WAANDA persona', 'Trade compliance pack', 'SOX/PCI HANUMANAS profile'] },
       PRO:        { priceGBP: 999,  features: ['+ Risk WVIS nodes', 'Advanced trade analytics', 'PCI compliance report', 'SOX evidence export'] },
-      ENTERPRISE: { priceGBP: 2499, features: ['+ Full trade governance', 'Custom risk workflows', 'SOC2 + SOX + PCI audit', 'Real-time risk AEGIS'] },
+      ENTERPRISE: { priceGBP: 2499, features: ['+ Full trade governance', 'Custom risk workflows', 'SOC2 + SOX + PCI audit', 'Real-time risk HANUMANAS'] },
     },
   },
 ] as const
@@ -5782,17 +5783,17 @@ kangqoreImmpRoutes.get('/vertical-editions/:slug/blueprint-seed', requireAuth, r
     const edition = await (prisma as any).verticalEdition.findUnique({ where: { slug: req.params.slug } })
     if (!edition) return res.status(404).json({ error: 'Edition not found' })
     const SEED_MODULES: Record<string, string[]> = {
-      healthtech: ['WAANDA', 'AEGIS', 'Projects', 'KIMMP', 'OIS', 'Clinical-Ops'],
-      legaltech:  ['WAANDA', 'AEGIS', 'Projects', 'KIMMP', 'OIS', 'Matter-Management'],
-      fintech:    ['WAANDA', 'AEGIS', 'Finance', 'KIMMP', 'OIS', 'Trade-Compliance'],
+      healthtech: ['WAANDA', HANUMANAS.name, 'Projects', 'KIMMP', 'OIS', 'Clinical-Ops'],
+      legaltech:  ['WAANDA', HANUMANAS.name, 'Projects', 'KIMMP', 'OIS', 'Matter-Management'],
+      fintech:    ['WAANDA', HANUMANAS.name, 'Finance', 'KIMMP', 'OIS', 'Trade-Compliance'],
     }
     res.json({
       slug: req.params.slug,
       personaName: edition.personaName,
       personaColor: edition.personaColor,
       complianceFlags: edition.complianceFlags,
-      suggestedModules: SEED_MODULES[req.params.slug] ?? ['WAANDA', 'AEGIS', 'KIMMP', 'OIS'],
-      aegisProfile: edition.aegisProfile,
+      suggestedModules: SEED_MODULES[req.params.slug] ?? ['WAANDA', HANUMANAS.name, 'KIMMP', 'OIS'],
+      hanumanasProfile: edition.hanumanasProfile,
     })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
 })
@@ -6792,7 +6793,7 @@ kangqoreImmpRoutes.post('/customers/seed-c36-c40', requireAuth, requireRole(['AD
         create: {
           customerName: c.name, version: '1.0', planTier: c.plan as any,
           industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget,
-          enabledModules: ['Projects','Finance','CRM','WAANDA','AEGIS'],
+          enabledModules: ['Projects','Finance','CRM','WAANDA',HANUMANAS.name],
           spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] },
           status: 'ACTIVE', deployedAt: new Date(),
         },
@@ -6925,7 +6926,7 @@ kangqoreImmpRoutes.get('/platform/s174-status', requireAuth, requireRole(['ADMIN
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ONBOARDING_MILESTONES = ['DAY_0', 'DAY_1', 'DAY_7', 'DAY_30', 'DAY_90']
-const DEPT_LIST = ['Projects','Finance','CRM','WAANDA','AEGIS','Analytics','Workflows','Signals']
+const DEPT_LIST = ['Projects','Finance','CRM','WAANDA',HANUMANAS.name,'Analytics','Workflows','Signals']
 
 kangqoreImmpRoutes.get('/customers/:customerId/onboarding', requireAuth, requireRole(['ADMIN']), async (req, res) => {
   try {
@@ -7036,7 +7037,7 @@ kangqoreImmpRoutes.post('/customers/seed-c41-c50', requireAuth, requireRole(['AD
       const bp = await (prisma as any).customerBlueprint.upsert({
         where: { customerName: c.name },
         update: {},
-        create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA','AEGIS'], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() },
+        create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA',HANUMANAS.name], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() },
       })
       await (prisma as any).customerOnboardingMilestone.upsert({ where: { customerId_milestone: { customerId: bp.id, milestone: 'DAY_0' } }, update: {}, create: { customerId: bp.id, milestone: 'DAY_0', status: 'COMPLETED', completedAt: new Date(), notes: `COIG baseline: ${c.oisBaseline}` } })
       created.push({ ref: c.ref, name: c.name, bpId: bp.id, oisBaseline: c.oisBaseline })
@@ -7276,7 +7277,7 @@ kangqoreImmpRoutes.post('/customers/seed-c51-c60', requireAuth, requireRole(['AD
   try {
     const created = []
     for (const c of C51_C60) {
-      const bp = await (prisma as any).customerBlueprint.upsert({ where: { customerName: c.name }, update: {}, create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA','AEGIS'], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() } })
+      const bp = await (prisma as any).customerBlueprint.upsert({ where: { customerName: c.name }, update: {}, create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA',HANUMANAS.name], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() } })
       await (prisma as any).customerOnboardingMilestone.upsert({ where: { customerId_milestone: { customerId: bp.id, milestone: 'DAY_0' } }, update: {}, create: { customerId: bp.id, milestone: 'DAY_0', status: 'COMPLETED', completedAt: new Date(), notes: `COIG baseline: ${c.oisBaseline}` } })
       created.push({ ref: c.ref, name: c.name, bpId: bp.id, oisBaseline: c.oisBaseline })
     }
@@ -7448,7 +7449,7 @@ kangqoreImmpRoutes.post('/customers/seed-c61-c75', requireAuth, requireRole(['AD
   try {
     const created = []
     for (const c of C61_C75) {
-      const bp = await (prisma as any).customerBlueprint.upsert({ where: { customerName: c.name }, update: {}, create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA','AEGIS'], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() } })
+      const bp = await (prisma as any).customerBlueprint.upsert({ where: { customerName: c.name }, update: {}, create: { customerName: c.name, version: '1.0', planTier: c.plan as any, industry: c.industry, oisBaseline: c.oisBaseline, oisTarget: c.oisTarget, enabledModules: ['Projects','Finance','CRM','WAANDA',HANUMANAS.name], spec: { ref: c.ref, region: c.region, coigTarget: c.coigTarget, organic: true, oisHistory: [c.oisBaseline] }, status: 'ACTIVE', deployedAt: new Date() } })
       await (prisma as any).customerOnboardingMilestone.upsert({ where: { customerId_milestone: { customerId: bp.id, milestone: 'DAY_0' } }, update: {}, create: { customerId: bp.id, milestone: 'DAY_0', status: 'COMPLETED', completedAt: new Date(), notes: `COIG baseline: ${c.oisBaseline}` } })
       created.push({ ref: c.ref, name: c.name, bpId: bp.id, oisBaseline: c.oisBaseline })
     }
@@ -7739,7 +7740,7 @@ kangqoreImmpRoutes.post('/enterprise/sla/commitments', requireAuth, requireRole(
 
 // ─── S187: Advanced RBAC v2 ──────────────────────────────────────────────────
 
-const DEFAULT_PERMISSIONS = ['projects:read','projects:write','finance:read','crm:read','waanda:use','aegis:view','reports:read','analytics:read','admin:none']
+const DEFAULT_PERMISSIONS = ['projects:read','projects:write','finance:read','crm:read','waanda:use','hanumanas:view','reports:read','analytics:read','admin:none']
 
 kangqoreImmpRoutes.get('/enterprise/rbac/roles', requireAuth, requireRole(['ADMIN']), async (_req, res) => {
   try {
@@ -7776,10 +7777,10 @@ kangqoreImmpRoutes.delete('/enterprise/rbac/roles/:id', requireAuth, requireRole
 // ─── S188: Enterprise Blueprint Templates ────────────────────────────────────
 
 const ENTERPRISE_TEMPLATES = [
-  { name: 'Finance Automation Pack', useCase: 'Finance Automation', industry: 'FinTech', description: 'Full AP/AR automation, budget intelligence, forecasting workflows, FP&A signals', modules: ['Finance','WAANDA','AEGIS','Analytics','Workflows'], config: { budgetAlerts: true, cashflowForecasting: true, approvalWorkflows: true } },
-  { name: 'PMO Intelligence Suite',  useCase: 'PMO',               industry: 'Enterprise', description: 'Portfolio management, resource tracking, milestone intelligence, executive reporting', modules: ['Projects','Finance','WAANDA','Analytics','AEGIS'], config: { portfolioView: true, resourceOpt: true, execReporting: true } },
+  { name: 'Finance Automation Pack', useCase: 'Finance Automation', industry: 'FinTech', description: 'Full AP/AR automation, budget intelligence, forecasting workflows, FP&A signals', modules: ['Finance','WAANDA',HANUMANAS.name,'Analytics','Workflows'], config: { budgetAlerts: true, cashflowForecasting: true, approvalWorkflows: true } },
+  { name: 'PMO Intelligence Suite',  useCase: 'PMO',               industry: 'Enterprise', description: 'Portfolio management, resource tracking, milestone intelligence, executive reporting', modules: ['Projects','Finance','WAANDA','Analytics',HANUMANAS.name], config: { portfolioView: true, resourceOpt: true, execReporting: true } },
   { name: 'HR Intelligence Pack',    useCase: 'HR Intelligence',    industry: 'HR', description: 'People analytics, hiring pipeline, performance signals, org health scoring', modules: ['WAANDA','Analytics','CRM','Signals'], config: { peopleAnalytics: true, hiringPipeline: true, orgHealth: true } },
-  { name: 'Legal Operations Suite',  useCase: 'Legal Ops',          industry: 'LegalTech', description: 'Matter management, contract intelligence, compliance tracking, deadline signals', modules: ['Projects','WAANDA','AEGIS','Workflows'], config: { matterTracking: true, contractIntel: true, complianceDash: true } },
+  { name: 'Legal Operations Suite',  useCase: 'Legal Ops',          industry: 'LegalTech', description: 'Matter management, contract intelligence, compliance tracking, deadline signals', modules: ['Projects','WAANDA',HANUMANAS.name,'Workflows'], config: { matterTracking: true, contractIntel: true, complianceDash: true } },
   { name: 'Sales Intelligence Pack', useCase: 'Revenue Intelligence', industry: 'SaaS', description: 'Pipeline AI, deal scoring, CRM automation, revenue forecasting signals', modules: ['CRM','Finance','WAANDA','Analytics','Signals'], config: { dealScoring: true, pipelineAI: true, revenueForecasting: true } },
 ]
 
@@ -9126,7 +9127,7 @@ kangqoreImmpRoutes.get('/platform/series-a-diligence', requireAuth, requireRole(
           { label: 'Gen5 Routing Live', value: '95% primary routing · <5% Claude fallback', status: 'READY' },
           { label: 'COIG North Star', value: 'COIG avg +12.4 across 200-fleet', status: 'READY' },
           { label: 'Krisnam Foundation v0.1', value: 'Proprietary model in production', status: 'READY' },
-          { label: 'AEGIS Governance Audit Trail', value: '100% decisions logged · SOC 2 Type II live', status: 'READY' },
+          { label: 'HANUMANAS Governance Audit Trail', value: '100% decisions logged · SOC 2 Type II live', status: 'READY' },
         ],
       },
       {
@@ -10156,7 +10157,7 @@ kangqoreImmpRoutes.get('/platform/wfm-corpus-assembly', requireAuth, requireRole
       { source: 'Gen2 Reasoning Chains',      records: 18_600_000, years: '2024–2025', type: 'REASONING_CHAIN',  status: 'INGESTED' },
       { source: 'Gen3 Cognitive Sessions',    records: 14_200_000, years: '2025–2026', type: 'COGNITIVE_SESSION', status: 'INGESTED' },
       { source: 'WVIS Debate Traces',         records: 4_800_000,  years: '2024–2026', type: 'DEBATE_TRACE',     status: 'INGESTED' },
-      { source: 'AEGIS Audit Logs',           records: 6_200_000,  years: '2023–2026', type: 'GOVERNANCE_LOG',   status: 'INGESTED' },
+      { source: 'HANUMANAS Audit Logs',           records: 6_200_000,  years: '2023–2026', type: 'GOVERNANCE_LOG',   status: 'INGESTED' },
       { source: 'Customer COIG Journeys',     records: 3_100_000,  years: '2024–2026', type: 'OUTCOME_RECORD',   status: 'INGESTED' },
       { source: 'Blueprint Execution Traces', records: 2_700_000,  years: '2025–2026', type: 'BLUEPRINT_TRACE',  status: 'INGESTED' },
       { source: 'Synthetic Augmentation',     records: 8_000_000,  years: '2026',      type: 'SYNTHETIC',        status: 'GENERATED' },
@@ -10181,7 +10182,7 @@ kangqoreImmpRoutes.get('/platform/wfm-architecture', requireAuth, requireRole(['
       { layer: 'Transformer Blocks', config: '96 layers · 64 attention heads · 256K context window · Flash Attention 3', params: '178.4B' },
       { layer: 'MoE Router',        config: '128 experts · top-8 active per token · load balancing loss',               params: '8.2B'   },
       { layer: 'Domain Heads',      config: '8 specialised output heads (Strategy/Finance/Compliance/Ops/CRM/HR/Tech/BIDS)', params: '4.1B' },
-      { layer: 'Safety Module',     config: 'Constitutional AI alignment · AEGIS-aware guardrails · refusal classifier', params: '2.3B'   },
+      { layer: 'Safety Module',     config: 'Constitutional AI alignment · HANUMANAS-aware guardrails · refusal classifier', params: '2.3B'   },
     ]
     res.json({
       sprintId: 'S284', modelName: 'WAANDA-FM', modelFamily: 'Kangqore Foundation Model',
@@ -10257,7 +10258,7 @@ kangqoreImmpRoutes.get('/platform/wfm-finetuning', requireAuth, requireRole(['AD
       { phase: 'RM — Reward Modelling',         examples: 840_000,  epochs: 2, loss: 0.31, status: 'COMPLETE', desc: 'COIG outcome correlation as reward signal (not human rater preference)' },
       { phase: 'PPO — Policy Optimisation',     examples: 1_200_000, epochs: 4, loss: 0.22, status: 'COMPLETE', desc: 'PPO against reward model, KL-penalty 0.02 to prevent collapse' },
       { phase: 'DPO — Direct Preference Opt.',  examples: 680_000,  epochs: 2, loss: 0.18, status: 'COMPLETE', desc: 'Preferred vs rejected decision pairs from 500-customer fleet outcomes' },
-      { phase: 'Constitutional Alignment',      examples: 320_000,  epochs: 1, loss: 0.09, status: 'COMPLETE', desc: 'AEGIS policy adherence, GDPR/SOC2/FedRAMP constraint encoding' },
+      { phase: 'Constitutional Alignment',      examples: 320_000,  epochs: 1, loss: 0.09, status: 'COMPLETE', desc: 'HANUMANAS policy adherence, GDPR/SOC2/FedRAMP constraint encoding' },
     ]
     res.json({
       sprintId: 'S287', modelVersion: 'WAANDA-FM-alpha-v0.1', status: 'COMPLETE',
@@ -10322,7 +10323,7 @@ kangqoreImmpRoutes.get('/platform/wfm-shadow-mode', requireAuth, requireRole(['A
         'Agreement rate ≥ 90% across 100K decisions',
         'FM advantage on COIG-prediction and compliance categories confirmed',
         'Latency optimisation (target: ≤320ms with speculative decoding)',
-        'AEGIS sign-off on safety and governance compliance',
+        'HANUMANAS sign-off on safety and governance compliance',
       ],
       estimatedProductionDate: '2026-09-01',
     })
@@ -10341,7 +10342,7 @@ kangqoreImmpRoutes.get('/platform/s290-status', requireAuth, requireRole(['ADMIN
     const criteria = [
       { id: 'G1', label: 'WAANDA-FM parity ≥ 85% vs Gen3',           passed: g1, value: `${overallParity}% overall parity on 5K-decision benchmark`,   threshold: '≥85% parity',           description: 'WAANDA-FM can replace Gen3 for the majority of production decisions. Exceeds parity gate.' },
       { id: 'G2', label: 'Shadow mode active',                        passed: g2, value: '84,200 shadow decisions processed · 91.7% agreement rate',      threshold: 'Shadow mode live',       description: 'WAANDA-FM running in parallel with Gen3, outcomes logged for comparison. No user impact.' },
-      { id: 'G3', label: 'Constitutional alignment ≥ 95%',            passed: g3, value: `${constitutionalScore}% alignment · 0.08% violation rate`,      threshold: '≥95% alignment',        description: 'AEGIS-aware guardrails encoded at pre-training layer, not bolted on. Governance-first model.' },
+      { id: 'G3', label: 'Constitutional alignment ≥ 95%',            passed: g3, value: `${constitutionalScore}% alignment · 0.08% violation rate`,      threshold: '≥95% alignment',        description: 'HANUMANAS-aware guardrails encoded at pre-training layer, not bolted on. Governance-first model.' },
       { id: 'G4', label: 'Safety evaluation passed',                  passed: g4, value: 'Harm rate 0.03% · refusal accuracy 99.4% · red-team cleared',    threshold: 'Safety eval pass',      description: 'Independent red-team evaluation cleared. WAANDA-FM is safe for shadow and progressive production.' },
       { id: 'G5', label: 'Training corpus ≥ 50M Kangqore records',   passed: g5, value: `${(corpusRecords / 1e6).toFixed(0)}M records · 25.2T tokens`,    threshold: '≥50M records',          description: 'WAANDA-FM trained on the most comprehensive Kangqore operational corpus ever assembled.' },
     ]

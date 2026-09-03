@@ -50,7 +50,7 @@ export const CollaborationCognitiveAdapter: CognitiveStateAdapter = {
     const openDecisions      = kimmpDecisions.filter(d => d.selected === null)
     const resolvedDecisions  = kimmpDecisions.filter(d => d.selected !== null)
 
-    // ── AEGIS autonomy decisions (L3+ requiring human approval) ───────────────
+    // ── HANUMANAS autonomy decisions (L3+ requiring human approval) ───────────────
     const pendingApprovals    = state.pendingDecisions.filter(d => d.level >= 3)
     const allPendingDecisions = state.pendingDecisions
 
@@ -114,7 +114,7 @@ export const CollaborationCognitiveAdapter: CognitiveStateAdapter = {
       openDecisionCount:    openDecisions.length,
       allKimmpDecisions:    kimmpDecisions,
 
-      // AEGIS autonomy decisions
+      // HANUMANAS autonomy decisions
       pendingApprovals,
       pendingApprovalCount: pendingApprovals.length,
       allPendingDecisions,

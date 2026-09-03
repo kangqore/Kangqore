@@ -136,7 +136,7 @@ const EXAMPLES: {
   {
     system: 'SENTINEL', trigger: 'THREAT_DETECTED', priority: 'CRITICAL',
     agentsUsed: ['THREAT_DETECTOR', 'ATTACK_ANALYZER', 'ACCESS_GOVERNOR', 'RISK_MANAGER'],
-    userPrompt: `System: Sentinel Layer — Security\nAvailable agents: THREAT_DETECTOR, VULNERABILITY_MANAGER, SECURITY_POSTURE, RISK_MANAGER, COMPLIANCE_GUARD, ATTACK_ANALYZER, ACCESS_GOVERNOR, ASSET_GUARDIAN, THIRD_PARTY_RISK, RESILIENCE_MONITOR, SHADOW_AI_DETECTOR, AGENT_GUARDIAN\nTrigger: THREAT_DETECTED\nContext: AEGIS flagged 14 failed authentication attempts against admin portal in 3 minutes from IP 185.220.x.x (Tor exit node). SENTINEL escalated.\nSelect which agents to activate.`,
+    userPrompt: `System: Sentinel Layer — Security\nAvailable agents: THREAT_DETECTOR, VULNERABILITY_MANAGER, SECURITY_POSTURE, RISK_MANAGER, COMPLIANCE_GUARD, ATTACK_ANALYZER, ACCESS_GOVERNOR, ASSET_GUARDIAN, THIRD_PARTY_RISK, RESILIENCE_MONITOR, SHADOW_AI_DETECTOR, AGENT_GUARDIAN\nTrigger: THREAT_DETECTED\nContext: HANUMANAS flagged 14 failed authentication attempts against admin portal in 3 minutes from IP 185.220.x.x (Tor exit node). SENTINEL escalated.\nSelect which agents to activate.`,
     completion: `{"selectedAgents":["THREAT_DETECTOR","ATTACK_ANALYZER","ACCESS_GOVERNOR","RISK_MANAGER"],"reasoning":"Active threat requires immediate triage: classify and validate the threat (THREAT_DETECTOR), analyse attack pattern and TTPs (ATTACK_ANALYZER), lock down access paths (ACCESS_GOVERNOR), and assess business risk (RISK_MANAGER). Compliance and vulnerability agents are not relevant to active incident response.","priority":"CRITICAL"}`,
   },
   {

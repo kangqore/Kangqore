@@ -1,4 +1,5 @@
 // ---------------------------------------------------------------------------
+import { HANUMANAS } from '../esf/hanumanas/identity';
 // WaandaAuthority — Supreme Authority Registry
 //
 // Singleton that holds the registry of all Kangqore subsystems under
@@ -41,7 +42,7 @@ export interface SubsystemReport {
   metrics:      Record<string, number | string>
 }
 
-// Escalation from AEGIS or any subsystem — WAANDA decides what action to take
+// Escalation from HANUMANAS or any subsystem — WAANDA decides what action to take
 export interface WaandaEscalation {
   from:    SubsystemName | string
   threat:  string
@@ -150,7 +151,7 @@ export const WaandaAuthority = {
     )
   },
 
-  // ── Escalation (AEGIS → WAANDA → decision) ────────────────────────────────
+  // ── Escalation (HANUMANAS → WAANDA → decision) ────────────────────────────────
 
   async receiveEscalation(escalation: WaandaEscalation): Promise<void> {
     logger.warn(
@@ -170,13 +171,13 @@ export const WaandaAuthority = {
       // If ETI is low, WAANDA is already in a degraded state — just notify
       if (currentETI >= 70 && this._registry.has('KIMMP')) {
         await this.issueDirective('KIMMP', 'PAUSE', {
-          reason:    'AEGIS CRITICAL escalation',
+          reason:    'HANUMANAS CRITICAL escalation',
           threat:    escalation.threat,
           source:    escalation.source,
           escalationTier: escalation.tier,
-        }, `AEGIS escalation: ${escalation.threat}`)
+        }, `HANUMANAS escalation: ${escalation.threat}`)
 
-        await this.issueDirective('AEGIS', 'REPORT', {
+        await this.issueDirective(HANUMANAS.name, 'REPORT', {
           investigate: escalation.source,
           context:     escalation.context,
         }, 'Post-escalation investigation')
@@ -185,7 +186,7 @@ export const WaandaAuthority = {
       // Emit WebSocket event so CEO sees it
       try {
         const { emitToAdmins } = await import('../../socket')
-        emitToAdmins('kimmp:aegis-escalation', {
+        emitToAdmins('kimmp:hanumanas-escalation', {
           threat:   escalation.threat,
           tier:     escalation.tier,
           from:     escalation.from,
@@ -202,7 +203,7 @@ export const WaandaAuthority = {
       const { SignalLedger } = await import('../../kangqore-immp/signals/signalLedger.service')
       await SignalLedger.record({
         sourceModule:   'waanda.authority',
-        signalType:     `AEGIS_ESCALATION_${escalation.tier}`,
+        signalType:     `HANUMANAS_ESCALATION_${escalation.tier}`,
         signalCategory: 'RISK',
         signalValue:    `${escalation.from}: ${escalation.threat}`,
         severity:       escalation.tier as any,

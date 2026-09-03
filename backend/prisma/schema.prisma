@@ -135,7 +135,7 @@ model User {
 
   // URGI™ Platform
   unifiedProfile  UnifiedRelationshipProfile?
-  // AEGIS — data marking clearances granted to this user (e.g. ["CONFIDENTIAL", "RESTRICTED"])
+  // HANUMANAS — data marking clearances granted to this user (e.g. ["CONFIDENTIAL", "RESTRICTED"])
   clearances      String[]                   @default([])
 
   // Team / Department RBAC
@@ -3565,14 +3565,14 @@ model KimmpLlmCost {
 // are effectively dead: zero writes in production code paths (WaandaRuntimeCall
 // is only reachable via a nightly benchmark script). Rather than add a fourth
 // unused table, this is the one that's actually wired into the real call paths
-// (kimmpLLMRouter.routedCall, withKrisnam, AEGIS callLLM). The three legacy
+// (kimmpLLMRouter.routedCall, withKrisnam, HANUMANAS callLLM). The three legacy
 // ledgers are left in place (dropping tables isn't in scope here) but should
 // be considered for retirement in a future cleanup sprint.
 // ---------------------------------------------------------------------------
 model LlmCallLog {
   id                 String   @id @default(cuid())
   userId             String?
-  actorType          String   // KIMMP | AEGIS | HUMAN | COPILOT | NOTEBOOK
+  actorType          String   // KIMMP | HANUMANAS | HUMAN | COPILOT | NOTEBOOK
   model              String
   provider           String   // claude | krisnam | gen2 | openai | gemini | none
   promptTokens       Int      @default(0)
@@ -4374,7 +4374,7 @@ model KimmpLearningRun {
 }
 
 // ---------------------------------------------------------------------------
-// Kangqore AEGIS — Autonomous Executive Governance & Intelligence Shield
+// Kangqore HANUMANAS — Autonomous Executive Governance & Intelligence Shield
 //
 // Immutable ledger for four governance domains:
 //   ACTIVATION     — every KIMMP system dispatch (admin-triggered or autonomous)
@@ -4383,7 +4383,7 @@ model KimmpLearningRun {
 //   KNOWLEDGE_ASSET — every RAG document ingested as ADMIN-owned intelligence
 // ---------------------------------------------------------------------------
 
-model AegisAuditLog {
+model HanumanasAuditLog {
   id          String   @id @default(cuid())
   eventType   String   // ACTIVATION | AUTONOMOUS | ACCESS_DENIED | KNOWLEDGE_ASSET
   system      String?  // KIMMP system: EQORE | LEAD_INTEL | ALIS | VIS | SENTINEL | KIMMP
@@ -4409,15 +4409,15 @@ model AegisAuditLog {
   @@index([autonomous, createdAt])
   @@index([system, createdAt])
   @@index([actor, createdAt])
-  @@map("aegis_audit_logs")
+  @@map("hanumanas_audit_logs")
 }
 
 // ---------------------------------------------------------------------------
-// AEGIS Agent Runs — queryable history of every agent's verdict over time.
-// Written by AegisEngineDispatcher after each agent execution.
+// HANUMANAS Agent Runs — queryable history of every agent's verdict over time.
+// Written by HanumanasEngineDispatcher after each agent execution.
 // ---------------------------------------------------------------------------
 
-model AegisAgentRun {
+model HanumanasAgentRun {
   id         String   @id @default(cuid())
   agentId    String                         // e.g. 'govops.engine-health'
   engine     String                         // e.g. 'GOVERNANCE_OPS'
@@ -4432,14 +4432,14 @@ model AegisAgentRun {
   @@index([engine, raisedAt])
   @@index([verdict, raisedAt])
   @@index([agentId, raisedAt])
-  @@map("aegis_agent_runs")
+  @@map("hanumanas_agent_runs")
 }
 
 // ---------------------------------------------------------------------------
-// AEGIS Phase 2 — Action Layer
+// HANUMANAS Phase 2 — Action Layer
 // ---------------------------------------------------------------------------
 
-model AegisPendingAction {
+model HanumanasPendingAction {
   id          String    @id @default(cuid())
   actionType  String                          // PAUSE_KIMMP_LOOP | BLOCK_ACTOR | QUARANTINE_ASSET
   level       Int                             // always 3
@@ -4454,10 +4454,10 @@ model AegisPendingAction {
   resolvedBy  String?
 
   @@index([status, requestedAt])
-  @@map("aegis_pending_actions")
+  @@map("hanumanas_pending_actions")
 }
 
-model AegisActionLog {
+model HanumanasActionLog {
   id          String   @id @default(cuid())
   actionType  String
   level       Int
@@ -4470,7 +4470,7 @@ model AegisActionLog {
 
   @@index([agentId, executedAt])
   @@index([status, executedAt])
-  @@map("aegis_action_logs")
+  @@map("hanumanas_action_logs")
 }
 
 // ─── BIDS™ ───────────────────────────────────────────────────────────────────
@@ -5028,7 +5028,7 @@ model OntologyAction {
 // ─── Action Engine v2 — S295–S297 ─────────────────────────────────────────────
 // Upgrades OntologyAction from a label into a real execution engine: typed
 // parameters (above), pre-flight validation rules, declarative write-back
-// effects, and a unified HUMAN/KIMMP/AEGIS execution audit log.
+// effects, and a unified HUMAN/KIMMP/HANUMANAS execution audit log.
 
 model ActionValidationRule {
   id           String         @id @default(cuid())
@@ -5064,7 +5064,7 @@ model ActionExecution {
   objectId       String?
   object         OntologyObject? @relation(fields: [objectId], references: [id], onDelete: SetNull)
   actorId        String?
-  actorType      String          @default("HUMAN")   // HUMAN | KIMMP | AEGIS
+  actorType      String          @default("HUMAN")   // HUMAN | KIMMP | HANUMANAS
   params         Json            @default("{}")
   effectsApplied Json            @default("[]")
   status         String          @default("SUCCESS") // SUCCESS | FAILED | BLOCKED | PENDING_APPROVAL
@@ -5101,7 +5101,7 @@ model PendingApproval {
   objectId     String?
   object       OntologyObject? @relation(fields: [objectId], references: [id], onDelete: SetNull)
   actorId      String?
-  actorType    String          @default("KIMMP")   // HUMAN | KIMMP | AEGIS
+  actorType    String          @default("KIMMP")   // HUMAN | KIMMP | HANUMANAS
   params       Json            @default("{}")
   policyId     String?
   policyName   String?
@@ -6675,9 +6675,9 @@ model KimmpCognitiveReasoningTrace {
   updatedAt   DateTime @updatedAt
 }
 
-// ─── AEGIS Phase 3.1: Governance & Trust ────────────
+// ─── HANUMANAS Phase 3.1: Governance & Trust ────────────
 
-model AegisPolicy {
+model HanumanasPolicy {
   id          String   @id @default(uuid())
   name        String   @unique
   description String?
@@ -6687,9 +6687,11 @@ model AegisPolicy {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("hanumanas_policies")
 }
 
-model AegisLedgerEntry {
+model HanumanasLedgerEntry {
   id               String   @id @default(uuid())
   missionId        String
   actor            String   // e.g. WAANDA
@@ -6700,6 +6702,8 @@ model AegisLedgerEntry {
   status           String   // e.g. BLOCKED, APPROVED, EXECUTED
   executionDetails Json?
   createdAt        DateTime @default(now())
+
+  @@map("hanumanas_ledger_entries")
 }
 
 // ─── KORE PERCEPTION & EVIDENCE ENGINE ────────────
@@ -7419,7 +7423,7 @@ model TenantOrganisation {
   maxAgents            Int       @default(20)
   blueprintId          String?
   blueprintVersion     String?
-  enabledModules       String[]                          // e.g. ["AEGIS","KEOS","WAANDA"]
+  enabledModules       String[]                          // e.g. ["HANUMANAS","KEOS","WAANDA"]
   disabledModules      String[]
   oisSnapshotsPerMonth Int       @default(100)
   apiCallsPerDay       Int       @default(1000)
@@ -7588,7 +7592,7 @@ model ComplianceControl {
 model PermissionScope {
   id         String   @id @default(cuid())
   userId     String
-  workspace  String                           // e.g. "AEGIS", "KIMMP", "CRM"
+  workspace  String                           // e.g. "HANUMANAS", "KIMMP", "CRM"
   feature    String                           // e.g. "shield", "signals", "leads"
   action     String                           // READ | WRITE | ADMIN
   grantedBy  String
@@ -8057,7 +8061,7 @@ model SOC2Evidence {
   controlName String
   evidenceType String                           // AUDIT_LOG | ACCESS_CONTROL | ENCRYPTION | INCIDENT | POLICY
   description String   @db.Text
-  sourceTable String?                           // e.g. "aegis_audit_logs"
+  sourceTable String?                           // e.g. "hanumanas_audit_logs"
   sourceCount Int      @default(0)             // row count at collection time
   collectedAt DateTime @default(now())
   period      SOC2AuditPeriod @relation(fields: [periodId], references: [id])
@@ -8156,7 +8160,7 @@ model VerticalEdition {
   displayName     String
   personaName     String                  // ARIA | LEX | FINX
   personaColor    String
-  aegisProfile    String?  @db.Text       // JSON: compliance flags + governance config
+  hanumanasProfile String?  @db.Text       // JSON: compliance flags + governance config
   complianceFlags String[]                // HIPAA | SOX | PCI | GDPR | BAR_ASSOCIATION
   description     String?  @db.Text
   planTiers       Json?                   // { STARTER: { priceGBP, features }, PRO:..., ENTERPRISE:... }
@@ -8498,7 +8502,7 @@ model CustomerOnboardingMilestone {
 model CustomerActivationScore {
   id             String   @id @default(cuid())
   customerId     String
-  department     String                           // Projects | Finance | CRM | WAANDA | AEGIS | etc.
+  department     String                           // Projects | Finance | CRM | WAANDA | HANUMANAS | etc.
   activationPct  Float    @default(0)             // 0–100: % of dept features activated
   lastActivityAt DateTime?
   createdAt      DateTime @default(now())
@@ -9511,7 +9515,7 @@ model ObjectComment {
   body       String   @db.Text
   /// HUMAN or the subsystem that wrote it. An agent posting to a thread is
   /// accountable in the same place a person is.
-  authorType String   @default("HUMAN")   // HUMAN | KIMMP | AEGIS | AUTOMATION
+  authorType String   @default("HUMAN")   // HUMAN | KIMMP | HANUMANAS | AUTOMATION
   authorId   String?
 
   /// Set when a subsystem posted this, so the UI can show provenance.

@@ -29,7 +29,7 @@ const ADMIN_ROUTES = [
   '/kangqore-view/admin/governance',
   '/kangqore-view/admin/strategy',
   '/kangqore-view/admin/systems',
-  '/kangqore-view/admin/aegis',
+  '/kangqore-view/admin/hanumanas',
   '/kangqore-view/admin/kimmp',
   '/kangqore-view/admin/developer',
   '/kangqore-view/admin/settings',

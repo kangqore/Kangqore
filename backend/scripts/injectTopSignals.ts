@@ -8,7 +8,7 @@ async function main() {
   await prisma.kimmpSignal.createMany({
     data: [
       {
-        sourceModule: 'aegis',
+        sourceModule: 'hanumanas',
         signalType: 'UNAUTHORIZED_ACCESS',
         signalCategory: 'RISK',
         signalValue: 'Unauthorized access patterns detected on 3 accounts, exceeding 16 active sessions per user',
@@ -16,7 +16,7 @@ async function main() {
         confidence: 99.5,
       },
       {
-        sourceModule: 'aegis',
+        sourceModule: 'hanumanas',
         signalType: 'CRITICAL_FAILURE',
         signalCategory: 'SYSTEM',
         signalValue: 'Critical failure in the system\'s ability to detect and respond to critical conditions',

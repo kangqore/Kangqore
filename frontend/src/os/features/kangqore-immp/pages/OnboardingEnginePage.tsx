@@ -3,7 +3,7 @@ import { api } from '../../../lib/api'
 
 const MILESTONE_LABEL: Record<string, string> = { DAY_0: 'Day 0 — Baseline', DAY_1: 'Day 1 — Activation', DAY_7: 'Day 7 — First Week', DAY_30: 'Day 30 — Checkpoint', DAY_90: 'Day 90 — QBR' }
 const STATUS_COLOR: Record<string, string> = { COMPLETED: '#00ddaa', IN_PROGRESS: '#4fc3f7', PENDING: '#556', OVERDUE: '#ff5252' }
-const DEPTS = ['Projects','Finance','CRM','WAANDA','AEGIS','Analytics','Workflows','Signals']
+const DEPTS = ['Projects','Finance','CRM','WAANDA','HANUMANAS','Analytics','Workflows','Signals']
 
 export function OnboardingEnginePage() {
   const [customers, setCustomers] = useState<any[]>([])

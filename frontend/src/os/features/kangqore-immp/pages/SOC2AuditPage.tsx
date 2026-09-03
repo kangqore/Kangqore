@@ -80,7 +80,7 @@ export function SOC2AuditPage() {
         <div>
           <h2 className="text-xl font-black tracking-tight" style={{ color: T1 }}>SOC2 Type II — Audit Control</h2>
           <p className="text-[10px] uppercase tracking-widest font-semibold mt-0.5" style={{ color: T2 }}>
-            12-month audit periods · AEGIS auto-evidence · auditor export
+            12-month audit periods · HANUMANAS auto-evidence · auditor export
           </p>
         </div>
         <button onClick={() => setShowForm(true)}
@@ -257,7 +257,7 @@ export function SOC2AuditPage() {
                 <div style={{ background: CARD }}>
                   {(!period.evidence || period.evidence.length === 0) && (
                     <p className="text-xs text-center py-8" style={{ color: T2 }}>
-                      No evidence yet — click Collect Evidence to auto-pull from AEGIS.
+                      No evidence yet — click Collect Evidence to auto-pull from HANUMANAS.
                     </p>
                   )}
                   {period.evidence?.map((e, i) => (
@@ -320,7 +320,7 @@ export function SOC2AuditPage() {
             <div className="rounded-2xl p-3" style={{ background: `${BLUE}12`, border: `1px solid ${BLUE}30` }}>
               <p className="text-xs" style={{ color: T2 }}>
                 <Clock className="w-3 h-3 inline mr-1" style={{ color: BLUE }} />
-                After creation, click <strong style={{ color: T1 }}>Collect Evidence</strong> to auto-pull 10 SOC2 controls from AEGIS audit logs, security findings, and access records.
+                After creation, click <strong style={{ color: T1 }}>Collect Evidence</strong> to auto-pull 10 SOC2 controls from HANUMANAS audit logs, security findings, and access records.
               </p>
             </div>
             <div className="flex gap-2 pt-1">

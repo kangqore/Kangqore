@@ -1,4 +1,5 @@
 import { prisma } from '../../../lib/prisma'
+import { HANUMANAS } from '../../esf/hanumanas/identity'
 
 export interface BlueprintOptions {
   customerName:   string
@@ -48,7 +49,7 @@ export function buildBlueprintSpec(opts: BlueprintOptions): Record<string, unkno
     policies: [
       { name: 'require_decision_audit',    effect: 'ENFORCE', priority: 1 },
       { name: 'kimmp_signal_threshold',    effect: 'ENFORCE', priority: 2 },
-      { name: 'aegis_data_residency',      effect: 'ENFORCE', priority: 3 },
+      { name: 'hanumanas_data_residency',      effect: 'ENFORCE', priority: 3 },
       { name: 'waanda_cycle_mandatory',    effect: 'RECOMMEND', priority: 4 },
     ],
     agents: [
@@ -70,7 +71,7 @@ export function buildBlueprintSpec(opts: BlueprintOptions): Record<string, unkno
       },
     },
     coig: { northStar: true, dimensions: ['velocity', 'depth', 'breadth', 'quality'] },
-    governance: { approvalLevels: { DECISION: 'KIMMP', POLICY: 'AEGIS' }, auditRetentionDays: 365 },
+    governance: { approvalLevels: { DECISION: 'KIMMP', POLICY: HANUMANAS.name }, auditRetentionDays: 365 },
   }
 }
 

@@ -27,7 +27,7 @@ import {
   EmbeddingsUnavailable,
 } from '../knowledge/EmbeddingsService'
 import { SystemType } from './agentRegistry'
-import { AegisLedger } from '../../../kangqore-aegis/aegisLedger.service'
+import { HanumanasLedger } from '../../esf/hanumanas/hanumanasLedger.service'
 import { PgvectorIndex } from '../knowledge/PgvectorIndex'
 import { KimmpFlags } from '../core/flags'
 
@@ -311,9 +311,9 @@ export class SystemRAG {
       tags:    [trigger, system.toLowerCase(), 'auto'],
     }).catch(err => { logger.warn(`[KIMMP:RAG] autoIndex failed: ${err.message}`); return null })
 
-    // AEGIS: register every ingested briefing as a KIMMP-owned intelligence asset
+    // HANUMANAS: register every ingested briefing as a KIMMP-owned intelligence asset
     if (result?.id) {
-      AegisLedger.logKnowledgeAsset({
+      HanumanasLedger.logKnowledgeAsset({
         system,
         assetId:     result.id,
         assetType:   docType,

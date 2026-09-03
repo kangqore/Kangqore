@@ -13,7 +13,7 @@
 // ---------------------------------------------------------------------------
 
 import { prisma } from '../../../lib/prisma'
-import { AegisLedger } from '../../esf/aegis/aegisLedger.service'
+import { HanumanasLedger } from '../../esf/hanumanas/hanumanasLedger.service'
 
 export interface LiveSignal {
   key:     string
@@ -28,7 +28,7 @@ export interface LiveSignal {
 // being auto-marked satisfied on a shaky inference.
 export async function getLiveComplianceSignals(): Promise<LiveSignal[]> {
   const [stats, piiConfig, roleRows, benchmarkCount] = await Promise.all([
-    AegisLedger.stats(),
+    HanumanasLedger.stats(),
     (prisma as any).piiScanConfig.findFirst({ where: { active: true } }),
     prisma.user.groupBy({ by: ['role'], _count: { _all: true } }),
     (prisma as any).kimmpBenchmarkRun.count(),
@@ -39,7 +39,7 @@ export async function getLiveComplianceSignals(): Promise<LiveSignal[]> {
       key: 'audit_logging',
       label: 'Audit logging & monitoring',
       satisfied: stats.totalActivations > 0,
-      detail: `${stats.totalActivations.toLocaleString()} activations logged, ${stats.totalDenied.toLocaleString()} access denials recorded in the AEGIS ledger.`,
+      detail: `${stats.totalActivations.toLocaleString()} activations logged, ${stats.totalDenied.toLocaleString()} access denials recorded in the HANUMANAS ledger.`,
     },
     {
       key: 'access_control_segregation',

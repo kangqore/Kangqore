@@ -2,7 +2,7 @@
 //
 // Implements the full Reason → Propose → Govern → Approve → Execute → Observe → Learn
 // state machine using real KIMMP reasoning, real ActionEngine execution, and
-// AEGIS policy for mandatory human-in-loop on high-impact decisions.
+// HANUMANAS policy for mandatory human-in-loop on high-impact decisions.
 //
 // Each autonomous cycle is one AutonomousExecution row, updated as it transitions
 // through states. On failure at any gate, the row is marked FAILED with errorMessage.

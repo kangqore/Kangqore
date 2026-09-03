@@ -67,7 +67,7 @@ const STATUS_CFG: Record<string, { color: string; bg: string }> = {
 const INHERITED_LAYERS = [
   { key: 'identity',      label: 'Identity',      note: 'OAuth client + installation record' },
   { key: 'permissions',   label: 'Permissions',   note: 'Action & object allowlist from manifest' },
-  { key: 'governance',    label: 'Governance',    note: 'AEGIS policy evaluated per call' },
+  { key: 'governance',    label: 'Governance',    note: 'HANUMANAS policy evaluated per call' },
   { key: 'billing',       label: 'Billing',       note: 'Credit envelope debited per call' },
   { key: 'audit',         label: 'Audit',         note: 'AppAuditEvent row per decision' },
   { key: 'observability', label: 'Observability', note: 'Latency + denial telemetry' },

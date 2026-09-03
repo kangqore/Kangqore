@@ -7,7 +7,7 @@ export const communitiesRouter = Router()
 const SEED_COMMUNITIES = [
   { name: 'k/architecture',  slug: 'architecture', description: 'Platform & Cloud Architecture',               color: '#3B82F6', topicTags: ['cloud','microservices','platform'] },
   { name: 'k/ai-agents',     slug: 'ai-agents',    description: 'Agentic AI & Cognition',                     color: '#10B981', topicTags: ['agents','../kangqore-view/waanda','llm'] },
-  { name: 'k/governance',    slug: 'governance',   description: 'Enterprise Trust & Compliance',               color: '#8B5CF6', topicTags: ['compliance','aegis','security'] },
+  { name: 'k/governance',    slug: 'governance',   description: 'Enterprise Trust & Compliance',               color: '#8B5CF6', topicTags: ['compliance','hanumanas','security'] },
   { name: 'k/workflows',     slug: 'workflows',    description: 'Automation & Engineering',                    color: '#FB923C', topicTags: ['automation','bpmn','ops'] },
   { name: 'k/showcase',      slug: 'showcase',     description: 'Member Demos & Launches',                    color: '#F43F5E', topicTags: ['demo','launch','community'] },
   { name: 'k/kangqore-os',   slug: 'kangqore-os',  description: 'Kangqore OS · Enterprise Operating System', color: '#d4a017', topicTags: ['os','bids','platform'] },

@@ -11,7 +11,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
   // KIMMP strategic decisions needing human review (selected === null)
   const openDecisions: any[]     = Array.isArray(viewModel.openDecisions)     ? viewModel.openDecisions     : []
   const resolvedDecisions: any[] = Array.isArray(viewModel.resolvedDecisions) ? viewModel.resolvedDecisions : []
-  // AEGIS autonomy boundary decisions (L3+)
+  // HANUMANAS autonomy boundary decisions (L3+)
   const l3decisions: any[]       = Array.isArray(viewModel.pendingApprovals)  ? viewModel.pendingApprovals  : []
   const synthesis: string | null = viewModel.kimmSynthesis ?? null
 
@@ -39,7 +39,7 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
         {[
           { label: 'Open Threads', value: openCount,    warn: openCount > 0 },
           { label: 'Resolved',     value: resolvedCount, warn: false        },
-          { label: 'L3+ AEGIS',   value: l3Count,       warn: l3Count > 0  },
+          { label: 'L3+ HANUMANAS',   value: l3Count,       warn: l3Count > 0  },
         ].map(({ label, value, warn }) => (
           <div key={label} style={{
             flex: 1, padding: '6px 4px', borderRadius: 6, textAlign: 'center',
@@ -100,11 +100,11 @@ const Core: React.FC<WidgetProps> = ({ viewModel }) => {
             </>
           )}
 
-          {/* AEGIS L3+ autonomy boundary */}
+          {/* HANUMANAS L3+ autonomy boundary */}
           {l3decisions.length > 0 && (
             <>
               <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--os-text-4)', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: openDecisions.length > 0 ? 4 : 0 }}>
-                AEGIS · L3+ Boundary
+                HANUMANAS · L3+ Boundary
               </div>
               {l3decisions.slice(0, 2).map((d: any) => (
                 <div key={d.id} style={{

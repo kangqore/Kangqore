@@ -41,11 +41,11 @@ const INTEGRATION_LAYERS = [
   },
   {
     id: 'governance',
-    label: 'AEGIS Governance',
+    label: 'HANUMANAS Governance',
     sub: 'Zero-Trust · Policy · Audit',
     color: '#00c875',
     x: 1.2,
-    desc: 'Every integration flow passes through AEGIS governance — identity verification, policy enforcement, cryptographic audit trail.',
+    desc: 'Every integration flow passes through HANUMANAS governance — identity verification, policy enforcement, cryptographic audit trail.',
     metrics: { policies: 340, sla: '99.999%' },
   },
   {

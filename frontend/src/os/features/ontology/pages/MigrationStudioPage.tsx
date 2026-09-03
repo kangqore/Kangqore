@@ -205,7 +205,7 @@ function SandboxView({ onNext }: any) {
     <div className="os-card h-[500px] flex flex-col p-8 relative overflow-hidden">
       <div className="absolute top-0 right-0 p-4">
         <div className="flex items-center gap-2 bg-amber-500/10 text-amber-500 border border-amber-500/20 px-3 py-1.5 rounded-full text-xs font-bold">
-          <ShieldCheck className="w-4 h-4" /> AEGIS Validation Sandbox
+          <ShieldCheck className="w-4 h-4" /> HANUMANAS Validation Sandbox
         </div>
       </div>
 
@@ -231,7 +231,7 @@ function SandboxView({ onNext }: any) {
             <Zap className="w-5 h-5 text-red-500" />
             <div>
               <div className="text-sm font-bold text-[var(--os-text-1)]">Translation: Auto-Delete Item</div>
-              <div className="text-[10px] text-red-400">AEGIS Collision: Hard Deletes restricted by Policy P-4. Mapped to Soft Delete.</div>
+              <div className="text-[10px] text-red-400">HANUMANAS Collision: Hard Deletes restricted by Policy P-4. Mapped to Soft Delete.</div>
             </div>
           </div>
           <ShieldCheck className="w-5 h-5 text-amber-500" />

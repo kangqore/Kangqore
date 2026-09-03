@@ -16,7 +16,7 @@
     "trigger":   "Via triggerOn events (e.g. 'project.created') OR schedule (cron expression).",
     "reason":    "Agent calls POST /api/admin/kangqore-immp/decisions/detect to identify decision points. WAANDA synthesises options.",
     "propose":   "Agent calls POST /api/admin/kangqore-immp/strategic-decisions with question + options.",
-    "approve":   "Human approves at /admin/aegis/approvals OR WAANDA auto-approves at L1 policy.",
+    "approve":   "Human approves at /admin/hanumanas/approvals OR WAANDA auto-approves at L1 policy.",
     "execute":   "Agent calls POST /api/admin/kangqore-immp/workflows/:id/run OR direct action endpoint.",
     "record":    "Agent calls POST /api/admin/adoption/event to log activity (AGENT_INVOKE, DECISION_ACCEPT, etc.)."
   },

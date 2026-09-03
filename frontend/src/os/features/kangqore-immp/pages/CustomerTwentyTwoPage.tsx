@@ -11,7 +11,7 @@ export function CustomerTwentyTwoPage() {
       size:            '400–700 employees',
       oisBaseline:     64.8,
       oisTarget:       78.0,
-      modules:         ['WAANDA', 'AEGIS', 'Projects', 'KIMMP', 'OIS', 'Clinical-Ops'],
+      modules:         ['WAANDA', 'HANUMANAS', 'Projects', 'KIMMP', 'OIS', 'Clinical-Ops'],
       accentColor:     '#10b981',
       verticalEdition: 'healthtech',
       personaName:     'ARIA',

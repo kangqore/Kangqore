@@ -1,7 +1,8 @@
 import logger from '../../../utils/logger'
+import type { HanumanasName } from '../../esf/hanumanas/identity'
 import { codeOverlord } from './codeOverlord.service'
 
-export type SubsystemType = 'HATHAWAY' | 'NOLAN' | 'AEGIS' | 'ALIS' | 'HCIP' | 'EQORE' | 'VIS' | 'KIMMP'
+export type SubsystemType = 'HATHAWAY' | 'NOLAN' | HanumanasName | 'ALIS' | 'HCIP' | 'EQORE' | 'VIS' | 'KIMMP'
 
 export interface SynapseSignal {
   id: string

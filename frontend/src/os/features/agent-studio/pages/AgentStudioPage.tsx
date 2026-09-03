@@ -348,7 +348,7 @@ export function AgentStudioPage() {
         <div className="os-card p-12 flex flex-col items-center gap-3 text-center">
           <ListChecks size={28} className="text-[var(--os-text-2)]" />
           <p className="text-sm text-[var(--os-text-1)] font-semibold">No DB-defined agents yet</p>
-          <p className="text-xs text-[var(--os-text-2)] max-w-sm">The 38 KIMMP + 80 AEGIS agents run their existing hardcoded path unaffected. Create a new agent here to try the data-driven path.</p>
+          <p className="text-xs text-[var(--os-text-2)] max-w-sm">The 38 KIMMP + 80 HANUMANAS agents run their existing hardcoded path unaffected. Create a new agent here to try the data-driven path.</p>
         </div>
       ) : (
         <div className="space-y-2">

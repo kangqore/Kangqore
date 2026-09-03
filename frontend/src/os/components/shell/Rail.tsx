@@ -19,7 +19,7 @@ import { useUIStore } from '@store/ui'
 
 const HOME     = RAIL_ITEMS.find(i => i.id === 'home')!
 const RECENT   = RAIL_ITEMS.find(i => i.id === 'recent')!
-const INTEL    = RAIL_ITEMS.filter(i => ['waanda','kimmp','keos','aegis','ontology','relay','intelligence'].includes(i.id))
+const INTEL    = RAIL_ITEMS.filter(i => ['waanda','kimmp','keos','hanumanas','ontology','relay','intelligence'].includes(i.id))
 // 'work' was defined in RAIL_ITEMS with its sub-items but belonged to none of
 // the three lists the rail actually renders, so the Work OS had no rail entry
 // at all. It leads the business group: it is where the day's work happens.

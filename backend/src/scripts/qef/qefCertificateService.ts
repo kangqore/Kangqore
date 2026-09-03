@@ -277,7 +277,7 @@ const QEF_SCOPE_V1 = [
   { id: 'waanda_routing', label: 'WAANDA Routing',     gate: 'gate35' },
   { id: 'waoe',           label: 'WAOE Engine',        gate: 'gate4'  },
   { id: 'wvis',           label: 'WVIS Studio',        gate: 'gate5'  },
-  { id: 'aegis',          label: 'AEGIS Governance',   gate: 'gate6'  },
+  { id: 'hanumanas',      label: 'HANUMANAS Governance',   gate: 'gate6'  },
   { id: 'security',       label: 'Security Controls',  gate: 'gate6'  },
   { id: 'compliance',     label: 'Compliance Posture', gate: 'gate6'  },
 ]

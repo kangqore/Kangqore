@@ -49,8 +49,8 @@ const BATTLECARDS: BattlecardSeed[] = [
   {
     slug: 'battlecard-secops', name: 'Security Operations', serviceNowModule: 'SecOps', verdict: 'WON',
     objection: '"SecOps has an AI Control Tower now — isn\'t that the same AI-governance story?"',
-    response: "SecOps' own AI Control Tower was retrofitted after four years of AI-agent shipping. AEGIS governance — every AI call logged, PII-scanned, budget-checked before it executes — was native from the first agent this platform ever ran. The AI Security View extends that same real audit/approval data into a security-team-facing lens, not a new detection engine bolted on after the fact.",
-    keyDifferentiators: ['Governance-native since day one, not retrofitted', 'AI Security View built on real AEGIS audit + pending-approval data', 'Sequencing argument published as a whitepaper, not just asserted'],
+    response: "SecOps' own AI Control Tower was retrofitted after four years of AI-agent shipping. HANUMANAS governance — every AI call logged, PII-scanned, budget-checked before it executes — was native from the first agent this platform ever ran. The AI Security View extends that same real audit/approval data into a security-team-facing lens, not a new detection engine bolted on after the fact.",
+    keyDifferentiators: ['Governance-native since day one, not retrofitted', 'AI Security View built on real HANUMANAS audit + pending-approval data', 'Sequencing argument published as a whitepaper, not just asserted'],
     proofLink: '/trust/governance-native-vs-retrofitted', iconEmoji: '🛡️',
   },
   {
@@ -63,7 +63,7 @@ const BATTLECARDS: BattlecardSeed[] = [
   {
     slug: 'battlecard-itsm', name: 'IT Service Management', serviceNowModule: 'ITSM', verdict: 'TOGETHER',
     objection: '"We run ITSM for incident/change/problem management — are you asking us to rip it out?"',
-    response: "No — this is the one case where the playbook's own recommendation is coexistence, and no Kangqore phase has built a competing capability here. The right pitch is Kangqore's ontology sitting alongside ITSM, not replacing it: import your CMDB via the Migration Accelerator (P7.2) and let AEGIS govern the AI layer on top, while ITSM keeps running the ticket queue it already runs well.",
+    response: "No — this is the one case where the playbook's own recommendation is coexistence, and no Kangqore phase has built a competing capability here. The right pitch is Kangqore's ontology sitting alongside ITSM, not replacing it: import your CMDB via the Migration Accelerator (P7.2) and let HANUMANAS govern the AI layer on top, while ITSM keeps running the ticket queue it already runs well.",
     keyDifferentiators: ['No built Kangqore ITSM competitor — coexistence is the honest pitch', 'CMDB import path exists specifically to make coexistence real, not theoretical'],
     proofLink: '/kangqore-view/admin/ontology/pipelines', iconEmoji: '🎫',
   },

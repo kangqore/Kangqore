@@ -52,7 +52,7 @@ const SERVICES: ContractedService[] = [
     highlights: ['Real-time milestone tracking', 'OKR alignment scoring', 'Weekly delivery digest'],
   },
   {
-    id: 'svc-3', name: 'AEGIS Compliance Monitoring',
+    id: 'svc-3', name: 'HANUMANAS Compliance Monitoring',
     description: 'Continuous compliance posture monitoring across SOC 2, ISO 27001, and NIST CSF — with audit evidence export.',
     icon: Shield, iconColor: '#00c875',
     status: 'active', tier: 'Standard', renewal: '2026-12-01',

@@ -106,7 +106,7 @@ import { AccessIdentityWidget }    from '../../widgets/AccessIdentityWidget';
 import { ComplianceCenterWidget }  from '../../widgets/ComplianceCenterWidget';
 import { ThreatMonitorWidget }     from '../../widgets/ThreatMonitorWidget';
 import { RiskSignalWidget }        from '../../widgets/RiskSignalWidget';
-import { AegisGovernanceWidget }   from '../../widgets/AegisGovernanceWidget';
+import { HanumanasGovernanceWidget }   from '../../widgets/HanumanasGovernanceWidget';
 
 // ── Phase 5.9 — Ecosystem ─────────────────────────────────────────────────
 import { CustomerPortalWidget }   from '../../widgets/CustomerPortalWidget';
@@ -182,7 +182,8 @@ export const WidgetRegistry: Record<string, React.ComponentType<any>> = {
   'SimulationLedgerWidget': SimulationLedgerWidget, 'OptimizationLedgerWidget': OptimizationLedgerWidget,
   'AccessIdentityWidget': AccessIdentityWidget, 'ComplianceCenterWidget': ComplianceCenterWidget,
   'ThreatMonitorWidget': ThreatMonitorWidget, 'RiskSignalWidget': RiskSignalWidget,
-  'AegisGovernanceWidget': AegisGovernanceWidget,
+  'HanumanasGovernanceWidget': HanumanasGovernanceWidget,
+  'AegisGovernanceWidget': HanumanasGovernanceWidget,  // legacy alias — saved dashboard layouts
 
   // 5.9 Ecosystem
   'CustomerPortalWidget': CustomerPortalWidget, 'PartnerHubWidget': PartnerHubWidget,

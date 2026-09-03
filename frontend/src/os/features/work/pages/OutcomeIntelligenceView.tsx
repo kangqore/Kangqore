@@ -235,7 +235,7 @@ export default function OutcomeIntelligenceView() {
           <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center gap-3">
              <Lock className="w-5 h-5 text-purple-400 shrink-0" />
              <p className="text-[11px] text-slate-400 leading-relaxed">
-               All outcome metrics are immutable and cryptographically bound to the original AEGIS Decision Token.
+               All outcome metrics are immutable and cryptographically bound to the original HANUMANAS Decision Token.
              </p>
           </div>
         </div>
