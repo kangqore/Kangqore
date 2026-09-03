@@ -3574,7 +3574,7 @@ model LlmCallLog {
   userId             String?
   actorType          String   // KIMMP | HANUMANAS | HUMAN | COPILOT | NOTEBOOK
   model              String
-  provider           String   // claude | krisnam | gen2 | openai | gemini | none
+  provider           String   // claude | krisnam | openai | gemini | none
   promptTokens       Int      @default(0)
   completionTokens   Int      @default(0)
   totalCost          Float    @default(0)
@@ -7291,14 +7291,15 @@ model FinetuneJob {
 // S61 — WAANDA Gen 2 Model Registry
 // ═══════════════════════════════════════════════════════════════════════════════
 
-model Gen2Model {
+model KrisnamModel {
   id               String    @id @default(cuid())
   name             String
-  provider         String                          // ANTHROPIC | TOGETHER | HUGGINGFACE
-  baseModel        String                          // e.g. claude-haiku-4-5-20251001
-  providerModelId  String?                         // fine-tuned model ID from provider
+  version          String    @default("0.1.1")     // semantic version, e.g. 0.1.0 (base) / 0.1.1 (first fine-tune)
+  provider         String                          // ANTHROPIC | TOGETHER | HUGGINGFACE | LOCAL_MLX
+  baseModel        String                          // e.g. Llama-3.2-3B-Instruct
+  providerModelId  String?                         // fine-tuned model ID / serving path
   finetuneJobId    String?                         // source FinetuneJob.id
-  benchmarkAccuracy Float?                         // 0–1 accuracy vs Gen1 on eval set
+  benchmarkAccuracy Float?                         // 0–1 accuracy vs baseline on eval set
   trainingExamples  Int      @default(0)
   isDeployed       Boolean   @default(false)
   deployedAt       DateTime?
@@ -7308,7 +7309,7 @@ model Gen2Model {
   updatedAt        DateTime  @updatedAt
 
   @@index([isDeployed])
-  @@map("gen2_models")
+  @@map("krisnam_models")
 }
 
 // S62 — Connector SDK field mappings
@@ -7451,7 +7452,7 @@ model TenantOrganisation {
 
 model AutonomyConfig {
   id              String   @id @default(cuid())
-  gen2TrafficPct  Int      @default(0)   // 0–100; % of calls routed to Gen2 first
+  krisnamCanaryPct Int     @default(0)   // 0–100; % of calls routed to the Krisnam canary first
   enabledAt       DateTime?
   updatedBy       String?
   createdAt       DateTime @default(now())
@@ -7761,7 +7762,7 @@ model PlanDecompositionTree {
   goal         String    @db.Text
   subtasks     Json      @default("[]")
   status       String    @default("PENDING")
-  gen2ModelId  String?
+  krisnamModelId String?
   failureCount Int       @default(0)
   replannedAt  DateTime?
   completedAt  DateTime?
@@ -7901,21 +7902,21 @@ model CustomerBlueprint {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// S117 — Gen2 per-tenant accuracy tracking
+// S117 — Krisnam per-tenant accuracy tracking (baseline vs candidate)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-model Gen2AccuracyRecord {
+model KrisnamAccuracyRecord {
   id            String   @id @default(cuid())
   tenantId      String
-  provider      String   @default("gen1")  // gen1 | gen2 | krisnam
+  arm           String   @default("baseline")  // baseline (Claude) | candidate (Krisnam)
   responseId    String?
   isAccurate    Boolean
   ratingComment String?
   createdAt     DateTime @default(now())
 
   @@index([tenantId])
-  @@index([provider])
-  @@map("gen2_accuracy_records")
+  @@index([arm])
+  @@map("krisnam_accuracy_records")
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

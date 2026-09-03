@@ -90,10 +90,10 @@ export class LocalReasonService {
         const completion = data.choices?.[0]?.message?.content ?? ''
         if (!completion.trim()) return null
         const latencyMs = Date.now() - start
-        logger.info(`[KIMMP:GEN2] MLX ${latencyMs}ms`)
+        logger.info(`[KIMMP:KRISNAM] MLX ${latencyMs}ms`)
         return { completion, latencyMs, model: this.MLX_MODEL, backend: 'mlx' }
       } catch (err: any) {
-        logger.debug(`[KIMMP:GEN2] MLX failed: ${err.message}`)
+        logger.debug(`[KIMMP:KRISNAM] MLX failed: ${err.message}`)
         return null
       }
     }
@@ -119,10 +119,10 @@ export class LocalReasonService {
         const completion = data.message?.content ?? ''
         if (!completion.trim()) return null
         const latencyMs = Date.now() - start
-        logger.info(`[KIMMP:GEN2] Ollama ${latencyMs}ms`)
+        logger.info(`[KIMMP:KRISNAM] Ollama ${latencyMs}ms`)
         return { completion, latencyMs, model: this.OLLAMA_MODEL, backend: 'ollama' }
       } catch (err: any) {
-        logger.debug(`[KIMMP:GEN2] Ollama failed: ${err.message}`)
+        logger.debug(`[KIMMP:KRISNAM] Ollama failed: ${err.message}`)
         return null
       }
     }
