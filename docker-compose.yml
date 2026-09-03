@@ -51,7 +51,7 @@ services:
       KIMMP_MLX_SERVER_URL: ${KIMMP_MLX_SERVER_URL:-http://host.docker.internal:11435}
       KIMMP_MLX_MODEL: ${KIMMP_MLX_MODEL:-/Users/maheshkumar/models/kimmp-reason-v1}
       KRISNAM_URL: ${KRISNAM_URL:-http://host.docker.internal:11435}
-      KRISNAM_MODEL: ${KRISNAM_MODEL:-/Users/maheshkumar/models/Krisnam/gen2-fused}
+      KRISNAM_MODEL: ${KRISNAM_MODEL:-/Users/maheshkumar/models/Krisnam/v0_1_1}
       KIMMP_OLLAMA_URL: ${KIMMP_OLLAMA_URL:-http://host.docker.internal:11434}
       KIMMP_LOCAL_REASON_MODEL: ${KIMMP_LOCAL_REASON_MODEL:-kimmp-reason:latest}
       BRAVE_SEARCH_API_KEY: ${BRAVE_SEARCH_API_KEY:-}
