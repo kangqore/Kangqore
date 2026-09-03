@@ -10,8 +10,23 @@ import { PageFactoryController } from './pageFactory.controller';
 const pageFactoryRoutes = Router();
 
 // Public — the dynamic renderer (PR-A2) fetches PUBLISHED pages by slug.
-// `*slug` captures multi-segment slugs (e.g. solutions/ai-governance) in Express 5.
-pageFactoryRoutes.get('/rendered/*slug', PageFactoryController.rendered);
+// In Express 5 (path-to-regexp v8), `:slug(*)` is invalid and `*slug` must be used.
+// In Express 4 (path-to-regexp v0.1.x), `:slug(*)` captures multi-segment slugs.
+const expressVersion = (Router as any).version || ((): string => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    return require('express/package.json').version || '';
+  } catch {
+    return '';
+  }
+})();
+const isExpress5 = /^5\./.test(expressVersion);
+
+if (isExpress5) {
+  pageFactoryRoutes.get('/rendered/*slug', PageFactoryController.rendered);
+} else {
+  pageFactoryRoutes.get('/rendered/:slug(*)', PageFactoryController.rendered);
+}
 
 // Admin — page authoring & lifecycle.
 pageFactoryRoutes.get('/meta', requireAuth, requireRole(['ADMIN']), PageFactoryController.meta);
