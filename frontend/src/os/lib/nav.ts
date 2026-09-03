@@ -348,6 +348,7 @@ export const RAIL_ITEMS: RailEntry[] = [
     sidebarItems: [
       { id: 'work-dashboard',   label: 'Dashboard',      path: `${BASE}/work/dashboard`,   category: 'Work OS', badge: 'new' },
       { id: 'work-templates',   label: 'Templates',      path: `${BASE}/work/templates`,   category: 'Work OS', badge: 'new' },
+      { id: 'work-boards',      label: 'Boards',         path: `${BASE}/work/boards`,      category: 'Work OS', badge: 'new' },
       { id: 'work-board',       label: 'Board',          path: `${BASE}/work/board`,       category: 'Work OS', badge: 'new' },
       { id: 'work-table',       label: 'Table',          path: `${BASE}/work/table`,       category: 'Work OS' },
       { id: 'work-timeline',    label: 'Timeline',       path: `${BASE}/work/timeline`,    category: 'Work OS' },

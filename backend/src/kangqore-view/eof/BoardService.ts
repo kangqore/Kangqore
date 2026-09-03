@@ -54,14 +54,24 @@ export const BoardService = {
     const groupBy = input.groupByField ?? 'status'
     const show = input.showClasses ?? DEFAULT_VISIBLE_CLASSES
 
+    // The root type is ALWAYS part of the query, never replaced by the filters.
+    // Written the other way round, a board over Project with a `status` filter
+    // returned every object in the graph with that status — 34 rows on this
+    // database, of which 17 were Contracts, Customers, Goals and Cases. The
+    // board was not wrong-looking; it was wrong. Same mistake as IntentCompiler,
+    // fixed the same way.
+    const typeFilter: FilterNode = { type: 'filter', field: 'typeId', op: 'eq', value: type.id }
     const query: QueryNode = input.where && Object.keys(input.where).length
       ? {
           type: 'intersection',
-          sets: Object.entries(input.where).map(([field, value]) => ({
-            type: 'filter', field, op: Array.isArray(value) ? 'in' : 'eq', value,
-          } as FilterNode)),
+          sets: [
+            typeFilter,
+            ...Object.entries(input.where).map(([field, value]) => ({
+              type: 'filter', field, op: Array.isArray(value) ? 'in' : 'eq', value,
+            } as FilterNode)),
+          ],
         }
-      : ({ type: 'filter', field: 'typeId', op: 'eq', value: type.id } as FilterNode)
+      : typeFilter
 
     const board = await prisma.board.create({
       data: {

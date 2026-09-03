@@ -25,7 +25,7 @@ import fixtures from './work-os.fixtures.json'
  */
 
 const WORK_OS_TABS = [
-  'dashboard', 'templates', 'board', 'table', 'timeline', 'graph',
+  'dashboard', 'templates', 'boards', 'board', 'table', 'timeline', 'graph',
   'workload', 'goals', 'portfolio', 'outcomes', 'executive',
   'automations', 'fields', 'ingest', 'agent-ux', 'decision-matrix',
 ]
@@ -45,7 +45,13 @@ async function mockApi(page: Page) {
     const path = new URL(route.request().url()).pathname
       .replace(/^.*\/api\/admin\/work-os\//, '')
       .replace(/\?.*$/, '')
-    const key = Object.keys(fixtures).find(k => path === k || path.startsWith(k))
+    // Exact match wins; otherwise the LONGEST matching prefix. Taking the first
+    // prefix hit served the `boards` list payload to `boards/<id>`, which the
+    // detail view would have rendered as an empty board rather than failing —
+    // a fixture bug that looks exactly like a working page.
+    const key = Object.keys(fixtures)
+      .filter(k => path === k || path.startsWith(k))
+      .sort((a, b) => (path === a ? -1 : path === b ? 1 : b.length - a.length))[0]
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
