@@ -166,3 +166,29 @@ exits 0.
 **Learning:** on macOS, `\b` in `sed` is a silent no-op, not an error. Use
 `[[:<:]]`/`[[:>:]]`, or `token([A-Za-z])` capture groups, or `perl -pi`. And
 after any bulk `sed`, grep for the *old* string — exit code 0 is not proof.
+
+## 2026-09-03 — "genN" was three concepts wearing one name  (P1)
+
+**Context:** renaming the Krisnam model lineage "Gen 1/2" → "0.1.0/0.1.1".
+**What happened:** the first inventory conflated (a) the Krisnam model version,
+(b) the router A/B arms where `gen1` = the *Claude baseline*, not Krisnam 0.1.0,
+and (c) the WAANDA evolution-roadmap generations (32 `Gen3/4/5*Page.tsx`, the
+`gen4_*`/`gen5_*` tables, `gen3Executor`). A mechanical `genN → v0_1_(N-1)` would
+have made "0.1.4" mean both a model and a roadmap phase, and turned the A/B
+control arm into a wrong version label.
+**Learning:** before a namespace rename, classify every hit by *which concept* it
+serves, not by its spelling. Here the split was: live model layer → concept names
++ a `version` field; A/B arms → `baseline`/`candidate`; roadmap → left untouched.
+**System change:** the Krisnam↔roadmap boundary is now documented in
+`krisnam-0-1-0` memory and PR #508's description so the next person doesn't
+re-conflate them.
+
+## 2026-09-03 — a second agent was resetting the working tree mid-task  (P2)
+
+**Context:** mid-refactor, `git branch --show-current` changed between two
+commands; uncommitted files appeared that weren't mine; `main` moved backwards.
+**Why:** another session was doing branch checkouts / resets in the same clone.
+**Learning:** when `rg`/`grep` give inconsistent results and HEAD moves on its
+own, stop — a concurrent session is editing the tree. Re-verify `git status`,
+`reflog`, and `origin/main` before trusting any inventory, and branch off
+`origin/main` (a fixed ref) rather than local `main`.
