@@ -10,8 +10,8 @@ import { PageFactoryController } from './pageFactory.controller';
 const pageFactoryRoutes = Router();
 
 // Public — the dynamic renderer (PR-A2) fetches PUBLISHED pages by slug.
-// `:slug(*)` captures multi-segment slugs (e.g. solutions/ai-governance).
-pageFactoryRoutes.get('/rendered/:slug(*)', PageFactoryController.rendered);
+// `*slug` captures multi-segment slugs (e.g. solutions/ai-governance) in Express 5.
+pageFactoryRoutes.get('/rendered/*slug', PageFactoryController.rendered);
 
 // Admin — page authoring & lifecycle.
 pageFactoryRoutes.get('/meta', requireAuth, requireRole(['ADMIN']), PageFactoryController.meta);

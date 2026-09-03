@@ -132,7 +132,9 @@ export class PageFactoryController {
   /** GET /page-factory/rendered/:slug — PUBLIC. Only returns PUBLISHED pages. */
   static async rendered(req: Request, res: Response) {
     try {
-      const page = await PageStore.getPublishedBySlug(req.params.slug);
+      const rawSlug = req.params.slug;
+      const slug = Array.isArray(rawSlug) ? rawSlug.join('/') : (rawSlug || '');
+      const page = await PageStore.getPublishedBySlug(slug);
       if (!page) return res.status(404).json({ error: 'Page not found or not published' });
       return res.json({ page });
     } catch (error) {
