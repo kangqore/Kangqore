@@ -8228,6 +8228,72 @@ export const servicesData = {
     relatedServiceSlugs: ['software-development', 'devops-as-a-service', 'enterprise-integration-platform'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    heroTitle: 'API and Microservices\nEngineering',
+    heroBadge: 'Assess. Design. Build. Run.',
+    heroStripItems: [
+      'API Strategy & Governance', 'Design-First Development', 'Microservices Architecture', 'Legacy Access Layer',
+      'Integration & Connectivity', 'B2B & EDI', 'Events & Streaming', 'Developer Portal',
+    ],
+
+    whatIsEyebrow: 'What our API and microservices services cover',
+    whatIsTitle: 'Every Integration Platform',
+    whatIsTitleLine2: 'Was Somebody’s',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'Modernization.',
+    whatIsPara2: 'The service bus you are migrating off was bought to end a point-to-point mess, and it did, for a while. It became the bottleneck because every change had to pass through one team, one release train and one set of skills that got rarer each year. The platform replacing it earns the same reputation on the same schedule unless something other than the technology changes.',
+    whatIsPara3: 'What changes it is ownership. An estate where a domain team owns its own contracts, publishes them somewhere others can find them, and versions them without joining a central queue does not accumulate a bottleneck. One where a central integration team builds everything, on the newest platform available, accumulates precisely the same bottleneck on better software.',
+    whatIsPara4: 'So we read the estate before recommending a platform, hold no reseller agreement with any vendor in this category, and are as willing to conclude that the answer is governance and a developer portal as a migration. Where a migration genuinely is the answer, we say what the result costs to run at year three, not only what it costs to build.',
+
+    // The two synthesized case cards are opted out rather than deleted:
+    // getParityService fills an absent outcomeCard with an invented client
+    // asserting perfect reliability, so deletion alone would keep them.
+    hideOutcomeCards: true,
+
+    solutionsCarousel: {
+      eyebrow: 'WHAT YOU CAN BUY',
+      title: 'Eight offerings,',
+      titleHighlight: 'bought separately or as a program.',
+      subtitle: 'Named for what they do rather than for a trademark. Most estates need two or three of these, and the assessment usually shortens the list rather than lengthening it.',
+      items: [
+        {
+          title: 'Legacy Access Layer',
+          desc: 'An API layer in front of systems that cannot be replaced yet, so the rest of the estate stops waiting on them. Read models, caching and event projection where the source cannot serve the load. The part to design deliberately is the decommission plan — without one the layer becomes permanent, and you now maintain two things instead of one.',
+        },
+        {
+          title: 'Events and Real-Time Data',
+          desc: 'Moving from nightly batch to event-driven where it earns the complexity: ingestion, change data capture, stream processing and schema governance across device, application and partner sources. Most estates need this for a handful of flows and batch for everything else. The failure is applying it uniformly because the architecture diagram looked better that way.',
+        },
+        {
+          title: 'Cloud-Native Delivery Platform',
+          desc: 'The paved road — templates, pipelines, runtime and observability standard across services, so the hundredth is as cheap to build as the tenth. It works where a platform team owns it as a product with real users. It fails where it is a mandate, because teams route around anything slower than not using it.',
+          href: '/services/devops-as-a-service',
+          linkLabel: 'DevOps',
+        },
+        {
+          title: 'Integration Middleware Migration',
+          desc: 'Moving off a service bus or an aging broker onto something current — MuleSoft, Azure Integration Services, Boomi or Kong, chosen on your estate rather than on our margin, because we hold none. Lifting every existing interface across reproduces the problem on newer software; the migration is the one chance you get to retire what nobody calls.',
+        },
+        {
+          title: 'Hybrid Integration Platform',
+          desc: 'Cloud, on-premise and SaaS interoperating without rewriting the core. Vendor-neutral by construction, because most estates already run two or three integration technologies and consolidating them is frequently a larger project than the one you actually came to do.',
+          href: '/services/enterprise-integration-platform',
+          linkLabel: 'Integration platform',
+        },
+        {
+          title: 'B2B and EDI Modernization',
+          desc: 'The trading-partner estate, usually older than everything around it and watched by nobody. AS2, SFTP and API channels, document mapping and validation, partner onboarding that partners can complete themselves, and exception handling with an owner rather than a shared inbox. Unglamorous, and the first thing to fail at volume.',
+        },
+        {
+          title: 'Partner and Marketplace Platforms',
+          desc: 'For business models that depend on third parties transacting on your platform: buyer-to-seller connection, partner onboarding, settlement, and the governance layer over all three. Worth building where partners are the product. Expensive decoration where they are a roadmap slide.',
+        },
+        {
+          title: 'API Catalog and Governance',
+          desc: 'A developer portal and central catalog, so an internal or partner team finds an API instead of building it a second time. Lifecycle automation, design review before development, and standards teams follow because the templates make them the path of least resistance. Nearly every estate we look at has the same integration built three times.',
+        },
+      ],
+    },
+
     capabilitiesLabel: 'API & MICROSERVICES SERVICES',
     capabilitiesSectionTitle: 'API and Microservices',
     capabilitiesSectionHighlight: 'Capabilities.',
