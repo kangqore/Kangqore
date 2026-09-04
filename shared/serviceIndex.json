@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-04T04:39:48.586Z",
+  "generatedAt": "2026-09-04T05:51:16.780Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1322,15 +1322,14 @@
       "department": "Foundry",
       "description": "API-first and microservices — API design, microservices architecture, API gateway, service mesh, and API management for scalable applications.",
       "capabilities": [
-        "API Strategy & Governance",
-        "API Design & Development",
-        "Microservices Architecture",
-        "Legacy Decoupling",
-        "Integration & Connectivity",
-        "B2B, EDI & Partner Integration",
-        "Events & Real-Time Data",
-        "Developer Portal & API Marketplace",
-        "Platform Engineering & Delivery"
+        "Kangqore Velocity Layer",
+        "Kangqore LiveSignal",
+        "Kangqore Cloud Native Foundry",
+        "Kangqore Middleware Migration Suite",
+        "Kangqore Hybrid Integration Platform",
+        "Kangqore Connect Plus for Azure",
+        "Kangqore Partner Exchange",
+        "Kangqore API Exchange"
       ],
       "faqs": [],
       "method": [
