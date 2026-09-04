@@ -8233,7 +8233,10 @@ export const servicesData = {
     // No trailing period: the template renders the last word as
     // {titleHighlight}. with the period already baked in.
     heroTitle: 'Kangqore API And\nMicroservices',
-    heroBadge: 'Modernize. Connect. Govern. Accelerate.',
+    // Category label above the h1. "Modernize. Connect. Govern. Accelerate."
+    // still closes the page, so the cadence is kept where it lands hardest
+    // rather than used twice.
+    heroBadge: 'Digital Integration & Connectivity',
     heroStripItems: [
       'API Speed Layer', 'Real-Time Data & Intelligence', 'Cloud-Native Development', 'Integration Modernization',
       'Hybrid Cloud Integration', 'B2B & EDI Modernization', 'Connected Marketplace', 'API Marketplace',
@@ -8244,9 +8247,10 @@ export const servicesData = {
     whatIsTitleLine2: 'Through APIs, Microservices,',
     whatIsHighlightNewLine: true,
     whatIsHighlight: 'Data and Intelligent Integration.',
-    whatIsPara2: 'Kangqore API & Microservices enables enterprises to modernize their technology landscape through ecosystem connectivity, intelligent data access, API-led transformation and cloud-native engineering.',
-    whatIsPara3: 'We help organizations unlock the value of enterprise data, expose business capabilities through reusable APIs and microservices, simplify complex integration landscapes, and accelerate digital initiatives across cloud, on-premise, SaaS, partner, supplier, customer and device ecosystems.',
-    whatIsPara4: 'Our approach is designed for enterprises operating across complex technology environments, where legacy systems, cloud platforms, distributed applications, APIs, data streams, partners and digital channels must work together reliably and securely.',
+    whatIsPara2: 'Kangqore API & Microservices enables enterprises to modernize how applications, data, systems, partners, devices and digital channels connect and operate together. We combine API-led transformation, microservices engineering, integration modernization, cloud-native development, real-time data capabilities and intelligent connectivity to help organizations build a more agile and connected digital enterprise.',
+    whatIsPara3: 'Our capabilities span the full enterprise integration landscape \u2014 from modernizing legacy systems and exposing business capabilities through reusable APIs and microservices, to connecting cloud, on-premise, SaaS, B2B, EDI, IoT and partner ecosystems. Kangqore helps enterprises reduce tightly coupled dependencies, simplify access to legacy cores, establish reusable digital capabilities, and accelerate the delivery of new products, services and experiences.',
+    whatIsPara4: 'We provide capabilities across API Speed Layers, Real-Time Data Insight and Intelligence Acceleration, Industrialized Cloud-Native Development, Integration Modernization and Migration, Hybrid Cloud Integration, B2B and EDI Modernization, Connected Marketplaces and API Marketplaces. These are supported by API governance, developer self-service, observability, DevSecOps, automation, centralized visibility and controlled enterprise integration workflows.',
+    whatIsPara5: 'The result is a modern enterprise connectivity foundation where legacy systems, applications, APIs, microservices, data, events, cloud platforms, SaaS systems, partners and devices work as a connected ecosystem. Kangqore helps enterprises move from fragmented and complex integration environments toward architectures that are scalable, governed, reusable, cloud-ready and designed for continuous digital transformation.',
 
     hideOutcomeCards: true,
 
