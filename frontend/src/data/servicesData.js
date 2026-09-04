@@ -8229,7 +8229,9 @@ export const servicesData = {
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
 
-    heroTitle: 'Kangqore API\n& Microservices',
+    // No trailing period: the template renders the last word as
+    // {titleHighlight}. with the period already baked in.
+    heroTitle: 'Kangqore API And\nMicroservices',
     heroBadge: 'Modernize. Connect. Govern. Accelerate.',
     heroStripItems: [
       'API Speed Layer', 'Real-Time Data & Intelligence', 'Cloud-Native Development', 'Integration Modernization',
