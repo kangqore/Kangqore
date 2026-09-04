@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T05:00:50.560Z",
+  "generatedAt": "2026-09-04T03:00:12.186Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1321,7 +1321,17 @@
       "name": "API & Microservices Engineering",
       "department": "Foundry",
       "description": "API-first and microservices — API design, microservices architecture, API gateway, service mesh, and API management for scalable applications.",
-      "capabilities": [],
+      "capabilities": [
+        "API Strategy & Governance",
+        "API Design & Development",
+        "Microservices Architecture",
+        "Legacy Decoupling",
+        "Integration & Connectivity",
+        "B2B, EDI & Partner Integration",
+        "Events & Real-Time Data",
+        "Developer Portal & API Marketplace",
+        "Platform Engineering & Delivery"
+      ],
       "faqs": [],
       "method": [
         {
