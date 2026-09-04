@@ -8243,9 +8243,9 @@ export const servicesData = {
     ],
 
     whatIsEyebrow: 'What Kangqore API and microservices covers',
-    whatIsTitle: 'Digital Integration',
+    whatIsTitle: 'Kangqore Digital Integration',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: '& Modernization.',
+    whatIsHighlight: 'And Modernization.',
     whatIsPara2: 'Kangqore API & Microservices enables enterprises to modernize how applications, data, systems, partners, devices and digital channels connect and operate together. We combine API-led transformation, microservices engineering, integration modernization, cloud-native development, real-time data capabilities and intelligent connectivity to help organizations build a more agile and connected digital enterprise.',
     whatIsPara3: 'Our capabilities span the full enterprise integration landscape \u2014 from modernizing legacy systems and exposing business capabilities through reusable APIs and microservices, to connecting cloud, on-premise, SaaS, B2B, EDI, IoT and partner ecosystems. Kangqore helps enterprises reduce tightly coupled dependencies, simplify access to legacy cores, establish reusable digital capabilities, and accelerate the delivery of new products, services and experiences.',
     whatIsPara4: 'We provide capabilities across API Speed Layers, Real-Time Data Insight and Intelligence Acceleration, Industrialized Cloud-Native Development, Integration Modernization and Migration, Hybrid Cloud Integration, B2B and EDI Modernization, Connected Marketplaces and API Marketplaces. These are supported by API governance, developer self-service, observability, DevSecOps, automation, centralized visibility and controlled enterprise integration workflows.',
