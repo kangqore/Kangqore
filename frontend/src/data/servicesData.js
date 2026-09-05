@@ -8671,19 +8671,36 @@ export const servicesData = {
 
     solutionsCarousel: {
       eyebrow: 'WHAT KANGQORE DELIVERS',
-      title: 'Nine outcomes,',
-      titleHighlight: 'across the connected enterprise.',
-      subtitle: 'Designed around the same enterprise problems that leading global technology organizations solve.',
+      title: 'Six engagements,',
+      titleHighlight: 'and the decision inside each.',
+      subtitle: 'These are the six things enterprises actually call us about. Each one turns on a decision that gets made once and then governs how expensive change is for years, so the decision is the work.',
       items: [
-        { title: 'Modernize the core', desc: 'Create modern service layers around legacy systems without forcing immediate core replacement.' },
-        { title: 'Connect the enterprise', desc: 'Connect cloud, on-premise, SaaS, applications, APIs, partners, suppliers, devices and digital channels.' },
-        { title: 'Turn data into reusable capabilities', desc: 'Expose domain data and business capabilities as reusable APIs, services and data products.' },
-        { title: 'Reduce integration complexity', desc: 'Replace tightly coupled integration patterns with modular, API-led, event-centric architectures.' },
-        { title: 'Accelerate cloud transformation', desc: 'Support cloud-native application development, hybrid environments, DevSecOps, containerization and modern integration.' },
-        { title: 'Modernize legacy integration', desc: 'Provide structured pathways from legacy middleware, B2B and EDI platforms toward modern cloud and API architectures.' },
-        { title: 'Democratize integration', desc: 'Introduce controlled self-service so business and engineering teams act without creating central-team bottlenecks.' },
-        { title: 'Govern the API estate', desc: 'A unified model for API discovery, design, development, governance, publishing, consumption, monitoring and retirement.' },
-        { title: 'Build digital ecosystems', desc: 'Connect partners, developers, customers, suppliers, applications and digital products through marketplace and platform architectures.' },
+        {
+          title: 'Monolith-to-Microservices Migration',
+          desc: 'Decomposition against how the business changes rather than how the org chart looks this quarter. We start from the seams that already exist — the modules nobody has edited together in two years — and cut there. The measure we hold it to is how many services must be released together to ship one business change. If that number is not falling, the work is producing a distributed monolith, and we say so rather than continue.',
+        },
+        {
+          title: 'API Governance and Standards',
+          desc: 'An operating model where the domain team owns its contracts and versions them without joining a central queue. Standards land through templates and pipelines rather than a review board, because a standard slower than ignoring it gets ignored. Measured on consumers per API and the count of APIs with none — the two numbers that say whether governance produced reuse or paperwork.',
+        },
+        {
+          title: 'ESB and Middleware Migration',
+          desc: 'Off a service bus onto something current — MuleSoft, Azure Integration Services, Boomi or Kong, chosen on your estate rather than on our margin, because we hold none. The inventory comes first and usually changes the plan: roughly a quarter of the interfaces in a mature ESB estate are called by nothing. Migrating those is pure cost, and the migration is the only moment when retiring them is politically possible.',
+          href: '/services/enterprise-integration-platform',
+          linkLabel: 'Integration platform',
+        },
+        {
+          title: 'API Gateway Selection',
+          desc: 'Kong, Apigee, AWS API Gateway, Azure API Management, and the gateway already sitting inside a platform you license. Selection is usually decided by deployment model and identity integration rather than by the feature matrix, because every product answers yes to most rows. We document why the runner-up lost, which is worth more than the decision itself eighteen months later when somebody asks.',
+        },
+        {
+          title: 'API Security and Rate Limiting',
+          desc: 'Authentication, authorization, quota and abuse protection designed into the contract rather than bolted onto the gateway afterwards. The failures we find are rarely exotic: an internal API with no authorization because it was never meant to leave the network, a rate limit applied per IP behind a proxy that makes every caller look like one, and a token that grants everything because scoping was left until later.',
+        },
+        {
+          title: 'Developer Portal and Catalog',
+          desc: 'Where an internal or partner engineer finds an API, understands it, and gets a key without opening a ticket. Catalogs fail when finding an API takes longer than writing one, which makes this a search, documentation and sandbox problem before it is a governance problem. Once discovery is genuinely faster than rebuilding, reuse stops needing to be mandated.',
+        },
       ],
     },
 
