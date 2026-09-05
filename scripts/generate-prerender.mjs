@@ -217,7 +217,13 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
   // honor it too. Emitting it here regardless would describe a section the
   // visitor never sees — the same page-versus-snapshot mismatch that put stale
   // content in front of crawlers on two other services.
-  const comparison = svc.comparisonTable && !svc.hideComparison
+  // The comparison band was removed from the template for all 62 services in
+  // 24e61e5b, but this emitter was left in place — so any service still
+  // carrying comparisonTable data published a table to crawlers that no
+  // visitor could see. Held at '' rather than deleted: the data and this
+  // emitter are both intact, so restoring the section is a one-line change.
+  const COMPARISON_SECTION_IN_TEMPLATE = false;
+  const comparison = COMPARISON_SECTION_IN_TEMPLATE && svc.comparisonTable && !svc.hideComparison
     ? `    <h2>${esc(svc.comparisonTable.heading || 'How this differs')}</h2>
     ${svc.comparisonTable.lede ? `<p>${esc(svc.comparisonTable.lede)}</p>` : ''}
       <table>
@@ -227,6 +233,15 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
 ${(svc.comparisonTable.rows || []).map((r) => `          <tr><th scope="row">${esc(r.dimension)}</th><td>${esc(r.before)}</td><td>${esc(r.after)}${linkTo(r.link)}</td></tr>`).join('\n')}
         </tbody>
       </table>`
+    : '';
+
+  // The what-is h2 was never emitted. Its paragraphs were, so every snapshot
+  // carried the section's body with no heading above it — the strongest
+  // semantic signal for that passage, missing on all 62 pages. Carries its own
+  // indentation and trailing newline so a service without the keys emits
+  // nothing, the same contract as the concierge chips.
+  const whatIsHeading = (svc.whatIsTitle || svc.whatIsHighlight)
+    ? `    <h2>${esc([svc.whatIsTitle, svc.whatIsTitleLine2, svc.whatIsHighlight].filter(Boolean).join(' '))}</h2>\n`
     : '';
 
   const architecture = (svc.architectureNodes || []).length
@@ -485,7 +500,7 @@ ${seo?.keywords ? `<meta name="keywords" content="${esc(seo.keywords)}">` : ''}
     <h1>${esc(heroH1)}</h1>
     <p>${esc(svc.fullDescription || svc.shortDescription || '')}</p>
     ${svc.shortDescription && svc.fullDescription ? `<p>${esc(svc.shortDescription)}</p>` : ''}
-    ${svc.whatIsPara2 ? `<p>${esc(svc.whatIsPara2)}</p>` : ''}
+${whatIsHeading}    ${svc.whatIsPara2 ? `<p>${esc(svc.whatIsPara2)}</p>` : ''}
     ${svc.whatIsPara3 ? `<p>${esc(svc.whatIsPara3)}</p>` : ''}
     ${svc.whatIsPara4 ? `<p>${esc(svc.whatIsPara4)}</p>` : ''}
     ${svc.whatIsPara5 ? `<p>${esc(svc.whatIsPara5)}</p>` : ''}

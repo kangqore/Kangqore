@@ -8222,12 +8222,492 @@ export const servicesData = {
     name: 'API & Microservices Engineering',
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
-    shortDescription: 'Design and build modern API-first architectures',
-    fullDescription: 'Implement API-first and microservices architectures for scalable applications.',
+    shortDescription: 'API and microservices engineering: ecosystem connectivity, data value, and agility in digital delivery',
+    fullDescription: 'Kangqore is focusing on business transformation through ecosystem connectivity, unlocking the value of data, and simplification and agility in digital initiatives during these times.',
+    fullDescriptionMaxWidth: 'max-w-[760px] xl:max-w-[820px]',
     keyFeatures: ['API design', 'Microservices architecture', 'API gateway', 'Service mesh', 'API management'],
     relatedServiceSlugs: ['software-development', 'devops-as-a-service', 'enterprise-integration-platform'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+
+    // No trailing period: the template renders the last word as
+    // {titleHighlight}. with the period already baked in.
+    heroTitle: 'Kangqore API And\nMicroservices',
+    // The phrase moved to the what-is heading, which is where the copy it
+    // introduces actually sits. Two headings a word apart within one screen
+    // reads as an error rather than as emphasis.
+    heroBadge: 'Modernize. Connect. Govern. Accelerate.',
+    heroStripItems: [
+      'API Speed Layer', 'Real-Time Data & Intelligence', 'Cloud-Native Development', 'Integration Modernization',
+      'Hybrid Cloud Integration', 'B2B & EDI Modernization', 'Connected Marketplace', 'API Marketplace',
+    ],
+
+    whatIsEyebrow: 'What Kangqore API and microservices covers',
+    whatIsTitle: 'Kangqore Digital Integration',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'And Modernization.',
+    whatIsPara2: 'Kangqore API & Microservices enables enterprises to modernize how applications, data, systems, partners, devices and digital channels connect and operate together. We combine API-led transformation, microservices engineering, integration modernization, cloud-native development, real-time data capabilities and intelligent connectivity to help organizations build a more agile and connected digital enterprise.',
+    whatIsPara3: 'Our capabilities span the full enterprise integration landscape \u2014 from modernizing legacy systems and exposing business capabilities through reusable APIs and microservices, to connecting cloud, on-premise, SaaS, B2B, EDI, IoT and partner ecosystems. Kangqore helps enterprises reduce tightly coupled dependencies, simplify access to legacy cores, establish reusable digital capabilities, and accelerate the delivery of new products, services and experiences.',
+    whatIsPara4: 'We provide capabilities across API Speed Layers, Real-Time Data Insight and Intelligence Acceleration, Industrialized Cloud-Native Development, Integration Modernization and Migration, Hybrid Cloud Integration, B2B and EDI Modernization, Connected Marketplaces and API Marketplaces. These are supported by API governance, developer self-service, observability, DevSecOps, automation, centralized visibility and controlled enterprise integration workflows.',
+    whatIsPara5: 'The result is a modern enterprise connectivity foundation where legacy systems, applications, APIs, microservices, data, events, cloud platforms, SaaS systems, partners and devices work as a connected ecosystem. Kangqore helps enterprises move from fragmented and complex integration environments toward architectures that are scalable, governed, reusable, cloud-ready and designed for continuous digital transformation.',
+
+    hideOutcomeCards: true,
+
+    conciergeHeading: 'Ask about the estate before the architecture.',
+    conciergeIntro: 'eQORE answers the questions that come up before a proposal exists — which pattern fits, what a migration actually costs, and where an integration platform stops being worth it.',
+    conciergeChips: [
+      'How do we choose between REST, GraphQL and gRPC?',
+      'What does moving off our ESB actually involve?',
+      'Do we need a service mesh, or is that premature?',
+      'How do we stop the same integration being built three times?',
+      'Book an integration landscape assessment',
+    ],
+
+    comparisonTable: {
+      eyebrow: 'WHERE INTEGRATION ESTATES GO WRONG',
+      heading: 'Point-to-point and ESB, against API-led and event-driven.',
+      lede: 'Not a technology argument. Every row below is a decision that gets made once, quietly, and then governs how expensive change is for the next decade.',
+      beforeLabel: 'Point-to-point and ESB',
+      afterLabel: 'API-led and event-driven',
+      afterBadge: 'Kangqore',
+      beforeShort: 'Central team, tight coupling',
+      afterShort: 'Domain ownership, contracts',
+      rows: [
+        {
+          dimension: 'Who builds a new interface',
+          before: 'A central integration team, on their backlog, in their release train. The requesting team waits, and the wait is invisible in every project plan that assumed it would not.',
+          after: 'The domain team that owns the data, against a published contract and a style guide. The central team owns the standards and the platform, not the queue.',
+        },
+        {
+          dimension: 'What happens when a consumer needs a change',
+          before: 'The provider changes the interface and everything downstream is retested, because there is no contract distinguishing what was promised from what was implemented.',
+          after: 'The contract is versioned, the old version has a sunset date, and consumer-driven tests fail in the provider pipeline before anything reaches production.',
+        },
+        {
+          dimension: 'Finding whether the capability already exists',
+          before: 'Nobody knows, so it gets built again. Most estates we assess have the same customer lookup implemented three or four times, each with slightly different behavior.',
+          after: 'A catalog and developer portal where discovery is faster than rebuilding, which is the only condition under which reuse actually happens.',
+        },
+        {
+          dimension: 'Exposure of the legacy core',
+          before: 'Consumers query the system of record directly, so its load profile is set by whoever wrote the newest mobile screen, and it cannot be replaced without touching all of them.',
+          after: 'An access layer with read models and caching absorbs the load, and the core can be replaced behind it on a schedule you choose rather than one an outage chooses.',
+        },
+        {
+          dimension: 'When the platform reaches end of life',
+          before: 'A wholesale migration is scoped, costed and deferred, because every interface was written against the platform rather than against a contract.',
+          after: 'Interfaces are portable because the contract is the artifact. Migration becomes a runtime decision rather than a rewrite of the estate.',
+        },
+        {
+          dimension: 'What governance means in practice',
+          before: 'A review board that approves designs after they are built, and a standards document nobody reads because following it is slower than not.',
+          after: 'Templates and pipelines that make the standard the path of least resistance, with design review before development rather than after it.',
+        },
+      ],
+    },
+
+    industryHeading: 'Integration work grounded in',
+    industryHeadingHighlight: 'your regulatory reality.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Open banking made the API the regulated surface, so design quality and evidence are compliance concerns rather than engineering preferences.',
+        items: [
+          'Open banking and PSD2-aligned API exposure',
+          'BIAN-aligned domain and service modeling',
+          'Payment and core banking access layers',
+          'Consent, entitlement and strong authentication in the contract',
+          'Audit evidence attached to every published version',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Interoperability is legislated, and the standard is specified — which makes the work integration engineering rather than integration invention.',
+        items: [
+          'FHIR resource and profile implementation',
+          'HL7 to FHIR migration and coexistence',
+          'Patient consent and access control at the API boundary',
+          'PHI handling, minimization and audit logging',
+          'Clinical system access layers over packaged applications',
+        ],
+      },
+      {
+        industry: 'Retail & Consumer',
+        headline: 'The estate is judged on a single number — whether the item shown as available actually is — and that number is an integration outcome.',
+        items: [
+          'Order management and available-to-promise logic',
+          'Inventory and pricing exposure across channels',
+          'Marketplace and partner catalog integration',
+          'Event-driven stock and fulfilment updates',
+          'Peak-season load absorbed away from the core',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Operational technology and enterprise IT were never designed to meet, and the join is where most industrial data programs stall.',
+        items: [
+          'IIoT and shop-floor telemetry ingestion',
+          'OT to IT integration with a controlled boundary',
+          'Supplier and logistics B2B connectivity',
+          'Edge to cloud event pipelines',
+          'Plant system access without exposing control networks',
+        ],
+      },
+      {
+        industry: 'Telecommunications & Media',
+        headline: 'The catalog is the product, and TM Forum exists because everyone solved the same modeling problem differently and then had to interoperate anyway.',
+        items: [
+          'TM Forum Open API implementation',
+          'Product and service catalog exposure',
+          'Partner and wholesale API channels',
+          'Order orchestration across network and IT systems',
+          'High-volume event and usage streams',
+        ],
+      },
+      {
+        industry: 'Public Sector',
+        headline: 'Procurement outlives every vendor on the estate, so portability and open standards are commercial requirements rather than architectural taste.',
+        items: [
+          'Open standards and published API specifications',
+          'Cross-agency data sharing with consent controls',
+            'Legacy access layers over long-lived systems',
+          'Accessibility and transparency in developer portals',
+          'Exit and portability terms designed in from the start',
+        ],
+      },
+    ],
+
+    capabilitiesLabel: 'API & MICROSERVICES CAPABILITIES',
+    capabilitiesSectionTitle: 'Our API & Microservices',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Creating digital differentiation with a modernized core, hyper-connected ecosystems and extreme agility.',
+    capabilityAreas: [
+      {
+        title: 'API Speed Layer',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'For agility in digital data, propositions and moments. A flexible digital layer over the enterprise core, so new products, services, channels, experiences and ecosystem capabilities can be introduced without repeatedly modifying underlying legacy systems.',
+        items: [
+          'API-Led Connectivity: connect enterprise applications, data sources, partners, channels and ecosystems through API-led architecture',
+          'Domain Data as a Product: expose governed domain data as reusable, discoverable, consumable data products',
+          'Unlocking Systems of Differentiation: decouple digital experiences and differentiated capabilities from systems of record',
+          'Agility Across Platforms and Distributed Businesses: support distributed business models and heterogeneous platforms through standardized APIs and reusable services',
+          'Legacy Core Simplification: simplify access to legacy enterprise systems through APIs without requiring immediate replacement of the core',
+          'Legacy Core Protection: reduce direct exposure of legacy platforms by introducing controlled API and service layers',
+          'Scale and Speed for Digital Initiatives: reusable capabilities deployed rapidly across channels, products, applications and partner ecosystems',
+          'Event-Centric Integration: event-driven architectures for real-time enterprise interactions and distributed workflows',
+          'Legacy Decoupling: separate modern digital capabilities from legacy implementation dependencies',
+          'Offloading: move suitable workloads and service interactions away from constrained legacy environments into scalable service layers',
+        ],
+      },
+      {
+        title: 'Real-Time Data Insight, Ingestion & Intelligence Acceleration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The challenge is no longer collecting information. It is preserving context, relationships, meaning and business relevance across continuously generated data streams — so a digital experience understands surrounding activity before deciding what action to take.',
+        items: [
+          'Massive-Scale Data Ingestion: structured, semi-structured, streaming, operational, application, IoT and industrial data',
+          'Real-Time Data Streams: process and respond to continuously changing streams and business events',
+          'Data Interlinking: connect information across sources to surface relationships invisible inside individual systems',
+          'Contextual Data Processing: preserve context around events, interactions, customers, devices, transactions and operational signals',
+          'Event Intersection: intersect multiple events and signals to identify meaningful combinations, correlations and business conditions',
+          'Intelligence Acceleration: convert continuously arriving information into insights, signals and actions',
+          'AI/ML Ecosystem Integration: connect real-time data environments with AI, machine learning, analytics and intelligent automation',
+          'IoT and IIoT Integration: ingestion and contextual processing across connected devices, industrial systems and operational environments',
+          'Knowledge-Based Data Interpretation: structured domain knowledge and common vocabularies for consistent interpretation across systems',
+          'Operating model: ingest, interlink, intersect, understand, act',
+        ],
+      },
+      {
+        title: 'Industrialized Cloud-Native Development with PaaS Platforms',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Large-scale cloud-native engineering requires more than containers and microservices. A platform-oriented approach giving engineering teams productivity, development speed, consistency and quality, adaptable to enterprise DevSecOps tools, deployment platforms and container runtimes.',
+        items: [
+          'Cloud-Native Application Development: build using modern cloud-native architecture patterns',
+          'Microservices Development: modular, independently deployable business services',
+          'PaaS-Based Engineering: standardized platform capabilities so teams focus on business functionality rather than foundational infrastructure',
+          'DevSecOps Integration: security, development, testing, deployment and operations in one engineering workflow',
+          'Containerized Runtime Support: containerized environments across cloud and enterprise infrastructure',
+          'Engineering Standardization: repeatable patterns for architecture, development, testing, deployment, observability and operations',
+          'Agile Development Practices: high-performance agile practice applied to large-scale engineering initiatives',
+          'Cloud-Native Design Patterns: reusable architecture patterns for modern distributed application environments',
+        ],
+      },
+      {
+        title: 'Integration Modernization & Migration',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Legacy integration middleware built around monolithic architectures, tightly coupled interfaces and outdated patterns becomes a major obstacle to modernization. We assess, rationalize, modernize and migrate complex integration landscapes into modern, scalable, API-led, cloud-ready environments.',
+        items: [
+          'Integration Landscape Assessment: existing integrations, dependencies, interfaces, applications, data flows and middleware',
+          'Migration Planning: a structured roadmap based on business priorities, technical dependencies, risk and target architecture',
+          'API-Led Modernization: transform tightly coupled integration patterns into reusable APIs and services',
+          'Three-Tier API Architecture: separate experience, process and system concerns for maintainable, scalable integration',
+          'Design-First API Approach: define contracts, requirements, governance and consumer expectations before implementation',
+          'Legacy Middleware Modernization: move enterprise service buses and legacy middleware toward modern integration architectures',
+          'Hybrid Deployment: on-premise, private-cloud, public-cloud and containerized integration environments',
+          'Automated Validation: automate validation and testing to increase migration confidence',
+          'Integration Documentation & Visibility: visibility into current landscapes, dependencies and implementation status',
+          'Developer Portal & API Discovery: teams discover, understand, consume and collaborate around enterprise APIs',
+        ],
+      },
+      {
+        title: 'Hybrid Cloud Integration Platform',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'For hyper-agile, cloud-scale connectivity. An enterprise integration framework connecting on-premise, public cloud, private cloud, SaaS, PaaS, application, device and regional environments while maintaining operational visibility, governance, automation and flexibility.',
+        items: [
+          'Hybrid Integration: connect cloud, on-premise, private-cloud, SaaS, PaaS, application and device ecosystems',
+          'API & Microservices Connectivity: expose enterprise capabilities through APIs and reusable services',
+          'Self-Service Integration Configuration: authorized teams configure integration through guided interfaces',
+          'Operational Dashboards: visibility into integration health, transactions, failures and operational activity',
+          'Automated Failure Recovery: automated recovery mechanisms for appropriate integration failures',
+          'Message Replay: controlled replay of failed or delayed integration messages',
+          'Centralized Governance: common governance and control across distributed integration environments',
+          'Build-Anywhere: integration development across multiple technology environments',
+          'Deploy-Anywhere: deployment across cloud, on-premise, private-cloud and hybrid environments',
+          'DevOps Automation: automate development, testing, deployment and operational processes',
+          'Vendor-neutral by construction: connect fit-for-purpose integration technologies rather than consolidating onto one',
+        ],
+      },
+      {
+        title: 'B2B & EDI Modernization on Cloud Platforms',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Legacy B2B and EDI environments become expensive to operate, difficult to change and dependent on specialized skills. A platform-oriented transition toward cloud-first digital integration, focused on self-service, configurable EDI, end-to-end visibility and governed execution.',
+        items: [
+          'B2B Integration Modernization: modernize traditional B2B integration architectures',
+          'EDI Modernization: transition legacy EDI environments toward modern cloud-based integration',
+          'Cloud-First Integration: build B2B capability using cloud-native and managed integration models',
+          'Self-Service Integration: authorized teams handle common integration requirements themselves',
+          'Configurable EDI: configurable patterns that reduce repetitive implementation work',
+          'End-to-End Visibility: monitoring and visibility across B2B integration processes',
+          'API Integration: connect B2B and EDI capability into modern API-driven ecosystems',
+          'Automated Execution: automate deployment, execution, monitoring and operational processes',
+          'Universal Logging: consistent logging across integration components and workflows',
+          'API Auto-Creation: accelerate creation of APIs around eligible integration capabilities',
+          'Preconfigured Integration Patterns: curated patterns and reusable implementation approaches',
+          'Legacy Transformation Conversion: convert legacy transformation components into modern architectures',
+          'Business Activity Monitoring: dashboards and monitoring for important business integration activity',
+        ],
+      },
+      {
+        title: 'Kangqore Connected Marketplace',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'A cloud-based marketplace architecture with analytics, integration, platform and connectivity capability — for enterprises moving from product-centric models toward platform and ecosystem business models. Three layers: marketplace, partner collaboration and IT, and management.',
+        items: [
+          'Marketplace Layer: connect buyers, sellers, customers, suppliers, partners and ecosystem participants',
+          'Partner Collaboration & IT Layer: connect business operations with partners, systems, APIs, applications and integration services',
+          'Management Layer: control, governance, operational visibility, analytics and management across the stack',
+          'Cloud-Based Marketplace: deploy marketplace environments on scalable cloud architecture',
+          'B2B Marketplace: digital platforms for business-to-business transactions and relationships',
+          'API Business Platform: expose, discover, consume and potentially commercialize APIs and digital services',
+          'Partner Integration: connect external partners with internal enterprise systems',
+          'Self-Service Partner Onboarding: partners complete defined onboarding without depending entirely on central IT',
+          'Partner Operations Portal: an operational interface for partner interaction and management',
+          'Analytics: insight across marketplace, partner, platform and transaction activity',
+          'Resilient, Self-Healing Infrastructure: automated recovery and operational response',
+          'Flexible Regional Deployment: deployment across appropriate geographic and cloud environments',
+        ],
+      },
+      {
+        title: 'Kangqore API Marketplace Platform',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'APIs exist everywhere, and there is no unified way to discover, govern, manage, consume, collaborate around and commercialize them. A central catalog and lifecycle platform, regardless of how or where individual APIs are implemented.',
+        items: [
+          'API Lifecycle Automation: requirements and design through implementation, publication, consumption and retirement',
+          'API Governance: standards, policies, rules, workflows and review mechanisms across the lifecycle',
+          'Integrated API Developer Portal: custom portal for discovery, documentation, consumption and collaboration',
+          'API Self-Service: authorized publishers and consumers act without depending entirely on central teams',
+          'API Marketplace: internal teams, partners, developers and consumers discover and consume APIs',
+          'API Product Migration: modernize and migrate existing API products and implementations',
+          'Multi-Cloud API Support: API environments distributed across multiple cloud platforms',
+          'Multi-API Platform Support: centralized visibility and governance across different API management technologies',
+          'Industry API Catalogs and Sandboxes: industry-aligned standards, reusable models and environments for validation',
+          'API Discovery, Tagging and Hierarchies: rich search, structured metadata and enterprise, domain, product and service levels',
+          'Pre-defined standards, frameworks, templates, rules, workflows and CI/CD pipelines for consistent API development',
+          'Design quality checks and structured requirement capture before implementation, with review and approval gates',
+        ],
+      },
+    ],
+
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'API and microservices work,',
+    engagementHeadingHighlight: 'four ways to start.',
+    engagementLede: 'Most conversations begin with an estate nobody can draw, or a platform decision that has to be made this quarter. Both are assessment problems before they are engineering problems.',
+    servicePackages: [
+      {
+        name: 'Integration Landscape Assessment',
+        description: 'What is actually in the estate: every interface, who calls it, what it depends on, and which ones nothing has called in a year. Fixed price, scoped so you can stop after it and keep the output.',
+        deliverables: [
+          'Interface and dependency inventory with real consumer counts',
+          'Duplication analysis: the same capability, implemented more than once',
+          'Coupling and blast-radius map across the estate',
+          'Platform position, license utilization and end-of-life exposure',
+          'Costed roadmap sequenced by what unblocks the most',
+        ],
+      },
+      {
+        name: 'API Strategy & Governance',
+        description: 'The operating model for the estate — who owns a contract, who may change it, and how a standard becomes the path of least resistance rather than a document nobody reads.',
+        deliverables: [
+          'API operating model with ownership and decision rights',
+          'Design standards, style guide and versioning policy',
+          'Domain boundaries agreed across teams before endpoints exist',
+          'Catalog, discovery and developer portal design',
+          'Governance embedded in templates and pipelines, not in a review board',
+        ],
+      },
+      {
+        name: 'Build & Modernization',
+        description: 'The engineering itself: APIs, microservices, access layers over legacy, event pipelines, and migration off middleware that has become the constraint. On whichever platform the assessment pointed at.',
+        deliverables: [
+          'Contract-first API and microservice implementation',
+          'Legacy access layer with a dated decommission plan',
+          'Integration or middleware migration with reconciliation evidence',
+          'Event and streaming pipelines where they earn the complexity',
+          'Cutover with a dual-run period and a rollback position',
+        ],
+      },
+      {
+        name: 'Managed Platform Operations',
+        description: 'Running the estate under a service level, including the parts nobody owns: contract drift, dead endpoints, expiring certificates and the versions consumers never migrated off.',
+        deliverables: [
+          'Gateway, runtime and pipeline administration',
+          'Contract drift detection and consumer migration tracking',
+          'Deprecation execution against published sunset dates',
+          'Latency, error and saturation reporting per API',
+          'Catalog curation, so discovery stays faster than rebuilding',
+        ],
+      },
+    ],
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve API and microservices questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    customFAQs: [
+      {
+        q: 'Do you resell any integration platform?',
+        a: 'No, and in this category it changes what we can recommend.\n\nWe hold no reseller agreement and take no margin on MuleSoft, Azure Integration Services, Boomi, Kong, Apigee or anything else. A recommendation to configure what you already license, or to use native connectors and a small amount of engineering instead of buying middleware at all, costs us the larger engagement and nothing else.\n\nWorth pressing on any firm running your platform selection. Most large integrators hold formal partnership tiers with two or three of the vendors likely to be on your shortlist, with volume commitments attached, while describing the evaluation as unbiased. Both things appear on the same page more often than you would expect.',
+      },
+      {
+        q: 'Do we need a service mesh?',
+        a: 'Below roughly thirty services, almost certainly not.\n\nA mesh gives you mTLS, retries, circuit breaking and traffic shifting without library changes. All four are available in libraries, and at small service counts a library is cheaper to run than a control plane and a sidecar per pod.\n\nThe honest threshold is polyglot scale. When you have enough services in enough languages that keeping those behaviors consistent in libraries has become its own maintenance problem, a mesh starts paying. Before then it adds a component your on-call has to understand during an incident.\n\nWe have talked more clients out of a mesh than into one, and none of them regretted it.',
+      },
+      {
+        q: 'What does moving off our ESB actually involve?',
+        a: 'An inventory first, and the inventory usually changes the plan.\n\nEvery ESB estate we assess contains interfaces nothing calls. Not a few — often a quarter of them. Migrating those is pure cost, and finding them is a week of work against access logs rather than a guess.\n\nWhat remains splits three ways: interfaces that should become APIs with real contracts, interfaces that should become events, and interfaces that exist because two systems were never meant to talk and one of them is being decommissioned anyway.\n\nLifting all of it onto newer middleware reproduces the problem on a platform with a longer support window. The migration is the only moment when retiring things is politically possible, and it is worth spending that moment.',
+      },
+      {
+        q: 'How do we know if our microservices are too small?',
+        a: 'Count how many services have to be changed and released together to ship one business change.\n\nIf the answer is routinely more than two, the boundaries are wrong. You have distributed a monolith, which is worse than the monolith because you now pay for network calls, partial failure and deployment coordination while keeping every coupling you had.\n\nThe second signal is data. If two services read and write the same table, they are one service that has been split for organizational reasons rather than domain ones.\n\nMerging services is unfashionable and frequently correct. We have consolidated estates as often as we have decomposed them.',
+      },
+      {
+        q: 'Should we use REST, GraphQL or gRPC?',
+        a: 'Usually all three, for different jobs, and the mistake is picking one as policy.\n\nREST for public and partner surfaces, because the tooling, caching and documentation ecosystem is unmatched and your consumers already know it. gRPC for service-to-service where latency and payload size matter and both ends are yours. GraphQL where a client genuinely needs to compose across several domains and the alternative is a proliferation of purpose-built endpoints.\n\nGraphQL is the one most often chosen for the wrong reason. It moves complexity from the client to the resolver layer rather than removing it, and it makes rate limiting, caching and cost attribution materially harder. That is a fair trade for a rich client surface and a poor one for an internal call between two services.',
+      },
+      {
+        q: 'How long before we see anything?',
+        a: 'Weeks for the map, a quarter for the first domain, and the sequence matters more than either.\n\nThe assessment produces the interface and dependency inventory in weeks. A meaningful share of engagements stop there, because the finding is duplication and ownership rather than technology, and both are fixable inside the current platform.\n\nWhere build work follows, the first domain end to end takes a quarter. Not because the code takes a quarter, but because agreeing the contract, the ownership and the versioning policy with the teams who will live with them is the actual work.\n\nBe suspicious of anyone quoting a timeline before seeing the dependency map.',
+      },
+      {
+        q: 'What does an API engagement cost?',
+        a: 'The assessment is fixed price and deliberately small. Its job is partly to tell you the rest is not worth doing.\n\nBeyond that, the variable that moves the number most is not service count or interface count. It is how many teams have to agree. A hundred interfaces owned by three teams is a smaller engagement than forty owned by twelve, and no estimate built from interface counts alone will survive contact with the second case.\n\nSo we price the assessment, then price the build against what the map shows. A quote produced before that is a guess with a cover sheet.',
+      },
+      {
+        q: 'How do you stop the same integration being built three times?',
+        a: 'By making discovery faster than rebuilding. There is no other mechanism that works.\n\nCatalogs fail when finding an API takes longer than writing one. That is a search, metadata and documentation problem before it is a governance problem, and mandating reuse without fixing it produces compliance theater and a second catalog nobody updates.\n\nWhat works: a portal where search actually returns the right result, documentation generated from the contract so it cannot drift, a sandbox a developer can call in minutes, and a self-service key. Once those exist, reuse stops needing to be mandated.\n\nThe measure worth tracking is consumers per API, and the count of APIs with none.',
+      },
+      {
+        q: 'How is this different from your enterprise integration platform service?',
+        a: 'This service is accountable for the contracts. That one is accountable for the connections.\n\nIf the question is what an API should expose, who owns it, how it is versioned and how services are bounded, that is here. If the question is how a dozen systems exchange data reliably on a chosen platform, with the platform itself as the deliverable, the integration platform service leads.\n\nThey overlap most on migration work, and on engagements needing both we agree at the start which one holds the plan rather than discovering it in the third month.',
+      },
+      {
+        q: 'What about AI and agents calling our APIs?',
+        a: 'It raises the cost of a badly described API, and lowers the tolerance for an undocumented one.\n\nAn agent selects a tool from its description. Where the description is thin, wrong or inconsistent with behavior, the agent picks wrong confidently — and unlike a human developer it will not read the source to check. Description quality moves from a documentation concern to a correctness one.\n\nThe practical consequences are narrow and worth doing anyway: contracts that state semantics rather than shape, idempotency on anything an agent may retry, rate limits and quotas per consumer identity, and error responses a machine can act on rather than a human can read.\n\nAn estate with good contracts is already most of the way there. An estate without them will find agents expose that faster than any audit would.',
+      },
+      {
+        q: 'Who owns the estate after you leave?',
+        a: 'Your teams, per domain, and if ownership goes back to a central queue the engagement has failed regardless of what got built.\n\nConcretely: a named owner per API, engineers who were in the room when the standards were set rather than handed them, templates and pipelines your teams run without us, and a catalog your own people curate.\n\nThe measure we would use is simple. Six months after handover, can a domain team publish a new version without asking anyone outside the domain. Where the answer is no, the bottleneck moved rather than went.',
+      },
+      {
+        q: 'How do you measure whether it worked?',
+        a: 'Against numbers captured before anything changes, and reported afterwards whether or not they flatter us.\n\nLead time from contract agreed to consumer in production. Consumers per API, and the count of APIs with none, which together say whether reuse is real. The number of services that must be released together to ship one business change. And change failure rate, because an estate that ships faster while breaking more has not improved.\n\nAll four come from your own pipelines and gateway logs, and all four can be pulled again after we leave.',
+      },
+    ],
+
+    // The partnership band is the one section here with nothing service-specific
+    // to say. Every other page that has been rebuilt hides it for the same
+    // reason: it describes how Kangqore engages generally, and the engagement
+    // section above now does that concretely for this service.
+    hidePartnershipModel: true,
+
+    architectureEyebrow: 'ENTERPRISE ARCHITECTURE',
+    architectureTitle: 'Four Layers,',
+    architectureTitleHighlight: 'One Connected Enterprise.',
+    architectureLede: 'Kangqore brings these capabilities together as an integrated enterprise connectivity architecture.',
+    architectureNodes: [
+      {
+        title: 'Enterprise Connectivity',
+        icon: 'Network',
+        description: 'Legacy core, applications, APIs, microservices, data, events, cloud, SaaS, partners and devices joined as one estate rather than as point-to-point pairs. In practice this is where the contracts live: what each system promises, who is entitled to call it, and which calls are synchronous because they have to be rather than because synchronous was the default nobody revisited.',
+      },
+      {
+        title: 'Intelligence',
+        icon: 'Activity',
+        description: 'Context laid over the traffic. The same event stream carries a customer viewing one product twice and a payment retrying three times, and neither means anything until it is linked to what happened around it. Ingestion, change data capture, stream processing, and the schema governance that stops every consumer inventing its own interpretation.',
+      },
+      {
+        title: 'Governance',
+        icon: 'ShieldCheck',
+        description: 'Who may call what, on what terms, and what happens across an API from proposal to retirement. Security, identity, policy, compliance, observability and versioning. This is the layer that decides whether a domain team can publish without asking permission, which is the whole difference between an estate that scales and one that queues.',
+      },
+      {
+        title: 'Execution',
+        icon: 'Zap',
+        description: 'Automation, deployment, monitoring, failure recovery, workflow and self-service: the operational layer that makes the other three repeatable rather than a one-time build. Golden paths, templates and pipelines, so the hundredth service costs roughly what the tenth did instead of what the first did.',
+      },
+    ],
+
+    solutionsCarousel: {
+      eyebrow: 'WHAT KANGQORE DELIVERS',
+      title: 'Six engagements,',
+      titleHighlight: 'and the decision inside each.',
+      subtitle: 'These are the six things enterprises actually call us about. Each one turns on a decision that gets made once and then governs how expensive change is for years, so the decision is the work.',
+      items: [
+        {
+          title: 'Monolith-to-Microservices Migration',
+          desc: 'Cut at the seams that already exist. Measured on how many services must ship together for one business change \u2014 if that number is not falling, it is a distributed monolith and we say so.',
+        },
+        {
+          title: 'API Governance and Standards',
+          desc: 'Domain teams own their contracts and version them without a central queue. Standards land through templates rather than a review board, because a standard slower than ignoring it gets ignored.',
+        },
+        {
+          title: 'ESB and Middleware Migration',
+          desc: 'MuleSoft, Azure, Boomi or Kong \u2014 chosen on your estate, not our margin, because we hold none. About a quarter of a mature ESB estate is called by nothing, and migration is the only moment you can retire it.',
+          href: '/services/enterprise-integration-platform',
+          linkLabel: 'Integration platform',
+        },
+        {
+          title: 'API Gateway Selection',
+          desc: 'Kong, Apigee, AWS, Azure, or the gateway already inside a platform you license. Decided by deployment model and identity, not the feature matrix \u2014 every product answers yes to most rows.',
+        },
+        {
+          title: 'API Security and Rate Limiting',
+          desc: 'Authorization designed into the contract, not bolted onto the gateway. The failures are rarely exotic: no auth because it was internal, a rate limit per IP behind a proxy, a token that grants everything.',
+        },
+        {
+          title: 'Developer Portal and Catalog',
+          desc: 'Find an API, understand it, get a key \u2014 without a ticket. Catalogs fail when finding one takes longer than writing one, so this is a search and sandbox problem before it is a governance problem.',
+        },
+      ],
+    },
+
+    midCta: 'Connect the enterprise. Modernize the core. Expose the capability.',
+    midCtaLabel: 'Talk To Our Experts',
+    closingCta: {
+      title: 'Modernize. Connect.',
+      highlight: 'Govern. Accelerate.',
+      body: 'Move from fragmented systems and tightly coupled integrations toward an architecture where data, services, APIs, events, applications, partners and digital experiences operate as one connected enterprise ecosystem.',
+      proofLabel: 'From first call to a mapped integration landscape',
+    },
     toolsStack: {
       eyebrow: 'THE API & MICROSERVICES FABRIC',
       title: 'The microservices planes,',

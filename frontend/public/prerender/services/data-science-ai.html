@@ -30,6 +30,7 @@
     <h1>Data Science &amp; AI for Decisions You Can Defend</h1>
     <p>Models that survive contact with next quarter, wired into the decision they exist to make, with the confidence attached so a person knows when to overrule them.</p>
     <p>Kangqore builds predictive models that reach production and stay accurate there: forecasting, risk scoring, churn and pricing, monitored per segment.</p>
+    <h2>A notebook result and a production model are different objects.</h2>
     <p>Most data science work fails somewhere between a validated result and a decision anybody makes differently. The model is fine. What is missing is the path from a prediction to an action, the monitoring that says whether it is still right, and a named person who is accountable when it is not.</p>
     <p>So the question we ask first is not what could be predicted, but which decision would change if the prediction existed. A churn model that is accurate but arrives after the renewal date has answered the wrong question precisely. If no decision moves, the work is analysis, and analysis is cheaper done once than productionized.</p>
     <p>Accuracy is also the wrong headline number on its own. Watch it per segment rather than in aggregate: an overall score holds steady for months while the segment you actually care about degrades underneath it, and nobody notices until a person who trusted the output is asked to explain a decision.</p>
@@ -109,19 +110,7 @@
 
     <p>You already have the data. The decision still takes a week.</p>
 
-        <h2>The gap is not modeling. It is everything after it.</h2>
-    <p>Both columns describe competent statistical work. They differ in whether anything downstream of the model was built.</p>
-      <table>
-        <caption>ANALYSIS THAT STOPS AT THE DECK compared with MODELS THAT RUN THE DECISION</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">ANALYSIS THAT STOPS AT THE DECK</th><th scope="col">MODELS THAT RUN THE DECISION</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">What is delivered</th><td>A slide carrying an accuracy score, and a recommendation nobody owns.</td><td>A model behind an endpoint, the decision it feeds, and the person accountable for that decision named.</td></tr>
-          <tr><th scope="row">Whether it survives new data</th><td>Validated once against whatever sample was available, then trusted indefinitely.</td><td>Monitored per segment, because an aggregate score stays flat while one population quietly drifts. <a href="https://kangqore.com/services/analytics">Analytics</a></td></tr>
-          <tr><th scope="row">Who can explain a result</th><td>The analyst who built it, if they still work here.</td><td>Feature contributions ship with the prediction, so the person acting on it can see what drove it. <a href="https://kangqore.com/services/ai-governance">AI Governance</a></td></tr>
-          <tr><th scope="row">Cost of being wrong</th><td>Discovered when somebody finally questions the number, which is usually late.</td><td>Bounded up front: a confidence threshold decides which cases the model answers and which go to a person.</td></tr>
-          <tr><th scope="row">What handover looks like</th><td>A notebook, a CSV, and a conversation you have to remember.</td><td>A repository, a pipeline, tests, and a runbook that someone other than the author can follow. <a href="https://kangqore.com/services/mlops">MLOps</a></td></tr>
-        </tbody>
-      </table>
+    
 
         <h2>Four stages. The last two are where projects die.</h2>
     <p>Feature work and model selection are the visible part and the smaller part. Validation and the monitoring that follows deployment are what decide whether the thing is still correct in six months.</p>

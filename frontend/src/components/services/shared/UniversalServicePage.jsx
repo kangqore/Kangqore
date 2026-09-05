@@ -3111,6 +3111,98 @@ const featureMicros   = service.featureMicros
                     <text x="290" y="419" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.6">what escaped, and which test should have caught it</text>
                   </svg>
                 </div>
+              ) : service.slug === 'api-microservices-engineering' ? (
+                /* ── The connected enterprise, in four layers ──
+                   Replaces the shared agentic default, which put AGENTIC
+                   ORCHESTRATOR, AI COMMANDER and AUTONOMOUS COMMIT above the
+                   fold on an integration page. The diagram is the page's own
+                   architecture section: what is connected, what adds meaning,
+                   what controls it, and what makes it repeatable.
+
+                   The four layers match architectureNodes below exactly.
+
+                   Label floor: this column renders at roughly 509px against a
+                   540-unit viewBox, a 0.94 scale, so a 12-unit label reaches
+                   the screen at 11.3px. Nothing here is under 12. */
+                <div className="flex items-center justify-start sm:justify-center w-full overflow-x-auto sm:overflow-visible lg:-mt-8" role="group" aria-label="Four layers of a connected enterprise: a connectivity layer joining legacy core, applications, APIs, microservices, data, events, cloud, SaaS, partners and devices; an intelligence layer adding relationships, context and decisions; a governance layer covering security, identity, policy, compliance and lifecycle; and an execution layer providing automation, deployment, monitoring, recovery and self-service" tabIndex={0}>
+                <svg viewBox="0 0 540 450" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[95%] min-w-[460px] sm:min-w-0 ml-auto">
+                  <title>The connected enterprise in four layers</title>
+                  <desc>Connectivity joins the legacy core, applications, APIs, microservices, data, events, cloud platforms, SaaS systems, partners and devices into one estate. Intelligence adds relationships, context and decisions on top of that traffic. Governance controls security, identity, policy, compliance, observability and lifecycle across it. Execution supplies the automation, deployment, monitoring, recovery and self-service that make the other three repeatable rather than a one-time build.</desc>
+                  <defs>
+                    <linearGradient id="api-spine" gradientUnits="userSpaceOnUse" x1="26" y1="196" x2="514" y2="196">
+                      <stop offset="0" stopColor="#2564ea" />
+                      <stop offset="1" stopColor="#4ab6d4" />
+                    </linearGradient>
+                    <linearGradient id="api-band" gradientUnits="userSpaceOnUse" x1="0" y1="250" x2="0" y2="420">
+                      <stop offset="0" stopColor="#131d31" />
+                      <stop offset="1" stopColor="#0a0f1a" />
+                    </linearGradient>
+                    <marker id="api-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                      <path d="M0,0 L10,5 L0,10 z" fill="#4ab6d4" />
+                    </marker>
+                  </defs>
+
+                  {/* ── What gets connected ── */}
+                  <text x="26" y="30" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#4ab6d4">THE ESTATE</text>
+                  <g fontFamily="monospace" textAnchor="middle">
+                    <rect x="26"  y="42" width="112" height="32" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.16" />
+                    <text x="82"  y="62" fontSize="12" fill="white" fillOpacity="0.75">LEGACY CORE</text>
+                    <rect x="148" y="42" width="112" height="32" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.16" />
+                    <text x="204" y="62" fontSize="12" fill="white" fillOpacity="0.75">CLOUD &amp; SAAS</text>
+                    <rect x="270" y="42" width="112" height="32" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.16" />
+                    <text x="326" y="62" fontSize="12" fill="white" fillOpacity="0.75">PARTNERS</text>
+                    <rect x="392" y="42" width="122" height="32" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.16" />
+                    <text x="453" y="62" fontSize="12" fill="white" fillOpacity="0.75">DEVICES</text>
+                    <path d="M 82 78 L 258 106"  stroke="#4ab6d4" strokeOpacity="0.4" strokeWidth="1.3" />
+                    <path d="M 204 78 L 264 104" stroke="#4ab6d4" strokeOpacity="0.4" strokeWidth="1.3" />
+                    <path d="M 326 78 L 276 104" stroke="#4ab6d4" strokeOpacity="0.4" strokeWidth="1.3" />
+                    <path d="M 453 78 L 282 106" stroke="#4ab6d4" strokeOpacity="0.4" strokeWidth="1.3" />
+                  </g>
+
+                  {/* ── Layer 1: connectivity ── */}
+                  <rect x="26" y="112" width="488" height="42" rx="9" fill="#0a1220" stroke="#2564ea" strokeOpacity="0.5" />
+                  <text x="270" y="132" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.2" fill="#4ab6d4">CONNECTIVITY</text>
+                  <text x="270" y="147" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="white" fillOpacity="0.55">APIs · microservices · data · events</text>
+
+                  <line x1="270" y1="158" x2="270" y2="186" stroke="url(#api-spine)" strokeWidth="2" markerEnd="url(#api-arrow)" />
+
+                  {/* ── Layers 2-4 ── */}
+                  <g fontFamily="monospace" textAnchor="middle">
+                    <rect x="26"  y="196" width="152" height="58" rx="9" fill="url(#api-band)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="102" y="220" fontSize="12" fontWeight="bold" fill="white" fillOpacity="0.85">INTELLIGENCE</text>
+                    <text x="102" y="238" fontSize="12" fill="white" fillOpacity="0.55">context · decisions</text>
+
+                    <rect x="194" y="196" width="152" height="58" rx="9" fill="url(#api-band)" stroke="#2564ea" strokeOpacity="0.42" />
+                    <text x="270" y="220" fontSize="12" fontWeight="bold" fill="white" fillOpacity="0.85">GOVERNANCE</text>
+                    <text x="270" y="238" fontSize="12" fill="white" fillOpacity="0.55">policy · lifecycle</text>
+
+                    <rect x="362" y="196" width="152" height="58" rx="9" fill="url(#api-band)" stroke="#4ab6d4" strokeOpacity="0.5" />
+                    <text x="438" y="220" fontSize="12" fontWeight="bold" fill="white" fillOpacity="0.85">EXECUTION</text>
+                    <text x="438" y="238" fontSize="12" fill="white" fillOpacity="0.55">automation · recovery</text>
+                  </g>
+
+                  {/* ── The eight offerings ── */}
+                  <text x="26" y="292" fontFamily="monospace" fontSize="12" fontWeight="bold" letterSpacing="1.4" fill="#4ab6d4">EIGHT OFFERINGS</text>
+                  <g fontFamily="monospace" textAnchor="middle" fontSize="12">
+                    <rect x="26"  y="304" width="234" height="30" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.12" />
+                    <text x="143" y="323" fill="white" fillOpacity="0.7">API SPEED LAYER</text>
+                    <rect x="280" y="304" width="234" height="30" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.12" />
+                    <text x="397" y="323" fill="white" fillOpacity="0.7">REAL-TIME DATA</text>
+                    <rect x="26"  y="340" width="234" height="30" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.12" />
+                    <text x="143" y="359" fill="white" fillOpacity="0.7">CLOUD-NATIVE DEV</text>
+                    <rect x="280" y="340" width="234" height="30" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.12" />
+                    <text x="397" y="359" fill="white" fillOpacity="0.7">INTEGRATION MIGRATION</text>
+                    <rect x="26"  y="376" width="234" height="30" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.12" />
+                    <text x="143" y="395" fill="white" fillOpacity="0.7">HYBRID INTEGRATION</text>
+                    <rect x="280" y="376" width="234" height="30" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.12" />
+                    <text x="397" y="395" fill="white" fillOpacity="0.7">B2B &amp; EDI</text>
+                    <rect x="26"  y="412" width="234" height="30" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.12" />
+                    <text x="143" y="431" fill="white" fillOpacity="0.7">CONNECTED MARKETPLACE</text>
+                    <rect x="280" y="412" width="234" height="30" rx="7" fill="#0a1220" stroke="#ffffff" strokeOpacity="0.12" />
+                    <text x="397" y="431" fill="white" fillOpacity="0.7">API MARKETPLACE</text>
+                  </g>
+                </svg>
+                </div>
               ) : service.slug === 'supply-chain' ? (
                 /* ── The engine and what it runs on ──
                    Replaces the shared agentic default, which put AGENTIC
@@ -5893,10 +5985,19 @@ const featureMicros   = service.featureMicros
           </div>
 
           <div className="space-y-0">
-            {((faqs.length > 5 && !isFaqExpanded) ? faqs.slice(0, 5) : faqs).map((faq, i) => {
+            {/* Every question stays mounted; the ones past the fifth are hidden
+                with CSS until Read More. Slicing the array instead meant a
+                crawler that does not click received five questions while the
+                prerender snapshot emitted twelve — the page and the snapshot
+                disagreeing, which reads as cloaking and pushed measured
+                coverage past 100 per cent. Same reason whatIsPara3 and 4 stay
+                in the DOM when collapsed. `hidden` also removes them from the
+                accessibility tree and from tab order. */}
+            {faqs.map((faq, i) => {
               const isOpen = openFaq === i;
+              const isBeyondFold = faqs.length > 5 && !isFaqExpanded && i >= 5;
               return (
-                <div key={i} className={`border-t border-white/[0.06] relative overflow-hidden transition-all duration-500 ${isOpen ? 'rounded-xl my-2' : ''}`}>
+                <div key={i} hidden={isBeyondFold} className={`border-t border-white/[0.06] relative overflow-hidden transition-all duration-500 ${isOpen ? 'rounded-xl my-2' : ''}`}>
                   {/* Active State: Liquid Black Impasto Paint Texture — same as 3D Ecosystem Cockpit */}
                   {isOpen && (
                     <>
