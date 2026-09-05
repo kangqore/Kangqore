@@ -8677,29 +8677,29 @@ export const servicesData = {
       items: [
         {
           title: 'Monolith-to-Microservices Migration',
-          desc: 'Decomposition against how the business changes rather than how the org chart looks this quarter. We start from the seams that already exist — the modules nobody has edited together in two years — and cut there. The measure we hold it to is how many services must be released together to ship one business change. If that number is not falling, the work is producing a distributed monolith, and we say so rather than continue.',
+          desc: 'Cut at the seams that already exist. Measured on how many services must ship together for one business change \u2014 if that number is not falling, it is a distributed monolith and we say so.',
         },
         {
           title: 'API Governance and Standards',
-          desc: 'An operating model where the domain team owns its contracts and versions them without joining a central queue. Standards land through templates and pipelines rather than a review board, because a standard slower than ignoring it gets ignored. Measured on consumers per API and the count of APIs with none — the two numbers that say whether governance produced reuse or paperwork.',
+          desc: 'Domain teams own their contracts and version them without a central queue. Standards land through templates rather than a review board, because a standard slower than ignoring it gets ignored.',
         },
         {
           title: 'ESB and Middleware Migration',
-          desc: 'Off a service bus onto something current — MuleSoft, Azure Integration Services, Boomi or Kong, chosen on your estate rather than on our margin, because we hold none. The inventory comes first and usually changes the plan: roughly a quarter of the interfaces in a mature ESB estate are called by nothing. Migrating those is pure cost, and the migration is the only moment when retiring them is politically possible.',
+          desc: 'MuleSoft, Azure, Boomi or Kong \u2014 chosen on your estate, not our margin, because we hold none. About a quarter of a mature ESB estate is called by nothing, and migration is the only moment you can retire it.',
           href: '/services/enterprise-integration-platform',
           linkLabel: 'Integration platform',
         },
         {
           title: 'API Gateway Selection',
-          desc: 'Kong, Apigee, AWS API Gateway, Azure API Management, and the gateway already sitting inside a platform you license. Selection is usually decided by deployment model and identity integration rather than by the feature matrix, because every product answers yes to most rows. We document why the runner-up lost, which is worth more than the decision itself eighteen months later when somebody asks.',
+          desc: 'Kong, Apigee, AWS, Azure, or the gateway already inside a platform you license. Decided by deployment model and identity, not the feature matrix \u2014 every product answers yes to most rows.',
         },
         {
           title: 'API Security and Rate Limiting',
-          desc: 'Authentication, authorization, quota and abuse protection designed into the contract rather than bolted onto the gateway afterwards. The failures we find are rarely exotic: an internal API with no authorization because it was never meant to leave the network, a rate limit applied per IP behind a proxy that makes every caller look like one, and a token that grants everything because scoping was left until later.',
+          desc: 'Authorization designed into the contract, not bolted onto the gateway. The failures are rarely exotic: no auth because it was internal, a rate limit per IP behind a proxy, a token that grants everything.',
         },
         {
           title: 'Developer Portal and Catalog',
-          desc: 'Where an internal or partner engineer finds an API, understands it, and gets a key without opening a ticket. Catalogs fail when finding an API takes longer than writing one, which makes this a search, documentation and sandbox problem before it is a governance problem. Once discovery is genuinely faster than rebuilding, reuse stops needing to be mandated.',
+          desc: 'Find an API, understand it, get a key \u2014 without a ticket. Catalogs fail when finding one takes longer than writing one, so this is a search and sandbox problem before it is a governance problem.',
         },
       ],
     },
