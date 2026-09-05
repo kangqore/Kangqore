@@ -134,19 +134,7 @@
 
     <p>Your next model ships on rails.</p>
 
-        <h2>Notebook to production, and the gap in between.</h2>
-    <p>Most teams can train a model. The difficulty is everything after: proving which data and code produced the version now serving traffic, noticing when it stops being right, and retraining without a person remembering to. An ad hoc path does each of those once, by hand. A platform does them every time, for every model.</p>
-      <table>
-        <caption>AD HOC ML DELIVERY compared with GOVERNED MLOPS PLATFORM</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">AD HOC ML DELIVERY</th><th scope="col">GOVERNED MLOPS PLATFORM</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">Reproducibility</th><td>A model is a file on a laptop or in object storage. The notebook that produced it has moved on, and nobody can rebuild the exact version currently serving traffic.</td><td>Every model in a registry with the dataset version, code commit, parameters, and metrics that produced it — so any deployed version can be rebuilt or explained months later.</td></tr>
-          <tr><th scope="row">Promotion</th><td>A person decides the model looks good enough and copies it to production. The threshold lives in their head, and it moves with the deadline.</td><td>Promotion gates are statistical thresholds against a holdout set, evaluated automatically. A model that scores below the gate does not progress, and the record of why is kept.</td></tr>
-          <tr><th scope="row">Features</th><td>Features are engineered once for training and reimplemented in application code for inference. The two drift apart, and the model degrades for reasons no dashboard attributes correctly.</td><td>One definition serves both paths, with point-in-time correctness for training labels — so training-serving skew is designed out rather than debugged after it costs accuracy.</td></tr>
-          <tr><th scope="row">Monitoring</th><td>Monitoring watches latency and error rates. A model that returns a confident wrong answer in ten milliseconds passes every check.</td><td>Input, prediction, and performance drift are tracked separately, because they fail at different times. Thresholds trigger retraining, rollback, or a review with a named owner.</td></tr>
-          <tr><th scope="row">Retraining</th><td>Retraining happens when someone notices a complaint. The gap between decay and detection is measured in quarters.</td><td>Retraining runs on a schedule or a drift trigger, through the same gates as the original release — so the fix cannot bypass the checks the first version had to pass.</td></tr>
-        </tbody>
-      </table>
+    
 
         <h2>The path from notebook to something on call.</h2>
     

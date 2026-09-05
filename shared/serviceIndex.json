@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-04T17:09:34.478Z",
+  "generatedAt": "2026-09-05T08:29:12.749Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1331,7 +1331,20 @@
         "Kangqore Connected Marketplace",
         "Kangqore API Marketplace Platform"
       ],
-      "faqs": [],
+      "faqs": [
+        {
+          "q": "Do you resell any integration platform?",
+          "a": "No, and in this category it changes what we can recommend. We hold no reseller agreement and take no margin on MuleSoft, Azure Integration Services, Boomi, Kong, Apigee or anything else. A recommendation to configure what you already license, or to use native connectors and a small amount of engineering instead of buying middleware at all, costs us the larger engagement and nothing else. Worth pressing on any firm running your platform selection. Most large integrators hold formal partnership tiers with two or three of the vendors likely to be on your shortlist, with volume commitments attached, while describing the evaluation as unbiased. Both things appear on the same page more often than you would expect."
+        },
+        {
+          "q": "Do we need a service mesh?",
+          "a": "Below roughly thirty services, almost certainly not. A mesh gives you mTLS, retries, circuit breaking and traffic shifting without library changes. All four are available in libraries, and at small service counts a library is cheaper to run than a control plane and a sidecar per pod. The honest threshold is polyglot scale. When you have enough services in enough languages that keeping those behaviors consistent in libraries has become its own maintenance problem, a mesh starts paying. Before then it adds a component your on-call has to understand during an incident. We have talked more clients out of a mesh than into one, and none of them regretted it."
+        },
+        {
+          "q": "What does moving off our ESB actually involve?",
+          "a": "An inventory first, and the inventory usually changes the plan. Every ESB estate we assess contains interfaces nothing calls. Not a few — often a quarter of them. Migrating those is pure cost, and finding them is a week of work against access logs rather than a guess. What remains splits three ways: interfaces that should become APIs with real contracts, interfaces that should become events, and interfaces that exist because two systems were never meant to talk and one of them is being decommissioned anyway. Lifting all of it onto newer middleware reproduces the problem on a platform with a longer support window. The migration is the only moment when retiring things is politically possible, and it is worth spending that moment."
+        }
+      ],
       "method": [
         {
           "rule": "API Gateway & Traffic Routing",

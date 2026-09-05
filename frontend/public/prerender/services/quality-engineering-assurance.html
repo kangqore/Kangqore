@@ -525,21 +525,7 @@
 
     <p>The suite is green. The question is whether anybody believes it.</p>
 
-        <h2>Both suites are green.</h2>
-    <p>Neither column describes a team that does not test. They differ in whether anybody still changes their behavior when the build turns red.</p>
-      <table>
-        <caption>TESTS AS A DELIVERABLE compared with THE SUITE AS A PRODUCT</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">TESTS AS A DELIVERABLE</th><th scope="col">THE SUITE AS A PRODUCT</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">When the build goes red</th><td>Someone presses retry. It passes second time, the change merges, and nothing anywhere records that it happened.</td><td>Every failure is classified as real or flaky inside the run. Flake rate is a tracked number with an owner and a target, so a retry becomes data rather than a reflex.</td></tr>
-          <tr><th scope="row">What the coverage number measures</th><td>A line-coverage percentage on a dashboard, reached by tests that execute the code without asserting anything meaningful about it.</td><td>Coverage argued path by path against risk, with mutation testing used to check whether the tests would notice a defect at all. What is left uncovered is written down.</td></tr>
-          <tr><th scope="row">How long from commit to a verdict</th><td>A suite that grew to forty minutes one test at a time, so engineers batch their changes and stop running it before merging.</td><td>Runtime treated as a delivery constraint with a ceiling: parallelized, sharded, change-selected, and pruned of tests that were never load-bearing.</td></tr>
-          <tr><th scope="row">Who owns the test code</th><td>A separate team, or nobody. It is outside code review, it has no standards, and it is the first thing dropped when a date moves.</td><td>Owned by the team that owns the service, reviewed like production code, with a maintenance budget defended in planning rather than borrowed from it.</td></tr>
-          <tr><th scope="row">What the release gate blocks on</th><td>Everything, so it gets overridden most weeks, and within two quarters the override is the process.</td><td>A short list of failures worth stopping a release for, agreed in advance, with a named approver for exceptions and every override recorded. <a href="https://kangqore.com/services/devops-as-a-service">Pipeline engineering</a></td></tr>
-          <tr><th scope="row">A test that has been failing for three weeks</th><td>Muted, with a ticket nobody will pick up. The coverage number does not move, so nothing signals what was lost.</td><td>Quarantined with an expiry date. Fixed, rewritten or deleted before that date, and the gap it leaves stays visible on the risk register until then.</td></tr>
-          <tr><th scope="row">A feature whose output changes every run</th><td>Checked by hand before release, then not at all, because no equality assertion could be written for it.</td><td>An evaluation set built from real traffic, thresholds in place of equality, and a scored regression run on every prompt, model or retrieval change. <a href="https://kangqore.com/services/mlops">Model operations</a></td></tr>
-        </tbody>
-      </table>
+    
 
         <h2>How It Works. Scope to Learn.</h2>
     <p>Five stages, and the one that decides the outcome is the last. Most programs are resourced through Run and never close the loop between what reached production and which test should have caught it.</p>

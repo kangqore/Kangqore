@@ -217,7 +217,13 @@ ${(a.items || []).map((it) => { const { name, desc } = splitItem(it); return `  
   // honor it too. Emitting it here regardless would describe a section the
   // visitor never sees — the same page-versus-snapshot mismatch that put stale
   // content in front of crawlers on two other services.
-  const comparison = svc.comparisonTable && !svc.hideComparison
+  // The comparison band was removed from the template for all 62 services in
+  // 24e61e5b, but this emitter was left in place — so any service still
+  // carrying comparisonTable data published a table to crawlers that no
+  // visitor could see. Held at '' rather than deleted: the data and this
+  // emitter are both intact, so restoring the section is a one-line change.
+  const COMPARISON_SECTION_IN_TEMPLATE = false;
+  const comparison = COMPARISON_SECTION_IN_TEMPLATE && svc.comparisonTable && !svc.hideComparison
     ? `    <h2>${esc(svc.comparisonTable.heading || 'How this differs')}</h2>
     ${svc.comparisonTable.lede ? `<p>${esc(svc.comparisonTable.lede)}</p>` : ''}
       <table>

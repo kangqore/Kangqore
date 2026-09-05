@@ -179,20 +179,7 @@
 
     <p>The job ran green. The data is still wrong.</p>
 
-        <h2>The platform is easy to build
-and hard to keep.</h2>
-    <p>Both columns describe a working data platform. They differ in what happens on the day something upstream changes.</p>
-      <table>
-        <caption>A PLATFORM THAT RUNS compared with A PLATFORM YOU CAN RELY ON</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">A PLATFORM THAT RUNS</th><th scope="col">A PLATFORM YOU CAN RELY ON</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">When a source changes shape</th><td>The job succeeds and writes the wrong thing. Somebody notices weeks later.</td><td>A contract test fails at ingest, the pipeline stops, and the team that owns the source is told.</td></tr>
-          <tr><th scope="row">When a table doubles</th><td>Queries get slower until someone adds a bigger cluster.</td><td>Partitioning and file layout designed for the access pattern, so cost per query stays flat.</td></tr>
-          <tr><th scope="row">What the platform costs</th><td>One cloud bill nobody can attribute, growing faster than usage.</td><td>Cost per workload and per team, visible before the invoice rather than after it.</td></tr>
-          <tr><th scope="row">How anyone knows it worked</th><td>The orchestrator says green. Whether the data is right is a separate question nobody asks.</td><td>Freshness, volume and quality checked as part of the run, with an alert somebody owns. <a href="https://kangqore.com/services/analytics">Analytics</a></td></tr>
-          <tr><th scope="row">Whether teams can self-serve</th><td>Every new dataset is a ticket to the platform team, who are the bottleneck by design.</td><td>Platform as a product: paved paths, standards and templates, so teams ship without asking.</td></tr>
-        </tbody>
-      </table>
+    
 
         <h2>Four layers, and the one that decides your bill.</h2>
     <p>Ingest, store, process, serve. Most cost and most pain concentrate in the second layer, which is also the one hardest to change once data is written into it.</p>

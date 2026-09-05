@@ -120,19 +120,7 @@
 
     <p>Your next workflow runs itself.</p>
 
-        <h2>How this differs</h2>
     
-      <table>
-        <caption>Before compared with After</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">Discovery</th><td>Engineers read subsystems one at a time, and the business rules stay in the heads of whoever has been there longest.</td><td>Static analysis covers the whole estate at once — producing a dependency graph, and recovering the embedded business rules as a written artifact that outlives staff turnover.</td></tr>
-          <tr><th scope="row">Planning</th><td>A static migration playbook, drafted from partial discovery and defended as reality diverges from it.</td><td>A blueprint that is regenerated as each subsystem is understood, alongside architecture maps and runbooks derived from the source rather than drawn once and left to drift.</td></tr>
-          <tr><th scope="row">Transformation</th><td>Refactoring and language migration written by hand, module by module, at whatever pace headcount allows.</td><td>Agents execute the transformation and cross-language conversion against the recovered specification, leaving engineers reviewing diffs rather than authoring them.</td></tr>
-          <tr><th scope="row">Validation</th><td>Test coverage is written after the fact — slow, partial, and highest-risk exactly where the code is oldest.</td><td>Characterization tests are generated against legacy behavior before anything changes, so each cutover is proven equivalent rather than assumed correct.</td></tr>
-          <tr><th scope="row">Governance</th><td>Progress is reported in status decks; when something breaks, the reasoning behind the change is gone.</td><td>Every autonomous action runs inside declared policy limits and lands in an immutable audit trail, with named human sign-off at each gate.</td></tr>
-        </tbody>
-      </table>
 
         <h2>How it works</h2>
     

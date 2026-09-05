@@ -169,20 +169,7 @@
 
     <p>The pilot ran beautifully. Year two is the one to plan for.</p>
 
-        <h2>RPA Implementation vs. RPA Estate Operations.</h2>
-    <p>Neither column describes bad engineering. They differ in what happens the first time somebody else ships a release you were not told about.</p>
-      <table>
-        <caption>BOTS AS DELIVERABLES compared with BOTS AS OPERATED SOFTWARE</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">BOTS AS DELIVERABLES</th><th scope="col">BOTS AS OPERATED SOFTWARE</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">When the vendor ships an update</th><td>A selector stops matching. The run fails, or worse completes against the wrong field, and somebody notices from the numbers a week later.</td><td>Resilient locators where the application permits them, a tracked vendor release calendar, and regression tests that run against the new build before the bot does.</td></tr>
-          <tr><th scope="row">How you know a run went wrong</th><td>The orchestrator reports success because the script reached the end. Nothing checked what was actually written.</td><td>Verification at the output: the record exists, the total reconciles, the file has the expected row count. A green run that wrote nothing raises an alert.</td></tr>
-          <tr><th scope="row">Who the bot signs in as</th><td>A developer’s account, or a shared service account with a password in a config file and permissions nobody has reviewed since it was built.</td><td>A named bot identity with least-privilege access, credentials in a vault, and every action attributable to that identity in your audit trail.</td></tr>
-          <tr><th scope="row">What the licensed runtime costs</th><td>Unattended licenses bought per bot, most of them idle overnight and at weekends, with no attribution of runtime cost to the process it serves.</td><td>Queues and schedules packed so the runtime you pay for is executing, with cost per process reported and license count matched to real concurrency.</td></tr>
-          <tr><th scope="row">When the person who built it leaves</th><td>No design document, no naming convention, no reusable components. The bot runs until it does not, and then it is rebuilt from scratch.</td><td>Built to a documented standard from a shared component library, with a runbook covering the failure modes we actually hit during delivery.</td></tr>
-          <tr><th scope="row">What happens when an API finally ships</th><td>The bot stays, because retiring it is nobody’s objective and it still technically works.</td><td>The bot is retired and replaced with the integration. We would rather remove our own work than bill you to maintain something the platform now does properly.</td></tr>
-        </tbody>
-      </table>
+    
 
         <h2>How It Works. Qualify to Maintain.</h2>
     <p>Five stages, and the one that decides the outcome is the last. Most RPA programs are resourced through Deploy and then surprised by what Maintain costs.</p>

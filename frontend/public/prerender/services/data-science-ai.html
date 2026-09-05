@@ -110,19 +110,7 @@
 
     <p>You already have the data. The decision still takes a week.</p>
 
-        <h2>The gap is not modeling. It is everything after it.</h2>
-    <p>Both columns describe competent statistical work. They differ in whether anything downstream of the model was built.</p>
-      <table>
-        <caption>ANALYSIS THAT STOPS AT THE DECK compared with MODELS THAT RUN THE DECISION</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">ANALYSIS THAT STOPS AT THE DECK</th><th scope="col">MODELS THAT RUN THE DECISION</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">What is delivered</th><td>A slide carrying an accuracy score, and a recommendation nobody owns.</td><td>A model behind an endpoint, the decision it feeds, and the person accountable for that decision named.</td></tr>
-          <tr><th scope="row">Whether it survives new data</th><td>Validated once against whatever sample was available, then trusted indefinitely.</td><td>Monitored per segment, because an aggregate score stays flat while one population quietly drifts. <a href="https://kangqore.com/services/analytics">Analytics</a></td></tr>
-          <tr><th scope="row">Who can explain a result</th><td>The analyst who built it, if they still work here.</td><td>Feature contributions ship with the prediction, so the person acting on it can see what drove it. <a href="https://kangqore.com/services/ai-governance">AI Governance</a></td></tr>
-          <tr><th scope="row">Cost of being wrong</th><td>Discovered when somebody finally questions the number, which is usually late.</td><td>Bounded up front: a confidence threshold decides which cases the model answers and which go to a person.</td></tr>
-          <tr><th scope="row">What handover looks like</th><td>A notebook, a CSV, and a conversation you have to remember.</td><td>A repository, a pipeline, tests, and a runbook that someone other than the author can follow. <a href="https://kangqore.com/services/mlops">MLOps</a></td></tr>
-        </tbody>
-      </table>
+    
 
         <h2>Four stages. The last two are where projects die.</h2>
     <p>Feature work and model selection are the visible part and the smaller part. Validation and the monitoring that follows deployment are what decide whether the thing is still correct in six months.</p>

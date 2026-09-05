@@ -179,20 +179,7 @@
 
     <p>Passing the audit and being secure are not the same claim.</p>
 
-        <h2>Security Tooling vs. Governed Security Operations.</h2>
-    <p>Neither column is short on tools. They differ in whether a control is enforced, owned and provable, or just switched on and left running.</p>
-      <table>
-        <caption>CONTROLS DEPLOYED compared with CONTROLS GOVERNED</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">CONTROLS DEPLOYED</th><th scope="col">CONTROLS GOVERNED</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">When an alert fires at 2am</th><td>It sits in a queue with several thousand others, ranked by default severity, until someone opens the console the next morning.</td><td>It is triaged against a runbook within an agreed window, by a named owner, with escalation defined before the alert ever fires.</td></tr>
-          <tr><th scope="row">What an auditor asks for</th><td>Screenshots and a spreadsheet assembled the week the audit is scheduled, reconstructed from memory of what the control was supposed to do.</td><td>Continuous evidence tied to the control itself, exportable on request, current because it was never allowed to go stale.</td></tr>
-          <tr><th scope="row">Who has access to what</th><td>Access accumulated by request over several years. Nobody has reviewed the list, and nobody is confident removing anything from it.</td><td>Access mapped to role and least privilege, recertified on a schedule, with owners who can explain why each grant still exists.</td></tr>
-          <tr><th scope="row">When a new SaaS application appears</th><td>Discovered during the next audit, or after an incident, whichever comes first — procured by a team that never involved security.</td><td>Discovered and risk-scored close to when it was provisioned, with a lightweight review that does not block the business.</td></tr>
-          <tr><th scope="row">What the vulnerability scan produces</th><td>A report with several thousand findings ranked by CVSS score, most of them unreachable, none of them prioritized by what actually matters.</td><td>A short list ranked by exploitability and business impact — what an attacker could actually reach and what it would actually cost.</td></tr>
-          <tr><th scope="row">What happens when the person who built it leaves</th><td>No architecture document, no runbook, no successor who understands why a rule exists. The control erodes quietly until something breaks.</td><td>Built to a documented standard with an owner and a runbook, so the control outlives the person who configured it.</td></tr>
-        </tbody>
-      </table>
+    
 
         <h2>How It Works. Assess to Govern.</h2>
     <p>Five stages, and most security programs are resourced through Implement and then surprised by what Govern costs. A control that is not owned, reviewed and evidenced decays back into risk within a year.</p>

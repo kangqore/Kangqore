@@ -8253,6 +8253,130 @@ export const servicesData = {
 
     hideOutcomeCards: true,
 
+    conciergeHeading: 'Ask about the estate before the architecture.',
+    conciergeIntro: 'eQORE answers the questions that come up before a proposal exists — which pattern fits, what a migration actually costs, and where an integration platform stops being worth it.',
+    conciergeChips: [
+      'How do we choose between REST, GraphQL and gRPC?',
+      'What does moving off our ESB actually involve?',
+      'Do we need a service mesh, or is that premature?',
+      'How do we stop the same integration being built three times?',
+      'Book an integration landscape assessment',
+    ],
+
+    comparisonTable: {
+      eyebrow: 'WHERE INTEGRATION ESTATES GO WRONG',
+      heading: 'Point-to-point and ESB, against API-led and event-driven.',
+      lede: 'Not a technology argument. Every row below is a decision that gets made once, quietly, and then governs how expensive change is for the next decade.',
+      beforeLabel: 'Point-to-point and ESB',
+      afterLabel: 'API-led and event-driven',
+      afterBadge: 'Kangqore',
+      beforeShort: 'Central team, tight coupling',
+      afterShort: 'Domain ownership, contracts',
+      rows: [
+        {
+          dimension: 'Who builds a new interface',
+          before: 'A central integration team, on their backlog, in their release train. The requesting team waits, and the wait is invisible in every project plan that assumed it would not.',
+          after: 'The domain team that owns the data, against a published contract and a style guide. The central team owns the standards and the platform, not the queue.',
+        },
+        {
+          dimension: 'What happens when a consumer needs a change',
+          before: 'The provider changes the interface and everything downstream is retested, because there is no contract distinguishing what was promised from what was implemented.',
+          after: 'The contract is versioned, the old version has a sunset date, and consumer-driven tests fail in the provider pipeline before anything reaches production.',
+        },
+        {
+          dimension: 'Finding whether the capability already exists',
+          before: 'Nobody knows, so it gets built again. Most estates we assess have the same customer lookup implemented three or four times, each with slightly different behavior.',
+          after: 'A catalog and developer portal where discovery is faster than rebuilding, which is the only condition under which reuse actually happens.',
+        },
+        {
+          dimension: 'Exposure of the legacy core',
+          before: 'Consumers query the system of record directly, so its load profile is set by whoever wrote the newest mobile screen, and it cannot be replaced without touching all of them.',
+          after: 'An access layer with read models and caching absorbs the load, and the core can be replaced behind it on a schedule you choose rather than one an outage chooses.',
+        },
+        {
+          dimension: 'When the platform reaches end of life',
+          before: 'A wholesale migration is scoped, costed and deferred, because every interface was written against the platform rather than against a contract.',
+          after: 'Interfaces are portable because the contract is the artifact. Migration becomes a runtime decision rather than a rewrite of the estate.',
+        },
+        {
+          dimension: 'What governance means in practice',
+          before: 'A review board that approves designs after they are built, and a standards document nobody reads because following it is slower than not.',
+          after: 'Templates and pipelines that make the standard the path of least resistance, with design review before development rather than after it.',
+        },
+      ],
+    },
+
+    industryHeading: 'Integration work grounded in',
+    industryHeadingHighlight: 'your regulatory reality.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Open banking made the API the regulated surface, so design quality and evidence are compliance concerns rather than engineering preferences.',
+        items: [
+          'Open banking and PSD2-aligned API exposure',
+          'BIAN-aligned domain and service modeling',
+          'Payment and core banking access layers',
+          'Consent, entitlement and strong authentication in the contract',
+          'Audit evidence attached to every published version',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Interoperability is legislated, and the standard is specified — which makes the work integration engineering rather than integration invention.',
+        items: [
+          'FHIR resource and profile implementation',
+          'HL7 to FHIR migration and coexistence',
+          'Patient consent and access control at the API boundary',
+          'PHI handling, minimization and audit logging',
+          'Clinical system access layers over packaged applications',
+        ],
+      },
+      {
+        industry: 'Retail & Consumer',
+        headline: 'The estate is judged on a single number — whether the item shown as available actually is — and that number is an integration outcome.',
+        items: [
+          'Order management and available-to-promise logic',
+          'Inventory and pricing exposure across channels',
+          'Marketplace and partner catalog integration',
+          'Event-driven stock and fulfilment updates',
+          'Peak-season load absorbed away from the core',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Operational technology and enterprise IT were never designed to meet, and the join is where most industrial data programs stall.',
+        items: [
+          'IIoT and shop-floor telemetry ingestion',
+          'OT to IT integration with a controlled boundary',
+          'Supplier and logistics B2B connectivity',
+          'Edge to cloud event pipelines',
+          'Plant system access without exposing control networks',
+        ],
+      },
+      {
+        industry: 'Telecommunications & Media',
+        headline: 'The catalog is the product, and TM Forum exists because everyone solved the same modeling problem differently and then had to interoperate anyway.',
+        items: [
+          'TM Forum Open API implementation',
+          'Product and service catalog exposure',
+          'Partner and wholesale API channels',
+          'Order orchestration across network and IT systems',
+          'High-volume event and usage streams',
+        ],
+      },
+      {
+        industry: 'Public Sector',
+        headline: 'Procurement outlives every vendor on the estate, so portability and open standards are commercial requirements rather than architectural taste.',
+        items: [
+          'Open standards and published API specifications',
+          'Cross-agency data sharing with consent controls',
+            'Legacy access layers over long-lived systems',
+          'Accessibility and transparency in developer portals',
+          'Exit and portability terms designed in from the start',
+        ],
+      },
+    ],
+
     capabilitiesLabel: 'API & MICROSERVICES CAPABILITIES',
     capabilitiesSectionTitle: 'Our API & Microservices',
     capabilitiesSectionHighlight: 'Capabilities.',
@@ -8401,6 +8525,118 @@ export const servicesData = {
         ],
       },
     ],
+
+    engagementEyebrow: 'HOW WE ENGAGE',
+    engagementHeading: 'API and microservices work,',
+    engagementHeadingHighlight: 'four ways to start.',
+    engagementLede: 'Most conversations begin with an estate nobody can draw, or a platform decision that has to be made this quarter. Both are assessment problems before they are engineering problems.',
+    servicePackages: [
+      {
+        name: 'Integration Landscape Assessment',
+        description: 'What is actually in the estate: every interface, who calls it, what it depends on, and which ones nothing has called in a year. Fixed price, scoped so you can stop after it and keep the output.',
+        deliverables: [
+          'Interface and dependency inventory with real consumer counts',
+          'Duplication analysis: the same capability, implemented more than once',
+          'Coupling and blast-radius map across the estate',
+          'Platform position, license utilization and end-of-life exposure',
+          'Costed roadmap sequenced by what unblocks the most',
+        ],
+      },
+      {
+        name: 'API Strategy & Governance',
+        description: 'The operating model for the estate — who owns a contract, who may change it, and how a standard becomes the path of least resistance rather than a document nobody reads.',
+        deliverables: [
+          'API operating model with ownership and decision rights',
+          'Design standards, style guide and versioning policy',
+          'Domain boundaries agreed across teams before endpoints exist',
+          'Catalog, discovery and developer portal design',
+          'Governance embedded in templates and pipelines, not in a review board',
+        ],
+      },
+      {
+        name: 'Build & Modernization',
+        description: 'The engineering itself: APIs, microservices, access layers over legacy, event pipelines, and migration off middleware that has become the constraint. On whichever platform the assessment pointed at.',
+        deliverables: [
+          'Contract-first API and microservice implementation',
+          'Legacy access layer with a dated decommission plan',
+          'Integration or middleware migration with reconciliation evidence',
+          'Event and streaming pipelines where they earn the complexity',
+          'Cutover with a dual-run period and a rollback position',
+        ],
+      },
+      {
+        name: 'Managed Platform Operations',
+        description: 'Running the estate under a service level, including the parts nobody owns: contract drift, dead endpoints, expiring certificates and the versions consumers never migrated off.',
+        deliverables: [
+          'Gateway, runtime and pipeline administration',
+          'Contract drift detection and consumer migration tracking',
+          'Deprecation execution against published sunset dates',
+          'Latency, error and saturation reporting per API',
+          'Catalog curation, so discovery stays faster than rebuilding',
+        ],
+      },
+    ],
+
+    faqEyebrow: 'ASKED ON THE FIRST CALL',
+    faqHeading: 'Twelve API and microservices questions,',
+    faqHeadingHighlight: 'answered without hedging.',
+
+    customFAQs: [
+      {
+        q: 'Do you resell any integration platform?',
+        a: 'No, and in this category it changes what we can recommend.\n\nWe hold no reseller agreement and take no margin on MuleSoft, Azure Integration Services, Boomi, Kong, Apigee or anything else. A recommendation to configure what you already license, or to use native connectors and a small amount of engineering instead of buying middleware at all, costs us the larger engagement and nothing else.\n\nWorth pressing on any firm running your platform selection. Most large integrators hold formal partnership tiers with two or three of the vendors likely to be on your shortlist, with volume commitments attached, while describing the evaluation as unbiased. Both things appear on the same page more often than you would expect.',
+      },
+      {
+        q: 'Do we need a service mesh?',
+        a: 'Below roughly thirty services, almost certainly not.\n\nA mesh gives you mTLS, retries, circuit breaking and traffic shifting without library changes. All four are available in libraries, and at small service counts a library is cheaper to run than a control plane and a sidecar per pod.\n\nThe honest threshold is polyglot scale. When you have enough services in enough languages that keeping those behaviors consistent in libraries has become its own maintenance problem, a mesh starts paying. Before then it adds a component your on-call has to understand during an incident.\n\nWe have talked more clients out of a mesh than into one, and none of them regretted it.',
+      },
+      {
+        q: 'What does moving off our ESB actually involve?',
+        a: 'An inventory first, and the inventory usually changes the plan.\n\nEvery ESB estate we assess contains interfaces nothing calls. Not a few — often a quarter of them. Migrating those is pure cost, and finding them is a week of work against access logs rather than a guess.\n\nWhat remains splits three ways: interfaces that should become APIs with real contracts, interfaces that should become events, and interfaces that exist because two systems were never meant to talk and one of them is being decommissioned anyway.\n\nLifting all of it onto newer middleware reproduces the problem on a platform with a longer support window. The migration is the only moment when retiring things is politically possible, and it is worth spending that moment.',
+      },
+      {
+        q: 'How do we know if our microservices are too small?',
+        a: 'Count how many services have to be changed and released together to ship one business change.\n\nIf the answer is routinely more than two, the boundaries are wrong. You have distributed a monolith, which is worse than the monolith because you now pay for network calls, partial failure and deployment coordination while keeping every coupling you had.\n\nThe second signal is data. If two services read and write the same table, they are one service that has been split for organizational reasons rather than domain ones.\n\nMerging services is unfashionable and frequently correct. We have consolidated estates as often as we have decomposed them.',
+      },
+      {
+        q: 'Should we use REST, GraphQL or gRPC?',
+        a: 'Usually all three, for different jobs, and the mistake is picking one as policy.\n\nREST for public and partner surfaces, because the tooling, caching and documentation ecosystem is unmatched and your consumers already know it. gRPC for service-to-service where latency and payload size matter and both ends are yours. GraphQL where a client genuinely needs to compose across several domains and the alternative is a proliferation of purpose-built endpoints.\n\nGraphQL is the one most often chosen for the wrong reason. It moves complexity from the client to the resolver layer rather than removing it, and it makes rate limiting, caching and cost attribution materially harder. That is a fair trade for a rich client surface and a poor one for an internal call between two services.',
+      },
+      {
+        q: 'How long before we see anything?',
+        a: 'Weeks for the map, a quarter for the first domain, and the sequence matters more than either.\n\nThe assessment produces the interface and dependency inventory in weeks. A meaningful share of engagements stop there, because the finding is duplication and ownership rather than technology, and both are fixable inside the current platform.\n\nWhere build work follows, the first domain end to end takes a quarter. Not because the code takes a quarter, but because agreeing the contract, the ownership and the versioning policy with the teams who will live with them is the actual work.\n\nBe suspicious of anyone quoting a timeline before seeing the dependency map.',
+      },
+      {
+        q: 'What does an API engagement cost?',
+        a: 'The assessment is fixed price and deliberately small. Its job is partly to tell you the rest is not worth doing.\n\nBeyond that, the variable that moves the number most is not service count or interface count. It is how many teams have to agree. A hundred interfaces owned by three teams is a smaller engagement than forty owned by twelve, and no estimate built from interface counts alone will survive contact with the second case.\n\nSo we price the assessment, then price the build against what the map shows. A quote produced before that is a guess with a cover sheet.',
+      },
+      {
+        q: 'How do you stop the same integration being built three times?',
+        a: 'By making discovery faster than rebuilding. There is no other mechanism that works.\n\nCatalogs fail when finding an API takes longer than writing one. That is a search, metadata and documentation problem before it is a governance problem, and mandating reuse without fixing it produces compliance theater and a second catalog nobody updates.\n\nWhat works: a portal where search actually returns the right result, documentation generated from the contract so it cannot drift, a sandbox a developer can call in minutes, and a self-service key. Once those exist, reuse stops needing to be mandated.\n\nThe measure worth tracking is consumers per API, and the count of APIs with none.',
+      },
+      {
+        q: 'How is this different from your enterprise integration platform service?',
+        a: 'This service is accountable for the contracts. That one is accountable for the connections.\n\nIf the question is what an API should expose, who owns it, how it is versioned and how services are bounded, that is here. If the question is how a dozen systems exchange data reliably on a chosen platform, with the platform itself as the deliverable, the integration platform service leads.\n\nThey overlap most on migration work, and on engagements needing both we agree at the start which one holds the plan rather than discovering it in the third month.',
+      },
+      {
+        q: 'What about AI and agents calling our APIs?',
+        a: 'It raises the cost of a badly described API, and lowers the tolerance for an undocumented one.\n\nAn agent selects a tool from its description. Where the description is thin, wrong or inconsistent with behavior, the agent picks wrong confidently — and unlike a human developer it will not read the source to check. Description quality moves from a documentation concern to a correctness one.\n\nThe practical consequences are narrow and worth doing anyway: contracts that state semantics rather than shape, idempotency on anything an agent may retry, rate limits and quotas per consumer identity, and error responses a machine can act on rather than a human can read.\n\nAn estate with good contracts is already most of the way there. An estate without them will find agents expose that faster than any audit would.',
+      },
+      {
+        q: 'Who owns the estate after you leave?',
+        a: 'Your teams, per domain, and if ownership goes back to a central queue the engagement has failed regardless of what got built.\n\nConcretely: a named owner per API, engineers who were in the room when the standards were set rather than handed them, templates and pipelines your teams run without us, and a catalog your own people curate.\n\nThe measure we would use is simple. Six months after handover, can a domain team publish a new version without asking anyone outside the domain. Where the answer is no, the bottleneck moved rather than went.',
+      },
+      {
+        q: 'How do you measure whether it worked?',
+        a: 'Against numbers captured before anything changes, and reported afterwards whether or not they flatter us.\n\nLead time from contract agreed to consumer in production. Consumers per API, and the count of APIs with none, which together say whether reuse is real. The number of services that must be released together to ship one business change. And change failure rate, because an estate that ships faster while breaking more has not improved.\n\nAll four come from your own pipelines and gateway logs, and all four can be pulled again after we leave.',
+      },
+    ],
+
+    // The partnership band is the one section here with nothing service-specific
+    // to say. Every other page that has been rebuilt hides it for the same
+    // reason: it describes how Kangqore engages generally, and the engagement
+    // section above now does that concretely for this service.
+    hidePartnershipModel: true,
 
     architectureEyebrow: 'ENTERPRISE ARCHITECTURE',
     architectureTitle: 'Four Layers,',

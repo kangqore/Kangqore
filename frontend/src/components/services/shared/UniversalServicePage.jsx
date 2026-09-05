@@ -5985,10 +5985,19 @@ const featureMicros   = service.featureMicros
           </div>
 
           <div className="space-y-0">
-            {((faqs.length > 5 && !isFaqExpanded) ? faqs.slice(0, 5) : faqs).map((faq, i) => {
+            {/* Every question stays mounted; the ones past the fifth are hidden
+                with CSS until Read More. Slicing the array instead meant a
+                crawler that does not click received five questions while the
+                prerender snapshot emitted twelve — the page and the snapshot
+                disagreeing, which reads as cloaking and pushed measured
+                coverage past 100 per cent. Same reason whatIsPara3 and 4 stay
+                in the DOM when collapsed. `hidden` also removes them from the
+                accessibility tree and from tab order. */}
+            {faqs.map((faq, i) => {
               const isOpen = openFaq === i;
+              const isBeyondFold = faqs.length > 5 && !isFaqExpanded && i >= 5;
               return (
-                <div key={i} className={`border-t border-white/[0.06] relative overflow-hidden transition-all duration-500 ${isOpen ? 'rounded-xl my-2' : ''}`}>
+                <div key={i} hidden={isBeyondFold} className={`border-t border-white/[0.06] relative overflow-hidden transition-all duration-500 ${isOpen ? 'rounded-xl my-2' : ''}`}>
                   {/* Active State: Liquid Black Impasto Paint Texture — same as 3D Ecosystem Cockpit */}
                   {isOpen && (
                     <>

@@ -215,20 +215,7 @@
 
     <p>Every interface you add is a dependency somebody has to remember.</p>
 
-        <h2>Connecting Systems, or Architecting an Estate.</h2>
-    <p>Both columns describe interfaces built competently against a real requirement. They differ on what happens the fifth time somebody needs the same data.</p>
-      <table>
-        <caption>INTEGRATION AS INTERFACES compared with INTEGRATION AS ARCHITECTURE</caption>
-        <thead><tr><th scope="col">Dimension</th><th scope="col">INTEGRATION AS INTERFACES</th><th scope="col">INTEGRATION AS ARCHITECTURE</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">The fifth time somebody needs the same data</th><td>A fifth interface, because finding and trusting the existing four costs more than writing a new one. The estate grows faster than the business does.</td><td>A published API or event somebody already owns, with a contract and a consumer list, so the fifth team consumes rather than builds.</td></tr>
-          <tr><th scope="row">When one system changes</th><td>Nobody can say with confidence what else breaks. The change is deferred, or it ships and something unrelated fails in production a week later.</td><td>Dependency mapping and versioned contracts make the blast radius knowable before the change, and consumers are notified rather than surprised.</td></tr>
-          <tr><th scope="row">Who owns an interface</th><td>The person who built it, until they move team. After that it runs unowned until it fails, and then it is nobody’s to fix.</td><td>Every interface has a named owner, a lifecycle stage and a retirement date, recorded where an operations team can see it.</td></tr>
-          <tr><th scope="row">When a transaction goes missing</th><td>Each team checks its own logs and concludes the problem is upstream. Resolution takes days and usually ends in a manual re-entry.</td><td>Distributed tracing follows the transaction across every hop, so the failing step is identified in minutes and replayed rather than retyped.</td></tr>
-          <tr><th scope="row">Onboarding a new trading partner</th><td>An engineering project each time, quoted in weeks, because every partner is treated as a new problem.</td><td>A templated onboarding with partner profiles, standard document maps and a validation harness — measured in days, run by operations.</td></tr>
-          <tr><th scope="row">What happens when AI wants access</th><td>Agents are pointed at whatever interface exists, or at the screen when none does, outside the controls the rest of the estate is held to.</td><td>Agents consume the same governed APIs and events as any other client, with scoped permissions and a traceable record of what they did.</td></tr>
-        </tbody>
-      </table>
+    
 
         <h2>How It Works. Systems to Governance.</h2>
     <p>Five layers. The first is what you already run, the last is what makes the middle three safe to depend on, and every enterprise that skipped the last one is now paying for it.</p>
