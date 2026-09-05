@@ -8646,26 +8646,22 @@ export const servicesData = {
       {
         title: 'Enterprise Connectivity',
         icon: 'Network',
-        description: 'Legacy core, applications, APIs, microservices, data, events, cloud, SaaS, partners, devices and digital channels, connected as one estate rather than as point-to-point pairs.',
-        features: ['Legacy core and applications', 'APIs and microservices', 'Data and events', 'Cloud, SaaS and on-premise', 'Partners, devices and digital channels'],
+        description: 'Legacy core, applications, APIs, microservices, data, events, cloud, SaaS, partners and devices joined as one estate rather than as point-to-point pairs. In practice this is where the contracts live: what each system promises, who is entitled to call it, and which calls are synchronous because they have to be rather than because synchronous was the default nobody revisited.',
       },
       {
         title: 'Intelligence',
         icon: 'Activity',
-        description: 'Contextual understanding across the estate, so information arriving continuously becomes something a system or a person can act on.',
-        features: ['Data and events', 'Relationships and context', 'Insights and decisions', 'Actions', 'AI and ML ecosystem integration'],
+        description: 'Context laid over the traffic. The same event stream carries a customer viewing one product twice and a payment retrying three times, and neither means anything until it is linked to what happened around it. Ingestion, change data capture, stream processing, and the schema governance that stops every consumer inventing its own interpretation.',
       },
       {
         title: 'Governance',
         icon: 'ShieldCheck',
-        description: 'Control over who may call what, on which terms, and what happens across an API or integration from proposal through to retirement.',
-        features: ['Security and identity', 'Policies and API governance', 'Compliance', 'Observability and access', 'Lifecycle management'],
+        description: 'Who may call what, on what terms, and what happens across an API from proposal to retirement. Security, identity, policy, compliance, observability and versioning. This is the layer that decides whether a domain team can publish without asking permission, which is the whole difference between an estate that scales and one that queues.',
       },
       {
         title: 'Execution',
         icon: 'Zap',
-        description: 'The operational layer that makes the other three repeatable rather than a one-time build.',
-        features: ['Automation and integration', 'Deployment and monitoring', 'Failure recovery', 'Workflow', 'Self-service'],
+        description: 'Automation, deployment, monitoring, failure recovery, workflow and self-service: the operational layer that makes the other three repeatable rather than a one-time build. Golden paths, templates and pipelines, so the hundredth service costs roughly what the tenth did instead of what the first did.',
       },
     ],
 
