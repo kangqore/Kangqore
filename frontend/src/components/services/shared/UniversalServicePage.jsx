@@ -5247,7 +5247,15 @@ const featureMicros   = service.featureMicros
       {!service.hideArchitecture && service.architectureNodes && service.slug !== 'agentic-ai-led-application-modernization' && service.slug !== 'agentic-ai' && (() => {
         const archNodes = service.architectureNodes || [];
         const totalArch = archNodes.length;
-        const visibleArchIndices = totalArch <= 3
+        // Above three nodes the stack rotates a three-card window, which keeps
+        // the section short but means a reader has to wait to see everything —
+        // and a section headed "Four Layers" showing three of them at a time
+        // reads as a bug. `architectureShowAll` renders every node instead.
+        // The cards are a vertical flex stack, so the section simply grows;
+        // nothing reflows. Rotation still drives which card is highlighted and
+        // which image the left column shows. Defaults to the rotating window,
+        // so the other 61 pages are unchanged.
+        const visibleArchIndices = (totalArch <= 3 || service.architectureShowAll)
           ? archNodes.map((_, i) => i)
           : [0, 1, 2].map(k => (archOffset + k) % totalArch);
 
