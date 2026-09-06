@@ -29,22 +29,27 @@ router.get('/stages', ...guard, (_req: Request, res: Response) => {
   })
 })
 
-/** The "New client" button. */
-router.post('/clients', ...guard, async (req: Request, res: Response) => {
+/** The "New client" / new engagement button. */
+router.post(['/engagements', '/clients'], ...guard, async (req: Request, res: Response) => {
   try {
-    const card = await ClientOnboardingService.createClient({ ...req.body, actorId: actorOf(req) })
-    return res.status(201).json({ client: card })
+    const card = await ClientOnboardingService.createEngagement({
+      clientName: req.body.clientName || req.body.name,
+      ...req.body,
+      actorId: actorOf(req),
+    })
+    return res.status(201).json({ engagement: card, client: card })
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
 })
 
 /** Dragging a card between groups. This is where provisioning happens. */
-router.post('/clients/:id/stage', ...guard, async (req: Request, res: Response) => {
+router.post(['/engagements/:id/stage', '/clients/:id/stage'], ...guard, async (req: Request, res: Response) => {
   const to = req.body?.stage as OnboardingStage
   if (!to) return res.status(400).json({ error: 'stage is required' })
   try {
-    return res.json(await ClientOnboardingService.moveToStage(req.params.id, to, actorOf(req)))
+    const result = await ClientOnboardingService.moveToStage(req.params.id, to, actorOf(req))
+    return res.json({ ...result, client: (result as any).engagement })
   } catch (err: any) {
     return res.status(400).json({ error: err.message })
   }
