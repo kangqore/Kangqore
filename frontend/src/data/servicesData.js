@@ -8638,6 +8638,10 @@ export const servicesData = {
     // section above now does that concretely for this service.
     hidePartnershipModel: true,
 
+    // A section headed "Four Layers" that shows three at a time reads as a
+    // bug. All four render; the rotation still drives the highlight and the
+    // visual beside them.
+    architectureShowAll: true,
     architectureEyebrow: 'ENTERPRISE ARCHITECTURE',
     architectureTitle: 'Four Layers,',
     architectureTitleHighlight: 'One Connected Enterprise.',
