@@ -74,10 +74,16 @@ export const PodcastProvider = ({ children }) => {
       closePlayer
     }}>
       {children}
-      <audio 
-        ref={audioRef} 
-        src="/Podcasts/Ep-1.mp3" 
-        preload="metadata"
+      {/* preload="none": this provider is mounted on every page, so
+          preload="metadata" made a 23MB request on every route — including
+          pages with no visible player, where the element measures 0px. The
+          browser ranged it as bytes=0- and pulled the whole file. Nothing
+          about playback changes: the src is set, and a user pressing play
+          starts the fetch then. */}
+      <audio
+        ref={audioRef}
+        src="/Podcasts/Ep-1.mp3"
+        preload="none"
       />
     </PodcastContext.Provider>
   );
