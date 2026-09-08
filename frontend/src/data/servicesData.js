@@ -8675,7 +8675,6 @@ export const servicesData = {
       titleHighlight: 'and the decision inside each.',
       subtitle: 'These are the six things enterprises actually call us about. Each one turns on a decision that gets made once and then governs how expensive change is for years, so the decision is the work.',
       numbered: false,
-      variant: 'showcase',
       items: [
         {
           title: 'Monolith-to-Microservices Migration',
