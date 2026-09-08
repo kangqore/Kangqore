@@ -76,54 +76,39 @@ const SolutionsCarousel = ({
   return (
     <section ref={sectionRef} className="py-24 lg:py-32 bg-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        {/* Header with Eyebrow, Title & Carousel Nav */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
-          <div className="max-w-3xl">
-            {eyebrow && (
-              <div className="flex items-center gap-4 mb-5">
-                <div className="w-10 h-px bg-white/25" />
-                <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">
-                  {eyebrow}
-                </span>
+        {/* Header: Eyebrow + Heading on Left, Description on Top-Right */}
+        <div className="mb-14">
+          {eyebrow && (
+            <div className="flex items-center gap-4 mb-5">
+              <div className="w-10 h-px bg-white/25" />
+              <span className="text-[11px] font-black tracking-[0.35em] text-white/60 uppercase">
+                {eyebrow}
+              </span>
+            </div>
+          )}
+
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 lg:gap-16">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.08]">
+                {title}
+                {titleHighlight && (
+                  <>
+                    <br />
+                    <span className="bg-brand-gradient bg-clip-text text-transparent">
+                      {titleHighlight}
+                    </span>
+                  </>
+                )}
+              </h2>
+            </div>
+
+            {subtitle && (
+              <div className="max-w-xl lg:max-w-md xl:max-w-xl shrink-0 lg:pt-2">
+                <p className="text-white/60 text-base sm:text-lg font-light leading-relaxed">
+                  {subtitle}
+                </p>
               </div>
             )}
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.08]">
-              {title}
-              {titleHighlight && (
-                <>
-                  <br />
-                  <span className="bg-brand-gradient bg-clip-text text-transparent">
-                    {titleHighlight}
-                  </span>
-                </>
-              )}
-            </h2>
-            {subtitle && (
-              <p className="text-white/60 text-base sm:text-lg font-light leading-relaxed mt-6 max-w-2xl">
-                {subtitle}
-              </p>
-            )}
-          </div>
-
-          <div className="flex gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => nudge(-1)}
-              disabled={atStart}
-              aria-label="Previous solutions"
-              className="w-12 h-12 rounded-full border border-white/15 flex items-center justify-center transition-colors duration-300 enabled:hover:border-white/40 enabled:hover:bg-white/5 disabled:opacity-30 disabled:cursor-default"
-            >
-              <ArrowRight className="w-5 h-5 text-white/70 rotate-180" />
-            </button>
-            <button
-              type="button"
-              onClick={() => nudge(1)}
-              disabled={atEnd}
-              aria-label="Next solutions"
-              className="w-12 h-12 rounded-full border border-white/15 flex items-center justify-center transition-colors duration-300 enabled:hover:border-white/40 enabled:hover:bg-white/5 disabled:opacity-30 disabled:cursor-default"
-            >
-              <ArrowRight className="w-5 h-5 text-white/70" />
-            </button>
           </div>
         </div>
 
@@ -176,6 +161,28 @@ const SolutionsCarousel = ({
               </div>
             </article>
           ))}
+        </div>
+
+        {/* Bottom Navigation Affordance: Right-Aligned < and > */}
+        <div className="flex justify-end items-center gap-3 mt-8">
+          <button
+            type="button"
+            onClick={() => nudge(-1)}
+            disabled={atStart}
+            aria-label="Previous solutions"
+            className="w-12 h-12 rounded-full border border-white/15 flex items-center justify-center transition-colors duration-300 enabled:hover:border-white/40 enabled:hover:bg-white/5 disabled:opacity-30 disabled:cursor-default"
+          >
+            <ArrowRight className="w-5 h-5 text-white/70 rotate-180" />
+          </button>
+          <button
+            type="button"
+            onClick={() => nudge(1)}
+            disabled={atEnd}
+            aria-label="Next solutions"
+            className="w-12 h-12 rounded-full border border-white/15 flex items-center justify-center transition-colors duration-300 enabled:hover:border-white/40 enabled:hover:bg-white/5 disabled:opacity-30 disabled:cursor-default"
+          >
+            <ArrowRight className="w-5 h-5 text-white/70" />
+          </button>
         </div>
       </div>
 
