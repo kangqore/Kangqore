@@ -1,12 +1,16 @@
-// ─── Solutions Carousel (Apple-Inspired Design) ──────────────────────────────────
-// Horizontally scrolling cards inspired by Apple's card design:
-// - Deep obsidian black container with smooth rounded corners (rounded-[34px])
-// - Bold, crisp title at the top
-// - Rich, expressive middle graphic artwork
-// - Bottom area: card description on the left, decorative showpiece '+' badge on the right
+// ─── Solutions Carousel ────────────────────────────────────────────────────────
+// Horizontally scrolling cards with two specialized modes:
+// 1. Showcase Mode (variant="showcase"):
+//    For technical engineering deliverables (e.g. API & Microservices Engineering)
+//    where architectural vector illustrations visually anchor the technical patterns.
+// 2. Editorial Mode (variant="editorial", default):
+//    For authoritative advisory and platform evaluations (e.g. Supply Chain,
+//    Salesforce, GCC) where uncompressed, senior consulting copy is the hero,
+//    housed in spacious, elegant obsidian cards without synthetic graphic boxes.
 // ────────────────────────────────────────────────────────────────────────────────
 
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { getSolutionVisual } from './SolutionsCardVisuals';
@@ -18,11 +22,14 @@ const SolutionsCarousel = ({
   subtitle,
   items = [],
   numbered = false,
+  variant = 'editorial',
 }) => {
   const sectionRef = useRef(null);
   const railRef = useRef(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+
+  const isShowcase = variant === 'showcase';
 
   useEffect(() => {
     if (!items.length) return undefined;
@@ -124,7 +131,11 @@ const SolutionsCarousel = ({
           {items.map((s, i) => (
             <article
               key={s.title}
-              className="sol-card group relative flex-none w-[320px] sm:w-[410px] lg:w-[450px] h-[480px] sm:h-[500px] snap-start rounded-[32px] sm:rounded-[36px] bg-[#050508] border border-white/[0.08] hover:border-white/20 p-8 sm:p-9 flex flex-col justify-between overflow-hidden transition-all duration-500 shadow-2xl"
+              className={`sol-card group relative flex-none snap-start rounded-[32px] sm:rounded-[36px] bg-[#050508] border border-white/[0.08] hover:border-white/20 p-8 sm:p-9 flex flex-col justify-between overflow-hidden transition-all duration-500 shadow-2xl ${
+                isShowcase
+                  ? 'w-[320px] sm:w-[410px] lg:w-[450px] h-[480px] sm:h-[500px]'
+                  : 'w-[320px] sm:w-[380px] lg:w-[420px] h-[360px] sm:h-[390px]'
+              }`}
               style={{ opacity: 0 }}
             >
               {/* Subtle ambient lighting on hover */}
@@ -148,17 +159,43 @@ const SolutionsCarousel = ({
                 </h3>
               </div>
 
-              {/* Middle: Expressive Artwork Showcase */}
-              <div className="relative z-10 flex-1 w-full my-3 flex items-center justify-center min-h-[190px] overflow-hidden transition-transform duration-500 group-hover:scale-[1.03]">
-                {getSolutionVisual(s.title, i)}
-              </div>
+              {isShowcase ? (
+                <>
+                  {/* Middle: Expressive Artwork Showcase (for technical architecture cards) */}
+                  <div className="relative z-10 flex-1 w-full my-3 flex items-center justify-center min-h-[190px] overflow-hidden transition-transform duration-500 group-hover:scale-[1.03]">
+                    {getSolutionVisual(s.title, i)}
+                  </div>
 
-              {/* Bottom Area: Card description */}
-              <div className="relative z-10 pt-2">
-                <p className="text-white/65 text-sm sm:text-[0.92rem] font-normal leading-relaxed">
-                  {s.desc}
-                </p>
-              </div>
+                  {/* Bottom Area: Card description */}
+                  <div className="relative z-10 pt-2">
+                    <p className="text-white/65 text-sm sm:text-[0.92rem] font-normal leading-relaxed">
+                      {s.desc}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Middle: Editorial Body Copy (for platform evaluations and advisory) */}
+                  <div className="relative z-10 flex-1 my-4 overflow-hidden">
+                    <p className="text-white/70 text-base sm:text-[1.02rem] font-light leading-relaxed">
+                      {s.desc}
+                    </p>
+                  </div>
+
+                  {/* Optional Bottom Link */}
+                  {s.href && (
+                    <div className="relative z-10 pt-3 border-t border-white/10 flex items-center justify-between">
+                      <Link
+                        to={s.href}
+                        className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] uppercase text-white/70 hover:text-white transition-colors"
+                      >
+                        {s.linkLabel || 'Learn more'}
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    </div>
+                  )}
+                </>
+              )}
             </article>
           ))}
         </div>
