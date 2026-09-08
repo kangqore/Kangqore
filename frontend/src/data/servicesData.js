@@ -8674,32 +8674,33 @@ export const servicesData = {
       title: 'Six engagements,',
       titleHighlight: 'and the decision inside each.',
       subtitle: 'These are the six things enterprises actually call us about. Each one turns on a decision that gets made once and then governs how expensive change is for years, so the decision is the work.',
+      numbered: false,
       items: [
         {
           title: 'Monolith-to-Microservices Migration',
-          desc: 'Cut at the seams that already exist. Measured on how many services must ship together for one business change \u2014 if that number is not falling, it is a distributed monolith and we say so.',
+          desc: 'Cut along existing domain seams to ensure services deploy independently without coupling bottlenecks.',
         },
         {
           title: 'API Governance and Standards',
-          desc: 'Domain teams own their contracts and version them without a central queue. Standards land through templates rather than a review board, because a standard slower than ignoring it gets ignored.',
+          desc: 'Automated contract standards and templates that empower domain teams without central review queues.',
         },
         {
           title: 'ESB and Middleware Migration',
-          desc: 'MuleSoft, Azure, Boomi or Kong \u2014 chosen on your estate, not our margin, because we hold none. About a quarter of a mature ESB estate is called by nothing, and migration is the only moment you can retire it.',
+          desc: 'Retire heavy ESBs for modern gateways, eliminating dormant integrations and costly vendor lock-in.',
           href: '/services/enterprise-integration-platform',
           linkLabel: 'Integration platform',
         },
         {
           title: 'API Gateway Selection',
-          desc: 'Kong, Apigee, AWS, Azure, or the gateway already inside a platform you license. Decided by deployment model and identity, not the feature matrix \u2014 every product answers yes to most rows.',
+          desc: 'Evaluated on runtime topology and identity needs rather than generic vendor feature matrices.',
         },
         {
           title: 'API Security and Rate Limiting',
-          desc: 'Authorization designed into the contract, not bolted onto the gateway. The failures are rarely exotic: no auth because it was internal, a rate limit per IP behind a proxy, a token that grants everything.',
+          desc: 'Authorization and tenant-aware rate limiting built directly into service contracts, not bolted on.',
         },
         {
           title: 'Developer Portal and Catalog',
-          desc: 'Find an API, understand it, get a key \u2014 without a ticket. Catalogs fail when finding one takes longer than writing one, so this is a search and sandbox problem before it is a governance problem.',
+          desc: 'Instant API discovery, interactive sandboxes, and self-serve credentials without ticketing delays.',
         },
       ],
     },
