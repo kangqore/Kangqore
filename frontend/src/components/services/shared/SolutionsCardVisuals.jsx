@@ -34,6 +34,8 @@ import {
   FileText,
   Compass,
   Radio,
+  Bot,
+  Network,
 } from 'lucide-react';
 
 /* ═════════════════════════════════════════════════════════════════════════════
@@ -612,6 +614,39 @@ export function MuleSoftVisual() {
   );
 }
 
+export function AgentforceVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-cyan-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#091522] border border-cyan-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <Bot className="w-4 h-4 text-cyan-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">Agentforce Guardrails &amp; Esc</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-cyan-500/20 border border-cyan-400/30 text-[11px] font-mono font-bold text-cyan-300">
+            GOVERNED AGENT
+          </span>
+        </div>
+        <div className="space-y-1.5 py-1">
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Data Cloud Grounding</span>
+            <span className="text-[11px] text-cyan-300 font-bold font-mono">Zero Hallucination</span>
+          </div>
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Autonomous Resolution</span>
+            <span className="text-[11px] text-emerald-400 font-bold font-mono">92% First-Contact</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>Escalation Handover</span>
+          <span className="text-cyan-400 font-bold">Deterministic Path</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ═════════════════════════════════════════════════════════════════════════════
    3. GLOBAL CAPABILITY CENTERS (GCC) VISUALS (10 Cards)
    ═════════════════════════════════════════════════════════════════════════════ */
@@ -952,6 +987,138 @@ export function PartnerManagementVisual() {
   );
 }
 
+export function LeadershipVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-violet-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#140c22] border border-violet-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4 text-violet-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">Executive Authority &amp; Mandate</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-violet-500/20 border border-violet-400/30 text-[11px] font-mono font-bold text-violet-300">
+            EMPOWERED
+          </span>
+        </div>
+        <div className="p-2 rounded-xl bg-black/40 border border-white/5 space-y-1">
+          <div className="flex justify-between text-[11px] font-mono">
+            <span className="text-white/70">Decision Authority Mandate</span>
+            <span className="text-violet-300 font-bold">Direct P&amp;L Ownership</span>
+          </div>
+          <div className="flex justify-between text-[11px] font-mono">
+            <span className="text-white/70">Strategic Maturity Velocity</span>
+            <span className="text-emerald-400 font-bold">Center of Excellence</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>Global Leadership Alignment</span>
+          <span className="text-violet-300 font-bold">High Authority</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function WorkspaceVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-fuchsia-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#1b0918] border border-fuchsia-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <Building2 className="w-4 h-4 text-fuchsia-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">Hybrid Workplace Telemetry</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-fuchsia-500/20 border border-fuchsia-400/30 text-[11px] font-mono font-bold text-fuchsia-300">
+            COLLABORATIVE
+          </span>
+        </div>
+        <div className="space-y-1.5 py-1">
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Dynamic Seat Utilization</span>
+            <span className="text-[11px] text-fuchsia-300 font-bold font-mono">78% Peak Efficiency</span>
+          </div>
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Commute Incentive Index</span>
+            <span className="text-[11px] text-emerald-400 font-bold font-mono">91% In-Person NPS</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>Smart Campus Infrastructure</span>
+          <span className="text-fuchsia-300 font-bold">Hybrid Optimized</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function AITransformationVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-teal-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#091717] border border-teal-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <Sparkles className="w-4 h-4 text-teal-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">Agentic Enterprise Automation</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-teal-500/20 border border-teal-400/30 text-[11px] font-mono font-bold text-teal-300">
+            GOVERNED AI
+          </span>
+        </div>
+        <div className="space-y-1.5 py-1">
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Workflow Cycle Compression</span>
+            <span className="text-[11px] text-teal-300 font-bold font-mono">-68% Processing Time</span>
+          </div>
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Operating Model Sync</span>
+            <span className="text-[11px] text-emerald-400 font-bold font-mono">Policy-Bound Execution</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>Cross-Functional Intelligence</span>
+          <span className="text-teal-300 font-bold">HR &bull; Finance &bull; Delivery</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function GCCAdvisoryVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-sky-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#09131e] border border-sky-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <Compass className="w-4 h-4 text-sky-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">GCC Feasibility &amp; Strategy</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-sky-500/20 border border-sky-400/30 text-[11px] font-mono font-bold text-sky-300">
+            OBJECTIVE
+          </span>
+        </div>
+        <div className="p-2 rounded-xl bg-black/40 border border-white/5 space-y-1">
+          <div className="flex justify-between text-[11px] font-mono">
+            <span className="text-white/70">Maturity Labor Cost Model</span>
+            <span className="text-sky-300 font-bold">4-Year Realized Delta</span>
+          </div>
+          <div className="flex justify-between text-[11px] font-mono">
+            <span className="text-white/70">Location Talent Depth</span>
+            <span className="text-emerald-400 font-bold">Index: 94 / 100</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>Vendor-Neutral Advisory</span>
+          <span className="text-sky-300 font-bold">Unbiased Truth</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ═════════════════════════════════════════════════════════════════════════════
    4. SUPPLY CHAIN PLANNING PLATFORMS VISUALS (8 Cards)
    ═════════════════════════════════════════════════════════════════════════════ */
@@ -1228,6 +1395,138 @@ export function AnaplanSupplyChainVisual() {
   );
 }
 
+export function OracleSCMVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-orange-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#1a0e0a] border border-orange-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <Database className="w-4 h-4 text-orange-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">Oracle SCM &amp; Financial Ledger</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-orange-500/20 border border-orange-400/30 text-[11px] font-mono font-bold text-orange-300">
+            UNIFIED ERP
+          </span>
+        </div>
+        <div className="space-y-1.5 py-1">
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Demand-to-Settlement Pipeline</span>
+            <span className="text-[11px] text-orange-300 font-bold font-mono">Single Ledger Sync</span>
+          </div>
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Vendor Accountability</span>
+            <span className="text-[11px] text-emerald-400 font-bold font-mono">Single Stack SLA</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>End-to-End Orchestration</span>
+          <span className="text-orange-400 font-bold">Zero Reconcile Gaps</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function DynamicsSCMVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-blue-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#0a121e] border border-blue-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <Boxes className="w-4 h-4 text-blue-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">Dynamics 365 Supply Chain MRP</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-blue-500/20 border border-blue-400/30 text-[11px] font-mono font-bold text-blue-300">
+            DATAVERSE
+          </span>
+        </div>
+        <div className="space-y-1.5 py-1">
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Power Platform Automation</span>
+            <span className="text-[11px] text-blue-300 font-bold font-mono">M365 Native Mesh</span>
+          </div>
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Multi-Echelon Capacity Gate</span>
+            <span className="text-[11px] text-cyan-300 font-bold font-mono">Mid-Market Fit</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>Constraint Planning Ceiling</span>
+          <span className="text-blue-300 font-bold">Mapped &amp; Governed</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ExecutionSuitesVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-amber-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#171109] border border-amber-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <Truck className="w-4 h-4 text-amber-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">WMS &bull; TMS Execution Suites</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-amber-500/20 border border-amber-400/30 text-[11px] font-mono font-bold text-amber-300">
+            HIGH THROUGHPUT
+          </span>
+        </div>
+        <div className="p-2 rounded-xl bg-black/40 border border-white/5 space-y-1">
+          <div className="flex justify-between text-[11px] font-mono">
+            <span className="text-white/70">Manhattan &bull; Blue Yonder &bull; K&ouml;rber</span>
+            <span className="text-amber-400 font-bold">Robotics Mesh</span>
+          </div>
+          <div className="flex justify-between text-[11px] font-mono">
+            <span className="text-white/70">Yard &amp; Labor Model Throughput</span>
+            <span className="text-emerald-400 font-bold">99.98% On-Time Dock</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>Execution Physical Axis</span>
+          <span className="text-amber-400 font-bold">Zero Dock Stalls</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ExistingLicenseVisual() {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute w-44 h-44 rounded-full bg-emerald-500/15 blur-3xl" />
+      <div className="relative w-[300px] h-[180px] rounded-2xl bg-[#091710] border border-emerald-500/30 p-3 shadow-2xl flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span className="text-[11px] font-bold text-white tracking-tight">Unlock Existing ERP Planning</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-400/30 text-[11px] font-mono font-bold text-emerald-300">
+            $0 NEW LICENSE
+          </span>
+        </div>
+        <div className="space-y-1.5 py-1">
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Dormant Capability Activation</span>
+            <span className="text-[11px] text-emerald-400 font-bold font-mono">100% Unlocked</span>
+          </div>
+          <div className="flex justify-between items-center p-1.5 rounded-xl bg-black/40 border border-white/5">
+            <span className="text-[11px] text-white/70 font-mono">Underlying Data Cleanse</span>
+            <span className="text-[11px] text-cyan-300 font-bold font-mono">Truth Invariants</span>
+          </div>
+        </div>
+        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+          <span>Zero Reseller Margin</span>
+          <span className="text-emerald-400 font-bold">Unbiased Truth</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ═════════════════════════════════════════════════════════════════════════════
    5. GENERIC FALLBACK VISUAL
    ═════════════════════════════════════════════════════════════════════════════ */
@@ -1271,10 +1570,11 @@ export function getSolutionVisual(title = '', index = 0) {
   // 2. Salesforce Platform (Platforms)
   if (lower.includes('sales cloud')) return <SalesCloudVisual />;
   if (lower.includes('service cloud')) return <ServiceCloudVisual />;
-  if (lower.includes('marketing cloud')) return <MarketingCloudVisual />;
   if (lower.includes('experience cloud')) return <ExperienceCloudVisual />;
   if (lower.includes('commerce cloud')) return <CommerceCloudVisual />;
+  if (lower.includes('marketing cloud')) return <MarketingCloudVisual />;
   if (lower.includes('data cloud')) return <DataCloudVisual />;
+  if (lower.includes('agentforce')) return <AgentforceVisual />;
   if (lower.includes('revenue') || lower.includes('cpq')) return <RevenueCloudVisual />;
   if (lower.includes('mulesoft')) return <MuleSoftVisual />;
 
@@ -1282,19 +1582,27 @@ export function getSolutionVisual(title = '', index = 0) {
   if (lower.includes('talent')) return <TalentAcquisitionVisual />;
   if (lower.includes('corporate')) return <CorporateFunctionsVisual />;
   if (lower.includes('hr') || lower.includes('wellbeing')) return <HRWellbeingVisual />;
-  if (lower.includes('brand') || lower.includes('marketing and employer')) return <MarketingBrandVisual />;
-  if (lower.includes('infrastructure') || lower.includes('technology and infrastructure')) return <TechInfrastructureVisual />;
-  if (lower.includes('knowledge') || lower.includes('operations')) return <KnowledgeOperationsVisual />;
-  if (lower.includes('strategy') || lower.includes('advisory')) return <StrategyAdvisoryVisual />;
+  if (lower.includes('brand') || lower.includes('marketing and employer') || lower.includes('employer')) return <MarketingBrandVisual />;
+  if (lower.includes('infrastructure')) return <TechInfrastructureVisual />;
+  if (lower.includes('operations')) return <KnowledgeOperationsVisual />;
+  if (lower.includes('leadership')) return <LeadershipVisual />;
+  if (lower.includes('workspace')) return <WorkspaceVisual />;
+  if (lower.includes('ai and transformation') || lower.includes('transformation')) return <AITransformationVisual />;
+  if (lower.includes('gcc advisory') || lower.includes('advisory')) return <GCCAdvisoryVisual />;
   if (lower.includes('facilities') || lower.includes('real estate')) return <FacilitiesRealEstateVisual />;
   if (lower.includes('risk') || lower.includes('compliance')) return <RiskComplianceVisual />;
   if (lower.includes('partner')) return <PartnerManagementVisual />;
+  if (lower.includes('strategy')) return <StrategyAdvisoryVisual />;
 
   // 4. Supply Chain Planning (Cognition)
   if (lower.includes('blue yonder')) return <BlueYonderVisual />;
   if (lower.includes('o9')) return <O9SolutionsVisual />;
   if (lower.includes('kinaxis')) return <KinaxisVisual />;
   if (lower.includes('sap ibp') || lower.includes('ibp')) return <SAPIBPVisual />;
+  if (lower.includes('oracle')) return <OracleSCMVisual />;
+  if (lower.includes('dynamics') || lower.includes('microsoft')) return <DynamicsSCMVisual />;
+  if (lower.includes('execution') || lower.includes('suites')) return <ExecutionSuitesVisual />;
+  if (lower.includes('license') || lower.includes('already license')) return <ExistingLicenseVisual />;
   if (lower.includes('manhattan')) return <ManhattanAssociatesVisual />;
   if (lower.includes('blue ridge')) return <BlueRidgeVisual />;
   if (lower.includes('logility')) return <LogilityVisual />;
