@@ -5160,6 +5160,7 @@ const featureMicros   = service.featureMicros
           subtitle={service.solutionsCarousel.subtitle}
           items={service.solutionsCarousel.items}
           numbered={service.solutionsCarousel.numbered}
+          variant={service.solutionsCarousel.variant}
         />
       )}
 
