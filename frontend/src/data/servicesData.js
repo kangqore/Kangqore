@@ -7255,7 +7255,7 @@ export const servicesData = {
     image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80',
     lastReviewed: '2026-09-09',
 
-    heroTitle: 'Microsoft Services Solutions at\nEnterprise Scale BY Kangqore',
+    heroTitle: 'Microsoft Services and Solutions at\nEnterprise Scale by Kangqore',
     heroBadge: 'One Microsoft Estate, Not Nine Disconnected Ones',
     heroStripItems: ['Azure & Sentinel', 'Dynamics 365', 'Power Platform', 'Modern Workplace', 'Connected Products'],
 
