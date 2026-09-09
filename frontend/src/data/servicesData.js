@@ -7304,7 +7304,7 @@ export const servicesData = {
       {
         title: 'Application Modernization',
         image: '/images/capabilities/application-modernization-illustration.png',
-        desc: 'Legacy applications rarely need replacing. They need the business logic inside them separated from the platform decisions made around them fifteen years ago. We work out which applications justify investment, which should move as they are, and which are better retired into something you already own — then do the engineering.',
+        desc: 'Re-engineer, refactor or re-platform — and retire what you pay for twice.',
         items: [
           'Application Re-engineering: Rebuild existing applications for scalability, maintainability, performance and security without discarding the business logic that already works.',
           'Legacy Code Refactoring: Reduce technical debt in aging codebases and prepare them for modern architectures, one bounded change at a time rather than a rewrite nobody can review.',
@@ -7319,7 +7319,7 @@ export const servicesData = {
       {
         title: 'Modern Workplace',
         image: '/images/capabilities/ux-design.png',
-        desc: 'A modern workplace is not a set of collaboration licenses. It is whether an employee can find the document, reach the right person, and complete the task without leaving the tools they already have open. Most Microsoft 365 tenants have the capability and never finished the adoption.',
+        desc: 'The Microsoft 365 you already own, adopted past the license count.',
         items: [
           'OneDrive and SharePoint: Modernize document management, content collaboration and information architecture so permissions are inherited by design rather than granted ad hoc.',
           'Microsoft Teams: Enable communication, meetings, workflow and team productivity inside the surface where people already spend the day.',
@@ -7336,7 +7336,7 @@ export const servicesData = {
       {
         title: 'Microsoft Dynamics 365',
         image: '/images/capabilities/business-strategy.png',
-        desc: 'Dynamics 365 brings CRM and ERP together with data, automation and AI. Whether that becomes an advantage or a maintenance burden is decided early — in how the entities are modeled, how much is customized rather than configured, and whether anyone drew the integration boundaries before development started.',
+        desc: 'CRM and ERP that survive the next release wave, because nothing was over-built.',
         items: [
           'D365 Strategy and Roadmap: Define the CRM and ERP direction, sequence and investment case before implementation commits you to a shape that is expensive to change.',
           'Fit-Gap Analysis: Establish where the platform meets the requirement as configured, where it needs extending, and where the requirement itself is the thing worth changing.',
@@ -7368,7 +7368,7 @@ export const servicesData = {
       {
         title: 'Connected Products',
         image: '/images/capabilities/iot-connected.png',
-        desc: 'Connected products change the economics of service — from dispatching an engineer after a failure to knowing which units will fail next month. The technology is rarely the hard part. The hard part is the operating model on the other side, and whether anyone acts on what the telemetry says.',
+        desc: 'Telemetry that dispatches an engineer before the customer calls one.',
         items: [
           'IoT Enablement of Products and Platforms: Connect products, devices and operational environments so real-time condition data reaches the systems that can act on it.',
           'Smart Building Management: Enable monitoring, automation and optimization across connected building estates, with occupancy and energy treated as operational data.',
@@ -7382,7 +7382,7 @@ export const servicesData = {
       {
         title: 'Data, Analytics and AI',
         image: '/images/capabilities/data-analytics-new.png',
-        desc: 'Enterprise data becomes valuable at the point someone can act on it without checking three other systems first. That depends less on the analytics tool than on whether the underlying definitions are shared — which is why this work usually starts further upstream than people expect.',
+        desc: 'One definition of a customer, then analytics worth building on it.',
         items: [
           'Data Engineering: Build the pipelines, models and platform foundations that analytics and AI depend on, including the unglamorous reconciliation work.',
           'Cloud-First Data Solutions: Design data platforms on Azure that scale with demand rather than with the size of the nightly batch window.',
@@ -7396,7 +7396,7 @@ export const servicesData = {
       {
         title: 'Azure Platform and Microsoft Sentinel',
         image: '/images/capabilities/cloud-infrastructure.png',
-        desc: 'Azure is where the estate runs and Sentinel is how you find out what happened to it. We treat them as one engagement, because a security operation built without knowledge of the landing zone ends up ingesting the wrong logs at considerable expense.',
+        desc: 'Where the estate runs, and how you find out what happened to it.',
         items: [
           'Environment Assessment: Assess existing workloads, data sources, security requirements and architecture before recommending a target state.',
           'Design and Implementation: Design and implement Azure platform and security solutions against enterprise requirements and the constraints that come with them.',
@@ -7422,7 +7422,7 @@ export const servicesData = {
       {
         title: 'Power Platform',
         image: '/images/capabilities/automation-rpa.png',
-        desc: 'Power Platform is the fastest way to build a business application and the fastest way to accumulate four hundred of them that nobody owns. The engineering is in the environment strategy, the data layer and the release path — the apps themselves are usually the easy part.',
+        desc: 'Low-code with an owner, an environment, and a way back to production.',
         items: [
           'Power Apps: Build business applications for the operational requirements that no purchased product covers well enough to justify the seat cost.',
           'Power Automate: Automate tasks, approvals, notifications and integrations across Microsoft and third-party systems.',
