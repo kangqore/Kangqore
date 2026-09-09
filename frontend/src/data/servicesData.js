@@ -7297,8 +7297,8 @@ export const servicesData = {
     },
 
     capabilitiesLabel: 'THE MICROSOFT CAPABILITY MAP',
-    capabilitiesSectionTitle: 'What we build,',
-    capabilitiesSectionHighlight: 'and what it fixes.',
+    capabilitiesSectionTitle: 'Microsoft Services and',
+    capabilitiesSectionHighlight: 'Capabilities.',
     capabilitiesLede: 'Grouped by engineering, not by product name.',
     capabilityAreas: [
       {
