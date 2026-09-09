@@ -8229,6 +8229,9 @@ export const servicesData = {
     relatedServiceSlugs: ['software-development', 'devops-as-a-service', 'enterprise-integration-platform'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
+    // Real date, set when this page was rewritten. Emitted as dateModified in
+    // the WebPage node by seo/serviceSchema.js.
+    lastReviewed: '2026-09-09',
 
     // No trailing period: the template renders the last word as
     // {titleHighlight}. with the period already baked in.
