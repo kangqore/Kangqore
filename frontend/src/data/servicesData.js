@@ -7299,7 +7299,7 @@ export const servicesData = {
     capabilitiesLabel: 'THE MICROSOFT CAPABILITY MAP',
     capabilitiesSectionTitle: 'What we build,',
     capabilitiesSectionHighlight: 'and what it fixes.',
-    capabilitiesLede: 'The work below is what a Microsoft transformation actually contains once you stop describing it by product name. Some of it is modernization, some of it is business applications, some of it is security operations. It is listed as engineering, because that is how it is delivered and how it is billed.',
+    capabilitiesLede: 'Grouped by engineering, not by product name.',
     capabilityAreas: [
       {
         title: 'Application Modernization',
