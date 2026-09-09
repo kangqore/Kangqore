@@ -7248,7 +7248,7 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Microsoft Azure and M365 solutions',
-    fullDescription: 'Microsoft engineering across Azure, Dynamics 365, Power Platform, Microsoft 365 and Sentinel — application modernization, cloud migration, business applications, connected products, data and AI, and security operations delivered as one estate rather than eight separate projects.',
+    fullDescription: 'Azure, Dynamics 365, Power Platform and Sentinel — engineered as one estate, not eight separate projects.',
     keyFeatures: ['Azure implementation', 'Microsoft 365', 'Power Platform', 'Dynamics 365', 'Security & compliance'],
     relatedServiceSlugs: ['cloud-computing', 'managed-cloud-services'],
     featured: false,
@@ -7274,10 +7274,10 @@ export const servicesData = {
     outcomesHeading: 'Fewer places for the truth',
     outcomesHeadingHighlight: 'to disagree with itself.',
     businessMetrics: [
-      { illustrative: true, title: 'Identity Surface', desc: 'Directories a user can exist in across Azure, Dynamics 365, Power Platform and Microsoft 365 once Entra is the single source, rather than one per workload with sync jobs between them.', value: '1', suffix: ' Directory', metricLabel: 'Authoritative Directories', icon: 'Shield' },
-      { illustrative: true, title: 'Licensing Recovery', desc: 'Share of an existing Microsoft agreement typically found to be entitlement already paid for and never switched on, before any new spend is proposed.', value: '10–20', suffix: '% Unused', metricLabel: 'Entitlement Already Owned', icon: 'TrendingUp' },
-      { illustrative: true, title: 'Log Coverage', desc: 'Security-relevant sources reaching one Sentinel workspace rather than sitting in per-product consoles that no investigation can correlate across.', value: 'One', suffix: ' Workspace', metricLabel: 'Correlation Surface', icon: 'Radar' },
-      { illustrative: true, title: 'Deployment Path', desc: 'Environments a Power Platform or Dynamics change moves through before production once ALM is in place, instead of being edited live in the environment users are working in.', value: '3', suffix: ' Gated', metricLabel: 'Dev → Test → Prod', icon: 'Layers' },
+      { illustrative: true, title: 'Identity Surface', desc: 'One directory instead of one per workload, and no sync jobs between them.', value: '1', suffix: ' Directory', metricLabel: 'Authoritative Directories', icon: 'Shield' },
+      { illustrative: true, title: 'Licensing Recovery', desc: 'Entitlement already paid for and never switched on, found before new spend.', value: '10–20', suffix: '% Unused', metricLabel: 'Entitlement Already Owned', icon: 'TrendingUp' },
+      { illustrative: true, title: 'Log Coverage', desc: 'Security sources in one workspace, so an investigation can correlate.', value: 'One', suffix: ' Workspace', metricLabel: 'Correlation Surface', icon: 'Radar' },
+      { illustrative: true, title: 'Deployment Path', desc: 'Dev, test and production gated, instead of editing live in production.', value: '3', suffix: ' Gated', metricLabel: 'Dev → Test → Prod', icon: 'Layers' },
     ],
     outcomeCard: {
       illustrative: true,
@@ -7456,7 +7456,7 @@ export const servicesData = {
       {
         title: 'Assess',
         icon: 'Search',
-        description: 'Establish what you already own, what is switched on, and what the estate is actually costing. The licensing position comes first because it changes every architecture decision downstream, and because most estates are paying for capability nobody has enabled.',
+        description: 'What you own, what is switched on, what it costs. Licensing first, because it changes everything downstream.',
         features: [
           'Licensing and entitlement position across Azure, Microsoft 365, Dynamics and Power Platform',
           'Application portfolio assessed for modernization, migration, retention or retirement',
@@ -7467,7 +7467,7 @@ export const servicesData = {
       {
         title: 'Design',
         icon: 'Layers',
-        description: 'Set the shape before anything is built. Landing zones, identity model, data definitions and integration boundaries are the decisions that are expensive to reverse, so they are made explicitly and reviewed against the platform\'s grain rather than around it.',
+        description: 'Landing zones, identity, data definitions, integration boundaries — the decisions expensive to reverse.',
         features: [
           'Azure landing zone, subscription structure and policy guardrails',
           'Entra identity model, conditional access and privileged access design',
@@ -7478,7 +7478,7 @@ export const servicesData = {
       {
         title: 'Implement',
         icon: 'Rocket',
-        description: 'Build and deploy against the design, in units small enough to review and reverse. Configuration is preferred to customization, and every customization that survives the argument is recorded with the reason it was necessary.',
+        description: 'Build in units small enough to review and reverse. Configure first, and record every customization.',
         features: [
           'Workload migration and application modernization delivery',
           'Dynamics 365 and Power Platform build against agreed entity models',
@@ -7489,7 +7489,7 @@ export const servicesData = {
       {
         title: 'Integrate',
         icon: 'Network',
-        description: 'Connect the estate so it behaves as one system. This is where most Microsoft programs lose time, because integration is treated as the last task rather than a design constraint that should have shaped the previous three stages.',
+        description: 'Connect the estate so it behaves as one system — the stage most programs leave last and lose time to.',
         features: [
           'Governed interfaces between Microsoft workloads and line-of-business systems',
           'Event and batch integration built on the cadence the business needs',
@@ -7500,7 +7500,7 @@ export const servicesData = {
       {
         title: 'Secure',
         icon: 'ShieldCheck',
-        description: 'Bring the estate under one detection and response capability. Sentinel is only as useful as the sources reaching it and the analysts acting on it, so the ingestion decision and the operating model are made together.',
+        description: 'One detection surface, with ingestion and the operating model decided together rather than apart.',
         features: [
           'Sentinel workspace design, ingestion strategy and retention tiering',
           'Detection analytics mapped to MITRE ATT&CK with coverage stated',
@@ -7511,7 +7511,7 @@ export const servicesData = {
       {
         title: 'Optimize',
         icon: 'TrendingUp',
-        description: 'Bring cost, performance and reliability back to what the design assumed. Azure spend drifts by default — the question is whether anyone is watching the right number and has the authority to act on it.',
+        description: 'Cost, performance and reliability back to what the design assumed. Azure spend drifts by default.',
         features: [
           'Cost baseline, reservation and commitment position reviewed against usage',
           'Performance and reliability measured against the workload requirement',
@@ -7522,7 +7522,7 @@ export const servicesData = {
       {
         title: 'Automate',
         icon: 'Zap',
-        description: 'Remove the manual work the earlier stages made visible. Automation is ranked by hours returned and risk reduced, not by how well it demonstrates, and each candidate is measured before and after.',
+        description: 'Remove the manual work the earlier stages exposed, ranked by hours returned rather than by demo.',
         features: [
           'Process automation across Power Automate, cloud flows and desktop automation',
           'Security and operational runbooks automated where the decision is deterministic',
@@ -7533,7 +7533,7 @@ export const servicesData = {
       {
         title: 'Support',
         icon: 'Activity',
-        description: 'Run it. Microsoft ships wave releases and platform changes whether or not you have planned for them, so the support model has to absorb continuous change rather than treat each one as an incident.',
+        description: 'Run it. Microsoft ships change whether you planned for it, so support absorbs it, not escalates.',
         features: [
           'Level 1 to 3 support with agreed response commitments',
           'Release wave readiness assessed ahead of each Microsoft cycle',
@@ -7748,7 +7748,7 @@ export const servicesData = {
         name: 'Microsoft Estate Assessment',
         tier: 'ASSESSMENT',
         duration: '3–4 weeks',
-        description: 'A read of what you own, what is switched on, and where the estate disagrees with itself. The licensing position is established first because it changes every recommendation that follows.',
+        description: 'What you own, what is switched on, and where the estate disagrees with itself.',
         deliverables: [
           'Entitlement position across Azure, Microsoft 365, Dynamics 365 and Power Platform',
           'Identity and privileged access reviewed as one surface',
@@ -7761,7 +7761,7 @@ export const servicesData = {
         name: 'Azure Landing Zone & Migration',
         tier: 'ENGINEERING',
         duration: '8–16 weeks',
-        description: 'Establish the platform foundations before workloads arrive, then migrate against them. Subscription structure, identity, network and policy guardrails first; workload movement second.',
+        description: 'Platform foundations first, then workloads migrated against them.',
         deliverables: [
           'Landing zone with management group hierarchy and Azure Policy guardrails',
           'Entra identity model, conditional access and privileged access design',
@@ -7774,7 +7774,7 @@ export const servicesData = {
         name: 'Dynamics 365 Implementation',
         tier: 'BUSINESS APPLICATIONS',
         duration: '12–24 weeks',
-        description: 'CRM and ERP delivery with the entity model, integration boundaries and customization discipline set before build starts, so the first release wave is maintenance rather than remediation.',
+        description: 'CRM and ERP built so the first release wave is maintenance, not remediation.',
         deliverables: [
           'Fit-gap analysis with configure-versus-customize decisions recorded',
           'Entity and security model designed for extension',
@@ -7787,7 +7787,7 @@ export const servicesData = {
         name: 'Sentinel & Security Operations',
         tier: 'SECURITY',
         duration: '6–12 weeks',
-        description: 'One correlation surface for the estate. Ingestion decided by what you need to detect rather than by what is available, with detections mapped to a framework you can argue coverage against.',
+        description: 'One correlation surface, with ingestion decided by what you must detect.',
         deliverables: [
           'Workspace design with ingestion, retention and archive tiering',
           'Detection analytics mapped to MITRE ATT&CK with coverage stated',
@@ -7800,7 +7800,7 @@ export const servicesData = {
         name: 'Power Platform Foundation',
         tier: 'PLATFORM',
         duration: '6–10 weeks',
-        description: 'Environment strategy, application lifecycle management and governance for organizations where low-code has already spread further than anyone intended.',
+        description: 'Environments, ALM and governance for low-code that already spread.',
         deliverables: [
           'Inventory of existing apps and flows with ownership and dependency mapping',
           'Environment strategy separating development, test and production',
@@ -7813,7 +7813,7 @@ export const servicesData = {
         name: 'Managed Microsoft Services',
         tier: 'RUN',
         duration: 'Ongoing',
-        description: 'Continuous operation of the estate — support, administration, release wave readiness and improvement — under agreed response commitments rather than best effort.',
+        description: 'Support, administration and wave readiness under agreed response times.',
         deliverables: [
           'Level 1 to 3 support with defined response and escalation',
           'Release wave assessment ahead of each Microsoft cycle',
