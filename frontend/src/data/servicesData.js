@@ -7256,21 +7256,21 @@ export const servicesData = {
     lastReviewed: '2026-09-09',
 
     heroTitle: 'Microsoft Services and Solutions at\nEnterprise Scale by Kangqore',
-    heroBadge: 'One Microsoft Estate, Not Nine Disconnected Ones',
+    heroBadge: 'Make the Microsoft You Already Pay For Work Together',
     heroStripItems: ['Azure & Sentinel', 'Dynamics 365', 'Power Platform', 'Modern Workplace', 'Connected Products'],
 
     hidePartnershipModel: true,
 
-    whatIsEyebrow: 'What it takes to make them one system',
-    whatIsTitle: 'You Did Not Buy Nine Products.',
+    whatIsEyebrow: 'Why the pieces stopped talking to each other',
+    whatIsTitle: 'Your Microsoft Estate Grew',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'You Bought One Estate.',
+    whatIsHighlight: 'One Decision at a Time.',
     whatIsPara2: 'Most organizations arrive at Microsoft one decision at a time. Exchange became Microsoft 365. A data center refresh became Azure. Finance asked for a CRM and got Dynamics 365. Somebody in operations built a Power App that is now load-bearing. Each decision was defensible on its own, and the result is an estate where identity, data, automation and security were each solved separately — usually by different teams, often by different vendors.',
     whatIsPara3: 'The cost of that shows up later, and it rarely shows up as a Microsoft problem. It shows up as a report nobody trusts because two systems disagree on what a customer is. As a security investigation that stalls because the logs live in four places. As a Power App that broke when someone changed a column name in Dataverse, and no one knew it was connected.',
     whatIsPara4: 'We work on the joins. Identity is the spine — Entra decides who reaches what across Azure, Dynamics, Power Platform and Microsoft 365, so getting it right once removes a class of problems everywhere else. Data is the second: one definition of a customer, an asset, an employee, held where every workload can read it. Everything else is engineering on top of those two.',
     whatIsPara5: 'That is also why we start with what you already own. Most Microsoft estates are paying for capability nobody has switched on — an E5 tenant using E3 features, a Sentinel workspace ingesting logs nobody queries, Power Platform licenses attached to people who never got an environment. We read the licensing position before proposing anything, because it changes the architecture and because a partner billing by the hour has no reason to raise it.',
 
-    outcomesEyebrow: 'WHAT CHANGES WHEN THE ESTATE IS ONE SYSTEM',
+    outcomesEyebrow: 'WHAT CHANGES WHEN IT FINALLY CONNECTS',
     outcomesHeading: 'Fewer places for the truth',
     outcomesHeadingHighlight: 'to disagree with itself.',
     businessMetrics: [
@@ -7297,8 +7297,8 @@ export const servicesData = {
     },
 
     capabilitiesLabel: 'THE MICROSOFT CAPABILITY MAP',
-    capabilitiesSectionTitle: 'Seven areas of engineering,',
-    capabilitiesSectionHighlight: 'one Microsoft estate.',
+    capabilitiesSectionTitle: 'What we build,',
+    capabilitiesSectionHighlight: 'and what it fixes.',
     capabilitiesLede: 'The work below is what a Microsoft transformation actually contains once you stop describing it by product name. Some of it is modernization, some of it is business applications, some of it is security operations. It is listed as engineering, because that is how it is delivered and how it is billed.',
     capabilityAreas: [
       {
@@ -7437,7 +7437,7 @@ export const servicesData = {
 
     dataBoundary: {
       eyebrow: 'WHERE YOUR DATA ACTUALLY SITS',
-      title: 'Four questions about your tenant',
+      title: 'Questions about your tenant',
       titleHighlight: 'worth answering before an auditor does.',
       lede: 'A Microsoft estate holds employee records in Microsoft 365, customer and financial data in Dynamics, telemetry in Azure, and security logs in Sentinel — and Copilot can read across several of them at once. Where that data lives, who can reach it, and what a model is permitted to see are governance questions that belong in the architecture, not in a policy document written afterward.',
       blocks: [
@@ -7450,7 +7450,7 @@ export const servicesData = {
 
     architectureEyebrow: 'HOW A MICROSOFT PROGRAM ACTUALLY RUNS',
     architectureTitle: 'Assessment to support,',
-    architectureTitleHighlight: 'as one continuous engagement.',
+    architectureTitleHighlight: 'with nothing dropped at the handoffs.',
     architectureLede: 'Microsoft programs fail at the joins — between assessment and design, between go-live and operations. This is the sequence we run, and the point of writing it down is that each stage has an output the next one consumes rather than a document that gets filed.',
     architectureNodes: [
       {
@@ -7462,6 +7462,7 @@ export const servicesData = {
           'Application portfolio assessed for modernization, migration, retention or retirement',
           'Identity, data and security posture read as one surface rather than four',
           'What will deliberately not be in scope, written where a reviewer can see it',
+          'A risk register naming what must be decided before design can start',
         ],
       },
       {
@@ -7473,6 +7474,7 @@ export const servicesData = {
           'Entra identity model, conditional access and privileged access design',
           'Shared data definitions and the systems authoritative for each',
           'Integration boundaries and the interfaces that cross them',
+          'Target-state architecture signed off by the teams who will run it',
         ],
       },
       {
@@ -7484,6 +7486,7 @@ export const servicesData = {
           'Dynamics 365 and Power Platform build against agreed entity models',
           'Infrastructure as code with environments promoted rather than hand-built',
           'Customization register with justification, owner and upgrade impact',
+          'Runbooks written as the work is done rather than reconstructed later',
         ],
       },
       {
@@ -7495,6 +7498,7 @@ export const servicesData = {
           'Event and batch integration built on the cadence the business needs',
           'Master data flows with reconciliation and a defined system of record',
           'Failure handling, replay and observability designed in rather than added',
+          'Contract tests on every interface that crosses a system boundary',
         ],
       },
       {
@@ -7506,6 +7510,7 @@ export const servicesData = {
           'Detection analytics mapped to MITRE ATT&CK with coverage stated',
           'Response playbooks with a defined action per alert class',
           'Privileged access, conditional access and key management enforced',
+          'Detection gaps named explicitly where coverage is not yet possible',
         ],
       },
       {
@@ -7517,6 +7522,7 @@ export const servicesData = {
           'Performance and reliability measured against the workload requirement',
           'Unused entitlement identified before new spend is proposed',
           'Well-Architected review across reliability, security, cost and operations',
+          'Savings tracked against the baseline rather than claimed once',
         ],
       },
       {
@@ -7528,6 +7534,7 @@ export const servicesData = {
           'Security and operational runbooks automated where the decision is deterministic',
           'AI applied where a prediction changes an action, not where it produces a report',
           'Effect measured against the pre-automation baseline',
+          'A fallback path defined for every decision handed to automation',
         ],
       },
       {
@@ -7539,6 +7546,7 @@ export const servicesData = {
           'Release wave readiness assessed ahead of each Microsoft cycle',
           'Continuous improvement backlog owned rather than accumulated',
           'Environment administration, capacity and configuration management',
+          'Monthly service review against the commitments actually agreed',
         ],
       },
     ],
@@ -7739,7 +7747,7 @@ export const servicesData = {
       },
     ],
 
-    engagementEyebrow: 'FIVE WAYS TO START',
+    engagementEyebrow: 'WHERE TO START',
     engagementHeading: 'Scoped engagements,',
     engagementHeadingHighlight: 'not open-ended programs.',
     engagementLede: 'Each of these has a defined output and a defined end. None of them require the next one, and the assessments are deliberately structured so that "leave this alone" is an available conclusion.',
@@ -7891,8 +7899,8 @@ export const servicesData = {
     ],
 
     practiceLabel: 'THE ENGINEERING FOUNDRY PRACTICE',
-    practiceHeading: 'Microsoft is one estate',
-    practiceHeadingHighlight: 'inside a larger one.',
+    practiceHeading: 'Microsoft rarely runs',
+    practiceHeadingHighlight: 'on its own.',
     practiceLede: 'Most organizations running Microsoft are also running something else — a cloud they inherited, an integration layer that predates the tenant, a data platform bought for a different reason. The work below sits alongside this one when the answer crosses a boundary.',
 
     conciergeHeading: 'Ask about your Microsoft estate',
@@ -7908,7 +7916,7 @@ export const servicesData = {
     midCta: 'The licenses renew whether or not anyone read what you are paying for.',
     midCtaLabel: 'Book a Microsoft Estate Assessment',
     closingCta: {
-      title: 'One estate,',
+      title: 'Your estate,',
       highlight: 'honestly read.',
       body: 'Tell us roughly what you run — which Microsoft workloads, how many people, and what is currently annoying you most. In 30 minutes we will tell you where the estate is likely leaking licensing, which joins are missing, and what we would look at first. No proposal attached.',
       proofLabel: 'From first call to a read of your estate',
