@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T03:00:46.297Z",
+  "generatedAt": "2026-09-10T08:41:55.578Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -858,8 +858,8 @@
         "Modern Workplace",
         "Microsoft Dynamics 365",
         "Connected Products",
-        "Data, Analytics and AI",
-        "Azure Platform and Microsoft Sentinel",
+        "Analytics and AI",
+        "Azure and Azure Sentinel",
         "Power Platform"
       ],
       "faqs": [
