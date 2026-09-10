@@ -7437,18 +7437,6 @@ export const servicesData = {
       },
     ],
 
-    dataBoundary: {
-      eyebrow: 'WHERE YOUR DATA ACTUALLY SITS',
-      title: 'Questions about your tenant',
-      titleHighlight: 'worth answering before an auditor does.',
-      lede: 'A Microsoft estate holds employee records in Microsoft 365, customer and financial data in Dynamics, telemetry in Azure, and security logs in Sentinel, and Copilot can read across several of them at once. Where that data lives, who can reach it, and what a model is permitted to see are governance questions that belong in the architecture, not in a policy document written afterward.',
-      blocks: [
-        { label: 'Which tenant and which region?', body: 'Microsoft 365 and Dynamics data residency is decided at tenant creation and is not trivially changed afterward. Multi-geo is a licensing and architecture decision, not a setting.' },
-        { label: 'What can Copilot actually see?', body: 'Copilot inherits the permissions a user already holds. Oversharing that was survivable when nobody could search it becomes visible the moment a model can summarize it.' },
-        { label: 'Where do the logs go, and for how long?', body: 'Sentinel retention, archive tiers and per-source ingestion cost drive both the security answer and the bill. Both should be decided deliberately.' },
-        { label: 'Who holds the keys?', body: 'Customer-managed keys, Purview boundaries and privileged role activation determine whether a compromised administrator account is an incident or a catastrophe.' },
-      ],
-    },
 
     architectureEyebrow: 'HOW A MICROSOFT PROGRAM ACTUALLY RUNS',
     architectureTitle: 'Assessment to support,',
@@ -7740,6 +7728,27 @@ export const servicesData = {
           { label: 'Microsoft Fabric documentation', url: 'https://learn.microsoft.com/en-us/fabric/' },
         ],
         a: 'Neither, and programs that sequence it as a choice usually stall on the one they picked second.\n\nWhat has to come first is agreement on the definitions. What a customer is, what an asset is, which system is authoritative for each. That is not a platform decision and it does not require any technology to be purchased. It requires the people who own those processes to agree, which is why it takes longer than the engineering and why it is usually skipped.\n\nWith the definitions settled, the two tracks can run in parallel. Business applications write to the agreed model rather than inventing their own, and the data platform consumes from a known system of record rather than reverse-engineering intent from a schema.\n\nWithout them, you get the estate we see most often: a data warehouse whose numbers do not match the operational systems it draws from, and reporting nobody trusts enough to act on. The technology in that scenario is usually fine. The disagreement is upstream of it.',
+      },
+      {
+        q: 'Which tenant and which region does our data actually live in?',
+        sources: [
+          { label: 'Microsoft 365 data locations', url: 'https://learn.microsoft.com/en-us/microsoft-365/enterprise/o365-data-locations' },
+        ],
+        a: 'Data residency for Microsoft 365 and Dynamics 365 is fixed when the tenant is created, and it is not something you change later by flipping a setting.\n\nThat surprises people, because almost everything else in the estate is reconfigurable. Tenant region determines where mailboxes, SharePoint content and Dynamics data sit at rest. Moving it is a migration Microsoft performs, on its own schedule, and only under specific conditions. Multi-geo exists for organizations that genuinely need content held in more than one region, but it is a licensing commitment and an architecture decision rather than a toggle, and it applies per workload rather than to the tenant as a whole.\n\nAzure is different and more flexible, because residency is decided per resource at deployment time. That flexibility is also how estates end up with storage accounts in regions nobody intended, which is what Azure Policy at management group scope is for.\n\nThe practical advice is to establish the position before it matters. Know which region each workload sits in, know which of those are fixed and which are not, and know what your contractual and regulatory obligations actually require, which is often narrower than the assumption being defended in the room.',
+      },
+      {
+        q: 'Where do our security logs go, and how long do they stay there?',
+        sources: [
+          { label: 'Microsoft Sentinel documentation', url: 'https://learn.microsoft.com/en-us/azure/sentinel/' },
+        ],
+        a: 'Wherever you point them, for exactly as long as you configured, which in most estates nobody has checked since the workspace was created.\n\nRetention is two decisions rather than one. There is the interactive period, where data is queryable by analysts and by detection rules, and there is the archive, where it is retained cheaply but has to be restored or searched before it can be used. The security answer and the bill both come out of how you split that. Keeping everything interactive for two years is defensible and expensive. Keeping ninety days interactive with a longer archive behind it is usually the better shape, and it is a decision worth making deliberately rather than inheriting.\n\nThe constraint most organizations discover late is that regulatory retention and security retention are different requirements with different periods, and the longer of the two governs. Financial services and healthcare frequently need evidence available years after the interactive window has closed.\n\nWorth separating from the cost question, which is about what you ingest in the first place. This one is about what happens to it afterward, and about being able to answer an auditor asking whether the record still exists.',
+      },
+      {
+        q: 'Who holds the encryption keys, and what happens if an admin account is compromised?',
+        sources: [
+          { label: 'Azure encryption at rest', url: 'https://learn.microsoft.com/en-us/azure/security/fundamentals/encryption-atrest' },
+        ],
+        a: 'By default Microsoft holds them, and for most organizations that is the correct answer.\n\nCustomer-managed keys move control to you, and with it the responsibility. You hold the key in your own vault, you control rotation, and you can revoke access. You can also lose the key, and losing it means losing the data. Organizations adopt it because a regulator or a contract requires demonstrable control, not because it is inherently more secure than what Microsoft operates. If nobody can name the requirement driving it, the added operational risk is usually not worth taking on.\n\nThe compromised administrator question is separate and, in practice, more urgent. Encryption at rest protects against a stolen disk. It does nothing about an account that is legitimately authorized to read the data. What limits that blast radius is privileged access design: standing administrative rights removed, elevation through time-bounded activation with approval, and separation so no single account can reach every workload.\n\nSo the honest framing is that keys matter for a narrow set of obligations, and privileged access design matters for almost every real incident. We would fix the second before debating the first.',
       },
       {
         q: 'What is the smallest sensible engagement?',
