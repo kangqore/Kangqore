@@ -53,7 +53,7 @@ function writeStoredConversationId(id) {
 }
 
 const DEFAULT_GREETING_TEXT =
-  "Hi, I'm eQORE — Kangqore’s Unified Intelligence. Ask me anything about Kangqore.";
+  "Hi, I'm eQORE, Kangqore’s Unified Intelligence. Ask me anything about Kangqore.";
 
 function buildGreeting(seedContext) {
   // 1. Try the contextual intelligence registry for a domain-specific greeting

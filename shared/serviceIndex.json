@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T16:56:53.831Z",
+  "generatedAt": "2026-09-10T08:41:55.578Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -852,9 +852,30 @@
       "url": "/services/microsoft-services",
       "name": "Microsoft Services",
       "department": "Foundry",
-      "description": "Microsoft cloud services — Azure implementation, Microsoft 365, Power Platform, Dynamics 365, and Microsoft security & compliance.",
-      "capabilities": [],
-      "faqs": [],
+      "description": "Microsoft engineering across Azure, Dynamics 365, Power Platform and Sentinel: application modernization, business applications, data and security operations.",
+      "capabilities": [
+        "Application Modernization",
+        "Modern Workplace",
+        "Microsoft Dynamics 365",
+        "Connected Products",
+        "Analytics and AI",
+        "Azure and Azure Sentinel",
+        "Power Platform"
+      ],
+      "faqs": [
+        {
+          "q": "Are you a Microsoft partner, and what tier?",
+          "a": "We hold no Microsoft partner tier and we do not resell Microsoft licensing. It is worth saying plainly, because most firms answering this question lead with a designation and a logo. What that means practically is that we carry no reseller margin on your agreement and no quota against a product. When we tell you an E3 tenant covers the requirement and the E5 upgrade is not justified yet, there is no commercial reason for us to say otherwise. When we recommend configuring rather than building, we are reducing our own scope. The trade is real and you should weigh it. Partner tiers come with escalation paths into Microsoft support, funded assessment programs, and early access to some previews. If your program depends on those, you should use a partner who has them, and we will say so rather than compete for the work."
+        },
+        {
+          "q": "We already have a Microsoft partner. Why would we bring in another?",
+          "a": "Usually you would not, and the honest answer is that a second firm on the same workload adds coordination cost without adding much else. The case for it is narrower. It holds when the existing relationship is strong on one workload and thin on the joins, a partner who implemented Dynamics well but has no view of your Azure landing zone or your Sentinel coverage. It holds when you want the licensing position read by someone who does not sell licensing. And it holds when a program has stalled and the useful next step is a reading of what is actually there rather than another delivery proposal. What we would not do is take over a workload that is running acceptably to prove we can run it differently. If your current partner is delivering, the assessment we run should end with us saying so."
+        },
+        {
+          "q": "Our Azure bill keeps growing and nobody can explain it. Where do we start?",
+          "a": "Start by finding out what is running, because in most estates the growth is not one expensive thing. It is a long tail nobody owns. The first pass is mechanical and usually recovers more than the sophisticated work that follows. Non-production environments running around the clock because nobody built a schedule. Storage in a hot tier that has not been read in a year. Managed disks still attached to virtual machines that were decommissioned. Log ingestion into Sentinel from sources no detection ever queries. None of this requires an architecture change. The second pass is commitment shape, whether reservations and savings plans match the workloads you actually run rather than the ones you ran when the agreement was signed. This is where the larger numbers usually sit, and it is also where a partner earning margin on your consumption has the least incentive to look. The third pass is architectural, and it is the slowest: workloads sized for a peak that happens twice a year, or running on a service tier the requirement never justified. We would sequence it in that order, because the first two fund the third."
+        }
+      ],
       "method": [
         {
           "rule": "Identity & Access Plane",
@@ -881,7 +902,24 @@
           "detail": "Automated collaboration governance, enterprise search grounding, and AI workflow integration."
         }
       ],
-      "dataHandling": []
+      "dataHandling": [
+        {
+          "topic": "Which tenant and which region?",
+          "detail": "Microsoft 365 and Dynamics data residency is decided at tenant creation and is not trivially changed afterward. Multi-geo is a licensing and architecture decision, not a setting."
+        },
+        {
+          "topic": "What can Copilot actually see?",
+          "detail": "Copilot inherits the permissions a user already holds. Oversharing that was survivable when nobody could search it becomes visible the moment a model can summarize it."
+        },
+        {
+          "topic": "Where do the logs go, and for how long?",
+          "detail": "Sentinel retention, archive tiers and per-source ingestion cost drive both the security answer and the bill. Both should be decided deliberately."
+        },
+        {
+          "topic": "Who holds the keys?",
+          "detail": "Customer-managed keys, Purview boundaries and privileged role activation determine whether a compromised administrator account is an incident or a catastrophe."
+        }
+      ]
     },
     {
       "slug": "google-cloud-services",

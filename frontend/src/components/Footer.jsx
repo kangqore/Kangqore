@@ -201,7 +201,7 @@ const Footer = () => {
                             e.preventDefault();
                             toggleDept(slug);
                           }}
-                          className="flex items-center justify-center select-none"
+                          className="flex items-center justify-center select-none min-w-[24px] min-h-[24px] -my-1"
                           aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${dept.name} services`}
                           title={`${isOpen ? 'Collapse' : 'Expand'} services`}
                         >
@@ -232,7 +232,7 @@ const Footer = () => {
                                   />
                                   <Link
                                     to={`/services/${svc.slug}`}
-                                    className="text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-[#2564ea] dark:hover:text-cyan-400 transition-colors truncate max-w-[240px] pl-1 leading-tight"
+                                    className="text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-[#2564ea] dark:hover:text-cyan-400 transition-colors truncate max-w-[240px] pl-1 py-1.5 leading-tight"
                                     title={svc.name}
                                   >
                                     {svc.name}

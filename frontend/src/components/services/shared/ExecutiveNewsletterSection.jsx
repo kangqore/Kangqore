@@ -111,6 +111,15 @@ export const ExecutiveNewsletterSection = () => {
           <p className="mt-4 sm:mt-5 text-white/80 text-base sm:text-lg font-normal leading-relaxed max-w-lg">
             Sharper decisions start with <strong className="text-white font-semibold">The CEO Shortlist</strong>, a bimonthly newsletter of our best ideas for the C-suite.
           </p>
+          {/* What the reader is actually subscribing to. A 500px band asking for an
+              email while saying nothing about cadence, content or what happens to the
+              address is a conversion problem before it is a density one. */}
+          <p className="mt-3 text-white/65 text-sm sm:text-base font-normal leading-relaxed max-w-lg">
+            Each issue takes one decision leaders are actually facing, whether a platform choice,
+            a modernization sequence, or a governance question nobody has answered yet. It sets out
+            the trade-offs, what the evidence supports, and where the honest uncertainty still
+            sits. Two issues a month. Unsubscribe in one click, and we never share your address.
+          </p>
 
           {/* Subscription Form */}
           <div className="mt-7 sm:mt-8 max-w-md">

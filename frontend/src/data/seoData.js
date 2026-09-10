@@ -456,9 +456,9 @@ export const serviceSEO = {
     url: '/services/aws',
   },
   'microsoft-services': {
-    title: 'Microsoft Services — Foundry | Kangqore',
-    description: 'Microsoft cloud services — Azure implementation, Microsoft 365, Power Platform, Dynamics 365, and Microsoft security & compliance.',
-    keywords: 'Microsoft Azure, Azure consulting, Microsoft 365, Power Platform, Dynamics 365',
+    title: 'Microsoft Azure, Dynamics 365 and Power Platform | Kangqore',
+    description: 'Microsoft engineering across Azure, Dynamics 365, Power Platform and Sentinel: application modernization, business applications, data and security operations.',
+    keywords: 'Microsoft Azure, Azure consulting, Microsoft 365, Power Platform, Dynamics 365, Microsoft Sentinel, Azure migration, Dynamics 365 implementation',
     url: '/services/microsoft-services',
   },
   'google-cloud-services': {
