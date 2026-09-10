@@ -456,7 +456,7 @@ export const serviceSEO = {
     url: '/services/aws',
   },
   'microsoft-services': {
-    title: 'Microsoft Services — Azure, D365 & Power Platform | Kangqore',
+    title: 'Microsoft Azure, Dynamics 365 and Power Platform | Kangqore',
     description: 'Microsoft engineering across Azure, Dynamics 365, Power Platform and Sentinel: application modernization, business applications, data and security operations.',
     keywords: 'Microsoft Azure, Azure consulting, Microsoft 365, Power Platform, Dynamics 365, Microsoft Sentinel, Azure migration, Dynamics 365 implementation',
     url: '/services/microsoft-services',

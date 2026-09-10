@@ -115,8 +115,8 @@ export const ExecutiveNewsletterSection = () => {
               email while saying nothing about cadence, content or what happens to the
               address is a conversion problem before it is a density one. */}
           <p className="mt-3 text-white/65 text-sm sm:text-base font-normal leading-relaxed max-w-lg">
-            Each issue takes one decision leaders are actually facing — a platform choice, a
-            modernization sequence, a governance question nobody has answered yet — and sets out
+            Each issue takes one decision leaders are actually facing, whether a platform choice,
+            a modernization sequence, or a governance question nobody has answered yet. It sets out
             the trade-offs, what the evidence supports, and where the honest uncertainty still
             sits. Two issues a month. Unsubscribe in one click, and we never share your address.
           </p>

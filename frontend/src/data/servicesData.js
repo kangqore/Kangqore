@@ -7248,7 +7248,7 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Microsoft Azure and M365 solutions',
-    fullDescription: 'Azure, Dynamics 365, Power Platform and Sentinel — engineered as one estate, not eight separate projects.',
+    fullDescription: 'Azure, Dynamics 365, Power Platform and Sentinel, engineered as one estate rather than eight separate projects.',
     keyFeatures: ['Azure implementation', 'Microsoft 365', 'Power Platform', 'Dynamics 365', 'Security & compliance'],
     relatedServiceSlugs: ['cloud-computing', 'managed-cloud-services'],
     featured: false,
@@ -7265,17 +7265,17 @@ export const servicesData = {
     whatIsTitle: 'Your Microsoft Estate Grew',
     whatIsHighlightNewLine: true,
     whatIsHighlight: 'One Decision at a Time.',
-    whatIsPara2: 'Most organizations arrive at Microsoft one decision at a time. Exchange became Microsoft 365. A data center refresh became Azure. Finance asked for a CRM and got Dynamics 365. Somebody in operations built a Power App that is now load-bearing. Each decision was defensible on its own, and the result is an estate where identity, data, automation and security were each solved separately — usually by different teams, often by different vendors.',
+    whatIsPara2: 'Most organizations arrive at Microsoft one decision at a time. Exchange became Microsoft 365. A data center refresh became Azure. Finance asked for a CRM and got Dynamics 365. Somebody in operations built a Power App that is now load-bearing. Each decision was defensible on its own, and the result is an estate where identity, data, automation and security were each solved separately, usually by different teams and often by different vendors.',
     whatIsPara3: 'The cost of that shows up later, and it rarely shows up as a Microsoft problem. It shows up as a report nobody trusts because two systems disagree on what a customer is. As a security investigation that stalls because the logs live in four places. As a Power App that broke when someone changed a column name in Dataverse, and no one knew it was connected.',
-    whatIsPara4: 'We work on the joins. Identity is the spine — Entra decides who reaches what across Azure, Dynamics, Power Platform and Microsoft 365, so getting it right once removes a class of problems everywhere else. Data is the second: one definition of a customer, an asset, an employee, held where every workload can read it. Everything else is engineering on top of those two.',
-    whatIsPara5: 'That is also why we start with what you already own. Most Microsoft estates are paying for capability nobody has switched on — an E5 tenant using E3 features, a Sentinel workspace ingesting logs nobody queries, Power Platform licenses attached to people who never got an environment. We read the licensing position before proposing anything, because it changes the architecture and because a partner billing by the hour has no reason to raise it.',
+    whatIsPara4: 'We work on the joins. Identity is the spine. Entra decides who reaches what across Azure, Dynamics, Power Platform and Microsoft 365, so getting it right once removes a class of problems everywhere else. Data is the second: one definition of a customer, an asset, an employee, held where every workload can read it. Everything else is engineering on top of those two.',
+    whatIsPara5: 'That is also why we start with what you already own. Most Microsoft estates are paying for capability nobody has switched on. An E5 tenant using E3 features, a Sentinel workspace ingesting logs nobody queries, Power Platform licenses attached to people who never got an environment. We read the licensing position before proposing anything, because it changes the architecture and because a partner billing by the hour has no reason to raise it.',
 
     outcomesEyebrow: 'WHAT CHANGES WHEN IT FINALLY CONNECTS',
     outcomesHeading: 'Fewer places for the truth',
     outcomesHeadingHighlight: 'to disagree with itself.',
     businessMetrics: [
       { illustrative: true, title: 'Identity Surface', desc: 'One directory instead of one per workload, and no sync jobs between them.', value: '1', suffix: ' Directory', metricLabel: 'Authoritative Directories', icon: 'Shield' },
-      { illustrative: true, title: 'Licensing Recovery', desc: 'Entitlement already paid for and never switched on, found before new spend.', value: '10–20', suffix: '% Unused', metricLabel: 'Entitlement Already Owned', icon: 'TrendingUp' },
+      { illustrative: true, title: 'Licensing Recovery', desc: 'Entitlement already paid for and never switched on, found before new spend.', value: '10 to 20', suffix: '% Unused', metricLabel: 'Entitlement Already Owned', icon: 'TrendingUp' },
       { illustrative: true, title: 'Log Coverage', desc: 'Security sources in one workspace, so an investigation can correlate.', value: 'One', suffix: ' Workspace', metricLabel: 'Correlation Surface', icon: 'Radar' },
       { illustrative: true, title: 'Deployment Path', desc: 'Dev, test and production gated, instead of editing live in production.', value: '3', suffix: ' Gated', metricLabel: 'Dev → Test → Prod', icon: 'Layers' },
     ],
@@ -7283,7 +7283,7 @@ export const servicesData = {
       illustrative: true,
       metric: '4 → 1',
       metricLabel: 'identity directories',
-      industry: 'Modeled scenario — manufacturing, ~6,000 employees',
+      industry: 'Modeled scenario in manufacturing, ~6,000 employees',
       problem: 'An E5 tenant, an on-premises Active Directory nobody would decommission, a separate directory behind the Dynamics environment, and a fourth set of accounts for contractors on the plant floor. Joiner-mover-leaver ran four times, by hand, and the leaver half was the one that got skipped.',
       outcome: 'Entra established as the authoritative directory with Connect Sync in one direction only, conditional access replacing per-application rules, and privileged roles moved behind time-bounded PIM activation. Contractor accounts moved to entitlement management with an expiry date that does not depend on anyone remembering.',
     },
@@ -7291,7 +7291,7 @@ export const servicesData = {
       illustrative: true,
       metric: '11 → 3',
       metricLabel: 'reporting sources',
-      industry: 'Modeled scenario — distribution, ~40 warehouses',
+      industry: 'Modeled scenario in distribution, ~40 warehouses',
       problem: 'Eleven places to ask what a customer had ordered, and no two agreeing. Finance reported from the ERP extract, sales from a Dynamics view, and operations from a Power BI file on someone\'s desktop that had become the number leadership actually quoted.',
       outcome: 'One customer definition landed in the data platform, with Dynamics and the warehouse systems writing to it rather than each holding a version. Power BI rebuilt against that single model, and the desktop file retired deliberately rather than left to rot.',
     },
@@ -7304,11 +7304,11 @@ export const servicesData = {
       {
         title: 'Application Modernization',
         image: '/images/capabilities/application-modernization-illustration.png',
-        desc: 'Re-engineer, refactor or re-platform — and retire what you pay for twice.',
+        desc: 'Re-engineer, refactor or re-platform, and retire what you pay for twice.',
         items: [
           'Application Re-engineering: Rebuild existing applications for scalability, maintainability, performance and security without discarding the business logic that already works.',
           'Legacy Code Refactoring: Reduce technical debt in aging codebases and prepare them for modern architectures, one bounded change at a time rather than a rewrite nobody can review.',
-          'Application Re-writing: Re-write on modern architectures where the existing system genuinely cannot carry evolving requirements — a decision we argue against more often than for.',
+          'Application Re-writing: Re-write on modern architectures where the existing system genuinely cannot carry evolving requirements, a decision we argue against more often than for.',
           'Monolith to Microservices: Decompose monolithic applications into modular services designed for independent deployment, resilience and scale, keeping the seams where the domain actually divides.',
           'On-premises to Azure Migration: Move applications, workloads, infrastructure and databases into Azure, with the landing zone and policy guardrails established before the first workload lands.',
           'Multi-Cloud Architecture Migration: Modernize workloads across cloud environments where interoperability, governance and data residency rule out a single-provider answer.',
@@ -7326,7 +7326,7 @@ export const servicesData = {
           'Viva Engage and Planner: Support organizational communication, coordination and collaborative work management across distributed teams.',
           'Microsoft 365 Groups and Outlook Add-ins: Improve collaboration and integration across productivity environments, with group lifecycle governed rather than left to sprawl.',
           'Workspace Service Integration: Integrate workplace services and line-of-business systems so employee experiences are connected rather than adjacent.',
-          'Cloud Adoption Opportunity Identification: Identify the workplace workloads and processes where cloud adoption improves efficiency, scale and accessibility — and the ones where it will not.',
+          'Cloud Adoption Opportunity Identification: Identify the workplace workloads and processes where cloud adoption improves efficiency, scale and accessibility, and the ones where it will not.',
           'End-User and Device Analysis: Analyze users, devices, environments and usage patterns to ground workplace decisions in what people actually do.',
           'Automation Opportunity Identification: Find the repetitive workplace processes worth automating, ranked by hours returned rather than by ease of demo.',
           'End-User Persona Mapping: Map personas, requirements and workflows so adoption is designed for the roles that exist, not the average user who does not.',
@@ -7362,7 +7362,7 @@ export const servicesData = {
           'Predictive Analytics: Apply predictive models to pipeline, service demand and operational data held in the platform.',
           'Machine Learning: Build machine learning capability against Dynamics data where the pattern is worth more than the rule.',
           'Copilot Plugins and Extensions: Extend Copilot with plugins that reach the systems your processes actually depend on.',
-          'Managed Services: Run the environment as a service — administration, support and maintenance under agreed response commitments.',
+          'Managed Services: Run the environment as a service, with administration, support and maintenance under agreed response commitments.',
         ],
       },
       {
@@ -7388,7 +7388,7 @@ export const servicesData = {
           'Cloud-First Data Solutions: Design data platforms on Azure that scale with demand rather than with the size of the nightly batch window.',
           'Data Visualization: Turn enterprise data into reporting people trust, with lineage a reviewer can follow back to source.',
           'Machine Learning: Apply machine learning where the pattern genuinely beats the rule, and say so when it does not.',
-          'Deep Learning: Build deep learning capability for problems — vision, language, signal — where classical approaches have run out.',
+          'Deep Learning: Build deep learning capability for vision, language and signal problems where classical approaches have run out.',
           'AI and Automation: Combine AI with process automation so a prediction triggers an action rather than an email.',
           'Digital Reality: Apply mixed reality and spatial computing to training, maintenance and field operations where a screen is the wrong interface.',
         ],
@@ -7439,7 +7439,7 @@ export const servicesData = {
       eyebrow: 'WHERE YOUR DATA ACTUALLY SITS',
       title: 'Questions about your tenant',
       titleHighlight: 'worth answering before an auditor does.',
-      lede: 'A Microsoft estate holds employee records in Microsoft 365, customer and financial data in Dynamics, telemetry in Azure, and security logs in Sentinel — and Copilot can read across several of them at once. Where that data lives, who can reach it, and what a model is permitted to see are governance questions that belong in the architecture, not in a policy document written afterward.',
+      lede: 'A Microsoft estate holds employee records in Microsoft 365, customer and financial data in Dynamics, telemetry in Azure, and security logs in Sentinel, and Copilot can read across several of them at once. Where that data lives, who can reach it, and what a model is permitted to see are governance questions that belong in the architecture, not in a policy document written afterward.',
       blocks: [
         { label: 'Which tenant and which region?', body: 'Microsoft 365 and Dynamics data residency is decided at tenant creation and is not trivially changed afterward. Multi-geo is a licensing and architecture decision, not a setting.' },
         { label: 'What can Copilot actually see?', body: 'Copilot inherits the permissions a user already holds. Oversharing that was survivable when nobody could search it becomes visible the moment a model can summarize it.' },
@@ -7451,7 +7451,7 @@ export const servicesData = {
     architectureEyebrow: 'HOW A MICROSOFT PROGRAM ACTUALLY RUNS',
     architectureTitle: 'Assessment to support,',
     architectureTitleHighlight: 'with nothing dropped at the handoffs.',
-    architectureLede: 'Microsoft programs fail at the joins — between assessment and design, between go-live and operations. This is the sequence we run, and the point of writing it down is that each stage has an output the next one consumes rather than a document that gets filed.',
+    architectureLede: 'Microsoft programs fail at the joins between assessment and design, and between go-live and operations. This is the sequence we run, and the point of writing it down is that each stage has an output the next one consumes rather than a document that gets filed.',
     architectureNodes: [
       {
         title: 'Assess',
@@ -7468,7 +7468,7 @@ export const servicesData = {
       {
         title: 'Design',
         icon: 'Layers',
-        description: 'Landing zones, identity, data definitions, integration boundaries — the decisions expensive to reverse.',
+        description: 'Landing zones, identity, data definitions, integration boundaries, the decisions expensive to reverse.',
         features: [
           'Azure landing zone, subscription structure and policy guardrails',
           'Entra identity model, conditional access and privileged access design',
@@ -7492,7 +7492,7 @@ export const servicesData = {
       {
         title: 'Integrate',
         icon: 'Network',
-        description: 'Connect the estate so it behaves as one system — the stage most programs leave last and lose time to.',
+        description: 'Connect the estate so it behaves as one system, the stage most programs leave last and lose time to.',
         features: [
           'Governed interfaces between Microsoft workloads and line-of-business systems',
           'Event and batch integration built on the cadence the business needs',
@@ -7616,7 +7616,7 @@ export const servicesData = {
     comparisonTable: {
       eyebrow: 'WHERE MICROSOFT ESTATES QUIETLY DIVERGE',
       heading: 'Both tenants passed the health check.',
-      lede: 'Neither column describes a failed program. They differ on the second year — when the licensing renews, the release wave lands, and someone asks which system holds the real customer record.',
+      lede: 'Neither column describes a failed program. They differ on the second year, when the licensing renews, the release wave lands, and someone asks which system holds the real customer record.',
       beforeLabel: 'DELIVERED BY WORKLOAD',
       afterLabel: 'DELIVERED AS AN ESTATE',
       afterBadge: 'KANGQORE',
@@ -7656,6 +7656,7 @@ export const servicesData = {
       ],
     },
 
+    faqLede: 'The questions below are the ones buyers actually ask in a first call, on scope, risk, timelines, and what happens when something goes wrong. Answers are direct rather than promotional.',
     faqEyebrow: 'THE QUESTIONS THAT DECIDE THE PROGRAM',
     faqHeading: 'What people ask',
     faqHeadingHighlight: 'before they commit.',
@@ -7665,56 +7666,56 @@ export const servicesData = {
         sources: [
           { label: 'Microsoft AI Cloud Partner Program', url: 'https://partner.microsoft.com/en-us/partnership' },
         ],
-        a: 'We hold no Microsoft partner tier and we do not resell Microsoft licensing. It is worth saying plainly, because most firms answering this question lead with a designation and a logo.\n\nWhat that means practically is that we carry no reseller margin on your agreement and no quota against a product. When we tell you an E3 tenant covers the requirement and the E5 upgrade is not justified yet, there is no commercial reason for us to say otherwise. When we recommend configuring rather than building, we are reducing our own scope.\n\nThe trade is real and you should weigh it. Partner tiers come with escalation paths into Microsoft support, funded assessment programs, and early access to some previews. If your program depends on those, you should use a partner who has them — and we will say so rather than compete for the work.',
+        a: 'We hold no Microsoft partner tier and we do not resell Microsoft licensing. It is worth saying plainly, because most firms answering this question lead with a designation and a logo.\n\nWhat that means practically is that we carry no reseller margin on your agreement and no quota against a product. When we tell you an E3 tenant covers the requirement and the E5 upgrade is not justified yet, there is no commercial reason for us to say otherwise. When we recommend configuring rather than building, we are reducing our own scope.\n\nThe trade is real and you should weigh it. Partner tiers come with escalation paths into Microsoft support, funded assessment programs, and early access to some previews. If your program depends on those, you should use a partner who has them, and we will say so rather than compete for the work.',
       },
       {
         q: 'We already have a Microsoft partner. Why would we bring in another?',
         sources: [
           { label: 'Microsoft Cloud Adoption Framework', url: 'https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/' },
         ],
-        a: 'Usually you would not, and the honest answer is that a second firm on the same workload adds coordination cost without adding much else.\n\nThe case for it is narrower. It holds when the existing relationship is strong on one workload and thin on the joins — a partner who implemented Dynamics well but has no view of your Azure landing zone or your Sentinel coverage. It holds when you want the licensing position read by someone who does not sell licensing. And it holds when a program has stalled and the useful next step is a reading of what is actually there rather than another delivery proposal.\n\nWhat we would not do is take over a workload that is running acceptably to prove we can run it differently. If your current partner is delivering, the assessment we run should end with us saying so.',
+        a: 'Usually you would not, and the honest answer is that a second firm on the same workload adds coordination cost without adding much else.\n\nThe case for it is narrower. It holds when the existing relationship is strong on one workload and thin on the joins, a partner who implemented Dynamics well but has no view of your Azure landing zone or your Sentinel coverage. It holds when you want the licensing position read by someone who does not sell licensing. And it holds when a program has stalled and the useful next step is a reading of what is actually there rather than another delivery proposal.\n\nWhat we would not do is take over a workload that is running acceptably to prove we can run it differently. If your current partner is delivering, the assessment we run should end with us saying so.',
       },
       {
         q: 'Our Azure bill keeps growing and nobody can explain it. Where do we start?',
         sources: [
-          { label: 'Microsoft Azure Well-Architected Framework — Cost Optimization', url: 'https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/' },
+          { label: 'Microsoft Azure Well-Architected Framework (Cost Optimization)', url: 'https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/' },
         ],
-        a: 'Start by finding out what is running, because in most estates the growth is not one expensive thing. It is a long tail nobody owns.\n\nThe first pass is mechanical and usually recovers more than the sophisticated work that follows. Non-production environments running around the clock because nobody built a schedule. Storage in a hot tier that has not been read in a year. Managed disks still attached to virtual machines that were decommissioned. Log ingestion into Sentinel from sources no detection ever queries. None of this requires an architecture change.\n\nThe second pass is commitment shape — whether reservations and savings plans match the workloads you actually run rather than the ones you ran when the agreement was signed. This is where the larger numbers usually sit, and it is also where a partner earning margin on your consumption has the least incentive to look.\n\nThe third pass is architectural, and it is the slowest: workloads sized for a peak that happens twice a year, or running on a service tier the requirement never justified. We would sequence it in that order, because the first two fund the third.',
+        a: 'Start by finding out what is running, because in most estates the growth is not one expensive thing. It is a long tail nobody owns.\n\nThe first pass is mechanical and usually recovers more than the sophisticated work that follows. Non-production environments running around the clock because nobody built a schedule. Storage in a hot tier that has not been read in a year. Managed disks still attached to virtual machines that were decommissioned. Log ingestion into Sentinel from sources no detection ever queries. None of this requires an architecture change.\n\nThe second pass is commitment shape, whether reservations and savings plans match the workloads you actually run rather than the ones you ran when the agreement was signed. This is where the larger numbers usually sit, and it is also where a partner earning margin on your consumption has the least incentive to look.\n\nThe third pass is architectural, and it is the slowest: workloads sized for a peak that happens twice a year, or running on a service tier the requirement never justified. We would sequence it in that order, because the first two fund the third.',
       },
       {
         q: 'What does Copilot actually see, and how do we stop it surfacing the wrong thing?',
         sources: [
           { label: 'Microsoft 365 Copilot data, privacy and security', url: 'https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-privacy' },
         ],
-        a: 'Copilot sees what the person using it can already see. It does not widen permissions, and that is exactly why it causes problems.\n\nMost tenants carry oversharing that was survivable while it was undiscoverable. A SharePoint site shared with everyone in the organization years ago. A OneDrive folder with a link that was never revoked. An HR document in a Teams channel that quietly includes the whole department. None of it was reachable in practice, because nobody was going to browse for it. A model that can summarize across everything a user is permitted to open changes that overnight.\n\nSo the work before enabling Copilot is not really Copilot work. It is a permissions review — finding the broad grants, the anonymous links and the inherited access nobody intended, and closing them. Microsoft ships tooling for this, and the review is the part worth paying for.\n\nAfter that the controls are ordinary: sensitivity labeling on the content that matters, Purview boundaries where data must not cross, and a decision about which groups get Copilot first. We would start with a pilot population whose content you have actually reviewed.',
+        a: 'Copilot sees what the person using it can already see. It does not widen permissions, and that is exactly why it causes problems.\n\nMost tenants carry oversharing that was survivable while it was undiscoverable. A SharePoint site shared with everyone in the organization years ago. A OneDrive folder with a link that was never revoked. An HR document in a Teams channel that quietly includes the whole department. None of it was reachable in practice, because nobody was going to browse for it. A model that can summarize across everything a user is permitted to open changes that overnight.\n\nSo the work before enabling Copilot is not really Copilot work. It is a permissions review, finding the broad grants, the anonymous links and the inherited access nobody intended, and closing them. Microsoft ships tooling for this, and the review is the part worth paying for.\n\nAfter that the controls are ordinary: sensitivity labeling on the content that matters, Purview boundaries where data must not cross, and a decision about which groups get Copilot first. We would start with a pilot population whose content you have actually reviewed.',
       },
       {
         q: 'How much should we customize Dynamics 365?',
         sources: [
           { label: 'Dynamics 365 implementation guidance', url: 'https://learn.microsoft.com/en-us/dynamics365/guidance/implementation-guide/overview' },
         ],
-        a: 'Less than you will be asked to, and every exception should be written down with the reason.\n\nThe test we apply is whether the customization encodes something genuinely distinctive about how you compete, or whether it encodes how a previous system happened to work. The second category is the majority, and it is expensive twice: once to build, and again at every release wave when Microsoft changes behavior underneath it.\n\nThat does not mean configuring around every requirement. Some processes genuinely are the business, and forcing them into a standard model produces a system people work around rather than in — which costs more than the customization would have. The judgment is which is which, and it belongs to the people who run the process rather than to the implementation team.\n\nWhat we insist on is the register: every customization recorded with an owner, a justification and an upgrade impact. It takes an hour a month and it is the difference between a wave release being routine maintenance and being a remediation project.',
+        a: 'Less than you will be asked to, and every exception should be written down with the reason.\n\nThe test we apply is whether the customization encodes something genuinely distinctive about how you compete, or whether it encodes how a previous system happened to work. The second category is the majority, and it is expensive twice: once to build, and again at every release wave when Microsoft changes behavior underneath it.\n\nThat does not mean configuring around every requirement. Some processes genuinely are the business, and forcing them into a standard model produces a system people work around rather than in, which costs more than the customization would have. The judgment is which is which, and it belongs to the people who run the process rather than to the implementation team.\n\nWhat we insist on is the register: every customization recorded with an owner, a justification and an upgrade impact. It takes an hour a month and it is the difference between a wave release being routine maintenance and being a remediation project.',
       },
       {
         q: 'Power Platform has spread across the business and nobody owns it. How do we get control without stopping it?',
         sources: [
           { label: 'Power Platform adoption and governance', url: 'https://learn.microsoft.com/en-us/power-platform/guidance/adoption/methodology' },
         ],
-        a: 'The instinct is to lock down the default environment. It usually backfires, because the demand does not disappear — it moves somewhere you cannot see.\n\nA better sequence starts with visibility. Find out what exists, who built it, what it connects to, and which ones are load-bearing. The Center of Excellence toolkit does most of this. The result is normally a small number of applications that matter a great deal and a long tail that can be left alone or retired.\n\nThen give the makers somewhere legitimate to work. Separate environments for development, test and production, with the production path gated by a pipeline rather than by an approval email. Makers who have a supported route generally take it, because editing live is stressful for them too.\n\nGovernance last, and lightly. Data loss prevention policies scoped to connectors that actually present risk, ownership recorded at creation, and a review for anything a business process depends on. The organizations that get this right treat citizen development as a supply of solutions to be supported, not a compliance problem to be contained.',
+        a: 'The instinct is to lock down the default environment. It usually backfires, because the demand does not disappear. It moves somewhere you cannot see.\n\nA better sequence starts with visibility. Find out what exists, who built it, what it connects to, and which ones are load-bearing. The Center of Excellence toolkit does most of this. The result is normally a small number of applications that matter a great deal and a long tail that can be left alone or retired.\n\nThen give the makers somewhere legitimate to work. Separate environments for development, test and production, with the production path gated by a pipeline rather than by an approval email. Makers who have a supported route generally take it, because editing live is stressful for them too.\n\nGovernance last, and lightly. Data loss prevention policies scoped to connectors that actually present risk, ownership recorded at creation, and a review for anything a business process depends on. The organizations that get this right treat citizen development as a supply of solutions to be supported, not a compliance problem to be contained.',
       },
       {
         q: 'What does it cost to run Microsoft Sentinel properly?',
         sources: [
           { label: 'Microsoft Sentinel costs and billing', url: 'https://learn.microsoft.com/en-us/azure/sentinel/billing' },
         ],
-        a: 'The licensing is straightforward and the ingestion decision is where the money goes. Sentinel bills largely on data volume, so the question is not whether you can afford Sentinel — it is which logs earn their place in it.\n\nThe failure mode we see most is ingesting everything on the theory that it might be needed. Verbose firewall logs and high-volume informational events can dominate a bill while contributing to no detection anyone has written. The opposite failure is quieter and worse: ingesting only what is cheap, and discovering during an investigation that the source you needed was never connected.\n\nThe useful discipline is to work backward from detections. Decide what you need to detect, map that to MITRE ATT&CK, identify the sources those detections require, and ingest those at full fidelity. Route high-volume, low-signal data to an auxiliary or archive tier where it is available for investigation without being priced as analytics.\n\nBudget separately for tuning. A Sentinel deployment that is never tuned produces alert volumes analysts learn to ignore, which is the same as not having it.',
+        a: 'The licensing is straightforward and the ingestion decision is where the money goes. Sentinel bills largely on data volume, so the question is not whether you can afford Sentinel. It is which logs earn their place in it.\n\nThe failure mode we see most is ingesting everything on the theory that it might be needed. Verbose firewall logs and high-volume informational events can dominate a bill while contributing to no detection anyone has written. The opposite failure is quieter and worse: ingesting only what is cheap, and discovering during an investigation that the source you needed was never connected.\n\nThe useful discipline is to work backward from detections. Decide what you need to detect, map that to MITRE ATT&CK, identify the sources those detections require, and ingest those at full fidelity. Route high-volume, low-signal data to an auxiliary or archive tier where it is available for investigation without being priced as analytics.\n\nBudget separately for tuning. A Sentinel deployment that is never tuned produces alert volumes analysts learn to ignore, which is the same as not having it.',
       },
       {
         q: 'We are on-premises and cautious about moving. What actually has to move?',
         sources: [
           { label: 'Azure Arc documentation', url: 'https://learn.microsoft.com/en-us/azure/azure-arc/' },
         ],
-        a: 'Less than the usual framing suggests. The choice is rarely all-in or nothing, and treating it that way is how migration programs stall.\n\nSome workloads should move because they are constrained by hardware, because the platform underneath them is going out of support, or because they need elasticity the data center cannot provide. Some should move because the effort to keep them running locally now exceeds the effort to modernize them. And some should stay — because of latency to physical equipment, because of data residency, or simply because they work and the business case is thin.\n\nWhat we would push on is bringing the estate under one management and security plane even where the workloads stay put. Azure Arc lets on-premises servers and Kubernetes clusters be governed, patched and monitored alongside cloud resources, which means one policy set and one place to look during an incident. That is often more valuable in the first year than moving the workload itself.\n\nThe sequencing question is which workloads to move first, and the answer is usually the ones that reduce risk or unlock a dependency rather than the ones that are easiest.',
+        a: 'Less than the usual framing suggests. The choice is rarely all-in or nothing, and treating it that way is how migration programs stall.\n\nSome workloads should move because they are constrained by hardware, because the platform underneath them is going out of support, or because they need elasticity the data center cannot provide. Some should move because the effort to keep them running locally now exceeds the effort to modernize them. And some should stay, because of latency to physical equipment, because of data residency, or simply because they work and the business case is thin.\n\nWhat we would push on is bringing the estate under one management and security plane even where the workloads stay put. Azure Arc lets on-premises servers and Kubernetes clusters be governed, patched and monitored alongside cloud resources, which means one policy set and one place to look during an incident. That is often more valuable in the first year than moving the workload itself.\n\nThe sequencing question is which workloads to move first, and the answer is usually the ones that reduce risk or unlock a dependency rather than the ones that are easiest.',
       },
       {
         q: 'Can you take over an estate another partner built?',
@@ -7729,14 +7730,14 @@ export const servicesData = {
           { label: 'Dynamics 365 and Power Platform release plans', url: 'https://learn.microsoft.com/en-us/dynamics365/release-plans/' },
           { label: 'Microsoft product lifecycle policy', url: 'https://learn.microsoft.com/en-us/lifecycle/' },
         ],
-        a: 'By treating the waves as a calendar item rather than an event. They arrive on a published schedule with release plans available months ahead, which makes them the most predictable change your estate will absorb.\n\nThe organizations that struggle are the ones carrying undocumented customization. When nobody can say what was extended or why, every wave requires rediscovering the estate before it can be assessed — and that work happens under time pressure, after early access has closed.\n\nThe practice that fixes it is unglamorous. Keep the customization register current. Read the release plans when they publish rather than when the wave deploys. Validate in a non-production environment during the early access window. And keep a standing decision about which changes you adopt immediately and which you defer, so the question is answered before it is urgent.\n\nDone that way a wave is a scheduled maintenance activity of a few days. Done the other way it is a quarter.',
+        a: 'By treating the waves as a calendar item rather than an event. They arrive on a published schedule with release plans available months ahead, which makes them the most predictable change your estate will absorb.\n\nThe organizations that struggle are the ones carrying undocumented customization. When nobody can say what was extended or why, every wave requires rediscovering the estate before it can be assessed, and that work happens under time pressure, after early access has closed.\n\nThe practice that fixes it is unglamorous. Keep the customization register current. Read the release plans when they publish rather than when the wave deploys. Validate in a non-production environment during the early access window. And keep a standing decision about which changes you adopt immediately and which you defer, so the question is answered before it is urgent.\n\nDone that way a wave is a scheduled maintenance activity of a few days. Done the other way it is a quarter.',
       },
       {
-        q: 'Which comes first — the data platform or the business applications?',
+        q: 'Which comes first, the data platform or the business applications?',
         sources: [
           { label: 'Microsoft Fabric documentation', url: 'https://learn.microsoft.com/en-us/fabric/' },
         ],
-        a: 'Neither, and programs that sequence it as a choice usually stall on the one they picked second.\n\nWhat has to come first is agreement on the definitions — what a customer is, what an asset is, which system is authoritative for each. That is not a platform decision and it does not require any technology to be purchased. It requires the people who own those processes to agree, which is why it takes longer than the engineering and why it is usually skipped.\n\nWith the definitions settled, the two tracks can run in parallel. Business applications write to the agreed model rather than inventing their own, and the data platform consumes from a known system of record rather than reverse-engineering intent from a schema.\n\nWithout them, you get the estate we see most often: a data warehouse whose numbers do not match the operational systems it draws from, and reporting nobody trusts enough to act on. The technology in that scenario is usually fine. The disagreement is upstream of it.',
+        a: 'Neither, and programs that sequence it as a choice usually stall on the one they picked second.\n\nWhat has to come first is agreement on the definitions. What a customer is, what an asset is, which system is authoritative for each. That is not a platform decision and it does not require any technology to be purchased. It requires the people who own those processes to agree, which is why it takes longer than the engineering and why it is usually skipped.\n\nWith the definitions settled, the two tracks can run in parallel. Business applications write to the agreed model rather than inventing their own, and the data platform consumes from a known system of record rather than reverse-engineering intent from a schema.\n\nWithout them, you get the estate we see most often: a data warehouse whose numbers do not match the operational systems it draws from, and reporting nobody trusts enough to act on. The technology in that scenario is usually fine. The disagreement is upstream of it.',
       },
       {
         q: 'What is the smallest sensible engagement?',
@@ -7755,7 +7756,7 @@ export const servicesData = {
       {
         name: 'Microsoft Estate Assessment',
         tier: 'ASSESSMENT',
-        duration: '3–4 weeks',
+        duration: '3 to 4 weeks',
         description: 'What you own, what is switched on, and where the estate disagrees with itself.',
         deliverables: [
           'Entitlement position across Azure, Microsoft 365, Dynamics 365 and Power Platform',
@@ -7768,7 +7769,7 @@ export const servicesData = {
       {
         name: 'Azure Landing Zone & Migration',
         tier: 'ENGINEERING',
-        duration: '8–16 weeks',
+        duration: '8 to 16 weeks',
         description: 'Platform foundations first, then workloads migrated against them.',
         deliverables: [
           'Landing zone with management group hierarchy and Azure Policy guardrails',
@@ -7781,7 +7782,7 @@ export const servicesData = {
       {
         name: 'Dynamics 365 Implementation',
         tier: 'BUSINESS APPLICATIONS',
-        duration: '12–24 weeks',
+        duration: '12 to 24 weeks',
         description: 'CRM and ERP built so the first release wave is maintenance, not remediation.',
         deliverables: [
           'Fit-gap analysis with configure-versus-customize decisions recorded',
@@ -7794,7 +7795,7 @@ export const servicesData = {
       {
         name: 'Sentinel & Security Operations',
         tier: 'SECURITY',
-        duration: '6–12 weeks',
+        duration: '6 to 12 weeks',
         description: 'One correlation surface, with ingestion decided by what you must detect.',
         deliverables: [
           'Workspace design with ingestion, retention and archive tiering',
@@ -7807,7 +7808,7 @@ export const servicesData = {
       {
         name: 'Power Platform Foundation',
         tier: 'PLATFORM',
-        duration: '6–10 weeks',
+        duration: '6 to 10 weeks',
         description: 'Environments, ALM and governance for low-code that already spread.',
         deliverables: [
           'Inventory of existing apps and flows with ownership and dependency mapping',
@@ -7901,7 +7902,7 @@ export const servicesData = {
     practiceLabel: 'THE ENGINEERING FOUNDRY PRACTICE',
     practiceHeading: 'Microsoft rarely runs',
     practiceHeadingHighlight: 'on its own.',
-    practiceLede: 'Most organizations running Microsoft are also running something else — a cloud they inherited, an integration layer that predates the tenant, a data platform bought for a different reason. The work below sits alongside this one when the answer crosses a boundary.',
+    practiceLede: 'Most organizations running Microsoft are also running something else, a cloud they inherited, an integration layer that predates the tenant, a data platform bought for a different reason. The work below sits alongside this one when the answer crosses a boundary.',
 
     conciergeHeading: 'Ask about your Microsoft estate',
     conciergeIntro: 'Questions we are asked before anyone commits to a program. Answered against your tenant rather than in general.',
@@ -7918,7 +7919,7 @@ export const servicesData = {
     closingCta: {
       title: 'Your estate,',
       highlight: 'honestly read.',
-      body: 'Tell us roughly what you run — which Microsoft workloads, how many people, and what is currently annoying you most. In 30 minutes we will tell you where the estate is likely leaking licensing, which joins are missing, and what we would look at first. No proposal attached.',
+      body: 'Tell us roughly what you run, which Microsoft workloads, how many people, and what is currently annoying you most. In 30 minutes we will tell you where the estate is likely leaking licensing, which joins are missing, and what we would look at first. No proposal attached.',
       proofLabel: 'From first call to a read of your estate',
     },
   },

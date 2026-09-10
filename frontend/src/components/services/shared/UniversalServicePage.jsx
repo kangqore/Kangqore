@@ -4648,7 +4648,7 @@ const featureMicros   = service.featureMicros
             </p>
           ) : (service.businessMetrics || []).some((m) => m.illustrative) ? (
             <p className="text-white/60 text-[11px] font-medium leading-snug mt-4 mb-0 max-w-3xl">
-              Illustrative figures — modeled on typical engagement patterns, not a specific client result.
+              Illustrative figures, modeled on typical engagement patterns, not a specific client result.
             </p>
           ) : null}
 
@@ -5433,7 +5433,7 @@ const featureMicros   = service.featureMicros
                           are templates rather than engagements — must not make that claim. */}
                       <p className="text-white/50 text-xs font-medium italic">
                         {card.illustrative
-                          ? 'Illustrative scenario — modeled on typical engagement patterns, not a specific client result.'
+                          ? 'Illustrative scenario, modeled on typical engagement patterns, not a specific client result.'
                           : 'Engagement confidential — details available on request.'}
                       </p>
                       {service.methodologyBrief && (
