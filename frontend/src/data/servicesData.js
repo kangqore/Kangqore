@@ -7257,6 +7257,7 @@ export const servicesData = {
 
     heroTitle: 'Microsoft Services and Solutions at\nEnterprise Scale by Kangqore',
     heroBadge: 'MICROSOFT, CONNECTED.',
+    fullDescriptionMaxWidth: 'max-w-[680px] xl:max-w-[720px]',
     heroStripItems: ['Azure & Sentinel', 'Dynamics 365', 'Power Platform', 'Modern Workplace', 'Connected Products'],
 
     hidePartnershipModel: true,
