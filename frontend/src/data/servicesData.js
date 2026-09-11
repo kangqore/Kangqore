@@ -7248,7 +7248,7 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Microsoft Azure and M365 solutions',
-    fullDescription: 'Azure, Dynamics 365, Power Platform and Sentinel, engineered as one estate rather than eight separate projects.',
+    fullDescription: 'We engineer Microsoft technologies into a unified digital estate, connecting cloud, applications, data, automation and security to move the enterprise forward.',
     keyFeatures: ['Azure implementation', 'Microsoft 365', 'Power Platform', 'Dynamics 365', 'Security & compliance'],
     relatedServiceSlugs: ['cloud-computing', 'managed-cloud-services'],
     featured: false,
@@ -7256,7 +7256,7 @@ export const servicesData = {
     lastReviewed: '2026-09-09',
 
     heroTitle: 'Microsoft Services and Solutions at\nEnterprise Scale by Kangqore',
-    heroBadge: 'Make the Microsoft You Already Pay For Work Together',
+    heroBadge: 'MICROSOFT, CONNECTED.',
     heroStripItems: ['Azure & Sentinel', 'Dynamics 365', 'Power Platform', 'Modern Workplace', 'Connected Products'],
 
     hidePartnershipModel: true,
