@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T08:41:55.578Z",
+  "generatedAt": "2026-09-10T11:05:51.449Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -902,24 +902,7 @@
           "detail": "Automated collaboration governance, enterprise search grounding, and AI workflow integration."
         }
       ],
-      "dataHandling": [
-        {
-          "topic": "Which tenant and which region?",
-          "detail": "Microsoft 365 and Dynamics data residency is decided at tenant creation and is not trivially changed afterward. Multi-geo is a licensing and architecture decision, not a setting."
-        },
-        {
-          "topic": "What can Copilot actually see?",
-          "detail": "Copilot inherits the permissions a user already holds. Oversharing that was survivable when nobody could search it becomes visible the moment a model can summarize it."
-        },
-        {
-          "topic": "Where do the logs go, and for how long?",
-          "detail": "Sentinel retention, archive tiers and per-source ingestion cost drive both the security answer and the bill. Both should be decided deliberately."
-        },
-        {
-          "topic": "Who holds the keys?",
-          "detail": "Customer-managed keys, Purview boundaries and privileged role activation determine whether a compromised administrator account is an incident or a catastrophe."
-        }
-      ]
+      "dataHandling": []
     },
     {
       "slug": "google-cloud-services",
