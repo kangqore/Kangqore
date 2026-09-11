@@ -7304,7 +7304,7 @@ export const servicesData = {
     capabilityAreas: [
       {
         title: 'Application Modernization',
-        image: '/images/capabilities/application-modernization-illustration.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Re-engineer, refactor or re-platform, and retire what you pay for twice.',
         items: [
           'Application Re-engineering: Re-engineer existing applications to improve scalability, maintainability, performance, security, and business agility.',
@@ -7319,7 +7319,7 @@ export const servicesData = {
       },
       {
         title: 'Modern Workplace',
-        image: '/images/capabilities/ux-design.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'The Microsoft 365 you already own, adopted past the license count.',
         items: [
           'OneDrive and SharePoint: Modernize document management, content collaboration, knowledge sharing, and organizational information environments.',
@@ -7336,7 +7336,7 @@ export const servicesData = {
       },
       {
         title: 'Microsoft Dynamics 365',
-        image: '/images/capabilities/business-strategy.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'CRM and ERP that survive the next release wave, because nothing was over-built.',
         items: [
           'Application Modernization: Strategy and consulting to modernize existing business applications onto Dynamics 365.',
@@ -7370,7 +7370,7 @@ export const servicesData = {
       },
       {
         title: 'Connected Products',
-        image: '/images/capabilities/iot-connected.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Telemetry that dispatches an engineer before the customer calls one.',
         items: [
           'IoT Enablement of Products and Platforms: Connect products, devices, platforms, and operational environments to capture and use real-time data.',
@@ -7384,7 +7384,7 @@ export const servicesData = {
       },
       {
         title: 'Analytics and AI',
-        image: '/images/capabilities/data-analytics-new.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'One definition of a customer, then analytics worth building on it.',
         items: [
           'AI and Automation: Combine AI with process automation so a prediction triggers an action rather than an email.',
@@ -7398,7 +7398,7 @@ export const servicesData = {
       },
       {
         title: 'Azure and Azure Sentinel',
-        image: '/images/capabilities/cloud-infrastructure.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Where the estate runs, and how you find out what happened to it.',
         items: [
           'Environment Assessment: Assess existing environments, workloads, data sources, security requirements, and architecture.',
@@ -7424,7 +7424,7 @@ export const servicesData = {
       },
       {
         title: 'Power Platform',
-        image: '/images/capabilities/automation-rpa.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Low-code with an owner, an environment, and a way back to production.',
         items: [
           'Power Apps: Build custom business applications that address specific operational and organizational requirements.',
