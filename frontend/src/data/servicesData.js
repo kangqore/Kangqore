@@ -7262,10 +7262,10 @@ export const servicesData = {
 
     hidePartnershipModel: true,
 
-    whatIsEyebrow: 'Why the pieces stopped talking to each other',
-    whatIsTitle: 'Your Microsoft Estate Grew',
+    whatIsEyebrow: 'THE MICROSOFT ESTATE',
+    whatIsTitle: 'Your Microsoft Estate',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'One Decision at a Time.',
+    whatIsHighlight: 'Became More Connected.',
     whatIsPara2: 'Most organizations arrive at Microsoft one decision at a time. Exchange became Microsoft 365. A data center refresh became Azure. Finance asked for a CRM and got Dynamics 365. Somebody in operations built a Power App that is now load-bearing. Each decision was defensible on its own, and the result is an estate where identity, data, automation and security were each solved separately, usually by different teams and often by different vendors.',
     whatIsPara3: 'The cost of that shows up later, and it rarely shows up as a Microsoft problem. It shows up as a report nobody trusts because two systems disagree on what a customer is. As a security investigation that stalls because the logs live in four places. As a Power App that broke when someone changed a column name in Dataverse, and no one knew it was connected.',
     whatIsPara4: 'We work on the joins. Identity is the spine. Entra decides who reaches what across Azure, Dynamics, Power Platform and Microsoft 365, so getting it right once removes a class of problems everywhere else. Data is the second: one definition of a customer, an asset, an employee, held where every workload can read it. Everything else is engineering on top of those two.',
