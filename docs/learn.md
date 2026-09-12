@@ -404,3 +404,37 @@ copy that had lifted that band from 4.6 to 13.0 words per 100px, so the band is
 thin fleet-wide again and no page-level content change can compensate. Recorded
 in `docs/DEFERRED.md` rather than reversed, because #536 was a deliberate
 decision by another session.
+
+## 2026-09-13 — borrowed material in a brief comes in three kinds, not one  (P2)
+
+**Context:** the brief for `/services/modernization-infrastructure` was
+Accenture's page. The previous cycle's guard caught competitor *product names*
+(Happiest Minds' MIDAS, APPRise, WSAPI). This brief carried none of those. It
+carried two other kinds instead: **third-party research statistics** presented as
+bare figures, and **signature vocabulary** that belongs to the firm that coined
+it.
+
+**Learning:** the statistics were the sharper risk. A product name reads as
+obviously foreign once you look for it. A percentage reads as a fact, and the
+natural move is to keep it because it makes the argument land. Two things make
+that wrong. It is misattribution unless the source is named, and citing it
+properly requires a URL for the actual study, which was not supplied — so the
+options were omit it or fabricate a citation, and a fabricated citation is worse
+than no citation. The vocabulary problem is milder but compounding: reuse enough
+of another firm's coined terms and the page reads as derivative even where the
+engineering underneath is original.
+
+**System change:** the write-time assertion list is no longer just product names.
+For this block it covered the competitor's name, its signature terms, and the two
+figures — asserted against the block before the file is written, then re-checked
+against the rendered page and the snapshot. Generalize it in the
+`service-page-audit` skill as three categories to enumerate whenever a brief is
+pasted from a named competitor: **product names, research figures, coined
+vocabulary.** The figures category is the one worth calling out, because it is
+the one that looks like ordinary content.
+
+**Also worth noting:** this brief's "FAQ" heading was followed by five capability
+lines rather than questions, and its outcomes list repeated two of seven entries.
+Briefs scraped from a live page carry the source's layout artifacts too, and
+reproducing them faithfully would have shipped a duplicate and a mislabelled
+section. Read the structure, do not transcribe it.
