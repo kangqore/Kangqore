@@ -7542,10 +7542,10 @@ export const servicesData = {
       },
     ],
     toolsStack: {
-      eyebrow: 'THE MICROSOFT ENTERPRISE FABRIC',
-      title: 'The Azure & Microsoft 365 planes,',
-      titleHighlight: 'for governed enterprise scale.',
-      subtitle: 'Bridging Azure cloud infrastructure, Microsoft Entra ID zero-trust security, Power Platform automation, and Teams enterprise collaboration.',
+      eyebrow: 'ENGINEERING THE MICROSOFT ESTATE',
+      title: 'Every Plane Connected.',
+      titleHighlight: 'Every Decision Governed.',
+      subtitle: 'We architect Microsoft across identity, cloud, integration, data, security, and productivity, creating a unified foundation for enterprise operations and intelligent automation.',
       items: [
         {
           icon: 'Shield',
