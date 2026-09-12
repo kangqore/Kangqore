@@ -8243,11 +8243,97 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Research and development for product innovation',
-    fullDescription: 'Partner with our R&D team to research, develop, and innovate new product capabilities.',
+    fullDescription: 'Product engineering across automotive, networking and consumer electronics, from concept through certification and sustaining.',
     keyFeatures: ['Technology research', 'Innovation labs', 'IP development', 'Patent support', 'Academic partnerships'],
     relatedServiceSlugs: ['engineering-foundry', 'product-digital-engineering'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=800&q=80',
+    lastReviewed: '2026-09-12',
+
+    heroTitle: 'Engineering R&D Services at\nEnterprise Scale by Kangqore',
+    heroBadge: 'From an Idea to a Product That Ships',
+    heroStripItems: ['Automotive', 'Networking & Storage', 'Consumer Electronics', 'Embedded Systems', 'Certification'],
+
+    hidePartnershipModel: true,
+    hideArchitecture: true,
+    hideOutcomeCards: true,
+
+    whatIsEyebrow: 'WHY R&D DECIDES THE PRODUCT',
+    whatIsTitle: 'A Product Is Only as Good',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'as the Research Behind It.',
+    whatIsPara2: 'Innovation is the thing every company says it wants, and R&D engineering is where the wanting stops and the deciding starts. As service delivery and customer engagement move to cloud-centric models, the gap between companies in the same market is rarely the idea. It is whether the engineering behind the idea survived contact with silicon, radio, a safety standard and a factory.',
+    whatIsPara3: 'We work on products rather than on demos. That distinction matters more in R&D than anywhere else, because a prototype that works on a bench and a product that passes certification, ships in volume and can be updated in the field are separated by most of the actual engineering. The demo is the easy tenth.',
+    whatIsPara4: 'Our work spans automotive, communications and networking, storage, and consumer electronics, which sound like different industries and increasingly are not. A car is a network with wheels. A television is an embedded Linux device with a streaming stack. A storage appliance and a home gateway share more architecture than either shares with the product it replaced. The same engineering discipline carries across all of them.',
+    whatIsPara5: 'That is also why we start by asking what you are actually trying to ship, and to whom, under which standard. Certification, regional radio approval and functional safety are not late-stage paperwork. They are architectural constraints, and discovering them after the board is laid out is the most expensive way to learn them.',
+
+    businessMetrics: [
+      { illustrative: true, title: 'Time to Prototype', desc: 'Concept to a working prototype that can be measured and argued about, rather than a slide deck.', value: '6', suffix: ' Weeks', metricLabel: 'Concept to Working Prototype', icon: 'Rocket' },
+      { illustrative: true, title: 'Platform Reuse', desc: 'One codebase carried across product variants, instead of a fork per SKU that diverges within a year.', value: 'One', suffix: ' Codebase', metricLabel: 'Across Product Variants', icon: 'Layers' },
+      { illustrative: true, title: 'Certification Readiness', desc: 'Standards treated as architectural constraints from the first design review rather than as late paperwork.', value: 'Day One', suffix: '', metricLabel: 'Compliance Designed In', icon: 'ShieldCheck' },
+      { illustrative: true, title: 'Field Telemetry', desc: 'Shipped devices reporting condition and failure back into engineering, so the next revision is informed.', value: 'Live', suffix: '', metricLabel: 'From Shipped Devices', icon: 'Activity' },
+    ],
+    outcomeCard: {
+      illustrative: true,
+      metric: '5 → 1',
+      metricLabel: 'firmware codebases',
+      industry: 'Modeled scenario in consumer electronics, four product lines',
+      problem: 'Five firmware branches for what marketing described as one product family. A fix landed in two of them, the other three shipped with the defect, and nobody could say which units in the field carried which build.',
+      outcome: 'A single platform layer with per-variant board support, one build system, and a signed over-the-air update path. Field units now report their build identity, so a defect can be scoped to a population rather than guessed at.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '9 → 2',
+      metricLabel: 'months to radio approval',
+      industry: 'Modeled scenario in connected devices, two regional markets',
+      problem: 'A product designed and laid out before anyone read the radio requirements for its second market. The antenna placement that passed in one region failed in the other, and the respin cost a full quarter.',
+      outcome: 'Regulatory and radio constraints pulled into the architecture review, pre-scan testing before design freeze, and a single hardware variant qualified for both markets rather than a regional fork.',
+    },
+
+    capabilitiesLabel: 'THE R&D CAPABILITY MAP',
+    capabilitiesSectionTitle: 'Engineering R&D Services and',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Grouped by the product being built, not by the technology used.',
+    capabilityAreas: [
+      {
+        title: 'Automotive',
+        image: '/images/capabilities/iot-connected.png',
+        desc: 'A car is a network with wheels, and it ships under a safety standard.',
+        items: [
+          'Telematics: Connect the vehicle to the back office for diagnostics, fleet operations, usage-based insurance and over-the-air update, with the link designed for intermittent coverage rather than for a lab.',
+          'Advanced Driver Assistance Systems (ADAS): Engineer perception, sensor fusion and decision paths for driver assistance, where the functional safety argument is part of the architecture rather than a document produced afterward.',
+          'Infotainment and Mobility Services: Build the in-cabin experience and the mobility services behind it, across head unit, phone projection, connected services and the update path that keeps them current for the life of the vehicle.',
+        ],
+      },
+      {
+        title: 'Communications, Networking and Storage',
+        image: '/images/capabilities/cloud-infrastructure.png',
+        desc: 'The plumbing everything else depends on, engineered to stay up.',
+        items: [
+          'Enterprise, Access and Core Networking: Engineer across the enterprise, access and core layers, including the data plane performance work and the management surface that decides whether an operator can run it.',
+          'IMS (IP Multimedia Subsystems): Build and integrate IP multimedia subsystem capability for voice, video and messaging over packet networks, including interworking with what the operator already runs.',
+          'Enterprise Wireless: Engineer wireless access, controller and roaming behavior for enterprise environments, where density and handoff matter more than headline throughput.',
+          'Automotive Networking and M2M: Connect vehicles and machines across in-vehicle networks and machine-to-machine links, with the security boundary between the moving thing and the corporate network designed deliberately.',
+          'Software Defined Networking (SDN): Separate control from data plane and build the controller, southbound integration and policy model that make the separation useful rather than merely fashionable.',
+          'Storage Services, Sub-Systems and Appliances: Engineer storage services, subsystems and appliances, including the data path, the resilience behavior under failure, and the management layer an operator actually lives in.',
+        ],
+      },
+      {
+        title: 'Consumer Electronics',
+        image: '/images/capabilities/ux-design.png',
+        desc: 'Always-on devices where the user notices every compromise.',
+        items: [
+          'Streaming Solutions: Engineer media pipelines end to end, covering ingest, transcode, playback, digital rights management and the adaptive behavior that decides whether the picture holds on a poor connection.',
+          'Embedded Systems, Device Drivers and GUI: Build the embedded stack from board bring-up and device drivers through the application layer and on-device interface, on the real silicon rather than on an emulator.',
+          'User Interface Design and Usability: Design the on-device interface for the constraints that actually apply, which are a remote control, a small panel, a gloved hand or a moving vehicle rather than a mouse.',
+          'M2M and IoT Technologies: Connect devices and the services behind them, including provisioning, identity, update and the telemetry path that makes a shipped fleet legible to engineering.',
+          'Home Networking and Home Gateways: Engineer the gateway and the home network around it, where the support call is the real product metric and self-recovery is worth more than a feature.',
+          'Integrated Information Management: Bring device, usage and service data into one model so product decisions are made on evidence from the field rather than on the loudest internal opinion.',
+          'Specialized Solution Based Services: Engineer the parts no catalog covers, where a product needs a bespoke subsystem and the work is defined by the constraint rather than by a standard offering.',
+        ],
+      },
+    ],
+
     toolsStack: {
       eyebrow: 'THE R&D INNOVATION FABRIC',
       title: 'The research & development planes,',
@@ -8309,6 +8395,304 @@ export const servicesData = {
           keyRule: 'Novel technical mechanisms are documented with cleanroom provenance for patent filing.'
         }
       ]
+    },
+
+    comparisonTable: {
+      eyebrow: 'WHERE R&D PROGRAMS QUIETLY GO WRONG',
+      heading: 'Both prototypes worked.',
+      lede: 'Neither column describes a failed demo. They diverge at certification, at the second market, and at the first field update.',
+      beforeLabel: 'BUILT TO DEMONSTRATE',
+      afterLabel: 'BUILT TO SHIP',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'PROTOTYPE',
+      afterShort: 'PRODUCT',
+      rows: [
+        {
+          dimension: 'When the standard gets read',
+          before: 'After the board is laid out. The safety or radio requirement arrives as a surprise and the respin costs a quarter.',
+          after: 'Before the architecture is fixed. Standards are treated as constraints that shape the design rather than paperwork that follows it.',
+        },
+        {
+          dimension: 'What happens on the second market',
+          before: 'A regional fork. The hardware that passed in one geography fails in another, and now two variants need maintaining forever.',
+          after: 'One design qualified for both, because the regulatory envelope for every target market was known before design freeze.',
+        },
+        {
+          dimension: 'How a new SKU is created',
+          before: 'A branch. Within a year there are five firmware codebases and a fix lands in two of them.',
+          after: 'A configuration on one platform layer, with board support separated so the variant is data rather than a fork.',
+        },
+        {
+          dimension: 'The first field update',
+          before: 'Written after launch, under pressure, on a device population nobody can identify by build.',
+          after: 'Rehearsed before volume, with signed images, a rollback path, and devices that report their own build identity.',
+        },
+        {
+          dimension: 'What the lab tested',
+          before: 'The happy path at room temperature, on the bench, against equipment from the same vendor.',
+          after: 'The conditions the product will actually meet, including thermal, interference and interoperability against what is really deployed.',
+        },
+        {
+          dimension: 'What happens when silicon goes end of life',
+          before: 'Discovered from a distributor email, with no qualified alternative and a product that cannot be built.',
+          after: 'Tracked ahead of the notice, with the abstraction boundary that makes a substitution an engineering task rather than a redesign.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'THE QUESTIONS THAT DECIDE THE PROGRAM',
+    faqLede: 'The questions below are the ones product and engineering leaders actually ask in a first call, on feasibility, standards, cost and what happens when something fails in the field. Answers are direct rather than promotional.',
+    faqHeading: 'What people ask',
+    faqHeadingHighlight: 'before they commit.',
+    customFAQs: [
+      {
+        q: 'We have an idea and a rough spec. What actually happens first?',
+        sources: [
+          { label: 'NIST Secure Software Development Framework', url: 'https://csrc.nist.gov/Projects/ssdf' },
+        ],
+        a: 'We work out what would kill the product, and we test that before anything else.\n\nMost R&D programs start by building the part the team already knows how to build, because it feels like progress. The risk sits somewhere else: a radio that will not pass in the second market, a sensor that behaves differently at temperature, a processor that cannot hold the frame rate once the real codec is running. Those are the questions worth six weeks. The rest is engineering you can schedule.\n\nSo the first stage is deliberately unglamorous. Which markets, under which approvals. Which standards apply and which of them constrain the architecture rather than the documentation. What the supply position is on the parts you are designing around. What has to be true for this to be manufacturable at the volume you have in mind.\n\nThe output is a constraint list and a risk register naming what must be decided before architecture can start. It is usually shorter than people expect and more uncomfortable, because it makes the unknowns explicit while they are still cheap.',
+      },
+      {
+        q: 'How do we know a prototype proves anything?',
+        sources: [
+          { label: 'Yocto Project documentation', url: 'https://www.yoctoproject.org/' },
+        ],
+        a: 'By deciding, in advance and in writing, which assumption it exists to kill.\n\nA prototype that demonstrates the concept proves very little, because the concept was rarely the risk. A prototype that runs the real codec on the real silicon at the real thermal envelope and produces a number you can compare against the requirement proves something specific. The difference is whether there was a question.\n\nWe bring up on actual hardware rather than an emulator wherever the risk is physical, because emulation is exactly where the surprises hide. Timing, thermal behavior, power draw and radio performance do not survive abstraction.\n\nThe stage ends with an explicit decision: proceed, change direction, or stop. Stopping is a legitimate outcome and the cheapest one available at that point. A prototype phase that cannot conclude "this will not work" was a construction project rather than an experiment.',
+      },
+      {
+        q: 'Our product has to pass functional safety. Does that change how you work?',
+        sources: [
+          { label: 'ISO 26262 road vehicles functional safety', url: 'https://www.iso.org/standard/68383.html' },
+        ],
+        a: 'Substantially, and the change belongs at the start rather than at the audit.\n\nFunctional safety is an argument, not a test. You are demonstrating that hazards were identified, that the architecture addresses them, and that the evidence supports the claim. Evidence assembled retrospectively is both expensive and weak, because the traceability has to be reconstructed from work that was not recorded for that purpose.\n\nPractically it changes several things. The architecture carries the safety concept rather than having it attached. Requirements are traceable from hazard through design to test. Tool qualification matters, so the build chain is a decision rather than a default. Coding standards are enforced mechanically rather than reviewed for.\n\nIt is also worth saying when it does not apply. Plenty of products carry a safety label in the brief that the actual standard does not require. Establishing which parts of the system are genuinely in scope, and which are not, is usually the single largest cost reduction available in the program.',
+      },
+      {
+        q: 'What does certification actually cost us in time?',
+        sources: [
+          { label: 'FCC equipment authorization', url: 'https://www.fcc.gov/engineering-technology/laboratory-division/general/equipment-authorization' },
+          { label: 'Wi-Fi Alliance certification', url: 'https://www.wi-fi.org/certification' },
+        ],
+        a: 'Far less if you pre-scan, and a quarter or more if you do not.\n\nThe formal submission is not where time goes. Time goes into the respin that follows a failure, because a failure at that point means changing hardware that the whole program has already been built around. Antenna placement, enclosure material and board layout are the usual culprits, and all three are effectively fixed by the time most teams book a lab.\n\nPre-compliance testing before design freeze changes the shape of this. It costs a fraction of a formal campaign, it happens while changes are still cheap, and it converts the formal submission into a confirmation rather than a discovery.\n\nThe second variable is how many markets you are entering. Each target geography has its own approval regime and its own radio rules, and the design envelope that satisfies all of them is narrower than any one of them. Knowing the full list at architecture time is what avoids the regional fork.',
+      },
+      {
+        q: 'We are already mid-program and it is slipping. Can you come in now?',
+        sources: [
+          { label: 'AUTOSAR standards', url: 'https://www.autosar.org/' },
+        ],
+        a: 'Yes, and the first thing we do is read rather than build.\n\nA slipping program usually has a diagnosis nobody has written down. Sometimes it is genuinely scope. More often it is a decision made early that everything since has been working around, and the schedule is absorbing the cost of that decision in small increments nobody reports.\n\nSo the engagement starts with an assessment: what is actually built against what was specified, where the architecture is fighting the requirement, what the test evidence really covers, and which risks are still open. That reading is deliberately unflattering and we share it as written.\n\nWhat we will not do is open with a rewrite. Programs in trouble usually have a small number of decisions that are genuinely wrong and a large number that are merely different from how we would have done it. Reversing the second category burns the schedule further without changing the outcome.',
+      },
+      {
+        q: 'How do you stop us ending up with a separate codebase per product?',
+        sources: [
+          { label: 'Yocto Project documentation', url: 'https://www.yoctoproject.org/' },
+        ],
+        a: 'By deciding the variant strategy before the second product exists, which is the only moment it is cheap.\n\nThe fork is never a decision. It is what happens when a new SKU has a deadline and the platform does not yet have a clean place to put the difference. Once two branches exist they diverge continuously, and the cost shows up as a fix that lands in some products and not others.\n\nThe engineering is a platform layer that holds what is common, board support that holds what is not, and a build system that composes the two. New variants become configuration. This is ordinary practice and it is skipped constantly, because at the point it must be done there is only one product and the abstraction looks like overhead.\n\nIt is recoverable afterward, and it is a real project rather than a refactor. We would usually converge the two most divergent branches first, because that is where the argument gets settled.',
+      },
+      {
+        q: 'Who owns the intellectual property?',
+        sources: [
+          { label: 'World Intellectual Property Organization', url: 'https://www.wipo.int/patents/en/' },
+        ],
+        a: 'You do, and it should be written into the agreement rather than assumed from the relationship.\n\nOur standard position is that foreground intellectual property created for your product is yours outright. Background intellectual property, meaning the methods and reusable components we bring in, stays ours and is licensed to you for the product. That split is conventional and it should still be explicit, because the expensive disputes are about the boundary rather than the principle.\n\nTwo things are worth settling at the same time. Open-source licensing obligations, which in embedded products are usually more extensive than the team assumes and are far easier to handle during development than during a due diligence. And patent position, where a product that is genuinely novel may warrant filings and the window for those closes on disclosure.\n\nIf you have an existing agreement with a partner or an investor that constrains any of this, it should be on the table before design starts rather than discovered at exit.',
+      },
+      {
+        q: 'What happens to the product after it ships?',
+        sources: [
+          { label: 'EU Cyber Resilience Act', url: 'https://digital-strategy.ec.europa.eu/en/policies/cyber-resilience-act' },
+        ],
+        a: 'It needs an owner, and the regulatory environment is making that less optional than it used to be.\n\nA connected product now carries obligations through its supported life. Vulnerabilities have to be addressable, which means an update path that works on devices already in the field, not a plan to build one. Component obsolescence arrives on the supplier calendar rather than yours. Standards move, and a product that was compliant at launch may not stay so.\n\nSustaining engineering covers that: patching, obsolescence tracking, regulatory monitoring per market, and feeding field failure data back into the next revision. It is unglamorous and it is what separates a product line from a launch.\n\nThe practical implication at design time is that the update path and the telemetry path are architecture, not features. Retrofitting either onto a shipped population is between difficult and impossible, and it is the most common reason a product cannot be sustained.',
+      },
+      {
+        q: 'Can you work on our silicon, or do we have to use what you know?',
+        sources: [
+          { label: 'MISRA coding standards', url: 'https://misra.org.uk/' },
+        ],
+        a: 'Yours. The platform decision belongs to your product, not to our familiarity.\n\nSilicon choice is driven by things that have nothing to do with the engineering team: supply position, unit cost at volume, the vendor relationship, the peripheral set, the software ecosystem, and increasingly whether the part will still exist in four years. Those constraints should decide it.\n\nWhat we would push on is the abstraction boundary. A product tied tightly to one vendor silicon is a product that cannot respond when that part becomes unavailable, and end-of-life notices arrive with less warning than most programs assume. A clean board support boundary makes substitution an engineering task rather than a redesign.\n\nWhere we have less depth on a specific part we will say so, and we will scope the bring-up risk accordingly instead of discovering it in the schedule.',
+      },
+      {
+        q: 'Our networking product has to interoperate with equipment we do not control. How do you test that?',
+        sources: [
+          { label: '3GPP specifications', url: 'https://www.3gpp.org/' },
+          { label: 'Open Networking Foundation', url: 'https://opennetworking.org/' },
+        ],
+        a: 'Against the equipment that is actually deployed, which is rarely the equipment in the specification.\n\nInteroperability failures are mostly not standards failures. They are the accumulated differences between how vendors read the same clause, plus a long tail of deployed devices running firmware from several years ago that will not be updated. A product that passes conformance and fails in the field usually failed against reality rather than against the standard.\n\nSo the test strategy has two halves. Conformance, which proves the product reads the specification correctly, and interoperability against a matrix of real equipment chosen from what your customers actually run. The second list is worth building deliberately, because it is the one that predicts support calls.\n\nFor carrier and enterprise products we would also push for early field trials with a friendly customer. There is no lab substitute for a real topology under real load, and problems found there are still cheap.',
+      },
+      {
+        q: 'How do you handle security in an embedded product?',
+        sources: [
+          { label: 'UNECE vehicle cybersecurity regulations', url: 'https://unece.org/transport/vehicle-regulations-wp29' },
+        ],
+        a: 'As architecture, because almost none of it can be added afterward.\n\nThe decisions that matter are early and structural. Where the root of trust lives. Whether the boot chain is verified. How keys reach the device in the factory and whether they are unique per unit. Whether an update can be signed, and whether a device can refuse an unsigned one. Whether a compromised device can reach anything beyond itself.\n\nNone of those are features that can be scheduled into a later sprint. A device shipped without a verified boot chain cannot be given one in the field, and a fleet provisioned with a shared key stays that way.\n\nWhat can be added later is the operational half: monitoring, disclosure handling, and the patch cadence. Those need a team and a process rather than a design change, and they are the part most often left unowned at launch.',
+      },
+      {
+        q: 'What is the smallest sensible engagement?',
+        sources: [
+          { label: 'NIST Secure Software Development Framework', url: 'https://csrc.nist.gov/Projects/ssdf' },
+        ],
+        a: 'A feasibility and constraints read, and for most programs it should be the first one regardless of what follows.\n\nIt is a fixed-scope assessment across four surfaces: what you are building and for which markets, which standards genuinely apply, what the technical risks are in order of cost, and what the supply and platform position looks like. The output is a written position on each, including the parts that are already sound and should be left alone.\n\nWe run it that way because the alternative is a proposal shaped by what we would like to build. An assessment that cannot conclude "this is feasible as specified, proceed without us" is not an assessment.\n\nFrom there the sequencing is yours. Some organizations act on the constraint findings and continue with their own team, which is a legitimate outcome. Others use it as the architecture input for the full program. Either way you own the document and it does not commit you to us.',
+      },
+    ],
+
+    engagementEyebrow: 'ENGINEERING FROM FIRST QUESTION TO LONG-TERM SUPPORT',
+    engagementHeading: 'From Feasibility to',
+    engagementHeadingHighlight: 'Sustaining Engineering.',
+    engagementLede: 'Every engagement is structured around a defined engineering outcome, from feasibility and risk reduction through product development, validation, certification, and ongoing support.',
+    servicePackages: [
+      {
+        name: 'Feasibility & Constraints Read',
+        tier: 'ASSESSMENT',
+        duration: '3 to 4 weeks',
+        description: 'What you are building, under which standards, against which risks.',
+        deliverables: [
+          'Target markets with the approvals and radio regimes each one requires',
+          'Applicable safety, security and interoperability standards identified',
+          'Technical risks ranked by cost rather than by likelihood alone',
+          'Silicon, module and supply position assessed against the design intent',
+          'Written position on what is already sound and should be left alone',
+        ],
+      },
+      {
+        name: 'Prototype & Risk Retirement',
+        tier: 'ENGINEERING',
+        duration: '6 to 10 weeks',
+        description: 'Build the smallest thing that answers the riskiest question.',
+        deliverables: [
+          'Riskiest assumption identified and tested on real silicon',
+          'Measured results against the requirement, not a demonstration',
+          'Thermal, power and radio behavior characterized where they are the risk',
+          'An explicit proceed, change direction or stop recommendation',
+          'Findings written so the engineering stage inherits them',
+        ],
+      },
+      {
+        name: 'Product Engineering',
+        tier: 'BUILD',
+        duration: '16 to 40 weeks',
+        description: 'Drivers, firmware, application and interface on a reproducible build.',
+        deliverables: [
+          'Platform layer and board support separated for the product family',
+          'Firmware, drivers and on-device interface against the agreed architecture',
+          'Reproducible builds with artifact identity carried into the device',
+          'Static analysis and coding standard enforced in the pipeline',
+          'Update and recovery path implemented and rehearsed',
+        ],
+      },
+      {
+        name: 'Validation & Certification Support',
+        tier: 'ASSURANCE',
+        duration: '8 to 16 weeks',
+        description: 'Test against the environment, then take it through approval.',
+        deliverables: [
+          'Test strategy weighted by failure cost, executed on hardware',
+          'Pre-compliance testing before design freeze',
+          'Interoperability against the equipment your customers actually run',
+          'Documentation package assembled during the work rather than after',
+          'Approval gaps named explicitly where a market needs a variant',
+        ],
+      },
+      {
+        name: 'Sustaining Engineering',
+        tier: 'RUN',
+        duration: 'Ongoing',
+        description: 'Patching, obsolescence and regulatory change for the supported life.',
+        deliverables: [
+          'Security patching path maintained for the supported product life',
+          'Component obsolescence tracked ahead of end-of-life notices',
+          'Regulatory and standards changes monitored per target market',
+          'Field failure data fed back into the next revision',
+          'Regular service review against the commitments actually agreed',
+        ],
+      },
+    ],
+
+    industryHeading: 'What the product has to prove,',
+    industryHeadingHighlight: 'sector by sector.',
+    industryLede: 'The engineering discipline carries across these sectors. What changes is which standard applies, who audits it, and what failure costs.',
+    industryUseCases: [
+      {
+        industry: 'Automotive & Mobility',
+        headline: 'Functional safety and cybersecurity regulation now decide the architecture before any feature does.',
+        items: [
+          'Safety concept carried in the architecture rather than attached to it',
+          'Requirements traceable from hazard through design to test evidence',
+          'Cybersecurity management aligned to vehicle type approval',
+          'Over-the-air update with rollback on a safety-relevant system',
+          'In-vehicle network separation between domains by design',
+          'Supplier evidence assembled to the standard the auditor will apply',
+        ],
+      },
+      {
+        industry: 'Communications & Networking',
+        headline: 'Interoperability against deployed equipment predicts support cost better than conformance does.',
+        items: [
+          'Conformance plus interoperability against a real equipment matrix',
+          'Data plane performance measured under representative load',
+          'Management surface designed for the operator who runs it',
+          'Resilience behavior characterized under failure, not only at steady state',
+          'Early field trial on a real topology before volume',
+          'Long support horizons planned into the platform from the start',
+        ],
+      },
+      {
+        industry: 'Consumer Electronics',
+        headline: 'The support call is the real product metric, and self-recovery is worth more than a feature.',
+        items: [
+          'Update and recovery path proven before the first volume shipment',
+          'On-device interface designed for the actual input method',
+          'Media pipeline behavior held on a poor connection',
+          'Thermal and acoustic envelope validated in the real enclosure',
+          'Regional radio approvals resolved without a hardware fork',
+          'Field telemetry that makes a shipped fleet legible to engineering',
+        ],
+      },
+      {
+        industry: 'Medical & Life Sciences Devices',
+        headline: 'Software is a regulated component, and the evidence has to exist as the work is done.',
+        items: [
+          'Development lifecycle evidence produced during engineering',
+          'Risk management traceable from hazard to mitigation to test',
+          'Change control that survives an inspection years later',
+          'Cybersecurity expectations for connected clinical devices',
+          'Validated toolchain with qualification recorded',
+          'Post-market surveillance data reaching engineering',
+        ],
+      },
+      {
+        industry: 'Industrial & Energy',
+        headline: 'Long deployed lifetimes and physical consequence change what maintainability has to mean.',
+        items: [
+          'Products designed for support horizons measured in decades',
+          'Component obsolescence strategy at architecture rather than at notice',
+          'Operational technology separated from corporate networks by design',
+          'Update paths that work over constrained and intermittent links',
+          'Environmental and interference conditions exercised deliberately',
+          'Field failure data reaching the next revision rather than a warranty log',
+        ],
+      },
+    ],
+
+    practiceLabel: 'THE ENGINEERING FOUNDRY PRACTICE',
+    practiceHeading: 'R&D rarely ships',
+    practiceHeadingHighlight: 'on its own.',
+    practiceLede: 'A product that reaches the field usually needed more than research. The work below sits alongside this one when the answer crosses a boundary.',
+
+    conciergeHeading: 'Ask about your product program',
+    conciergeIntro: 'Questions we are asked before anyone commits to a program. Answered against your product rather than in general.',
+    conciergeChips: [
+      'Which standards actually apply to our product?',
+      'Can one design cover both our target markets?',
+      'How do we stop a codebase fork per SKU?',
+      'Can you take over a program that is slipping?',
+      'Book a feasibility and constraints read',
+    ],
+
+    midCta: 'The constraint you have not read yet is the one that costs a quarter.',
+    midCtaLabel: 'Book a Feasibility & Constraints Read',
+    closingCta: {
+      title: 'Your product,',
+      highlight: 'honestly assessed.',
+      body: 'Tell us roughly what you are building, which markets it has to reach, and where you think the risk sits. In 30 minutes we will tell you which standards actually apply, which of your assumptions we would test first, and what we would look at before anyone designs anything. No proposal attached.',
+      proofLabel: 'From first call to a read of your program',
     },
   },
 

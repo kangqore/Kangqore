@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T09:15:24.920Z",
+  "generatedAt": "2026-09-12T16:14:19.241Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1053,9 +1053,26 @@
       "url": "/services/engineering-rd-services",
       "name": "Engineering R&D Services",
       "department": "Foundry",
-      "description": "Engineering R&D — technology research, innovation labs, IP development, patent support, and academic partnerships for product innovation.",
-      "capabilities": [],
-      "faqs": [],
+      "description": "Product engineering research and development across automotive, communications, networking, storage and consumer electronics, from concept to certification.",
+      "capabilities": [
+        "Automotive",
+        "Communications, Networking and Storage",
+        "Consumer Electronics"
+      ],
+      "faqs": [
+        {
+          "q": "We have an idea and a rough spec. What actually happens first?",
+          "a": "We work out what would kill the product, and we test that before anything else. Most R&D programs start by building the part the team already knows how to build, because it feels like progress. The risk sits somewhere else: a radio that will not pass in the second market, a sensor that behaves differently at temperature, a processor that cannot hold the frame rate once the real codec is running. Those are the questions worth six weeks. The rest is engineering you can schedule. So the first stage is deliberately unglamorous. Which markets, under which approvals. Which standards apply and which of them constrain the architecture rather than the documentation. What the supply position is on the parts you are designing around. What has to be true for this to be manufacturable at the volume you have in mind. The output is a constraint list and a risk register naming what must be decided before architecture can start. It is usually shorter than people expect and more uncomfortable, because it makes the unknowns explicit while they are still cheap."
+        },
+        {
+          "q": "How do we know a prototype proves anything?",
+          "a": "By deciding, in advance and in writing, which assumption it exists to kill. A prototype that demonstrates the concept proves very little, because the concept was rarely the risk. A prototype that runs the real codec on the real silicon at the real thermal envelope and produces a number you can compare against the requirement proves something specific. The difference is whether there was a question. We bring up on actual hardware rather than an emulator wherever the risk is physical, because emulation is exactly where the surprises hide. Timing, thermal behavior, power draw and radio performance do not survive abstraction. The stage ends with an explicit decision: proceed, change direction, or stop. Stopping is a legitimate outcome and the cheapest one available at that point. A prototype phase that cannot conclude \"this will not work\" was a construction project rather than an experiment."
+        },
+        {
+          "q": "Our product has to pass functional safety. Does that change how you work?",
+          "a": "Substantially, and the change belongs at the start rather than at the audit. Functional safety is an argument, not a test. You are demonstrating that hazards were identified, that the architecture addresses them, and that the evidence supports the claim. Evidence assembled retrospectively is both expensive and weak, because the traceability has to be reconstructed from work that was not recorded for that purpose. Practically it changes several things. The architecture carries the safety concept rather than having it attached. Requirements are traceable from hazard through design to test. Tool qualification matters, so the build chain is a decision rather than a default. Coding standards are enforced mechanically rather than reviewed for. It is also worth saying when it does not apply. Plenty of products carry a safety label in the brief that the actual standard does not require. Establishing which parts of the system are genuinely in scope, and which are not, is usually the single largest cost reduction available in the program."
+        }
+      ],
       "method": [
         {
           "rule": "Algorithmic & Mathematical Modeling",
