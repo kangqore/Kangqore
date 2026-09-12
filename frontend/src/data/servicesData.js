@@ -7271,9 +7271,9 @@ export const servicesData = {
     whatIsPara4: 'We work on the joins. Identity is the spine. Entra decides who reaches what across Azure, Dynamics, Power Platform and Microsoft 365, so getting it right once removes a class of problems everywhere else. Data is the second: one definition of a customer, an asset, an employee, held where every workload can read it. Everything else is engineering on top of those two.',
     whatIsPara5: 'That is also why we start with what you already own. Most Microsoft estates are paying for capability nobody has switched on. An E5 tenant using E3 features, a Sentinel workspace ingesting logs nobody queries, Power Platform licenses attached to people who never got an environment. We read the licensing position before proposing anything, because it changes the architecture and because a partner billing by the hour has no reason to raise it.',
 
-    outcomesEyebrow: 'WHAT CHANGES WHEN IT FINALLY CONNECTS',
-    outcomesHeading: 'Fewer places for the truth',
-    outcomesHeadingHighlight: 'to disagree with itself.',
+    outcomesEyebrow: 'WHAT CHANGES WHEN THE ARCHITECTURE WORKS AS ONE',
+    outcomesHeading: 'Less Duplication. Less Reconciliation.',
+    outcomesHeadingHighlight: 'Better Decisions.',
     businessMetrics: [
       { illustrative: true, title: 'Identity Surface', desc: 'One directory instead of one per workload, and no sync jobs between them.', value: '1', suffix: ' Directory', metricLabel: 'Authoritative Directories', icon: 'Shield' },
       { illustrative: true, title: 'Licensing Recovery', desc: 'Entitlement already paid for and never switched on, found before new spend.', value: '10 to 20', suffix: '% Unused', metricLabel: 'Entitlement Already Owned', icon: 'TrendingUp' },
