@@ -7761,10 +7761,10 @@ export const servicesData = {
       },
     ],
 
-    engagementEyebrow: 'WHERE TO START',
-    engagementHeading: 'Scoped engagements,',
-    engagementHeadingHighlight: 'not open-ended programs.',
-    engagementLede: 'Each of these has a defined output and a defined end. None of them require the next one, and the assessments are deliberately structured so that "leave this alone" is an available conclusion.',
+    engagementEyebrow: 'START WITH A DEFINED OUTCOME',
+    engagementHeading: 'Focused Programs.',
+    engagementHeadingHighlight: 'Defined Outcomes.',
+    engagementLede: 'Each engagement is designed around a specific outcome, with a clear scope, defined deliverables, and a clear path to completion.',
     servicePackages: [
       {
         name: 'Microsoft Estate Assessment',
