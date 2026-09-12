@@ -330,3 +330,26 @@ Standing per-feature blockers also live in the memory index
 (`pending-*.md` entries). This file is for work we chose to defer; those are for
 environment state. When something moves from "we skipped it" to "it's done,"
 delete the entry here rather than marking it complete.
+
+### Executive newsletter band is thin on all 62 service pages (P2)
+
+The `ExecutiveNewsletterSection` band renders ~500px carrying 23 words, a density
+of 4.6 against the rubric's threshold of 10. It costs **every service page** the
+`section density` point, which is why pages that are otherwise perfect cap at
+39/40 rather than 40/40.
+
+It was fixed once, in the `microsoft-services` branch, by adding a sentence on
+what an issue contains, the cadence and the unsubscribe commitment — density went
+4.6 → 13.0 and ServiceNow returned to 40/40. **PR #536 then trimmed that copy
+back**, deliberately, and the band returned to 4.6.
+
+**Not reversed here** because #536 was another session's considered decision; the
+completion protocol says do not undo what shipped without asking.
+
+**What unblocks it:** a decision on whether that band should carry enough copy to
+clear the density threshold, or whether the rubric should exempt a signup band
+the way it already exempts CTA bands under 250px. Either is defensible; doing
+neither leaves 62 pages one point short with no page-level remedy.
+
+**Where:** `frontend/src/components/services/shared/ExecutiveNewsletterSection.jsx`
+(copy), `scripts/audit-page-quality.mjs` `CTA_BAND_PX` (rubric side).

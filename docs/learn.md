@@ -372,3 +372,35 @@ and `smoke.spec.ts` are fast enough to mostly avoid the race, not immune to it.
 source rather than out-waiting it. Confirmed failing without the mock (5/5
 across repeats) and passing with it (8/8 across repeats), both under the exact
 CI recipe run locally — not the dev server.
+
+## 2026-09-12 — a competitor's product names arrived inside a content brief  (P2)
+
+**Context:** the brief supplied for `/services/engineering-rd-services` was
+Happiest Minds' own R&D page, pasted in full. Four of the six entries in its
+"Our Solutions" carousel are their proprietary products. Presenting those as
+Kangqore's would have claimed products we do not have and used another firm's
+product names. The same class of leak had already reached a shipped page: on
+`/services/microsoft-services` the brief contained "Threat Hunting with In-Built
+Queries and HM Native Tools", where HM is Happiest Minds. That one was caught by
+reading the line carefully during a rewrite, which is not a control.
+
+**Learning:** a brief lifted from a competitor's live page mixes two kinds of
+noun in the same bullet list. Capability nouns (ADAS, SDN, IMS) are
+industry-standard and matching them is coverage parity. Brand and product nouns
+are not, and they look identical in the list. Catching them by reading works
+until the list is long or the session is late.
+
+**System change:** the splice for this block asserts on forbidden tokens before
+the file is written — the competitor's name, each of its product names, and the
+existing non-US spellings — so the write fails rather than the page shipping.
+Carry this into the `service-page-audit` skill as a standing step: whenever a
+brief is pasted from a named competitor, list that competitor's brand and
+product names and assert on them at write time, alongside the spelling checks
+that are already there.
+
+**Not fixed (deliberately, scope):** the section-density point on this page is
+unrecoverable from within the page. PR #536 trimmed the executive newsletter
+copy that had lifted that band from 4.6 to 13.0 words per 100px, so the band is
+thin fleet-wide again and no page-level content change can compensate. Recorded
+in `docs/DEFERRED.md` rather than reversed, because #536 was a deliberate
+decision by another session.
