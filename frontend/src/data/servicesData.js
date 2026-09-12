@@ -8533,7 +8533,7 @@ export const servicesData = {
       },
     ],
 
-    engagementEyebrow: 'ENGINEERING FROM FIRST QUESTION TO LONG-TERM SUPPORT',
+    engagementEyebrow: 'THE ENGINEERING DELIVERY MODEL',
     engagementHeading: 'From Feasibility to',
     engagementHeadingHighlight: 'Sustaining Engineering.',
     engagementLede: 'Every engagement is structured around a defined engineering outcome, from feasibility and risk reduction through product development, validation, certification, and ongoing support.',
