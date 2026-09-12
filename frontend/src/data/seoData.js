@@ -486,9 +486,9 @@ export const serviceSEO = {
     url: '/services/engineering-foundry',
   },
   'engineering-rd-services': {
-    title: 'Engineering R&D Services — Foundry | Kangqore',
-    description: 'Engineering R&D — technology research, innovation labs, IP development, patent support, and academic partnerships for product innovation.',
-    keywords: 'engineering R&D, technology research, innovation labs, IP development, patent support',
+    title: 'Engineering R&D Services for Connected Products | Kangqore',
+    description: 'Product engineering research and development across automotive, communications, networking, storage and consumer electronics, from concept to certification.',
+    keywords: 'engineering R&D, product engineering, embedded systems, ADAS, telematics, SDN, consumer electronics R&D, certification support',
     url: '/services/engineering-rd-services',
   },
   'product-digital-engineering': {
