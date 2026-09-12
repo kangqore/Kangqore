@@ -8297,7 +8297,7 @@ export const servicesData = {
     capabilityAreas: [
       {
         title: 'Automotive',
-        image: '/images/capabilities/iot-connected.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'A car is a network with wheels, and it ships under a safety standard.',
         items: [
           'Telematics: Connect the vehicle to the back office for diagnostics, fleet operations, usage-based insurance and over-the-air update, with the link designed for intermittent coverage rather than for a lab.',
@@ -8307,7 +8307,7 @@ export const servicesData = {
       },
       {
         title: 'Communications, Networking and Storage',
-        image: '/images/capabilities/cloud-infrastructure.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'The plumbing everything else depends on, engineered to stay up.',
         items: [
           'Enterprise, Access and Core Networking: Engineer across the enterprise, access and core layers, including the data plane performance work and the management surface that decides whether an operator can run it.',
@@ -8320,7 +8320,7 @@ export const servicesData = {
       },
       {
         title: 'Consumer Electronics',
-        image: '/images/capabilities/ux-design.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Always-on devices where the user notices every compromise.',
         items: [
           'Streaming Solutions: Engineer media pipelines end to end, covering ingest, transcode, playback, digital rights management and the adaptive behavior that decides whether the picture holds on a poor connection.',
