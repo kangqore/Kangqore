@@ -8255,6 +8255,8 @@ export const servicesData = {
     heroStripItems: ['Automotive', 'Networking & Storage', 'Consumer Electronics', 'Embedded Systems', 'Certification'],
 
     hidePartnershipModel: true,
+    hideArchitecture: true,
+    hideOutcomeCards: true,
 
     whatIsEyebrow: 'WHY R&D DECIDES THE PRODUCT',
     whatIsTitle: 'A Product Is Only as Good',
@@ -8265,9 +8267,6 @@ export const servicesData = {
     whatIsPara4: 'Our work spans automotive, communications and networking, storage, and consumer electronics, which sound like different industries and increasingly are not. A car is a network with wheels. A television is an embedded Linux device with a streaming stack. A storage appliance and a home gateway share more architecture than either shares with the product it replaced. The same engineering discipline carries across all of them.',
     whatIsPara5: 'That is also why we start by asking what you are actually trying to ship, and to whom, under which standard. Certification, regional radio approval and functional safety are not late-stage paperwork. They are architectural constraints, and discovering them after the board is laid out is the most expensive way to learn them.',
 
-    outcomesEyebrow: 'WHAT CHANGES WHEN R&D IS ENGINEERED',
-    outcomesHeading: 'Fewer surprises',
-    outcomesHeadingHighlight: 'late in the program.',
     businessMetrics: [
       { illustrative: true, title: 'Time to Prototype', desc: 'Concept to a working prototype that can be measured and argued about, rather than a slide deck.', value: '6', suffix: ' Weeks', metricLabel: 'Concept to Working Prototype', icon: 'Rocket' },
       { illustrative: true, title: 'Platform Reuse', desc: 'One codebase carried across product variants, instead of a fork per SKU that diverges within a year.', value: 'One', suffix: ' Codebase', metricLabel: 'Across Product Variants', icon: 'Layers' },
@@ -8335,108 +8334,6 @@ export const servicesData = {
       },
     ],
 
-    architectureEyebrow: 'HOW AN R&D PROGRAM ACTUALLY RUNS',
-    architectureTitle: 'Discovery to sustaining,',
-    architectureTitleHighlight: 'with the constraints known early.',
-    architectureLede: 'R&D programs fail late and expensively, almost always because a constraint that was always true was discovered after the architecture was fixed. This is the sequence we run, and its purpose is to move the discovery forward.',
-    architectureNodes: [
-      {
-        title: 'Discover',
-        icon: 'Search',
-        description: 'Establish what is being built, for which market, under which standard. Constraints first, because they are the expensive part.',
-        features: [
-          'Target markets and the regulatory or radio approvals each one requires',
-          'Applicable safety, security and interoperability standards identified',
-          'Silicon, module and supply constraints that bound the design',
-          'What is deliberately out of scope, written where a reviewer can see it',
-          'A risk register naming what must be decided before architecture can start',
-        ],
-      },
-      {
-        title: 'Architect',
-        icon: 'Layers',
-        description: 'Fix the shape while it is still cheap to change. Platform boundaries, variant strategy and the update path are decided here.',
-        features: [
-          'Platform and board support boundaries drawn for the whole product family',
-          'Variant strategy chosen so a new SKU is configuration, not a fork',
-          'Update and recovery path designed before the first build is cut',
-          'Security boundary and key handling settled at architecture, not later',
-          'Target-state architecture signed off by the team who will build it',
-        ],
-      },
-      {
-        title: 'Prototype',
-        icon: 'Rocket',
-        description: 'Build the smallest thing that answers the riskiest question. A prototype exists to kill an assumption, not to impress.',
-        features: [
-          'Riskiest technical assumption identified and tested first',
-          'Bring-up on real silicon rather than on an emulator',
-          'Measured results against the requirement, not a demonstration',
-          'An explicit decision to proceed, change direction or stop',
-          'Findings written down so the next stage inherits them',
-        ],
-      },
-      {
-        title: 'Engineer',
-        icon: 'Cpu',
-        description: 'Build the product. Drivers, firmware, application and interface, on a build system that produces the same artifact every time.',
-        features: [
-          'Board bring-up, device drivers and firmware against the platform layer',
-          'Application and on-device interface built for the real input method',
-          'Reproducible builds with artifact identity carried into the device',
-          'Static analysis and coding standard enforced in the pipeline',
-          'Runbooks written as the work is done rather than reconstructed later',
-        ],
-      },
-      {
-        title: 'Validate',
-        icon: 'Target',
-        description: 'Test against the requirement and the environment, including the conditions the product will meet and the lab usually will not.',
-        features: [
-          'Test strategy weighted by failure cost rather than by coverage target',
-          'Environmental, thermal and interference conditions exercised deliberately',
-          'Interoperability against the equipment the product will actually meet',
-          'Automated regression on hardware, not only in simulation',
-          'Defects traced to root cause rather than closed on a retest',
-        ],
-      },
-      {
-        title: 'Certify',
-        icon: 'ShieldCheck',
-        description: 'Take it through approval. Pre-scan before design freeze, so the formal submission confirms a result rather than discovering one.',
-        features: [
-          'Pre-compliance testing before the design is frozen',
-          'Regional radio and electromagnetic approvals per target market',
-          'Functional safety or security evidence assembled as work proceeds',
-          'Documentation package built during engineering, not afterward',
-          'Approval gaps named explicitly where a market will need a variant',
-        ],
-      },
-      {
-        title: 'Launch',
-        icon: 'Zap',
-        description: 'Get it into production and into the field, with the factory process and the first-update path both proven before volume.',
-        features: [
-          'Manufacturing test and provisioning designed for the line, not the bench',
-          'Device identity and key injection handled in the factory process',
-          'First over-the-air update rehearsed before it is needed',
-          'Field telemetry live from the first production units',
-          'Rollback path defined before the first update ships',
-        ],
-      },
-      {
-        title: 'Sustain',
-        icon: 'Activity',
-        description: 'Keep it current. Silicon goes end of life, standards move, and vulnerabilities arrive whether or not the program planned for them.',
-        features: [
-          'Component obsolescence tracked ahead of end-of-life notices',
-          'Security patching path maintained for the supported life of the product',
-          'Field failure data fed back into the next revision',
-          'Standards and regulatory changes monitored per target market',
-          'Regular service review against the commitments actually agreed',
-        ],
-      },
-    ],
     toolsStack: {
       eyebrow: 'THE R&D INNOVATION FABRIC',
       title: 'The research & development planes,',
@@ -8636,10 +8533,10 @@ export const servicesData = {
       },
     ],
 
-    engagementEyebrow: 'WHERE TO START',
-    engagementHeading: 'Scoped engagements,',
-    engagementHeadingHighlight: 'not open-ended programs.',
-    engagementLede: 'Each of these has a defined output and a defined end. None of them require the next one, and the assessments are structured so that "this is sound, proceed without us" is an available conclusion.',
+    engagementEyebrow: 'ENGINEERING FROM FIRST QUESTION TO LONG-TERM SUPPORT',
+    engagementHeading: 'From Feasibility to',
+    engagementHeadingHighlight: 'Sustaining Engineering.',
+    engagementLede: 'Every engagement is structured around a defined engineering outcome, from feasibility and risk reduction through product development, validation, certification, and ongoing support.',
     servicePackages: [
       {
         name: 'Feasibility & Constraints Read',

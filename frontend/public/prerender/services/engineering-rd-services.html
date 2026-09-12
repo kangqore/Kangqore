@@ -36,7 +36,7 @@
     <p>Our work spans automotive, communications and networking, storage, and consumer electronics, which sound like different industries and increasingly are not. A car is a network with wheels. A television is an embedded Linux device with a streaming stack. A storage appliance and a home gateway share more architecture than either shares with the product it replaced. The same engineering discipline carries across all of them.</p>
     <p>That is also why we start by asking what you are actually trying to ship, and to whom, under which standard. Certification, regional radio approval and functional safety are not late-stage paperwork. They are architectural constraints, and discovering them after the board is laid out is the most expensive way to learn them.</p>
 
-    <h2>Fewer surprises late in the program.</h2>
+    <h2>Business Outcomes</h2>
       <ul>
         <li><strong>6 Weeks</strong> Concept to Working Prototype. Concept to a working prototype that can be measured and argued about, rather than a slide deck.</li>
         <li><strong>One Codebase</strong> Across Product Variants. One codebase carried across product variants, instead of a fork per SKU that diverges within a year.</li>
@@ -87,96 +87,7 @@
 
     
 
-        <h2>Discovery to sustaining, with the constraints known early.</h2>
-    <p>R&amp;D programs fail late and expensively, almost always because a constraint that was always true was discovered after the architecture was fixed. This is the sequence we run, and its purpose is to move the discovery forward.</p>
-      <section>
-        <h3>Discover</h3>
-        <p>Establish what is being built, for which market, under which standard. Constraints first, because they are the expensive part.</p>
-        <ul>
-          <li>Target markets and the regulatory or radio approvals each one requires</li>
-          <li>Applicable safety, security and interoperability standards identified</li>
-          <li>Silicon, module and supply constraints that bound the design</li>
-          <li>What is deliberately out of scope, written where a reviewer can see it</li>
-          <li>A risk register naming what must be decided before architecture can start</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Architect</h3>
-        <p>Fix the shape while it is still cheap to change. Platform boundaries, variant strategy and the update path are decided here.</p>
-        <ul>
-          <li>Platform and board support boundaries drawn for the whole product family</li>
-          <li>Variant strategy chosen so a new SKU is configuration, not a fork</li>
-          <li>Update and recovery path designed before the first build is cut</li>
-          <li>Security boundary and key handling settled at architecture, not later</li>
-          <li>Target-state architecture signed off by the team who will build it</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Prototype</h3>
-        <p>Build the smallest thing that answers the riskiest question. A prototype exists to kill an assumption, not to impress.</p>
-        <ul>
-          <li>Riskiest technical assumption identified and tested first</li>
-          <li>Bring-up on real silicon rather than on an emulator</li>
-          <li>Measured results against the requirement, not a demonstration</li>
-          <li>An explicit decision to proceed, change direction or stop</li>
-          <li>Findings written down so the next stage inherits them</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Engineer</h3>
-        <p>Build the product. Drivers, firmware, application and interface, on a build system that produces the same artifact every time.</p>
-        <ul>
-          <li>Board bring-up, device drivers and firmware against the platform layer</li>
-          <li>Application and on-device interface built for the real input method</li>
-          <li>Reproducible builds with artifact identity carried into the device</li>
-          <li>Static analysis and coding standard enforced in the pipeline</li>
-          <li>Runbooks written as the work is done rather than reconstructed later</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Validate</h3>
-        <p>Test against the requirement and the environment, including the conditions the product will meet and the lab usually will not.</p>
-        <ul>
-          <li>Test strategy weighted by failure cost rather than by coverage target</li>
-          <li>Environmental, thermal and interference conditions exercised deliberately</li>
-          <li>Interoperability against the equipment the product will actually meet</li>
-          <li>Automated regression on hardware, not only in simulation</li>
-          <li>Defects traced to root cause rather than closed on a retest</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Certify</h3>
-        <p>Take it through approval. Pre-scan before design freeze, so the formal submission confirms a result rather than discovering one.</p>
-        <ul>
-          <li>Pre-compliance testing before the design is frozen</li>
-          <li>Regional radio and electromagnetic approvals per target market</li>
-          <li>Functional safety or security evidence assembled as work proceeds</li>
-          <li>Documentation package built during engineering, not afterward</li>
-          <li>Approval gaps named explicitly where a market will need a variant</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Launch</h3>
-        <p>Get it into production and into the field, with the factory process and the first-update path both proven before volume.</p>
-        <ul>
-          <li>Manufacturing test and provisioning designed for the line, not the bench</li>
-          <li>Device identity and key injection handled in the factory process</li>
-          <li>First over-the-air update rehearsed before it is needed</li>
-          <li>Field telemetry live from the first production units</li>
-          <li>Rollback path defined before the first update ships</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Sustain</h3>
-        <p>Keep it current. Silicon goes end of life, standards move, and vulnerabilities arrive whether or not the program planned for them.</p>
-        <ul>
-          <li>Component obsolescence tracked ahead of end-of-life notices</li>
-          <li>Security patching path maintained for the supported life of the product</li>
-          <li>Field failure data fed back into the next revision</li>
-          <li>Standards and regulatory changes monitored per target market</li>
-          <li>Regular service review against the commitments actually agreed</li>
-        </ul>
-      </section>
+    
 
         <h2>What the product has to prove, sector by sector.</h2>
     <p>The engineering discipline carries across these sectors. What changes is which standard applies, who audits it, and what failure costs.</p>
@@ -241,26 +152,14 @@
         </ul>
       </section>
 
-        <h2>Fewer surprises late in the program.</h2>
-      <section>
-        <h3>Modeled scenario in consumer electronics, four product lines. 5 → 1 firmware codebases</h3>
-        <p>Five firmware branches for what marketing described as one product family. A fix landed in two of them, the other three shipped with the defect, and nobody could say which units in the field carried which build.</p>
-        <p>A single platform layer with per-variant board support, one build system, and a signed over-the-air update path. Field units now report their build identity, so a defect can be scoped to a population rather than guessed at.</p>
-        <p>Illustrative figures, modeled on typical engagement patterns, not a specific client result.</p>
-      </section>
-      <section>
-        <h3>Modeled scenario in connected devices, two regional markets. 9 → 2 months to radio approval</h3>
-        <p>A product designed and laid out before anyone read the radio requirements for its second market. The antenna placement that passed in one region failed in the other, and the respin cost a full quarter.</p>
-        <p>Regulatory and radio constraints pulled into the architecture review, pre-scan testing before design freeze, and a single hardware variant qualified for both markets rather than a regional fork.</p>
-        <p>Illustrative figures, modeled on typical engagement patterns, not a specific client result.</p>
-      </section>
+    
 
     
 
     
 
-        <h2>Scoped engagements, not open-ended programs.</h2>
-    <p>Each of these has a defined output and a defined end. None of them require the next one, and the assessments are structured so that &quot;this is sound, proceed without us&quot; is an available conclusion.</p>
+        <h2>From Feasibility to Sustaining Engineering.</h2>
+    <p>Every engagement is structured around a defined engineering outcome, from feasibility and risk reduction through product development, validation, certification, and ongoing support.</p>
       <section>
         <h3>Feasibility &amp; Constraints Read (3 to 4 weeks)</h3>
         <p>What you are building, under which standards, against which risks.</p>
