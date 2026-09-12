@@ -1515,18 +1515,19 @@ const featureMicros   = service.featureMicros
 
   useEffect(() => {
     const totalArch = service.architectureNodes?.length || 0;
-    if (totalArch <= 3 || isArchPaused) return;
+    const archBatchSize = service.architectureVisibleCount || 3;
+    if (totalArch <= archBatchSize || service.architectureShowAll || isArchPaused) return;
 
     const timer = setInterval(() => {
       setArchOffset(prev => {
-        const next = (prev + 3) % totalArch;
+        const next = (prev + archBatchSize) % totalArch;
         setActiveArchNode(next);
         return next;
       });
     }, 5500);
 
     return () => clearInterval(timer);
-  }, [service.architectureNodes, service.slug, isArchPaused]);
+  }, [service.architectureNodes, service.architectureVisibleCount, service.architectureShowAll, service.slug, isArchPaused]);
 
   // ── Scroll animations ─────────────────────────────────────────────────────
   const [defRef,   defVisible]   = useScrollAnimation({ once: true, threshold: 0.1 });
@@ -5256,9 +5257,10 @@ const featureMicros   = service.featureMicros
         // nothing reflows. Rotation still drives which card is highlighted and
         // which image the left column shows. Defaults to the rotating window,
         // so the other 61 pages are unchanged.
-        const visibleArchIndices = (totalArch <= 3 || service.architectureShowAll)
+        const archBatchSize = service.architectureVisibleCount || 3;
+        const visibleArchIndices = (totalArch <= archBatchSize || service.architectureShowAll)
           ? archNodes.map((_, i) => i)
-          : [0, 1, 2].map(k => (archOffset + k) % totalArch);
+          : Array.from({ length: archBatchSize }, (_, k) => (archOffset + k) % totalArch);
 
         return (
           <section id="svc-architecture" className="py-24 md:py-32" style={{ backgroundColor: '#000000' }}>
@@ -5301,9 +5303,13 @@ const featureMicros   = service.featureMicros
                   </div>
                 </div>
 
-                {/* Right Column: 3-Card Automated Rotating Stack (All 3 Open, Smooth In-Place Fade) */}
+                {/* Right Column: Automated Rotating Stack (All Open, Smooth In-Place Fade) */}
                 <div 
-                  className="lg:col-span-7 order-1 lg:order-2 flex flex-col justify-center space-y-6 sm:space-y-8"
+                  className={`lg:col-span-7 order-1 lg:order-2 flex flex-col justify-center ${
+                    archBatchSize >= 4 || visibleArchIndices.length >= 4 
+                      ? 'space-y-4 sm:space-y-6' 
+                      : 'space-y-6 sm:space-y-8'
+                  }`}
                   onMouseEnter={() => setIsArchPaused(true)}
                   onMouseLeave={() => setIsArchPaused(false)}
                 >

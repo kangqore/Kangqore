@@ -7439,6 +7439,7 @@ export const servicesData = {
     ],
 
 
+    architectureVisibleCount: 4,
     architectureEyebrow: 'HOW ENTERPRISE PROGRAMS SHOULD RUN',
     architectureTitle: 'One Program.',
     architectureTitleHighlight: 'One Continuous Chain of Execution.',
