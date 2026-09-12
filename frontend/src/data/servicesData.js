@@ -7439,10 +7439,10 @@ export const servicesData = {
     ],
 
 
-    architectureEyebrow: 'HOW A MICROSOFT PROGRAM ACTUALLY RUNS',
-    architectureTitle: 'Assessment to support,',
-    architectureTitleHighlight: 'with nothing dropped at the handoffs.',
-    architectureLede: 'Microsoft programs fail at the joins between assessment and design, and between go-live and operations. This is the sequence we run, and the point of writing it down is that each stage has an output the next one consumes rather than a document that gets filed.',
+    architectureEyebrow: 'HOW ENTERPRISE PROGRAMS SHOULD RUN',
+    architectureTitle: 'One Program.',
+    architectureTitleHighlight: 'One Continuous Chain of Execution.',
+    architectureLede: 'Assessment informs design. Design informs implementation. Implementation informs integration. Every output becomes the foundation for the next stage.',
     architectureNodes: [
       {
         title: 'Assess',
