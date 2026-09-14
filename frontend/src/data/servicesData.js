@@ -8982,7 +8982,7 @@ export const servicesData = {
     capabilityAreas: [
       {
         title: 'Hybrid Cloud',
-        image: '/images/capabilities/cloud-infrastructure.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Placement decided per workload, not inherited from what you already own.',
         items: [
           'Landing Zone and Governance: Establish the subscription or account structure, policy boundaries and guardrails before workloads arrive, so governance is enforced rather than documented.',
@@ -8995,7 +8995,7 @@ export const servicesData = {
       },
       {
         title: 'Enterprise Networks',
-        image: '/images/capabilities/vibrant-platform.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'The layer everything else assumes works, and nobody notices until it does not.',
         items: [
           'SD-WAN and Branch Modernization: Replace circuit-bound branch networking with software-defined paths, including the failover behavior that decides what a site does when its primary link drops.',
@@ -9008,7 +9008,7 @@ export const servicesData = {
       },
       {
         title: 'Hybrid Workplace',
-        image: '/images/capabilities/ux-design.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Where the estate meets the people who have to work in it.',
         items: [
           'Endpoint Management and Compliance: Manage devices, configuration and compliance from one plane, including the unmanaged population that exists in every estate that claims otherwise.',
@@ -9021,7 +9021,7 @@ export const servicesData = {
       },
       {
         title: 'Cloud and Infrastructure Security',
-        image: '/images/capabilities/vibrant-security.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Controls that hold when the estate is half yours and half rented.',
         items: [
           'Cloud Security Posture Management: Find and close misconfiguration continuously rather than at audit, and know which findings actually matter in your architecture.',
@@ -9034,7 +9034,7 @@ export const servicesData = {
       },
       {
         title: 'Software and Asset Management',
-        image: '/images/capabilities/business-strategy.png',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
         desc: 'Knowing what you own, what you pay for, and whether those agree.',
         items: [
           'Discovery and Inventory: Establish what is actually deployed across hardware, virtual and cloud estate, which in most organizations differs materially from the asset register.',
