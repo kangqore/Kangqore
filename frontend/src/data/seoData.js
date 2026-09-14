@@ -510,9 +510,9 @@ export const serviceSEO = {
     url: '/services/managed-infrastructure-services',
   },
   'modernization-infrastructure': {
-    title: 'Modernization Infrastructure — Foundry | Kangqore',
-    description: 'Modernize legacy infrastructure — assessment, modernization roadmap, cloud migration, hybrid infrastructure, and infrastructure as code (IaC).',
-    keywords: 'infrastructure modernization, cloud migration, hybrid infrastructure, infrastructure as code, IaC',
+    title: 'Infrastructure Modernization and Cloud Migration | Kangqore',
+    description: 'Build, migrate and modernize infrastructure across hybrid cloud, enterprise networks, workplace, security and asset management, without moving everything.',
+    keywords: 'infrastructure modernization, cloud migration, hybrid cloud, landing zone, SD-WAN, SASE, FinOps, infrastructure as code, IaC',
     url: '/services/modernization-infrastructure',
   },
   'managed-services': {

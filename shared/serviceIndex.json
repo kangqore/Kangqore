@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T16:32:53.926Z",
+  "generatedAt": "2026-09-14T12:02:01.754Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1214,9 +1214,28 @@
       "url": "/services/modernization-infrastructure",
       "name": "Modernization Infrastructure",
       "department": "Foundry",
-      "description": "Modernize legacy infrastructure — assessment, modernization roadmap, cloud migration, hybrid infrastructure, and infrastructure as code (IaC).",
-      "capabilities": [],
-      "faqs": [],
+      "description": "Build, migrate and modernize infrastructure across hybrid cloud, enterprise networks, workplace, security and asset management, without moving everything.",
+      "capabilities": [
+        "Hybrid Cloud",
+        "Enterprise Networks",
+        "Hybrid Workplace",
+        "Cloud and Infrastructure Security",
+        "Software and Asset Management"
+      ],
+      "faqs": [
+        {
+          "q": "Does everything have to move to cloud?",
+          "a": "No, and programs that start from that assumption are the ones that overrun. The useful question is per workload rather than per estate. Some things move because they are constrained by hardware, because the platform underneath is going out of support, or because they need elasticity a data center cannot provide. Some things move because keeping them running locally now costs more than modernizing them. And some should stay, because of latency to physical equipment, data residency, a licensing position that makes cloud materially more expensive, or simply because they work and the business case is thin. What we would push on is bringing the whole estate under one management and security plane even where workloads stay put. One policy set and one place to look during an incident is often worth more in the first year than moving the workload itself. The sequencing question is which workloads go first, and the answer is usually the ones that reduce risk or unblock something else, not the ones that are easiest to lift."
+        },
+        {
+          "q": "Our cloud bill went up after migration. What went wrong?",
+          "a": "Usually nothing went wrong technically. The estate was lifted at the size it was requested rather than the size it uses. On-premises, over-provisioning is invisible because the hardware is already bought. A team asks for sixteen cores and uses three, and nobody sees a line item. The same request in cloud bills monthly, forever, and the waste that was absorbed by a capital purchase becomes an operating cost with your name on it. The first pass is mechanical and recovers more than the sophisticated work that follows. Non-production running around the clock. Storage in a hot tier nothing has read in a year. Disks still attached to instances that were decommissioned. None of it needs an architecture change. The second pass is right-sizing against measured utilization and matching commitment shape to what you actually run. That is where the larger numbers sit, and it is where a partner earning margin on your consumption has the least reason to look."
+        },
+        {
+          "q": "How do we modernize without a freeze on everything else?",
+          "a": "By sequencing in waves small enough that any one of them can be reversed, and by accepting that the estate will be in two states for a while. The change-freeze instinct comes from treating migration as a single event. It rarely is, and a freeze long enough to cover a real program does more damage than the migration risk it is protecting against. What makes waves safe is dependency mapping done before scoping, not during. Most migration incidents are something unseen depending on the thing that moved, and that is a discovery problem rather than an execution one. The other half is rehearsal. Cut over a representative workload first, with rollback tested rather than documented, and let the team learn on something that will not stop the business. The waves after that go faster because the unknowns were spent early."
+        }
+      ],
       "method": [
         {
           "rule": "Estate Discovery & Dependency Map",

@@ -8927,11 +8927,228 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Modernize legacy infrastructure',
-    fullDescription: 'Transform legacy infrastructure to modern, cloud-ready architecture.',
+    fullDescription: 'Build, migrate and modernize the infrastructure underneath your applications, so what you can run stops being decided by what you already own.',
     keyFeatures: ['Assessment', 'Modernization roadmap', 'Cloud migration', 'Hybrid infrastructure', 'IaC'],
     relatedServiceSlugs: ['legacy-modernization', 'cloud-computing', 'managed-infrastructure-services'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1560732488-6b0df240254a?w=800&q=80',
+    lastReviewed: '2026-09-12',
+
+    heroTitle: 'Infrastructure Modernization at\nEnterprise Scale by Kangqore',
+    heroBadge: 'Build, Migrate and Modernize',
+    heroStripItems: ['Hybrid Cloud', 'Enterprise Networks', 'Hybrid Workplace', 'Cloud Security', 'Asset Management'],
+
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'WHY THE FOUNDATION DECIDES THE CEILING',
+    whatIsTitle: 'What You Can Run',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'Is Decided Underneath.',
+    whatIsPara2: 'Infrastructure is not a piece of technology sitting beneath the interesting work. It is the thing that decides which applications you can support at all, and most IT organizations are still carrying enough legacy, cost and complexity that the decision has already been made for them.',
+    whatIsPara3: 'The cost of that shows up as a refusal rather than a bill. A team cannot ship the service because there is nowhere to run it. An AI initiative stalls because the data sits on storage that cannot feed a GPU, or because nobody can provision the capacity inside a quarter. The infrastructure did not fail. It simply set a ceiling nobody wrote down.',
+    whatIsPara4: 'We work on that ceiling. Not by moving everything to cloud, which is rarely the right answer and never the whole one, but by getting to a position where placement is a decision you make per workload rather than a constraint you inherit. Some things move, some things stay, some things are retired, and the useful work is knowing which is which before the migration plan is written.',
+    whatIsPara5: 'That is also why we start with what you already run. Most estates carry capacity nobody has reclaimed, licenses nobody has reconciled, and a support model that absorbs the difference quietly. Reading that position first changes the architecture and changes the business case, and it is the part an integrator paid by the migration has least reason to raise.',
+
+    outcomesEyebrow: 'WHAT CHANGES WHEN THE FOUNDATION MOVES',
+    outcomesHeading: 'Capacity stops being',
+    outcomesHeadingHighlight: 'the reason for no.',
+    businessMetrics: [
+      { illustrative: true, title: 'Time to Capacity', desc: 'How long a team waits between asking for an environment and being able to deploy into it, once provisioning is defined in code rather than in a ticket queue.', value: 'Minutes', suffix: ' Not Weeks', metricLabel: 'Environment Provisioning', icon: 'Rocket' },
+      { illustrative: true, title: 'Platform Foundation', desc: 'One governed landing zone with policy applied at the boundary, instead of a subscription estate that grew per project and now needs reconciling.', value: 'One', suffix: ' Landing Zone', metricLabel: 'Governed Foundation', icon: 'Layers' },
+      { illustrative: true, title: 'AI Readiness', desc: 'Whether the data platform and network underneath can actually feed accelerated compute, which is where most stalled AI programs are really stuck.', value: 'GPU', suffix: ' Ready', metricLabel: 'Infrastructure for AI', icon: 'Cpu' },
+      { illustrative: true, title: 'Operating Model', desc: 'Teams provisioning what they need against guardrails, rather than raising a request and waiting for a central queue to clear.', value: 'Self', suffix: ' Service', metricLabel: 'Within Guardrails', icon: 'Activity' },
+    ],
+    outcomeCard: {
+      illustrative: true,
+      metric: '11 → 1',
+      metricLabel: 'provisioning paths',
+      industry: 'Modeled scenario in financial services, ~400 applications',
+      problem: 'Eleven ways to get an environment, depending on which team you asked and how long you were prepared to wait. The fastest route was a credit card and a subscription nobody governed, which is where a third of the estate had quietly ended up.',
+      outcome: 'One landing zone with policy at the management group boundary, self-service provisioning inside it, and the shadow subscriptions brought under the same guardrails rather than shut down. The fast route stayed fast and became the governed one.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '9 → 2',
+      metricLabel: 'months to reclaim capacity',
+      industry: 'Modeled scenario in manufacturing, hybrid estate',
+      problem: 'A refresh budget built on the assumption that every workload needed replacing, because nobody had measured which ones were running and which had been idle since a project ended two years earlier.',
+      outcome: 'Discovery across the estate first, retirement of what nothing depended on, and a refresh scoped to what remained. The reclaimed capacity covered the workloads that genuinely needed new hardware.',
+    },
+
+    capabilitiesLabel: 'THE INFRASTRUCTURE CAPABILITY MAP',
+    capabilitiesSectionTitle: 'Infrastructure Modernization',
+    capabilitiesSectionHighlight: 'Services and Capabilities.',
+    capabilitiesLede: 'Five surfaces, engineered as one estate rather than five projects.',
+    capabilityAreas: [
+      {
+        title: 'Hybrid Cloud',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Placement decided per workload, not inherited from what you already own.',
+        items: [
+          'Landing Zone and Governance: Establish the subscription or account structure, policy boundaries and guardrails before workloads arrive, so governance is enforced rather than documented.',
+          'Workload Placement Assessment: Decide per application whether it moves, stays, is rebuilt or is retired, against cost, latency, data residency and the effort each option actually takes.',
+          'Migration Waves and Execution: Move workloads in reviewable waves with rollback defined, sequenced so the ones that reduce risk or unlock a dependency go first rather than the ones that are easiest.',
+          'Container Platform Engineering: Build and run the Kubernetes or container platform, including the operational model that decides whether anyone can support it after handover.',
+          'Hybrid Connectivity and Extension: Connect on-premises estate to cloud with the network, identity and management plane treated as one surface rather than two that meet at a gateway.',
+          'Exit and Portability Design: Keep the cost of leaving visible and bounded, so a provider decision made now does not become a position you cannot revisit.',
+        ],
+      },
+      {
+        title: 'Enterprise Networks',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'The layer everything else assumes works, and nobody notices until it does not.',
+        items: [
+          'SD-WAN and Branch Modernization: Replace circuit-bound branch networking with software-defined paths, including the failover behavior that decides what a site does when its primary link drops.',
+          'Secure Access Service Edge: Bring network and security policy into one enforcement point for users who are no longer behind a perimeter, without routing everything through a data center that no longer holds the applications.',
+          'Campus and Data Center Refresh: Modernize campus and data center fabric with the capacity, resilience and lifecycle position planned rather than discovered at end of support.',
+          'Network Automation and Infrastructure as Code: Define network state in code with change applied through pipelines, so configuration drift stops being the default condition.',
+          'Network Observability: Instrument the network so a performance complaint can be answered with evidence rather than with a packet capture and a theory.',
+          'Segmentation and Zero Trust Networking: Separate what should not reach what, designed around how the business actually works rather than around the diagram it was drawn from.',
+        ],
+      },
+      {
+        title: 'Hybrid Workplace',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Where the estate meets the people who have to work in it.',
+        items: [
+          'Endpoint Management and Compliance: Manage devices, configuration and compliance from one plane, including the unmanaged population that exists in every estate that claims otherwise.',
+          'Virtual Desktop and Application Delivery: Deliver desktops and applications where the work happens, sized for the workload rather than for the worst month of the year.',
+          'Identity and Conditional Access: Make access a property of identity, device posture and context rather than of network location, which stopped being a meaningful signal some years ago.',
+          'Collaboration Platform Engineering: Build and integrate the collaboration estate so employee experiences are connected rather than a set of adjacent tools.',
+          'Device Lifecycle and Provisioning: Handle procurement, zero-touch provisioning, refresh and disposal as a process rather than as a series of escalations.',
+          'Workplace Support Model: Structure support across levels with escalation paths defined before they are needed, and measured on resolution rather than on ticket volume.',
+        ],
+      },
+      {
+        title: 'Cloud and Infrastructure Security',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Controls that hold when the estate is half yours and half rented.',
+        items: [
+          'Cloud Security Posture Management: Find and close misconfiguration continuously rather than at audit, and know which findings actually matter in your architecture.',
+          'Identity and Privileged Access: Remove standing administrative rights, elevate through time-bounded activation with approval, and separate duties so no one account reaches the whole estate.',
+          'Workload and Container Protection: Protect what runs, including the container and serverless surface that traditional endpoint tooling was never designed to see.',
+          'Vulnerability and Patch Operations: Run patching as an operational rhythm with measured latency, rather than as a project that follows a disclosure.',
+          'Detection and Response for Infrastructure: Bring infrastructure telemetry into one correlation surface with a defined response action per alert class.',
+          'Compliance Evidence and Control Mapping: Produce evidence as the work happens, mapped to the frameworks your auditor will actually apply.',
+        ],
+      },
+      {
+        title: 'Software and Asset Management',
+        image: '/images/capabilities/agentic-governed-autonomy.png',
+        desc: 'Knowing what you own, what you pay for, and whether those agree.',
+        items: [
+          'Discovery and Inventory: Establish what is actually deployed across hardware, virtual and cloud estate, which in most organizations differs materially from the asset register.',
+          'License Position and Entitlement: Reconcile what you are licensed for against what you are running, before a vendor audit or a renewal does it for you.',
+          'Renewal and True-Up Management: Handle renewals and true-ups from a measured position rather than from a vendor spreadsheet delivered six weeks before the deadline.',
+          'Hardware Lifecycle and Refresh: Track support status and plan refresh against the actual lifecycle, so end of support is a scheduled event rather than an incident.',
+          'Cloud Cost and FinOps Practice: Make consumption visible per workload and per owner, with commitment shape matched to what you actually run rather than to what you ran when the agreement was signed.',
+          'End-of-Life and Obsolescence Tracking: Watch the support horizon across the estate so a component going unsupported is known before it becomes a security finding.',
+        ],
+      },
+    ],
+
+    architectureEyebrow: 'HOW A MODERNIZATION PROGRAM ACTUALLY RUNS',
+    architectureTitle: 'Discovery to steady state,',
+    architectureTitleHighlight: 'with the estate known first.',
+    architectureLede: 'Infrastructure programs overrun because the estate was never measured, only described. This is the sequence we run, and its purpose is to make the first stage the honest one.',
+    architectureNodes: [
+      {
+        title: 'Discover',
+        icon: 'Search',
+        description: 'Measure what is actually running, what depends on it, and what it costs.',
+        features: [
+          'Automated discovery across physical, virtual and cloud estate',
+          'Dependency mapping so a migration wave does not break something unseen',
+          'Utilization measured rather than assumed, including what is idle',
+          'License and support position established before any recommendation',
+          'A risk register naming what must be decided before design can start',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Fix the platform shape while it is still cheap. Landing zone, identity and network are the expensive decisions.',
+        features: [
+          'Landing zone, account structure and policy boundaries',
+          'Identity model and privileged access design across the estate',
+          'Network and connectivity architecture treated as one surface',
+          'Placement decision recorded per workload with its reason',
+          'Target-state architecture signed off by the team who will run it',
+        ],
+      },
+      {
+        title: 'Migrate',
+        icon: 'Rocket',
+        description: 'Move in waves small enough to review and reverse, sequenced by risk rather than by ease.',
+        features: [
+          'Waves sequenced by dependency and risk, not by convenience',
+          'Rollback defined and tested before each wave, not after',
+          'Cutover rehearsed on a representative workload first',
+          'Retirement of what nothing depends on, agreed in writing',
+          'Runbooks written as the work is done rather than reconstructed later',
+        ],
+      },
+      {
+        title: 'Secure',
+        icon: 'ShieldCheck',
+        description: 'Bring the estate under one set of controls, including the half that did not move.',
+        features: [
+          'Posture management across cloud and on-premises together',
+          'Privileged access elevated through approval rather than standing',
+          'Workload protection covering container and serverless surface',
+          'Detection telemetry into one correlation surface',
+          'Control gaps named explicitly where coverage is not yet possible',
+        ],
+      },
+      {
+        title: 'Automate',
+        icon: 'Zap',
+        description: 'Define the estate in code so the second environment costs a fraction of the first.',
+        features: [
+          'Infrastructure as code with environments promoted, not hand-built',
+          'Policy as code enforced at the boundary rather than reviewed for',
+          'Self-service provisioning inside guardrails teams cannot bypass',
+          'Drift detection with a defined remediation path',
+          'A fallback path defined for every decision handed to automation',
+        ],
+      },
+      {
+        title: 'Optimize',
+        icon: 'TrendingUp',
+        description: 'Bring cost and performance back to what the design assumed. Consumption drifts by default.',
+        features: [
+          'Cost visible per workload and per owner, not only per account',
+          'Commitment and reservation shape matched to measured usage',
+          'Right-sizing against real utilization rather than requested size',
+          'Idle and orphaned resources reclaimed on a standing cadence',
+          'Savings tracked against the baseline rather than claimed once',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'Run it, with the support model and the observability agreed before handover rather than after.',
+        features: [
+          'Support model with defined response and escalation per tier',
+          'Observability sufficient to answer a complaint with evidence',
+          'Patch and vulnerability operations run as a rhythm',
+          'Capacity and lifecycle reviewed on a standing cadence',
+          'Monthly service review against the commitments actually agreed',
+        ],
+      },
+      {
+        title: 'Evolve',
+        icon: 'Network',
+        description: 'Keep the foundation ahead of what the business will ask of it next.',
+        features: [
+          'Capacity planned against where demand is going, including accelerated compute',
+          'End-of-support horizon tracked across the estate',
+          'Architecture reviewed as workload patterns change',
+          'Portability position kept current so provider decisions stay revisitable',
+          'Improvement backlog owned and reported rather than accumulated',
+        ],
+      },
+    ],
     toolsStack: {
       eyebrow: 'THE MODERNIZATION FOUNDRY',
       title: 'The infrastructure modernization planes,',
@@ -8993,6 +9210,302 @@ export const servicesData = {
           keyRule: 'Legacy point monitoring tools are consolidated into a single unified telemetry pane.'
         }
       ]
+    },
+
+    comparisonTable: {
+      eyebrow: 'WHERE MODERNIZATION PROGRAMS QUIETLY STALL',
+      heading: 'Both programs migrated on schedule.',
+      lede: 'Neither column describes a failed migration. They diverge at the first invoice, the first incident, and the first request the platform cannot serve.',
+      beforeLabel: 'MIGRATED',
+      afterLabel: 'MODERNIZED',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'MOVED',
+      afterShort: 'ENGINEERED',
+      rows: [
+        {
+          dimension: 'What the estate was before design',
+          before: 'Described from an asset register nobody had reconciled, so the migration scope was built on a list rather than on measurement.',
+          after: 'Measured. Discovery across physical, virtual and cloud, with dependencies mapped and idle workloads identified before anything was scoped.',
+        },
+        {
+          dimension: 'How a workload was chosen to move',
+          before: 'Everything moves, because the program was funded as a migration and a workload left behind reads as scope not delivered.',
+          after: 'Per workload, against cost, latency, residency and effort. Some move, some stay, some are retired, and each decision is recorded with its reason.',
+        },
+        {
+          dimension: 'The first invoice after cutover',
+          before: 'Higher than the data center it replaced, because the estate was lifted at the size it was requested rather than the size it used.',
+          after: 'Right-sized against measured utilization, with commitment shape matched to real consumption and cost visible per workload and owner.',
+        },
+        {
+          dimension: 'How the second environment gets built',
+          before: 'By hand, from a runbook written during the first one, with drift starting on day two.',
+          after: 'From code. Environments are promoted rather than rebuilt, and drift is detected with a defined remediation path.',
+        },
+        {
+          dimension: 'What security covers',
+          before: 'The part that moved. The half still on-premises keeps its old controls and its own console.',
+          after: 'Both halves under one posture and one correlation surface, because an attacker does not respect the boundary the program drew.',
+        },
+        {
+          dimension: 'Who can provision',
+          before: 'A central team, through a ticket queue, which is why a third of the estate is on a subscription nobody governs.',
+          after: 'Any team, inside guardrails they cannot bypass. The fast route stays fast and becomes the governed one.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'THE QUESTIONS THAT DECIDE THE PROGRAM',
+    faqLede: 'The questions below are the ones infrastructure and platform leaders actually ask in a first call, on cost, sequencing, risk and what happens when something breaks. Answers are direct rather than promotional.',
+    faqHeading: 'What people ask',
+    faqHeadingHighlight: 'before they commit.',
+    customFAQs: [
+      {
+        q: 'Does everything have to move to cloud?',
+        sources: [
+          { label: 'NIST definition of cloud computing (SP 800-145)', url: 'https://csrc.nist.gov/publications/detail/sp/800-145/final' },
+        ],
+        a: 'No, and programs that start from that assumption are the ones that overrun.\n\nThe useful question is per workload rather than per estate. Some things move because they are constrained by hardware, because the platform underneath is going out of support, or because they need elasticity a data center cannot provide. Some things move because keeping them running locally now costs more than modernizing them. And some should stay, because of latency to physical equipment, data residency, a licensing position that makes cloud materially more expensive, or simply because they work and the business case is thin.\n\nWhat we would push on is bringing the whole estate under one management and security plane even where workloads stay put. One policy set and one place to look during an incident is often worth more in the first year than moving the workload itself.\n\nThe sequencing question is which workloads go first, and the answer is usually the ones that reduce risk or unblock something else, not the ones that are easiest to lift.',
+      },
+      {
+        q: 'Our cloud bill went up after migration. What went wrong?',
+        sources: [
+          { label: 'FinOps Foundation framework', url: 'https://www.finops.org/' },
+        ],
+        a: 'Usually nothing went wrong technically. The estate was lifted at the size it was requested rather than the size it uses.\n\nOn-premises, over-provisioning is invisible because the hardware is already bought. A team asks for sixteen cores and uses three, and nobody sees a line item. The same request in cloud bills monthly, forever, and the waste that was absorbed by a capital purchase becomes an operating cost with your name on it.\n\nThe first pass is mechanical and recovers more than the sophisticated work that follows. Non-production running around the clock. Storage in a hot tier nothing has read in a year. Disks still attached to instances that were decommissioned. None of it needs an architecture change.\n\nThe second pass is right-sizing against measured utilization and matching commitment shape to what you actually run. That is where the larger numbers sit, and it is where a partner earning margin on your consumption has the least reason to look.',
+      },
+      {
+        q: 'How do we modernize without a freeze on everything else?',
+        sources: [
+          { label: 'Azure Cloud Adoption Framework', url: 'https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/' },
+        ],
+        a: 'By sequencing in waves small enough that any one of them can be reversed, and by accepting that the estate will be in two states for a while.\n\nThe change-freeze instinct comes from treating migration as a single event. It rarely is, and a freeze long enough to cover a real program does more damage than the migration risk it is protecting against.\n\nWhat makes waves safe is dependency mapping done before scoping, not during. Most migration incidents are something unseen depending on the thing that moved, and that is a discovery problem rather than an execution one.\n\nThe other half is rehearsal. Cut over a representative workload first, with rollback tested rather than documented, and let the team learn on something that will not stop the business. The waves after that go faster because the unknowns were spent early.',
+      },
+      {
+        q: 'What do we do about the workloads that cannot move?',
+        sources: [
+          { label: 'Kubernetes documentation', url: 'https://kubernetes.io/docs/home/' },
+        ],
+        a: 'Bring them under the same management and security plane, and stop treating them as a separate estate with its own tooling and its own team.\n\nEvery organization has them. Equipment with a physical dependency, a system whose vendor will not support it anywhere else, a licensing position that makes the move uneconomic, or a regulatory constraint that settles it. Those are legitimate and they are not going away on the program timeline.\n\nWhat is not legitimate is the second operating model that grows around them. Two consoles, two patch processes, two sets of access rules and two places to look during an incident is where the real cost sits, and it is the cost that keeps being paid after the migration is declared complete.\n\nSo the work is extending governance, policy, patching and monitoring across both halves. That is achievable today in a way it was not a few years ago, and it is usually a better first-year investment than forcing a move that the constraint will fight.',
+      },
+      {
+        q: 'Our estate is not ready for AI. Where does that actually bite?',
+        sources: [
+          { label: 'AWS Well-Architected Framework', url: 'https://aws.amazon.com/architecture/well-architected/' },
+        ],
+        a: 'Almost never at the model. It bites at data, at network, and at provisioning speed.\n\nThe usual sequence is that an initiative gets funded, a team picks a model, and then discovers the training or inference data sits on storage that cannot feed accelerated compute at a useful rate, or in a system with no interface worth calling. That is an infrastructure problem wearing an AI label.\n\nThe second constraint is provisioning. If getting capacity takes a quarter, iteration takes a quarter, and the initiative dies of cycle time rather than of technical failure. Self-service inside guardrails matters more here than raw capacity.\n\nThe third is placement and residency. Accelerated compute is not evenly available across regions, and the region that satisfies your data residency may not be the one with the capacity. That is an architecture decision and it belongs before the initiative is scoped, not after.',
+      },
+      {
+        q: 'How do we stop shadow cloud without slowing everyone down?',
+        sources: [
+          { label: 'NIST Zero Trust Architecture (SP 800-207)', url: 'https://csrc.nist.gov/publications/detail/sp/800-207/final' },
+        ],
+        a: 'By making the governed route the fast one. Shadow estate is not a discipline problem, it is a latency problem with a workaround.\n\nWhen provisioning takes six weeks and a corporate card takes six minutes, the card wins, and it keeps winning regardless of policy. Shutting the accounts down moves the workload somewhere you can see even less.\n\nThe sequence that works starts with amnesty and discovery. Find what exists, who owns it and what it connects to, without consequences for having built it. What surfaces is normally a small number of things that matter a great deal and a long tail that can be retired.\n\nThen give teams a legitimate route that is genuinely faster than the workaround, with guardrails enforced at the boundary rather than by review. Policy as code, a landing zone they can provision into, and a clear line between what they can do freely and what needs a conversation. Teams take the supported path when it is the quickest one.',
+      },
+      {
+        q: 'What does infrastructure as code actually change?',
+        sources: [
+          { label: 'Terraform documentation', url: 'https://developer.hashicorp.com/terraform/docs' },
+        ],
+        a: 'It changes the cost of the second environment, and the honesty of the first.\n\nBuilt by hand, environments diverge from the moment they exist. The runbook describes what was intended, the environment holds what was actually typed, and the difference is discovered during an incident. Defining state in code makes the environment and its description the same artifact.\n\nThe practical gains are ordinary and large. A new environment costs a pipeline run rather than a project. Changes are reviewable before they are applied. Drift is detectable rather than assumed absent. And a recovery is a rebuild rather than an archaeology exercise.\n\nWhat it does not do is remove the need to understand the platform. Code that provisions a bad architecture provisions it faster and more consistently. The design decisions still have to be right; the code makes them repeatable.',
+      },
+      {
+        q: 'Who owns security once half the estate is somebody else\'s data center?',
+        sources: [
+          { label: 'Cloud Security Alliance Cloud Controls Matrix', url: 'https://cloudsecurityalliance.org/research/cloud-controls-matrix' },
+        ],
+        a: 'You do, for everything above the line, and the line is further up than most teams assume.\n\nProviders secure the infrastructure they run. Configuration, identity, access, data and workload protection remain yours, and the overwhelming majority of cloud incidents come from that side rather than from a provider failure. The shared responsibility model is published, specific and worth reading against your actual services, because the line moves depending on what you consume.\n\nWhat changes practically is that misconfiguration becomes the dominant risk and it is continuous rather than periodic. A storage bucket opened during a debugging session at eleven at night is a finding that an annual audit will not catch. Posture management exists for that, and it is the control we would put in first.\n\nThe second change is identity. In a data center, network position carried meaning. In a hybrid estate it does not, and privileged access design becomes the thing that determines whether a compromised account is an incident or a catastrophe.',
+      },
+      {
+        q: 'We do not know what we own. Where do we start?',
+        sources: [
+          { label: 'ISO/IEC 19770 software asset management', url: 'https://www.iso.org/standard/68531.html' },
+        ],
+        a: 'With discovery, and with the expectation that the result will not match the asset register.\n\nIt never does. Systems are decommissioned without being recorded, projects leave infrastructure behind, and acquisitions arrive with estates nobody has fully mapped. The gap between the register and reality is not a failure of record keeping so much as an inevitable consequence of change happening faster than documentation.\n\nAutomated discovery across physical, virtual and cloud gives you what is running. Dependency mapping gives you what would break if it stopped. Utilization data gives you what is earning its keep. Those three together usually identify enough idle and orphaned capacity to fund a meaningful part of the modernization.\n\nThe same exercise covers licensing, and that is often where the recoverable money is. Reconciling entitlement against deployment before a renewal or an audit puts you in a measured position rather than responding to a vendor spreadsheet.',
+      },
+      {
+        q: 'Can you take over an estate another partner built?',
+        sources: [
+          { label: 'CIS Benchmarks', url: 'https://www.cisecurity.org/cis-benchmarks' },
+        ],
+        a: 'Yes, and it starts with a read rather than a plan.\n\nThe first thing we establish is what is deployed against what was documented, because those diverge in every estate we have looked at. Account and subscription structure, policy assignments and the exceptions granted against them, identity and privileged access, the network position, and what the monitoring actually covers. That read is deliberately unflattering and we share it as written.\n\nThe second is the commercial position, meaning commitments, licensing and support contracts, because they constrain what is worth recommending and because they are frequently where the recoverable money is.\n\nWhat we will not do is open with a rebuild. Estates assembled project by project usually have a small number of decisions that are genuinely wrong and a large number that are merely different from how we would have done it. Reversing the second category burns budget without changing outcomes.',
+      },
+      {
+        q: 'How do we keep this from drifting back within two years?',
+        sources: [
+          { label: 'Cloud Native Computing Foundation', url: 'https://www.cncf.io/' },
+        ],
+        a: 'By making the guardrails structural rather than procedural, and by giving the estate an owner after the program ends.\n\nDrift is what happens when the only thing holding a standard in place is that someone remembers it. Policy as code, enforced at the boundary, does not depend on memory. Neither does a provisioning path that cannot produce a non-compliant environment, or a pipeline that refuses a change that fails a check.\n\nThe second half is ownership. Most estates degrade because the program team disbands and the platform becomes everyone and no one. A named owner with a standing cadence for cost, capacity, patching and lifecycle is unglamorous and it is the difference between a foundation and a snapshot.\n\nThe third is measurement. Cost per workload, patch latency, drift findings and time to provision, reviewed monthly. Numbers nobody looks at do not hold a standard; numbers with an owner do.',
+      },
+      {
+        q: 'What is the smallest sensible engagement?',
+        sources: [
+          { label: 'Azure Cloud Adoption Framework', url: 'https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/' },
+        ],
+        a: 'An estate read, and for most organizations it should be the first one regardless of what the program becomes.\n\nIt is a fixed-scope assessment across four surfaces: what is actually running and what depends on it, what it costs against what it delivers, where the security and support position is weak, and what the licensing and commitment position looks like. The output is a written position on each, including the parts that are sound and should be left alone.\n\nWe run it that way because the alternative is a proposal shaped by what we would like to build. An assessment that cannot conclude "this is in reasonable shape, do nothing here" is not an assessment.\n\nFrom there the sequencing is yours. Some organizations act on the cost and licensing findings and stop, which is a legitimate outcome and often pays for the work several times over. Others use it as the design input for a full program. Either way you own the document and it does not commit you to us.',
+      },
+    ],
+
+    engagementEyebrow: 'WHERE TO START',
+    engagementHeading: 'Scoped engagements,',
+    engagementHeadingHighlight: 'not open-ended programs.',
+    engagementLede: 'Each of these has a defined output and a defined end. None of them require the next one, and the assessments are structured so that "this is sound, leave it alone" is an available conclusion.',
+    servicePackages: [
+      {
+        name: 'Infrastructure Estate Read',
+        tier: 'ASSESSMENT',
+        duration: '3 to 5 weeks',
+        description: 'What is running, what depends on it, and what it costs.',
+        deliverables: [
+          'Automated discovery across physical, virtual and cloud estate',
+          'Dependency map so migration waves do not break something unseen',
+          'Utilization measured, with idle and orphaned capacity identified',
+          'Licensing, support and commitment position reconciled',
+          'Written position on what is sound and should be left unchanged',
+        ],
+      },
+      {
+        name: 'Landing Zone & Platform Foundation',
+        tier: 'ENGINEERING',
+        duration: '6 to 12 weeks',
+        description: 'The governed foundation, before any workload arrives.',
+        deliverables: [
+          'Account or subscription structure with policy at the boundary',
+          'Identity model and privileged access design across the estate',
+          'Network and connectivity architecture as one surface',
+          'Infrastructure as code with environments promoted, not hand-built',
+          'Self-service provisioning inside guardrails teams cannot bypass',
+        ],
+      },
+      {
+        name: 'Migration & Modernization Waves',
+        tier: 'DELIVERY',
+        duration: '12 to 36 weeks',
+        description: 'Workloads moved, rebuilt or retired, in reviewable waves.',
+        deliverables: [
+          'Placement decision recorded per workload with its reason',
+          'Waves sequenced by dependency and risk rather than by ease',
+          'Rollback defined and tested before each wave',
+          'Retirement of what nothing depends on, agreed in writing',
+          'Runbooks produced during the work rather than after it',
+        ],
+      },
+      {
+        name: 'Cost & FinOps Practice',
+        tier: 'OPTIMIZATION',
+        duration: '6 to 10 weeks',
+        description: 'Consumption visible per workload and per owner, then reduced.',
+        deliverables: [
+          'Cost allocation to workload and owner, not only to account',
+          'Right-sizing against measured utilization',
+          'Commitment and reservation shape matched to real consumption',
+          'Idle and orphaned resource reclamation on a standing cadence',
+          'Savings tracked against the baseline rather than claimed once',
+        ],
+      },
+      {
+        name: 'Managed Infrastructure Operations',
+        tier: 'RUN',
+        duration: 'Ongoing',
+        description: 'Support, patching, capacity and lifecycle under agreed commitments.',
+        deliverables: [
+          'Support model with defined response and escalation per tier',
+          'Patch and vulnerability operations run as a measured rhythm',
+          'Capacity, cost and lifecycle reviewed on a standing cadence',
+          'Drift detection with a defined remediation path',
+          'Monthly service review against the commitments actually agreed',
+        ],
+      },
+    ],
+
+    industryHeading: 'What the estate has to prove,',
+    industryHeadingHighlight: 'sector by sector.',
+    industryLede: 'The infrastructure choices do not change much between industries. What changes is which constraint is non-negotiable, and who audits it.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Resilience and evidence are regulated outcomes, not engineering preferences.',
+        items: [
+          'Operational resilience testing against regulated recovery objectives',
+          'Privileged access with time-bounded activation and approval',
+          'Immutable audit retention across cloud and on-premises',
+          'Data residency established by design rather than per deployment',
+          'Exit and portability positions evidenced for the regulator',
+          'Change evidence retained for the period supervision requires',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Plant networks and corporate estate carry different risk, and the join is the design problem.',
+        items: [
+          'Operational technology separated from corporate networks by design',
+          'Site resilience when the link to a central region is not guaranteed',
+          'Edge compute where latency to equipment rules out a round trip',
+          'Long support horizons planned into the platform from the start',
+          'Patch paths that work on constrained and intermittent links',
+          'Legacy equipment brought under monitoring without being replaced',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Patient and trial data carry handling obligations that outlive the program that moved them.',
+        items: [
+          'Data residency and sovereignty by region and by system',
+          'Validated environments with controlled change for regulated systems',
+          'Access segregation between research, clinical and corporate estate',
+          'Audit trails that survive the required retention period',
+          'Availability designed around clinical rather than office hours',
+          'Legacy clinical systems governed where they cannot be modernized',
+        ],
+      },
+      {
+        industry: 'Retail & Distribution',
+        headline: 'Seasonal demand and store connectivity decide the architecture more than any headline capability.',
+        items: [
+          'Elastic capacity for seasonal peaks without over-provisioning year round',
+          'Store and warehouse connectivity that degrades gracefully',
+          'Edge compute where a site must keep trading when the link drops',
+          'Cost per store made visible rather than pooled centrally',
+          'Rapid site provisioning as estate changes',
+          'Point-of-sale estate patched without closing the store',
+        ],
+      },
+      {
+        industry: 'Public Sector',
+        headline: 'Procurement, sovereignty and transparency shape the architecture before any technical requirement does.',
+        items: [
+          'Sovereignty and residency requirements settled at design',
+          'Entitlement transparency across a framework agreement',
+          'Accessibility built into workplace and service delivery',
+          'Separation of duties across delegated administrative boundaries',
+          'Exit and portability considered at design rather than at renewal',
+          'Records retention enforced through platform policy',
+        ],
+      },
+    ],
+
+    practiceLabel: 'THE ENGINEERING FOUNDRY PRACTICE',
+    practiceHeading: 'Infrastructure rarely moves',
+    practiceHeadingHighlight: 'on its own.',
+    practiceLede: 'A modernization program usually touches the applications above it and the operating model around it. The work below sits alongside this one when the answer crosses a boundary.',
+
+    conciergeHeading: 'Ask about your estate',
+    conciergeIntro: 'Questions we are asked before anyone commits to a program. Answered against your estate rather than in general.',
+    conciergeChips: [
+      'Why did our cloud bill go up after migrating?',
+      'Which workloads actually need to move?',
+      'How much of our estate is idle right now?',
+      'Can you take over an estate another partner built?',
+      'Book an infrastructure estate read',
+    ],
+
+    midCta: 'The capacity you are paying for and not using is funding the migration you have not started.',
+    midCtaLabel: 'Book an Infrastructure Estate Read',
+    closingCta: {
+      title: 'Your estate,',
+      highlight: 'honestly measured.',
+      body: 'Tell us roughly what you run, where it runs, and what is currently costing you most. In 30 minutes we will tell you what we would measure first, which workloads we would expect to stay put, and where the estate is most likely leaking money. No proposal attached.',
+      proofLabel: 'From first call to a read of your estate',
     },
   },
 
