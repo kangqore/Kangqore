@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T13:44:18.993Z",
+  "generatedAt": "2026-09-14T18:42:05.358Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1075,28 +1075,28 @@
       ],
       "method": [
         {
-          "rule": "Algorithmic & Mathematical Modeling",
-          "detail": "Mathematical formulation, numerical simulations, and heuristic optimization for complex domains."
+          "rule": "Embedded Build & Toolchain",
+          "detail": "One platform layer, board support separated from it, and a build that produces the same artifact every time it runs."
         },
         {
-          "rule": "Rapid Prototyping & PoC Lab",
-          "detail": "Two-week Proof-of-Concept sprints validating technical feasibility and latency limits."
+          "rule": "Board Bring-Up & Debug",
+          "detail": "First power-on through drivers and peripherals, on the silicon that will ship rather than on an emulator that forgives."
         },
         {
-          "rule": "Hardware & Silicon Emulation",
-          "detail": "Virtual prototyping of custom silicon, FPGA acceleration, and instruction-set simulation."
+          "rule": "RF & Compliance Pre-Scan",
+          "detail": "Radio, emissions and immunity characterized while the layout can still change, so the formal submission confirms a result instead of discovering one."
         },
         {
-          "rule": "Autonomous Systems & Robotics Lab",
-          "detail": "Spatial computing, SLAM navigation algorithms, and kinematic simulation for robotic fleets."
+          "rule": "Interoperability Test Bed",
+          "detail": "Tested against the equipment your customers actually run, including the units nobody has updated in three years."
         },
         {
-          "rule": "Benchmarking & Stress Labs",
-          "detail": "Throughput saturation limits, thermal breakdown points, and memory leak profiling."
+          "rule": "Validation & Environmental Labs",
+          "detail": "Exercised across the temperature, interference and load the product will actually meet, rather than the bench conditions it was built on."
         },
         {
-          "rule": "Intellectual Property & Patents",
-          "detail": "Novel architecture patent documentation, cleanroom IP verification, and prior art mapping."
+          "rule": "OTA & Fleet Telemetry",
+          "detail": "Shipped units that report what they are running and what went wrong, so the next revision is informed by evidence rather than by warranty anecdote."
         }
       ],
       "dataHandling": []
