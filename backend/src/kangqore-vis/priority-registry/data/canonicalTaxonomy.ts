@@ -49,7 +49,7 @@ export const CANONICAL_SERVICES: CanonicalService[] = [
   { slug: 'product-digital-engineering', name: 'Product Digital Engineering Services', departmentSlug: 'foundry', featured: false },
   { slug: 'devops-as-a-service', name: 'DevOps as a Service (DaaS)', departmentSlug: 'foundry', featured: false },
   { slug: 'managed-infrastructure-services', name: 'Managed Infrastructure Services', departmentSlug: 'foundry', featured: false },
-  { slug: 'modernization-infrastructure', name: 'Modernization Infrastructure', departmentSlug: 'foundry', featured: false },
+  { slug: 'infrastructure-modernization', name: 'Modernization Infrastructure', departmentSlug: 'foundry', featured: false },
   { slug: 'managed-services', name: 'Managed Services', departmentSlug: 'foundry', featured: false },
   { slug: 'support-maintenance', name: 'Support And Maintenance', departmentSlug: 'foundry', featured: false },
   { slug: 'software-development', name: 'Software Development', departmentSlug: 'foundry', featured: false },

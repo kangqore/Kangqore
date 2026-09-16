@@ -6,7 +6,7 @@ import { departmentsData } from '../../../data/departmentsData';
 const ModernizationInfrastructure = () => {
   return (
     <UniversalServicePage 
-      service={servicesData['modernization-infrastructure']} 
+      service={servicesData['infrastructure-modernization']} 
       department={departmentsData.foundry} 
     />
   );

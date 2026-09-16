@@ -8921,9 +8921,9 @@ export const servicesData = {
     },
   },
 
-  'modernization-infrastructure': {
-    slug: 'modernization-infrastructure',
-    name: 'Modernization Infrastructure',
+  'infrastructure-modernization': {
+    slug: 'infrastructure-modernization',
+    name: 'Infrastructure Modernization',
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Modernize legacy infrastructure to innovate faster',
@@ -10542,7 +10542,7 @@ export const servicesData = {
     shortDescription: 'Transform aging systems into modern platforms',
     fullDescription: 'Modernize legacy systems to reduce technical debt, improve performance, and enable innovation.',
     keyFeatures: ['Assessment', 'Migration planning', 'Data migration', 'Testing', 'Cutover management'],
-    relatedServiceSlugs: ['application-modernization', 'modernization-infrastructure', 'technology-modernization'],
+    relatedServiceSlugs: ['application-modernization', 'infrastructure-modernization', 'technology-modernization'],
     featured: false,
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80',
     toolsStack: {

@@ -273,7 +273,7 @@ export async function streamConcierge(
 
 **8. Infrastructure, Networks & Operations**
 *   [Managed Infrastructure Services](/services/infrastructure-networks-operations/managed-infrastructure-services)
-*   [Infrastructure Modernization](/services/infrastructure-networks-operations/modernization-infrastructure)
+*   [Infrastructure Modernization](/services/infrastructure-networks-operations/infrastructure-modernization)
 *   [Managed Services](/services/infrastructure-networks-operations/managed-services)
 *   [Support & Maintenance](/services/infrastructure-networks-operations/support-maintenance)
 *   [Operation Technology (OT)](/services/infrastructure-networks-operations/operation-technology)

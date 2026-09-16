@@ -363,7 +363,7 @@ export const SupportEcosystemSection = () => {
             <div className="space-y-4">
               {[
                 { name: 'Managed Services', desc: 'End-to-end managed IT operations.', icon: <Settings className="w-5 h-5 text-gray-400" />, link: '/services/infrastructure-networks-operations/managed-services' },
-                { name: 'Infrastructure Modernization', desc: 'Modernize legacy environments.', icon: <Cloud className="w-5 h-5 text-gray-400" />, link: '/services/infrastructure-networks-operations/modernization-infrastructure' },
+                { name: 'Infrastructure Modernization', desc: 'Modernize legacy environments.', icon: <Cloud className="w-5 h-5 text-gray-400" />, link: '/services/infrastructure-networks-operations/infrastructure-modernization' },
                 { name: 'Network & Connectivity', desc: 'Engineer resilient enterprise networks.', icon: <Network className="w-5 h-5 text-gray-400" />, link: '/services/infrastructure-networks-operations/managed-infrastructure-services' },
                 { name: 'Operation Technology', desc: 'IT/OT convergence and industrial ops.', icon: <Cpu className="w-5 h-5 text-gray-400" />, link: '/services/infrastructure-networks-operations/operation-technology' }
               ].map((svc, i) => (

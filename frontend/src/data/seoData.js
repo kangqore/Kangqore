@@ -509,11 +509,11 @@ export const serviceSEO = {
     keywords: 'managed infrastructure, infrastructure monitoring, incident management, capacity planning, IT automation',
     url: '/services/managed-infrastructure-services',
   },
-  'modernization-infrastructure': {
+  'infrastructure-modernization': {
     title: 'Infrastructure Modernization and Cloud Migration | Kangqore',
     description: 'Build, migrate and modernize infrastructure across hybrid cloud, enterprise networks, workplace, security and asset management, without moving everything.',
     keywords: 'infrastructure modernization, cloud migration, hybrid cloud, landing zone, SD-WAN, SASE, FinOps, infrastructure as code, IaC',
-    url: '/services/modernization-infrastructure',
+    url: '/services/infrastructure-modernization',
   },
   'managed-services': {
     title: 'Managed Services — Foundry | Kangqore',

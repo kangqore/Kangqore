@@ -424,7 +424,7 @@ export const departmentData = [
       },
       {
         name: 'Modernization Infrastructure',
-        slug: 'modernization-infrastructure',
+        slug: 'infrastructure-modernization',
         shortDescription: 'Modernize legacy infrastructure',
         fullDescription: 'Transform legacy infrastructure to modern, cloud-ready architecture.',
         image: 'https://images.unsplash.com/photo-1560732488-6b0df240254a?w=800&q=80',
