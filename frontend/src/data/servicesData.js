@@ -9059,6 +9059,7 @@ export const servicesData = {
     architectureTitle: 'Discovery to steady state,',
     architectureTitleHighlight: 'with the estate known first.',
     architectureLede: 'Infrastructure programs overrun because the estate was never measured, only described. This is the sequence we run, and its purpose is to make the first stage the honest one.',
+    architectureVisibleCount: 4,
     architectureNodes: [
       {
         title: 'Discover',
