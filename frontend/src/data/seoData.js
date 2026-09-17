@@ -528,9 +528,9 @@ export const serviceSEO = {
     url: '/services/support-maintenance',
   },
   'software-development': {
-    title: 'Software Development — Foundry | Kangqore',
-    description: 'Custom software development — full-stack development, agile methodology, code quality, CI/CD, and documentation tailored to your business needs.',
-    keywords: 'software development, custom software, full-stack development, agile development, CI/CD',
+    title: 'Software Development Services and Capabilities | Kangqore',
+    description: 'Custom software development with security, identity, access and compliance designed into the lifecycle rather than added before the first audit.',
+    keywords: 'software development, custom software, secure SDLC, independent verification and validation, IAM, VAPT, GRC, full-stack development',
     url: '/services/software-development',
   },
   'api-microservices-engineering': {
