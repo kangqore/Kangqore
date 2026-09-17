@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T03:29:10.220Z",
+  "generatedAt": "2026-09-17T03:46:44.353Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1238,28 +1238,28 @@
       ],
       "method": [
         {
-          "rule": "Estate Discovery & Dependency Map",
-          "detail": "Automated hardware inventory, software dependency graph extraction, and migration wave planning."
+          "rule": "Estate Discovery & Dependency Mapping",
+          "detail": "Automated inventory across physical, virtual and cloud estate, with dependencies observed rather than declared."
         },
         {
-          "rule": "Server Re-Platforming & Migration",
-          "detail": "Continuous block-level data replication and automated cutover to modern cloud instances."
+          "rule": "Hybrid Cloud Landing Zone & Migration",
+          "detail": "The governed foundation first, then workloads moved, rebuilt or retired against it rather than lifted into an empty subscription."
         },
         {
-          "rule": "VM to Container Migration",
-          "detail": "Packaging legacy application binaries into standard container images running on modern Kubernetes."
+          "rule": "Enterprise Network & Connectivity",
+          "detail": "Branch and campus connectivity rebuilt in software, with enough telemetry to answer a performance complaint with evidence."
         },
         {
-          "rule": "Database Modernization & Migration",
-          "detail": "Schema conversion from proprietary engines (Oracle/DB2) to open-source PostgreSQL and MySQL."
+          "rule": "Digital Workplace & Endpoint",
+          "detail": "Devices enrolled, configured and recovered from one plane, including the unmanaged population every estate claims not to have."
         },
         {
-          "rule": "Legacy Network to SD-WAN",
-          "detail": "Retiring legacy MPLS circuits in favor of secure, encrypted, internet-based SD-WAN connectivity."
+          "rule": "Cloud Security Posture & Identity",
+          "detail": "Misconfiguration found continuously rather than at audit, and standing administrative rights removed rather than documented."
         },
         {
-          "rule": "Modern Observability & Telemetry",
-          "detail": "Transitioning from fragmented ping-based monitoring to unified high-cardinality distributed telemetry."
+          "rule": "Asset, License & FinOps",
+          "detail": "What you own, what you pay for, and whether those two agree, established before a renewal or a vendor audit settles it for you."
         }
       ],
       "dataHandling": []
