@@ -9789,6 +9789,7 @@ export const servicesData = {
     architectureTitle: 'Discovery to steady state,',
     architectureTitleHighlight: 'with the controls moving alongside.',
     architectureLede: 'Software programs slip late because the security and compliance work was sequenced after the build instead of beside it. This is the sequence we run, and every stage carries both.',
+    architectureVisibleCount: 4,
     architectureNodes: [
       {
         title: 'Discover',
@@ -9889,65 +9890,65 @@ export const servicesData = {
     ],
     toolsStack: {
       eyebrow: 'THE SOFTWARE ENGINEERING FABRIC',
-      title: 'The custom software planes,',
-      titleHighlight: 'built for enterprise scale and speed.',
-      subtitle: 'Full-lifecycle custom software development from architectural design, domain-driven microservices, frontend design systems, to automated testing and cloud deployment.',
+      title: 'The tooling behind',
+      titleHighlight: 'each capability.',
+      subtitle: 'Every capability above has a plane here, with the platforms we build on it and the rule that governs it. Two planes carry the lifecycle, and one each carries the controls that decide whether the software is allowed to ship.',
       items: [
         {
-          icon: 'Compass',
-          title: 'Architecture & Domain Modeling',
-          category: 'SYSTEM ARCHITECTURE',
-          managed: ['Lucidchart Enterprise', 'Miro Architecture', 'Enterprise Architect'],
-          selfHosted: ['Domain-Driven Design (DDD) bounded contexts', 'C4 model diagrams in code'],
-          desc: 'Clean architecture design, modular service boundaries, and event-driven data flow schemas.',
-          keyRule: 'Software architectures follow domain-driven design with explicit bounded contexts.'
+          icon: 'Layers',
+          title: 'Architecture & Application Engineering',
+          category: 'SOFTWARE LIFECYCLE',
+          managed: ['Backstage developer portal with golden paths', 'LeanIX and Sparx EA for architecture, Figma and Storybook for design systems'],
+          selfHosted: ['Java and Spring, .NET, Node and Go services on Kubernetes', 'React and Angular front ends against one shared component library'],
+          desc: 'Domain modeling through to the interface people actually use, on one platform rather than one per team.',
+          keyRule: 'The service boundary follows the domain, not the org chart that happened to build it.',
         },
         {
-          icon: 'LayoutGrid',
-          title: 'Modern Frontend Engineering',
-          category: 'UI/UX & DESIGN SYSTEM',
-          managed: ['Figma Enterprise', 'Storybook Cloud', 'Vercel'],
-          selfHosted: ['React, Next.js, Vue 3, Tailwind CSS, WCAG 2.1 AA accessible component libraries'],
-          desc: 'High-performance responsive web applications, design token systems, and accessible interfaces.',
-          keyRule: 'Frontend components strictly adhere to standardized design tokens and accessibility rules.'
-        },
-        {
-          icon: 'Cpu',
-          title: 'High-Throughput Backend Services',
-          category: 'BACKEND RUNTIME',
-          managed: ['AWS Lambda', 'Azure Functions', 'Google Cloud Run'],
-          selfHosted: ['Go, Rust, Node.js / TypeScript, Java Spring Boot microservices with gRPC'],
-          desc: 'Stateless microservices, asynchronous message queues, and high-concurrency API backends.',
-          keyRule: 'Backend services enforce strict input validation schemas and structured logging.'
-        },
-        {
-          icon: 'Database',
-          title: 'Database & Data Persistence',
-          category: 'DATA PERSISTENCE',
-          managed: ['Amazon Aurora', 'Azure Cosmos DB', 'MongoDB Atlas'],
-          selfHosted: ['PostgreSQL', 'Redis', 'ClickHouse', 'Apache Cassandra'],
-          desc: 'Relational, document, and key-value databases tailored to specific domain query access patterns.',
-          keyRule: 'Database transactions adhere to strict ACID compliance for financial and stateful models.'
+          icon: 'GitBranch',
+          title: 'Build, Test & Release Automation',
+          category: 'DELIVERY PIPELINE',
+          managed: ['GitHub Actions, GitLab CI and Azure DevOps', 'Tricentis Tosca and BrowserStack for cross-platform coverage'],
+          selfHosted: ['Jenkins and Argo CD with progressive delivery and automated rollback', 'Selenium, Playwright, JMeter and k6 running against real environments'],
+          desc: 'One pipeline that builds it, proves it and ships it, and refuses a change that fails a gate.',
+          keyRule: 'A build that cannot pass its own gates does not reach an environment, regardless of who is asking.',
         },
         {
           icon: 'ShieldCheck',
-          title: 'Automated Testing & QA Gates',
-          category: 'QUALITY ASSURANCE',
-          managed: ['BrowserStack', 'Cypress Cloud', 'Playwright Enterprise'],
-          selfHosted: ['Jest', 'PyTest', 'Playwright end-to-end suites', 'Pact contract testing'],
-          desc: 'Unit test coverage, consumer-driven contract testing, and visual regression suites.',
-          keyRule: 'All code changes require rigorous unit test coverage and green integration suites before merge.'
+          title: 'Application & Infrastructure Security',
+          category: 'INFRASTRUCTURE SECURITY',
+          managed: ['SonarQube, Checkmarx, Veracode and Snyk inside the pipeline', 'Wiz and Prisma Cloud for runtime and container posture'],
+          selfHosted: ['Trivy and OWASP ZAP as build-time gates', 'Burp Suite and internal tooling for VAPT against the running system'],
+          desc: 'Static, dependency and runtime scanning inside the pipeline, plus the penetration testing that proves the result.',
+          keyRule: 'Findings are ranked by reachability in your architecture, not by the severity the scanner shipped with.',
         },
         {
-          icon: 'Workflow',
-          title: 'DevOps & Container Deployment',
-          category: 'RELEASE AUTOMATION',
-          managed: ['GitHub Actions', 'Docker Hub Enterprise', 'AWS ECR'],
-          selfHosted: ['ArgoCD GitOps', 'Helm chart repositories', 'Kubernetes clusters'],
-          desc: 'Automated container builds, semantic versioning, and zero-downtime rolling deployments.',
-          keyRule: 'Releases deploy via canary or blue-green rollouts with automated health verification.'
-        }
-      ]
+          icon: 'Lock',
+          title: 'Data Protection & Cryptography',
+          category: 'DATA SECURITY',
+          managed: ['AWS KMS, Azure Key Vault and Thales HSM for key custody', 'Informatica and Delphix for masking and subsetting'],
+          selfHosted: ['HashiCorp Vault for secrets, certificates and internal PKI', 'Format-preserving tokenization applied at the boundary'],
+          desc: 'Masking, tokenization, encryption and key custody decided per data class rather than per project.',
+          keyRule: 'No production data leaves production unmasked. A non-production breach must never be a customer breach.',
+        },
+        {
+          icon: 'Users',
+          title: 'Identity & Access Engineering',
+          category: 'IDENTITY & ACCESS MANAGEMENT',
+          managed: ['Microsoft Entra ID, Okta and Ping Identity for authentication and federation', 'SailPoint and CyberArk for identity lifecycle and privileged access'],
+          selfHosted: ['Keycloak where identity has to stay inside the estate', 'Open Policy Agent and Cedar for fine grained authorization'],
+          desc: 'One directory, one authorization model, and a joiner-mover-leaver process that actually removes access.',
+          keyRule: 'Services call the authorization model. A service that reimplements it has created a second source of truth.',
+        },
+        {
+          icon: 'CheckSquare',
+          title: 'Governance, Evidence & Compliance',
+          category: 'GOVERNANCE, RISK & COMPLIANCE',
+          managed: ['ServiceNow IRM, Archer and OneTrust for governance and risk', 'Vanta and Drata for continuous control monitoring'],
+          selfHosted: ['CycloneDX and Syft producing an SBOM at build time', 'Open Policy Agent enforcing policy as code at the boundary'],
+          desc: 'Control status read from the systems themselves, and audit evidence produced by the pipeline as the work happens.',
+          keyRule: 'Evidence is produced, never assembled. An artifact reconstructed for an auditor is not evidence.',
+        },
+      ],
     },
 
     comparisonTable: {
