@@ -6,7 +6,7 @@
 //   - devops-as-a-service            (was product-engineering/DevopsAsAService.jsx)
 //   - managed-infrastructure-services(was infrastructure-networks-operations/ManagedInfrastructureServices.jsx)
 //   - engineering-foundry            (was product-engineering/EngineeringFoundry.jsx)
-//   - modernization-infrastructure   (was infrastructure-networks-operations/ModernizationInfrastructure.jsx)
+//   - infrastructure-modernization   (was infrastructure-networks-operations/ModernizationInfrastructure.jsx)
 //   - software-development           (was digital-engineering/SoftwareDevelopment.jsx)
 //
 // Locked rules applied:
@@ -39,7 +39,7 @@
 //   cloud/engineering, /services/cloud-engineering, /services/cloud -> cloud-computing
 //   data-ai/generative-ai -> genai-business-services
 //   infrastructure-networks-operations/cloud-data-center-advisory-transformation
-//     -> modernization-infrastructure
+//     -> infrastructure-modernization
 //   infrastructure-networks-operations/digital-workspace
 //     -> managed-infrastructure-services
 //   product-engineering/saas-product-development,
@@ -2586,8 +2586,8 @@ const managedInfrastructureServicesRelatedSection = (
               // NOTE: legacy "cybersecurity/managed-security-services" not canonical -> it-security-services
               { name: 'Managed Security Services', link: '/services/it-security-services', icon: <ShieldCheck className="w-5 h-5" />, desc: 'Deploy absolute cyber resilience alongside your managed infrastructure.' },
               { name: 'Software Defined Infrastructure', link: '#', icon: <Server className="w-5 h-5" />, desc: 'Modernize environments with infrastructure driven strictly by code.' },
-              // NOTE: legacy "cloud-data-center-advisory-transformation" not canonical -> modernization-infrastructure
-              { name: 'Cloud & Data Center Advisory', link: '/services/modernization-infrastructure', icon: <Database className="w-5 h-5" />, desc: 'Expert strategic consulting to modernize and migrate your core assets.' },
+              // NOTE: legacy "cloud-data-center-advisory-transformation" not canonical -> infrastructure-modernization
+              { name: 'Cloud & Data Center Advisory', link: '/services/infrastructure-modernization', icon: <Database className="w-5 h-5" />, desc: 'Expert strategic consulting to modernize and migrate your core assets.' },
               // NOTE: legacy "digital-workspace" not canonical -> managed-infrastructure-services
               { name: 'Workspace Transformation', link: '/services/managed-infrastructure-services', icon: <Monitor className="w-5 h-5" />, desc: 'Re-engineer productivity with secure, agile digital environments.' },
             ].map((offering, idx) => (
@@ -3240,7 +3240,7 @@ const engineeringFoundry = {
   ctaDescription: 'Discover how the Kangqore Engineering Foundry can automate your development pipelines and significantly reduce time-to-market.',
 };
 
-// ─── 7. modernization-infrastructure ───────────────────────────────────────────
+// ─── 7. infrastructure-modernization ───────────────────────────────────────────
 const modernizationInfrastructureCoESection = (
   <section className="py-20 lg:py-28 overflow-hidden relative bg-white dark:bg-black">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -3976,6 +3976,6 @@ export const FOUNDRY_LEGACY_SECTIONS = {
   'devops-as-a-service': devopsAsAService,
   'managed-infrastructure-services': managedInfrastructureServices,
   'engineering-foundry': engineeringFoundry,
-  'modernization-infrastructure': modernizationInfrastructure,
+  'infrastructure-modernization': modernizationInfrastructure,
   'software-development': softwareDevelopment,
 };

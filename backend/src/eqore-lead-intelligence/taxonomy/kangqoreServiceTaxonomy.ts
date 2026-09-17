@@ -94,7 +94,7 @@ export const KANGQORE_DEPARTMENTS: KangqoreDepartment[] = [
     description: 'Manage and modernize IT infrastructure for reliability and performance.',
     services: [
       'managed-infrastructure-services',
-      'modernization-infrastructure',
+      'infrastructure-modernization',
       'managed-services',
       'support-maintenance',
       'operation-technology'
@@ -569,8 +569,8 @@ export const KANGQORE_SERVICES: Record<string, KangqoreService> = {
     recommendedSolutionPackages: ['Managed Infrastructure Services Strategy Audit', 'Managed Infrastructure Services Implementation Roadmap'],
     priorityLevel: 'standard'
   },
-  'modernization-infrastructure': {
-    slug: 'modernization-infrastructure',
+  'infrastructure-modernization': {
+    slug: 'infrastructure-modernization',
     name: 'Infrastructure Modernization',
     departmentSlug: 'infrastructure-networks-operations',
     departmentName: 'Infrastructure, Networks & Operations',

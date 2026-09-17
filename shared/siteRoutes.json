@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T14:34:47.015Z",
+  "generatedAt": "2026-09-16T16:37:06.676Z",
   "baseUrl": "https://kangqore.com",
   "routes": [
     {
@@ -411,7 +411,7 @@
       "changefreq": "monthly"
     },
     {
-      "path": "/services/modernization-infrastructure",
+      "path": "/services/infrastructure-modernization",
       "type": "SERVICE",
       "priority": "0.8",
       "changefreq": "monthly"

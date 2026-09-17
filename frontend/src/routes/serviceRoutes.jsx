@@ -164,7 +164,7 @@ export const serviceRoutes = [
   
   // Infrastructure (5) — Foundry Department
   <Route key="managed-infra" path="/services/infrastructure-networks-operations/managed-infrastructure-services" element={<ServicePage6 slug="managed-infrastructure-services" />} />,
-  <Route key="modernization-infra" path="/services/infrastructure-networks-operations/modernization-infrastructure" element={<ServicePage6 slug="modernization-infrastructure" />} />,
+  <Route key="modernization-infra" path="/services/infrastructure-networks-operations/infrastructure-modernization" element={<ServicePage6 slug="infrastructure-modernization" />} />,
   <Route key="managed-services" path="/services/infrastructure-networks-operations/managed-services" element={<ServicePage6 slug="managed-services" />} />,
   <Route key="support-maintenance" path="/services/infrastructure-networks-operations/support-maintenance" element={<ServicePage6 slug="support-maintenance" />} />,
   <Route key="operation-tech" path="/services/infrastructure-networks-operations/operation-technology" element={<ServicePage6 slug="operation-technology" />} />,

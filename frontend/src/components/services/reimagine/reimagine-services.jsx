@@ -2500,7 +2500,7 @@ const mvpAccelerationExecutionEcosystem = (
             {[
               { name: 'Discover & Frame Workshops', link: '/services/discover-frame-workshops', icon: <Compass className="w-5 h-5" />, desc: 'Structured discovery before you build.' },
               { name: 'Product Digital Engineering', link: '/services/product-digital-engineering', icon: <Cpu className="w-5 h-5" />, desc: 'Enterprise-grade platform development at scale.' },
-              { name: 'Modernization Infrastructure', link: '/services/modernization-infrastructure', icon: <Layers className="w-5 h-5" />, desc: 'Modernize legacy debt into a scalable digital core.' },
+              { name: 'Modernization Infrastructure', link: '/services/infrastructure-modernization', icon: <Layers className="w-5 h-5" />, desc: 'Modernize legacy debt into a scalable digital core.' },
             ].map((e, idx) => (
               <Link key={idx} to={e.link} className="group flex items-start gap-5 p-6 bg-white dark:bg-gray-900 dark:border-gray-800 border border-gray-100 rounded-3xl hover:border-blue-300 transition-all shadow-sm">
                 <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-all">{e.icon}</div>

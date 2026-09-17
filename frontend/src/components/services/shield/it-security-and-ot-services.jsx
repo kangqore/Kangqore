@@ -650,7 +650,7 @@ const otExecutionEcosystemSection = (
             {[
               { name: 'Managed Services', desc: 'End-to-end managed IT operations.', icon: <Settings className="w-5 h-5 text-gray-400" />, link: '/services/managed-services' },
               { name: 'Support & Maintenance', desc: 'Structured support & system upkeep.', icon: <Wrench className="w-5 h-5 text-gray-400" />, link: '/services/support-maintenance' },
-              { name: 'Infrastructure Modernization', desc: 'Modernize legacy IT environments.', icon: <Cloud className="w-5 h-5 text-gray-400" />, link: '/services/modernization-infrastructure' },
+              { name: 'Infrastructure Modernization', desc: 'Modernize legacy IT environments.', icon: <Cloud className="w-5 h-5 text-gray-400" />, link: '/services/infrastructure-modernization' },
               { name: 'Network & Connectivity', desc: 'Enterprise network engineering.', icon: <Network className="w-5 h-5 text-gray-400" />, link: '/services/managed-infrastructure-services' },
             ].map((svc, i) => (
               <Link key={i} to={svc.link} className="flex items-center gap-4 p-5 bg-white dark:bg-gray-900 dark:border-gray-800 rounded-xl border border-gray-100 hover:border-brand-blue/20 hover:shadow-lg transition-all duration-300 group">

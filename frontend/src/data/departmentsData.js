@@ -84,7 +84,7 @@ export const departmentsData = {
       'product-digital-engineering',
       'devops-as-a-service',
       'managed-infrastructure-services',
-      'modernization-infrastructure',
+      'infrastructure-modernization',
       'managed-services',
       'support-maintenance',
       'software-development',

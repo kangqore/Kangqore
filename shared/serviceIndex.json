@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T18:42:05.358Z",
+  "generatedAt": "2026-09-16T16:37:06.734Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1210,9 +1210,9 @@
       "dataHandling": []
     },
     {
-      "slug": "modernization-infrastructure",
-      "url": "/services/modernization-infrastructure",
-      "name": "Modernization Infrastructure",
+      "slug": "infrastructure-modernization",
+      "url": "/services/infrastructure-modernization",
+      "name": "Infrastructure Modernization",
       "department": "Foundry",
       "description": "Build, migrate and modernize infrastructure across hybrid cloud, enterprise networks, workplace, security and asset management, without moving everything.",
       "capabilities": [
