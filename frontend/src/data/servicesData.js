@@ -10082,6 +10082,27 @@ export const servicesData = {
         ],
         a: 'A discovery and design read, and for most programs it should be the first one regardless of who builds the software.\n\nIt is a fixed-scope assessment across four surfaces: what is being built and for whom, which obligations genuinely apply, what the technical risks are in order of cost, and what the identity and data model needs to be. The output is a written position on each, including the parts that are already sound and should be left alone.\n\nWe run it that way because the alternative is a proposal shaped by what we would like to build. An assessment that cannot conclude "this is feasible as specified, proceed without us" is not an assessment.\n\nFrom there the sequencing is yours. Some organizations act on the findings and build with their own team, which is a legitimate outcome. Others use it as the design input for the full program. Either way you own the document and it does not commit you to us.',
       },
+      {
+        q: 'You need a robust security monitoring mechanism to manage incidents in real time.',
+        sources: [
+          { label: 'NIST Cybersecurity Framework — Incident Response & Monitoring', url: 'https://www.nist.gov/cyberframework' },
+        ],
+        a: 'We operate an automated platform for configuration, bulk uploads, update, password reset, and user unlock that directly feeds real-time incident telemetry.\n\nMost security incidents in custom software environments are not sophisticated zero-day exploits. They originate in configuration drift, compromised user credentials, or unmonitored administrative bulk actions that go unlogged until damage is done. By governing system configurations and administrative events through an automated pipeline with continuous telemetry, routine changes stop generating false-positive alarms while anomalous events trigger instant triage.\n\nThe monitoring mechanism integrates directly into your security operations center (SOC) and SIEM, providing structured audit trails across every configuration change, data ingestion event, and authentication transition. When an anomaly occurs, automated isolation guardrails engage immediately while alerting on-call engineers with exact execution context rather than generic error codes.',
+      },
+      {
+        q: 'You require a secure IT infrastructure and software development cycle to prevent data loss.',
+        sources: [
+          { label: 'NIST Secure Software Development Framework (SSDF)', url: 'https://csrc.nist.gov/Projects/ssdf' },
+        ],
+        a: 'We provide integrated L1, L2, and L3 IT support alongside continuous managed services for cloud-hosted systems and applications, coupled with a secure software development lifecycle (SSDLC) designed to prevent data loss at every phase.\n\nData loss rarely stems from a single code bug. It occurs when insecure development practices meet unmonitored infrastructure: test environments populated with live customer records, misconfigured object storage buckets, missing point-in-time recovery configurations, or support teams lacking tiered escalation paths during an active database incident. Building security into the development cycle ensures encryption at rest, tokenization of sensitive fields, and immutable backup policies are architectural invariants rather than post-deployment tickets.\n\nOur managed services model pairs dedicated Level 1 ticket resolution, Level 2 engineering diagnosis, and Level 3 core architecture support with round-the-clock infrastructure observability. Continuous vulnerability patching, automated disaster recovery drills, and strict separation of duties ensure your cloud systems remain resilient against ransomware, operational outages, and accidental data deletion.',
+      },
+      {
+        q: 'You should offer tools for IT self-service to boost enterprise productivity.',
+        sources: [
+          { label: 'CIS Critical Security Controls — Administrative Privileges & Account Monitoring', url: 'https://www.cisecurity.org/controls' },
+        ],
+        a: 'We deliver comprehensive automation of IT utilities, including configuration, user provisioning, archival, and GUI scripting to eliminate manual support bottlenecks and boost enterprise productivity.\n\nIn most enterprises, developer and employee productivity is crippled by central ticket queues for routine administrative tasks: waiting days for environment access, manual onboarding spreadsheets, or ad-hoc data archival scripts that run without audit logging. Self-service tools turn those tickets into governed, deterministic actions that authorized users can execute in seconds without compromising security guardrails.\n\nEvery self-service utility is built with strict role-based access control, time-bounded permission elevation, and automated audit logging. Whether an engineer is spinning up an ephemeral testing environment, running a bulk data archival job, or executing an automated browser GUI workflow, the action executes against predefined policy boundaries with zero manual intervention required from IT operations.',
+      },
     ],
 
     engagementEyebrow: 'WHERE TO START',
