@@ -69,18 +69,29 @@ function clearPageScoped() {
  * Apply a page's SEO to document.head.
  * Safe to call on every render — it is idempotent per input.
  */
-export function applySeo({
-  title,
-  description,
-  keywords,
-  canonical,
-  robots,
-  lang,
-  og = {},
-  twitter = {},
-  jsonLd = [],
-  hreflang = [],
-} = {}) {
+// `config` is destructured inside rather than in the signature because a
+// parameter default only covers `undefined`. Callers pass an explicit `null` to
+// mean "this route has no SEO payload" — ServicePageReal does exactly that for
+// an unrecognised slug — and `applySeo(null)` threw
+// "Cannot destructure property 'title' of ... as it is null", taking every
+// unknown /services/* URL to the error boundary instead of the 404 page.
+// Null now falls through with every field undefined, which still reaches
+// clearPageScoped() below so the previous route's schema and hreflang are
+// removed rather than inherited by the 404.
+export function applySeo(config) {
+  const {
+    title,
+    description,
+    keywords,
+    canonical,
+    robots,
+    lang,
+    og = {},
+    twitter = {},
+    jsonLd = [],
+    hreflang = [],
+  } = config || {};
+
   if (typeof document === 'undefined') return;
 
   if (title) document.title = title;
