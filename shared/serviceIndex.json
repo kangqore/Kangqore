@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T21:37:02.386Z",
+  "generatedAt": "2026-09-17T22:04:38.718Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1341,9 +1341,28 @@
       "url": "/services/software-development",
       "name": "Software Development",
       "department": "Foundry",
-      "description": "Custom software development — full-stack development, agile methodology, code quality, CI/CD, and documentation tailored to your business needs.",
-      "capabilities": [],
-      "faqs": [],
+      "description": "Custom software development with security, identity, access and compliance designed into the lifecycle rather than added before the first audit.",
+      "capabilities": [
+        "Software lifecycle",
+        "Infrastructure security",
+        "Data security",
+        "Identity & access management",
+        "Governance, risk & compliance"
+      ],
+      "faqs": [
+        {
+          "q": "We have a spec and a deadline. What happens first?",
+          "a": "We work out which obligations the software has to satisfy, because those are the constraints that shape the architecture and they are the ones specs usually omit. A specification describes what the software should do. It rarely says which regulation applies, what the largest customer will demand in their security questionnaire, where the data is allowed to live, or who is allowed to see what. Those answers change the design, and discovering them after the schema is fixed is the most expensive way to learn them. So the first stage is deliberately unglamorous. What is being built and for whom. Which standards and contractual obligations apply. What the data classification actually is. What has to be true before anyone would be allowed to put this in front of a real user. The output is a constraint list and a risk register naming what must be decided before architecture starts. It is usually shorter than people expect and more uncomfortable, because it makes the unknowns explicit while they are still cheap."
+        },
+        {
+          "q": "Does building security in slow delivery down?",
+          "a": "It moves the cost rather than adding it, and in most programs it moves it somewhere cheaper. The work does not disappear when you defer it. Threat analysis, access modeling, encryption decisions and evidence gathering all still happen. Deferred, they happen under deadline pressure, after the architecture is fixed, when the only options left are accept the risk or slip the date. That is the quarter that goes missing between code complete and launch. Done in design, the same decisions are conversations. Choosing an authorization model costs an afternoon before any service exists and costs a rewrite afterward. Deciding data classification before the schema is free. The measurable effect is usually on the second release rather than the first. The first still carries the setup. After that, the pipeline produces the evidence, the model is already there, and releases stop waiting on reviews that started too late to change anything."
+        },
+        {
+          "q": "How do you stop every service inventing its own permissions?",
+          "a": "By making the model something services call rather than something each one implements. The drift is never a decision. A service needs a permission check, the central model does not quite cover the case, and a local check gets written to unblock the sprint. Repeat that nine times and you have nine interpretations of what a role means, and revoking access centrally leaves it live in four of them because nobody can list which. What prevents it is a model that is genuinely easier to call than to reimplement, covering both coarse role checks and fine grained permissions, with a clear route for the cases it does not yet handle. If the central model is hard to extend, teams will route around it, and that is a design failure rather than a discipline failure. Recovering from drift afterward is a real project rather than a refactor. We would usually converge the two most divergent services first, because that is where the argument gets settled."
+        }
+      ],
       "method": [
         {
           "rule": "Architecture & Domain Modeling",

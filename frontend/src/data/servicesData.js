@@ -9674,11 +9674,219 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Custom software development services',
-    fullDescription: 'Build custom software solutions tailored to your business needs.',
-    keyFeatures: ['Full-stack development', 'Agile methodology', 'Code quality', 'CI/CD', 'Documentation'],
-    relatedServiceSlugs: ['api-microservices-engineering', 'devops-as-a-service', 'engineering-foundry'],
+    fullDescription: 'Software built to a lifecycle, with security, identity and compliance designed in rather than added after the first audit.',
+    keyFeatures: ['Discover and design', 'Iterative development', 'Verification and validation', 'Secure by design', 'Continuous improvement'],
+    relatedServiceSlugs: ['api-microservices-engineering', 'product-digital-engineering', 'devops-as-a-service'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
+    lastReviewed: '2026-09-18',
+
+    heroTitle: 'Software Development at\nEnterprise Scale by Kangqore',
+    heroBadge: 'Built to a Lifecycle, Not to a Deadline',
+    heroStripItems: ['Software Lifecycle', 'Infrastructure Security', 'Data Security', 'Identity & Access', 'Governance & Risk'],
+
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'WHY MOST SOFTWARE GETS EXPENSIVE LATE',
+    whatIsTitle: 'The Build Was Never',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'the Expensive Part.',
+    whatIsPara2: 'Writing the software is the part everyone estimates. What nobody estimates is the audit that finds no access review, the penetration test three weeks before launch, the customer questionnaire asking how data is encrypted at rest, or the integration that turns out to need an identity model nobody designed.',
+    whatIsPara3: 'Those are not surprises. They are the same set of questions every enterprise buyer, regulator and security team asks, and they are knowable on day one. What makes them expensive is discovering them after the architecture is fixed, because by then the answer is a rebuild rather than a design decision.',
+    whatIsPara4: 'So we run software delivery and the controls around it as one lifecycle rather than two. Threat analysis sits in design, not in a pre-launch scramble. Identity and authorization are modeled before the first endpoint exists. Compliance evidence is produced by the pipeline as work happens, instead of assembled by hand the week an auditor asks.',
+    whatIsPara5: 'The result is not slower delivery. It is the same delivery without the quarter that usually disappears between code complete and actually being allowed to ship.',
+
+    outcomesEyebrow: 'WHAT CHANGES WHEN THE CONTROLS ARE DESIGNED IN',
+    outcomesHeading: 'Nothing waits on a finding',
+    outcomesHeadingHighlight: 'nobody saw coming.',
+    businessMetrics: [
+      { illustrative: true, title: 'Release Readiness', desc: 'Whether a build can actually ship on the day it is code complete, or waits on a security review that started too late to change anything.', value: 'Day One', suffix: ' Shippable', metricLabel: 'Controls Designed In', icon: 'Rocket' },
+      { illustrative: true, title: 'Identity Model', desc: 'One authorization model the application enforces, rather than permission logic re-implemented per service and drifting apart.', value: 'One', suffix: ' Model', metricLabel: 'Across Every Service', icon: 'ShieldCheck' },
+      { illustrative: true, title: 'Evidence', desc: 'Compliance artifacts produced by the pipeline as work happens, instead of reconstructed by hand when an auditor asks.', value: 'Produced', suffix: ' Not Assembled', metricLabel: 'Audit Evidence', icon: 'CheckCircle' },
+      { illustrative: true, title: 'Findings Cost', desc: 'Where a vulnerability is found. In design it is a conversation, in staging it is a sprint, in production it is an incident.', value: 'Design', suffix: ' Not Staging', metricLabel: 'Where Issues Surface', icon: 'Search' },
+    ],
+    outcomeCard: {
+      illustrative: true,
+      metric: '9 → 1',
+      metricLabel: 'permission models',
+      industry: 'Modeled scenario in financial services, ~40 services',
+      problem: 'Nine services, nine interpretations of what a role meant. A permission revoked centrally stayed live in four of them, and nobody could answer which, because each service had its own copy of the logic.',
+      outcome: 'One authorization model the services call rather than reimplement, with directory as the source of truth and revocation taking effect everywhere at once. Access reviews became a report instead of a project.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '11 → 0',
+      metricLabel: 'weeks lost to pre-launch security',
+      industry: 'Modeled scenario in healthcare software, first enterprise customer',
+      problem: 'Code complete in March, shipped in June. The gap was a penetration test nobody had scheduled, encryption decisions taken after the schema was fixed, and an access-control model written to satisfy a questionnaire rather than a design.',
+      outcome: 'Threat analysis moved into design review, VAPT booked against the sprint calendar rather than the launch date, and evidence produced continuously. The next release shipped the week it was code complete.',
+    },
+
+    capabilitiesLabel: 'THE SOFTWARE CAPABILITY MAP',
+    capabilitiesSectionTitle: 'Software Development',
+    capabilitiesSectionHighlight: 'Services and Capabilities.',
+    capabilitiesLede: 'How the software gets built, and how it gets to be allowed to ship.',
+    capabilityAreas: [
+      {
+        title: 'Software lifecycle',
+        image: '/images/capabilities/software-engineering.png',
+        desc: 'From the first conversation to the release after the one you are planning.',
+        items: [
+          'Discover and design: Establish what is actually being built and for whom, with the constraints that will decide the architecture identified before anyone commits to one.',
+          'Sprint planning: Sequence the work so the riskiest unknown is answered first, rather than leaving it for the sprint before launch when nothing can be changed cheaply.',
+          'Iterative development: Build in increments that are individually reviewable and individually reversible, on a pipeline that produces the same artifact every time it runs.',
+          'Independent verification and validation: Test the software against the requirement by people who did not write it, because the author is the worst reader of their own assumptions.',
+          'Continuous improvement: Feed defects, incidents and usage back into the backlog as evidence, so the next release is informed by what actually happened rather than by opinion.',
+        ],
+      },
+      {
+        title: 'Infrastructure security',
+        image: '/images/capabilities/cloud-infrastructure.png',
+        desc: 'The ground the application stands on, hardened before it carries anything.',
+        items: [
+          'Perimeter and network security: Segment what the application can reach and what can reach it, designed around how the system actually works rather than around the diagram it was drawn from.',
+          'Hardware and platform security: Harden the hosts, images and platform the software runs on, with a baseline that is enforced at provisioning instead of corrected afterward.',
+          'Endpoint and email security: Protect the developer and operator endpoints that hold credentials and source, which is where most intrusions into a delivery pipeline actually begin.',
+          'Vulnerability Assessment and Penetration Testing (VAPT): Test the running system the way an attacker would, booked against the sprint calendar rather than the week before launch when findings cannot be acted on.',
+        ],
+      },
+      {
+        title: 'Data security',
+        image: '/images/capabilities/vibrant-data.png',
+        desc: 'What the software holds, and what happens to it when something goes wrong.',
+        items: [
+          'Threat analysis: Model what an attacker would want and how they would get it, during design review, where the answer is still an architecture decision rather than a rebuild.',
+          'Data masking and tokenization: Keep production-shaped data out of the places that do not need it, so a non-production environment stops being a copy of your customer records.',
+          'Information rights management: Control what happens to data after it leaves the application, which is the point at which most access controls stop applying.',
+          'Encryption and Public Key Infrastructure (PKI): Encrypt in transit and at rest with key custody, rotation and revocation decided deliberately rather than inherited from a default.',
+        ],
+      },
+      {
+        title: 'Identity & access management',
+        image: '/images/capabilities/cybersecurity.png',
+        desc: 'Who can do what, expressed once instead of reimplemented per service.',
+        items: [
+          'Directory services: Establish one authoritative directory the application reads from, rather than a user table per service that has to be reconciled by hand.',
+          'Coarse and fine grained authorization: Model both the broad role and the specific permission, so the answer to "can this person do this" is computed rather than argued.',
+          'Authentication, single sign on and federation: Let people sign in once, including through a customer identity provider you do not control, without each integration becoming its own project.',
+          'Identity lifecycle management and provisioning: Handle joiners, movers and leavers as a process, because the leaver half is the one that quietly gets skipped.',
+        ],
+      },
+      {
+        title: 'Governance, risk & compliance',
+        image: '/images/capabilities/business-strategy.png',
+        desc: 'Proving the controls work, to someone who is paid to doubt it.',
+        items: [
+          'Compliance audits: Prepare for and carry the audit with evidence produced during the work rather than reconstructed afterward under time pressure.',
+          'IT GRC tools configuration: Configure the governance tooling so control status is read from the systems themselves, instead of from a spreadsheet somebody updates monthly.',
+          'Risk and security controls enforcement: Enforce controls in the pipeline and at the boundary, so a non-compliant change cannot ship rather than being caught in review.',
+          'Security framework, policies and procedures: Write the framework the organization will actually follow, mapped to the standard your customers and regulators will ask about.',
+        ],
+      },
+    ],
+
+    architectureEyebrow: 'HOW A BUILD ACTUALLY RUNS',
+    architectureTitle: 'Discovery to steady state,',
+    architectureTitleHighlight: 'with the controls moving alongside.',
+    architectureLede: 'Software programs slip late because the security and compliance work was sequenced after the build instead of beside it. This is the sequence we run, and every stage carries both.',
+    architectureNodes: [
+      {
+        title: 'Discover',
+        icon: 'Search',
+        description: 'Establish what is being built, for whom, and under which obligations. Constraints first, because they shape the architecture.',
+        features: [
+          'Requirements and success criteria agreed with the people who will use it',
+          'Regulatory, contractual and customer security obligations identified',
+          'Threat analysis run at design rather than before launch',
+          'What is deliberately out of scope, written where a reviewer can see it',
+          'A risk register naming what must be decided before architecture starts',
+        ],
+      },
+      {
+        title: 'Design',
+        icon: 'Layers',
+        description: 'Fix the shape while it is cheap. Identity, data model and trust boundaries are the expensive decisions to reverse.',
+        features: [
+          'Authorization model designed once and enforced by every service',
+          'Data classification with encryption and retention decided per class',
+          'Trust boundaries and network segmentation drawn deliberately',
+          'Architecture reviewed against the standard the auditor will apply',
+          'Target-state design signed off by the team who will run it',
+        ],
+      },
+      {
+        title: 'Build',
+        icon: 'Cpu',
+        description: 'Iterative delivery on a pipeline that produces the same artifact every time and refuses one that fails a check.',
+        features: [
+          'Increments individually reviewable and individually reversible',
+          'Static analysis, dependency scanning and secrets detection in the pipeline',
+          'Infrastructure defined in code and promoted between environments',
+          'Masked or synthetic data in every non-production environment',
+          'Runbooks written as the work is done rather than reconstructed later',
+        ],
+      },
+      {
+        title: 'Verify',
+        icon: 'Target',
+        description: 'Independent verification and validation against the requirement, by people who did not write the code.',
+        features: [
+          'Test strategy weighted by failure cost rather than by coverage target',
+          'Verification performed independently of the implementing team',
+          'Performance and resilience exercised under representative load',
+          'Defects traced to root cause rather than closed on a retest',
+          'Acceptance evidence recorded against the original requirement',
+        ],
+      },
+      {
+        title: 'Harden',
+        icon: 'ShieldCheck',
+        description: 'Penetration testing and control validation while findings are still cheap to act on.',
+        features: [
+          'VAPT scheduled against the sprint calendar, not the launch date',
+          'Findings ranked by reachability in your architecture, not scanner severity',
+          'Key custody, rotation and revocation proven rather than assumed',
+          'Access review run end to end before the first real user exists',
+          'Residual risk named explicitly where it is being accepted',
+        ],
+      },
+      {
+        title: 'Release',
+        icon: 'Rocket',
+        description: 'Ship it, with rollback rehearsed before it is needed and the first release treated as the risky one.',
+        features: [
+          'Progressive rollout with a defined abort condition',
+          'Rollback rehearsed on a representative workload before go-live',
+          'Observability sufficient to answer a complaint with evidence',
+          'Support model and escalation agreed before handover, not after',
+          'Compliance evidence package complete at release rather than later',
+        ],
+      },
+      {
+        title: 'Operate',
+        icon: 'Activity',
+        description: 'Run it. Patching, access reviews and control monitoring as a rhythm rather than an escalation.',
+        features: [
+          'Patch and dependency currency maintained on a measured cadence',
+          'Access recertification run on a schedule with a named owner',
+          'Control status read from the systems rather than from a spreadsheet',
+          'Incident response path tested before it is needed',
+          'Monthly service review against the commitments actually agreed',
+        ],
+      },
+      {
+        title: 'Improve',
+        icon: 'TrendingUp',
+        description: 'Feed what happened back into the backlog, so the next release is informed by evidence rather than opinion.',
+        features: [
+          'Defect and incident data fed into the backlog as evidence',
+          'Usage telemetry informing what gets built next',
+          'Architecture revisited as load and obligations change',
+          'Security findings closed at root cause, not per instance',
+          'Improvement backlog owned and reported rather than accumulated',
+        ],
+      },
+    ],
     toolsStack: {
       eyebrow: 'THE SOFTWARE ENGINEERING FABRIC',
       title: 'The custom software planes,',
@@ -9741,8 +9949,303 @@ export const servicesData = {
         }
       ]
     },
-  },
 
+    comparisonTable: {
+      eyebrow: 'WHERE SOFTWARE PROJECTS LOSE THE QUARTER',
+      heading: 'Both reached code complete on time.',
+      lede: 'Neither column describes a failed build. They diverge between code complete and being allowed to ship, which is where the quarter usually goes.',
+      beforeLabel: 'SECURED AFTERWARD',
+      afterLabel: 'SECURED BY DESIGN',
+      afterBadge: 'KANGQORE',
+      beforeShort: 'RETROFITTED',
+      afterShort: 'DESIGNED IN',
+      rows: [
+        {
+          dimension: 'When threat analysis happens',
+          before: 'Three weeks before launch, as a penetration test. Findings arrive when the architecture is fixed and the only options are accept the risk or slip.',
+          after: 'In design review, where a finding is a conversation about the model rather than a rebuild of it.',
+        },
+        {
+          dimension: 'How authorization is modeled',
+          before: 'Per service, by whoever built it. Nine services hold nine interpretations of a role, and revoking access centrally does not revoke it everywhere.',
+          after: 'Once. Services call the model rather than reimplement it, so revocation takes effect everywhere at the same moment.',
+        },
+        {
+          dimension: 'What is in the test environment',
+          before: 'A copy of production, because it was the quickest way to get realistic data. Now customer records exist in a place with none of the controls.',
+          after: 'Masked or synthetic data shaped like production, so a non-production breach is not a customer breach.',
+        },
+        {
+          dimension: 'Where compliance evidence comes from',
+          before: 'Assembled by hand the week the auditor asks, reconstructed from memory, tickets and screenshots.',
+          after: 'Produced by the pipeline as the work happens, so the audit reads what already exists.',
+        },
+        {
+          dimension: 'What a dependency advisory means',
+          before: 'An unplanned scramble to work out whether you are affected, because nobody knows what is in the build.',
+          after: 'A query. The artifact carries its inventory, so exposure is answered in minutes rather than discovered in days.',
+        },
+        {
+          dimension: 'The first enterprise security questionnaire',
+          before: 'A project. Two hundred questions answered by engineers guessing at what the system does.',
+          after: 'A document. The answers were design decisions, recorded when they were made.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'THE QUESTIONS THAT DECIDE THE PROGRAM',
+    faqLede: 'The questions below are the ones engineering and product leaders actually ask in a first call, on scope, security, cost and what happens when something breaks. Answers are direct rather than promotional.',
+    faqHeading: 'What people ask',
+    faqHeadingHighlight: 'before they commit.',
+    customFAQs: [
+      {
+        q: 'We have a spec and a deadline. What happens first?',
+        sources: [
+          { label: 'NIST Secure Software Development Framework', url: 'https://csrc.nist.gov/Projects/ssdf' },
+        ],
+        a: 'We work out which obligations the software has to satisfy, because those are the constraints that shape the architecture and they are the ones specs usually omit.\n\nA specification describes what the software should do. It rarely says which regulation applies, what the largest customer will demand in their security questionnaire, where the data is allowed to live, or who is allowed to see what. Those answers change the design, and discovering them after the schema is fixed is the most expensive way to learn them.\n\nSo the first stage is deliberately unglamorous. What is being built and for whom. Which standards and contractual obligations apply. What the data classification actually is. What has to be true before anyone would be allowed to put this in front of a real user.\n\nThe output is a constraint list and a risk register naming what must be decided before architecture starts. It is usually shorter than people expect and more uncomfortable, because it makes the unknowns explicit while they are still cheap.',
+      },
+      {
+        q: 'Does building security in slow delivery down?',
+        sources: [
+          { label: 'DORA research on software delivery performance', url: 'https://dora.dev/' },
+        ],
+        a: 'It moves the cost rather than adding it, and in most programs it moves it somewhere cheaper.\n\nThe work does not disappear when you defer it. Threat analysis, access modeling, encryption decisions and evidence gathering all still happen. Deferred, they happen under deadline pressure, after the architecture is fixed, when the only options left are accept the risk or slip the date. That is the quarter that goes missing between code complete and launch.\n\nDone in design, the same decisions are conversations. Choosing an authorization model costs an afternoon before any service exists and costs a rewrite afterward. Deciding data classification before the schema is free.\n\nThe measurable effect is usually on the second release rather than the first. The first still carries the setup. After that, the pipeline produces the evidence, the model is already there, and releases stop waiting on reviews that started too late to change anything.',
+      },
+      {
+        q: 'How do you stop every service inventing its own permissions?',
+        sources: [
+          { label: 'NIST Digital Identity Guidelines (SP 800-63)', url: 'https://pages.nist.gov/800-63-3/' },
+        ],
+        a: 'By making the model something services call rather than something each one implements.\n\nThe drift is never a decision. A service needs a permission check, the central model does not quite cover the case, and a local check gets written to unblock the sprint. Repeat that nine times and you have nine interpretations of what a role means, and revoking access centrally leaves it live in four of them because nobody can list which.\n\nWhat prevents it is a model that is genuinely easier to call than to reimplement, covering both coarse role checks and fine grained permissions, with a clear route for the cases it does not yet handle. If the central model is hard to extend, teams will route around it, and that is a design failure rather than a discipline failure.\n\nRecovering from drift afterward is a real project rather than a refactor. We would usually converge the two most divergent services first, because that is where the argument gets settled.',
+      },
+      {
+        q: 'When should penetration testing happen?',
+        sources: [
+          { label: 'OWASP Application Security Verification Standard', url: 'https://owasp.org/www-project-application-security-verification-standard/' },
+        ],
+        a: 'Early enough that a finding can change something, which is almost never where it gets scheduled.\n\nBooked three weeks before launch, a penetration test is a formality that everyone hopes passes. A structural finding at that point cannot be fixed, because the architecture is fixed, so it becomes an accepted risk with a remediation date nobody defends.\n\nScheduled against the sprint calendar instead, testing becomes information. An early engagement against a partial system finds the design problems while they are still design problems. A later one confirms the build. Both are cheaper than one panic at the end.\n\nThe second thing worth changing is how findings are ranked. A scanner severity is generic. What matters is reachability in your architecture: a critical in a component nothing can reach is lower priority than a medium on your authentication path, and treating the list in scanner order wastes the remediation budget.',
+      },
+      {
+        q: 'Can you work with our existing team, or do you take the whole build?',
+        sources: [
+          { label: 'OWASP Top Ten', url: 'https://owasp.org/www-project-top-ten/' },
+        ],
+        a: 'Either, and the mixed model is the one we run most often.\n\nThe common shape is that your team knows the domain and owns the product, and we bring the engineering disciplines that are hard to staff for a single build: independent verification, the security and identity work, the pipeline. Your team keeps the context, which is the part that cannot be outsourced usefully anyway.\n\nWhat matters more than the split is who owns the decisions. Programs go wrong when ownership is ambiguous, not when the team is mixed. We would want that written down at the start, including which decisions are ours to make and which are escalations.\n\nWhere we take the whole build, we would still expect someone on your side to own the product decisions. A build with no internal owner produces software that is technically correct and commercially wrong.',
+      },
+      {
+        q: 'What does independent verification actually add?',
+        sources: [
+          { label: 'ISO/IEC/IEEE 29119 software testing', url: 'https://www.iso.org/standard/81291.html' },
+        ],
+        a: 'A reader who does not share the author\'s assumptions, which is the whole point.\n\nThe person who wrote the code tests it against what they meant. That catches mistakes in implementation and almost never catches mistakes in understanding, because the misunderstanding is present in both the code and the test. Independent verification tests against the requirement instead.\n\nIt matters most where the cost of being wrong is not symmetrical. A regulated system, a payment path, anything where a defect reaches a customer\'s customer. In lower-stakes areas it is often not worth the overhead, and we would say so rather than sell it.\n\nWhat it is not is a second team writing the same unit tests. It is verification against the original requirement with its own test design, its own data, and the standing ability to conclude that the requirement itself was wrong, which is the finding that saves the most money.',
+      },
+      {
+        q: 'Our test environment has a copy of production data. How bad is that?',
+        sources: [
+          { label: 'PCI Security Standards Council', url: 'https://www.pcisecuritystandards.org/' },
+        ],
+        a: 'It is usually the largest unmanaged risk in a delivery estate, and it is almost always there for a good reason.\n\nThe reason is that realistic data finds real bugs. Synthetic data that does not match production shapes produces tests that pass and software that fails. So teams copy production, and now customer records exist in an environment with weaker access control, looser monitoring and more people who can reach it.\n\nMasking and tokenization exist for exactly this. Done properly the data keeps its shape, its distribution and its edge cases while ceasing to be personal data, so the tests stay honest and the exposure goes away.\n\nThe part that takes effort is referential integrity across systems. Masking one database is easy. Masking a set of systems that join on a customer identifier, consistently, is the actual work, and it is worth doing once properly rather than per environment.',
+      },
+      {
+        q: 'How do we answer a customer security questionnaire without it becoming a project?',
+        sources: [
+          { label: 'ISO/IEC 27001 information security management', url: 'https://www.iso.org/standard/27001' },
+        ],
+        a: 'By having made the decisions deliberately, so answering is recall rather than investigation.\n\nThe first enterprise questionnaire is a shock for most teams. Two hundred questions about encryption, key custody, access review cadence, incident response, subprocessors and retention, answered by engineers reconstructing what the system does from the code. It takes weeks and the answers are hedged, which invites follow-ups.\n\nMost of those questions have one correct answer that was settled at design time, if anyone settled it. Recording the decision when it is made, with its reason, turns the questionnaire into a document rather than an investigation.\n\nThe second thing that helps is mapping to a recognized framework early. Answering against a standard your customers already know is faster than answering each questionnaire from first principles, and it gets easier with each one rather than harder.',
+      },
+      {
+        q: 'What happens when a dependency vulnerability is announced?',
+        sources: [
+          { label: 'NIST National Vulnerability Database', url: 'https://nvd.nist.gov/' },
+        ],
+        a: 'It should be a query, and in most estates it is an archaeology exercise.\n\nThe question is simple: are we affected, where, and what is the exposure. Answering it requires knowing exactly what is in each build, including transitive dependencies nobody chose directly. Without that inventory the answer takes days and is a guess.\n\nSo the artifact carries its own inventory, generated at build time rather than compiled afterward. Then the advisory becomes a lookup, and the follow-on question of whether the vulnerable path is even reachable in your usage can be answered rather than assumed.\n\nThe operational half is currency. An estate that patches continuously absorbs an advisory as routine work. One that patches annually meets every advisory as an emergency, and the emergencies are what consume the year.',
+      },
+      {
+        q: 'Can you take over software somebody else built?',
+        sources: [
+          { label: 'CIS Benchmarks', url: 'https://www.cisecurity.org/cis-benchmarks' },
+        ],
+        a: 'Yes, and it starts with a read rather than a plan.\n\nThe first thing we establish is what is actually deployed against what was documented, because those diverge in every estate we have looked at. Architecture as built, the dependency position, what the tests really cover, how identity and access work today, and what the pipeline does and does not enforce. That read is deliberately unflattering and we share it as written.\n\nThe second is the operational position: what is on call, what is patched, what the recovery path is if the primary environment is lost. Those answers usually decide the sequencing more than the code quality does.\n\nWhat we will not do is open with a rewrite. Systems assembled under deadline pressure usually have a small number of decisions that are genuinely wrong and a large number that are merely different from how we would have done it. Reversing the second category burns budget without changing outcomes.',
+      },
+      {
+        q: 'Who owns the code and the intellectual property?',
+        sources: [
+          { label: 'World Intellectual Property Organization', url: 'https://www.wipo.int/copyright/en/' },
+        ],
+        a: 'You do, and it should be written into the agreement rather than assumed from the relationship.\n\nOur standard position is that foreground intellectual property created for your product is yours outright. Background intellectual property, meaning the methods and reusable components we bring, stays ours and is licensed to you for the product. That split is conventional and it should still be explicit, because the expensive disputes are about the boundary rather than the principle.\n\nOpen-source licensing is the part most teams underestimate. Obligations vary by license and by how the component is used, and they are far easier to handle during development than during a due diligence when someone is reading your dependency tree for the first time.\n\nIf you have an existing agreement with an investor or a partner that constrains any of this, it should be on the table before development starts rather than discovered at exit.',
+      },
+      {
+        q: 'What is the smallest sensible engagement?',
+        sources: [
+          { label: 'NIST Secure Software Development Framework', url: 'https://csrc.nist.gov/Projects/ssdf' },
+        ],
+        a: 'A discovery and design read, and for most programs it should be the first one regardless of who builds the software.\n\nIt is a fixed-scope assessment across four surfaces: what is being built and for whom, which obligations genuinely apply, what the technical risks are in order of cost, and what the identity and data model needs to be. The output is a written position on each, including the parts that are already sound and should be left alone.\n\nWe run it that way because the alternative is a proposal shaped by what we would like to build. An assessment that cannot conclude "this is feasible as specified, proceed without us" is not an assessment.\n\nFrom there the sequencing is yours. Some organizations act on the findings and build with their own team, which is a legitimate outcome. Others use it as the design input for the full program. Either way you own the document and it does not commit you to us.',
+      },
+    ],
+
+    engagementEyebrow: 'WHERE TO START',
+    engagementHeading: 'Scoped engagements,',
+    engagementHeadingHighlight: 'not open-ended programs.',
+    engagementLede: 'Each of these has a defined output and a defined end. None of them require the next one, and the assessments are structured so that "this is sound, build it yourself" is an available conclusion.',
+    servicePackages: [
+      {
+        name: 'Discovery & Design Read',
+        tier: 'ASSESSMENT',
+        duration: '3 to 4 weeks',
+        description: 'What is being built, under which obligations, against which risks.',
+        deliverables: [
+          'Requirements and success criteria agreed with the people who will use it',
+          'Regulatory, contractual and customer security obligations identified',
+          'Authorization and data classification model proposed',
+          'Technical risks ranked by cost rather than by likelihood alone',
+          'Written position on what is already sound and should be left alone',
+        ],
+      },
+      {
+        name: 'Product Build',
+        tier: 'ENGINEERING',
+        duration: '12 to 36 weeks',
+        description: 'Iterative delivery with the controls designed in, not bolted on.',
+        deliverables: [
+          'Increments individually reviewable and individually reversible',
+          'One authorization model every service calls rather than reimplements',
+          'Pipeline enforcing static analysis, dependency and secrets checks',
+          'Masked or synthetic data across every non-production environment',
+          'Runbooks and architecture decisions recorded as the work is done',
+        ],
+      },
+      {
+        name: 'Independent Verification & Validation',
+        tier: 'ASSURANCE',
+        duration: '4 to 10 weeks',
+        description: 'Testing against the requirement, by people who did not write it.',
+        deliverables: [
+          'Test strategy weighted by failure cost rather than coverage target',
+          'Verification performed independently of the implementing team',
+          'Performance and resilience exercised under representative load',
+          'Defects traced to root cause rather than closed on a retest',
+          'Acceptance evidence recorded against the original requirement',
+        ],
+      },
+      {
+        name: 'Security & Compliance Readiness',
+        tier: 'READINESS',
+        duration: '6 to 12 weeks',
+        description: 'VAPT, access review and the evidence pack, before the audit.',
+        deliverables: [
+          'Threat analysis and architecture review against the applicable standard',
+          'VAPT with findings ranked by reachability, not scanner severity',
+          'Identity lifecycle and access recertification proven end to end',
+          'Encryption, key custody and rotation validated rather than assumed',
+          'Evidence pack mapped to the framework your auditor will apply',
+        ],
+      },
+      {
+        name: 'Managed Engineering & Support',
+        tier: 'RUN',
+        duration: 'Ongoing',
+        description: 'Patching, access reviews and improvement under agreed commitments.',
+        deliverables: [
+          'Support model with defined response and escalation per tier',
+          'Patch and dependency currency maintained on a measured cadence',
+          'Access recertification run on a schedule with a named owner',
+          'Control status read from the systems rather than a spreadsheet',
+          'Monthly service review against the commitments actually agreed',
+        ],
+      },
+    ],
+
+    industryHeading: 'What the software has to prove,',
+    industryHeadingHighlight: 'sector by sector.',
+    industryLede: 'The engineering is much the same across these sectors. What changes is who audits it, what failure costs, and which obligations are non-negotiable.',
+    industryUseCases: [
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Every privileged action has to be evidenced, so access design is a control rather than a convenience.',
+        items: [
+          'Segregation of duties enforced in the authorization model',
+          'Access recertification with evidence retained for the regulator',
+          'Immutable audit trail across services and data stores',
+          'Encryption and key custody demonstrable, not asserted',
+          'Change evidence produced by the pipeline as work happens',
+          'Resilience testing against regulated recovery objectives',
+        ],
+      },
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'Patient data carries obligations that outlive the project that created the system.',
+        items: [
+          'Data classification driving encryption and retention per class',
+          'Masked or synthetic data in every non-production environment',
+          'Validated change control that survives inspection years later',
+          'Access limited by role and by clinical context, not role alone',
+          'Audit trails retained for the required period without exception',
+          'Cybersecurity expectations for connected clinical systems',
+        ],
+      },
+      {
+        industry: 'Retail & eCommerce',
+        headline: 'Payment scope and seasonal load decide the architecture more than any feature does.',
+        items: [
+          'Cardholder data scope minimized by tokenization at the boundary',
+          'Capacity designed for peak without paying for it year round',
+          'Fraud and abuse controls built into the identity path',
+          'Third-party and subprocessor exposure mapped deliberately',
+          'Graceful degradation when a downstream dependency fails',
+          'Customer identity federation without a project per integration',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'Software that reaches equipment carries consequences a web application does not.',
+        items: [
+          'Separation between operational technology and corporate networks',
+          'Long support horizons planned into the architecture from the start',
+          'Update paths that work over constrained and intermittent links',
+          'Component and dependency obsolescence tracked ahead of notice',
+          'Safety-relevant behavior verified independently of the build team',
+          'Field telemetry returning evidence to engineering, not a warranty log',
+        ],
+      },
+      {
+        industry: 'Public Sector',
+        headline: 'Procurement, accessibility and transparency obligations shape the build before any requirement does.',
+        items: [
+          'Accessibility built into delivery rather than audited at the end',
+          'Data residency and sovereignty settled at design',
+          'Open standards and exit provisions considered from the start',
+          'Separation of duties across delegated administrative boundaries',
+          'Records retention enforced through platform policy',
+          'Security framework mapped to the applicable national standard',
+        ],
+      },
+    ],
+
+    practiceLabel: 'THE ENGINEERING FOUNDRY PRACTICE',
+    practiceHeading: 'Software rarely ships',
+    practiceHeadingHighlight: 'on its own.',
+    practiceLede: 'A build usually needs the platform underneath it and the operating model around it. The work below sits alongside this one when the answer crosses a boundary.',
+
+    conciergeHeading: 'Ask about your build',
+    conciergeIntro: 'Questions we are asked before anyone commits to a program. Answered against your system rather than in general.',
+    conciergeChips: [
+      'Which obligations actually apply to our product?',
+      'Why does every service have its own permissions?',
+      'Is production data sitting in our test environment?',
+      'Can you take over software somebody else built?',
+      'Book a discovery and design read',
+    ],
+
+    midCta: 'Code complete is not the same as allowed to ship.',
+    midCtaLabel: 'Book a Discovery & Design Read',
+    closingCta: {
+      title: 'Your build,',
+      highlight: 'honestly assessed.',
+      body: 'Tell us roughly what you are building, who it has to satisfy, and where you think the risk sits. In 30 minutes we will tell you which obligations actually apply, which decisions we would take before writing anything, and what we would look at first. No proposal attached.',
+      proofLabel: 'From first call to a read of your build',
+    },
+  },
   'api-microservices-engineering': {
     slug: 'api-microservices-engineering',
     name: 'API & Microservices Engineering',
