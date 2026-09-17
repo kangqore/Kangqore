@@ -4818,12 +4818,17 @@ const featureMicros   = service.featureMicros
 
             {/* Section Header — mirrors DepartmentCarousel */}
             <div className="mb-16">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
-                  {service.capabilitiesLabel || 'CAPABILITIES'}
-                </span>
-              </div>
+              {/* Opt-out: an explicit empty capabilitiesLabel removes the eyebrow.
+                  Omitting the key keeps the default, so the other services are
+                  unaffected — only `capabilitiesLabel: ''` suppresses it. */}
+              {service.capabilitiesLabel !== '' && (
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-[1px] w-12 bg-white/20" />
+                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                    {service.capabilitiesLabel || 'CAPABILITIES'}
+                  </span>
+                </div>
+              )}
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                 <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
                   {service.capabilitiesSectionTitle
@@ -5067,10 +5072,12 @@ const featureMicros   = service.featureMicros
         <section id="svc-capabilities" className="py-16 md:py-32 relative" style={{ backgroundColor: '#000000' }}>
           <div ref={capRef} className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 transition-all duration-1000 ${capVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="mb-16">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.capabilitiesLabel || 'THE FRAMEWORK'}</span>
-              </div>
+              {service.capabilitiesLabel !== '' && (
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-[1px] w-12 bg-white/20" />
+                  <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.capabilitiesLabel || 'THE FRAMEWORK'}</span>
+                </div>
+              )}
               <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
                 {service.capabilitiesSectionTitle
                   ? <>{service.capabilitiesSectionTitle}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{service.capabilitiesSectionHighlight}</span></>

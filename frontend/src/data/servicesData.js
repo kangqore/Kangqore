@@ -8983,10 +8983,10 @@ export const servicesData = {
       outcome: 'Empowered, connected teams with the right skills, automated guardrails, and tools to personalize user experiences and balance agility with cost-efficiency.',
     },
 
-    capabilitiesLabel: 'HOW INFRASTRUCTURE MODERNIZATION IS CHANGING',
-    capabilitiesSectionTitle: 'Technology evolution is driving',
-    capabilitiesSectionHighlight: 'infrastructure modernization.',
-    capabilitiesLede: 'Organizations are evolving to a cloud-first, AI-powered digital core that is self-healing and adaptive. To stay competitive, companies need to act fast to modernize all elements of their IT infrastructure—providing the compute, storage, network, data, and agility to drive ongoing reinvention. After all, the applications you can support depend directly on the infrastructure running underneath.',
+    capabilitiesLabel: '',
+    capabilitiesSectionTitle: 'Our Infrastructure Modernization',
+    capabilitiesSectionHighlight: 'Capabilities.',
+    capabilitiesLede: 'Each surface below is engineered as part of one estate, not as a separate project.',
     capabilityAreas: [
       {
         title: 'Hybrid Cloud',
