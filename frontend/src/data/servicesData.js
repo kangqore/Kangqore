@@ -8927,7 +8927,7 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Modernize legacy infrastructure to innovate faster',
-    fullDescription: 'A modern cloud infrastructure is not just a piece of technology—it is at the heart of your digital core. Build, migrate and modernize your infrastructure to innovate faster.',
+    fullDescription: 'A modern cloud infrastructure is not a piece of technology. It is the ceiling on what you can run and how fast you can change it.',
     keyFeatures: ['Assessment', 'Modernization roadmap', 'Cloud migration', 'Hybrid infrastructure', 'IaC'],
     relatedServiceSlugs: ['legacy-modernization', 'cloud-computing', 'managed-infrastructure-services'],
     featured: false,
