@@ -438,3 +438,84 @@ lines rather than questions, and its outcomes list repeated two of seven entries
 Briefs scraped from a live page carry the source's layout artifacts too, and
 reproducing them faithfully would have shipped a duplicate and a mislabelled
 section. Read the structure, do not transcribe it.
+
+## 2026-09-18 — a page review that reads the service block cannot see half the page  (P2)
+
+**Context:** `/services/software-development` had just been rebuilt and scored
+39/40. A section-by-section read against its own h1 then found five strings a
+buyer sees that still spoke agentic AI: a hero illustration labelled AI
+COMMANDER / AGENTIC ORCHESTRATOR, a "Download the Playbook" link pointing at
+`kangqore-agentic-ai-playbook.pdf`, "Schedule a Demo" twice, "Talk through your
+specific workflow", and a closing-CTA promise of "Strategy → Build → Production
+in 8 weeks".
+
+**Learning:** the review habit is to read `servicesData.js` for the service and
+the rendered copy for voice. Both miss this class entirely, because these strings
+are authored by nobody — they are template defaults, they were written for the
+agentic pages the template was extracted from, and they are invisible to anyone
+diffing a service block. The "8 weeks" one was the worst: the page argues for
+3,300 words that sequencing a build to a date is what loses the quarter, and its
+own badge reads "Built to a Lifecycle, Not to a Deadline". The template then
+promised a fixed delivery window in the final band. No amount of rewriting the
+service block would ever have fixed it.
+
+**Why the score did not catch it:** off-topic contamination scored **2/2 at 4
+stray words against a threshold of 5**. Those four words were the agentic hero
+labels. A page can carry another service's entire hero graphic and pass the
+check by one word. The rubric measures the copy an author controls; it has no
+concept of furniture.
+
+**System change:** add a step to the `service-page-audit` skill — dump the
+rendered `innerText` and the set of string literals in the service's own block,
+and **list every on-screen string that is not in the block.** Each one is a
+template default; decide per page whether it belongs. This is mechanical and
+finds the whole class in one pass. Three of the five were fixed in PR #552 by
+the established pattern: a new opt-in hook defaulting to the existing string, so
+the other 61 pages render byte-identically.
+
+**Second trap, same PR:** `generate-prerender.mjs` held its own copy of the
+practice-band sibling logic. Curating the band on the page alone would have left
+the snapshot emitting twelve links a reader no longer sees — showing a crawler
+more than a human. Dual emission is usually framed as "content added to React
+must reach the generator". This is the mirror case: **content removed from React
+must also be removed from the generator**, and it is easier to miss because
+nothing looks broken.
+
+## 2026-09-18 — a competitor brief carries a fourth category: credentials  (P1)
+
+**Context:** the brief for `/services/aws` was a Happiest Minds page. The
+2026-09-13 entry established three categories to enumerate whenever a brief is
+pasted from a named competitor: **product names, research figures, coined
+vocabulary.** This brief carried a fourth that none of those catch.
+
+It led on being an **AWS Optimization and Licensing Assessment (OLA) certified
+partner**, which unlocks AWS-funded, tool-based assessments using AWS Migration
+Analyzer and Cloudamize. It also claimed Fortune 500 clients, large retail and
+media references, and a dedicated Analytics COE.
+
+**Learning:** a credential is the most dangerous category of the four, and the
+easiest to transcribe without noticing. A product name reads as foreign. A
+statistic at least looks like a fact that wants a source. A partner designation
+reads as ordinary self-description, sits in the same sentence as capabilities
+that are genuinely ours, and is **externally checkable in seconds** — a prospect
+opens AWS Partner Finder and the whole page loses its credibility, not just that
+claim. `DOITLATER.md` already carried "do not claim a partner tier we do not
+hold" as a standing rule, written for Microsoft. It did not stop this brief
+arriving with the same problem in AWS clothing, because the rule lived in a file
+about a different vendor.
+
+**System change:** the write-time assertion list is now four categories, not
+three: **product names, research figures, coined vocabulary, and credentials.**
+Credentials means partner tiers, certifications, funded-assessment programs,
+named client references and named internal units (a COE). For this page the
+assertion covered fourteen strings and runs before the file is written, so none
+of them can drift back in on a later edit. Generalize it in the
+`service-page-audit` skill alongside the other three.
+
+**The commercial half is worth separating from the compliance half.** The OLA
+designation is a real disadvantage, not just wording: a prospect comparing us on
+AWS gets a funded assessment from them and a paid one from us. Cutting the claim
+was correct; noting that the underlying gap is real and earnable belongs in
+`DOITLATER.md`, which is where it went. Removing a borrowed claim and recording
+why it was worth having are two different actions, and only doing the first
+loses the intelligence the brief contained.
