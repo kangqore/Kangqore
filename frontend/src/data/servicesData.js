@@ -10247,7 +10247,8 @@ export const servicesData = {
     practiceLabel: 'THE ENGINEERING FOUNDRY PRACTICE',
     practiceHeading: 'Software rarely ships',
     practiceHeadingHighlight: 'on its own.',
-    practiceLede: 'A build usually needs the platform underneath it and the operating model around it. The work below sits alongside this one when the answer crosses a boundary.',
+    practiceSlugs: ['api-microservices-engineering', 'product-digital-engineering', 'devops-as-a-service'],
+    practiceLede: 'Where a build most often crosses a boundary: the interfaces it exposes, the product engineering around it, and the pipeline that ships it.',
 
     conciergeHeading: 'Ask about your build',
     conciergeIntro: 'Questions we are asked before anyone commits to a program. Answered against your system rather than in general.',
@@ -10266,6 +10267,7 @@ export const servicesData = {
       highlight: 'honestly assessed.',
       body: 'Tell us roughly what you are building, who it has to satisfy, and where you think the risk sits. In 30 minutes we will tell you which obligations actually apply, which decisions we would take before writing anything, and what we would look at first. No proposal attached.',
       proofLabel: 'From first call to a read of your build',
+      proofDetail: 'Obligations → decisions → risks, in 30 minutes',
     },
   },
   'api-microservices-engineering': {
