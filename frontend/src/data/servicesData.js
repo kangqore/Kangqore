@@ -7173,7 +7173,7 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Customer analytics, data platforms and applied AI on AWS',
-    fullDescription: 'We build the data platforms, customer intelligence and AI services that run on AWS, on a landing zone governed before the first workload arrives. The analytics are only ever as trustworthy as the platform underneath them.',
+    fullDescription: 'Data platforms, customer intelligence and AI on AWS, governed before the first workload arrives.',
     keyFeatures: ['Customer 360 and segmentation', 'Real time streaming analytics', 'Lakehouse platform engineering', 'Applied AI on managed services', 'Governed AWS landing zone'],
     relatedServiceSlugs: ['cloud-computing', 'devops-as-a-service', 'managed-cloud-services'],
     featured: false,
