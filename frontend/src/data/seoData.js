@@ -450,9 +450,9 @@ export const serviceSEO = {
     url: '/services/managed-cloud-services',
   },
   'aws': {
-    title: 'AWS — Foundry | Kangqore',
-    description: 'Expert AWS services — architecture, migration, cost optimization, security best practices, and DevOps on AWS for enterprise workloads.',
-    keywords: 'AWS services, Amazon Web Services consulting, AWS architecture, AWS migration, AWS DevOps',
+    title: 'AWS Data and AI Services and Capabilities | Kangqore',
+    description: 'Customer analytics, big data platform engineering and applied AI on AWS, built on a landing zone that is governed before the first workload arrives.',
+    keywords: 'AWS data platform, customer 360 on AWS, AWS lakehouse, Amazon Personalize, Amazon SageMaker, AWS streaming analytics, applied AI on AWS, AWS landing zone',
     url: '/services/aws',
   },
   'microsoft-services': {
