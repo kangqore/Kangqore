@@ -9687,10 +9687,10 @@ export const servicesData = {
 
     hidePartnershipModel: true,
 
-    whatIsEyebrow: 'WHY MOST SOFTWARE GETS EXPENSIVE LATE',
-    whatIsTitle: 'The Build Was Never',
+    whatIsEyebrow: 'WHAT ENTERPRISE SOFTWARE DEMANDS',
+    whatIsTitle: 'Enterprise Software, Built',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'the Expensive Part.',
+    whatIsHighlight: 'With the Controls Designed In.',
     whatIsPara2: 'Writing the software is the part everyone estimates. What nobody estimates is the audit that finds no access review, the penetration test three weeks before launch, the customer questionnaire asking how data is encrypted at rest, or the integration that turns out to need an identity model nobody designed.',
     whatIsPara3: 'Those are not surprises. They are the same set of questions every enterprise buyer, regulator and security team asks, and they are knowable on day one. What makes them expensive is discovering them after the architecture is fixed, because by then the answer is a rebuild rather than a design decision.',
     whatIsPara4: 'So we run software delivery and the controls around it as one lifecycle rather than two. Threat analysis sits in design, not in a pre-launch scramble. Identity and authorization are modeled before the first endpoint exists. Compliance evidence is produced by the pipeline as work happens, instead of assembled by hand the week an auditor asks.',
