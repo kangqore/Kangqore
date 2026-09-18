@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T23:15:20.339Z",
+  "generatedAt": "2026-09-18T17:05:58.969Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -816,33 +816,50 @@
       "url": "/services/aws",
       "name": "AWS",
       "department": "Foundry",
-      "description": "Expert AWS services — architecture, migration, cost optimization, security best practices, and DevOps on AWS for enterprise workloads.",
-      "capabilities": [],
-      "faqs": [],
+      "description": "Customer analytics, big data platform engineering and applied AI on AWS, built on a landing zone that is governed before the first workload arrives.",
+      "capabilities": [
+        "Cognitive Customer Analytics",
+        "Big Data Platform Engineering",
+        "AI & Cognitive"
+      ],
+      "faqs": [
+        {
+          "q": "We are already on AWS. Where does this start?",
+          "a": "With what the data is allowed to do, not with what the platform can do. That is the constraint set that decides the architecture, and it is the one that rarely arrives written down. Being on AWS already tells us about compute and storage. It says nothing about whether accounts are separated in a way that survives an audit, whether personal data has a classification that drives encryption and retention, or whether the definition of a metric exists anywhere outside the query that produced it. So the first stage looks at the account structure, the data that already exists and the decisions the business wants to improve. It usually finds that the platform is sound and the governance around it was written last, which is a cheaper problem than the reverse. The output is a constraint list, a target architecture and a sequence. It is deliberately unglamorous, and it is the part that stops the reconciliation project from arriving later."
+        },
+        {
+          "q": "What does a customer 360 actually require from us?",
+          "a": "An agreement on what counts as the same person, and a decision about who owns that answer. The engineering is the straightforward half. Identity resolution is a policy question wearing a technical costume. Is a shared household email one customer or two? Does a lapsed account merge with a new signup at the same address? Every organization has a defensible answer and most have several, held by different teams, each built into the tool that needed it first. What we need from you is the authority to settle it once, and access to the systems that hold the identifiers. What you get back is a resolved profile that segmentation, recommendation and churn work all read from, rather than three teams each maintaining their own. The uncomfortable part is usually that the first resolved count is lower than the numbers people were reporting. That is the point of doing it."
+        },
+        {
+          "q": "Real time or batch? How do we decide?",
+          "a": "By asking whether anything actually changes if the answer arrives sooner. If the decision it feeds is made weekly, streaming buys latency nobody spends. Real time earns its cost where the window to act is short: fraud, abandonment, an operational alert, a recommendation inside a live session. Where it rarely earns it is reporting, where the audience reads the number once a day and a nightly load is both cheaper and easier to reason about. The expensive mistake is not choosing wrong. It is running both paths with separate logic, so the streaming number and the batch number disagree and each has a team willing to defend it. We would rather one definition is shared by both paths, even when that constrains the design. Most platforms we build end up mixed, and that is fine. What matters is that the split was decided rather than inherited."
+        }
+      ],
       "method": [
         {
-          "rule": "Enterprise Landing Zone",
-          "detail": "Multi-account boundary segregation, centralized billing, and service control policy guardrails."
+          "rule": "Landing Zone & Account Governance",
+          "detail": "Multi account boundaries, centralized identity and guardrails that apply before a workload deploys rather than after an audit finds it."
         },
         {
-          "rule": "Container & Kubernetes Plane",
-          "detail": "High-density container scheduling with sub-second node provisioning and eBPF network security."
+          "rule": "Lakehouse & Data Platform",
+          "detail": "Storage, catalog and compute scaling independently on an open table format, so the platform can be left rather than only added to."
         },
         {
-          "rule": "Serverless & Event Backbones",
-          "detail": "Decoupled event streaming handling hundreds of thousands of asynchronous messages per second."
+          "rule": "Streaming & Event Analytics",
+          "detail": "Events processed as they arrive, with history replayable through the same code path that handles the live stream."
         },
         {
-          "rule": "Data Lake & Analytical Mesh",
-          "detail": "Centralized object storage lakehouse with automated schema discovery and granular IAM tables."
+          "rule": "Customer Intelligence & Activation",
+          "detail": "One resolved customer behind segmentation, recommendation and churn work, so a segment carries the same meaning wherever it is read."
         },
         {
-          "rule": "Security & Perimeter Shield",
-          "detail": "Automated DDoS mitigation, intelligent threat detection, and envelope encryption with customer keys."
+          "rule": "Applied AI Services",
+          "detail": "Audio, video, image and text capability assembled from managed services first, and built custom only where a managed service genuinely does not fit."
         },
         {
-          "rule": "Cloud Observability & Tracing",
-          "detail": "Distributed microservice request tracing, synthetic canary probes, and log analytics."
+          "rule": "ML Platform & Model Governance",
+          "detail": "Models versioned, monitored and attributable, so a prediction can be traced to the data and the code that produced it months later."
         }
       ],
       "dataHandling": []
