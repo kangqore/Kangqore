@@ -480,3 +480,42 @@ more than a human. Dual emission is usually framed as "content added to React
 must reach the generator". This is the mirror case: **content removed from React
 must also be removed from the generator**, and it is easier to miss because
 nothing looks broken.
+
+## 2026-09-18 — a competitor brief carries a fourth category: credentials  (P1)
+
+**Context:** the brief for `/services/aws` was a Happiest Minds page. The
+2026-09-13 entry established three categories to enumerate whenever a brief is
+pasted from a named competitor: **product names, research figures, coined
+vocabulary.** This brief carried a fourth that none of those catch.
+
+It led on being an **AWS Optimization and Licensing Assessment (OLA) certified
+partner**, which unlocks AWS-funded, tool-based assessments using AWS Migration
+Analyzer and Cloudamize. It also claimed Fortune 500 clients, large retail and
+media references, and a dedicated Analytics COE.
+
+**Learning:** a credential is the most dangerous category of the four, and the
+easiest to transcribe without noticing. A product name reads as foreign. A
+statistic at least looks like a fact that wants a source. A partner designation
+reads as ordinary self-description, sits in the same sentence as capabilities
+that are genuinely ours, and is **externally checkable in seconds** — a prospect
+opens AWS Partner Finder and the whole page loses its credibility, not just that
+claim. `DOITLATER.md` already carried "do not claim a partner tier we do not
+hold" as a standing rule, written for Microsoft. It did not stop this brief
+arriving with the same problem in AWS clothing, because the rule lived in a file
+about a different vendor.
+
+**System change:** the write-time assertion list is now four categories, not
+three: **product names, research figures, coined vocabulary, and credentials.**
+Credentials means partner tiers, certifications, funded-assessment programs,
+named client references and named internal units (a COE). For this page the
+assertion covered fourteen strings and runs before the file is written, so none
+of them can drift back in on a later edit. Generalize it in the
+`service-page-audit` skill alongside the other three.
+
+**The commercial half is worth separating from the compliance half.** The OLA
+designation is a real disadvantage, not just wording: a prospect comparing us on
+AWS gets a funded assessment from them and a paid one from us. Cutting the claim
+was correct; noting that the underlying gap is real and earnable belongs in
+`DOITLATER.md`, which is where it went. Removing a borrowed claim and recording
+why it was worth having are two different actions, and only doing the first
+loses the intelligence the brief contained.
