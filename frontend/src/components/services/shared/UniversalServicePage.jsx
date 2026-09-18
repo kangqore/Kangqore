@@ -1339,6 +1339,10 @@ const INDUSTRY_ROUTES = {
   // the question the card raised.
   'manufacturing & industrial': 'manufacturing',
   'retail & e-commerce': 'retail',
+  // Same label without the hyphen. /services/software-development writes
+  // "Retail & eCommerce" and was the only one of its five industry cards
+  // rendering without a link, despite /industries/retail existing.
+  'retail & ecommerce': 'retail',
   ecommerce: 'retail',
   'media & entertainment ': 'media-technology',
   'media & telecommunications': 'media-technology',
@@ -1467,9 +1471,25 @@ export default function UniversalServicePage({ service: rawService, department }
   // Three related links left each service page a near dead-end for crawlers and
   // gave the 61-page catalog no traversable hub↔spoke structure. Linking the
   // full practice turns each page into a real cluster node.
-  const clusterSiblings = Object.keys(servicesData)
-    .filter(s => s !== service.slug && servicesData[s].departmentSlug === service.departmentSlug)
-    .map(s => ({ slug: s, name: servicesData[s].name, link: `/services/${s}` }));
+  //
+  // `practiceSlugs` is an opt-in override for services where listing the whole
+  // department stops being a hub and starts being a dilution. Foundry carries
+  // 17 services, so /services/software-development was offering AWS, Google
+  // Cloud, Cloud Computing, Managed Infrastructure and IoT under the heading
+  // "the work below sits alongside this one" — five cloud and infrastructure
+  // entries recommended to someone commissioning a custom build.
+  //
+  // The crawl argument above is not lost when a page curates: the footer
+  // sitemap links every service on every page, so the cluster stays traversable
+  // and only this band's recommendation narrows. Services that do not set
+  // practiceSlugs render exactly as before. Unknown slugs are dropped rather
+  // than rendering a dead link.
+  const isCuratedPractice = Array.isArray(service.practiceSlugs) && service.practiceSlugs.length > 0;
+  const clusterSiblings = (isCuratedPractice
+    ? service.practiceSlugs.filter(s => s !== service.slug && servicesData[s])
+    : Object.keys(servicesData)
+        .filter(s => s !== service.slug && servicesData[s].departmentSlug === service.departmentSlug)
+  ).map(s => ({ slug: s, name: servicesData[s].name, link: `/services/${s}` }));
 
   // ── Feature accordion (first 4 keyFeatures) ──────────────────────────────
   const featureLabels   = service.keyFeatures.slice(0, 4);
@@ -6158,7 +6178,12 @@ const featureMicros   = service.featureMicros
                 : <>The complete <span className="bg-brand-gradient bg-clip-text text-transparent">{department.name}</span> practice.</>}
             </h2>
             <p className="text-white/50 text-sm font-medium leading-relaxed max-w-2xl mb-10">
-              {service.practiceLede || `${service.name} is one of ${clusterSiblings.length + 1} services in this practice. Explore how they combine.`}
+              {/* The counting default only tells the truth when the band lists
+                  the whole department. A curated list must not claim to be the
+                  practice, so it gets a lede that describes adjacency instead. */}
+              {service.practiceLede || (isCuratedPractice
+                ? `The work that most often sits alongside ${service.name}.`
+                : `${service.name} is one of ${clusterSiblings.length + 1} services in this practice. Explore how they combine.`)}
             </p>
 
             <nav aria-label={`Other ${department.name} services`}>
@@ -6222,7 +6247,13 @@ const featureMicros   = service.featureMicros
               </div>
               <div className="group/weeks flex flex-col gap-1 lg:items-end cursor-default select-none">
                 <span className="text-[11px] font-black tracking-[0.25em] uppercase text-white/50 group-hover/weeks:text-white/80 transition-colors duration-300">{service.closingCta?.proofLabel || 'From first call to first agent'}</span>
-                <span className="text-white/50 text-[11px] font-semibold group-hover/weeks:text-white/70 transition-colors duration-300">Strategy → Build → Production in 8 weeks</span>
+                {/* Was hardcoded, and it is a delivery commitment rather than
+                    decoration. On /services/software-development it contradicted
+                    the page's own badge ("Built to a Lifecycle, Not to a
+                    Deadline") and its argument that deadline-first sequencing is
+                    what costs the quarter. Opt-in override; the 61 pages that do
+                    not set proofDetail render the original string. */}
+                <span className="text-white/50 text-[11px] font-semibold group-hover/weeks:text-white/70 transition-colors duration-300">{service.closingCta?.proofDetail || 'Strategy → Build → Production in 8 weeks'}</span>
               </div>
             </div>
 

@@ -460,8 +460,16 @@ ${(cc.risks || []).map((r) => `        <li>${esc(r.item)} — ${esc(r.level)}</l
 
   // Sibling services in the same department: gives crawlers a real topical
   // cluster to traverse instead of a dead-end leaf page.
-  const siblings = Object.keys(servicesData)
-    .filter((s) => s !== slug && servicesData[s].departmentSlug === svc.departmentSlug)
+  // Mirrors the practice band in UniversalServicePage: a service that curates
+  // `practiceSlugs` shows those and only those, so the snapshot must not offer
+  // a crawler the nine department siblings the page deliberately stopped
+  // recommending. The links are not lost — every service stays in sitemap.xml
+  // and on its department page.
+  const curatedPractice = Array.isArray(svc.practiceSlugs) && svc.practiceSlugs.length > 0
+    ? svc.practiceSlugs.filter((s) => s !== slug && servicesData[s])
+    : null;
+  const siblings = (curatedPractice || Object.keys(servicesData)
+    .filter((s) => s !== slug && servicesData[s].departmentSlug === svc.departmentSlug))
     .slice(0, 12)
     .map((s) => `        <li><a href="${BASE_URL}/services/${s}">${esc(servicesData[s].name)}</a></li>`)
     .join('\n');

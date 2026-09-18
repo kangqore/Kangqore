@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T22:31:30.440Z",
+  "generatedAt": "2026-09-17T23:15:20.339Z",
   "baseUrl": "https://kangqore.com",
   "services": [
     {
@@ -1365,28 +1365,28 @@
       ],
       "method": [
         {
-          "rule": "Architecture & Domain Modeling",
-          "detail": "Clean architecture design, modular service boundaries, and event-driven data flow schemas."
+          "rule": "Architecture & Application Engineering",
+          "detail": "Domain modeling through to the interface people actually use, on one platform rather than one per team."
         },
         {
-          "rule": "Modern Frontend Engineering",
-          "detail": "High-performance responsive web applications, design token systems, and accessible interfaces."
+          "rule": "Build, Test & Release Automation",
+          "detail": "One pipeline that builds it, proves it and ships it, and refuses a change that fails a gate."
         },
         {
-          "rule": "High-Throughput Backend Services",
-          "detail": "Stateless microservices, asynchronous message queues, and high-concurrency API backends."
+          "rule": "Application & Infrastructure Security",
+          "detail": "Static, dependency and runtime scanning inside the pipeline, plus the penetration testing that proves the result."
         },
         {
-          "rule": "Database & Data Persistence",
-          "detail": "Relational, document, and key-value databases tailored to specific domain query access patterns."
+          "rule": "Data Protection & Cryptography",
+          "detail": "Masking, tokenization, encryption and key custody decided per data class rather than per project."
         },
         {
-          "rule": "Automated Testing & QA Gates",
-          "detail": "Unit test coverage, consumer-driven contract testing, and visual regression suites."
+          "rule": "Identity & Access Engineering",
+          "detail": "One directory, one authorization model, and a joiner-mover-leaver process that actually removes access."
         },
         {
-          "rule": "DevOps & Container Deployment",
-          "detail": "Automated container builds, semantic versioning, and zero-downtime rolling deployments."
+          "rule": "Governance, Evidence & Compliance",
+          "detail": "Control status read from the systems themselves, and audit evidence produced by the pipeline as the work happens."
         }
       ],
       "dataHandling": []
