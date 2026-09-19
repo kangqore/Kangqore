@@ -8412,10 +8412,10 @@ export const servicesData = {
     heroStripItems: ['Advisory & Assessment', 'Build & Migrate', 'Managed Operations', 'Optimization', 'FinOps'],
     hidePartnershipModel: true,
 
-    whatIsEyebrow: 'WHY CLOUD PROGRAMS NEVER QUITE FINISH',
-    whatIsTitle: 'Cloud Is a Cycle,',
+    whatIsEyebrow: 'WHAT HAPPENS AFTER THE CUTOVER',
+    whatIsTitle: 'Cloud Computing, Governed',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'Not a Project With an End.',
+    whatIsHighlight: 'Beyond the Migration Date.',
     whatIsPara2: 'Most cloud programs are funded as a migration. There is a business case, a target date, a cutover weekend, and a slide confirming the workloads arrived. Then the program closes, the team returns to other work, and the estate is left in the state it happened to be in on the day the funding stopped.',
     whatIsPara3: 'That state is rarely the one the business case described. Instances were sized for the migration rather than for steady running. Licenses came across unchanged because changing them was out of scope. Nothing was rationalized, because rationalization was the stage after the one that got funded. The saving in the business case is still theoretically available and nobody owns the work to collect it.',
     whatIsPara4: 'So we treat cloud as a cycle with four stages that keep handing to each other. Advisory establishes the case and the architecture. Transform moves and integrates the estate. Managed operations run it. Optimization rationalizes what is actually running, and what it finds becomes the next business case rather than a report nobody funds.',
@@ -8450,7 +8450,7 @@ export const servicesData = {
     capabilitiesLabel: 'THE CLOUD CAPABILITY MAP',
     capabilitiesSectionTitle: 'Cloud Computing Services',
     capabilitiesSectionHighlight: 'and Capabilities.',
-    capabilitiesLede: 'Four capabilities that correspond to the four stages of the cycle, and hand to each other rather than finishing.',
+    capabilitiesLede: 'Four capabilities matching the four stages of the cycle, so wherever your program currently sits, the stage after it is already defined.',
     capabilityAreas: [
       {
         title: 'Cloud Advisory & Assessment',
@@ -8501,7 +8501,7 @@ export const servicesData = {
     architectureEyebrow: 'HOW THE CLOUD CYCLE ACTUALLY RUNS',
     architectureTitle: 'Four stages that hand to each other,',
     architectureTitleHighlight: 'and then begin again.',
-    architectureLede: 'This is a cycle rather than a sequence. The fourth stage produces the case for the next turn, which is why a program scoped to end at the third one never realizes what it set out to.',
+    architectureLede: 'This is a cycle rather than a sequence. The fourth stage produces the case for the next turn, which is why a program scoped to end at the third one never realizes what you funded it for.',
     architectureVisibleCount: 4,
     architectureNodes: [
       {
@@ -8680,6 +8680,7 @@ export const servicesData = {
       },
     ],
 
+    hideEngagement: true,
     engagementEyebrow: 'WHERE TO START',
     engagementHeading: 'Scoped engagements,',
     engagementHeadingHighlight: 'not open ended programs.',
@@ -8741,7 +8742,7 @@ export const servicesData = {
 
     industryHeading: 'What the estate has to satisfy,',
     industryHeadingHighlight: 'sector by sector.',
-    industryLede: 'The engineering is much the same across these sectors. What changes is who audits the estate, what an outage costs, and which obligations decide the architecture before any preference does.',
+    industryLede: 'The engineering is much the same across these sectors. What changes is who audits your estate, what an outage costs you, and which obligations decide the architecture before any preference does.',
     industryUseCases: [
       {
         industry: 'Banking & Financial Services',
