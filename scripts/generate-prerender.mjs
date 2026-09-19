@@ -393,6 +393,15 @@ ${blockList(svc.dataBoundary.blocks || [], 'label', 'body')}
     .map((m) => `        <li><strong>${esc(m.value)}${esc(m.suffix || '')}</strong> ${esc(m.metricLabel || m.title)}. ${esc(m.desc)}</li>`)
     .join('\n');
 
+  // The metric list has no heading of its own on the page, so the snapshot
+  // borrows the outcomes heading that sits just below it. That only holds while
+  // the outcomes band renders: with `hideOutcomeCards` set, the borrowed heading
+  // is one no visitor ever sees, and it lands above the metrics as an orphan.
+  // Fall back to the generic label in that case.
+  const metricsHeading = (!svc.hideOutcomeCards
+    && [svc.outcomesHeading, svc.outcomesHeadingHighlight].filter(Boolean).join(' '))
+    || 'Business Outcomes';
+
   // ── Blocks added with the twenty-area rebuild ──────────────────────────────
   // Each renders a real section on the page, so each has to reach the crawler
   // that never runs our JS. The architecture stack in particular is drawn from
@@ -513,7 +522,7 @@ ${whatIsHeading}    ${svc.whatIsPara2 ? `<p>${esc(svc.whatIsPara2)}</p>` : ''}
     ${svc.whatIsPara4 ? `<p>${esc(svc.whatIsPara4)}</p>` : ''}
     ${svc.whatIsPara5 ? `<p>${esc(svc.whatIsPara5)}</p>` : ''}
 
-    ${metrics ? `<h2>${esc([svc.outcomesHeading, svc.outcomesHeadingHighlight].filter(Boolean).join(' ') || 'Business Outcomes')}</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
+    ${metrics ? `<h2>${esc(metricsHeading)}</h2>\n      <ul>\n${metrics}\n      </ul>` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${svc.capabilitiesLede ? `      <p>${esc(svc.capabilitiesLede)}</p>\n` : ''}${capabilities}` : ''}
 
