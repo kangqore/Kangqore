@@ -8400,7 +8400,7 @@ export const servicesData = {
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
     shortDescription: 'Advisory, migration, managed operations and optimization across the cloud lifecycle',
-    fullDescription: 'We run the whole cloud cycle rather than the migration alone: the business case, the move, the operation afterward, and the rationalization that feeds the next case. The stage most programs skip is the one that pays for the rest.',
+    fullDescription: 'We run the whole cloud cycle, not the migration alone. The stage most programs skip is the one that pays for the rest.',
     keyFeatures: ['Cloud maturity and portfolio analysis', 'Migration and integration engineering', 'Managed cloud operations', 'FinOps and capacity optimization', 'Landing zone and platform foundation'],
     relatedServiceSlugs: ['managed-cloud-services', 'infrastructure-modernization', 'devops-as-a-service'],
     featured: false,
