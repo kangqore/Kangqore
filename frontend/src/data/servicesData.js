@@ -8421,6 +8421,7 @@ export const servicesData = {
     whatIsPara4: 'So we treat cloud as a cycle with four stages that keep handing to each other. Advisory establishes the case and the architecture. Transform moves and integrates the estate. Managed operations run it. Optimization rationalizes what is actually running, and what it finds becomes the next business case rather than a report nobody funds.',
     whatIsPara5: 'The practical difference is that the fourth stage exists at all. It is where the money in the original case is realized, and it is the stage that gets cut when a program is scoped as a migration with a finish line.',
 
+    hideOutcomeCards: true,
     outcomesEyebrow: 'WHAT CHANGES WHEN THE CYCLE CLOSES',
     outcomesHeading: 'The fourth stage is where',
     outcomesHeadingHighlight: 'the business case gets paid.',
