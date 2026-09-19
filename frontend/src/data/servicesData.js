@@ -8401,10 +8401,11 @@ export const servicesData = {
         desc: 'Where the sector rather than the architecture decides what gets built, on the same landing zone as everything else.',
         items: [
           'Financial services: Core platform integration, regulated data residency and the evidencing of privileged action, where the regulator decides the architecture before any cost case does.',
-          'Retail and consumer: Customer identity, catalog search and demand signals, with peak capacity designed without paying for peak for the other eleven months of the year.',
-          'Manufacturing and industrial: Connected asset data, quality inspection and the operational technology boundary that has to stay exactly where it is.',
-          'Communications and media: Subscriber experience, content metadata and network data at a volume that decides the platform rather than merely running on it.',
-          'Energy and sustainability: Consumption telemetry and reporting against the disclosure obligations that increasingly arrive with an audit attached to them.',
+          'Retail and consumer: Multichannel journey orchestration, catalog search, and merchandising and supply chain optimization decided together rather than by two teams optimizing against each other.',
+          'Manufacturing and industrial: Edge to cloud device telemetry, automated visual inspection for defects, and digital twins built from data actually being collected rather than from a model of it.',
+          'Communications and media: Generative AI across customer touchpoints, and subscriber and network data at a volume that decides the platform rather than merely running on it.',
+          'Energy and sustainability: Consumption telemetry, carbon measurement and the disclosure reporting that increasingly arrives with an audit attached rather than a press release.',
+          'Logistics and assets in motion: Real time position and condition data for things that move, where the value is in acting during the journey rather than reconciling after it.',
         ],
       },
       {
