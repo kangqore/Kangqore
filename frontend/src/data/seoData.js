@@ -462,9 +462,9 @@ export const serviceSEO = {
     url: '/services/microsoft-services',
   },
   'google-cloud-services': {
-    title: 'Google Cloud Services — Foundry | Kangqore',
-    description: 'Google Cloud Platform expertise — GCP architecture, BigQuery analytics, AI/ML on GCP, Kubernetes (GKE), and data solutions.',
-    keywords: 'Google Cloud, GCP services, BigQuery, GKE, AI on GCP, GCP data solutions',
+    title: 'Google Cloud Services and Capabilities | Kangqore',
+    description: 'Infrastructure, application modernization, data and AI, security and Workspace on Google Cloud, sequenced around whatever drove your decision.',
+    keywords: 'Google Cloud services, GCP landing zone, GKE Enterprise, BigQuery, Vertex AI, cloud migration to GCP, BeyondCorp zero trust, Google Workspace migration, Apigee',
     url: '/services/google-cloud-services',
   },
   'cloud-computing': {
