@@ -468,9 +468,9 @@ export const serviceSEO = {
     url: '/services/google-cloud-services',
   },
   'cloud-computing': {
-    title: 'Cloud Computing — Foundry | Kangqore',
-    description: 'Multi-cloud and hybrid cloud strategy — cloud strategy, multi-cloud management, hybrid solutions, cloud native development, and FinOps.',
-    keywords: 'cloud computing, multi-cloud strategy, hybrid cloud, cloud native development, FinOps',
+    title: 'Cloud Computing Services and Capabilities | Kangqore',
+    description: 'Cloud advisory, migration, managed operations and the optimization stage most programs skip, run as one cycle rather than a migration with an end date.',
+    keywords: 'cloud computing services, cloud advisory and assessment, cloud migration, cloud managed services, cloud optimization, FinOps, landing zone, portfolio analysis',
     url: '/services/cloud-computing',
   },
   'embedded-design-systems': {
