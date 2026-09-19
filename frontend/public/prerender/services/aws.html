@@ -186,13 +186,13 @@
       <section>
         <h3>Modeled scenario in retail, multi channel. 6 → 1 definitions of an active customer</h3>
         <p>Six teams each had a defensible definition of an active customer, built into the tool that needed it first. Campaign counts never matched the warehouse, so every review spent its first half arguing about whose number was right rather than what to do about it.</p>
-        <p>Identity resolution and the metric definition moved into the platform, with the campaign tool and the warehouse both reading from it. The number stopped being contested, and segment work moved from reconciliation to targeting.</p>
+        <p>Identity resolution moved onto AWS Entity Resolution, with the definition of an active customer held once in the AWS Glue Data Catalog and read by Amazon Redshift and the campaign tool alike. The number stopped being contested, and segment work moved from reconciliation to targeting.</p>
         <p>Illustrative figures, modeled on typical engagement patterns, not a specific client result.</p>
       </section>
       <section>
         <h3>Modeled scenario in financial services, credit decisioning. 9 months → 6 weeks to answer an audit on a live model</h3>
         <p>A model had been in production for two years. The training data had been refreshed twice, the feature logic lived in a notebook, and the engineer who built it had left. Answering which data produced a given decision meant reconstructing it from memory and hoping.</p>
-        <p>Training runs, datasets and model versions registered and retained, with monitored baselines and an owner named for each model in production. The same question is now a lookup, and drift is caught before a regulator asks about it.</p>
+        <p>Training runs, datasets and model versions registered in the Amazon SageMaker model registry, with SageMaker Model Monitor holding a baseline and an owner named against every model in production. The same question is now a registry lookup, and drift surfaces before a regulator asks about it.</p>
         <p>Illustrative figures, modeled on typical engagement patterns, not a specific client result.</p>
       </section>
 
@@ -204,7 +204,7 @@
     <p>Each of these has a defined output and a defined end. None of them require the next one, and the assessments are structured so that &quot;this is sound, leave it alone&quot; is an available conclusion.</p>
       <section>
         <h3>Architecture &amp; Data Read (3 to 4 weeks)</h3>
-        <p>What you hold, where it is allowed to live, and which decisions it can actually improve.</p>
+        <p>What your AWS estate holds, where it is allowed to live, and which decisions it can actually improve.</p>
         <ul>
           <li>Account structure and landing zone reviewed against Well-Architected guidance</li>
           <li>License entitlements and instance commitments reviewed against what is actually running</li>
@@ -216,20 +216,20 @@
       </section>
       <section>
         <h3>Data Platform Build (10 to 16 weeks)</h3>
-        <p>The lakehouse, the ingestion paths and the governance, built to be handed over.</p>
+        <p>The lakehouse on Amazon S3 and Lake Formation, the ingestion paths, and the governance, built to be handed over.</p>
         <ul>
           <li>Landing zone and account guardrails provisioned before workloads arrive</li>
-          <li>Batch and streaming ingestion with change data capture from operational stores</li>
-          <li>Open table format storage with catalog, lineage and fine grained permissions</li>
+          <li>Batch and streaming ingestion through Amazon Kinesis or MSK, with change data capture from operational stores</li>
+          <li>Apache Iceberg tables on Amazon S3, with AWS Glue catalog, lineage and Lake Formation permissions</li>
           <li>One metric layer read by both the warehouse and the stream</li>
           <li>Runbooks and handover to the team that will operate it</li>
         </ul>
       </section>
       <section>
         <h3>Customer Intelligence (8 to 12 weeks)</h3>
-        <p>Identity resolved once, then segmentation, recommendation and churn built on it.</p>
+        <p>Identity resolved once on AWS, then segmentation, recommendation and churn built on top of it.</p>
         <ul>
-          <li>Identity resolution rules agreed, implemented and evidenced</li>
+          <li>Identity resolution rules agreed and implemented on AWS Entity Resolution, with the matching evidenced</li>
           <li>Consent state held in the platform and enforced at activation</li>
           <li>Segmentation and targeting available to the systems that act on them</li>
           <li>Recommendation or churn model with the evaluation agreed beforehand</li>
@@ -238,10 +238,10 @@
       </section>
       <section>
         <h3>Applied AI Pilot (4 to 6 weeks)</h3>
-        <p>Managed service against custom model, evaluated on your material before you commit.</p>
+        <p>Amazon Personalize, Bedrock or Rekognition against a custom model, evaluated on your material first.</p>
         <ul>
           <li>Evaluation set built from your own documents, audio, images or text</li>
-          <li>Managed AWS service benchmarked against a custom alternative</li>
+          <li>The managed AWS service benchmarked against a custom model trained on the same data</li>
           <li>Cost per prediction at realistic volume, not at demonstration volume</li>
           <li>Failure cases characterized, including which groups they concentrate on</li>
           <li>A recommendation that may be to do nothing, with the reasoning shown</li>
