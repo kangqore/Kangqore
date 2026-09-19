@@ -8413,11 +8413,10 @@ export const servicesData = {
         image: '/images/capabilities/digital-transformation.png',
         desc: 'Collaboration moved deliberately, with the identity, retention and change management that most migrations underestimate.',
         items: [
-          'Assessment: What is in use today, what integrates with it, and what the identity, access and retention policies actually are, which is usually the part nobody has written down.',
-          'Migration and transformation: Move mail, files and collaboration with the history intact and the regulatory retention obligations carried across rather than quietly dropped.',
-          'Automation: Applications and workflows built on the low code platform, repetitive tasks scripted, and the Workspace APIs used to integrate rather than to export.',
-          'Identity and access: Single sign on, device policy and context aware access agreed as part of the move rather than tightened afterward once people have settled into workarounds.',
-          'Adoption and reliability: Self service capability and change management, because a migration everyone routes around has moved the license and not the work.',
+          'Assess: What is in use today, what integrates with it, and what the identity, access and security policies actually are, which is usually the part nobody has written down.',
+          'Transform: Move from whatever is there now, including another cloud platform, with regulatory retention carried across rather than quietly dropped and change management treated as the larger half of the work.',
+          'Automate: Applications and workflows built on AppSheet, repetitive tasks scripted with Apps Script, and the Workspace APIs used to integrate line of business systems rather than to export from them.',
+          'Embed reliability services: Self service capability built into the platform, because a collaboration tool that needs a ticket for routine change is one people quietly work around until the workaround becomes the process.',
         ],
       },
       {
