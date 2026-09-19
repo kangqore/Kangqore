@@ -8407,7 +8407,7 @@ export const servicesData = {
     image: '/images/capabilities/cloud-infrastructure.png',
     lastReviewed: '2026-09-19',
 
-    heroTitle: 'Cloud Computing at\nEnterprise Scale by Kangqore',
+    heroTitle: 'Cloud Computing Services at\nEnterprise Scale by Kangqore',
     heroBadge: 'A Cycle, Not a Cutover',
     heroStripItems: ['Advisory & Assessment', 'Build & Migrate', 'Managed Operations', 'Optimization', 'FinOps'],
     hidePartnershipModel: true,
