@@ -8424,11 +8424,11 @@ export const servicesData = {
         image: '/images/capabilities/security-modernization-illustration.png',
         desc: 'Secure by design through the migration itself, rather than assessed once the estate already depends on the boundaries.',
         items: [
-          'Consulting and advisory: Risk based assessment across infrastructure and workloads, with benchmarking and a roadmap that names what must change before anything is built on it.',
-          'Secure landing zone and foundation automation: Policy evaluated before a change reaches a project rather than reported after an audit finds it, with native controls implemented rather than bolted alongside.',
-          'Zero trust access: Access decided by identity and device posture rather than by network position, which is the control that survives an estate spread across cloud, office and home.',
-          'Managed detection and response: Monitoring, threat hunting and incident response against a correlated view of the estate, with data sources from on premises and cloud landing in one place.',
-          'Compliance as code: Regulatory requirements expressed as policy the pipeline evaluates, so evidence is produced as work happens rather than assembled by hand the week an auditor asks.',
+          'Consulting and advisory: Risk based assessment across infrastructure and workloads, with benchmarking and a roadmap that names what has to change before anything is built on top of it.',
+          'Engineering and professional services: Secure landing zone and foundation automation, with native controls implemented and integrated rather than a third party layer bolted alongside them.',
+          'Digital workplace services: Security design across the desktop and the collaboration platform, because an estate hardened at the perimeter and open at the endpoint has moved the problem rather than solved it.',
+          'Transformation services: Compliance requirements expressed as code the pipeline evaluates, and a phased move to identity based access, so guardrails give developers continuous feedback instead of a review arriving too late to change anything.',
+          'Managed services: Round the clock monitoring, incident response and threat hunting against a correlated view, with data sources from on premises and cloud landing in one place rather than in three consoles.',
         ],
       },
       {
