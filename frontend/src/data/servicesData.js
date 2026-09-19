@@ -8364,13 +8364,13 @@ export const servicesData = {
       {
         title: 'Infrastructure modernization',
         image: '/images/capabilities/infrastructure-modernization-illustration.png',
-        desc: 'The target state the estate is moving toward, and the operating model that keeps it there afterward.',
+        desc: 'Strategy, foundation, migration and the reliability model that holds a hybrid estate together afterward.',
         items: [
-          'Assessment and advisory: Discover the estate and its dependencies from the network rather than from a configuration database nobody has updated, and establish what the target state should actually be.',
-          'Cloud foundation and platform engineering: Organization structure, identity, network and policy provisioned before workloads arrive, so guardrails are configuration rather than a later retrofit with a compliance deadline attached.',
-          'Strategic transformation: Sequence the estate around whatever justified moving in the first place, because a program ordered by what is easiest to schedule reaches steady state without the capability it was funded for.',
-          'Hybrid reliability and orchestration: Most estates keep something where it is, so hybrid is the end state rather than a phase, and the operating model has to accept that from the start.',
-          'Managed operations: Monitoring, incident response and patching once the estate is there, with the routine work executed by the platform rather than documented as a runbook only one engineer can follow.',
+          'Strategic transformation on Google Cloud: Establish what the estate should become and in what order, because legacy infrastructure bills you in three different ways, through total cost of ownership, through lock in, and through capacity nobody is using.',
+          'Robust foundation for workloads on Google Cloud: Organization structure, identity, network and policy provisioned before workloads arrive, so guardrails are configuration rather than a retrofit once something already depends on them.',
+          'Seamless migration of workloads on Google Cloud: Move each workload by the route it warrants, with data center exit sequenced around the dependencies that only reveal themselves when something is switched off.',
+          'Enterprise reliability services for hybrid clouds: Most estates keep something where it is and many run more than one platform, so interoperability and hybrid operation are the end state rather than a phase somebody tidies up later.',
+          'Workspace services on Google Cloud: The identity, endpoint and collaboration layer treated as part of the infrastructure, because access policy has to hold across the estate and the desktop alike.',
         ],
       },
       {
