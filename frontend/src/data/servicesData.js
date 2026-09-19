@@ -8378,11 +8378,10 @@ export const servicesData = {
         image: '/images/capabilities/data-analytics-new.png',
         desc: 'The data platform first, then the analytics and the models that sit on top of it, which are only ever as trustworthy as it is.',
         items: [
-          'Database migration and modernization: Move the data layer with the downtime the business can actually absorb, and take the opportunity to leave behind what the old engine forced rather than carrying it across.',
-          'Smart analytics: A warehouse and lakehouse where storage and compute scale independently, with the definition of a metric held once rather than reimplemented in each tool that needed it.',
-          'Cloud based AI: Vision, speech, document and language capability assembled from managed services first, and built custom only where your material is genuinely unlike what the service was trained on.',
+          'Database migration and modernization: Move the data layer with the downtime the business can actually absorb, and leave behind what the old engine forced rather than carrying its constraints into a place that charges for them monthly.',
+          'Smart analytics: Pull data out of the silos it accumulated in, with one definition of a metric across every tool that reads it, because disparate sources become disjointed answers long before anyone calls it a data problem.',
+          'Cloud-based AI: Vision, speech, document and language capability assembled from managed services first, and built custom only where your material is genuinely unlike what the service was trained on.',
           'Generative AI: Retrieval grounded in your own corpus, with evaluation agreed before the model is chosen and the refusal case designed rather than left to whatever the default returns.',
-          'Governance and lineage: Where a number came from, who may see it, and which model version produced a given decision, answerable months later rather than reconstructed from memory.',
         ],
       },
       {
