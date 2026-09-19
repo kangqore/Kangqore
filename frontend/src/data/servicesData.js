@@ -8389,11 +8389,10 @@ export const servicesData = {
         image: '/images/capabilities/application-modernization-illustration.png',
         desc: 'Cloud native where it genuinely earns its place, and honest rehosting for the applications nobody intends to change again.',
         items: [
-          'Legacy assessment: Establish which applications are genuinely central and will be invested in, because those are the only ones where refactoring returns more than it costs.',
-          'Containerization and cloud native build: Microservices and event driven architecture where the shape of the application genuinely calls for it, on Kubernetes rather than around it.',
-          'Release engineering: Build, test and deploy pipelines that produce the same artifact every time and refuse a change that fails a gate, so modernization does not trade one fragility for another.',
-          'API management: Assessment, architecture, governance and reliability for the interfaces that outlive the applications behind them, because an API contract is harder to change than the service implementing it.',
-          'Quality and security in the pipeline: Static analysis, dependency scanning and policy evaluation running against every change rather than as a review before launch.',
+          'Cloud strategy and assessment: Discover the landscape and assess maturity before committing to a strategy, identifying which migration pattern each application fits so the program can be costed against evidence rather than against assumption.',
+          'Migration: Move workloads in repeatable waves with the same tooling and checks each time, provisioning the foundation and the delivery pipelines inside the wave rather than as a prerequisite everything else waits on.',
+          'Modernization: Changing application code is high touch in a way migration is not, so microservice decomposition follows the domain rather than the org chart, against cloud native patterns held in one place instead of reinvented per team.',
+          'API-fication: Assessment, architecture, foundation, implementation, governance and reliability for the interfaces that outlive the services behind them, because an API contract is harder to change than the code implementing it.',
         ],
       },
       {
