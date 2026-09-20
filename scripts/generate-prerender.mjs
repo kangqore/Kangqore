@@ -408,6 +408,17 @@ ${blockList(svc.dataBoundary.blocks || [], 'label', 'body')}
   // data precisely so its node names survive as text here rather than being
   // locked inside an SVG.
 
+  // Mirrors the platformCoverage band in UniversalServicePage. It is a
+  // coverage statement, never a credential: the heading and items say where the
+  // work reaches, and must not assert a partner tier or certification.
+  const coverage = svc.platformCoverage
+    ? `\n    <h2>${esc([svc.platformCoverage.title, svc.platformCoverage.titleHighlight].filter(Boolean).join(' '))}</h2>
+    ${svc.platformCoverage.lede ? `<p>${esc(svc.platformCoverage.lede)}</p>` : ''}
+      <ul>
+${(svc.platformCoverage.items || []).map((x) => `        <li>${esc(x)}</li>`).join('\n')}
+      </ul>`
+    : '';
+
   const entArch = svc.enterpriseArchitecture
     ? `    <h2>${heading(svc.enterpriseArchitecture)}</h2>
     ${svc.enterpriseArchitecture.lede ? `<p>${esc(svc.enterpriseArchitecture.lede)}</p>` : ''}
@@ -526,7 +537,7 @@ ${whatIsHeading}    ${svc.whatIsPara2 ? `<p>${esc(svc.whatIsPara2)}</p>` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${svc.capabilitiesLede ? `      <p>${esc(svc.capabilitiesLede)}</p>\n` : ''}${capabilities}` : ''}
 
-${carousel}    ${entArch}
+${carousel}    ${entArch}${coverage}
 
     ${svc.midCta ? `<p>${esc(svc.midCta)}</p>` : ''}
 

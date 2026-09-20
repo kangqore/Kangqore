@@ -5194,6 +5194,57 @@ const featureMicros   = service.featureMicros
       {/* 3D Ecosystem Cockpit / Tools & Technology Stack — situated directly below Capabilities */}
       {toolsStackSection}
 
+      {/* ─── Platform coverage ──────────────────────────────────────────────
+          An opt-in flat list of the areas a service reaches on a named
+          platform, sitting directly under the tooling band it qualifies.
+
+          Deliberately a coverage band and not a credential band. It states
+          where our engineering works; it must never be used to assert a
+          partner tier, specialization or certification, because those are
+          third-party designations published in vendor directories and a
+          reader can check them in one click. Services that do not set
+          `platformCoverage` render nothing. */}
+      {service.platformCoverage && (
+        <section
+          className="py-16 md:py-24 border-t border-white/[0.05]"
+          style={{ backgroundColor: '#000000' }}
+          aria-labelledby="platform-coverage-heading"
+        >
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-[1px] w-12 bg-white/20" />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.platformCoverage.eyebrow}
+              </span>
+            </div>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
+              <h2
+                id="platform-coverage-heading"
+                className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white max-w-3xl"
+              >
+                {service.platformCoverage.title}{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent">
+                  {service.platformCoverage.titleHighlight}
+                </span>
+              </h2>
+              {service.platformCoverage.lede && (
+                <p className="text-lg text-white/50 leading-relaxed max-w-md lg:text-right">
+                  {service.platformCoverage.lede}
+                </p>
+              )}
+            </div>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1">
+              {(service.platformCoverage.items || []).map((entry) => (
+                <li key={entry} className="flex items-center gap-3 py-3 border-b border-white/[0.06]">
+                  <span className="h-1.5 w-1.5 rounded-full shrink-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]" />
+                  <span className="text-white/70 text-[0.95rem] font-medium leading-snug">{entry}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
 
       {/* ══════════════════════ INDUSTRY USE CASES ══════════════════════ */}
       {/* Opt-out per service via hideIndustry, mirroring hideComparison. An
