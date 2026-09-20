@@ -8497,35 +8497,6 @@ export const servicesData = {
       },
     ],
 
-    enterpriseArchitecture: {
-      eyebrow: 'OUR APPROACH',
-      title: 'Four things decided',
-      titleHighlight: 'before anything is migrated.',
-      lede: 'Google Cloud programs stall on decisions nobody made rather than on work nobody did. These are the four we settle first, because each one changes the sequence, and all four are far cheaper to answer before a wave than during one.',
-      layers: [
-        {
-          label: 'Strong portfolio mix',
-          role: 'What moves, what stays, and what gets switched off',
-          nodes: ['Rehost', 'Replatform', 'Refactor', 'Replace', 'Re-engineer', 'Leave Alone'],
-        },
-        {
-          label: 'Industry-specific solutions',
-          role: 'What the sector requires before any preference applies',
-          nodes: ['Regulated Residency', 'Sector Data Models', 'Compliance Frameworks', 'Peak Demand Shape', 'Operational Technology Boundary', 'Disclosure Obligations'],
-        },
-        {
-          label: 'Accelerated value realization',
-          role: 'How soon the capability reaches past the team that asked for it',
-          nodes: ['Landing Zone First', 'Repeatable Waves', 'Self Service Access', 'Cost Attribution', 'Rehearsed Cutover', 'Handover To Your Team'],
-        },
-        {
-          label: 'Modernization aligned to business goals',
-          role: 'Why each change is being made at all',
-          nodes: ['Named Business Outcome', 'Cost To Run Afterward', 'Investment Horizon', 'Risk Appetite', 'Exit Path', 'Decision Owner'],
-        },
-      ],
-    },
-
     toolsStack: {
       eyebrow: 'THE GOOGLE CLOUD ENGINEERING FABRIC',
       title: 'The tooling behind',
