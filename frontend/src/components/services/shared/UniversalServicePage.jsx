@@ -5206,7 +5206,10 @@ const featureMicros   = service.featureMicros
           `platformCoverage` render nothing. */}
       {service.platformCoverage && (
         <section
-          className="py-16 md:py-24 border-t border-white/[0.05]"
+          /* No top rule. Every other section on the page separates on
+             background and spacing alone, so a border here was the one band
+             drawing a line the rest of the page does not draw. */
+          className="py-16 md:py-24"
           style={{ backgroundColor: '#000000' }}
           aria-labelledby="platform-coverage-heading"
         >
@@ -5233,9 +5236,12 @@ const featureMicros   = service.featureMicros
                 </p>
               )}
             </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1">
+            {/* No rule between entries. This is a list of names, not a table of
+                rows, and fifteen horizontal lines read as structure the content
+                does not have. The marker and the gap carry the separation. */}
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1.5">
               {(service.platformCoverage.items || []).map((entry) => (
-                <li key={entry} className="flex items-center gap-3 py-3 border-b border-white/[0.06]">
+                <li key={entry} className="flex items-center gap-3 py-2.5">
                   <span className="h-1.5 w-1.5 rounded-full shrink-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]" />
                   <span className="text-white/70 text-[0.95rem] font-medium leading-snug">{entry}</span>
                 </li>
