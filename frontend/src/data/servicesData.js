@@ -8346,6 +8346,7 @@ export const servicesData = {
     whatIsPara4: 'So we sequence the estate around the reason rather than around the migration wave. The landing zone is built to let more than one team reach that capability safely. Applications are modernized where reaching it requires it and rehosted where it does not. Data, security and the workplace are moved in the order that makes the original case pay rather than in the order that is easiest to schedule.',
     whatIsPara5: 'The difference shows up in who is using the thing you bought. A platform decision that stays inside one project was an expensive way to fund a single team.',
 
+    hideOutcomeCards: true,
     outcomesEyebrow: 'WHAT CHANGES WHEN THE SEQUENCE FOLLOWS THE REASON',
     outcomesHeading: 'The capability you bought',
     outcomesHeadingHighlight: 'reaches more than one team.',
@@ -8660,6 +8661,7 @@ export const servicesData = {
       },
     ],
 
+    hideEngagement: true,
     engagementEyebrow: 'WHERE TO START',
     engagementHeading: 'Scoped engagements,',
     engagementHeadingHighlight: 'not open ended programs.',
