@@ -9895,76 +9895,441 @@ export const servicesData = {
     name: 'Product Digital Engineering Services',
     departmentSlug: 'foundry',
     bannerBrand: 'Engineering Foundry™',
-    shortDescription: 'Digital engineering for connected products',
-    fullDescription: 'Transform physical products with digital capabilities and connected experiences.',
-    keyFeatures: ['Product digitization', 'Connected products', 'Digital twins', 'Smart features', 'Data integration'],
-    relatedServiceSlugs: ['embedded-design-systems', 'internet-of-things', 'software-development'],
+    shortDescription: 'Platform, quality, device, experience and acceleration engineering for products',
+    fullDescription: 'Product programs lose time at the seams between disciplines, not inside them. We run all five as one engagement.',
+    keyFeatures: ['Cloud native platform engineering', 'Automation first quality engineering', 'Hardware and embedded device engineering', 'Design and experience engineering', 'Prototype to MVP acceleration'],
+    relatedServiceSlugs: ['software-development', 'quality-engineering-assurance', 'engineering-rd-services'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80',
+    image: '/images/capabilities/software-engineering.png',
+    lastReviewed: '2026-09-20',
+
+    heroTitle: 'Product and Digital Engineering at\nEnterprise Scale by Kangqore',
+    heroBadge: 'Five Disciplines, One Engagement',
+    heroStripItems: ['Platform', 'Quality', 'Device', 'Experience', 'Acceleration'],
+    hidePartnershipModel: true,
+
+    whatIsEyebrow: 'WHERE PRODUCT PROGRAMS ACTUALLY LOSE TIME',
+    whatIsTitle: 'Product Engineering, Built',
+    whatIsHighlightNewLine: true,
+    whatIsHighlight: 'Without the Handoffs.',
+    whatIsPara2: 'Building a product needs a platform underneath it, a quality practice around it, design ahead of it, someone to get the prototype in front of a user, and for a good many products, hardware that has to be laid out, certified and manufactured. Most organizations buy those five from four different places.',
+    whatIsPara3: 'The time rarely disappears inside any one of them. It disappears at the seams. A design handed over as a file rather than a component library. A test suite written against a build the team has already moved past. Firmware and cloud assuming different message formats because nobody owned the contract between them. Each handoff looks like a coordination problem and is actually a redesign nobody scheduled.',
+    whatIsPara4: 'So we run the five as one engagement with one set of decisions. Design and engineering share a component library rather than a specification. Quality is automated against the same pipeline that builds the product. Where there is hardware, the firmware and the platform agree their contract before either is written. Prototypes go in front of users early enough that what they reveal can still change the architecture.',
+    whatIsPara5: 'The difference is not that any discipline moves faster. It is that the weeks between them stop existing, and those are the weeks nobody put in the plan.',
+
+    capabilitiesLabel: 'THE PRODUCT ENGINEERING CAPABILITY MAP',
+    capabilitiesSectionTitle: 'Product and Digital Engineering',
+    capabilitiesSectionHighlight: 'Services and Capabilities.',
+    capabilitiesLede: 'Five capabilities that a product usually needs together, run as one engagement rather than bought from four places.',
+    capabilityAreas: [
+      {
+        title: 'Platform Engineering',
+        image: '/images/capabilities/cloud-infrastructure.png',
+        desc: 'The architecture a product stands on, built to scale before it has to and to be left rather than locked into.',
+        items: [
+          'Platform building: Cloud native, scalable and secure platforms on Azure and AWS, designed from the consulting stage rather than assembled from whatever each team provisioned first.',
+          'Device transformation: Connected device and digital twin work where equipment has to talk to a platform, with edge processing placed where latency or bandwidth makes a round trip impractical.',
+          'Modernization: Monolith to microservices where the application shape genuinely calls for it, with backend, API and interface optimized together rather than one at a time.',
+          'Industry specific engineering: Reference architectures for healthcare, education and manufacturing, because those sectors decide the architecture before any preference applies.',
+          'Developer productivity: Tooling across the lifecycle so time goes into the product rather than into the work around it, measured on cycle time instead of on adoption.',
+        ],
+      },
+      {
+        title: 'Quality Engineering',
+        image: '/images/capabilities/quality-testing.png',
+        desc: 'Automation first and risk based, sitting inside the pipeline rather than arriving as a stage before launch.',
+        items: [
+          'QE consulting: Testing maturity assessed against recognized models, then a transformation plan with an outcome attached rather than a tooling list.',
+          'Test automation: Open source and commercial frameworks against the same pipeline that builds the product, so a suite cannot quietly drift behind the code it tests.',
+          'Web, mobile and connected device testing: Real device coverage across browsers, handsets and connected television, because emulators forgive what customers do not.',
+          'Performance, security and compliance testing: Load behavior, vulnerability and regulatory checks run on a schedule the release can absorb rather than in the week before it.',
+          'Digital experience testing: Compatibility, accessibility and end user experience verified as requirements, not audited afterward when the finding costs a redesign.',
+        ],
+      },
+      {
+        title: 'Device Engineering',
+        image: '/images/capabilities/iot-connected.png',
+        desc: 'New electronic products and the modernization of existing ones, from concept through certification to manufacture.',
+        items: [
+          'Hardware board design: Schematic, layout and signal integrity for the board that will actually ship, with component availability treated as a design constraint rather than a purchasing problem.',
+          'Mechanical engineering: Enclosure, thermal and manufacturability worked alongside the electronics, because the two constrain each other and discovering that late means a respin.',
+          'Embedded software development: Firmware against real silicon rather than an emulator, with the contract between device and platform agreed before either side is written.',
+          'FPGA and VLSI design and verification: Register transfer level design, verification and timing closure where the function genuinely warrants custom logic rather than a general purpose part.',
+          'Prototyping, certification and manufacturing support: Concept to prototype to production, with regulatory submission planned while the layout can still change.',
+        ],
+      },
+      {
+        title: 'Experience Engineering',
+        image: '/images/capabilities/ux-design.png',
+        desc: 'Design and engineering as one team, because the handoff between them is where consistency is usually lost.',
+        items: [
+          'Design research: Understand what users are actually trying to do before deciding what to build, including the people who abandoned the product and never said why.',
+          'Experience design: Interaction and interface design grounded in human centered practice, with the difficult states designed rather than left to whatever the framework renders.',
+          'Design systems: A shared component library that design and engineering both build from, so a design is handed over as working components rather than as a specification to reinterpret.',
+          'Accessibility and inclusive design: Treated as a requirement inside delivery, because retrofitting it after launch is the most expensive way to arrive at the same place.',
+          'Experience measurement: Instrumented journeys showing where users actually stop, so the next iteration is informed by behavior rather than by opinion in a review.',
+        ],
+      },
+      {
+        title: 'Technology & Innovation Acceleration',
+        image: '/images/capabilities/digital-transformation.png',
+        desc: 'For startups, digital natives and the small teams inside large organizations trying to get something in front of a user.',
+        items: [
+          'Rapid prototyping: Concept to something a real user can hold, fast enough that what it teaches can still change the direction rather than only confirm it.',
+          'Minimum viable product: The smallest build that tests the assumption the business actually rests on, which is rarely the smallest build that demonstrates the idea.',
+          'Product architecture consulting: What to build and what to build it on, with the decisions that are expensive to reverse identified before they are made.',
+          'Audit and roadmap: An engineering read of what exists, what will not survive growth, and the order in which to fix it.',
+          'Re-engineering: Rework of a product that found its market on an architecture that cannot carry the next order of magnitude.',
+          'End to end engineering: Full lifecycle ownership where a team does not yet exist, structured so it can be handed over once one does.',
+        ],
+      },
+    ],
+
+    architectureEyebrow: 'HOW A PRODUCT PROGRAM ACTUALLY RUNS',
+    architectureTitle: 'Discovery to steady state,',
+    architectureTitleHighlight: 'with the disciplines moving together.',
+    architectureLede: 'Product programs slip at the boundaries between design, build, test and hardware. This is the sequence we run, and every stage carries all of them rather than passing between them.',
+    architectureVisibleCount: 4,
+    architectureNodes: [
+      {
+        title: 'Discover',
+        icon: 'Search',
+        description: 'What users are trying to do, what the business is betting on, and which assumption the product actually rests on.',
+      },
+      {
+        title: 'Design',
+        icon: 'Target',
+        description: 'Experience and architecture decided together, with the choices that are expensive to reverse identified while they are still cheap.',
+      },
+      {
+        title: 'Prototype',
+        icon: 'Zap',
+        description: 'Something real in front of a user early enough that what it reveals can still change the architecture rather than only the backlog.',
+      },
+      {
+        title: 'Build',
+        icon: 'Cpu',
+        description: 'Platform, application and where relevant firmware, on a pipeline that produces the same artifact every time and refuses one that fails a gate.',
+      },
+      {
+        title: 'Verify',
+        icon: 'ShieldCheck',
+        description: 'Automated quality inside the pipeline, on real devices and browsers, against the behavior the business depends on rather than a checklist.',
+      },
+      {
+        title: 'Operate',
+        icon: 'Eye',
+        description: 'Instrumented journeys and field telemetry returning evidence to the team, so the next release is informed by behavior rather than by opinion.',
+      },
+    ],
+
     toolsStack: {
       eyebrow: 'THE PRODUCT ENGINEERING FABRIC',
-      title: 'The digital product planes,',
-      titleHighlight: 'engineered for retention and scale.',
-      subtitle: 'Building customer-facing software products combining user research, scalable microservice architectures, real-time analytics, and continuous experimentation.',
+      title: 'The tooling behind',
+      titleHighlight: 'each capability.',
+      subtitle: 'Every capability above has a plane here, with the platforms we build on it and the rule that governs it. Five planes carry the disciplines, and one carries the feedback that tells all of them whether any of it worked.',
       items: [
         {
+          icon: 'Layers',
+          title: 'Platform & Cloud Native Engineering',
+          category: 'PLATFORM ENGINEERING',
+          managed: ['Azure and AWS managed services for compute, data and identity', 'Managed Kubernetes on AKS and EKS where portability is genuinely needed', 'Azure IoT Hub and AWS IoT Core for connected device fleets'],
+          selfHosted: ['Terraform and Bicep holding infrastructure as version controlled code', 'Service contracts published and versioned before either side is written'],
+          desc: 'The platform a product runs on, with the contracts between its parts agreed as artifacts rather than settled in conversation.',
+          keyRule: 'A contract between two teams is a published artifact. One that lives in a conversation will be remembered differently by each side.',
+        },
+        {
+          icon: 'ShieldCheck',
+          title: 'Quality & Test Automation',
+          category: 'QUALITY ENGINEERING',
+          managed: ['BrowserStack and Sauce Labs for real browser and handset coverage', 'Tricentis Tosca for packaged application and enterprise test estates', 'Applitools for visual regression across breakpoints'],
+          selfHosted: ['Playwright, Selenium, Appium, JMeter and k6 against real environments', 'axe and Pa11y for accessibility checks running on every pull request'],
+          desc: 'Tests that run against the same pipeline that builds the product, on real devices rather than the emulators that forgive.',
+          keyRule: 'A suite that only runs before a release is documentation. Quality that is not in the pipeline is an opinion about the past.',
+        },
+        {
+          icon: 'Cpu',
+          title: 'Hardware & Embedded Engineering',
+          category: 'DEVICE ENGINEERING',
+          managed: ['Accredited laboratories for regulatory, safety and emissions submission', 'Silicon vendor SDK, board support and errata channels'],
+          selfHosted: ['Altium and Cadence for schematic, layout and signal integrity', 'Zephyr, FreeRTOS and embedded Linux built from pinned toolchains', 'Vivado and Questa for register transfer level design and verification', 'JTAG probes, analyzers and power profilers against production boards'],
+          desc: 'Boards, enclosures, firmware and custom logic developed against the silicon that will ship rather than a model of it.',
+          keyRule: 'Firmware is verified on hardware. A build that only passes in simulation has tested the simulation.',
+        },
+        {
           icon: 'Target',
-          title: 'Product Discovery & Experimentation',
-          category: 'EXPERIMENTATION PLANE',
-          managed: ['LaunchDarkly', 'Statsig', 'Amplitude Analytics'],
-          selfHosted: ['GrowthBook open-source feature flags', 'PostHog self-hosted analytics'],
-          desc: 'A/B testing experimentation engines, cohort tracking, and progressive feature rollout gates.',
-          keyRule: 'New features roll out behind feature flags with automated rollback on error spikes.'
+          title: 'Design & Experience Engineering',
+          category: 'EXPERIENCE ENGINEERING',
+          managed: ['Figma for design, component libraries and developer handoff', 'Maze and Dovetail for research, testing and synthesis'],
+          selfHosted: ['Storybook as the shared component library design and engineering both build from', 'Design tokens generated once and consumed by every platform the product ships on'],
+          desc: 'One component library rather than a specification, so a design reaches engineering as something that already runs.',
+          keyRule: 'Design is handed over as components, never as a picture. A picture is reinterpreted at every handoff.',
         },
         {
-          icon: 'LayoutGrid',
-          title: 'Frontend & Mobile Engineering',
-          category: 'CROSS-PLATFORM APPS',
-          managed: ['Expo Application Services (EAS)', 'Fastlane', 'Bitrise'],
-          selfHosted: ['React Native', 'Flutter', 'Swift/Kotlin native engines', 'Tailwind CSS design systems'],
-          desc: 'Responsive web apps, 60fps native iOS/Android experiences, and accessible UI components.',
-          keyRule: 'Mobile builds undergo automated screenshot regression testing on device farms.'
-        },
-        {
-          icon: 'Workflow',
-          title: 'API & Business Logic Mesh',
-          category: 'DOMAIN ARCHITECTURE',
-          managed: ['Apollo GraphOS', 'AWS AppSync', 'Kong Enterprise'],
-          selfHosted: ['GraphQL federation gateways', 'NestJS', 'FastAPI microservices'],
-          desc: 'Federated schema composition, real-time WebSocket subscriptions, and business rules.',
-          keyRule: 'Domain microservices expose typed GraphQL schemas with centralized query caching.'
-        },
-        {
-          icon: 'Search',
-          title: 'Search & Recommendation Engines',
-          category: 'DISCOVERY LAYER',
-          managed: ['Algolia', 'Pinecone Serverless', 'AWS OpenSearch'],
-          selfHosted: ['Meilisearch', 'Elasticsearch', 'Typesense distributed clusters'],
-          desc: 'Typo-tolerant instant search, semantic vector retrieval, and personalized user rankings.',
-          keyRule: 'Search queries return ranked results in under 50 milliseconds at peak concurrency.'
-        },
-        {
-          icon: 'Lock',
-          title: 'Customer Identity & Multi-Tenancy',
-          category: 'ACCESS & TENANCY',
-          managed: ['Auth0 by Okta', 'Clerk', 'WorkOS Enterprise SSO'],
-          selfHosted: ['Ory Kratos / Hydra', 'Keycloak identity servers'],
-          desc: 'SAML/OIDC enterprise Single Sign-On, SCIM directory provisioning, and tenant isolation.',
-          keyRule: 'B2B customers access products through dedicated enterprise SSO and RBAC roles.'
+          icon: 'Rocket',
+          title: 'Prototyping & Product Acceleration',
+          category: 'TECHNOLOGY & INNOVATION ACCELERATION',
+          managed: ['Managed application platforms where a cluster would outweigh the product', 'Feature flag and experiment platforms for staged exposure'],
+          selfHosted: ['Throwaway prototype stacks kept deliberately separate from production code', 'Architecture decision records written at the point the decision is made'],
+          desc: 'Getting something real in front of users quickly, without the prototype quietly becoming the production system.',
+          keyRule: 'A prototype is built to be discarded. One that ships becomes the architecture nobody chose.',
         },
         {
           icon: 'Eye',
-          title: 'Product Observability & Feedback',
-          category: 'EXPERIENCE TELEMETRY',
-          managed: ['Sentry', 'FullStory', 'Datadog RUM'],
-          selfHosted: ['OpenTelemetry RUM', 'GlitchTip error tracking', 'Custom feedback event streams'],
-          desc: 'Real-user monitoring (RUM), session replay diagnostics, and crash attribution analytics.',
-          keyRule: 'Client-side exceptions automatically generate actionable bug reports with stack traces.'
-        }
-      ]
+          title: 'Product Telemetry & Feedback',
+          category: 'PRODUCT FEEDBACK',
+          managed: ['Product analytics and session tooling for journey and funnel behavior', 'Sentry and the native crash reporting each platform provides'],
+          selfHosted: ['OpenTelemetry traces correlating a user action to the services behind it', 'Field telemetry returning build identity and failure to the engineering team'],
+          desc: 'Evidence from real use returned to the people who can act on it, rather than to a dashboard somebody remembers to open.',
+          keyRule: 'Telemetry goes to the team that owns the code. A shared inbox is where a signal goes to be ignored.',
+        },
+      ],
+    },
+
+    faqEyebrow: 'THE QUESTIONS THAT DECIDE THE PROGRAM',
+    faqHeading: 'The hard questions,',
+    faqHeadingHighlight: 'answered (FAQ).',
+    faqLede: 'The questions below are the ones product and engineering leaders actually ask in a first call, on sequencing, scope, quality and what happens when the prototype works. Answers are direct rather than promotional.',
+    customFAQs: [
+      {
+        q: 'We have an idea and a deadline. What happens first?',
+        sources: [
+          { label: 'Nielsen Norman Group on discovery', url: 'https://www.nngroup.com/articles/discovery-phase/' },
+        ],
+        a: 'We work out which assumption the product actually rests on, because that is what the first build should test and it is rarely the thing the roadmap starts with.\n\nMost product ideas contain several bets at once: that the problem is real, that this is the shape people want, that they will pay, that it can be built economically. A plan that treats them as one bet tests none of them, and the most expensive outcome is a beautifully built product for a problem nobody had.\n\nSo the first stage separates them and asks which one, if wrong, makes everything else irrelevant. Usually that is answerable with a prototype rather than a product, and in weeks rather than quarters.\n\nThe output is a written position on what to build first and what it will prove. It is often smaller than people expect and more uncomfortable, because it makes the riskiest assumption explicit while it is still cheap to be wrong about.',
+      },
+      {
+        q: 'Do we need a separate QA team?',
+        sources: [
+          { label: 'DORA research on software delivery performance', url: 'https://dora.dev/' },
+        ],
+        a: 'You need a quality practice. Whether it is a separate team depends on how much of it can run without a person, and in most products that is more than teams assume.\n\nThe failing pattern is a team at the end of the pipeline whose job is to find what the previous stage missed. That role is genuinely hard, thankless, and the bottleneck grows with the product. It also arrives too late to change anything structural.\n\nWhat works better is automation inside the pipeline owned by the people writing the code, with specialists doing the work automation is bad at: exploratory testing, performance characterization, security, accessibility, and deciding what is worth testing at all.\n\nSo the honest answer is that the headcount often stays similar and the work changes completely. If your test suite only runs before a release, that is the thing to fix first.',
+      },
+      {
+        q: 'Our product has hardware in it. How much does that change?',
+        sources: [
+          { label: 'NIST cyber-physical systems framework', url: 'https://www.nist.gov/el/cyber-physical-systems' },
+        ],
+        a: 'It changes the cost of being wrong, which changes the sequence rather than the method.\n\nSoftware mistakes are expensive. Hardware mistakes are expensive and slow, because a respin is measured in weeks of fabrication before anyone can even confirm the fix. That asymmetry means decisions that could be deferred in a pure software product have to be made earlier, and verified on real silicon rather than in a model.\n\nThe seam that causes the most trouble is the contract between firmware and platform. Two teams, two schedules, and an interface that each assumed the other would define. We would want that written and versioned before either side starts.\n\nRegulatory work belongs early too. Pre-compliance scanning while the layout can change turns a submission into a confirmation rather than a discovery.',
+      },
+      {
+        q: 'How do you stop design and engineering pulling apart?',
+        sources: [
+          { label: 'W3C Web Content Accessibility Guidelines', url: 'https://www.w3.org/WAI/standards-guidelines/wcag/' },
+        ],
+        a: 'By making the handoff an artifact rather than an event. Design that arrives as a picture gets reinterpreted; design that arrives as components does not.\n\nThe drift is never deliberate. A screen is designed, built approximately, adjusted under deadline, and six months later the product has four button styles and nobody decided on any of them. Repeat across a year and design and engineering are describing different products.\n\nA shared component library fixes most of it because there is only one implementation to diverge from. Design tokens fix the rest by generating the values rather than transcribing them.\n\nThe other half is organizational. If designers review pull requests and engineers attend research sessions, the gap closes on its own. If they meet only at handoff, no tooling will save it.',
+      },
+      {
+        q: 'When is an MVP the wrong answer?',
+        sources: [
+          { label: 'Nielsen Norman Group on discovery', url: 'https://www.nngroup.com/articles/discovery-phase/' },
+        ],
+        a: 'When the minimum version cannot fail in a way that teaches you anything, which is more often than the term suggests.\n\nAn MVP is an experiment. If a product only works at a scale or a quality the minimum version cannot reach, the experiment tests the wrong thing. Medical devices, payment infrastructure and anything safety related are obvious cases. So is a product whose entire proposition is reliability.\n\nThe subtler failure is the MVP that ships, gets traction, and becomes permanent. It was built to be thrown away, nobody threw it away, and the shortcuts that were correct for an experiment are now the architecture.\n\nSo we would agree up front what the minimum version is testing and what happens to it afterward. If the answer is that it becomes the product, it is not an MVP and should not be built like one.',
+      },
+      {
+        q: 'Is moving from a monolith to microservices worth it?',
+        sources: [
+          { label: 'DORA research on software delivery performance', url: 'https://dora.dev/' },
+        ],
+        a: 'Sometimes, and it is chosen far more often than it is warranted. The question is whether your constraint is actually the thing microservices relieve.\n\nThey help when independent teams need to deploy independently, or when parts of the system scale very differently. They cost you a distributed system: network failure between things that used to be function calls, debugging across process boundaries, and operational overhead that a small team will feel immediately.\n\nA monolith that is slow to change because it is badly organized will produce distributed services that are slow to change and now also hard to debug. The boundaries have to come from the domain, and if you cannot name them cleanly inside the monolith, extracting them will not reveal them.\n\nModular first, extract where the evidence says so. That order is reversible and the other one is not.',
+      },
+      {
+        q: 'How do you test the things automation is bad at?',
+        sources: [
+          { label: 'ISTQB testing standards', url: 'https://www.istqb.org/' },
+        ],
+        a: 'With people, deliberately, on the parts where a person notices what an assertion cannot.\n\nAutomation is excellent at regression, at scale and at anything with a definite expected answer. It is poor at whether a flow feels broken, whether an error message helps, whether a screen reader can complete the task, and at the unexpected interaction nobody thought to write a case for.\n\nSo the split is deliberate rather than budgetary. Automate what is repeatable and let it run constantly. Use exploratory sessions with a charter for the rest, and treat what they find as a signal about coverage rather than a defect count.\n\nAccessibility deserves naming here. Automated checks catch perhaps a third of real issues. The rest requires using the product the way someone relying on assistive technology would.',
+      },
+      {
+        q: 'What does accessibility actually require of us?',
+        sources: [
+          { label: 'W3C Web Content Accessibility Guidelines', url: 'https://www.w3.org/WAI/standards-guidelines/wcag/' },
+        ],
+        a: 'Decisions at design time and checks in the pipeline. Treated that way it is close to free, and retrofitted it is one of the most expensive things you can do to a shipped product.\n\nThe decisions are unglamorous: sufficient contrast, a sensible heading structure, focus order that follows the visual order, targets big enough to hit, and every control reachable without a mouse. Made during design they cost nothing. Made after launch they are a redesign, because the layout already depends on the choices.\n\nAutomated checks belong on every pull request and catch the mechanical failures cheaply. They do not catch whether the experience is usable, which needs someone actually navigating it with a keyboard and a screen reader.\n\nThe legal position is increasingly firm in most markets, but the practical argument lands sooner: these are the same decisions that make a product usable on a phone in bright sunlight.',
+      },
+      {
+        q: 'Can you work with our existing product team?',
+        sources: [
+          { label: 'DORA research on software delivery performance', url: 'https://dora.dev/' },
+        ],
+        a: 'Usually, and the mixed model is the one we run most often. Your team holds the domain and the product decisions, which is the part that cannot be usefully outsourced.\n\nThe common shape is that we bring disciplines that are hard to staff for a single product: quality engineering, hardware, design systems, the platform work. Your team keeps context and ownership. We would expect to hand over rather than to stay.\n\nWhat matters more than the split is who decides. Programs go wrong when ownership is ambiguous, not when the team is mixed, so we would want that written down at the start including which calls are escalations.\n\nWhere we build it alone, we would still expect an internal owner for the product decisions. A build with no internal owner produces something technically correct and commercially wrong.',
+      },
+      {
+        q: 'Our product exists and is struggling. Where do you start?',
+        sources: [
+          { label: 'DORA research on software delivery performance', url: 'https://dora.dev/' },
+        ],
+        a: 'With why, because struggling is a symptom and the causes look nothing alike.\n\nA product can be losing because the market moved, because the experience is poor, because the architecture cannot carry the load it now has, or because releases take so long that the team cannot respond to anything. Those need entirely different work, and the instinct to rebuild is usually the most expensive answer to whichever one it actually is.\n\nSo the first stage is an audit across all four: what users do and where they stop, what the architecture will and will not carry, what quality and release cadence look like, and what the business actually needs the product to do.\n\nThe output names what to leave alone, which is generally most of it. Rebuilds are occasionally right and are recommended far more often than they are warranted.',
+      },
+      {
+        q: 'What happens after launch?',
+        sources: [
+          { label: 'Nielsen Norman Group on discovery', url: 'https://www.nngroup.com/articles/discovery-phase/' },
+        ],
+        a: 'The part most plans underfund. Launch is where you first learn whether any of it was right, and a team with no capacity left to respond has wasted the information.\n\nInstrumented journeys showing where users actually stop matter more than an analytics dashboard nobody opens. So does a release cadence fast enough that the answer to a problem is a fix rather than a roadmap item three months out.\n\nFor products with hardware in the field the stakes are higher, because units you cannot update are units you cannot recover. A rehearsed update path with an enforced rollback is not optional at that point.\n\nWe would want the first weeks after launch planned as work rather than as slack, with someone owning what the telemetry says and the authority to act on it.',
+      },
+      {
+        q: 'What is the smallest sensible engagement?',
+        sources: [
+          { label: 'Nielsen Norman Group on discovery', url: 'https://www.nngroup.com/articles/discovery-phase/' },
+        ],
+        a: 'A product and engineering read. A few weeks, a defined output, and no obligation to do anything afterward.\n\nIt covers what users are actually doing, what the architecture will carry, where quality and release cadence sit, and which assumption the product rests on. For an existing product it also covers which parts are genuinely worth changing, which is usually a shorter list than the team expects.\n\nThe output is a written position and a sequence, structured so that leave it alone is an available conclusion for any part of the product and for the whole of it.\n\nEverything larger is a decision you can make afterward with better information than you have now.',
+      },
+    ],
+
+    engagementEyebrow: 'WHERE TO START',
+    engagementHeading: 'Scoped engagements,',
+    engagementHeadingHighlight: 'not open ended programs.',
+    engagementLede: 'Each of these has a defined output and a defined end. None of them require the next one, and the assessments are structured so that "this is sound, leave it alone" is an available conclusion about your product.',
+    servicePackages: [
+      {
+        name: 'Product & Engineering Read',
+        tier: 'ASSESSMENT',
+        duration: '3 to 4 weeks',
+        description: 'What your users actually do, what your architecture will carry, and which assumption the product rests on.',
+        deliverables: [
+          'The riskiest assumption in your product named, and what would test it',
+          'Architecture reviewed against the load and change rate you expect',
+          'Quality and release cadence measured rather than described',
+          'Experience audit against real user behavior, not a heuristic checklist',
+          'Written position on what you should leave alone, usually most of it',
+        ],
+      },
+      {
+        name: 'Prototype & MVP Build',
+        tier: 'DELIVERY',
+        duration: '6 to 12 weeks',
+        description: 'Something real in front of your users early enough that what it teaches can still change your direction.',
+        deliverables: [
+          'A working prototype your users can hold, not a clickable picture',
+          'The assumption it tests agreed with you before anything is built',
+          'Architecture decision records written where the decision is made',
+          'An explicit answer on whether the build is thrown away or carried forward',
+          'Instrumentation so what your users do is evidence rather than anecdote',
+        ],
+      },
+      {
+        name: 'Quality Engineering Uplift',
+        tier: 'DELIVERY',
+        duration: '8 to 14 weeks',
+        description: 'Testing moved out of the week before release and into the pipeline that builds your product.',
+        deliverables: [
+          'Testing maturity assessed against recognized models, with the gaps ranked',
+          'Automation running in your pipeline, owned by the people writing the code',
+          'Real device and browser coverage for the platforms you actually ship on',
+          'Performance, security and accessibility checks on a cadence you can absorb',
+          'Exploratory practice defined for what automation is genuinely bad at',
+        ],
+      },
+      {
+        name: 'Device & Hardware Program',
+        tier: 'DELIVERY',
+        duration: '16 to 30 weeks',
+        description: 'Board, enclosure and firmware developed together, with certification planned while the layout can change.',
+        deliverables: [
+          'Schematic, layout and signal integrity for the board you will ship',
+          'Enclosure, thermal and manufacturability worked alongside the electronics',
+          'Firmware verified on production silicon rather than in simulation',
+          'The contract between your device and your platform written and versioned',
+          'Pre-compliance scanning before design freeze, not after it',
+        ],
+      },
+    ],
+
+    industryHeading: 'What the product has to satisfy,',
+    industryHeadingHighlight: 'sector by sector.',
+    industryLede: 'The engineering is much the same across these sectors. What changes is who certifies your product, what a defect costs you, and which obligations decide the design before any preference does.',
+    industryUseCases: [
+      {
+        industry: 'Healthcare & Life Sciences',
+        headline: 'A product that reaches a patient is certified before it is shipped, not after.',
+        items: [
+          'Design history and traceability maintained as the product is built',
+          'Regulatory classification settled before architecture rather than after',
+          'Usability engineering evidenced against the applicable standard',
+          'Cybersecurity expectations for connected clinical devices designed in',
+          'Masked or synthetic data in every non production environment',
+          'Post market surveillance and field update paths planned from the start',
+        ],
+      },
+      {
+        industry: 'Manufacturing & Industrial',
+        headline: 'The product ships into environments that were never designed for it.',
+        items: [
+          'Enclosure, thermal and vibration constraints designed alongside the electronics',
+          'Separation between operational technology and corporate networks preserved',
+          'Update paths that work over constrained and intermittent connectivity',
+          'Component obsolescence tracked ahead of end of life notice',
+          'Long support horizons planned into the architecture from the start',
+          'Field telemetry returning evidence to engineering rather than a warranty log',
+        ],
+      },
+      {
+        industry: 'Retail & eCommerce',
+        headline: 'Experience and peak decide the build more than any feature does.',
+        items: [
+          'Capacity designed for peak without paying for peak year round',
+          'Cardholder data scope minimized by design rather than by exception',
+          'Accessibility treated as a requirement, because the audience is everyone',
+          'Experiment infrastructure so changes are measured rather than argued',
+          'Graceful degradation when a downstream dependency fails',
+          'Real device coverage across the handsets customers actually hold',
+        ],
+      },
+      {
+        industry: 'Media & Entertainment',
+        headline: 'The product runs on screens nobody in the building owns.',
+        items: [
+          'Connected television and set top coverage on real hardware',
+          'Playback quality verified across network conditions rather than on the office link',
+          'Content metadata enriched automatically rather than cataloged by hand',
+          'Subtitle, caption and audio description built into delivery',
+          'Rights and territory constraints respected by the architecture',
+          'Cost per stream understood when the design is chosen',
+        ],
+      },
+      {
+        industry: 'Banking & Financial Services',
+        headline: 'Every decision the product makes has to be explainable later.',
+        items: [
+          'Segregation of duties enforced in the authorization model',
+          'Change evidence produced by the pipeline as work happens',
+          'Immutable audit trail across services and data stores',
+          'Resilience tested against regulated recovery objectives',
+          'Accessibility and fair treatment obligations designed in',
+          'Encryption and key custody demonstrable rather than asserted',
+        ],
+      },
+    ],
+
+    practiceLabel: 'THE ENGINEERING FOUNDRY PRACTICE',
+    practiceHeading: 'A product rarely needs',
+    practiceHeadingHighlight: 'only one of these.',
+    practiceLede: 'Where a product program most often crosses a boundary: the software underneath it, the quality practice around it, and the hardware research behind it.',
+    practiceSlugs: ['software-development', 'quality-engineering-assurance', 'engineering-rd-services'],
+
+    conciergeHeading: 'Ask about your product',
+    conciergeIntro: 'Questions we are asked before anyone commits to a program. Answered against your product rather than in general.',
+    conciergeChips: [
+      'Which assumption should our first build test?',
+      'Do we need a separate QA team?',
+      'Is our architecture going to carry the next year?',
+      'Should we rebuild or fix what we have?',
+      'Book a product and engineering read',
+    ],
+
+    midCta: 'The weeks disappear between the disciplines, not inside them.',
+    midCtaLabel: 'Book a Product & Engineering Read',
+
+    closingCta: {
+      title: 'Your product,',
+      highlight: 'honestly assessed.',
+      body: 'Tell us what you are building, who it is for, and where you think it is weakest. In 30 minutes we will tell you which assumption we would test first, what we would leave alone, and which part of the program is most likely to lose you a quarter. No proposal attached.',
+      primaryLabel: 'Book a Product & Engineering Read',
+      proofLabel: 'From first call to a read of your product',
+      proofDetail: 'Assumption → architecture → sequence, in 30 minutes',
     },
   },
-
   'devops-as-a-service': {
     slug: 'devops-as-a-service',
     name: 'DevOps as a Service (DaaS)',

@@ -492,9 +492,9 @@ export const serviceSEO = {
     url: '/services/engineering-rd-services',
   },
   'product-digital-engineering': {
-    title: 'Product Digital Engineering — Foundry | Kangqore',
-    description: 'Digital engineering for connected products — product digitization, connected products, digital twins, smart features, and data integration.',
-    keywords: 'product digital engineering, connected products, digital twins, smart products, product digitization',
+    title: 'Product and Digital Engineering Services | Kangqore',
+    description: 'Platform, quality, device, experience and acceleration engineering run as one engagement, so product programs stop losing time at the handoffs.',
+    keywords: 'product engineering services, platform engineering, quality engineering, device engineering, experience engineering, design systems, MVP development, rapid prototyping, embedded firmware',
     url: '/services/product-digital-engineering',
   },
   'devops-as-a-service': {
