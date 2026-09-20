@@ -9912,36 +9912,37 @@ export const servicesData = {
     whatIsTitle: 'Product Engineering, Built',
     whatIsHighlightNewLine: true,
     whatIsHighlight: 'Without the Handoffs.',
-    whatIsPara2: 'Building a product needs a platform underneath it, a quality practice around it, design ahead of it, someone to get the prototype in front of a user, and for a good many products, hardware that has to be laid out, certified and manufactured. Most organizations buy those five from four different places.',
+    whatIsPara2: 'Building your product needs a platform underneath it, a quality practice around it, design ahead of it, someone to get the prototype in front of a user, and for a good many products, hardware that has to be laid out, certified and manufactured. Most organizations buy those five from four different places.',
     whatIsPara3: 'The time rarely disappears inside any one of them. It disappears at the seams. A design handed over as a file rather than a component library. A test suite written against a build the team has already moved past. Firmware and cloud assuming different message formats because nobody owned the contract between them. Each handoff looks like a coordination problem and is actually a redesign nobody scheduled.',
     whatIsPara4: 'So we run the five as one engagement with one set of decisions. Design and engineering share a component library rather than a specification. Quality is automated against the same pipeline that builds the product. Where there is hardware, the firmware and the platform agree their contract before either is written. Prototypes go in front of users early enough that what they reveal can still change the architecture.',
-    whatIsPara5: 'The difference is not that any discipline moves faster. It is that the weeks between them stop existing, and those are the weeks nobody put in the plan.',
+    whatIsPara5: 'The difference is not that any discipline moves faster. It is that the weeks between them stop existing, and those are the weeks nobody put in your plan.',
 
+    hideOutcomeCards: true,
     capabilitiesLabel: 'THE PRODUCT ENGINEERING CAPABILITY MAP',
     capabilitiesSectionTitle: 'Product and Digital Engineering',
     capabilitiesSectionHighlight: 'Services and Capabilities.',
-    capabilitiesLede: 'Five capabilities that a product usually needs together, run as one engagement rather than bought from four places.',
+    capabilitiesLede: 'Five capabilities your product usually needs together, run as one engagement rather than bought from four places.',
     capabilityAreas: [
       {
         title: 'Platform Engineering',
         image: '/images/capabilities/cloud-infrastructure.png',
-        desc: 'The architecture a product stands on, built to scale before it has to and to be left rather than locked into.',
+        desc: 'The architecture your product stands on, built to scale before it has to and to be left rather than locked into.',
         items: [
-          'Platform building: Cloud native, scalable and secure platforms on Azure and AWS, designed from the consulting stage rather than assembled from whatever each team provisioned first.',
+          'Platform building: Cloud native, scalable and secure platforms on Azure and AWS, designed from the consulting stage rather than assembled from whatever each of your teams provisioned first.',
           'Device transformation: Connected device and digital twin work where equipment has to talk to a platform, with edge processing placed where latency or bandwidth makes a round trip impractical.',
-          'Modernization: Monolith to microservices where the application shape genuinely calls for it, with backend, API and interface optimized together rather than one at a time.',
+          'Modernization: Monolith to microservices where your application shape genuinely calls for it, with backend, API and interface optimized together rather than one at a time.',
           'Industry specific engineering: Reference architectures for healthcare, education and manufacturing, because those sectors decide the architecture before any preference applies.',
-          'Developer productivity: Tooling across the lifecycle so time goes into the product rather than into the work around it, measured on cycle time instead of on adoption.',
+          'Developer productivity: Tooling across the lifecycle so your engineers spend their time on the product rather than on the work around it, measured on cycle time instead of on adoption.',
         ],
       },
       {
         title: 'Quality Engineering',
         image: '/images/capabilities/quality-testing.png',
-        desc: 'Automation first and risk based, sitting inside the pipeline rather than arriving as a stage before launch.',
+        desc: 'Automation first and risk based, sitting inside your pipeline rather than arriving as a stage before launch.',
         items: [
-          'QE consulting: Testing maturity assessed against recognized models, then a transformation plan with an outcome attached rather than a tooling list.',
+          'QE consulting: Your testing maturity assessed against recognized models, then a transformation plan with an outcome attached rather than a tooling list.',
           'Test automation: Open source and commercial frameworks against the same pipeline that builds the product, so a suite cannot quietly drift behind the code it tests.',
-          'Web, mobile and connected device testing: Real device coverage across browsers, handsets and connected television, because emulators forgive what customers do not.',
+          'Web, mobile and connected device testing: Real device coverage across browsers, handsets and connected television, because emulators forgive what your customers do not.',
           'Performance, security and compliance testing: Load behavior, vulnerability and regulatory checks run on a schedule the release can absorb rather than in the week before it.',
           'Digital experience testing: Compatibility, accessibility and end user experience verified as requirements, not audited afterward when the finding costs a redesign.',
         ],
@@ -9949,7 +9950,7 @@ export const servicesData = {
       {
         title: 'Device Engineering',
         image: '/images/capabilities/iot-connected.png',
-        desc: 'New electronic products and the modernization of existing ones, from concept through certification to manufacture.',
+        desc: 'New electronic products, and the modernization of the ones you already ship, from concept through certification to manufacture.',
         items: [
           'Hardware board design: Schematic, layout and signal integrity for the board that will actually ship, with component availability treated as a design constraint rather than a purchasing problem.',
           'Mechanical engineering: Enclosure, thermal and manufacturability worked alongside the electronics, because the two constrain each other and discovering that late means a respin.',
@@ -9961,26 +9962,26 @@ export const servicesData = {
       {
         title: 'Experience Engineering',
         image: '/images/capabilities/ux-design.png',
-        desc: 'Design and engineering as one team, because the handoff between them is where consistency is usually lost.',
+        desc: 'Design and engineering as one team, because the handoff between them is where your product quietly loses its consistency.',
         items: [
-          'Design research: Understand what users are actually trying to do before deciding what to build, including the people who abandoned the product and never said why.',
+          'Design research: Understand what your users are actually trying to do before deciding what to build, including the people who abandoned your product and never said why.',
           'Experience design: Interaction and interface design grounded in human centered practice, with the difficult states designed rather than left to whatever the framework renders.',
           'Design systems: A shared component library that design and engineering both build from, so a design is handed over as working components rather than as a specification to reinterpret.',
           'Accessibility and inclusive design: Treated as a requirement inside delivery, because retrofitting it after launch is the most expensive way to arrive at the same place.',
-          'Experience measurement: Instrumented journeys showing where users actually stop, so the next iteration is informed by behavior rather than by opinion in a review.',
+          'Experience measurement: Instrumented journeys showing where your users actually stop, so the next iteration is informed by behavior rather than by opinion in a review.',
         ],
       },
       {
         title: 'Technology & Innovation Acceleration',
         image: '/images/capabilities/digital-transformation.png',
-        desc: 'For startups, digital natives and the small teams inside large organizations trying to get something in front of a user.',
+        desc: 'For startups, digital natives and the small teams inside large organizations trying to get something in front of your users.',
         items: [
-          'Rapid prototyping: Concept to something a real user can hold, fast enough that what it teaches can still change the direction rather than only confirm it.',
-          'Minimum viable product: The smallest build that tests the assumption the business actually rests on, which is rarely the smallest build that demonstrates the idea.',
+          'Rapid prototyping: Concept to something a real user can hold, fast enough that what it teaches can still change your direction rather than only confirm it.',
+          'Minimum viable product: The smallest build that tests the assumption your business actually rests on, which is rarely the smallest build that demonstrates the idea.',
           'Product architecture consulting: What to build and what to build it on, with the decisions that are expensive to reverse identified before they are made.',
-          'Audit and roadmap: An engineering read of what exists, what will not survive growth, and the order in which to fix it.',
-          'Re-engineering: Rework of a product that found its market on an architecture that cannot carry the next order of magnitude.',
-          'End to end engineering: Full lifecycle ownership where a team does not yet exist, structured so it can be handed over once one does.',
+          'Audit and roadmap: An engineering read of what you have, what will not survive your growth, and the order in which to fix it.',
+          'Re-engineering: Rework of a product that found its market on an architecture that cannot carry your next order of magnitude.',
+          'End to end engineering: Full lifecycle ownership where your team does not yet exist, structured so it can be handed over once one does.',
         ],
       },
     ],
@@ -9988,13 +9989,13 @@ export const servicesData = {
     architectureEyebrow: 'HOW A PRODUCT PROGRAM ACTUALLY RUNS',
     architectureTitle: 'Discovery to steady state,',
     architectureTitleHighlight: 'with the disciplines moving together.',
-    architectureLede: 'Product programs slip at the boundaries between design, build, test and hardware. This is the sequence we run, and every stage carries all of them rather than passing between them.',
+    architectureLede: 'Product programs slip at the boundaries between design, build, test and hardware. This is the sequence we run across your program, and every stage carries all of them rather than passing between them.',
     architectureVisibleCount: 4,
     architectureNodes: [
       {
         title: 'Discover',
         icon: 'Search',
-        description: 'What users are trying to do, what the business is betting on, and which assumption the product actually rests on.',
+        description: 'What your users are trying to do, what your business is betting on, and which assumption your product actually rests on.',
       },
       {
         title: 'Design',
@@ -10004,7 +10005,7 @@ export const servicesData = {
       {
         title: 'Prototype',
         icon: 'Zap',
-        description: 'Something real in front of a user early enough that what it reveals can still change the architecture rather than only the backlog.',
+        description: 'Something real in front of your users early enough that what it reveals can still change the architecture rather than only the backlog.',
       },
       {
         title: 'Build',
@@ -10014,12 +10015,12 @@ export const servicesData = {
       {
         title: 'Verify',
         icon: 'ShieldCheck',
-        description: 'Automated quality inside the pipeline, on real devices and browsers, against the behavior the business depends on rather than a checklist.',
+        description: 'Automated quality inside the pipeline, on real devices and browsers, against the behavior your business depends on rather than a checklist.',
       },
       {
         title: 'Operate',
         icon: 'Eye',
-        description: 'Instrumented journeys and field telemetry returning evidence to the team, so the next release is informed by behavior rather than by opinion.',
+        description: 'Instrumented journeys and field telemetry returning evidence to your team, so the next release is informed by behavior rather than by opinion.',
       },
     ],
 
@@ -10027,7 +10028,7 @@ export const servicesData = {
       eyebrow: 'THE PRODUCT ENGINEERING FABRIC',
       title: 'The tooling behind',
       titleHighlight: 'each capability.',
-      subtitle: 'Every capability above has a plane here, with the platforms we build on it and the rule that governs it. Five planes carry the disciplines, and one carries the feedback that tells all of them whether any of it worked.',
+      subtitle: 'Every capability above has a plane here, with the platforms we build on it and the rule that governs it. Five planes carry the disciplines, and one carries the feedback that tells all of them whether any of it worked for your users.',
       items: [
         {
           icon: 'Layers',
@@ -10096,7 +10097,7 @@ export const servicesData = {
         sources: [
           { label: 'Nielsen Norman Group on discovery', url: 'https://www.nngroup.com/articles/discovery-phase/' },
         ],
-        a: 'We work out which assumption the product actually rests on, because that is what the first build should test and it is rarely the thing the roadmap starts with.\n\nMost product ideas contain several bets at once: that the problem is real, that this is the shape people want, that they will pay, that it can be built economically. A plan that treats them as one bet tests none of them, and the most expensive outcome is a beautifully built product for a problem nobody had.\n\nSo the first stage separates them and asks which one, if wrong, makes everything else irrelevant. Usually that is answerable with a prototype rather than a product, and in weeks rather than quarters.\n\nThe output is a written position on what to build first and what it will prove. It is often smaller than people expect and more uncomfortable, because it makes the riskiest assumption explicit while it is still cheap to be wrong about.',
+        a: 'We work out which assumption the product actually rests on, because that is what the first build should test and it is rarely the thing the roadmap starts with.\n\nMost product ideas contain several bets at once: that the problem is real, that this is the shape people want, that they will pay, that it can be built economically. A plan that treats them as one bet tests none of them, and the most expensive outcome is a beautifully built product for a problem nobody had.\n\nSo the first stage separates them and asks which one, if wrong, makes everything else irrelevant. Usually that is answerable with a prototype rather than a product, and in weeks rather than quarters.\n\nThe output is a written position on what you should build first and what it will prove. It is often smaller than people expect and more uncomfortable, because it makes the riskiest assumption explicit while it is still cheap to be wrong about.',
       },
       {
         q: 'Do we need a separate QA team?',
@@ -10124,7 +10125,7 @@ export const servicesData = {
         sources: [
           { label: 'Nielsen Norman Group on discovery', url: 'https://www.nngroup.com/articles/discovery-phase/' },
         ],
-        a: 'When the minimum version cannot fail in a way that teaches you anything, which is more often than the term suggests.\n\nAn MVP is an experiment. If a product only works at a scale or a quality the minimum version cannot reach, the experiment tests the wrong thing. Medical devices, payment infrastructure and anything safety related are obvious cases. So is a product whose entire proposition is reliability.\n\nThe subtler failure is the MVP that ships, gets traction, and becomes permanent. It was built to be thrown away, nobody threw it away, and the shortcuts that were correct for an experiment are now the architecture.\n\nSo we would agree up front what the minimum version is testing and what happens to it afterward. If the answer is that it becomes the product, it is not an MVP and should not be built like one.',
+        a: 'When the minimum version cannot fail in a way that teaches you anything, which is more often than the term suggests.\n\nAn MVP is an experiment. If a product only works at a scale or a quality the minimum version cannot reach, the experiment tests the wrong thing. Medical devices, payment infrastructure and anything safety related are obvious cases. So is a product whose entire proposition is reliability.\n\nThe subtler failure is the MVP that ships, gets traction, and becomes permanent. It was built to be thrown away, nobody threw it away, and the shortcuts that were correct for an experiment are now the architecture.\n\nSo we would agree with you up front what the minimum version is testing and what happens to it afterward. If the answer is that it becomes the product, it is not an MVP and should not be built like one.',
       },
       {
         q: 'Is moving from a monolith to microservices worth it?',
@@ -10177,6 +10178,7 @@ export const servicesData = {
       },
     ],
 
+    hideEngagement: true,
     engagementEyebrow: 'WHERE TO START',
     engagementHeading: 'Scoped engagements,',
     engagementHeadingHighlight: 'not open ended programs.',
