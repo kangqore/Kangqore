@@ -8336,6 +8336,7 @@ export const servicesData = {
     heroBadge: 'Adopted for the Reason You Chose It',
     heroStripItems: ['Infrastructure & Migration', 'Application Modernization', 'Data & AI', 'Security', 'Workspace'],
     hidePartnershipModel: true,
+    hideSectionRules: true,
 
     whatIsEyebrow: 'WHY GOOGLE CLOUD USUALLY GETS CHOSEN',
     whatIsTitle: 'Google Cloud, Adopted',
