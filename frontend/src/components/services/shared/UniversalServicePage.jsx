@@ -173,6 +173,14 @@ const EIPParallaxImageCard = ({ src, alt }) => {
 const CAP_COLORS = ['#22D3EE', '#60A5FA', '#A78BFA', '#FB923C', '#34D399', '#F472B6', '#FDE047', '#E8614A'];
 const ICON_POOL  = [Target, Zap, Layers, Search, Cpu, Radar, BrainCircuit, TrendingUp, Shield, Activity, Globe, BarChart3, Network, Settings, Rocket, Users];
 const PHASE_GRADIENTS = ['from-slate-600 to-slate-800', 'from-blue-500 to-blue-700', 'from-brand-blue to-indigo-600', 'from-emerald-500 to-emerald-700', 'from-cyan-500 to-cyan-700'];
+/**
+ * The short rule that sits before a section eyebrow. It reads as a divider
+ * between sections, so it is opt-out per service via `hideSectionRules`.
+ * A service that does not set the flag renders exactly as before, which is why
+ * the other 61 pages are untouched.
+ */
+const EyebrowRule = ({ service }) => (service?.hideSectionRules ? null : <div className="h-[1px] w-12 bg-white/20" />);
+
 const JOURNEY_ICON_MAP = { Search, Target, Cpu, Rocket, Shield, TrendingUp, BrainCircuit, Network, Radar, Zap, Layers, Activity, Globe, Settings, ShieldCheck, Eye, Database, Lock };
 const TECH_STACK_ICON_COLORS = [
   { bg: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)', glow: '0 8px 24px rgba(59,130,246,0.45), 0 2px 8px rgba(59,130,246,0.3)' },
@@ -450,7 +458,7 @@ const ServicePackagesSection = ({ service }) => {
           {/* Left Column: Heading & Description */}
           <div className="w-full lg:w-5/12 lg:sticky lg:top-32 flex flex-col">
             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-white/20" />
+              <EyebrowRule service={service} />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.engagementEyebrow || 'HOW WE ENGAGE'}</span>
             </div>
             <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-extrabold leading-[1.15] tracking-tight text-white mb-6">
@@ -1699,6 +1707,7 @@ const featureMicros   = service.featureMicros
         titleHighlight={service.toolsStack?.titleHighlight}
         subtitle={service.toolsStack?.subtitle}
         items={service.toolsStack?.items}
+        hideRule={service.hideSectionRules}
       />
     ) : (
       <AIToolsSection
@@ -1860,13 +1869,13 @@ const featureMicros   = service.featureMicros
               {'whatIsEyebrow' in service
                 ? service.whatIsEyebrow && (
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="h-[1px] w-12 bg-white/20" />
+                    <EyebrowRule service={service} />
                     <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.whatIsEyebrow}</span>
                   </div>
                 )
                 : (
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="h-[1px] w-12 bg-white/20" />
+                    <EyebrowRule service={service} />
                     <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">WHAT IS {service.name.toUpperCase()}</span>
                   </div>
                 )
@@ -1906,13 +1915,13 @@ const featureMicros   = service.featureMicros
                   {'whatIsEyebrow' in service
                     ? service.whatIsEyebrow && (
                       <div className="flex items-center gap-4 mb-4">
-                        <div className="h-[1px] w-12 bg-white/20" />
+                        <EyebrowRule service={service} />
                         <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.whatIsEyebrow}</span>
                       </div>
                     )
                     : (
                       <div className="flex items-center gap-4 mb-4">
-                        <div className="h-[1px] w-12 bg-white/20" />
+                        <EyebrowRule service={service} />
                         <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">WHAT IS {service.name.toUpperCase()}</span>
                       </div>
                     )
@@ -4704,7 +4713,7 @@ const featureMicros   = service.featureMicros
 
       {/* ══════════════════════ eQORE AI CONCIERGE ══════════════════════ */}
       <div id="svc-concierge">
-        <ConciergeSection inverted heading={service.conciergeHeading} intro={service.conciergeIntro} suggestedPrompts={service.conciergeChips || [
+        <ConciergeSection inverted hideRule={service.hideSectionRules} heading={service.conciergeHeading} intro={service.conciergeIntro} suggestedPrompts={service.conciergeChips || [
           `What is ${service.name}?`,
           `What capabilities does Kangqore offer for ${service.name}?`,
           `How does the ${service.name} engagement process work?`,
@@ -4735,7 +4744,7 @@ const featureMicros   = service.featureMicros
         <section className="py-16 md:py-24 border-t border-white/[0.05] overflow-hidden" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-white/20" />
+              <EyebrowRule service={service} />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                 {service.enterpriseArchitecture?.eyebrow}
               </span>
@@ -4843,7 +4852,7 @@ const featureMicros   = service.featureMicros
                   unaffected — only `capabilitiesLabel: ''` suppresses it. */}
               {service.capabilitiesLabel !== '' && (
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
+                  <EyebrowRule service={service} />
                   <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                     {service.capabilitiesLabel || 'CAPABILITIES'}
                   </span>
@@ -5094,7 +5103,7 @@ const featureMicros   = service.featureMicros
             <div className="mb-16">
               {service.capabilitiesLabel !== '' && (
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
+                  <EyebrowRule service={service} />
                   <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.capabilitiesLabel || 'THE FRAMEWORK'}</span>
                 </div>
               )}
@@ -5194,6 +5203,63 @@ const featureMicros   = service.featureMicros
       {/* 3D Ecosystem Cockpit / Tools & Technology Stack — situated directly below Capabilities */}
       {toolsStackSection}
 
+      {/* ─── Platform coverage ──────────────────────────────────────────────
+          An opt-in flat list of the areas a service reaches on a named
+          platform, sitting directly under the tooling band it qualifies.
+
+          Deliberately a coverage band and not a credential band. It states
+          where our engineering works; it must never be used to assert a
+          partner tier, specialization or certification, because those are
+          third-party designations published in vendor directories and a
+          reader can check them in one click. Services that do not set
+          `platformCoverage` render nothing. */}
+      {service.platformCoverage && (
+        <section
+          /* No top rule. Every other section on the page separates on
+             background and spacing alone, so a border here was the one band
+             drawing a line the rest of the page does not draw. */
+          className="py-16 md:py-24"
+          style={{ backgroundColor: '#000000' }}
+          aria-labelledby="platform-coverage-heading"
+        >
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-4 mb-4">
+              <EyebrowRule service={service} />
+              <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
+                {service.platformCoverage.eyebrow}
+              </span>
+            </div>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
+              <h2
+                id="platform-coverage-heading"
+                className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white max-w-3xl"
+              >
+                {service.platformCoverage.title}{' '}
+                <span className="bg-brand-gradient bg-clip-text text-transparent">
+                  {service.platformCoverage.titleHighlight}
+                </span>
+              </h2>
+              {service.platformCoverage.lede && (
+                <p className="text-lg text-white/50 leading-relaxed max-w-md lg:text-right">
+                  {service.platformCoverage.lede}
+                </p>
+              )}
+            </div>
+            {/* No rule between entries. This is a list of names, not a table of
+                rows, and fifteen horizontal lines read as structure the content
+                does not have. The marker and the gap carry the separation. */}
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1.5">
+              {(service.platformCoverage.items || []).map((entry) => (
+                <li key={entry} className="flex items-center gap-3 py-2.5">
+                  <span className="h-1.5 w-1.5 rounded-full shrink-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]" />
+                  <span className="text-white/70 text-[0.95rem] font-medium leading-snug">{entry}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
 
       {/* ══════════════════════ INDUSTRY USE CASES ══════════════════════ */}
       {/* Opt-out per service via hideIndustry, mirroring hideComparison. An
@@ -5204,7 +5270,7 @@ const featureMicros   = service.featureMicros
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="mb-14">
               <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
+                <EyebrowRule service={service} />
                 <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">BY INDUSTRY</span>
               </div>
               <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
@@ -5297,7 +5363,7 @@ const featureMicros   = service.featureMicros
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14 md:mb-18">
                 <div className="max-w-2xl">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="h-[1px] w-12 bg-white/20" />
+                    <EyebrowRule service={service} />
                     <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.architectureEyebrow || 'ARCHITECTURE & EXECUTION LOOP'}</span>
                   </div>
                   <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white font-display">
@@ -5501,7 +5567,7 @@ const featureMicros   = service.featureMicros
         <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-white/20" />
+              <EyebrowRule service={service} />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                 {service.commandCenter?.eyebrow}
               </span>
@@ -5707,7 +5773,7 @@ const featureMicros   = service.featureMicros
                 <div className="space-y-10">
                   <div>
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="h-[1px] w-12 bg-white/20" />
+                      <EyebrowRule service={service} />
                       <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.journeyEyebrow || `${service.name} Journey`}</span>
                     </div>
                     <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white mb-8">
@@ -5754,7 +5820,7 @@ const featureMicros   = service.featureMicros
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="mb-16">
             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-white/20" />
+              <EyebrowRule service={service} />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">HOW WE WORK</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.2] tracking-tight text-white">
@@ -5791,7 +5857,7 @@ const featureMicros   = service.featureMicros
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-16">
               <div>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="h-[1px] w-12 bg-white/20" />
+                  <EyebrowRule service={service} />
                   <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">TECH STACK</span>
                 </div>
                 <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-extrabold leading-[1.2] tracking-tight text-white">
@@ -5867,7 +5933,7 @@ const featureMicros   = service.featureMicros
         <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-white/20" />
+              <EyebrowRule service={service} />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                 {service.accelerators.eyebrow}
               </span>
@@ -5926,7 +5992,7 @@ const featureMicros   = service.featureMicros
         <section className="py-16 md:py-24 border-t border-white/[0.05]" style={{ backgroundColor: '#000000' }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-white/20" />
+              <EyebrowRule service={service} />
               <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                 {service.dataBoundary.eyebrow}
               </span>
@@ -6004,7 +6070,7 @@ const featureMicros   = service.featureMicros
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-32 items-end mb-10 sm:mb-20">
             <div>
               <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
+                <EyebrowRule service={service} />
                 <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">{service.faqEyebrow || 'BEFORE YOU SIGN'}</span>
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.2] tracking-tight text-white">
@@ -6165,7 +6231,7 @@ const featureMicros   = service.featureMicros
         <section className="py-16" style={{ backgroundColor: '#000000' }} aria-labelledby="practice-cluster-heading">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex items-center gap-4 mb-4">
-              <div className="h-[1px] w-12 bg-white/20" />
+              <EyebrowRule service={service} />
               {/* Department names are internal taxonomy. "COGNITION" and "SHIELD"
                   mean something on an org chart and nothing to a buyer, and this
                   heading put one in an h2 on every service page. Opt-in override;
@@ -6217,7 +6283,7 @@ const featureMicros   = service.featureMicros
             {/* Left — statement */}
             <div>
               <div className="flex items-center gap-4 mb-6">
-                <div className="h-[1px] w-12 bg-white/20" />
+                <EyebrowRule service={service} />
                 <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">NEXT STEP</span>
               </div>
               {/* Per service. The default promises an agent in production, which

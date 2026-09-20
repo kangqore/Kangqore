@@ -287,6 +287,7 @@ const TypewriterSkateText = ({
 // fixed so the branding cannot be overridden away. Both fall back to the copy
 // that shipped on every page, so a service that sets neither is unchanged.
 const ConciergeSection = ({
+  hideRule = false,
   inverted = false,
   suggestedPrompts,
   heading = 'From Business Questions to Solution Direction',
@@ -412,7 +413,7 @@ const ConciergeSection = ({
 
         <div className="mb-12 relative z-10">
           <div className="flex items-center gap-4 mb-4">
-            <div className={`h-[1px] w-12 ${inverted ? 'bg-white/40' : 'bg-gray-400 dark:bg-gray-600'}`}></div>
+            {!hideRule && <div className={`h-[1px] w-12 ${inverted ? 'bg-white/40' : 'bg-gray-400 dark:bg-gray-600'}`}></div>}
             <span className={`text-sm font-semibold uppercase tracking-widest ${inverted ? 'text-white/60' : 'text-gray-500 dark:text-gray-400'}`}>
             eQORE AI<sup className="text-[11px] ml-0.5 opacity-70">™</sup> Assistant
             </span>

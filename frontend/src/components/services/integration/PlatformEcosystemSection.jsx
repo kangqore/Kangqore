@@ -27,7 +27,10 @@ export const PlatformEcosystemSection = ({
   title = 'The platforms,',
   titleHighlight = 'and what each is actually for.',
   subtitle = 'Platform choice is mostly settled by what the group already licenses and by whether the hard problem is transformation, throughput or partner exchange.',
-  items = []
+  items = [],
+  // Suppresses the short rule before the eyebrow. Set by the service via
+  // `hideSectionRules`; absent, the rule renders exactly as before.
+  hideRule = false,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -115,7 +118,7 @@ export const PlatformEcosystemSection = ({
           <div className="max-w-2xl">
             {eyebrow && (
               <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-white/20" />
+                {!hideRule && <div className="h-[1px] w-12 bg-white/20" />}
                 <span className="text-sm font-semibold text-white/60 uppercase tracking-widest">
                   {eyebrow}
                 </span>
