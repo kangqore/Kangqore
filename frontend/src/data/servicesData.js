@@ -8355,6 +8355,22 @@ export const servicesData = {
       { illustrative: true, title: 'Access Model', desc: 'Whether access is decided by identity and device posture, or by whether a request arrived from inside the network perimeter.', value: 'Identity', suffix: ' Not Network', metricLabel: 'What Grants Access', icon: 'ShieldCheck' },
       { illustrative: true, title: 'Data Gravity', desc: 'Whether analytics and model work sit beside the data, or on the other side of an egress charge that quietly caps how often they run.', value: 'Beside', suffix: ' Not Across', metricLabel: 'Where Compute Sits', icon: 'Database' },
     ],
+    outcomeCard: {
+      illustrative: true,
+      metric: '1 team → 9',
+      metricLabel: 'able to reach the platform they paid for',
+      industry: 'Modeled scenario in consumer goods, single warehouse estate',
+      problem: 'The warehouse was adopted for one analytics team and worked exactly as intended. Two years later it was still that team’s project. Every other group that wanted access needed a ticket, a security review and a cost conversation, so most of them quietly built something smaller of their own instead.',
+      outcome: 'Project and dataset structure rebuilt so access is granted by policy rather than by exception, with cost attributed to whoever runs the query. The platform stopped being one team’s tool, and the duplicate estates were retired rather than migrated alongside it.',
+    },
+    outcomeCard2: {
+      illustrative: true,
+      metric: '200 → 74',
+      metricLabel: 'applications left in the refactor plan',
+      industry: 'Modeled scenario in manufacturing, mixed estate',
+      problem: 'The program had been scoped to modernize everything, because modernization was what had been sold. No assessment had run per application, so the plan assumed what was true of three flagship systems was true of the other two hundred.',
+      outcome: 'Each application assessed against what it would cost to run after the move rather than what it would cost to move. Seventy four were genuinely worth refactoring, the majority were rehosted and left alone, and eleven were switched off rather than migrated at all.',
+    },
 
     capabilitiesLabel: 'THE GOOGLE CLOUD CAPABILITY MAP',
     capabilitiesSectionTitle: 'Google Cloud Services',
@@ -8480,6 +8496,35 @@ export const servicesData = {
         description: 'Monitoring, cost attribution and drift detection, with improvement work inside the arrangement rather than a separate conversation.',
       },
     ],
+
+    enterpriseArchitecture: {
+      eyebrow: 'OUR APPROACH',
+      title: 'Four things decided',
+      titleHighlight: 'before anything is migrated.',
+      lede: 'Google Cloud programs stall on decisions nobody made rather than on work nobody did. These are the four we settle first, because each one changes the sequence, and all four are far cheaper to answer before a wave than during one.',
+      layers: [
+        {
+          label: 'Strong portfolio mix',
+          role: 'What moves, what stays, and what gets switched off',
+          nodes: ['Rehost', 'Replatform', 'Refactor', 'Replace', 'Re-engineer', 'Leave Alone'],
+        },
+        {
+          label: 'Industry-specific solutions',
+          role: 'What the sector requires before any preference applies',
+          nodes: ['Regulated Residency', 'Sector Data Models', 'Compliance Frameworks', 'Peak Demand Shape', 'Operational Technology Boundary', 'Disclosure Obligations'],
+        },
+        {
+          label: 'Accelerated value realization',
+          role: 'How soon the capability reaches past the team that asked for it',
+          nodes: ['Landing Zone First', 'Repeatable Waves', 'Self Service Access', 'Cost Attribution', 'Rehearsed Cutover', 'Handover To Your Team'],
+        },
+        {
+          label: 'Modernization aligned to business goals',
+          role: 'Why each change is being made at all',
+          nodes: ['Named Business Outcome', 'Cost To Run Afterward', 'Investment Horizon', 'Risk Appetite', 'Exit Path', 'Decision Owner'],
+        },
+      ],
+    },
 
     toolsStack: {
       eyebrow: 'THE GOOGLE CLOUD ENGINEERING FABRIC',
