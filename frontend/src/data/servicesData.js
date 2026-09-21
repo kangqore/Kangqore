@@ -9949,13 +9949,14 @@ export const servicesData = {
       {
         title: 'Device Engineering',
         image: '/images/capabilities/iot-connected.png',
-        desc: 'New electronic products, and the modernization of the ones you already ship, from concept through certification to manufacture.',
+        desc: 'New electronic products, and the modernization of the ones you already ship, across consumer, network, medical and industrial equipment.',
         items: [
-          'Hardware board design: Schematic, layout and signal integrity for the board that will actually ship, with component availability treated as a design constraint rather than a purchasing problem.',
-          'Mechanical engineering: Enclosure, thermal and manufacturability worked alongside the electronics, because the two constrain each other and discovering that late means a respin.',
-          'Embedded software development: Firmware against real silicon rather than an emulator, with the contract between device and platform agreed before either side is written.',
-          'FPGA and VLSI design and verification: Register transfer level design, verification and timing closure where the function genuinely warrants custom logic rather than a general purpose part.',
-          'Prototyping, certification and manufacturing support: Concept to prototype to production, with regulatory submission planned while the layout can still change.',
+          'Hardware board design: Schematic, layout and signal integrity for the board that will actually ship, with component availability treated as a design constraint rather than as a purchasing problem discovered later.',
+          'Mechanical engineering: Enclosure, thermal and manufacturability worked alongside the electronics, because the two constrain each other and finding that out late means a respin rather than an edit.',
+          'Embedded software development: Firmware against real silicon rather than an emulator, with the contract between your device and your platform agreed before either side is written.',
+          'FPGA design and verification: Register transfer level design, simulation and timing closure where programmable logic is genuinely the right answer rather than the familiar one.',
+          'VLSI design and verification: Custom silicon design and verification where volume and function together justify it, which is a narrower set of products than most roadmaps assume.',
+          'End to end design capability: Concept through design, prototyping, regulatory certification and manufacturing, sequenced so getting it right the first time costs less than the revision it avoids.',
         ],
       },
       {
