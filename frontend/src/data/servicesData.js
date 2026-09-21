@@ -10352,7 +10352,7 @@ export const servicesData = {
     whatIsEyebrow: 'COMMIT TO PRODUCTION',
     whatIsTitle: 'Stability, resilience and scale,',
     whatIsHighlightNewLine: true,
-    whatIsHighlight: 'and none of them are pipeline problems.',
+    whatIsHighlight: 'and none of them are pipeline\nproblems.',
     whatIsPara2: 'DevOps bought as a service usually means somebody else runs your pipeline. That moves the bottleneck rather than removing it. The release still waits on a person deciding it is safe, and that person is now on a different payroll.',
     whatIsPara3: 'What actually changes a release is narrower and less fashionable. Whether an outage is detected before a customer reports it. Whether a bad deploy reverses itself or needs a war room. Whether load you did not plan for is absorbed by the platform or by somebody watching a graph at midnight. Stability, resilience and scale, and none of them are pipeline problems.',
     whatIsPara4: 'So we engineer for those three directly. Infrastructure is immutable and declared in code, so an environment is rebuilt rather than repaired. Delivery is progressive, so a change reaches a fraction of traffic first and reverses on a signal rather than on a decision. Observability is built for the question you ask during an incident, not for a dashboard nobody opens.',
