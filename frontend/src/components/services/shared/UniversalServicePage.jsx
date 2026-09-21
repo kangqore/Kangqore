@@ -1356,6 +1356,11 @@ const INDUSTRY_ROUTES = {
   // "Retail & eCommerce" and was the only one of its five industry cards
   // rendering without a link, despite /industries/retail existing.
   'retail & ecommerce': 'retail',
+  // Bare sector labels used by the managed services process towers. Both routes
+  // already exist; only the label spelling differed, so the card rendered
+  // unlinked beside siblings that linked.
+  banking: 'banking',
+  health: 'healthcare',
   ecommerce: 'retail',
   'media & entertainment ': 'media-technology',
   'media & telecommunications': 'media-technology',
