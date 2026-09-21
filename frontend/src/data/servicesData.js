@@ -12866,7 +12866,7 @@ export const servicesData = {
     whatIsTitle: 'Connected Products, Decided',
     whatIsHighlightNewLine: true,
     whatIsHighlight: 'While the Choices Are Still Cheap.',
-    whatIsPara2: 'A connected product is four products at once. There is a board, firmware on it, a platform it reports to, and an application somebody uses. Each is built by a different discipline, and every one of them constrains the other three.',
+    whatIsPara2: 'From homes to industries to enterprises, connected devices have become commonplace, and getting them connected is no longer the hard part. What is hard is that a connected product is four products at once. There is a board, firmware on it, a platform it reports to, and an application somebody uses, and every one of them constrains the other three.',
     whatIsPara3: 'That is why these programs slip late rather than early. A power budget assumed in month one, a protocol chosen for convenience, a certification region nobody listed, an asset identity that differs between two systems. None of it looks like a problem at the time. All of it surfaces in month nine, when the answer is a respin and a respin is weeks of fabrication before anybody can even confirm the fix.',
     whatIsPara4: 'So we make the expensive decisions first and in one place. Hardware, platform and application are shaped together rather than handed between teams. Pre-compliance runs before design freeze. The contract between firmware and cloud is written before either side is. The asset model is settled before integration starts.',
     whatIsPara5: 'The result is not a faster build. It is a build without the quarter that usually disappears between the prototype that worked and the fleet you are allowed to ship.',
@@ -13129,6 +13129,13 @@ export const servicesData = {
     faqHeadingHighlight: 'answered (FAQ).',
     faqLede: 'The questions below are the ones product and operations leaders actually ask in a first call, on sequencing, hardware, connectivity, security and what happens to devices already in the field. Answers are direct rather than promotional.',
     customFAQs: [
+      {
+        q: 'What should an IoT program actually deliver?',
+        sources: [
+          { label: 'NIST cyber-physical systems framework', url: 'https://www.nist.gov/el/cyber-physical-systems' },
+        ],
+        a: 'Six things, and a program that cannot say which of them it exists for usually delivers none of them.\n\nConnect and scale with efficiency. Analyze and act on new data. Integrate and transform the business processes the devices serve. Improve decision making with augmented intelligence rather than with more dashboards. Design, develop, integrate, deploy and manage the whole process end to end. And integrate the result with the enterprise architecture you already run rather than beside it.\n\nThat span is deliberate, from integrating the right sensors and deriving the insight through to choosing the platform that fits. The value is rarely in any one step, which is why programs that buy the steps separately spend their time at the seams between them.\n\nGetting there means understanding where value is actually created and then systematically addressing the challenges underneath it, which is the unglamorous half of the work. Done properly the result is business value you can point at, better efficiency, and a lower operations and maintenance cost across the fleet lifetime.',
+      },
       {
         q: 'We have an idea for a connected product. What happens first?',
         sources: [
