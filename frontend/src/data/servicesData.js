@@ -10342,7 +10342,7 @@ export const servicesData = {
     image: '/images/capabilities/devops-modernization-illustration.png',
     lastReviewed: '2026-09-22',
 
-    heroTitle: 'DevOps as a Service at\nEnterprise Scale by Kangqore',
+    heroTitle: 'DevOps as a Service Solutions at\nEnterprise Scale by Kangqore',
     heroBadge: 'Stability, Resilience, Scale',
     heroStripItems: ['Advisory', 'Immutable Infrastructure', 'CI/CD', 'Progressive Delivery', 'Observability'],
     hidePartnershipModel: true,
