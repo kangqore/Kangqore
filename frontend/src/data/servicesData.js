@@ -12863,8 +12863,8 @@ export const servicesData = {
     hideOutcomeCards: true,
 
     whatIsEyebrow: 'DEVICE, PLATFORM, APPLICATION',
-    whatIsTitle: 'Internet of Things, Engineered',
-    whatIsHighlightNewLine: true,
+    whatIsTitle: 'IoT Engineered',
+    whatIsHighlightNewLine: false,
     whatIsHighlight: 'End to End.',
     whatIsPara2: 'From homes to industries to enterprises, connected devices have become commonplace, and getting them connected is no longer the hard part. What is hard is that a connected product is four products at once. There is a board, firmware on it, a platform it reports to, and an application somebody uses, and every one of them constrains the other three.',
     whatIsPara3: 'That is why these programs slip late rather than early. A power budget assumed in month one, a protocol chosen for convenience, a certification region nobody listed, an asset identity that differs between two systems. None of it looks like a problem at the time. All of it surfaces in month nine, when the answer is a respin and a respin is weeks of fabrication before anybody can even confirm the fix.',
