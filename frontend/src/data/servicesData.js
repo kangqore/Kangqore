@@ -9926,15 +9926,12 @@ export const servicesData = {
       {
         title: 'Platform Engineering',
         image: '/images/capabilities/cloud-infrastructure.png',
-        desc: 'Cloud native platforms on Azure and AWS, taken from strategy and consulting through integration to modernization.',
+        desc: 'Platform building, device transformation and modernization, cloud native on Microsoft Azure and AWS.',
         items: [
-          'Platform building: Digital ecosystems designed and built cloud native, scalable and secure on Microsoft Azure and AWS, carried from strategy and consulting through integration rather than handed over at the design stage.',
-          'Device transformation: IoT work including digital twin and edge computing, so devices and platforms never designed to talk to each other can, and the automation that follows acts on insight rather than on a schedule.',
-          'Modernization: Existing platforms moved to modern architecture, monolith to microservices, with backend, API and interface optimized together so performance, security and the experience improve at once rather than in sequence.',
           'Technology accelerators: Azure migration tooling and starter kits across microservices and IoT, so your program builds the product rather than rebuilding the same scaffolding each time.',
-          'AI powered productivity tools: Tooling across the lifecycle that speeds your engineers up and shortens time to market, measured on cycle time rather than on adoption.',
+          'AI powered productivity tools: Productivity tooling across the lifecycle that speeds your engineers up and shortens time to market, measured on cycle time rather than on adoption.',
           'Industry specific expertise: Tailored solutions for healthcare, edtech and manufacturing, where the sector decides the architecture before any preference applies.',
-          'Business benefits: Reliability, cost savings, future readiness and agility, stated as the outcomes the platform work is accountable for rather than as its selling points.',
+          'Business benefits: Reliability, cost savings, future readiness and agility, stated as what the platform work is accountable for rather than as its selling points.',
         ],
       },
       {
