@@ -9960,13 +9960,12 @@ export const servicesData = {
       {
         title: 'Experience Engineering',
         image: '/images/capabilities/ux-design.png',
-        desc: 'Design and engineering as one team, because the handoff between them is where your product quietly loses its consistency.',
+        desc: 'Design thinking and human centered design, with experience treated as an expectation rather than a differentiator.',
         items: [
-          'Design research: Understand what your users are actually trying to do before deciding what to build, including the people who abandoned your product and never said why.',
-          'Experience design: Interaction and interface design grounded in human centered practice, with the difficult states designed rather than left to whatever the framework renders.',
-          'Design systems: A shared component library that design and engineering both build from, so a design is handed over as working components rather than as a specification to reinterpret.',
-          'Accessibility and inclusive design: Treated as a requirement inside delivery, because retrofitting it after launch is the most expensive way to arrive at the same place.',
-          'Experience measurement: Instrumented journeys showing where your users actually stop, so the next iteration is informed by behavior rather than by opinion in a review.',
+          'Diversity led solution and innovation: A dedicated experience engineering practice where industry knowledge, design thinking and technical expertise are practiced together rather than bought from three places.',
+          'Greater consistency: UX and development working as one team, so the experience holds together across the handoffs where it usually comes apart.',
+          'Improved knowledge collaboration: Technical and design expertise combined, so what gets designed is user centric and technically feasible rather than one at the cost of the other.',
+          'Faster time to market: Delays caused by handoffs between external design teams removed, because those are the weeks nobody puts in your plan.',
         ],
       },
       {
