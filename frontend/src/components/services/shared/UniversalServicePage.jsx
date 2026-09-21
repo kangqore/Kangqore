@@ -5223,6 +5223,67 @@ const featureMicros   = service.featureMicros
           third-party designations published in vendor directories and a
           reader can check them in one click. Services that do not set
           `platformCoverage` render nothing. */}
+      {/* ─── Focus areas ────────────────────────────────────────────────────
+          A numbered list of segments: an ordinal, the segment name, the
+          sectors it covers, and a sentence about it. Opt-in via `focusAreas`;
+          services that do not set it render nothing. */}
+      {service.focusAreas && (
+        <section className="pb-16 md:pb-20" style={{ backgroundColor: '#000000' }} aria-label="Focus areas">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            {service.focusAreas.lede && (
+              <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-4xl mb-12">{service.focusAreas.lede}</p>
+            )}
+            <ol className="space-y-8">
+              {(service.focusAreas.items || []).map((seg, n) => (
+                <li key={seg.label} className="flex gap-5 sm:gap-7">
+                  <span className="shrink-0 text-2xl sm:text-3xl font-black leading-none pt-0.5 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent">
+                    {n + 1}.
+                  </span>
+                  <div>
+                    <p className="text-lg sm:text-xl font-bold text-white leading-snug">
+                      {seg.label}
+                      {seg.sectors ? <span className="font-medium text-white/50"> {seg.sectors}</span> : null}
+                    </p>
+                    <p className="mt-2 text-white/60 text-[0.95rem] sm:text-base leading-relaxed max-w-3xl">{seg.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {/* ─── Offer table ────────────────────────────────────────────────────
+          A banded header over evenly divided columns, each a heading and a
+          bullet list. Mirrors a source layout that is genuinely a table
+          rather than a carousel or an accordion. Opt-in via `offerTable`. */}
+      {service.offerTable && (
+        <section className="pb-16 md:pb-24" style={{ backgroundColor: '#000000' }} aria-label="What we offer">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="rounded-2xl overflow-hidden border border-white/10">
+              <div className="px-6 py-4 text-center text-white font-bold text-base sm:text-lg bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]">
+                {service.offerTable.banner}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                {(service.offerTable.columns || []).map((col) => (
+                  <div key={col.title} className="p-6 sm:p-8">
+                    <h3 className="text-base sm:text-lg font-bold text-white mb-4">{col.title}</h3>
+                    <ul className="space-y-3">
+                      {(col.items || []).map((entry) => (
+                        <li key={entry} className="flex items-start gap-2.5 text-white/65 text-[0.95rem] leading-relaxed">
+                          <span className="mt-2 h-1.5 w-1.5 rounded-full shrink-0 bg-gradient-to-r from-[#2564ea] to-[#4ab6d4]" />
+                          <span>{entry}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {service.platformCoverage && (
         <section
           /* No top rule. Every other section on the page separates on

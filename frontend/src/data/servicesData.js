@@ -12854,18 +12854,19 @@ export const servicesData = {
     image: '/images/capabilities/iot-connected.png',
     lastReviewed: '2026-09-21',
 
-    heroTitle: 'Internet of Things at\nEnterprise Scale by Kangqore',
+    heroTitle: 'Internet of Things (IoT) at Industries\nto Enterprise Scale by Kangqore',
     heroBadge: 'Decided Before the Board Is Cut',
     heroStripItems: ['Consulting', 'Devices', 'Platforms', 'Integration', 'Managed Operations'],
     hidePartnershipModel: true,
+    hideArchitecture: true,
     hideMetrics: true,
     hideOutcomeCards: true,
 
-    whatIsEyebrow: 'WHY CONNECTED PRODUCTS SLIP LATE',
-    whatIsTitle: 'Connected Products, Decided',
-    whatIsHighlightNewLine: true,
-    whatIsHighlight: 'While the Choices Are Still Cheap.',
-    whatIsPara2: 'A connected product is four products at once. There is a board, firmware on it, a platform it reports to, and an application somebody uses. Each is built by a different discipline, and every one of them constrains the other three.',
+    whatIsEyebrow: 'DEVICE, PLATFORM, APPLICATION',
+    whatIsTitle: 'IoT Engineered',
+    whatIsHighlightNewLine: false,
+    whatIsHighlight: 'End to End.',
+    whatIsPara2: 'From homes to industries to enterprises, connected devices have become commonplace, and getting them connected is no longer the hard part. What is hard is that a connected product is four products at once. There is a board, firmware on it, a platform it reports to, and an application somebody uses, and every one of them constrains the other three.',
     whatIsPara3: 'That is why these programs slip late rather than early. A power budget assumed in month one, a protocol chosen for convenience, a certification region nobody listed, an asset identity that differs between two systems. None of it looks like a problem at the time. All of it surfaces in month nine, when the answer is a respin and a respin is weeks of fabrication before anybody can even confirm the fix.',
     whatIsPara4: 'So we make the expensive decisions first and in one place. Hardware, platform and application are shaped together rather than handed between teams. Pre-compliance runs before design freeze. The contract between firmware and cloud is written before either side is. The asset model is settled before integration starts.',
     whatIsPara5: 'The result is not a faster build. It is a build without the quarter that usually disappears between the prototype that worked and the fleet you are allowed to ship.',
@@ -12880,11 +12881,11 @@ export const servicesData = {
         image: '/images/capabilities/business-strategy.png',
         desc: 'Deciding what to build and why, and whether to build it at all, before anything is committed to hardware.',
         items: [
-          'Requirement elicitation and analysis: Establish what the deployment has to do and under which constraints, because in connected products the constraints decide the architecture and they are what requirements documents usually omit.',
-          'Business process modeling with technology and process consulting: Model the process the devices are meant to serve, since instrumenting a process nobody has examined produces data about a problem rather than a solution to it.',
-          'Defining the problem statement along with recommendation on solution blueprint: A written problem statement and a blueprint you can challenge, rather than a technology selection presented as a conclusion.',
-          'Thought leadership and repository of business-ready use cases: Patterns that have been built before, so your program starts from what is known rather than discovering it at your expense.',
-          'Product and service enhancements: What the deployment should become once it is live, because the second release is where connected products either earn their place or stall.',
+          'Requirement elicitation and analysis: Establish what the deployment has to do, and the connectivity, physical environment, service life and certification region it has to do it in. Each of those eliminates options before any preference applies, and they are what requirement documents usually omit.',
+          'Business process modeling with technology and process consulting: Model the process the devices are meant to serve, since instrumenting a plant or a field operation nobody has examined produces telemetry about a problem rather than a solution to it.',
+          'Defining the problem statement along with recommendation on solution blueprint: A written problem statement and a blueprint you can challenge. The decisions it settles, protocol, silicon, form factor, are the ones that get fabricated, and a fabricated decision is a respin rather than an edit.',
+          'Thought leadership and repository of business-ready use cases: Reference architectures for connected products that have been built before, covering the parts that are always the same, device identity, update path and the boundary to your existing systems.',
+          'Product and service enhancements: What the deployment should become once units are live, which is constrained by what the fleet already in the field can actually be updated to rather than by what the roadmap would prefer.',
         ],
       },
       {
@@ -12998,43 +12999,58 @@ export const servicesData = {
       },
     ],
 
-    architectureEyebrow: 'HOW AN IOT PROGRAM ACTUALLY RUNS',
-    architectureTitle: 'Problem statement to running fleet,',
-    architectureTitleHighlight: 'with the hardware decided early.',
-    architectureLede: 'Connected products slip because a decision that was cheap in month one became a respin in month nine. This is the sequence we run, and the expensive choices are made while they are still choices.',
-    architectureVisibleCount: 4,
-    architectureNodes: [
-      {
-        title: 'Consult',
-        icon: 'Search',
-        description: 'What the deployment has to achieve, which process it serves, and the written problem statement you can challenge before anything is built.',
-      },
-      {
-        title: 'Design',
-        icon: 'Target',
-        description: 'Hardware, platform and application shaped together, because in connected products they constrain each other and late is expensive.',
-      },
-      {
-        title: 'Build',
-        icon: 'Cpu',
-        description: 'Board, firmware, platform and applications engineered against real silicon rather than against a model of it.',
-      },
-      {
-        title: 'Integrate',
-        icon: 'Network',
-        description: 'Connected to the systems that already run your business, so events reach the people and processes that act on them.',
-      },
-      {
-        title: 'Verify',
-        icon: 'ShieldCheck',
-        description: 'Lab, field and platform testing at fleet scale, plus the certification work that decides whether it can ship at all.',
-      },
-      {
-        title: 'Operate',
-        icon: 'Eye',
-        description: 'Run the fleet, update it safely, and return field evidence to engineering rather than to a warranty log.',
-      },
-    ],
+    focusAreas: {
+      lede: 'Our end to end IoT solutions empower smart industries, smart living and smart enterprises, and deliver connected experiences by connecting assets, operations and logistics, and services. We have expertise across all stages of IoT adoption, and we focus predominantly on the segments below.',
+      items: [
+        {
+          label: 'Smart Industries',
+          sectors: 'Manufacturing, Energy, Utilities.',
+          description: 'Re-imagine processes to unlock the true potential of your industry while facilitating sustainable development.',
+        },
+        {
+          label: 'Smart Living',
+          sectors: 'Wearables, Healthcare, Security.',
+          description: 'Enhance the quality of life by embracing emerging technologies designed to foster a healthier, happier and safe environment.',
+        },
+        {
+          label: 'Smart Enterprises',
+          sectors: 'Smart homes, Buildings, Offices, Retail.',
+          description: 'Connect people, machines and information using big data to enhance business efficiency in a secured ecosystem.',
+        },
+      ],
+    },
+
+    offerTable: {
+      banner: 'Enabling IoT Adoption across All Stages',
+      columns: [
+        {
+          title: 'Proof of Concept',
+          items: [
+            'Bring in connectivity to already deployed devices',
+            'Quick prototyping with the cloud based IoT platform',
+            'Demonstrate possible business value',
+          ],
+        },
+        {
+          title: 'Productization',
+          items: [
+            'Creation of next generation connected devices',
+            'Identify the right partner for IoT platform',
+            'Combine data with existing enterprise systems',
+            'Create business applications',
+          ],
+        },
+        {
+          title: 'Operationalization',
+          items: [
+            'On-board groups and users',
+            'On-board devices',
+            'Create operations center',
+            'Monitor and manage devices and business',
+          ],
+        },
+      ],
+    },
 
     toolsStack: {
       eyebrow: 'THE IOT ENGINEERING FABRIC',
@@ -13113,6 +13129,13 @@ export const servicesData = {
     faqHeadingHighlight: 'answered (FAQ).',
     faqLede: 'The questions below are the ones product and operations leaders actually ask in a first call, on sequencing, hardware, connectivity, security and what happens to devices already in the field. Answers are direct rather than promotional.',
     customFAQs: [
+      {
+        q: 'What should an IoT program actually deliver?',
+        sources: [
+          { label: 'NIST cyber-physical systems framework', url: 'https://www.nist.gov/el/cyber-physical-systems' },
+        ],
+        a: 'Six things, and a program that cannot say which of them it exists for usually delivers none of them.\n\nConnect and scale with efficiency. Analyze and act on new data. Integrate and transform the business processes the devices serve. Improve decision making with augmented intelligence rather than with more dashboards. Design, develop, integrate, deploy and manage the whole process end to end. And integrate the result with the enterprise architecture you already run rather than beside it.\n\nThat span is deliberate, from integrating the right sensors and deriving the insight through to choosing the platform that fits. The value is rarely in any one step, which is why programs that buy the steps separately spend their time at the seams between them.\n\nGetting there means understanding where value is actually created and then systematically addressing the challenges underneath it, which is the unglamorous half of the work. Done properly the result is business value you can point at, better efficiency, and a lower operations and maintenance cost across the fleet lifetime.',
+      },
       {
         q: 'We have an idea for a connected product. What happens first?',
         sources: [
@@ -13340,8 +13363,8 @@ export const servicesData = {
       'Book a solution read',
     ],
 
-    midCta: 'The expensive decisions in a connected product are made in month one.',
-    midCtaLabel: 'Book a Solution Read',
+    midCta: 'Want to explore what Internet of Things (IoT) can do for your business?',
+    midCtaLabel: 'Schedule your assessment today',
 
     closingCta: {
       title: 'Your deployment,',

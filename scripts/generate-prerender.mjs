@@ -411,6 +411,29 @@ ${blockList(svc.dataBoundary.blocks || [], 'label', 'body')}
   // Mirrors the platformCoverage band in UniversalServicePage. It is a
   // coverage statement, never a credential: the heading and items say where the
   // work reaches, and must not assert a partner tier or certification.
+  // Mirror the focus-areas list and the offer table so the snapshot carries
+  // what the page shows. Both are plain lists for a crawler; the layout is the
+  // page's job, the content is this file's.
+  const focus = svc.focusAreas
+    ? `\n    <h2>${esc([svc.focusAreas.title, svc.focusAreas.titleHighlight].filter(Boolean).join(' '))}</h2>
+    ${svc.focusAreas.lede ? `<p>${esc(svc.focusAreas.lede)}</p>` : ''}
+${(svc.focusAreas.items || []).map((x) => `      <section>
+        <h3>${esc(x.label)}${x.sectors ? '. ' + esc(x.sectors) : ''}</h3>
+        <p>${esc(x.description)}</p>
+      </section>`).join('\n')}`
+    : '';
+
+  const offer = svc.offerTable
+    ? `\n    <h2>${esc([svc.offerTable.title, svc.offerTable.titleHighlight].filter(Boolean).join(' '))}</h2>
+    ${svc.offerTable.banner ? `<p>${esc(svc.offerTable.banner)}</p>` : ''}
+${(svc.offerTable.columns || []).map((c) => `      <section>
+        <h3>${esc(c.title)}</h3>
+        <ul>
+${(c.items || []).map((i) => `          <li>${esc(i)}</li>`).join('\n')}
+        </ul>
+      </section>`).join('\n')}`
+    : '';
+
   const coverage = svc.platformCoverage
     ? `\n    <h2>${esc([svc.platformCoverage.title, svc.platformCoverage.titleHighlight].filter(Boolean).join(' '))}</h2>
     ${svc.platformCoverage.lede ? `<p>${esc(svc.platformCoverage.lede)}</p>` : ''}
@@ -537,7 +560,7 @@ ${whatIsHeading}    ${svc.whatIsPara2 ? `<p>${esc(svc.whatIsPara2)}</p>` : ''}
 
     ${capabilities ? `<h2>${esc(svc.capabilitiesSectionTitle || 'Capabilities')} ${esc(svc.capabilitiesSectionHighlight || '')}</h2>\n${svc.capabilitiesLede ? `      <p>${esc(svc.capabilitiesLede)}</p>\n` : ''}${capabilities}` : ''}
 
-${carousel}    ${entArch}${coverage}
+${carousel}    ${entArch}${coverage}${focus}${offer}
 
     ${svc.midCta ? `<p>${esc(svc.midCta)}</p>` : ''}
 
