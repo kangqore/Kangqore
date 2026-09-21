@@ -9952,14 +9952,9 @@ export const servicesData = {
       {
         title: 'Device Engineering',
         image: '/images/capabilities/iot-connected.png',
-        desc: 'New electronic products, and the modernization of the ones you already ship, across consumer, network, medical and industrial equipment.',
+        desc: 'Board design, mechanical, embedded software, FPGA and VLSI, across consumer, network, medical and industrial equipment.',
         items: [
-          'Hardware board design: Schematic, layout and signal integrity for the board that will actually ship, with component availability treated as a design constraint rather than as a purchasing problem discovered later.',
-          'Mechanical engineering: Enclosure, thermal and manufacturability worked alongside the electronics, because the two constrain each other and finding that out late means a respin rather than an edit.',
-          'Embedded software development: Firmware against real silicon rather than an emulator, with the contract between your device and your platform agreed before either side is written.',
-          'FPGA design and verification: Register transfer level design, simulation and timing closure where programmable logic is genuinely the right answer rather than the familiar one.',
-          'VLSI design and verification: Custom silicon design and verification where volume and function together justify it, which is a narrower set of products than most roadmaps assume.',
-          'End to end design capability: Comprehensive design services from initial concept through design, prototyping, regulatory certification and manufacturing.',
+          'End to end design capability: Comprehensive design services from initial concept through design, prototyping and manufacturing, so no stage is handed to someone who was not in the one before it.',
           'Accelerate time to market: The design process is built to get it right the first time, which minimizes design revision, and every revision avoided is weeks of fabrication you do not spend.',
           'Quality commitment: Strict quality checks through the build, so your products work reliably and last, rather than passing at the bench and failing in the field.',
           'Focus on customer goals: Custom solutions built to your goals and objectives, which means the requirements conversation happens before the architecture rather than after it.',
