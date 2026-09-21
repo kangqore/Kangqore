@@ -9926,13 +9926,11 @@ export const servicesData = {
       {
         title: 'Platform Engineering',
         image: '/images/capabilities/cloud-infrastructure.png',
-        desc: 'The architecture your product stands on, built to scale before it has to and to be left rather than locked into.',
+        desc: 'Cloud native platforms on Azure and AWS, taken from strategy and consulting through integration to modernization.',
         items: [
-          'Platform building: Cloud native, scalable and secure platforms on Azure and AWS, designed from the consulting stage rather than assembled from whatever each of your teams provisioned first.',
-          'Device transformation: Connected device and digital twin work where equipment has to talk to a platform, with edge processing placed where latency or bandwidth makes a round trip impractical.',
-          'Modernization: Monolith to microservices where your application shape genuinely calls for it, with backend, API and interface optimized together rather than one at a time.',
-          'Industry specific engineering: Reference architectures for healthcare, education and manufacturing, because those sectors decide the architecture before any preference applies.',
-          'Developer productivity: Tooling across the lifecycle so your engineers spend their time on the product rather than on the work around it, measured on cycle time instead of on adoption.',
+          'Platform building: Digital ecosystems designed and built cloud native, scalable and secure on Microsoft Azure and AWS, carried from strategy and consulting through integration rather than handed over at the design stage.',
+          'Device transformation: IoT work including digital twin and edge computing, so devices and platforms never designed to talk to each other can, and the automation that follows acts on insight rather than on a schedule.',
+          'Modernization: Existing platforms moved to modern architecture, monolith to microservices, with backend, API and interface optimized together so performance, security and the experience improve at once rather than in sequence.',
         ],
       },
       {
