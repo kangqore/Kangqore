@@ -12881,11 +12881,11 @@ export const servicesData = {
         image: '/images/capabilities/business-strategy.png',
         desc: 'Deciding what to build and why, and whether to build it at all, before anything is committed to hardware.',
         items: [
-          'Requirement elicitation and analysis: Establish what the deployment has to do and under which constraints, because in connected products the constraints decide the architecture and they are what requirements documents usually omit.',
-          'Business process modeling with technology and process consulting: Model the process the devices are meant to serve, since instrumenting a process nobody has examined produces data about a problem rather than a solution to it.',
-          'Defining the problem statement along with recommendation on solution blueprint: A written problem statement and a blueprint you can challenge, rather than a technology selection presented as a conclusion.',
-          'Thought leadership and repository of business-ready use cases: Patterns that have been built before, so your program starts from what is known rather than discovering it at your expense.',
-          'Product and service enhancements: What the deployment should become once it is live, because the second release is where connected products either earn their place or stall.',
+          'Requirement elicitation and analysis: Establish what the deployment has to do, and the connectivity, physical environment, service life and certification region it has to do it in. Each of those eliminates options before any preference applies, and they are what requirement documents usually omit.',
+          'Business process modeling with technology and process consulting: Model the process the devices are meant to serve, since instrumenting a plant or a field operation nobody has examined produces telemetry about a problem rather than a solution to it.',
+          'Defining the problem statement along with recommendation on solution blueprint: A written problem statement and a blueprint you can challenge. The decisions it settles, protocol, silicon, form factor, are the ones that get fabricated, and a fabricated decision is a respin rather than an edit.',
+          'Thought leadership and repository of business-ready use cases: Reference architectures for connected products that have been built before, covering the parts that are always the same, device identity, update path and the boundary to your existing systems.',
+          'Product and service enhancements: What the deployment should become once units are live, which is constrained by what the fleet already in the field can actually be updated to rather than by what the roadmap would prefer.',
         ],
       },
       {
@@ -13363,8 +13363,8 @@ export const servicesData = {
       'Book a solution read',
     ],
 
-    midCta: 'The expensive decisions in a connected product are made in month one.',
-    midCtaLabel: 'Book a Solution Read',
+    midCta: 'Want to explore what Internet of Things (IoT) can do for your business?',
+    midCtaLabel: 'Schedule your assessment today',
 
     closingCta: {
       title: 'Your deployment,',
