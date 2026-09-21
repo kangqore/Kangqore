@@ -13000,9 +13000,6 @@ export const servicesData = {
     ],
 
     focusAreas: {
-      eyebrow: 'FOCUS AREAS',
-      title: 'Smart industries, smart living',
-      titleHighlight: 'and smart enterprises.',
       lede: 'Our end to end IoT solutions empower smart industries, smart living and smart enterprises, and deliver connected experiences by connecting assets, operations and logistics, and services. We have expertise across all stages of IoT adoption, and we focus predominantly on the segments below.',
       items: [
         {
@@ -13024,9 +13021,6 @@ export const servicesData = {
     },
 
     offerTable: {
-      eyebrow: 'WHAT WE OFFER',
-      title: 'Proof of concept, productization,',
-      titleHighlight: 'operationalization.',
       banner: 'Enabling IoT Adoption across All Stages',
       columns: [
         {
