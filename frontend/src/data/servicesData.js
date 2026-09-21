@@ -12854,7 +12854,7 @@ export const servicesData = {
     image: '/images/capabilities/iot-connected.png',
     lastReviewed: '2026-09-21',
 
-    heroTitle: 'Internet of Things at\nEnterprise Scale by Kangqore',
+    heroTitle: 'Internet of Things (IoT) at Industries\nto Enterprise Scale by Kangqore',
     heroBadge: 'Decided Before the Board Is Cut',
     heroStripItems: ['Consulting', 'Devices', 'Platforms', 'Integration', 'Managed Operations'],
     hidePartnershipModel: true,
