@@ -516,9 +516,9 @@ export const serviceSEO = {
     url: '/services/infrastructure-modernization',
   },
   'managed-services': {
-    title: 'Managed Services — Foundry | Kangqore',
-    description: 'Full suite of managed IT services — service desk, application management, infrastructure management, security services, and cloud management.',
-    keywords: 'managed IT services, service desk, application management, infrastructure management, cloud management',
+    title: 'Enterprise Managed Services and Capabilities | Kangqore',
+    description: 'Data and AI, capability centers, applications, infrastructure and security, run as a service so the estate gets smaller rather than merely staying up.',
+    keywords: 'managed services, managed data and AI, global capability centers, application managed services, infrastructure managed services, cybersecurity managed services, service desk, ITSM',
     url: '/services/managed-services',
   },
   'support-maintenance': {
