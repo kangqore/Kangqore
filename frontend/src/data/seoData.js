@@ -540,9 +540,9 @@ export const serviceSEO = {
     url: '/services/api-microservices-engineering',
   },
   'internet-of-things': {
-    title: 'Internet of Things (IoT) — Foundry | Kangqore',
-    description: 'End-to-end IoT — IoT architecture, device connectivity, IoT analytics, platform integration, and security for connected device ecosystems.',
-    keywords: 'Internet of Things, IoT services, IoT platform, IoT analytics, device connectivity, IoT security',
+    title: 'Internet of Things Services and Capabilities | Kangqore',
+    description: 'Consulting, connected devices, IoT platforms, applications, integration, testing and managed fleet operations, decided before the board is cut.',
+    keywords: 'IoT services, IoT consulting, connected device engineering, IoT platform, PCB and firmware design, OTA updates, edge processing, industrial IoT, device testing, managed fleet operations',
     url: '/services/internet-of-things',
   },
 
