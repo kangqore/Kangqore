@@ -9938,11 +9938,12 @@ export const servicesData = {
         image: '/images/capabilities/quality-testing.png',
         desc: 'Automation first and risk based, sitting inside your pipeline rather than arriving as a stage before launch.',
         items: [
-          'QE consulting: Your testing maturity assessed against recognized models, then a transformation plan with an outcome attached rather than a tooling list.',
-          'Test automation: Open source and commercial frameworks against the same pipeline that builds the product, so a suite cannot quietly drift behind the code it tests.',
-          'Web, mobile and connected device testing: Real device coverage across browsers, handsets and connected television, because emulators forgive what your customers do not.',
-          'Performance, security and compliance testing: Load behavior, vulnerability and regulatory checks run on a schedule the release can absorb rather than in the week before it.',
+          'QE consulting: Testing maturity assessed against TMMi and CMMi, then a transformation strategy with an outcome attached rather than a tooling list, including tool rationalization and whether a quality center of excellence or embedded pods is the right shape for you.',
+          'QE services: Test automation on open source and commercial frameworks across web, mobile, connected television and packaged applications, run against the same pipeline that builds your product.',
+          'AI and GenAI driven automation: Model assisted test generation, maintenance and failure triage, applied where it genuinely reduces the upkeep of a suite rather than where it demonstrates well.',
+          'Performance, security and compliance testing: Load behavior, vulnerability and regulatory checks on a cadence your release can absorb rather than in the week before it.',
           'Digital experience testing: Compatibility, accessibility and end user experience verified as requirements, not audited afterward when the finding costs a redesign.',
+          'Testing as a service: Quality capacity you can consume directly, without building a permanent team for a peak you meet twice a year.',
         ],
       },
       {
