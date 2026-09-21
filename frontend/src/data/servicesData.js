@@ -12998,43 +12998,52 @@ export const servicesData = {
       },
     ],
 
-    architectureEyebrow: 'HOW AN IOT PROGRAM ACTUALLY RUNS',
-    architectureTitle: 'Problem statement to running fleet,',
-    architectureTitleHighlight: 'with the hardware decided early.',
-    architectureLede: 'Connected products slip because a decision that was cheap in month one became a respin in month nine. This is the sequence we run, and the expensive choices are made while they are still choices.',
-    architectureVisibleCount: 4,
+    architectureEyebrow: 'ENABLING IOT ADOPTION ACROSS ALL STAGES',
+    architectureTitle: 'Proof of concept, productization,',
+    architectureTitleHighlight: 'operationalization.',
+    architectureLede: 'Three stages, and most programs stall between the first and the second. A proof of concept proves the idea is possible; productization is where it becomes something you can actually sell and support.',
+    architectureVisibleCount: 3,
     architectureNodes: [
       {
-        title: 'Consult',
+        title: 'Proof of Concept',
         icon: 'Search',
-        description: 'What the deployment has to achieve, which process it serves, and the written problem statement you can challenge before anything is built.',
+        description: 'Bring connectivity to devices you have already deployed, prototype quickly on a cloud IoT platform, and demonstrate the business value before anyone commits to hardware.',
       },
       {
-        title: 'Design',
-        icon: 'Target',
-        description: 'Hardware, platform and application shaped together, because in connected products they constrain each other and late is expensive.',
-      },
-      {
-        title: 'Build',
+        title: 'Productization',
         icon: 'Cpu',
-        description: 'Board, firmware, platform and applications engineered against real silicon rather than against a model of it.',
+        description: 'Create the next generation connected device, choose the platform that fits rather than the one that demonstrated well, combine the data with your existing enterprise systems and build the applications on top.',
       },
       {
-        title: 'Integrate',
-        icon: 'Network',
-        description: 'Connected to the systems that already run your business, so events reach the people and processes that act on them.',
-      },
-      {
-        title: 'Verify',
-        icon: 'ShieldCheck',
-        description: 'Lab, field and platform testing at fleet scale, plus the certification work that decides whether it can ship at all.',
-      },
-      {
-        title: 'Operate',
-        icon: 'Eye',
-        description: 'Run the fleet, update it safely, and return field evidence to engineering rather than to a warranty log.',
+        title: 'Operationalization',
+        icon: 'Settings',
+        description: 'Onboard your groups, users and devices, stand up an operations center, and monitor and manage both the fleet and the business it runs.',
       },
     ],
+
+    enterpriseArchitecture: {
+      eyebrow: 'FOCUS AREAS',
+      title: 'Connected assets, operations',
+      titleHighlight: 'and services.',
+      lede: 'We work across every stage of IoT adoption, and these three segments are where the work concentrates. Each connects a different set of things, and what they demand of an architecture is genuinely different.',
+      layers: [
+        {
+          label: 'Smart Industries',
+          role: 'Manufacturing, energy and utilities',
+          nodes: ['Condition Monitoring', 'Predictive Maintenance', 'Process Re-imagining', 'Operational Technology Boundary', 'Sustainable Operation', 'Long Support Horizons'],
+        },
+        {
+          label: 'Smart Living',
+          role: 'Wearables, healthcare and security',
+          nodes: ['Body-Worn Devices', 'Connected Clinical Equipment', 'Safety And Security', 'Regulatory Classification', 'Battery And Power Budget', 'Personal Data Obligations'],
+        },
+        {
+          label: 'Smart Enterprises',
+          role: 'Homes, buildings, offices and retail',
+          nodes: ['Building Systems', 'Occupancy And Energy', 'Connected Store', 'People, Machines And Information', 'Big Data At Estate Scale', 'Secured Ecosystem'],
+        },
+      ],
+    },
 
     toolsStack: {
       eyebrow: 'THE IOT ENGINEERING FABRIC',
