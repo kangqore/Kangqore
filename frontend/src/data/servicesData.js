@@ -12858,6 +12858,7 @@ export const servicesData = {
     heroBadge: 'Decided Before the Board Is Cut',
     heroStripItems: ['Consulting', 'Devices', 'Platforms', 'Integration', 'Managed Operations'],
     hidePartnershipModel: true,
+    hideArchitecture: true,
     hideMetrics: true,
     hideOutcomeCards: true,
 
@@ -12998,49 +12999,61 @@ export const servicesData = {
       },
     ],
 
-    architectureEyebrow: 'ENABLING IOT ADOPTION ACROSS ALL STAGES',
-    architectureTitle: 'Proof of concept, productization,',
-    architectureTitleHighlight: 'operationalization.',
-    architectureLede: 'Three stages, and most programs stall between the first and the second. A proof of concept proves the idea is possible; productization is where it becomes something you can actually sell and support.',
-    architectureVisibleCount: 3,
-    architectureNodes: [
-      {
-        title: 'Proof of Concept',
-        icon: 'Search',
-        description: 'Bring connectivity to devices you have already deployed, prototype quickly on a cloud IoT platform, and demonstrate the business value before anyone commits to hardware.',
-      },
-      {
-        title: 'Productization',
-        icon: 'Cpu',
-        description: 'Create the next generation connected device, choose the platform that fits rather than the one that demonstrated well, combine the data with your existing enterprise systems and build the applications on top.',
-      },
-      {
-        title: 'Operationalization',
-        icon: 'Settings',
-        description: 'Onboard your groups, users and devices, stand up an operations center, and monitor and manage both the fleet and the business it runs.',
-      },
-    ],
-
-    enterpriseArchitecture: {
+    focusAreas: {
       eyebrow: 'FOCUS AREAS',
       title: 'Smart industries, smart living',
       titleHighlight: 'and smart enterprises.',
-      lede: 'Our end to end IoT solutions empower smart industries, smart living and smart enterprises, and deliver connected experiences by connecting assets, operations and logistics, and services. We have expertise across all stages of IoT adoption, and we focus predominantly on these three segments.',
-      layers: [
+      lede: 'Our end to end IoT solutions empower smart industries, smart living and smart enterprises, and deliver connected experiences by connecting assets, operations and logistics, and services. We have expertise across all stages of IoT adoption, and we focus predominantly on the segments below.',
+      items: [
         {
           label: 'Smart Industries',
-          role: 'Re-imagine processes to unlock the true potential of your industry while facilitating sustainable development.',
-          nodes: ['Manufacturing', 'Energy', 'Utilities'],
+          sectors: 'Manufacturing, Energy, Utilities.',
+          description: 'Re-imagine processes to unlock the true potential of your industry while facilitating sustainable development.',
         },
         {
           label: 'Smart Living',
-          role: 'Enhance the quality of life by embracing emerging technologies designed to foster a healthier, happier and safe environment.',
-          nodes: ['Wearables', 'Healthcare', 'Security'],
+          sectors: 'Wearables, Healthcare, Security.',
+          description: 'Enhance the quality of life by embracing emerging technologies designed to foster a healthier, happier and safe environment.',
         },
         {
           label: 'Smart Enterprises',
-          role: 'Connect people, machines and information using big data to enhance business efficiency in a secured ecosystem.',
-          nodes: ['Smart Homes', 'Buildings', 'Offices', 'Retail'],
+          sectors: 'Smart homes, Buildings, Offices, Retail.',
+          description: 'Connect people, machines and information using big data to enhance business efficiency in a secured ecosystem.',
+        },
+      ],
+    },
+
+    offerTable: {
+      eyebrow: 'WHAT WE OFFER',
+      title: 'Proof of concept, productization,',
+      titleHighlight: 'operationalization.',
+      banner: 'Enabling IoT Adoption across All Stages',
+      columns: [
+        {
+          title: 'Proof of Concept',
+          items: [
+            'Bring in connectivity to already deployed devices',
+            'Quick prototyping with the cloud based IoT platform',
+            'Demonstrate possible business value',
+          ],
+        },
+        {
+          title: 'Productization',
+          items: [
+            'Creation of next generation connected devices',
+            'Identify the right partner for IoT platform',
+            'Combine data with existing enterprise systems',
+            'Create business applications',
+          ],
+        },
+        {
+          title: 'Operationalization',
+          items: [
+            'On-board groups and users',
+            'On-board devices',
+            'Create operations center',
+            'Monitor and manage devices and business',
+          ],
         },
       ],
     },
