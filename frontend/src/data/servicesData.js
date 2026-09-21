@@ -9931,6 +9931,10 @@ export const servicesData = {
           'Platform building: Digital ecosystems designed and built cloud native, scalable and secure on Microsoft Azure and AWS, carried from strategy and consulting through integration rather than handed over at the design stage.',
           'Device transformation: IoT work including digital twin and edge computing, so devices and platforms never designed to talk to each other can, and the automation that follows acts on insight rather than on a schedule.',
           'Modernization: Existing platforms moved to modern architecture, monolith to microservices, with backend, API and interface optimized together so performance, security and the experience improve at once rather than in sequence.',
+          'Technology accelerators: Azure migration tooling and starter kits across microservices and IoT, so your program builds the product rather than rebuilding the same scaffolding each time.',
+          'AI powered productivity tools: Tooling across the lifecycle that speeds your engineers up and shortens time to market, measured on cycle time rather than on adoption.',
+          'Industry specific expertise: Tailored solutions for healthcare, edtech and manufacturing, where the sector decides the architecture before any preference applies.',
+          'Business benefits: Reliability, cost savings, future readiness and agility, stated as the outcomes the platform work is accountable for rather than as its selling points.',
         ],
       },
       {
@@ -9956,7 +9960,10 @@ export const servicesData = {
           'Embedded software development: Firmware against real silicon rather than an emulator, with the contract between your device and your platform agreed before either side is written.',
           'FPGA design and verification: Register transfer level design, simulation and timing closure where programmable logic is genuinely the right answer rather than the familiar one.',
           'VLSI design and verification: Custom silicon design and verification where volume and function together justify it, which is a narrower set of products than most roadmaps assume.',
-          'End to end design capability: Concept through design, prototyping, regulatory certification and manufacturing, sequenced so getting it right the first time costs less than the revision it avoids.',
+          'End to end design capability: Comprehensive design services from initial concept through design, prototyping, regulatory certification and manufacturing.',
+          'Accelerate time to market: The design process is built to get it right the first time, which minimizes design revision, and every revision avoided is weeks of fabrication you do not spend.',
+          'Quality commitment: Strict quality checks through the build, so your products work reliably and last, rather than passing at the bench and failing in the field.',
+          'Focus on customer goals: Custom solutions built to your goals and objectives, which means the requirements conversation happens before the architecture rather than after it.',
         ],
       },
       {
