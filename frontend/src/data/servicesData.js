@@ -9942,12 +9942,15 @@ export const servicesData = {
         image: '/images/capabilities/quality-testing.png',
         desc: 'Automation first and risk based, sitting inside your pipeline rather than arriving as a stage before launch.',
         items: [
-          'QE consulting: Testing maturity assessed against TMMi and CMMi, then a transformation strategy with an outcome attached rather than a tooling list, including tool rationalization and whether a quality center of excellence or embedded pods is the right shape for you.',
+          'QE consulting: Testing maturity assessed against TMMi and CMMi, then a transformation strategy with a defined outcome, including tool rationalization and whether a quality center of excellence or embedded pods is the right shape for you.',
           'QE services: Test automation on open source and commercial frameworks across web, mobile, connected television and packaged applications, run against the same pipeline that builds your product.',
-          'AI and GenAI driven automation: Model assisted test generation, maintenance and failure triage, applied where it genuinely reduces the upkeep of a suite rather than where it demonstrates well.',
+          'AI and GenAI driven test automation: Model assisted test generation, maintenance and failure triage, applied for the efficiency it returns on a suite you have to keep running rather than for the demonstration.',
+          'Industry specific testing accelerators and frameworks: Prebuilt test assets and harnesses per sector, so a regulated or high volume product starts from coverage that already exists rather than from an empty repository.',
+          'Scalable cloud native QE solutions: Test estates that scale out on demand, so a full regression run costs hours on a parallel grid rather than a weekend on a fixed one.',
+          'Testing as a service: Quality capacity you can consume directly, without building a permanent team for a peak you meet twice a year.',
+          'Transparency in delivering quantifiable business value: Coverage, escape rate and cycle time reported against the release rather than the sprint, so quality is argued with numbers you can check.',
           'Performance, security and compliance testing: Load behavior, vulnerability and regulatory checks on a cadence your release can absorb rather than in the week before it.',
           'Digital experience testing: Compatibility, accessibility and end user experience verified as requirements, not audited afterward when the finding costs a redesign.',
-          'Testing as a service: Quality capacity you can consume directly, without building a permanent team for a peak you meet twice a year.',
         ],
       },
       {
