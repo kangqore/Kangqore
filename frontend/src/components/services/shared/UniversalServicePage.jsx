@@ -682,9 +682,14 @@ const BentoCard = ({ cap, i, cardClass, isVibrant, onOpenModal, service }) => {
             <p className={`svc-cap-desc absolute inset-0 leading-relaxed text-sm lg:text-[16px] ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
               {cap.desc}
             </p>
-            <ul className={`svc-cap-items absolute inset-0 space-y-2.5 ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
+            {/* Every item, not the first four. The line above this list states
+                `cap.items.length`, so a truncated list made the card claim nine
+                capabilities and show four — and an item added past the fourth
+                changed nothing a reader could see. Long lists scroll inside the
+                card rather than being silently dropped. */}
+            <ul className={`svc-cap-items svc-cap-no-scroll absolute inset-0 space-y-2.5 overflow-y-auto ${isVibrant ? 'text-gray-800' : 'text-white/90'}`}>
               <span className={`block text-xs font-bold uppercase tracking-widest mb-2.5 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>Key Capabilities:</span>
-              {cap.items.slice(0, 4).map((item, j) => (
+              {cap.items.map((item, j) => (
                 <li key={j} className="flex items-start text-[14px] lg:text-sm font-medium">
                   <span className={`mr-2 opacity-80 ${isVibrant ? 'text-blue-600' : 'bg-gradient-to-r from-[#2564ea] to-[#4ab6d4] bg-clip-text text-transparent'}`}>✦</span>
                   {item.includes(':') ? item.split(':')[0] : item}
