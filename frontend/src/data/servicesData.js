@@ -13023,24 +13023,24 @@ export const servicesData = {
 
     enterpriseArchitecture: {
       eyebrow: 'FOCUS AREAS',
-      title: 'Connected assets, operations',
-      titleHighlight: 'and services.',
-      lede: 'We work across every stage of IoT adoption, and these three segments are where the work concentrates. Each connects a different set of things, and what they demand of an architecture is genuinely different.',
+      title: 'Smart industries, smart living',
+      titleHighlight: 'and smart enterprises.',
+      lede: 'Our end to end IoT solutions empower smart industries, smart living and smart enterprises, and deliver connected experiences by connecting assets, operations and logistics, and services. We have expertise across all stages of IoT adoption, and we focus predominantly on these three segments.',
       layers: [
         {
           label: 'Smart Industries',
-          role: 'Manufacturing, energy and utilities',
-          nodes: ['Condition Monitoring', 'Predictive Maintenance', 'Process Re-imagining', 'Operational Technology Boundary', 'Sustainable Operation', 'Long Support Horizons'],
+          role: 'Re-imagine processes to unlock the true potential of your industry while facilitating sustainable development.',
+          nodes: ['Manufacturing', 'Energy', 'Utilities'],
         },
         {
           label: 'Smart Living',
-          role: 'Wearables, healthcare and security',
-          nodes: ['Body-Worn Devices', 'Connected Clinical Equipment', 'Safety And Security', 'Regulatory Classification', 'Battery And Power Budget', 'Personal Data Obligations'],
+          role: 'Enhance the quality of life by embracing emerging technologies designed to foster a healthier, happier and safe environment.',
+          nodes: ['Wearables', 'Healthcare', 'Security'],
         },
         {
           label: 'Smart Enterprises',
-          role: 'Homes, buildings, offices and retail',
-          nodes: ['Building Systems', 'Occupancy And Energy', 'Connected Store', 'People, Machines And Information', 'Big Data At Estate Scale', 'Secured Ecosystem'],
+          role: 'Connect people, machines and information using big data to enhance business efficiency in a secured ecosystem.',
+          nodes: ['Smart Homes', 'Buildings', 'Offices', 'Retail'],
         },
       ],
     },
