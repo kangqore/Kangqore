@@ -241,7 +241,9 @@ ${(svc.comparisonTable.rows || []).map((r) => `          <tr><th scope="row">${e
   // indentation and trailing newline so a service without the keys emits
   // nothing, the same contract as the concierge chips.
   const whatIsHeading = (svc.whatIsTitle || svc.whatIsHighlight)
-    ? `    <h2>${esc([svc.whatIsTitle, svc.whatIsTitleLine2, svc.whatIsHighlight].filter(Boolean).join(' '))}</h2>\n`
+    // A newline in whatIsHighlight is a rendered line break, not text — flatten
+    // it so the snapshot h2 matches the page's innerText word for word.
+    ? `    <h2>${esc([svc.whatIsTitle, svc.whatIsTitleLine2, svc.whatIsHighlight].filter(Boolean).join(' ').replace(/\s*\n\s*/g, ' '))}</h2>\n`
     : '';
 
   const architecture = (svc.architectureNodes || []).length

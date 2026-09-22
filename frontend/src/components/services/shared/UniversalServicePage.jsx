@@ -181,6 +181,18 @@ const PHASE_GRADIENTS = ['from-slate-600 to-slate-800', 'from-blue-500 to-blue-7
  */
 const EyebrowRule = ({ service }) => (service?.hideSectionRules ? null : <div className="h-[1px] w-12 bg-white/20" />);
 
+// A newline inside `whatIsHighlight` is a deliberate line break. `whatIsTitleLine2`
+// can already produce a third line, but only by moving words out of the gradient
+// clause — this breaks the clause without recolouring it. Suppressed below `sm`
+// like every other heading break here: a phone column wraps it anyway, and the
+// space sits after the <br> so the two segments stay separated once it is hidden.
+const HighlightLines = ({ text }) => String(text ?? '').split('\n').map((seg, i) => (
+  <React.Fragment key={i}>
+    {i > 0 && <><br className="hidden sm:block" />{' '}</>}
+    {seg}
+  </React.Fragment>
+));
+
 const JOURNEY_ICON_MAP = { Search, Target, Cpu, Rocket, Shield, TrendingUp, BrainCircuit, Network, Radar, Zap, Layers, Activity, Globe, Settings, ShieldCheck, Eye, Database, Lock };
 const TECH_STACK_ICON_COLORS = [
   { bg: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)', glow: '0 8px 24px rgba(59,130,246,0.45), 0 2px 8px rgba(59,130,246,0.3)' },
@@ -1910,7 +1922,7 @@ const featureMicros   = service.featureMicros
                       {service.whatIsTitleLine2 && <><br />{service.whatIsTitleLine2}</>}
                       {service.whatIsHighlightNewLine && <br className="hidden sm:block" />}
                       {' '}
-                      <span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span>
+                      <span className="bg-brand-gradient bg-clip-text text-transparent"><HighlightLines text={service.whatIsHighlight} /></span>
                     </>
                   : <>The complete {(sectionLine || service.name).toLowerCase()}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{sectionHighlight.toLowerCase()} framework.</span></>
                 }
@@ -1943,7 +1955,7 @@ const featureMicros   = service.featureMicros
                           {service.whatIsTitleLine2 && <><br />{service.whatIsTitleLine2}</>}
                           {service.whatIsHighlightNewLine && <br className="hidden sm:block" />}
                           {' '}
-                          <span className="bg-brand-gradient bg-clip-text text-transparent">{service.whatIsHighlight}</span>
+                          <span className="bg-brand-gradient bg-clip-text text-transparent"><HighlightLines text={service.whatIsHighlight} /></span>
                         </>
                       : <>The complete {(sectionLine || service.name).toLowerCase()}{' '}<span className="bg-brand-gradient bg-clip-text text-transparent">{sectionHighlight.toLowerCase()} framework.</span></>
                     }

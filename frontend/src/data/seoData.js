@@ -498,9 +498,9 @@ export const serviceSEO = {
     url: '/services/product-digital-engineering',
   },
   'devops-as-a-service': {
-    title: 'DevOps as a Service (DaaS) — Foundry | Kangqore',
-    description: 'Managed DevOps — CI/CD pipelines, infrastructure as code, container orchestration, monitoring, and SRE practices for faster, reliable delivery.',
-    keywords: 'DevOps as a service, DaaS, CI/CD pipelines, infrastructure as code, container orchestration, SRE',
+    title: 'DevOps as a Service Solutions and Capabilities | Kangqore',
+    description: 'Advisory, immutable infrastructure, CI/CD pipelines, canary and blue green delivery and observability, engineered for stability, resilience and scale.',
+    keywords: 'DevOps as a service, DaaS, DevOps advisory, immutable infrastructure, GitOps, CI/CD pipeline development, canary deployment, blue green deployment, observability, SRE',
     url: '/services/devops-as-a-service',
   },
   'managed-infrastructure-services': {
